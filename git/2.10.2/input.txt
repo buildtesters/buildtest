@@ -1,0 +1,1 @@
+./testgen.sh -s git -v 2.10.2 -e git
