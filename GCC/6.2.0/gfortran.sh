@@ -12,7 +12,7 @@ fi
 
 gfortran -v
 if [ $? != 0 ]; then
-	echo "Unable to run gfortran"
+	echo "Unable to run gfortran -v"
 	exit 1
 fi
 

@@ -12,7 +12,7 @@ fi
 
 gcc -v
 if [ $? != 0 ]; then
-	echo "Unable to run gcc"
+	echo "Unable to run gcc -v"
 	exit 1
 fi
 

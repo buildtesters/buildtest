@@ -1,0 +1,1 @@
+./testgen.sh -s icc -v 2017.1.132-GCC-5.2.0 -e icc -p -v

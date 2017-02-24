@@ -1,8 +1,8 @@
 #!/bin/sh
 
 module purge
-module=GCC
-version=5.2.0
+module=icc
+version=2017.1.132-GCC-5.2.0
 module load $module/$version
 
 if [ $? != 0 ]; then
@@ -10,9 +10,9 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 
-gfortran -v
+icc -v
 if [ $? != 0 ]; then
-	echo "Unable to run gfortran -v"
+	echo "Unable to run icc -v"
 	exit 1
 fi
 

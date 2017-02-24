@@ -12,7 +12,7 @@ fi
 
 g++ -v
 if [ $? != 0 ]; then
-	echo "Unable to run g++"
+	echo "Unable to run g++ -v"
 	exit 1
 fi
 
