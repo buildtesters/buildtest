@@ -1,0 +1,8 @@
+./testgen.sh -s impi -v 2017.1.132 -e mpiicc -p -v -m iccifort/2017.1.132-GCC-5.2.0
+./testgen.sh -s impi -v 2017.1.132 -e mpiifort -p -v -m iccifort/2017.1.132-GCC-5.2.0
+./testgen.sh -s impi -v 2017.1.132 -e mpiicpc -p -v -m iccifort/2017.1.132-GCC-5.2.0
+./testgen.sh -s impi -v 2017.1.132 -e mpif77 -p -v -m iccifort/2017.1.132-GCC-5.2.0
+./testgen.sh -s impi -v 2017.1.132 -e mpif90 -p -v -m iccifort/2017.1.132-GCC-5.2.0
+./testgen.sh -s impi -v 2017.1.132 -e mpicc -p -v -m iccifort/2017.1.132-GCC-5.2.0
+./testgen.sh -s impi -v 2017.1.132 -e mpicxx -p -v -m iccifort/2017.1.132-GCC-5.2.0
+./testgen.sh -s impi -v 2017.1.132 -e cpuinfo -m iccifort/2017.1.132-GCC-5.2.0
