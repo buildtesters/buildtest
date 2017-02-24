@@ -11,9 +11,9 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 
-ompi_info 
+mpif90 -v
 if [ $? != 0 ]; then
-	echo "Unable to run ompi_info "
+	echo "Unable to run mpif90 -v"
 	exit 1
 fi
 

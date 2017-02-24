@@ -11,9 +11,19 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 
-ompi_info 
+SOURCE=hello.f
+EXEC=hello.f.exe
+
+mpif90 -o $EXEC $SOURCE
 if [ $? != 0 ]; then
-	echo "Unable to run ompi_info "
+	echo "Unable to build program $SOURCE"
 	exit 1
 fi
 
+mpirun -np 2 ./$EXEC
+if [ $? != 0 ]; then
+	echo "Unable to run $EXEC"
+	exit 1
+fi
+
+rm ./$EXEC

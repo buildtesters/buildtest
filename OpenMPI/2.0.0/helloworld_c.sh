@@ -10,10 +10,18 @@ if [ $? != 0 ]; then
 	echo "unable to load module $module/$version"
 	exit 1
 fi
-
-ompi_info 
+SOURCE=hello.c
+EXEC=hello.c.exe
+mpicc -o $EXEC $SOURCE 
 if [ $? != 0 ]; then
-	echo "Unable to run ompi_info "
+	echo "Unable to build program $SOURCE "
 	exit 1
 fi
 
+mpirun -np 2 ./$EXEC
+if [ $? != 0 ]; then
+	echo "Unable to run $EXEC"
+	exit 1
+fi
+
+rm ./$EXEC
