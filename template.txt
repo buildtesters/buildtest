@@ -1,0 +1,18 @@
+#!/bin/sh
+
+module purge
+module=$1
+version=$2
+module load $module/$version
+
+if [ $? != 0 ]; then
+	echo "unable to load module $module/$version"
+	exit 1
+fi
+
+EXECUTABLE
+if [ $? != 0 ]; then
+	echo "Unable to run EXECUTABLE"
+	exit 1
+fi
+
