@@ -10,9 +10,10 @@ if [ $? != 0 ]; then
 	echo "unable to load module $module/$version"
 	exit 1
 fi
-SOURCE=hello.cpp
-EXEC=hello.cpp.exe
-mpic++ -o $EXEC $SOURCE 
+SOURCE=hello.f
+EXEC=$SOURCE.exe
+COMPILER=mpifort
+$COMPILER -o $EXEC $SOURCE 
 if [ $? != 0 ]; then
 	echo "Unable to build program $SOURCE "
 	exit 1
