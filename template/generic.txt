@@ -1,8 +1,8 @@
 #!/bin/sh
 
 module purge
-module=$1
-version=$2
+module=
+version=
 module load $module/$version
 
 if [ $? != 0 ]; then
