@@ -6,3 +6,6 @@ sh mpif90.sh
 sh mpicc.sh 
 sh mpicxx.sh 
 sh cpuinfo.sh 
+sh hello_c++.sh 
+sh hello_c.sh 
+sh hello_fortran.sh 
