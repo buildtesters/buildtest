@@ -11,8 +11,9 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 SOURCE=hello.cpp
-EXEC=hello.cpp.exe
-mpic++ -o $EXEC $SOURCE 
+EXEC=$SOURCE.exe
+COMPILER=mpic++
+$COMPILER -o $EXEC $SOURCE 
 if [ $? != 0 ]; then
 	echo "Unable to build program $SOURCE "
 	exit 1

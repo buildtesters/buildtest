@@ -1,6 +1,0 @@
-./testgen.sh -s MPICH -v 3.2 -e mpicc -p -v -m GCC/5.2.0
-./testgen.sh -s MPICH -v 3.2 -e mpic++ -p -v -m GCC/5.2.0
-./testgen.sh -s MPICH -v 3.2 -e mpif90 -p -v -m GCC/5.2.0
-./testgen.sh -s MPICH -v 3.2 -e helloworld_c -m GCC/5.2.0
-./testgen.sh -s MPICH -v 3.2 -e helloworld_cpp -m GCC/5.2.0
-./testgen.sh -s MPICH -v 3.2 -e helloworld_fortran -m GCC/5.2.0

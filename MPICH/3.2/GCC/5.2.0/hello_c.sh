@@ -11,8 +11,9 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 SOURCE=hello.c
-EXEC=hello.c.exe
-mpicc -o $EXEC $SOURCE 
+EXEC=$SOURCE.exe
+COMPILER=mpicc
+$COMPILER -o $EXEC $SOURCE 
 if [ $? != 0 ]; then
 	echo "Unable to build program $SOURCE "
 	exit 1
