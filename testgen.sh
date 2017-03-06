@@ -35,6 +35,7 @@ Usage: testgen [-c] [-s] [-v] [-e] [-m]
    -t --template	  The template file used for creating the test script
 			  generic: used for running executable [default]
 			  mpi:	used for building mpi source code and running with mpirun
+			  serial: used to compile serial program
    
    -f --file		  Specify the source file used for building the executable. This file 
 		          will be used for setting the tag SOURCE in the template file
@@ -82,7 +83,7 @@ executable=""
 depmodules=""
 parameter=""
 template=""
-toolchain="none"
+toolchain="dummy/dummy"
 testname=""
 compiler=""
 
@@ -164,17 +165,9 @@ while getopts ":b:c:e:f:hm:n:p:s:t:v:" opt; do
   esac
 done
 
-echo "software="$software
-echo "version="$version
-echo "executable="$executable
-echo "depmodules="$depmodules
-echo "param="${parameter[@]}
-echo "toolchain="$toolchain
-echo "filename="$filename
-echo "template="$template
 
 if [ "$software" == "" ] || [ "$version" == "" ] ; then
-	echo "need to specify option -s -v in your command"
+	echo "need to specify option -s & -v in your command"
 	exit 1
 fi
 
@@ -182,6 +175,8 @@ if [ "$template" == "" ]; then
 	template="template/generic.txt"
 elif [ "$template" == "mpi" ]; then
 	template="template/mpi-build.txt"
+elif [ "$template" == "serial" ]; then
+	template="template/serial-build.txt"
 else
 	echo "invalid template, please select a valid template"
 	echo "exiting program..."
@@ -200,10 +195,29 @@ if [ ! -f $filename ]; then
 	echo "exiting program..."
         exit 1
 fi
+
+# if either testname and $executable are not passed as arguments, then can't create test
+if [ $testname == $executable ]; then
+	echo "Test is not specified, please specify either -e for executable or -n for testname"
+	echo "Exiting Program..."
+	exit 1
+fi
+
 # default value of testname is the value of the executable specified by -e
 if [ "$testname" == "" ]; then
 	testname=$executable
 fi
+
+
+echo "software="$software
+echo "version="$version
+echo "executable="$executable
+echo "depmodules="$depmodules
+echo "param="${parameter[@]}
+echo "toolchain="$toolchain
+echo "filename="$filename
+echo "template="$template
+echo "testname="$testname
 
 # split string by space and put in array. Since multiple modules can be 
 # passed we need to process each module separately
@@ -213,15 +227,62 @@ do
 	echo $i
 done
  
+#cmakelist_cmd_=$(grep -w ${software} CMakeLists.txt)
+
 if [ ! -d $software/$version/$toolchain ]; then
-	mkdir -p $software/$version/$toolchain
+        mkdir -p $software/$version/$toolchain
 fi
+# checking whether to add software to CMakeLists using add_subdirectory. The return code should be 0 when
+# a test exists for that software and 1 when its the first test.
+grep_ret_code=`grep -w ${software} CMakeLists.txt >/dev/null; echo $?`
+if [ $grep_ret_code == 1 ]; then
+	echo "add_subdirectory($software)" >> CMakeLists.txt
+fi
+
+# if no CMakeLists in software directory, create and add the version to CMakeLists
+if [ ! -f $software/CMakeLists.txt ]; then
+	echo "add_subdirectory($version)" >> $software/CMakeLists.txt
+else
+	# Each software directory has individual version directory, the statement below
+	# ensures cmake to find test inside the version directory
+	grep_ret_code=`grep -w ${version} $software/CMakeLists.txt >/dev/null; echo $?`
+	if [ $grep_ret_code == 1 ]; then
+        	echo "add_subdirectory($version)" >> $software/CMakeLists.txt
+	fi
+fi
+
+
+toolchain_name=`echo $toolchain | cut -f 1 -d /`
+toolchain_version=`echo $toolchain | cut -f 2 -d /`
+
+if [ ! -f $software/$version/CMakeLists.txt ]; then
+        echo "add_subdirectory($toolchain_name)" >> $software/$version/CMakeLists.txt
+else
+	grep_ret_code=`grep -w ${toolchain_name} $software/$version/CMakeLists.txt >/dev/null; echo $?`
+	if [ $grep_ret_code == 1 ]; then
+        	echo "add_subdirectory($toolchain_name)" >> $software/$version/CMakeLists.txt
+	fi
+fi
+
+if [ ! -f $software/$version/$toolchain_name/CMakeLists.txt ]; then
+        echo "add_subdirectory($toolchain_version)" >> $software/$version/$toolchain_name/CMakeLists.txt
+else
+	grep_ret_code=`grep -w ${toolchain_version} $software/$version/$toolchain_name/CMakeLists.txt >/dev/null; echo $?`
+	if [ $grep_ret_code == 1 ]; then
+        	echo "add_subdirectory($toolchain_version)" >> $software/$version/$toolchain_name/CMakeLists.txt
+	fi
+fi
+
+# check to see if a test exists for a particular software, if not then add it to CMakeLists.txt otherwise don't
+#grep_ret_code=`grep -w $software-$version-$testname $software/$version/$toolchain/$CMakeLists.txt >/dev/null; echo $?`
+
 currentcommand="$0 $@"
 echo $currentcommand
-# if test case doesn't exist then create the test script and add command to testall.sh
+# if test case doesn't exist then create the test script and add command to CMakeLists.txt, along with input.txt to keep a history of input commands
 
-if [ ! -f "$software/$version/$toolchain/${testname}.sh" ]; then
-	echo "sh $testname.sh " >> $software/$version/$toolchain/testall.sh	
+if [ ! -f "$software/$version/$toolchain_name/$toolchain_version/${testname}.sh" ]; then
+	# adding new test to CMakeLists	
+	echo "add_test(NAME $software-$version-$toolchain_name-$toolchain_version-$testname	COMMAND sh $testname.sh 	WORKING_DIRECTORY \${CMAKE_CURRENT_SOURCE_DIR})" >> $software/$version/$toolchain/CMakeLists.txt
 
 	# copy template file to its proper directory
 	cp $template $software/$version/$toolchain/$testname.sh
@@ -250,7 +311,7 @@ if [ ! -f "$software/$version/$toolchain/${testname}.sh" ]; then
 	sed -i 's/version=/version='$version'/g' $software/$version/$toolchain/$testname.sh
 
 
-	if [ "$toolchain" != "none" ]; then
+	if [ "$toolchain" != "dummy/dummy" ]; then
 		sed -i '4i module load '$toolchain $software/$version/$toolchain/$testname.sh
 	fi
 	# adding depended modules to file at line 4, this is aright after module purge
@@ -260,7 +321,7 @@ if [ ! -f "$software/$version/$toolchain/${testname}.sh" ]; then
 	done
 	
 	echo "Creating Test $software/$version/$toolchain/$testname.sh"
-	echo "Writing Test command to $software/$version/$toolchain/testall.sh"
+	echo "Writing Test for CMake at $software/$version/$toolchain/CMakeLists.txt"
 
 else
 	echo "Test already exists. Check file $software/$version/$toolchain/$testname.sh"
