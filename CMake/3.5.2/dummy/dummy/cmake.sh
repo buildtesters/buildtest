@@ -10,9 +10,9 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 
-ccmake --version
+cmake 
 if [ $? != 0 ]; then
-	echo "Unable to run ccmake "
+	echo "Unable to run cmake "
 	exit 1
 fi
 

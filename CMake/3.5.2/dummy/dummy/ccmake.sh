@@ -10,9 +10,9 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 
-ctest --version
+ccmake 
 if [ $? != 0 ]; then
-	echo "Unable to run ctest "
+	echo "Unable to run ccmake "
 	exit 1
 fi
 
