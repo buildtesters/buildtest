@@ -1,0 +1,4 @@
+./testgen.sh -s icc -v 2017.1.132-GCC-5.2.0 -e icc -p -v
+./testgen.sh -s icc -v 2017.1.132-GCC-5.2.0 -e icpc -p -v
+./testgen.sh -s icc -v 2017.1.132-GCC-5.2.0 -f src/C/hello.c -n hello_c -t serial -c icc
+./testgen.sh -s icc -v 2017.1.132-GCC-5.2.0 -f src/C++/hello.cpp -n hello_cpp -t serial -c icpc
