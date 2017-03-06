@@ -1,3 +1,0 @@
-./testgen.sh -s GCC -v 5.2.0 -e gcc -p -v
-./testgen.sh -s GCC -v 5.2.0 -e g++ -p -v
-./testgen.sh -s GCC -v 5.2.0 -e gfortran -p -v
