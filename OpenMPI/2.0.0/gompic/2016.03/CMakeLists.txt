@@ -1,0 +1,7 @@
+add_test(NAME OpenMPI-2.0.0-gompic-2016.03-ompi_info	COMMAND sh ompi_info.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_test(NAME OpenMPI-2.0.0-gompic-2016.03-mpicc	COMMAND sh mpicc.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_test(NAME OpenMPI-2.0.0-gompic-2016.03-mpic++	COMMAND sh mpic++.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_test(NAME OpenMPI-2.0.0-gompic-2016.03-mpif90	COMMAND sh mpif90.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_test(NAME OpenMPI-2.0.0-gompic-2016.03-hello_c	COMMAND sh hello_c.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_test(NAME OpenMPI-2.0.0-gompic-2016.03-hello_cpp	COMMAND sh hello_cpp.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_test(NAME OpenMPI-2.0.0-gompic-2016.03-hello_fortran	COMMAND sh hello_fortran.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
