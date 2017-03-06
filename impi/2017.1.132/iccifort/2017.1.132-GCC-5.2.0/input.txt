@@ -8,3 +8,4 @@
 ./testgen.sh -s impi -v 2017.1.132 -b iccifort/2017.1.132-GCC-5.2.0 -c mpiicpc -f src/MPI/hello.cpp -t mpi -n hello_c++
 ./testgen.sh -s impi -v 2017.1.132 -b iccifort/2017.1.132-GCC-5.2.0 -c mpiicc -f src/MPI/hello.c -t mpi -n hello_c
 ./testgen.sh -s impi -v 2017.1.132 -b iccifort/2017.1.132-GCC-5.2.0 -c mpiifort -f src/MPI/hello.f -t mpi -n hello_fortran
+./testgen.sh -s impi -v 2017.1.132 -e mpiicc -p -v -b iccifort/2017.1.132-GCC-5.2.0

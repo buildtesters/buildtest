@@ -1,0 +1,3 @@
+./testgen.sh -s CUDA -v 8.0.44 -b GCC/5.2.0 -e nvcc -p --version
+./testgen.sh -s CUDA -v 8.0.44 -b GCC/5.2.0 -f src/CUDA/saxpy.cu -t serial -n saxpy -c nvcc
+./testgen.sh -s CUDA -v 8.0.44 -b GCC/5.2.0 -f src/CUDA/saxpy.cu -t serial -n nvprof -c nvcc

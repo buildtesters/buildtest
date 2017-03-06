@@ -8,3 +8,4 @@ add_test(NAME impi-2017.1.132-iccifort-2017.1.132-GCC-5.2.0-cpuinfo	COMMAND sh c
 add_test(NAME impi-2017.1.132-iccifort-2017.1.132-GCC-5.2.0-hello_c++	COMMAND sh hello_c++.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 add_test(NAME impi-2017.1.132-iccifort-2017.1.132-GCC-5.2.0-hello_c	COMMAND sh hello_c.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 add_test(NAME impi-2017.1.132-iccifort-2017.1.132-GCC-5.2.0-hello_fortran	COMMAND sh hello_fortran.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_test(NAME impi-2017.1.132-iccifort-2017.1.132-GCC-5.2.0-mpiicc	COMMAND sh mpiicc.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
