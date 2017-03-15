@@ -334,7 +334,7 @@ do
 				exit 1
 			fi
 			templatefile=$BTTEMPLATEDIR/mpi.sh
-		# if there is a custom directory use the template in src/<software>/template.sj
+		# if there is a custom directory use the template in src/<software>/template.sh
 		elif [ $directory == "custom" ]; then
 			templatefile=$BTSRCSWDIR/template.sh
 		# all other directories are skipped
@@ -384,52 +384,5 @@ do
                 echo "Creating Test $destdir/$testname"
 	done	
 done
-exit 
-if [ -d $generic ]; then
-	source $BTSRCSWDIR/generic/setup.sh
-
-	files_in_generic=`ls -1 $generic`
-	for file in ${files_in_generic[@]}
-	do	
-		# dont process the setup.sh file since that is used for setting of environment for test script
-		if [ $file == "setup.sh" ]; then
-			continue;
-		fi
-		# use the custom template inside the software directory if it exists otherwise use the generic template
-		cp  $BTTEMPLATEDIR/generic.sh $destdir/${file}.sh
-	
-		# get name of extension file
-		ext=(`echo ${file} | cut -f2 -d.`)
-		# C files with .c extension, set compiler to gcc
-		if [ $ext == "c" ]; then
-			sed -i 's/COMPILER=/COMPILER='${CC}'/g' $destdir/${file}.sh
-	        elif [ $ext == "f" ]; then
-        	        sed -i 's/COMPILER=/COMPILER='${FC}'/g' $destdir/${file}.sh
-		elif [ $ext == "f90" ]; then
-			sed -i 's/COMPILER=/COMPILER='${F90}'/g' $destdir/${file}.sh
-		elif [ $ext == "f77" ]; then
-			sed -i 's/COMPILER=/COMPILER='${F77}'/g' $destdir/${file}.sh
-	        elif [ $ext == "cpp" ]; then
-        	        sed -i 's/COMPILER=/COMPILER='${CXX}'/g' $destdir/${file}.sh
-		fi
-
-		# loading toolchain module in test script if specified 
-        	if [ "$toolchain" != "dummy/dummy" ]; then
-                	sed -i '4i module load '$toolchain $destdir/${file}.sh
-	        fi
-
-		sed -i 's/module=/module='$software'/g' $destdir/${file}.sh
-		sed -i 's/version=/version='$version'/g' $destdir/${file}.sh
-
-		# replace every / with \/ so that sed command can be applied properly on SOURCE tag
-		sedcmd=$(echo ${generic} | sed  -re 's:/:\\/:g')
-		sed -i 's/SOURCE=/SOURCE='$sedcmd'/g' $destdir/${file}.sh
-	
-		echo "add_test(NAME $software-$version-$toolchain_name-$toolchain_version-$file     COMMAND sh ${file}.sh         WORKING_DIRECTORY \${CMAKE_CURRENT_SOURCE_DIR})" >> $destdir/CMakeLists.txt
-
-		echo "Creating Test $destdir/${file}.sh"
-	
-	done
-fi
 
 
