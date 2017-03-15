@@ -7,14 +7,14 @@ The BuildTest repository is a automatic framework for generating tests for softw
 ### Setup
 Specify your path for **BTMODROOT** (Module Tree Root) path in **setup.sh**.  This is used by **buildtest** to find all your modules in order to verify your test are generated based on your module environment. 
 
-If you are using a Hierarchical Module Naming Scheme for your Module Trees, you would have the following directories. Please specify the parent directory as your BTMODROOT assuming this is where all your modules reside. 
+If you are using a Hierarchical Module Naming Scheme for your Module Trees, you would have the following directories. Please specify the parent directory as your **BTMODROOT** assuming this is where all your modules reside. 
 ```
 Compiler
 Core
 MPI
 ```
 
-For instance, my BTMODROOT on my system is set to /nfs/grid/software/testing/RHEL7/easybuild/modules/ 
+For instance, my **BTMODROOT** on my system is set to **/nfs/grid/software/testing/RHEL7/easybuild/modules/** 
 ```
 hpcswadm@hpcv18$ls -l /nfs/grid/software/testing/RHEL7/easybuild/modules/
 total 8
@@ -65,16 +65,14 @@ Example:
 
     3.	Modules should be passed in quotation if adding multiple modules to path
     
-    	./testgen.sh -s netCDF -v 4.4.1 -b intel/2017.01  -m "<module>/<version> <module>/version ..."
+    	./buildtest -s netCDF -v 4.4.1 -b intel/2017.01  -m "<module>/<version> <module>/version ..."
 
 ```
 
 
 
 
-Each test case will reside in a directory **$software/$version/$toolchain**. If no toolchain is specified the path will be be
-
-**software/version/dummy/dummy**
+Each test case will reside in a directory **$software/$version/$toolchain**. If no toolchain is specified the path will be **software/version/dummy/dummy**
 
 All tests are recorded in the directory **testing**.
 
@@ -106,8 +104,11 @@ Each application will have a directory **src/$software** will have the following
 	gcov-tool --version
 	gfortran --version
 	 ```
- 2. **singlesourcedirectory** -- A directory containing source files used for building test from source. Each test is mapped to a single source file. The test uses src/$software/template.sh script to generate the test. If your test fits in this method, then place the test in this directory.
- 3. **env.sh** -- Initializes environment variables used for compiling code. For instance environment variables like CC, CXX, FC, F77, F90 are set accordingly if needed.
+ 2. **generic** -- A directory containing source files used to work with template/generic.sh. Each test is mapped to a single source file. If your test fits in this method, then place the test in this directory.
+ 3. **mpi** -- A directory containing MPI source files used to work with template/mpi.sh. 
+ 3. **custom** -- A directory that needs a custom template in order to generate test. The template file is in **src/$software/custom/template.sh**. Each test has 1-1 mapping to a source file. A **setup.sh** file can be specified in this directory if needed, otherwise it will use **src/setup.sh** 
+
+setup.sh file is used to set CC, CXX, FC, F77, F90 are set accordingly if needed.
  
 
 ### Testing
@@ -162,5 +163,6 @@ Test project /hpc/hpcswadm/applicationtesting/build
 
 
 ```
+
 
 

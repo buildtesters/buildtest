@@ -1,7 +1,0 @@
-./testgen.sh -s OpenMPI -v 2.0.1 -e ompi_info -b GCC/6.2.0
-./testgen.sh -s OpenMPI -v 2.0.1 -e mpicc -p -v -b GCC/6.2.0
-./testgen.sh -s OpenMPI -v 2.0.1 -e mpic++ -p -v -b GCC/6.2.0
-./testgen.sh -s OpenMPI -v 2.0.1 -e mpif90 -p -v -b GCC/6.2.0
-./testgen.sh -s OpenMPI -v 2.0.1 -c mpicc -f src/MPI/hello.c -b GCC/6.2.0 -t mpi -n hello_c
-./testgen.sh -s OpenMPI -v 2.0.1 -c mpic++ -f src/MPI/hello.cpp -b GCC/6.2.0 -t mpi -n hello_cpp
-./testgen.sh -s OpenMPI -v 2.0.1 -c mpifort -f src/MPI/hello.f -b GCC/6.2.0 -t mpi -n hello_fortran

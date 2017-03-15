@@ -1,6 +1,0 @@
-add_test(NAME GCC-5.2.0-dummy-dummy-gcc	COMMAND sh gcc.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_test(NAME GCC-5.2.0-dummy-dummy-gfortran	COMMAND sh gfortran.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_test(NAME GCC-5.2.0-dummy-dummy-g++	COMMAND sh g++.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_test(NAME GCC-5.2.0-dummy-dummy-hello_c	COMMAND sh hello_c.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_test(NAME GCC-5.2.0-dummy-dummy-hello_fortran	COMMAND sh hello_fortran.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_test(NAME GCC-5.2.0-dummy-dummy-hello_cpp	COMMAND sh hello_cpp.sh 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})

@@ -1,4 +1,0 @@
-./testgen.sh -s CMake -v 3.5.2 -e cmake
-./testgen.sh -s CMake -v 3.5.2 -e cpack
-./testgen.sh -s CMake -v 3.5.2 -e ccmake
-./testgen.sh -s CMake -v 3.5.2 -e ctest

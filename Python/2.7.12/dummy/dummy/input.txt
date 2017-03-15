@@ -1,2 +1,0 @@
-./testgen.sh -s Python -v 2.7.12 -e pip -p list
-./testgen.sh -s Python -v 2.7.12 -e python -p -V

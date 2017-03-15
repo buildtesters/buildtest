@@ -1,2 +1,0 @@
-./testgen.sh -s ifort -v 2017.1.132-GCC-5.2.0 -e ifort -p -v
-./testgen.sh -s ifort -v 2017.1.132-GCC-5.2.0 -f src/Fortran/hello.f90 -t serial -n hello_fortran -c ifort
