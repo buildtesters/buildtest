@@ -11,8 +11,8 @@ Usage: buildtest
 			  this to resolve dependencies, if it is not captured in 
 			  module file
 
-   -l --list		  List current modules in the system based on variable BTMODROOT. 
-			  Check setup.sh to see the path for BTMODROOT
+   -l --list		  List current modules in the system based on variable BUILDTEST_MODROOT. 
+			  Check setup.sh to see the path for BUILDTEST_MODROOT
 
    -b --buildtoolchain	  The toolchain used to build the package. This refers to the EasyBuild toolchain
 			  used for building the package. Check your easyconfig to see what toolchain you used. 
@@ -122,7 +122,7 @@ declare -a compilerver=()
 declare -a mpilist=()
 declare -a mpiverlist=()
 
-ret=`find $BTMODROOT -type f`
+ret=`find $BUILDTEST_MODROOT -type f`
 IFS=' ' read -ra modlist <<< $ret
 let nameindex=0
 
@@ -191,10 +191,10 @@ fi
 foundsoftware="false"
 foundtoolchain="false"
 
-export BTSRCSWDIR=$BTSRCDIR/$software
-cmdfile=$BTSRCSWDIR/command.txt
-generic=$BTSRCSWDIR/generic
-mpidir=$BTSRCSWDIR/MPI
+export BUILDTEST_SRCSWDIR=$BUILDTEST_SRCDIR/$software
+cmdfile=$BUILDTEST_SRCSWDIR/command.txt
+generic=$BUILDTEST_SRCSWDIR/generic
+mpidir=$BUILDTEST_SRCSWDIR/MPI
 
 # extract toolchain name and version from toolchain variable. Split by / to get name and version. Format: <name>/<version>
 toolchain_name=`echo $toolchain | cut -f 1 -d /`
@@ -222,12 +222,99 @@ if [ $foundsoftware == "false" ]; then
 	exit 1
 fi
 
+# if toolchain opt -b is specified and toolchain module doesn't exist
 if [ $toolchain != "dummy/dummy" ] && [ $foundtoolchain == "false" ]; then
-        echo "Can't find Toolchain module: $toolchain for: $software $version"
+	echo "Can't find Toolchain module: $toolchain for: $software $version"
         exit 1
 fi
 
+# if toolchain is not specified but software-version module exist in one of the module tree then search the easyconfig files for correct toolchain
+#elif [ $toolchain == "dummy/dummy" ]; then
 
+# when version of module file is hidden
+if [ ${version:0:1} == "." ]; then
+	strip_version=$(echo $version | cut -c2-${#version})
+	easyconfig_file=$(find $BUILDTEST_EASYCONFIGDIR -name "$software-$strip_version*.eb")
+else
+	easyconfig_file=$(find $BUILDTEST_EASYCONFIGDIR -name "$software-$version*.eb")
+fi
+eb_tc_name=()
+eb_tc_ver=()
+let index=0
+for file in ${easyconfig_file[@]}
+do
+	eb_tc_name[$index]=$(cat $file | grep "toolchain = *" | cut -f4 -d " " | tr -d ",'")
+	eb_tc_ver[$index]=$(cat $file | grep "toolchain = *" | cut -f6 -d " " | tr -d ",'}")
+	index=$index+1
+	
+done
+
+hidden_version_file=false
+# if toolchain version is hidden file from command line strip the leading "." when doing comparison
+if [ ${toolchain_version:0:1} == "." ]; then
+	len=${#toolchain_version}
+	# skip 1st character and get all characters from 2nd to end of string
+	strip_toolchain_version_hiddenfile=$(echo $toolchain_version | cut -c2-$len)
+	hidden_version_file=true
+		#echo $toolchain_version:
+fi
+
+# boolean variable to determine if the toolchain name and version match the values in easyconfig. If condition is not met, then we halt program
+eb_tc_name_match=0
+eb_tc_ver_match=0
+# only check 
+# loop over all easyconfig toolchain name/version values because there could be multiple software version built with different toolchains
+for ((i = 0; i < ${#eb_tc_name[@]}; i++))
+do
+	#echo "BEGIN: name,ver="${eb_tc_name[$i]} ${eb_tc_ver[$i]} "toolchain=" $toolchain_name $toolchain_version "match_name,verion=" $eb_tc_name_match $eb_tc_ver_match
+	# check of toolchain name is found in array eb_tc_name
+	if [ "$toolchain_name" == "${eb_tc_name[$i]}" ]; then
+		eb_tc_name_match=1
+	fi
+	# when easyconfig toolchain version use version='' instead of version='dummy' skip version check evaluation 
+	if [ ${#eb_tc_ver[$i]} == 0 ]; then
+		continue
+	fi
+	# if toolchain is not a hidden file do a normal string comparison of version found in easyconfig, otherwise strip the leading "." when the version is a hidden file
+	if [ ! $hidden_version_file ]; then
+		# if toolchain version is found in array eb_tc_ver 
+		if [ "$toolchain_version" == "${eb_tc_ver[$i]}" ]; then
+			eb_tc_ver_match=1
+		fi
+	else
+		if [ "$strip_toolchain_version_hiddenfile" == "${eb_tc_ver[$i]}" ]; then
+			eb_tc_ver_match=1
+		fi
+	fi
+        # dummy toolchain version can be either the value 'dummy' or '' in easyconfig so we ignore match from easyconfig for dummy toolchain
+        if [ "$toolchain_version" == "dummy" ]; then
+                  eb_tc_ver_match=1
+        fi
+
+	#cho "END: name,ver="${eb_tc_name[$i]} ${eb_tc_ver[$i]} "toolchain=" $toolchain_name $toolchain_version "match_name,verion=" $eb_tc_name_match $eb_tc_ver_match
+
+done
+
+if [ $eb_tc_name_match == 0   ] || [ $eb_tc_ver_match == 0 ]; then
+	echo "Toolchain name/version mismatch, check files for correct toolchain options: "
+	for file in "${easyconfig_file[@]}"
+	do
+		echo -e "$file \n"
+	done
+	exit 1
+fi
+
+# when there is no test directory for software in the src directory, stop execution 
+if [ ! -d $BUILDTEST_SRCSWDIR ]; then
+	echo "No test directory found: $BUILDTEST_SRCSWDIR, please create it and add test before running BuildTest"
+	exit 1
+fi
+
+# if the test directory exist for the software in the src directory, but no test files then halt execution
+if [ $(ls $BUILDTEST_SRCSWDIR | wc -l) == 0 ]; then
+	echo "No test found in $BUILDTEST_SRCSWDIR, please add test before running BuildTest"
+	exit 1
+fi
 # split string by space and put in array. Since multiple modules can be 
 # passed we need to process each module separately
 extramodules=(${depmodules// / })
@@ -291,7 +378,7 @@ if [ -f $cmdfile ]; then
 	do
 		executable=`echo $cmd | cut -f 1 -d " " `
 		parameter=`echo $cmd | cut -f 1 -d " " `
-		cp $BTTEMPLATEDIR/base.sh	$destdir/$executable.sh
+		cp $BUILDTEST_TEMPLATEDIR/base.sh	$destdir/$executable.sh
 		# if -b is specified then toolchain must be loaded. This is the case for packages dependent on GCC, Intel, 
 		if [ "$toolchain" != "dummy/dummy" ]; then
         	        sed -i '4i module load '$toolchain $destdir/$executable.sh
@@ -307,36 +394,36 @@ if [ -f $cmdfile ]; then
 	done < $cmdfile
 fi
 # if there are sourcefiles provided for the test then process them 
-#for directory in "$BTSRCSWDIR/*";
+#for directory in "$BUILDTEST_SRCSWDIR/*";
 
-for directory in $(ls -1 $BTSRCSWDIR);
+for directory in $(ls -1 $BUILDTEST_SRCSWDIR);
 do
 	# don't process any files, only directories
-	if [ ! -d $BTSRCSWDIR/$directory ]; then
+	if [ ! -d $BUILDTEST_SRCSWDIR/$directory ]; then
 		continue
 	fi
 	
-	for file in $(ls -1 $BTSRCSWDIR/$directory);
+	for file in $(ls -1 $BUILDTEST_SRCSWDIR/$directory);
 	do
 
 		if [ $directory == "generic" ]; then
-			if [ -f $BTSRCSWDIR/generic/setup.sh ]; then
-				source $BTSRCSWDIR/generic/setup.sh
+			if [ -f $BUILDTEST_SRCSWDIR/generic/setup.sh ]; then
+				source $BUILDTEST_SRCSWDIR/generic/setup.sh
 			else
-				source $BTSRCDIR/setup.sh
+				source $BUILDTEST_SRCDIR/setup.sh
 			fi
-			templatefile=$BTTEMPLATEDIR/generic.sh
+			templatefile=$BUILDTEST_TEMPLATEDIR/generic.sh
 		elif [ $directory == "mpi" ]; then
-			if [ -f $BTSRCSWDIR/mpi/setup.sh ]; then
-				source $BTSRCSWDIR/mpi/setup.sh
+			if [ -f $BUILDTEST_SRCSWDIR/mpi/setup.sh ]; then
+				source $BUILDTEST_SRCSWDIR/mpi/setup.sh
 			else
-				echo "Missing file $BTSRCSWDIR/mpi/setup.sh, please create it and setup wrappers like CC, FC, CXX"
+				echo "Missing file $BUILDTEST_SRCSWDIR/mpi/setup.sh, please create it and setup wrappers like CC, FC, CXX"
 				exit 1
 			fi
-			templatefile=$BTTEMPLATEDIR/mpi.sh
+			templatefile=$BUILDTEST_TEMPLATEDIR/mpi.sh
 		# if there is a custom directory use the template in src/<software>/template.sh
 		elif [ $directory == "custom" ]; then
-			templatefile=$BTSRCSWDIR/template.sh
+			templatefile=$BUILDTEST_SRCSWDIR/template.sh
 		# all other directories are skipped
 		else
 			continue
@@ -376,7 +463,7 @@ do
 
 
                 # replace every / with \/ so that sed command can be applied properly on SOURCE tag
-                sedcmd=$(echo $BTSRCSWDIR/${directory}/$file | sed  -re 's:/:\\/:g')
+                sedcmd=$(echo $BUILDTEST_SRCSWDIR/${directory}/$file | sed  -re 's:/:\\/:g')
                 sed -i 's/SOURCE=/SOURCE='$sedcmd'/g' $destdir/$testname
 
                 echo "add_test(NAME $software-$version-$toolchain_name-$toolchain_version-$testname     COMMAND sh $testname         WORKING_DIRECTORY \${CMAKE_CURRENT_SOURCE_DIR})" >> $destdir/CMakeLists.txt
@@ -384,5 +471,3 @@ do
                 echo "Creating Test $destdir/$testname"
 	done	
 done
-
-
