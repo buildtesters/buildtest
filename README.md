@@ -1,36 +1,52 @@
 ## Application Testing
 ---
 ### Description
-The BuildTest repository is a automatic framework for generating tests for software applications designed to work in a HPC environment.  This framework heavily relies on application to be built with [Lmod](https://github.com/TACC/Lmod) and [EasyBuild](https://github.com/hpcugent/easybuild-easyconfigs) 
+The BuildTest repository is an **Automatic Test Generation Framework** for writing test cases suited to work well in a HPC environment.  This framework heavily relies that your application is built with  [EasyBuild](https://github.com/hpcugent/easybuild-easyconfigs)  and your system has  [Lmod](https://github.com/TACC/Lmod) or [Environment Modules](http://modules.sourceforge.net/) for managing modules
 
 ---
 ### Setup
-Specify your path for **BTMODROOT** (Module Tree Root) path in **setup.sh**.  This is used by **buildtest** to find all your modules in order to verify your test are generated based on your module environment. 
+Specify your path for **BUILDTEST_MODROOT** (Module Tree Root) path in **setup.sh**.  This is used by **buildtest** to find all your modules in order to verify your test are generated based on your module environment. 
 
-If you are using a Hierarchical Module Naming Scheme for your Module Trees, you would have the following directories. Please specify the parent directory as your **BTMODROOT** assuming this is where all your modules reside. 
+If you are using a **"Hierarchical Module Naming Scheme"** for your Module Naming Scheme, you would have the following directories.  
 ```
 Compiler
 Core
 MPI
 ```
+Specify the directory where you see these directories as your path for **BUILDTEST_MODROOT** assuming this is where all your modules reside.
 
-For instance, my **BTMODROOT** on my system is set to **/nfs/grid/software/testing/RHEL7/easybuild/modules/** 
+For instance, my **BUILDTEST_MODROOT** on my system is set to **/nfs/grid/software/testing/RHEL7/easybuild/modules/all** 
 ```
-hpcswadm@hpcv18$ls -l /nfs/grid/software/testing/RHEL7/easybuild/modules/
-total 8
-drwxr-xr-x 5 hpcswadm hpcswadm 4096 Mar 13 14:26 all
-drwxr-xr-x 3 hpcswadm hpcswadm 4096 Mar 13 14:34 Tools
-
+[hpcswadm@amrndhl1157 BuildTest]$ ls -l /nfs/grid/software/testing/RHEL7/easybuild/modules/all/
+total 12
+drwxr-xr-x  6 hpcswadm hpcswadm 4096 Mar 21 10:56 Compiler
+drwxr-xr-x 14 hpcswadm hpcswadm 4096 Mar 21 10:41 Core
+drwxr-xr-x  3 hpcswadm hpcswadm 4096 Mar 21 00:54 MPI
 ```
  
-Once this is setup, you can check if your modules are picked up with **buildtest**
+Once this is setup, you can check if your modules are picked up by running **buildtest -l**
 
+Easyconfig setup with BuildTest
+----------------
 
+BuildTest utilizes the easyconfig files as part of the verification process to ensure test are created based on the module files and the toolchain used by Easybuild. The buildtest does a 2-step verification to make sure the test are created for the correct software package.
+
+**Module File Verification:** buildtest makes use of **$BUILDTEST_MODROOT** to find all the modules and stores the values in an array. Whenever an argument is passed for **--software** and **--version** it is checked with the module array to make sure it exist. If there is no module found with the following name, the program will halt because the test relies upon loading the module before running the test
+
+**Easyconfig Toolchain verification:** Each software version is built with a particular toolchain in EasyBuild. In order to make sure we are building for the correct test in the event of multiple packages being installed with different toolchain we need a way to classify which package to use. 
+
+For instance if **flex/2.6.0** is installed with **GCCcore/5.4.0**, **GCCcore/6.2.0**, **dummy** toolchain then we have three instances of this package in different module trees. We can perform this test by searching all the easyconfig files with the name flex-2.6.0 and search for the tag **toolchain = { name='toolchain-name', version='toolchain-version' }**
+
+Module File Check is not sufficient for checking modules in the event when there is a match for a software package but there is a toolchain mismatch. For instance if Python 2.7.12 is built with foss toolchain only and the user request to build Python 2.7.12 with intel, the module file verification will pass but it wouldn't pass the Toolchain verification stage. 
+
+In order for this to work properly, clone your easyconfig repository that you used to install your software packages on the cluster in the top level directory. 
+
+Next specify the path for **$BUILDTEST_EASYCONFIGDIR** to the path where your easyconfig files reside. 
+
+**Note: Keep this repository up to date as you build new software packages**
 
 Usage
 -----
-
-
 
 ```
 Usage: buildtest 
@@ -163,6 +179,3 @@ Test project /hpc/hpcswadm/applicationtesting/build
 
 
 ```
-
-
-
