@@ -62,7 +62,6 @@ def module_version_relation(moduletree):
 		module_dict[item]=version_set
 	return module_dict
 
-#def moduleversion_toolchain_relation(moduletree):
 def get_toolchain(easyconfigdir):
 	easyconfigfiles=os.popen("find " + easyconfigdir +  " -name *.eb -type f ").read().rstrip().split("\n")
         #print easyconfigfiles,type(easyconfigfiles)
@@ -75,15 +74,14 @@ def get_toolchain(easyconfigdir):
 		toolchain.add(toolchain_name+" "+toolchain_version)
 	return toolchain
 
+# checks whether software exist, there must be a module file present with the same name specified as the argument. 
 def software_exists(software):
-	print "length-",len(software)
 	if len(software) != 2:
 		print "Too many arguments, -s takes argument <software>,<version>"
 		sys.exit(1)
 	
 	softwarecollection=get_unique_software_version(BUILDTEST_MODULEROOT)
 	software_name=software[0]+" "+software[1]
-	#found=False
 	if software_name not in softwarecollection:
 		print "Can't find software: ", software_name
 		sys.exit(1)
@@ -99,7 +97,6 @@ def toolchain_exists(software,toolchain):
 		toolchain_name=toolchain[0]+" "+strip_version
 	else:
 		toolchain_name=toolchain[0]+" "+toolchain[1]
-	print "in func",software,toolchain
 	if len(toolchain) != 2:
 		print "Too many arguments, -t takes argument <toolchain-name>,<toolchain-version>"
 		sys.exit(1)
@@ -108,6 +105,74 @@ def toolchain_exists(software,toolchain):
 		print "Can't find toolchain: ", toolchain_name
 		sys.exit(1)
 	return True
+
+# return True if name,version+versionsuffix,toolchain from command line is found from easyconfig, False otherwise
+def check_software_version_in_easyconfig(moduletree,software,toolchain):
+	software_dir=software[0]
+	cmd="find " + moduletree + software_dir  + " -name *.eb -type f"         
+	easyconfigfiles=os.popen(cmd). read().rstrip().split("\n")
+
+	# boolean value to check if eb file found with parameters for software and toolchain
+	match=False    
+
+	for ebfile in easyconfigfiles:
+		# get name tag from easyconfig
+		cmd="""grep "name = " """ + ebfile + """ | cut -f3 -d " " """
+		name=os.popen(cmd).read()
+	
+		# get version tag from easyconfig, possibility for multiple occurence so get 1st entry
+		cmd="""grep "version = " """ + ebfile + """ | cut -f3 -d " " | head -n1 """
+		version=os.popen(cmd).read()
+
+		cmd=""" grep "toolchain = " """ + ebfile + """ | cut -f4 -d " " | tr -d "," """
+		toolchain_name=os.popen(cmd).read()
+
+
+		cmd=""" grep "toolchain = " """ + ebfile + """ | cut -f6 -d " " | tr -d "}" """
+		toolchain_version=os.popen(cmd).read()
+
+		# strip character ' and newline
+		name=name.replace('\'','')
+	        name=name.replace('\n','') 
+		version=version.replace('\'', '')
+		version=version.replace('\n','')
+		toolchain_name=toolchain_name.replace('\'','')
+		toolchain_name=toolchain_name.replace('\n','')
+		toolchain_version=toolchain_version.replace('\'','')
+		toolchain_version=toolchain_version.replace('\n','')
+		
+		# get name of eb file and remove .eb extension
+		ebname=os.popen("basename " + ebfile).read()
+		ebname=ebname[:-4]
+
+		# eb name format used for comparison to calculate versionsuffx
+		eb_name_format=name+"-"+version+"-"+toolchain_name+"-"+toolchain_version
+		# There is no version suffix when file name is just software-version-toolchain
+		if eb_name_format == ebname:
+			versionsuffix=""
+		else:
+			# extract version suffix 
+			startpos=ebname.find(toolchain_version)+len(toolchain_version)
+			endpos=len(ebname)
+			versionsuffix=ebname[startpos:endpos]
+
+		# variable used for comparison
+		version_versionsuffix=version + versionsuffix
+		print version_versionsuffix
+
+		# master condition
+		if name == software[0] and version_versionsuffix == software[1] and toolchain_name == toolchain[0] and toolchain_version == toolchain[1]:
+			return True
+
+	# mismatch in easyconfig entries for name,version+versionsuffix, and toolchain with specified entries
+	if match == False:
+		print "Can't find easyconfig file with argument:"
+		print "software= ", software[0]
+        	print "version:", software[1]
+		print "toolchain name:",toolchain[0]
+		print "toolchain version:", toolchain[1]
+		sys.exit(1)
+
 
 """
 	modulelist=get_module_list(moduletree)

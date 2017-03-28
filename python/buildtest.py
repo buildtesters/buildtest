@@ -28,28 +28,23 @@ print BUILDTEST_ROOT, BUILDTEST_SRCDIR, BUILDTEST_EASYCONFIGDIR, BUILDTEST_MODUL
 
 #moduleversion_toolchain_relation(BUILDTEST_MODULEROOT)
 
-print "software=",args.software
-software=args.software.split(",")
+software=args.software.split("/")
 
 # set toolchain to dummy when its not specified. 
 if not args.toolchain:
-	toolchain="dummy,dummy".split(",")
+	toolchain="dummy/dummy".split("/")
 else:
-	toolchain=args.toolchain.split(",")
+	toolchain=args.toolchain.split("/")
 
-print software, toolchain
-ret=software_exists(software)
-print "ret",ret
+
+# checking if its a valid software
+software_exists(software)
+# checking if its a valid toolchain 
 ret1=toolchain_exists(software,toolchain)
-print ret,ret1
 
-software_dir=software[0]
-cmd="find " + BUILDTEST_EASYCONFIGDIR + software_dir  + " -name *.eb -type f"         
-print "command=",cmd
-easyconfigfiles=os.popen(cmd). read().rstrip()                                        
-print easyconfigfiles    
+# check that the software,toolchain match the easyconfig.
+check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
 
-sys.exit(1)
 
 '''
 print "args.tc",args.list-toolchain
