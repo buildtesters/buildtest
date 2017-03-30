@@ -5,7 +5,7 @@ import sys
 
 # returns a complete list of modules found in the moduletree
 def get_module_list(moduletree):
-	find_cmd_module=os.popen("find " + moduletree + " -type f").read()
+	find_cmd_module=os.popen("find " + moduletree + " -type f """).read()
         modulelist=find_cmd_module.rstrip().split('\n')
 	return modulelist
 # returns a set of software packages found in the module tree
@@ -16,7 +16,7 @@ def get_unique_software(moduletree):
                 # extract the module name from filepath
 		modulename=os.popen("dirname " + module + " | xargs basename ").read().rstrip()
 		module_set.add(modulename)
-	return module_set
+	return sorted(module_set)
 # returns a set of software-version collection found in module files. Duplicates are ignored for instance, same package version is built with two different toolchains
 def get_unique_software_version(moduletree):
 	modulelist=get_module_list(moduletree)
@@ -37,7 +37,7 @@ def get_unique_software_version(moduletree):
 		moduleversion_set.add(modulename+" "+version)
 
         #print module_set
-	return moduleversion_set
+	return sorted(moduleversion_set)
 # relationship between software name and version. The function will return a dictionary with key values as software name and values will be a set of version
 def module_version_relation(moduletree):
 	modulelist=get_module_list(moduletree)
@@ -144,25 +144,40 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 		# get name of eb file and remove .eb extension
 		ebname=os.popen("basename " + ebfile).read()
 		ebname=ebname[:-4]
+		
+		# in case toolchain version uses '' set it to dummy 
+		if toolchain_version == '':
+			toolchain_version="dummy"
+		# alter eb_name_format for dummy toolchain
+		if toolchain_name == "dummy":
+			eb_name_format=name+"-"+version
+		else:
+			# eb name format used for comparison to calculate versionsuffx
+			eb_name_format=name+"-"+version+"-"+toolchain_name+"-"+toolchain_version
 
-		# eb name format used for comparison to calculate versionsuffx
-		eb_name_format=name+"-"+version+"-"+toolchain_name+"-"+toolchain_version
 		# There is no version suffix when file name is just software-version-toolchain
-		if eb_name_format == ebname:
-			versionsuffix=""
+		# determine starting position index in easyconfig filename to calculate versionsuffix. If its a dummy toolchain start with version, otherwise from toolchain version
+		if toolchain_name == "dummy":
+			startpos=ebname.find(version)+len(version)
 		else:
 			# extract version suffix 
 			startpos=ebname.find(toolchain_version)+len(toolchain_version)
-			endpos=len(ebname)
-			versionsuffix=ebname[startpos:endpos]
+		endpos=len(ebname)
+		versionsuffix=ebname[startpos:endpos]
 
 		# variable used for comparison
 		version_versionsuffix=version + versionsuffix
-		print version_versionsuffix
+		print "ebname,eb_name_format",ebname,eb_name_format
+		print "version/versionsuffix=",version,version_versionsuffix
+		print "name/ver",software
 
-		# master condition
-		if name == software[0] and version_versionsuffix == software[1] and toolchain_name == toolchain[0] and toolchain_version == toolchain[1]:
-			return True
+		if toolchain[0] == "dummy" and toolchain[1] == "dummy":
+			if name == software[0] and version_versionsuffix == software[1]:
+				return True
+		else:
+			# master condition
+			if name == software[0] and version_versionsuffix == software[1] and toolchain_name == toolchain[0] and toolchain_version == toolchain[1]:
+				return True
 
 	# mismatch in easyconfig entries for name,version+versionsuffix, and toolchain with specified entries
 	if match == False:
