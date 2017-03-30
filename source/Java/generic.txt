@@ -1,0 +1,2 @@
+TEST: HelloWorld	COMMAND: javac $BUILDTEST_SRCDIR/Java/HelloWorld.java; cd $BUILDTEST_SRCDIR/Java/; java HelloWorld
+TEST: BinaryConverter	COMMAND: javac $BUILDTEST_SRCDIR/Java/BinaryConverter.java; cd $BUILDTEST_SRCDIR/Java/; java BinaryConverter

@@ -73,10 +73,11 @@ if args.software != None:
 	software_exists(software)
 	# checking if its a valid toolchain 
 	toolchain_exists(software,toolchain)
-
+	print software,toolchain
 	# check that the software,toolchain match the easyconfig.
 	check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
 	
+	print software,toolchain
 	generate_binary_test(software,toolchain)
 
 

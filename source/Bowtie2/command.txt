@@ -1,0 +1,9 @@
+bowtie2 --version
+bowtie2-align-l --version
+bowtie2-align-s --version
+bowtie2-build --version
+bowtie2-build-l --version
+bowtie2-build-s --version
+bowtie2-inspect --version
+bowtie2-inspect-l --version
+bowtie2-inspect-s --version

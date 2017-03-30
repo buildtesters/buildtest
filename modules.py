@@ -108,16 +108,25 @@ def toolchain_exists(software,toolchain):
 
 # return True if name,version+versionsuffix,toolchain from command line is found from easyconfig, False otherwise
 def check_software_version_in_easyconfig(moduletree,software,toolchain):
-	software_dir=software[0]
-	cmd="find " + moduletree + software_dir  + " -name *.eb -type f"         
+	appname=software[0]
+	appversion=software[1]	
+	tcname=toolchain[0]	
+	tcversion=toolchain[1]
+
+	cmd="find " + moduletree + appname  + " -name *.eb -type f"         
 	easyconfigfiles=os.popen(cmd). read().rstrip().split("\n")
 
 	# boolean value to check if eb file found with parameters for software and toolchain
 	match=False    
 
-	# if argument for toolchain version is a hidden file, strip leading "." This would match the toolchain version tag found in easyconfig which is used for comparison
-	if isHiddenFile(toolchain[1]):
-		toolchain[1] = stripHiddenFile(toolchain[1])
+	# if user is testing a software package that is a hidden module file, strip the leading "." for checking
+	if isHiddenFile(appversion):
+		appver = stripHiddenFile(appver)
+
+	# if user specified a toolchain version that is a hidden module file, strip leading "." 
+	if isHiddenFile(tcversion):
+		tcversion = stripHiddenFile(tcversion)
+
 	for ebfile in easyconfigfiles:
 		# get name tag from easyconfig
 		cmd="""grep "name = " """ + ebfile + """ | cut -f3 -d " " """
@@ -174,12 +183,13 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 		#print "version/versionsuffix=",version,version_versionsuffix
 		#print "name/ver",software
 
-		if toolchain[0] == "dummy" and toolchain[1] == "dummy":
-			if name == software[0] and version_versionsuffix == software[1]:
+
+		# master condition to determine if easyconfig parameter match argument for software and toolchain
+		if tcname == "dummy" and tcversion == "dummy":
+			if name == appname and version_versionsuffix == appversion:
 				return True
 		else:
-			# master condition
-			if name == software[0] and version_versionsuffix == software[1] and toolchain_name == toolchain[0] and toolchain_version == toolchain[1]:
+			if name == appname and version_versionsuffix == appversion and toolchain_name == tcname and toolchain_version == tcversion:
 				return True
 
 	# mismatch in easyconfig entries for name,version+versionsuffix, and toolchain with specified entries

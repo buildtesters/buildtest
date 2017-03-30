@@ -1,0 +1,3 @@
+TEST:hello.c		COMMAND: $CC -o hello.c.exe $BUILDTEST_SRCDIR/OpenMPI/source/hello.c; mpirun -np 2 ./hello.exe
+TEST:hello.f90		COMMAND: $FC -o hello.f90.exe $BUILDTEST_SRCDIR/OpenMPI/source/hello.f90; mpirun -np 2 ./hello.f90.exe
+TEST:hello.cpp		COMMAND: $CXX -o hello.cpp.exe $BUILDTEST_SRCDIR/OpenMPI/source/hello.cpp; mpirun -np 2 ./hello.cpp.exe
