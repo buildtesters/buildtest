@@ -1,6 +1,7 @@
 from setup import *
 import os.path 
 import os, sys
+import shutil
 def generate_binary_test(software,toolchain):
 	toplevel_cmakelist_file=BUILDTEST_ROOT + "CMakeLists.txt"
 	testingdir_cmakelist_file=BUILDTEST_TESTDIR + "CMakeLists.txt"
@@ -42,38 +43,24 @@ def process_binary_file(filename,software,toolchain):
 	test_toolchain_name_cmakelist = test_toolchain_name_dir + "/CMakeLists.txt"
 	test_toolchain_version_cmakelist = test_toolchain_version_dir + "/CMakeLists.txt"
 
+	test_destdir=test_toolchain_version_dir
+	# if testdirectory exist, delete and recreate it inorder for reproducible test builds
+	if os.path.isdir(test_destdir):
+		shutil.rmtree(test_destdir)
+
 	# create directories if they don't exist
 	# Directory Format: <software>/<version>/toolchain-name>/<toolchain-version>
-	if not os.path.isdir(test_name_dir):
-		print "creating directory:", test_name_dir
-		os.mkdir(test_name_dir)
-	if not os.path.isdir(test_version_dir):
-		print "creating directory:", test_version_dir
-		os.mkdir(test_version_dir)
-	if not os.path.isdir(test_toolchain_name_dir):
-		print "creating directory:", test_toolchain_name_dir
-		os.mkdir(test_toolchain_name_dir)
-	if not os.path.isdir(test_toolchain_version_dir):
-		print "creating directory:", test_toolchain_version_dir
-		os.mkdir(test_toolchain_version_dir)
-
+	create_dir(test_name_dir)
+	create_dir(test_version_dir)
+	create_dir(test_toolchain_name_dir)
+	create_dir(test_toolchain_version_dir)
+	
 	# create CMakeList.txt file in each directory of <software>/<version>/<toolchain-name>/<toolchain-version> if it doesn't exist
-	if not os.path.isfile(test_name_cmakelist):
-		fd=open(test_name_cmakelist,'w')
-		fd.close()
-	
-	if not os.path.isfile(test_version_cmakelist):
-		fd=open(test_version_cmakelist,'w')
-		fd.close()
+	create_file(test_name_cmakelist)
+	create_file(test_version_cmakelist)
+	create_file(test_toolchain_name_cmakelist)
+	create_file(test_toolchain_version_cmakelist)
 
-	if not os.path.isfile(test_toolchain_name_cmakelist):
-		fd=open(test_toolchain_name_cmakelist,'w')
-		fd.close()
-
-	if not os.path.isfile(test_toolchain_version_cmakelist):
-		fd=open(test_toolchain_version_cmakelist,'w')
-		fd.close()
-	
 	check_CMakeLists(test_cmakelist,name)
 	check_CMakeLists(test_name_cmakelist,version)
 	check_CMakeLists(test_version_cmakelist,toolchain_name)
@@ -81,9 +68,47 @@ def process_binary_file(filename,software,toolchain):
 
 		
 	fd=open(filename,'r')
-	content=fd.read()
-	print content,type(content)
-	#for line in content:
+	content=fd.readlines()
+
+	# extract content for module load used inside test script
+	header=load_modules(software,toolchain)	
+	for line in content:
+		line = line.strip()
+		arr=line.split(' ')
+
+		executable=arr[0]
+		# if more than 1 argument specified, i.e (parameters to executable command)
+		if len(arr) >= 1:
+			parameter=arr[1:]
+
+		testname=executable+".sh"
+		testpath=test_destdir + "/" + testname
+		# write binary test to shell-script file
+		fd=open(testpath,'w')
+		fd.write(header)
+		fd.write(line)
+		fd.close()
+		print "Creating Test:",testpath
+		
+		# add entry to CMakeLists for test using add_test
+		fd=open(test_toolchain_version_cmakelist,'a')
+		add_test_str="add_test(NAME " + software[0] + "-" + software[1] + "-" + toolchain[0] + "-" + toolchain[1] + "-" + executable + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+		fd.write(add_test_str)
+		fd.close()
+		#print line, "testname=",testname, "path=",testpath
+		
+		
+			
+# create directory if it doesn't exist
+def create_dir(dirname):
+	if not os.path.isdir(dirname):
+		os.mkdir(dirname)
+
+# create an empty file if it doesn't exist
+def create_file(filename):
+	if not os.path.isfile(filename):
+		fd=open(filename,'w')
+		fd.close()
 
 # used for writing CMakeLists.txt with tag <software>, <version>, & toolchain
 def check_CMakeLists(filename,tag):
@@ -91,8 +116,8 @@ def check_CMakeLists(filename,tag):
 	count=int(os.popen(cmd).read())
 	# if add_subdirectory(<version>) not found in CMakeLists.txt then add it to file
 	if count == 0:
-		fd=open(filename,'w')
-		fd.write("add_subdirectory(" + tag + ")")
+		fd=open(filename,'a')
+		fd.write("add_subdirectory(" + tag + ")\n")
 		fd.close()
 		
 #def write_binary_test(filename):
@@ -106,3 +131,22 @@ add_subdirectory(""" + BUILDTEST_TESTDIR + ")"
 	fd=open(filename,'w')
 	fd.write(header)
 	fd.close()
+# return a string that loads the software and toolchain module. 
+def load_modules(software,toolchain):
+	# for dummy toolchain you can load software directly. Ensure a clean environment by running module purge
+	if toolchain[0] == "dummy":
+		header="""
+#!/bin/sh
+module purge
+module load """ + software[0] + "/" + software[1] + """
+"""
+	else:
+		header="""
+#!/bin/sh
+module purge
+module load """ + toolchain[0] + "/" + toolchain[1] + """
+module load """ + software[0] + "/" + software[1] + """
+"""
+	
+	return header
+			

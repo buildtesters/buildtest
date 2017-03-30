@@ -115,6 +115,9 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 	# boolean value to check if eb file found with parameters for software and toolchain
 	match=False    
 
+	# if argument for toolchain version is a hidden file, strip leading "." This would match the toolchain version tag found in easyconfig which is used for comparison
+	if isHiddenFile(toolchain[1]):
+		toolchain[1] = stripHiddenFile(toolchain[1])
 	for ebfile in easyconfigfiles:
 		# get name tag from easyconfig
 		cmd="""grep "name = " """ + ebfile + """ | cut -f3 -d " " """
@@ -167,9 +170,9 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 
 		# variable used for comparison
 		version_versionsuffix=version + versionsuffix
-		print "ebname,eb_name_format",ebname,eb_name_format
-		print "version/versionsuffix=",version,version_versionsuffix
-		print "name/ver",software
+		#print "ebname,eb_name_format",ebname,eb_name_format
+		#print "version/versionsuffix=",version,version_versionsuffix
+		#print "name/ver",software
 
 		if toolchain[0] == "dummy" and toolchain[1] == "dummy":
 			if name == software[0] and version_versionsuffix == software[1]:
