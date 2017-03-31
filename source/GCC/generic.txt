@@ -1,3 +1,0 @@
-generic.sh -f $BUILDTEST_SRCDIR/GCC/generic/hello.c
-generic.sh -f $BUILDTEST_SRCDIR/GCC/generic/hello.f90
-generic.sh -f $BUILDTEST_SRCDIR/GCC/generic/hello.cpp

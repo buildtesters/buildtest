@@ -3,6 +3,7 @@ from setup import *
 from modules import *
 from utilities import *
 from testgen import *
+from parser import *
 
 import argparse
 import sys
@@ -65,19 +66,26 @@ if not args.toolchain:
 else:
 	toolchain=args.toolchain.split("/")
 
-print software,toolchain
-print args.software,args.toolchain
 if args.software != None:
-	print "if"
 	# checking if its a valid software
 	software_exists(software)
 	# checking if its a valid toolchain 
 	toolchain_exists(software,toolchain)
-	print software,toolchain
 	# check that the software,toolchain match the easyconfig.
 	check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
 	
-	print software,toolchain
 	generate_binary_test(software,toolchain)
+	
+	appname=software[0]
+        configdir=BUILDTEST_SOURCEDIR + appname + "/config/"
+        codedir=BUILDTEST_SOURCEDIR + appname + "/code/"
+
+        for filename in os.listdir(configdir):
+                filepath=configdir+filename
+		configmap=parse_config(software,toolchain,filepath,codedir)		
+		# error processing config file, then parse_config will return an empty dictionary
+		if len(configmap) == 0:
+			continue
+		generate_source_test(software,toolchain,configmap,codedir)
 
 

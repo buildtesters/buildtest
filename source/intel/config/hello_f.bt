@@ -1,0 +1,3 @@
+testblock = 'intel'
+name='hello_f'
+source='hello.f90'

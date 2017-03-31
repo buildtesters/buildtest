@@ -1,8 +1,0 @@
-name=c++
-software=GCC
-version=5.4.0-2.27
-toolchain=dummy
-executable=c++
-param=--version
-
-

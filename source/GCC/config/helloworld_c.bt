@@ -1,0 +1,6 @@
+testblock = 'generic'
+name = 'helloworld_c'
+source = 'hello.c'
+scheduler = 'lsf'
+job = 'True'
+buildopts = '-O2'

@@ -1,0 +1,3 @@
+testblock = 'generic'
+name='helloworld_f'
+source='hello.f90'

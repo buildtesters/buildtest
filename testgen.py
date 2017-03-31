@@ -8,11 +8,12 @@ def generate_binary_test(software,toolchain):
 	swname = software[0]
 	commandfile=BUILDTEST_SOURCEDIR + swname + "/command.txt"  
 
-	print commandfile
 
 	# if CMakeLists.txt does not exist in top-level directory, create the header
 	if os.path.isfile(toplevel_cmakelist_file) == False:
 		init_CMakeList(toplevel_cmakelist_file)
+
+	create_dir(BUILDTEST_TESTDIR)
 	# if BUILDTEST_TESTDIR/CMakeLists.txt does not exist, then create it
 	if os.path.isfile(testingdir_cmakelist_file) == False:
 		fd=open(testingdir_cmakelist_file,'w')
@@ -24,13 +25,101 @@ def generate_binary_test(software,toolchain):
 	else:
 	    process_binary_file(commandfile,software,toolchain)
 
-
+# generate test for source
+def generate_source_test(software,toolchain,configmap,codedir):
+	appname=software[0]
+	appver=software[1]
+	tcname=toolchain[0]
+	tcver=toolchain[1]
 	
+	destdir=BUILDTEST_TESTDIR+appname+"/"+appver+"/"+tcname+"/"+tcver+"/"
+	cmakelist=destdir+"CMakeLists.txt"
+
+	# testname is key value "name" with .sh extension
+	testname=configmap["name"]+".sh"
+	testpath=destdir+testname
+	sourcefilepath=codedir+configmap["source"]
+	executable=configmap["source"]+".exe"
+
+	flags=""
+	# if buildopts key exists in dictionary
+	if "buildopts" in configmap:
+		flags=configmap["buildopts"]
+
+	fd=open(testpath,'w')
+	header=load_modules(software,toolchain)
+	fd.write(header)
+	
+	buildcmd=""
+	compiler=""
+	compiler,testblockname=testblock=process_testblock(configmap)
+	
+	if testblockname == "generic" or testblockname == "intel" or testblockname == "mpi" or testblockname == "intel-mpi":
+		buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
+	if testblockname == "generic" or testblockname == "intel" or testblockname == "cuda":
+		runcmd = "./" + executable + "\n"
+	elif testblockname == "mpi" or testblockname == "intel-mpi":
+		runcmd = "mpirun -np 2 ./" + executable + "\n"
+
+	clean="rm ./" + executable 
+	fd.write(buildcmd)
+	fd.write(runcmd)
+	fd.write(clean)
+	fd.close()
+
+	print "cmakefile=",cmakelist
+	fd=open(cmakelist,'a')
+	add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+	fd.write(add_test_str)
+	fd.close()
+
+	print "Creating Test: ",testpath	
+# get the appropriate compiler based on the testblock used. Compiler/Wrappers can be gcc,icc,nvcc,javac,python,R,perl,etc...
+def process_testblock(configmap):
+	# get extension for source file
+	ext = os.path.splitext(configmap["source"])[1]
+	print configmap["testblock"],type(configmap["testblock"])
+	compiler=""
+
+	testblockname=configmap["testblock"]
+	# determine compiler based on testblockname and its file extension
+	if ext == ".c":
+		if testblockname == "generic":
+			compiler="gcc"
+		elif testblockname == "intel":
+			compiler="icc"
+		elif testblockname == "mpi":
+			compiler="mpicc"
+		elif testblockname == "intel-mpi":
+			compiler="mpiicc"
+		elif testblockname == "cuda":
+			compiler="nvcc"
+	elif ext == ".cpp":
+		if testblockname == "generic":
+			compiler="g++"
+		elif testblockname == "intel":
+			compiler="icpc"
+		elif testblockname == "mpi":
+			compiler="mpic++"
+		elif testblockname == "intel-mpi":
+			compiler="mpiicpc"
+	elif ext == ".f90" or ext == ".f" or ext == ".f77":
+		if testblockname == "generic":
+			compiler="gfortran"
+		elif testblockname == "intel":
+			compiler="ifort"
+		elif testblockname == "mpi":
+			compiler="mpifort"
+		elif testblockname == "intel-mpi":
+			compiler="mpiifort"
+	if testblockname == "python":
+		compiler="python"
+	return compiler,testblockname
 # read binary file (command.txt) and create template shell script 
 def process_binary_file(filename,software,toolchain):
 	name,version=software
 	toolchain_name,toolchain_version=toolchain
-	print "values",name,version,toolchain_name,toolchain_version
+	#print "values",name,version,toolchain_name,toolchain_version
 	# if top level software directory is not present, create it
 	test_name_dir=BUILDTEST_TESTDIR + name
 	test_version_dir=test_name_dir + "/" + version
@@ -97,8 +186,6 @@ def process_binary_file(filename,software,toolchain):
 		fd.close()
 		#print line, "testname=",testname, "path=",testpath
 		
-		
-			
 # create directory if it doesn't exist
 def create_dir(dirname):
 	if not os.path.isdir(dirname):
