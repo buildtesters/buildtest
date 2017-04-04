@@ -8,16 +8,6 @@ field={
 	'job':['True','False'],
 	'buildopts':''
 }
-'''	
-key = [
-	"name",
-	"source",
-	"scheduler",
-	"buildopts",
-	"job"
-]
-value
-'''
 # read config file and verify its field
 def parse_config(software,toolchain,filename,codedir):
         fd=open(filename,'r')
@@ -53,12 +43,12 @@ def parse_config(software,toolchain,filename,codedir):
 def check_field(line,filename,codedir):
 	key,value=['','']
 	# if = found, split line by = and extract key,value
-	if line.find('=') != -1:
-		key,value=line.split("=")
+	if line.find(':') != -1:
+		key,value=line.split(":")
 		key=key.strip()
 		value=value.strip()
-		key=key.replace("'","")
-		value=value.replace("'","")
+		#key=key.replace("'","")
+		#value=value.replace("'","")
 		#key=key.replace("\n","")
 		#value=value.rstrip('')
 		#value=value.replace("\n","")
@@ -101,7 +91,7 @@ def check_field(line,filename,codedir):
 	# get value from dictionary if its scheduler or job to check if value field exist in list
 	if key == "testblock":
 		valuelist=field["testblock"]
-		print valuelist,type(valuelist)
+		#print valuelist,type(valuelist)
 	elif key == "scheduler":
 		valuelist=field["scheduler"]
 	elif key == "job":

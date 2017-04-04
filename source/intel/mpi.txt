@@ -1,3 +1,0 @@
-TEST:hello.c	CMD:$CC -o mpi/hello.c.exe $BUILDTEST_SRCDIR/intel/mpi/hello.c; ./mpi/hello.c.exe
-TEST:hello.f90	CMD:$FC -o mpi/hello.f90.exe $BUILDTEST_SRCDIR/intel/mpi/hello.f90; ./mpi/hello.f90.exe
-TEST:hello.cpp	CMD:$CXX -o mpi/hello.cpp.exe $BUILDTEST_SRCDIR/intel/mpi/hello.cpp; ./mpi/hello.cpp.exe

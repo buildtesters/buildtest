@@ -1,4 +1,0 @@
-testblock='intel-mpi'
-name='hello-mpi_c'
-source='hello-mpi.c'
-buildopts='-O2'

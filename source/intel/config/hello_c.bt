@@ -1,3 +1,0 @@
-testblock = 'intel'
-name = 'hello_c'
-source = 'hello.c'

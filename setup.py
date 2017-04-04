@@ -1,4 +1,4 @@
-BUILDTEST_ROOT = '/hpc/hpcswadm/BuildTest/python/'
+BUILDTEST_ROOT = '/hpc/hpcswadm/BuildTest/'
 BUILDTEST_SOURCEDIR = BUILDTEST_ROOT + 'source/'
 BUILDTEST_EASYCONFIGDIR = BUILDTEST_ROOT + 'easybuild/'
 BUILDTEST_MODULEROOT = '/nfs/grid/software/RHEL7/easybuild/modules'

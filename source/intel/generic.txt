@@ -1,3 +1,0 @@
-TEST:hello.c	CMD:$CC -o generic/hello.c.exe $BUILDTEST_SRCDIR/intel/generic/hello.c; ./generic/hello.c.exe
-TEST:hello.f90	CMD:$FC -o generic/hello.f90.exe $BUILDTEST_SRCDIR/intel/generic/hello.f90; ./generic/hello.f90.exe
-TEST:hello.cpp	CMD:$CXX -o generic/hello.cpp.exe $BUILDTEST_SRCDIR/intel/generic/hello.cpp; ./generic/hello.cpp.exe

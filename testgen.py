@@ -2,11 +2,12 @@ from setup import *
 import os.path 
 import os, sys
 import shutil
+import yaml
 def generate_binary_test(software,toolchain):
 	toplevel_cmakelist_file=BUILDTEST_ROOT + "CMakeLists.txt"
 	testingdir_cmakelist_file=BUILDTEST_TESTDIR + "CMakeLists.txt"
 	swname = software[0]
-	commandfile=BUILDTEST_SOURCEDIR + swname + "/command.txt"  
+	commandfile=BUILDTEST_SOURCEDIR + swname + "/command.yaml"  
 
 
 	# if CMakeLists.txt does not exist in top-level directory, create the header
@@ -156,7 +157,30 @@ def process_binary_file(filename,software,toolchain):
 	check_CMakeLists(test_toolchain_name_cmakelist,toolchain_version)
 
 		
+	header=load_modules(software,toolchain)
+
 	fd=open(filename,'r')
+	content=yaml.load(fd)
+	binarydict=content["binaries"]
+	for key in binarydict:
+		testname=key+".sh"
+		testpath=test_destdir + "/" + testname
+		fd=open(testpath,'w')
+		fd.write(header)
+		# if paramter is specified then write both executable and parameter to file otherwise only write the executable
+		if binarydict[key]:
+			fd.write(key + " " + binarydict[key])
+		else:
+			fd.write(key)
+		fd.close()
+
+		fd=open(test_toolchain_version_cmakelist,'a')
+		add_test_str="add_test(NAME " + name + "-" + version + "-" + toolchain_name + "-" + toolchain_version + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+		fd.write(add_test_str)
+
+		print "Creating Test:", testpath
+	sys.exit(1)
+
 	content=fd.readlines()
 
 	# extract content for module load used inside test script
