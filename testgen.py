@@ -53,7 +53,7 @@ def generate_source_test(software,toolchain,configmap,codedir):
 	
 	buildcmd=""
 	compiler=""
-	compiler,testblockname=testblock=process_testblock(configmap)
+	compiler,testblockname=process_testblock(configmap)
 	
 	if testblockname == "generic" or testblockname == "intel" or testblockname == "mpi" or testblockname == "intel-mpi":
 		buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
@@ -161,6 +161,12 @@ def process_binary_file(filename,software,toolchain):
 
 	fd=open(filename,'r')
 	content=yaml.load(fd)
+	# if key binaries is not in yaml file, exit program
+	if "binaries" not in content:
+		print "Cant find key binaries in file: ", filename, " Exiting program"
+		sys.exit(1)
+
+	# create a binary test script for each key,value item in dictionary
 	binarydict=content["binaries"]
 	for key in binarydict:
 		testname=key+".sh"
@@ -179,36 +185,6 @@ def process_binary_file(filename,software,toolchain):
 		fd.write(add_test_str)
 
 		print "Creating Test:", testpath
-	sys.exit(1)
-
-	content=fd.readlines()
-
-	# extract content for module load used inside test script
-	header=load_modules(software,toolchain)	
-	for line in content:
-		line = line.strip()
-		arr=line.split(' ')
-
-		executable=arr[0]
-		# if more than 1 argument specified, i.e (parameters to executable command)
-		if len(arr) >= 1:
-			parameter=arr[1:]
-
-		testname=executable+".sh"
-		testpath=test_destdir + "/" + testname
-		# write binary test to shell-script file
-		fd=open(testpath,'w')
-		fd.write(header)
-		fd.write(line)
-		fd.close()
-		print "Creating Test:",testpath
-		
-		# add entry to CMakeLists for test using add_test
-		fd=open(test_toolchain_version_cmakelist,'a')
-		add_test_str="add_test(NAME " + software[0] + "-" + software[1] + "-" + toolchain[0] + "-" + toolchain[1] + "-" + executable + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
-		fd.write(add_test_str)
-		fd.close()
-		#print line, "testname=",testname, "path=",testpath
 		
 # create directory if it doesn't exist
 def create_dir(dirname):

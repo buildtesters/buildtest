@@ -1,0 +1,4 @@
+testblock : intel-mpi
+name : mpi-hello.c
+source : mpi-hello.c
+buildopts : -O2

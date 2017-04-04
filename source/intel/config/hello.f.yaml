@@ -1,0 +1,4 @@
+testblock : intel
+name : hello.f
+source : hello.f90
+buildopts : -O2
