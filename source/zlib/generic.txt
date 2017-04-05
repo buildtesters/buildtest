@@ -1,1 +1,0 @@
-TEST:zlib-example1 		CMD:g++ -o generic/zlib-example1.exe $BUILDTEST_SRCDIR/zlib/generic/zlib-example1.c -lz; ./generic/zlib-example1.exe

@@ -3,7 +3,7 @@ import os.path
 import os, sys
 import shutil
 import yaml
-def generate_binary_test(software,toolchain):
+def generate_binary_test(software,toolchain,verbose):
 	toplevel_cmakelist_file=BUILDTEST_ROOT + "CMakeLists.txt"
 	testingdir_cmakelist_file=BUILDTEST_TESTDIR + "CMakeLists.txt"
 	swname = software[0]
@@ -14,20 +14,19 @@ def generate_binary_test(software,toolchain):
 	if os.path.isfile(toplevel_cmakelist_file) == False:
 		init_CMakeList(toplevel_cmakelist_file)
 
-	create_dir(BUILDTEST_TESTDIR)
+	create_dir(BUILDTEST_TESTDIR,verbose)
 	# if BUILDTEST_TESTDIR/CMakeLists.txt does not exist, then create it
 	if os.path.isfile(testingdir_cmakelist_file) == False:
 		fd=open(testingdir_cmakelist_file,'w')
 		fd.close()
 	# if command.txt does not exist then report error
 	if os.path.isfile(commandfile) == False:
-		print "Error cannot find file:", commandfile
-		sys.exit(1)
+		print "Warning: Cannot find command file:", commandfile, "Skipping binary test"
 	else:
-	    process_binary_file(commandfile,software,toolchain)
+	    process_binary_file(commandfile,software,toolchain,verbose)
 
 # generate test for source
-def generate_source_test(software,toolchain,configmap,codedir):
+def generate_source_test(software,toolchain,configmap,codedir,verbose):
 	appname=software[0]
 	appver=software[1]
 	tcname=toolchain[0]
@@ -68,7 +67,6 @@ def generate_source_test(software,toolchain,configmap,codedir):
 	fd.write(clean)
 	fd.close()
 
-	print "cmakefile=",cmakelist
 	fd=open(cmakelist,'a')
 	add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 	fd.write(add_test_str)
@@ -79,7 +77,6 @@ def generate_source_test(software,toolchain,configmap,codedir):
 def process_testblock(configmap):
 	# get extension for source file
 	ext = os.path.splitext(configmap["source"])[1]
-	print configmap["testblock"],type(configmap["testblock"])
 	compiler=""
 
 	testblockname=configmap["testblock"]
@@ -117,7 +114,7 @@ def process_testblock(configmap):
 		compiler="python"
 	return compiler,testblockname
 # read binary file (command.txt) and create template shell script 
-def process_binary_file(filename,software,toolchain):
+def process_binary_file(filename,software,toolchain,verbose):
 	name,version=software
 	toolchain_name,toolchain_version=toolchain
 	#print "values",name,version,toolchain_name,toolchain_version
@@ -140,21 +137,21 @@ def process_binary_file(filename,software,toolchain):
 
 	# create directories if they don't exist
 	# Directory Format: <software>/<version>/toolchain-name>/<toolchain-version>
-	create_dir(test_name_dir)
-	create_dir(test_version_dir)
-	create_dir(test_toolchain_name_dir)
-	create_dir(test_toolchain_version_dir)
+	create_dir(test_name_dir,verbose)
+	create_dir(test_version_dir,verbose)
+	create_dir(test_toolchain_name_dir,verbose)
+	create_dir(test_toolchain_version_dir,verbose)
 	
 	# create CMakeList.txt file in each directory of <software>/<version>/<toolchain-name>/<toolchain-version> if it doesn't exist
-	create_file(test_name_cmakelist)
-	create_file(test_version_cmakelist)
-	create_file(test_toolchain_name_cmakelist)
-	create_file(test_toolchain_version_cmakelist)
+	create_file(test_name_cmakelist,verbose)
+	create_file(test_version_cmakelist,verbose)
+	create_file(test_toolchain_name_cmakelist,verbose)
+	create_file(test_toolchain_version_cmakelist,verbose)
 
-	check_CMakeLists(test_cmakelist,name)
-	check_CMakeLists(test_name_cmakelist,version)
-	check_CMakeLists(test_version_cmakelist,toolchain_name)
-	check_CMakeLists(test_toolchain_name_cmakelist,toolchain_version)
+	check_CMakeLists(test_cmakelist,name,verbose)
+	check_CMakeLists(test_name_cmakelist,version,verbose)
+	check_CMakeLists(test_version_cmakelist,toolchain_name,verbose)
+	check_CMakeLists(test_toolchain_name_cmakelist,toolchain_version,verbose)
 
 		
 	header=load_modules(software,toolchain)
@@ -187,26 +184,34 @@ def process_binary_file(filename,software,toolchain):
 		print "Creating Test:", testpath
 		
 # create directory if it doesn't exist
-def create_dir(dirname):
+def create_dir(dirname,verbose):
 	if not os.path.isdir(dirname):
 		os.mkdir(dirname)
+		if verbose >= 1:
+			print "Creating Directory: ",dirname
 
 # create an empty file if it doesn't exist
-def create_file(filename):
+def create_file(filename,verbose):
 	if not os.path.isfile(filename):
 		fd=open(filename,'w')
 		fd.close()
+		if verbose >= 1:
+			print "Creating Empty File:", filename
 
 # used for writing CMakeLists.txt with tag <software>, <version>, & toolchain
-def check_CMakeLists(filename,tag):
-	cmd="cat " + filename + " | grep " + tag + " | wc -l"
-	count=int(os.popen(cmd).read())
-	# if add_subdirectory(<version>) not found in CMakeLists.txt then add it to file
-	if count == 0:
-		fd=open(filename,'a')
-		fd.write("add_subdirectory(" + tag + ")\n")
+def check_CMakeLists(filename,tag, verbose):
+	fd=open(filename,'r')
+	content=fd.read().strip().split("\n")
+	cmd="add_subdirectory("+tag+")"
+	if cmd not in content:
 		fd.close()
-		
+		fd=open(filename,'a')
+		fd.write(cmd+"\n")
+		fd.close()
+		if verbose >= 1:
+			print "writing:", cmd, "to file:",filename 
+	else:
+		fd.close()	
 #def write_binary_test(filename):
 def init_CMakeList(filename):
 	header = """ 
@@ -214,7 +219,6 @@ cmake_minimum_required(VERSION 2.8)
 include(CTest)
 ENABLE_TESTING()
 add_subdirectory(""" + BUILDTEST_TESTDIR + ")"
-	print filename
 	fd=open(filename,'w')
 	fd.write(header)
 	fd.close()

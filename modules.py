@@ -121,7 +121,7 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 
 	# if user is testing a software package that is a hidden module file, strip the leading "." for checking
 	if isHiddenFile(appversion):
-		appver = stripHiddenFile(appver)
+		appversion = stripHiddenFile(appversion)
 
 	# if user specified a toolchain version that is a hidden module file, strip leading "." 
 	if isHiddenFile(tcversion):
@@ -200,62 +200,4 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 		print "toolchain name:",toolchain[0]
 		print "toolchain version:", toolchain[1]
 		sys.exit(1)
-
-
-"""
-	modulelist=get_module_list(moduletree)
-	moduleversion_set=get_unique_software_version(moduletree)
-	toolchain_set=set()
-	# create relationship between software,version to toolchain.
-	# Process all easyconfig file, store name, version, versionsuffix, toolchain name, toolchain version as a tuple entry in a list. Extract version suffix by doing a diff between eb file and "name-version-toolchain". Loop over list and compare name/version with moduleversion_set and extract toolchain name/version from list and store in moduleversion_toolchain_set
-	easyconfigfiles=os.popen("find " + BUILDTEST_EASYCONFIGDIR +  " -name *.eb" " -type f ").read().rstrip().split("\n")
-	#print easyconfigfiles,type(easyconfigfiles)
-	name_version_toolchain_list=[]
-	for ebfile in easyconfigfiles:
-		# possibility there could be more than one entry for name in easyconfig, so limit to 1st entry which should be name of package
-		name=os.popen(cmd).read().rstrip()
-
-		# there can be more than one entry for version in easyconfig
-		version=os.popen(cmd).read().rstrip()
-                toolchain_name=os.popen(cmd).read().rstrip()
-                toolchain_version=os.popen(cmd).read().rstrip()
-		
-		cmd="basename " + ebfile 
-		ebfilename=os.popen(cmd).read().strip()
-		# remove .eb extension
-		ebfilename=ebfilename[:-3]
-		
-		#print  "file=", ebfilename
-		# version suffix with dummy toolchain
-		if toolchain_name == "dummy":
-			position=ebfilename.index(version)+len(version)			
-		else:
-			position=ebfilename.index(toolchain_version)+len(toolchain_version)
-
-		versionsuffix=ebfilename[position:]
-		name_version_toolchain_list.append([name,version,versionsuffix,toolchain_name,toolchain_version])
-		#print "name/version=",name,version, "toolchain=",toolchain_name,toolchain_version,"pos=",position,"versionsuffix=", versionsuffix
-	#print name_version_toolchain_list
-	for nameversion in moduleversion_set:
-		print nameversion
-	sys.exit(1)
-	for item in name_version_toolchain_list:
-		#print item
-		for nameversion in moduleversion_set:
-			nameversion.strip(',')
-			name_version_versionsuffix=item[0]+item[1]+item[2]
-			#print item,nameversion,name_version_versionsuffix
-			#if nameversion == name_version_versionsuffix:
-			#	print nameversion, name_version_versionsuffix, item
-			
-		# when toolchain version is '' change it to dummy
-		if len(item[4]) == 0:
-			item[4] = "dummy"
-		toolchain_set.add(item[3]+"-"+item[4])
-	#print_dictionary(moduleversion_toolchain_set)  
-	modver_tc_set={}	
-	#for setitem in toolchain_set:
-	#	print setitem
-	sys.exit(1)
-"""
 

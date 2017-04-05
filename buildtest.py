@@ -27,6 +27,7 @@ args_dict=vars(args)
 #print get_module_list(BUILDTEST_MODULEROOT)
 #print get_unique_software(BUILDTEST_MODULEROOT)
 #sys.exit(1)
+verbose=0
 if args_dict["verbose"] >= 1:
 	print "===================================================================="
 	print "BUILDTEST ROOT DIRECTORY: ", BUILDTEST_ROOT
@@ -35,6 +36,7 @@ if args_dict["verbose"] >= 1:
 	print "BUILDTEST TEST DIRECTORY :", BUILDTEST_TESTDIR
 	print "===================================================================="
 	print 
+	verbose=args_dict["verbose"]
 
 if args_dict["list_toolchain"] == True:
 	toolchain_set=get_toolchain(BUILDTEST_EASYCONFIGDIR)
@@ -66,26 +68,36 @@ if not args.toolchain:
 else:
 	toolchain=args.toolchain.split("/")
 
+appname=software[0]
+appversion=software[1]
+tcname=toolchain[0]
+tcversion=toolchain[1]
 if args.software != None:
 	# checking if its a valid software
-	software_exists(software)
+	ret = software_exists(software)
+	if verbose >= 1:
+		print "Software:",appname,appversion, "  found in system"
+
 	# checking if its a valid toolchain 
-	toolchain_exists(software,toolchain)
+	ret = toolchain_exists(software,toolchain)
+	if verbose >= 1:
+		print "Toolchain:",tcname,tcversion, "  found in system"
+
 	# check that the software,toolchain match the easyconfig.
 	check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
 	
-	generate_binary_test(software,toolchain)
+	generate_binary_test(software,toolchain,verbose)
 	
-	appname=software[0]
         configdir=BUILDTEST_SOURCEDIR + appname + "/config/"
         codedir=BUILDTEST_SOURCEDIR + appname + "/code/"
-
-        for filename in os.listdir(configdir):
-                filepath=configdir+filename
-		configmap=parse_config(software,toolchain,filepath,codedir)		
-		# error processing config file, then parse_config will return an empty dictionary
-		if len(configmap) == 0:
-			continue
-		generate_source_test(software,toolchain,configmap,codedir)
+	# if config directory exists then process .yaml files to build source test
+	if os.path.isdir(configdir):
+	        for filename in os.listdir(configdir):
+        	        filepath=configdir+filename
+			configmap=parse_config(software,toolchain,filepath,codedir)		
+			# error processing config file, then parse_config will return an empty dictionary
+			if len(configmap) == 0:
+				continue
+			generate_source_test(software,toolchain,configmap,codedir,verbose)
 
 

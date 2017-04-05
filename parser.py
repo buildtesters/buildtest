@@ -12,7 +12,6 @@ field={
 def parse_config(software,toolchain,filename,codedir):
         fd=open(filename,'r')
 	content=yaml.load(fd)
-	print content
 	# iterate over dictionary to seek any invalid keys 
 	for key in content:
 		if key not in field:
