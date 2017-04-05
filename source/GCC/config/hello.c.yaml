@@ -1,4 +1,3 @@
-testblock:  generic
 name: hello.c
 source:  hello.c
 buildopts: -O2

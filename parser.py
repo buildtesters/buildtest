@@ -6,7 +6,12 @@ field={
 	'name':'',
 	'source':'',
 	'scheduler':['slurm','lsf','pbs'],
-	'buildopts':''
+	'buildopts':'',
+	'buildcmd':'',
+	'runcmd':'',
+	'runextracmd':'',
+	'mpi':'enabled',
+	'cuda':'enabled'
 }
 # read config file and verify the key-value content with dictionary field
 def parse_config(software,toolchain,filename,codedir):
@@ -42,9 +47,6 @@ def parse_config(software,toolchain,filename,codedir):
 			if content[key] not in field["testblock"]:
 				print "Invalid testblock option: ", key, " Please select on of the following:" , field["testblock"]
 				sys.exit(1)
-			
-
-		
 			
 	fd.close()
 	return content

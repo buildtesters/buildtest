@@ -1,4 +1,4 @@
-testblock : intel-mpi
 name : mpi-hello.cpp
 source : mpi-hello.cpp
 buildopts : -O2
+mpi: enabled

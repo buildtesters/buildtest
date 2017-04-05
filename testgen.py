@@ -51,20 +51,67 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose):
 	fd.write(header)
 	
 	buildcmd=""
+	runcmd=""
 	compiler=""
-	compiler,testblockname=process_testblock(configmap)
-	
-	if testblockname == "generic" or testblockname == "intel" or testblockname == "mpi" or testblockname == "intel-mpi":
-		buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
-	if testblockname == "generic" or testblockname == "intel" or testblockname == "cuda":
-		runcmd = "./" + executable + "\n"
-	elif testblockname == "mpi" or testblockname == "intel-mpi":
-		runcmd = "mpirun -np 2 ./" + executable + "\n"
 
-	clean="rm ./" + executable 
-	fd.write(buildcmd)
-	fd.write(runcmd)
-	fd.write(clean)
+	print configmap
+        # if there is a buildcmd & runcmd in yaml file, put it directly in script
+        if "buildcmd" in configmap and "runcmd" in configmap:
+		# source BUILDTEST environments used for finding source
+		fd.write("source " + BUILDTEST_ROOT + "setup.sh \n")
+		for cmd in configmap["buildcmd"]:
+	                buildcmd += cmd + "\n"
+	
+		for cmd in configmap["runcmd"]:
+			runcmd += cmd + "\n"
+
+		if verbose >=1:
+			print testpath,":Invoking YAML buildcmd and runcmd fields..."
+			print "-----------------------------------"
+			print "BUILDCMD:"
+			print buildcmd
+			print "-----------------------------------"
+			print "RUNCMD:"
+			print runcmd
+			print "-----------------------------------"
+	        fd.write(buildcmd)
+	        fd.write(runcmd)
+
+			
+	# otherwise generate the buildcmd and runcmd automatically
+	else:
+		# checking if either buildcmd or runcmd specified but not both, then report an error.
+		if "buildcmd" in configmap and "runcmd" not in configmap or "buildcmd" not in configmap and "runcmd" in configmap:
+			print "Need to specify both key: buildcmd and runcmd"
+			sys.exit(1)
+
+	        compiler,testblockname=get_compiler(configmap,appname,tcname)
+    
+	        if testblockname == "gcc" or testblockname == "intel" or testblockname == "mpi" or testblockname == "intel-mpi":
+        	        buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
+
+	        if testblockname == "gcc" or testblockname == "intel" or testblockname == "cuda":
+	                # for intel mpi test, fix the runcmd to mpirun
+	                if testblockname == "intel" and "mpi" in configmap:
+	                        runcmd = "mpirun -np 2 ./" + executable + "\n"
+	                else:
+        	                runcmd = "./" + executable + "\n"
+	        elif testblockname == "mpi" or testblockname == "intel-mpi":
+        	        runcmd = "mpirun -np 2 ./" + executable + "\n"
+
+		if verbose >=1:
+			print testpath,":Invoking automatic buildcmd and runcmd fields..."
+			print "-----------------------------------"
+			print "BUILDCMD:",buildcmd
+			print "RUNCMD:",runcmd
+			print "-----------------------------------"
+
+		fd.write(buildcmd)
+		fd.write(runcmd)
+		if "runextracmd" in configmap:
+			for cmd in configmap["runextracmd"]:
+				fd.write(cmd + "\n")
+
 	fd.close()
 
 	fd=open(cmakelist,'a')
@@ -73,45 +120,110 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose):
 	fd.close()
 
 	print "Creating Test: ",testpath	
-# get the appropriate compiler based on the testblock used. Compiler/Wrappers can be gcc,icc,nvcc,javac,python,R,perl,etc...
-def process_testblock(configmap):
+# get the appropriate compiler based on the application/toolchain. Compiler/Wrappers can be gcc,icc,mpicc,nvcc,javac,python,R,perl,etc...
+def get_compiler(configmap,appname,tcname):
 	# get extension for source file
 	ext = os.path.splitext(configmap["source"])[1]
 	compiler=""
 
-	testblockname=configmap["testblock"]
+	# if app is GCC, GCCcore, -> compiler = gcc
+	# if app toolchain is GCC, GCCcore, dummy -> compiler = gcc
+ 	# if app is OpenMPI,MVAPICH, MPICH toolchain is GCC -> compiler = mpicc
+	# if app is intel -> compiler = icc/mpiicc -> need tag: mpi=true
+	# if app is python, tc=X -> compiler = python
+	# if app is OpenMPI, tc is intel -> compiler = mpicc
+	# if app is CUDA, tc=X -> compiler = nvcc
+	# if app is X, tc=gcccuda, compiler = gcc/nvcc need tag: cuda=true
+	# if cuda enabled
+	cuda = ""
+	mpi = ""
+	if "cuda" in configmap:
+		cuda=configmap["cuda"]
+	if "mpi" in configmap:
+		mpi=configmap["mpi"]
+
+	testblockname=""
+
+
+	# condition to calculate testblockname based on toolchain
+	if tcname in ["GCC","GCCcore","gcccuda","dummy"]:
+		testblockname = "gcc"
+	if tcname in ["intel", "iccifort","iccifortcuda"]: 
+		testblockname = "intel" 
+	if tcname in ["gompi","foss","goolfc"]:
+		testblockname = "mpi"
+	if tcname in ["impi","iimpi","iimpic"]:
+		testblockname = "intel-mpi"
+	
+	
+	if appname in ["GCC","GCCcore"]:
+		testblockname="gcc"
+	if appname in ["intel"]:
+		testblockname="intel"
+
+	# compiler can be determined automatically for apps below
+	if appname in ["Anaconda2", "Anaconda3", "Python", "Python3"]:
+		compiler = "python"
+		testblockname = "python"
+		return compiler,testblockname
+	if appname in ["R"]:
+		compiler = "R"
+		testblockname = "R"
+		return compiler,testblockname
+	if appname in ["Java"]:
+		compiler = "javac"
+		testblockname = "java"
+		return compiler,testblockname
+	if appname in ["CUDA"]:
+		compiler = "nvcc"
+		testblockname = "cuda"
+		return compiler,testblockname
+
+
+	#testblockname=configmap["testblock"]
+	
 	# determine compiler based on testblockname and its file extension
 	if ext == ".c":
-		if testblockname == "generic":
-			compiler="gcc"
+		if testblockname == "gcc":
+			# set compiler to nvcc when cuda is enabled
+			if cuda == "enabled":
+				compiler="nvcc"
+			else:
+				compiler="gcc"
 		elif testblockname == "intel":
-			compiler="icc"
+			# mpi test in intel test needs a check for mpi=enabled field to determine which wrapper to use 
+			if mpi=="enabled":
+				compiler="mpiicc"
+			else:
+				compiler="icc"
 		elif testblockname == "mpi":
 			compiler="mpicc"
 		elif testblockname == "intel-mpi":
 			compiler="mpiicc"
-		elif testblockname == "cuda":
-			compiler="nvcc"
 	elif ext == ".cpp":
-		if testblockname == "generic":
+		if testblockname == "gcc":
 			compiler="g++"
 		elif testblockname == "intel":
-			compiler="icpc"
+			if mpi=="enabled":
+				compiler="mpiicpc"
+			else:
+				compiler="icpc"
 		elif testblockname == "mpi":
 			compiler="mpic++"
 		elif testblockname == "intel-mpi":
 			compiler="mpiicpc"
 	elif ext == ".f90" or ext == ".f" or ext == ".f77":
-		if testblockname == "generic":
+		if testblockname == "gcc":
 			compiler="gfortran"
 		elif testblockname == "intel":
-			compiler="ifort"
+			if mpi=="enabled":
+				compiler="mpiifort"
+			else:
+				compiler="ifort"
 		elif testblockname == "mpi":
 			compiler="mpifort"
 		elif testblockname == "intel-mpi":
 			compiler="mpiifort"
-	if testblockname == "python":
-		compiler="python"
 	return compiler,testblockname
 # read binary file (command.txt) and create template shell script 
 def process_binary_file(filename,software,toolchain,verbose):

@@ -1,0 +1,9 @@
+name : a
+source : mpi-hello.f
+buildopts : -O2
+mpi: enabled
+buildcmd: 
+        - mpiifort $BUILDTEST_SOURCEDIR/intel/code/mpi-hello.f -o mpi-hello
+runcmd: 
+        - mpirun -np 2 ./mpi-hello
+        - rm ./mpi-hello
