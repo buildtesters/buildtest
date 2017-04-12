@@ -1,4 +1,3 @@
-#!/usr/bin/python
 from setup import *
 from modules import *
 from utilities import *
@@ -68,11 +67,19 @@ if not args.toolchain:
 else:
 	toolchain=args.toolchain.split("/")
 
-appname=software[0]
-appversion=software[1]
-tcname=toolchain[0]
-tcversion=toolchain[1]
+# when -s is specified
 if args.software != None:
+
+	appname=software[0]
+	appversion=software[1]
+
+	# default value assuming toolchain is not specified
+	tcname="dummy"
+	tcversion="dummy"
+	if args.toolchain != None:
+		tcname=toolchain[0]
+		tcversion=toolchain[1]
+
 	# checking if its a valid software
 	ret = software_exists(software)
 	if verbose >= 1:

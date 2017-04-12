@@ -54,7 +54,6 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose):
 	runcmd=""
 	compiler=""
 
-	print configmap
         # if there is a buildcmd & runcmd in yaml file, put it directly in script
         if "buildcmd" in configmap and "runcmd" in configmap:
 		# source BUILDTEST environments used for finding source

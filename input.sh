@@ -15,5 +15,6 @@ python ./buildtest.py -s OpenMPI/2.0.2 -t intel/2017.01
 python ./buildtest.py -s Bowtie2/2.2.9 -t GCCcore/.5.4.0
 python ./buildtest.py -s Bowtie/1.1.2 -t GCCcore/.5.4.0
 python ./buildtest.py -s binutils/.2.27 
-python buildtest.py -s Anaconda2/4.2.0 -s GCC/5.4.0-2.27
+python ./buildtest.py -s Anaconda2/4.2.0 -t GCC/5.4.0-2.27
+python ./buildtest.py -s netCDF/4.4.1 -t intel/2017.01
 
