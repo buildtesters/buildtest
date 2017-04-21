@@ -131,6 +131,13 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
         	        runcmd = "mpirun -np 2 ./" + executable + "\n"
 		elif testblockname == "python":
 			runcmd = "python " + sourcefilepath + "\n"
+		elif testblockname == "java":
+			buildcmd = compiler + " " + sourcefilepath + "\n"
+			java_codedir=os.path.dirname(sourcefilepath)
+			filename = os.path.basename(os.path.splitext(sourcefilepath)[0])
+			runcmd = "cd " + java_codedir + "\n"
+			runcmd += "java " + filename + "\n"
+			runcmd += "rm -v " + filename + ".class"
 
 		if verbose >=1:
 			print testpath,":Invoking automatic buildcmd and runcmd fields..."
@@ -154,7 +161,6 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 		fd1.write("add_subdirectory("+subdir+") \n")
 		fd1.close()
 
-		print "parent cmake=",parent_cmakelist
 		add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-"  + subdir + "-" + testname + "\t COMMAND sh " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 	else:
 		add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"

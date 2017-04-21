@@ -15,7 +15,9 @@ parser.add_argument("-t", "--toolchain",help=" Specify toolchain for the softwar
 parser.add_argument("-lt", "--list-toolchain",help="retrieve toolchain used based on the easyconfig files provided by BUILDTEST_EASYCONFIGDIR", action="store_true")
 parser.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_MODULETREE", action="store_true")
 parser.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
-parser.add_argument("--system", help=" Build test for system packages")
+parser.add_argument("--system", help=""" Build test for system packages
+
+					 To build all system package test use --system all """)
 parser.add_argument("-v", "--verbose", help="increase verbosity level", type=int, choices=[1,2])
 
 args = parser.parse_args()
@@ -115,20 +117,13 @@ if args.software != None:
 	        #for filename in os.listdir(configdir):
 		for root,subdirs,files in os.walk(configdir):
 			
-			print root,subdirs,files
-			print "-------------------"
         	        #filepath=configdir+filename
 			for file in files:
 				filepath=os.path.join(root,file)
 				subdir=os.path.basename(root)
-				print "file=",filepath, "root=",os.path.basename(root), root
-				# if subdirectory is found adjust codedir to add subdirectory
-				#if subdir != "":
+				# add subdirectory to code_destdir path, if there is no subdirectory the path will still work
 				code_destdir=os.path.join(codedir,subdir)
-				print "destination codedir",code_destdir
-			#print root,subdirs,files
 				configmap=parse_config(software,toolchain,filepath,code_destdir)		
-				print configmap
 				# error processing config file, then parse_config will return an empty dictionary
 				if len(configmap) == 0:
 					continue
