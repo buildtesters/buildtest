@@ -332,16 +332,16 @@ def process_binary_file(filename,software,toolchain,verbose):
 	toolchain_name,toolchain_version=toolchain
 	#print "values",name,version,toolchain_name,toolchain_version
 	# if top level software directory is not present, create it
-	test_name_dir=BUILDTEST_TESTDIR + name
-	test_version_dir=test_name_dir + "/" + version
-	test_toolchain_name_dir=test_version_dir + "/" + toolchain_name
-	test_toolchain_version_dir=test_toolchain_name_dir + "/" + toolchain_version
+	test_name_dir=os.path.join(BUILDTEST_TESTDIR,name)
+	test_version_dir=os.path.join(test_name_dir,version)
+	test_toolchain_name_dir=os.path.join(test_version_dir,toolchain_name)
+	test_toolchain_version_dir=os.path.join(test_toolchain_name_dir,toolchain_version)
 
-	test_cmakelist = BUILDTEST_TESTDIR + "/CMakeLists.txt"
-	test_name_cmakelist = test_name_dir + "/CMakeLists.txt"
-	test_version_cmakelist = test_version_dir + "/CMakeLists.txt"
-	test_toolchain_name_cmakelist = test_toolchain_name_dir + "/CMakeLists.txt"
-	test_toolchain_version_cmakelist = test_toolchain_version_dir + "/CMakeLists.txt"
+	test_cmakelist = os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
+	test_name_cmakelist = os.path.join(test_name_dir,"CMakeLists.txt")
+	test_version_cmakelist = os.path.join(test_version_dir,"CMakeLists.txt")
+	test_toolchain_name_cmakelist = os.path.join(test_toolchain_name_dir,"CMakeLists.txt")
+	test_toolchain_version_cmakelist = os.path.join(test_toolchain_version_dir,"CMakeLists.txt")
 
 	test_destdir=test_toolchain_version_dir
 	# if testdirectory exist, delete and recreate it inorder for reproducible test builds
@@ -380,7 +380,7 @@ def process_binary_file(filename,software,toolchain,verbose):
 	binarydict=content["binaries"]
 	for key in binarydict:
 		testname=key+".sh"
-		testpath=test_destdir + "/" + testname
+		testpath=os.path.join(test_destdir,testname)
 		fd=open(testpath,'w')
 		fd.write(header)
 		# if paramter is specified then write both executable and parameter to file otherwise only write the executable
