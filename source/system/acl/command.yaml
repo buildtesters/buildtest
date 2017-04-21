@@ -1,0 +1,3 @@
+binaries:
+        getfacl: -v
+        setfacl: -v

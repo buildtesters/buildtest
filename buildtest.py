@@ -72,8 +72,12 @@ else:
 # generate system pkg test
 if args.system:
 	systempkg = args.system
-	
-	systempkg_generate_binary_test(systempkg,verbose)
+	if systempkg == "all":
+		systempkg_list = os.listdir(BUILDTEST_SOURCEDIR + "system")
+		for pkg in systempkg_list:
+			systempkg_generate_binary_test(pkg,verbose)
+	else:
+		systempkg_generate_binary_test(systempkg,verbose)
 
 # when -s is specified
 if args.software != None:

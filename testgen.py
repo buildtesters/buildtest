@@ -301,7 +301,6 @@ def systempkg_process_binary_file(filename,pkg,verbose):
 
         # create a binary test script for each key,value item in dictionary
         binarydict=content["binaries"]
-	print binarydict
         for key in binarydict:
                 testname=key+".sh"
                 testpath=os.path.join(test_destdir,testname)
