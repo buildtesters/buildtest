@@ -32,7 +32,7 @@ def parse_config(software,toolchain,filename,codedir):
 				sys.exit(1)
 		# source must match a valid file name
 		elif key == "source":
-	                codefile=codedir+content[key]
+	                codefile=os.path.join(codedir,content[key])
         	        if not os.path.exists(codefile):
                 	        print "Can't find source file: ",codefile, ". Verify source file in directory:", codedir
 				sys.exit(1)

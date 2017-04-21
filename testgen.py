@@ -26,19 +26,30 @@ def generate_binary_test(software,toolchain,verbose):
 	    process_binary_file(commandfile,software,toolchain,verbose)
 
 # generate test for source
-def generate_source_test(software,toolchain,configmap,codedir,verbose):
+def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 	appname=software[0]
 	appver=software[1]
 	tcname=toolchain[0]
 	tcver=toolchain[1]
 	
-	destdir=BUILDTEST_TESTDIR+appname+"/"+appver+"/"+tcname+"/"+tcver+"/"
-	cmakelist=destdir+"CMakeLists.txt"
+	# app_destdir is root of test directory
+	app_destdir = os.path.join(BUILDTEST_TESTDIR,appname,appver,tcname,tcver)
+	# destdir is where test script and CMakeLists.txt will be generated. If there is a subdirectory then testscript will reside
+	# in subdir
+	destdir=os.path.join(app_destdir,subdir)
+	cmakelist=os.path.join(destdir,"CMakeLists.txt")
+	
+	#print "subdir:",subdir, "destdir:", destdir
+	#sys.exit(1)
+
+	# if subdirectory exists, create subdirectory in destdir so we can write test script
+	if subdir != "":
+		os.mkdir(destdir)
 
 	# testname is key value "name" with .sh extension
 	testname=configmap["name"]+".sh"
-	testpath=destdir+testname
-	sourcefilepath=codedir+configmap["source"]
+	testpath=os.path.join(destdir,testname)
+	sourcefilepath=os.path.join(codedir,configmap["source"])
 	executable=configmap["source"]+".exe"
 
 	flags=""
@@ -85,18 +96,21 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose):
 			sys.exit(1)
 
 	        compiler,testblockname=get_compiler(configmap,appname,tcname)
-    
+    		
+		# set buildcmd based on testblockname. compiler is either gcc,icc,mpicc, or mpiicc based on testblockname
 	        if testblockname == "gcc" or testblockname == "intel" or testblockname == "mpi" or testblockname == "intel-mpi":
         	        buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
 
 	        if testblockname == "gcc" or testblockname == "intel" or testblockname == "cuda":
-	                # for intel mpi test, fix the runcmd to mpirun
+	                # for intel mpi test, the runcmd needs to be mpirun
 	                if testblockname == "intel" and "mpi" in configmap:
 	                        runcmd = "mpirun -np 2 ./" + executable + "\n"
 	                else:
         	                runcmd = "./" + executable + "\n"
 	        elif testblockname == "mpi" or testblockname == "intel-mpi":
         	        runcmd = "mpirun -np 2 ./" + executable + "\n"
+		elif testblockname == "python":
+			runcmd = "python " + sourcefilepath + "\n"
 
 		if verbose >=1:
 			print testpath,":Invoking automatic buildcmd and runcmd fields..."
@@ -114,7 +128,16 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose):
 	fd.close()
 
 	fd=open(cmakelist,'a')
-	add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+	if subdir != "":
+		parent_cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
+		fd1=open(parent_cmakelist,'a')
+		fd1.write("add_subdirectory("+subdir+") \n")
+		fd1.close()
+
+		print "parent cmake=",parent_cmakelist
+		add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-"  + subdir + "-" + testname + "\t COMMAND sh " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+	else:
+		add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 	fd.write(add_test_str)
 	fd.close()
 

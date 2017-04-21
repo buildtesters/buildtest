@@ -97,14 +97,30 @@ if args.software != None:
 	
         configdir=BUILDTEST_SOURCEDIR + appname + "/config/"
         codedir=BUILDTEST_SOURCEDIR + appname + "/code/"
+	codedir=os.path.join(BUILDTEST_SOURCEDIR,appname,"code")
+	print "codedir=",codedir
 	# if config directory exists then process .yaml files to build source test
 	if os.path.isdir(configdir):
-	        for filename in os.listdir(configdir):
-        	        filepath=configdir+filename
-			configmap=parse_config(software,toolchain,filepath,codedir)		
-			# error processing config file, then parse_config will return an empty dictionary
-			if len(configmap) == 0:
-				continue
-			generate_source_test(software,toolchain,configmap,codedir,verbose)
+	        #for filename in os.listdir(configdir):
+		for root,subdirs,files in os.walk(configdir):
+			
+			print root,subdirs,files
+			print "-------------------"
+        	        #filepath=configdir+filename
+			for file in files:
+				filepath=os.path.join(root,file)
+				subdir=os.path.basename(root)
+				print "file=",filepath, "root=",os.path.basename(root), root
+				# if subdirectory is found adjust codedir to add subdirectory
+				#if subdir != "":
+				code_destdir=os.path.join(codedir,subdir)
+				print "destination codedir",code_destdir
+			#print root,subdirs,files
+				configmap=parse_config(software,toolchain,filepath,code_destdir)		
+				print configmap
+				# error processing config file, then parse_config will return an empty dictionary
+				if len(configmap) == 0:
+					continue
+				generate_source_test(software,toolchain,configmap,code_destdir,verbose,subdir)
 
 
