@@ -3,11 +3,31 @@ import os.path
 import os, sys
 import shutil
 import yaml
+def systempkg_generate_binary_test(pkg,verbose):
+	toplevel_cmakelist_file=os.path.join(BUILDTEST_ROOT,"CMakeLists.txt")
+	testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
+	commandfile=os.path.join(BUILDTEST_SOURCEDIR,"system",pkg,"command.yaml")
+
+        # if CMakeLists.txt does not exist in top-level directory, create the header
+        if os.path.isfile(toplevel_cmakelist_file) == False:
+                init_CMakeList(toplevel_cmakelist_file)
+
+        create_dir(BUILDTEST_TESTDIR,verbose)
+        # if BUILDTEST_TESTDIR/CMakeLists.txt does not exist, then create it
+        if os.path.isfile(testingdir_cmakelist_file) == False:
+                fd=open(testingdir_cmakelist_file,'w')
+                fd.close()
+        # if command.yaml does not exist then report error
+        if os.path.isfile(commandfile) == False:
+                print "Warning: Cannot find command file:", commandfile, "Skipping binary test"
+        else:
+            systempkg_process_binary_file(commandfile,pkg,verbose)
+
 def generate_binary_test(software,toolchain,verbose):
-	toplevel_cmakelist_file=BUILDTEST_ROOT + "CMakeLists.txt"
-	testingdir_cmakelist_file=BUILDTEST_TESTDIR + "CMakeLists.txt"
+	toplevel_cmakelist_file=os.path.join(BUILDTEST_ROOT,"CMakeLists.txt")
+	testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
 	swname = software[0]
-	commandfile=BUILDTEST_SOURCEDIR + swname + "/command.yaml"  
+	commandfile=os.path.join(BUILDTEST_SOURCEDIR,swname,"command.yaml")
 
 
 	# if CMakeLists.txt does not exist in top-level directory, create the header
@@ -19,7 +39,7 @@ def generate_binary_test(software,toolchain,verbose):
 	if os.path.isfile(testingdir_cmakelist_file) == False:
 		fd=open(testingdir_cmakelist_file,'w')
 		fd.close()
-	# if command.txt does not exist then report error
+	# if command.yaml does not exist then report error
 	if os.path.isfile(commandfile) == False:
 		print "Warning: Cannot find command file:", commandfile, "Skipping binary test"
 	else:
@@ -247,6 +267,60 @@ def get_compiler(configmap,appname,tcname):
 		elif testblockname == "intel-mpi":
 			compiler="mpiifort"
 	return compiler,testblockname
+
+def systempkg_process_binary_file(filename,pkg,verbose):
+
+	test_system_dir=os.path.join(BUILDTEST_TESTDIR,"system")
+	test_destdir=os.path.join(BUILDTEST_TESTDIR,"system",pkg)
+
+	test_cmakelist = os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
+	test_cmakelist_pkg = os.path.join(BUILDTEST_TESTDIR,"system","CMakeLists.txt")
+	test_cmakelist_destdir=os.path.join(test_destdir,"CMakeLists.txt")
+
+        # if testdirectory exist, delete and recreate it inorder for reproducible test builds
+        if os.path.isdir(test_destdir):
+                shutil.rmtree(test_destdir)
+
+	create_dir(test_system_dir,verbose)
+	create_dir(test_destdir,verbose)
+
+	create_file(test_cmakelist,verbose)
+	create_file(test_cmakelist_pkg,verbose)
+	create_file(test_cmakelist_destdir,verbose)
+
+
+        check_CMakeLists(test_cmakelist,"system",verbose)
+        check_CMakeLists(test_cmakelist_pkg,pkg,verbose)
+
+	fd=open(filename,'r')
+        content=yaml.load(fd)
+        # if key binaries is not in yaml file, exit program
+        if "binaries" not in content:
+                print "Cant find key binaries in file: ", filename, " Exiting program"
+                sys.exit(1)
+
+        # create a binary test script for each key,value item in dictionary
+        binarydict=content["binaries"]
+	print binarydict
+        for key in binarydict:
+                testname=key+".sh"
+                testpath=os.path.join(test_destdir,testname)
+                fd=open(testpath,'w')
+		fd.write("module purge \n" )
+                # if paramter is specified then write both executable and parameter to file otherwise only write the executable
+                if binarydict[key]:
+                        fd.write(key + " " + binarydict[key])
+                else:
+                        fd.write(key)
+                fd.close()
+
+                fd=open(test_cmakelist_destdir,'a')
+                add_test_str="add_test(NAME system-" + pkg + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+                fd.write(add_test_str)
+
+                print "Creating Test:", testpath
+
+
 # read binary file (command.txt) and create template shell script 
 def process_binary_file(filename,software,toolchain,verbose):
 	name,version=software

@@ -15,6 +15,7 @@ parser.add_argument("-t", "--toolchain",help=" Specify toolchain for the softwar
 parser.add_argument("-lt", "--list-toolchain",help="retrieve toolchain used based on the easyconfig files provided by BUILDTEST_EASYCONFIGDIR", action="store_true")
 parser.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_MODULETREE", action="store_true")
 parser.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
+parser.add_argument("--system", help=" Build test for system packages")
 parser.add_argument("-v", "--verbose", help="increase verbosity level", type=int, choices=[1,2])
 
 args = parser.parse_args()
@@ -67,6 +68,13 @@ if not args.toolchain:
 else:
 	toolchain=args.toolchain.split("/")
 
+
+# generate system pkg test
+if args.system:
+	systempkg = args.system
+	
+	systempkg_generate_binary_test(systempkg,verbose)
+
 # when -s is specified
 if args.software != None:
 
@@ -98,7 +106,6 @@ if args.software != None:
         configdir=BUILDTEST_SOURCEDIR + appname + "/config/"
         codedir=BUILDTEST_SOURCEDIR + appname + "/code/"
 	codedir=os.path.join(BUILDTEST_SOURCEDIR,appname,"code")
-	print "codedir=",codedir
 	# if config directory exists then process .yaml files to build source test
 	if os.path.isdir(configdir):
 	        #for filename in os.listdir(configdir):
