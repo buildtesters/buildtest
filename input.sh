@@ -13,7 +13,7 @@ python buildtest.py -s numactl/2.0.11 -t GCC/6.2.0-2.27
 python buildtest.py -s CUDA/8.0.44 -t GCC/5.4.0-2.27
 python buildtest.py -s OpenMPI/2.0.0 -t GCC/5.4.0-2.27
 python buildtest.py -s OpenMPI/2.0.1 -t GCC/6.2.0-2.27
-python buildtest.py -s OpenMPI/2.0.2 -t intel/2017.01
+python buildtest.py -s OpenMPI/2.0.2 -t iccifort/2017.1.132-GCC-5.4.0-2.27
 python buildtest.py -s Bowtie2/2.2.9 -t GCCcore/.5.4.0
 python buildtest.py -s Bowtie/1.1.2 -t GCCcore/.5.4.0
 python buildtest.py -s binutils/.2.27 

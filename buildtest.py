@@ -75,7 +75,7 @@ else:
 if args.system:
 	systempkg = args.system
 	if systempkg == "all":
-		systempkg_list = os.listdir(BUILDTEST_SOURCEDIR + "system")
+		systempkg_list = os.listdir(os.path.join(BUILDTEST_SOURCEDIR,"system"))
 		for pkg in systempkg_list:
 			systempkg_generate_binary_test(pkg,verbose)
 	else:
@@ -109,9 +109,8 @@ if args.software != None:
 	
 	generate_binary_test(software,toolchain,verbose)
 	
-        configdir=BUILDTEST_SOURCEDIR + appname + "/config/"
-        codedir=BUILDTEST_SOURCEDIR + appname + "/code/"
-	codedir=os.path.join(BUILDTEST_SOURCEDIR,appname,"code")
+        configdir=os.path.join(BUILDTEST_SOURCEDIR,appname,"config")
+        codedir=os.path.join(BUILDTEST_SOURCEDIR,appname,"code")
 	# if config directory exists then process .yaml files to build source test
 	if os.path.isdir(configdir):
 	        #for filename in os.listdir(configdir):
@@ -121,7 +120,11 @@ if args.software != None:
 			for file in files:
 				filepath=os.path.join(root,file)
 				subdir=os.path.basename(root)
-				# add subdirectory to code_destdir path, if there is no subdirectory the path will still work
+				# if there is no subdirectory in configdir that means subdir would be set to "config" so it can
+				# be set to empty string in order to concat codedir and subdir. This way both subdirectory and 
+				# and no subdirectory structure for yaml will work
+				if subdir == "config":
+					subdir = ""
 				code_destdir=os.path.join(codedir,subdir)
 				configmap=parse_config(software,toolchain,filepath,code_destdir)		
 				# error processing config file, then parse_config will return an empty dictionary
