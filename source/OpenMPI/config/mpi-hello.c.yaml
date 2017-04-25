@@ -2,3 +2,4 @@ testblock : mpi
 name : mpi-hello.c
 source : hello.c
 buildopts : -O2
+mpi: enabled

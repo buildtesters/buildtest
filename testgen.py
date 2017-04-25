@@ -115,23 +115,21 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 			print "Need to specify both key: buildcmd and runcmd"
 			sys.exit(1)
 
-	        compiler,testblockname=get_compiler(configmap,appname,tcname)
+	        compiler,compiler_type=get_compiler(configmap,appname,tcname)
     		
 		# set buildcmd based on testblockname. compiler is either gcc,icc,mpicc, or mpiicc based on testblockname
-	        if testblockname == "gcc" or testblockname == "intel" or testblockname == "mpi" or testblockname == "intel-mpi":
+	        if compiler_type == "gnu" or compiler_type == "intel":
         	        buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
 
-	        if testblockname == "gcc" or testblockname == "intel" or testblockname == "cuda":
+	        if compiler_type == "gnu" or compiler_type == "intel" or compiler_type == "nvcc":
 	                # for intel mpi test, the runcmd needs to be mpirun
-	                if testblockname == "intel" and "mpi" in configmap:
+	                if compiler in ["mpicc","mpic++","mpifort","mpiicc","mpiic++", "mpiifort"]:
 	                        runcmd = "mpirun -np 2 ./" + executable + "\n"
 	                else:
         	                runcmd = "./" + executable + "\n"
-	        elif testblockname == "mpi" or testblockname == "intel-mpi":
-        	        runcmd = "mpirun -np 2 ./" + executable + "\n"
-		elif testblockname == "python":
+		elif compiler_type == "python":
 			runcmd = "python " + sourcefilepath + "\n"
-		elif testblockname == "java":
+		elif compiler_type == "java":
 			buildcmd = compiler + " " + sourcefilepath + "\n"
 			java_codedir=os.path.dirname(sourcefilepath)
 			filename = os.path.basename(os.path.splitext(sourcefilepath)[0])
@@ -177,11 +175,11 @@ def get_compiler(configmap,appname,tcname):
 	# if app is GCC, GCCcore, -> compiler = gcc
 	# if app toolchain is GCC, GCCcore, dummy -> compiler = gcc
  	# if app is OpenMPI,MVAPICH, MPICH toolchain is GCC -> compiler = mpicc
-	# if app is intel -> compiler = icc/mpiicc -> need tag: mpi=true
+	# if app is intel -> compiler = icc/mpiicc -> need tag: mpi=enabled
 	# if app is python, tc=X -> compiler = python
 	# if app is OpenMPI, tc is intel -> compiler = mpicc
 	# if app is CUDA, tc=X -> compiler = nvcc
-	# if app is X, tc=gcccuda, compiler = gcc/nvcc need tag: cuda=true
+	# if app is X, tc=gcccuda, compiler = gcc/nvcc need tag: cuda=enabled
 	# if cuda enabled
 	cuda = ""
 	mpi = ""
@@ -190,89 +188,86 @@ def get_compiler(configmap,appname,tcname):
 	if "mpi" in configmap:
 		mpi=configmap["mpi"]
 
-	testblockname=""
-
+	# compiler_type valid may be "gnu, intel, mpi, intel-mpi, R, java, python"
+	compiler_type=""
 
 	# condition to calculate testblockname based on toolchain
-	if tcname in ["GCC","GCCcore","gcccuda","dummy"]:
-		testblockname = "gcc"
-	if tcname in ["intel", "iccifort","iccifortcuda"]: 
-		testblockname = "intel" 
-	if tcname in ["gompi","foss","goolfc"]:
-		testblockname = "mpi"
-	if tcname in ["impi","iimpi","iimpic"]:
-		testblockname = "intel-mpi"
+	if tcname in ["GCC","GCCcore","gcccuda","dummy","gompi", "foss","goolfc"]:
+		compiler_type="gnu"
+	if tcname in ["intel", "iccifort","iccifortcuda","impi","iimpi","iimpic"]: 
+		compiler_type="intel"
 	
 	
-	if appname in ["GCC","GCCcore"]:
-		testblockname="gcc"
+	#if appname in ["GCC","GCCcore"]:
+	#	testblockname="gcc"
 	if appname in ["intel"]:
-		testblockname="intel"
+		compiler_type="intel"
 
 	# compiler can be determined automatically for apps below
 	if appname in ["Anaconda2", "Anaconda3", "Python", "Python3"]:
 		compiler = "python"
-		testblockname = "python"
-		return compiler,testblockname
+		return compiler,compiler
 	if appname in ["R"]:
 		compiler = "R"
-		testblockname = "R"
-		return compiler,testblockname
+		return compiler,compiler
 	if appname in ["Java"]:
 		compiler = "javac"
-		testblockname = "java"
-		return compiler,testblockname
+		return compiler,compiler
 	if appname in ["CUDA"]:
 		compiler = "nvcc"
-		testblockname = "cuda"
-		return compiler,testblockname
+		return compiler,compiler
 
 
 	#testblockname=configmap["testblock"]
 	
-	# determine compiler based on testblockname and its file extension
+	# determine compiler based on compiler_type and its file extension
 	if ext == ".c":
-		if testblockname == "gcc":
+		if compiler_type == "gnu":
 			# set compiler to nvcc when cuda is enabled
 			if cuda == "enabled":
 				compiler="nvcc"
+			# set compiler to mpicc when mpi is enabled
+			elif mpi == "enabled":
+				compiler="mpicc"
 			else:
 				compiler="gcc"
-		elif testblockname == "intel":
+		elif compiler_type == "intel":
 			# mpi test in intel test needs a check for mpi=enabled field to determine which wrapper to use 
 			if mpi=="enabled":
 				compiler="mpiicc"
 			else:
 				compiler="icc"
-		elif testblockname == "mpi":
-			compiler="mpicc"
-		elif testblockname == "intel-mpi":
-			compiler="mpiicc"
 	elif ext == ".cpp":
-		if testblockname == "gcc":
-			compiler="g++"
-		elif testblockname == "intel":
+		if compiler_type == "gnu":
+			# set compiler to nvcc when cuda is enabled
+			if cuda == "enabled": 
+                                compiler="nvcc"
+                        # set compiler to mpicc when mpi is enabled
+                        elif mpi == "enabled":
+                                compiler="mpic++"
+			else:
+				compiler="g++"
+		elif compiler_type == "intel":
 			if mpi=="enabled":
-				compiler="mpiicpc"
+				compiler="mpiic++"
 			else:
 				compiler="icpc"
-		elif testblockname == "mpi":
-			compiler="mpic++"
-		elif testblockname == "intel-mpi":
-			compiler="mpiicpc"
 	elif ext == ".f90" or ext == ".f" or ext == ".f77":
-		if testblockname == "gcc":
-			compiler="gfortran"
-		elif testblockname == "intel":
+		if compiler_type == "gnu":
+			# set compiler to nvcc when cuda is enabled
+                        if cuda == "enabled":
+                                compiler="nvcc"
+                        # set compiler to mpicc when mpi is enabled
+                        elif mpi == "enabled":
+                                compiler="mpifort"
+			else:
+				compiler="gfortran"
+		elif compiler_type == "intel":
 			if mpi=="enabled":
 				compiler="mpiifort"
 			else:
 				compiler="ifort"
-		elif testblockname == "mpi":
-			compiler="mpifort"
-		elif testblockname == "intel-mpi":
-			compiler="mpiifort"
-	return compiler,testblockname
+	return compiler,compiler_type
 
 def systempkg_process_binary_file(filename,pkg,verbose):
 

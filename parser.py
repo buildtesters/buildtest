@@ -2,7 +2,6 @@ from setup import *
 import os,sys
 import yaml
 field={
-	'testblock':['generic','intel','java','python','cuda','R','mpi', 'intel-mpi'],
 	'name':'',
 	'source':'',
 	'scheduler':['slurm','lsf','pbs'],
@@ -11,7 +10,8 @@ field={
 	'runcmd':'',
 	'runextracmd':'',
 	'mpi':'enabled',
-	'cuda':'enabled'
+	'cuda':'enabled',
+	'nproc': ''
 }
 # read config file and verify the key-value content with dictionary field
 def parse_config(software,toolchain,filename,codedir):
@@ -41,11 +41,9 @@ def parse_config(software,toolchain,filename,codedir):
 			if content[key] not in field["scheduler"]:
 				print "Invalid scheduler option: ", key, " Please select on of the following:" , field["scheduler"]
 				sys.exit(1)
-		# checking for invalid testblock option
-		elif key == "testblock":
-			# invalid testblock option
-			if content[key] not in field["testblock"]:
-				print "Invalid testblock option: ", key, " Please select on of the following:" , field["testblock"]
+		elif key == "nproc":
+			if not content[key].is_integer(): 
+				print "nproc key must be an integer value"
 				sys.exit(1)
 			
 	fd.close()

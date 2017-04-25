@@ -5,12 +5,12 @@ binaries:
         conda-build: -V
         conda-convert: --help
         conda-develop: --help
-        conda-env: -V
-        conda-index: -V 
-        conda-inspect: -V 
-        conda-metapackage: -V 
+        conda-env: list
+        conda-index: --help
+        conda-inspect: --help
+        conda-metapackage: --help
         conda-render: -V 
         conda-server: -V 
-        conda-sign: -V 
-        conda-skeleton: -V
+        conda-sign: --help
+        conda-skeleton: --help
 
