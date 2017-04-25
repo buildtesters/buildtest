@@ -42,7 +42,7 @@ def parse_config(software,toolchain,filename,codedir):
 				print "Invalid scheduler option: ", key, " Please select on of the following:" , field["scheduler"]
 				sys.exit(1)
 		elif key == "nproc":
-			if not content[key].is_integer(): 
+			if not str(content[key]).isdigit(): 
 				print "nproc key must be an integer value"
 				sys.exit(1)
 			

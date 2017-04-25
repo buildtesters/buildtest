@@ -1,4 +1,5 @@
 name : mpi-hello.f
-source : mpi-hello.f
+source : hello.f
 buildopts : -O2
-mpi: enabled
+mpi : enabled
+nproc: 2

@@ -1,0 +1,5 @@
+name: mpi_indexed.c
+source: mpi_indexed.c
+mpi: enabled
+buildopts: -O2
+nproc: 4

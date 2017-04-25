@@ -84,7 +84,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 	buildcmd=""
 	runcmd=""
 	compiler=""
-
+	nproc = ""
         # if there is a buildcmd & runcmd in yaml file, put it directly in script
         if "buildcmd" in configmap and "runcmd" in configmap:
 		# source BUILDTEST environments used for finding source
@@ -124,7 +124,15 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 	        if compiler_type == "gnu" or compiler_type == "intel" or compiler_type == "nvcc":
 	                # for intel mpi test, the runcmd needs to be mpirun
 	                if compiler in ["mpicc","mpic++","mpifort","mpiicc","mpiic++", "mpiifort"]:
-	                        runcmd = "mpirun -np 2 ./" + executable + "\n"
+	
+		                # if nproc is defined in yaml, store value in nproc which will use it in mpirun command
+        		        if configmap["nproc"]:
+                		        nproc = str(configmap["nproc"])
+				# if nproc is not specified set it to 1 when building mpi apps
+				else:		
+					nproc = "1"
+
+                	        runcmd = "mpirun -np " + nproc + " ./" + executable + "\n"
 	                else:
         	                runcmd = "./" + executable + "\n"
 		elif compiler_type == "python":

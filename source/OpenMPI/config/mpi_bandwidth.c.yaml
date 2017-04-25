@@ -1,0 +1,5 @@
+name: mpi_bandwidth.c
+source: mpi_bandwidth.c
+mpi: enabled
+buildopts: -O2
+nproc: 4

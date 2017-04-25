@@ -1,0 +1,5 @@
+name: mpi_bandwidth_nonblock.c
+source: mpi_bandwidth_nonblock.c
+mpi: enabled
+buildopts: -O2
+nproc: 4
