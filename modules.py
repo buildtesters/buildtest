@@ -113,7 +113,8 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 	tcname=toolchain[0]	
 	tcversion=toolchain[1]
 
-	cmd="find " + moduletree + appname  + " -name *.eb -type f"         
+	
+	cmd="find " + os.path.join(moduletree,appname)  + " -name *.eb -type f"         
 	easyconfigfiles=os.popen(cmd). read().rstrip().split("\n")
 
 	# boolean value to check if eb file found with parameters for software and toolchain
