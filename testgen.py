@@ -225,7 +225,11 @@ def get_compiler(configmap,appname,tcname):
 		compiler = "nvcc"
 		return compiler,compiler
 
-
+	# MPI apps built with any toolchain (intel, gcc, pgi) will default to gnu. This is because all of these apps provide
+ 	# mpicc, mpifort, mpic++. While intel mpi provides mpiicc, mpiifort, mpiic++
+	if appname in ["MPICH","OpenMPI","MVAPICH"]:
+		compiler_type="gnu"
+	
 	#testblockname=configmap["testblock"]
 	
 	# determine compiler based on compiler_type and its file extension
