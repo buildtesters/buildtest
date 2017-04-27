@@ -23,11 +23,11 @@ def systempkg_generate_binary_test(pkg,verbose):
         else:
             systempkg_process_binary_file(commandfile,pkg,verbose)
 
-def generate_binary_test(software,toolchain,verbose):
+def generate_binary_test(software,toolchain,configdir,verbose):
 	toplevel_cmakelist_file=os.path.join(BUILDTEST_ROOT,"CMakeLists.txt")
 	testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
 	swname = software[0]
-	commandfile=os.path.join(BUILDTEST_SOURCEDIR,swname,"command.yaml")
+	commandfile=os.path.join(configdir,"command.yaml")
 
 
 	# if CMakeLists.txt does not exist in top-level directory, create the header
@@ -53,7 +53,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 	tcver=toolchain[1]
 	
 	# app_destdir is root of test directory
-	app_destdir = os.path.join(BUILDTEST_TESTDIR,appname,appver,tcname,tcver)
+	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
 	# destdir is where test script and CMakeLists.txt will be generated. If there is a subdirectory then testscript will reside
 	# in subdir
 	destdir=os.path.join(app_destdir,subdir)
@@ -160,6 +160,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 
 	fd.close()
 
+	# if YAML files are in subdirectory in config directory then update CMakeList in app_destdir to add tag "add_subdirectory" for subdirectory so CMakeList can find tests in subdirectory
 	fd=open(cmakelist,'a')
 	if subdir != "":
 		parent_cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
@@ -302,8 +303,8 @@ def systempkg_process_binary_file(filename,pkg,verbose):
 	create_file(test_cmakelist_destdir,verbose)
 
 
-        check_CMakeLists(test_cmakelist,"system",verbose)
-        check_CMakeLists(test_cmakelist_pkg,pkg,verbose)
+        update_CMakeLists(test_cmakelist,"system",verbose)
+        update_CMakeLists(test_cmakelist_pkg,pkg,verbose)
 
 	fd=open(filename,'r')
         content=yaml.load(fd)
@@ -333,18 +334,20 @@ def systempkg_process_binary_file(filename,pkg,verbose):
                 print "Creating Test:", testpath
 
 
-# read binary file (command.txt) and create template shell script 
+# read binary file (command.yaml) and create template shell script for eb applications
 def process_binary_file(filename,software,toolchain,verbose):
 	name,version=software
 	toolchain_name,toolchain_version=toolchain
 	#print "values",name,version,toolchain_name,toolchain_version
 	# if top level software directory is not present, create it
-	test_name_dir=os.path.join(BUILDTEST_TESTDIR,name)
+	test_ebapp_dir=os.path.join(BUILDTEST_TESTDIR,"ebapp")
+	test_name_dir=os.path.join(test_ebapp_dir,name)
 	test_version_dir=os.path.join(test_name_dir,version)
 	test_toolchain_name_dir=os.path.join(test_version_dir,toolchain_name)
 	test_toolchain_version_dir=os.path.join(test_toolchain_name_dir,toolchain_version)
 
 	test_cmakelist = os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
+	test_ebapp_cmakelist = os.path.join(test_ebapp_dir,"CMakeLists.txt")
 	test_name_cmakelist = os.path.join(test_name_dir,"CMakeLists.txt")
 	test_version_cmakelist = os.path.join(test_version_dir,"CMakeLists.txt")
 	test_toolchain_name_cmakelist = os.path.join(test_toolchain_name_dir,"CMakeLists.txt")
@@ -357,21 +360,25 @@ def process_binary_file(filename,software,toolchain,verbose):
 
 	# create directories if they don't exist
 	# Directory Format: <software>/<version>/toolchain-name>/<toolchain-version>
+	create_dir(test_ebapp_dir,verbose)
 	create_dir(test_name_dir,verbose)
 	create_dir(test_version_dir,verbose)
 	create_dir(test_toolchain_name_dir,verbose)
 	create_dir(test_toolchain_version_dir,verbose)
 	
 	# create CMakeList.txt file in each directory of <software>/<version>/<toolchain-name>/<toolchain-version> if it doesn't exist
+	
+	create_file(test_ebapp_cmakelist,verbose)
 	create_file(test_name_cmakelist,verbose)
 	create_file(test_version_cmakelist,verbose)
 	create_file(test_toolchain_name_cmakelist,verbose)
 	create_file(test_toolchain_version_cmakelist,verbose)
 
-	check_CMakeLists(test_cmakelist,name,verbose)
-	check_CMakeLists(test_name_cmakelist,version,verbose)
-	check_CMakeLists(test_version_cmakelist,toolchain_name,verbose)
-	check_CMakeLists(test_toolchain_name_cmakelist,toolchain_version,verbose)
+	update_CMakeLists(test_cmakelist,"ebapp",verbose)
+	update_CMakeLists(test_ebapp_cmakelist,name,verbose)
+	update_CMakeLists(test_name_cmakelist,version,verbose)
+	update_CMakeLists(test_version_cmakelist,toolchain_name,verbose)
+	update_CMakeLists(test_toolchain_name_cmakelist,toolchain_version,verbose)
 
 		
 	header=load_modules(software,toolchain)
@@ -419,7 +426,7 @@ def create_file(filename,verbose):
 			print "Creating Empty File:", filename
 
 # used for writing CMakeLists.txt with tag <software>, <version>, & toolchain
-def check_CMakeLists(filename,tag, verbose):
+def update_CMakeLists(filename,tag, verbose):
 	fd=open(filename,'r')
 	content=fd.read().strip().split("\n")
 	cmd="add_subdirectory("+tag+")"

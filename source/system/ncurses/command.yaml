@@ -4,7 +4,7 @@ binaries:
         infocmp: -V
         infotocap: -V
         reset: -V
-        tabs: -0
+        tabs: "-0"
         tic: -V
         toe: -V
         tput: -V

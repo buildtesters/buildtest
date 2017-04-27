@@ -107,10 +107,12 @@ if args.software != None:
 	# check that the software,toolchain match the easyconfig.
 	check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
 	
-	generate_binary_test(software,toolchain,verbose)
-	
-        configdir=os.path.join(BUILDTEST_SOURCEDIR,appname,"ebapps","config")
-        codedir=os.path.join(BUILDTEST_SOURCEDIR,appname,"ebapps","code")
+	# generate_binary_test(software,toolchain,verbose)
+	source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)
+        configdir=os.path.join(source_app_dir,"config")
+        codedir=os.path.join(source_app_dir,"code")
+
+	generate_binary_test(software,toolchain,source_app_dir,verbose)
 	# if config directory exists then process .yaml files to build source test
 	if os.path.isdir(configdir):
 	        #for filename in os.listdir(configdir):

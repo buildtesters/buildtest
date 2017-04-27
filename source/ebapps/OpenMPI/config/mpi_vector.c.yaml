@@ -1,5 +1,0 @@
-name: mpi_vector.c
-source: mpi_vector.c
-mpi: enabled
-buildopts: -O2
-nproc: 4
