@@ -109,8 +109,8 @@ if args.software != None:
 	
 	generate_binary_test(software,toolchain,verbose)
 	
-        configdir=os.path.join(BUILDTEST_SOURCEDIR,appname,"config")
-        codedir=os.path.join(BUILDTEST_SOURCEDIR,appname,"code")
+        configdir=os.path.join(BUILDTEST_SOURCEDIR,appname,"ebapps","config")
+        codedir=os.path.join(BUILDTEST_SOURCEDIR,appname,"ebapps","code")
 	# if config directory exists then process .yaml files to build source test
 	if os.path.isdir(configdir):
 	        #for filename in os.listdir(configdir):

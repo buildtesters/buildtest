@@ -1,0 +1,11 @@
+binaries:
+        captoinfo: -V
+        clear: -V
+        infocmp: -V
+        infotocap: -V
+        reset: -V
+        tabs: -0
+        tic: -V
+        toe: -V
+        tput: -V
+        tset: -V
