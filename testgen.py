@@ -96,7 +96,6 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 		                buildcmd += cmd + "\n"
 		else:
 			print "buildcmd is declared but value is not specified"
-			sys.exit(1)
 		if configmap["runcmd"] != None:
 			for cmd in configmap["runcmd"]:
 				runcmd += cmd + "\n"
