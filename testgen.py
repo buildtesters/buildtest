@@ -94,10 +94,17 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 		if configmap["buildcmd"] != None:
 			for cmd in configmap["buildcmd"]:
 		                buildcmd += cmd + "\n"
-	
-		for cmd in configmap["runcmd"]:
-			runcmd += cmd + "\n"
+		else:
+			print "buildcmd is declared but value is not specified"
+			sys.exit(1)
+		if configmap["runcmd"] != None:
+			for cmd in configmap["runcmd"]:
+				runcmd += cmd + "\n"
+		else:
+			print "runcmd is declared but value is not specified"
+			sys.exit(1)
 
+		
 		if verbose >=1:
 			print testpath,":Invoking YAML buildcmd and runcmd fields..."
 			print "-----------------------------------"
