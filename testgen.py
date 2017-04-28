@@ -88,8 +88,6 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
         # if there is a buildcmd & runcmd in yaml file, put it directly in script
         if "buildcmd" in configmap and "runcmd" in configmap:
 		# source BUILDTEST environments used for finding source
-		print configmap["buildcmd"]
-		print configmap["runcmd"]
 		# fd.write("source " + BUILDTEST_ROOT + "setup.sh \n")
 
 		# only process buildcmd if it there is a value specified for buildcmd key
