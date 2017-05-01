@@ -432,6 +432,7 @@ def systempkg_process_binary_file(filename,pkg,verbose):
                 testname=key+".sh"
                 testpath=os.path.join(test_destdir,testname)
                 fd=open(testpath,'w')
+		fd.write("#!/bin/sh \n")
 		fd.write("module purge \n" )
                 # if paramter is specified then write both executable and parameter to file otherwise only write the executable
                 if binarydict[key]:
@@ -538,18 +539,18 @@ def process_binary_file(filename,software,toolchain,verbose):
 		print "Creating Test:", testpath
 		
 def create_dir(dirname,verbose):
-"""
-Create directory if it doesn't exist
-"""
+	"""
+	Create directory if it doesn't exist
+	"""
 	if not os.path.isdir(dirname):
 		os.mkdir(dirname)
 		if verbose >= 1:
 			print "Creating Directory: ",dirname
 
 def create_file(filename,verbose):
-"""
-Create an empty file if it doesn't exist
-"""
+	"""
+	Create an empty file if it doesn't exist
+	"""
 	if not os.path.isfile(filename):
 		fd=open(filename,'w')
 		fd.close()
@@ -557,9 +558,9 @@ Create an empty file if it doesn't exist
 			print "Creating Empty File:", filename
 
 def update_CMakeLists(filename,tag, verbose):
-"""
-used for writing CMakeLists.txt with tag <software>, <version>, & toolchain
-"""
+	"""
+	used for writing CMakeLists.txt with tag <software>, <version>, & toolchain
+	"""
 	fd=open(filename,'r')
 	content=fd.read().strip().split("\n")
 	cmd="add_subdirectory("+tag+")"
@@ -574,9 +575,9 @@ used for writing CMakeLists.txt with tag <software>, <version>, & toolchain
 		fd.close()	
 
 def init_CMakeList(filename):
-"""
-This is the content of BUILDTEST_ROOT/CMakeLists.txt
-"""
+	"""
+	This is the content of BUILDTEST_ROOT/CMakeLists.txt
+	"""
 	header = """ 
 cmake_minimum_required(VERSION 2.8)
 include(CTest)
@@ -587,9 +588,9 @@ add_subdirectory(""" + BUILDTEST_TESTDIR + ")"
 	fd.close()
 
 def load_modules(software,toolchain):
-"""
-return a string that loads the software and toolchain module. 
-"""
+	"""
+	return a string that loads the software and toolchain module. 
+	"""
 	# for dummy toolchain you can load software directly. Ensure a clean environment by running module purge
 	if toolchain[0] == "dummy":
 		header="""

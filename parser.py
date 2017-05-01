@@ -40,9 +40,9 @@ field={
 }
 
 def parse_config(software,toolchain,filename,codedir):
-"""
-read config file and verify the key-value content with dictionary field
-"""
+	"""
+	read config file and verify the key-value content with dictionary field
+	"""
         fd=open(filename,'r')
 	content=yaml.load(fd)
 	# iterate over dictionary to seek any invalid keys 

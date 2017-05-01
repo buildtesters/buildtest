@@ -5,13 +5,13 @@ binaries:
         pmap: -V
         ps: -V 
         pwdx: -V
-        kill: -l SIGTERM
+        kill: -l 
         slabtop: -V
         nice: --version
         tload: -V 
         top: -v
         uptime:
         vmstat: -V 
-        w: -v
+        w: -V
         watch: -v
         sysctl: -V

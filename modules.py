@@ -26,17 +26,17 @@ import os
 import sys
 
 def get_module_list(moduletree):
-"""
-returns a complete list of modules found in module tree
-"""
+	"""
+	returns a complete list of modules found in module tree
+	"""
 	find_cmd_module=os.popen("find " + moduletree + " -type f """).read()
         modulelist=find_cmd_module.rstrip().split('\n')
 	return modulelist
 
 def get_unique_software(moduletree):
-"""
-returns a set of software packages found in the module tree
-"""
+	"""
+	returns a set of software packages found in the module tree
+	"""
 	modulelist=get_module_list(moduletree)
 	module_set=set()
 	for module in modulelist:
@@ -46,10 +46,10 @@ returns a set of software packages found in the module tree
 	return sorted(module_set)
 
 def get_unique_software_version(moduletree):
-"""
-returns a set of software-version collection found in module files. Duplicates are 
-ignored for instance, same package version is built with two different toolchains
-"""
+	"""
+	returns a set of software-version collection found in module files. Duplicates are 
+	ignored for instance, same package version is built with two different toolchains
+	"""
 	modulelist=get_module_list(moduletree)
         moduleversion_set=set()
         for module in modulelist:
@@ -71,10 +71,10 @@ ignored for instance, same package version is built with two different toolchain
 	return sorted(moduleversion_set)
 
 def module_version_relation(moduletree):
-"""
-relationship between software name and version. The function will return a 
-dictionary with key values as software name and values will be a set of version
-"""
+	"""
+	relationship between software name and version. The function will return a 
+	dictionary with key values as software name and values will be a set of version
+	"""
 	modulelist=get_module_list(moduletree)
 	module_set=get_unique_software(moduletree)
 	# dictionary used for keeping a relationship between software name and its corresponding versions found as modulefiles
@@ -98,9 +98,9 @@ dictionary with key values as software name and values will be a set of version
 	return module_dict
 
 def get_toolchain(easyconfigdir):
-"""
-return the set of toolchains found in the easyconfig directory 
-"""
+	"""
+	return the set of toolchains found in the easyconfig directory 
+	"""
 	easyconfigfiles=os.popen("find " + easyconfigdir +  " -name *.eb -type f ").read().rstrip().split("\n")
 
 	# only care about unique toolchains
@@ -116,10 +116,10 @@ return the set of toolchains found in the easyconfig directory
 	return toolchain
 
 def software_exists(software):
-"""
-checks whether software exist, there must be a module file present with the 
-same name specified as the argument. 
-"""
+	"""
+	checks whether software exist, there must be a module file present with the 
+	same name specified as the argument. 
+	"""
 	if len(software) != 2:
 		print "Too many arguments, -s takes argument <software>,<version>"
 		sys.exit(1)
@@ -131,9 +131,9 @@ same name specified as the argument.
 		sys.exit(1)
 	
 def toolchain_exists(software,toolchain):
-"""
-checks to see if toolchain passed on command line exist in toolchain list
-"""
+	"""
+	checks to see if toolchain passed on command line exist in toolchain list
+	"""
 	toolchain_list=get_toolchain(BUILDTEST_EASYCONFIGDIR)
 
 	# if toolchain is installed as hidden file then strip the "." prior to checking in list
@@ -153,10 +153,10 @@ checks to see if toolchain passed on command line exist in toolchain list
 		sys.exit(1)
 
 def check_software_version_in_easyconfig(moduletree,software,toolchain):
-"""
-return True if name,version+versionsuffix,toolchain from command line is found 
-from easyconfig, False otherwise
-"""
+	"""
+	return True if name,version+versionsuffix,toolchain from command line is found 
+	from easyconfig, False otherwise
+	"""
 	appname=software[0]
 	appversion=software[1]	
 	tcname=toolchain[0]	

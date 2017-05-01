@@ -24,10 +24,10 @@
 import os
 
 def isHiddenFile(inputfile):
-"""
-creates a relationship between software-version to a toolchain. This will show 
-how a module file relates to a particular toolchain
-"""
+	"""
+	creates a relationship between software-version to a toolchain. This will show 
+	how a module file relates to a particular toolchain
+	"""
 	if os.path.isdir(inputfile) == True:
 		return False
 	
@@ -39,23 +39,23 @@ how a module file relates to a particular toolchain
                 return False
 
 def stripHiddenFile(file): 
-"""
-removes the leading "." character from file
-"""
+	"""
+	removes the leading "." character from file
+	"""
         file=file[1:]
         return file  
 
 def print_dictionary(dictionary):
-"""
-prints the content of dictionary
-"""
+	"""
+	prints the content of dictionary
+	"""
         for key in dictionary:
                 print key, sset(dictionary[key])
 
 def print_set(setcollection):
-"""
-prints the content of set 
-"""
+	"""
+	prints the content of set 
+	"""
 	for item in setcollection:
 		print item
 class sset(set):
