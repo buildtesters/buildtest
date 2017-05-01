@@ -21,6 +21,9 @@ python buildtest.py -s Bowtie/1.1.2 -t GCCcore/.5.4.0
 python buildtest.py -s binutils/.2.27 
 python buildtest.py -s Anaconda2/4.2.0 -t GCC/5.4.0-2.27
 python buildtest.py -s netCDF/4.4.1 -t intel/2017.01
-
+python buildtest.py -s  HMMER/3.1b2 -t GCCcore/.5.4.0
+python buildtest.py -s FastQC/0.11.5-Java-1.8.0_92 -t GCCcore/.5.4.0
+python buildtest.py -s seqtk/1.2 -t GCCcore/.5.4.0
+python buildtest.py -s PCRE/8.38 -t GCC/5.4.0-2.27
 python buildtest.py --system all
 

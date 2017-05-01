@@ -1,0 +1,4 @@
+binaries:
+        pcre-version: --version
+        pcregrep: --help
+        pcretest: --help
