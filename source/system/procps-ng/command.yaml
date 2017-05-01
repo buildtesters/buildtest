@@ -1,0 +1,17 @@
+binaries:
+        free: -V
+        pgrep: -V
+        pkill: -V 
+        pmap: -V
+        ps: -V 
+        pwdx: -V
+        kill: -l SIGTERM
+        slabtop: -V
+        nice: --version
+        tload: -V 
+        top: -v
+        uptime:
+        vmstat: -V 
+        w: -v
+        watch: -v
+        sysctl: -V

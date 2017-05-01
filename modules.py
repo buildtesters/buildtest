@@ -1,15 +1,42 @@
+############################################################################ 
+# 
+#  Copyright 2017 
+# 
+#   https://github.com/shahzebsiddiqui/BuildTest 
+# 
+#  This file is part of buildtest. 
+# 
+#    buildtest is free software: you can redistribute it and/or modify 
+#    it under the terms of the GNU General Public License as published by 
+#    the Free Software Foundation, either version 3 of the License, or 
+#    (at your option) any later version. 
+# 
+#    buildtest is distributed in the hope that it will be useful, 
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of 
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+#    GNU General Public License for more details. 
+# 
+#    You should have received a copy of the GNU General Public License 
+#    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
+############################################################################# 
+
 from setup import *
 from utilities import *
 import os
 import sys
 
-# returns a complete list of modules found in the moduletree
 def get_module_list(moduletree):
+"""
+returns a complete list of modules found in module tree
+"""
 	find_cmd_module=os.popen("find " + moduletree + " -type f """).read()
         modulelist=find_cmd_module.rstrip().split('\n')
 	return modulelist
-# returns a set of software packages found in the module tree
+
 def get_unique_software(moduletree):
+"""
+returns a set of software packages found in the module tree
+"""
 	modulelist=get_module_list(moduletree)
 	module_set=set()
 	for module in modulelist:
@@ -17,8 +44,12 @@ def get_unique_software(moduletree):
 		modulename=os.popen("dirname " + module + " | xargs basename ").read().rstrip()
 		module_set.add(modulename)
 	return sorted(module_set)
-# returns a set of software-version collection found in module files. Duplicates are ignored for instance, same package version is built with two different toolchains
+
 def get_unique_software_version(moduletree):
+"""
+returns a set of software-version collection found in module files. Duplicates are 
+ignored for instance, same package version is built with two different toolchains
+"""
 	modulelist=get_module_list(moduletree)
         moduleversion_set=set()
         for module in modulelist:
@@ -38,8 +69,12 @@ def get_unique_software_version(moduletree):
 
         #print module_set
 	return sorted(moduleversion_set)
-# relationship between software name and version. The function will return a dictionary with key values as software name and values will be a set of version
+
 def module_version_relation(moduletree):
+"""
+relationship between software name and version. The function will return a 
+dictionary with key values as software name and values will be a set of version
+"""
 	modulelist=get_module_list(moduletree)
 	module_set=get_unique_software(moduletree)
 	# dictionary used for keeping a relationship between software name and its corresponding versions found as modulefiles
@@ -63,9 +98,15 @@ def module_version_relation(moduletree):
 	return module_dict
 
 def get_toolchain(easyconfigdir):
+"""
+return the set of toolchains found in the easyconfig directory 
+"""
 	easyconfigfiles=os.popen("find " + easyconfigdir +  " -name *.eb -type f ").read().rstrip().split("\n")
-        #print easyconfigfiles,type(easyconfigfiles)
+
+	# only care about unique toolchains
 	toolchain=set()
+
+	# find all toolchains in the easyconfig files
         for ebfile in easyconfigfiles:
                 cmd="""grep "toolchain =" """ + ebfile + """ | cut -f4 -d " " | tr -d "'," """
                 toolchain_name=os.popen(cmd).read().rstrip()
@@ -74,8 +115,11 @@ def get_toolchain(easyconfigdir):
 		toolchain.add(toolchain_name+" "+toolchain_version)
 	return toolchain
 
-# checks whether software exist, there must be a module file present with the same name specified as the argument. 
 def software_exists(software):
+"""
+checks whether software exist, there must be a module file present with the 
+same name specified as the argument. 
+"""
 	if len(software) != 2:
 		print "Too many arguments, -s takes argument <software>,<version>"
 		sys.exit(1)
@@ -86,9 +130,10 @@ def software_exists(software):
 		print "Can't find software: ", software_name
 		sys.exit(1)
 	
-	return True
-# checks to see if toolchain passed on command line exist in toolchain list
 def toolchain_exists(software,toolchain):
+"""
+checks to see if toolchain passed on command line exist in toolchain list
+"""
 	toolchain_list=get_toolchain(BUILDTEST_EASYCONFIGDIR)
 
 	# if toolchain is installed as hidden file then strip the "." prior to checking in list
@@ -97,6 +142,8 @@ def toolchain_exists(software,toolchain):
 		toolchain_name=toolchain[0]+" "+strip_version
 	else:
 		toolchain_name=toolchain[0]+" "+toolchain[1]
+
+	# catch all exception cases in invalid value for -t flag
 	if len(toolchain) != 2:
 		print "Too many arguments, -t takes argument <toolchain-name>,<toolchain-version>"
 		sys.exit(1)
@@ -104,10 +151,12 @@ def toolchain_exists(software,toolchain):
 	if toolchain_name not in toolchain_list:
 		print "Can't find toolchain: ", toolchain_name
 		sys.exit(1)
-	return True
 
-# return True if name,version+versionsuffix,toolchain from command line is found from easyconfig, False otherwise
 def check_software_version_in_easyconfig(moduletree,software,toolchain):
+"""
+return True if name,version+versionsuffix,toolchain from command line is found 
+from easyconfig, False otherwise
+"""
 	appname=software[0]
 	appversion=software[1]	
 	tcname=toolchain[0]	
@@ -180,9 +229,6 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 
 		# variable used for comparison
 		version_versionsuffix=version + versionsuffix
-		#print "ebname,eb_name_format",ebname,eb_name_format
-		#print "version/versionsuffix=",version,version_versionsuffix
-		#print "name/ver",software
 
 
 		# master condition to determine if easyconfig parameter match argument for software and toolchain

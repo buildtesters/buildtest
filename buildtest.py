@@ -1,3 +1,25 @@
+############################################################################
+#
+#  Copyright 2017
+#
+#   https://github.com/shahzebsiddiqui/BuildTest
+#
+#  This file is part of buildtest.
+#
+#    buildtest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    buildtest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
 from setup import *
 from modules import *
 from utilities import *
@@ -95,12 +117,12 @@ if args.software != None:
 		tcversion=toolchain[1]
 
 	# checking if its a valid software
-	ret = software_exists(software)
+	software_exists(software)
 	if verbose >= 1:
 		print "Software:",appname,appversion, "  found in system"
 
 	# checking if its a valid toolchain 
-	ret = toolchain_exists(software,toolchain)
+	toolchain_exists(software,toolchain)
 	if verbose >= 1:
 		print "Toolchain:",tcname,tcversion, "  found in system"
 
