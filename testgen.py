@@ -21,6 +21,7 @@
 ############################################################################# 
 
 from setup import *
+from datetime import datetime
 import os.path 
 import os, sys
 import shutil
@@ -84,7 +85,7 @@ def generate_binary_test(software,toolchain,configdir,verbose):
 	    process_binary_file(commandfile,software,toolchain,verbose)
 
 # generate test for source
-def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
+def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,args):
 	"""
 	This function generates the tests that requires compilation for EB apps. The
 	tests are written <software>/<version>/<toolchain-name>/<toolchain-version>.
@@ -100,6 +101,8 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 	tcname=toolchain[0]
 	tcver=toolchain[1]
 	
+	logging=False
+
 	# app_destdir is root of test directory
 	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
 
@@ -108,8 +111,24 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 	destdir=os.path.join(app_destdir,subdir)
 	cmakelist=os.path.join(destdir,"CMakeLists.txt")
 	
-	#print "subdir:",subdir, "destdir:", destdir
-	#sys.exit(1)
+
+
+	logging=False
+	# if --log is enabled, set logging to True
+	if args.log:
+		logging=True
+		create_dir(os.path.join(destdir,"log"),verbose)
+	        logfilename = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
+	        logfilepath = os.path.join(destdir,"log",logfilename)
+
+	if logging:
+		logfd=open(logfilepath,'a')
+		logfd.write("------------------------------------------------")
+		logfd.write("\n")
+		logfd.write("function: generate_source_test")
+		logfd.write("\n")
+		logfd.write("------------------------------------------------")
+		logfd.write("\n")
 
 	# if subdirectory exists, create subdirectory in destdir so we can write test script
 	if subdir != "":
@@ -126,6 +145,19 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 	# if buildopts key exists in dictionary, then add flags to compilation step (buildcmd)
 	if "buildopts" in configmap:
 		flags=configmap["buildopts"]
+
+        if logging:
+                logfd.write("Test Name: "+  testname)
+                logfd.write("\n")
+                logfd.write("Test Path: " + testpath)
+                logfd.write("\n")
+                logfd.write("Source File: " + sourcefilepath)
+                logfd.write("\n")
+                logfd.write("Executable Name: " +  executable)
+                logfd.write("\n")
+		logfd.write("Build Flags: " +  flags)
+                logfd.write("\n")
+
 
 	# write the preamble to test-script to initialize app environment using module cmds
 	fd=open(testpath,'w')
@@ -144,6 +176,12 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
         # if there is a buildcmd & runcmd in yaml file, place this directly in test script
         if "buildcmd" in configmap and "runcmd" in configmap:
 
+		if logging:
+			logfd.write("YAML file found buildcmd and runcmd.")
+			logfd.write("\n")
+			logfd.write("buildtest will generate explicit build/run commands from buildcmd and runcmd fields")	
+			logfd.write("\n")
+
 		# only process buildcmd if there is a value specified for buildcmd key
 		if configmap["buildcmd"] != None:
 			# for each element from dictionary configmap["buildcmd"], write
@@ -152,6 +190,11 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 		                buildcmd += cmd + "\n"
 		else:
 			print "buildcmd is declared but value is not specified"
+
+			if logging:
+				logfd.write("buildcmd is declared but value is not specified")
+				logfd.write("\n")
+
 		if configmap["runcmd"] != None:
 			# process the runcmd tag similar same as buildcmd and store in variable
 			# runcmd except if no value is specified for runcmd in YAML then throw 
@@ -160,6 +203,14 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 				runcmd += cmd + "\n"
 		else:
 			print "runcmd is declared but value is not specified"
+
+			if logging:
+				logfd.write("runcmd is declared, but value is not specified. Need to run executable")
+				logfd.write("\n")
+				logfd.write("Program Terminating")
+				logfd.write("\n")
+				logfd.close()
+
 			sys.exit(1)
 
 		
@@ -172,23 +223,51 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 			print "RUNCMD:"
 			print runcmd
 			print "-----------------------------------"
-	        fd.write(buildcmd)
+			
+			if logging:
+				fd.write("Invoking YAML buildcmd and runcmd fields")
+				fd.write("\n")
+				fd.write("buildcmd:")
+				fd.write("\n")
+				fd.write(buildcmd)
+				fd.write("runcmd:")
+				fd.write("\n")
+				fd.write(runcmd)
+				fd.write("\n")
+	        
+		fd.write(buildcmd)
 	        fd.write(runcmd)
 
 			
 	# otherwise generate the buildcmd and runcmd automatically
 	else:
+		
 		# checking if either buildcmd or runcmd specified but not both, then report an error.
 		if "buildcmd" in configmap and "runcmd" not in configmap or "buildcmd" not in configmap and "runcmd" in configmap:
 			print "Need to specify both key: buildcmd and runcmd"
+			
+			if logging:
+				logfd.write("Need to declare both key: buildcmd and runcmd")
+				logfd.write("Program Terminating")	
+				logfd.close()
+	
 			sys.exit(1)
 
 		# get the compiler tag and type based on application and toolchain
 	        compiler,compiler_type=get_compiler(configmap,appname,tcname)
-    		
+ 
+		if logging:
+			logfd.write("buildtest will auto-generate buildcmd & runcmd")
+			logfd.write("\n")
+			logfd.write("Compiler: "+ compiler)   
+			logfd.write("\n")		
+			logfd.write("Compiler Type: " + compiler_type)
+			logfd.write("\n")
+
 		# set buildcmd based on compiler_type. compiler is either nvcc,gcc,icc,mpicc, or mpiicc for intel
 	        if compiler_type == "gnu" or compiler_type == "intel" or compiler_type == "cuda":
-        	        buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
+
+	        	buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
 
 	                # set runcmd for mpi tags using mpirun otherwise just run executable 
 	                if compiler in ["mpicc","mpic++","mpifort","mpiicc","mpiic++", "mpiifort"]:
@@ -196,13 +275,24 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 		                # if nproc is defined in yaml, store value in nproc which will use it in mpirun command
         		        if configmap["nproc"]:
                 		        nproc = str(configmap["nproc"])
+					
+					if logging:
+						logfd.write("nproc key found in YAML config file")
+						logfd.write("\n")
+						logfd.write("nproc " + nproc) 
+						logfd.write("\n")
 				# if nproc is not specified set it to 1 when building mpi apps
 				else:		
 					nproc = "1"
 
-                	        runcmd = "mpirun -np " + nproc + " ./" + executable + "\n"
+					if logging:
+						logfd.write("nproc key not found in YAML config file, will set nproc = 1")
+						logfd.write("\n")
+
+	                	runcmd = "mpirun -np " + nproc + " ./" + executable + "\n"
 	                else:
-        	                runcmd = "./" + executable + "\n"
+				runcmd = "./" + executable + "\n"
+
 		# python scripts have no compilation, just run python script. So we just need to update runcmd string
 		elif compiler_type == "python":
 			runcmd = "python " + sourcefilepath + "\n"
@@ -225,6 +315,16 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 			print "RUNCMD:",runcmd
 			print "-----------------------------------"
 		
+			if logging:
+				logfd.write("Invoking Automatic buildcmd & runcmd fields")
+				logfd.write("\n")
+				logfd.write("buildcmd:")
+				logfd.write("\n")
+				logfd.write(buildcmd)
+				logfd.write("runcmd:")
+				logfd.write(runcmd)
+                                logfd.write("\n")
+
 		fd.write(buildcmd)
 		fd.write(runcmd)
 		
@@ -234,12 +334,18 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 			for cmd in configmap["runextracmd"]:
 				fd.write(cmd + "\n")
 
+			if logging:
+				logfd.write("runextracmd found in YAML config file")
+				logfd.write("\n")
+				logfd.write("runextracmd:" + configmap["runextracmd"])
+				logfd.write("\n")
 	fd.close()
 
 	# if YAML files are in subdirectory of config directory then update CMakeList
 	# in app_destdir to add tag "add_subdirectory" for subdirectory so CMakeList
 	# can find tests in subdirectory
 	fd=open(cmakelist,'a')
+
 	if subdir != "":
 		parent_cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
 		fd1=open(parent_cmakelist,'a')
