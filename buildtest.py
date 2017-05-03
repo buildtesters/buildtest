@@ -38,8 +38,8 @@ parser.add_argument("-lt", "--list-toolchain",help="retrieve toolchain used base
 parser.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_MODULETREE", action="store_true")
 parser.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
 parser.add_argument("--system", help=""" Build test for system packages
-
 					 To build all system package test use --system all """)
+parser.add_argument("--log", help="save test output to logfile", action="store_true")
 parser.add_argument("-v", "--verbose", help="increase verbosity level", type=int, choices=[1,2])
 
 args = parser.parse_args()
@@ -47,36 +47,53 @@ args = parser.parse_args()
 
 # convert args into a dictionary
 args_dict=vars(args)
-
 #print get_module_list(BUILDTEST_MODULEROOT)
 #print get_unique_software(BUILDTEST_MODULEROOT)
 #sys.exit(1)
 verbose=0
+logcontent=""
+
+logcontent += "------------------------------------------- \n"
+logcontent += "buildtest \n"
+logcontent += "------------------------------------------- \n"
+
+
 if args_dict["verbose"] >= 1:
-	print "===================================================================="
-	print "BUILDTEST ROOT DIRECTORY: ", BUILDTEST_ROOT
-	print "BUILDTEST SOURCE DIRECTORY: ", BUILDTEST_SOURCEDIR
-	print "BUILDTEST EASYCONFIGDIR: ", BUILDTEST_EASYCONFIGDIR
-	print "BUILDTEST TEST DIRECTORY :", BUILDTEST_TESTDIR
-	print "===================================================================="
-	print 
+	text = "==================================================================== " + "\n"
+	text += "BUILDTEST ROOT DIRECTORY: " + BUILDTEST_ROOT + "\n" 
+	text += "BUILDTEST SOURCE DIRECTORY: " + BUILDTEST_SOURCEDIR +"\n"
+	text += "BUILDTEST EASYCONFIGDIR: " + BUILDTEST_EASYCONFIGDIR + "\n"
+	text += "BUILDTEST TEST DIRECTORY:" + BUILDTEST_TESTDIR + "\n"
+	text += "==================================================================== " + "\n"
+	print text
+	print
+
+	
+	logcontent += text
+
 	verbose=args_dict["verbose"]
 
 if args_dict["list_toolchain"] == True:
-	toolchain_set=get_toolchain(BUILDTEST_EASYCONFIGDIR)
-	print """ 
+	toolchain_set,logcontent_substr=get_toolchain(BUILDTEST_EASYCONFIGDIR)
+	logcontent+=logcontent_substr
+	text = """ 
 		List of Toolchains:
 		--------------------
 	      """
+	print text
+
 	print_set(toolchain_set)
+
 if args_dict["list_unique_software"] == True:
-	software_set=get_unique_software(BUILDTEST_MODULEROOT)
+	software_set,logcontent_substr=get_unique_software(BUILDTEST_MODULEROOT)
+	logcontent+=logcontent_substr
 	print """
 	       List of Unique Software: 
 	       ---------------------------- """
 	print_set(software_set)	
 if args_dict["software_version_relation"] == True:
-	software_version_dict=module_version_relation(BUILDTEST_MODULEROOT)
+	software_version_dict,logcontent_substr=module_version_relation(BUILDTEST_MODULEROOT)
+	logcontent+=logcontent_substr
 	print """
 		Software Version Relationship:
 		-------------------------------
@@ -115,26 +132,36 @@ if args.software != None:
 	if args.toolchain != None:
 		tcname=toolchain[0]
 		tcversion=toolchain[1]
+	
 
 	# checking if its a valid software
 	software_exists(software)
 	if verbose >= 1:
-		print "Software:",appname,appversion, "  found in system"
+		text = "Software:" + appname + " " + appversion + " found in system \n"
+		print text
+		logcontent += text + "\n"
 
 	# checking if its a valid toolchain 
 	toolchain_exists(software,toolchain)
 	if verbose >= 1:
-		print "Toolchain:",tcname,tcversion, "  found in system"
+		text = "Toolchain:" + tcname + " " + tcversion + " found in system \n"
+		print text
+		logcontent += text
 
 	# check that the software,toolchain match the easyconfig.
-	check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
-	
+	ret,logcontent_substr=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
+	logcontent+=logcontent_substr
 	# generate_binary_test(software,toolchain,verbose)
 	source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)
         configdir=os.path.join(source_app_dir,"config")
         codedir=os.path.join(source_app_dir,"code")
+	logdir = os.path.join(BUILDTEST_ROOT,"log",appname,appversion,tcname,tcversion)
 
-	generate_binary_test(software,toolchain,source_app_dir,verbose)
+	logcontent += "Source App Directory:" +  source_app_dir + "\n"
+	logcontent += "Config Directory: " + configdir + "\n"
+	logcontent += "Code Directory:" + codedir + "\n"
+
+	logcontent += generate_binary_test(software,toolchain,source_app_dir,verbose,logdir)
 	# if config directory exists then process .yaml files to build source test
 	if os.path.isdir(configdir):
 	        #for filename in os.listdir(configdir):
@@ -154,6 +181,7 @@ if args.software != None:
 				# error processing config file, then parse_config will return an empty dictionary
 				if len(configmap) == 0:
 					continue
-				generate_source_test(software,toolchain,configmap,code_destdir,verbose,subdir)
+				logcontent+=generate_source_test(software,toolchain,configmap,code_destdir,verbose,subdir,logdir)
 
-
+     
+	update_logfile(logdir,logcontent,verbose)

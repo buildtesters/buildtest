@@ -22,6 +22,7 @@
 
 
 import os
+from datetime import datetime
 
 def isHiddenFile(inputfile):
 	"""
@@ -37,6 +38,85 @@ def isHiddenFile(inputfile):
                 return True
         else:
                 return False
+
+def create_dir(dirname,verbose):
+        """
+        Create directory if it doesn't exist
+        """
+        if not os.path.isdir(dirname):
+                os.makedirs(dirname)
+                if verbose >= 1:
+                        print "Creating Directory: ",dirname
+
+def create_file(filename,verbose):
+        """
+        Create an empty file if it doesn't exist
+        """
+        if not os.path.isfile(filename):
+                fd=open(filename,'w')
+                fd.close()
+                if verbose >= 1:
+                        print "Creating Empty File:", filename
+
+def update_CMakeLists(filename,tag, verbose):
+        """
+        used for writing CMakeLists.txt with tag <software>, <version>, & toolchain
+        """
+        fd=open(filename,'r')
+        content=fd.read().strip().split("\n")
+        cmd="add_subdirectory("+tag+")"
+        if cmd not in content:
+                fd.close()
+                fd=open(filename,'a')
+                fd.write(cmd+"\n")
+                fd.close()
+                if verbose >= 1:
+                        print "writing:", cmd, "to file:",filename
+        else:
+                fd.close()
+
+def init_CMakeList(filename):
+        """
+        This is the content of BUILDTEST_ROOT/CMakeLists.txt
+        """
+        header = """ 
+cmake_minimum_required(VERSION 2.8)
+include(CTest)
+ENABLE_TESTING()
+add_subdirectory(""" + BUILDTEST_TESTDIR + ")"
+        fd=open(filename,'w')
+        fd.write(header)
+        fd.close()
+
+def load_modules(software,toolchain):
+        """
+        return a string that loads the software and toolchain module. 
+        """
+        # for dummy toolchain you can load software directly. Ensure a clean environment by running module purge
+        if toolchain[0] == "dummy":
+                header="""
+#!/bin/sh
+module purge
+module load """ + software[0] + "/" + software[1] + """
+"""
+        else:
+                header="""
+#!/bin/sh
+module purge
+module load """ + toolchain[0] + "/" + toolchain[1] + """
+module load """ + software[0] + "/" + software[1] + """
+"""
+
+        return header
+
+def update_logfile(logdir,logcontent,verbose):
+	create_dir(logdir,verbose)	
+	logfilename = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
+        logfilepath = os.path.join(logdir,logfilename)
+
+	fd = open(logfilepath,'w')
+	fd.write(logcontent)
+	fd.close()
 
 def stripHiddenFile(file): 
 	"""

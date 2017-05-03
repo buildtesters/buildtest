@@ -37,13 +37,17 @@ def get_unique_software(moduletree):
 	"""
 	returns a set of software packages found in the module tree
 	"""
+	
 	modulelist=get_module_list(moduletree)
 	module_set=set()
 	for module in modulelist:
                 # extract the module name from filepath
 		modulename=os.popen("dirname " + module + " | xargs basename ").read().rstrip()
 		module_set.add(modulename)
-	return sorted(module_set)
+
+	logcontent = "Unique Software Packages from module tree: " + moduletree + "\n"
+	logcontent += str(sorted(module_set))
+	return sorted(module_set),logcontent
 
 def get_unique_software_version(moduletree):
 	"""
@@ -77,12 +81,17 @@ def module_version_relation(moduletree):
 	"""
 	modulelist=get_module_list(moduletree)
 	module_set=get_unique_software(moduletree)
+
 	# dictionary used for keeping a relationship between software name and its corresponding versions found as modulefiles
 	module_dict = {}
 
+	print "moduleset = ",module_set
 	# for every software in set, search easyconfig files to find version tag to get software to version relationship
 	for item in  module_set:
-		easyconfigfiles=os.popen("find " + BUILDTEST_EASYCONFIGDIR +  item + " -name *.eb -type f"). read().rstrip()
+		
+		print "BT=",BUILDTEST_EASYCONFIGDIR, item, type(item)
+		easyconfigfiles=os.popen("find " + BUILDTEST_EASYCONFIGDIR + item + " -name *.eb -type f"). read().rstrip()
+		# easyconfigfiles=os.popen("find " + str(os.path.join(BUILDTEST_EASYCONFIGDIR,item)) + " -name *.eb -type f"). read().rstrip()
 		listofebfiles=easyconfigfiles.split("\n")
 		version_set=set()
 		# for software package X, get all version and store them in a set to avoid duplicate addition, only care for unique versions on the system
@@ -95,7 +104,14 @@ def module_version_relation(moduletree):
 			
 		# store version set in dictionary that is indexed by software
 		module_dict[item]=version_set
-	return module_dict
+	print "software version relationship"
+	print module_dict
+
+	logcontent += " Software Version Relationship \n"
+	#logcontent += module_dict + "\n"
+	for key in module_dict:
+		logcontent += key + ":" + module_dict[key] + "\n"
+	return module_dict,logcontent
 
 def get_toolchain(easyconfigdir):
 	"""
@@ -103,17 +119,23 @@ def get_toolchain(easyconfigdir):
 	"""
 	easyconfigfiles=os.popen("find " + easyconfigdir +  " -name *.eb -type f ").read().rstrip().split("\n")
 
+	logcontent = "" 
+
+	logcontent += "Executing command: find " + easyconfigdir + " -name *.eb -type f" + "\n"
 	# only care about unique toolchains
 	toolchain=set()
 
 	# find all toolchains in the easyconfig files
         for ebfile in easyconfigfiles:
+
+		logcontent += ebfile + "\n"
+
                 cmd="""grep "toolchain =" """ + ebfile + """ | cut -f4 -d " " | tr -d "'," """
                 toolchain_name=os.popen(cmd).read().rstrip()
                 cmd="""grep "toolchain =" """ + ebfile + """ | cut -f6 -d " " | tr -d "}'" """
                 toolchain_version=os.popen(cmd).read().rstrip()
 		toolchain.add(toolchain_name+" "+toolchain_version)
-	return toolchain
+	return toolchain,logcontent
 
 def software_exists(software):
 	"""
@@ -134,7 +156,8 @@ def toolchain_exists(software,toolchain):
 	"""
 	checks to see if toolchain passed on command line exist in toolchain list
 	"""
-	toolchain_list=get_toolchain(BUILDTEST_EASYCONFIGDIR)
+
+	toolchain_list,logcontent=get_toolchain(BUILDTEST_EASYCONFIGDIR)
 
 	# if toolchain is installed as hidden file then strip the "." prior to checking in list
 	if isHiddenFile(toolchain[1]) == True:
@@ -164,7 +187,10 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 
 	
 	cmd="find " + os.path.join(moduletree,appname)  + " -name *.eb -type f"         
-	easyconfigfiles=os.popen(cmd). read().rstrip().split("\n")
+	easyconfigfiles=os.popen(cmd).read().rstrip().split("\n")
+
+	logcontent = "buildtest will search the following eb files"
+	logcontent += str(easyconfigfiles) + "\n"
 
 	# boolean value to check if eb file found with parameters for software and toolchain
 	match=False    
@@ -172,26 +198,44 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 	# if user is testing a software package that is a hidden module file, strip the leading "." for checking
 	if isHiddenFile(appversion):
 		appversion = stripHiddenFile(appversion)
+		logcontent += "Stripping leading . from application version: " + appversion
 
 	# if user specified a toolchain version that is a hidden module file, strip leading "." 
 	if isHiddenFile(tcversion):
 		tcversion = stripHiddenFile(tcversion)
+		logcontent += "Stripping leading . from toolchain version: " + tcversion
 
 	for ebfile in easyconfigfiles:
 		# get name tag from easyconfig
 		cmd="""grep "name = " """ + ebfile + """ | cut -f3 -d " " """
+		logcontent += "executing command: " + cmd + "\n"
+		
 		name=os.popen(cmd).read()
-	
+		logcontent += "result: " + name + "\n"
+
 		# get version tag from easyconfig, possibility for multiple occurence so get 1st entry
 		cmd="""grep "version = " """ + ebfile + """ | cut -f3 -d " " | head -n1 """
+		logcontent += "executing command: " + cmd + "\n"
 		version=os.popen(cmd).read()
+		logcontent += "result: "  + version + "\n"
 
 		cmd=""" grep "toolchain = " """ + ebfile + """ | cut -f4 -d " " | tr -d "," """
+		logcontent += "executing command: " + cmd + "\n"
 		toolchain_name=os.popen(cmd).read()
+		logcontent += "result: " + toolchain_name + "\n"
 
 
 		cmd=""" grep "toolchain = " """ + ebfile + """ | cut -f6 -d " " | tr -d "}" """
+		logcontent += "executing command: " + cmd + "\n"
 		toolchain_version=os.popen(cmd).read()
+		logcontent += "result: " + toolchain_version + "\n"
+
+		
+		logcontent += "Before Stripping characters \n"
+		logcontent += "name: " + name + "\n"
+		logcontent += "version: " + version + "\n"
+		logcontent += "toolchain name:" + toolchain_name + "\n"
+		logcontent += "toolchain version:" + toolchain_version + "\n"
 
 		# strip character ' and newline
 		name=name.replace('\'','')
@@ -202,11 +246,25 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 		toolchain_name=toolchain_name.replace('\n','')
 		toolchain_version=toolchain_version.replace('\'','')
 		toolchain_version=toolchain_version.replace('\n','')
-		
+	
+		logcontent += "\n"
+                logcontent += "After Stripping characters ' and newline \n"
+                logcontent += "name: " + name + "\n"
+                logcontent += "version: " + version + "\n"
+                logcontent += "toolchain name:" + toolchain_name + "\n"
+                logcontent += "toolchain version:" + toolchain_version + "\n"
+	
+
 		# get name of eb file and remove .eb extension
 		ebname=os.popen("basename " + ebfile).read()
+		logcontent = "easyconfig file= " + ebname
+
 		ebname=ebname[:-4]
+		logcontent += "stripping file extension .eb \n"
+		logcontent += "easyconfig file:"+ ebname + "\n"
 		
+		#print "local logcontent"
+		#print logcontent
 		# in case toolchain version uses '' set it to dummy 
 		if toolchain_version == '':
 			toolchain_version="dummy"
@@ -216,6 +274,9 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 		else:
 			# eb name format used for comparison to calculate versionsuffx
 			eb_name_format=name+"-"+version+"-"+toolchain_name+"-"+toolchain_version
+
+		logcontent += "eb name format using string concat of <name>-<version>-<toolchain-name>-<toolchain-version> \n"
+		logcontent += "eb name format string: " + eb_name_format + "\n"
 
 		# There is no version suffix when file name is just software-version-toolchain
 		# determine starting position index in easyconfig filename to calculate versionsuffix. If its a dummy toolchain start with version, otherwise from toolchain version
@@ -230,14 +291,25 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 		# variable used for comparison
 		version_versionsuffix=version + versionsuffix
 
+		logcontent += "Extracting version suffix from eb name: " + ebname + "\n"
+		logcontent += "Version Suffix: " + versionsuffix + "\n"
+		logcontent += "Version + Version Suffix: " + version_versionsuffix + "\n"
 
 		# master condition to determine if easyconfig parameter match argument for software and toolchain
 		if tcname == "dummy" and tcversion == "dummy":
 			if name == appname and version_versionsuffix == appversion:
-				return True
+				logcontent += "Comparing strings: the following strings" +  "\n"
+				logcontent += "name: " + name + " with appname: " + appname + " AND \n"
+				logcontent += "version_versionsuffix: " + version_versionsuffix + " with appversion: " + appversion + "\n"
+				return True,logcontent
 		else:
 			if name == appname and version_versionsuffix == appversion and toolchain_name == tcname and toolchain_version == tcversion:
-				return True
+				logcontent += "Comparing strings: the following strings \n" 
+				logcontent += "name:" + name + " with appname = " + appname + " AND \n"
+				logcontent += "version_versionsuffix: " + version_versionsuffix + " with appversion: " + appversion + " AND \n"
+				logcontent += "toolchain_name: " + toolchain_name + " with tcname: " + tcname + " AND \n"
+				logcontent += "toolchain_version: " + toolchain_version + "with tcversion: " + tcversion + "\n"
+				return True,logcontent
 
 	# mismatch in easyconfig entries for name,version+versionsuffix, and toolchain with specified entries
 	if match == False:
@@ -247,4 +319,3 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 		print "toolchain name:",toolchain[0]
 		print "toolchain version:", toolchain[1]
 		sys.exit(1)
-

@@ -21,11 +21,12 @@
 ############################################################################# 
 
 from setup import *
-from datetime import datetime
+from utilities import *
 import os.path 
 import os, sys
 import shutil
 import yaml
+
 def systempkg_generate_binary_test(pkg,verbose):
 	"""
 	This function generates the binary test for system packages by processing 
@@ -54,7 +55,7 @@ def systempkg_generate_binary_test(pkg,verbose):
         else:
             systempkg_process_binary_file(commandfile,pkg,verbose)
 
-def generate_binary_test(software,toolchain,configdir,verbose):
+def generate_binary_test(software,toolchain,configdir,verbose,logdir):
 	"""
 	This function operates similar to systempkg_generate_binary_test except this function
 	is used only for ebapps that are present as modules. This is because ebapps names are 
@@ -68,24 +69,33 @@ def generate_binary_test(software,toolchain,configdir,verbose):
 	swname = software[0]
 	commandfile=os.path.join(configdir,"command.yaml")
 
-
+	logcontent = ""
+	logcontent += "--------------------------------- \n "
+	logcontent += "function: generate_binary_test \n"
+	logcontent += "--------------------------------- \n "
 	# if CMakeLists.txt does not exist in top-level directory, create the header
 	if os.path.isfile(toplevel_cmakelist_file) == False:
+		logcontent += "File: " + toplevel_cmakelist_file + " was not found, build test will create it \n"
 		init_CMakeList(toplevel_cmakelist_file)
 
+	logcontent += "Creating Directory " + BUILDTEST_TESTDIR + "\n"
 	create_dir(BUILDTEST_TESTDIR,verbose)
+
 	# if BUILDTEST_TESTDIR/CMakeLists.txt does not exist, then create it
 	if os.path.isfile(testingdir_cmakelist_file) == False:
+		logcontent += "File: " + testingdir_cmakelist + " was not found, build test will create it \n"
 		fd=open(testingdir_cmakelist_file,'w')
 		fd.close()
 	# if command.yaml does not exist then report error
 	if os.path.isfile(commandfile) == False:
 		print "Warning: Cannot find command file:", commandfile, "Skipping binary test"
+		logcontent += "Warning: Cannot find command file:" + commandfile + "Skipping binary test"
 	else:
-	    process_binary_file(commandfile,software,toolchain,verbose)
+	    logcontent += process_binary_file(commandfile,software,toolchain,verbose,logdir)
 
+	return logcontent
 # generate test for source
-def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,args):
+def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,logdir):
 	"""
 	This function generates the tests that requires compilation for EB apps. The
 	tests are written <software>/<version>/<toolchain-name>/<toolchain-version>.
@@ -101,8 +111,6 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
 	tcname=toolchain[0]
 	tcver=toolchain[1]
 	
-	logging=False
-
 	# app_destdir is root of test directory
 	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
 
@@ -111,24 +119,10 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
 	destdir=os.path.join(app_destdir,subdir)
 	cmakelist=os.path.join(destdir,"CMakeLists.txt")
 	
-
-
-	logging=False
-	# if --log is enabled, set logging to True
-	if args.log:
-		logging=True
-		create_dir(os.path.join(destdir,"log"),verbose)
-	        logfilename = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
-	        logfilepath = os.path.join(destdir,"log",logfilename)
-
-	if logging:
-		logfd=open(logfilepath,'a')
-		logfd.write("------------------------------------------------")
-		logfd.write("\n")
-		logfd.write("function: generate_source_test")
-		logfd.write("\n")
-		logfd.write("------------------------------------------------")
-		logfd.write("\n")
+	logcontent = ""
+	logcontent += "------------------------------------------------ \n"
+	logcontent += "function: generate_source_test \n"
+	logcontent += "------------------------------------------------ \n"
 
 	# if subdirectory exists, create subdirectory in destdir so we can write test script
 	if subdir != "":
@@ -146,17 +140,11 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
 	if "buildopts" in configmap:
 		flags=configmap["buildopts"]
 
-        if logging:
-                logfd.write("Test Name: "+  testname)
-                logfd.write("\n")
-                logfd.write("Test Path: " + testpath)
-                logfd.write("\n")
-                logfd.write("Source File: " + sourcefilepath)
-                logfd.write("\n")
-                logfd.write("Executable Name: " +  executable)
-                logfd.write("\n")
-		logfd.write("Build Flags: " +  flags)
-                logfd.write("\n")
+        logcontent += "Test Name: " +  testname + "\n"
+	logcontent += "Test Path: " + testpath + "\n"
+        logcontent += "Source File: " + sourcefilepath + "\n"
+        logcontent += "Executable Name: " +  executable + "\n"
+        logcontent += "Build Flags: " +  flags + "\n"
 
 
 	# write the preamble to test-script to initialize app environment using module cmds
@@ -176,11 +164,8 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
         # if there is a buildcmd & runcmd in yaml file, place this directly in test script
         if "buildcmd" in configmap and "runcmd" in configmap:
 
-		if logging:
-			logfd.write("YAML file found buildcmd and runcmd.")
-			logfd.write("\n")
-			logfd.write("buildtest will generate explicit build/run commands from buildcmd and runcmd fields")	
-			logfd.write("\n")
+		logcontent += "YAML file found buildcmd and runcmd. \n"
+		logcontent += "buildtest will generate explicit build/run commands from buildcmd and runcmd fields \n"	
 
 		# only process buildcmd if there is a value specified for buildcmd key
 		if configmap["buildcmd"] != None:
@@ -191,9 +176,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
 		else:
 			print "buildcmd is declared but value is not specified"
 
-			if logging:
-				logfd.write("buildcmd is declared but value is not specified")
-				logfd.write("\n")
+			logcontent+="buildcmd is declared but value is not specified \n"
 
 		if configmap["runcmd"] != None:
 			# process the runcmd tag similar same as buildcmd and store in variable
@@ -204,13 +187,9 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
 		else:
 			print "runcmd is declared but value is not specified"
 
-			if logging:
-				logfd.write("runcmd is declared, but value is not specified. Need to run executable")
-				logfd.write("\n")
-				logfd.write("Program Terminating")
-				logfd.write("\n")
-				logfd.close()
-
+			logcontent+="runcmd is declared, but value is not specified. Need to run executable \n"
+			logcontent+="Program Terminating"
+			update_logfile(logdir,logcontent,verbose)
 			sys.exit(1)
 
 		
@@ -224,16 +203,11 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
 			print runcmd
 			print "-----------------------------------"
 			
-			if logging:
-				fd.write("Invoking YAML buildcmd and runcmd fields")
-				fd.write("\n")
-				fd.write("buildcmd:")
-				fd.write("\n")
-				fd.write(buildcmd)
-				fd.write("runcmd:")
-				fd.write("\n")
-				fd.write(runcmd)
-				fd.write("\n")
+			logcontent += "Invoking YAML buildcmd and runcmd fields \n"
+			logcontent += "buildcmd: \n "
+			logcontent += buildcmd 
+			logcontent += "runcmd: \n"
+			logcontent += runcmd
 	        
 		fd.write(buildcmd)
 	        fd.write(runcmd)
@@ -246,23 +220,17 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
 		if "buildcmd" in configmap and "runcmd" not in configmap or "buildcmd" not in configmap and "runcmd" in configmap:
 			print "Need to specify both key: buildcmd and runcmd"
 			
-			if logging:
-				logfd.write("Need to declare both key: buildcmd and runcmd")
-				logfd.write("Program Terminating")	
-				logfd.close()
-	
+			logcontent += "Need to declare both key: buildcmd and runcmd \n"
+			logcontent += "Program Terminating \n"	
+			update_logfile(logdir,logfile,verbose)
 			sys.exit(1)
 
 		# get the compiler tag and type based on application and toolchain
 	        compiler,compiler_type=get_compiler(configmap,appname,tcname)
  
-		if logging:
-			logfd.write("buildtest will auto-generate buildcmd & runcmd")
-			logfd.write("\n")
-			logfd.write("Compiler: "+ compiler)   
-			logfd.write("\n")		
-			logfd.write("Compiler Type: " + compiler_type)
-			logfd.write("\n")
+		logcontent += "buildtest will auto-generate buildcmd & runcmd \n" 
+		logcontent += "Compiler: "+ compiler + "\n"
+		logcontent += "Compiler Type: " + compiler_type + "\n"
 
 		# set buildcmd based on compiler_type. compiler is either nvcc,gcc,icc,mpicc, or mpiicc for intel
 	        if compiler_type == "gnu" or compiler_type == "intel" or compiler_type == "cuda":
@@ -276,18 +244,13 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
         		        if configmap["nproc"]:
                 		        nproc = str(configmap["nproc"])
 					
-					if logging:
-						logfd.write("nproc key found in YAML config file")
-						logfd.write("\n")
-						logfd.write("nproc " + nproc) 
-						logfd.write("\n")
+					logcontent += "nproc key found in YAML config file \n"
+					logcontent += "nproc: " + nproc + "\n" 
 				# if nproc is not specified set it to 1 when building mpi apps
 				else:		
 					nproc = "1"
 
-					if logging:
-						logfd.write("nproc key not found in YAML config file, will set nproc = 1")
-						logfd.write("\n")
+					logcontent += "nproc key not found in YAML config file, will set nproc = 1 \n"
 
 	                	runcmd = "mpirun -np " + nproc + " ./" + executable + "\n"
 	                else:
@@ -315,15 +278,11 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
 			print "RUNCMD:",runcmd
 			print "-----------------------------------"
 		
-			if logging:
-				logfd.write("Invoking Automatic buildcmd & runcmd fields")
-				logfd.write("\n")
-				logfd.write("buildcmd:")
-				logfd.write("\n")
-				logfd.write(buildcmd)
-				logfd.write("runcmd:")
-				logfd.write(runcmd)
-                                logfd.write("\n")
+			logcontent += "Invoking Automatic buildcmd & runcmd fields \n"
+			logcontent += "buildcmd: \n"
+			logcontent += buildcmd
+			logcontent += "runcmd: \n"
+			logcontent += runcmd
 
 		fd.write(buildcmd)
 		fd.write(runcmd)
@@ -334,11 +293,8 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
 			for cmd in configmap["runextracmd"]:
 				fd.write(cmd + "\n")
 
-			if logging:
-				logfd.write("runextracmd found in YAML config file")
-				logfd.write("\n")
-				logfd.write("runextracmd:" + configmap["runextracmd"])
-				logfd.write("\n")
+			logcontent+= "runextracmd found in YAML config file \n"
+			logcontent+= "runextracmd:" + configmap["runextracmd"] + "\n"
 	fd.close()
 
 	# if YAML files are in subdirectory of config directory then update CMakeList
@@ -349,8 +305,11 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
 	if subdir != "":
 		parent_cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
 		fd1=open(parent_cmakelist,'a')
-		fd1.write("add_subdirectory("+subdir+") \n")
+		cmake_content="add_subdirectory("+subdir+") \n"
+		fd1.write(cmake_content)
 		fd1.close()
+			
+		logcontent+="writing content: " + cmake_content + " to file " + parent_cmakelist + "\n"
 
 		# the string add_test allows you to test script with ctest. The NAME tag is 
 		# <name>-<version>-<toolchain-name>-<toolchain-version>-<subdir>-<testname>. This
@@ -362,11 +321,24 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,arg
 	else:
 		# for tests not present in subdirectory then subdir is removed from NAME tag in add_test CMAKE command
 		add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+
+		logcontent+= "Updating File " + cmakelist + " with: " + add_test_str + "\n"
+
 	fd.write(add_test_str)
 	fd.close()
 
-	print "Creating Test: ",testpath	
+	logcontent += " Creating Test: " + testpath + "\n"
+	logcontent += "Content of Testfile: " + testpath + "\n"
+	logcontent += "-------------------------------------------------- \n"
+	
+	fd=open(testpath,'r')
+	content=fd.read()
+	logcontent+=content
+	fd.close()
 
+
+	logcontent += "-------------------------------------------------- \n"
+	return logcontent
 def get_compiler(configmap,appname,tcname):
 	"""
 	 This function gets the appropriate compiler tag and compiler type based on the 
@@ -555,7 +527,7 @@ def systempkg_process_binary_file(filename,pkg,verbose):
                 print "Creating Test:", testpath
 
 
-def process_binary_file(filename,software,toolchain,verbose):
+def process_binary_file(filename,software,toolchain,verbose,logdir):
 	"""
 	does the same operation as systempkg_process_binary_file but for ebapps. There are extra 
 	subdirectories that are created that implies multiple CMakeLists.txt files for each sub directory
@@ -563,6 +535,11 @@ def process_binary_file(filename,software,toolchain,verbose):
 	name,version=software
 	toolchain_name,toolchain_version=toolchain
 	
+	logcontent = ""
+	logcontent += "--------------------------------------- \n"
+	logcontent += " function: process_binary_file \n"
+	logcontent += "--------------------------------------- \n"
+
 	# if top level software directory is not present, create it
 	test_ebapp_dir=os.path.join(BUILDTEST_TESTDIR,"ebapp")
 
@@ -585,43 +562,87 @@ def process_binary_file(filename,software,toolchain,verbose):
 	test_toolchain_version_cmakelist = os.path.join(test_toolchain_version_dir,"CMakeLists.txt")
 
 	test_destdir=test_toolchain_version_dir
+
+	logcontent += " Variables Assignments \n"
+	logcontent += "test_ebapp_dir = " + test_ebapp_dir + "\n"
+	logcontent += "test_name_dir = " + test_name_dir + "\n"
+	logcontent += "test_version_dir = " + test_version_dir + "\n"
+	logcontent += "test_toolchain_name_dir = " + test_toolchain_name_dir + "\n"
+	logcontent += "test_toolchain_version_dir = " + test_toolchain_version_dir + "\n"
+	logcontent += "test_cmakelist = " + test_cmakelist + "\n"
+	logcontent += "test_name_cmakelist = " +test_name_cmakelist + "\n"
+	logcontent += "test_version_cmakelist = " +test_version_cmakelist + "\n"
+	logcontent += "test_toolchain_name_cmakelist = " +test_toolchain_name_cmakelist + "\n"
+	logcontent += "test_toolchain_version_cmakelist = " +test_toolchain_version_cmakelist + "\n"
+	logcontent += "test_destdir = " + test_destdir + "\n"
+	logcontent += "\n"
 	# if test directory exist, delete and recreate it inorder for reproducible test builds
 	if os.path.isdir(test_destdir):
 		shutil.rmtree(test_destdir)
+		logcontent += "removing directory " + test_destdir + "\n"
 
 	# create directories if they don't exist
 	# Directory Format: <software>/<version>/toolchain-name>/<toolchain-version>
+	logcontent += "Creating directory: " + test_ebapp_dir + "\n"
 	create_dir(test_ebapp_dir,verbose)
+
+	logcontent += "Creating directory: " + test_name_dir + "\n"
 	create_dir(test_name_dir,verbose)
+
+	logcontent += "Creating directory: " + test_version_dir + "\n"
 	create_dir(test_version_dir,verbose)
+
+	logcontent += "Creating directory: " + test_toolchain_name_dir + "\n"
 	create_dir(test_toolchain_name_dir,verbose)
+
+	logcontent += "Creating directory: " + test_toolchain_version_dir + "\n"
 	create_dir(test_toolchain_version_dir,verbose)
 	
 	# create CMakeList.txt file in each directory of <software>/<version>/<toolchain-name>/<toolchain-version> if it doesn't exist
-	
+	logcontent += "Creating CMakeLists.txt file: " + test_ebapp_cmakelist + "\n"
 	create_file(test_ebapp_cmakelist,verbose)
+
+	logcontent += "Creating CMakeLists.txt file: " + test_name_cmakelist + "\n"
 	create_file(test_name_cmakelist,verbose)
+
+	logcontent += "Creating CMakeLists.txt file: " + test_version_cmakelist + "\n"
 	create_file(test_version_cmakelist,verbose)
+
+	logcontent += "Creating CMakeLists.txt file: " + test_toolchain_name_cmakelist + "\n"
 	create_file(test_toolchain_name_cmakelist,verbose)
+
+	logcontent += "Creating CMakeLists.txt file: " + test_toolchain_version_cmakelist + "\n"
 	create_file(test_toolchain_version_cmakelist,verbose)
 
+	logcontent += "Updating " + test_cmakelist + " with add_subdirectory(ebapp) \n"
 	# update CMakeLists.txt with tags add_subdirectory(ebapp)
 	update_CMakeLists(test_cmakelist,"ebapp",verbose)
 
 	# update CMakeLists.txt with tags add_subdirectory(X) where X=name|version|toolchain-name|toolchain-version
+	logcontent += "Updating " + test_ebapp_cmakelist + " with add_subdirectory("+name+")\n"
 	update_CMakeLists(test_ebapp_cmakelist,name,verbose)
+
+	logcontent += "Updating " + test_name_cmakelist + " with add_subdirectory("+version+")\n"
 	update_CMakeLists(test_name_cmakelist,version,verbose)
+
+	logcontent += "Updating " + test_version_cmakelist + " with add_subdirectory("+toolchain_name+")\n"
 	update_CMakeLists(test_version_cmakelist,toolchain_name,verbose)
+
+	logcontent += "Updating " + test_toolchain_name_cmakelist + " with add_subdirectory("+toolchain_version+")\n"
 	update_CMakeLists(test_toolchain_name_cmakelist,toolchain_version,verbose)
 
 	# load preamble for test-script that initializes environment.
 	header=load_modules(software,toolchain)
 
+	logcontent += "\n"
+	logcontent += "Reading File: " + filename + "\n"
 	fd=open(filename,'r')
 	content=yaml.load(fd)
+	logcontent += "Loading YAML content \n"
 	# if key binaries is not in yaml file, exit program
 	if "binaries" not in content:
 		print "Cant find key binaries in file: ", filename, " Exiting program"
+		update_logfile(logdir,logcontent,verbose)
 		sys.exit(1)
 
 	# create a binary test script for each key,value item in dictionary
@@ -629,6 +650,7 @@ def process_binary_file(filename,software,toolchain,verbose):
 	for key in binarydict:
 		testname=key+".sh"
 		testpath=os.path.join(test_destdir,testname)
+		logcontent += "Creating test file: " +  testpath + "\n"
 		fd=open(testpath,'w')
 		fd.write(header)
 		# if paramter is specified then write both executable and parameter to file otherwise only write the executable
@@ -638,79 +660,23 @@ def process_binary_file(filename,software,toolchain,verbose):
 			fd.write(key)
 		fd.close()
 
+		# reading test script for writing content of test in logcontent 
+		fd=open(testpath,'r')
+		content=fd.read()
+		fd.close()
+		logcontent+= "Content of test file: " + testpath + "\n"
+		logcontent += "----------------------------------------------------- \n"
+		logcontent+=content +"\n"
+		logcontent += "----------------------------------------------------- \n"
+		
 		fd=open(test_toolchain_version_cmakelist,'a')
 		add_test_str="add_test(NAME " + name + "-" + version + "-" + toolchain_name + "-" + toolchain_version + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+	
+		logcontent += "Updating CMakeLists: " + test_toolchain_version_cmakelist + "with content: "+ add_test_str 
 		fd.write(add_test_str)
 
 		print "Creating Test:", testpath
-		
-def create_dir(dirname,verbose):
-	"""
-	Create directory if it doesn't exist
-	"""
-	if not os.path.isdir(dirname):
-		os.mkdir(dirname)
-		if verbose >= 1:
-			print "Creating Directory: ",dirname
-
-def create_file(filename,verbose):
-	"""
-	Create an empty file if it doesn't exist
-	"""
-	if not os.path.isfile(filename):
-		fd=open(filename,'w')
-		fd.close()
-		if verbose >= 1:
-			print "Creating Empty File:", filename
-
-def update_CMakeLists(filename,tag, verbose):
-	"""
-	used for writing CMakeLists.txt with tag <software>, <version>, & toolchain
-	"""
-	fd=open(filename,'r')
-	content=fd.read().strip().split("\n")
-	cmd="add_subdirectory("+tag+")"
-	if cmd not in content:
-		fd.close()
-		fd=open(filename,'a')
-		fd.write(cmd+"\n")
-		fd.close()
-		if verbose >= 1:
-			print "writing:", cmd, "to file:",filename 
-	else:
-		fd.close()	
-
-def init_CMakeList(filename):
-	"""
-	This is the content of BUILDTEST_ROOT/CMakeLists.txt
-	"""
-	header = """ 
-cmake_minimum_required(VERSION 2.8)
-include(CTest)
-ENABLE_TESTING()
-add_subdirectory(""" + BUILDTEST_TESTDIR + ")"
-	fd=open(filename,'w')
-	fd.write(header)
-	fd.close()
-
-def load_modules(software,toolchain):
-	"""
-	return a string that loads the software and toolchain module. 
-	"""
-	# for dummy toolchain you can load software directly. Ensure a clean environment by running module purge
-	if toolchain[0] == "dummy":
-		header="""
-#!/bin/sh
-module purge
-module load """ + software[0] + "/" + software[1] + """
-"""
-	else:
-		header="""
-#!/bin/sh
-module purge
-module load """ + toolchain[0] + "/" + toolchain[1] + """
-module load """ + software[0] + "/" + software[1] + """
-"""
+		logcontent += "Creating Test:" + testpath + "\n"
+	return logcontent
 	
-	return header
 			
