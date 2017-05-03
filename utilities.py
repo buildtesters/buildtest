@@ -114,6 +114,8 @@ def update_logfile(logdir,logcontent,verbose):
 	logfilename = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
         logfilepath = os.path.join(logdir,logfilename)
 
+	print "Writing Log File: " + logfilepath
+
 	fd = open(logfilepath,'w')
 	fd.write(logcontent)
 	fd.close()

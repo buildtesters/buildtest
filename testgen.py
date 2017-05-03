@@ -27,7 +27,7 @@ import os, sys
 import shutil
 import yaml
 
-def systempkg_generate_binary_test(pkg,verbose):
+def systempkg_generate_binary_test(pkg,verbose,logdir):
 	"""
 	This function generates the binary test for system packages by processing 
 	command.yaml. We make sure command.yaml exists and CMakeLists.txt is present
@@ -40,21 +40,32 @@ def systempkg_generate_binary_test(pkg,verbose):
 	testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
 	commandfile=os.path.join(BUILDTEST_SOURCEDIR,"system",pkg,"command.yaml")
 
+        logcontent = ""
+        logcontent += "---------------------------------------------- \n "
+        logcontent += "function: systempkg_generate_binary_test \n"
+        logcontent += "---------------------------------------------- \n "
+
         # if CMakeLists.txt does not exist in top-level directory, create the header
         if os.path.isfile(toplevel_cmakelist_file) == False:
+                logcontent += "File: " + toplevel_cmakelist_file + " was not found, build test will create it \n"
                 init_CMakeList(toplevel_cmakelist_file)
 
+        logcontent += "Creating Directory " + BUILDTEST_TESTDIR + "\n"
         create_dir(BUILDTEST_TESTDIR,verbose)
+
         # if BUILDTEST_TESTDIR/CMakeLists.txt does not exist, then create it
         if os.path.isfile(testingdir_cmakelist_file) == False:
+	        logcontent += "File: " + testingdir_cmakelist + " was not found, build test will create it \n"
                 fd=open(testingdir_cmakelist_file,'w')
                 fd.close()
         # if command.yaml does not exist then report warning and skip to next test.
         if os.path.isfile(commandfile) == False:
                 print "Warning: Cannot find command file:", commandfile, "Skipping binary test"
+		logcontent += "Warning: Cannot find command file:" + commandfile + "Skipping binary test"
         else:
-            systempkg_process_binary_file(commandfile,pkg,verbose)
+            logcontent += systempkg_process_binary_file(commandfile,pkg,verbose,logdir)
 
+	return logcontent
 def generate_binary_test(software,toolchain,configdir,verbose,logdir):
 	"""
 	This function operates similar to systempkg_generate_binary_test except this function
@@ -458,11 +469,16 @@ def get_compiler(configmap,appname,tcname):
 
 	return compiler,compiler_type
 
-def systempkg_process_binary_file(filename,pkg,verbose):
+def systempkg_process_binary_file(filename,pkg,verbose,logdir):
 	"""
 	This function does the work in writing the test scripts from command.yaml
 	for system package tests. CMakeLists.txt is updated for each sub directory
 	"""
+
+	logcontent = ""
+	logcontent += "--------------------------------------- \n"
+	logcontent += " function: systempkg_process_binary_file \n"
+	logcontent += "--------------------------------------- \n"
 
 	# top level system directory and system package directory
 	test_system_dir=os.path.join(BUILDTEST_TESTDIR,"system")
@@ -477,31 +493,59 @@ def systempkg_process_binary_file(filename,pkg,verbose):
 	# CMakeLists.txt that contais the actual tests (add_test)
 	test_cmakelist_destdir=os.path.join(test_destdir,"CMakeLists.txt")
 
+	logcontent += " Variables Assignments \n"
+	logcontent += "test_system_dir = " + test_system_dir + "\n"
+	logcontent += "test_destdir = " + test_destdir + "\n"
+	logcontent += "test_cmakelist = " + test_cmakelist + "\n"
+	logcontent += "test_cmakelist_pkg = " + test_cmakelist_pkg + "\n"
+	logcontent += "test_cmakelist_destdir = " + test_cmakelist_destdir + "\n"
+	logcontent += "\n"
+
         # if testdirectory exist, delete and recreate it inorder for reproducible test builds
         if os.path.isdir(test_destdir):
                 shutil.rmtree(test_destdir)
+		logcontent += "removing directory " + test_destdir + "\n"
 
 	# create the directories if they don't exist
+	logcontent += "Creating directory: " + test_system_dir + "\n"
 	create_dir(test_system_dir,verbose)
+	logcontent += "Creating directory: " + test_destdir + "\n"
 	create_dir(test_destdir,verbose)
 
+
+
+	logcontent += "Creating CMakeLists.txt File: " + test_cmakelist + "\n"
 	# create CMakeLists.txt files if they are not present
 	create_file(test_cmakelist,verbose)
+
+	logcontent += "Creating CMakeLists.txt File: " + test_cmakelist_pkg + "\n"
 	create_file(test_cmakelist_pkg,verbose)
+
+	logcontent += "Creating CMakeLists.txt File: " + test_cmakelist_destdir + "\n"
 	create_file(test_cmakelist_destdir,verbose)
 
 	# update the CMakeLists.txt with the tag add_subdirectory(system) 
+	logcontent += "Updating " + test_cmakelist + " with add_subdirectory(system) \n"
         update_CMakeLists(test_cmakelist,"system",verbose)
+
+	logcontent += "Updating " + test_cmakelist_pkg + " with add_subdirectory("+pkg+") \n"
 	# update CMakeLists.txt with the tag add_subdirectory(pkg) where pkg is the application name
         update_CMakeLists(test_cmakelist_pkg,pkg,verbose)
+
+	logcontent += "\n"
+	logcontent += "Reading File: " + filename + "\n"
 
 	# open command.yaml and load the YAML content in variable content 
 	fd=open(filename,'r')
         content=yaml.load(fd)
+	logcontent += "Loading YAML content \n"
 
         # if key binaries is not in yaml file, exit program
         if "binaries" not in content:
                 print "Cant find key binaries in file: ", filename, " Exiting program"
+                logcontent += "Cant find key binaries in file: " + filename  + "\n"
+		logcontent += "Exiting program \n"
+		update_logfile(logdir,logcontent,verbose)
                 sys.exit(1)
 
         # create a binary test script for each key,value item in dictionary
@@ -509,6 +553,7 @@ def systempkg_process_binary_file(filename,pkg,verbose):
         for key in binarydict:
                 testname=key+".sh"
                 testpath=os.path.join(test_destdir,testname)
+		logcontent += "Creating test file: " +  testpath + "\n"
                 fd=open(testpath,'w')
 		fd.write("#!/bin/sh \n")
 		fd.write("module purge \n" )
@@ -519,14 +564,26 @@ def systempkg_process_binary_file(filename,pkg,verbose):
                         fd.write(key)
                 fd.close()
 
+		# reading test script for writing content of test in logcontent 
+		fd=open(testpath,'r')
+		content=fd.read()
+		fd.close()
+		logcontent += "Content of test file: " + testpath + "\n"
+		logcontent += "----------------------------------------------------- \n"
+		logcontent += content +"\n"
+		logcontent += "----------------------------------------------------- \n"
+		
 		# append the test in CMakeLists.txt
                 fd=open(test_cmakelist_destdir,'a')
                 add_test_str="add_test(NAME system-" + pkg + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
                 fd.write(add_test_str)
 
+		logcontent += "Updating CMakeLists: " + test_cmakelist_destdir + " with content: "+ add_test_str 
+
                 print "Creating Test:", testpath
+		logcontent += "Creating Test:" + testpath + "\n"
 
-
+	return logcontent
 def process_binary_file(filename,software,toolchain,verbose,logdir):
 	"""
 	does the same operation as systempkg_process_binary_file but for ebapps. There are extra 
@@ -672,7 +729,7 @@ def process_binary_file(filename,software,toolchain,verbose,logdir):
 		fd=open(test_toolchain_version_cmakelist,'a')
 		add_test_str="add_test(NAME " + name + "-" + version + "-" + toolchain_name + "-" + toolchain_version + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 	
-		logcontent += "Updating CMakeLists: " + test_toolchain_version_cmakelist + "with content: "+ add_test_str 
+		logcontent += "Updating CMakeLists: " + test_toolchain_version_cmakelist + " with content: "+ add_test_str 
 		fd.write(add_test_str)
 
 		print "Creating Test:", testpath

@@ -39,7 +39,6 @@ parser.add_argument("-ls", "--list-unique-software",help="retrieve all unique so
 parser.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
 parser.add_argument("--system", help=""" Build test for system packages
 					 To build all system package test use --system all """)
-parser.add_argument("--log", help="save test output to logfile", action="store_true")
 parser.add_argument("-v", "--verbose", help="increase verbosity level", type=int, choices=[1,2])
 
 args = parser.parse_args()
@@ -51,6 +50,9 @@ args_dict=vars(args)
 #print get_unique_software(BUILDTEST_MODULEROOT)
 #sys.exit(1)
 verbose=0
+
+# logdir where log file will be rewritten. logdir can change based on parameter -s and --system
+logdir = os.path.join(BUILDTEST_ROOT,"log")
 logcontent=""
 
 logcontent += "------------------------------------------- \n"
@@ -114,11 +116,16 @@ else:
 if args.system:
 	systempkg = args.system
 	if systempkg == "all":
+
+		logdir = os.path.join(BUILDTEST_ROOT,"log","system","all")
 		systempkg_list = os.listdir(os.path.join(BUILDTEST_SOURCEDIR,"system"))
+		logcontent += "System Packages: \n"
+		logcontent += str(systempkg_list) + "\n"
 		for pkg in systempkg_list:
-			systempkg_generate_binary_test(pkg,verbose)
+			logcontent += systempkg_generate_binary_test(pkg,verbose,logdir)
 	else:
-		systempkg_generate_binary_test(systempkg,verbose)
+		logdir = os.path.join(BUILDTEST_ROOT,"log","system",systempkg)
+		logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
 
 # when -s is specified
 if args.software != None:
@@ -184,4 +191,4 @@ if args.software != None:
 				logcontent+=generate_source_test(software,toolchain,configmap,code_destdir,verbose,subdir,logdir)
 
      
-	update_logfile(logdir,logcontent,verbose)
+update_logfile(logdir,logcontent,verbose)
