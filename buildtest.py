@@ -94,13 +94,17 @@ if args_dict["list_unique_software"] == True:
 	       ---------------------------- """
 	print_set(software_set)	
 if args_dict["software_version_relation"] == True:
-	software_version_dict,logcontent_substr=module_version_relation(BUILDTEST_MODULEROOT)
-	logcontent+=logcontent_substr
-	print """
+	software_version_dict=module_version_relation(BUILDTEST_MODULEROOT)
+	text = """
 		Software Version Relationship:
 		-------------------------------
 		"""
+	print text
 	print_dictionary(software_version_dict)
+
+	logcontent += text +"\n"
+	for item in software_version_dict:
+		logcontent+= item + " " + str(sset(software_version_dict[item])) + "\n"
 
 if args.software:
 	software=args.software.split("/")

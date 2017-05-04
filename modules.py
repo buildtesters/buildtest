@@ -42,7 +42,8 @@ def get_unique_software(moduletree):
 	module_set=set()
 	for module in modulelist:
                 # extract the module name from filepath
-		modulename=os.popen("dirname " + module + " | xargs basename ").read().rstrip()
+		modulename=os.path.basename(os.path.dirname(module))
+		#modulename=os.popen(os.path.basename(module)).read().rstrip()
 		module_set.add(modulename)
 
 	logcontent = "Unique Software Packages from module tree: " + moduletree + "\n"
@@ -81,16 +82,17 @@ def module_version_relation(moduletree):
 	"""
 	modulelist=get_module_list(moduletree)
 	module_set=get_unique_software(moduletree)
+	# This set contains one entry of sorted lists of modules, need to iterate over list and not set.
+	module_set = module_set[0]
 
 	# dictionary used for keeping a relationship between software name and its corresponding versions found as modulefiles
 	module_dict = {}
 
-	print "moduleset = ",module_set
+
 	# for every software in set, search easyconfig files to find version tag to get software to version relationship
 	for item in  module_set:
 		
-		print "BT=",BUILDTEST_EASYCONFIGDIR, item, type(item)
-		easyconfigfiles=os.popen("find " + BUILDTEST_EASYCONFIGDIR + item + " -name *.eb -type f"). read().rstrip()
+		easyconfigfiles=os.popen("find " + os.path.join(BUILDTEST_EASYCONFIGDIR,item) + " -name *.eb -type f"). read().rstrip()
 		# easyconfigfiles=os.popen("find " + str(os.path.join(BUILDTEST_EASYCONFIGDIR,item)) + " -name *.eb -type f"). read().rstrip()
 		listofebfiles=easyconfigfiles.split("\n")
 		version_set=set()
@@ -104,14 +106,7 @@ def module_version_relation(moduletree):
 			
 		# store version set in dictionary that is indexed by software
 		module_dict[item]=version_set
-	print "software version relationship"
-	print module_dict
-
-	logcontent += " Software Version Relationship \n"
-	#logcontent += module_dict + "\n"
-	for key in module_dict:
-		logcontent += key + ":" + module_dict[key] + "\n"
-	return module_dict,logcontent
+	return module_dict
 
 def get_toolchain(easyconfigdir):
 	"""
