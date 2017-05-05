@@ -20,7 +20,7 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
-
+from setup import *
 import os
 from datetime import datetime
 

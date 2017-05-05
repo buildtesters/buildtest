@@ -94,7 +94,7 @@ def generate_binary_test(software,toolchain,configdir,verbose,logdir):
 
 	# if BUILDTEST_TESTDIR/CMakeLists.txt does not exist, then create it
 	if os.path.isfile(testingdir_cmakelist_file) == False:
-		logcontent += "File: " + testingdir_cmakelist + " was not found, build test will create it \n"
+		logcontent += "File: " + testingdir_cmakelist_file + " was not found, build test will create it \n"
 		fd=open(testingdir_cmakelist_file,'w')
 		fd.close()
 	# if command.yaml does not exist then report error
