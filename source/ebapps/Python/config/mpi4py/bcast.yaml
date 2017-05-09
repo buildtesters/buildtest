@@ -1,5 +1,0 @@
-name: bcast
-source: bcast.py
-buildcmd: 
-runcmd: 
-        - mpirun -np 4 python $BUILDTEST_SOURCEDIR/ebapps/Python/code/mpi4py/bcast.py

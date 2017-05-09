@@ -1,7 +1,0 @@
-name : ncgen
-source : mydata.cdl
-buildcmd: 
-        - ncgen -lc $BUILDTEST_SOURCEDIR/netCDF/code/mydata.cdl > mydata.nc
-runcmd:  
-        - cat mydata.nc
-        - rm mydata.nc

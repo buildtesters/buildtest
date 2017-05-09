@@ -1,6 +1,0 @@
-binaries:
-        iptables-xml: --help
-        ip6tables: -V
-        ip6tables-restore: --help
-        ip6tables-save:
-        iptables: -V

@@ -1,5 +1,0 @@
-binaries:
-        pydoc:
-        python: -V
-        python2: -V
-        python2.7: -V
