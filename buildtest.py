@@ -1,3 +1,4 @@
+
 ############################################################################
 #
 #  Copyright 2017
@@ -26,12 +27,17 @@ from utilities import *
 from testgen import *
 from parser import *
 
+import subprocess
 import argparse
 import sys
 module=""
 version=""
 
 parser = argparse.ArgumentParser()
+parser.add_argument("-fc","--findconfig", help= """" Find buildtest YAML config files 
+						     To find all yaml config files use -fc all """)
+parser.add_argument("-ft", "--findtest", help="""Find buildtest generated test scripts
+					      	     To find all test scripts use -ft all """)
 parser.add_argument("-s", "--software", help=" Specify software package to test")
 parser.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package") 
 parser.add_argument("-lt", "--list-toolchain",help="retrieve toolchain used based on the easyconfig files provided by BUILDTEST_EASYCONFIGDIR", action="store_true")
@@ -74,6 +80,48 @@ if args_dict["verbose"] >= 1:
 	logcontent += text
 
 	verbose=args_dict["verbose"]
+
+print args_dict
+
+
+# when no argument is specified to -fc then output all yaml files
+if args.findconfig == "all": 
+	findCMD = "find " + BUILDTEST_SOURCEDIR + " -name \"*.yaml\" -type f"
+	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	(output,err) = ret.communicate()
+	print output
+	sys.exit(1)
+# otherwise report yaml file based on argument. If -fc is not specified then args.findconfig is set
+# to None and we don't want to run this section unless a -fc is specified along with an argument other than
+# all
+elif args.findconfig != None:
+	find_arg = args_dict["findconfig"]
+	findCMD = "find " + BUILDTEST_SOURCEDIR + " -name \"*" + find_arg + "*.yaml\" -type f"
+	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	(output,err) = ret.communicate()
+	print output
+	sys.exit(1)
+
+# report all buildtest generated test scripts
+if args.findtest == "all":
+	# running command: find $BUILDTEST_TESTDIR -name "*.sh" -type f
+	findCMD = "find " + BUILDTEST_TESTDIR + " -name \"*.sh\" -type f"
+	print findCMD
+	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	(output,err) = ret.communicate()
+	print output
+	sys.exit(1)
+# otherwise report test scripts based on argument. If -ft is not specified then args.findtest is None
+# so we don't want to run section below everytime. Only when -ft is specified
+elif args.findtest != None:
+	find_arg = args_dict["findtest"]
+	print find_arg, type(find_arg)
+	findCMD = "find " + BUILDTEST_TESTDIR + " -name \"*" + find_arg + "*.sh\" -type f"
+	# running command: find $BUILDTEST_SOURCEDIR -name "*<find_arg>*.sh" -type f
+	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	(output,err) = ret.communicate()
+	print output
+	sys.exit(1)
 
 if args_dict["list_toolchain"] == True:
 	toolchain_set,logcontent_substr=get_toolchain(BUILDTEST_EASYCONFIGDIR)
