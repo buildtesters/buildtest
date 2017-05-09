@@ -1,0 +1,3 @@
+binaries:
+        chronyc: --version
+        chronyd: --version

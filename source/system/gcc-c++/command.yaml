@@ -1,0 +1,6 @@
+binaries:
+        c++: -v
+        g++: -v
+        x86_64-redhat-linux-c++: -v
+        x86_64-redhat-linux-g++: -v
+

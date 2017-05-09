@@ -1,0 +1,5 @@
+name: setup
+source: setup.py
+buildcmd:
+runcmd: 
+        - python $BUILDTEST_SOURCEDIR/ebapps/Python/code/setuptools/setup.py --name

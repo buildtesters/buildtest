@@ -1,0 +1,5 @@
+name: mpi_cartesian.c
+source: mpi_cartesian.c
+mpi: enabled
+buildopts: -O2
+nproc: 16

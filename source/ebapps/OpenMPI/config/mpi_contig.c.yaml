@@ -1,0 +1,5 @@
+name: mpi_contig.c
+source: mpi_contig.c
+mpi: enabled
+buildopts: -O2
+nproc: 4

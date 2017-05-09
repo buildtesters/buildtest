@@ -1,0 +1,5 @@
+name: mpi_ringtopo.c
+source: mpi_ringtopo.c
+mpi: enabled
+buildopts: -O2
+nproc: 4

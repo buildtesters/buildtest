@@ -1,0 +1,5 @@
+name: mpi_group.c
+source: mpi_group.c
+mpi: enabled
+buildopts: -O2
+nproc: 8

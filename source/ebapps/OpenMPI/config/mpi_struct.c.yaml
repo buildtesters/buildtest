@@ -1,0 +1,5 @@
+name: mpi_struct.c
+source: mpi_struct.c
+mpi: enabled
+buildopts: -O2
+nproc: 4

@@ -1,0 +1,3 @@
+binaries:
+        f95: -v
+        gfortran: -v

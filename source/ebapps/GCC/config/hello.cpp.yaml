@@ -1,0 +1,3 @@
+name : hello.cpp
+source : hello.cpp
+buildopts : -O2

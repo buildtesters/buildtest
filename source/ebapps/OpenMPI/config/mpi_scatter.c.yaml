@@ -1,0 +1,5 @@
+name: mpi_scatter.c
+source: mpi_scatter.c
+mpi: enabled
+buildopts: -O2
+nproc: 4
