@@ -305,7 +305,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 				fd.write(cmd + "\n")
 
 			logcontent+= "runextracmd found in YAML config file \n"
-			logcontent+= "runextracmd:" + configmap["runextracmd"] + "\n"
+			logcontent+= "runextracmd:" + str(configmap["runextracmd"]) + "\n"
 	fd.close()
 
 	# if YAML files are in subdirectory of config directory then update CMakeList
@@ -337,6 +337,8 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 
 	fd.write(add_test_str)
 	fd.close()
+
+	print " Creating Test: " + testpath
 
 	logcontent += " Creating Test: " + testpath + "\n"
 	logcontent += "Content of Testfile: " + testpath + "\n"

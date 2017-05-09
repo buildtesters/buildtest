@@ -21,9 +21,11 @@
 ############################################################################# 
 
 import os
-BUILDTEST_ROOT = os.getcwd()
-BUILDTEST_SOURCEDIR = os.path.join(BUILDTEST_ROOT ,"source")
-BUILDTEST_EASYCONFIGDIR = os.path.join(BUILDTEST_ROOT,"easybuild")
-BUILDTEST_MODULEROOT = "/nfs/grid/software/RHEL7/easybuild/modules"
-BUILDTEST_TESTDIR = os.path.join(BUILDTEST_ROOT,"testing")
+
+# read the BUILDTEST env vars from the shell environment that is sourced by setup.sh
+BUILDTEST_ROOT = os.environ['BUILDTEST_ROOT']
+BUILDTEST_SOURCEDIR = os.environ['BUILDTEST_SOURCEDIR']
+BUILDTEST_EASYCONFIGDIR = os.environ['BUILDTEST_EASYCONFIGDIR']
+BUILDTEST_MODULEROOT = os.environ['BUILDTEST_MODULEROOT']
+BUILDTEST_TESTDIR = os.environ['BUILDTEST_TESTDIR']
 
