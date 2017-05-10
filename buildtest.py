@@ -81,7 +81,6 @@ if args_dict["verbose"] >= 1:
 
 	verbose=args_dict["verbose"]
 
-print args_dict
 
 
 # when no argument is specified to -fc then output all yaml files

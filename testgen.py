@@ -338,7 +338,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 	fd.write(add_test_str)
 	fd.close()
 
-	print " Creating Test: " + testpath
+	print "Creating Test: " + testpath
 
 	logcontent += " Creating Test: " + testpath + "\n"
 	logcontent += "Content of Testfile: " + testpath + "\n"
