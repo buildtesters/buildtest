@@ -1,5 +1,5 @@
 binaries:
-        cmake: --version
-        ccmake: --version
-        cpack: --version
-        ctest: --version
+        - cmake --version
+        - ccmake --version
+        - cpack --version
+        - ctest --version

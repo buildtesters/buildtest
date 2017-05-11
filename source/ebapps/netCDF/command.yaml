@@ -1,2 +1,2 @@
 binaries:
-        nc-config: --all
+       - nc-config --all

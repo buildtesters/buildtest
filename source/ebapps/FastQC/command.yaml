@@ -1,2 +1,2 @@
 binaries:
-        fastqc: --version
+       - fastqc --version

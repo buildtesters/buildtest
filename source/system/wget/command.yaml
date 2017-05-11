@@ -1,2 +1,2 @@
 binaries:
-        wget: -V
+       - wget -V

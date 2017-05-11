@@ -1,0 +1,5 @@
+binaries:
+        - systemctl -l
+        - systemctl status network
+        - systemctl status centrify-sshd
+        - systemctl status autofs

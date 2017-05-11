@@ -1,2 +1,2 @@
 binaries:
-        ltrace: --version
+        - ltrace --version

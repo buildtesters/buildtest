@@ -1,3 +1,3 @@
 binaries:
-        numactl: -H
-        numastat:
+        - numactl -H
+        - numastat

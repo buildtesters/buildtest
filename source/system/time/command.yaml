@@ -1,2 +1,2 @@
 binaries:
-        time: ls
+       - time ls

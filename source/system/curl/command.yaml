@@ -1,2 +1,2 @@
 binaries:
-        curl: --version
+       - curl --version
