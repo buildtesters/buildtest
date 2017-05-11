@@ -553,17 +553,16 @@ def systempkg_process_binary_file(filename,pkg,verbose,logdir):
         # create a binary test script for each key,value item in dictionary
         binarydict=content["binaries"]
         for key in binarydict:
-                testname=key+".sh"
+		# replace each space with _ to form test name with command. This allows to generate binary test with same command with multiple parameters
+		name_str = key.replace(" " ,"_")
+		testname=name_str+".sh"
+
                 testpath=os.path.join(test_destdir,testname)
 		logcontent += "Creating test file: " +  testpath + "\n"
                 fd=open(testpath,'w')
 		fd.write("#!/bin/sh \n")
 		fd.write("module purge \n" )
-                # if paramter is specified then write both executable and parameter to file otherwise only write the executable
-                if binarydict[key]:
-                        fd.write(key + " " + binarydict[key])
-                else:
-                        fd.write(key)
+                fd.write(key)
                 fd.close()
 
 		# reading test script for writing content of test in logcontent 
@@ -707,16 +706,13 @@ def process_binary_file(filename,software,toolchain,verbose,logdir):
 	# create a binary test script for each key,value item in dictionary
 	binarydict=content["binaries"]
 	for key in binarydict:
-		testname=key+".sh"
+		name_str=key.replace(" ","_")
+		testname=name_str+".sh"
 		testpath=os.path.join(test_destdir,testname)
 		logcontent += "Creating test file: " +  testpath + "\n"
 		fd=open(testpath,'w')
 		fd.write(header)
-		# if paramter is specified then write both executable and parameter to file otherwise only write the executable
-		if binarydict[key]:
-			fd.write(key + " " + binarydict[key])
-		else:
-			fd.write(key)
+		fd.write(key)
 		fd.close()
 
 		# reading test script for writing content of test in logcontent 
