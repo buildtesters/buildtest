@@ -27,5 +27,7 @@ python buildtest.py -s FastQC/0.11.5-Java-1.8.0_92 -t GCCcore/.5.4.0
 python buildtest.py -s seqtk/1.2 -t GCCcore/.5.4.0
 python buildtest.py -s PCRE/8.38 -t GCC/5.4.0-2.27
 python buildtest.py -s HDF5/1.8.16 -t intel/2017.01
+python buildtest.py -s Perl/5.22.1 -t foss/.2016.03
+python buildtest.py -s R/3.3.1 -t intel/2017.01
 python buildtest.py --system all
 

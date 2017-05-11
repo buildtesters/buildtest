@@ -269,7 +269,12 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 
 		# python scripts have no compilation, just run python script. So we just need to update runcmd string
 		elif compiler_type == "python":
-			runcmd = "python " + sourcefilepath + "\n"
+			runcmd = compiler + sourcefilepath + "\n"
+		elif compiler_type == "perl":
+			runcmd = compiler + sourcefilepath + "\n"
+		elif compiler_type == "R":
+			runcmd = compiler + sourcefilepath + "\n"
+
 		# java programs need "javac" to compile and "java" to run program. This works best if you are
 		# in current directory where source file exists. 
 		elif compiler_type == "java":
@@ -393,15 +398,6 @@ def get_compiler(configmap,appname,tcname):
 	if appname in ["intel"]:
 		compiler_type="intel"
 
-	# compiler can be determined automatically for apps below
-	if appname in ["Anaconda2", "Anaconda3", "Python", "Python3"]:
-		compiler = "python"
-		compiler_type = "python"
-		return compiler,compiler_type
-	if appname in ["R"]:
-		compiler = "R"
-		compiler_type = "R"
-		return compiler,compiler_type
 	if appname in ["Java"]:
 		compiler = "javac"
 		compiler_type = "java"
@@ -419,6 +415,19 @@ def get_compiler(configmap,appname,tcname):
 	
 	# determine compiler based on compiler_type and its file extension
 	
+	# perl extension
+	if ext == ".py":
+		compiler_type = "python"
+		compiler = "python "
+		return compiler,compiler_type
+	if ext == ".pl":
+		compiler_type = "perl"
+		compiler = "perl"
+		return compiler,compiler_type
+	if ext == ".R":
+		compiler_type = "R"
+		compiler = "Rscript "
+		return compiler,compiler_type
 	# C extension
 	if ext == ".c":
 		if compiler_type == "gnu":
