@@ -1,0 +1,61 @@
+binaries:
+        - cal
+        - chfn --version
+        - chrt --version
+        - chsh --list-shells
+        - col --version
+        - colcrt --version
+        - colrm -V
+        - column -V
+        - dmesg
+        - eject -V
+        - fallocate -V
+        - findmnt
+        - flock -V
+        - getopt -V
+        - hexdump -V
+        - i386 -V
+        - ionice -V
+        - ipcmk -V
+        - ipcrm -V 
+        - ipcs -V 
+        - isosize -V 
+        - kill -l
+        - linux32 -V 
+        - linux64 -V 
+        - logger -V 
+        - login -V
+        - look -V-
+        - lsblk
+        - lscpu
+        - lslocks
+        - lslogins
+        - mcookie
+        - more -V
+        - mount
+        - mountpoint -V
+        - namei -V
+        - nsenter -V
+        - prlimit -V
+        - raw -V
+        - rename -V 
+        - renice -V 
+        - rev -V 
+        - script -V 
+        - scriptreplay -V
+        - setarch -V
+        - setpriv -V
+        - setsid -V 
+        - setterm -version
+        - su -V
+        - tailf -V
+        - taskset -V
+        - ul -V
+        - umount -V
+        - unshare -V
+        - utmpdump -V       
+        - uuidgen
+        - wdctl -V  
+        - whereis -V
+        - write -V
+        - x86_64 -V

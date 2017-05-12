@@ -1,0 +1,4 @@
+binaries:
+       - slogin localhost
+       - ssh localhost
+
