@@ -1,5 +1,0 @@
-name: mpi_mm.c
-source: mpi_mm.c
-mpi: enabled
-buildopts: -O2
-nproc: 4
