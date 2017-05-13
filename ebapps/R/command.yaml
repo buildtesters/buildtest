@@ -1,0 +1,3 @@
+binaries:
+        - R --version
+        - Rscript --version
