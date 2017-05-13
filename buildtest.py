@@ -26,6 +26,7 @@ from modules import *
 from utilities import *
 from testgen import *
 from parser import *
+from master import *
 
 import subprocess
 import argparse
@@ -45,6 +46,7 @@ parser.add_argument("-ls", "--list-unique-software",help="retrieve all unique so
 parser.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
 parser.add_argument("--system", help=""" Build test for system packages
 					 To build all system package test use --system all """)
+parser.add_argument("--testset", help="Select the type of test set to run (python,mpi,ruby,perl,R)", choices=["python","R","mpi","ruby","perl"])
 parser.add_argument("-v", "--verbose", help="increase verbosity level", type=int, choices=[1,2])
 
 args = parser.parse_args()
@@ -162,6 +164,9 @@ if not args.toolchain:
 else:
 	toolchain=args.toolchain.split("/")
 
+testset=""
+if args.testset: 
+	testset=args.testset
 
 # generate system pkg test
 if args.system:
@@ -210,7 +215,9 @@ if args.software != None:
 	ret,logcontent_substr=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
 	logcontent+=logcontent_substr
 	# generate_binary_test(software,toolchain,verbose)
+	
 	source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)
+
         configdir=os.path.join(source_app_dir,"config")
         codedir=os.path.join(source_app_dir,"code")
 	logdir = os.path.join(BUILDTEST_ROOT,"log",appname,appversion,tcname,tcversion)
@@ -220,26 +227,22 @@ if args.software != None:
 	logcontent += "Code Directory:" + codedir + "\n"
 
 	logcontent += generate_binary_test(software,toolchain,source_app_dir,verbose,logdir)
-	# if config directory exists then process .yaml files to build source test
-	if os.path.isdir(configdir):
-	        #for filename in os.listdir(configdir):
-		for root,subdirs,files in os.walk(configdir):
-			
-        	        #filepath=configdir+filename
-			for file in files:
-				filepath=os.path.join(root,file)
-				subdir=os.path.basename(root)
-				# if there is no subdirectory in configdir that means subdir would be set to "config" so it can
-				# be set to empty string in order to concat codedir and subdir. This way both subdirectory and 
-				# and no subdirectory structure for yaml will work
-				if subdir == "config":
-					subdir = ""
-				code_destdir=os.path.join(codedir,subdir)
-				configmap=parse_config(software,toolchain,filepath,code_destdir)		
-				# error processing config file, then parse_config will return an empty dictionary
-				if len(configmap) == 0:
-					continue
-				logcontent+=generate_source_test(software,toolchain,configmap,code_destdir,verbose,subdir,logdir)
+	# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
+	logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose, logdir)
 
-     
+	# when you are  running python testset we must change paths for configdir and codedir and generate tests 
+        if appname in PYTHON_APPS and testset == "python":
+                source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"python")
+	        configdir=os.path.join(source_app_dir,"config")
+        	codedir=os.path.join(source_app_dir,"code")
+		logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose,logdir)
+
+	# condition to run mpi testset, need to alter path and rerun recursive_gen_test 
+	if appname in MPI_APPS and testset == "mpi":
+		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"mpi")
+                configdir=os.path.join(source_app_dir,"config")
+                codedir=os.path.join(source_app_dir,"code")
+		logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose,logdir)
+
+	
 update_logfile(logdir,logcontent,verbose)

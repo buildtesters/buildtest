@@ -22,7 +22,7 @@
 ############################################################################# 
 
 BUILDTEST_ROOT=`pwd`
-BUILDTEST_SOURCEDIR=${BUILDTEST_ROOT}"/buildtest-configs/source"
+BUILDTEST_SOURCEDIR=${BUILDTEST_ROOT}"/buildtest-configs"
 BUILDTEST_EASYCONFIGDIR=${BUILDTEST_ROOT}"/easybuild"
 BUILDTEST_MODULEROOT=/nfs/grid/software/RHEL7/easybuild/modules
 BUILDTEST_TESTDIR=$BUILDTEST_ROOT"/testing"
