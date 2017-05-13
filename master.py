@@ -2,9 +2,11 @@ from parser import *
 from testgen import *
 def recursive_gen_test(software,toolchain,configdir,codedir,verbose,logdir):
        # if config directory exists then process .yaml files to build source test
-	logcontent = ""
+	logcontent =  "------------------------------------------------------------"
+	logcontent += " function: recursive_gen_test "
+	logcontent += "------------------------------------------------------------"
+	logcontent += " Processing all YAML files in " + configdir 
         if os.path.isdir(configdir):
-                #for filename in os.listdir(configdir):
                 for root,subdirs,files in os.walk(configdir):
     
                         #filepath=configdir+filename

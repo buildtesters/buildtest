@@ -269,11 +269,11 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 
 		# python scripts have no compilation, just run python script. So we just need to update runcmd string
 		elif compiler_type == "python":
-			runcmd = compiler + sourcefilepath + "\n"
+			runcmd = compiler + " " + sourcefilepath + "\n"
 		elif compiler_type == "perl":
-			runcmd = compiler + sourcefilepath + "\n"
+			runcmd = compiler + " " + sourcefilepath + "\n"
 		elif compiler_type == "R":
-			runcmd = compiler + sourcefilepath + "\n"
+			runcmd = compiler + " " + sourcefilepath + "\n"
 
 		# java programs need "javac" to compile and "java" to run program. This works best if you are
 		# in current directory where source file exists. 
