@@ -230,19 +230,30 @@ if args.software != None:
 	# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
 	logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose, logdir)
 
-	# when you are  running python testset we must change paths for configdir and codedir and generate tests 
-        if appname in PYTHON_APPS and testset == "python":
-                source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"python")
-	        configdir=os.path.join(source_app_dir,"config")
-        	codedir=os.path.join(source_app_dir,"code")
-		logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose,logdir)
+	# if flag --testset is set, then 
+	if testset !=  None:
+		# boolean to determine if test needs to be run. This is done by checking appname corresponds with testset
+		runtest=False
+		#source_app_dir=""
+		# when you are  running python testset we must change paths for configdir and codedir and generate tests 
+	        if appname in PYTHON_APPS and testset == "python":
+        	        source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"python")
+			runtest=True
 
-	# condition to run mpi testset, need to alter path and rerun recursive_gen_test 
-	if appname in MPI_APPS and testset == "mpi":
-		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"mpi")
-                configdir=os.path.join(source_app_dir,"config")
-                codedir=os.path.join(source_app_dir,"code")
-		logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose,logdir)
+		# condition to run mpi testset, need to alter path and rerun recursive_gen_test 
+		if appname in MPI_APPS and testset == "mpi":
+			source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"mpi")
+			runtest=True
+
+		# condition to run R testset
+		if appname in ["R"] and testset == "R":
+			source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"R")
+			runtest=True
+	
+		if runtest == True:
+			configdir=os.path.join(source_app_dir,"config")
+			codedir=os.path.join(source_app_dir,"code")
+			logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose,logdir)
 
 	
 update_logfile(logdir,logcontent,verbose)
