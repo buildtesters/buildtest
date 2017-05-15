@@ -137,7 +137,9 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 
 	# if subdirectory exists, create subdirectory in destdir so we can write test script
 	if subdir != "":
-		os.mkdir(destdir)
+		# if sub directory does not exist, then create all directories and its parents directories
+		if os.path.exists(destdir) == False:
+			os.makedirs(destdir)
 
 	# testname is key value "name" with .sh extension
 	testname=configmap["name"]+".sh"
