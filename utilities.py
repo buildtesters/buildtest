@@ -50,6 +50,11 @@ def add_arg_to_runcmd(runcmd,arglist):
                 runcmd+= " " + str(arg)
 	return runcmd
 
+def string_in_file(string,filename):
+	if string in open(filename).read():
+		return True
+	else:
+		return False
 def add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname):
 	fd=open(cmakelist,'a')
 	add_test_str=""
@@ -58,11 +63,15 @@ def add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakel
         # in app_destdir to add tag "add_subdirectory" for subdirectory so CMakeList
         # can find tests in subdirectory
 	if subdir != "":
- 		parent_cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
-               	fd1=open(parent_cmakelist,'a')
+		# only update the app_destdir/CMakeLists.txt if subdirectory doesn't exist. This avoids
+		# writing duplicate values when there are multiple tests in subdirectory
+		parent_cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
                	cmake_content="add_subdirectory("+subdir+") \n"
-               	fd1.write(cmake_content)
-               	fd1.close()
+	 	ret = string_in_file(cmake_content,parent_cmakelist)
+		if ret == False:
+	               	fd1=open(parent_cmakelist,'a')
+		        fd1.write(cmake_content)
+        	       	fd1.close()
 
                 # the string add_test in CMakeLists allows you to test script with ctest. The NAME tag is 
                 # <name>-<version>-<toolchain-name>-<toolchain-version>-<subdir>-<testname>. This
