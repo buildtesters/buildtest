@@ -33,6 +33,7 @@ field={
 	'scheduler':['slurm','lsf','pbs'],
 	'buildopts':'',
 	'buildcmd':'',
+	'outputfile':'',
 	'runcmd':'',
 	'runextracmd':'',
 	'mpi':'enabled',

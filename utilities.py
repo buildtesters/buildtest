@@ -48,7 +48,6 @@ def add_arg_to_runcmd(runcmd,arglist):
                 	continue
 		# in case argument is not a string, convert it anyways
                 runcmd+= " " + str(arg)
-       	runcmd+= "\n"
 	return runcmd
 
 def create_dir(dirname,verbose):
