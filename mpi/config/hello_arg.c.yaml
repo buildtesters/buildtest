@@ -1,0 +1,8 @@
+name: hello_arg.c
+source: hello_arg.c
+mpi: enabled
+args:
+        - hi 
+        - how 
+        - are 
+        - you

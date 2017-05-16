@@ -1,0 +1,8 @@
+name: arglist.c
+source: arglist.c
+args:
+        - hello
+        - world
+        - foo
+        - 2016
+        - abc123
