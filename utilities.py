@@ -50,6 +50,36 @@ def add_arg_to_runcmd(runcmd,arglist):
                 runcmd+= " " + str(arg)
 	return runcmd
 
+def add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname):
+	fd=open(cmakelist,'a')
+	add_test_str=""
+
+        # if YAML files are in subdirectory of config directory then update CMakeList
+        # in app_destdir to add tag "add_subdirectory" for subdirectory so CMakeList
+        # can find tests in subdirectory
+	if subdir != "":
+ 		parent_cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
+               	fd1=open(parent_cmakelist,'a')
+               	cmake_content="add_subdirectory("+subdir+") \n"
+               	fd1.write(cmake_content)
+               	fd1.close()
+
+                # the string add_test in CMakeLists allows you to test script with ctest. The NAME tag is 
+                # <name>-<version>-<toolchain-name>-<toolchain-version>-<subdir>-<testname>. This
+                # naming scheme should allow buildtest to reuse same YAML configs for multiple version
+                # built with any toolchains. Subdirectories come in handy when you need to organize tests 
+		# effectively to avoid naming conflict
+      		
+		add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-"      + subdir + "-" + testname + "\t COMMAND sh " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR    }) \n"
+	else:
+         	add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+	fd.write(add_test_str)
+        fd.close()
+	
+	logcontent= "Updating File " + cmakelist + " with: " + add_test_str + "\n"
+	return logcontent
+
+	
 def create_dir(dirname,verbose):
         """
         Create directory if it doesn't exist

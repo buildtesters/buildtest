@@ -26,6 +26,7 @@ import os.path
 import os, sys
 import shutil
 import yaml
+from shutil import copyfile
 
 def systempkg_generate_binary_test(pkg,verbose,logdir):
 	"""
@@ -130,7 +131,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 	destdir=os.path.join(app_destdir,subdir)
 	cmakelist=os.path.join(destdir,"CMakeLists.txt")
 	
-	logcontent = ""
+	logcontent = "\n"
 	logcontent += "------------------------------------------------ \n"
 	logcontent += "function: generate_source_test \n"
 	logcontent += "------------------------------------------------ \n"
@@ -270,7 +271,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 	                		runcmd = "mpirun -np " + nproc + " ./" + executable
 					runcmd = add_arg_to_runcmd(runcmd,arglist)
 				else:
-	                		runcmd = "mpirun -np " + nproc + " ./" + executable + "\n"
+	                		runcmd = "mpirun -np " + nproc + " ./" + executable
 	                else:
 				# add argument to runcmd in general jobs
 				if "args" in configmap:
@@ -278,7 +279,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 					runcmd = "./" + executable 
 					runcmd = add_arg_to_runcmd(runcmd,arglist)
 				else:
-					runcmd = "./" + executable + "\n"
+					runcmd = "./" + executable 
 
 		# Scripting languages like Python, R, Perl no compilation stage, just run script. So we just need to update runcmd string
 		elif compiler_type == "python" or compiler_type == "perl" or compiler_type == "R":
@@ -303,6 +304,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 			# would like to remove .class files that are generated due to javac
 			runcmd += "rm -v " + filename + ".class"
 
+		# if inputfile key is found, add this as part of runcmd
 		if "inputfile" in configmap:
 			runcmd += " < " + os.path.join(codedir,configmap["inputfile"])
 		# if output of program needs to be written to file instead of STDOUT	
@@ -334,36 +336,58 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 			logcontent+= "runextracmd found in YAML config file \n"
 			logcontent+= "runextracmd:" + str(configmap["runextracmd"]) + "\n"
 	fd.close()
+	# if keyword iter is found in YAML, lets try to recreate N tests by renaming test such as
+	# hello.sh to hello_1.sh and create N-1 copies with file names hello_2.sh, hello_3.sh, ...
+	if  "iter" in configmap:
+		filename=os.path.basename(os.path.splitext(sourcefilepath)[0])
+		testname = filename + "_1.sh"  
+		testpath_testname = os.path.join(destdir,testname).replace("\n",'')
+		os.rename(testpath,testpath_testname)
+		out = "Rename Iteration Test: " +  testpath +  " -> " +  testpath_testname
+		#print "Rename Iteration Test: ", testpath, " -> ", testpath_testname
+		print out
+		# logcontent += "Renaming file: ", testpath, " -> ", testpath_testname
+		logcontent += out
+		# writing test to CMakeLists.txt
+		logcontent+=add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
+		logcontent += "Content of Testfile: " + testpath_testname + "\n"
+                logcontent += "-------------------------------------------------- \n"
+    
+                fd=open(testpath_testname,'r')
+                content=fd.read()
+                logcontent+=content
+                fd.close()
+                logcontent += "\n -------------------------------------------------- \n"
 
-	# if YAML files are in subdirectory of config directory then update CMakeList
-	# in app_destdir to add tag "add_subdirectory" for subdirectory so CMakeList
-	# can find tests in subdirectory
-	fd=open(cmakelist,'a')
 
-	if subdir != "":
-		parent_cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
-		fd1=open(parent_cmakelist,'a')
-		cmake_content="add_subdirectory("+subdir+") \n"
-		fd1.write(cmake_content)
-		fd1.close()
-			
-		logcontent+="writing content: " + cmake_content + " to file " + parent_cmakelist + "\n"
+		numiter = int(configmap["iter"])
+		# creating N-1 copies of tests
+		for index in range(1,numiter):
+			testname=filename+"_"+str(index+1)+".sh"
+			src_testpath=testpath_testname
+			dest_testpathname=os.path.join(destdir,testname).replace('\n','')
+			copyfile(src_testpath,dest_testpathname)
+			out = "Iteration Test: " + dest_testpathname 
+			print out
+			logcontent += out
 
-		# the string add_test allows you to test script with ctest. The NAME tag is 
-		# <name>-<version>-<toolchain-name>-<toolchain-version>-<subdir>-<testname>. This
-		# naming scheme should allow buildtest to reuse same YAML configs for multiple version
-		# built with any toolchains. Subdirectories come in handy when you have large number 
-		# of tests that can cause name conflict, so this is resolved by storing YAML files and generated
-		# test scripts in subdirectories
-		add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-"  + subdir + "-" + testname + "\t COMMAND sh " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
-	else:
-		# for tests not present in subdirectory then subdir is removed from NAME tag in add_test CMAKE command
-		add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+			logcontent+=add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
+			logcontent += "Content of Testfile: " + dest_testpathname + "\n"
+			logcontent += "-------------------------------------------------- \n"
+    
+		        fd=open(dest_testpathname,'r')
+		        content=fd.read()
+		        logcontent+=content
+		        fd.close()
+			logcontent += " \n-------------------------------------------------- \n"
 
-		logcontent+= "Updating File " + cmakelist + " with: " + add_test_str + "\n"
 
-	fd.write(add_test_str)
-	fd.close()
+		return logcontent
+
+
+	
+	logcontent += add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
+
 
 	print "Creating Test: " + testpath
 
@@ -377,7 +401,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 	fd.close()
 
 
-	logcontent += "-------------------------------------------------- \n"
+	logcontent += "\n -------------------------------------------------- \n"
 	return logcontent
 def get_compiler(configmap,appname,tcname):
 	"""

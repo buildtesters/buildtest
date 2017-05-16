@@ -34,6 +34,7 @@ field={
 	'buildopts':'',
 	'buildcmd':'',
 	'inputfile':'',
+	'iter':'',
 	'outputfile':'',
 	'runcmd':'',
 	'runextracmd':'',
@@ -72,10 +73,17 @@ def parse_config(software,toolchain,filename,codedir):
 			if content[key] not in field["scheduler"]:
 				print "Invalid scheduler option: ", key, " Please select on of the following:" , field["scheduler"]
 				sys.exit(1)
-		elif key == "nproc":
+		elif key == "nproc" or key == "iter":
+			# checking whether value of nproc and iter is integer
 			if not str(content[key]).isdigit(): 
-				print "nproc key must be an integer value"
+				print key + " key must be an integer value"
 				sys.exit(1)
+			# checking whether key is negative or zero
+			else:
+				if int(content[key]) <= 0: 
+					print key + " must be greater than 0"
+					sys.exit(1)
+		
 			
 	fd.close()
 	return content
