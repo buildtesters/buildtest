@@ -33,6 +33,7 @@ field={
 	'scheduler':['slurm','lsf','pbs'],
 	'buildopts':'',
 	'buildcmd':'',
+	'inputfile':'',
 	'outputfile':'',
 	'runcmd':'',
 	'runextracmd':'',
@@ -61,7 +62,7 @@ def parse_config(software,toolchain,filename,codedir):
                         	print "Invalid value for key: ",key,":",content[key],". Value should be:", filename
 				sys.exit(1)
 		# source must match a valid file name
-		elif key == "source":
+		elif key == "source" or key == "inputfile":
 	                codefile=os.path.join(codedir,content[key])
         	        if not os.path.exists(codefile):
                 	        print "Can't find source file: ",codefile, ". Verify source file in directory:", codedir

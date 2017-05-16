@@ -303,6 +303,8 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 			# would like to remove .class files that are generated due to javac
 			runcmd += "rm -v " + filename + ".class"
 
+		if "inputfile" in configmap:
+			runcmd += " < " + os.path.join(codedir,configmap["inputfile"])
 		# if output of program needs to be written to file instead of STDOUT	
  	        if "outputfile" in configmap:
           		runcmd +=  " > " + configmap["outputfile"]
