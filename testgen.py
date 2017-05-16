@@ -254,7 +254,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 	                if compiler in ["mpicc","mpic++","mpifort","mpiicc","mpiic++", "mpiifort"]:
 	
 		                # if nproc is defined in yaml, store value in nproc which will use it in mpirun command
-        		        if configmap["nproc"]:
+        		        if "nproc" in configmap:
                 		        nproc = str(configmap["nproc"])
 					
 					logcontent += "nproc key found in YAML config file \n"
@@ -264,18 +264,31 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 					nproc = "1"
 
 					logcontent += "nproc key not found in YAML config file, will set nproc = 1 \n"
-
-	                	runcmd = "mpirun -np " + nproc + " ./" + executable + "\n"
+				# add argument to runcmd in MPI jobs
+                                if "args" in configmap:
+                                        arglist = configmap["args"]
+	                		runcmd = "mpirun -np " + nproc + " ./" + executable
+					runcmd = add_arg_to_runcmd(runcmd,arglist)
+				else:
+	                		runcmd = "mpirun -np " + nproc + " ./" + executable + "\n"
 	                else:
-				runcmd = "./" + executable + "\n"
+				# add argument to runcmd in general jobs
+				if "args" in configmap:
+					arglist = configmap["args"]
+					runcmd = "./" + executable 
+					runcmd = add_arg_to_runcmd(runcmd,arglist)
+				else:
+					runcmd = "./" + executable + "\n"
 
-		# python scripts have no compilation, just run python script. So we just need to update runcmd string
-		elif compiler_type == "python":
-			runcmd = compiler + " " + sourcefilepath + "\n"
-		elif compiler_type == "perl":
-			runcmd = compiler + " " + sourcefilepath + "\n"
-		elif compiler_type == "R":
-			runcmd = compiler + " " + sourcefilepath + "\n"
+		# Scripting languages like Python, R, Perl no compilation stage, just run script. So we just need to update runcmd string
+		elif compiler_type == "python" or compiler_type == "perl" or compiler_type == "R":
+			if "args" in configmap:
+				arglist = configmap["args"]
+	
+				runcmd = compiler + " " + sourcefilepath 
+				runcmd = add_arg_to_runcmd(runcmd,arglist)
+			else:
+				runcmd = compiler + " " + sourcefilepath + "\n"
 
 		# java programs need "javac" to compile and "java" to run program. This works best if you are
 		# in current directory where source file exists. 

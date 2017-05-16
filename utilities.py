@@ -39,6 +39,18 @@ def isHiddenFile(inputfile):
         else:
                 return False
 
+def add_arg_to_runcmd(runcmd,arglist):
+	# add each argument to runcmd
+	print arglist
+        for arg in arglist:
+        # skip argument if value is not specified, by default set to None
+        	if arg == None:
+                	continue
+		# in case argument is not a string, convert it anyways
+                runcmd+= " " + str(arg)
+       	runcmd+= "\n"
+	return runcmd
+
 def create_dir(dirname,verbose):
         """
         Create directory if it doesn't exist
