@@ -1,5 +1,0 @@
-name: hello
-source: hello.py
-args: 
-        - hello
-        - world
