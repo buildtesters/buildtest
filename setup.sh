@@ -3,7 +3,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/BuildTest 
+#   https://github.com/shahzebsiddiqui/buildtest 
 # 
 #  This file is part of buildtest. 
 # 
@@ -23,9 +23,13 @@
 
 BUILDTEST_ROOT=`pwd`
 BUILDTEST_SOURCEDIR=${BUILDTEST_ROOT}"/buildtest-configs"
-BUILDTEST_EASYCONFIGDIR=${BUILDTEST_ROOT}"/easybuild"
-BUILDTEST_MODULEROOT=/nfs/grid/software/RHEL7/easybuild/modules
 BUILDTEST_TESTDIR=$BUILDTEST_ROOT"/testing"
+
+# BUILDTEST_EASYCONFIGDIR path to easybuild easyconfig directory
+# BUILDTEST_EASYCONFIG=${BUILDTEST_ROOT}/path/to/easybuild/
+
+# BUILDTEST_MODULEROOT is used to find all modules in a tree, multiple trees can be specified using ":" character. 
+# BUILDTEST_MODULEROOT=/path/to/moduletree:/path/to/moduletree/
 
 export BUILDTEST_ROOT
 export BUILDTEST_SOURCEDIR

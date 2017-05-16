@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/BuildTest 
+#   https://github.com/shahzebsiddiqui/buildtest 
 # 
 #  This file is part of buildtest. 
 # 
