@@ -33,18 +33,20 @@ def get_module_list(moduletree):
         modulelist=find_cmd_module.rstrip().split('\n')
 	return modulelist
 
-def get_unique_software(moduletree):
+def get_unique_software(moduletrees):
 	"""
 	returns a set of software packages found in the module tree
 	"""
-	
-	modulelist=get_module_list(moduletree)
+	moduletreelist=moduletrees.split(":")
 	module_set=set()
-	for module in modulelist:
-                # extract the module name from filepath
-		modulename=os.path.basename(os.path.dirname(module))
-		#modulename=os.popen(os.path.basename(module)).read().rstrip()
-		module_set.add(modulename)
+	for moduletree in moduletreelist:
+		modulelist=get_module_list(moduletree)
+		module_set=set()
+		for module in modulelist:
+                	# extract the module name from filepath
+			modulename=os.path.basename(os.path.dirname(module))
+			#modulename=os.popen(os.path.basename(module)).read().rstrip()
+			module_set.add(modulename)
 
 	logcontent = "Unique Software Packages from module tree: " + moduletree + "\n"
 	logcontent += str(sorted(module_set))
@@ -55,24 +57,23 @@ def get_unique_software_version(moduletree):
 	returns a set of software-version collection found in module files. Duplicates are 
 	ignored for instance, same package version is built with two different toolchains
 	"""
-	modulelist=get_module_list(moduletree)
         moduleversion_set=set()
-        for module in modulelist:
-                # extract the module name and version from the file path returned from find
-                modulename=os.popen("dirname " + module + " | xargs basename ").read().rstrip()
-                version=os.popen("basename " + module ).read().rstrip()
-
+	modulelist=get_module_list(moduletree)
+		
+  	for module in modulelist:
+               	# extract the module name and version from the file path returned from find
+		modulename = os.path.basename(os.path.dirname(module))
+		version=os.path.basename(module)
 		# skip .version files
 		if version == ".version":
 			continue
 
-                # if modulefile is lua extension then strip extension from version
+	        # if modulefile is lua extension then strip extension from version
                 if version[-4:] == ".lua":
-                        version=version[:-4]
+               	        version=version[:-4]
                 
 		moduleversion_set.add(modulename+" "+version)
 
-        #print module_set
 	return sorted(moduleversion_set)
 
 def module_version_relation(moduletree):
@@ -81,6 +82,7 @@ def module_version_relation(moduletree):
 	dictionary with key values as software name and values will be a set of version
 	"""
 	modulelist=get_module_list(moduletree)
+
 	module_set=get_unique_software(moduletree)
 	# This set contains one entry of sorted lists of modules, need to iterate over list and not set.
 	module_set = module_set[0]
@@ -141,12 +143,12 @@ def software_exists(software):
 		print "Too many arguments, -s takes argument <software>,<version>"
 		sys.exit(1)
 	
-	softwarecollection=get_unique_software_version(BUILDTEST_MODULEROOT)
+	softwarecollection=get_unique_software_version(BUILDTEST_MODULE_EBROOT)
 	software_name=software[0]+" "+software[1]
 	if software_name not in softwarecollection:
 		print "Can't find software: ", software_name
 		sys.exit(1)
-	
+
 def toolchain_exists(software,toolchain):
 	"""
 	checks to see if toolchain passed on command line exist in toolchain list
