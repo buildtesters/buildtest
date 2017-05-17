@@ -251,7 +251,7 @@ if args.software != None:
 		if runtest == True:
 			configdir=os.path.join(source_app_dir,"config")
 			codedir=os.path.join(source_app_dir,"code")
-			logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose,logdir)
+			logcontent+=testset_generator(software,toolchain,codedir,verbose)
 
 	
 update_logfile(logdir,logcontent,verbose)
