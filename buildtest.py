@@ -54,9 +54,7 @@ args = parser.parse_args()
 
 # convert args into a dictionary
 args_dict=vars(args)
-#print get_module_list(BUILDTEST_MODULEROOT)
-#print get_unique_software(BUILDTEST_MODULEROOT)
-#sys.exit(1)
+
 verbose=0
 
 # logdir where log file will be rewritten. logdir can change based on parameter -s and --system
@@ -73,6 +71,7 @@ if args_dict["verbose"] >= 1:
 	text += "BUILDTEST ROOT DIRECTORY: " + BUILDTEST_ROOT + "\n" 
 	text += "BUILDTEST SOURCE DIRECTORY: " + BUILDTEST_SOURCEDIR +"\n"
 	text += "BUILDTEST EASYCONFIGDIR: " + BUILDTEST_EASYCONFIGDIR + "\n"
+	text += "BUILDTEST MODULE_EBROOT: " + BUILDTEST_MODULE_EBROOT + "\n"
 	text += "BUILDTEST TEST DIRECTORY:" + BUILDTEST_TESTDIR + "\n"
 	text += "==================================================================== " + "\n"
 	print text
@@ -136,14 +135,14 @@ if args_dict["list_toolchain"] == True:
 	print_set(toolchain_set)
 
 if args_dict["list_unique_software"] == True:
-	software_set,logcontent_substr=get_unique_software(BUILDTEST_MODULEROOT)
+	software_set,logcontent_substr=get_unique_software(BUILDTEST_MODULE_EBROOT)
 	logcontent+=logcontent_substr
 	print """
 	       List of Unique Software: 
 	       ---------------------------- """
 	print_set(software_set)	
 if args_dict["software_version_relation"] == True:
-	software_version_dict=module_version_relation(BUILDTEST_MODULEROOT)
+	software_version_dict=module_version_relation(BUILDTEST_MODULE_EBROOT)
 	text = """
 		Software Version Relationship:
 		-------------------------------
@@ -196,7 +195,6 @@ if args.software != None:
 		tcname=toolchain[0]
 		tcversion=toolchain[1]
 	
-
 	# checking if its a valid software
 	software_exists(software)
 	if verbose >= 1:

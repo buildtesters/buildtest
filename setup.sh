@@ -28,11 +28,11 @@ BUILDTEST_TESTDIR=$BUILDTEST_ROOT"/testing"
 # BUILDTEST_EASYCONFIGDIR path to easybuild easyconfig directory
 # BUILDTEST_EASYCONFIG=${BUILDTEST_ROOT}/path/to/easybuild/
 
-# BUILDTEST_MODULEROOT is used to find all modules in a tree, multiple trees can be specified using ":" character. 
-# BUILDTEST_MODULEROOT=/path/to/moduletree:/path/to/moduletree/
+# BUILDTEST_MODULE_EBROOT specify the root of the EB module tree
+# BUILDTEST_MODULE_EBROOT=/path/to/moduletree
 
 export BUILDTEST_ROOT
 export BUILDTEST_SOURCEDIR
 export BUILDTEST_EASYCONFIGDIR
-export BUILDTEST_MODULEROOT
+export BUILDTEST_MODULE_EBROOT
 export BUILDTEST_TESTDIR
