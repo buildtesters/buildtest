@@ -237,6 +237,10 @@ if args.software != None:
 	        if appname in PYTHON_APPS and testset == "python":
         	        source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"python")
 			runtest=True
+		
+		if appname in PERL_APPS and testset == "perl":
+			source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"perl")
+			runtest=True
 
 		# condition to run mpi testset, need to alter path and rerun recursive_gen_test 
 		if appname in MPI_APPS and testset == "mpi":
@@ -247,7 +251,8 @@ if args.software != None:
 		if appname in ["R"] and testset == "R":
 			source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"R")
 			runtest=True
-	
+
+		print "source_app_dir", source_app_dir, runtest
 		if runtest == True:
 			configdir=os.path.join(source_app_dir,"config")
 			codedir=os.path.join(source_app_dir,"code")

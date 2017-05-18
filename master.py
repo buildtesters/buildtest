@@ -71,9 +71,11 @@ def testset_generator(software,toolchain,codedir,verbose):
 				ext = os.path.splitext(file)[1]
 			
 				if ext == ".py":
-					wrapper="python"
+					wrapper = "python"
 				elif ext == ".R":
-					wrapper="Rscript"
+					wrapper = "Rscript"
+				elif ext == ".pl":
+					wrapper = "perl"
 				else:
 					continue
 
