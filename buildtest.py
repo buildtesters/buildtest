@@ -21,16 +21,21 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+import sys
+import os
+sys.path.insert(0,os.path.abspath('.'))
+
 from setup import *
 from modules import *
-from utilities import *
 from testgen import *
-from parser import *
 from master import *
+from tools.generic import *
+from tools.file import *
+from parser import *
+from testmodules.testsets import *
 
 import subprocess
 import argparse
-import sys
 module=""
 version=""
 
@@ -154,15 +159,6 @@ if args_dict["software_version_relation"] == True:
 	for item in software_version_dict:
 		logcontent+= item + " " + str(sset(software_version_dict[item])) + "\n"
 
-if args.software:
-	software=args.software.split("/")
-
-# set toolchain to dummy when its not specified. 
-if not args.toolchain:
-	toolchain="dummy/dummy".split("/")
-else:
-	toolchain=args.toolchain.split("/")
-
 testset=""
 if args.testset: 
 	testset=args.testset
@@ -182,25 +178,32 @@ if args.system:
 		logdir = os.path.join(BUILDTEST_ROOT,"log","system",systempkg)
 		logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
 
+
+testset=""
+if args.testset:
+        testset=args.testset
+
 # when -s is specified
 if args.software != None:
-
-	appname=software[0]
-	appversion=software[1]
+	
+        software=args.software.split("/")
+	appname,appversion=get_software_name_version(software)
 
 	# default value assuming toolchain is not specified
 	tcname="dummy"
 	tcversion="dummy"
+	toolchain=""
 	if args.toolchain != None:
-		tcname=toolchain[0]
-		tcversion=toolchain[1]
+        	toolchain=args.toolchain.split("/")
+	else:
+	        toolchain="dummy/dummy".split("/")
 	
+
+	tcname=toolchain[0]
+	tcversion=toolchain[1]
+
 	# checking if its a valid software
-	software_exists(software)
-	if verbose >= 1:
-		text = "Software:" + appname + " " + appversion + " found in system \n"
-		print text
-		logcontent += text + "\n"
+	logcontent += software_exists(software,verbose)
 
 	# checking if its a valid toolchain 
 	toolchain_exists(software,toolchain)
@@ -218,7 +221,7 @@ if args.software != None:
 
         configdir=os.path.join(source_app_dir,"config")
         codedir=os.path.join(source_app_dir,"code")
-	logdir = os.path.join(BUILDTEST_ROOT,"log",appname,appversion,tcname,tcversion)
+	logdir=os.path.join(BUILDTEST_ROOT,"log",appname,appversion,tcname,tcversion)
 
 	logcontent += "Source App Directory:" +  source_app_dir + "\n"
 	logcontent += "Config Directory: " + configdir + "\n"
@@ -230,33 +233,6 @@ if args.software != None:
 
 	# if flag --testset is set, then 
 	if testset !=  None:
-		# boolean to determine if test needs to be run. This is done by checking appname corresponds with testset
-		runtest=False
-		#source_app_dir=""
-		# when you are  running python testset we must change paths for configdir and codedir and generate tests 
-	        if appname in PYTHON_APPS and testset == "python":
-        	        source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"python")
-			runtest=True
-		
-		if appname in PERL_APPS and testset == "perl":
-			source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"perl")
-			runtest=True
-
-		# condition to run mpi testset, need to alter path and rerun recursive_gen_test 
-		if appname in MPI_APPS and testset == "mpi":
-			source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"mpi")
-			runtest=True
-
-		# condition to run R testset
-		if appname in ["R"] and testset == "R":
-			source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"R")
-			runtest=True
-
-		print "source_app_dir", source_app_dir, runtest
-		if runtest == True:
-			configdir=os.path.join(source_app_dir,"config")
-			codedir=os.path.join(source_app_dir,"code")
-			logcontent+=testset_generator(software,toolchain,codedir,verbose)
-
+		logcontent+=run_testset(software,toolchain,testset,verbose)
 	
 update_logfile(logdir,logcontent,verbose)

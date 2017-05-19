@@ -21,7 +21,7 @@
 ############################################################################# 
 
 from setup import *
-from utilities import *
+from tools.file import *
 import os
 import sys
 
@@ -134,11 +134,12 @@ def get_toolchain(easyconfigdir):
 		toolchain.add(toolchain_name+" "+toolchain_version)
 	return toolchain,logcontent
 
-def software_exists(software):
+def software_exists(software,verbose):
 	"""
 	checks whether software exist, there must be a module file present with the 
 	same name specified as the argument. 
 	"""
+	logcontent = ""
 	if len(software) != 2:
 		print "Too many arguments, -s takes argument <software>,<version>"
 		sys.exit(1)
@@ -148,6 +149,11 @@ def software_exists(software):
 	if software_name not in softwarecollection:
 		print "Can't find software: ", software_name
 		sys.exit(1)
+	text = "Software:" + str(software) + " found in system \n"
+	print text
+	logcontent = text
+	return logcontent
+		
 
 def toolchain_exists(software,toolchain):
 	"""

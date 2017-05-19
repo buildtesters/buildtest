@@ -21,7 +21,10 @@
 ############################################################################# 
 
 from setup import *
-from utilities import *
+from tools.generic import *
+from tools.cmake import *
+from tools.file import *
+
 import os.path 
 import os, sys
 import shutil
