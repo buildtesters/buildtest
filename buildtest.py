@@ -233,6 +233,6 @@ if args.software != None:
 
 	# if flag --testset is set, then 
 	if testset !=  None:
-		logcontent+=run_testset(software,toolchain,testset,verbose)
+		logcontent+=run_testset(software,toolchain,testset,verbose,logdir)
 	
 update_logfile(logdir,logcontent,verbose)
