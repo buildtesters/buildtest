@@ -196,16 +196,17 @@ if system != None:
 
 		os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log","system","all")
 		systempkg_list = os.listdir(os.path.join(BUILDTEST_SOURCEDIR,"system"))
-		logcontent += "System Packages: \n"
-		logcontent += str(systempkg_list) + "\n"
+		BUILDTEST_LOGCONTENT.append("System Packages: \n")
+
 		for pkg in systempkg_list:
-			logcontent += generate_binary_test(args_dict,verbose)
+			generate_binary_test(args_dict,verbose,pkg)
 	else:
 		os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log","system",systempkg)
 		#logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
-		logcontent += generate_binary_test(args_dict,verbose)
+		generate_binary_test(args_dict,verbose,systempkg)
 
-
+	update_logfile(verbose)
+	sys.exit(1)
 # when -s is specified
 if software != None:
 	software=software.split("/")
@@ -245,7 +246,7 @@ if software != None:
 	logcontent += "Config Directory: " + configdir + "\n"
 	logcontent += "Code Directory:" + codedir + "\n"
 
-	generate_binary_test(args_dict,verbose)
+	generate_binary_test(args_dict,verbose,None)
 	# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
 	logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose, logdir)
 
@@ -253,4 +254,4 @@ if software != None:
 	if testset !=  None:
 		logcontent+=run_testset(software,toolchain,testset,verbose,logdir)
 	
-update_logfile(verbose)
+	update_logfile(verbose)

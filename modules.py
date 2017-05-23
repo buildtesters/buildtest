@@ -37,6 +37,9 @@ def get_unique_software(moduletrees):
 	"""
 	returns a set of software packages found in the module tree
 	"""
+	BUILDTEST_LOGCONTENT.append("-------------------------------- \n")
+	BUILDTEST_LOGCONTENT.append("func: get_unique_software \n")
+	BUILDTEST_LOGCONTENT.append("-------------------------------- \n")
 	moduletreelist=moduletrees.split(":")
 	module_set=set()
 	for moduletree in moduletreelist:
@@ -48,9 +51,8 @@ def get_unique_software(moduletrees):
 			#modulename=os.popen(os.path.basename(module)).read().rstrip()
 			module_set.add(modulename)
 
-	logcontent = "Unique Software Packages from module tree: " + moduletree + "\n"
-	logcontent += str(sorted(module_set))
-	return sorted(module_set),logcontent
+		BUILDTEST_LOGCONTENT.append("Unique Software Packages from module tree: " + moduletree + "\n")
+	return sorted(module_set)
 
 def get_unique_software_version(moduletree):
 	"""
@@ -85,17 +87,18 @@ def module_version_relation(moduletree):
 
 	module_set=get_unique_software(moduletree)
 	# This set contains one entry of sorted lists of modules, need to iterate over list and not set.
-	module_set = module_set[0]
+	#module_set = module_set[0]
 
 	# dictionary used for keeping a relationship between software name and its corresponding versions found as modulefiles
 	module_dict = {}
 
 
+	print module_set
 	# for every software in set, search easyconfig files to find version tag to get software to version relationship
 	for item in  module_set:
-		
+		print "item=",item
 		easyconfigfiles=os.popen("find " + os.path.join(BUILDTEST_EASYCONFIGDIR,item) + " -name *.eb -type f"). read().rstrip()
-		# easyconfigfiles=os.popen("find " + str(os.path.join(BUILDTEST_EASYCONFIGDIR,item)) + " -name *.eb -type f"). read().rstrip()
+		print "ebfiles=",easyconfigfiles
 		listofebfiles=easyconfigfiles.split("\n")
 		version_set=set()
 		# for software package X, get all version and store them in a set to avoid duplicate addition, only care for unique versions on the system
