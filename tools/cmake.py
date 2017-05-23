@@ -19,6 +19,7 @@
 #    You should have received a copy of the GNU General Public License 
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
+from setup import *
 from parser import *
 from tools.file import *
 def init_CMakeList(filename):

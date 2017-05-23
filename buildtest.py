@@ -31,7 +31,9 @@ from testgen import *
 from master import *
 from tools.generic import *
 from tools.file import *
-from parser import *
+from parser.functions import *
+from parser.args import *
+from parser.parser import *
 from testmodules.testsets import *
 
 import subprocess
@@ -59,8 +61,27 @@ args = parser.parse_args()
 
 # convert args into a dictionary
 args_dict=vars(args)
+print args_dict
 
-verbose=0
+findconfig=get_arg_findconfig(args_dict)
+findtest=get_arg_findtest(args_dict)
+software=get_arg_software(args_dict)
+toolchain=get_arg_toolchain(args_dict)
+list_toolchain=get_arg_list_toolchain(args_dict)
+list_unique_software=get_arg_list_unique_software(args_dict)
+software_version_relation=get_arg_software_version_relation(args_dict)
+system=get_arg_system(args_dict)
+testset=get_arg_testset(args_dict)
+verbose=get_arg_verbose(args_dict)
+
+print "verbose=",verbose
+print "findconfig=",findconfig
+print "findtest=",findtest
+print "software=",software
+print "toolchain=",toolchain
+print "software-version-relation=",software_version_relation
+print "system=",system
+print "testset=",testset
 
 # logdir where log file will be rewritten. logdir can change based on parameter -s and --system
 logdir = os.path.join(BUILDTEST_ROOT,"log")
@@ -71,7 +92,8 @@ logcontent += "buildtest \n"
 logcontent += "------------------------------------------- \n"
 
 
-if args_dict["verbose"] >= 1:
+
+if verbose >= 1:
 	text = "==================================================================== " + "\n"
 	text += "BUILDTEST ROOT DIRECTORY: " + BUILDTEST_ROOT + "\n" 
 	text += "BUILDTEST SOURCE DIRECTORY: " + BUILDTEST_SOURCEDIR +"\n"
@@ -85,12 +107,8 @@ if args_dict["verbose"] >= 1:
 	
 	logcontent += text
 
-	verbose=args_dict["verbose"]
-
-
-
 # when no argument is specified to -fc then output all yaml files
-if args.findconfig == "all": 
+if findconfig == "all": 
 	findCMD = "find " + BUILDTEST_SOURCEDIR + " -name \"*.yaml\" -type f"
 	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	(output,err) = ret.communicate()
@@ -99,7 +117,7 @@ if args.findconfig == "all":
 # otherwise report yaml file based on argument. If -fc is not specified then args.findconfig is set
 # to None and we don't want to run this section unless a -fc is specified along with an argument other than
 # all
-elif args.findconfig != None:
+elif findconfig != None:
 	find_arg = args_dict["findconfig"]
 	findCMD = "find " + BUILDTEST_SOURCEDIR + " -name \"*" + find_arg + "*.yaml\" -type f"
 	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -108,27 +126,31 @@ elif args.findconfig != None:
 	sys.exit(1)
 
 # report all buildtest generated test scripts
-if args.findtest == "all":
+if findtest == "all":
 	# running command: find $BUILDTEST_TESTDIR -name "*.sh" -type f
 	findCMD = "find " + BUILDTEST_TESTDIR + " -name \"*.sh\" -type f"
-	print findCMD
+	logcontent += findCMD + "\n"
 	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	(output,err) = ret.communicate()
 	print output
+	logcontent += output
+	update_logfile(logdir,logcontent,verbose)
 	sys.exit(1)
 # otherwise report test scripts based on argument. If -ft is not specified then args.findtest is None
 # so we don't want to run section below everytime. Only when -ft is specified
-elif args.findtest != None:
+elif findtest != None:
 	find_arg = args_dict["findtest"]
-	print find_arg, type(find_arg)
 	findCMD = "find " + BUILDTEST_TESTDIR + " -name \"*" + find_arg + "*.sh\" -type f"
 	# running command: find $BUILDTEST_SOURCEDIR -name "*<find_arg>*.sh" -type f
 	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	(output,err) = ret.communicate()
 	print output
+	logcontent += findCMD +"\n"
+	logcontent += output
+	update_logfile(logdir,logcontent,verbose)
 	sys.exit(1)
 
-if args_dict["list_toolchain"] == True:
+if list_toolchain == True:
 	toolchain_set,logcontent_substr=get_toolchain(BUILDTEST_EASYCONFIGDIR)
 	logcontent+=logcontent_substr
 	text = """ 
@@ -139,14 +161,14 @@ if args_dict["list_toolchain"] == True:
 
 	print_set(toolchain_set)
 
-if args_dict["list_unique_software"] == True:
+if list_unique_software == True:
 	software_set,logcontent_substr=get_unique_software(BUILDTEST_MODULE_EBROOT)
 	logcontent+=logcontent_substr
 	print """
 	       List of Unique Software: 
 	       ---------------------------- """
 	print_set(software_set)	
-if args_dict["software_version_relation"] == True:
+if software_version_relation == True:
 	software_version_dict=module_version_relation(BUILDTEST_MODULE_EBROOT)
 	text = """
 		Software Version Relationship:
@@ -159,12 +181,9 @@ if args_dict["software_version_relation"] == True:
 	for item in software_version_dict:
 		logcontent+= item + " " + str(sset(software_version_dict[item])) + "\n"
 
-testset=""
-if args.testset: 
-	testset=args.testset
 
 # generate system pkg test
-if args.system:
+if system != None:
 	systempkg = args.system
 	if systempkg == "all":
 
@@ -179,41 +198,34 @@ if args.system:
 		logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
 
 
-testset=""
-if args.testset:
-        testset=args.testset
-
 # when -s is specified
-if args.software != None:
+if software != None:
 	
-        software=args.software.split("/")
-	appname,appversion=get_software_name_version(software)
+        sw_arr=software.split("/")
+	appname,appversion=get_software_name_version(sw_arr)
 
-	# default value assuming toolchain is not specified
-	tcname="dummy"
-	tcversion="dummy"
-	toolchain=""
-	if args.toolchain != None:
-        	toolchain=args.toolchain.split("/")
+	if toolchain != None:
+        	tc_arr=toolchain.split("/")
+
+	# default value is dummy assuming toolchain is not specified 
 	else:
-	        toolchain="dummy/dummy".split("/")
+	        tc_arr="dummy/dummy".split("/")
 	
 
-	tcname=toolchain[0]
-	tcversion=toolchain[1]
+	tcname,tcversion=get_toolchain_name_version(tc_arr)
 
 	# checking if its a valid software
-	logcontent += software_exists(software,verbose)
+	logcontent += software_exists(sw_arr,verbose)
 
 	# checking if its a valid toolchain 
-	toolchain_exists(software,toolchain)
+	toolchain_exists(tc_arr)
 	if verbose >= 1:
 		text = "Toolchain:" + tcname + " " + tcversion + " found in system \n"
 		print text
 		logcontent += text
 
 	# check that the software,toolchain match the easyconfig.
-	ret,logcontent_substr=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
+	ret,logcontent_substr=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,sw_arr,tc_arr)
 	logcontent+=logcontent_substr
 	# generate_binary_test(software,toolchain,verbose)
 	
@@ -227,12 +239,12 @@ if args.software != None:
 	logcontent += "Config Directory: " + configdir + "\n"
 	logcontent += "Code Directory:" + codedir + "\n"
 
-	logcontent += generate_binary_test(software,toolchain,source_app_dir,verbose,logdir)
+	logcontent += generate_binary_test(sw_arr,tc_arr,source_app_dir,verbose,logdir)
 	# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
-	logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose, logdir)
+	logcontent += recursive_gen_test(sw_arr,tc_arr,configdir,codedir,verbose, logdir)
 
 	# if flag --testset is set, then 
 	if testset !=  None:
-		logcontent+=run_testset(software,toolchain,testset,verbose,logdir)
+		logcontent+=run_testset(sw_arr,tc_arr,testset,verbose,logdir)
 	
 update_logfile(logdir,logcontent,verbose)

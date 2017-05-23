@@ -26,6 +26,11 @@ def get_software_name_version(software):
 	else:
 		return software[0],software[1]
 
+def get_toolchain_name_version(toolchain):
+	if toolchain == None:
+		return None,None
+	else:
+		return toolchain[0],toolchain[1]
 def add_arg_to_runcmd(runcmd,arglist):
         # add each argument to runcmd
         print arglist

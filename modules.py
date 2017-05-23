@@ -150,12 +150,11 @@ def software_exists(software,verbose):
 		print "Can't find software: ", software_name
 		sys.exit(1)
 	text = "Software:" + str(software) + " found in system \n"
-	print text
 	logcontent = text
 	return logcontent
 		
 
-def toolchain_exists(software,toolchain):
+def toolchain_exists(toolchain):
 	"""
 	checks to see if toolchain passed on command line exist in toolchain list
 	"""
@@ -183,6 +182,7 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 	return True if name,version+versionsuffix,toolchain from command line is found 
 	from easyconfig, False otherwise
 	"""
+	#appname,appversion=get_software_name_version()
 	appname=software[0]
 	appversion=software[1]	
 	tcname=toolchain[0]	
