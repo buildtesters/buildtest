@@ -211,27 +211,26 @@ if system != None:
 if software != None:
 	software=software.split("/")
 
+	# checking if software exists
+	software_exists(software,verbose)
 	appname,appversion=software
+
 	if toolchain == None:
 		toolchain = "dummy/dummy"
 	
 	toolchain=toolchain.split("/")
+	# checking if its a valid toolchain 
+	toolchain_exists(toolchain,verbose)
+	
 	tcname,tcversion=toolchain
 
 	
-	# checking if its a valid software
-	logcontent += software_exists(software,verbose)
-
-	# checking if its a valid toolchain 
-	toolchain_exists(toolchain)
 	if verbose >= 1:
 		text = "Toolchain:" + tcname + " " + tcversion + " found in system \n"
 		print text
-		logcontent += text
 
 	# check that the software,toolchain match the easyconfig.
-	ret,logcontent_substr=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
-	logcontent+=logcontent_substr
+	ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
 	# generate_binary_test(software,toolchain,verbose)
 	
 	source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)
@@ -242,16 +241,16 @@ if software != None:
 	logdir=os.environ["BUILDTEST_LOGDIR"]
 
 
-	logcontent += "Source App Directory:" +  source_app_dir + "\n"
-	logcontent += "Config Directory: " + configdir + "\n"
-	logcontent += "Code Directory:" + codedir + "\n"
+	BUILDTEST_LOGCONTENT.append("Source App Directory:" +  source_app_dir + "\n")
+	BUILDTEST_LOGCONTENT.append("Config Directory: " + configdir + "\n")
+	BUILDTEST_LOGCONTENT.append("Code Directory:" + codedir + "\n")
 
 	generate_binary_test(args_dict,verbose,None)
 	# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
-	logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose, logdir)
+	recursive_gen_test(software,toolchain,configdir,codedir,verbose)
 
 	# if flag --testset is set, then 
 	if testset !=  None:
-		logcontent+=run_testset(software,toolchain,testset,verbose,logdir)
+		run_testset(software,toolchain,testset,verbose)
 	
 	update_logfile(verbose)

@@ -129,7 +129,7 @@ def generate_binary_test(args_dict,verbose,pkg):
 
 	
 # generate test for source
-def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,logdir):
+def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 	"""
 	This function generates the tests that requires compilation for EB apps. The
 	tests are written <software>/<version>/<toolchain-name>/<toolchain-version>.
@@ -153,10 +153,10 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 	destdir=os.path.join(app_destdir,subdir)
 	cmakelist=os.path.join(destdir,"CMakeLists.txt")
 	
-	logcontent = "\n"
-	logcontent += "------------------------------------------------ \n"
-	logcontent += "function: generate_source_test \n"
-	logcontent += "------------------------------------------------ \n"
+	BUILDTEST_LOGCONTENT.append("\n")
+	BUILDTEST_LOGCONTENT.append("------------------------------------------------ \n")
+	BUILDTEST_LOGCONTENT.append("function: generate_source_test \n")
+	BUILDTEST_LOGCONTENT.append("------------------------------------------------ \n")
 
 	# if subdirectory exists, create subdirectory in destdir so we can write test script
 	if subdir != "":
@@ -176,11 +176,11 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 	if "buildopts" in configmap:
 		flags=configmap["buildopts"]
 
-        logcontent += "Test Name: " +  testname + "\n"
-	logcontent += "Test Path: " + testpath + "\n"
-        logcontent += "Source File: " + sourcefilepath + "\n"
-        logcontent += "Executable Name: " +  executable + "\n"
-        logcontent += "Build Flags: " +  flags + "\n"
+        BUILDTEST_LOGCONTENT.append("Test Name: " +  testname + "\n")
+	BUILDTEST_LOGCONTENT.append("Test Path: " + testpath + "\n")
+	BUILDTEST_LOGCONTENT.append("Source File: " + sourcefilepath + "\n")
+        BUILDTEST_LOGCONTENT.append("Executable Name: " +  executable + "\n")
+        BUILDTEST_LOGCONTENT.append("Build Flags: " +  flags + "\n")
 
 
 	# write the preamble to test-script to initialize app environment using module cmds
@@ -200,8 +200,8 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
         # if there is a buildcmd & runcmd in yaml file, place this directly in test script
         if "buildcmd" in configmap and "runcmd" in configmap:
 
-		logcontent += "YAML file found buildcmd and runcmd. \n"
-		logcontent += "buildtest will generate explicit build/run commands from buildcmd and runcmd fields \n"	
+		BUILDTEST_LOGCONTENT.append("YAML file found buildcmd and runcmd. \n")
+		BUILDTEST_LOGCONTENT.append("buildtest will generate explicit build/run commands from buildcmd and runcmd fields \n")
 
 		# only process buildcmd if there is a value specified for buildcmd key
 		if configmap["buildcmd"] != None:
@@ -210,9 +210,8 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 			for cmd in configmap["buildcmd"]:
 		                buildcmd += cmd + "\n"
 		else:
-			print "buildcmd is declared but value is not specified"
-
-			logcontent+="buildcmd is declared but value is not specified \n"
+			msg = "buildcmd is declared but value is not specified \n"
+			BUILDTEST_LOGCONTENT.append(msg)
 
 		if configmap["runcmd"] != None:
 			# process the runcmd tag similar same as buildcmd and store in variable
@@ -221,10 +220,10 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 			for cmd in configmap["runcmd"]:
 				runcmd += cmd + "\n"
 		else:
-			print "runcmd is declared but value is not specified"
-
-			logcontent+="runcmd is declared, but value is not specified. Need to run executable \n"
-			logcontent+="Program Terminating"
+			msg = "runcmd is declared but value is not specified. Need runcmd to run executable \n"
+			print msg
+			BUILDTEST_LOGCONTENT.append(msg)
+			BUILDTEST_LOGCONTENT.append("Program Terminating \n")
 			update_logfile(verbose)
 			sys.exit(1)
 
@@ -239,11 +238,11 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 			print runcmd
 			print "-----------------------------------"
 			
-			logcontent += "Invoking YAML buildcmd and runcmd fields \n"
-			logcontent += "buildcmd: \n "
-			logcontent += buildcmd 
-			logcontent += "runcmd: \n"
-			logcontent += runcmd
+			BUILDTEST_LOGCONTENT.append("Invoking YAML buildcmd and runcmd fields \n")
+			BUILDTEST_LOGCONTENT.append("buildcmd: \n ")
+			BUILDTEST_LOGCONTENT.append(buildcmd)
+			BUILDTEST_LOGCONTENT.append("runcmd: \n")
+			BUILDTEST_LOGCONTENT.append(runcmd)
 	        
 		fd.write(buildcmd)
 	        fd.write(runcmd)
@@ -256,17 +255,17 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 		if "buildcmd" in configmap and "runcmd" not in configmap or "buildcmd" not in configmap and "runcmd" in configmap:
 			print "Need to specify both key: buildcmd and runcmd"
 			
-			logcontent += "Need to declare both key: buildcmd and runcmd \n"
-			logcontent += "Program Terminating \n"	
+			BUILDTEST_LOGCONTENT.append("Need to declare both key: buildcmd and runcmd \n")
+			BUILDTEST_LOGCONTENT.append("Program Terminating \n")
 			update_logfile(verbose)
 			sys.exit(1)
 
 		# get the compiler tag and type based on application and toolchain
 	        compiler,compiler_type=get_compiler(configmap,appname,tcname)
  
-		logcontent += "buildtest will auto-generate buildcmd & runcmd \n" 
-		logcontent += "Compiler: "+ compiler + "\n"
-		logcontent += "Compiler Type: " + compiler_type + "\n"
+		BUILDTEST_LOGCONTENT.append("buildtest will auto-generate buildcmd & runcmd \n")
+		BUILDTEST_LOGCONTENT.append("Compiler: " + compiler + "\n")
+		BUILDTEST_LOGCONTENT.append("Compiler Type: " + compiler_type + "\n")
 
 		# set buildcmd based on compiler_type. compiler is either nvcc,gcc,icc,mpicc, or mpiicc for intel
 	        if compiler_type == "gnu" or compiler_type == "intel" or compiler_type == "cuda":
@@ -280,13 +279,13 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
         		        if "nproc" in configmap:
                 		        nproc = str(configmap["nproc"])
 					
-					logcontent += "nproc key found in YAML config file \n"
-					logcontent += "nproc: " + nproc + "\n" 
+					BUILDTEST_LOGCONTENT.append("nproc key found in YAML config file \n")
+					BUILDTEST_LOGCONTENT.append("nproc: " + nproc + "\n") 
 				# if nproc is not specified set it to 1 when building mpi apps
 				else:		
 					nproc = "1"
 
-					logcontent += "nproc key not found in YAML config file, will set nproc = 1 \n"
+					BUILDTEST_LOGCONTENT.append("nproc key not found in YAML config file, will set nproc = 1 \n")
 				# add argument to runcmd in MPI jobs
                                 if "args" in configmap:
                                         arglist = configmap["args"]
@@ -340,11 +339,11 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 			print "RUNCMD:",runcmd
 			print "-----------------------------------"
 		
-			logcontent += "Invoking Automatic buildcmd & runcmd fields \n"
-			logcontent += "buildcmd: \n"
-			logcontent += buildcmd
-			logcontent += "runcmd: \n"
-			logcontent += runcmd
+			BUILDTEST_LOGCONTENT.append("Invoking Automatic buildcmd & runcmd fields \n")
+			BUILDTEST_LOGCONTENT.append("buildcmd: \n")
+			BUILDTEST_LOGCONTENT.append(buildcmd)
+			BUILDTEST_LOGCONTENT.append("runcmd: \n")
+			BUILDTEST_LOGCONTENT.append(runcmd)
 
 		fd.write(buildcmd)
 		fd.write(runcmd)
@@ -355,8 +354,8 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 			for cmd in configmap["runextracmd"]:
 				fd.write(cmd + "\n")
 
-			logcontent+= "runextracmd found in YAML config file \n"
-			logcontent+= "runextracmd:" + str(configmap["runextracmd"]) + "\n"
+			BUILDTEST_LOGCONTENT.append("runextracmd found in YAML config file \n")
+			BUILDTEST_LOGCONTENT.append("runextracmd:" + str(configmap["runextracmd"]) + "\n")
 	fd.close()
 	# if keyword iter is found in YAML, lets try to recreate N tests by renaming test such as
 	# hello.sh to hello_1.sh and create N-1 copies with file names hello_2.sh, hello_3.sh, ...
@@ -366,20 +365,18 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 		testpath_testname = os.path.join(destdir,testname).replace("\n",'')
 		os.rename(testpath,testpath_testname)
 		out = "Rename Iteration Test: " +  testpath +  " -> " +  testpath_testname
-		#print "Rename Iteration Test: ", testpath, " -> ", testpath_testname
 		print out
-		# logcontent += "Renaming file: ", testpath, " -> ", testpath_testname
-		logcontent += out
+		BUILDTEST_LOGCONTENT.append(out)
 		# writing test to CMakeLists.txt
-		logcontent+=add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
-		logcontent += "Content of Testfile: " + testpath_testname + "\n"
-                logcontent += "-------------------------------------------------- \n"
+		add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
+		BUILDTEST_LOGCONTENT.append("Content of Testfile: " + testpath_testname + "\n")
+                BUILDTEST_LOGCONTENT.append("-------------------------------------------------- \n")
     
                 fd=open(testpath_testname,'r')
                 content=fd.read()
-                logcontent+=content
+                BUILDTEST_LOGCONTENT.append(content)
                 fd.close()
-                logcontent += "\n -------------------------------------------------- \n"
+                BUILDTEST_LOGCONTENT.append("\n -------------------------------------------------- \n")
 
 
 		numiter = int(configmap["iter"])
@@ -391,40 +388,34 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 			copyfile(src_testpath,dest_testpathname)
 			out = "Iteration Test: " + dest_testpathname 
 			print out
-			logcontent += out
+			BUILDTEST_LOGCONTENT.append(out)
 
-			logcontent+=add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
-			logcontent += "Content of Testfile: " + dest_testpathname + "\n"
-			logcontent += "-------------------------------------------------- \n"
+			add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
+			BUILDTEST_LOGCONTENT.append("Content of Testfile: " + dest_testpathname + "\n")
+			BUILDTEST_LOGCONTENT.append("-------------------------------------------------- \n")
     
 		        fd=open(dest_testpathname,'r')
 		        content=fd.read()
-		        logcontent+=content
+		        BUILDTEST_LOGCONTENT.append(content)
 		        fd.close()
-			logcontent += " \n-------------------------------------------------- \n"
-
-
-		return logcontent
-
+			BUILDTEST_LOGCONTENT.append("\n-------------------------------------------------- \n")
 
 	
-	logcontent += add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
-
+	add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
 
 	print "Creating Test: " + testpath
 
-	logcontent += " Creating Test: " + testpath + "\n"
-	logcontent += "Content of Testfile: " + testpath + "\n"
-	logcontent += "-------------------------------------------------- \n"
+	BUILDTEST_LOGCONTENT.append("Creating Test: " + testpath + "\n")
+	BUILDTEST_LOGCONTENT.append("Content of Testfile: " + testpath + "\n")
+	BUILDTEST_LOGCONTENT.append("----------------------- \n")
 	
 	fd=open(testpath,'r')
 	content=fd.read()
-	logcontent+=content
+	BUILDTEST_LOGCONTENT.append(content)
 	fd.close()
 
 
-	logcontent += "\n -------------------------------------------------- \n"
-	return logcontent
+	BUILDTEST_LOGCONTENT.append("\n -------------------------------------------------- \n")
 def get_compiler(configmap,appname,tcname):
 	"""
 	 This function gets the appropriate compiler tag and compiler type based on the 
@@ -675,7 +666,7 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 
 		# when toolchain is not specified use dummy toolchain
 		if toolchain == None:
-			toolchain = "dummy/dummy".split("/")
+			toolchain = "dummy/dummy"
 		software=software.split("/")
 		toolchain=toolchain.split("/")
 

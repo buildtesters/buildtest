@@ -124,19 +124,27 @@ def get_toolchain(easyconfigdir):
 	BUILDTEST_LOGCONTENT.append("-------------------------------------\n")
 
 	BUILDTEST_LOGCONTENT.append("Executing command: find " + easyconfigdir + " -name *.eb -type f" + "\n")
+	BUILDTEST_LOGCONTENT.append("The following eb files found \n")
+	for ebfile in easyconfigfiles:
+		BUILDTEST_LOGCONTENT.append(ebfile + "\n")
+	
 	# only care about unique toolchains
 	toolchain=set()
-	logcontent = ""
 	# find all toolchains in the easyconfig files
         for ebfile in easyconfigfiles:
 
-		logcontent += ebfile + "\n"
 
-                cmd="""grep "toolchain =" """ + ebfile + """ | cut -f4 -d " " | tr -d "'," """
+                cmd="""grep "toolchain =" """ + ebfile + """ | cut -f4 -d " " | tr -d "'," """ 
+		BUILDTEST_LOGCONTENT.append("Running Command: " + cmd + "\n")
                 toolchain_name=os.popen(cmd).read().rstrip()
                 cmd="""grep "toolchain =" """ + ebfile + """ | cut -f6 -d " " | tr -d "}'" """
+		BUILDTEST_LOGCONTENT.append("Running Command: " + cmd + "\n")
                 toolchain_version=os.popen(cmd).read().rstrip()
 		toolchain.add(toolchain_name+" "+toolchain_version)
+
+	BUILDTEST_LOGCONTENT.append("\n\n The Following Toolchain were found :\n")
+	for tc in toolchain:
+		BUILDTEST_LOGCONTENT.append(tc + "\n")
 	return toolchain
 
 def software_exists(software,verbose):
@@ -144,43 +152,64 @@ def software_exists(software,verbose):
 	checks whether software exist, there must be a module file present with the 
 	same name specified as the argument. 
 	"""
-	logcontent = ""
 	if len(software) != 2:
-		print "Too many arguments, -s takes argument <software>,<version>"
+		msg = "Too many arguments, -s takes argument <software>,<version> \n"
+		print msg
+		BUILDTEST_LOGCONTENT.append(msg)
+		update_logfile(verbose)
 		sys.exit(1)
 	
 	softwarecollection=get_unique_software_version(BUILDTEST_MODULE_EBROOT)
 	software_name=software[0]+" "+software[1]
 	if software_name not in softwarecollection:
-		print "Can't find software: ", software_name
+		msg = "Can't find software: " +  software_name + "\n"
+		print msg
+                BUILDTEST_LOGCONTENT.append(msg)
+                update_logfile(verbose)
 		sys.exit(1)
+
 	text = "Software:" + str(software) + " found in system \n"
-	logcontent = text
-	return logcontent
+	BUILDTEST_LOGCONTENT.append(text)
+	
 		
 
-def toolchain_exists(toolchain):
+def toolchain_exists(toolchain,verbose):
 	"""
 	checks to see if toolchain passed on command line exist in toolchain list
 	"""
 
+        # catch all exception cases for invalid value for -t flag
+        if len(toolchain) != 2:
+                msg =  "Too many arguments, -t takes argument <toolchain-name>,<toolchain-version> \n"
+                print msg
+		BUILDTEST_LOGCONTENT.append(msg)
+		update_logfile(verbose)
+                sys.exit(1)
+
 	toolchain_list=get_toolchain(BUILDTEST_EASYCONFIGDIR)
 
+	BUILDTEST_LOGCONTENT.append("-------------------------------------------\n")
+	BUILDTEST_LOGCONTENT.append("func: toolchain_exists \n")
+	BUILDTEST_LOGCONTENT.append("-------------------------------------------\n")
 	# if toolchain is installed as hidden file then strip the "." prior to checking in list
 	if isHiddenFile(toolchain[1]) == True:
 		strip_version=stripHiddenFile(toolchain[1])
 		toolchain_name=toolchain[0]+" "+strip_version
+		msg = "Toolchain version specified as hidden file. Striping leading . for matching purpose \n"
+		BUILDTEST_LOGCONTENT.append("msg")
 	else:
 		toolchain_name=toolchain[0]+" "+toolchain[1]
 
-	# catch all exception cases in invalid value for -t flag
-	if len(toolchain) != 2:
-		print "Too many arguments, -t takes argument <toolchain-name>,<toolchain-version>"
-		sys.exit(1)
-	# check if toolchain is in list
+	# report error if toolchain is not found in toolchain list
 	if toolchain_name not in toolchain_list:
-		print "Can't find toolchain: ", toolchain_name
+		msg = "Can't find toolchain: " + toolchain_name + "\n"
+		print msg
+		BUILDTEST_LOGCONTENT.append(msg)
+	        update_logfile(verbose)
 		sys.exit(1)
+
+	msg = "Toolchain + " + toolchain_name + " found in system"
+	BUILDTEST_LOGCONTENT.append(msg)
 
 def check_software_version_in_easyconfig(moduletree,software,toolchain):
 	"""
@@ -197,8 +226,13 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 	cmd="find " + os.path.join(moduletree,appname)  + " -name *.eb -type f"         
 	easyconfigfiles=os.popen(cmd).read().rstrip().split("\n")
 
-	logcontent = "buildtest will search the following eb files"
-	logcontent += str(easyconfigfiles) + "\n"
+	BUILDTEST_LOGCONTENT.append("--------------------------------------------- \n")
+	BUILDTEST_LOGCONTENT.append("func: check_software_version_in_easyconfig \n")
+	BUILDTEST_LOGCONTENT.append("--------------------------------------------- \n")
+
+	BUILDTEST_LOGCONTENT.append("buildtest will search the following eb files \n")
+	for ebfile in easyconfigfiles:
+		BUILDTEST_LOGCONTENT.append(ebfile + "\n")
 
 	# boolean value to check if eb file found with parameters for software and toolchain
 	match=False    
@@ -206,44 +240,37 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 	# if user is testing a software package that is a hidden module file, strip the leading "." for checking
 	if isHiddenFile(appversion):
 		appversion = stripHiddenFile(appversion)
-		logcontent += "Stripping leading . from application version: " + appversion
+		BUILDTEST_LOGCONTENT.append("Stripping leading . from application version: " + appversion + "\n")
 
 	# if user specified a toolchain version that is a hidden module file, strip leading "." 
 	if isHiddenFile(tcversion):
 		tcversion = stripHiddenFile(tcversion)
-		logcontent += "Stripping leading . from toolchain version: " + tcversion
+		BUILDTEST_LOGCONTENT.append("Stripping leading . from toolchain version: " + tcversion + "\n")
 
 	for ebfile in easyconfigfiles:
 		# get name tag from easyconfig
 		cmd="""grep "name = " """ + ebfile + """ | cut -f3 -d " " """
-		logcontent += "executing command: " + cmd + "\n"
+		BUILDTEST_LOGCONTENT.append("executing command: " + cmd + "\n")
 		
 		name=os.popen(cmd).read()
-		logcontent += "result: " + name + "\n"
+		BUILDTEST_LOGCONTENT.append("result: " + name + "\n")
 
 		# get version tag from easyconfig, possibility for multiple occurence so get 1st entry
 		cmd="""grep "version = " """ + ebfile + """ | cut -f3 -d " " | head -n1 """
-		logcontent += "executing command: " + cmd + "\n"
+		BUILDTEST_LOGCONTENT.append("executing command: " + cmd + "\n")
 		version=os.popen(cmd).read()
-		logcontent += "result: "  + version + "\n"
+		BUILDTEST_LOGCONTENT.append("result: "  + version + "\n")
 
 		cmd=""" grep "toolchain = " """ + ebfile + """ | cut -f4 -d " " | tr -d "," """
-		logcontent += "executing command: " + cmd + "\n"
+		BUILDTEST_LOGCONTENT.append("executing command: " + cmd + "\n")
 		toolchain_name=os.popen(cmd).read()
-		logcontent += "result: " + toolchain_name + "\n"
+		BUILDTEST_LOGCONTENT.append("result: " + toolchain_name + "\n")
 
 
 		cmd=""" grep "toolchain = " """ + ebfile + """ | cut -f6 -d " " | tr -d "}" """
-		logcontent += "executing command: " + cmd + "\n"
+		BUILDTEST_LOGCONTENT.append("executing command: " + cmd + "\n")
 		toolchain_version=os.popen(cmd).read()
-		logcontent += "result: " + toolchain_version + "\n"
-
-		
-		logcontent += "Before Stripping characters \n"
-		logcontent += "name: " + name + "\n"
-		logcontent += "version: " + version + "\n"
-		logcontent += "toolchain name:" + toolchain_name + "\n"
-		logcontent += "toolchain version:" + toolchain_version + "\n"
+		BUILDTEST_LOGCONTENT.append(toolchain_version + "\n")
 
 		# strip character ' and newline
 		name=name.replace('\'','')
@@ -255,21 +282,29 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 		toolchain_version=toolchain_version.replace('\'','')
 		toolchain_version=toolchain_version.replace('\n','')
 	
-		logcontent += "\n"
-                logcontent += "After Stripping characters ' and newline \n"
-                logcontent += "name: " + name + "\n"
-                logcontent += "version: " + version + "\n"
-                logcontent += "toolchain name:" + toolchain_name + "\n"
-                logcontent += "toolchain version:" + toolchain_version + "\n"
-	
+
+		BUILDTEST_LOGCONTENT.append("Before Stripping characters \n")
+		BUILDTEST_LOGCONTENT.append("name: " + name + "\n")
+		BUILDTEST_LOGCONTENT.append("version: " + version + "\n")
+		BUILDTEST_LOGCONTENT.append("toolchain name:" + toolchain_name + "\n")
+		BUILDTEST_LOGCONTENT.append("toolchain version:" + toolchain_version + "\n")
+
+		BUILDTEST_LOGCONTENT.append("\n")
+                BUILDTEST_LOGCONTENT.append("After Stripping characters ' and newline \n")
+                BUILDTEST_LOGCONTENT.append("name: " + name + "\n")
+                BUILDTEST_LOGCONTENT.append("version: " + version + "\n")
+                BUILDTEST_LOGCONTENT.append("toolchain name:" + toolchain_name + "\n")
+                BUILDTEST_LOGCONTENT.append("toolchain version:" + toolchain_version + "\n")
+		BUILDTEST_LOGCONTENT.append("\n")
+
 
 		# get name of eb file and remove .eb extension
 		ebname=os.popen("basename " + ebfile).read()
-		logcontent = "easyconfig file= " + ebname
+		BUILDTEST_LOGCONTENT.append("easyconfig file= " + ebname)
 
 		ebname=ebname[:-4]
-		logcontent += "stripping file extension .eb \n"
-		logcontent += "easyconfig file:"+ ebname + "\n"
+		BUILDTEST_LOGCONTENT.append("stripping file extension .eb \n")
+		BUILDTEST_LOGCONTENT.append("easyconfig file:"+ ebname + "\n")
 		
 		#print "local logcontent"
 		#print logcontent
@@ -283,8 +318,8 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 			# eb name format used for comparison to calculate versionsuffx
 			eb_name_format=name+"-"+version+"-"+toolchain_name+"-"+toolchain_version
 
-		logcontent += "eb name format using string concat of <name>-<version>-<toolchain-name>-<toolchain-version> \n"
-		logcontent += "eb name format string: " + eb_name_format + "\n"
+		BUILDTEST_LOGCONTENT.append("eb name format using string concat of <name>-<version>-<toolchain-name>-<toolchain-version> \n")
+		BUILDTEST_LOGCONTENT.append("eb name format string: " + eb_name_format + "\n")
 
 		# There is no version suffix when file name is just software-version-toolchain
 		# determine starting position index in easyconfig filename to calculate versionsuffix. If its a dummy toolchain start with version, otherwise from toolchain version
@@ -299,31 +334,29 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 		# variable used for comparison
 		version_versionsuffix=version + versionsuffix
 
-		logcontent += "Extracting version suffix from eb name: " + ebname + "\n"
-		logcontent += "Version Suffix: " + versionsuffix + "\n"
-		logcontent += "Version + Version Suffix: " + version_versionsuffix + "\n"
+		BUILDTEST_LOGCONTENT.append("Extracting version suffix from eb name: " + ebname + "\n")
+		BUILDTEST_LOGCONTENT.append("Version Suffix: " + versionsuffix + "\n")
+		BUILDTEST_LOGCONTENT.append("Version + Version Suffix: " + version_versionsuffix + "\n")
 
 		# master condition to determine if easyconfig parameter match argument for software and toolchain
 		if tcname == "dummy" and tcversion == "dummy":
 			if name == appname and version_versionsuffix == appversion:
-				logcontent += "Comparing strings: the following strings" +  "\n"
-				logcontent += "name: " + name + " with appname: " + appname + " AND \n"
-				logcontent += "version_versionsuffix: " + version_versionsuffix + " with appversion: " + appversion + "\n"
-				return True,logcontent
+				BUILDTEST_LOGCONTENT.append("Comparing strings: the following strings \n" )
+				BUILDTEST_LOGCONTENT.append("name: " + name + " with appname: " + appname + " AND ")
+				BUILDTEST_LOGCONTENT.append("version_versionsuffix: " + version_versionsuffix + " with appversion: " + appversion + "\n")
+				return True
 		else:
 			if name == appname and version_versionsuffix == appversion and toolchain_name == tcname and toolchain_version == tcversion:
-				logcontent += "Comparing strings: the following strings \n" 
-				logcontent += "name:" + name + " with appname = " + appname + " AND \n"
-				logcontent += "version_versionsuffix: " + version_versionsuffix + " with appversion: " + appversion + " AND \n"
-				logcontent += "toolchain_name: " + toolchain_name + " with tcname: " + tcname + " AND \n"
-				logcontent += "toolchain_version: " + toolchain_version + "with tcversion: " + tcversion + "\n"
-				return True,logcontent
+				BUILDTEST_LOGCONTENT.append("Comparing strings: the following strings \n") 
+				BUILDTEST_LOGCONTENT.append("name:" + name + " with appname = " + appname + " AND ")
+				BUILDTEST_LOGCONTENT.append("version_versionsuffix: " + version_versionsuffix + " with appversion: " + appversion + " AND ")
+				BUILDTEST_LOGCONTENT.append("toolchain_name: " + toolchain_name + " with tcname: " + tcname + " AND ")
+				BUILDTEST_LOGCONTENT.append("toolchain_version: " + toolchain_version + "with tcversion: " + tcversion + "\n")
+				return True
 
 	# mismatch in easyconfig entries for name,version+versionsuffix, and toolchain with specified entries
 	if match == False:
-		print "Can't find easyconfig file with argument:"
-		print "software= ", software[0]
-        	print "version:", software[1]
-		print "toolchain name:",toolchain[0]
-		print "toolchain version:", toolchain[1]
+	 	msg = "Can't find easyconfig file with argument: -s " + software + " -t " + toolchain
+		BUILDTEST_LOGCONTENT.append(msg)
+		update_logfile(verbose)
 		sys.exit(1)

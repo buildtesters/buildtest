@@ -25,12 +25,13 @@ from testgen import *
 from tools.generic import *
 
 
-def recursive_gen_test(software,toolchain,configdir,codedir,verbose,logdir):
+def recursive_gen_test(software,toolchain,configdir,codedir,verbose ):
         """ if config directory exists then process .yaml files to build source test """
-	logcontent =  "\n ------------------------------------------------------------ \n"
-	logcontent += " function: recursive_gen_test \n"
-	logcontent += "------------------------------------------------------------ \n"
-	logcontent += " Processing all YAML files in " + configdir 
+	BUILDTEST_LOGCONTENT.append("\n ------------------------------------------------------------ \n")
+	BUILDTEST_LOGCONTENT.append(" function: recursive_gen_test \n")
+	BUILDTEST_LOGCONTENT.append("------------------------------------------------------------ \n")
+	BUILDTEST_LOGCONTENT.append("Processing all YAML files in " + configdir)
+
         if os.path.isdir(configdir):
                 for root,subdirs,files in os.walk(configdir):
     
@@ -49,6 +50,5 @@ def recursive_gen_test(software,toolchain,configdir,codedir,verbose,logdir):
                                 # error processing config file, then parse_config will return an empty dictionary
                                 if len(configmap) == 0:
                                         continue
-                                logcontent+=generate_source_test(software,toolchain,configmap,code_destdir,verbose,subdir,logdir)
-	return logcontent
+                                generate_source_test(software,toolchain,configmap,code_destdir,verbose,subdir)
 

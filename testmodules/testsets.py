@@ -24,10 +24,10 @@ from tools.generic import *
 from tools.cmake import *
 from master import *
 
-def run_testset(software,toolchain,testset,verbose,logdir):
+def run_testset(software,toolchain,testset,verbose):
 	""" checks the testset parameter to determine which set of scripts to use to create tests """
 
-	appname,appversion=get_software_name_version(software)
+	appname,appversion=software
 
 	source_app_dir=""
 	codedir=""
@@ -52,13 +52,12 @@ def run_testset(software,toolchain,testset,verbose,logdir):
 		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"python")
 		configdir=os.path.join(source_app_dir,"config")
 		codedir=os.path.join(source_app_dir,"code")
-		logcontent+=recursive_gen_test(software,toolchain,configdir,codedir,verbose,logdir)
-		return logcontent
+		recursive_gen_test(software,toolchain,configdir,codedir,verbose)
+		return
         if runtest == True:
         	codedir=os.path.join(source_app_dir,"code")
-                logcontent+=testset_generator(software,toolchain,codedir,verbose)
+                testset_generator(software,toolchain,codedir,verbose)
 
-	return logcontent
 def testset_generator(software,toolchain,codedir,verbose):
 	logcontent = "--------------------------------------\n"
 	logcontent = "function: testset_generator \n"
@@ -108,6 +107,7 @@ def testset_generator(software,toolchain,codedir,verbose):
 				logcontent+="\n--------------------------------------------\n"
 				
 				cmakelist = os.path.join(subdirpath,"CMakeLists.txt")
-				logcontent+=add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
-				print "Creating Test: ", testpath
-	return logcontent	
+				add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
+				msg = "Creating Test: " + testpath  
+				print msg
+				BUILDTEST_LOGCONTENT.append(msg + "\n")
