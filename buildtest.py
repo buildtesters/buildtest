@@ -155,10 +155,9 @@ elif findtest != None:
 
 if list_toolchain == True:
 	toolchain_set=get_toolchain(BUILDTEST_EASYCONFIGDIR)
-	text = """ 
-		List of Toolchains:
-		--------------------
-	      """
+	text = """ \n
+		 List of Toolchains: 
+		 -------------------- \n"""
 	print text
 	BUILDTEST_LOGCONTENT.append(text)
 	print_set(toolchain_set)
@@ -166,25 +165,29 @@ if list_toolchain == True:
 	sys.exit(1)
 
 if list_unique_software == True:
-	software_set,logcontent_substr=get_unique_software(BUILDTEST_MODULE_EBROOT)
-	logcontent+=logcontent_substr
-	print """
+	software_set=get_unique_software(BUILDTEST_MODULE_EBROOT)
+	text =  """ \n
 	       List of Unique Software: 
-	       ---------------------------- """
+	       ---------------------------- \n """
+	print text
+	BUILDTEST_LOGCONTENT.append(text)
 	print_set(software_set)	
+	update_logfile(verbose)
+	sys.exit(1)
 if software_version_relation == True:
 	software_version_dict=module_version_relation(BUILDTEST_MODULE_EBROOT)
-	text = """
+	text = """ \n
 		Software Version Relationship:
-		-------------------------------
-		"""
+		------------------------------- \n """
 	print text
+	BUILDTEST_LOGCONTENT.append(text)
 	print_dictionary(software_version_dict)
 
-	logcontent += text +"\n"
 	for item in software_version_dict:
-		logcontent+= item + " " + str(sset(software_version_dict[item])) + "\n"
+		BUILDTEST_LOGCONTENT.append(item + " " + str(sset(software_version_dict[item])) + "\n")
 
+	update_logfile(verbose)
+	sys.exit(1)
 
 # generate system pkg test
 if system != None:
