@@ -21,12 +21,21 @@
 ############################################################################# 
 def get_software_name_version(software):
 	""" return the software as two separate values name and version """
+	# split software by / to get name and version
+	if '/' in software:
+		software=software.split("/")	
+
 	if software == None:
 		return None,None
 	else:
 		return software[0],software[1]
 
 def get_toolchain_name_version(toolchain):
+	print toolchain
+        # split software by / to get name and version
+        if '/' in toolchain:
+                toolchain=toolchain.split("/")
+
 	if toolchain == None:
 		return None,None
 	else:

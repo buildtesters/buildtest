@@ -24,6 +24,7 @@ from setup import *
 from tools.generic import *
 from tools.cmake import *
 from tools.file import *
+from parser.args import *
 
 import os.path 
 import os, sys
@@ -70,7 +71,7 @@ def systempkg_generate_binary_test(pkg,verbose,logdir):
             logcontent += systempkg_process_binary_file(commandfile,pkg,verbose,logdir)
 
 	return logcontent
-def generate_binary_test(software,toolchain,configdir,verbose,logdir):
+def generate_binary_test(args_dict,configdir,verbose,logdir):
 	"""
 	This function operates similar to systempkg_generate_binary_test except this function
 	is used only for ebapps that are present as modules. This is because ebapps names are 
@@ -79,9 +80,21 @@ def generate_binary_test(software,toolchain,configdir,verbose,logdir):
 	that provides gcc, gfortran, g++. This function makes sure command.yaml exists and CMakeLists.txt
 	is present in all subdirectories in BUILDTEST_TESTDIR
 	"""
+	# variable to indicate if it is a software or system package for binary test
+	test_type=""
+
 	toplevel_cmakelist_file=os.path.join(BUILDTEST_ROOT,"CMakeLists.txt")
 	testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
-	swname = software[0]
+
+	software=get_arg_software(args_dict)
+	system=get_arg_system(args_dict)
+	if software is not None:
+		appname,appversion=get_software_name_version(software)
+		configdir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)
+		test_type="software"
+	elif system is not None:
+		configdir=os.path.join(BUILDTEST_SOURCEDIR,"system",system)
+		test_type="system"
 	commandfile=os.path.join(configdir,"command.yaml")
 
 	logcontent = ""
@@ -106,7 +119,7 @@ def generate_binary_test(software,toolchain,configdir,verbose,logdir):
 		print "Warning: Cannot find command file:", commandfile, "Skipping binary test"
 		logcontent += "Warning: Cannot find command file:" + commandfile + "Skipping binary test"
 	else:
-	    logcontent += process_binary_file(commandfile,software,toolchain,verbose,logdir)
+	    logcontent += process_binary_file(commandfile,args_dict,test_type,verbose,logdir)
 
 	return logcontent
 # generate test for source
@@ -206,7 +219,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 
 			logcontent+="runcmd is declared, but value is not specified. Need to run executable \n"
 			logcontent+="Program Terminating"
-			update_logfile(logdir,logcontent,verbose)
+			update_logfile(logcontent,verbose)
 			sys.exit(1)
 
 		
@@ -239,7 +252,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 			
 			logcontent += "Need to declare both key: buildcmd and runcmd \n"
 			logcontent += "Program Terminating \n"	
-			update_logfile(logdir,logfile,verbose)
+			update_logfile(logcontent,verbose)
 			sys.exit(1)
 
 		# get the compiler tag and type based on application and toolchain
@@ -605,7 +618,7 @@ def systempkg_process_binary_file(filename,pkg,verbose,logdir):
                 print "Cant find key binaries in file: ", filename, " Exiting program"
                 logcontent += "Cant find key binaries in file: " + filename  + "\n"
 		logcontent += "Exiting program \n"
-		update_logfile(logdir,logcontent,verbose)
+		update_logfile(logcontent,verbose)
                 sys.exit(1)
 
         # create a binary test script for each key,value item in dictionary
@@ -643,112 +656,40 @@ def systempkg_process_binary_file(filename,pkg,verbose,logdir):
 		logcontent += "Creating Test:" + testpath + "\n"
 
 	return logcontent
-def process_binary_file(filename,software,toolchain,verbose,logdir):
+def process_binary_file(filename,args_dict,test_type,verbose,logdir):
 	"""
 	does the same operation as systempkg_process_binary_file but for ebapps. There are extra 
 	subdirectories that are created that implies multiple CMakeLists.txt files for each sub directory
 	"""
-	name,version=software
-	toolchain_name,toolchain_version=toolchain
+	if test_type=="software":
+		software=get_arg_software(args_dict)
+		name,version=get_software_name_version(software)
+		toolchain=get_arg_toolchain(args_dict)
+
+		# when toolchain is not specified use dummy toolchain
+		if toolchain == None:
+			toolchain = "dummy/dummy".split("/")
+		software=software.split("/")
+		toolchain=toolchain.split("/")
+
+		print toolchain
+		toolchain_name,toolchain_version=toolchain
+	
+		test_destdir,test_destdir_cmakelist = setup_software_cmake(software,toolchain,args_dict)	
+
+ 	       # load preamble for test-script that initializes environment.
+        	header=load_modules(software,toolchain)
+
+	else:
+		system_get_arg_system(args_dict)
+
+		test_destdir,test_destdir_cmakelist = setup_system_cmake(args_dict)	
+
 	
 	logcontent = ""
 	logcontent += "--------------------------------------- \n"
 	logcontent += " function: process_binary_file \n"
 	logcontent += "--------------------------------------- \n"
-
-	# if top level software directory is not present, create it
-	test_ebapp_dir=os.path.join(BUILDTEST_TESTDIR,"ebapp")
-
-	# variables to reference each subdirectory in <software>/<version>/<toolchain-name>/<toolchain-version>
-	test_name_dir=os.path.join(test_ebapp_dir,name)
-	test_version_dir=os.path.join(test_name_dir,version)
-	test_toolchain_name_dir=os.path.join(test_version_dir,toolchain_name)
-	test_toolchain_version_dir=os.path.join(test_toolchain_name_dir,toolchain_version)
-
-	# BUILDTEST_TESTDIR/CMakeLists.txt
-	test_cmakelist = os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
-
-	# BUILDTEST_TESTDIR/ebapps/CMakeLists.txt
-	test_ebapp_cmakelist = os.path.join(test_ebapp_dir,"CMakeLists.txt")
-	
-	# CMakeLists.txt files in <software>/<version>/<toolchain-name>/<toolchain-version>
-	test_name_cmakelist = os.path.join(test_name_dir,"CMakeLists.txt")
-	test_version_cmakelist = os.path.join(test_version_dir,"CMakeLists.txt")
-	test_toolchain_name_cmakelist = os.path.join(test_toolchain_name_dir,"CMakeLists.txt")
-	test_toolchain_version_cmakelist = os.path.join(test_toolchain_version_dir,"CMakeLists.txt")
-
-	test_destdir=test_toolchain_version_dir
-
-	logcontent += " Variables Assignments \n"
-	logcontent += "test_ebapp_dir = " + test_ebapp_dir + "\n"
-	logcontent += "test_name_dir = " + test_name_dir + "\n"
-	logcontent += "test_version_dir = " + test_version_dir + "\n"
-	logcontent += "test_toolchain_name_dir = " + test_toolchain_name_dir + "\n"
-	logcontent += "test_toolchain_version_dir = " + test_toolchain_version_dir + "\n"
-	logcontent += "test_cmakelist = " + test_cmakelist + "\n"
-	logcontent += "test_name_cmakelist = " +test_name_cmakelist + "\n"
-	logcontent += "test_version_cmakelist = " +test_version_cmakelist + "\n"
-	logcontent += "test_toolchain_name_cmakelist = " +test_toolchain_name_cmakelist + "\n"
-	logcontent += "test_toolchain_version_cmakelist = " +test_toolchain_version_cmakelist + "\n"
-	logcontent += "test_destdir = " + test_destdir + "\n"
-	logcontent += "\n"
-	# if test directory exist, delete and recreate it inorder for reproducible test builds
-	if os.path.isdir(test_destdir):
-		shutil.rmtree(test_destdir)
-		logcontent += "removing directory " + test_destdir + "\n"
-
-	# create directories if they don't exist
-	# Directory Format: <software>/<version>/toolchain-name>/<toolchain-version>
-	logcontent += "Creating directory: " + test_ebapp_dir + "\n"
-	create_dir(test_ebapp_dir,verbose)
-
-	logcontent += "Creating directory: " + test_name_dir + "\n"
-	create_dir(test_name_dir,verbose)
-
-	logcontent += "Creating directory: " + test_version_dir + "\n"
-	create_dir(test_version_dir,verbose)
-
-	logcontent += "Creating directory: " + test_toolchain_name_dir + "\n"
-	create_dir(test_toolchain_name_dir,verbose)
-
-	logcontent += "Creating directory: " + test_toolchain_version_dir + "\n"
-	create_dir(test_toolchain_version_dir,verbose)
-	
-	# create CMakeList.txt file in each directory of <software>/<version>/<toolchain-name>/<toolchain-version> if it doesn't exist
-	logcontent += "Creating CMakeLists.txt file: " + test_ebapp_cmakelist + "\n"
-	create_file(test_ebapp_cmakelist,verbose)
-
-	logcontent += "Creating CMakeLists.txt file: " + test_name_cmakelist + "\n"
-	create_file(test_name_cmakelist,verbose)
-
-	logcontent += "Creating CMakeLists.txt file: " + test_version_cmakelist + "\n"
-	create_file(test_version_cmakelist,verbose)
-
-	logcontent += "Creating CMakeLists.txt file: " + test_toolchain_name_cmakelist + "\n"
-	create_file(test_toolchain_name_cmakelist,verbose)
-
-	logcontent += "Creating CMakeLists.txt file: " + test_toolchain_version_cmakelist + "\n"
-	create_file(test_toolchain_version_cmakelist,verbose)
-
-	logcontent += "Updating " + test_cmakelist + " with add_subdirectory(ebapp) \n"
-	# update CMakeLists.txt with tags add_subdirectory(ebapp)
-	update_CMakeLists(test_cmakelist,"ebapp",verbose)
-
-	# update CMakeLists.txt with tags add_subdirectory(X) where X=name|version|toolchain-name|toolchain-version
-	logcontent += "Updating " + test_ebapp_cmakelist + " with add_subdirectory("+name+")\n"
-	update_CMakeLists(test_ebapp_cmakelist,name,verbose)
-
-	logcontent += "Updating " + test_name_cmakelist + " with add_subdirectory("+version+")\n"
-	update_CMakeLists(test_name_cmakelist,version,verbose)
-
-	logcontent += "Updating " + test_version_cmakelist + " with add_subdirectory("+toolchain_name+")\n"
-	update_CMakeLists(test_version_cmakelist,toolchain_name,verbose)
-
-	logcontent += "Updating " + test_toolchain_name_cmakelist + " with add_subdirectory("+toolchain_version+")\n"
-	update_CMakeLists(test_toolchain_name_cmakelist,toolchain_version,verbose)
-
-	# load preamble for test-script that initializes environment.
-	header=load_modules(software,toolchain)
 
 	logcontent += "\n"
 	logcontent += "Reading File: " + filename + "\n"
@@ -758,7 +699,7 @@ def process_binary_file(filename,software,toolchain,verbose,logdir):
 	# if key binaries is not in yaml file, exit program
 	if "binaries" not in content:
 		print "Cant find key binaries in file: ", filename, " Exiting program"
-		update_logfile(logdir,logcontent,verbose)
+		update_logfile(logcontent,verbose)
 		sys.exit(1)
 
 	# create a binary test script for each key,value item in dictionary
@@ -769,7 +710,10 @@ def process_binary_file(filename,software,toolchain,verbose,logdir):
 		testpath=os.path.join(test_destdir,testname)
 		logcontent += "Creating test file: " +  testpath + "\n"
 		fd=open(testpath,'w')
-		fd.write(header)
+		if test_type == "software":
+			fd.write(header)
+		else:
+			fd.write("module purge")
 		fd.write(key)
 		fd.close()
 
@@ -782,10 +726,14 @@ def process_binary_file(filename,software,toolchain,verbose,logdir):
 		logcontent+=content +"\n"
 		logcontent += "----------------------------------------------------- \n"
 		
-		fd=open(test_toolchain_version_cmakelist,'a')
-		add_test_str="add_test(NAME " + name + "-" + version + "-" + toolchain_name + "-" + toolchain_version + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
-	
-		logcontent += "Updating CMakeLists: " + test_toolchain_version_cmakelist + " with content: "+ add_test_str 
+		fd=open(test_destdir_cmakelist,'a')
+		if test_type == "software":
+			add_test_str="add_test(NAME " + name + "-" + version + "-" + toolchain_name + "-" + toolchain_version + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+		else:
+			add_test_str="add_test(NAME system-" + system + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+
+		
+		logcontent += "Updating CMakeLists: " + test_destdir_cmakelist + " with content: "+ add_test_str 
 		fd.write(add_test_str)
 
 		print "Creating Test:", testpath

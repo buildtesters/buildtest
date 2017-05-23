@@ -8,7 +8,7 @@ def get_arg_software(config):
         return config["software"]
 
 def get_arg_toolchain(config):
-        return config["toolchain"]
+	return config["toolchain"]
 
 def get_arg_list_toolchain(config):
         return config["list_toolchain"]

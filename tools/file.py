@@ -62,14 +62,16 @@ def isHiddenFile(inputfile):
         else:
                 return False
 
-def update_logfile(logdir,logcontent,verbose):
-        create_dir(logdir,verbose)          
-        logfilename = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
-        logfilepath = os.path.join(logdir,logfilename)
+def update_logfile(logcontent,verbose):
+ 	logdir=os.environ["BUILDTEST_LOGDIR"]
+	logfile=os.environ["BUILDTEST_LOGFILE"]
+
+	create_dir(logdir,verbose)          
+        logfilepath = os.path.join(logdir,logfile)
 
         print "Writing Log File: " + logfilepath
 
-        fd = open(logfilepath,'w')
+        fd = open(logfilepath,'a')
         fd.write(logcontent)
         fd.close()
 

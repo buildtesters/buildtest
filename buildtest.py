@@ -83,8 +83,11 @@ print "software-version-relation=",software_version_relation
 print "system=",system
 print "testset=",testset
 
-# logdir where log file will be rewritten. logdir can change based on parameter -s and --system
-logdir = os.path.join(BUILDTEST_ROOT,"log")
+os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log")
+os.environ["BUILDTEST_LOGFILE"] = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
+logdir =  os.environ["BUILDTEST_LOGDIR"]
+logfile = os.environ["BUILDTEST_LOGFILE"]
+
 logcontent=""
 
 logcontent += "------------------------------------------- \n"
@@ -134,7 +137,7 @@ if findtest == "all":
 	(output,err) = ret.communicate()
 	print output
 	logcontent += output
-	update_logfile(logdir,logcontent,verbose)
+	update_logfile(logcontent,verbose)
 	sys.exit(1)
 # otherwise report test scripts based on argument. If -ft is not specified then args.findtest is None
 # so we don't want to run section below everytime. Only when -ft is specified
@@ -147,7 +150,7 @@ elif findtest != None:
 	print output
 	logcontent += findCMD +"\n"
 	logcontent += output
-	update_logfile(logdir,logcontent,verbose)
+	update_logfile(logcontent,verbose)
 	sys.exit(1)
 
 if list_toolchain == True:
@@ -187,7 +190,7 @@ if system != None:
 	systempkg = args.system
 	if systempkg == "all":
 
-		logdir = os.path.join(BUILDTEST_ROOT,"log","system","all")
+		os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log","system","all")
 		systempkg_list = os.listdir(os.path.join(BUILDTEST_SOURCEDIR,"system"))
 		logcontent += "System Packages: \n"
 		logcontent += str(systempkg_list) + "\n"
@@ -195,37 +198,34 @@ if system != None:
 			logcontent += systempkg_generate_binary_test(pkg,verbose,logdir)
 	else:
 		logdir = os.path.join(BUILDTEST_ROOT,"log","system",systempkg)
-		logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
+		#logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
+		logcontent += generate_binary_test(args_dict,verbose,logdir)
 
 
 # when -s is specified
 if software != None:
+	software=software.split("/")
+
+	appname,appversion=software
+	if toolchain == None:
+		toolchain = "dummy/dummy"
 	
-        sw_arr=software.split("/")
-	appname,appversion=get_software_name_version(sw_arr)
+	toolchain=toolchain.split("/")
+	tcname,tcversion=toolchain
 
-	if toolchain != None:
-        	tc_arr=toolchain.split("/")
-
-	# default value is dummy assuming toolchain is not specified 
-	else:
-	        tc_arr="dummy/dummy".split("/")
 	
-
-	tcname,tcversion=get_toolchain_name_version(tc_arr)
-
 	# checking if its a valid software
-	logcontent += software_exists(sw_arr,verbose)
+	logcontent += software_exists(software,verbose)
 
 	# checking if its a valid toolchain 
-	toolchain_exists(tc_arr)
+	toolchain_exists(toolchain)
 	if verbose >= 1:
 		text = "Toolchain:" + tcname + " " + tcversion + " found in system \n"
 		print text
 		logcontent += text
 
 	# check that the software,toolchain match the easyconfig.
-	ret,logcontent_substr=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,sw_arr,tc_arr)
+	ret,logcontent_substr=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
 	logcontent+=logcontent_substr
 	# generate_binary_test(software,toolchain,verbose)
 	
@@ -233,18 +233,20 @@ if software != None:
 
         configdir=os.path.join(source_app_dir,"config")
         codedir=os.path.join(source_app_dir,"code")
-	logdir=os.path.join(BUILDTEST_ROOT,"log",appname,appversion,tcname,tcversion)
+	os.environ["BUILDTEST_LOGDIR"]=os.path.join(BUILDTEST_ROOT,"log",appname,appversion,tcname,tcversion)
+	logdir=os.environ["BUILDTEST_LOGDIR"]
+
 
 	logcontent += "Source App Directory:" +  source_app_dir + "\n"
 	logcontent += "Config Directory: " + configdir + "\n"
 	logcontent += "Code Directory:" + codedir + "\n"
 
-	logcontent += generate_binary_test(sw_arr,tc_arr,source_app_dir,verbose,logdir)
+	logcontent += generate_binary_test(args_dict,source_app_dir,verbose,logdir)
 	# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
-	logcontent += recursive_gen_test(sw_arr,tc_arr,configdir,codedir,verbose, logdir)
+	logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose, logdir)
 
 	# if flag --testset is set, then 
 	if testset !=  None:
-		logcontent+=run_testset(sw_arr,tc_arr,testset,verbose,logdir)
+		logcontent+=run_testset(software,toolchain,testset,verbose,logdir)
 	
-update_logfile(logdir,logcontent,verbose)
+update_logfile(logcontent,verbose)
