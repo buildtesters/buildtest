@@ -192,7 +192,7 @@ def setup_software_cmake(software,toolchain,args_dict):
 
 	logdir=os.getenv("BUILDTEST_LOGDIR")
 	verbose=get_arg_verbose(args_dict)
-	update_logfile(logcontent,verbose)
+	update_logfile(verbose)
 	return test_destdir,test_toolchain_version_cmakelist
 
 def setup_system_cmake(args_dict):

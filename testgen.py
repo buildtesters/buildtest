@@ -71,7 +71,7 @@ def systempkg_generate_binary_test(pkg,verbose,logdir):
             logcontent += systempkg_process_binary_file(commandfile,pkg,verbose,logdir)
 
 	return logcontent
-def generate_binary_test(args_dict,configdir,verbose,logdir):
+def generate_binary_test(args_dict,verbose):
 	"""
 	This function operates similar to systempkg_generate_binary_test except this function
 	is used only for ebapps that are present as modules. This is because ebapps names are 
@@ -88,6 +88,8 @@ def generate_binary_test(args_dict,configdir,verbose,logdir):
 
 	software=get_arg_software(args_dict)
 	system=get_arg_system(args_dict)
+
+	# determine whether we are running a binary test on ebapp or system package
 	if software is not None:
 		appname,appversion=get_software_name_version(software)
 		configdir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)
@@ -119,7 +121,8 @@ def generate_binary_test(args_dict,configdir,verbose,logdir):
 		print "Warning: Cannot find command file:", commandfile, "Skipping binary test"
 		logcontent += "Warning: Cannot find command file:" + commandfile + "Skipping binary test"
 	else:
-	    logcontent += process_binary_file(commandfile,args_dict,test_type,verbose,logdir)
+	    update_logfile(verbose)
+	    process_binary_file(commandfile,args_dict,test_type,verbose)
 
 	return logcontent
 # generate test for source
@@ -219,7 +222,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 
 			logcontent+="runcmd is declared, but value is not specified. Need to run executable \n"
 			logcontent+="Program Terminating"
-			update_logfile(logcontent,verbose)
+			update_logfile(verbose)
 			sys.exit(1)
 
 		
@@ -252,7 +255,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir,log
 			
 			logcontent += "Need to declare both key: buildcmd and runcmd \n"
 			logcontent += "Program Terminating \n"	
-			update_logfile(logcontent,verbose)
+			update_logfile(verbose)
 			sys.exit(1)
 
 		# get the compiler tag and type based on application and toolchain
@@ -618,7 +621,7 @@ def systempkg_process_binary_file(filename,pkg,verbose,logdir):
                 print "Cant find key binaries in file: ", filename, " Exiting program"
                 logcontent += "Cant find key binaries in file: " + filename  + "\n"
 		logcontent += "Exiting program \n"
-		update_logfile(logcontent,verbose)
+		update_logfile(verbose)
                 sys.exit(1)
 
         # create a binary test script for each key,value item in dictionary
@@ -656,7 +659,7 @@ def systempkg_process_binary_file(filename,pkg,verbose,logdir):
 		logcontent += "Creating Test:" + testpath + "\n"
 
 	return logcontent
-def process_binary_file(filename,args_dict,test_type,verbose,logdir):
+def process_binary_file(filename,args_dict,test_type,verbose):
 	"""
 	does the same operation as systempkg_process_binary_file but for ebapps. There are extra 
 	subdirectories that are created that implies multiple CMakeLists.txt files for each sub directory
@@ -672,7 +675,6 @@ def process_binary_file(filename,args_dict,test_type,verbose,logdir):
 		software=software.split("/")
 		toolchain=toolchain.split("/")
 
-		print toolchain
 		toolchain_name,toolchain_version=toolchain
 	
 		test_destdir,test_destdir_cmakelist = setup_software_cmake(software,toolchain,args_dict)	
@@ -699,7 +701,7 @@ def process_binary_file(filename,args_dict,test_type,verbose,logdir):
 	# if key binaries is not in yaml file, exit program
 	if "binaries" not in content:
 		print "Cant find key binaries in file: ", filename, " Exiting program"
-		update_logfile(logcontent,verbose)
+		update_logfile(verbose)
 		sys.exit(1)
 
 	# create a binary test script for each key,value item in dictionary
@@ -723,7 +725,7 @@ def process_binary_file(filename,args_dict,test_type,verbose,logdir):
 		fd.close()
 		logcontent+= "Content of test file: " + testpath + "\n"
 		logcontent += "----------------------------------------------------- \n"
-		logcontent+=content +"\n"
+		logcontent += content +"\n"
 		logcontent += "----------------------------------------------------- \n"
 		
 		fd=open(test_destdir_cmakelist,'a')
@@ -738,6 +740,7 @@ def process_binary_file(filename,args_dict,test_type,verbose,logdir):
 
 		print "Creating Test:", testpath
 		logcontent += "Creating Test:" + testpath + "\n"
-	return logcontent
+		update_logfile(verbose)
+	
 	
 			

@@ -19,6 +19,7 @@
 #    You should have received a copy of the GNU General Public License 
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
+from setup import *
 def get_software_name_version(software):
 	""" return the software as two separate values name and version """
 	# split software by / to get name and version
@@ -87,6 +88,7 @@ def print_set(setcollection):
         """
         for item in setcollection:
                 print item
+		BUILDTEST_LOGCONTENT.append(item + "\n")
 class sset(set):
     def __str__(self):
         return ', '.join([str(i) for i in self])

@@ -116,12 +116,14 @@ def get_toolchain(easyconfigdir):
 	"""
 	easyconfigfiles=os.popen("find " + easyconfigdir +  " -name *.eb -type f ").read().rstrip().split("\n")
 
-	logcontent = "" 
+	BUILDTEST_LOGCONTENT.append("-------------------------------------\n")
+	BUILDTEST_LOGCONTENT.append("function: get_toolchain \n")
+	BUILDTEST_LOGCONTENT.append("-------------------------------------\n")
 
-	logcontent += "Executing command: find " + easyconfigdir + " -name *.eb -type f" + "\n"
+	BUILDTEST_LOGCONTENT.append("Executing command: find " + easyconfigdir + " -name *.eb -type f" + "\n")
 	# only care about unique toolchains
 	toolchain=set()
-
+	logcontent = ""
 	# find all toolchains in the easyconfig files
         for ebfile in easyconfigfiles:
 
@@ -132,7 +134,7 @@ def get_toolchain(easyconfigdir):
                 cmd="""grep "toolchain =" """ + ebfile + """ | cut -f6 -d " " | tr -d "}'" """
                 toolchain_version=os.popen(cmd).read().rstrip()
 		toolchain.add(toolchain_name+" "+toolchain_version)
-	return toolchain,logcontent
+	return toolchain
 
 def software_exists(software,verbose):
 	"""
@@ -159,7 +161,7 @@ def toolchain_exists(toolchain):
 	checks to see if toolchain passed on command line exist in toolchain list
 	"""
 
-	toolchain_list,logcontent=get_toolchain(BUILDTEST_EASYCONFIGDIR)
+	toolchain_list=get_toolchain(BUILDTEST_EASYCONFIGDIR)
 
 	# if toolchain is installed as hidden file then strip the "." prior to checking in list
 	if isHiddenFile(toolchain[1]) == True:

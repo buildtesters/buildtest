@@ -88,13 +88,10 @@ os.environ["BUILDTEST_LOGFILE"] = datetime.now().strftime("buildtest_%H_%M_%d_%m
 logdir =  os.environ["BUILDTEST_LOGDIR"]
 logfile = os.environ["BUILDTEST_LOGFILE"]
 
-logcontent=""
 
-logcontent += "------------------------------------------- \n"
-logcontent += "buildtest \n"
-logcontent += "------------------------------------------- \n"
-
-
+BUILDTEST_LOGCONTENT.append("------------------------------------------- \n")
+BUILDTEST_LOGCONTENT.append("buildtest \n")
+BUILDTEST_LOGCONTENT.append("------------------------------------------- \n")
 
 if verbose >= 1:
 	text = "==================================================================== " + "\n"
@@ -108,7 +105,7 @@ if verbose >= 1:
 	print
 
 	
-	logcontent += text
+	BUILDTEST_LOGCONTENT.append(text)
 
 # when no argument is specified to -fc then output all yaml files
 if findconfig == "all": 
@@ -116,6 +113,8 @@ if findconfig == "all":
 	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	(output,err) = ret.communicate()
 	print output
+	BUILDTEST_LOGCONTENT.append(output)
+	update_logfile(verbose)
 	sys.exit(1)
 # otherwise report yaml file based on argument. If -fc is not specified then args.findconfig is set
 # to None and we don't want to run this section unless a -fc is specified along with an argument other than
@@ -126,43 +125,45 @@ elif findconfig != None:
 	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	(output,err) = ret.communicate()
 	print output
+	BUILDTEST_LOGCONTENT.append(output)
+	update_logfile(verbose)
 	sys.exit(1)
 
 # report all buildtest generated test scripts
 if findtest == "all":
 	# running command: find $BUILDTEST_TESTDIR -name "*.sh" -type f
 	findCMD = "find " + BUILDTEST_TESTDIR + " -name \"*.sh\" -type f"
-	logcontent += findCMD + "\n"
 	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	(output,err) = ret.communicate()
 	print output
-	logcontent += output
-	update_logfile(logcontent,verbose)
+	BUILDTEST_LOGCONTENT.append(output)
+	update_logfile(verbose)
 	sys.exit(1)
 # otherwise report test scripts based on argument. If -ft is not specified then args.findtest is None
 # so we don't want to run section below everytime. Only when -ft is specified
 elif findtest != None:
 	find_arg = args_dict["findtest"]
-	findCMD = "find " + BUILDTEST_TESTDIR + " -name \"*" + find_arg + "*.sh\" -type f"
+	findCMD = "find " + BUILDTEST_TESTDIR + " -name \"*" + find_arg + "*.sh\" -type f \n"
 	# running command: find $BUILDTEST_SOURCEDIR -name "*<find_arg>*.sh" -type f
 	ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	(output,err) = ret.communicate()
 	print output
-	logcontent += findCMD +"\n"
-	logcontent += output
-	update_logfile(logcontent,verbose)
+	BUILDTEST_LOGCONTENT.append(findCMD)
+	BUILDTEST_LOGCONTENT.append(output)
+	update_logfile(verbose)
 	sys.exit(1)
 
 if list_toolchain == True:
-	toolchain_set,logcontent_substr=get_toolchain(BUILDTEST_EASYCONFIGDIR)
-	logcontent+=logcontent_substr
+	toolchain_set=get_toolchain(BUILDTEST_EASYCONFIGDIR)
 	text = """ 
 		List of Toolchains:
 		--------------------
 	      """
 	print text
-
+	BUILDTEST_LOGCONTENT.append(text)
 	print_set(toolchain_set)
+	update_logfile(verbose)
+	sys.exit(1)
 
 if list_unique_software == True:
 	software_set,logcontent_substr=get_unique_software(BUILDTEST_MODULE_EBROOT)
@@ -195,11 +196,11 @@ if system != None:
 		logcontent += "System Packages: \n"
 		logcontent += str(systempkg_list) + "\n"
 		for pkg in systempkg_list:
-			logcontent += systempkg_generate_binary_test(pkg,verbose,logdir)
+			logcontent += generate_binary_test(args_dict,verbose)
 	else:
-		logdir = os.path.join(BUILDTEST_ROOT,"log","system",systempkg)
+		os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log","system",systempkg)
 		#logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
-		logcontent += generate_binary_test(args_dict,verbose,logdir)
+		logcontent += generate_binary_test(args_dict,verbose)
 
 
 # when -s is specified
@@ -241,7 +242,7 @@ if software != None:
 	logcontent += "Config Directory: " + configdir + "\n"
 	logcontent += "Code Directory:" + codedir + "\n"
 
-	logcontent += generate_binary_test(args_dict,source_app_dir,verbose,logdir)
+	generate_binary_test(args_dict,verbose)
 	# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
 	logcontent += recursive_gen_test(software,toolchain,configdir,codedir,verbose, logdir)
 
@@ -249,4 +250,4 @@ if software != None:
 	if testset !=  None:
 		logcontent+=run_testset(software,toolchain,testset,verbose,logdir)
 	
-update_logfile(logcontent,verbose)
+update_logfile(verbose)

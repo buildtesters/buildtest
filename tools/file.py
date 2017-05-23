@@ -21,6 +21,7 @@
 ############################################################################# 
 import os
 from datetime import datetime
+from setup import *
 
 def stripHiddenFile(file): 
 	"""  removes the leading "." character from file """
@@ -62,16 +63,16 @@ def isHiddenFile(inputfile):
         else:
                 return False
 
-def update_logfile(logcontent,verbose):
+def update_logfile(verbose):
  	logdir=os.environ["BUILDTEST_LOGDIR"]
 	logfile=os.environ["BUILDTEST_LOGFILE"]
 
 	create_dir(logdir,verbose)          
         logfilepath = os.path.join(logdir,logfile)
 
-        print "Writing Log File: " + logfilepath
-
         fd = open(logfilepath,'a')
-        fd.write(logcontent)
+	for line in BUILDTEST_LOGCONTENT:
+	        fd.write(line)
         fd.close()
+	print "Writing Logfile: ", logfilepath
 

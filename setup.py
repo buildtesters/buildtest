@@ -33,3 +33,8 @@ BUILDTEST_TESTDIR = os.environ['BUILDTEST_TESTDIR']
 PYTHON_APPS = ["Python","Anaconda2", "Anaconda3"]
 MPI_APPS = ["OpenMPI", "MPICH","MVAPICH2", "intel", "impi"]
 PERL_APPS = ["Perl"]
+
+global BUILDTEST_LOGCONTENT
+BUILDTEST_LOGCONTENT = []
+
+	
