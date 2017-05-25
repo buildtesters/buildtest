@@ -1,0 +1,5 @@
+library(tripack)
+data(tritest)
+tritest.tr<-tri.mesh(tritest$x,tritest$y)
+plot(tritest.tr)
+identify.tri(tritest.tr)
