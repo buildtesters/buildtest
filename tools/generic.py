@@ -20,30 +20,8 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 from setup import *
-def get_software_name_version(software):
-	""" return the software as two separate values name and version """
-	# split software by / to get name and version
-	if '/' in software:
-		software=software.split("/")	
-
-	if software == None:
-		return None,None
-	else:
-		return software[0],software[1]
-
-def get_toolchain_name_version(toolchain):
-	print toolchain
-        # split software by / to get name and version
-        if '/' in toolchain:
-                toolchain=toolchain.split("/")
-
-	if toolchain == None:
-		return None,None
-	else:
-		return toolchain[0],toolchain[1]
 def add_arg_to_runcmd(runcmd,arglist):
         # add each argument to runcmd
-        print arglist
         for arg in arglist:
         # skip argument if value is not specified, by default set to None
                 if arg == None:

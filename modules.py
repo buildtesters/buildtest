@@ -216,12 +216,8 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 	return True if name,version+versionsuffix,toolchain from command line is found 
 	from easyconfig, False otherwise
 	"""
-	#appname,appversion=get_software_name_version()
-	appname=software[0]
-	appversion=software[1]	
-	tcname=toolchain[0]	
-	tcversion=toolchain[1]
-
+	appname,appversion=software
+	tcname,tcversion=toolchain
 	
 	cmd="find " + os.path.join(moduletree,appname)  + " -name *.eb -type f"         
 	easyconfigfiles=os.popen(cmd).read().rstrip().split("\n")

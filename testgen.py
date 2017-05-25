@@ -52,7 +52,8 @@ def generate_binary_test(args_dict,verbose,pkg):
 
 	# determine whether we are running a binary test on ebapp or system package
 	if software is not None:
-		appname,appversion=get_software_name_version(software)
+		software=software.split("/")
+		appname,appversion=software
 		configdir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)
 		test_type="software"
 	elif system is not None:
@@ -505,11 +506,10 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 	does the same operation as systempkg_process_binary_file but for ebapps. There are extra 
 	subdirectories that are created that implies multiple CMakeLists.txt files for each sub directory
 	"""
-	software=get_arg_software(args_dict)
-	name,version=get_software_name_version(software)
-	toolchain=get_arg_toolchain(args_dict)
-
 	if test_type == "software":
+		software=get_arg_software(args_dict)
+		toolchain=get_arg_toolchain(args_dict)
+
 		# when toolchain is not specified use dummy toolchain
 		if toolchain == None:
 			toolchain = "dummy/dummy"
@@ -517,6 +517,7 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 		software=software.split("/")
 		toolchain=toolchain.split("/")
 
+		name,version=software
 		toolchain_name,toolchain_version=toolchain
 	
 		test_destdir,test_destdir_cmakelist = setup_software_cmake(software,toolchain,args_dict)	
