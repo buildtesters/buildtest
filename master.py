@@ -45,7 +45,6 @@ def recursive_gen_test(software,toolchain,configdir,codedir,verbose ):
                                 if subdir == "config":
                                         subdir = ""
                                 code_destdir=os.path.join(codedir,subdir)
-				print software,toolchain
                                 configmap=parse_config(software,toolchain,filepath,code_destdir)    
                                 # error processing config file, then parse_config will return an empty dictionary
                                 if len(configmap) == 0:

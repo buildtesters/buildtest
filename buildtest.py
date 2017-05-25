@@ -61,7 +61,6 @@ args = parser.parse_args()
 
 # convert args into a dictionary
 args_dict=vars(args)
-print args_dict
 
 findconfig=get_arg_findconfig(args_dict)
 findtest=get_arg_findtest(args_dict)
@@ -73,15 +72,6 @@ software_version_relation=get_arg_software_version_relation(args_dict)
 system=get_arg_system(args_dict)
 testset=get_arg_testset(args_dict)
 verbose=get_arg_verbose(args_dict)
-
-print "verbose=",verbose
-print "findconfig=",findconfig
-print "findtest=",findtest
-print "software=",software
-print "toolchain=",toolchain
-print "software-version-relation=",software_version_relation
-print "system=",system
-print "testset=",testset
 
 os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log")
 os.environ["BUILDTEST_LOGFILE"] = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
