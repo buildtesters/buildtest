@@ -1,0 +1,3 @@
+library(TraMineR)
+seqsep("ABAAAAAAD")
+

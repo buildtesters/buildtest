@@ -1,8 +1,0 @@
-name: fib
-source: fib.pyx
-buildcmd:
-runcmd:
-        - cd $BUILDTEST_SOURCEDIR/ebapps/Python/code/Cython/
-        - python setup.py build_ext --inplace
-        - python fibtest.py
-        - rm -rf build fib.c fib.so
