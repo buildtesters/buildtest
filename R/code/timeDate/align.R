@@ -1,4 +1,3 @@
-# https://cran.r-project.org/web/packages/timeDate/timeDate.pdf
 library(tidyr)
 ## align -
 # Align Bi-Weekly with a 3 Days Offset:

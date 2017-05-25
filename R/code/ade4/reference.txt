@@ -1,0 +1,1 @@
+https://cran.r-project.org/web/packages/ade4/ade4.pdf
