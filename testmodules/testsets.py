@@ -23,7 +23,7 @@ from parser import *
 from tools.generic import *
 from tools.cmake import *
 from master import *
-
+import os
 def run_testset(software,toolchain,testset,verbose):
 	""" checks the testset parameter to determine which set of scripts to use to create tests """
 
@@ -35,16 +35,16 @@ def run_testset(software,toolchain,testset,verbose):
 	runtest = False
 
 	if appname in PYTHON_APPS and testset == "python":
-	        source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"python")
+	        source_app_dir=os.path.join(os.environ['BUILDTEST_PYTHON_DIR'],"python")
                 runtest=True
     
         if appname in PERL_APPS and testset == "perl":
-        	source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"perl")
+        	source_app_dir=os.path.join(os.environ['BUILDTEST_PERL_DIR'],"perl")
                 runtest=True
 
         # condition to run R testset
         if appname in ["R"] and testset == "R":
-        	source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"R")
+        	source_app_dir=os.path.join(os.environ['BUILDTEST_R_DIR'],"R")
                 runtest=True
 
 	# for MPI we run recursive_gen_test since it processes YAML files
