@@ -1,1 +1,0 @@
-https://cran.r-project.org/web/packages/TH.data/TH.data.pdf

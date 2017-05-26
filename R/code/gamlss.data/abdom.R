@@ -1,5 +1,0 @@
-library(gamlss.data)
-data(abdom)
-attach(abdom)
-plot(x,y)
-detach(abdom)

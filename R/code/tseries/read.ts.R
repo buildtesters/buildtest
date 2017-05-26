@@ -1,8 +1,0 @@
-library(tseries)
-data(sunspots)
-st <- start(sunspots)
-fr <- frequency(sunspots)
-write(sunspots, "sunspots", ncolumns=1)
-x <- read.ts("sunspots", start=st, frequency=fr)
-plot(x)
-unlink("sunspots")

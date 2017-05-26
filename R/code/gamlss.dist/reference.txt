@@ -1,1 +1,0 @@
-https://cran.r-project.org/web/packages/gamlss.dist/gamlss.dist.pdf

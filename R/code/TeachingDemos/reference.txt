@@ -1,1 +1,0 @@
-https://cran.r-project.org/web/packages/TeachingDemos/TeachingDemos.pdf

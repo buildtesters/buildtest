@@ -1,2 +1,0 @@
-library(tm)
-getTokenizers()

@@ -1,3 +1,0 @@
-library(TraMineR)
-seqsep("ABAAAAAAD")
-
