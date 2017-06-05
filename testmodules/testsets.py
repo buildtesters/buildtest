@@ -49,7 +49,7 @@ def run_testset(software,toolchain,testset,verbose):
 
 	# for MPI we run recursive_gen_test since it processes YAML files
 	if appname in MPI_APPS and testset == "mpi":
-		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"python")
+		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"mpi")
 		configdir=os.path.join(source_app_dir,"config")
 		codedir=os.path.join(source_app_dir,"code")
 		recursive_gen_test(software,toolchain,configdir,codedir,verbose)
