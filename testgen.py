@@ -319,6 +319,25 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 			BUILDTEST_LOGCONTENT.append("runextracmd found in YAML config file \n")
 			BUILDTEST_LOGCONTENT.append("runextracmd:" + str(configmap["runextracmd"]) + "\n")
 	fd.close()
+
+    	# by default run the commands below which will add the test to CMakeLists.txt and update the logfile
+        if "iter" not in configmap:
+        	add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
+
+	        print "Creating Test: " + testpath
+
+	        BUILDTEST_LOGCONTENT.append("Creating Test: " + testpath + "\n")
+	        BUILDTEST_LOGCONTENT.append("Content of Testfile: " + testpath + "\n")
+	        BUILDTEST_LOGCONTENT.append("----------------------- \n")
+    
+                fd=open(testpath,'r')
+                content=fd.read()
+                BUILDTEST_LOGCONTENT.append(content)
+                fd.close()
+
+
+ 		BUILDTEST_LOGCONTENT.append("\n -------------------------------------------------- \n")
+
 	# if keyword iter is found in YAML, lets try to recreate N tests by renaming test such as
 	# hello.sh to hello_1.sh and create N-1 copies with file names hello_2.sh, hello_3.sh, ...
 	if  "iter" in configmap:
@@ -363,21 +382,6 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 			BUILDTEST_LOGCONTENT.append("\n-------------------------------------------------- \n")
 
 	
-	add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
-
-	print "Creating Test: " + testpath
-
-	BUILDTEST_LOGCONTENT.append("Creating Test: " + testpath + "\n")
-	BUILDTEST_LOGCONTENT.append("Content of Testfile: " + testpath + "\n")
-	BUILDTEST_LOGCONTENT.append("----------------------- \n")
-	
-	fd=open(testpath,'r')
-	content=fd.read()
-	BUILDTEST_LOGCONTENT.append(content)
-	fd.close()
-
-
-	BUILDTEST_LOGCONTENT.append("\n -------------------------------------------------- \n")
 def get_compiler(configmap,appname,tcname):
 	"""
 	 This function gets the appropriate compiler tag and compiler type based on the 
