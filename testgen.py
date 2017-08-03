@@ -20,7 +20,7 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
-from setup import *
+from env import *
 from tools.generic import *
 from tools.cmake import *
 from tools.file import *

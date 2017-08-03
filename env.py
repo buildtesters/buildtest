@@ -2,9 +2,9 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest 
+#   https://github.com/shahzebsiddiqui/buildtest-framework 
 # 
-#  This file is part of buildtest. 
+#    This file is part of buildtest. 
 # 
 #    buildtest is free software: you can redistribute it and/or modify 
 #    it under the terms of the GNU General Public License as published by 

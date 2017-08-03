@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest 
+#   https://github.com/shahzebsiddiqui/buildtest-framework
 # 
 #  This file is part of buildtest. 
 # 
@@ -20,7 +20,7 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
-from setup import *
+from env import *
 from tools.file import *
 import os
 import sys
@@ -117,6 +117,68 @@ def get_toolchain(easyconfigdir):
 	"""
 	return the set of toolchains found in the easyconfig directory 
 	"""
+        toolchain = [
+        "ClangGCC",
+	"CrayCCE",
+	"CrayGNU",
+	"CrayIntel",
+	"CrayPGI",
+	"GCC",
+	"GCCcore",
+	"GNU",
+	"PGI",
+	"cgmpich",
+	"cgmpolf",
+	"cgmvapich2",
+	"cgmvolf",
+	"cgompi",
+	"cgoolf",
+	"dummy",
+	"foss",
+	"gcccuda",
+ 	"gimkl",
+	"gimpi",
+	"gmacml",
+	"gmpich",
+	"gmpich2",
+	"gmpolf",
+	"gmvapich2",
+	"gmvolf",
+	"goalf",
+	"gompi",
+	"gompic",
+	"goolf",
+	"goolfc",
+        "gpsmpi",
+	"gpsolf",
+	"gqacml",
+	"iccifort",
+	"iccifortcuda",
+	"ictce",
+	"iimkl",
+	"iimpi",
+	"iimpic",
+	"iiqmpi",
+	"impich",
+	"impmkl",
+	"intel",
+	"intel-para",
+	"intelcuda",
+	"iomkl",
+	"iompi",
+	"ipsmpi",
+	"iqacml",
+	"ismkl",
+	"pomkl",
+	"pompi",
+	"xlcxlf",
+	"xlmpich",
+	"xlmpich2",
+	"xlmvapich2",
+	"xlompi",
+        ]
+	return toolchain
+
 	easyconfigfiles=os.popen("find " + easyconfigdir +  " -name *.eb -type f ").read().rstrip().split("\n")
 
 	BUILDTEST_LOGCONTENT.append("-------------------------------------\n")
@@ -201,7 +263,7 @@ def toolchain_exists(toolchain,verbose):
 		toolchain_name=toolchain[0]+" "+toolchain[1]
 
 	# report error if toolchain is not found in toolchain list
-	if toolchain_name not in toolchain_list:
+	if toolchain[0] not in toolchain_list:
 		msg = "Can't find toolchain: " + toolchain_name + "\n"
 		print msg
 		BUILDTEST_LOGCONTENT.append(msg)
@@ -211,7 +273,7 @@ def toolchain_exists(toolchain,verbose):
 	msg = "Toolchain + " + toolchain_name + " found in system"
 	BUILDTEST_LOGCONTENT.append(msg)
 
-def check_software_version_in_easyconfig(moduletree,software,toolchain):
+def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, verbose):
 	"""
 	return True if name,version+versionsuffix,toolchain from command line is found 
 	from easyconfig, False otherwise
@@ -219,7 +281,8 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 	appname,appversion=software
 	tcname,tcversion=toolchain
 	
-	cmd="find " + os.path.join(moduletree,appname)  + " -name *.eb -type f"         
+	cmd="find " + easyconfig_repo  + " -name " + appname+"-"+appversion+"*.eb -type f"         
+	print cmd
 	easyconfigfiles=os.popen(cmd).read().rstrip().split("\n")
 
 	BUILDTEST_LOGCONTENT.append("--------------------------------------------- \n")
@@ -352,7 +415,8 @@ def check_software_version_in_easyconfig(moduletree,software,toolchain):
 
 	# mismatch in easyconfig entries for name,version+versionsuffix, and toolchain with specified entries
 	if match == False:
-	 	msg = "Can't find easyconfig file with argument: -s " + software + " -t " + toolchain
+	 	msg = "Can't find easyconfig file with argument: -s " + appname + "/" + appversion + " -t " + tcname + "/" + tcversion
+		print msg
 		BUILDTEST_LOGCONTENT.append(msg)
 		update_logfile(verbose)
 		sys.exit(1)

@@ -3,9 +3,9 @@
 #
 #  Copyright 2017
 #
-#   https://github.com/shahzebsiddiqui/buildtest
+#   https://github.com/shahzebsiddiqui/buildtest-framework
 #
-#  This file is part of buildtest.
+#    This file is part of buildtest.
 #
 #    buildtest is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import sys
 import os
 sys.path.insert(0,os.path.abspath('.'))
 
-from setup import *
+from env import *
 from modules import *
 from testgen import *
 from master import *
@@ -220,7 +220,7 @@ if software != None:
 		print text
 
 	# check that the software,toolchain match the easyconfig.
-	ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain)
+	ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain,verbose)
 	# generate_binary_test(software,toolchain,verbose)
 	
 	source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)

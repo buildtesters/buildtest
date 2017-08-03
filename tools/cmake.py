@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest 
+#   https://github.com/shahzebsiddiqui/buildtest-framework
 # 
 #  This file is part of buildtest. 
 # 
@@ -19,7 +19,7 @@
 #    You should have received a copy of the GNU General Public License 
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
-from setup import *
+from env import *
 from parser.args import *
 from tools.generic import *
 from tools.file import *

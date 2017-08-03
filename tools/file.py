@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest 
+#   https://github.com/shahzebsiddiqui/buildtest-framework
 # 
 #  This file is part of buildtest. 
 # 
@@ -21,7 +21,7 @@
 ############################################################################# 
 import os
 from datetime import datetime
-from setup import *
+from env import *
 
 def stripHiddenFile(file): 
 	"""  removes the leading "." character from file """
