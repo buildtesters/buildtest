@@ -31,8 +31,9 @@ def recursive_gen_test(software,toolchain,configdir,codedir,verbose ):
 	BUILDTEST_LOGCONTENT.append(" function: recursive_gen_test \n")
 	BUILDTEST_LOGCONTENT.append("------------------------------------------------------------ \n")
 	BUILDTEST_LOGCONTENT.append("Processing all YAML files in " + configdir)
-
+	
         if os.path.isdir(configdir):
+		count = 0
                 for root,subdirs,files in os.walk(configdir):
     
                         #filepath=configdir+filename
@@ -49,5 +50,7 @@ def recursive_gen_test(software,toolchain,configdir,codedir,verbose ):
                                 # error processing config file, then parse_config will return an empty dictionary
                                 if len(configmap) == 0:
                                         continue
+				count = count + 1
                                 generate_source_test(software,toolchain,configmap,code_destdir,verbose,subdir)
+		print "Generating " + str(count) + " Source Tests "
 

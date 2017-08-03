@@ -324,7 +324,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
         if "iter" not in configmap:
         	add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
 
-	        print "Creating Test: " + testpath
+	        # print "Creating Test: " + testpath
 
 	        BUILDTEST_LOGCONTENT.append("Creating Test: " + testpath + "\n")
 	        BUILDTEST_LOGCONTENT.append("Content of Testfile: " + testpath + "\n")
@@ -553,7 +553,11 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 
 	# create a binary test script for each key,value item in dictionary
 	binarydict=content["binaries"]
+	# keep track of number of binary test
+	count = 0
+
 	for key in binarydict:
+		count = count + 1
 		name_str=key.replace(" ","_")
 		testname=name_str+".sh"
 		testpath=os.path.join(test_destdir,testname)
@@ -585,8 +589,11 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 		BUILDTEST_LOGCONTENT.append("Updating CMakeLists: " + test_destdir_cmakelist + " with content: "+ add_test_str)
 		fd.write(add_test_str)
 
-		print "Creating Test:", testpath
+		# print "Creating Test:", testpath
 		BUILDTEST_LOGCONTENT.append("Creating Test:" + testpath + "\n\n")
 		BUILDTEST_LOGCONTENT.append("_________________________________ END TEST SECTION_______________________________\n")
+
+	print "Generating " + str(count) + " binary tests "
+	print "Binary Tests are written in " + test_destdir
 	
 			

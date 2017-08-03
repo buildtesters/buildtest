@@ -179,42 +179,15 @@ def get_toolchain(easyconfigdir):
         ]
 	return toolchain
 
-	easyconfigfiles=os.popen("find " + easyconfigdir +  " -name *.eb -type f ").read().rstrip().split("\n")
-
-	BUILDTEST_LOGCONTENT.append("-------------------------------------\n")
-	BUILDTEST_LOGCONTENT.append("function: get_toolchain \n")
-	BUILDTEST_LOGCONTENT.append("-------------------------------------\n")
-
-	BUILDTEST_LOGCONTENT.append("Executing command: find " + easyconfigdir + " -name *.eb -type f" + "\n")
-	BUILDTEST_LOGCONTENT.append("The following eb files found \n")
-	for ebfile in easyconfigfiles:
-		BUILDTEST_LOGCONTENT.append(ebfile + "\n")
-	
-	# only care about unique toolchains
-	toolchain=set()
-	# find all toolchains in the easyconfig files
-        for ebfile in easyconfigfiles:
-
-
-                cmd="""grep "toolchain =" """ + ebfile + """ | cut -f4 -d " " | tr -d "'," """ 
-		BUILDTEST_LOGCONTENT.append("Running Command: " + cmd + "\n")
-                toolchain_name=os.popen(cmd).read().rstrip()
-                cmd="""grep "toolchain =" """ + ebfile + """ | cut -f6 -d " " | tr -d "}'" """
-		BUILDTEST_LOGCONTENT.append("Running Command: " + cmd + "\n")
-                toolchain_version=os.popen(cmd).read().rstrip()
-		toolchain.add(toolchain_name+" "+toolchain_version)
-
-	BUILDTEST_LOGCONTENT.append("\n\n The Following Toolchain were found :\n")
-	for tc in toolchain:
-		BUILDTEST_LOGCONTENT.append(tc + "\n")
-	return toolchain
-
 def software_exists(software,verbose):
 	"""
 	checks whether software exist, there must be a module file present with the 
 	same name specified as the argument. 
 	"""
+	success_msg = "Checking Software Exists ... SUCCESS"  
+	fail_msg = "Checking Software Exists ... FAILED"
 	if len(software) != 2:
+		print fail_msg
 		msg = "Too many arguments, -s takes argument <software>,<version> \n"
 		print msg
 		BUILDTEST_LOGCONTENT.append(msg)
@@ -224,6 +197,7 @@ def software_exists(software,verbose):
 	softwarecollection=get_unique_software_version(BUILDTEST_MODULE_EBROOT)
 	software_name=software[0]+" "+software[1]
 	if software_name not in softwarecollection:
+		print fail_msg
 		msg = "Can't find software: " +  software_name + "\n"
 		print msg
                 BUILDTEST_LOGCONTENT.append(msg)
@@ -233,15 +207,17 @@ def software_exists(software,verbose):
 	text = "Software:" + str(software) + " found in system \n"
 	BUILDTEST_LOGCONTENT.append(text)
 	
-		
+        print success_msg
 
 def toolchain_exists(toolchain,verbose):
 	"""
 	checks to see if toolchain passed on command line exist in toolchain list
 	"""
-
+	success_msg = "Checking Toolchain Exists ... SUCCESS"
+	fail_msg = "Checking Software Exists ... FAILED"
         # catch all exception cases for invalid value for -t flag
         if len(toolchain) != 2:
+		print fail_msg
                 msg =  "Too many arguments, -t takes argument <toolchain-name>,<toolchain-version> \n"
                 print msg
 		BUILDTEST_LOGCONTENT.append(msg)
@@ -249,22 +225,18 @@ def toolchain_exists(toolchain,verbose):
                 sys.exit(1)
 
 	toolchain_list=get_toolchain(BUILDTEST_EASYCONFIGDIR)
-
+	tcname = toolchain[0]
+	tcversion = toolchain[1]
+	toolchain_name = tcname + "/" + tcversion
 	BUILDTEST_LOGCONTENT.append("-------------------------------------------\n")
 	BUILDTEST_LOGCONTENT.append("func: toolchain_exists \n")
 	BUILDTEST_LOGCONTENT.append("-------------------------------------------\n")
-	# if toolchain is installed as hidden file then strip the "." prior to checking in list
-	if isHiddenFile(toolchain[1]) == True:
-		strip_version=stripHiddenFile(toolchain[1])
-		toolchain_name=toolchain[0]+" "+strip_version
-		msg = "Toolchain version specified as hidden file. Striping leading . for matching purpose \n"
-		BUILDTEST_LOGCONTENT.append("msg")
-	else:
-		toolchain_name=toolchain[0]+" "+toolchain[1]
 
-	# report error if toolchain is not found in toolchain list
-	if toolchain[0] not in toolchain_list:
-		msg = "Can't find toolchain: " + toolchain_name + "\n"
+	# report error if toolchain is not found in toolchain list. toolchain list only
+	# contains the name of toolchain and not the version
+	if tcname not in toolchain_list:
+		print fail_msg
+		msg = "Can't find toolchain: " + tcname + "\n"
 		print msg
 		BUILDTEST_LOGCONTENT.append(msg)
 	        update_logfile(verbose)
@@ -272,17 +244,30 @@ def toolchain_exists(toolchain,verbose):
 
 	msg = "Toolchain + " + toolchain_name + " found in system"
 	BUILDTEST_LOGCONTENT.append(msg)
+	print success_msg
 
 def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, verbose):
 	"""
 	return True if name,version+versionsuffix,toolchain from command line is found 
 	from easyconfig, False otherwise
 	"""
+	success_msg = "Checking easyconfig file ... SUCCESS"
+	fail_msg = "Checking easyconfig file ... FAILED"
 	appname,appversion=software
 	tcname,tcversion=toolchain
 	
+        # if user is testing a software package that is a hidden module file, strip the leading "." for checking
+        if isHiddenFile(appversion):
+                appversion = stripHiddenFile(appversion)
+                BUILDTEST_LOGCONTENT.append("Stripping leading . from application version: " + appversion + "\n")
+
+        # if user specified a toolchain version that is a hidden module file, strip leading "." 
+        if isHiddenFile(tcversion):
+                tcversion = stripHiddenFile(tcversion)
+                BUILDTEST_LOGCONTENT.append("Stripping leading . from toolchain version: " + tcversion + "\n")
+
+
 	cmd="find " + easyconfig_repo  + " -name " + appname+"-"+appversion+"*.eb -type f"         
-	print cmd
 	easyconfigfiles=os.popen(cmd).read().rstrip().split("\n")
 
 	BUILDTEST_LOGCONTENT.append("--------------------------------------------- \n")
@@ -295,16 +280,6 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
 
 	# boolean value to check if eb file found with parameters for software and toolchain
 	match=False    
-
-	# if user is testing a software package that is a hidden module file, strip the leading "." for checking
-	if isHiddenFile(appversion):
-		appversion = stripHiddenFile(appversion)
-		BUILDTEST_LOGCONTENT.append("Stripping leading . from application version: " + appversion + "\n")
-
-	# if user specified a toolchain version that is a hidden module file, strip leading "." 
-	if isHiddenFile(tcversion):
-		tcversion = stripHiddenFile(tcversion)
-		BUILDTEST_LOGCONTENT.append("Stripping leading . from toolchain version: " + tcversion + "\n")
 
 	for ebfile in easyconfigfiles:
 		# get name tag from easyconfig
@@ -403,6 +378,7 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
 				BUILDTEST_LOGCONTENT.append("Comparing strings: the following strings \n" )
 				BUILDTEST_LOGCONTENT.append("name: " + name + " with appname: " + appname + " AND ")
 				BUILDTEST_LOGCONTENT.append("version_versionsuffix: " + version_versionsuffix + " with appversion: " + appversion + "\n")
+				print success_msg
 				return True
 		else:
 			if name == appname and version_versionsuffix == appversion and toolchain_name == tcname and toolchain_version == tcversion:
@@ -411,10 +387,12 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
 				BUILDTEST_LOGCONTENT.append("version_versionsuffix: " + version_versionsuffix + " with appversion: " + appversion + " AND ")
 				BUILDTEST_LOGCONTENT.append("toolchain_name: " + toolchain_name + " with tcname: " + tcname + " AND ")
 				BUILDTEST_LOGCONTENT.append("toolchain_version: " + toolchain_version + "with tcversion: " + tcversion + "\n")
+				print success_msg
 				return True
 
 	# mismatch in easyconfig entries for name,version+versionsuffix, and toolchain with specified entries
 	if match == False:
+		print fail_msg
 	 	msg = "Can't find easyconfig file with argument: -s " + appname + "/" + appversion + " -t " + tcname + "/" + tcversion
 		print msg
 		BUILDTEST_LOGCONTENT.append(msg)
