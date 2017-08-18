@@ -21,6 +21,8 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
+# @author: Shahzeb Siddiqui (Pfizer)
+
 BUILDTEST_ROOT=`pwd`
 BUILDTEST_SOURCEDIR=${BUILDTEST_ROOT}"/buildtest-configs"
 BUILDTEST_TESTDIR=$BUILDTEST_ROOT"/testing"

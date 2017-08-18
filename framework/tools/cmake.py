@@ -19,6 +19,12 @@
 #    You should have received a copy of the GNU General Public License 
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
+"""
+All CMake related functions neccessary for writing configuration when writing
+the tests. 
+
+:author: Shahzeb Siddiqui (Pfizer)
+"""
 from framework.env import *
 from framework.parser.args import *
 from framework.tools.generic import *

@@ -20,6 +20,9 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
+"""
+:author: Shahzeb Siddiqui (Pfizer)
+"""
 from framework.parser.parser import *
 from framework.testgen import *
 from framework.tools.generic import *

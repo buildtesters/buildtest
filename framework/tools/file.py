@@ -19,6 +19,14 @@
 #    You should have received a copy of the GNU General Public License 
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
+"""
+This python module provides some generic file level operation such as creating
+file, and directory and strip hidden file character. This module also 
+provides function to update log file, check if file is hidden and determine
+if a string is found in file 
+
+:author: Shahzeb Siddiqui (Pfizer)
+"""
 import os
 from datetime import datetime
 from framework.env import *

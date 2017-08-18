@@ -20,6 +20,13 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
+"""
+This file sets the buildtest specific environment variables used throughout all
+the scripts
+
+:author: Shahzeb Siddiqui (Pfizer)
+"""
+
 import os
 
 # read the BUILDTEST env vars from the shell environment that is sourced by setup.sh

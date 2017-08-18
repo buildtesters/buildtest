@@ -20,6 +20,14 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
+"""
+This python module generates the binary & source test by processing all yaml 
+files and create .sh scripts along with the CMakeLists configuration. There
+is only 1 binary yaml file that can generate multiple binary test, while 
+source test has 1 YAML file and generates only 1 test
+
+:author: Shahzeb Siddiqui (Pfizer)
+"""
 from framework.env import *
 from framework.tools.generic import *
 from framework.tools.cmake import *

@@ -20,6 +20,12 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
+"""
+This python module gets the parameters from YAML file and returns them to be 
+used as python variables
+
+:author: Shahzeb Siddiqui
+"""
 def get_name(config):
 	return config["name"]
 

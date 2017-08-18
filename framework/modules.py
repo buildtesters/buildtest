@@ -20,6 +20,18 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
+"""
+This python module does the following
+	 - get module listing
+	 - get unique application
+	 - get unique application version
+	 - get easybuild toolchains
+ 	 - check if software exists based on argument -s
+	 - check if toolchain exists based on argument -t
+	 - check if easyconfig passes
+
+:author: Shahzeb Siddiqui (Pfizer)
+"""
 from framework.env import *
 from framework.tools.file import *
 import os

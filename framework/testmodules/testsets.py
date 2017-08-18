@@ -24,6 +24,14 @@ from framework.tools.generic import *
 from framework.tools.cmake import *
 from framework.master import *
 import os
+
+"""
+This python module is used with the flag --testset to create test scripts that 
+don't require any YAML files. 
+
+:author: Shahzeb Siddiqui (Pfizer)
+
+"""
 def run_testset(software,toolchain,testset,verbose):
 	""" checks the testset parameter to determine which set of scripts to use to create tests """
 

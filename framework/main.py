@@ -21,6 +21,12 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+"""
+The entry point to buildtest
+
+:author: Shahzeb Siddiqui (Pfizer)
+"""
+
 import sys
 import os
 sys.path.insert(0,os.path.abspath('.'))

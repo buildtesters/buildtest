@@ -20,6 +20,12 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
+"""
+This function returns argument passed to buildtest from a dictionary to a 
+variable
+
+:author: Shahzeb Siddqiui
+"""
 def get_arg_version(config):
 	return config["version"]
 
