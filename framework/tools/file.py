@@ -21,7 +21,7 @@
 ############################################################################# 
 import os
 from datetime import datetime
-from env import *
+from framework.env import *
 
 def stripHiddenFile(file): 
 	"""  removes the leading "." character from file """

@@ -19,10 +19,10 @@
 #    You should have received a copy of the GNU General Public License 
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
-from env import *
-from parser.args import *
-from tools.generic import *
-from tools.file import *
+from framework.env import *
+from framework.parser.args import *
+from framework.tools.generic import *
+from framework.tools.file import *
 import shutil 
 
 def init_CMakeList(filename):

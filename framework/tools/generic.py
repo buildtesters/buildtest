@@ -19,7 +19,10 @@
 #    You should have received a copy of the GNU General Public License 
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
-from env import *
+from framework.env import *
+def print_version():
+	print "buildtest version: " + BUILDTEST_VERSION
+
 def add_arg_to_runcmd(runcmd,arglist):
         # add each argument to runcmd
         for arg in arglist:

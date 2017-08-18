@@ -19,10 +19,10 @@
 #    You should have received a copy of the GNU General Public License 
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
-from parser import *
-from tools.generic import *
-from tools.cmake import *
-from master import *
+from framework.parser import *
+from framework.tools.generic import *
+from framework.tools.cmake import *
+from framework.master import *
 import os
 def run_testset(software,toolchain,testset,verbose):
 	""" checks the testset parameter to determine which set of scripts to use to create tests """

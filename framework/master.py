@@ -20,9 +20,9 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
-from parser.parser import *
-from testgen import *
-from tools.generic import *
+from framework.parser.parser import *
+from framework.testgen import *
+from framework.tools.generic import *
 
 
 def recursive_gen_test(software,toolchain,configdir,codedir,verbose ):

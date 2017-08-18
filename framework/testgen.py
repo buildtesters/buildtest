@@ -20,11 +20,11 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
-from env import *
-from tools.generic import *
-from tools.cmake import *
-from tools.file import *
-from parser.args import *
+from framework.env import *
+from framework.tools.generic import *
+from framework.tools.cmake import *
+from framework.tools.file import *
+from framework.parser.args import *
 
 import os.path 
 import os, sys

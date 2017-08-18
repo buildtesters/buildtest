@@ -20,6 +20,9 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
+def get_arg_version(config):
+	return config["version"]
+
 def get_arg_findconfig(config):
         return config["findconfig"]
 

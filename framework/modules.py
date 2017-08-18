@@ -20,8 +20,8 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
 
-from env import *
-from tools.file import *
+from framework.env import *
+from framework.tools.file import *
 import os
 import sys
 
