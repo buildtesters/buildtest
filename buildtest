@@ -59,5 +59,11 @@ then
     exit 3
 fi
 
+python -c "import yaml" &> /dev/null
+# checking if python package yaml can be imported
+if [ $? -ne 0 ]; then
+	echo "ERROR: can't import python package: yaml, buildtest requires this package"
+	exit 1
+fi
 $PYTHON -m framework.main "$@"
 
