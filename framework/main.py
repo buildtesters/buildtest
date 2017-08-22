@@ -50,6 +50,7 @@ def main():
 	version=""
 
 	parser = argparse.ArgumentParser()
+	parser.add_argument("--check-setup", help="Check buildtest configuration and determine if you have it setup properly for testing",action="store_true")
 	parser.add_argument("-fc","--findconfig", help= """" Find buildtest YAML config files 
 							     To find all yaml config files use -fc all """)
 	parser.add_argument("-ft", "--findtest", help="""Find buildtest generated test scripts
@@ -71,11 +72,7 @@ def main():
 	# convert args into a dictionary
 	args_dict=vars(args)
 	version=get_arg_version(args_dict)
-	
-	if version == True:
-		print_version()
-		sys.exit(1)
-
+	check_setup=get_arg_check_setup(args_dict)
 	findconfig=get_arg_findconfig(args_dict)
 	findtest=get_arg_findtest(args_dict)
 	software=get_arg_software(args_dict)
@@ -86,6 +83,16 @@ def main():
 	system=get_arg_system(args_dict)
 	testset=get_arg_testset(args_dict)
 	verbose=get_arg_verbose(args_dict)
+
+	print args_dict
+	print check_setup
+	if version == True:
+		print_version()
+		sys.exit(1)
+
+	if check_setup == True:
+		check_buildtest_setup()
+		sys.exit(1)
 
 	os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log")
 	os.environ["BUILDTEST_LOGFILE"] = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")

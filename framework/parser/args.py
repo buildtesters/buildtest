@@ -29,6 +29,10 @@ variable
 def get_arg_version(config):
 	return config["version"]
 
+
+def get_arg_check_setup(config):
+	return config["check_setup"]
+
 def get_arg_findconfig(config):
         return config["findconfig"]
 

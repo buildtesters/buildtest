@@ -19,9 +19,127 @@
 #    You should have received a copy of the GNU General Public License 
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
+
+import subprocess
+import time
 from framework.env import *
 def print_version():
 	print "buildtest version: " + BUILDTEST_VERSION
+
+def check_buildtest_setup():
+	print "=============================================="
+	print "buildtest configuration check"
+	print "=============================================="
+	
+	print "Checking buildtest environment variables ..."
+	time.sleep(0.5)
+
+	ec = 0
+
+	print "Checking BUILDTEST_ROOT ..."
+	time.sleep(0.5)
+	if not os.path.exists(os.environ["BUILDTEST_ROOT"]):
+		ec = 1
+		print "STATUS: BUILDTEST_ROOT is not set ... FAILED"
+	else:
+		print "STATUS: BUILDTEST_ROOT ... PASSED"
+
+
+	print "Checking BUILDTEST_SOURCEDIR ..."
+	time.sleep(0.5)
+	if not os.path.exists(os.environ["BUILDTEST_SOURCEDIR"]):
+		ec = 1
+		print "STATUS: BUILDTEST_SOURCEDIR is not set ... FAILED"
+	else:
+		print "STATUS: BUILDTEST_SOURCEDIR ... PASSED" 
+
+	
+	print "Checking BUILDTEST_TESTDIR ..."
+	time.sleep(0.5)
+	if not os.path.exists(os.environ["BUILDTEST_TESTDIR"]):
+		ec = 1
+		print "STATUS: BUILDTEST_TESTDIR is not set ... FAILED"
+	else:
+		print "STATUS: BUILDTEST_TESTDIR ... PASSED"
+
+
+
+	print "Checking BUILDTEST_MODULE_EBROOT ..."
+	time.sleep(0.5)
+	if not os.path.exists(os.environ["BUILDTEST_MODULE_EBROOT"]):
+		ec = 1
+		print "STATUS: BUILDTEST_MODULE_EBROOT is not set"
+	else:
+		print "STATUS: BUILDTEST_MODULE_EBROOT ... PASSED"
+	
+
+	print "Checking BUILDTEST_EASYCONFIGDIR ..."
+	time.sleep(0.5)
+	if not os.path.exists(os.environ["BUILDTEST_EASYCONFIGDIR"]):
+		ec = 1
+		print "STATUS: BUILDTEST_EASYCONFIGDIR is not set ... FAILED"
+	else:
+		print "STATUS: BUILDTEST_EASYCONFIGDIR ... PASSED"
+	
+
+	print "Checking BUILDTEST_R_DIR ..."
+	time.sleep(0.5)
+	if not os.path.exists(os.environ["BUILDTEST_R_DIR"]):
+		ec = 1
+		print "STATUS: BUILDTEST_R_DIR is not set"
+	else:
+		print "STATUS: BUILDTEST_R_DIR ... PASSED"
+
+
+	print "Checking BUILDTEST_PERL_DIR ..."
+	time.sleep(0.5)
+	if not os.path.exists(os.environ["BUILDTEST_PERL_DIR"]):
+		ec = 1
+		print "STATUS: BUILDTEST_PERL_DIR is not set ... FAILED"
+	else:
+		print "STATUS: BUILDTEST_PERL_DIR ... PASSED"
+	
+
+	print "Checking BUILDTEST_PYTHON_DIR ..."
+	time.sleep(0.5)
+	if not os.path.exists(os.environ["BUILDTEST_PYTHON_DIR"]):
+		ec = 1
+		print "STATUS: BUILDTEST_PYTHON_DIR is not set ... FAILED"
+	else:
+		print "STATUS: BUILDTEST_PYTHON_DIR ... PASSED"
+
+	if ec == 0:
+		print "buildtest environment variable PASSED!"
+
+	print "Checking module command ..."
+	time.sleep(0.5)
+
+	cmd = "module --version"
+	ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	ret.communicate()
+	ec = ret.returncode
+	if ec == 0:
+		print "module command found!:"
+
+	# detecting whether we have Lmod or environment-modules
+	# query Lmod rpm 
+	cmd = "rpm -q Lmod"
+	ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	(outputmsg,errormsg) = ret.communicate()
+	ec = ret.returncode
+	if ec == 0:
+		print "System detected Lmod found package - ", outputmsg
+
+
+	cmd = "rpm -q environment-modules"
+	ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	(outputmsg,errormsg) = ret.communicate()
+	ec = ret.returncode
+	if ec == 0:
+		print "System detected environment-modules found package - ", outputmsg
+
+	
+
 
 def add_arg_to_runcmd(runcmd,arglist):
         # add each argument to runcmd
