@@ -16,7 +16,6 @@ def systempkg_menu(systempkg):
                         break
         print "Selecting Package: " + dirs[userinput]
 	systempkg_test_menu(systempkg, dirs[userinput])
-        return dirs[userinput]
 
 def systempkg_test_menu(systempkgpath, pkg_name):
 	print os.path.join(systempkgpath,pkg_name)
@@ -38,6 +37,12 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 
 	while True:
 		count = 0
+
+                print
+                print "------------------------------------------------------"
+                print " TEST ID                TEST NAME"
+                print "------------------------------------------------------"
+
 		for name in test_list:
 			print str(count) + ".", name
 			count = count + 1
@@ -56,43 +61,148 @@ Selection: """
 			failed_test = 0
 
 			for f in files_as_list:
-				cmd = "cd " + test_directory + "; time sh " + f + " >/dev/null"
-				ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-				ret.communicate()
-				ec = ret.returncode
-				if ec == 0: 
-					print "TEST: ", f, " PASSED"
-					passed_test = passed_test + 1
-				else:
-					print "TEST: ", f, " FAILED"
-					failed_test = failed_test + 1
+				(output,passtest,failtest)=launch_test(f)
+				passed_test = passed_test + passtest
+				failed_test = failed_test + failtest
 
 			total_tests = passed_test + failed_test
-			passrate = float(passed_test) / float(total_tests) * 100
-			failrate = float(failed_test) / float(total_tests) * 100
+			passrate = float(passed_test) * 100.0 / float(total_tests) 
+			failrate = float(failed_test) * 100.0 / float(total_tests) 
 
 			print passrate, "% of tests passed -  ", passed_test, "/", total_tests
 			print failrate, "% of tests failed - " , failed_test, "/", total_tests
 
-			os.system("sleep 1")
-	
+			time.sleep(0.5)
+			
 		elif userinput >= 0 and userinput < testcount:
-			cmd = "cd " + test_directory + "; time sh " + files_as_list[userinput] + " >/dev/null"
-			ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-			ret.communicate()
-			ec = ret.returncode
-			if ec == 0: 
-				print "TEST: ", f, " PASSED"
-			else:
-				print "TEST: ", f, " FAILED"
+			output = launch_test(files_as_list[userinput])[0]
+			print output
 
-			os.system("sleep 1")
+			time.sleep(0.5)
 		elif userinput == -2:
 			systempkg_menu(systempkgpath)
 		else:
 			print "Invalid Entry, please try again."
 	
+
+def eb_menu(ebpkg):
+	cmd = "find " + ebpkg + " -maxdepth 4 -mindepth 4 -type d"
+	ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+	(output,error) = ret.communicate()
+
+	#dirs = [ d for d in os.listdir(ebpkg) if os.path.isdir(os.path.join(ebpkg,d)) ]
+	output = output.split("\n")
+        print """ 
+Available EB Package Tests: 
+
+ID      Application           Toolchain
+========================================
+"""
+
+
+	toolchain = []
+	# getting the toolchain name and version and adding to toolchain list
+	for f in output:
+		tcver = os.path.basename(f)
+		tcname = os.path.basename(os.path.dirname(f))
+		toolchain.append(os.path.join(tcname,tcver))
+
+
+	app = []
+	# getting the app name and version and add to app list
+	for f in output:
+		appver = os.path.basename(os.path.dirname(os.path.dirname(f)))
+		appname = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(f))))
+		app.append(os.path.join(appname,appver))
+
+	# removing last element because its an empty token
+	app = app[:-1]
+	toolchain = toolchain[:-1]
+	for i in xrange(len(app)):
+		print i, "\t", app[i],"\t\t",toolchain[i]
 	
+	print 
+	while True:
+		userinput = input("Please corresponding ID to select application to view tests: ")
+		if userinput >= 0 and userinput < len(app):
+			break;
+
+	print "Selected  APP: ", app[userinput], " TOOLCHAIN: ",  toolchain[userinput]
+	
+	cmd = "find " + os.path.join(ebpkg,app[userinput],toolchain[userinput]) + """ -type f -name "*.sh" """
+	ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+	(outputmsg,errormsg) = ret.communicate()
+	output_list = outputmsg.split("\n")
+	# remove last element
+	output_list = output_list[:-1]
+	while True:
+		print 
+		print "------------------------------------------------------"
+		print " TEST ID                TEST NAME"
+		print "------------------------------------------------------"
+		for i in xrange(len(output_list)):
+			print str(i) + ". \t", output_list[i] 
+	
+		text = """
+Select Test # you want.
+-1: run all test
+-2: Go back
+-3: Exit Program
+Selection: """
+		userinput = input(text)
+	
+		if userinput >= 0 and userinput < len(output_list):
+			outputmsg = launch_test(output_list[userinput])[0]
+			print outputmsg
+
+			time.sleep(0.5)
+
+		elif userinput == -1:
+			total_pass = 0
+			total_fail = 0
+			for i in xrange(len(output_list)):
+				(output,passtest,failtest) = launch_test(output_list[i])	
+				total_pass = total_pass + passtest 
+				total_fail = total_fail + failtest
+			
+
+			total_test = total_pass + total_fail
+
+			passrate = float(total_pass) * 100.0 / float(total_test) 
+			failrate = float(total_fail) * 100.0 / float(total_test) 
+			print
+			print "---------------------------------------------------------"
+			print "Results:"
+			print "---------------------------------------------------------"
+			print "PASS RATE: ", passrate, "% with ", total_pass, "/", total_test
+			print "FAIL RATE: ", failrate, "% with ", total_fail, "/", total_test
+			
+			time.sleep(0.5)
+ 
+		elif userinput == -2: 
+			eb_menu(ebpkg)
+		elif userinput == -3:
+			sys.exit(1)	
+		else:
+			print "Invalid entry, please try again"
+
+
+def launch_test(test):
+	 cmd = " cd " + os.path.dirname(test) + "; time sh " + test
+         ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+         (output,errormsg) = ret.communicate()
+         ec = ret.returncode
+	 test_pass = 0
+	 test_fail = 0
+         if ec == 0:
+		 test_pass = 1
+	         print "TEST ", test, " PASSED"
+         else:
+		test_fail = 1
+         	print "TEST ", test, " FAILED"
+         return output, test_pass, test_fail
+
+
 
 cwd = os.getcwd()
 testing = os.path.join(cwd,"testing")
@@ -104,7 +214,9 @@ text = """ Please select the type of tests to run
 """
 userinput = input(text)
 if userinput == 1:
-	pkg = systempkg_menu(systempkg)
+	systempkg_menu(systempkg)
+elif userinput == 2:
+	eb_menu(ebpkg)
 	
 
 

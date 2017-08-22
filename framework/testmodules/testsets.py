@@ -81,6 +81,7 @@ def testset_generator(software,toolchain,codedir,verbose):
 	cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
 	if os.path.isdir(codedir):
 		for root,subdirs,files in os.walk(codedir):
+			count = 0
 			for file in files:
 				# get file name without extension
 				fname = os.path.splitext(file)[0]
@@ -117,5 +118,7 @@ def testset_generator(software,toolchain,codedir,verbose):
 				cmakelist = os.path.join(subdirpath,"CMakeLists.txt")
 				add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
 				msg = "Creating Test: " + testpath  
-				print msg
 				BUILDTEST_LOGCONTENT.append(msg + "\n")
+				count = count + 1
+			print "Generating ", count, "tests for ", os.path.basename(root)
+

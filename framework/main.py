@@ -84,8 +84,6 @@ def main():
 	testset=get_arg_testset(args_dict)
 	verbose=get_arg_verbose(args_dict)
 
-	print args_dict
-	print check_setup
 	if version == True:
 		print_version()
 		sys.exit(1)
