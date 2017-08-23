@@ -63,4 +63,7 @@ def get_arg_testset(config):
 def get_arg_verbose(config):
         return config["verbose"]
 
+def get_arg_runtest(config):
+        return config["runtest"]
+
 

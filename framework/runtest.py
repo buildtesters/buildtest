@@ -3,22 +3,41 @@ import sys
 import subprocess
 import time
 def systempkg_menu(systempkg):
+
+	os.system("clear")
+
         dirs = [ d for d in os.listdir(systempkg) if os.path.isdir(os.path.join(systempkg,d)) ]
-        print "Available System Package Tests: "
+        print "System Package Tests: "
+	print "-------------------------------------------"
+
         count = 0
         for i in dirs:
                 print str(count)+".", i
                 count = count + 1
         totalcount = count
         while True:
-                userinput = input("Please make a selection (choose the number or type name of package): ")
+		text = """
+Select Test # you want.
+-3: Main Menu
+-4: Exit Program
+User Input: """
+                userinput = input(text)
                 if userinput >= 0 and userinput < totalcount:
                         break
+		elif userinput == -3:
+			runtest_menu()
+		elif userinput == -4:
+			sys.exit(0)
+		else:
+			print "Invalid entry, please try again"
+		
         print "Selecting Package: " + dirs[userinput]
 	systempkg_test_menu(systempkg, dirs[userinput])
 
 def systempkg_test_menu(systempkgpath, pkg_name):
-	print os.path.join(systempkgpath,pkg_name)
+
+	os.system("clear")
+
 	cmd = "find " + os.path.join(systempkgpath,pkg_name) + """ -type f -name "*.sh" """
 	files=os.popen(cmd).read()
 	test_list = []
@@ -37,7 +56,8 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 
 	while True:
 		count = 0
-
+		print 
+		print " Available Tests for package: ", pkg_name
                 print
                 print "------------------------------------------------------"
                 print " TEST ID                TEST NAME"
@@ -47,15 +67,15 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 			print str(count) + ".", name
 			count = count + 1
 		testcount = count
-		text = """ 
-Select Test # you want.
--1: run all test
--2: Go back
--3: Exit Program
-Selection: """
-		userinput = input(text)
-		if userinput == -3:
+
+		userinput = userprompt()
+
+		if userinput == -4:
 			sys.exit(0)
+
+		elif userinput == -3:
+			runtest_menu()
+
 		elif userinput == -1:
 			passed_test = 0
 			failed_test = 0
@@ -86,18 +106,22 @@ Selection: """
 	
 
 def eb_menu(ebpkg):
+
+	os.system("clear")
+
 	cmd = "find " + ebpkg + " -maxdepth 4 -mindepth 4 -type d"
 	ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
 	(output,error) = ret.communicate()
 
 	#dirs = [ d for d in os.listdir(ebpkg) if os.path.isdir(os.path.join(ebpkg,d)) ]
 	output = output.split("\n")
-        print """ 
+        text =  """ 
 Available EB Package Tests: 
 
 ID      Application           Toolchain
 ========================================
 """
+	print text
 
 
 	toolchain = []
@@ -123,12 +147,27 @@ ID      Application           Toolchain
 	
 	print 
 	while True:
-		userinput = input("Please corresponding ID to select application to view tests: ")
+		
+                text = """
+Select Test # you want.
+-3: Main Menu
+-4: Exit Program
+User Input: """
+		userinput = input(text)
+
 		if userinput >= 0 and userinput < len(app):
 			break;
+		elif userinput == -3:
+			runtest_menu()
+		elif userinput == -4:
+			sys.exit(0)
+		else:
+			print "Invalid entry, please try again"
 
 	print "Selected  APP: ", app[userinput], " TOOLCHAIN: ",  toolchain[userinput]
 	
+	os.system("clear")
+
 	cmd = "find " + os.path.join(ebpkg,app[userinput],toolchain[userinput]) + """ -type f -name "*.sh" """
 	ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
 	(outputmsg,errormsg) = ret.communicate()
@@ -137,19 +176,15 @@ ID      Application           Toolchain
 	output_list = output_list[:-1]
 	while True:
 		print 
+		print "Tests for Application: ", app[userinput], " Toolchain: ", toolchain[userinput]
+		print 
 		print "------------------------------------------------------"
 		print " TEST ID                TEST NAME"
 		print "------------------------------------------------------"
 		for i in xrange(len(output_list)):
 			print str(i) + ". \t", output_list[i] 
 	
-		text = """
-Select Test # you want.
--1: run all test
--2: Go back
--3: Exit Program
-Selection: """
-		userinput = input(text)
+		userinput = userprompt()
 	
 		if userinput >= 0 and userinput < len(output_list):
 			outputmsg = launch_test(output_list[userinput])[0]
@@ -182,6 +217,8 @@ Selection: """
 		elif userinput == -2: 
 			eb_menu(ebpkg)
 		elif userinput == -3:
+			runtest_menu()
+		elif userinput == -4:
 			sys.exit(1)	
 		else:
 			print "Invalid entry, please try again"
@@ -203,20 +240,43 @@ def launch_test(test):
          return output, test_pass, test_fail
 
 
+def userprompt():
+	text = """
+Select Test # you want.
+-1: run all test
+-2: Go back
+-3: Main Menu
+-4: Exit Program
+User Input: """
+	userinput = input(text)
+	return userinput
 
-cwd = os.getcwd()
-testing = os.path.join(cwd,"testing")
-systempkg = os.path.join(testing,"system")
-ebpkg = os.path.join(testing,"ebapp")
-text = """ Please select the type of tests to run
+def runtest_menu():
+
+	os.system("clear")
+
+	cwd = os.environ["BUILDTEST_ROOT"]
+	testing = os.path.join(cwd,"testing")
+	systempkg = os.path.join(testing,"system")
+	ebpkg = os.path.join(testing,"ebapp")
+	text = """ Select the type of tests to run
 1) System Packages 
-2) Easybuild 
-"""
-userinput = input(text)
-if userinput == 1:
-	systempkg_menu(systempkg)
-elif userinput == 2:
-	eb_menu(ebpkg)
+2) Easybuild
+3) Exit Program
+User Input:  """
+
+
+	while True:
+		userinput = input(text)
+		if userinput == 1:
+			systempkg_menu(systempkg)
+		elif userinput == 2:
+			eb_menu(ebpkg)
+		elif userinput == 3:
+			sys.exit(1)
+		else:
+			print "Invalid Entry, please try again"
+			print
 	
 
 

@@ -31,6 +31,7 @@ import sys
 import os
 sys.path.insert(0,os.path.abspath('.'))
 
+from framework.runtest import *
 from framework.env import *
 from framework.modules import *
 from framework.testgen import *
@@ -63,6 +64,7 @@ def main():
 	parser.add_argument("--system", help=""" Build test for system packages
 					 To build all system package test use --system all """)
 	parser.add_argument("--testset", help="Select the type of test set to run (python,mpi,ruby,perl,R)", choices=["python","R","mpi","ruby","perl"])
+	parser.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
 	parser.add_argument("-v", "--verbose", help="increase verbosity level", type=int, choices=[1,2])
 	parser.add_argument("-V", "--version", help="show program version number and exit",action="store_true")
  
@@ -70,19 +72,21 @@ def main():
 
 
 	# convert args into a dictionary
-	args_dict=vars(args)
-	version=get_arg_version(args_dict)
-	check_setup=get_arg_check_setup(args_dict)
-	findconfig=get_arg_findconfig(args_dict)
-	findtest=get_arg_findtest(args_dict)
-	software=get_arg_software(args_dict)
-	toolchain=get_arg_toolchain(args_dict)
-	list_toolchain=get_arg_list_toolchain(args_dict)
-	list_unique_software=get_arg_list_unique_software(args_dict)
-	software_version_relation=get_arg_software_version_relation(args_dict)
-	system=get_arg_system(args_dict)
-	testset=get_arg_testset(args_dict)
-	verbose=get_arg_verbose(args_dict)
+	args_dict = vars(args)
+
+	version = get_arg_version(args_dict)
+	check_setup = get_arg_check_setup(args_dict)
+	findconfig = get_arg_findconfig(args_dict)
+	findtest = get_arg_findtest(args_dict)
+	software = get_arg_software(args_dict)
+	toolchain = get_arg_toolchain(args_dict)
+	list_toolchain = get_arg_list_toolchain(args_dict)
+	list_unique_software = get_arg_list_unique_software(args_dict)
+	software_version_relation = get_arg_software_version_relation(args_dict)
+	system = get_arg_system(args_dict)
+	testset = get_arg_testset(args_dict)
+	verbose = get_arg_verbose(args_dict)
+	runtest = get_arg_runtest(args_dict)
 
 	if version == True:
 		print_version()
@@ -91,6 +95,9 @@ def main():
 	if check_setup == True:
 		check_buildtest_setup()
 		sys.exit(1)
+
+	if runtest == True:
+		runtest_menu()
 
 	os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log")
 	os.environ["BUILDTEST_LOGFILE"] = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
