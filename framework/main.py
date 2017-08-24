@@ -235,9 +235,16 @@ def main():
 			toolchain = "dummy/dummy"
 	
 		toolchain=toolchain.split("/")
+
+		# only check toolchain argument with module tree if its not dummy toolchain
+		if ["dummy","dummy"] != toolchain:
+			# checking if toolchain argument has a valid module file
+			software_exists(toolchain,verbose)
+
 		# checking if its a valid toolchain 
 		toolchain_exists(toolchain,verbose)
 	
+		
 		tcname,tcversion=toolchain
 
 	

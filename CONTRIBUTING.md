@@ -23,7 +23,7 @@ The devel from upstream will get Pull Requests from other contributors, inorder 
 
 ```bash
 cd buildtest-framework
-git remote add upstream git@github.com/HPC-buildtest/buildtest-framework.git
+git remote add upstream git@github.com:HPC-buildtest/buildtest-framework.git
 git branch devel
 git checkout devel
 git pull upstream devel

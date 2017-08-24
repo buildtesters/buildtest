@@ -32,12 +32,10 @@ def check_buildtest_setup():
 	print "=============================================="
 	
 	print "Checking buildtest environment variables ..."
-	time.sleep(0.5)
 
 	ec = 0
 
-	print "Checking BUILDTEST_ROOT ..."
-	time.sleep(0.5)
+	time.sleep(0.2)
 	if not os.path.exists(os.environ["BUILDTEST_ROOT"]):
 		ec = 1
 		print "STATUS: BUILDTEST_ROOT is not set ... FAILED"
@@ -45,8 +43,7 @@ def check_buildtest_setup():
 		print "STATUS: BUILDTEST_ROOT ... PASSED"
 
 
-	print "Checking BUILDTEST_SOURCEDIR ..."
-	time.sleep(0.5)
+	time.sleep(0.2)
 	if not os.path.exists(os.environ["BUILDTEST_SOURCEDIR"]):
 		ec = 1
 		print "STATUS: BUILDTEST_SOURCEDIR is not set ... FAILED"
@@ -54,8 +51,7 @@ def check_buildtest_setup():
 		print "STATUS: BUILDTEST_SOURCEDIR ... PASSED" 
 
 	
-	print "Checking BUILDTEST_TESTDIR ..."
-	time.sleep(0.5)
+	time.sleep(0.2)
 	if not os.path.exists(os.environ["BUILDTEST_TESTDIR"]):
 		ec = 1
 		print "STATUS: BUILDTEST_TESTDIR is not set ... FAILED"
@@ -64,8 +60,7 @@ def check_buildtest_setup():
 
 
 
-	print "Checking BUILDTEST_MODULE_EBROOT ..."
-	time.sleep(0.5)
+	time.sleep(0.2)
 	if not os.path.exists(os.environ["BUILDTEST_MODULE_EBROOT"]):
 		ec = 1
 		print "STATUS: BUILDTEST_MODULE_EBROOT is not set"
@@ -73,8 +68,7 @@ def check_buildtest_setup():
 		print "STATUS: BUILDTEST_MODULE_EBROOT ... PASSED"
 	
 
-	print "Checking BUILDTEST_EASYCONFIGDIR ..."
-	time.sleep(0.5)
+	time.sleep(0.2)
 	if not os.path.exists(os.environ["BUILDTEST_EASYCONFIGDIR"]):
 		ec = 1
 		print "STATUS: BUILDTEST_EASYCONFIGDIR is not set ... FAILED"
@@ -82,8 +76,7 @@ def check_buildtest_setup():
 		print "STATUS: BUILDTEST_EASYCONFIGDIR ... PASSED"
 	
 
-	print "Checking BUILDTEST_R_DIR ..."
-	time.sleep(0.5)
+	time.sleep(0.2)
 	if not os.path.exists(os.environ["BUILDTEST_R_DIR"]):
 		ec = 1
 		print "STATUS: BUILDTEST_R_DIR is not set"
@@ -91,8 +84,7 @@ def check_buildtest_setup():
 		print "STATUS: BUILDTEST_R_DIR ... PASSED"
 
 
-	print "Checking BUILDTEST_PERL_DIR ..."
-	time.sleep(0.5)
+	time.sleep(0.2)
 	if not os.path.exists(os.environ["BUILDTEST_PERL_DIR"]):
 		ec = 1
 		print "STATUS: BUILDTEST_PERL_DIR is not set ... FAILED"
@@ -100,8 +92,7 @@ def check_buildtest_setup():
 		print "STATUS: BUILDTEST_PERL_DIR ... PASSED"
 	
 
-	print "Checking BUILDTEST_PYTHON_DIR ..."
-	time.sleep(0.5)
+	time.sleep(0.2)
 	if not os.path.exists(os.environ["BUILDTEST_PYTHON_DIR"]):
 		ec = 1
 		print "STATUS: BUILDTEST_PYTHON_DIR is not set ... FAILED"
@@ -111,15 +102,21 @@ def check_buildtest_setup():
 	if ec == 0:
 		print "buildtest environment variable PASSED!"
 
-	print "Checking module command ..."
-	time.sleep(0.5)
+	time.sleep(0.2)
 
 	cmd = "module --version"
 	ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-	ret.communicate()
+	(outputmsg,errormsg) = ret.communicate()
 	ec = ret.returncode
+
 	if ec == 0:
-		print "module command found!:"
+		print "Detecting module command .... "
+		print outputmsg, errormsg
+
+	else:
+		print "module commmand not found in system"
+		print outputmsg, errormsg
+
 
 	# detecting whether we have Lmod or environment-modules
 	# query Lmod rpm 
@@ -133,8 +130,9 @@ def check_buildtest_setup():
 
 	cmd = "rpm -q environment-modules"
 	ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-	(outputmsg,errormsg) = ret.communicate()
+	(outputmsg) = ret.communicate()[0]
 	ec = ret.returncode
+
 	if ec == 0:
 		print "System detected environment-modules found package - ", outputmsg
 

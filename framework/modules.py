@@ -196,8 +196,8 @@ def software_exists(software,verbose):
 	checks whether software exist, there must be a module file present with the 
 	same name specified as the argument. 
 	"""
-	success_msg = "Checking Software Exists ... SUCCESS"  
-	fail_msg = "Checking Software Exists ... FAILED"
+	success_msg = "Checking Software: " + software[0] + "/" + software[1] + "  ... SUCCESS"  
+	fail_msg = "Checking Software: " + software[0] + "/" + software[1] + " ... FAILED"
 	if len(software) != 2:
 		print fail_msg
 		msg = "Too many arguments, -s takes argument <software>,<version> \n"
@@ -225,8 +225,8 @@ def toolchain_exists(toolchain,verbose):
 	"""
 	checks to see if toolchain passed on command line exist in toolchain list
 	"""
-	success_msg = "Checking Toolchain Exists ... SUCCESS"
-	fail_msg = "Checking Software Exists ... FAILED"
+	success_msg = "Checking Toolchain: " + toolchain[0] + "/" + toolchain[1] + " ... SUCCESS"
+	fail_msg = "Checking Toolchain: " + toolchain[0] + "/" + toolchain[1] + " ... FAILED"
         # catch all exception cases for invalid value for -t flag
         if len(toolchain) != 2:
 		print fail_msg
@@ -384,28 +384,19 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
 		BUILDTEST_LOGCONTENT.append("Version Suffix: " + versionsuffix + "\n")
 		BUILDTEST_LOGCONTENT.append("Version + Version Suffix: " + version_versionsuffix + "\n")
 
-		# master condition to determine if easyconfig parameter match argument for software and toolchain
-		if tcname == "dummy" and tcversion == "dummy":
-			if name == appname and version_versionsuffix == appversion:
-				BUILDTEST_LOGCONTENT.append("Comparing strings: the following strings \n" )
-				BUILDTEST_LOGCONTENT.append("name: " + name + " with appname: " + appname + " AND ")
-				BUILDTEST_LOGCONTENT.append("version_versionsuffix: " + version_versionsuffix + " with appversion: " + appversion + "\n")
-				print success_msg
-				return True
-		else:
-			if name == appname and version_versionsuffix == appversion and toolchain_name == tcname and toolchain_version == tcversion:
-				BUILDTEST_LOGCONTENT.append("Comparing strings: the following strings \n") 
-				BUILDTEST_LOGCONTENT.append("name:" + name + " with appname = " + appname + " AND ")
-				BUILDTEST_LOGCONTENT.append("version_versionsuffix: " + version_versionsuffix + " with appversion: " + appversion + " AND ")
-				BUILDTEST_LOGCONTENT.append("toolchain_name: " + toolchain_name + " with tcname: " + tcname + " AND ")
-				BUILDTEST_LOGCONTENT.append("toolchain_version: " + toolchain_version + "with tcversion: " + tcversion + "\n")
-				print success_msg
-				return True
+		if name == appname and version_versionsuffix == appversion and toolchain_name == tcname and toolchain_version == tcversion:
+			BUILDTEST_LOGCONTENT.append("Comparing strings: the following strings \n") 
+			BUILDTEST_LOGCONTENT.append("name:" + name + " with appname = " + appname + " AND ")
+			BUILDTEST_LOGCONTENT.append("version_versionsuffix: " + version_versionsuffix + " with appversion: " + appversion + " AND ")
+			BUILDTEST_LOGCONTENT.append("toolchain_name: " + toolchain_name + " with tcname: " + tcname + " AND ")
+			BUILDTEST_LOGCONTENT.append("toolchain_version: " + toolchain_version + "with tcversion: " + tcversion + "\n")
+			print success_msg
+			return True
 
 	# mismatch in easyconfig entries for name,version+versionsuffix, and toolchain with specified entries
 	if match == False:
 		print fail_msg
-	 	msg = "Can't find easyconfig file with argument: -s " + appname + "/" + appversion + " -t " + tcname + "/" + tcversion
+	 	msg = "ERROR: Attempting to  find easyconfig file  " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + ".eb"
 		print msg
 		BUILDTEST_LOGCONTENT.append(msg)
 		update_logfile(verbose)
