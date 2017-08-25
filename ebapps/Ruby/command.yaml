@@ -1,0 +1,15 @@
+binaries:
+        - bundle --version
+        - bundler --version
+        - erb --version
+        - gem --version
+        - irb --version
+        - launchy --version
+        - ldiff --version
+        - rackup --version
+        - rake --version
+        - rdoc --version
+        - ri --version
+        - rspec --version
+        - ruby --version
+        - tilt --help
