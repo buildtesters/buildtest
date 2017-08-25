@@ -1,0 +1,3 @@
+binaries:
+        - bison -V
+        - yacc -V
