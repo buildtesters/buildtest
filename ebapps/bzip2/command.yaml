@@ -1,0 +1,5 @@
+binaries:
+        - bunzip --help
+        - bzcat --help
+        - bzip2 --help
+        - bzmore --help
