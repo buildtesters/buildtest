@@ -26,8 +26,18 @@ cd buildtest-framework
 git remote add upstream git@github.com:HPC-buildtest/buildtest-framework.git
 git branch devel
 git checkout devel
+git fetch upstream
 git pull upstream devel
 ```
+
+Once your local repo is in-sync with upstream lets push the changes to upstream fork 
+```bash
+git checkout devel
+git push origin devel
+```
+
+To sync master branch, please do the same operation as you did with devel branch.
+
 
 ### Branch
 
