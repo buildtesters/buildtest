@@ -38,6 +38,7 @@ from framework.testgen import *
 from framework.master import *
 from framework.tools.generic import *
 from framework.tools.file import *
+from framework.tools.scan import *
 from framework.parser.functions import *
 from framework.parser.args import *
 from framework.parser.parser import *
@@ -61,6 +62,9 @@ def main():
 	parser.add_argument("-lt", "--list-toolchain",help="retrieve toolchain used based on the easyconfig files provided by BUILDTEST_EASYCONFIGDIR", action="store_true")
 	parser.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_MODULETREE", action="store_true")
 	parser.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
+
+	parser.add_argument("--scantest", help=""" Report all tests that can be built with buildtest by checking all available apps found
+in eb stack and system packages""", action="store_true")
 	parser.add_argument("--system", help=""" Build test for system packages
 					 To build all system package test use --system all """)
 	parser.add_argument("--testset", help="Select the type of test set to run (python,mpi,ruby,perl,R)", choices=["python","R","mpi","ruby","perl"])
@@ -83,10 +87,12 @@ def main():
 	list_toolchain = get_arg_list_toolchain(args_dict)
 	list_unique_software = get_arg_list_unique_software(args_dict)
 	software_version_relation = get_arg_software_version_relation(args_dict)
+	scan = get_arg_scantest(args_dict)
 	system = get_arg_system(args_dict)
 	testset = get_arg_testset(args_dict)
 	verbose = get_arg_verbose(args_dict)
 	runtest = get_arg_runtest(args_dict)
+
 
 	if version == True:
 		print_version()
@@ -98,6 +104,10 @@ def main():
 
 	if runtest == True:
 		runtest_menu()
+	
+	if scan == True:
+		scantest()
+
 
 	os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log")
 	os.environ["BUILDTEST_LOGFILE"] = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")

@@ -54,6 +54,9 @@ def get_arg_list_unique_software(config):
 def get_arg_software_version_relation(config):
 	return config["software_version_relation"]
 
+def get_arg_scantest(config):
+	return config["scantest"]
+
 def get_arg_system(config):
 	return config["system"]
 
