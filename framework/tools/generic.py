@@ -176,8 +176,11 @@ def print_dictionary(dictionary):
         """
         prints the content of dictionary
         """
+	count = 1
         for key in dictionary:
-                print key, sset(dictionary[key])
+		
+                print (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t", sset(dictionary[key])
+		count = count + 1
 
 def print_set(setcollection):
         """
