@@ -51,28 +51,7 @@ def main():
 	module=""
 	version=""
 
-	parser = argparse.ArgumentParser()
-	parser.add_argument("--check-setup", help="Check buildtest configuration and determine if you have it setup properly for testing",action="store_true")
-	parser.add_argument("-fc","--findconfig", help= """" Find buildtest YAML config files 
-							     To find all yaml config files use -fc all """)
-	parser.add_argument("-ft", "--findtest", help="""Find buildtest generated test scripts
-					      	     To find all test scripts use -ft all """)
-	parser.add_argument("-s", "--software", help=" Specify software package to test")
-	parser.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package") 
-	parser.add_argument("-lt", "--list-toolchain",help="retrieve toolchain used based on the easyconfig files provided by BUILDTEST_EASYCONFIGDIR", action="store_true")
-	parser.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_MODULETREE", action="store_true")
-	parser.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
-
-	parser.add_argument("--scantest", help=""" Report all tests that can be built with buildtest by checking all available apps found
-in eb stack and system packages""", action="store_true")
-	parser.add_argument("--system", help=""" Build test for system packages
-					 To build all system package test use --system all """)
-	parser.add_argument("--testset", help="Select the type of test set to run (python,mpi,ruby,perl,R)", choices=["python","R","mpi","ruby","perl"])
-	parser.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
-	parser.add_argument("-v", "--verbose", help="increase verbosity level", type=int, choices=[1,2])
-	parser.add_argument("-V", "--version", help="show program version number and exit",action="store_true")
- 
-	args = parser.parse_args()
+	args = buildtest_parsermenu()
 
 
 	# convert args into a dictionary
@@ -202,9 +181,15 @@ in eb stack and system packages""", action="store_true")
 		sys.exit(1)
 	if software_version_relation == True:
 		software_version_dict=module_version_relation(BUILDTEST_MODULE_EBROOT)
-		text = """ \n
-			Software Version Relationship:
-			------------------------------- \n """
+		text = """ 
+		
+			------------------------------------------ 
+	 		|      Software Version Relationship     |
+			------------------------------------------
+
+
+ ID  |        Software            |      Versions
+-----|----------------------------|----------------------------- """
 		print text
 		BUILDTEST_LOGCONTENT.append(text)
 		print_dictionary(software_version_dict)

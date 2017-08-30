@@ -104,25 +104,19 @@ def module_version_relation(moduletree):
 	# dictionary used for keeping a relationship between software name and its corresponding versions found as modulefiles
 	module_dict = {}
 
-
-	print module_set
-	# for every software in set, search easyconfig files to find version tag to get software to version relationship
+	# for every app iterate over module tree and add unique version in set, then add this to a dictionary. That way 
+	# a dictionary can reference via key,value where key is application name and value is the list of versions
 	for item in  module_set:
-		print "item=",item
-		easyconfigfiles=os.popen("find " + os.path.join(BUILDTEST_EASYCONFIGDIR,item) + " -name *.eb -type f"). read().rstrip()
-		print "ebfiles=",easyconfigfiles
-		listofebfiles=easyconfigfiles.split("\n")
-		version_set=set()
-		# for software package X, get all version and store them in a set to avoid duplicate addition, only care for unique versions on the system
-		for ebfile in listofebfiles:
-			# extract version tag from easyconfig, there is a case where altversion = gets picked up so only get 1st entry which should be version
-			cmd="""grep "version =" """ + ebfile + """ | cut -f3 -d " " | head -n 1"""
-			version=os.popen(cmd).read().rstrip()
-			# remove the leading and trailing ' character
-			version_set.add(version[1:-1])
-			
-		# store version set in dictionary that is indexed by software
-		module_dict[item]=version_set
+		version_set = set()
+		for app in modulelist:
+			name = os.path.basename(os.path.dirname(app))
+			version = os.path.basename(app)
+			version = os.path.splitext(version)[0]
+			# only add module version to set when module name is found in tree
+			if item == name:
+				version_set.add(version)
+		module_dict[item] = version_set
+
 	return module_dict
 
 def get_toolchain(easyconfigdir):
