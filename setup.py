@@ -29,7 +29,7 @@ from setuptools import setup
 
 
 setup(name='buildtest-framework',
-      version='1.0.1',
+      version='1.1.1',
       description='HPC Application Testing Framework',
       url='https://github.com/shahzebsiddiqui/buildtest-framework',
       author='Shahzeb Siddiqui',
