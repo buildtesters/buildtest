@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest-framework
+#   https://github.com/HPC-buildtest/buildtest-framework
 # 
 #  This file is part of buildtest. 
 # 
@@ -41,7 +41,7 @@ def buildtest_parsermenu():
         parser.add_argument("-lt", "--list-toolchain",help="retrieve toolchain used based on the easyconfig files provided by BUILDTEST_EASYCONFIGDIR", action="store_true")
         parser.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_MODULETREE", action="store_true")
         parser.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
-
+	parser.add_argument("--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
         parser.add_argument("--scantest", help=""" Report all tests that can be built with buildtest by checking all available apps found
 in eb stack and system packages""", action="store_true")
         parser.add_argument("--system", help=""" Build test for system packages
@@ -82,6 +82,9 @@ def get_arg_list_unique_software(config):
 
 def get_arg_software_version_relation(config):
 	return config["software_version_relation"]
+
+def get_arg_module_naming_scheme(config):
+	return config["module_naming_scheme"]
 
 def get_arg_scantest(config):
 	return config["scantest"]

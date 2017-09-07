@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest-framework
+#   https://github.com/HPC-buildtest/buildtest-framework
 # 
 #  This file is part of buildtest. 
 # 
@@ -43,7 +43,7 @@ field={
 	'nproc': ''
 }
 
-def parse_config(software,toolchain,filename,codedir):
+def parse_config(filename,codedir):
 	"""
 	read config file and verify the key-value content with dictionary field
 	"""

@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest-framework 
+#   https://github.com/HPC-buildtest/buildtest-framework 
 # 
 #    This file is part of buildtest. 
 # 
@@ -35,6 +35,7 @@ BUILDTEST_ROOT = os.environ['BUILDTEST_ROOT']
 BUILDTEST_SOURCEDIR = os.environ['BUILDTEST_SOURCEDIR']
 BUILDTEST_EASYCONFIGDIR = os.environ['BUILDTEST_EASYCONFIGDIR']
 BUILDTEST_MODULE_EBROOT = os.environ['BUILDTEST_MODULE_EBROOT']
+BUILDTEST_MODULE_NAMING_SCHEME = os.environ['BUILDTEST_MODULE_NAMING_SCHEME']
 BUILDTEST_TESTDIR = os.environ['BUILDTEST_TESTDIR']
 
 

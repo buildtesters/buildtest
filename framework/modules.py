@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest-framework
+#   https://github.com/HPC-buildtest/buildtest-framework
 # 
 #  This file is part of buildtest. 
 # 
@@ -190,6 +190,7 @@ def software_exists(software,verbose):
 	checks whether software exist, there must be a module file present with the 
 	same name specified as the argument. 
 	"""
+
 	success_msg = "Checking Software: " + software[0] + "/" + software[1] + "  ... SUCCESS"  
 	fail_msg = "Checking Software: " + software[0] + "/" + software[1] + " ... FAILED"
 	if len(software) != 2:
@@ -271,6 +272,13 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
         if isHiddenFile(tcversion):
                 tcversion = stripHiddenFile(tcversion)
                 BUILDTEST_LOGCONTENT.append("Stripping leading . from toolchain version: " + tcversion + "\n")
+
+	# for Flat Naming Scheme -s will take APP/Version-Toolchain so need to take Toolchain out for comparision
+        if BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
+                arg_tc_name = toolchain[0] + "-" + toolchain[1]
+                appversion = appversion.replace(arg_tc_name,'')
+                if appversion[-1] == "-":
+                        appversion = appversion[:-1]
 
 
 	cmd="find " + easyconfig_repo  + " -name " + appname+"-"+appversion+"*.eb -type f"         
@@ -386,6 +394,7 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
 			BUILDTEST_LOGCONTENT.append("toolchain_version: " + toolchain_version + "with tcversion: " + tcversion + "\n")
 			print success_msg
 			return True
+	
 
 	# mismatch in easyconfig entries for name,version+versionsuffix, and toolchain with specified entries
 	if match == False:

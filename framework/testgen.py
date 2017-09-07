@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest 
+#   https://github.com/HPC-buildtest/buildtest-framework
 # 
 #  This file is part of buildtest. 
 # 
@@ -32,6 +32,7 @@ from framework.env import *
 from framework.tools.generic import *
 from framework.tools.cmake import *
 from framework.tools.file import *
+from framework.tools.software import *
 from framework.parser.args import *
 
 import os.path 
@@ -99,7 +100,7 @@ def generate_binary_test(args_dict,verbose,pkg):
 
 	
 # generate test for source
-def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
+def generate_source_test(configmap,codedir,verbose,subdir):
 	"""
 	This function generates the tests that requires compilation for EB apps. The
 	tests are written <software>/<version>/<toolchain-name>/<toolchain-version>.
@@ -110,10 +111,10 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 	will try to generate this automatically if nothing is provided. 
 	"""
 	
-	appname=software[0]
-	appver=software[1]
-	tcname=toolchain[0]
-	tcver=toolchain[1]
+	appname=get_appname()
+	appver=get_appversion()
+	tcname=get_toolchain_name()
+	tcver=get_toolchain_version()
 	
 	# app_destdir is root of test directory
 	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
@@ -155,7 +156,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 
 	# write the preamble to test-script to initialize app environment using module cmds
 	fd=open(testpath,'w')
-	header=load_modules(software,toolchain)
+	header=load_modules()
 	fd.write(header)
 	
 	# string used for generating the compilation step
@@ -330,7 +331,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 
     	# by default run the commands below which will add the test to CMakeLists.txt and update the logfile
         if "iter" not in configmap:
-        	add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
+        	add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 
 	        # print "Creating Test: " + testpath
 
@@ -357,7 +358,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 		print out
 		BUILDTEST_LOGCONTENT.append(out)
 		# writing test to CMakeLists.txt
-		add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
+		add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 		BUILDTEST_LOGCONTENT.append("Content of Testfile: " + testpath_testname + "\n")
                 BUILDTEST_LOGCONTENT.append("-------------------------------------------------- \n")
     
@@ -379,7 +380,7 @@ def generate_source_test(software,toolchain,configmap,codedir,verbose,subdir):
 			print out
 			BUILDTEST_LOGCONTENT.append(out)
 
-			add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
+			add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 			BUILDTEST_LOGCONTENT.append("Content of Testfile: " + dest_testpathname + "\n")
 			BUILDTEST_LOGCONTENT.append("-------------------------------------------------- \n")
     
@@ -519,23 +520,16 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 	subdirectories that are created that implies multiple CMakeLists.txt files for each sub directory
 	"""
 	if test_type == "software":
-		software=get_arg_software(args_dict)
-		toolchain=get_arg_toolchain(args_dict)
 
-		# when toolchain is not specified use dummy toolchain
-		if toolchain == None:
-			toolchain = "dummy/dummy"
-	
-		software=software.split("/")
-		toolchain=toolchain.split("/")
+ 		name = get_appname()
+		version = get_appversion()
+	        toolchain_name = get_toolchain_name()
+        	toolchain_version = get_toolchain_version()
 
-		name,version=software
-		toolchain_name,toolchain_version=toolchain
-	
-		test_destdir,test_destdir_cmakelist = setup_software_cmake(software,toolchain,args_dict)	
+		test_destdir,test_destdir_cmakelist = setup_software_cmake(args_dict)	
 
  	       # load preamble for test-script that initializes environment.
-        	header=load_modules(software,toolchain)
+        	header=load_modules()
 
 	else:
 		system=get_arg_system(args_dict)

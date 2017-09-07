@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest-framework
+#   https://github.com/HPC-buildtest/buildtest-framework
 # 
 #  This file is part of buildtest. 
 # 
@@ -29,6 +29,7 @@ from framework.env import *
 from framework.parser.args import *
 from framework.tools.generic import *
 from framework.tools.file import *
+from framework.tools.software import *
 import shutil 
 
 def init_CMakeList(filename):
@@ -62,11 +63,16 @@ def update_CMakeLists(filename,tag, verbose):
         else:
                 fd.close()
 
-def add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname):
+def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
 	""" update CMakeLists.txt with add_test command to allow ctest to run test """
 
 	fd=open(cmakelist,'a')
 	add_test_str=""
+
+	appname = get_appname()
+	appversion = get_appversion()
+	tcname = get_toolchain_name()
+	tcversion = get_toolchain_version()
 
         # if YAML files are in subdirectory of config directory then update CMakeList
         # in app_destdir to add tag "add_subdirectory" for subdirectory so CMakeList
@@ -88,17 +94,19 @@ def add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakel
                 # built with any toolchains. Subdirectories come in handy when you need to organize tests 
 		# effectively to avoid naming conflict
       		
-		add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-"      + subdir + "-" + testname + "\t COMMAND sh " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+		add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"      + subdir + "-" + testname + "\t COMMAND sh " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 	else:
-         	add_test_str="add_test(NAME " + appname + "-" + appver + "-" + tcname + "-" + tcver + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+         	add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 	fd.write(add_test_str)
         fd.close()
 	BUILDTEST_LOGCONTENT.append("Updating File " + cmakelist + " with: " + add_test_str + "\n")
 
-def setup_software_cmake(software,toolchain,args_dict):
+def setup_software_cmake(args_dict):
 	verbose=get_arg_verbose(args_dict)
-	name,version=software
-	toolchain_name,toolchain_version=toolchain
+	name = get_appname()
+	version = get_appversion()
+	toolchain_name = get_toolchain_name()
+	toolchain_version = get_toolchain_version()
 
 	 # if top level software directory is not present, create it
         test_ebapp_dir=os.path.join(BUILDTEST_TESTDIR,"ebapp")
