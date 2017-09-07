@@ -116,7 +116,7 @@ def testset_generator(software,toolchain,codedir,verbose):
 				logcontent+="\n--------------------------------------------\n"
 				
 				cmakelist = os.path.join(subdirpath,"CMakeLists.txt")
-				add_test_to_CMakeLists(appname,appver,tcname,tcver,app_destdir,subdir,cmakelist,testname)
+				add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 				msg = "Creating Test: " + testpath  
 				BUILDTEST_LOGCONTENT.append(msg + "\n")
 				count = count + 1

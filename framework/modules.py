@@ -290,7 +290,6 @@ def check_software_version_in_easyconfig(easyconfig_repo, verbose):
 	easyconfigfiles=os.popen(cmd).read().rstrip().split("\n")
 	# remove any empty elements in list when there is no eb files found
 	easyconfigfiles = [x for x in easyconfigfiles if x]
-	print easyconfigfiles
 	# if no easyconfig files found
 	if len(easyconfigfiles) == 0:
 		if len(tcversion) == 0:
