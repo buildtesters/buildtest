@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest-framework 
+#   https://github.com/HPC-buildtest/buildtest-framework 
 # 
 #  This file is part of buildtest. 
 # 
@@ -28,7 +28,7 @@ from framework.testgen import *
 from framework.tools.generic import *
 
 
-def recursive_gen_test(software,toolchain,configdir,codedir,verbose ):
+def recursive_gen_test(configdir,codedir,verbose ):
         """ if config directory exists then process .yaml files to build source test """
 	BUILDTEST_LOGCONTENT.append("\n ------------------------------------------------------------ \n")
 	BUILDTEST_LOGCONTENT.append(" function: recursive_gen_test \n")
@@ -49,11 +49,11 @@ def recursive_gen_test(software,toolchain,configdir,codedir,verbose ):
                                 if subdir == "config":
                                         subdir = ""
                                 code_destdir=os.path.join(codedir,subdir)
-                                configmap=parse_config(software,toolchain,filepath,code_destdir)    
+                                configmap=parse_config(filepath,code_destdir)    
                                 # error processing config file, then parse_config will return an empty dictionary
                                 if len(configmap) == 0:
                                         continue
 				count = count + 1
-                                generate_source_test(software,toolchain,configmap,code_destdir,verbose,subdir)
+                                generate_source_test(configmap,code_destdir,verbose,subdir)
 		print "Generating " + str(count) + " Source Tests "
 

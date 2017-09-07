@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest-framework
+#   https://github.com/HPC-buildtest/buildtest-framework
 # 
 #  This file is part of buildtest. 
 # 
@@ -23,6 +23,7 @@
 import subprocess
 import time
 from framework.env import *
+from framework.tools.software import *
 def print_version():
 	print "buildtest version: " + BUILDTEST_VERSION
 
@@ -75,6 +76,16 @@ def check_buildtest_setup():
 	else:
 		print "STATUS: BUILDTEST_EASYCONFIGDIR ... PASSED"
 	
+
+	time.sleep(0.2)
+	if os.environ["BUILDTEST_MODULE_NAMING_SCHEME"] == "FNS" or  os.environ["BUILDTEST_MODULE_NAMING_SCHEME"] == "HMNS":
+		print "STATUS: BUILDTEST_MODULE_NAMING_SCHEME ... PASSED"
+		print "BUILDTEST_MODULE_NAMING_SCHEME is set to: ", os.environ["BUILDTEST_MODULE_NAMING_SCHEME"]
+	else:
+		ec = 1
+		print "STATUS: BUILDTEST_MODULE_NAMING_SCHEME is set to: " + BUILDTEST_MODULE_NAMING_SCHEME
+		print "Valid values for BUILDTEST_MODULE_NAMING_SCHEME are: [HMNS, FNS]"
+
 
 	time.sleep(0.2)
 	if not os.path.exists(os.environ["BUILDTEST_R_DIR"]):
@@ -150,25 +161,37 @@ def add_arg_to_runcmd(runcmd,arglist):
         return runcmd
 
 
-def load_modules(software,toolchain):
+def load_modules():
         """
         return a string that loads the software and toolchain module. 
         """
-        # for dummy toolchain you can load software directly. Ensure a clean environment by running module purge
-        if toolchain[0] == "dummy":
-                header="""
-#!/bin/sh
-module purge
-module load """ + software[0] + "/" + software[1] + """
-"""
-        else:
-                header="""
-#!/bin/sh
-module purge
-module load """ + toolchain[0] + "/" + toolchain[1] + """
-module load """ + software[0] + "/" + software[1] + """
-"""
+	
+	appname = get_appname()
+	appversion = get_appversion()
+	tcname = get_toolchain_name()
+	tcversion = get_toolchain_version()
 
+        header="""
+#!/bin/sh
+module purge
+"""
+        # for dummy toolchain you can load software directly. Ensure a clean environment by running module purge
+        if tcname == "dummy":
+		moduleload = "module load " + appname + "/" + appversion  + "\n"
+        else:
+		if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
+			moduleload = "module load " + tcname + "/" + tcversion + "\n"
+			moduleload += "module load " + appname + "/" + appversion + "\n"
+		elif BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
+			moduleload = "module load " + tcname + "/" + tcversion + "\n"
+			toolchain_name = appname + "-" + tcversion
+			appversion = appversion.replace(toolchain_name,'')
+			if appversion[-1] == "-":
+				appversion = appversion[:-1]
+
+			moduleload += " module load " + appname + "/" + appversion + "-" + tcname + "-" + tcversion + "\n"
+
+	header = header + moduleload
         return header
 
 

@@ -3,7 +3,7 @@
 #
 #  Copyright 2017
 #
-#   https://github.com/shahzebsiddiqui/buildtest-framework
+#   https://github.com/HPC-buildtest/buildtest-framework
 #
 #    This file is part of buildtest.
 #
@@ -39,6 +39,7 @@ from framework.master import *
 from framework.tools.generic import *
 from framework.tools.file import *
 from framework.tools.scan import *
+from framework.tools.software import *
 from framework.parser.functions import *
 from framework.parser.args import *
 from framework.parser.parser import *
@@ -67,6 +68,7 @@ def main():
 	list_unique_software = get_arg_list_unique_software(args_dict)
 	software_version_relation = get_arg_software_version_relation(args_dict)
 	scan = get_arg_scantest(args_dict)
+	BUILDTEST_MODULE_NAMING_SCHEME=get_arg_module_naming_scheme(args_dict)
 	system = get_arg_system(args_dict)
 	testset = get_arg_testset(args_dict)
 	verbose = get_arg_verbose(args_dict)
@@ -222,14 +224,20 @@ def main():
 	if software != None:
 		software=software.split("/")
 
+
+                if toolchain == None:
+                        toolchain = "dummy/dummy"
+
+                toolchain=toolchain.split("/")
+
+		appname=get_appname()
+		appversion=get_appversion()
+		tcname = get_toolchain_name()
+		tcversion = get_toolchain_version()	
+
 		# checking if software exists
 		software_exists(software,verbose)
-		appname,appversion=software
-
-		if toolchain == None:
-			toolchain = "dummy/dummy"
 	
-		toolchain=toolchain.split("/")
 
 		# only check toolchain argument with module tree if its not dummy toolchain
 		if ["dummy","dummy"] != toolchain:
@@ -239,8 +247,6 @@ def main():
 		# checking if its a valid toolchain 
 		toolchain_exists(toolchain,verbose)
 	
-		
-		tcname,tcversion=toolchain
 
 	
 		if verbose >= 1:
@@ -265,7 +271,7 @@ def main():
 
 		generate_binary_test(args_dict,verbose,None)
 		# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
-		recursive_gen_test(software,toolchain,configdir,codedir,verbose)
+		recursive_gen_test(configdir,codedir,verbose)
 	
 		# if flag --testset is set, then 
 		if testset !=  None:
