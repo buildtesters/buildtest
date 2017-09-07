@@ -254,7 +254,7 @@ def main():
 			print text
 
 		# check that the software,toolchain match the easyconfig.
-		ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,software,toolchain,verbose)
+		ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,verbose)
 		# generate_binary_test(software,toolchain,verbose)
 	
 		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)

@@ -34,6 +34,7 @@ This python module does the following
 """
 from framework.env import *
 from framework.tools.file import *
+from framework.tools.software import *
 import os
 import sys
 
@@ -253,25 +254,29 @@ def toolchain_exists(toolchain,verbose):
 	BUILDTEST_LOGCONTENT.append(msg)
 	print success_msg
 
-def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, verbose):
+def check_software_version_in_easyconfig(easyconfig_repo, verbose):
 	"""
 	return True if name,version+versionsuffix,toolchain from command line is found 
 	from easyconfig, False otherwise
 	"""
 	success_msg = "Checking easyconfig file ... SUCCESS"
 	fail_msg = "Checking easyconfig file ... FAILED"
-	appname,appversion=software
-	tcname,tcversion=toolchain
+	appname = get_appname()
+	appversion = get_appversion()
+	tcname = get_toolchain_name()
+	tcversion = get_toolchain_version()
 	
         # if user is testing a software package that is a hidden module file, strip the leading "." for checking
         if isHiddenFile(appversion):
                 appversion = stripHiddenFile(appversion)
                 BUILDTEST_LOGCONTENT.append("Stripping leading . from application version: " + appversion + "\n")
 
-        # if user specified a toolchain version that is a hidden module file, strip leading "." 
-        if isHiddenFile(tcversion):
-                tcversion = stripHiddenFile(tcversion)
-                BUILDTEST_LOGCONTENT.append("Stripping leading . from toolchain version: " + tcversion + "\n")
+	# only check if toolchain version is a hidden module  when toolchain is specified by checking length
+	if len(tcversion) != 0:
+	        # if user specified a toolchain version that is a hidden module file, strip leading "." 
+	        if isHiddenFile(tcversion) :
+        	        tcversion = stripHiddenFile(tcversion)
+                	BUILDTEST_LOGCONTENT.append("Stripping leading . from toolchain version: " + tcversion + "\n")
 
 	# for Flat Naming Scheme -s will take APP/Version-Toolchain so need to take Toolchain out for comparision
         if BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
@@ -283,6 +288,18 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
 
 	cmd="find " + easyconfig_repo  + " -name " + appname+"-"+appversion+"*.eb -type f"         
 	easyconfigfiles=os.popen(cmd).read().rstrip().split("\n")
+	# remove any empty elements in list when there is no eb files found
+	easyconfigfiles = [x for x in easyconfigfiles if x]
+	print easyconfigfiles
+	# if no easyconfig files found
+	if len(easyconfigfiles) == 0:
+		if len(tcversion) == 0:
+		 	msg = "FAILED to find any easyconfig file with the name " + appname + "-" + appversion + ".eb"
+		else:
+		 	msg = "FAILED to find any easyconfig file with the name " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + ".eb"
+		print msg
+		sys.exit(1)
+
 
 	BUILDTEST_LOGCONTENT.append("--------------------------------------------- \n")
 	BUILDTEST_LOGCONTENT.append("func: check_software_version_in_easyconfig \n")
@@ -294,7 +311,6 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
 
 	# boolean value to check if eb file found with parameters for software and toolchain
 	match=False    
-
 	for ebfile in easyconfigfiles:
 		# get name tag from easyconfig
 		cmd="""grep "name = " """ + ebfile + """ | cut -f3 -d " " """
@@ -358,9 +374,10 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
 		#print logcontent
 		# in case toolchain version uses '' set it to dummy 
 		if toolchain_version == '':
-			toolchain_version="dummy"
+			toolchain_version=""
 		# alter eb_name_format for dummy toolchain
 		if toolchain_name == "dummy":
+			toolchain_name = ""
 			eb_name_format=name+"-"+version
 		else:
 			# eb name format used for comparison to calculate versionsuffx
@@ -371,7 +388,7 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
 
 		# There is no version suffix when file name is just software-version-toolchain
 		# determine starting position index in easyconfig filename to calculate versionsuffix. If its a dummy toolchain start with version, otherwise from toolchain version
-		if toolchain_name == "dummy":
+		if toolchain_name == "":
 			startpos=ebname.find(version)+len(version)
 		else:
 			# extract version suffix 
@@ -386,6 +403,8 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
 		BUILDTEST_LOGCONTENT.append("Version Suffix: " + versionsuffix + "\n")
 		BUILDTEST_LOGCONTENT.append("Version + Version Suffix: " + version_versionsuffix + "\n")
 
+		# print name,version_versionsuffix, toolchain_name, toolchain_version
+		# print appname, appversion, tcname, tcversion
 		if name == appname and version_versionsuffix == appversion and toolchain_name == tcname and toolchain_version == tcversion:
 			BUILDTEST_LOGCONTENT.append("Comparing strings: the following strings \n") 
 			BUILDTEST_LOGCONTENT.append("name:" + name + " with appname = " + appname + " AND ")
@@ -393,6 +412,10 @@ def check_software_version_in_easyconfig(easyconfig_repo,software,toolchain, ver
 			BUILDTEST_LOGCONTENT.append("toolchain_name: " + toolchain_name + " with tcname: " + tcname + " AND ")
 			BUILDTEST_LOGCONTENT.append("toolchain_version: " + toolchain_version + "with tcversion: " + tcversion + "\n")
 			print success_msg
+			if tcname == "":
+				print "found easyconfig file: " + appname + "-" + appversion + ".eb"
+			else:
+				print "found easyconfig file: " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + ".eb"
 			return True
 	
 

@@ -51,21 +51,24 @@ def get_toolchain_name():
         args = buildtest_parsermenu()
         args_dict = vars(args)
         toolchain = get_arg_toolchain(args_dict)
-	toolchain = toolchain.split("/")
-	return toolchain[0]
+	
+	# checking if toolchain is defined in argument
+	if toolchain is  None:	
+		return ""
+	else:
+		toolchain = toolchain.split("/")
+		return toolchain[0]
 
 def get_toolchain_version():
         args = buildtest_parsermenu()
         args_dict = vars(args)
         toolchain = get_arg_toolchain(args_dict)
-	toolchain = toolchain.split("/")
-	return toolchain[1]
 
-#def get_arg_appname():
+	# checking if toolchain is defined in argument
+	if toolchain is None:
+		return ""
+	else:
+		toolchain = toolchain.split("/")
+		return toolchain[1]
 
-#def get_arg_appversion():
-
-#def get_arg_toolchain_name():
-
-#def get_arg_toolchain_version():
 
