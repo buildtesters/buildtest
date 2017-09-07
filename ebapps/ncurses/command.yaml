@@ -1,0 +1,10 @@
+binaries:
+        - clear
+        - tic -V
+        - infocmp -V
+        - ncurses6-config --version
+        - ncursesw6-config --version
+        - tabs -V
+        - toe -V
+        - tput -V
+        - tset -V
