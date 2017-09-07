@@ -176,7 +176,7 @@ def load_modules():
 module purge
 """
         # for dummy toolchain you can load software directly. Ensure a clean environment by running module purge
-        if tcname == "dummy":
+        if len(tcname) == 0:
 		moduleload = "module load " + appname + "/" + appversion  + "\n"
         else:
 		if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
