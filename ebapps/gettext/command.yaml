@@ -1,0 +1,24 @@
+binaries:
+        - autopoint --version
+        - envsubst --version
+        - gettext --version
+        - gettextize --version
+        - gettext.sh --version
+        - msgattrib --version
+        - msgcat --version
+        - msgcmp --version
+        - msgcomm --version
+        - msgconv --version
+        - msgen --version
+        - msgexec --version
+        - msgfilter --version
+        - msgfmt --version
+        - msggrep --version
+        - msginit --version
+        - msgmerge --version
+        - msgunfmt --version
+        - msguniq --version
+        - ngettext --version
+        - recode-sr-latin --version
+        - xgettext --version
+
