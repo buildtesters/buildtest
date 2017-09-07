@@ -60,7 +60,7 @@ def run_testset(software,toolchain,testset,verbose):
 		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"mpi")
 		configdir=os.path.join(source_app_dir,"config")
 		codedir=os.path.join(source_app_dir,"code")
-		recursive_gen_test(software,toolchain,configdir,codedir,verbose)
+		recursive_gen_test(configdir,codedir,verbose)
 		return
         if runtest == True:
         	codedir=os.path.join(source_app_dir,"code")
@@ -105,7 +105,7 @@ def testset_generator(software,toolchain,codedir,verbose):
 				testname = fname + ".sh"
 				testpath = os.path.join(subdirpath,testname)
 				fd = open(testpath,'w')
-				header=load_modules(software,toolchain)
+				header=load_modules()
 				fd.write(header)
 				fd.write(cmd)
 				fd.close()

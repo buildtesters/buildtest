@@ -2,7 +2,7 @@
 # 
 #  Copyright 2017 
 # 
-#   https://github.com/shahzebsiddiqui/buildtest-framework
+#   https://github.com/HPC-buildtest/buildtest-framework
 # 
 #  This file is part of buildtest. 
 # 
