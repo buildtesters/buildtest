@@ -257,9 +257,12 @@ def main():
 		systempkg = args.system
 		if systempkg == "all":
 
+			logger.info("Generating all system package tests from YAML files in %s", os.path.join(BUILDTEST_SOURCEDIR,"system"))
+
 			os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log","system","all")
 			systempkg_list = os.listdir(os.path.join(BUILDTEST_SOURCEDIR,"system"))
-			BUILDTEST_LOGCONTENT.append("System Packages: \n")
+
+			logger.info("List of system packages to test: %s ", systempkg_list)
 
 			for pkg in systempkg_list:
 				generate_binary_test(args_dict,verbose,pkg)
@@ -268,8 +271,19 @@ def main():
 			#logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
 			generate_binary_test(args_dict,verbose,systempkg)
 
-		update_logfile(verbose)
-		sys.exit(1)
+		#update_logfile(verbose)
+		
+		if not os.path.exists(os.environ["BUILDTEST_LOGDIR"]):
+			cmd = "mkdir -p " + os.environ["BUILDTEST_LOGDIR"]
+			os.system(cmd)
+			logger.warning("Directory not found: %s", os.environ["BUILDTEST_LOGDIR"])
+			logger.info("Executing Command: %s", cmd)
+
+		cmd = "mv " + logpath + " " + os.environ["BUILDTEST_LOGDIR"]
+		os.system(cmd)
+		
+		print "Writing Log file to:", os.path.join(os.environ["BUILDTEST_LOGDIR"],logfile)
+		sys.exit(0)
 	# when -s is specified
 	if software != None:
 		software=software.split("/")
@@ -285,6 +299,15 @@ def main():
 		tcname = get_toolchain_name()
 		tcversion = get_toolchain_version()	
 
+		logger.debug("Generating Test from EB Application")
+
+		logger.debug("Software: %s", appname)
+		logger.debug("Software Version: %s", appversion)
+		logger.debug("Toolchain: %s", tcname)
+		logger.debug("Toolchain Version: %s", tcversion)
+
+		logger.debug("Checking if software: %s/%s exists",appname,appversion)
+
 		# checking if software exists
 		software_exists(software,verbose)
 	
@@ -298,11 +321,6 @@ def main():
 		toolchain_exists(toolchain,verbose)
 	
 
-	
-		if verbose >= 1:
-			text = "Toolchain:" + tcname + " " + tcversion + " found in system \n"
-			print text
-
 		# check that the software,toolchain match the easyconfig.
 		ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,verbose)
 		# generate_binary_test(software,toolchain,verbose)
@@ -315,9 +333,9 @@ def main():
 		logdir=os.environ["BUILDTEST_LOGDIR"]
 
 
-		BUILDTEST_LOGCONTENT.append("Source App Directory:" +  source_app_dir + "\n")
-		BUILDTEST_LOGCONTENT.append("Config Directory: " + configdir + "\n")
-		BUILDTEST_LOGCONTENT.append("Code Directory:" + codedir + "\n")
+		logger.debug("Source App Directory: %s" +  source_app_dir)
+		logger.debug("Config Directory: %s " + configdir)
+		logger.debug("Code Directory: %s" + codedir)
 
 		generate_binary_test(args_dict,verbose,None)
 		# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
@@ -327,7 +345,17 @@ def main():
 		if testset !=  None:
 			run_testset(software,toolchain,testset,verbose)
 	
-		update_logfile(verbose)
+		if not os.path.isdir(logdir):
+			cmd = "mkdir -p " + logdir
+			os.system(cmd)
+			logger.debug("Executing Command: %s", cmd)
+
+			
+		cmd = "mv " + logpath + " " + logdir
+		os.system(cmd)
+		logger.debug("Executing command: %s ", cmd)
+		
+		print "Writing Log file: %s", os.path.join(logdir,logfile)
 
 if __name__ == "__main__":
         main()
