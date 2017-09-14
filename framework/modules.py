@@ -222,25 +222,30 @@ def software_exists(software,verbose):
 
 	success_msg = "Checking Software: " + software[0] + "/" + software[1] + "  ... SUCCESS"  
 	fail_msg = "Checking Software: " + software[0] + "/" + software[1] + " ... FAILED"
+
+	logger = logging.getLogger(logID)
+
+	logger.debug("Checking argument list length for software, must be equal to 2")
 	if len(software) != 2:
 		print fail_msg
 		msg = "Too many arguments, -s takes argument <software>,<version> \n"
 		print msg
-		BUILDTEST_LOGCONTENT.append(msg)
-		update_logfile(verbose)
+		logger.error("%s",msg)
 		sys.exit(1)
-	
+
 	softwarecollection=get_unique_software_version(BUILDTEST_MODULE_EBROOT)
 	software_name=software[0]+" "+software[1]
+
+	logger.debug("Checking %s is found in software version list", software_name)
+
 	if software_name not in softwarecollection:
 		print fail_msg
 		msg = "Can't find software: " +  software_name + "\n"
 		print msg
-                BUILDTEST_LOGCONTENT.append(fail_msg + "\n")
-                update_logfile(verbose)
+                logger.error("%s",fail_msg)
 		sys.exit(1)
 
-	BUILDTEST_LOGCONTENT.append(success_msg + "\n")
+	logger.info("%s",success_msg)
 	
         print success_msg
 
