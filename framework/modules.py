@@ -208,12 +208,11 @@ def software_exists(software,verbose):
 		print fail_msg
 		msg = "Can't find software: " +  software_name + "\n"
 		print msg
-                BUILDTEST_LOGCONTENT.append(msg)
+                BUILDTEST_LOGCONTENT.append(fail_msg + "\n")
                 update_logfile(verbose)
 		sys.exit(1)
 
-	text = "Software:" + str(software) + " found in system \n"
-	BUILDTEST_LOGCONTENT.append(text)
+	BUILDTEST_LOGCONTENT.append(success_msg + "\n")
 	
         print success_msg
 
