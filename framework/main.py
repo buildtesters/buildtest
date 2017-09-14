@@ -47,6 +47,7 @@ from framework.testmodules.testsets import *
 
 import subprocess
 import argparse
+import logging
 
 def main():
 	module=""
@@ -95,70 +96,117 @@ def main():
 	logdir =  os.environ["BUILDTEST_LOGDIR"]
 	logfile = os.environ["BUILDTEST_LOGFILE"]
 
-
-	BUILDTEST_LOGCONTENT.append("------------------------------------------- \n")
-	BUILDTEST_LOGCONTENT.append("buildtest \n")
-	BUILDTEST_LOGCONTENT.append("------------------------------------------- \n")
-
-	if verbose >= 1:
-		text = "==================================================================== " + "\n"
-		text += "BUILDTEST ROOT DIRECTORY: " + BUILDTEST_ROOT + "\n" 
-		text += "BUILDTEST SOURCE DIRECTORY: " + BUILDTEST_SOURCEDIR +"\n"
-		text += "BUILDTEST EASYCONFIGDIR: " + BUILDTEST_EASYCONFIGDIR + "\n"
-		text += "BUILDTEST MODULE_EBROOT: " + BUILDTEST_MODULE_EBROOT + "\n"
-		text += "BUILDTEST TEST DIRECTORY:" + BUILDTEST_TESTDIR + "\n"
-		text += "==================================================================== " + "\n"
-		print text
-		print
-
+	logpath = os.path.join(logdir,logfile)
 	
-		BUILDTEST_LOGCONTENT.append(text)
+	# if log directory is not created do it automatically. Typically first run in buildtest will 
+	# after git clone will run into this condition
+	if not os.path.exists(logdir):
+		print "Creating Log directory: ", logdir
+		os.system("mkdir " + logdir)
+
+	#logging.basicConfig(filename=logfile)
+	logger = logging.getLogger(__name__)
+	fh = logging.FileHandler(logpath)
+        formatter = logging.Formatter('%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s')
+ 	fh.setFormatter(formatter)
+	logger.addHandler(fh)
+	logger.setLevel(logging.DEBUG)
+
+	cmd = "env | grep BUILDTEST"
+	ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	output = ret.communicate()[0]
+	output = output.split("\n")
+
+	for line in output:
+		logger.debug(line)
 
 	# when no argument is specified to -fc then output all yaml files
 	if findconfig == "all": 
 		findCMD = "find " + BUILDTEST_SOURCEDIR + " -name \"*.yaml\" -type f"
+		logger.debug("Running command: %s", findCMD)
+
 		ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 		(output,err) = ret.communicate()
 		print output
-		BUILDTEST_LOGCONTENT.append(output)
-		update_logfile(verbose)
-		sys.exit(1)
+		output = output.splitlines()
+	
+
+		logger.info("List of YAML files found")
+		logger.info("-----------------------------------")
+		for line in output:
+			logger.info(line)
+		print "Writing Log file to:", logpath
+
+		#update_logfile(verbose)
+		sys.exit(0)
 	# otherwise report yaml file based on argument. If -fc is not specified then args.findconfig is set
 	# to None and we don't want to run this section unless a -fc is specified along with an argument other than
 	# all
 	elif findconfig != None:
 		find_arg = args_dict["findconfig"]
 		findCMD = "find " + BUILDTEST_SOURCEDIR + " -name \"*" + find_arg + "*.yaml\" -type f"
+		logger.debug("Running command: %s", findCMD)
+
 		ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 		(output,err) = ret.communicate()
 		print output
-		BUILDTEST_LOGCONTENT.append(output)
-		update_logfile(verbose)
-		sys.exit(1)
+
+		output = output.splitlines()
+
+		logger.info("List of YAML files found")
+		logger.info("-----------------------------------")
+
+		for line in output:
+			logger.info(line)
+
+		print "Writing Log file to:", logpath
+
+		sys.exit(0)
 
 	# report all buildtest generated test scripts
 	if findtest == "all":
-		# running command: find $BUILDTEST_TESTDIR -name "*.sh" -type f
+		# running find command to get all tests
 		findCMD = "find " + BUILDTEST_TESTDIR + " -name \"*.sh\" -type f"
+		logger.debug("Running command: %s", findCMD)
+
 		ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 		(output,err) = ret.communicate()
 		print output
-		BUILDTEST_LOGCONTENT.append(output)
-		update_logfile(verbose)
-		sys.exit(1)
+
+		output = output.splitlines()
+		logger.info("List of test found")
+		logger.info("----------------------------------")
+		
+		for line in output:
+			logger.info(line)
+
+		print "Writing Log file to:", logpath
+
+		sys.exit(0)
 	# otherwise report test scripts based on argument. If -ft is not specified then args.findtest is None
 	# so we don't want to run section below everytime. Only when -ft is specified
 	elif findtest != None:
 		find_arg = args_dict["findtest"]
+
+		# running find command to get test based on argument to --findtest
 		findCMD = "find " + BUILDTEST_TESTDIR + " -name \"*" + find_arg + "*.sh\" -type f \n"
+		logger.debug("Running command: %s", findCMD)
+
 		# running command: find $BUILDTEST_SOURCEDIR -name "*<find_arg>*.sh" -type f
 		ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 		(output,err) = ret.communicate()
 		print output
-		BUILDTEST_LOGCONTENT.append(findCMD)
-		BUILDTEST_LOGCONTENT.append(output)
-		update_logfile(verbose)
-		sys.exit(1)
+
+		output = output.splitlines()
+                logger.info("List of test found")
+                logger.info("----------------------------------")
+
+                for line in output:
+                        logger.info(line)
+
+                print "Writing Log file to:", logpath
+
+		sys.exit(0)
 
 	if list_toolchain == True:
 		toolchain_set=get_toolchain(BUILDTEST_EASYCONFIGDIR)
