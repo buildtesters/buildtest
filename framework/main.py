@@ -65,7 +65,7 @@ def main():
 	findtest = get_arg_findtest(args_dict)
 	software = get_arg_software(args_dict)
 	toolchain = get_arg_toolchain(args_dict)
-	list_toolchain = get_arg_list_toolchain(args_dict)
+	list_toolchain_flag = get_arg_list_toolchain(args_dict)
 	list_unique_software = get_arg_list_unique_software(args_dict)
 	software_version_relation = get_arg_software_version_relation(args_dict)
 	scan = get_arg_scantest(args_dict)
@@ -105,7 +105,7 @@ def main():
 		os.system("mkdir " + logdir)
 
 	#logging.basicConfig(filename=logfile)
-	logger = logging.getLogger(__name__)
+	logger = logging.getLogger(logID)
 	fh = logging.FileHandler(logpath)
         formatter = logging.Formatter('%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s')
  	fh.setFormatter(formatter)
@@ -208,16 +208,16 @@ def main():
 
 		sys.exit(0)
 
-	if list_toolchain == True:
-		toolchain_set=get_toolchain(BUILDTEST_EASYCONFIGDIR)
+	if list_toolchain_flag == True:
+		toolchain_set=list_toolchain()
 		text = """ \n
 			 List of Toolchains: 
 			 -------------------- \n"""
 		print text
-		BUILDTEST_LOGCONTENT.append(text)
 		print_set(toolchain_set)
-		update_logfile(verbose)
-		sys.exit(1)
+
+                print "Writing Log file to:", logpath
+		sys.exit(0)
 
 	if list_unique_software == True:
 		software_set=get_unique_software(BUILDTEST_MODULE_EBROOT)
@@ -225,10 +225,10 @@ def main():
 		       List of Unique Software: 
 		       ---------------------------- \n """
 		print text
-		BUILDTEST_LOGCONTENT.append(text)
 		print_set(software_set)	
-		update_logfile(verbose)
-		sys.exit(1)
+		
+		print "Writing Log file to:", logpath
+		sys.exit(0)
 	if software_version_relation == True:
 		software_version_dict=module_version_relation(BUILDTEST_MODULE_EBROOT)
 		text = """ 
@@ -241,14 +241,16 @@ def main():
  ID  |        Software            |      Versions
 -----|----------------------------|----------------------------- """
 		print text
-		BUILDTEST_LOGCONTENT.append(text)
+
+		text = text.splitlines()
+		for line in text:
+			logger.info(line)
+
 		print_dictionary(software_version_dict)
 	
-		for item in software_version_dict:
-			BUILDTEST_LOGCONTENT.append(item + " " + str(sset(software_version_dict[item])) + "\n")
 
-		update_logfile(verbose)
-		sys.exit(1)
+		print "Writing Log file to:", logpath
+		sys.exit(0)
 
 	# generate system pkg test
 	if system != None:
@@ -329,3 +331,4 @@ def main():
 
 if __name__ == "__main__":
         main()
+
