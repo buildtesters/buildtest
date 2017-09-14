@@ -120,6 +120,7 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 	tcname=get_toolchain_name()
 	tcver=get_toolchain_version()
 	
+	logger = logging.getLogger(logID)
 	# app_destdir is root of test directory
 	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
 
@@ -128,11 +129,6 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 	destdir=os.path.join(app_destdir,subdir)
 	cmakelist=os.path.join(destdir,"CMakeLists.txt")
 	
-	BUILDTEST_LOGCONTENT.append("\n")
-	BUILDTEST_LOGCONTENT.append("------------------------------------------------ \n")
-	BUILDTEST_LOGCONTENT.append("function: generate_source_test \n")
-	BUILDTEST_LOGCONTENT.append("------------------------------------------------ \n")
-
 	# if subdirectory exists, create subdirectory in destdir so we can write test script
 	if subdir != "":
 		# if sub directory does not exist, then create all directories and its parents directories
@@ -151,11 +147,11 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 	if "buildopts" in configmap:
 		flags=configmap["buildopts"]
 
-        BUILDTEST_LOGCONTENT.append("Test Name: " +  testname + "\n")
-	BUILDTEST_LOGCONTENT.append("Test Path: " + testpath + "\n")
-	BUILDTEST_LOGCONTENT.append("Source File: " + sourcefilepath + "\n")
-        BUILDTEST_LOGCONTENT.append("Executable Name: " +  executable + "\n")
-        BUILDTEST_LOGCONTENT.append("Build Flags: " +  flags + "\n")
+        logger.debug("Test Name: %s", testname)
+	logger.debug("Test Path: %s", testpath)
+	logger.debug("Source File: %s", sourcefilepath)
+        logger.debug("Executable Name: %s",  executable)
+        logger.debug("Build Flags: %s",  flags)
 
 
 	# write the preamble to test-script to initialize app environment using module cmds
@@ -172,11 +168,14 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 	# used for parallel processing to specify # of procs with mpirun -np 
 	nproc = ""
 
+
+	logger.debug("""Checking for YAML key "buildcmd" and "runcmd" """)
+
         # if there is a buildcmd & runcmd in yaml file, place this directly in test script
         if "buildcmd" in configmap and "runcmd" in configmap:
 
-		BUILDTEST_LOGCONTENT.append("YAML file found buildcmd and runcmd. \n")
-		BUILDTEST_LOGCONTENT.append("buildtest will generate explicit build/run commands from buildcmd and runcmd fields \n")
+		logger.debug("YAML file found buildcmd and runcmd.")
+		logger.debug("buildtest will generate explicit build/run commands from buildcmd and runcmd field")
 
 		# only process buildcmd if there is a value specified for buildcmd key
 		if configmap["buildcmd"] != None:
@@ -186,7 +185,7 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 		                buildcmd += cmd + "\n"
 		else:
 			msg = "buildcmd is declared but value is not specified \n"
-			BUILDTEST_LOGCONTENT.append(msg)
+			logger.debug("%s",msg)
 
 		if configmap["runcmd"] != None:
 			# process the runcmd tag similar same as buildcmd and store in variable
@@ -197,10 +196,9 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 		else:
 			msg = "runcmd is declared but value is not specified. Need runcmd to run executable \n"
 			print msg
-			BUILDTEST_LOGCONTENT.append(msg)
-			BUILDTEST_LOGCONTENT.append("Program Terminating \n")
-			update_logfile(verbose)
-			sys.exit(1)
+			logger.debug.append("%s",msg)
+			logging.warning("Unable to create test from YAML config, skipping test generation")
+			return
 
 		
 		if verbose >=1:
@@ -230,17 +228,15 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 		if "buildcmd" in configmap and "runcmd" not in configmap or "buildcmd" not in configmap and "runcmd" in configmap:
 			print "Need to specify both key: buildcmd and runcmd"
 			
-			BUILDTEST_LOGCONTENT.append("Need to declare both key: buildcmd and runcmd \n")
-			BUILDTEST_LOGCONTENT.append("Program Terminating \n")
-			update_logfile(verbose)
-			sys.exit(1)
+			logger.warning("Need to declare both key: buildcmd and runcmd. Skipping to next YAML config \n")
+			return
 
 		# get the compiler tag and type based on application and toolchain
 	        compiler,compiler_type=get_compiler(configmap,appname,tcname)
  
-		BUILDTEST_LOGCONTENT.append("buildtest will auto-generate buildcmd & runcmd \n")
-		BUILDTEST_LOGCONTENT.append("Compiler: " + compiler + "\n")
-		BUILDTEST_LOGCONTENT.append("Compiler Type: " + compiler_type + "\n")
+		logger.debug("buildtest will auto-generate buildcmd & runcmd")
+		logger.debug("Compiler: %s", compiler)
+		logger.debug("Compiler Type: %s", compiler_type)
 
 		# set buildcmd based on compiler_type. compiler is either nvcc,gcc,icc,mpicc, or mpiicc for intel
 	        if compiler_type == "gnu" or compiler_type == "intel" or compiler_type == "cuda":
@@ -254,13 +250,13 @@ def generate_source_test(configmap,codedir,verbose,subdir):
         		        if "nproc" in configmap:
                 		        nproc = str(configmap["nproc"])
 					
-					BUILDTEST_LOGCONTENT.append("nproc key found in YAML config file \n")
-					BUILDTEST_LOGCONTENT.append("nproc: " + nproc + "\n") 
+					logger.debug("nproc key found in YAML config file")
+					logger.debug("nproc: ", nproc)
 				# if nproc is not specified set it to 1 when building mpi apps
 				else:		
 					nproc = "1"
 
-					BUILDTEST_LOGCONTENT.append("nproc key not found in YAML config file, will set nproc = 1 \n")
+					logger.debug("nproc key not found in YAML config file, will set nproc = 1")
 				# add argument to runcmd in MPI jobs
                                 if "args" in configmap:
                                         arglist = configmap["args"]
@@ -329,8 +325,8 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 			for cmd in configmap["runextracmd"]:
 				fd.write(cmd + "\n")
 
-			BUILDTEST_LOGCONTENT.append("runextracmd found in YAML config file \n")
-			BUILDTEST_LOGCONTENT.append("runextracmd:" + str(configmap["runextracmd"]) + "\n")
+			logger.debug("runextracmd found in YAML config file")
+			logger.debug("runextracmd: %s", str(configmap["runextracmd"]))
 	fd.close()
 
     	# by default run the commands below which will add the test to CMakeLists.txt and update the logfile
@@ -339,17 +335,17 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 
 	        # print "Creating Test: " + testpath
 
-	        BUILDTEST_LOGCONTENT.append("Creating Test: " + testpath + "\n")
-	        BUILDTEST_LOGCONTENT.append("Content of Testfile: " + testpath + "\n")
-	        BUILDTEST_LOGCONTENT.append("----------------------- \n")
-    
+	        logger.debug("Creating Test: %s ", testpath)
+	        logger.debug("[TEST START-BLOCK]")
+
                 fd=open(testpath,'r')
-                content=fd.read()
-                BUILDTEST_LOGCONTENT.append(content)
+                content=fd.read().splitlines()
+		for line in content:
+			logger.debug(line)
                 fd.close()
 
+	        logger.debug("[TEST END-BLOCK]")
 
- 		BUILDTEST_LOGCONTENT.append("\n -------------------------------------------------- \n")
 
 	# if keyword iter is found in YAML, lets try to recreate N tests by renaming test such as
 	# hello.sh to hello_1.sh and create N-1 copies with file names hello_2.sh, hello_3.sh, ...
@@ -603,13 +599,17 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 			add_test_str="add_test(NAME system-" + pkg + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 
 		
-		logger.debug("Adding content: %s ",  add_test_str,)
+		logger.debug("Adding content: %s ",  add_test_str)
 		fd.write(add_test_str)
 
 		# print "Creating Test:", testpath
 
 	print
-	print "Generating " + str(count) + " binary tests for package: " + pkg
+	if test_type == "system":
+		print "Generating " + str(count) + " binary tests for package: " + pkg
+	else:
+		print "Generating " + str(count) + " binary tests for Application: " + name + "/" + version
+
 	print "Binary Tests are written in " + test_destdir
 	
 			
