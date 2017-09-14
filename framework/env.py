@@ -43,6 +43,8 @@ PYTHON_APPS = ["Python","Anaconda2", "Anaconda3"]
 MPI_APPS = ["OpenMPI", "MPICH","MVAPICH2", "intel", "impi"]
 PERL_APPS = ["Perl"]
 
+global logID
+logID = "buildtest"
 
 global BUILDTEST_LOGCONTENT
 BUILDTEST_LOGDIR = os.path.join(BUILDTEST_ROOT,"log")
