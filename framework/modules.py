@@ -35,8 +35,10 @@ This python module does the following
 from framework.env import *
 from framework.tools.file import *
 from framework.tools.software import *
+import logging
 import os
 import sys
+
 
 def get_module_list(moduletree):
 	"""
@@ -53,6 +55,10 @@ def get_unique_software(moduletrees):
 	BUILDTEST_LOGCONTENT.append("-------------------------------- \n")
 	BUILDTEST_LOGCONTENT.append("func: get_unique_software \n")
 	BUILDTEST_LOGCONTENT.append("-------------------------------- \n")
+
+	logger = logging.getLogger(logID)
+	logger.info("Traversing Module Tree: %s to find all unique software", moduletrees)
+
 	moduletreelist=moduletrees.split(":")
 	module_set=set()
 	for moduletree in moduletreelist:
@@ -64,7 +70,9 @@ def get_unique_software(moduletrees):
 			#modulename=os.popen(os.path.basename(module)).read().rstrip()
 			module_set.add(modulename)
 
-		BUILDTEST_LOGCONTENT.append("Unique Software Packages from module tree: " + moduletree + "\n")
+	logger.info("List of modules found:")
+	logger.info("----------------------------------------")
+	logger.info("Software = %s", list(module_set))
 	return sorted(module_set)
 
 def get_unique_software_version(moduletree):
@@ -105,22 +113,36 @@ def module_version_relation(moduletree):
 	# dictionary used for keeping a relationship between software name and its corresponding versions found as modulefiles
 	module_dict = {}
 
+	logger = logging.getLogger(logID)
+	logger.info("Calculating Application Modules with corresponding versions ...")
+
 	# for every app iterate over module tree and add unique version in set, then add this to a dictionary. That way 
 	# a dictionary can reference via key,value where key is application name and value is the list of versions
 	for item in  module_set:
 		version_set = set()
+		logger.debug("Application: ", item)
 		for app in modulelist:
+			#logger.debug("ModuleFile: %s", app)
 			name = os.path.basename(os.path.dirname(app))
+
+			if item != name:
+				continue
+
+
 			version = os.path.basename(app)
 			version = os.path.splitext(version)[0]
+			logger.debug("Extracting Version: %s from ModuleFile: %s", version, app)
+
 			# only add module version to set when module name is found in tree
-			if item == name:
-				version_set.add(version)
+			#if item == name:
+			version_set.add(version)
+			logger.debug("APPLICATION: %s - Adding %s to version_set: %s ",name, version, list(version_set))
+
 		module_dict[item] = version_set
 
 	return module_dict
 
-def get_toolchain(easyconfigdir):
+def list_toolchain():
 	"""
 	return the set of toolchains found in the easyconfig directory 
 	"""
@@ -184,6 +206,12 @@ def get_toolchain(easyconfigdir):
 	"xlmvapich2",
 	"xlompi",
         ]
+
+	logger = logging.getLogger(logID)
+	logger.info("List of EB Toolchains")
+	logger.info("--------------------------------------")
+	logger.info("EB Toolchains = %s", toolchain)
+
 	return toolchain
 
 def software_exists(software,verbose):
@@ -231,7 +259,7 @@ def toolchain_exists(toolchain,verbose):
 		update_logfile(verbose)
                 sys.exit(1)
 
-	toolchain_list=get_toolchain(BUILDTEST_EASYCONFIGDIR)
+	toolchain_list=list_toolchain()
 	tcname = toolchain[0]
 	tcversion = toolchain[1]
 	toolchain_name = tcname + "/" + tcversion
