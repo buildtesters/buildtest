@@ -22,6 +22,7 @@
 
 import subprocess
 import time
+import logging
 from framework.env import *
 from framework.tools.software import *
 def print_version():
@@ -199,10 +200,13 @@ def print_dictionary(dictionary):
         """
         prints the content of dictionary
         """
+	logger = logging.getLogger(logID)
+
 	count = 1
         for key in dictionary:
 		
                 print (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t", sset(dictionary[key])
+		logger.info("%s %s %s", (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t", sset(dictionary[key]))
 		count = count + 1
 
 def print_set(setcollection):

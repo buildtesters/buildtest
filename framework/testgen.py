@@ -39,17 +39,18 @@ import os.path
 import os, sys
 import shutil
 import yaml
+import logging
 from shutil import copyfile
 
 def generate_binary_test(args_dict,verbose,pkg):
 	"""
-	This function operates similar to systempkg_generate_binary_test except this function
-	is used only for ebapps that are present as modules. This is because ebapps names are 
-	different then systempkg names for instance "gcc" "gcc-gfortran" "gcc-c++" are package 
-	names in RHEL that test binaries for gcc, gfortran, g++. In EB there is a single app GCC
-	that provides gcc, gfortran, g++. This function makes sure command.yaml exists and CMakeLists.txt
-	is present in all subdirectories in BUILDTEST_TESTDIR
+	This function generates binary test from command.yaml file. For ebapps apps the module
+	and any toolchain is loaded in advance. Each entry in command.yaml will generate a 
+	separate testscript from this function. All tests will be stored in BUILDTEST_TESTDIR. 
+	This function makes sure command.yaml exists and CMakeLists.txt is present in all 
+	subdirectories in BUILDTEST_TESTDIR.
 	"""
+
 	# variable to indicate if it is a software or system package for binary test
 	test_type=""
 
@@ -71,32 +72,35 @@ def generate_binary_test(args_dict,verbose,pkg):
 	
 	commandfile=os.path.join(configdir,"command.yaml")
 
-	BUILDTEST_LOGCONTENT.append("--------------------------------- \n ")
-	BUILDTEST_LOGCONTENT.append("function: generate_binary_test \n")
-	BUILDTEST_LOGCONTENT.append("--------------------------------- \n ")
-	BUILDTEST_LOGCONTENT.append("This is a " + test_type + " binary test \n")
-	BUILDTEST_LOGCONTENT.append("commandfile: " + commandfile + "\n")
+	logger = logging.getLogger(logID)
+
+	logger.debug("This is a %s binary test", test_type)
+	logger.debug("Processing YAML file: %s", commandfile)
 
 	# if CMakeLists.txt does not exist in top-level directory, create the header
 	if os.path.isfile(toplevel_cmakelist_file) == False:
-		BUILDTEST_LOGCONTENT.append("File: " + toplevel_cmakelist_file + " was not found, build test will create it \n")
+		logger.warning("File: %s was not found, will create it automatically", toplevel_cmakelist_file)
 		init_CMakeList(toplevel_cmakelist_file)
 
-	BUILDTEST_LOGCONTENT.append("Creating Directory " + BUILDTEST_TESTDIR + "\n")
-	create_dir(BUILDTEST_TESTDIR,verbose)
+	if not os.path.exists(BUILDTEST_TESTDIR):
+		logger.debug("Creating Directory: %s ", BUILDTEST_TESTDIR)
+		create_dir(BUILDTEST_TESTDIR,verbose)
 
 	# if BUILDTEST_TESTDIR/CMakeLists.txt does not exist, then create it
 	if os.path.isfile(testingdir_cmakelist_file) == False:
-		BUILDTEST_LOGCONTENT.append("File: " + testingdir_cmakelist_file + " was not found, build test will create it \n")
+		logger.warning("File: %s  was not found, will create it automatically", testingdir_cmakelist_file)
 		fd=open(testingdir_cmakelist_file,'w')
 		fd.close()
 
 	# if command.yaml does not exist then report error
 	if os.path.isfile(commandfile) == False:
-		msg =  "Warning: Cannot find command file:" +  commandfile + "Skipping binary test \n"
-		BUILDTEST_LOGCONTENT.append(msg)
-	else:
-	    process_binary_file(commandfile,args_dict,test_type,verbose,pkg)
+		msg =  "Cannot find command file:" +  commandfile + "Skipping binary test for package:", pkg	
+		logger.error("%s", msg)
+		return
+	
+
+	# if all checks have passed then proceed with generating test   
+	process_binary_file(commandfile,args_dict,test_type,verbose,pkg)
 
 	
 # generate test for source
@@ -516,9 +520,13 @@ def get_compiler(configmap,appname,tcname):
 
 def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 	"""
-	does the same operation as systempkg_process_binary_file but for ebapps. There are extra 
-	subdirectories that are created that implies multiple CMakeLists.txt files for each sub directory
+	Module responsible for actually creating the test scripts for binary tests along
+	with CMakeLists.txt in subdirectories under $BUILDTEST_TESTDIR. This module
+	is used for generating binary tests for both system and ebapps tests.
 	"""
+
+	logger = logging.getLogger(logID)
+
 	if test_type == "software":
 
  		name = get_appname()
@@ -534,23 +542,18 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 	else:
 		system=get_arg_system(args_dict)
 		
-		update_logfile(verbose)
+		# update_logfile(verbose)
 		test_destdir,test_destdir_cmakelist = setup_system_cmake(args_dict,pkg)	
 
-	
-	BUILDTEST_LOGCONTENT.append("--------------------------------------- \n")
-	BUILDTEST_LOGCONTENT.append(" function: process_binary_file \n")
-	BUILDTEST_LOGCONTENT.append("--------------------------------------- \n")
 
-	BUILDTEST_LOGCONTENT.append("Reading File: " + filename + "\n")
+	
+	logger.info("Reading File: %s", filename)
 	fd=open(filename,'r')
 	content=yaml.load(fd)
-	BUILDTEST_LOGCONTENT.append("Loading YAML content \n")
+	logger.debug("Loading YAML content")
 	# if key binaries is not in yaml file, exit program
 	if "binaries" not in content:
-		msg =  "Cant find key binaries in file: ", filename, " Exiting program \n"
-		BUILDTEST_LOGCONTENT.append(msg)
-		update_logfile(verbose)
+		logger.error("Can't find key: binaries in file %s", filename)
 		sys.exit(1)
 
 	# create a binary test script for each key,value item in dictionary
@@ -563,8 +566,10 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 		name_str=key.replace(" ","_")
 		testname=name_str+".sh"
 		testpath=os.path.join(test_destdir,testname)
-		BUILDTEST_LOGCONTENT.append("Creating test file: " +  testpath + "\n")
+
+		logger.debug("Creating and Opening  test file: %s for writing ",  testpath)
 		fd=open(testpath,'w')
+		
 		if test_type == "software":
 			fd.write(header)
 		else:
@@ -574,13 +579,19 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 
 		# reading test script for writing content of test in logcontent 
 		fd=open(testpath,'r')
-		content=fd.read()
+		content=fd.read().splitlines()
 		fd.close()
-		BUILDTEST_LOGCONTENT.append("Content of test file: " + testpath + "\n")
-		BUILDTEST_LOGCONTENT.append("----------------------------------------------------- \n")
-		BUILDTEST_LOGCONTENT.append(content +"\n")
-		BUILDTEST_LOGCONTENT.append("----------------------------------------------------- \n")
+
+		logger.info("Content of test file: %s ", testpath)
+		logger.info("[START TEST-BLOCK]")
+		for line in content:
+			logger.info("%s", line)
 		
+
+		logger.info("[END TEST-BLOCK]")
+
+
+		logger.debug("Updating CMakeList file: %s", test_destdir_cmakelist)
 		fd=open(test_destdir_cmakelist,'a')
 		if test_type == "software":
 			# modify add_test string when toolchain is not defined
@@ -592,14 +603,13 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 			add_test_str="add_test(NAME system-" + pkg + "-" + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 
 		
-		BUILDTEST_LOGCONTENT.append("Updating CMakeLists: " + test_destdir_cmakelist + " with content: "+ add_test_str)
+		logger.debug("Adding content: %s ",  add_test_str,)
 		fd.write(add_test_str)
 
 		# print "Creating Test:", testpath
-		BUILDTEST_LOGCONTENT.append("Creating Test:" + testpath + "\n\n")
-		BUILDTEST_LOGCONTENT.append("_________________________________ END TEST SECTION_______________________________\n")
 
-	print "Generating " + str(count) + " binary tests "
+	print
+	print "Generating " + str(count) + " binary tests for package: " + pkg
 	print "Binary Tests are written in " + test_destdir
 	
 			
