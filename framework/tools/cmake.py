@@ -31,6 +31,7 @@ from framework.tools.generic import *
 from framework.tools.file import *
 from framework.tools.software import *
 import shutil 
+import logging
 
 def init_CMakeList(filename):
         """
@@ -218,20 +219,20 @@ def setup_system_cmake(args_dict,pkg):
         # CMakeLists.txt that contais the actual tests (add_test)
         test_cmakelist_destdir=os.path.join(test_destdir,"CMakeLists.txt")
 
-	BUILDTEST_LOGCONTENT.append("------------------------------------------------\n")
-	BUILDTEST_LOGCONTENT.append("function: setup_system_cmake \n ")
-	BUILDTEST_LOGCONTENT.append("------------------------------------------------\n")
-        BUILDTEST_LOGCONTENT.append(" Variables Assignments \n")
-        BUILDTEST_LOGCONTENT.append("test_system_dir = " + test_system_dir + "\n")
-        BUILDTEST_LOGCONTENT.append("test_destdir = " + test_destdir + "\n")
-        BUILDTEST_LOGCONTENT.append("test_cmakelist = " + test_cmakelist + "\n")
-        BUILDTEST_LOGCONTENT.append("test_cmakelist_pkg = " + test_cmakelist_pkg + "\n")
-        BUILDTEST_LOGCONTENT.append("test_cmakelist_destdir = " + test_cmakelist_destdir + "\n")
+	logger = logging.getLogger(logID)
+
+        logger.debug("Variables Assignments")
+        logger.debug("----------------------------------")
+        logger.debug("SYSTEM Test Directory: %s ", test_system_dir)
+        logger.debug("Testscript Destination Directory: %s", test_destdir)
+        logger.debug("CMakeList for BUILDTEST_TESTDIR: %s ", test_cmakelist)
+        logger.debug("CMakeList for $BUILDTEST_TESTDIR/system: %s",  test_cmakelist_pkg)
+        logger.debug("CMakeList for $BUILDTEST_TESTDIR/system/%s: %s" , pkg, test_cmakelist_destdir)
 
         # if testdirectory exist, delete and recreate it inorder for reproducible test builds
         if os.path.isdir(test_destdir):
                 shutil.rmtree(test_destdir)
-                BUILDTEST_LOGCONTENT.append("removing directory " + test_destdir + "\n")
+                logger.debug("Removing directory: %s before creating tests ", test_destdir)
 
 	verbose=get_arg_verbose(args_dict)
         # create the directories if they don't exist
@@ -247,14 +248,14 @@ def setup_system_cmake(args_dict,pkg):
         update_CMakeLists(test_cmakelist,"system",verbose)
 
 
-        BUILDTEST_LOGCONTENT.append("Creating directory: " + test_system_dir + "\n")
-        BUILDTEST_LOGCONTENT.append("Creating directory: " + test_destdir + "\n")
-	BUILDTEST_LOGCONTENT.append("Creating CMakeLists.txt File: " + test_cmakelist + "\n")
-        BUILDTEST_LOGCONTENT.append("Creating CMakeLists.txt File: " + test_cmakelist_pkg + "\n")
-        BUILDTEST_LOGCONTENT.append("Creating CMakeLists.txt File: " + test_cmakelist_destdir + "\n")
+        logger.debug("Creating directory: %s", test_system_dir)
+        logger.debug("Creating directory: %s", test_destdir)
+	logger.debug("Creating CMakeLists.txt File: %s", test_cmakelist)
+        logger.debug("Creating CMakeLists.txt File: %s", test_cmakelist_pkg)
+        logger.debug("Creating CMakeLists.txt File: %s", test_cmakelist_destdir)
 
-        BUILDTEST_LOGCONTENT.append("Updating " + test_cmakelist + " with add_subdirectory(system) \n")
-        BUILDTEST_LOGCONTENT.append("Updating " + test_cmakelist_pkg + " with add_subdirectory("+pkg+") \n")
+        logger.debug("Updating %s with add_subdirectory(system)", test_cmakelist)
+        logger.debug("Updating %s with add_subdirectory(%s)", test_cmakelist_pkg,pkg)
         # update CMakeLists.txt with the tag add_subdirectory(pkg) where pkg is the application name
         update_CMakeLists(test_cmakelist_pkg,pkg,verbose)
 
