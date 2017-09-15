@@ -201,22 +201,6 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 			return
 
 		
-		if verbose >=1:
-			print testpath,":Invoking YAML buildcmd and runcmd fields..."
-			print "-----------------------------------"
-			print "BUILDCMD:"
-			print buildcmd
-			print "-----------------------------------"
-			print "RUNCMD:"
-			print runcmd
-			print "-----------------------------------"
-			
-			BUILDTEST_LOGCONTENT.append("Invoking YAML buildcmd and runcmd fields \n")
-			BUILDTEST_LOGCONTENT.append("buildcmd: \n ")
-			BUILDTEST_LOGCONTENT.append(buildcmd)
-			BUILDTEST_LOGCONTENT.append("runcmd: \n")
-			BUILDTEST_LOGCONTENT.append(runcmd)
-	        
 		fd.write(buildcmd)
 	        fd.write(runcmd)
 
@@ -303,19 +287,6 @@ def generate_source_test(configmap,codedir,verbose,subdir):
  	        if "outputfile" in configmap:
           		runcmd +=  " > " + configmap["outputfile"]
 
-		if verbose >=1:
-			print testpath,":Invoking automatic buildcmd and runcmd fields..."
-			print "-----------------------------------"
-			print "BUILDCMD:",buildcmd
-			print "RUNCMD:",runcmd
-			print "-----------------------------------"
-		
-			BUILDTEST_LOGCONTENT.append("Invoking Automatic buildcmd & runcmd fields \n")
-			BUILDTEST_LOGCONTENT.append("buildcmd: \n")
-			BUILDTEST_LOGCONTENT.append(buildcmd)
-			BUILDTEST_LOGCONTENT.append("runcmd: \n")
-			BUILDTEST_LOGCONTENT.append(runcmd)
-
 		fd.write(buildcmd)
 		fd.write(runcmd)
 		
@@ -356,20 +327,20 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 		os.rename(testpath,testpath_testname)
 		out = "Rename Iteration Test: " +  testpath +  " -> " +  testpath_testname
 		print out
-		BUILDTEST_LOGCONTENT.append(out)
+		logger.debug("%s",out)
 		# writing test to CMakeLists.txt
 		add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
-		BUILDTEST_LOGCONTENT.append("Content of Testfile: " + testpath_testname + "\n")
-                BUILDTEST_LOGCONTENT.append("-------------------------------------------------- \n")
+		logger.debug("Content of Test file: ", testpath_testname)
+		logger.debug("[START TEST-BLOCK]")
     
                 fd=open(testpath_testname,'r')
                 content=fd.read()
-                BUILDTEST_LOGCONTENT.append(content)
+                logger.debug("%s",content)
                 fd.close()
-                BUILDTEST_LOGCONTENT.append("\n -------------------------------------------------- \n")
-
+		logger.debug("[END TEST-BLOCK]")
 
 		numiter = int(configmap["iter"])
+		logger.debug("Making %s copy of test: %s", numiter, testpath_testname)
 		# creating N-1 copies of tests
 		for index in range(1,numiter):
 			testname=filename+"_"+str(index+1)+".sh"
@@ -378,18 +349,9 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 			copyfile(src_testpath,dest_testpathname)
 			out = "Iteration Test: " + dest_testpathname 
 			print out
-			BUILDTEST_LOGCONTENT.append(out)
-
+			logger.debug("Adding test: %s to CMakeList", testname)
 			add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
-			BUILDTEST_LOGCONTENT.append("Content of Testfile: " + dest_testpathname + "\n")
-			BUILDTEST_LOGCONTENT.append("-------------------------------------------------- \n")
     
-		        fd=open(dest_testpathname,'r')
-		        content=fd.read()
-		        BUILDTEST_LOGCONTENT.append(content)
-		        fd.close()
-			BUILDTEST_LOGCONTENT.append("\n-------------------------------------------------- \n")
-
 	
 def get_compiler(configmap,appname,tcname):
 	"""
@@ -538,7 +500,6 @@ def process_binary_file(filename,args_dict,test_type,verbose,pkg):
 	else:
 		system=get_arg_system(args_dict)
 		
-		# update_logfile(verbose)
 		test_destdir,test_destdir_cmakelist = setup_system_cmake(args_dict,pkg)	
 
 

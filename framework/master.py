@@ -26,14 +26,13 @@
 from framework.parser.parser import *
 from framework.testgen import *
 from framework.tools.generic import *
-
+import logging
 
 def recursive_gen_test(configdir,codedir,verbose ):
         """ if config directory exists then process .yaml files to build source test """
-	BUILDTEST_LOGCONTENT.append("\n ------------------------------------------------------------ \n")
-	BUILDTEST_LOGCONTENT.append(" function: recursive_gen_test \n")
-	BUILDTEST_LOGCONTENT.append("------------------------------------------------------------ \n")
-	BUILDTEST_LOGCONTENT.append("Processing all YAML files in " + configdir)
+	logger = logging.getLogger(logID)
+
+	logger.debug("Processing all YAML files in %s", configdir)
 	
         if os.path.isdir(configdir):
 		count = 0
@@ -49,6 +48,7 @@ def recursive_gen_test(configdir,codedir,verbose ):
                                 if subdir == "config":
                                         subdir = ""
                                 code_destdir=os.path.join(codedir,subdir)
+				logger.debug("Parsing YAML file: %s", filepath)
                                 configmap=parse_config(filepath,code_destdir)    
                                 # error processing config file, then parse_config will return an empty dictionary
                                 if len(configmap) == 0:
