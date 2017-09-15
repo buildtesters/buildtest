@@ -28,6 +28,7 @@ if a string is found in file
 :author: Shahzeb Siddiqui (Pfizer)
 """
 import os
+import logging
 from datetime import datetime
 from framework.env import *
 
@@ -44,6 +45,9 @@ def create_file(filename,verbose):
                 if verbose >= 1:
                         print "Creating Empty File:", filename
 
+		logger = logging.getLogger(logID)
+		logger.debug("Creating File: %s", filename)
+
 
 def create_dir(dirname,verbose):
         """Create directory if it doesn't exist"""
@@ -51,6 +55,9 @@ def create_dir(dirname,verbose):
                 os.makedirs(dirname)
                 if verbose >= 1:
                         print "Creating Directory: ",dirname
+
+		logger = logging.getLogger(logID)
+		logger.debug("Creating Directory: %s", dirname)
 
 def string_in_file(string,filename):
 	""" returns true/false to indicate if string is in file """
@@ -70,17 +77,4 @@ def isHiddenFile(inputfile):
                 return True
         else:
                 return False
-
-def update_logfile(verbose):
- 	logdir=os.environ["BUILDTEST_LOGDIR"]
-	logfile=os.environ["BUILDTEST_LOGFILE"]
-
-	create_dir(logdir,verbose)          
-        logfilepath = os.path.join(logdir,logfile)
-
-        fd = open(logfilepath,'a')
-	for line in BUILDTEST_LOGCONTENT:
-	        fd.write(line)
-        fd.close()
-	print "Writing Logfile: ", logfilepath
 

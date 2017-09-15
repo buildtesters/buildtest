@@ -70,6 +70,8 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
 	fd=open(cmakelist,'a')
 	add_test_str=""
 
+	logger = logging.getLogger(logID)
+
 	appname = get_appname()
 	appversion = get_appversion()
 	tcname = get_toolchain_name()
@@ -100,9 +102,12 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
          	add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 	fd.write(add_test_str)
         fd.close()
-	BUILDTEST_LOGCONTENT.append("Updating File " + cmakelist + " with: " + add_test_str + "\n")
+	logger.debug("Updating File " + cmakelist + " with: " + add_test_str + "\n")
 
 def setup_software_cmake(args_dict):
+
+	logger = logging.getLogger(logID)
+
 	verbose=get_arg_verbose(args_dict)
 	name = get_appname()
 	version = get_appversion()
@@ -132,23 +137,37 @@ def setup_software_cmake(args_dict):
 
 	test_destdir=test_toolchain_version_dir
 
-	BUILDTEST_LOGCONTENT.append(" Variables Assignments \n")
-        BUILDTEST_LOGCONTENT.append("test_ebapp_dir = " + test_ebapp_dir + "\n")
-        BUILDTEST_LOGCONTENT.append("test_name_dir = " + test_name_dir + "\n")
-        BUILDTEST_LOGCONTENT.append("test_version_dir = " + test_version_dir + "\n")
-        BUILDTEST_LOGCONTENT.append("test_toolchain_name_dir = " + test_toolchain_name_dir + "\n")
-        BUILDTEST_LOGCONTENT.append("test_toolchain_version_dir = " + test_toolchain_version_dir + "\n")
-        BUILDTEST_LOGCONTENT.append("test_cmakelist = " + test_cmakelist + "\n")
-        BUILDTEST_LOGCONTENT.append("test_name_cmakelist = " +test_name_cmakelist + "\n")
-        BUILDTEST_LOGCONTENT.append("test_version_cmakelist = " +test_version_cmakelist + "\n")
-        BUILDTEST_LOGCONTENT.append("test_toolchain_name_cmakelist = " +test_toolchain_name_cmakelist + "\n")
-        BUILDTEST_LOGCONTENT.append("test_toolchain_version_cmakelist = " +test_toolchain_version_cmakelist + "\n")
-        BUILDTEST_LOGCONTENT.append("test_destdir = " + test_destdir + "\n")
+
+	logger.debug("----------------------------------------")
+	logger.debug("EB Directory Assignments")
+	logger.debug("----------------------------------------")
+
+        logger.debug("EB Directory in $BUILDTEST_TESTDIR: %s ", test_ebapp_dir)
+        logger.debug("EB Application Directory: %s", test_name_dir)
+        logger.debug("EB Application Version Directory: %s", test_version_dir)
+        logger.debug("EB Toolchain Name Directory: %s", test_toolchain_name_dir)
+        logger.debug("EB Toolchain Version Directory: %s", test_toolchain_version_dir)
+
+	logger.debug("\n")
+	logger.debug("Test Directory for EB Application: ", test_destdir)
+
+	logger.debug("\n\n")
+
+	logger.debug("----------------------------------------")
+	logger.debug("EB CMakeList Assignments")
+	logger.debug("----------------------------------------")
+
+        logger.debug("$BUILDTEST_TESTDIR CMakeList Path: %s ", test_cmakelist)
+        logger.debug("EB Application CMakeList Path: %s ", test_name_cmakelist)
+        logger.debug("EB Application Version CMakeList Path: %s", test_version_cmakelist)
+        logger.debug("EB Toolchain Name CMakeList Path: %s", test_toolchain_name_cmakelist)
+        logger.debug("EB Toolchain Version CMakeList Path: %s", test_toolchain_version_cmakelist)
+        
 
         # if test directory exist, delete and recreate it inorder for reproducible test builds
         if os.path.isdir(test_destdir):
                 shutil.rmtree(test_destdir)
-                BUILDTEST_LOGCONTENT.append("removing directory " + test_destdir + "\n")
+                logger.debug("Removing test directory before creating test", test_destdir)
 
 	 # create directories if they don't exist
         # Directory Format: <software>/<version>/toolchain-name>/<toolchain-version>
@@ -157,15 +176,10 @@ def setup_software_cmake(args_dict):
         create_dir(test_version_dir,verbose)
 
 
-        BUILDTEST_LOGCONTENT.append("Creating directory: " + test_ebapp_dir + "\n")
-        BUILDTEST_LOGCONTENT.append("Creating directory: " + test_name_dir + "\n")
-        BUILDTEST_LOGCONTENT.append("Creating directory: " + test_version_dir + "\n")
 
 	if len(toolchain_name) != 0:
 	        create_dir(test_toolchain_name_dir,verbose)
         	create_dir(test_toolchain_version_dir,verbose)
-        	BUILDTEST_LOGCONTENT.append("Creating directory: " + test_toolchain_name_dir + "\n")
-	        BUILDTEST_LOGCONTENT.append("Creating directory: " + test_toolchain_version_dir + "\n")
 
         # create CMakeList.txt file in each directory of <software>/<version>/<toolchain-name>/<toolchain-version> if it doesn't exist
         create_file(test_ebapp_cmakelist,verbose)
@@ -174,16 +188,10 @@ def setup_software_cmake(args_dict):
         create_file(test_version_cmakelist,verbose)
 	
 
-        BUILDTEST_LOGCONTENT.append("Creating CMakeLists.txt file: " + test_ebapp_cmakelist + "\n")
-        BUILDTEST_LOGCONTENT.append("Creating CMakeLists.txt file: " + test_name_cmakelist + "\n")
-        BUILDTEST_LOGCONTENT.append("Creating CMakeLists.txt file: " + test_version_cmakelist + "\n")
-
 	if len(toolchain_name) != 0:
 	        create_file(test_toolchain_name_cmakelist,verbose)
 	        create_file(test_toolchain_version_cmakelist,verbose)
 
-        	BUILDTEST_LOGCONTENT.append("Creating CMakeLists.txt file: " + test_toolchain_name_cmakelist + "\n")
-	        BUILDTEST_LOGCONTENT.append("Creating CMakeLists.txt file: " + test_toolchain_version_cmakelist + "\n")
 
 	 # update CMakeLists.txt with tags add_subdirectory(ebapp)
         update_CMakeLists(test_cmakelist,"ebapp",verbose)
@@ -192,16 +200,9 @@ def setup_software_cmake(args_dict):
         update_CMakeLists(test_ebapp_cmakelist,name,verbose)
         update_CMakeLists(test_name_cmakelist,version,verbose)
 
-
-        BUILDTEST_LOGCONTENT.append("Updating " + test_cmakelist + " with add_subdirectory(ebapp) \n")
-        BUILDTEST_LOGCONTENT.append( "Updating " + test_ebapp_cmakelist + " with add_subdirectory("+name+")\n")
-        BUILDTEST_LOGCONTENT.append("Updating " + test_name_cmakelist + " with add_subdirectory("+version+")\n")
-
 	if len(toolchain_name) != 0:
 	        update_CMakeLists(test_version_cmakelist,toolchain_name,verbose)
         	update_CMakeLists(test_toolchain_name_cmakelist,toolchain_version,verbose)
-	        BUILDTEST_LOGCONTENT.append( "Updating " + test_version_cmakelist + " with add_subdirectory("+toolchain_name+")\n")
-        	BUILDTEST_LOGCONTENT.append("Updating " + test_toolchain_name_cmakelist + " with add_subdirectory("+toolchain_version+")\n")
 
 	return test_destdir,test_toolchain_version_cmakelist
 
@@ -246,13 +247,6 @@ def setup_system_cmake(args_dict,pkg):
 
         # update the CMakeLists.txt with the tag add_subdirectory(system) 
         update_CMakeLists(test_cmakelist,"system",verbose)
-
-
-        logger.debug("Creating directory: %s", test_system_dir)
-        logger.debug("Creating directory: %s", test_destdir)
-	logger.debug("Creating CMakeLists.txt File: %s", test_cmakelist)
-        logger.debug("Creating CMakeLists.txt File: %s", test_cmakelist_pkg)
-        logger.debug("Creating CMakeLists.txt File: %s", test_cmakelist_destdir)
 
         logger.debug("Updating %s with add_subdirectory(system)", test_cmakelist)
         logger.debug("Updating %s with add_subdirectory(%s)", test_cmakelist_pkg,pkg)
