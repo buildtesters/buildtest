@@ -44,6 +44,9 @@ def get_appversion():
 	else:
 		return software[1]				
 
+def get_application_name():
+	return get_appname() + '-' + get_appversion()
+
 def get_toolchain():
 	return get_toolchain_name() + '-' + get_toolchain_version()
 	

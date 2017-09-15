@@ -137,7 +137,6 @@ def main():
 			logger.info(line)
 		print "Writing Log file to:", logpath
 
-		#update_logfile(verbose)
 		sys.exit(0)
 	# otherwise report yaml file based on argument. If -fc is not specified then args.findconfig is set
 	# to None and we don't want to run this section unless a -fc is specified along with an argument other than
@@ -271,7 +270,6 @@ def main():
 			#logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
 			generate_binary_test(args_dict,verbose,systempkg)
 
-		#update_logfile(verbose)
 		
 		if not os.path.exists(os.environ["BUILDTEST_LOGDIR"]):
 			cmd = "mkdir -p " + os.environ["BUILDTEST_LOGDIR"]
@@ -333,9 +331,9 @@ def main():
 		logdir=os.environ["BUILDTEST_LOGDIR"]
 
 
-		logger.debug("Source App Directory: %s" +  source_app_dir)
-		logger.debug("Config Directory: %s " + configdir)
-		logger.debug("Code Directory: %s" + codedir)
+		logger.debug("Source App Directory: %s",  source_app_dir)
+		logger.debug("Config Directory: %s ", configdir)
+		logger.debug("Code Directory: %s", codedir)
 
 		generate_binary_test(args_dict,verbose,None)
 		# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
@@ -355,7 +353,7 @@ def main():
 		os.system(cmd)
 		logger.debug("Executing command: %s ", cmd)
 		
-		print "Writing Log file: %s", os.path.join(logdir,logfile)
+		print "Writing Log file: ", os.path.join(logdir,logfile)
 
 if __name__ == "__main__":
         main()
