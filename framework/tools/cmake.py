@@ -149,7 +149,7 @@ def setup_software_cmake(args_dict):
         logger.debug("EB Toolchain Version Directory: %s", test_toolchain_version_dir)
 
 	logger.debug("\n")
-	logger.debug("Test Directory for EB Application: ", test_destdir)
+	logger.debug("Test Directory for EB Application: %s ", test_destdir)
 
 	logger.debug("\n\n")
 
@@ -167,7 +167,7 @@ def setup_software_cmake(args_dict):
         # if test directory exist, delete and recreate it inorder for reproducible test builds
         if os.path.isdir(test_destdir):
                 shutil.rmtree(test_destdir)
-                logger.debug("Removing test directory before creating test", test_destdir)
+                logger.debug("Removing test directory before creating test: %s", test_destdir)
 
 	 # create directories if they don't exist
         # Directory Format: <software>/<version>/toolchain-name>/<toolchain-version>
