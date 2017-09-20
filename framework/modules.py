@@ -325,7 +325,6 @@ def check_software_version_in_easyconfig(easyconfig_repo, verbose):
 	easyconfigfiles=os.popen(cmd).read().rstrip().split("\n")
 	# remove any empty elements in list when there is no eb files found
 	easyconfigfiles = [x for x in easyconfigfiles if x]
-
 	# if no easyconfig files found
 	if len(easyconfigfiles) == 0:
 		if len(tcversion) == 0:
@@ -382,6 +381,11 @@ def check_software_version_in_easyconfig(easyconfig_repo, verbose):
 		toolchain_version=toolchain_version.replace('\'','')
 		toolchain_version=toolchain_version.replace('\n','')
 	
+		# if toolchain name is dummy in easyconfig, lets force it to "" so checking for dummy toolchain will be with empty quotes	
+		if toolchain_name == "dummy":
+			toolchain_name = ""
+			toolchain_version = ""
+
 		logger.debug("\n")
                 logger.debug("After Stripping characters ' and newline")
 		logger.debug("name: %s \t version: %s \t toolchain name: %s \t toolchain version: %s", name, version, toolchain_name, toolchain_version)
@@ -453,8 +457,11 @@ def check_software_version_in_easyconfig(easyconfig_repo, verbose):
 
 	# mismatch in easyconfig entries for name,version+versionsuffix, and toolchain with specified entries
 	if match == False:
+		if tcname == "":
+		 	msg = "ERROR: Attempting to  find easyconfig file  " + appname + "-" + appversion + ".eb"
+		else:
+		 	msg = "ERROR: Attempting to  find easyconfig file  " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + ".eb"
 		print fail_msg
-	 	msg = "ERROR: Attempting to  find easyconfig file  " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + ".eb"
 		print msg
 		logger.error("%s",msg)
 		sys.exit(1)
