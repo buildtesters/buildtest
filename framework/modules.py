@@ -35,6 +35,7 @@ This python module does the following
 from framework.env import *
 from framework.tools.file import *
 from framework.tools.software import *
+from framework.tools.generic import *
 import logging
 import os
 import sys
@@ -136,6 +137,29 @@ def module_version_relation(moduletree):
 
 		module_dict[item] = version_set
 
+   	text = """
+                        ------------------------------------------
+                        |      Software Version Relationship     |
+                        ------------------------------------------
+
+
+ ID  |        Software            |      Versions
+-----|----------------------------|----------------------------- """
+        print text
+
+        text = text.splitlines()
+        for line in text:
+        	logger.info(line)
+
+	# sorting keys in dictionary for printing in alphabetical order by software name
+	keylist = module_dict.keys()
+	keylist.sort()
+	count = 1
+	for key in keylist:
+                print (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t", sset(module_dict[key])
+                logger.info("%s %s %s", (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t", sset(module_dict[key]))
+                count = count + 1
+	
 	return module_dict
 
 def list_toolchain():
@@ -305,7 +329,7 @@ def check_software_version_in_easyconfig(easyconfig_repo, verbose):
 	        # if user specified a toolchain version that is a hidden module file, strip leading "." 
 	        if isHiddenFile(tcversion) :
         	        tcversion = stripHiddenFile(tcversion)
-                	logger.debug("Stripping leading . from toolchain version: ", tcversion)
+                	logger.debug("Stripping leading . from toolchain version: %s", tcversion)
 
 	# for Flat Naming Scheme -s will take APP/Version-Toolchain so need to take Toolchain out for comparison
         if BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
