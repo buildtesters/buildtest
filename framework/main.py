@@ -229,25 +229,7 @@ def main():
 		print "Writing Log file to:", logpath
 		sys.exit(0)
 	if software_version_relation == True:
-		software_version_dict=module_version_relation(BUILDTEST_MODULE_EBROOT)
-		text = """ 
-		
-			------------------------------------------ 
-	 		|      Software Version Relationship     |
-			------------------------------------------
-
-
- ID  |        Software            |      Versions
------|----------------------------|----------------------------- """
-		print text
-
-		text = text.splitlines()
-		for line in text:
-			logger.info(line)
-
-		print_dictionary(software_version_dict)
-	
-
+		module_version_relation(BUILDTEST_MODULE_EBROOT)
 		print "Writing Log file to:", logpath
 		sys.exit(0)
 

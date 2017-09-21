@@ -330,7 +330,7 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 		logger.debug("%s",out)
 		# writing test to CMakeLists.txt
 		add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
-		logger.debug("Content of Test file: ", testpath_testname)
+		logger.debug("Content of Test file: %s", testpath_testname)
 		logger.debug("[START TEST-BLOCK]")
     
                 fd=open(testpath_testname,'r')

@@ -196,26 +196,12 @@ module purge
         return header
 
 
-def print_dictionary(dictionary):
-        """
-        prints the content of dictionary
-        """
-	logger = logging.getLogger(logID)
-
-	count = 1
-        for key in dictionary:
-		
-                print (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t", sset(dictionary[key])
-		logger.info("%s %s %s", (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t", sset(dictionary[key]))
-		count = count + 1
-
 def print_set(setcollection):
         """
         prints the content of set 
         """
         for item in setcollection:
                 print item
-		BUILDTEST_LOGCONTENT.append(item + "\n")
 class sset(set):
     def __str__(self):
         return ', '.join([str(i) for i in self])
