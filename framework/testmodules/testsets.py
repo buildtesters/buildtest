@@ -34,7 +34,7 @@ don't require any YAML files.
 :author: Shahzeb Siddiqui (Pfizer)
 
 """
-def run_testset(testset,verbose):
+def run_testset(arg_dict,testset,verbose):
 	""" checks the testset parameter to determine which set of scripts to use to create tests """
 
 
@@ -65,6 +65,11 @@ def run_testset(testset,verbose):
                 runtest=True
 
 
+        # condition to run R testset
+        if appname in ["Tcl"] and testset == "Tcl":
+                source_app_dir=os.path.join(os.environ['BUILDTEST_TCL_DIR'],"Tcl")
+                runtest=True
+
 	# for MPI we run recursive_gen_test since it processes YAML files
 	if appname in MPI_APPS and testset == "mpi":
 		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"mpi")
@@ -74,9 +79,9 @@ def run_testset(testset,verbose):
 		return
         if runtest == True:
         	codedir=os.path.join(source_app_dir,"code")
-                testset_generator(codedir,verbose)
+                testset_generator(arg_dict,codedir,verbose)
 
-def testset_generator(codedir,verbose):
+def testset_generator(arg_dict, codedir,verbose):
 
 	wrapper=""
         appname=get_appname()
@@ -86,6 +91,12 @@ def testset_generator(codedir,verbose):
 
 	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
 	cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
+	
+	# setup CMakeList in all subdirectories for the app if CMakeList.txt was not generated from
+	# binary test 
+	if not os.path.exists(cmakelist):
+		setup_software_cmake(arg_dict)
+
 	if os.path.isdir(codedir):
 		for root,subdirs,files in os.walk(codedir):
 
@@ -108,6 +119,8 @@ def testset_generator(codedir,verbose):
 					wrapper = "perl"
 				elif ext == ".rb":
 					wrapper = "ruby"
+				elif ext == ".tcl":
+					wrapper = "tclsh"
 				else:
 					continue
 
@@ -118,7 +131,7 @@ def testset_generator(codedir,verbose):
 				subdir = os.path.basename(root)
 				subdirpath = os.path.join(app_destdir,subdir)
 				if not os.path.exists(subdirpath):
-					os.mkdir(subdirpath)
+					os.makedirs(subdirpath)
 
 				testname = fname + ".sh"
 				testpath = os.path.join(subdirpath,testname)
@@ -128,11 +141,6 @@ def testset_generator(codedir,verbose):
 				fd.write(cmd)
 				fd.close()
 			
-				#logcontent+="TestPath: " + testpath
-				#logcontent+="\n--------------------------------------------\n"
-				#logcontent+=open(testpath,'r').read()
-				#logcontent+="\n--------------------------------------------\n"
-				
 				cmakelist = os.path.join(subdirpath,"CMakeLists.txt")
 				add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 				msg = "Creating Test: " + testpath  
@@ -140,4 +148,6 @@ def testset_generator(codedir,verbose):
 				count = count + 1
 
 			print "Generating ", count, "tests for ", os.path.basename(root)
+
+	print "Writing tests to ", app_destdir
 

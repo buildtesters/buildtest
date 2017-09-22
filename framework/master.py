@@ -37,7 +37,11 @@ def recursive_gen_test(configdir,codedir,verbose ):
         if os.path.isdir(configdir):
 		count = 0
                 for root,subdirs,files in os.walk(configdir):
-    
+ 
+			# skip to next element if subdirectory has no files
+			if len(files) == 0:
+				continue   
+
                         #filepath=configdir+filename
                         for file in files:
                                 filepath=os.path.join(root,file)
@@ -55,5 +59,6 @@ def recursive_gen_test(configdir,codedir,verbose ):
                                         continue
 				count = count + 1
                                 generate_source_test(configmap,code_destdir,verbose,subdir)
+
 		print "Generating " + str(count) + " Source Tests "
 
