@@ -323,7 +323,7 @@ def main():
 	
 		# if flag --testset is set, then 
 		if testset !=  None:
-			run_testset(testset,verbose)
+			run_testset(args_dict, testset,verbose)
 	
 		if not os.path.isdir(logdir):
 			cmd = "mkdir -p " + logdir
