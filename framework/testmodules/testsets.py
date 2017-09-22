@@ -23,6 +23,8 @@ from framework.parser import *
 from framework.tools.generic import *
 from framework.tools.cmake import *
 from framework.master import *
+from framework.tools.software import *
+
 import os
 
 """
@@ -32,21 +34,22 @@ don't require any YAML files.
 :author: Shahzeb Siddiqui (Pfizer)
 
 """
-def run_testset(software,toolchain,testset,verbose):
+def run_testset(testset,verbose):
 	""" checks the testset parameter to determine which set of scripts to use to create tests """
 
-	appname,appversion=software
+
+	appname = get_appname()
 
 	source_app_dir=""
 	codedir=""
 	logcontent = ""
 	runtest = False
 
-	if appname in PYTHON_APPS and testset == "python":
+	if appname in PYTHON_APPS and testset == "Python":
 	        source_app_dir=os.path.join(os.environ['BUILDTEST_PYTHON_DIR'],"python")
                 runtest=True
     
-        if appname in PERL_APPS and testset == "perl":
+        if appname in ["Perl"] and testset == "Perl":
         	source_app_dir=os.path.join(os.environ['BUILDTEST_PERL_DIR'],"perl")
                 runtest=True
 
@@ -54,6 +57,13 @@ def run_testset(software,toolchain,testset,verbose):
         if appname in ["R"] and testset == "R":
         	source_app_dir=os.path.join(os.environ['BUILDTEST_R_DIR'],"R")
                 runtest=True
+
+
+        # condition to run R testset
+        if appname in ["Ruby"] and testset == "Ruby":
+                source_app_dir=os.path.join(os.environ['BUILDTEST_RUBY_DIR'],"ruby")
+                runtest=True
+
 
 	# for MPI we run recursive_gen_test since it processes YAML files
 	if appname in MPI_APPS and testset == "mpi":
@@ -64,23 +74,25 @@ def run_testset(software,toolchain,testset,verbose):
 		return
         if runtest == True:
         	codedir=os.path.join(source_app_dir,"code")
-                testset_generator(software,toolchain,codedir,verbose)
+                testset_generator(codedir,verbose)
 
-def testset_generator(software,toolchain,codedir,verbose):
-	logcontent = "--------------------------------------\n"
-	logcontent = "function: testset_generator \n"
-	logcontent = "--------------------------------------\n"
+def testset_generator(codedir,verbose):
 
 	wrapper=""
-        appname=software[0]
-        appver=software[1]
-        tcname=toolchain[0]
-        tcver=toolchain[1]
+        appname=get_appname()
+        appver=get_appversion()
+        tcname=get_toolchain_name()
+	tcver=get_toolchain_version()
 
 	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
 	cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
 	if os.path.isdir(codedir):
 		for root,subdirs,files in os.walk(codedir):
+
+			# skip to next item in loop when a sub-directory has no files
+			if len(files) == 0:
+				continue
+
 			count = 0
 			for file in files:
 				# get file name without extension
@@ -94,14 +106,20 @@ def testset_generator(software,toolchain,codedir,verbose):
 					wrapper = "Rscript"
 				elif ext == ".pl":
 					wrapper = "perl"
+				elif ext == ".rb":
+					wrapper = "ruby"
 				else:
 					continue
 
+				# command to execute the script
 				cmd = wrapper + " " + os.path.join(root,file)
+		
+				# getting subdirectory path to write test to correct path
 				subdir = os.path.basename(root)
 				subdirpath = os.path.join(app_destdir,subdir)
 				if not os.path.exists(subdirpath):
 					os.mkdir(subdirpath)
+
 				testname = fname + ".sh"
 				testpath = os.path.join(subdirpath,testname)
 				fd = open(testpath,'w')
@@ -110,15 +128,16 @@ def testset_generator(software,toolchain,codedir,verbose):
 				fd.write(cmd)
 				fd.close()
 			
-				logcontent+="TestPath: " + testpath
-				logcontent+="\n--------------------------------------------\n"
-				logcontent+=open(testpath,'r').read()
-				logcontent+="\n--------------------------------------------\n"
+				#logcontent+="TestPath: " + testpath
+				#logcontent+="\n--------------------------------------------\n"
+				#logcontent+=open(testpath,'r').read()
+				#logcontent+="\n--------------------------------------------\n"
 				
 				cmakelist = os.path.join(subdirpath,"CMakeLists.txt")
 				add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 				msg = "Creating Test: " + testpath  
 				BUILDTEST_LOGCONTENT.append(msg + "\n")
 				count = count + 1
+
 			print "Generating ", count, "tests for ", os.path.basename(root)
 
