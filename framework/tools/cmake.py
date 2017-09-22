@@ -96,10 +96,17 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
                 # naming scheme should allow buildtest to reuse same YAML configs for multiple version
                 # built with any toolchains. Subdirectories come in handy when you need to organize tests 
 		# effectively to avoid naming conflict
-      		
-		add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"      + subdir + "-" + testname + "\t COMMAND sh " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+
+		# condition to check of toolchain exists, if so then add it to add_test() 
+      		if tcname == "":
+			add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + subdir + "-" + testname + "\t COMMAND sh " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+		else:	
+			add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"      + subdir + "-" + testname + "\t COMMAND sh " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 	else:
-         	add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+		if tcname == "":
+	         	add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+		else:
+	         	add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 	fd.write(add_test_str)
         fd.close()
 	logger.debug("Updating File " + cmakelist + " with: " + add_test_str + "\n")
