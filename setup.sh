@@ -34,6 +34,7 @@ BUILDTEST_PYTHON_DIR=$BUILDTEST_ROOT"/Python-buildtest-config"
 BUILDTEST_PERL_DIR=$BUILDTEST_ROOT"/Perl-buildtest-config"
 BUILDTEST_R_DIR=$BUILDTEST_ROOT"/R-buildtest-config"
 BUILDTEST_RUBY_DIR=$BUILDTEST_ROOT"/Ruby-buildtest-config"
+BUILDTEST_TCL_DIR=$BUILDTEST_ROOT"/Tcl-buildtest-config"
 
 # BUILDTEST_EASYCONFIGDIR path to easybuild easyconfig directory
 # BUILDTEST_EASYCONFIG=${BUILDTEST_ROOT}/path/to/easybuild/
@@ -51,5 +52,6 @@ export BUILDTEST_PYTHON_DIR
 export BUILDTEST_PERL_DIR
 export BUILDTEST_R_DIR
 export BUILDTEST_RUBY_DIR
+export BUILDTEST_TCL_DIR
 
 export PATH=$PWD:${PATH}
