@@ -49,6 +49,9 @@ import subprocess
 import argparse
 import logging
 
+import fnmatch
+import glob
+
 def main():
 	module=""
 	version=""
@@ -101,8 +104,8 @@ def main():
 	# if log directory is not created do it automatically. Typically first run in buildtest will 
 	# after git clone will run into this condition
 	if not os.path.exists(logdir):
+		os.makedirs(logdir)
 		print "Creating Log directory: ", logdir
-		os.system("mkdir " + logdir)
 
 	#logging.basicConfig(filename=logfile)
 	logger = logging.getLogger(logID)
@@ -122,19 +125,16 @@ def main():
 
 	# when no argument is specified to -fc then output all yaml files
 	if findconfig == "all": 
-		findCMD = "find " + BUILDTEST_SOURCEDIR + " -name \"*.yaml\" -type f"
-		logger.debug("Running command: %s", findCMD)
 
-		ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-		(output,err) = ret.communicate()
-		print output
-		output = output.splitlines()
-	
+		logger.info("List of YAML configs found")
+                logger.info("----------------------------------")
 
-		logger.info("List of YAML files found")
-		logger.info("-----------------------------------")
-		for line in output:
-			logger.info(line)
+		for root, dirs, files in os.walk(BUILDTEST_SOURCEDIR):
+                        for file in files:
+                                if file.endswith(".yaml"):
+                                        print os.path.join(root,file)
+                                        logger.info("%s",os.path.join(root,file))
+
 		print "Writing Log file to:", logpath
 
 		sys.exit(0)
@@ -142,21 +142,20 @@ def main():
 	# to None and we don't want to run this section unless a -fc is specified along with an argument other than
 	# all
 	elif findconfig != None:
+
 		find_arg = args_dict["findconfig"]
-		findCMD = "find " + BUILDTEST_SOURCEDIR + " -name \"*" + find_arg + "*.yaml\" -type f"
-		logger.debug("Running command: %s", findCMD)
 
-		ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-		(output,err) = ret.communicate()
-		print output
-
-		output = output.splitlines()
-
-		logger.info("List of YAML files found")
+		logger.info("List of YAML configs found")
 		logger.info("-----------------------------------")
 
-		for line in output:
-			logger.info(line)
+
+ 		for root, dirs, files in os.walk(BUILDTEST_SOURCEDIR):
+                        for file in files:
+                                if file.endswith(".yaml"):
+
+                                        if find_arg in os.path.basename(file):
+                                                print os.path.join(root,file)
+                                                logger.info("%s",os.path.join(root,file))
 
 		print "Writing Log file to:", logpath
 
@@ -164,44 +163,37 @@ def main():
 
 	# report all buildtest generated test scripts
 	if findtest == "all":
-		# running find command to get all tests
-		findCMD = "find " + BUILDTEST_TESTDIR + " -name \"*.sh\" -type f"
-		logger.debug("Running command: %s", findCMD)
 
-		ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-		(output,err) = ret.communicate()
-		print output
-
-		output = output.splitlines()
 		logger.info("List of test found")
 		logger.info("----------------------------------")
-		
-		for line in output:
-			logger.info(line)
+		for root, dirs, files in os.walk(BUILDTEST_TESTDIR):
+			for file in files:
+				if file.endswith(".sh"):
+					print os.path.join(root,file)
+					logger.info("%s",os.path.join(root,file))
+
 
 		print "Writing Log file to:", logpath
-
 		sys.exit(0)
+
+
 	# otherwise report test scripts based on argument. If -ft is not specified then args.findtest is None
 	# so we don't want to run section below everytime. Only when -ft is specified
 	elif findtest != None:
+
+
 		find_arg = args_dict["findtest"]
 
-		# running find command to get test based on argument to --findtest
-		findCMD = "find " + BUILDTEST_TESTDIR + " -name \"*" + find_arg + "*.sh\" -type f \n"
-		logger.debug("Running command: %s", findCMD)
-
-		# running command: find $BUILDTEST_SOURCEDIR -name "*<find_arg>*.sh" -type f
-		ret = subprocess.Popen(findCMD,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-		(output,err) = ret.communicate()
-		print output
-
-		output = output.splitlines()
+		
                 logger.info("List of test found")
                 logger.info("----------------------------------")
+                for root, dirs, files in os.walk(BUILDTEST_TESTDIR):
+                        for file in files:
+                                if file.endswith(".sh"):
 
-                for line in output:
-                        logger.info(line)
+					if find_arg in os.path.basename(file):
+						print os.path.join(root,file)
+						logger.info("%s",os.path.join(root,file))
 
                 print "Writing Log file to:", logpath
 
@@ -228,6 +220,7 @@ def main():
 		
 		print "Writing Log file to:", logpath
 		sys.exit(0)
+
 	if software_version_relation == True:
 		module_version_relation(BUILDTEST_MODULE_EBROOT)
 		print "Writing Log file to:", logpath
@@ -240,7 +233,7 @@ def main():
 
 			logger.info("Generating all system package tests from YAML files in %s", os.path.join(BUILDTEST_SOURCEDIR,"system"))
 
-			os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log","system","all")
+			os.environ["BUILDTEST_LOGDIR"] = os.path.join(logdir,"system","all")
 			systempkg_list = os.listdir(os.path.join(BUILDTEST_SOURCEDIR,"system"))
 
 			logger.info("List of system packages to test: %s ", systempkg_list)
@@ -248,19 +241,20 @@ def main():
 			for pkg in systempkg_list:
 				generate_binary_test(args_dict,verbose,pkg)
 		else:
-			os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log","system",systempkg)
+			os.environ["BUILDTEST_LOGDIR"] = os.path.join(logdir,"system",systempkg)
 			#logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
 			generate_binary_test(args_dict,verbose,systempkg)
 
-		
-		if not os.path.exists(os.environ["BUILDTEST_LOGDIR"]):
-			cmd = "mkdir -p " + os.environ["BUILDTEST_LOGDIR"]
-			os.system(cmd)
-			logger.warning("Directory not found: %s", os.environ["BUILDTEST_LOGDIR"])
-			logger.info("Executing Command: %s", cmd)
 
-		cmd = "mv " + logpath + " " + os.environ["BUILDTEST_LOGDIR"]
-		os.system(cmd)
+		# if log directory is not created then create directory recursively
+		if not os.path.exists(os.environ["BUILDTEST_LOGDIR"]):
+			os.makedirs(os.environ["BUILDTEST_LOGDIR"], 0755 )
+			logger.warning("Directory not found: %s will create it", os.environ["BUILDTEST_LOGDIR"])
+
+		#cmd = "mv " + logpath + " " + os.environ["BUILDTEST_LOGDIR"]
+		#os.system(cmd)
+		destpath = os.path.join(os.environ["BUILDTEST_LOGDIR"],logfile)
+		os.rename(logpath, destpath)
 		
 		print "Writing Log file to:", os.path.join(os.environ["BUILDTEST_LOGDIR"],logfile)
 		sys.exit(0)
