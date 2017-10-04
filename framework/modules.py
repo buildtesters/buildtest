@@ -40,6 +40,8 @@ import logging
 import os
 import sys
 
+import re
+import glob
 
 def get_module_list(moduletree):
 	"""
@@ -310,8 +312,8 @@ def check_software_version_in_easyconfig(easyconfig_repo, verbose):
 	return True if name,version+versionsuffix,toolchain from command line is found 
 	from easyconfig, False otherwise
 	"""
-	success_msg = "Checking easyconfig file ... SUCCESS"
-	fail_msg = "Checking easyconfig file ... FAILED"
+	success_msg = "Checking easyconfig conditional checks ... SUCCESS"
+	fail_msg = "Checking easyconfig conditional checks ... FAILED"
 	appname = get_appname()
 	appversion = get_appversion()
 	tcname = get_toolchain_name()
@@ -342,150 +344,112 @@ def check_software_version_in_easyconfig(easyconfig_repo, verbose):
                 if appversion[-1] == "-":
                         appversion = appversion[:-1]
 
+	firstletter = appname[0].lower()
+	ebapp_easyconfig_root = os.path.join(easyconfig_repo,firstletter,appname)
+	os.chdir(ebapp_easyconfig_root)
 	
-	cmd="find " + easyconfig_repo  + " -name " + appname+"-"+appversion+"*.eb -type f"         
-	logger.debug("Attempting to find all easyconfigs based on appname = %s \t appversion = %s", appname, appversion)
-	logger.debug("Executing Command: %s", cmd)
-	easyconfigfiles=os.popen(cmd).read().rstrip().split("\n")
-	# remove any empty elements in list when there is no eb files found
-	easyconfigfiles = [x for x in easyconfigfiles if x]
-	# if no easyconfig files found
-	if len(easyconfigfiles) == 0:
-		if len(tcversion) == 0:
-		 	msg = "FAILED to find any easyconfig file with the name " + appname + "-" + appversion + ".eb"
-		else:
-		 	msg = "FAILED to find any easyconfig file with the name " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + ".eb"
-		print msg
-		logger.error("%s",msg)
+	easyconfigfile = ""
+
+	if len(tcname) == 0:
+		easyconfigfile = appname + "-" + appversion +  ".eb"
+	else:
+		easyconfigfile = appname + "-" + appversion + "-" + tcname + "-" + tcversion +".eb"
+
+
+	easyconfigpath = os.path.join(easyconfig_repo,firstletter,appname,easyconfigfile)
+	if not os.path.exists(easyconfigpath):
+		print "ERROR: No such easyconfig file: " + easyconfigpath 
+		print 
+		print "buildtest checks the easyconfig to ensure application is installed with easybuild"
 		sys.exit(1)
+	else:
+		print "Checking for easyconfig file: " + easyconfigfile + " ... FOUND"
 
-	# writing easyconfig file path to log
-	for ebfile in easyconfigfiles:
-		logger.debug("%s",ebfile)
+	# renaming variable
+	ebfile = easyconfigpath
 
-	# boolean value to check if eb file found with parameters for software and toolchain
-	match=False    
-	for ebfile in easyconfigfiles:
-		# get name tag from easyconfig
-		cmd="""grep "name = " """ + ebfile + """ | cut -f3 -d " " """
-		logger.debug("Executing command: %s ", cmd)
-		
-		name=os.popen(cmd).read()
-		logger.debug("Result: %s", name)
-
-		# get version tag from easyconfig, possibility for multiple occurence so get 1st entry
-		cmd="""grep "version = " """ + ebfile + """ | cut -f3 -d " " | head -n1 """
-		logger.debug("Executing command: %s", cmd)
-		version=os.popen(cmd).read()
-		logger.debug("Result: %s", version)
-
-		cmd=""" grep "toolchain = " """ + ebfile + """ | cut -f4 -d " " | tr -d "," """
-		logger.debug("Executing command: %s", cmd)
-		toolchain_name=os.popen(cmd).read()
-		logger.debug("Result: %s", toolchain_name)
-
-
-		cmd=""" grep "toolchain = " """ + ebfile + """ | cut -f6 -d " " | tr -d "}" """
-		logger.debug("Executing command: %s", cmd)
-		toolchain_version=os.popen(cmd).read()
-		logger.debug("Result: %s",toolchain_version)
-
-
-
-		logger.debug("Before Stripping characters")
-		logger.debug("name: %s \t version: %s \t toolchain name: %s \t toolchain version: %s", name, version, toolchain_name, toolchain_version)
-
-		# strip character ' and newline
-		name=name.replace('\'','')
-	        name=name.replace('\n','') 
-		version=version.replace('\'', '')
-		version=version.replace('\n','')
-		toolchain_name=toolchain_name.replace('\'','')
-		toolchain_name=toolchain_name.replace('\n','')
-		toolchain_version=toolchain_version.replace('\'','')
-		toolchain_version=toolchain_version.replace('\n','')
+	f = open(ebfile,'r')
+	content = f.readlines()
 	
-		# if toolchain name is dummy in easyconfig, lets force it to "" so checking for dummy toolchain will be with empty quotes	
-		if toolchain_name == "dummy":
-			toolchain_name = ""
-			toolchain_version = ""
+	# extracting name, version, and toolchain name/version from easyconfig file
+	for line in content:
+		line_name = re.match('name = ',line)
+		line_version = re.match('version = ',line)
+		line_toolchain = re.match('toolchain = ', line)
 
-		logger.debug("\n")
-                logger.debug("After Stripping characters ' and newline")
-		logger.debug("name: %s \t version: %s \t toolchain name: %s \t toolchain version: %s", name, version, toolchain_name, toolchain_version)
+		if line_name:
+			name =  line.split("=")[1].replace("'","").strip()
+
+		if line_version:
+			version = line.split("=")[1].replace("'","").strip()
+	
+		if line_toolchain:
+			# extract toolchain name/version from string: toolchain = {'name': 'intel', 'version': '2016b'}
+			startpos = line.index("{")
+			temp = line[startpos:]
+			toolchain_name = temp.split(",")[0].split(":")[1].replace("'","").strip()
+			toolchain_version = temp.split(",")[1].split(":")[1].replace("}","").replace("'","").strip()
 
 
-		# get name of eb file and remove .eb extension
-		ebname=os.popen("basename " + ebfile).read()
+	# if toolchain name is dummy in easyconfig, lets force it to "" so checking for dummy toolchain will be with empty quotes	
+	if toolchain_name == "dummy":
+		toolchain_name = ""
+		toolchain_version = ""
 
-		logger.debug("Before Stripping File extension(.eb) - FILE: %s", ebname)
-
-		# stripping characters ".eb" plus newline character a total of 4 from end
-		ebname=ebname[:-4]
-
-		logger.debug("After Stripping File extension -  FILE: %s", ebname)
-		
-		# in case toolchain version uses '' set it to dummy 
-		if toolchain_version == '':
-			toolchain_version=""
 		# alter eb_name_format for dummy toolchain
-		if toolchain_name == "dummy":
-			toolchain_name = ""
-			eb_name_format=name+"-"+version
-		else:
-			# eb name format used for comparison to calculate versionsuffx
-			eb_name_format=name+"-"+version+"-"+toolchain_name+"-"+toolchain_version
+		eb_name_format=name+"-"+version
+	else:
+		# eb name format used for comparison to calculate versionsuffx
+		eb_name_format=name+"-"+version+"-"+toolchain_name+"-"+toolchain_version
+	
 
+	# get name of eb file 
+	ebname = os.path.basename(ebfile)
 
-		# There is no version suffix when file name is just 
-		# software-version-toolchain
-		# determine starting position index in easyconfig filename to 
-		# calculate versionsuffix. If its a dummy toolchain start with 
-		# version, otherwise from toolchain version
-		if toolchain_name == "":
-			startpos=ebname.find(version)+len(version)
-		else:
-			# extract version suffix 
-			startpos=ebname.find(toolchain_version)+len(toolchain_version)
+	logger.debug("Before Stripping File extension(.eb) - FILE: %s", ebname)
 
-		endpos=len(ebname)
-		versionsuffix=ebname[startpos:endpos]
+	# stripping extension ".eb"
+	ebname=os.path.splitext(ebname)[0]
 
-		# variable used for comparison
-		version_versionsuffix=version + versionsuffix
+	logger.debug("After Stripping File extension -  FILE: %s", ebname)
 
-		logger.debug("Extracting version suffix from eb name: %s",ebname)
-		logger.debug("Version Suffix: %s", versionsuffix)
-		logger.debug("Version + Version Suffix: %s", version_versionsuffix)
+	# There is no version suffix when file name is just 
+	# software-version-toolchain.eb
+	# determine starting position index in easyconfig filename to 
+	# calculate versionsuffix. If its a dummy toolchain start with 
+	# version, otherwise from toolchain version
+	if toolchain_name == "":
+		startpos=ebname.find(version)+len(version)
+	else:
+		# extract version suffix 
+		startpos=ebname.find(toolchain_version)+len(toolchain_version)
 
+	endpos=len(ebname)
 
+	versionsuffix=ebname[startpos:endpos]
 
-		logger.debug("All CONDITIONS must pass") 
-		logger.debug("NAME String Comparision - STR1: %s \t STR2: %s", name, appname)
-		logger.debug("VERSION String Comparision - STR1: %s \t STR2: %s", version_versionsuffix, appversion)
-		logger.debug("TOOLCHAIN NAME String Comparision - STR1: %s \t STR2: %s", toolchain_name, tcname)
-		logger.debug("TOOLCHAIN VERSION String Comparision - STR1: %s \t STR2: %s", toolchain_version, tcversion)
-		# print name,version_versionsuffix, toolchain_name, toolchain_version
-		# print appname, appversion, tcname, tcversion
-		if name == appname and version_versionsuffix == appversion and toolchain_name == tcname and toolchain_version == tcversion:
-			logger.debug("All Checks have PASSED!") 
+	# variable used for comparison
+	version_versionsuffix=version + versionsuffix
 
-			print success_msg
-			if tcname == "":
-				print "found easyconfig file: " + appname + "-" + appversion + ".eb"
-			else:
-				print "found easyconfig file: " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + ".eb"
-			return True
-		else:
-			logger.debug("All Checks failed to PASSED!") 
+	logger.debug("Extracting version suffix from eb name: %s",ebname)
+	logger.debug("Version Suffix: %s", versionsuffix)
+	logger.debug("Version + Version Suffix: %s", version_versionsuffix)
 
-	# mismatch in easyconfig entries for name,version+versionsuffix, and toolchain with specified entries
-	if match == False:
-		if tcname == "":
-		 	msg = "ERROR: Attempting to  find easyconfig file  " + appname + "-" + appversion + ".eb"
-		else:
-		 	msg = "ERROR: Attempting to  find easyconfig file  " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + ".eb"
-		print fail_msg
-		print msg
-		logger.error("%s",msg)
+	logger.debug("\n")
+
+	logger.debug("All CONDITIONS must pass") 
+	logger.debug("NAME String Comparision - STR1: %s \t STR2: %s", name, appname)
+	logger.debug("VERSION String Comparision - STR1: %s \t STR2: %s", version_versionsuffix, appversion)
+	logger.debug("TOOLCHAIN NAME String Comparision - STR1: %s \t STR2: %s", toolchain_name, tcname)
+	logger.debug("TOOLCHAIN VERSION String Comparision - STR1: %s \t STR2: %s", toolchain_version, tcversion)
+
+	if name == appname and version_versionsuffix == appversion and toolchain_name == tcname and toolchain_version == tcversion:
+		logger.debug("All Checks have PASSED!") 
+
+		print success_msg
+		return True
+	else:
+		print "ERROR: failed to pass all checks in easyconfig, make sure Application & Toolchain name/version match in easyconfig"
+		logger.debug("ERROR: FAILED to pass all checks!") 
 		sys.exit(1)
+
