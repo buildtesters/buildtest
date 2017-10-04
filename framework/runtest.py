@@ -34,20 +34,41 @@ def systempkg_menu(systempkg):
 	os.system("clear")
 
         dirs = [ d for d in os.listdir(systempkg) if os.path.isdir(os.path.join(systempkg,d)) ]
-        print "System Package Tests: "
-	print "-------------------------------------------"
 
+	text = """
+  			     ---------------------------
+           		     |  System Package Tests   |
+			     ---------------------------
+
+	=========================================
+
+	||  ID	  ||	System Package         ||
+
+	=========================================   """
+	
+	print text
+	print 
         count = 0
         for i in dirs:
-                print str(count)+".", i
+                print ("\t||").expandtabs(8) +  ("\t" + str(count)+"\t||").expandtabs(3), "\t".expandtabs(4) + (i + "\t||").expandtabs(24)
                 count = count + 1
+
+	print """
+	==========================================
+"""
         totalcount = count
         while True:
 		text = """
-Select Test # you want.
--3: Main Menu
--4: Exit Program
-User Input: """
+
+		Select Test # you want to run
+                 _____________________________
+                |  -3 |  Main Menu            |
+                |_____|_______________________|
+                |  -4 |   Exit Program        |
+                |_____|_______________________|
+
+		User Input: """
+
                 userinput = input(text)
                 if userinput >= 0 and userinput < totalcount:
                         break
@@ -65,14 +86,24 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 
 	os.system("clear")
 
-	cmd = "find " + os.path.join(systempkgpath,pkg_name) + """ -type f -name "*.sh" """
-	files=os.popen(cmd).read()
+	#cmd = "find " + os.path.join(systempkgpath,pkg_name) + """ -type f -name "*.sh" """
+	
+	files_as_list = []
+	for dirpath, dirs, files in os.walk(os.path.join(systempkgpath,pkg_name)):
+		for file in files:
+			if file.endswith(".sh"):
+				files_as_list.append(file)
+
+	#files=os.popen(cmd).read()
+
 	test_list = []
 	count = 0
 	# creating a list of files
-	files_as_list = files.split("\n")
+	#files_as_list = files.split("\n")
+
 	# removing last element from list since its an empty token
-	files_as_list = files_as_list[:-1]
+	#files_as_list = files_as_list[:-1]
+
 	# string path and get test name
 
 	# get top level test directory to cd into before running test
@@ -286,11 +317,38 @@ def runtest_menu():
 	testing = os.path.join(cwd,"testing")
 	systempkg = os.path.join(testing,"system")
 	ebpkg = os.path.join(testing,"ebapp")
-	text = """ Select the type of tests to run
-1) System Packages 
-2) Easybuild
-3) Exit Program
-User Input:  """
+
+	text = """ 
+		_________________________________________________________________________
+	        |\							               /|	      
+		| \           Welcome to buildtest Interactive Testing Menu	      / |
+	        |  \_________________________________________________________________/  |
+		|  |								     |  |
+		|  |								     |  | 
+		|  |  *****  *  *  *   *      *****  *******  ****   ****  ******    |  | 
+  		|  |  *   *  *  *  *   *      *    *    *     *     *         *      |  |
+		|  |  *****  *  *  *   *      *    *    *     ****   ***      *      |  |
+	        |  |  *	  *  *  *  *   *      *    *    *     *         *     *      |  |
+		|  |  *****  ****  *   *****  *****     *     ****  ****      *      |  |
+	        |  |_________________________________________________________________|  |
+		| /                                                                   \ | 
+		|/_____________________________________________________________________\|
+
+
+		
+		Select an Option:
+		
+		_______________________________
+		|  1  |   System Packages     |
+		|_____|_______________________|
+		|  2  |   EasyBuild Packages  |
+		|_____|_______________________|
+		|  3  |   Exit                |
+		|_____|_______________________|
+
+		
+
+		User Input: """
 
 
 	while True:
