@@ -29,55 +29,66 @@ import os
 import sys
 import subprocess
 import time
+import glob
+
+from framework.env import *
+
 def systempkg_menu(systempkg):
 
-	os.system("clear")
 
         dirs = [ d for d in os.listdir(systempkg) if os.path.isdir(os.path.join(systempkg,d)) ]
-
-	text = """
-  			     ---------------------------
-           		     |  System Package Tests   |
-			     ---------------------------
-
-	=========================================
-
-	||  ID	  ||	System Package         ||
-
-	=========================================   """
-	
-	print text
-	print 
-        count = 0
-        for i in dirs:
-                print ("\t||").expandtabs(8) +  ("\t" + str(count)+"\t||").expandtabs(3), "\t".expandtabs(4) + (i + "\t||").expandtabs(24)
-                count = count + 1
-
-	print """
-	==========================================
-"""
-        totalcount = count
+        #totalcount = count
         while True:
+
+		os.system("clear")
+		
+        	text = """
+
+        =========================================
+        ||  ID    ||    System Package         ||
+        =========================================   """
+
+	        print text
+	        count = 0
+	        for i in dirs:
+	                print ("\t||").expandtabs(8) +  ("\t" + str(count)+"\t||").expandtabs(3), "\t".expandtabs(4) + (i + "\t||").expandtabs(24)
+	                count = count + 1
+
+        	print "\
+	========================================== \
+"
+
+
 		text = """
 
 		Select Test # you want to run
                  _____________________________
-                |  -3 |  Main Menu            |
+                |  m  |  Main Menu            |
                 |_____|_______________________|
-                |  -4 |   Exit Program        |
+                |  e  |   Exit Program        |
                 |_____|_______________________|
 
 		User Input: """
 
-                userinput = input(text)
-                if userinput >= 0 and userinput < totalcount:
-                        break
-		elif userinput == -3:
-			runtest_menu()
-		elif userinput == -4:
+                userinput = raw_input(text)
+
+		if userinput.lower() == "m":
+                        runtest_menu()
+		elif userinput.lower() == "e":
 			sys.exit(0)
+
+                # check if user prompt is not integer, report error
+                if not userinput.isdigit():
+                        print "Invalid format for user input, please type a number"
+                        time.sleep(1)
+                        continue
+		
+		userinput = int(userinput)
+                if userinput >= 0 and userinput < count:
+                        break
 		else:
 			print "Invalid entry, please try again"
+			time.sleep(1.0)
 		
         print "Selecting Package: " + dirs[userinput]
 	systempkg_test_menu(systempkg, dirs[userinput])
@@ -86,25 +97,17 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 
 	os.system("clear")
 
-	#cmd = "find " + os.path.join(systempkgpath,pkg_name) + """ -type f -name "*.sh" """
-	
 	files_as_list = []
+	# get all files with .sh extension for system package tests
 	for dirpath, dirs, files in os.walk(os.path.join(systempkgpath,pkg_name)):
 		for file in files:
 			if file.endswith(".sh"):
-				files_as_list.append(file)
+				files_as_list.append(os.path.join(dirpath,file))
 
-	#files=os.popen(cmd).read()
 
 	test_list = []
 	count = 0
-	# creating a list of files
-	#files_as_list = files.split("\n")
 
-	# removing last element from list since its an empty token
-	#files_as_list = files_as_list[:-1]
-
-	# string path and get test name
 
 	# get top level test directory to cd into before running test
 	test_directory = os.path.dirname(files_as_list[0])
@@ -113,33 +116,40 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 		test_list.append(os.path.basename(f))
 
 	while True:
+		os.system("clear")
 		count = 0
 		print 
-		print " Available Tests for package: ", pkg_name
+		print ("\t" + "System Package: ").expandtabs(40), pkg_name
                 print
-                print "------------------------------------------------------"
-                print " TEST ID                TEST NAME"
-                print "------------------------------------------------------"
+		print """
+		------------------------------------------------------------------------------
+	        |    ID   |                          TEST NAME			             |
+                ------------------------------------------------------------------------------	"""
 
 		for name in test_list:
-			print str(count) + ".", name
+			print "\t|".expandtabs(16),(str(count)+"\t|").expandtabs(8), (name + "\t| ").expandtabs(65)
 			count = count + 1
 		testcount = count
-
+		print "\
+		------------------------------------------------------------------------------ "
+	
 		userinput = userprompt()
 
-		if userinput == -4:
+		if userinput.lower() == "e":
 			sys.exit(0)
 
-		elif userinput == -3:
+		elif userinput.lower() == "m":
 			runtest_menu()
 
-		elif userinput == -1:
+		elif userinput.lower() == "b":
+			systempkg_menu(systempkgpath)
+
+		elif userinput.lower() == "a":
 			passed_test = 0
 			failed_test = 0
 
 			for f in files_as_list:
-				(output,passtest,failtest)=launch_test(f)
+				(output,passtest,failtest)=launch_test(test_directory,f)
 				passed_test = passed_test + passtest
 				failed_test = failed_test + failtest
 
@@ -150,111 +160,203 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 			print passrate, "% of tests passed -  ", passed_test, "/", total_tests
 			print failrate, "% of tests failed - " , failed_test, "/", total_tests
 
-			time.sleep(0.5)
-			
-		elif userinput >= 0 and userinput < testcount:
-			output = launch_test(files_as_list[userinput])[0]
+	
+			time.sleep(3)
+			continue
+		
+                # check if user prompt is not integer, report error
+                if not userinput.isdigit():
+                        print "Invalid format for user input, please type a number"
+                        time.sleep(1)
+                        continue
+
+		
+		userinput = int(userinput)
+
+		if userinput >= 0 and userinput < testcount:
+			output = launch_test(test_directory,files_as_list[userinput])[0]
 			print output
 
-			time.sleep(0.5)
-		elif userinput == -2:
-			systempkg_menu(systempkgpath)
+			time.sleep(3)
 		else:
 			print "Invalid Entry, please try again."
+			time.sleep(1.0)
 	
 
 def eb_menu(ebpkg):
 
 	os.system("clear")
 
-	cmd = "find " + ebpkg + " -maxdepth 4 -mindepth 4 -type d"
-	ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-	(output,error) = ret.communicate()
+	testroot_set = set()
 
-	#dirs = [ d for d in os.listdir(ebpkg) if os.path.isdir(os.path.join(ebpkg,d)) ]
-	output = output.split("\n")
-        text =  """ 
-Available EB Package Tests: 
+	# walk through ebapp test directory and add all directories that contain no subdirectories
+	for dirpath, subdir, files in os.walk(ebpkg):
+		for file in files:
+			# only add directory if no subdirectories exists
+			if len(subdir) == 0:
+				testroot_set.add(dirpath)
 
-ID      Application           Toolchain
-========================================
-"""
-	print text
+	app_tc_set = set()
 
+	# translate directory path into app name/version and toolchain name/version
+	for item in testroot_set:
+		# directory format $BUILDTEST_TESTDIR/ebapps/software/version, ebapp only 2 directories up
+		if os.path.basename(os.path.dirname(os.path.dirname(item))) == "ebapp":
 
-	toolchain = []
-	# getting the toolchain name and version and adding to toolchain list
-	for f in output:
-		tcver = os.path.basename(f)
-		tcname = os.path.basename(os.path.dirname(f))
-		toolchain.append(os.path.join(tcname,tcver))
+			app = os.path.basename(os.path.dirname(item))
+			ver = os.path.basename(item)
 
+			app_ver = os.path.join(app,ver)
+			toolchain = "NONE"
+			app_tc_set.add(app_ver+","+toolchain)
 
-	app = []
-	# getting the app name and version and add to app list
-	for f in output:
-		appver = os.path.basename(os.path.dirname(os.path.dirname(f)))
-		appname = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(f))))
-		app.append(os.path.join(appname,appver))
+		# directory format $BUILDTEST_TESTDIR/ebapps/software/version/toolchainname/toolchainver, ebapp only 4 directories up
+		elif os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(item))))) == "ebapp":
 
-	# removing last element because its an empty token
-	app = app[:-1]
-	toolchain = toolchain[:-1]
-	for i in xrange(len(app)):
-		print i, "\t", app[i],"\t\t",toolchain[i]
-	
-	print 
-	while True:
+			app = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(item))))
+			ver = os.path.basename(os.path.dirname(os.path.dirname(item)))
+			tcname = os.path.basename(os.path.dirname(item))
+			tcver = os.path.basename(item)
+			
+			app_ver = os.path.join(app,ver)
+			tcname_tcver = os.path.join(tcname,tcver)
+			app_tc_set.add(app_ver+","+tcname_tcver)
+
 		
-                text = """
-Select Test # you want.
--3: Main Menu
--4: Exit Program
-User Input: """
-		userinput = input(text)
 
-		if userinput >= 0 and userinput < len(app):
+                # directory format $BUILDTEST_TESTDIR/ebapps/software/version/package, ebapp only 3 directories up
+                if os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(item)))) == "ebapp":
+
+                        app = os.path.basename(os.path.dirname(os.path.dirname(item)))
+                        ver = os.path.basename(os.path.dirname(item))
+			
+		        app_ver = os.path.join(app,ver)
+                        toolchain = "NONE"
+                        app_tc_set.add(app_ver+","+toolchain)
+
+		
+		# directory format $BUILDTEST_TESTDIR/ebapps/software/version/toolchainname/toolchainver/package, ebapp only 5 directories up
+		if os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(item)))))) == "ebapp":
+
+
+			app = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(item)))))
+			ver = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(item))))
+			tcname = os.path.basename(os.path.dirname(os.path.dirname(item)))
+			tcver = os.path.basename(os.path.dirname(item))
+
+		        app_ver = os.path.join(app,ver)
+                        tcname_tcver = os.path.join(tcname,tcver)
+                        app_tc_set.add(app_ver+","+tcname_tcver)
+
+
+	app_tc_set = list(app_tc_set)
+	app_tc_set.sort()
+
+	while True:
+		os.system("clear")
+
+		text =  """
+                ------------------------------------------------------------------
+                |  ID   |  Application               |  Toolchain                |
+                ------------------------------------------------------------------ """
+        	print text
+
+        	for i in xrange(len(app_tc_set)):
+                	app = app_tc_set[i].split(",")[0]
+	                toolchain = app_tc_set[i].split(",")[1]
+
+        	        print "\t|  ".expandtabs(16), (str(i)+"\t|  ").expandtabs(4), (app+"\t| ").expandtabs(25),(toolchain + "\t|").expandtabs(25)
+
+        	print """\
+                ------------------------------------------------------------------ """
+
+
+
+                text = """
+
+                Select Test # you want to run
+                 _____________________________
+                |  m  |  Main Menu            |
+                |_____|_______________________|
+                |  e  |   Exit Program        |
+                |_____|_______________________|
+
+                User Input: """
+
+		userinput = raw_input(text)
+
+                if userinput.lower() == "m":
+                        runtest_menu()
+                elif userinput.lower() == "e":
+                        sys.exit(0)
+
+		# check if user prompt is not integer, report error
+		if not userinput.isdigit():
+			print "Invalid format for user input, please type a number"
+			time.sleep(1)
+			continue
+
+		# force input to be int for checking with Test ID
+		userinput = int(userinput)
+
+		if userinput >= 0 and userinput < len(app_tc_set):
 			break;
-		elif userinput == -3:
-			runtest_menu()
-		elif userinput == -4:
-			sys.exit(0)
 		else:
 			print "Invalid entry, please try again"
+			time.sleep(1)
 
-	print "Selected  APP: ", app[userinput], " TOOLCHAIN: ",  toolchain[userinput]
+		
+	app_selected = app_tc_set[userinput].split(",")[0]
+	toolchain_selected = app_tc_set[userinput].split(",")[1]
+
+	print "Selected  APP: ", app_selected, " TOOLCHAIN: ",  toolchain_selected
 	
 	os.system("clear")
 
-	cmd = "find " + os.path.join(ebpkg,app[userinput],toolchain[userinput]) + """ -type f -name "*.sh" """
-	ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-	(outputmsg,errormsg) = ret.communicate()
-	output_list = outputmsg.split("\n")
-	# remove last element
-	output_list = output_list[:-1]
+	if toolchain_selected == "NONE":
+		testdir = os.path.join(ebpkg,app_selected)
+	else:
+		testdir = os.path.join(ebpkg,app_selected,toolchain_selected)
+
+
+	output_list = []
+	# adding all tests from a eb package in a list for printing
+        for dirpath, subdir, files in os.walk(testdir):
+        	for file in files:
+                	if file.endswith(".sh"):
+                        	output_list.append(os.path.join(dirpath,file))
+
+
 	while True:
-		print 
-		print "Tests for Application: ", app[userinput], " Toolchain: ", toolchain[userinput]
-		print 
-		print "------------------------------------------------------"
-		print " TEST ID                TEST NAME"
-		print "------------------------------------------------------"
-		for i in xrange(len(output_list)):
-			print str(i) + ". \t", output_list[i] 
+
+                print
+                print "Tests for Application: ", app_selected, " Toolchain: ", toolchain_selected
+                print """
+	---------------------------------------------------------------------------------------------------------------------------------------------------
+        |  ID    |  TEST NAME                                                                                                                             |
+	--------------------------------------------------------------------------------------------------------------------------------------------------- """
+
+		for x in xrange(len(output_list)):
+			print "\t|  ".expandtabs(8), (str(x) + "\t|").expandtabs(5), (output_list[x]+"\t|").expandtabs(45)
 	
+		
+		print """\
+	---------------------------------------------------------------------------------------------------------------------------------------------------- """
 		userinput = userprompt()
 	
-		if userinput >= 0 and userinput < len(output_list):
-			outputmsg = launch_test(output_list[userinput])[0]
-			print outputmsg
+		
+                if userinput.lower() == "b":
+                        eb_menu(ebpkg)
+                elif userinput.lower() == "m":
+                        runtest_menu()
+                elif userinput.lower() == "e":
+                        sys.exit(0)
 
-			time.sleep(0.5)
-
-		elif userinput == -1:
+		elif userinput.lower() == "a":
 			total_pass = 0
 			total_fail = 0
 			for i in xrange(len(output_list)):
-				(output,passtest,failtest) = launch_test(output_list[i])	
+				(output,passtest,failtest) = launch_test(os.path.dirname(output_list[i]),output_list[i])	
 				total_pass = total_pass + passtest 
 				total_fail = total_fail + failtest
 			
@@ -270,20 +372,28 @@ User Input: """
 			print "PASS RATE: ", passrate, "% with ", total_pass, "/", total_test
 			print "FAIL RATE: ", failrate, "% with ", total_fail, "/", total_test
 			
-			time.sleep(0.5)
+			time.sleep(3)
+			continue
+
+		if not userinput.isdigit():
+                        print "Invalid format for user input, please type a number"
+                        time.sleep(1)
+                        continue
+	
+		userinput = int(userinput)
+
+		if userinput >= 0 and userinput < len(output_list):
+			outputmsg = launch_test(os.path.dirname(output_list[userinput]),output_list[userinput])[0]
+			print outputmsg
+			time.sleep(3)
  
-		elif userinput == -2: 
-			eb_menu(ebpkg)
-		elif userinput == -3:
-			runtest_menu()
-		elif userinput == -4:
-			sys.exit(1)	
 		else:
 			print "Invalid entry, please try again"
 
 
-def launch_test(test):
-	 cmd = " cd " + os.path.dirname(test) + "; time sh " + test
+def launch_test(testdir,test):
+	 os.chdir(testdir)
+	 cmd = "time sh " + test
          ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
          (output,errormsg) = ret.communicate()
          ec = ret.returncode
@@ -299,14 +409,25 @@ def launch_test(test):
 
 
 def userprompt():
+
 	text = """
-Select Test # you want.
--1: run all test
--2: Go back
--3: Main Menu
--4: Exit Program
-User Input: """
-	userinput = input(text)
+
+                Select Test # you want to run
+                 
+		______________________________
+                |  a  |  Run All Tests        |
+                |_____|_______________________|
+                |  b  |  Go Back              |
+                |_____|_______________________|
+                |  m  |  Main Menu            |
+                |_____|_______________________|
+                |  e  |   Exit Program        |
+                |_____|_______________________|
+
+                User Input: """
+
+
+	userinput = raw_input(text)
 	return userinput
 
 def runtest_menu():
@@ -343,7 +464,7 @@ def runtest_menu():
 		|_____|_______________________|
 		|  2  |   EasyBuild Packages  |
 		|_____|_______________________|
-		|  3  |   Exit                |
+		|  e  |   Exit                |
 		|_____|_______________________|
 
 		
@@ -352,16 +473,26 @@ def runtest_menu():
 
 
 	while True:
-		userinput = input(text)
+		userinput = raw_input(text)
+
+		if userinput.lower() == "e":
+			sys.exit(0)
+
+
+		if not userinput.isdigit():
+			print "Invalid format for user input, please type a number"
+			time.sleep(1)
+			continue
+
+
+		# force userinput to be integer in case its float or something else
+		userinput = int(userinput)
 		if userinput == 1:
 			systempkg_menu(systempkg)
 		elif userinput == 2:
 			eb_menu(ebpkg)
-		elif userinput == 3:
-			sys.exit(1)
 		else:
 			print "Invalid Entry, please try again"
-			print
 	
 
 
