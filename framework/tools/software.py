@@ -23,6 +23,7 @@
 from framework.env import *
 from framework.parser.args import *
 
+	
 def get_appname():
 	args = buildtest_parsermenu()
 	args_dict = vars(args)
