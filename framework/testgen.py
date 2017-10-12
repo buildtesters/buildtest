@@ -218,6 +218,8 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 		# get the compiler tag and type based on application and toolchain
 	        compiler,compiler_type=get_compiler(configmap,appname,tcname)
  
+		print configmap, appname, tcname
+
 		logger.debug("buildtest will auto-generate buildcmd & runcmd")
 		logger.debug("Compiler: %s", compiler)
 		logger.debug("Compiler Type: %s", compiler_type)
@@ -226,7 +228,7 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 	        if compiler_type == "gnu" or compiler_type == "intel" or compiler_type == "cuda":
 
 	        	buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
-
+			print buildcmd
 	                # set runcmd for mpi tags using mpirun otherwise just run executable 
 	                if compiler in ["mpicc","mpic++","mpifort","mpiicc","mpiic++", "mpiifort"]:
 	
@@ -393,6 +395,10 @@ def get_compiler(configmap,appname,tcname):
 	# if application is intel then compiler_type will be intel
 	if appname in ["intel"]:
 		compiler_type="intel"
+
+	# if application is GCC then compiler type is gnu
+	if appname in ["GCC"]:
+		compiler_type = "gnu"
 
 	if appname in ["Java"]:
 		compiler = "javac"
