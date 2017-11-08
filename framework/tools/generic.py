@@ -23,8 +23,11 @@
 import subprocess
 import time
 import logging
-from framework.env import *
-from framework.tools.software import *
+import os
+from framework.env import BUILDTEST_ROOT, BUILDTEST_VERSION, BUILDTEST_EASYCONFIGDIR, BUILDTEST_MODULE_EBROOT, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR, BUILDTEST_MODULE_NAMING_SCHEME
+from framework.env import BUILDTEST_R_DIR, BUILDTEST_PYTHON_DIR, BUILDTEST_PERL_DIR, BUILDTEST_RUBY_DIR, BUILDTEST_TCL_DIR
+from framework.tools.software import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+
 def print_version():
 	print "buildtest version: " + BUILDTEST_VERSION
 
@@ -38,7 +41,7 @@ def check_buildtest_setup():
 	ec = 0
 
 	time.sleep(0.2)
-	if not os.path.exists(os.environ["BUILDTEST_ROOT"]):
+	if not os.path.exists(BUILDTEST_ROOT):
 		ec = 1
 		print "STATUS: BUILDTEST_ROOT is not set ... FAILED"
 	else:
@@ -46,7 +49,7 @@ def check_buildtest_setup():
 
 
 	time.sleep(0.2)
-	if not os.path.exists(os.environ["BUILDTEST_SOURCEDIR"]):
+	if not os.path.exists(BUILDTEST_SOURCEDIR):
 		ec = 1
 		print "STATUS: BUILDTEST_SOURCEDIR is not set ... FAILED"
 	else:
@@ -54,7 +57,7 @@ def check_buildtest_setup():
 
 	
 	time.sleep(0.2)
-	if not os.path.exists(os.environ["BUILDTEST_TESTDIR"]):
+	if not os.path.exists(BUILDTEST_TESTDIR):
 		ec = 1
 		print "STATUS: BUILDTEST_TESTDIR is not set ... FAILED"
 	else:
@@ -63,7 +66,7 @@ def check_buildtest_setup():
 
 
 	time.sleep(0.2)
-	if not os.path.exists(os.environ["BUILDTEST_MODULE_EBROOT"]):
+	if not os.path.exists(BUILDTEST_MODULE_EBROOT):
 		ec = 1
 		print "STATUS: BUILDTEST_MODULE_EBROOT is not set"
 	else:
@@ -71,7 +74,7 @@ def check_buildtest_setup():
 	
 
 	time.sleep(0.2)
-	if not os.path.exists(os.environ["BUILDTEST_EASYCONFIGDIR"]):
+	if not os.path.exists(BUILDTEST_EASYCONFIGDIR):
 		ec = 1
 		print "STATUS: BUILDTEST_EASYCONFIGDIR is not set ... FAILED"
 	else:
@@ -79,9 +82,9 @@ def check_buildtest_setup():
 	
 
 	time.sleep(0.2)
-	if os.environ["BUILDTEST_MODULE_NAMING_SCHEME"] == "FNS" or  os.environ["BUILDTEST_MODULE_NAMING_SCHEME"] == "HMNS":
+	if BUILDTEST_MODULE_NAMING_SCHEME == "FNS" or  BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
 		print "STATUS: BUILDTEST_MODULE_NAMING_SCHEME ... PASSED"
-		print "BUILDTEST_MODULE_NAMING_SCHEME is set to: ", os.environ["BUILDTEST_MODULE_NAMING_SCHEME"]
+		print "BUILDTEST_MODULE_NAMING_SCHEME is set to: ", BUILDTEST_MODULE_NAMING_SCHEME
 	else:
 		ec = 1
 		print "STATUS: BUILDTEST_MODULE_NAMING_SCHEME is set to: " + BUILDTEST_MODULE_NAMING_SCHEME
@@ -89,7 +92,7 @@ def check_buildtest_setup():
 
 
 	time.sleep(0.2)
-	if not os.path.exists(os.environ["BUILDTEST_R_DIR"]):
+	if not os.path.exists(BUILDTEST_R_DIR):
 		ec = 1
 		print "STATUS: BUILDTEST_R_DIR is not set"
 	else:
@@ -97,7 +100,7 @@ def check_buildtest_setup():
 
 
 	time.sleep(0.2)
-	if not os.path.exists(os.environ["BUILDTEST_PERL_DIR"]):
+	if not os.path.exists(BUILDTEST_PERL_DIR):
 		ec = 1
 		print "STATUS: BUILDTEST_PERL_DIR is not set ... FAILED"
 	else:
@@ -105,11 +108,26 @@ def check_buildtest_setup():
 	
 
 	time.sleep(0.2)
-	if not os.path.exists(os.environ["BUILDTEST_PYTHON_DIR"]):
+	if not os.path.exists(BUILDTEST_PYTHON_DIR):
 		ec = 1
 		print "STATUS: BUILDTEST_PYTHON_DIR is not set ... FAILED"
 	else:
 		print "STATUS: BUILDTEST_PYTHON_DIR ... PASSED"
+
+        time.sleep(0.2)
+        if not os.path.exists(BUILDTEST_RUBY_DIR):
+                ec = 1
+                print "STATUS: BUILDTEST_RUBY_DIR is not set ... FAILED"
+        else:
+                print "STATUS: BUILDTEST_RUBY_DIR ... PASSED"
+
+
+        time.sleep(0.2)
+        if not os.path.exists(BUILDTEST_TCL_DIR):
+                ec = 1
+                print "STATUS: BUILDTEST_TCL_DIR is not set ... FAILED"
+        else:
+                print "STATUS: BUILDTEST_TCL_DIR ... PASSED"
 
 	if ec == 0:
 		print "buildtest environment variable PASSED!"
