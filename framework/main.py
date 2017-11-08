@@ -31,24 +31,27 @@ import sys
 import os
 sys.path.insert(0,os.path.abspath('.'))
 
-from framework.runtest import *
-from framework.env import *
-from framework.modules import *
-from framework.testgen import *
-from framework.master import *
-from framework.tools.generic import *
-from framework.tools.file import *
-from framework.tools.scan import *
-from framework.tools.software import *
-from framework.parser.functions import *
-from framework.parser.args import *
-from framework.parser.parser import *
-from framework.testmodules.testsets import *
+from framework.runtest import runtest_menu
+from framework.env import BUILDTEST_ROOT, BUILDTEST_LOGDIR, BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR, BUILDTEST_MODULE_EBROOT, BUILDTEST_EASYCONFIGDIR, logID
+from framework.modules import get_unique_software, module_version_relation, list_toolchain, software_exists, toolchain_exists, check_software_version_in_easyconfig
+from framework.testgen import generate_binary_test
+from framework.master import recursive_gen_test
+from framework.tools.generic import check_buildtest_setup, print_set
+#from framework.tools.file import *
+from framework.tools.scan import scantest
+from framework.tools.software import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+#from framework.parser.functions import *
+from framework.parser.args import buildtest_parsermenu
+from framework.parser.args import get_arg_version, get_arg_check_setup, get_arg_findconfig, get_arg_findtest, get_arg_software, get_arg_toolchain, get_arg_list_toolchain
+from framework.parser.args import get_arg_list_unique_software, get_arg_software_version_relation, get_arg_scantest, get_arg_module_naming_scheme, get_arg_system
+from framework.parser.args import get_arg_testset, get_arg_verbose, get_arg_runtest
+#from framework.parser.parser import *
+from framework.testmodules.testsets import run_testset
 
 import subprocess
 import argparse
 import logging
-
+from datetime import datetime
 import fnmatch
 import glob
 

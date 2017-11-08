@@ -20,8 +20,8 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-from framework.env import *
-from framework.parser.args import *
+from framework.env import BUILDTEST_MODULE_NAMING_SCHEME
+from framework.parser.args import buildtest_parsermenu, get_arg_software, get_arg_toolchain
 
 	
 def get_appname():

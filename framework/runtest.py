@@ -31,7 +31,7 @@ import subprocess
 import time
 import glob
 
-from framework.env import *
+from framework.env import BUILDTEST_ROOT
 
 def systempkg_menu(systempkg):
 
@@ -434,7 +434,7 @@ def runtest_menu():
 
 	os.system("clear")
 
-	cwd = os.environ["BUILDTEST_ROOT"]
+	cwd = BUILDTEST_ROOT
 	testing = os.path.join(cwd,"testing")
 	systempkg = os.path.join(testing,"system")
 	ebpkg = os.path.join(testing,"ebapp")

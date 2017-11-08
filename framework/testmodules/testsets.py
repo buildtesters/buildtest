@@ -19,13 +19,15 @@
 #    You should have received a copy of the GNU General Public License 
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
-from framework.parser import *
-from framework.tools.generic import *
-from framework.tools.cmake import *
-from framework.master import *
-from framework.tools.software import *
-
+#from framework.parser import *
+from framework.tools.generic import load_modules
+from framework.tools.cmake import add_test_to_CMakeLists, setup_software_cmake
+from framework.master import recursive_gen_test
+from framework.tools.software import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+from framework.env import BUILDTEST_SOURCEDIR, BUILDTEST_PYTHON_DIR, BUILDTEST_R_DIR, BUILDTEST_PYTHON_DIR, BUILDTEST_RUBY_DIR, BUILDTEST_TCL_DIR,BUILDTEST_TESTDIR
+from framework.env import PYTHON_APPS, MPI_APPS, logID
 import os
+import logging
 
 """
 This python module is used with the flag --testset to create test scripts that 
@@ -46,28 +48,28 @@ def run_testset(arg_dict,testset,verbose):
 	runtest = False
 
 	if appname in PYTHON_APPS and testset == "Python":
-	        source_app_dir=os.path.join(os.environ['BUILDTEST_PYTHON_DIR'],"python")
+	        source_app_dir=os.path.join(BUILDTEST_PYTHON_DIR,"python")
                 runtest=True
     
         if appname in ["Perl"] and testset == "Perl":
-        	source_app_dir=os.path.join(os.environ['BUILDTEST_PERL_DIR'],"perl")
+        	source_app_dir=os.path.join(BUILDTEST_PERL_DIR,"perl")
                 runtest=True
 
         # condition to run R testset
         if appname in ["R"] and testset == "R":
-        	source_app_dir=os.path.join(os.environ['BUILDTEST_R_DIR'],"R")
+        	source_app_dir=os.path.join(BUILDTEST_R_DIR,"R")
                 runtest=True
 
 
         # condition to run R testset
         if appname in ["Ruby"] and testset == "Ruby":
-                source_app_dir=os.path.join(os.environ['BUILDTEST_RUBY_DIR'],"ruby")
+                source_app_dir=os.path.join(BUILDTEST_RUBY_DIR,"ruby")
                 runtest=True
 
 
         # condition to run R testset
         if appname in ["Tcl"] and testset == "Tcl":
-                source_app_dir=os.path.join(os.environ['BUILDTEST_TCL_DIR'],"Tcl")
+                source_app_dir=os.path.join(BUILDTEST_TCL_DIR,"Tcl")
                 runtest=True
 
 	# for MPI we run recursive_gen_test since it processes YAML files
@@ -83,6 +85,7 @@ def run_testset(arg_dict,testset,verbose):
 
 def testset_generator(arg_dict, codedir,verbose):
 
+	logger = logging.getLogger(logID)
 	wrapper=""
         appname=get_appname()
         appver=get_appversion()
@@ -144,7 +147,7 @@ def testset_generator(arg_dict, codedir,verbose):
 				cmakelist = os.path.join(subdirpath,"CMakeLists.txt")
 				add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 				msg = "Creating Test: " + testpath  
-				BUILDTEST_LOGCONTENT.append(msg + "\n")
+				logger.info(msg)
 				count = count + 1
 
 			print "Generating ", count, "tests for ", os.path.basename(root)

@@ -23,9 +23,10 @@
 """
 :author: Shahzeb Siddiqui (Pfizer)
 """
-from framework.parser.parser import *
-from framework.testgen import *
-from framework.tools.generic import *
+from framework.parser.parser import parse_config
+from framework.testgen import generate_source_test
+from framework.env import logID
+import os
 import logging
 
 def recursive_gen_test(configdir,codedir,verbose ):

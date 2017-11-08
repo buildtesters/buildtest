@@ -30,7 +30,7 @@ if a string is found in file
 import os
 import logging
 from datetime import datetime
-from framework.env import *
+from framework.env import logID
 
 def stripHiddenFile(file): 
 	"""  removes the leading "." character from file """

@@ -32,10 +32,10 @@ This python module does the following
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
-from framework.env import *
-from framework.tools.file import *
-from framework.tools.software import *
-from framework.tools.generic import *
+from framework.env import BUILDTEST_MODULE_EBROOT, BUILDTEST_MODULE_NAMING_SCHEME, logID
+from framework.tools.file import stripHiddenFile, isHiddenFile
+from framework.tools.software import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+from framework.tools.generic import sset
 import logging
 import os
 import sys
@@ -442,7 +442,6 @@ def check_software_version_in_easyconfig(easyconfig_repo, verbose):
 	logger.debug("VERSION String Comparision - STR1: %s \t STR2: %s", version_versionsuffix, appversion)
 	logger.debug("TOOLCHAIN NAME String Comparision - STR1: %s \t STR2: %s", toolchain_name, tcname)
 	logger.debug("TOOLCHAIN VERSION String Comparision - STR1: %s \t STR2: %s", toolchain_version, tcversion)
-
 	if name == appname and version_versionsuffix == appversion and toolchain_name == tcname and toolchain_version == tcversion:
 		logger.debug("All Checks have PASSED!") 
 

@@ -21,7 +21,13 @@
 ############################################################################# 
 
 
-from framework.env import *
+"""
+Function that process the YAML config and verify key/value.
+Also declares the valid YAML keys that can be used when writing YAML configs
+
+
+:author: Shahzeb Siddiqui (Pfizer)
+"""
 import os,sys
 import yaml
 
