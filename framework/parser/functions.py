@@ -24,7 +24,7 @@
 This python module gets the parameters from YAML file and returns them to be 
 used as python variables
 
-:author: Shahzeb Siddiqui
+:author: Shahzeb Siddiqui (Pfizer)
 """
 def get_name(config):
 	return config["name"]

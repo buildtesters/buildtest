@@ -28,14 +28,13 @@ source test has 1 YAML file and generates only 1 test
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
-from framework.env import *
-from framework.tools.generic import *
-from framework.tools.cmake import *
-from framework.tools.file import *
-from framework.tools.software import *
-from framework.parser.args import *
+from framework.env import BUILDTEST_ROOT, BUILDTEST_TESTDIR, BUILDTEST_SOURCEDIR, logID
+from framework.tools.generic import add_arg_to_runcmd, load_modules
+from framework.tools.cmake import init_CMakeList, add_test_to_CMakeLists, setup_software_cmake, setup_system_cmake
+from framework.tools.file import create_dir
+from framework.tools.software import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+from framework.parser.args import get_arg_software, get_arg_system
 
-import os.path 
 import os, sys
 import shutil
 import yaml
@@ -218,7 +217,6 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 		# get the compiler tag and type based on application and toolchain
 	        compiler,compiler_type=get_compiler(configmap,appname,tcname)
  
-		print configmap, appname, tcname
 
 		logger.debug("buildtest will auto-generate buildcmd & runcmd")
 		logger.debug("Compiler: %s", compiler)
@@ -228,7 +226,7 @@ def generate_source_test(configmap,codedir,verbose,subdir):
 	        if compiler_type == "gnu" or compiler_type == "intel" or compiler_type == "cuda":
 
 	        	buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
-			print buildcmd
+			#print buildcmd
 	                # set runcmd for mpi tags using mpirun otherwise just run executable 
 	                if compiler in ["mpicc","mpic++","mpifort","mpiicc","mpiic++", "mpiifort"]:
 	
