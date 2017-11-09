@@ -1,35 +1,34 @@
-############################################################################ 
-# 
-#  Copyright 2017 
-# 
+############################################################################
+#
+#  Copyright 2017
+#
 #   https://github.com/HPC-buildtest/buildtest-framework
-# 
-#  This file is part of buildtest. 
-# 
-#    buildtest is free software: you can redistribute it and/or modify 
-#    it under the terms of the GNU General Public License as published by 
-#    the Free Software Foundation, either version 3 of the License, or 
-#    (at your option) any later version. 
-# 
-#    buildtest is distributed in the hope that it will be useful, 
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of 
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-#    GNU General Public License for more details. 
-# 
-#    You should have received a copy of the GNU General Public License 
-#    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
-############################################################################# 
+#
+#  This file is part of buildtest.
+#
+#    buildtest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    buildtest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
 
 """
-This function returns argument passed to buildtest from a dictionary to a 
-variable
-
 :author: Shahzeb Siddqiui
 """
+
 import argparse
 
-def buildtest_parsermenu():
-	
+def buildtest_menu():
+	""" buildtest option menu """
+
         parser = argparse.ArgumentParser()
         parser.add_argument("--check-setup", help="Check buildtest configuration and determine if you have it setup properly for testing",action="store_true")
         parser.add_argument("-fc","--findconfig", help= """ Find buildtest YAML config files found in BUILDTEST_SOURCEDIR.
@@ -41,7 +40,7 @@ def buildtest_parsermenu():
         parser.add_argument("-lt", "--list-toolchain",help="retrieve toolchain used based on the easyconfig files provided by BUILDTEST_EASYCONFIGDIR", action="store_true")
         parser.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_MODULETREE", action="store_true")
         parser.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
-	parser.add_argument("--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
+        parser.add_argument("--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
         parser.add_argument("--scantest", help=""" Report all tests that can be built with buildtest by checking all available apps found
 in eb stack and system packages""", action="store_true")
         parser.add_argument("--system", help=""" Build test for system packages
@@ -53,52 +52,6 @@ in eb stack and system packages""", action="store_true")
 
         args = parser.parse_args()
 
-	return args
-
-def get_arg_version(config):
-	return config["version"]
-
-
-def get_arg_check_setup(config):
-	return config["check_setup"]
-
-def get_arg_findconfig(config):
-        return config["findconfig"]
-
-def get_arg_findtest(config):
-        return config["findtest"]
-
-def get_arg_software(config):
-        return config["software"]
-
-def get_arg_toolchain(config):
-	return config["toolchain"]
-
-def get_arg_list_toolchain(config):
-        return config["list_toolchain"]
-
-def get_arg_list_unique_software(config):
-	return config["list_unique_software"]
-
-def get_arg_software_version_relation(config):
-	return config["software_version_relation"]
-
-def get_arg_module_naming_scheme(config):
-	return config["module_naming_scheme"]
-
-def get_arg_scantest(config):
-	return config["scantest"]
-
-def get_arg_system(config):
-	return config["system"]
-
-def get_arg_testset(config):
-	return config["testset"]
-
-def get_arg_verbose(config):
-        return config["verbose"]
-
-def get_arg_runtest(config):
-        return config["runtest"]
+        return args
 
 

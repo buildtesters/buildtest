@@ -26,11 +26,11 @@ This python module will implement the --scantest feature of buildtest
 :author: Shahzeb Siddiqui (Pfizer)
 """
 
-from framework.modules import get_unique_software
-from framework.env import BUILDTEST_MODULE_EBROOT, BUILDTEST_SOURCEDIR
 import os
 import subprocess
 import sys
+from framework.env import BUILDTEST_MODULE_EBROOT, BUILDTEST_SOURCEDIR
+from framework.tools.software import get_unique_software
 
 def scantest():
 
