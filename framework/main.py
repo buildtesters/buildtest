@@ -34,9 +34,6 @@ sys.path.insert(0,os.path.abspath('.'))
 
 from framework.env import BUILDTEST_ROOT, BUILDTEST_LOGDIR, BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR, BUILDTEST_MODULE_EBROOT, BUILDTEST_EASYCONFIGDIR, logID
 from framework.runtest import runtest_menu
-from framework.tools.parser.args import get_arg_version, get_arg_check_setup, get_arg_findconfig, get_arg_findtest, get_arg_software, get_arg_toolchain, get_arg_list_toolchain
-from framework.tools.parser.args import get_arg_list_unique_software, get_arg_software_version_relation, get_arg_scantest, get_arg_module_naming_scheme, get_arg_system
-from framework.tools.parser.args import get_arg_testset, get_arg_verbose, get_arg_runtest
 from framework.test.binarytest import generate_binary_test
 from framework.test.sourcetest import recursive_gen_test
 from framework.test.testsets import run_testset
@@ -66,22 +63,21 @@ def main():
 
 	# convert args into a dictionary
 	args_dict = vars(args)
-
-	version = get_arg_version(args_dict)
-	check_setup = get_arg_check_setup(args_dict)
-	findconfig = get_arg_findconfig(args_dict)
-	findtest = get_arg_findtest(args_dict)
-	software = get_arg_software(args_dict)
-	toolchain = get_arg_toolchain(args_dict)
-	list_toolchain_flag = get_arg_list_toolchain(args_dict)
-	list_unique_software = get_arg_list_unique_software(args_dict)
-	sw_ver_relation = get_arg_software_version_relation(args_dict)
-	scan = get_arg_scantest(args_dict)
-	BUILDTEST_MODULE_NAMING_SCHEME=get_arg_module_naming_scheme(args_dict)
-	system = get_arg_system(args_dict)
-	testset = get_arg_testset(args_dict)
-	verbose = get_arg_verbose(args_dict)
-	runtest = get_arg_runtest(args_dict)
+	
+	version = args_dict["version"]
+	check_setup = args_dict["check_setup"]
+	findconfig = args_dict["findconfig"]
+	findtest = args_dict["findtest"]
+	software = args_dict["software"]
+	toolchain = args_dict["toolchain"]
+	list_toolchain_flag = args_dict["list_toolchain"]
+	list_unique_software = args_dict["list_unique_software"]
+	sw_ver_relation = args_dict["software_version_relation"]
+	scan = args_dict["scantest"]
+	BUILDTEST_MODULE_NAMING_SCHEME= args_dict["module_naming_scheme"]
+	system = args_dict["system"]
+	testset = args_dict["testset"]
+	runtest = args_dict["runtest"]
 
 
 	if version == True:
@@ -244,11 +240,11 @@ def main():
 			logger.info("List of system packages to test: %s ", systempkg_list)
 
 			for pkg in systempkg_list:
-				generate_binary_test(args_dict,verbose,pkg)
+				generate_binary_test(args_dict,pkg)
 		else:
 			os.environ["BUILDTEST_LOGDIR"] = os.path.join(logdir,"system",systempkg)
 			#logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
-			generate_binary_test(args_dict,verbose,systempkg)
+			generate_binary_test(args_dict,systempkg)
 
 
 		# if log directory is not created then create directory recursively
@@ -288,20 +284,20 @@ def main():
 		logger.debug("Checking if software: %s/%s exists",appname,appversion)
 
 		# checking if software exists
-		software_exists(software,verbose)
+		software_exists(software)
 	
 
 		# only check toolchain argument with module tree if its not dummy toolchain
 		if ["dummy","dummy"] != toolchain:
 			# checking if toolchain argument has a valid module file
-			software_exists(toolchain,verbose)
+			software_exists(toolchain)
 
 		# checking if its a valid toolchain 
-		toolchain_exists(toolchain,verbose)
+		toolchain_exists(toolchain)
 	
 
 		# check that the software,toolchain match the easyconfig.
-		ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR,verbose)
+		ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR)
 		# generate_binary_test(software,toolchain,verbose)
 	
 		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)
@@ -316,13 +312,13 @@ def main():
 		logger.debug("Config Directory: %s ", configdir)
 		logger.debug("Code Directory: %s", codedir)
 
-		generate_binary_test(args_dict,verbose,None)
+		generate_binary_test(args_dict,None)
 		# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
-		recursive_gen_test(configdir,codedir,verbose)
+		recursive_gen_test(configdir,codedir)
 	
 		# if flag --testset is set, then 
 		if testset !=  None:
-			run_testset(args_dict, testset,verbose)
+			run_testset(args_dict, testset)
 	
 		if not os.path.isdir(logdir):
 			cmd = "mkdir -p " + logdir

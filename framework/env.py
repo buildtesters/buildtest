@@ -50,6 +50,7 @@ MPI_APPS = ["OpenMPI", "MPICH","MVAPICH2", "intel", "impi"]
 global logID
 logID = "buildtest"
 
+
 global BUILDTEST_LOGCONTENT
 BUILDTEST_LOGDIR = os.path.join(BUILDTEST_ROOT,"log")
 BUILDTEST_LOGCONTENT = []
