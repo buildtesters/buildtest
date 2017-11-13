@@ -37,24 +37,20 @@ def stripHiddenFile(file):
         file=file[1:]
         return file  
 
-def create_file(filename,verbose):
+def create_file(filename):
         """ Create an empty file if it doesn't exist   """
         if not os.path.isfile(filename):
                 fd=open(filename,'w')
                 fd.close()
-                if verbose >= 1:
-                        print "Creating Empty File:", filename
 
 		logger = logging.getLogger(logID)
 		logger.debug("Creating File: %s", filename)
 
 
-def create_dir(dirname,verbose):
+def create_dir(dirname):
         """Create directory if it doesn't exist"""
         if not os.path.isdir(dirname):
                 os.makedirs(dirname)
-                if verbose >= 1:
-                        print "Creating Directory: ",dirname
 
 		logger = logging.getLogger(logID)
 		logger.debug("Creating Directory: %s", dirname)

@@ -23,12 +23,15 @@
 from framework.env import BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_MODULE_EBROOT, logID
 from framework.tools.menu import buildtest_menu
 from framework.tools.modules import get_module_list
-from framework.tools.parser.args import get_arg_software, get_arg_toolchain
 from framework.tools.utility import sset
 import os
 import sys
 import logging
 	
+"""
+Application & Toolchain name & version query functions
+
+:author: Shahzeb Siddiqui (Pfizer)
 """
 def get_appname():
 	args = buildtest_menu()
@@ -81,7 +84,6 @@ def get_toolchain_version():
 		toolchain = toolchain.split("/")
 		return toolchain[1]
 
-"""
 
 def get_unique_software(moduletrees):
         """
@@ -198,7 +200,7 @@ def software_version_relation(moduletree):
 
         return module_dict
 
-def software_exists(software,verbose):
+def software_exists(software):
         """
         checks whether software exist, there must be a module file present with the
         same name specified as the argument.

@@ -103,7 +103,7 @@ def list_toolchain():
         logger.info("EB Toolchains = %s", toolchain)
 
         return toolchain
-def check_software_version_in_easyconfig(easyconfig_repo, verbose):
+def check_software_version_in_easyconfig(easyconfig_repo):
         """
         return True if name,version+versionsuffix,toolchain from command line is found
         from easyconfig, False otherwise
@@ -248,7 +248,7 @@ def check_software_version_in_easyconfig(easyconfig_repo, verbose):
                 logger.debug("ERROR: FAILED to pass all checks!")
                 sys.exit(1)
 
-def toolchain_exists(toolchain,verbose):
+def toolchain_exists(toolchain):
         """
         checks to see if toolchain passed on command line exist in toolchain list
         """

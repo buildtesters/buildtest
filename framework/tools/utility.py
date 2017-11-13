@@ -23,7 +23,6 @@
 
 from framework.env import BUILDTEST_MODULE_NAMING_SCHEME, logID
 from framework.tools.menu import buildtest_menu
-from framework.tools.parser.args import get_arg_software, get_arg_toolchain
 """
 :author: Shahzeb Siddiqui (Pfizer) 
 """
@@ -40,14 +39,14 @@ class sset(set):
 def get_appname():
         args = buildtest_menu()
         args_dict = vars(args)
-        software = get_arg_software(args_dict)
+        software = args_dict["software"]
         software = software.split('/')
         return software[0]
 
 def get_appversion():
         args = buildtest_menu()
         args_dict = vars(args)
-        software = get_arg_software(args_dict)
+        software = args_dict["software"]
         software = software.split('/')
         if BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
                 tc = get_toolchain()
@@ -67,7 +66,7 @@ def get_toolchain():
 def get_toolchain_name():
         args = buildtest_menu()
         args_dict = vars(args)
-        toolchain = get_arg_toolchain(args_dict)
+        toolchain = args_dict["toolchain"]
 
         # checking if toolchain is defined in argument
         if toolchain is  None:
@@ -79,7 +78,7 @@ def get_toolchain_name():
 def get_toolchain_version():
         args = buildtest_menu()
         args_dict = vars(args)
-        toolchain = get_arg_toolchain(args_dict)
+        toolchain = args_dict["toolchain"]
 
         # checking if toolchain is defined in argument
         if toolchain is None:
