@@ -43,12 +43,11 @@ def buildtest_menu():
         parser.add_argument("--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
         parser.add_argument("--scantest", help=""" Report all tests that can be built with buildtest by checking all available apps found
 in eb stack and system packages""", action="store_true")
-	parser.add_argument("--shell", help=""" Select the type of shell when running test""", choices=["sh","csh"])
+	parser.add_argument("--shell", help=""" Select the type of shell when running test""", choices=["sh","csh"], default="sh")
         parser.add_argument("--system", help=""" Build test for system packages
                                          To build all system package test use --system all """)
         parser.add_argument("--testset", help="Select the type of test set to run (Python, R, Ruby, Perl, Tcl, MPI)", choices=["Python","R","Ruby","Perl","Tcl","MPI"])
         parser.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
-        parser.add_argument("-v", "--verbose", help="increase verbosity level", type=int, choices=[1,2])
         parser.add_argument("-V", "--version", help="show program version number and exit",action="store_true")
 
         args = parser.parse_args()

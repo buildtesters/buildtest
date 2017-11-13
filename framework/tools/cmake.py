@@ -28,6 +28,7 @@ the tests.
 from framework.env import BUILDTEST_TESTDIR, logID
 from framework.tools.file import create_dir, create_file,string_in_file
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+from framework.tools.menu import buildtest_menu
 import shutil 
 import logging
 import os
@@ -68,6 +69,10 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
 	add_test_str=""
 
 	logger = logging.getLogger(logID)
+	
+	args = buildtest_menu()
+	args_dict = vars(args)
+	shell_type = args_dict["shell"]
 
 	appname = get_appname()
 	appversion = get_appversion()
@@ -96,14 +101,14 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
 
 		# condition to check of toolchain exists, if so then add it to add_test() 
       		if tcname == "":
-			add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + subdir + "-" + testname + "\t COMMAND sh " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+			add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + subdir + "-" + testname + "\t COMMAND "+ shell_type + " " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 		else:	
-			add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"      + subdir + "-" + testname + "\t COMMAND sh " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+			add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"      + subdir + "-" + testname + "\t COMMAND " + shell_type + " "  +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 	else:
 		if tcname == "":
-	         	add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+	         	add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + testname + "\t COMMAND  " + shell_type + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 		else:
-	         	add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"  + testname + "\t COMMAND sh " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+	         	add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"  + testname + "\t COMMAND " + shell_type + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 	fd.write(add_test_str)
         fd.close()
 	logger.debug("Updating File " + cmakelist + " with: " + add_test_str + "\n")
