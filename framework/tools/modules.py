@@ -34,6 +34,7 @@ This python module does the following
 """
 
 from framework.env import BUILDTEST_MODULE_NAMING_SCHEME
+from framework.tools.menu import buildtest_menu
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 import os
 
@@ -52,14 +53,19 @@ def load_modules():
         """
         return a string that loads the software and toolchain module.
         """
+	args = 	buildtest_menu()
+	args_dict = vars(args)
+	shell_type = args_dict["shell"]
+	
+	shell_magic = "#!/" + os.path.join("bin",shell_type)
 
         appname = get_appname()
         appversion = get_appversion()
         tcname = get_toolchain_name()
         tcversion = get_toolchain_version()
 
-        header="""
-#!/bin/sh
+	header = shell_magic
+        header+= """
 module purge
 """
         # for dummy toolchain you can load software directly. Ensure a clean environment by running module purge

@@ -299,7 +299,7 @@ def generate_source_test(configmap,codedir,subdir):
 	# hello.sh to hello_1.sh and create N-1 copies with file names hello_2.sh, hello_3.sh, ...
 	if  "iter" in configmap:
 		filename=os.path.basename(os.path.splitext(sourcefilepath)[0])
-		testname = filename + "_1.sh"  
+		testname = filename + "_1." + shell_type
 		testpath_testname = os.path.join(destdir,testname).replace("\n",'')
 		os.rename(testpath,testpath_testname)
 		out = "Rename Iteration Test: " +  testpath +  " -> " +  testpath_testname
@@ -320,7 +320,7 @@ def generate_source_test(configmap,codedir,subdir):
 		logger.debug("Making %s copy of test: %s", numiter, testpath_testname)
 		# creating N-1 copies of tests
 		for index in range(1,numiter):
-			testname=filename+"_"+str(index+1)+".sh"
+			testname=filename+"_"+str(index+1)+"." + shell_type
 			src_testpath=testpath_testname
 			dest_testpathname=os.path.join(destdir,testname).replace('\n','')
 			copyfile(src_testpath,dest_testpathname)

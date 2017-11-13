@@ -26,6 +26,7 @@ from framework.test.sourcetest import recursive_gen_test
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.env import BUILDTEST_SOURCEDIR, BUILDTEST_PYTHON_DIR, BUILDTEST_R_DIR, BUILDTEST_PYTHON_DIR, BUILDTEST_RUBY_DIR, BUILDTEST_TCL_DIR,BUILDTEST_TESTDIR
 from framework.env import PYTHON_APPS, MPI_APPS, logID
+from framework.tools.menu import buildtest_menu
 import os
 import logging
 
@@ -92,6 +93,10 @@ def testset_generator(arg_dict, codedir):
         tcname=get_toolchain_name()
 	tcver=get_toolchain_version()
 
+	args = 	buildtest_menu()
+	args_dict = vars(args)
+	shell_type = args_dict["shell"]
+
 	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
 	cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
 	
@@ -136,7 +141,7 @@ def testset_generator(arg_dict, codedir):
 				if not os.path.exists(subdirpath):
 					os.makedirs(subdirpath)
 
-				testname = fname + ".sh"
+				testname = fname + "." + shell_type
 				testpath = os.path.join(subdirpath,testname)
 				fd = open(testpath,'w')
 				header=load_modules()
