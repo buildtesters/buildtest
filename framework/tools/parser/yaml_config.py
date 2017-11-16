@@ -37,6 +37,7 @@ import yaml
 field={
 	'name':'',
 	'source':'',
+	'envvars':'',
 	'args':'',
 	'scheduler':['slurm','lsf','pbs'],
 	'buildopts':'',

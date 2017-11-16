@@ -94,6 +94,14 @@ def generate_source_test(configmap,codedir,subdir):
 	tcver=get_toolchain_version()
 	
 	logger = logging.getLogger(logID)
+
+	testname = ""
+	testpath = ""
+	sourcefilepath = ""
+	executable = ""
+	buildopts = ""
+	envvars = ""
+	env_msg = []
 	# app_destdir is root of test directory
 	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
 
@@ -122,6 +130,15 @@ def generate_source_test(configmap,codedir,subdir):
 	# if buildopts key exists in dictionary, then add flags to compilation step (buildcmd)
 	if "buildopts" in configmap:
 		flags=configmap["buildopts"]
+
+	if "envvars" in configmap:
+		envvars = configmap["envvars"]
+		for key in envvars.keys():
+			if shell_type == "sh" or shell_type == "bash":
+				env_msg.append("export " + key + "=" +  str(envvars[key]) + "\n")
+			elif shell_type == "csh":
+				env_msg.append("setenv " + key + " " +  str(envvars[key]) + "\n")
+			
 
         logger.debug("Test Name: %s", testname)
 	logger.debug("Test Path: %s", testpath)
@@ -263,6 +280,10 @@ def generate_source_test(configmap,codedir,subdir):
 		# if output of program needs to be written to file instead of STDOUT	
  	        if "outputfile" in configmap:
           		runcmd +=  " > " + configmap["outputfile"]
+	
+		if "envvars" in configmap:
+			for key in env_msg:
+				fd.write(key)
 
 		fd.write(buildcmd)
 		fd.write(runcmd)
