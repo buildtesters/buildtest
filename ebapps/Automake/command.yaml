@@ -1,0 +1,3 @@
+binaries:
+        - aclocal --version
+        - automake --version

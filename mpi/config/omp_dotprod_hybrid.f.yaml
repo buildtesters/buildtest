@@ -1,0 +1,6 @@
+name: omp_dotprod_hybrid.f
+source:  omp_dotprod_hybrid.f
+buildopts: -O2 -fopenmp
+mpi: enabled
+envvars:
+        OMP_NUM_THREADS : 2

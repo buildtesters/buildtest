@@ -1,0 +1,3 @@
+name: omp_dotprod_serial.c
+source:  omp_dotprod_serial.c
+buildopts: -O2 

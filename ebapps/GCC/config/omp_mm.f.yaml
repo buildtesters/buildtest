@@ -1,0 +1,5 @@
+name: omp_mm.f
+source:  omp_mm.f
+buildopts: -O2 -fopenmp
+envvars:
+        OMP_NUM_THREADS : 2

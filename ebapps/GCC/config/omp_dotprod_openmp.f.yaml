@@ -1,0 +1,5 @@
+name: omp_dotprod_openmp.f
+source:  omp_dotprod_openmp.f
+buildopts: -O2 -fopenmp
+envvars:
+        OMP_NUM_THREADS : 2

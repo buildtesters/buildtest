@@ -1,0 +1,5 @@
+name: omp_orphan.f
+source:  omp_orphan.f
+buildopts: -O2 -fopenmp
+envvars:
+        OMP_NUM_THREADS : 2
