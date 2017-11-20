@@ -138,7 +138,16 @@ def generate_source_test(configmap,codedir,subdir):
 				env_msg.append("export " + key + "=" +  str(envvars[key]) + "\n")
 			elif shell_type == "csh":
 				env_msg.append("setenv " + key + " " +  str(envvars[key]) + "\n")
-			
+
+	if "procrange" in configmap:		
+		procrange = configmap["procrange"]
+		startproc =  int(procrange.split(",")[0])
+		endproc = int(procrange.split(",")[1])
+		procinterval = int(procrange.split(",")[2])
+		testname=configmap["name"]+"_nproc_"+str(startproc)+"."+shell_type	
+		testpath = os.path.join(destdir,testname)
+		mpi_proc_list = range(startproc,endproc+1,procinterval)
+
 
         logger.debug("Test Name: %s", testname)
 	logger.debug("Test Path: %s", testpath)
@@ -230,6 +239,10 @@ def generate_source_test(configmap,codedir,subdir):
 					
 					logger.debug("nproc key found in YAML config file")
 					logger.debug("nproc: %s", nproc)
+
+				# check for procrange in case nproc is not defined
+				elif "procrange" in configmap:
+					nproc = str(startproc)
 				# if nproc is not specified set it to 1 when building mpi apps
 				else:		
 					nproc = "1"
@@ -316,6 +329,9 @@ def generate_source_test(configmap,codedir,subdir):
 	        logger.debug("[TEST END-BLOCK]")
 
 
+	if "procrange" in configmap:
+		create_procrange_test(testpath,startproc,mpi_proc_list,subdir)
+
 	# if keyword iter is found in YAML, lets try to recreate N tests by renaming test such as
 	# hello.sh to hello_1.sh and create N-1 copies with file names hello_2.sh, hello_3.sh, ...
 	if  "iter" in configmap:
@@ -349,4 +365,28 @@ def generate_source_test(configmap,codedir,subdir):
 			print out
 			logger.debug("Adding test: %s to CMakeList", testname)
 			add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
-    
+
+import re
+import sys
+def create_procrange_test(testpath, startproc, proc_list,subdir):
+	destdir = os.path.dirname(testpath)
+	cmakelist = os.path.join(destdir,"CMakeLists.txt")
+	ext = os.path.splitext(testpath)[1]
+	fd=open(testpath,'r')
+	content = fd.read()
+	fd.close()
+	os.chdir(destdir)
+
+	for proc in proc_list:
+		newtestname = os.path.basename(testpath).rsplit("_",1)[0]
+		if proc == startproc:
+			continue
+
+	 	newtestname += "_" + str(proc) + ext
+		# replace mpirun -np with value of proc
+		ret = re.sub("mpirun -np " + str(startproc), "mpirun -np " + str(proc) + " " ,content)
+		fd = open(newtestname,'w')
+		fd.write(ret)
+		fd.close()
+		add_test_to_CMakeLists(destdir,subdir,cmakelist,newtestname)
+

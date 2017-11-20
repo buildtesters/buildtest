@@ -49,7 +49,9 @@ field={
 	'runextracmd':'',
 	'mpi':'enabled',
 	'cuda':'enabled',
-	'nproc': ''
+	'nproc': '',
+	'procrange':''
+	
 }
 
 def parse_config(filename,codedir):
@@ -67,22 +69,27 @@ def parse_config(filename,codedir):
 		if key == "name":
 			strip_ext=os.path.splitext(filename)[0]
         	        # get name of file only for comparison with key value "name"
-                	filename=os.path.basename(strip_ext)
-                	if content[key] != filename:   
-                        	print "Invalid value for key: ",key,":",content[key],". Value should be:", filename
+                	testname=os.path.basename(strip_ext)
+                	if content[key] != testname:   
+                        	print "Invalid value for key: ",key,":",content[key],". Value should be:", testname
+				sys.exit(1)
+		if key == "mpi":
+			if content[key] != "enabled":
+				print "Error processing YAML file: ", filename
+				print """ "mpi" key must take value "enabled" """
 				sys.exit(1)
 		# source must match a valid file name
-		elif key == "source" or key == "inputfile":
+		if key == "source" or key == "inputfile":
 	                codefile=os.path.join(codedir,content[key])
         	        if not os.path.exists(codefile):
                 	        print "Can't find source file: ",codefile, ". Verify source file in directory:", codedir
 				sys.exit(1)
 		# checking for invalid scheduler option
-		elif key == "scheduler":
+		if key == "scheduler":
 			if content[key] not in field["scheduler"]:
 				print "Invalid scheduler option: ", key, " Please select on of the following:" , field["scheduler"]
 				sys.exit(1)
-		elif key == "nproc" or key == "iter":
+		if key == "nproc" or key == "iter":
 			# checking whether value of nproc and iter is integer
 			if not str(content[key]).isdigit(): 
 				print key + " key must be an integer value"
@@ -92,6 +99,29 @@ def parse_config(filename,codedir):
 				if int(content[key]) <= 0: 
 					print key + " must be greater than 0"
 					sys.exit(1)
+		if key == "procrange":
+			# format procrange: 2,10,3
+			if len(content[key].split(",")) != 3:
+				print "Error processing YAML file: ", filename
+				print "Format expected: <startproc>,<endproc>,<procinterval> i.e 4,40,10"
+				sys.exit(1)
+
+			startproc = content[key].split(",")[0]
+			endproc = content[key].split(",")[1]
+			procinterval = content[key].split(",")[2]
+			if not startproc.isdigit():
+				print "Error in ", filename, " expecting integer but found",  startproc
+				sys.exit(1)
+
+			if not endproc.isdigit():
+				print "Error in ", filename, " expecting integer but found",  endproc
+				sys.exit(1)
+
+			if not procinterval.isdigit():
+				print "Error in ", filename, " expecting integer but found",  procinterval
+				sys.exit(1)
+
+
 		
 			
 	fd.close()
