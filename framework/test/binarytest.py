@@ -148,6 +148,10 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         for key in binarydict:
                 count = count + 1
                 name_str=key.replace(" ","_")
+		
+		# replace / with _ when creating testname for yaml configuration that have path name
+		name_str = name_str.replace("/","_")
+
                 testname=name_str+"."+shell_type
                 testpath=os.path.join(test_destdir,testname)
 

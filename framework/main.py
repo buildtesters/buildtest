@@ -39,6 +39,7 @@ from framework.test.sourcetest import recursive_gen_test
 from framework.test.testsets import run_testset
 from framework.tools.check_setup import check_buildtest_setup
 from framework.tools.easybuild import list_toolchain, toolchain_exists, check_software_version_in_easyconfig
+from framework.tools.generate_yaml import create_system_yaml
 from framework.tools.menu import buildtest_menu
 from framework.tools.scan import scantest
 # from framework.tools.software import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
@@ -78,6 +79,8 @@ def main():
 	system = args_dict["system"]
 	testset = args_dict["testset"]
 	runtest = args_dict["runtest"]
+	sysyaml = args_dict["sysyaml"]
+	ebyaml = args_dict["ebyaml"]
 
 
 	if version == True:
@@ -94,6 +97,33 @@ def main():
 	if scan == True:
 		scantest()
 
+	if list_toolchain_flag == True:
+                toolchain_set=list_toolchain()
+                text = """ \n
+                         List of Toolchains:
+                         -------------------- \n"""
+                print text
+                print_set(toolchain_set)
+
+                sys.exit(0)
+
+        if list_unique_software == True:
+                software_set=get_unique_software(BUILDTEST_MODULE_EBROOT)
+                text =  """ \n
+                       List of Unique Software:
+                       ---------------------------- \n """
+                print text
+                print_set(software_set)
+
+                sys.exit(0)
+
+        if sw_ver_relation == True:
+                software_version_relation(BUILDTEST_MODULE_EBROOT)
+                sys.exit(0)
+
+	if sysyaml != None:
+		
+		create_system_yaml(sysyaml)
 
 	os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log")
 	os.environ["BUILDTEST_LOGFILE"] = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
@@ -198,33 +228,6 @@ def main():
 
                 print "Writing Log file to:", logpath
 
-		sys.exit(0)
-
-	if list_toolchain_flag == True:
-		toolchain_set=list_toolchain()
-		text = """ \n
-			 List of Toolchains: 
-			 -------------------- \n"""
-		print text
-		print_set(toolchain_set)
-
-                print "Writing Log file to:", logpath
-		sys.exit(0)
-
-	if list_unique_software == True:
-		software_set=get_unique_software(BUILDTEST_MODULE_EBROOT)
-		text =  """ \n
-		       List of Unique Software: 
-		       ---------------------------- \n """
-		print text
-		print_set(software_set)	
-		
-		print "Writing Log file to:", logpath
-		sys.exit(0)
-
-	if sw_ver_relation == True:
-		software_version_relation(BUILDTEST_MODULE_EBROOT)
-		print "Writing Log file to:", logpath
 		sys.exit(0)
 
 	# generate system pkg test

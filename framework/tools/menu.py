@@ -50,6 +50,8 @@ in eb stack and system packages""", action="store_true")
         parser.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
         parser.add_argument("-V", "--version", help="show program version number and exit",action="store_true")
 
+	parser.add_argument("--sysyaml", help = "generate binary test YAML configuration for system package")
+	parser.add_argument("--ebyaml", help = "generate binary test YAML configuration for easybuild package")
         args = parser.parse_args()
 
         return args
