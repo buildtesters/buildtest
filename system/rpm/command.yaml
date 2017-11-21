@@ -1,0 +1,6 @@
+binaries:
+- /bin/rpm --help
+- /usr/bin/rpmdb --version
+- /usr/bin/rpmkeys --version
+- /usr/bin/rpmquery --version
+- /usr/bin/rpmverify --version
