@@ -52,6 +52,7 @@ in eb stack and system packages""", action="store_true")
 
 	parser.add_argument("--sysyaml", help = "generate binary test YAML configuration for system package")
 	parser.add_argument("--ebyaml", help = "generate binary test YAML configuration for easybuild package")
+	parser.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
         args = parser.parse_args()
 
         return args

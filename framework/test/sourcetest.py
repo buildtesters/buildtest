@@ -31,6 +31,7 @@ source test has 1 YAML file and generates only 1 test
 from framework.env import  BUILDTEST_TESTDIR, logID
 from framework.test.compiler import get_compiler
 from framework.test.function import add_arg_to_runcmd
+from framework.test.job import generate_job
 from framework.tools.modules import load_modules
 from framework.tools.cmake import  add_test_to_CMakeLists
 from framework.tools.parser.yaml_config import parse_config
@@ -323,6 +324,10 @@ def generate_source_test(configmap,codedir,subdir):
 			logger.debug("runextracmd found in YAML config file")
 			logger.debug("runextracmd: %s", str(configmap["runextracmd"]))
 	fd.close()
+
+        if args_dict["job_template"] != None:
+		generate_job(testpath,shell_type,args_dict["job_template"])
+
 
     	# by default run the commands below which will add the test to CMakeLists.txt and update the logfile
         if "iter" not in configmap:
