@@ -43,7 +43,7 @@ BUILDTEST_PERL_DIR = os.environ['BUILDTEST_PERL_DIR']
 BUILDTEST_RUBY_DIR = os.environ['BUILDTEST_RUBY_DIR']
 BUILDTEST_TCL_DIR = os.environ['BUILDTEST_TCL_DIR']
 
-
+BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm", ".pbs"]
 PYTHON_APPS = ["Python","Anaconda2", "Anaconda3"]
 MPI_APPS = ["OpenMPI", "MPICH","MVAPICH2", "intel", "impi"]
 

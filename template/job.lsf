@@ -1,0 +1,3 @@
+#BSUB -n 1
+#BSUB -q short
+#BSUB -W 00:02

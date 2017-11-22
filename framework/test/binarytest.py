@@ -31,7 +31,9 @@ is only 1 binary yaml file that can generate multiple binary test
 import logging
 import os
 import yaml
+from shutil import copyfile
 from framework.env import BUILDTEST_ROOT, BUILDTEST_TESTDIR, BUILDTEST_SOURCEDIR, logID
+from framework.test.job import generate_job
 from framework.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.file import create_dir
@@ -193,8 +195,10 @@ def process_binary_file(filename,args_dict,test_type,pkg):
 
                 logger.debug("Adding content: %s ",  add_test_str)
                 fd.write(add_test_str)
+		fd.close()
 
-                # print "Creating Test:", testpath
+		if args_dict["job_template"] != None:
+			generate_job(testpath,shell_type,args_dict["job_template"])
 
         print
         if test_type == "system":

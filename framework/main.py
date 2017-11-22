@@ -32,7 +32,7 @@ import os
 sys.path.insert(0,os.path.abspath('.'))
 
 
-from framework.env import BUILDTEST_ROOT, BUILDTEST_LOGDIR, BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR, BUILDTEST_MODULE_EBROOT, BUILDTEST_EASYCONFIGDIR, logID
+from framework.env import BUILDTEST_ROOT, BUILDTEST_LOGDIR, BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR, BUILDTEST_MODULE_EBROOT, BUILDTEST_EASYCONFIGDIR, BUILDTEST_JOB_EXTENSION, logID
 from framework.runtest import runtest_menu
 from framework.test.binarytest import generate_binary_test
 from framework.test.sourcetest import recursive_gen_test
@@ -81,7 +81,7 @@ def main():
 	runtest = args_dict["runtest"]
 	sysyaml = args_dict["sysyaml"]
 	ebyaml = args_dict["ebyaml"]
-
+	jobtemplate = args_dict["job_template"]
 
 	if version == True:
 		buildtest_version()
@@ -121,8 +121,17 @@ def main():
                 software_version_relation(BUILDTEST_MODULE_EBROOT)
                 sys.exit(0)
 
+	if jobtemplate != None:
+		if not os.path.isfile(jobtemplate):
+			print "Cant file job template file", jobtemplate
+			sys.exit(1)
+
+		# checking if extension is job template file extension is valid to detect type of scheduler
+		if os.path.splitext(jobtemplate)[1]  not in BUILDTEST_JOB_EXTENSION:
+			print "Invalid file extension, must be one of the following extension", BUILDTEST_JOB_EXTENSION
+			sys.exit(1)
+
 	if sysyaml != None:
-		
 		create_system_yaml(sysyaml)
 
 	os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log")
