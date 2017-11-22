@@ -37,6 +37,9 @@ from framework.tools.parser.yaml_config import parse_config
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.menu import buildtest_menu
 
+
+import re
+import sys
 import os
 import logging
 from shutil import copyfile
@@ -134,10 +137,8 @@ def generate_source_test(configmap,codedir,subdir):
 	if "envvars" in configmap:
 		envvars = configmap["envvars"]
 		for key in envvars.keys():
-			if shell_type == "sh" or shell_type == "bash":
-				env_msg.append("export " + key + "=" +  str(envvars[key]) + "\n")
-			elif shell_type == "csh":
-				env_msg.append("setenv " + key + " " +  str(envvars[key]) + "\n")
+			# append value from function openmp_env_string into env_msg that sets OpenMP environment variable according to shell
+			env_msg.append(openmp_env_string(shell_type,envvars[key]))
 
 	if "procrange" in configmap:		
 		procrange = configmap["procrange"]
@@ -148,6 +149,15 @@ def generate_source_test(configmap,codedir,subdir):
 		testpath = os.path.join(destdir,testname)
 		mpi_proc_list = range(startproc,endproc+1,procinterval)
 
+	if "threadrange" in configmap:
+		threadrange = configmap["threadrange"]
+		startthread =  int(threadrange.split(",")[0])
+		endthread = int(threadrange.split(",")[1])
+		threadinterval = int(threadrange.split(",")[2])
+		testname=configmap["name"]+"_nthread_"+str(startthread)+"."+shell_type	
+		testpath = os.path.join(destdir,testname)
+		thread_list = range(startthread,endthread+1,threadinterval)
+		openmp_env_str = openmp_env_string(shell_type,startthread) 
 
         logger.debug("Test Name: %s", testname)
 	logger.debug("Test Path: %s", testpath)
@@ -297,6 +307,9 @@ def generate_source_test(configmap,codedir,subdir):
 		if "envvars" in configmap:
 			for key in env_msg:
 				fd.write(key)
+	
+		if "threadrange" in configmap:
+			fd.write(openmp_env_str)
 
 		fd.write(buildcmd)
 		fd.write(runcmd)
@@ -331,6 +344,8 @@ def generate_source_test(configmap,codedir,subdir):
 
 	if "procrange" in configmap:
 		create_procrange_test(testpath,startproc,mpi_proc_list,subdir)
+	if "threadrange" in configmap:
+		create_threadrange_test(testpath,startthread,thread_list,subdir)
 
 	# if keyword iter is found in YAML, lets try to recreate N tests by renaming test such as
 	# hello.sh to hello_1.sh and create N-1 copies with file names hello_2.sh, hello_3.sh, ...
@@ -366,9 +381,8 @@ def generate_source_test(configmap,codedir,subdir):
 			logger.debug("Adding test: %s to CMakeList", testname)
 			add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 
-import re
-import sys
 def create_procrange_test(testpath, startproc, proc_list,subdir):
+	""" create same mpi tests with varying parameter for -np """
 	destdir = os.path.dirname(testpath)
 	cmakelist = os.path.join(destdir,"CMakeLists.txt")
 	ext = os.path.splitext(testpath)[1]
@@ -390,3 +404,39 @@ def create_procrange_test(testpath, startproc, proc_list,subdir):
 		fd.close()
 		add_test_to_CMakeLists(destdir,subdir,cmakelist,newtestname)
 
+def create_threadrange_test(testpath,startthread,thread_list,subdir):
+	""" create a range of OpenMP thread test """
+	""" create same mpi tests with varying parameter for -np """
+        destdir = os.path.dirname(testpath)
+        cmakelist = os.path.join(destdir,"CMakeLists.txt")
+        ext = os.path.splitext(testpath)[1]
+        fd=open(testpath,'r')
+        content = fd.read()
+        fd.close()
+        os.chdir(destdir)
+
+	for thread in thread_list:
+		ret = ""
+		# replace threadcnt for each testname <testname>_nthread_<threadcnt>.<shell_ext> 
+		newtestname = os.path.basename(testpath).rsplit("_",1)[0]
+                if thread == startthread:
+                        continue
+
+                newtestname += "_" + str(thread) + ext
+                # change value of OMP_NUM_THREAD in loop depending on type of shell
+		if ext == ".bash" or ext == ".sh":
+	                ret = re.sub("export OMP_NUM_THREADS=" + str(startthread), "export OMP_NUM_THREADS=" + str(thread)  ,content)
+		else:
+	                ret = re.sub("setenv OMP_NUM_THREADS " + str(startthread), "setenv OMP_NUM_THREADS " + str(thread)  ,content)
+
+                fd = open(newtestname,'w')
+                fd.write(ret)
+                fd.close()
+                add_test_to_CMakeLists(destdir,subdir,cmakelist,newtestname)
+
+def openmp_env_string(shell,threadcnt):
+	""" return environment variable for setting OpenMP threads as a string based on shell type """
+	if shell == "sh" or shell == "bash":
+        	return "export OMP_NUM_THREADS=" +  str(threadcnt) + "\n"
+        elif shell == "csh":
+        	return "setenv OMP_NUM_THREADS " +  str(threadcnt) + "\n"

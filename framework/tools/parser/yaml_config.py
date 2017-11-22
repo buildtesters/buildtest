@@ -50,6 +50,7 @@ field={
 	'mpi':'enabled',
 	'cuda':'enabled',
 	'nproc': '',
+	'threadrange':'',
 	'procrange':''
 	
 }
@@ -99,11 +100,11 @@ def parse_config(filename,codedir):
 				if int(content[key]) <= 0: 
 					print key + " must be greater than 0"
 					sys.exit(1)
-		if key == "procrange":
+		if key == "procrange" or key == "threadrange":
 			# format procrange: 2,10,3
 			if len(content[key].split(",")) != 3:
 				print "Error processing YAML file: ", filename
-				print "Format expected: <startproc>,<endproc>,<procinterval> i.e 4,40,10"
+				print "Format expected: <start>,<end>,<interval> i.e 4,40,10"
 				sys.exit(1)
 
 			startproc = content[key].split(",")[0]
