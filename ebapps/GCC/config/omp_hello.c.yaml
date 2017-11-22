@@ -1,5 +1,4 @@
 name: omp_hello.c
 source:  omp_hello.c
 buildopts: -O2 -fopenmp
-envvars:
-        OMP_NUM_THREADS : 2
+threadrange: 5,20,4
