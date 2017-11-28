@@ -82,7 +82,7 @@ def main():
 	sysyaml = args_dict["sysyaml"]
 	ebyaml = args_dict["ebyaml"]
 	jobtemplate = args_dict["job_template"]
-
+	
 	if version == True:
 		buildtest_version()
 		sys.exit(1)
@@ -133,6 +133,9 @@ def main():
 
 	if sysyaml != None:
 		create_system_yaml(sysyaml)
+	
+	if ebyaml != None:
+		raise NotImplementedError
 
 	os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log")
 	os.environ["BUILDTEST_LOGFILE"] = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
