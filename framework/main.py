@@ -35,6 +35,7 @@ sys.path.insert(0,os.path.abspath('.'))
 from framework.env import BUILDTEST_ROOT, BUILDTEST_LOGDIR, BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR, BUILDTEST_MODULE_EBROOT, BUILDTEST_EASYCONFIGDIR, BUILDTEST_JOB_EXTENSION, logID
 from framework.runtest import runtest_menu
 from framework.test.binarytest import generate_binary_test
+from framework.test.job import submit_job_to_scheduler
 from framework.test.sourcetest import recursive_gen_test
 from framework.test.testsets import run_testset
 from framework.tools.check_setup import check_buildtest_setup
@@ -82,7 +83,8 @@ def main():
 	sysyaml = args_dict["sysyaml"]
 	ebyaml = args_dict["ebyaml"]
 	jobtemplate = args_dict["job_template"]
-	
+	submitjob = args_dict["submitjob"]
+
 	if version == True:
 		buildtest_version()
 		sys.exit(1)
@@ -130,6 +132,9 @@ def main():
 		if os.path.splitext(jobtemplate)[1]  not in BUILDTEST_JOB_EXTENSION:
 			print "Invalid file extension, must be one of the following extension", BUILDTEST_JOB_EXTENSION
 			sys.exit(1)
+	if submitjob != None:
+		submit_job_to_scheduler(submitjob)
+		sys.exit(0)
 
 	if sysyaml != None:
 		create_system_yaml(sysyaml)

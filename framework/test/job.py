@@ -24,10 +24,14 @@
 This file generates the job script
 :author: Shahzeb Siddiqui (Pfizer)
 """
-
+from framework.env import BUILDTEST_ROOT
 from shutil import copyfile
 import os
+import glob
 def generate_job(testpath,shell_type, jobtemplate):
+
+	if not os.path.isabs(jobtemplate):
+		jobtemplate=os.path.join(BUILDTEST_ROOT,jobtemplate)
 
         jobname = os.path.splitext(testpath)[0]
         jobext = os.path.splitext(jobtemplate)[1]
@@ -37,4 +41,21 @@ def generate_job(testpath,shell_type, jobtemplate):
         cmd  = shell_type + " " + testpath
         fd.write(cmd)
         fd.close()
+
+def submit_job_to_scheduler(job_path):
+
+	job_ext = ".lsf"
+	job_launcher = "bsub"
+	if os.path.isdir(job_path):
+		for root, dirs, files in os.walk(job_path):
+			for file in files:
+				if file.endswith(job_ext):
+					cmd = job_launcher + " < " + os.path.join(root,file) 
+					os.system(cmd)
+				
+					print "Submitting Job:", os.path.join(root,file), " to scheduler"
+	if os.path.isfile(job_path):
+		cmd = job_launcher + " < " + job_path
+		os.system(cmd)
+		print "Submitting Job:", job_path, " to scheduler"
 
