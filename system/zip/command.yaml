@@ -1,0 +1,5 @@
+binaries:
+- /usr/bin/zip --help
+- /usr/bin/zipcloak --help
+- /usr/bin/zipnote -v
+- /usr/bin/zipsplit -h
