@@ -38,9 +38,22 @@ def generate_job(testpath,shell_type, jobtemplate):
         jobname += jobext
         copyfile(jobtemplate,jobname)
         fd = open(jobname,'a')
-        cmd  = shell_type + " " + testpath
-        fd.write(cmd)
+	test_fd = open(testpath,'r')
+	test_content = test_fd.read().splitlines()
+
+	shell_magic = "#!/" + os.path.join("bin",shell_type)
+	cmd  = shell_type + " " + testpath
+
+	for line in test_content:
+		# need to add shell magic at beginning of line which we will do
+		# below
+		if line == shell_magic:
+			continue
+	        fd.write(line + "\n")
         fd.close()
+
+	# writing shell_magic as 1st line in job submission script
+	with open(jobname,"r+") as f: s = f.read(); f.seek(0); f.write(shell_magic + "\n" + s)
 
 def submit_job_to_scheduler(job_path):
 

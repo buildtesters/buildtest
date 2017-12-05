@@ -23,6 +23,7 @@
 from framework.tools.modules import load_modules
 from framework.tools.cmake import add_test_to_CMakeLists, setup_software_cmake
 from framework.test.sourcetest import recursive_gen_test
+from framework.test.job import generate_job
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.env import BUILDTEST_SOURCEDIR, BUILDTEST_PYTHON_DIR, BUILDTEST_R_DIR, BUILDTEST_PYTHON_DIR, BUILDTEST_RUBY_DIR, BUILDTEST_TCL_DIR,BUILDTEST_TESTDIR
 from framework.env import PYTHON_APPS, MPI_APPS, logID
@@ -154,6 +155,9 @@ def testset_generator(arg_dict, codedir):
 				msg = "Creating Test: " + testpath  
 				logger.info(msg)
 				count = count + 1
+
+        			if args_dict["job_template"] != None:
+					generate_job(testpath,shell_type,args_dict["job_template"])
 
 			print "Generating ", count, "tests for ", os.path.basename(root)
 

@@ -138,6 +138,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         # if key binaries is not in yaml file, exit program
         if "binaries" not in content:
                 logger.error("Can't find key: binaries in file %s", filename)
+                print "Can't find key: binaries in file %s", filename
                 sys.exit(1)
 
         # create a binary test script for each key,value item in dictionary
@@ -160,6 +161,8 @@ def process_binary_file(filename,args_dict,test_type,pkg):
                 logger.debug("Creating and Opening  test file: %s for writing ",  testpath)
                 fd=open(testpath,'w')
 
+		shell_magic = "#!/" + os.path.join("bin",shell_type)
+		fd.write(shell_magic + "\n")
                 if test_type == "software":
                         fd.write(header)
                 else:
