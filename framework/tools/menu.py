@@ -25,7 +25,7 @@
 """
 
 #from framework.tools.software import get_unique_software_version
-from framework.tools.system import systempackage_list
+from framework.tools.system import systempackage_list, systempackage_installed_list
 import argparse
 import argcomplete
 
@@ -38,6 +38,11 @@ def buildtest_menu():
 	#print software_list
 
 	syspkg_list = systempackage_list()
+	
+	pkglist = systempackage_installed_list()
+
+	# adding "all" as parameter to run all system package test
+	syspkg_list.append("all")
 
         parser = argparse.ArgumentParser(prog='buildtest', usage='%(prog)s [options]')
         parser.add_argument("--check-setup", help="Check buildtest configuration and determine if you have it setup properly for testing",action="store_true")
@@ -57,12 +62,12 @@ in eb stack and system packages""", action="store_true")
         parser.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package")
 	parser.add_argument("--shell", help=""" Select the type of shell when running test""", choices=["sh","csh", "bash"], default="sh")
         parser.add_argument("--system", help=""" Build test for system packages
-                                         To build all system package test use --system all """, choices=syspkg_list, metavar='PARAMETER')
+                                         To build all system package test use --system all """, choices=syspkg_list, metavar='SYSTEM-PACKAGE')
         parser.add_argument("--testset", help="Select the type of test set to run (Python, R, Ruby, Perl, Tcl, MPI)", choices=["Python","R","Ruby","Perl","Tcl","MPI"])
 
 	parser.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
 
-	parser.add_argument("--sysyaml", help = "generate binary test YAML configuration for system package")
+	parser.add_argument("--sysyaml", help = "generate binary test YAML configuration for system package", choices=pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
 	parser.add_argument("--ebyaml", help = "generate binary test YAML configuration for easybuild package (Not Implemented)")
 	parser.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
 	parser.add_argument("--submitjob", help = "specify a directory or job script to submit to resource scheduler")

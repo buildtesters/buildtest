@@ -75,3 +75,14 @@ def systempackage_list():
 	dir = os.path.join(BUILDTEST_SOURCEDIR,"system")
 	return os.listdir(dir)
 
+def systempackage_installed_list():
+	cmd = """ rpm -qa --qf "%{NAME}\n" """
+	ret = subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE)
+	output = ret.communicate()[0]
+	pkglist = output.split("\n")
+	# delete last element which is a ""
+	pkglist = pkglist[:-1]
+	return pkglist
+
+
+
