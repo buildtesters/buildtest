@@ -42,8 +42,8 @@ from framework.tools.check_setup import check_buildtest_setup
 from framework.tools.easybuild import list_toolchain, toolchain_exists, check_software_version_in_easyconfig
 from framework.tools.generate_yaml import create_system_yaml
 from framework.tools.menu import buildtest_menu
+from framework.tools.print_functions import print_software_version_relation
 from framework.tools.scan import scantest
-# from framework.tools.software import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.software import get_unique_software, software_version_relation, software_exists
 from framework.tools.utility import  print_set
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
@@ -59,9 +59,8 @@ import glob
 def main():
 	module=""
 	version=""
-
+	
 	args = buildtest_menu()
-
 
 	# convert args into a dictionary
 	args_dict = vars(args)
@@ -120,7 +119,8 @@ def main():
                 sys.exit(0)
 
         if sw_ver_relation == True:
-                software_version_relation(BUILDTEST_MODULE_EBROOT)
+                software_dict = software_version_relation(BUILDTEST_MODULE_EBROOT)
+		print_software_version_relation(software_dict)
                 sys.exit(0)
 
 	if jobtemplate != None:

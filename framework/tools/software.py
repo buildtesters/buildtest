@@ -183,7 +183,7 @@ def software_version_relation(moduletree):
 
  ID  |        Software            |      Versions
 -----|----------------------------|----------------------------- """
-        print text
+        #print text
 
         text = text.splitlines()
         for line in text:
@@ -194,7 +194,7 @@ def software_version_relation(moduletree):
         keylist.sort()
         count = 1
         for key in keylist:
-                print (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t", sset(module_dict[key])
+                #print (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t", sset(module_dict[key])
                 logger.info("%s %s %s", (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t", sset(module_dict[key]))
                 count = count + 1
 

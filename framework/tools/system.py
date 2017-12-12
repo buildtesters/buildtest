@@ -29,6 +29,7 @@ import os
 import stat
 from stat import S_IXUSR, S_IXGRP, S_IXOTH
 import subprocess
+from framework.env import BUILDTEST_SOURCEDIR
 
 def check_system_package_installed(pkg):
 	""" check if system package is installed and return True/False"""
@@ -69,3 +70,8 @@ def get_binaries_from_systempackage(pkg):
 			binarylist.append(file)
 
 	return binarylist
+
+def systempackage_list():
+	dir = os.path.join(BUILDTEST_SOURCEDIR,"system")
+	return os.listdir(dir)
+

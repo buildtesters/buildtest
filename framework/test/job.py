@@ -28,11 +28,30 @@ from framework.env import BUILDTEST_ROOT
 from shutil import copyfile
 import os
 import glob
+import subprocess
+import sys
+def detect_scheduler():
+	""" detect scheduler for host system"""
+	SCHEDULER_LSF = "LSF"
+	SCHEDULER_SLURM = "SLURM"
+
+	cmdlist = ["lsid", "sinfo"]
+	for cmd in cmdlist:
+		ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+		ret.communicate()
+		errcode = ret.returncode
+		if errcode == 0 and cmd == "lsid":
+			return SCHEDULER_LSF
+		if errcode == 0 and cmd == "sinfo":
+			return SCHEDULER_SLURM
+
 def generate_job(testpath,shell_type, jobtemplate):
+	
+	SCHEDULER = detect_scheduler()
 
 	if not os.path.isabs(jobtemplate):
 		jobtemplate=os.path.join(BUILDTEST_ROOT,jobtemplate)
-
+	
         jobname = os.path.splitext(testpath)[0]
         jobext = os.path.splitext(jobtemplate)[1]
         jobname += jobext

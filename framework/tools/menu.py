@@ -24,11 +24,20 @@
 :author: Shahzeb Siddqiui
 """
 
+#from framework.tools.software import get_unique_software_version
+from framework.tools.system import systempackage_list
 import argparse
 import argcomplete
 
+
 def buildtest_menu():
 	""" buildtest option menu """
+	#software_list = get_unique_software_version(BUILDTEST_MODULE_EBROOT)
+	#software_list = get_unique_software_version(BUILDTEST_MODULE_EBROOT)
+	#print software_list
+	#print software_list
+
+	syspkg_list = systempackage_list()
 
         parser = argparse.ArgumentParser(prog='buildtest', usage='%(prog)s [options]')
         parser.add_argument("--check-setup", help="Check buildtest configuration and determine if you have it setup properly for testing",action="store_true")
@@ -48,7 +57,7 @@ in eb stack and system packages""", action="store_true")
         parser.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package")
 	parser.add_argument("--shell", help=""" Select the type of shell when running test""", choices=["sh","csh", "bash"], default="sh")
         parser.add_argument("--system", help=""" Build test for system packages
-                                         To build all system package test use --system all """)
+                                         To build all system package test use --system all """, choices=syspkg_list, metavar='PARAMETER')
         parser.add_argument("--testset", help="Select the type of test set to run (Python, R, Ruby, Perl, Tcl, MPI)", choices=["Python","R","Ruby","Perl","Tcl","MPI"])
 
 	parser.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")

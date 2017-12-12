@@ -54,5 +54,4 @@ logID = "buildtest"
 global BUILDTEST_LOGCONTENT
 BUILDTEST_LOGDIR = os.path.join(BUILDTEST_ROOT,"log")
 BUILDTEST_LOGCONTENT = []
-
 	
