@@ -34,7 +34,10 @@ def print_software_version_relation(software_dict):
 -----|----------------------------|----------------------------- """
 	print text
 	count = 0
-        for key in software_dict:
+	keylist = software_dict.keys()
+	keylist.sort()
+        for key in keylist:
 		count = count + 1
-                print (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t", sset(software_dict[key])
+		for value in sset(software_dict[key]):
+	        	print (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t" +  value
 

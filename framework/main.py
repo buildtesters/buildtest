@@ -49,17 +49,17 @@ from framework.tools.utility import  print_set
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.version import buildtest_version
 
+
 import subprocess
 import argparse
 import logging
 from datetime import datetime
-import fnmatch
 import glob
 
 def main():
 	module=""
 	version=""
-	
+
 	args = buildtest_menu()
 
 	# convert args into a dictionary
@@ -109,7 +109,7 @@ def main():
                 sys.exit(0)
 
         if list_unique_software == True:
-                software_set=get_unique_software(BUILDTEST_MODULE_EBROOT)
+                software_set=get_unique_software()
                 text =  """ \n
                        List of Unique Software:
                        ---------------------------- \n """
@@ -119,7 +119,7 @@ def main():
                 sys.exit(0)
 
         if sw_ver_relation == True:
-                software_dict = software_version_relation(BUILDTEST_MODULE_EBROOT)
+                software_dict = software_version_relation()
 		print_software_version_relation(software_dict)
                 sys.exit(0)
 
