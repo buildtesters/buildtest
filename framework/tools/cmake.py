@@ -70,8 +70,7 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
 
 	logger = logging.getLogger(logID)
 	
-	args = buildtest_menu()
-	args_dict = vars(args)
+	args_dict = buildtest_menu()
 	shell_type = args_dict["shell"]
 
 	appname = get_appname()

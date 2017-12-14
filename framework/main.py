@@ -60,10 +60,9 @@ def main():
 	module=""
 	version=""
 
-	args = buildtest_menu()
-
+	args_dict = buildtest_menu()
 	# convert args into a dictionary
-	args_dict = vars(args)
+	#args_dict = vars(args)
 	
 	version = args_dict["version"]
 	check_setup = args_dict["check_setup"]
@@ -86,7 +85,7 @@ def main():
 
 	if version == True:
 		buildtest_version()
-		sys.exit(1)
+		sys.exit(0)
 
 	if check_setup == True:
 		check_buildtest_setup()
@@ -249,7 +248,7 @@ def main():
 
 	# generate system pkg test
 	if system != None:
-		systempkg = args.system
+		systempkg = args_dict["system"]
 		if systempkg == "all":
 
 			logger.info("Generating all system package tests from YAML files in %s", os.path.join(BUILDTEST_SOURCEDIR,"system"))

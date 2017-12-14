@@ -34,15 +34,13 @@ Application & Toolchain name & version query functions
 :author: Shahzeb Siddiqui (Pfizer)
 """
 def get_appname():
-	args = buildtest_menu()
-	args_dict = vars(args)
+	args_dict = buildtest_menu()
 	software = get_arg_software(args_dict)
 	software = software.split('/')
 	return software[0]
 
 def get_appversion():
-        args = buildtest_menu()
-        args_dict = vars(args)
+        args_dict = buildtest_menu()
         software = get_arg_software(args_dict)
 	software = software.split('/')
 	if BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
@@ -61,8 +59,7 @@ def get_toolchain():
 	return get_toolchain_name() + '-' + get_toolchain_version()
 	
 def get_toolchain_name():
-        args = buildtest_menu()
-        args_dict = vars(args)
+        args_dict = buildtest_menu()
         toolchain = get_arg_toolchain(args_dict)
 	
 	# checking if toolchain is defined in argument
@@ -73,8 +70,7 @@ def get_toolchain_name():
 		return toolchain[0]
 
 def get_toolchain_version():
-        args = buildtest_menu()
-        args_dict = vars(args)
+        args_dict = buildtest_menu()
         toolchain = get_arg_toolchain(args_dict)
 
 	# checking if toolchain is defined in argument

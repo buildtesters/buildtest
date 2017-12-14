@@ -55,8 +55,7 @@ def load_modules():
         """
         return a string that loads the software and toolchain module.
         """
-	args = 	buildtest_menu()
-	args_dict = vars(args)
+	args_dict = 	buildtest_menu()
 	shell_type = args_dict["shell"]
 	
 	shell_magic = "#!/" + os.path.join("bin",shell_type)

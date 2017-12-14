@@ -30,7 +30,7 @@ the scripts
 import os
 
 # read the BUILDTEST env vars from the shell environment that is sourced by setup.sh
-BUILDTEST_VERSION="1.2.0"
+BUILDTEST_VERSION="1.2.1"
 BUILDTEST_ROOT = os.environ['BUILDTEST_ROOT']
 BUILDTEST_SOURCEDIR = os.environ['BUILDTEST_SOURCEDIR']
 BUILDTEST_EASYCONFIGDIR = os.environ['BUILDTEST_EASYCONFIGDIR']

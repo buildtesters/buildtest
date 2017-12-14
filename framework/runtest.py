@@ -319,8 +319,7 @@ def eb_menu(ebpkg):
 	else:
 		testdir = os.path.join(ebpkg,app_selected,toolchain_selected)
 
-	args = buildtest_menu()
-	args_dict = vars(args)
+	args_dict = buildtest_menu()
 
 	output_list = []
 	# adding all tests from a eb package in a list for printing
@@ -396,8 +395,7 @@ def eb_menu(ebpkg):
 
 def launch_test(testdir,test):
 	 os.chdir(testdir)
-	 args = buildtest_menu()
-	 args_dict = vars(args)
+	 args_dict = buildtest_menu()
 	 cmd = "time " + args_dict["shell"] + " " + test
          ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
          (output,errormsg) = ret.communicate()

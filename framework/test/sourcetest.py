@@ -120,8 +120,7 @@ def generate_source_test(configmap,codedir,subdir):
 		if os.path.exists(destdir) == False:
 			os.makedirs(destdir)
 
-	args = buildtest_menu()
-	args_dict = vars(args)
+	args_dict = buildtest_menu()
 	shell_type = args_dict["shell"]
 	# testname is key value "name" with .sh extension
 	testname=configmap["name"]+"."+shell_type

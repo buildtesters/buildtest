@@ -94,8 +94,7 @@ def testset_generator(arg_dict, codedir):
         tcname=get_toolchain_name()
 	tcver=get_toolchain_version()
 
-	args = 	buildtest_menu()
-	args_dict = vars(args)
+	args_dict = buildtest_menu()
 	shell_type = args_dict["shell"]
 
 	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
