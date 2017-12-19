@@ -29,12 +29,12 @@ This python module will implement the --scantest feature of buildtest
 import os
 import subprocess
 import sys
-from framework.env import BUILDTEST_MODULE_EBROOT, BUILDTEST_SOURCEDIR
+from framework.env import BUILDTEST_SOURCEDIR
 from framework.tools.software import get_unique_software
 
 def scantest():
 
-	applist = get_unique_software(BUILDTEST_MODULE_EBROOT)
+	applist = get_unique_software()
 
 	eblist_sourcedir =  os.listdir(os.path.join(BUILDTEST_SOURCEDIR,"ebapps"))
 	

@@ -27,7 +27,7 @@ from framework.tools.utility import sset
 import os
 import sys
 import logging
-	
+
 """
 Application & Toolchain name & version query functions
 

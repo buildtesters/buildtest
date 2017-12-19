@@ -23,24 +23,21 @@
 """
 :author: Shahzeb Siddqiui
 """
-
-#from framework.tools.software import get_unique_software_version
+from framework.env import BUILDTEST_SHELLTYPES
 from framework.tools.system import systempackage_list, systempackage_installed_list
 import argparse
 import argcomplete
 
+
+syspkg_list = systempackage_list()
+# adding "all" as parameter to run all system package test
+syspkg_list.append("all")
+
+pkglist = systempackage_installed_list()
+
 def buildtest_menu():
+	# reports an error, issue with import 
 	#software_list = get_unique_software_version(BUILDTEST_MODULE_EBROOT)
-	#software_list = get_unique_software_version(BUILDTEST_MODULE_EBROOT)
-	#print software_list
-	#print software_list
-
-	syspkg_list = systempackage_list()
-	
-	pkglist = systempackage_installed_list()
-
-	# adding "all" as parameter to run all system package test
-	syspkg_list.append("all")
 
 	parser = argparse.ArgumentParser(prog='buildtest', usage='%(prog)s [options]')
 	group1 = parser.add_argument_group('Basic Options', 'buildtest basic options')
@@ -65,7 +62,7 @@ in eb stack and system packages""", action="store_true")
 	group3 = parser.add_argument_group('Test Options', 'Options for building tests with buildtest')
 	group3.add_argument("-s", "--software", help=" Specify software package to test")
 	group3.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package")
-	group3.add_argument("--shell", help=""" Select the type of shell when running test""", choices=["sh","csh", "bash"], default="sh")
+	group3.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES, default="sh")
 	group3.add_argument("--system", help=""" Build test for system packages
 				 To build all system package test use --system all """, choices=syspkg_list, metavar='SYSTEM-PACKAGE')
 	group3.add_argument("--testset", help="Select the type of test set to run (Python, R, Ruby, Perl, Tcl, MPI)", choices=["Python","R","Ruby","Perl","Tcl","MPI"])

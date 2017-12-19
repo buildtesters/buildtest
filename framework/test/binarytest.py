@@ -121,12 +121,14 @@ def process_binary_file(filename,args_dict,test_type,pkg):
 
                 test_destdir,test_destdir_cmakelist = setup_software_cmake(args_dict)
 
+
+		print "[BINARYTEST]: Processing YAML file for ", os.path.join(name,version), os.path.join(toolchain_name,toolchain_version), " at ", filename
                # load preamble for test-script that initializes environment.
                 header=load_modules()
 
         else:
                 system=args_dict["system"]
-
+		print "[BINARYTEST]: Processing YAML file for ", pkg , " at ", filename
                 test_destdir,test_destdir_cmakelist = setup_system_cmake(args_dict,pkg)
 
 
