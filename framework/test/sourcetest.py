@@ -47,12 +47,16 @@ from shutil import copyfile
 
 
 def recursive_gen_test(configdir,codedir):
-        """ if config directory exists then process .yaml files to build source test """
-        logger = logging.getLogger(logID)
+        """ if config directory exists then process all .yaml files to build source test """
 
-        logger.debug("Processing all YAML files in %s", configdir)
-
+	# only process yaml files if configdir directory is found
         if os.path.isdir(configdir):
+
+        	logger = logging.getLogger(logID)
+
+	        logger.debug("Processing all YAML files in %s", configdir)
+
+		print "[SOURCETEST]: Processing all YAML files in ", configdir
                 count = 0
                 for root,subdirs,files in os.walk(configdir):
 
@@ -78,14 +82,22 @@ def recursive_gen_test(configdir,codedir):
                                 count = count + 1
                                 generate_source_test(configmap,code_destdir,subdir)
 
-                print "Generating " + str(count) + " Source Tests "
+		appname=get_appname()
+		appver=get_appversion()
+		tcname=get_toolchain_name()
+		tcver=get_toolchain_version()
+		destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
+
+                print "Generating " + str(count) + " Source Tests and writing at ", destdir
+	else:
+		return
 
 # generate test for source
 def generate_source_test(configmap,codedir,subdir):
 	"""
 	This function generates the tests that requires compilation for EB apps. The
 	tests are written <software>/<version>/<toolchain-name>/<toolchain-version>.
-	The test script is named according to "name" key tag with the extension ".sh"
+	The test script is named according to "name" key tag with the shell extension 
 	CMakeLists.txt has an entry for each test that executes the shell-script. Most
 	test requires a compilation step, while every test requires a execution stage. 
 	This is done via buildcmd and runcmd tags in YAML for explicit builds. buildtest
@@ -359,7 +371,6 @@ def generate_source_test(configmap,codedir,subdir):
 		testpath_testname = os.path.join(destdir,testname).replace("\n",'')
 		os.rename(testpath,testpath_testname)
 		out = "Rename Iteration Test: " +  testpath +  " -> " +  testpath_testname
-		print out
 		logger.debug("%s",out)
 		# writing test to CMakeLists.txt
 		add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
@@ -381,7 +392,7 @@ def generate_source_test(configmap,codedir,subdir):
 			dest_testpathname=os.path.join(destdir,testname).replace('\n','')
 			copyfile(src_testpath,dest_testpathname)
 			out = "Iteration Test: " + dest_testpathname 
-			print out
+			logger.info("%s",out)
 			logger.debug("Adding test: %s to CMakeList", testname)
 			add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 

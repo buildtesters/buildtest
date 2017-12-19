@@ -194,6 +194,12 @@ def main():
 	for line in output:
 		logger.debug(line)
 
+
+	# if log directory is not created then create directory recursively
+	if not os.path.exists(os.environ["BUILDTEST_LOGDIR"]):
+		os.makedirs(os.environ["BUILDTEST_LOGDIR"], 0755 )
+		logger.warning("Directory not found: %s will create it", os.environ["BUILDTEST_LOGDIR"])
+
 	# generate system pkg test
 	if system is not None:
 		if system == "all":
@@ -210,14 +216,8 @@ def main():
 		else:
 			systempkg = system
 			os.environ["BUILDTEST_LOGDIR"] = os.path.join(logdir,"system",systempkg)
-			#logcontent += systempkg_generate_binary_test(systempkg,verbose,logdir)
 			generate_binary_test(args_dict,systempkg)
 
-
-		# if log directory is not created then create directory recursively
-		if not os.path.exists(os.environ["BUILDTEST_LOGDIR"]):
-			os.makedirs(os.environ["BUILDTEST_LOGDIR"], 0755 )
-			logger.warning("Directory not found: %s will create it", os.environ["BUILDTEST_LOGDIR"])
 
 		destpath = os.path.join(os.environ["BUILDTEST_LOGDIR"],logfile)
 		os.rename(logpath, destpath)
@@ -278,22 +278,20 @@ def main():
 		logger.debug("Code Directory: %s", codedir)
 
 		generate_binary_test(args_dict,None)
+
 		# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
 		recursive_gen_test(configdir,codedir)
 	
 		# if flag --testset is set, then 
-		if testset !=  None:
+		if testset is not  None:
 			run_testset(args_dict, testset)
 	
-		if not os.path.isdir(logdir):
-			cmd = "mkdir -p " + logdir
-			os.system(cmd)
-			logger.debug("Executing Command: %s", cmd)
+		if not os.path.exists(logdir):
+			os.makedirs(logdir)
 
-			
-		cmd = "mv " + logpath + " " + logdir
-		os.system(cmd)
-		logger.debug("Executing command: %s ", cmd)
+		# moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to $BUILDTEST_LOGDIR/app/appver/tcname/tcver/buildtest_%H_%M_%d_%m_%Y.log
+		os.rename(logpath, os.path.join(logdir,logfile))	
+		logger.debug("Writing Log file to %s", os.path.join(logdir,logfile))
 		
 		print "Writing Log file: ", os.path.join(logdir,logfile)
 
