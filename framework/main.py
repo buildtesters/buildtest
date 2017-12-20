@@ -46,67 +46,40 @@ from framework.test.testsets import run_testset
 from framework.tools.check_setup import check_buildtest_setup
 from framework.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from framework.tools.find import find_all_tests, find_tests_by_arg
-from framework.tools.easybuild import list_toolchain, toolchain_exists, check_software_version_in_easyconfig
+from framework.tools.easybuild import list_toolchain, check_software_version_in_easyconfig
 from framework.tools.generate_yaml import create_system_yaml
 from framework.tools.menu import buildtest_menu
 from framework.tools.print_functions import print_software_version_relation
 from framework.tools.scan import scantest
-from framework.tools.software import get_unique_software, software_version_relation, software_exists
+from framework.tools.software import get_unique_software, software_version_relation 
 from framework.tools.utility import  print_set
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.version import buildtest_version
 
-BUILDTEST_ARGLIST = {}
-
 def main():
-	module=""
-	version=""
+	""" entry point to buildtest """
+	#module=""
+	#version=""
 
-	#BUILDTEST_SOFTWARELIST = get_unique_software_version(BUILDTEST_MODULE_EBROOT)
-	#print BUILDTEST_SOFTWARELIST
 
 	parser = buildtest_menu()
-	print parser.parse_options(), type(parser.parse_options())
-	sys.exit(0)
-	BUILDTEST_ARGLIST = parse_options(parser)
-	args_dict = parse_options(parser)
-	# convert args into a dictionary
-	#args_dict = vars(args)
-	
-	version = args_dict["version"]
-	check_setup = args_dict["check_setup"]
-	findconfig = args_dict["findconfig"]
-	findtest = args_dict["findtest"]
-	software = args_dict["software"]
-	toolchain = args_dict["toolchain"]
-	list_toolchain_flag = args_dict["list_toolchain"]
-	list_unique_software = args_dict["list_unique_software"]
-	sw_ver_relation = args_dict["software_version_relation"]
-	scan = args_dict["scantest"]
-	BUILDTEST_MODULE_NAMING_SCHEME= args_dict["module_naming_scheme"]
-	system = args_dict["system"]
-	testset = args_dict["testset"]
-	runtest = args_dict["runtest"]
-	sysyaml = args_dict["sysyaml"]
-	ebyaml = args_dict["ebyaml"]
-	jobtemplate = args_dict["job_template"]
-	submitjob = args_dict["submitjob"]
+	bt_opts = parser.parse_options()
 
-	if version is True:
+	if bt_opts.version:
 		buildtest_version()
 		sys.exit(0)
 
-	if check_setup is True:
+	if bt_opts.check_setup:
 		check_buildtest_setup()
 		sys.exit(1)
 
-	if runtest is True:
+	if bt_opts.runtest:
 		runtest_menu()
 	
-	if scan is True:
+	if bt_opts.scantest:
 		scantest()
 
-	if list_toolchain_flag is True:
+	if bt_opts.list_toolchain is True:
                 toolchain_set=list_toolchain()
                 text = """ \n
                          List of Toolchains:
@@ -116,7 +89,7 @@ def main():
 
                 sys.exit(0)
 
-        if list_unique_software is True:
+        if bt_opts.list_unique_software:
                 software_set=get_unique_software()
                 text =  """ \n
                        List of Unique Software:
@@ -126,53 +99,52 @@ def main():
 
                 sys.exit(0)
 
-        if sw_ver_relation is True:
+        if bt_opts.software_version_relation:
                 software_dict = software_version_relation()
 		print_software_version_relation(software_dict)
                 sys.exit(0)
 
-	if jobtemplate is not None:
-		if not os.path.isfile(jobtemplate):
-			print "Cant file job template file", jobtemplate
+	if bt_opts.job_template is not None:
+		if not os.path.isfile(bt_opts.job_template):
+			print "Cant file job template file", bt_opts.job_template
 			sys.exit(1)
 
 		# checking if extension is job template file extension is valid to detect type of scheduler
-		if os.path.splitext(jobtemplate)[1]  not in BUILDTEST_JOB_EXTENSION:
+		if os.path.splitext(bt_opts.job_template)[1]  not in BUILDTEST_JOB_EXTENSION:
 			print "Invalid file extension, must be one of the following extension", BUILDTEST_JOB_EXTENSION
 			sys.exit(1)
-	if submitjob is not None:
-		submit_job_to_scheduler(submitjob)
+	if bt_opts.submitjob is not None:
+		submit_job_to_scheduler(bt_opts.submitjob)
 		sys.exit(0)
 
-	if sysyaml is not None:
-		create_system_yaml(sysyaml)
+	if bt_opts.sysyaml is not None:
+		create_system_yaml(bt_opts.sysyaml)
 	
-	if ebyaml != None:
+	if bt_opts.ebyaml != None:
 		raise NotImplementedError
 
 
 	# when no argument is specified to -fc then output all yaml files
-	if findconfig == "all": 
+	if bt_opts.findconfig == "all": 
 		find_all_yaml_configs()
 		sys.exit(0)
 	# find yaml configs by argument instead of reporting all yaml files
-	elif findconfig is not None:
-		find_yaml_configs_by_arg(findconfig)
+	elif bt_opts.findconfig is not None:
+		find_yaml_configs_by_arg(bt_opts.findconfig)
 		sys.exit(0)
 	# report all buildtest generated test scripts
-	if findtest == "all":
+	if bt_opts.findtest == "all":
 		find_all_tests()
 		sys.exit(0)
 	# find test by argument instead of all tests
-	elif findtest is not None:
-		find_tests_by_arg(findtest)
+	elif bt_opts.findtest is not None:
+		find_tests_by_arg(bt_opts.findtest)
 		sys.exit(0)
 
 
-	os.environ["BUILDTEST_LOGDIR"] = os.path.join(BUILDTEST_ROOT,"log")
-	os.environ["BUILDTEST_LOGFILE"] = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
-	logdir =  os.environ["BUILDTEST_LOGDIR"]
-	logfile = os.environ["BUILDTEST_LOGFILE"]
+	#os.environ["BUILDTEST_LOGFILE"] = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
+	logdir =  BUILDTEST_LOGDIR
+	logfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
 
 	logpath = os.path.join(logdir,logfile)
 	
@@ -200,43 +172,47 @@ def main():
 
 
 	# if log directory is not created then create directory recursively
-	if not os.path.exists(os.environ["BUILDTEST_LOGDIR"]):
-		os.makedirs(os.environ["BUILDTEST_LOGDIR"], 0755 )
-		logger.warning("Directory not found: %s will create it", os.environ["BUILDTEST_LOGDIR"])
+	if not os.path.exists(BUILDTEST_LOGDIR):
+		os.makedirs(BUILDTEST_LOGDIR, 0755 )
+		logger.warning("Directory not found: %s will create it", BUILDTEST_LOGDIR)
 
 	# generate system pkg test
-	if system is not None:
-		if system == "all":
-			systempkg = system
+	if bt_opts.system is not None:
+		if bt_opts.system == "all":
+			systempkg = bt_opts.system
 			logger.info("Generating all system package tests from YAML files in %s", os.path.join(BUILDTEST_SOURCEDIR,"system"))
 
-			os.environ["BUILDTEST_LOGDIR"] = os.path.join(logdir,"system","all")
+			logdir = os.path.join(logdir,"system","all")
 			systempkg_list = os.listdir(os.path.join(BUILDTEST_SOURCEDIR,"system"))
 
 			logger.info("List of system packages to test: %s ", systempkg_list)
 
 			for pkg in systempkg_list:
-				generate_binary_test(args_dict,pkg)
+				generate_binary_test(bt_opts,pkg)
 		else:
-			systempkg = system
-			os.environ["BUILDTEST_LOGDIR"] = os.path.join(logdir,"system",systempkg)
-			generate_binary_test(args_dict,systempkg)
+			systempkg = bt_opts.system
+			logdir = os.path.join(logdir,"system",systempkg)
+			generate_binary_test(bt_opts,systempkg)
 
+		if not os.path.exists(logdir):
+			os.makedirs(logdir,0755)
+			logger.warning("Creating directory %s, to write log file", logdir)
 
-		destpath = os.path.join(os.environ["BUILDTEST_LOGDIR"],logfile)
+		destpath = os.path.join(logdir,logfile)
 		os.rename(logpath, destpath)
-		
-		print "Writing Log file to:", os.path.join(os.environ["BUILDTEST_LOGDIR"],logfile)
+		logger.info("Moving log file from %s to %s", logpath, destpath)
+
+		print "Writing Log file to:", destpath
 		sys.exit(0)
 	# when -s is specified
-	if software != None:
-		software=software.split("/")
+	if bt_opts.software is not None:
+		software=bt_opts.software.split("/")
 
 
-                if toolchain == None:
-                        toolchain = "dummy/dummy"
-
-                toolchain=toolchain.split("/")
+		if bt_opts.toolchain is None:
+			toolchain="dummy/dummy".split("/")
+		else:
+	                toolchain=bt_opts.toolchain.split("/")
 
 		appname=get_appname()
 		appversion=get_appversion()
@@ -252,18 +228,6 @@ def main():
 
 		logger.debug("Checking if software: %s/%s exists",appname,appversion)
 
-		# checking if software exists
-		software_exists(software)
-	
-
-		# only check toolchain argument with module tree if its not dummy toolchain
-		if ["dummy","dummy"] != toolchain:
-			# checking if toolchain argument has a valid module file
-			software_exists(toolchain)
-
-		# checking if its a valid toolchain 
-		toolchain_exists(toolchain)
-	
 
 		# check that the software,toolchain match the easyconfig.
 		ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR)
@@ -281,14 +245,14 @@ def main():
 		logger.debug("Config Directory: %s ", configdir)
 		logger.debug("Code Directory: %s", codedir)
 
-		generate_binary_test(args_dict,None)
+		generate_binary_test(bt_opts,None)
 
 		# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
 		recursive_gen_test(configdir,codedir)
 	
 		# if flag --testset is set, then 
-		if testset is not  None:
-			run_testset(args_dict, testset)
+		if bt_opts.testset is not  None:
+			run_testset(bt_opts)
 	
 		if not os.path.exists(logdir):
 			os.makedirs(logdir)

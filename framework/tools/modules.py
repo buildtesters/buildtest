@@ -35,8 +35,7 @@ This python module does the following
 import os
 
 from framework.env import BUILDTEST_MODULE_NAMING_SCHEME,BUILDTEST_MODULE_EBROOT
-from framework.tools.menu import buildtest_menu
-from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+#from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 
 def get_module_list():
@@ -51,13 +50,12 @@ def get_module_list():
 	return modulefiles
 
 
-def load_modules():
+def load_modules(shell_type):
         """
         return a string that loads the software and toolchain module.
         """
-	args_dict = 	buildtest_menu()
-	shell_type = args_dict["shell"]
 	
+	from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 	shell_magic = "#!/" + os.path.join("bin",shell_type)
 
         appname = get_appname()
