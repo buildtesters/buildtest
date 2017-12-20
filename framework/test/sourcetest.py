@@ -28,6 +28,13 @@ source test has 1 YAML file and generates only 1 test
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
+
+import re
+import sys
+import os
+import logging
+from shutil import copyfile
+
 from framework.env import  BUILDTEST_TESTDIR, logID
 from framework.test.compiler import get_compiler
 from framework.test.function import add_arg_to_runcmd
@@ -37,13 +44,6 @@ from framework.tools.cmake import  add_test_to_CMakeLists
 from framework.tools.parser.yaml_config import parse_config
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.menu import buildtest_menu
-
-
-import re
-import sys
-import os
-import logging
-from shutil import copyfile
 
 
 def recursive_gen_test(configdir,codedir):

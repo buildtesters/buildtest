@@ -319,6 +319,7 @@ def eb_menu(ebpkg):
 	else:
 		testdir = os.path.join(ebpkg,app_selected,toolchain_selected)
 
+	
 	args_dict = buildtest_menu()
 
 	output_list = []

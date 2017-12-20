@@ -20,19 +20,22 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-from framework.env import BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_MODULE_EBROOT, logID
-from framework.tools.menu import buildtest_menu
-from framework.tools.modules import get_module_list
-from framework.tools.utility import sset
-import os
-import sys
-import logging
 
 """
 Application & Toolchain name & version query functions
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
+
+import os
+import sys
+import logging
+
+from framework.env import BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_MODULE_EBROOT, logID
+from framework.tools.menu import buildtest_menu
+from framework.tools.modules import get_module_list
+from framework.tools.utility import sset
+
 def get_appname():
 	args_dict = buildtest_menu()
 	software = get_arg_software(args_dict)

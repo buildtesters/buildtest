@@ -24,12 +24,13 @@
 This file generates the job script
 :author: Shahzeb Siddiqui (Pfizer)
 """
-from framework.env import BUILDTEST_ROOT
 from shutil import copyfile
 import os
 import glob
 import subprocess
 import sys
+
+from framework.env import BUILDTEST_ROOT
 def detect_scheduler():
 	""" detect scheduler for host system"""
 	SCHEDULER_LSF = "LSF"
