@@ -73,8 +73,8 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
 
 	logger = logging.getLogger(logID)
 	
-	args_dict = buildtest_menu()
-	shell_type = args_dict["shell"]
+	args_dict = buildtest_menu().parse_options()
+	shell_type = args_dict.shell
 
 	appname = get_appname()
 	appversion = get_appversion()
@@ -115,7 +115,7 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
         fd.close()
 	logger.debug("Updating File " + cmakelist + " with: " + add_test_str + "\n")
 
-def setup_software_cmake(args_dict):
+def setup_software_cmake():
 
 	logger = logging.getLogger(logID)
 
@@ -216,7 +216,7 @@ def setup_software_cmake(args_dict):
 
 	return test_destdir,test_toolchain_version_cmakelist
 
-def setup_system_cmake(args_dict,pkg):
+def setup_system_cmake(pkg):
 	 # top level system directory and system package directory
         test_system_dir=os.path.join(BUILDTEST_TESTDIR,"system")
         test_destdir=os.path.join(BUILDTEST_TESTDIR,"system",pkg)

@@ -55,8 +55,8 @@ def generate_binary_test(args_dict,pkg):
         toplevel_cmakelist_file=os.path.join(BUILDTEST_ROOT,"CMakeLists.txt")
         testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
 	
-	software = args_dict["software"]
-	system = args_dict["system"]
+	software = args_dict.software
+	system = args_dict.system
 
         #software=get_arg_software(args_dict)
         #system=get_arg_system(args_dict)
@@ -111,7 +111,9 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         """
 
         logger = logging.getLogger(logID)
-
+	shell_type = ""
+	if args_dict.shell:
+		shell_type = args_dict.shell
         if test_type == "software":
 
                 name = get_appname()
@@ -119,17 +121,17 @@ def process_binary_file(filename,args_dict,test_type,pkg):
                 toolchain_name = get_toolchain_name()
                 toolchain_version = get_toolchain_version()
 
-                test_destdir,test_destdir_cmakelist = setup_software_cmake(args_dict)
+                test_destdir,test_destdir_cmakelist = setup_software_cmake()
 
 
 		print "[BINARYTEST]: Processing YAML file for ", os.path.join(name,version), os.path.join(toolchain_name,toolchain_version), " at ", filename
                # load preamble for test-script that initializes environment.
-                header=load_modules()
+                header=load_modules(shell_type)
 
         else:
-                system=args_dict["system"]
+                system=args_dict.system
 		print "[BINARYTEST]: Processing YAML file for ", pkg , " at ", filename
-                test_destdir,test_destdir_cmakelist = setup_system_cmake(args_dict,pkg)
+                test_destdir,test_destdir_cmakelist = setup_system_cmake(pkg)
 
 
 
@@ -148,8 +150,6 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         # keep track of number of binary test
         count = 0
 
-	if args_dict["shell"]:
-		shell_type = args_dict["shell"]
         for key in binarydict:
                 count = count + 1
                 name_str=key.replace(" ","_")
@@ -202,8 +202,8 @@ def process_binary_file(filename,args_dict,test_type,pkg):
                 fd.write(add_test_str)
 		fd.close()
 
-		if args_dict["job_template"] != None:
-			generate_job(testpath,shell_type,args_dict["job_template"])
+		if args_dict.job_template is not None:
+			generate_job(testpath,shell_type,args_dict.job_template)
 
         print
         if test_type == "system":

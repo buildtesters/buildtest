@@ -132,8 +132,8 @@ def generate_source_test(configmap,codedir,subdir):
 		if os.path.exists(destdir) == False:
 			os.makedirs(destdir)
 
-	args_dict = buildtest_menu()
-	shell_type = args_dict["shell"]
+	args_dict = buildtest_menu().parse_options()
+	shell_type = args_dict.shell
 	# testname is key value "name" with .sh extension
 	testname=configmap["name"]+"."+shell_type
 	testpath=os.path.join(destdir,testname)
@@ -180,7 +180,7 @@ def generate_source_test(configmap,codedir,subdir):
 
 	# write the preamble to test-script to initialize app environment using module cmds
 	fd=open(testpath,'w')
-	header=load_modules()
+	header=load_modules(shell_type)
 	fd.write(header)
 	
 	# string used for generating the compilation step
@@ -336,8 +336,8 @@ def generate_source_test(configmap,codedir,subdir):
 			logger.debug("runextracmd: %s", str(configmap["runextracmd"]))
 	fd.close()
 
-        if args_dict["job_template"] != None:
-		generate_job(testpath,shell_type,args_dict["job_template"])
+        if args_dict.job_template != None:
+		generate_job(testpath,shell_type,args_dict.job_template)
 
 
     	# by default run the commands below which will add the test to CMakeLists.txt and update the logfile

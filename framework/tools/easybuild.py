@@ -248,39 +248,3 @@ def check_software_version_in_easyconfig(easyconfig_repo):
                 logger.debug("ERROR: FAILED to pass all checks!")
                 sys.exit(1)
 
-def toolchain_exists(toolchain):
-        """
-        checks to see if toolchain passed on command line exist in toolchain list
-        """
-        success_msg = "Checking Toolchain: " + toolchain[0] + "/" + toolchain[1] + " ... SUCCESS"
-        fail_msg = "Checking Toolchain: " + toolchain[0] + "/" + toolchain[1] + " ... FAILED"
-
-        logger = logging.getLogger(logID)
-
-        # catch all exception cases for invalid value for -t flag
-        if len(toolchain) != 2:
-                print fail_msg
-                msg =  "Too many arguments, -t takes argument <toolchain-name>,<toolchain-version> \n"
-                print msg
-                logger.error("%s", msg)
-                sys.exit(1)
-
-        toolchain_list=list_toolchain()
-        tcname = toolchain[0]
-        tcversion = toolchain[1]
-        toolchain_name = tcname + "/" + tcversion
-
-        # report error if toolchain is not found in toolchain list. toolchain list only
-        # contains the name of toolchain and not the version
-        if tcname not in toolchain_list:
-                print fail_msg
-                msg = "Can't find toolchain: " + tcname + "\n"
-                print msg
-                logger.error("%s", msg)
-                sys.exit(1)
-
-        msg = "Toolchain + " + toolchain_name + " found in system"
-        logger.info("%s",msg)
-        print success_msg
-        logger.info("%s",success_msg)
-

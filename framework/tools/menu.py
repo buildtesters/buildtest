@@ -28,7 +28,7 @@ import argparse
 import argcomplete
 from framework.env import BUILDTEST_SHELLTYPES
 from framework.tools.system import systempackage_list, systempackage_installed_list
-
+from framework.tools.software import get_software_stack, get_toolchain_stack
 
 syspkg_list = systempackage_list()
 # adding "all" as parameter to run all system package test
@@ -36,8 +36,13 @@ syspkg_list.append("all")
 
 pkglist = systempackage_installed_list()
 
+
+software_list = get_software_stack()
+toolchain_list = get_toolchain_stack()
 class buildtest_menu():
+
 	parser = {}
+
 	def __init__(self):
 	# reports an error, issue with import 
 	#software_list = get_unique_software_version(BUILDTEST_MODULE_EBROOT)
@@ -63,8 +68,8 @@ in eb stack and system packages""", action="store_true")
 					     To find all test scripts use -ft all """)
 	
 		group3 = parser.add_argument_group('Test Options', 'Options for building tests with buildtest')
-		group3.add_argument("-s", "--software", help=" Specify software package to test")
-		group3.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package")
+		group3.add_argument("-s", "--software", help=" Specify software package to test", choices=software_list, metavar='INSTALLED-EASYBUILD-APPS')
+		group3.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=toolchain_list, metavar='INSTALLED-EASYBUILD-TOOLCHAINS')
 		group3.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES, default="sh")
 		group3.add_argument("--system", help=""" Build test for system packages
 				 To build all system package test use --system all """, choices=syspkg_list, metavar='SYSTEM-PACKAGE')
@@ -82,6 +87,7 @@ in eb stack and system packages""", action="store_true")
 
 		group6 = parser.add_argument_group('Miscellaneous Options', 'rest of buildtest options')
 		group6.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
+		self.parser = parser
 	
 	#argcomplete.autocomplete(parser)
 	#args = parser.parse_args()
@@ -89,11 +95,11 @@ in eb stack and system packages""", action="store_true")
    	#return vars(args)
 
 
-	def parse_options(self,parser):
+	def parse_options(self):
 		""" return argument as a dictionary"""
 
-		argcomplete.autocomplete(parser)
-		args = parser.parse_args()
-		return vars(args)
+		argcomplete.autocomplete(self.parser)
+		args = self.parser.parse_args()
+		return args
 
 

@@ -28,7 +28,7 @@ from framework.tools.cmake import add_test_to_CMakeLists, setup_software_cmake
 from framework.test.sourcetest import recursive_gen_test
 from framework.test.job import generate_job
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
-from framework.env import BUILDTEST_SOURCEDIR, BUILDTEST_PYTHON_DIR, BUILDTEST_R_DIR, BUILDTEST_PYTHON_DIR, BUILDTEST_RUBY_DIR, BUILDTEST_TCL_DIR,BUILDTEST_TESTDIR
+from framework.env import BUILDTEST_SOURCEDIR, BUILDTEST_PYTHON_DIR, BUILDTEST_R_DIR, BUILDTEST_PYTHON_DIR, BUILDTEST_RUBY_DIR, BUILDTEST_PERL_DIR, BUILDTEST_TCL_DIR,BUILDTEST_TESTDIR
 from framework.env import PYTHON_APPS, MPI_APPS, logID
 from framework.tools.menu import buildtest_menu
 
@@ -39,7 +39,7 @@ don't require any YAML files.
 :author: Shahzeb Siddiqui (Pfizer)
 
 """
-def run_testset(arg_dict,testset):
+def run_testset(arg_dict):
 	""" checks the testset parameter to determine which set of scripts to use to create tests """
 
 
@@ -50,33 +50,33 @@ def run_testset(arg_dict,testset):
 	logcontent = ""
 	runtest = False
 
-	if appname in PYTHON_APPS and testset == "Python":
+	if appname in PYTHON_APPS and arg_dict.testset == "Python":
 	        source_app_dir=os.path.join(BUILDTEST_PYTHON_DIR,"python")
                 runtest=True
     
-        if appname in ["Perl"] and testset == "Perl":
+        if appname in ["Perl"] and arg_dict.testset == "Perl":
         	source_app_dir=os.path.join(BUILDTEST_PERL_DIR,"perl")
                 runtest=True
 
         # condition to run R testset
-        if appname in ["R"] and testset == "R":
+        if appname in ["R"] and arg_dict.testset == "R":
         	source_app_dir=os.path.join(BUILDTEST_R_DIR,"R")
                 runtest=True
 
 
         # condition to run R testset
-        if appname in ["Ruby"] and testset == "Ruby":
+        if appname in ["Ruby"] and arg_dict.testset == "Ruby":
                 source_app_dir=os.path.join(BUILDTEST_RUBY_DIR,"ruby")
                 runtest=True
 
 
         # condition to run R testset
-        if appname in ["Tcl"] and testset == "Tcl":
+        if appname in ["Tcl"] and arg_dict.testset == "Tcl":
                 source_app_dir=os.path.join(BUILDTEST_TCL_DIR,"Tcl")
                 runtest=True
 
 	# for MPI we run recursive_gen_test since it processes YAML files
-	if appname in MPI_APPS and testset == "MPI":
+	if appname in MPI_APPS and arg_dict.testset == "MPI":
 		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"mpi")
 		configdir=os.path.join(source_app_dir,"config")
 		codedir=os.path.join(source_app_dir,"code")
@@ -95,16 +95,15 @@ def testset_generator(arg_dict, codedir):
         tcname=get_toolchain_name()
 	tcver=get_toolchain_version()
 
-	args_dict = buildtest_menu()
-	shell_type = args_dict["shell"]
-
+	args_dict = buildtest_menu().parse_options()
+	
 	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
 	cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
 	
 	# setup CMakeList in all subdirectories for the app if CMakeList.txt was not generated from
 	# binary test 
 	if not os.path.exists(cmakelist):
-		setup_software_cmake(arg_dict)
+		setup_software_cmake()
 
 	if os.path.isdir(codedir):
 		for root,subdirs,files in os.walk(codedir):
@@ -142,10 +141,10 @@ def testset_generator(arg_dict, codedir):
 				if not os.path.exists(subdirpath):
 					os.makedirs(subdirpath)
 
-				testname = fname + "." + shell_type
+				testname = fname + "." + args_dict.shell
 				testpath = os.path.join(subdirpath,testname)
 				fd = open(testpath,'w')
-				header=load_modules()
+				header=load_modules(args_dict.shell)
 				fd.write(header)
 				fd.write(cmd)
 				fd.close()
@@ -156,8 +155,8 @@ def testset_generator(arg_dict, codedir):
 				logger.info(msg)
 				count = count + 1
 
-        			if args_dict["job_template"] != None:
-					generate_job(testpath,shell_type,args_dict["job_template"])
+        			if args_dict.job_template != None:
+					generate_job(testpath,shell_type,args_dict.job_template)
 
 			print "Generating ", count, "tests for ", os.path.basename(root)
 
