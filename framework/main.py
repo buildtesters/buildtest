@@ -29,6 +29,11 @@ The entry point to buildtest
 
 import sys
 import os
+import subprocess
+import argparse
+import logging
+from datetime import datetime
+import glob
 sys.path.insert(0,os.path.abspath('.'))
 
 
@@ -51,12 +56,7 @@ from framework.tools.utility import  print_set
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.version import buildtest_version
 
-
-import subprocess
-import argparse
-import logging
-from datetime import datetime
-import glob
+BUILDTEST_ARGLIST = {}
 
 def main():
 	module=""
@@ -65,7 +65,11 @@ def main():
 	#BUILDTEST_SOFTWARELIST = get_unique_software_version(BUILDTEST_MODULE_EBROOT)
 	#print BUILDTEST_SOFTWARELIST
 
-	args_dict = buildtest_menu()
+	parser = buildtest_menu()
+	print parser.parse_options(), type(parser.parse_options())
+	sys.exit(0)
+	BUILDTEST_ARGLIST = parse_options(parser)
+	args_dict = parse_options(parser)
 	# convert args into a dictionary
 	#args_dict = vars(args)
 	

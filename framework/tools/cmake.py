@@ -25,13 +25,16 @@ the tests.
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
+
+
+import os
+import shutil 
+import logging
+
 from framework.env import BUILDTEST_TESTDIR, logID
 from framework.tools.file import create_dir, create_file,string_in_file
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.menu import buildtest_menu
-import shutil 
-import logging
-import os
 
 def init_CMakeList(filename):
         """

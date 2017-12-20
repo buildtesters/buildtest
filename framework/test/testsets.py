@@ -19,7 +19,10 @@
 #    You should have received a copy of the GNU General Public License 
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
 ############################################################################# 
-#from framework.parser import *
+
+import os
+import logging
+
 from framework.tools.modules import load_modules
 from framework.tools.cmake import add_test_to_CMakeLists, setup_software_cmake
 from framework.test.sourcetest import recursive_gen_test
@@ -28,8 +31,6 @@ from framework.tools.utility import get_appname, get_appversion, get_toolchain_n
 from framework.env import BUILDTEST_SOURCEDIR, BUILDTEST_PYTHON_DIR, BUILDTEST_R_DIR, BUILDTEST_PYTHON_DIR, BUILDTEST_RUBY_DIR, BUILDTEST_TCL_DIR,BUILDTEST_TESTDIR
 from framework.env import PYTHON_APPS, MPI_APPS, logID
 from framework.tools.menu import buildtest_menu
-import os
-import logging
 
 """
 This python module is used with the flag --testset to create test scripts that 

@@ -32,11 +32,11 @@ This python module does the following
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
+import os
 
 from framework.env import BUILDTEST_MODULE_NAMING_SCHEME,BUILDTEST_MODULE_EBROOT
 from framework.tools.menu import buildtest_menu
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
-import os
 
 
 def get_module_list():
