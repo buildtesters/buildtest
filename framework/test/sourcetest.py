@@ -38,7 +38,7 @@ from shutil import copyfile
 from framework.env import  BUILDTEST_TESTDIR, logID
 from framework.test.compiler import get_compiler
 from framework.test.function import add_arg_to_runcmd
-from framework.test.job import generate_job
+from framework.test.job import generate_job, generate_job_by_config
 from framework.tools.modules import load_modules
 from framework.tools.cmake import  add_test_to_CMakeLists
 from framework.tools.parser.yaml_config import parse_config
@@ -336,8 +336,15 @@ def generate_source_test(configmap,codedir,subdir):
 			logger.debug("runextracmd: %s", str(configmap["runextracmd"]))
 	fd.close()
 
+
+	if "scheduler" in configmap:
+		generate_job_by_config(testpath,shell_type, configmap)
+
         if args_dict.job_template != None:
-		generate_job(testpath,shell_type,args_dict.job_template)
+		# generate job script based on template, if "scheduler" found in
+		# then module below will do nothing and taken care off by 
+		# generate_job_by_config
+		generate_job(testpath,shell_type,args_dict.job_template,configmap)
 
 
     	# by default run the commands below which will add the test to CMakeLists.txt and update the logfile

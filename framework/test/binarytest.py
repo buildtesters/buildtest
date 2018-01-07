@@ -163,11 +163,11 @@ def process_binary_file(filename,args_dict,test_type,pkg):
                 logger.debug("Creating and Opening  test file: %s for writing ",  testpath)
                 fd=open(testpath,'w')
 
-		shell_magic = "#!/" + os.path.join("bin",shell_type)
-		fd.write(shell_magic + "\n")
                 if test_type == "software":
                         fd.write(header)
                 else:
+			shell_magic = "#!/" + os.path.join("bin",shell_type)
+			fd.write(shell_magic + "\n")
                         fd.write("module purge \n")
                 fd.write(key)
                 fd.close()
@@ -203,7 +203,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
 		fd.close()
 
 		if args_dict.job_template is not None:
-			generate_job(testpath,shell_type,args_dict.job_template)
+			generate_job(testpath,shell_type,args_dict.job_template, content)
 
         print
         if test_type == "system":
