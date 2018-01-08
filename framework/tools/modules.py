@@ -32,31 +32,30 @@ This python module does the following
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
-
-from framework.env import BUILDTEST_MODULE_NAMING_SCHEME
-from framework.tools.menu import buildtest_menu
-from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 import os
 
+from framework.env import BUILDTEST_MODULE_NAMING_SCHEME,BUILDTEST_MODULE_EBROOT
+#from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
-def get_module_list(moduletree):
+
+def get_module_list():
 	"""
-	returns a complete list of modules found in module tree
+	returns a complete list of modules and full path in module tree
 	"""
-	find_cmd_module=os.popen("find " + moduletree + " -type f """).read()
-        modulelist=find_cmd_module.rstrip().split('\n')
-	return modulelist
+	modulefiles = []
+	for root, dirs, files in os.walk(BUILDTEST_MODULE_EBROOT):
+		for file in files:
+			modulefiles.append(os.path.join(root,file))
+
+	return modulefiles
 
 
-
-def load_modules():
+def load_modules(shell_type):
         """
         return a string that loads the software and toolchain module.
         """
-	args = 	buildtest_menu()
-	args_dict = vars(args)
-	shell_type = args_dict["shell"]
 	
+	from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 	shell_magic = "#!/" + os.path.join("bin",shell_type)
 
         appname = get_appname()

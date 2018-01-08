@@ -39,7 +39,7 @@ field={
 	'source':'',
 	'envvars':'',
 	'args':'',
-	'scheduler':['slurm','lsf','pbs'],
+	'scheduler':['SLURM','LSF','PBS'],
 	'buildopts':'',
 	'buildcmd':'',
 	'inputfile':'',
@@ -51,7 +51,8 @@ field={
 	'cuda':'enabled',
 	'nproc': '',
 	'threadrange':'',
-	'procrange':''
+	'procrange':'',
+	'jobslots':'',
 	
 }
 
@@ -90,7 +91,7 @@ def parse_config(filename,codedir):
 			if content[key] not in field["scheduler"]:
 				print "Invalid scheduler option: ", key, " Please select on of the following:" , field["scheduler"]
 				sys.exit(1)
-		if key == "nproc" or key == "iter":
+		if key == "nproc" or key == "iter" or key =="jobslots":
 			# checking whether value of nproc and iter is integer
 			if not str(content[key]).isdigit(): 
 				print key + " key must be an integer value"

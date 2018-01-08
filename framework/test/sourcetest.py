@@ -28,16 +28,6 @@ source test has 1 YAML file and generates only 1 test
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
-from framework.env import  BUILDTEST_TESTDIR, logID
-from framework.test.compiler import get_compiler
-from framework.test.function import add_arg_to_runcmd
-from framework.test.job import generate_job
-from framework.tools.modules import load_modules
-from framework.tools.cmake import  add_test_to_CMakeLists
-from framework.tools.parser.yaml_config import parse_config
-from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
-from framework.tools.menu import buildtest_menu
-
 
 import re
 import sys
@@ -45,14 +35,28 @@ import os
 import logging
 from shutil import copyfile
 
+from framework.env import  BUILDTEST_TESTDIR, logID
+from framework.test.compiler import get_compiler
+from framework.test.function import add_arg_to_runcmd
+from framework.test.job import generate_job, generate_job_by_config
+from framework.tools.modules import load_modules
+from framework.tools.cmake import  add_test_to_CMakeLists
+from framework.tools.parser.yaml_config import parse_config
+from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+from framework.tools.menu import buildtest_menu
+
 
 def recursive_gen_test(configdir,codedir):
-        """ if config directory exists then process .yaml files to build source test """
-        logger = logging.getLogger(logID)
+        """ if config directory exists then process all .yaml files to build source test """
 
-        logger.debug("Processing all YAML files in %s", configdir)
-
+	# only process yaml files if configdir directory is found
         if os.path.isdir(configdir):
+
+        	logger = logging.getLogger(logID)
+
+	        logger.debug("Processing all YAML files in %s", configdir)
+
+		print "[SOURCETEST]: Processing all YAML files in ", configdir
                 count = 0
                 for root,subdirs,files in os.walk(configdir):
 
@@ -78,14 +82,22 @@ def recursive_gen_test(configdir,codedir):
                                 count = count + 1
                                 generate_source_test(configmap,code_destdir,subdir)
 
-                print "Generating " + str(count) + " Source Tests "
+		appname=get_appname()
+		appver=get_appversion()
+		tcname=get_toolchain_name()
+		tcver=get_toolchain_version()
+		destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
+
+                print "Generating " + str(count) + " Source Tests and writing at ", destdir
+	else:
+		return
 
 # generate test for source
 def generate_source_test(configmap,codedir,subdir):
 	"""
 	This function generates the tests that requires compilation for EB apps. The
 	tests are written <software>/<version>/<toolchain-name>/<toolchain-version>.
-	The test script is named according to "name" key tag with the extension ".sh"
+	The test script is named according to "name" key tag with the shell extension 
 	CMakeLists.txt has an entry for each test that executes the shell-script. Most
 	test requires a compilation step, while every test requires a execution stage. 
 	This is done via buildcmd and runcmd tags in YAML for explicit builds. buildtest
@@ -120,9 +132,8 @@ def generate_source_test(configmap,codedir,subdir):
 		if os.path.exists(destdir) == False:
 			os.makedirs(destdir)
 
-	args = buildtest_menu()
-	args_dict = vars(args)
-	shell_type = args_dict["shell"]
+	args_dict = buildtest_menu().parse_options()
+	shell_type = args_dict.shell
 	# testname is key value "name" with .sh extension
 	testname=configmap["name"]+"."+shell_type
 	testpath=os.path.join(destdir,testname)
@@ -169,7 +180,7 @@ def generate_source_test(configmap,codedir,subdir):
 
 	# write the preamble to test-script to initialize app environment using module cmds
 	fd=open(testpath,'w')
-	header=load_modules()
+	header=load_modules(shell_type)
 	fd.write(header)
 	
 	# string used for generating the compilation step
@@ -325,8 +336,15 @@ def generate_source_test(configmap,codedir,subdir):
 			logger.debug("runextracmd: %s", str(configmap["runextracmd"]))
 	fd.close()
 
-        if args_dict["job_template"] != None:
-		generate_job(testpath,shell_type,args_dict["job_template"])
+
+	if "scheduler" in configmap:
+		generate_job_by_config(testpath,shell_type, configmap)
+
+        if args_dict.job_template != None:
+		# generate job script based on template, if "scheduler" found in
+		# then module below will do nothing and taken care off by 
+		# generate_job_by_config
+		generate_job(testpath,shell_type,args_dict.job_template,configmap)
 
 
     	# by default run the commands below which will add the test to CMakeLists.txt and update the logfile
@@ -360,7 +378,6 @@ def generate_source_test(configmap,codedir,subdir):
 		testpath_testname = os.path.join(destdir,testname).replace("\n",'')
 		os.rename(testpath,testpath_testname)
 		out = "Rename Iteration Test: " +  testpath +  " -> " +  testpath_testname
-		print out
 		logger.debug("%s",out)
 		# writing test to CMakeLists.txt
 		add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
@@ -382,7 +399,7 @@ def generate_source_test(configmap,codedir,subdir):
 			dest_testpathname=os.path.join(destdir,testname).replace('\n','')
 			copyfile(src_testpath,dest_testpathname)
 			out = "Iteration Test: " + dest_testpathname 
-			print out
+			logger.info("%s",out)
 			logger.debug("Adding test: %s to CMakeList", testname)
 			add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 

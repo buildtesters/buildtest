@@ -26,11 +26,10 @@ the scripts
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
-
 import os
 
 # read the BUILDTEST env vars from the shell environment that is sourced by setup.sh
-BUILDTEST_VERSION="1.2.0"
+BUILDTEST_VERSION="1.2.1"
 BUILDTEST_ROOT = os.environ['BUILDTEST_ROOT']
 BUILDTEST_SOURCEDIR = os.environ['BUILDTEST_SOURCEDIR']
 BUILDTEST_EASYCONFIGDIR = os.environ['BUILDTEST_EASYCONFIGDIR']
@@ -44,6 +43,8 @@ BUILDTEST_RUBY_DIR = os.environ['BUILDTEST_RUBY_DIR']
 BUILDTEST_TCL_DIR = os.environ['BUILDTEST_TCL_DIR']
 
 BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm", ".pbs"]
+BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
+
 PYTHON_APPS = ["Python","Anaconda2", "Anaconda3"]
 MPI_APPS = ["OpenMPI", "MPICH","MVAPICH2", "intel", "impi"]
 

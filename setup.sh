@@ -53,3 +53,4 @@ export BUILDTEST_RUBY_DIR
 export BUILDTEST_TCL_DIR
 
 export PATH=$PWD:${PATH}
+eval "$(register-python-argcomplete buildtest)"
