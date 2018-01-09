@@ -104,7 +104,7 @@ def testset_generator(arg_dict, codedir):
 	# binary test 
 	if not os.path.exists(cmakelist):
 		setup_software_cmake()
-
+	emptylist = []
 	if os.path.isdir(codedir):
 		for root,subdirs,files in os.walk(codedir):
 
@@ -156,7 +156,7 @@ def testset_generator(arg_dict, codedir):
 				count = count + 1
 
         			if args_dict.job_template != None:
-					generate_job(testpath,shell_type,args_dict.job_template)
+					generate_job(testpath,args_dict.shell,args_dict.job_template,emptylist)
 
 			print "Generating ", count, "tests for ", os.path.basename(root)
 
