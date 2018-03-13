@@ -26,12 +26,6 @@ from framework.env import BUILDTEST_MODULE_NAMING_SCHEME
 """
 :author: Shahzeb Siddiqui (Pfizer) 
 """
-def print_set(setcollection):
-        """
-        prints the content of set 
-        """
-        for item in setcollection:
-                print item
 class sset(set):
     def __str__(self):
         return ', '.join([str(i) for i in self])

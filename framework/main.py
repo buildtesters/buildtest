@@ -49,10 +49,9 @@ from framework.tools.find import find_all_tests, find_tests_by_arg
 from framework.tools.easybuild import list_toolchain, check_software_version_in_easyconfig
 from framework.tools.generate_yaml import create_system_yaml
 from framework.tools.menu import buildtest_menu
-from framework.tools.print_functions import print_software_version_relation
+from framework.tools.print_functions import print_software_version_relation, print_software, print_toolchain
 from framework.tools.scan import scantest
 from framework.tools.software import get_unique_software, software_version_relation 
-from framework.tools.utility import  print_set
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.version import buildtest_version
 
@@ -81,21 +80,13 @@ def main():
 
 	if bt_opts.list_toolchain is True:
                 toolchain_set=list_toolchain()
-                text = """ \n
-                         List of Toolchains:
-                         -------------------- \n"""
-                print text
-                print_set(toolchain_set)
+                print_toolchain(toolchain_set)
 
                 sys.exit(0)
 
         if bt_opts.list_unique_software:
                 software_set=get_unique_software()
-                text =  """ \n
-                       List of Unique Software:
-                       ---------------------------- \n """
-                print text
-                print_set(software_set)
+		print_software(software_set)
 
                 sys.exit(0)
 

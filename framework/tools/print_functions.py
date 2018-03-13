@@ -25,11 +25,6 @@ from framework.tools.utility import sset
 def print_software_version_relation(software_dict):
 
         text = """
-                        ------------------------------------------
-                        |      Software Version Relationship     |
-                        ------------------------------------------
-
-
  ID  |        Software            |      Versions
 -----|----------------------------|----------------------------- """
 	print text
@@ -40,4 +35,27 @@ def print_software_version_relation(software_dict):
 		count = count + 1
 		for value in sset(software_dict[key]):
 	        	print (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t" +  value
+			
 
+def print_software(software_set):
+	count = 1
+	text =  """
+ID  |     Software
+----|-----------------------------  """
+
+	print text
+	for item in software_set:
+		print (str(count) + "\t|").expandtabs(4), "\t" + item 
+		count = count + 1
+
+
+def print_toolchain(toolchain_set):
+	count = 1
+	text =  """
+ID  |     Toolchains
+----|-----------------------------  """
+
+	print text
+	for item in toolchain_set:
+		print (str(count) + "\t|").expandtabs(4), "\t" + item 
+		count = count + 1
