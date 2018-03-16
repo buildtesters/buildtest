@@ -52,7 +52,7 @@ class buildtest_menu():
 
                 group1.add_argument("--check-setup", help="Check buildtest configuration and determine if you have it setup properly for testing",action="store_true")
 
-                group1.add_argument("--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
+                group1.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
                 group1.add_argument("--scantest", help=""" Report all tests that can be built with buildtest by checking all available apps found
 in eb stack and system packages""", action="store_true")
                 parser.add_argument("-V", "--version", help="show program version number and exit",action="store_true")
@@ -101,5 +101,3 @@ in eb stack and system packages""", action="store_true")
                 argcomplete.autocomplete(self.parser)
                 args = self.parser.parse_args()
                 return args
-
-

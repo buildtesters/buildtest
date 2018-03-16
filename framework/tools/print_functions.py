@@ -20,7 +20,7 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-from framework.tools.utility import sset 
+from framework.tools.utility import sset
 
 def print_software_version_relation(software_dict):
 
@@ -32,10 +32,10 @@ def print_software_version_relation(software_dict):
 	keylist = software_dict.keys()
 	keylist.sort()
         for key in keylist:
-		count = count + 1
+		id = id + 1
 		for value in sset(software_dict[key]):
-	        	print (str(count) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t" +  value
-			
+	        	print (str(id) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t" +  value
+
 
 def print_software(software_set):
 	count = 1
@@ -45,9 +45,11 @@ ID  |     Software
 
 	print text
 	for item in software_set:
-		print (str(count) + "\t|").expandtabs(4), "\t" + item 
+		print (str(count) + "\t|").expandtabs(4), "\t" + item
 		count = count + 1
 
+
+    print "Total Software Packages: ", count
 
 def print_toolchain(toolchain_set):
 	count = 1
@@ -57,5 +59,5 @@ ID  |     Toolchains
 
 	print text
 	for item in toolchain_set:
-		print (str(count) + "\t|").expandtabs(4), "\t" + item 
+		print (str(count) + "\t|").expandtabs(4), "\t" + item
 		count = count + 1

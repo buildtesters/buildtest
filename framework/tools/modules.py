@@ -1,24 +1,24 @@
-############################################################################ 
-# 
-#  Copyright 2017 
-# 
+############################################################################
+#
+#  Copyright 2017
+#
 #   https://github.com/HPC-buildtest/buildtest-framework
-# 
-#  This file is part of buildtest. 
-# 
-#    buildtest is free software: you can redistribute it and/or modify 
-#    it under the terms of the GNU General Public License as published by 
-#    the Free Software Foundation, either version 3 of the License, or 
-#    (at your option) any later version. 
-# 
-#    buildtest is distributed in the hope that it will be useful, 
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of 
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-#    GNU General Public License for more details. 
-# 
-#    You should have received a copy of the GNU General Public License 
-#    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
-############################################################################# 
+#
+#  This file is part of buildtest.
+#
+#    buildtest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    buildtest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
 
 """
 This python module does the following
@@ -33,6 +33,7 @@ This python module does the following
 :author: Shahzeb Siddiqui (Pfizer)
 """
 import os
+import sys
 
 from framework.env import BUILDTEST_MODULE_NAMING_SCHEME,BUILDTEST_MODULE_EBROOT
 #from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
@@ -42,19 +43,37 @@ def get_module_list():
 	"""
 	returns a complete list of modules and full path in module tree
 	"""
-	modulefiles = []
-	for root, dirs, files in os.walk(BUILDTEST_MODULE_EBROOT):
-		for file in files:
-			modulefiles.append(os.path.join(root,file))
+
+	# if there is no : then there is only one module tree
+	if BUILDTEST_MODULE_EBROOT.find(":") == 0:
+		if not os.path.exists(BUILDTEST_MODULE_EBROOT):
+			print "Invalid module tree: ", BUILDTEST_MODULE_EBROOT
+			sys.exit(0)
+
+		for root, dirs, files in os.walk(BUILDTEST_MODULE_EBROOT):
+			for file in files:
+				modulefiles.append(os.path.join(root,file))
+
+	# more than one module tree, process each module tree and return list of module files
+	else:
+		mod_trees = BUILDTEST_MODULE_EBROOT.split(":")
+		for moduletree in mod_trees:
+			# check if each module tree is valid path
+			if not os.path.exists(moduletree):
+				print "Invalid module tree", moduletree
+				sys.exit(0)
+
+			for root, dirs, files in os.walk(BUILDTEST_MODULE_EBROOT):
+				for file in files:
+					modulefiles.append(os.path.join(root,file))
 
 	return modulefiles
-
 
 def load_modules(shell_type):
         """
         return a string that loads the software and toolchain module.
         """
-	
+
 	from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 	shell_magic = "#!/" + os.path.join("bin",shell_type)
 
@@ -85,4 +104,3 @@ module purge
 
         header = header + moduleload
         return header
-
