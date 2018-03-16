@@ -51,14 +51,13 @@ from framework.tools.generate_yaml import create_system_yaml
 from framework.tools.menu import buildtest_menu
 from framework.tools.print_functions import print_software_version_relation, print_software, print_toolchain
 from framework.tools.scan import scantest
-from framework.tools.software import get_unique_software, software_version_relation 
+from framework.tools.software import get_unique_software, software_version_relation
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.version import buildtest_version
 
 def main():
 	""" entry point to buildtest """
-	#module=""
-	#version=""
+
 
 
 	parser = buildtest_menu()
@@ -74,7 +73,7 @@ def main():
 
 	if bt_opts.runtest:
 		runtest_menu()
-	
+
 	if bt_opts.scantest:
 		scantest()
 
@@ -110,13 +109,13 @@ def main():
 
 	if bt_opts.sysyaml is not None:
 		create_system_yaml(bt_opts.sysyaml)
-	
+
 	if bt_opts.ebyaml != None:
 		raise NotImplementedError
 
 
 	# when no argument is specified to -fc then output all yaml files
-	if bt_opts.findconfig == "all": 
+	if bt_opts.findconfig == "all":
 		find_all_yaml_configs()
 		sys.exit(0)
 	# find yaml configs by argument instead of reporting all yaml files
@@ -138,8 +137,8 @@ def main():
 	logfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
 
 	logpath = os.path.join(logdir,logfile)
-	
-	# if log directory is not created do it automatically. Typically first run in buildtest will 
+
+	# if log directory is not created do it automatically. Typically first run in buildtest will
 	# after git clone will run into this condition
 	if not os.path.exists(logdir):
 		os.makedirs(logdir)
@@ -208,7 +207,7 @@ def main():
 		appname=get_appname()
 		appversion=get_appversion()
 		tcname = get_toolchain_name()
-		tcversion = get_toolchain_version()	
+		tcversion = get_toolchain_version()
 
 		logger.debug("Generating Test from EB Application")
 
@@ -223,7 +222,7 @@ def main():
 		# check that the software,toolchain match the easyconfig.
 		ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR)
 		# generate_binary_test(software,toolchain,verbose)
-	
+
 		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)
 
 	        configdir=os.path.join(source_app_dir,"config")
@@ -240,20 +239,19 @@ def main():
 
 		# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
 		recursive_gen_test(configdir,codedir)
-	
-		# if flag --testset is set, then 
+
+		# if flag --testset is set, then
 		if bt_opts.testset is not  None:
 			run_testset(bt_opts)
-	
+
 		if not os.path.exists(logdir):
 			os.makedirs(logdir)
 
 		# moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to $BUILDTEST_LOGDIR/app/appver/tcname/tcver/buildtest_%H_%M_%d_%m_%Y.log
-		os.rename(logpath, os.path.join(logdir,logfile))	
+		os.rename(logpath, os.path.join(logdir,logfile))
 		logger.debug("Writing Log file to %s", os.path.join(logdir,logfile))
-		
+
 		print "Writing Log file: ", os.path.join(logdir,logfile)
 
 if __name__ == "__main__":
         main()
-
