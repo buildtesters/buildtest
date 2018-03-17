@@ -35,7 +35,7 @@ This python module does the following
 import os
 import sys
 
-from framework.env import BUILDTEST_MODULE_NAMING_SCHEME,BUILDTEST_MODULE_EBROOT
+from framework.main import BUILDTEST_MODULE_NAMING_SCHEME,BUILDTEST_MODULE_EBROOT
 #from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 
@@ -43,6 +43,7 @@ def get_module_list():
 	"""
 	returns a complete list of modules and full path in module tree
 	"""
+	modulefiles = []
 
 	# if there is no : then there is only one module tree
 	if BUILDTEST_MODULE_EBROOT.find(":") == 0:
@@ -63,7 +64,7 @@ def get_module_list():
 				print "Invalid module tree", moduletree
 				sys.exit(0)
 
-			for root, dirs, files in os.walk(BUILDTEST_MODULE_EBROOT):
+			for root, dirs, files in os.walk(moduletree):
 				for file in files:
 					modulefiles.append(os.path.join(root,file))
 

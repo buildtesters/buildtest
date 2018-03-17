@@ -29,7 +29,8 @@ This module generates yaml configuration files
 import os
 import sys
 import yaml
-from framework.env import BUILDTEST_SOURCEDIR, BUILDTEST_MODULE_EBROOT
+from framework.env import BUILDTEST_SOURCEDIR
+from framework.main import BUILDTEST_MODULE_EBROOT
 from framework.tools.software import get_unique_software
 from framework.tools.system import check_system_package_installed, get_binaries_from_systempackage
 def create_system_yaml(name):

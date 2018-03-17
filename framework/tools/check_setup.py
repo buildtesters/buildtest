@@ -30,8 +30,9 @@ import subprocess
 import time
 import logging
 import os
-from framework.env import BUILDTEST_ROOT, BUILDTEST_EASYCONFIGDIR, BUILDTEST_MODULE_EBROOT, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR, BUILDTEST_MODULE_NAMING_SCHEME
+from framework.env import BUILDTEST_ROOT, BUILDTEST_EASYCONFIGDIR, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR
 from framework.env import BUILDTEST_R_DIR, BUILDTEST_PYTHON_DIR, BUILDTEST_PERL_DIR, BUILDTEST_RUBY_DIR, BUILDTEST_TCL_DIR
+from framework.main import BUILDTEST_MODULE_EBROOT, BUILDTEST_MODULE_NAMING_SCHEME
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 def check_buildtest_setup():

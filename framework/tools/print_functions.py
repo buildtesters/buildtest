@@ -28,13 +28,17 @@ def print_software_version_relation(software_dict):
  ID  |        Software            |      Versions
 -----|----------------------------|----------------------------- """
 	print text
-	count = 0
+	id = 0
 	keylist = software_dict.keys()
 	keylist.sort()
+	modulecnt = 0
         for key in keylist:
 		id = id + 1
 		for value in sset(software_dict[key]):
 	        	print (str(id) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t" +  value
+			modulecnt += 1
+
+	print "Total Software Modules Found: ", modulecnt
 
 
 def print_software(software_set):
@@ -49,7 +53,7 @@ ID  |     Software
 		count = count + 1
 
 
-    print "Total Software Packages: ", count
+    	print "Total Software Packages: ", count
 
 def print_toolchain(toolchain_set):
 	count = 1

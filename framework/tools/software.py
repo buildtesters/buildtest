@@ -31,7 +31,8 @@ import os
 import sys
 import logging
 
-from framework.env import BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_MODULE_EBROOT, logID
+from framework.env import logID
+from framework.main import BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_MODULE_EBROOT
 from framework.tools.easybuild import list_toolchain
 from framework.tools.modules import get_module_list
 from framework.tools.utility import sset

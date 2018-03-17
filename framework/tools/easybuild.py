@@ -29,7 +29,8 @@ import os
 import re
 import sys
 import logging
-from framework.env import logID, BUILDTEST_MODULE_NAMING_SCHEME
+from framework.env import logID
+from framework.main import BUILDTEST_MODULE_NAMING_SCHEME
 from framework.tools.file import stripHiddenFile, isHiddenFile
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 def list_toolchain():
@@ -116,6 +117,8 @@ def check_software_version_in_easyconfig(easyconfig_repo):
         tcversion = get_toolchain_version()
 
         logger = logging.getLogger(logID)
+
+	print BUILDTEST_MODULE_NAMING_SCHEME
 
         # if user is testing a software package that is a hidden module file, strip the leading "." for checking
         if isHiddenFile(appversion):

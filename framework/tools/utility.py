@@ -21,7 +21,9 @@
 ############################################################################# 
 
 
-from framework.env import BUILDTEST_MODULE_NAMING_SCHEME
+#from framework.env import BUILDTEST_MODULE_NAMING_SCHEME
+
+from framework.main import BUILDTEST_MODULE_NAMING_SCHEME
 #from framework.tools.menu import buildtest_menu
 """
 :author: Shahzeb Siddiqui (Pfizer) 

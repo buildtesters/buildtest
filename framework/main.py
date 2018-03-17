@@ -32,12 +32,13 @@ import os
 import subprocess
 import argparse
 import logging
+import configparser
 from datetime import datetime
 import glob
 sys.path.insert(0,os.path.abspath('.'))
 
 
-from framework.env import BUILDTEST_ROOT, BUILDTEST_LOGDIR, BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR, BUILDTEST_MODULE_EBROOT, BUILDTEST_EASYCONFIGDIR, BUILDTEST_JOB_EXTENSION, logID
+from framework.env import BUILDTEST_ROOT, BUILDTEST_LOGDIR, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR, BUILDTEST_EASYCONFIGDIR, BUILDTEST_JOB_EXTENSION, logID
 from framework.runtest import runtest_menu
 from framework.test.binarytest import generate_binary_test
 from framework.test.job import submit_job_to_scheduler
@@ -55,10 +56,17 @@ from framework.tools.software import get_unique_software, software_version_relat
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.version import buildtest_version
 
+global BUILDTEST_MODULE_EBROOT
+global BUILDTEST_MODULE_NAMING_SCHEME
+
 def main():
 	""" entry point to buildtest """
 
-
+	config = configparser.ConfigParser()
+	print config.sections()
+	config.read('config.ini')
+	BUILDTEST_MODULE_EBROOT = config['DEFAULT']['BUILDTEST_MODULE_EBROOT']
+	BUILDTEST_MODULE_NAMING_SCHEME = config['DEFAULT']['BUILDTEST_MODULE_NAMING_SCHEME']
 
 	parser = buildtest_menu()
 	bt_opts = parser.parse_options()
@@ -70,6 +78,10 @@ def main():
 	if bt_opts.check_setup:
 		check_buildtest_setup()
 		sys.exit(1)
+	
+	if bt_opts.module_naming_scheme:
+		framework.env.BUILDTEST_MODULE_NAMING_SCHEME = bt_opts.module_naming_scheme
+		print framework.env.BUILDTEST_MODULE_NAMING_SCHEME
 
 	if bt_opts.runtest:
 		runtest_menu()
