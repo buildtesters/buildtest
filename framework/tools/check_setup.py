@@ -30,9 +30,7 @@ import subprocess
 import time
 import logging
 import os
-from framework.env import BUILDTEST_ROOT, BUILDTEST_EASYCONFIGDIR, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR
-from framework.env import BUILDTEST_R_DIR, BUILDTEST_PYTHON_DIR, BUILDTEST_PERL_DIR, BUILDTEST_RUBY_DIR, BUILDTEST_TCL_DIR
-from framework.main import BUILDTEST_MODULE_EBROOT, BUILDTEST_MODULE_NAMING_SCHEME
+from framework.env import BUILDTEST_ROOT, BUILDTEST_TESTDIR, config_opts
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 def check_buildtest_setup():
@@ -40,6 +38,17 @@ def check_buildtest_setup():
 	Reports buildtest configuration and checks each BUILDTEST environment variable and check
 	for module environment
 	"""
+
+	BUILDTEST_MODULE_EBROOT = config_opts['DEFAULT']['BUILDTEST_MODULE_EBROOT']
+	BUILDTEST_MODULE_NAMING_SCHEME = config_opts['DEFAULT']['BUILDTEST_MODULE_NAMING_SCHEME']
+	BUILDTEST_EASYCONFIG_REPO = config_opts['DEFAULT']['BUILDTEST_EASYCONFIG_REPO']
+	BUILDTEST_CONFIGS_REPO = config_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
+	BUILDTEST_PYTHON_REPO = config_opts['DEFAULT']['BUILDTEST_PYTHON_REPO']
+	BUILDTEST_PERL_REPO = config_opts['DEFAULT']['BUILDTEST_PERL_REPO']
+	BUILDTEST_R_REPO = config_opts['DEFAULT']['BUILDTEST_R_REPO']
+	BUILDTEST_RUBY_REPO = config_opts['DEFAULT']['BUILDTEST_RUBY_REPO']
+	BUILDTEST_TCL_REPO = config_opts['DEFAULT']['BUILDTEST_TCL_REPO']
+
         print "=============================================="
         print "buildtest configuration check"
         print "=============================================="
@@ -57,11 +66,11 @@ def check_buildtest_setup():
 
 
         time.sleep(0.2)
-        if not os.path.exists(BUILDTEST_SOURCEDIR):
+        if not os.path.exists(BUILDTEST_CONFIGS_REPO):
                 ec = 1
-                print "STATUS: BUILDTEST_SOURCEDIR is not set ... FAILED"
+                print "STATUS: BUILDTEST_CONFIGS_REPO is not set ... FAILED"
         else:
-                print "STATUS: BUILDTEST_SOURCEDIR ... PASSED"
+                print "STATUS: BUILDTEST_CONFIGS_REPO ... PASSED"
 
 
         time.sleep(0.2)
@@ -82,11 +91,11 @@ def check_buildtest_setup():
 
 
         time.sleep(0.2)
-        if not os.path.exists(BUILDTEST_EASYCONFIGDIR):
+        if not os.path.exists(BUILDTEST_EASYCONFIG_REPO):
                 ec = 1
-                print "STATUS: BUILDTEST_EASYCONFIGDIR is not set ... FAILED"
+                print "STATUS: BUILDTEST_EASYCONFIG_REPO is not set ... FAILED"
         else:
-                print "STATUS: BUILDTEST_EASYCONFIGDIR ... PASSED"
+                print "STATUS: BUILDTEST_EASYCONFIG_REPO ... PASSED"
 
 
         time.sleep(0.2)
@@ -100,42 +109,42 @@ def check_buildtest_setup():
 
 
         time.sleep(0.2)
-        if not os.path.exists(BUILDTEST_R_DIR):
+        if not os.path.exists(BUILDTEST_R_REPO):
                 ec = 1
-                print "STATUS: BUILDTEST_R_DIR is not set"
+                print "STATUS: BUILDTEST_R_REPO is not set"
         else:
-                print "STATUS: BUILDTEST_R_DIR ... PASSED"
+                print "STATUS: BUILDTEST_R_REPO ... PASSED"
 
 
         time.sleep(0.2)
-        if not os.path.exists(BUILDTEST_PERL_DIR):
+        if not os.path.exists(BUILDTEST_PERL_REPO):
                 ec = 1
-                print "STATUS: BUILDTEST_PERL_DIR is not set ... FAILED"
+                print "STATUS: BUILDTEST_PERL_REPO is not set ... FAILED"
         else:
-                print "STATUS: BUILDTEST_PERL_DIR ... PASSED"
+                print "STATUS: BUILDTEST_PERL_REPO ... PASSED"
 
 
         time.sleep(0.2)
-        if not os.path.exists(BUILDTEST_PYTHON_DIR):
+        if not os.path.exists(BUILDTEST_PYTHON_REPO):
                 ec = 1
-                print "STATUS: BUILDTEST_PYTHON_DIR is not set ... FAILED"
+                print "STATUS: BUILDTEST_PYTHON_REPO is not set ... FAILED"
         else:
-                print "STATUS: BUILDTEST_PYTHON_DIR ... PASSED"
+                print "STATUS: BUILDTEST_PYTHON_REPO ... PASSED"
 
         time.sleep(0.2)
-        if not os.path.exists(BUILDTEST_RUBY_DIR):
+        if not os.path.exists(BUILDTEST_RUBY_REPO):
                 ec = 1
-                print "STATUS: BUILDTEST_RUBY_DIR is not set ... FAILED"
+                print "STATUS: BUILDTEST_RUBY_REPO is not set ... FAILED"
         else:
-                print "STATUS: BUILDTEST_RUBY_DIR ... PASSED"
+                print "STATUS: BUILDTEST_RUBY_REPO ... PASSED"
 
 
         time.sleep(0.2)
-        if not os.path.exists(BUILDTEST_TCL_DIR):
+        if not os.path.exists(BUILDTEST_TCL_REPO):
                 ec = 1
-                print "STATUS: BUILDTEST_TCL_DIR is not set ... FAILED"
+                print "STATUS: BUILDTEST_TCL_REPO is not set ... FAILED"
         else:
-                print "STATUS: BUILDTEST_TCL_DIR ... PASSED"
+                print "STATUS: BUILDTEST_TCL_REPO ... PASSED"
 
         if ec == 0:
                 print "buildtest environment variable PASSED!"
@@ -173,4 +182,3 @@ def check_buildtest_setup():
 
         if ec == 0:
                 print "System detected environment-modules found package - ", outputmsg
-

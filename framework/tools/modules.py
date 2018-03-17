@@ -35,7 +35,7 @@ This python module does the following
 import os
 import sys
 
-from framework.main import BUILDTEST_MODULE_NAMING_SCHEME,BUILDTEST_MODULE_EBROOT
+from framework.env import config_opts
 #from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 
@@ -44,7 +44,7 @@ def get_module_list():
 	returns a complete list of modules and full path in module tree
 	"""
 	modulefiles = []
-
+	BUILDTEST_MODULE_EBROOT = config_opts['DEFAULT']['BUILDTEST_MODULE_EBROOT']
 	# if there is no : then there is only one module tree
 	if BUILDTEST_MODULE_EBROOT.find(":") == 0:
 		if not os.path.exists(BUILDTEST_MODULE_EBROOT):
@@ -83,6 +83,7 @@ def load_modules(shell_type):
         tcname = get_toolchain_name()
         tcversion = get_toolchain_version()
 
+	BUILDTEST_MODULE_NAMING_SCHEME = config_opts['DEFAULT']['BUILDTEST_MODULE_NAMING_SCHEME']
 	header = shell_magic
         header+= """
 module purge

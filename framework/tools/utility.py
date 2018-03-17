@@ -1,32 +1,30 @@
-############################################################################ 
-# 
-#  Copyright 2017 
-# 
+############################################################################
+#
+#  Copyright 2017
+#
 #   https://github.com/HPC-buildtest/buildtest-framework
-# 
-#  This file is part of buildtest. 
-# 
-#    buildtest is free software: you can redistribute it and/or modify 
-#    it under the terms of the GNU General Public License as published by 
-#    the Free Software Foundation, either version 3 of the License, or 
-#    (at your option) any later version. 
-# 
-#    buildtest is distributed in the hope that it will be useful, 
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of 
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-#    GNU General Public License for more details. 
-# 
-#    You should have received a copy of the GNU General Public License 
-#    along with buildtest.  If not, see <http://www.gnu.org/licenses/>. 
-############################################################################# 
+#
+#  This file is part of buildtest.
+#
+#    buildtest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    buildtest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
 
 
-#from framework.env import BUILDTEST_MODULE_NAMING_SCHEME
-
-from framework.main import BUILDTEST_MODULE_NAMING_SCHEME
+from framework.env import config_opts
 #from framework.tools.menu import buildtest_menu
 """
-:author: Shahzeb Siddiqui (Pfizer) 
+:author: Shahzeb Siddiqui (Pfizer)
 """
 class sset(set):
     def __str__(self):
@@ -46,6 +44,7 @@ def get_appversion():
         args_dict = buildtest_menu().parse_options()
         software = args_dict.software
         software = software.split('/')
+        BUILDTEST_MODULE_NAMING_SCHEME = config_opts['DEFAULT']['BUILDTEST_MODULE_NAMING_SCHEME']
         if BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
                 tc = get_toolchain()
                 appversion = software[1].replace(tc,'')
@@ -86,5 +85,3 @@ def get_toolchain_version():
         else:
                 toolchain = toolchain.split("/")
                 return toolchain[1]
-
-

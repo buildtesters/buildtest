@@ -42,7 +42,7 @@ def systempkg_menu(systempkg):
         while True:
 
 		os.system("clear")
-		
+
         	text = """
 
         =========================================
@@ -83,14 +83,14 @@ def systempkg_menu(systempkg):
                         print "Invalid format for user input, please type a number"
                         time.sleep(1)
                         continue
-		
+
 		userinput = int(userinput)
                 if userinput >= 0 and userinput < count:
                         break
 		else:
 			print "Invalid entry, please try again"
 			time.sleep(1.0)
-		
+
         print "Selecting Package: " + dirs[userinput]
 	systempkg_test_menu(systempkg, dirs[userinput])
 
@@ -119,7 +119,7 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 	while True:
 		os.system("clear")
 		count = 0
-		print 
+		print
 		print ("\t" + "System Package: ").expandtabs(40), pkg_name
                 print
 		print """
@@ -133,7 +133,7 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 		testcount = count
 		print "\
 		------------------------------------------------------------------------------ "
-	
+
 		userinput = userprompt()
 
 		if userinput.lower() == "e":
@@ -155,23 +155,23 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 				failed_test = failed_test + failtest
 
 			total_tests = passed_test + failed_test
-			passrate = float(passed_test) * 100.0 / float(total_tests) 
-			failrate = float(failed_test) * 100.0 / float(total_tests) 
+			passrate = float(passed_test) * 100.0 / float(total_tests)
+			failrate = float(failed_test) * 100.0 / float(total_tests)
 
 			print passrate, "% of tests passed -  ", passed_test, "/", total_tests
 			print failrate, "% of tests failed - " , failed_test, "/", total_tests
 
-	
+
 			time.sleep(3)
 			continue
-		
+
                 # check if user prompt is not integer, report error
                 if not userinput.isdigit():
                         print "Invalid format for user input, please type a number"
                         time.sleep(1)
                         continue
 
-		
+
 		userinput = int(userinput)
 
 		if userinput >= 0 and userinput < testcount:
@@ -182,7 +182,7 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 		else:
 			print "Invalid Entry, please try again."
 			time.sleep(1.0)
-	
+
 
 def eb_menu(ebpkg):
 
@@ -218,24 +218,24 @@ def eb_menu(ebpkg):
 			ver = os.path.basename(os.path.dirname(os.path.dirname(item)))
 			tcname = os.path.basename(os.path.dirname(item))
 			tcver = os.path.basename(item)
-			
+
 			app_ver = os.path.join(app,ver)
 			tcname_tcver = os.path.join(tcname,tcver)
 			app_tc_set.add(app_ver+","+tcname_tcver)
 
-		
+
 
                 # directory format $BUILDTEST_TESTDIR/ebapps/software/version/package, ebapp only 3 directories up
                 if os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(item)))) == "ebapp":
 
                         app = os.path.basename(os.path.dirname(os.path.dirname(item)))
                         ver = os.path.basename(os.path.dirname(item))
-			
+
 		        app_ver = os.path.join(app,ver)
                         toolchain = "NONE"
                         app_tc_set.add(app_ver+","+toolchain)
 
-		
+
 		# directory format $BUILDTEST_TESTDIR/ebapps/software/version/toolchainname/toolchainver/package, ebapp only 5 directories up
 		if os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(item)))))) == "ebapp":
 
@@ -306,12 +306,12 @@ def eb_menu(ebpkg):
 			print "Invalid entry, please try again"
 			time.sleep(1)
 
-		
+
 	app_selected = app_tc_set[userinput].split(",")[0]
 	toolchain_selected = app_tc_set[userinput].split(",")[1]
 
 	print "Selected  APP: ", app_selected, " TOOLCHAIN: ",  toolchain_selected
-	
+
 	os.system("clear")
 
 	if toolchain_selected == "NONE":
@@ -319,14 +319,14 @@ def eb_menu(ebpkg):
 	else:
 		testdir = os.path.join(ebpkg,app_selected,toolchain_selected)
 
-	
-	args_dict = buildtest_menu()
 
+	#args_dict = buildtest_menu().parse_options()
+    #	print args_dict, type(args_dict)
 	output_list = []
 	# adding all tests from a eb package in a list for printing
         for dirpath, subdir, files in os.walk(testdir):
         	for file in files:
-                	if file.endswith(args_dict["shell"]):
+                	if file.endswith(".sh") or file.endswith(".csh") or file.endswith(".bash"):
                         	output_list.append(os.path.join(dirpath,file))
 
 
@@ -341,13 +341,13 @@ def eb_menu(ebpkg):
 
 		for x in xrange(len(output_list)):
 			print "\t|  ".expandtabs(8), (str(x) + "\t|").expandtabs(5), (output_list[x]+"\t|").expandtabs(45)
-	
-		
+
+
 		print """\
 	---------------------------------------------------------------------------------------------------------------------------------------------------- """
 		userinput = userprompt()
-	
-		
+
+
                 if userinput.lower() == "b":
                         eb_menu(ebpkg)
                 elif userinput.lower() == "m":
@@ -359,22 +359,22 @@ def eb_menu(ebpkg):
 			total_pass = 0
 			total_fail = 0
 			for i in xrange(len(output_list)):
-				(output,passtest,failtest) = launch_test(os.path.dirname(output_list[i]),output_list[i])	
-				total_pass = total_pass + passtest 
+				(output,passtest,failtest) = launch_test(os.path.dirname(output_list[i]),output_list[i])
+				total_pass = total_pass + passtest
 				total_fail = total_fail + failtest
-			
+
 
 			total_test = total_pass + total_fail
 
-			passrate = float(total_pass) * 100.0 / float(total_test) 
-			failrate = float(total_fail) * 100.0 / float(total_test) 
+			passrate = float(total_pass) * 100.0 / float(total_test)
+			failrate = float(total_fail) * 100.0 / float(total_test)
 			print
 			print "---------------------------------------------------------"
 			print "Results:"
 			print "---------------------------------------------------------"
 			print "PASS RATE: ", passrate, "% with ", total_pass, "/", total_test
 			print "FAIL RATE: ", failrate, "% with ", total_fail, "/", total_test
-			
+
 			time.sleep(3)
 			continue
 
@@ -382,22 +382,27 @@ def eb_menu(ebpkg):
                         print "Invalid format for user input, please type a number"
                         time.sleep(1)
                         continue
-	
+
 		userinput = int(userinput)
 
 		if userinput >= 0 and userinput < len(output_list):
 			outputmsg = launch_test(os.path.dirname(output_list[userinput]),output_list[userinput])[0]
 			print outputmsg
 			time.sleep(3)
- 
+
 		else:
 			print "Invalid entry, please try again"
 
 
 def launch_test(testdir,test):
 	 os.chdir(testdir)
-	 args_dict = buildtest_menu()
-	 cmd = "time " + args_dict["shell"] + " " + test
+	 #args_dict = buildtest_menu().parse_args()
+
+         shell_type = os.path.splitext(test)[1]
+         # remove leading .
+         shell_type = shell_type[1:]
+
+	 cmd = "time " + shell_type + " " + test
          ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
          (output,errormsg) = ret.communicate()
          ec = ret.returncode
@@ -417,7 +422,7 @@ def userprompt():
 	text = """
 
                 Select Test # you want to run
-                 
+
 		______________________________
                 |  a  |  Run All Tests        |
                 |_____|_______________________|
@@ -443,26 +448,26 @@ def runtest_menu():
 	systempkg = os.path.join(testing,"system")
 	ebpkg = os.path.join(testing,"ebapp")
 
-	text = """ 
+	text = """
 		_________________________________________________________________________
-	        |\							               /|	      
+	        |\							               /|
 		| \           Welcome to buildtest Interactive Testing Menu	      / |
 	        |  \_________________________________________________________________/  |
 		|  |								     |  |
-		|  |								     |  | 
-		|  |  *****  *  *  *   *      *****  *******  ****   ****  ******    |  | 
+		|  |								     |  |
+		|  |  *****  *  *  *   *      *****  *******  ****   ****  ******    |  |
   		|  |  *   *  *  *  *   *      *    *    *     *     *         *      |  |
 		|  |  *****  *  *  *   *      *    *    *     ****   ***      *      |  |
 	        |  |  *	  *  *  *  *   *      *    *    *     *         *     *      |  |
 		|  |  *****  ****  *   *****  *****     *     ****  ****      *      |  |
 	        |  |_________________________________________________________________|  |
-		| /                                                                   \ | 
+		| /                                                                   \ |
 		|/_____________________________________________________________________\|
 
 
-		
+
 		Select an Option:
-		
+
 		_______________________________
 		|  1  |   System Packages     |
 		|_____|_______________________|
@@ -471,7 +476,7 @@ def runtest_menu():
 		|  e  |   Exit                |
 		|_____|_______________________|
 
-		
+
 
 		User Input: """
 
@@ -497,7 +502,3 @@ def runtest_menu():
 			eb_menu(ebpkg)
 		else:
 			print "Invalid Entry, please try again"
-	
-
-
-

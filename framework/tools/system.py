@@ -23,14 +23,14 @@
 """
 :author: Shahzeb Siddiqui (Pfizer)
 
-Functions for system package 
+Functions for system package
 """
 
 import os
 import stat
 from stat import S_IXUSR, S_IXGRP, S_IXOTH
 import subprocess
-from framework.env import BUILDTEST_SOURCEDIR
+from framework.env import config_opts
 
 def check_system_package_installed(pkg):
 	""" check if system package is installed and return True/False"""
@@ -43,23 +43,23 @@ def check_system_package_installed(pkg):
 		return True
 	else:
 		return False
-	
+
 def get_binaries_from_systempackage(pkg):
 	""" get binaries from system package that typically install in standard linux path and only those that are executable """
 
 	bindirs = [ "/usr/bin", "/bin", "/sbin", "/usr/sbin", "/usr/local/bin", "/usr/local/sbin" ]
 
-	cmd = "rpm -ql " + pkg  
+	cmd = "rpm -ql " + pkg
         ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
         (output,err) = ret.communicate()
-	
+
 	temp = output.splitlines()
 	output = temp
-	
+
 	binarylist = []
 
 	for file in output:
-		# if file doesn't exist but found during rpm -ql then skip file. 
+		# if file doesn't exist but found during rpm -ql then skip file.
 		if not os.path.isfile(file):
 			continue
 
@@ -73,7 +73,8 @@ def get_binaries_from_systempackage(pkg):
 	return binarylist
 
 def systempackage_list():
-	dir = os.path.join(BUILDTEST_SOURCEDIR,"system")
+	BUILDTEST_CONFIGS_REPO = config_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
+	dir = os.path.join(BUILDTEST_CONFIGS_REPO,"system")
 	return os.listdir(dir)
 
 def systempackage_installed_list():
@@ -84,6 +85,3 @@ def systempackage_installed_list():
 	# delete last element which is a ""
 	pkglist = pkglist[:-1]
 	return pkglist
-
-
-

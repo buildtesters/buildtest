@@ -32,7 +32,7 @@ import logging
 import os
 import yaml
 from shutil import copyfile
-from framework.env import BUILDTEST_ROOT, BUILDTEST_TESTDIR, BUILDTEST_SOURCEDIR, logID
+from framework.env import BUILDTEST_ROOT, BUILDTEST_TESTDIR, config_opts, logID
 from framework.test.job import generate_job
 from framework.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
@@ -54,9 +54,11 @@ def generate_binary_test(args_dict,pkg):
 
         toplevel_cmakelist_file=os.path.join(BUILDTEST_ROOT,"CMakeLists.txt")
         testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
-	
-	software = args_dict.software
-	system = args_dict.system
+
+    	software = args_dict.software
+    	system = args_dict.system
+
+        BUILDTEST_CONFIGS_REPO = config_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
 
         #software=get_arg_software(args_dict)
         #system=get_arg_system(args_dict)
@@ -65,10 +67,10 @@ def generate_binary_test(args_dict,pkg):
         if software is not None:
                 software=software.split("/")
                 appname,appversion=software
-                configdir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)
+                configdir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname)
                 test_type="software"
         elif system is not None:
-                configdir=os.path.join(BUILDTEST_SOURCEDIR,"system",pkg)
+                configdir=os.path.join(BUILDTEST_CONFIGS_REPO,"system",pkg)
                 test_type="system"
 
         commandfile=os.path.join(configdir,"command.yaml")
@@ -153,7 +155,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         for key in binarydict:
                 count = count + 1
                 name_str=key.replace(" ","_")
-		
+
 		# replace / with _ when creating testname for yaml configuration that have path name
 		name_str = name_str.replace("/","_")
 
@@ -212,5 +214,3 @@ def process_binary_file(filename,args_dict,test_type,pkg):
                 print "Generating " + str(count) + " binary tests for Application: " + name + "/" + version
 
         print "Binary Tests are written in " + test_destdir
-
-

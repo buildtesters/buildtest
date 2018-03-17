@@ -32,13 +32,12 @@ import os
 import subprocess
 import argparse
 import logging
-import configparser
 from datetime import datetime
 import glob
 sys.path.insert(0,os.path.abspath('.'))
 
 
-from framework.env import BUILDTEST_ROOT, BUILDTEST_LOGDIR, BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR, BUILDTEST_EASYCONFIGDIR, BUILDTEST_JOB_EXTENSION, logID
+from framework.env import BUILDTEST_ROOT, BUILDTEST_LOGDIR, BUILDTEST_TESTDIR, BUILDTEST_JOB_EXTENSION, logID, config_opts
 from framework.runtest import runtest_menu
 from framework.test.binarytest import generate_binary_test
 from framework.test.job import submit_job_to_scheduler
@@ -56,18 +55,15 @@ from framework.tools.software import get_unique_software, software_version_relat
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.version import buildtest_version
 
-global BUILDTEST_MODULE_EBROOT
-global BUILDTEST_MODULE_NAMING_SCHEME
-
 def main():
 	""" entry point to buildtest """
 
-	config = configparser.ConfigParser()
-	print config.sections()
-	config.read('config.ini')
-	BUILDTEST_MODULE_EBROOT = config['DEFAULT']['BUILDTEST_MODULE_EBROOT']
-	BUILDTEST_MODULE_NAMING_SCHEME = config['DEFAULT']['BUILDTEST_MODULE_NAMING_SCHEME']
 
+	BUILDTEST_MODULE_EBROOT = config_opts['DEFAULT']['BUILDTEST_MODULE_EBROOT']
+	BUILDTEST_MODULE_NAMING_SCHEME = config_opts['DEFAULT']['BUILDTEST_MODULE_NAMING_SCHEME']
+	BUILDTEST_CONFIGS_REPO = config_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
+	BUILDTEST_EASYCONFIG_REPO = config_opts['DEFAULT']['BUILDTEST_EASYCONFIG_REPO']
+	
 	parser = buildtest_menu()
 	bt_opts = parser.parse_options()
 
@@ -78,10 +74,9 @@ def main():
 	if bt_opts.check_setup:
 		check_buildtest_setup()
 		sys.exit(1)
-	
+
 	if bt_opts.module_naming_scheme:
-		framework.env.BUILDTEST_MODULE_NAMING_SCHEME = bt_opts.module_naming_scheme
-		print framework.env.BUILDTEST_MODULE_NAMING_SCHEME
+		print BUILDTEST_MODULE_NAMING_SCHEME
 
 	if bt_opts.runtest:
 		runtest_menu()
@@ -182,10 +177,10 @@ def main():
 	if bt_opts.system is not None:
 		if bt_opts.system == "all":
 			systempkg = bt_opts.system
-			logger.info("Generating all system package tests from YAML files in %s", os.path.join(BUILDTEST_SOURCEDIR,"system"))
+			logger.info("Generating all system package tests from YAML files in %s", os.path.join(BUILDTEST_CONFIGS_REPO,"system"))
 
 			logdir = os.path.join(logdir,"system","all")
-			systempkg_list = os.listdir(os.path.join(BUILDTEST_SOURCEDIR,"system"))
+			systempkg_list = os.listdir(os.path.join(BUILDTEST_CONFIGS_REPO,"system"))
 
 			logger.info("List of system packages to test: %s ", systempkg_list)
 
@@ -232,10 +227,10 @@ def main():
 
 
 		# check that the software,toolchain match the easyconfig.
-		ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIGDIR)
+		ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIG_REPO)
 		# generate_binary_test(software,toolchain,verbose)
 
-		source_app_dir=os.path.join(BUILDTEST_SOURCEDIR,"ebapps",appname)
+		source_app_dir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname)
 
 	        configdir=os.path.join(source_app_dir,"config")
 	        codedir=os.path.join(source_app_dir,"code")
@@ -249,7 +244,7 @@ def main():
 
 		generate_binary_test(bt_opts,None)
 
-		# this generates all the compilation tests found in application directory ($BUILDTEST_SOURCEDIR/ebapps/<software>)
+		# this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)
 		recursive_gen_test(configdir,codedir)
 
 		# if flag --testset is set, then

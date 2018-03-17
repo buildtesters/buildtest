@@ -31,8 +31,7 @@ import os
 import sys
 import logging
 
-from framework.env import logID
-from framework.main import BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_MODULE_EBROOT
+from framework.env import logID, config_opts
 from framework.tools.easybuild import list_toolchain
 from framework.tools.modules import get_module_list
 from framework.tools.utility import sset
@@ -42,6 +41,7 @@ def get_unique_software():
         """
         returns a set of software packages found in the module tree
         """
+        BUILDTEST_MODULE_EBROOT = config_opts['DEFAULT']['BUILDTEST_MODULE_EBROOT']
         logger = logging.getLogger(logID)
         logger.info("Traversing Module Tree: %s to find all unique software", BUILDTEST_MODULE_EBROOT)
 
@@ -89,7 +89,7 @@ def get_software_stack():
         return sorted(moduleversion_set)
 
 def get_toolchain_stack():
-	""" return a list of toolchain used as choices for -t option in 
+	""" return a list of toolchain used as choices for -t option in
 	buildtest menu"""
 
 
@@ -104,8 +104,8 @@ def get_toolchain_stack():
 		if appname in toolchains:
 			modified_toolchain_list.append(app)
 
-	return modified_toolchain_list		
-			
+	return modified_toolchain_list
+
 
 def software_version_relation():
         """

@@ -27,29 +27,31 @@ find functions for flags -fc and -ft
 :author: Shahzeb Siddiqui (Pfizer)
 """
 
-from framework.env import BUILDTEST_SOURCEDIR, BUILDTEST_TESTDIR, BUILDTEST_SHELLTYPES
+from framework.env import BUILDTEST_TESTDIR, BUILDTEST_SHELLTYPES, config_opts
 import os
 def find_all_yaml_configs():
 	""" find all yaml configs"""
 	count = 0
-	for root, dirs, files in os.walk(BUILDTEST_SOURCEDIR):
+	BUILDTEST_CONFIGS_REPO = configs_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
+	for root, dirs, files in os.walk(BUILDTEST_CONFIGS_REPO):
         	for file in files:
                 	if file.endswith(".yaml"):
 				count+=1
                         	print os.path.join(root,file)
 
-	print 			
+	print
 	print "Total YAML configs:", count
 
-def find_yaml_configs_by_arg(find_arg):	
+def find_yaml_configs_by_arg(find_arg):
 	"""find yaml configs based on argument"""
 	count = 0
- 	for root, dirs, files in os.walk(BUILDTEST_SOURCEDIR):
+	BUILDTEST_CONFIGS_REPO = configs_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
+ 	for root, dirs, files in os.walk(BUILDTEST_CONFIGS_REPO):
         	for file in files:
                 	if file.endswith(".yaml") and find_arg in os.path.basename(file):
 				count+=1
                               	print os.path.join(root,file)
-				
+
 	print
 	print "Total YAML configs: ", count
 
@@ -67,7 +69,7 @@ def find_all_tests():
 				print os.path.join(root,file)
 
 
-	print 
+	print
 	print "Total Test scripts:", count
 
 def find_tests_by_arg(find_arg):
@@ -83,7 +85,5 @@ def find_tests_by_arg(find_arg):
 				print os.path.join(root,file)
 
 
-	print 
+	print
 	print "Total Test scripts:", count
-
-

@@ -21,7 +21,7 @@
 #############################################################################
 
 """
-This module generates yaml configuration files 
+This module generates yaml configuration files
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
@@ -29,22 +29,22 @@ This module generates yaml configuration files
 import os
 import sys
 import yaml
-from framework.env import BUILDTEST_SOURCEDIR
-from framework.main import BUILDTEST_MODULE_EBROOT
+from framework.env import config_opts
 from framework.tools.software import get_unique_software
 from framework.tools.system import check_system_package_installed, get_binaries_from_systempackage
 def create_system_yaml(name):
 	""" create YAML configuration for binary test for system package """
-
+	BUILDTEST_MODULE_EBROOT = config_opts['DEFAULT']['BUILDTEST_MODULE_EBROOT']
+	BUILDTEST_CONFIGS_REPO = config_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
 	softwarelist = get_unique_software(BUILDTEST_MODULE_EBROOT)
-	destdir = os.path.join(BUILDTEST_SOURCEDIR,"system",name)
+	destdir = os.path.join(BUILDTEST_CONFIGS_REPO,"system",name)
 	yamlfile = os.path.join(destdir,"command.yaml")
 
 	# if yaml file exists then exit out
 	if os.path.isfile(yamlfile):
 		print "YAML file already exists, please check: ", yamlfile
 		sys.exit(0)
-	
+
 	# if directory is not present then create it
 	if not os.path.isdir(destdir):
 		print "creating directory ", destdir
@@ -70,4 +70,3 @@ def create_system_yaml(name):
 
 	print "Please check YAML file", yamlfile, " and fix test accordingly"
 	sys.exit(0)
-	
