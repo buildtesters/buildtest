@@ -25,6 +25,11 @@
 :author: Shahzeb Siddiqui (Pfizer)
 """
 
+import os
+import shutil
+
+from framework.env import BUILDTEST_TESTDIR
+
 def add_arg_to_runcmd(runcmd,arglist):
         # add each argument to runcmd
         for arg in arglist:
@@ -35,3 +40,9 @@ def add_arg_to_runcmd(runcmd,arglist):
                 runcmd+= " " + str(arg)
         return runcmd
 
+def clean_tests():
+    if os.path.exists(BUILDTEST_TESTDIR):
+        shutil.rmtree(BUILDTEST_TESTDIR)
+        print "Removing test directory ", BUILDTEST_TESTDIR
+    else:
+        print "BUILDTEST_TESTDIR directory does not exist, nothing to remove"
