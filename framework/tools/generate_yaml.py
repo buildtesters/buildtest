@@ -34,9 +34,8 @@ from framework.tools.software import get_unique_software
 from framework.tools.system import check_system_package_installed, get_binaries_from_systempackage
 def create_system_yaml(name):
 	""" create YAML configuration for binary test for system package """
-	BUILDTEST_MODULE_EBROOT = config_opts['DEFAULT']['BUILDTEST_MODULE_EBROOT']
-	BUILDTEST_CONFIGS_REPO = config_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
-	softwarelist = get_unique_software(BUILDTEST_MODULE_EBROOT)
+	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+
 	destdir = os.path.join(BUILDTEST_CONFIGS_REPO,"system",name)
 	yamlfile = os.path.join(destdir,"command.yaml")
 

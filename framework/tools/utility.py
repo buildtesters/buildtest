@@ -44,7 +44,7 @@ def get_appversion():
         args_dict = buildtest_menu().parse_options()
         software = args_dict.software
         software = software.split('/')
-        BUILDTEST_MODULE_NAMING_SCHEME = config_opts['DEFAULT']['BUILDTEST_MODULE_NAMING_SCHEME']
+        BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
         if BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
                 tc = get_toolchain()
                 appversion = software[1].replace(tc,'')

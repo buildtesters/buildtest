@@ -36,39 +36,26 @@ import os
 import sys
 
 from framework.env import config_opts
+from framework.tools.easybuild import get_module_ebroot
 #from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 
 def get_module_list():
-	"""
-	returns a complete list of modules and full path in module tree
-	"""
-	modulefiles = []
-	BUILDTEST_MODULE_EBROOT = config_opts['DEFAULT']['BUILDTEST_MODULE_EBROOT']
-	# if there is no : then there is only one module tree
-	if BUILDTEST_MODULE_EBROOT.find(":") == 0:
-		if not os.path.exists(BUILDTEST_MODULE_EBROOT):
-			print "Invalid module tree: ", BUILDTEST_MODULE_EBROOT
-			sys.exit(0)
+    """
+    returns a complete list of modules and full path in module tree
+    """
+    modulefiles = []
+    modtrees = get_module_ebroot()
+    for tree in modtrees:
+        for root, dirs, files in os.walk(tree):
+            for file in files:
+                # skipping files that are symbolic links
+                if os.path.islink(os.path.join(root,file)):
+                    continue
+                    
+                modulefiles.append(os.path.join(root,file))
 
-		for root, dirs, files in os.walk(BUILDTEST_MODULE_EBROOT):
-			for file in files:
-				modulefiles.append(os.path.join(root,file))
-
-	# more than one module tree, process each module tree and return list of module files
-	else:
-		mod_trees = BUILDTEST_MODULE_EBROOT.split(":")
-		for moduletree in mod_trees:
-			# check if each module tree is valid path
-			if not os.path.exists(moduletree):
-				print "Invalid module tree", moduletree
-				sys.exit(0)
-
-			for root, dirs, files in os.walk(moduletree):
-				for file in files:
-					modulefiles.append(os.path.join(root,file))
-
-	return modulefiles
+    return modulefiles
 
 def load_modules(shell_type):
         """
@@ -83,7 +70,7 @@ def load_modules(shell_type):
         tcname = get_toolchain_name()
         tcversion = get_toolchain_version()
 
-	BUILDTEST_MODULE_NAMING_SCHEME = config_opts['DEFAULT']['BUILDTEST_MODULE_NAMING_SCHEME']
+	BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
 	header = shell_magic
         header+= """
 module purge

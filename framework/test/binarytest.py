@@ -58,7 +58,7 @@ def generate_binary_test(args_dict,pkg):
     	software = args_dict.software
     	system = args_dict.system
 
-        BUILDTEST_CONFIGS_REPO = config_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
+        BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 
         #software=get_arg_software(args_dict)
         #system=get_arg_system(args_dict)

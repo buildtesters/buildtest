@@ -41,12 +41,12 @@ don't require any YAML files.
 def run_testset(arg_dict):
 	""" checks the testset parameter to determine which set of scripts to use to create tests """
 
-	BUILDTEST_CONFIGS_REPO = config_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
-	BUILDTEST_PYTHON_REPO = config_opts['DEFAULT']['BUILDTEST_PYTHON_REPO']
-	BUILDTEST_TCL_REPO = config_opts['DEFAULT']['BUILDTEST_TCL_REPO']
-	BUILDTEST_R_REPO = config_opts['DEFAULT']['BUILDTEST_R_REPO']
-	BUILDTEST_PERL_REPO = config_opts['DEFAULT']['BUILDTEST_PERL_REPO']
-	BUILDTEST_RUBY_REPO = config_opts['DEFAULT']['BUILDTEST_RUBY_REPO']
+	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+	BUILDTEST_PYTHON_REPO = config_opts['BUILDTEST_PYTHON_REPO']
+	BUILDTEST_TCL_REPO = config_opts['BUILDTEST_TCL_REPO']
+	BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
+	BUILDTEST_PERL_REPO = config_opts['BUILDTEST_PERL_REPO']
+	BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
 
 	appname = get_appname()
 

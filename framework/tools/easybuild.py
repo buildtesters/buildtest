@@ -29,9 +29,34 @@ import os
 import re
 import sys
 import logging
+import subprocess
 from framework.env import logID, config_opts
 from framework.tools.file import stripHiddenFile, isHiddenFile
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+
+# return root of module directory for all EasyBuild Trees in BUILDTEST_EBROOT
+def get_module_ebroot():
+    modroot = []
+    for tree in config_opts['BUILDTEST_EBROOT']:
+        if os.path.exists(os.path.join(tree,"modules")):
+            modroot.append(os.path.join(tree,"modules"))
+        else:
+            print "Invalid EasyBuild Tree, please check your BUILDTEST_EBROOT in config.yaml"
+            sys.exit(1)
+    return modroot
+
+# return root of software directory for all EasyBuild Trees in BUILDTEST_EBROOT
+def get_software_ebroot():
+    swroot = []
+    for tree in config_opts['BUILDTEST_EBROOT']:
+        if os.path.exists(os.path.join(tree,"software")):
+            swroot.append(os.path.join(tree,"software"))
+        else:
+            print "Invalid EasyBuild Tree, please check your BUILDTEST_EBROOT in config.yaml"
+            sys.exit(1)
+
+    return swroot
+
 def list_toolchain():
         """
         return the set of toolchains found in the easyconfig directory
@@ -103,6 +128,31 @@ def list_toolchain():
         logger.info("EB Toolchains = %s", toolchain)
 
         return toolchain
+
+def find_easyconfigs():
+        BUILDTEST_SOFTWARE_EBROOT = config_opts.get('DEFAULT','BUILDTEST_SOFTWARE_EBROOT')
+        BUILDTEST_EBROOT = config_opts['BUILDTEST_EBROOT']
+
+        swtree = get_software_ebroot()
+
+        easyconfigs = []
+
+        for tree in swtree:
+            cmd = "find " + tree + " -type f -name *.eb "
+            print "Finding easyconfigs ..."
+            ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
+            output = ret.communicate()[0]
+
+            easyconfigs =  output.splitlines()
+            print "EASYBUILD Tree:", tree
+            print "----------------------------"
+            print "$EBROOT=",tree
+            for ec in easyconfigs:
+                #print os.path.commonprefix([tree,ec]), ec
+                print ec.replace(tree,"${EBROOT}")
+
+
+
 def check_software_version_in_easyconfig(easyconfig_repo):
         """
         return True if name,version+versionsuffix,toolchain from command line is found
@@ -116,8 +166,7 @@ def check_software_version_in_easyconfig(easyconfig_repo):
         tcversion = get_toolchain_version()
 
         logger = logging.getLogger(logID)
-        BUILDTEST_MODULE_NAMING_SCHEME = config_opts['DEFAULT']['BUILDTEST_MODULE_NAMING_SCHEME']
-        print BUILDTEST_MODULE_NAMING_SCHEME
+        BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
 
         # if user is testing a software package that is a hidden module file, strip the leading "." for checking
         if isHiddenFile(appversion):

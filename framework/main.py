@@ -45,7 +45,7 @@ from framework.test.testsets import run_testset
 from framework.tools.check_setup import check_buildtest_setup
 from framework.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from framework.tools.find import find_all_tests, find_tests_by_arg
-from framework.tools.easybuild import list_toolchain, check_software_version_in_easyconfig
+from framework.tools.easybuild import list_toolchain, check_software_version_in_easyconfig,find_easyconfigs
 from framework.tools.generate_yaml import create_system_yaml
 from framework.tools.log import init_log, clean_logs
 from framework.tools.menu import buildtest_menu
@@ -59,10 +59,11 @@ def main():
     """ entry point to buildtest """
 
 
-    BUILDTEST_MODULE_EBROOT = config_opts['DEFAULT']['BUILDTEST_MODULE_EBROOT']
-    BUILDTEST_MODULE_NAMING_SCHEME = config_opts['DEFAULT']['BUILDTEST_MODULE_NAMING_SCHEME']
-    BUILDTEST_CONFIGS_REPO = config_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
-    BUILDTEST_EASYCONFIG_REPO = config_opts['DEFAULT']['BUILDTEST_EASYCONFIG_REPO']
+    #BUILDTEST_MODULE_EBROOT = config_opts['BUILDTEST_MODULE_EBROOT')
+    #BUILDTEST_EBROOT = config_opts['BUILDTEST_EBROOT')
+    #BUILDTEST_MODULE_NAMING_SCHEME = config_opts.get('DEFAULT','BUILDTEST_MODULE_NAMING_SCHEME')
+    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+    BUILDTEST_EASYCONFIG_REPO = config_opts['BUILDTEST_EASYCONFIG_REPO']
 
     parser = buildtest_menu()
     bt_opts = parser.parse_options()
@@ -76,7 +77,7 @@ def main():
 
     if bt_opts.clean_tests:
         clean_tests()
-    
+
 
     if bt_opts.check_setup:
         check_buildtest_setup()
@@ -106,6 +107,26 @@ def main():
         print_software_version_relation(software_dict)
         sys.exit(0)
 
+    if bt_opts.modules_to_easyconfigs:
+        find_easyconfigs()
+
+    # when no argument is specified to -fc then output all yaml files
+    if bt_opts.findconfig == "all":
+        find_all_yaml_configs()
+        sys.exit(0)
+    # find yaml configs by argument instead of reporting all yaml files
+    elif bt_opts.findconfig is not None:
+        find_yaml_configs_by_arg(bt_opts.findconfig)
+        sys.exit(0)
+	# report all buildtest generated test scripts
+	if bt_opts.findtest == "all":
+		find_all_tests()
+		sys.exit(0)
+	# find test by argument instead of all tests
+	elif bt_opts.findtest is not None:
+		find_tests_by_arg(bt_opts.findtest)
+		sys.exit(0)
+
     if bt_opts.job_template is not None:
         if not os.path.isfile(bt_opts.job_template):
             print "Cant file job template file", bt_opts.job_template
@@ -127,24 +148,6 @@ def main():
         raise NotImplementedError
 
 
-    # when no argument is specified to -fc then output all yaml files
-    if bt_opts.findconfig == "all":
-        find_all_yaml_configs()
-        sys.exit(0)
-    # find yaml configs by argument instead of reporting all yaml files
-    elif bt_opts.findconfig is not None:
-        find_yaml_configs_by_arg(bt_opts.findconfig)
-        sys.exit(0)
-	# report all buildtest generated test scripts
-	if bt_opts.findtest == "all":
-		find_all_tests()
-		sys.exit(0)
-	# find test by argument instead of all tests
-	elif bt_opts.findtest is not None:
-		find_tests_by_arg(bt_opts.findtest)
-		sys.exit(0)
-
-
     logger,logpath,logfile = init_log()
 
     cmd = "env | grep BUILDTEST"
@@ -162,7 +165,7 @@ def main():
             systempkg = bt_opts.system
             logger.info("Generating all system package tests from YAML files in %s", os.path.join(BUILDTEST_CONFIGS_REPO,"system"))
 
-            logdir = os.path.join(logdir,"system","all")
+            logdir = os.path.join(BUILDTEST_LOGDIR,"system","all")
             systempkg_list = os.listdir(os.path.join(BUILDTEST_CONFIGS_REPO,"system"))
 
             logger.info("List of system packages to test: %s ", systempkg_list)
@@ -171,7 +174,7 @@ def main():
                 generate_binary_test(bt_opts,pkg)
         else:
             systempkg = bt_opts.system
-            logdir = os.path.join(logdir,"system",systempkg)
+            logdir = os.path.join(BUILDTEST_LOGDIR,"system",systempkg)
             generate_binary_test(bt_opts,systempkg)
 
         if not os.path.exists(logdir):

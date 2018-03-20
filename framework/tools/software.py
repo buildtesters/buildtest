@@ -32,7 +32,7 @@ import sys
 import logging
 
 from framework.env import logID, config_opts
-from framework.tools.easybuild import list_toolchain
+from framework.tools.easybuild import list_toolchain, get_module_ebroot
 from framework.tools.modules import get_module_list
 from framework.tools.utility import sset
 
@@ -41,9 +41,10 @@ def get_unique_software():
         """
         returns a set of software packages found in the module tree
         """
-        BUILDTEST_MODULE_EBROOT = config_opts['DEFAULT']['BUILDTEST_MODULE_EBROOT']
+        modtrees = get_module_ebroot()
         logger = logging.getLogger(logID)
-        logger.info("Traversing Module Tree: %s to find all unique software", BUILDTEST_MODULE_EBROOT)
+
+        logger.info("Traversing Module Tree: %s to find all unique software", modtrees)
 
         #moduletreelist=moduletrees.split(":")
         module_set=set()

@@ -39,15 +39,15 @@ def check_buildtest_setup():
 	for module environment
 	"""
 
-	BUILDTEST_MODULE_EBROOT = config_opts['DEFAULT']['BUILDTEST_MODULE_EBROOT']
-	BUILDTEST_MODULE_NAMING_SCHEME = config_opts['DEFAULT']['BUILDTEST_MODULE_NAMING_SCHEME']
-	BUILDTEST_EASYCONFIG_REPO = config_opts['DEFAULT']['BUILDTEST_EASYCONFIG_REPO']
-	BUILDTEST_CONFIGS_REPO = config_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
-	BUILDTEST_PYTHON_REPO = config_opts['DEFAULT']['BUILDTEST_PYTHON_REPO']
-	BUILDTEST_PERL_REPO = config_opts['DEFAULT']['BUILDTEST_PERL_REPO']
-	BUILDTEST_R_REPO = config_opts['DEFAULT']['BUILDTEST_R_REPO']
-	BUILDTEST_RUBY_REPO = config_opts['DEFAULT']['BUILDTEST_RUBY_REPO']
-	BUILDTEST_TCL_REPO = config_opts['DEFAULT']['BUILDTEST_TCL_REPO']
+	BUILDTEST_MODULE_EBROOT = config_opts['BUILDTEST_EBROOT']
+	BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
+	BUILDTEST_EASYCONFIG_REPO = config_opts['BUILDTEST_EASYCONFIG_REPO']
+	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+	BUILDTEST_PYTHON_REPO = config_opts['BUILDTEST_PYTHON_REPO']
+	BUILDTEST_PERL_REPO = config_opts['BUILDTEST_PERL_REPO']
+	BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
+	BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
+	BUILDTEST_TCL_REPO = config_opts['BUILDTEST_TCL_REPO']
 
         print "=============================================="
         print "buildtest configuration check"
@@ -83,6 +83,13 @@ def check_buildtest_setup():
 
 
         time.sleep(0.2)
+        for tree in BUILDTEST_EBROOT:
+            if not os.path.exists(tree):
+                ec = 1
+                print "STATUS: BUILDTEST_EBROOT:",tree, "does  not exists"
+            else:
+                print "STATUS: BUILDTEST_EBROOT:", tree, "is valid!"
+
         if not os.path.exists(BUILDTEST_MODULE_EBROOT):
                 ec = 1
                 print "STATUS: BUILDTEST_MODULE_EBROOT is not set"

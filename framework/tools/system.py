@@ -73,7 +73,7 @@ def get_binaries_from_systempackage(pkg):
 	return binarylist
 
 def systempackage_list():
-	BUILDTEST_CONFIGS_REPO = config_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
+	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 	dir = os.path.join(BUILDTEST_CONFIGS_REPO,"system")
 	return os.listdir(dir)
 

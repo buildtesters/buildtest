@@ -27,7 +27,7 @@ find functions for flags -fc and -ft
 :author: Shahzeb Siddiqui (Pfizer)
 """
 
-from framework.env import BUILDTEST_TESTDIR, BUILDTEST_SHELLTYPES, config_opts
+from framework.env import BUILDTEST_TESTDIR, BUILDTEST_SHELLTYPES
 import os
 def find_all_yaml_configs():
 	""" find all yaml configs"""

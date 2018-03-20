@@ -27,7 +27,7 @@ the scripts
 :author: Shahzeb Siddiqui (Pfizer)
 """
 import os
-import configparser
+import yaml
 
 # read the BUILDTEST env vars from the shell environment that is sourced by setup.sh
 BUILDTEST_VERSION="0.1.9"
@@ -41,8 +41,8 @@ BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
 PYTHON_APPS = ["Python","Anaconda2", "Anaconda3"]
 MPI_APPS = ["OpenMPI", "MPICH","MVAPICH2", "intel", "impi"]
 
-config_opts = configparser.ConfigParser()
-config_opts.read('config.ini')
+fd = open('config.yaml','r')
+config_opts = yaml.load(fd)
 
 global logID
 logID = "buildtest"
