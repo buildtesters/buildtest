@@ -91,10 +91,6 @@ def main():
     if bt_opts.clean_tests:
         clean_tests()
 
-    if bt_opts.check_setup:
-        check_buildtest_setup()
-        sys.exit(0)
-
     if bt_opts.module_naming_scheme:
         print BUILDTEST_MODULE_NAMING_SCHEME
 
