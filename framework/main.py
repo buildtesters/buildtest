@@ -35,6 +35,7 @@ import glob
 sys.path.insert(0,os.path.abspath('.'))
 
 
+
 from framework.env import BUILDTEST_ROOT, BUILDTEST_JOB_EXTENSION, logID, config_opts
 from framework.runtest import runtest_menu
 from framework.test.binarytest import generate_binary_test
@@ -47,7 +48,7 @@ from framework.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from framework.tools.find import find_all_tests, find_tests_by_arg
 from framework.tools.easybuild import list_toolchain, check_software_version_in_easyconfig,find_easyconfigs
 from framework.tools.generate_yaml import create_system_yaml
-from framework.tools.log import init_log, clean_logs
+from framework.tools.log import init_log, clean_logs, update_logdir
 from framework.tools.menu import buildtest_menu
 from framework.tools.print_functions import print_software_version_relation, print_software, print_toolchain
 from framework.tools.scan import scantest
@@ -62,6 +63,7 @@ def main():
     """ entry point to buildtest """
 
 
+
     #BUILDTEST_MODULE_EBROOT = config_opts['BUILDTEST_MODULE_EBROOT')
     #BUILDTEST_EBROOT = config_opts['BUILDTEST_EBROOT')
     #BUILDTEST_MODULE_NAMING_SCHEME = config_opts.get('DEFAULT','BUILDTEST_MODULE_NAMING_SCHEME')
@@ -71,24 +73,14 @@ def main():
     parser = buildtest_menu()
     bt_opts = parser.parse_options()
 
+    check_buildtest_setup()
+
     if bt_opts.version:
         buildtest_version()
         sys.exit(0)
 
     if bt_opts.logdir:
-        if os.path.exists(bt_opts.logdir):
-            config_opts['BUILDTEST_LOGDIR']=bt_opts.logdir
-        # automatically create directory if it does not exist.
-        else:
-            # exit if it can't create directory due to permission issues or invalid path
-            try:
-                os.makedirs(bt_opts.logdir)
-            except OSError:
-                print "Unable to create log directory:", bt_opts.logdir
-                raise
-
-            print "Creating log directory: ", bt_opts.logdir
-            config_opts['BUILDTEST_LOGDIR']=bt_opts.logdir
+        update_logdir(bt_opts.logdir)
 
     if bt_opts.testdir:
          config_opts['BUILDTEST_TESTDIR'] = bt_opts.testdir

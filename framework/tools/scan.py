@@ -35,7 +35,7 @@ from framework.tools.software import get_unique_software
 def scantest():
 
 	applist = get_unique_software()
-	BUILDTEST_CONFIGS_REPO = config_opts.get('DEFAULT','BUILDTEST_CONFIGS_REPO')
+	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 	eblist_sourcedir =  os.listdir(os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps"))
 
 	ebapps_common=  set(applist) & set(eblist_sourcedir)

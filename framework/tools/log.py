@@ -55,7 +55,25 @@ def init_log():
     return logger,logpath,logfile
 
 def clean_logs():
+    """ delete log directory. this module implements --clean-logs option"""
     BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
     if os.path.exists(BUILDTEST_LOGDIR):
         shutil.rmtree(BUILDTEST_LOGDIR)
         print "Removing log directory", BUILDTEST_LOGDIR
+
+def update_logdir(logdir):
+    """ update BUILDTEST_LOGDIR with value passed by --logdir option"""
+
+    if os.path.exists(logdir):
+        config_opts['BUILDTEST_LOGDIR']=logdir
+    # automatically create directory if it does not exist.
+    else:
+        # exit if it can't create directory due to permission issues or invalid path
+        try:
+            os.makedirs(logdir)
+        except OSError:
+            print "Unable to create log directory:", logdir
+            raise
+
+        print "Creating log directory: ", logdir
+        config_opts['BUILDTEST_LOGDIR']=logdir

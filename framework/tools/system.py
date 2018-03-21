@@ -28,6 +28,7 @@ Functions for system package
 
 import os
 import stat
+import sys
 from stat import S_IXUSR, S_IXGRP, S_IXOTH
 import subprocess
 from framework.env import config_opts
@@ -73,9 +74,13 @@ def get_binaries_from_systempackage(pkg):
 	return binarylist
 
 def systempackage_list():
-	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
-	dir = os.path.join(BUILDTEST_CONFIGS_REPO,"system")
-	return os.listdir(dir)
+    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+    if not os.path.exists(BUILDTEST_CONFIGS_REPO):
+        print "Non existent directory for BUILDTEST_CONFIGS_REPO ", BUILDTEST_CONFIGS_REPO
+        sys.exit(1)
+
+    dir = os.path.join(BUILDTEST_CONFIGS_REPO,"system")
+    return os.listdir(dir)
 
 def systempackage_installed_list():
 	cmd = """ rpm -qa --qf "%{NAME}\n" """
