@@ -28,12 +28,13 @@ import shutil
 import logging
 from datetime import datetime
 
-from framework.env import BUILDTEST_LOGDIR, logID
+from framework.env import logID, config_opts
 
 def init_log():
 
 
     logfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
+    BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
 
     logpath = os.path.join(BUILDTEST_LOGDIR,logfile)
 

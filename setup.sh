@@ -21,25 +21,12 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# @author: Shahzeb Siddiqui (Pfizer)
+# author: Shahzeb Siddiqui (Pfizer)
 
 BUILDTEST_ROOT=`pwd`
-
-# module naming scheme valid options: HMNS, FNS
-#BUILDTEST_MODULE_NAMING_SCHEME="HMNS"
-
-
 BUILDTEST_TESTDIR=$BUILDTEST_ROOT"/testing"
 
-# BUILDTEST_EASYCONFIGDIR path to easybuild easyconfig directory
-# BUILDTEST_EASYCONFIG=${BUILDTEST_ROOT}/path/to/easybuild/
-
-# BUILDTEST_MODULE_EBROOT specify the root of the EB module tree
-# BUILDTEST_MODULE_EBROOT=/path/to/moduletree:/path/to/moduletree/
-
 export BUILDTEST_ROOT
-export BUILDTEST_SOURCEDIR
-#export BUILDTEST_MODULE_NAMING_SCHEME
 export BUILDTEST_TESTDIR
 
 export PATH=$PWD:${PATH}

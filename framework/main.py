@@ -72,12 +72,26 @@ def main():
         buildtest_version()
         sys.exit(0)
 
+    if bt_opts.logdir:
+        if os.path.exists(bt_opts.logdir):
+            config_opts['BUILDTEST_LOGDIR']=bt_opts.logdir
+        # automatically create directory if it does not exist.
+        else:
+            # exit if it can't create directory due to permission issues or invalid path
+            try:
+                os.makedirs(bt_opts.logdir)
+            except OSError:
+                print "Unable to create log directory:", bt_opts.logdir
+                raise
+
+            print "Creating log directory: ", bt_opts.logdir
+            config_opts['BUILDTEST_LOGDIR']=bt_opts.logdir
+
     if bt_opts.clean_logs:
         clean_logs()
 
     if bt_opts.clean_tests:
         clean_tests()
-
 
     if bt_opts.check_setup:
         check_buildtest_setup()
@@ -91,6 +105,7 @@ def main():
 
     if bt_opts.scantest:
         scantest()
+
 
     if bt_opts.list_toolchain is True:
         toolchain_set=list_toolchain()
@@ -149,6 +164,7 @@ def main():
 
 
     logger,logpath,logfile = init_log()
+    BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
 
     cmd = "env | grep BUILDTEST"
     ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -165,7 +181,7 @@ def main():
             systempkg = bt_opts.system
             logger.info("Generating all system package tests from YAML files in %s", os.path.join(BUILDTEST_CONFIGS_REPO,"system"))
 
-            logdir = os.path.join(BUILDTEST_LOGDIR,"system","all")
+            BUILDTEST_LOGDIR = os.path.join(BUILDTEST_LOGDIR,"system","all")
             systempkg_list = os.listdir(os.path.join(BUILDTEST_CONFIGS_REPO,"system"))
 
             logger.info("List of system packages to test: %s ", systempkg_list)
@@ -174,14 +190,14 @@ def main():
                 generate_binary_test(bt_opts,pkg)
         else:
             systempkg = bt_opts.system
-            logdir = os.path.join(BUILDTEST_LOGDIR,"system",systempkg)
+            BUILDTEST_LOGDIR = os.path.join(BUILDTEST_LOGDIR,"system",systempkg)
             generate_binary_test(bt_opts,systempkg)
 
-        if not os.path.exists(logdir):
-            os.makedirs(logdir,0755)
-            logger.warning("Creating directory %s, to write log file", logdir)
+        if not os.path.exists(BUILDTEST_LOGDIR):
+            os.makedirs(BUILDTEST_LOGDIR,0755)
+            logger.warning("Creating directory %s, to write log file", BUILDTEST_LOGDIR)
 
-        destpath = os.path.join(logdir,logfile)
+        destpath = os.path.join(BUILDTEST_LOGDIR,logfile)
         os.rename(logpath, destpath)
         logger.info("Moving log file from %s to %s", logpath, destpath)
 
@@ -220,12 +236,11 @@ def main():
 
         configdir=os.path.join(source_app_dir,"config")
         codedir=os.path.join(source_app_dir,"code")
-        os.environ["BUILDTEST_LOGDIR"]=os.path.join(BUILDTEST_ROOT,"log",appname,appversion,tcname,tcversion)
-        logdir=os.environ["BUILDTEST_LOGDIR"]
+        BUILDTEST_LOGDIR=os.path.join(BUILDTEST_LOGDIR,"log",appname,appversion,tcname,tcversion)
 
         # if directory tree for software is not present, create the directory
-        if not os.path.exists(logdir):
-            os.makedirs(logdir)
+        if not os.path.exists(BUILDTEST_LOGDIR):
+            os.makedirs(BUILDTEST_LOGDIR)
 
         logger.debug("Source App Directory: %s",  source_app_dir)
         logger.debug("Config Directory: %s ", configdir)
@@ -241,10 +256,10 @@ def main():
             run_testset(bt_opts)
 
         # moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to $BUILDTEST_LOGDIR/app/appver/tcname/tcver/buildtest_%H_%M_%d_%m_%Y.log
-        os.rename(logpath, os.path.join(logdir,logfile))
-        logger.debug("Writing Log file to %s", os.path.join(logdir,logfile))
+        os.rename(logpath, os.path.join(BUILDTEST_LOGDIR,logfile))
+        logger.debug("Writing Log file to %s", os.path.join(BUILDTEST_LOGDIR,logfile))
 
-        print "Writing Log file: ", os.path.join(logdir,logfile)
+        print "Writing Log file: ", os.path.join(BUILDTEST_LOGDIR,logfile)
 
 if __name__ == "__main__":
         main()
