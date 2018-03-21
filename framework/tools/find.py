@@ -27,7 +27,7 @@ find functions for flags -fc and -ft
 :author: Shahzeb Siddiqui (Pfizer)
 """
 
-from framework.env import BUILDTEST_TESTDIR, BUILDTEST_SHELLTYPES
+from framework.env import config_opts, BUILDTEST_SHELLTYPES
 import os
 def find_all_yaml_configs():
 	""" find all yaml configs"""
@@ -56,34 +56,35 @@ def find_yaml_configs_by_arg(find_arg):
 	print "Total YAML configs: ", count
 
 def find_all_tests():
-	"""find all test scripts in $BUILDTEST_TESTDIR"""
+    """find all test scripts in $BUILDTEST_TESTDIR"""
+    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+    count = 0
+    for root, dirs, files in os.walk(BUILDTEST_TESTDIR):
+        for file in files:
+            ext = os.path.splitext(file)[1]
+            # remove leading . from extension
+            ext = ext[1:]
+            if ext in BUILDTEST_SHELLTYPES:
+                count+=1
+                print os.path.join(root,file)
 
-	count = 0
-	for root, dirs, files in os.walk(BUILDTEST_TESTDIR):
-		for file in files:
-			ext = os.path.splitext(file)[1]
-			# remove leading . from extension
-			ext = ext[1:]
-			if ext in BUILDTEST_SHELLTYPES:
-				count+=1
-				print os.path.join(root,file)
 
-
-	print
-	print "Total Test scripts:", count
+    print
+    print "Total Test scripts:", count
 
 def find_tests_by_arg(find_arg):
-	"""find all test scripts in $BUILDTEST_TESTDIR"""
-	count = 0
-	for root, dirs, files in os.walk(BUILDTEST_TESTDIR):
-		for file in files:
-			ext = os.path.splitext(file)[1]
-			# remove leading . from extension
-			ext = ext[1:]
-			if ext in BUILDTEST_SHELLTYPES and find_arg in os.path.basename(file):
-				count+=1
-				print os.path.join(root,file)
+    """find all test scripts in $BUILDTEST_TESTDIR"""
+    count = 0
+    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+    for root, dirs, files in os.walk(BUILDTEST_TESTDIR):
+        for file in files:
+            ext = os.path.splitext(file)[1]
+            # remove leading . from extension
+            ext = ext[1:]
+            if ext in BUILDTEST_SHELLTYPES and find_arg in os.path.basename(file):
+                count+=1
+                print os.path.join(root,file)
 
 
-	print
-	print "Total Test scripts:", count
+    print
+    print "Total Test scripts:", count

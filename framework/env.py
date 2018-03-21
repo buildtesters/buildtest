@@ -32,8 +32,6 @@ import yaml
 # read the BUILDTEST env vars from the shell environment that is sourced by setup.sh
 BUILDTEST_VERSION="0.1.9"
 BUILDTEST_ROOT = os.environ['BUILDTEST_ROOT']
-BUILDTEST_TESTDIR = os.environ['BUILDTEST_TESTDIR']
-
 
 BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm", ".pbs"]
 BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
@@ -46,6 +44,3 @@ config_opts = yaml.load(fd)
 
 #global logID
 logID = "buildtest"
-
-
-BUILDTEST_LOGDIR = os.path.join(BUILDTEST_ROOT,"log")

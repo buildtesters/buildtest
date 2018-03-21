@@ -32,7 +32,7 @@ import logging
 import os
 import yaml
 from shutil import copyfile
-from framework.env import BUILDTEST_ROOT, BUILDTEST_TESTDIR, config_opts, logID
+from framework.env import BUILDTEST_ROOT, config_opts, logID
 from framework.test.job import generate_job
 from framework.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
@@ -51,8 +51,9 @@ def generate_binary_test(args_dict,pkg):
 
         # variable to indicate if it is a software or system package for binary test
         test_type=""
-
-        toplevel_cmakelist_file=os.path.join(BUILDTEST_ROOT,"CMakeLists.txt")
+        BUILDTEST_TESTDIR=config_opts['BUILDTEST_TESTDIR']
+        # top level CMakeList.txt should be in same parent directory where BUILDTEST_TESTDIR is created
+        toplevel_cmakelist_file=os.path.join(os.path.dirname(BUILDTEST_TESTDIR),"CMakeLists.txt")
         testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
 
     	software = args_dict.software

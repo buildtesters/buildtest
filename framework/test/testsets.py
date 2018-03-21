@@ -28,7 +28,7 @@ from framework.tools.cmake import add_test_to_CMakeLists, setup_software_cmake
 from framework.test.sourcetest import recursive_gen_test
 from framework.test.job import generate_job
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
-from framework.env import BUILDTEST_TESTDIR, PYTHON_APPS, MPI_APPS, logID, config_opts
+from framework.env import config_opts, PYTHON_APPS, MPI_APPS, logID, config_opts
 from framework.tools.menu import buildtest_menu
 
 """
@@ -93,76 +93,78 @@ def run_testset(arg_dict):
 
 def testset_generator(arg_dict, codedir):
 
-	logger = logging.getLogger(logID)
-	wrapper=""
-        appname=get_appname()
-        appver=get_appversion()
-        tcname=get_toolchain_name()
-	tcver=get_toolchain_version()
+    logger = logging.getLogger(logID)
+    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+    wrapper=""
+    appname=get_appname()
+    appver=get_appversion()
+    tcname=get_toolchain_name()
+    tcver=get_toolchain_version()
 
-	args_dict = buildtest_menu().parse_options()
+    args_dict = buildtest_menu().parse_options()
 
-	app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
-	cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
+    app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
+    cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
 
-	# setup CMakeList in all subdirectories for the app if CMakeList.txt was not generated from
-	# binary test
-	if not os.path.exists(cmakelist):
-		setup_software_cmake()
-	emptylist = []
-	if os.path.isdir(codedir):
-		for root,subdirs,files in os.walk(codedir):
+    # setup CMakeList in all subdirectories for the app if CMakeList.txt was not generated from
+    # binary test
+    if not os.path.exists(cmakelist):
+        setup_software_cmake()
 
-			# skip to next item in loop when a sub-directory has no files
-			if len(files) == 0:
-				continue
+    emptylist = []
+    if os.path.isdir(codedir):
+        for root,subdirs,files in os.walk(codedir):
 
-			count = 0
-			for file in files:
-				# get file name without extension
-				fname = os.path.splitext(file)[0]
-				# get file extension
-				ext = os.path.splitext(file)[1]
+            # skip to next item in loop when a sub-directory has no files
+            if len(files) == 0:
+                continue
 
-				if ext == ".py":
-					wrapper = "python"
-				elif ext == ".R":
-					wrapper = "Rscript"
-				elif ext == ".pl":
-					wrapper = "perl"
-				elif ext == ".rb":
-					wrapper = "ruby"
-				elif ext == ".tcl":
-					wrapper = "tclsh"
-				else:
-					continue
+            count = 0
+            for file in files:
+                # get file name without extension
+                fname = os.path.splitext(file)[0]
+                # get file extension
+                ext = os.path.splitext(file)[1]
 
-				# command to execute the script
-				cmd = wrapper + " " + os.path.join(root,file)
+                if ext == ".py":
+                    wrapper = "python"
+                elif ext == ".R":
+                    wrapper = "Rscript"
+                elif ext == ".pl":
+                    wrapper = "perl"
+                elif ext == ".rb":
+                    wrapper = "ruby"
+                elif ext == ".tcl":
+                    wrapper = "tclsh"
+                else:
+                    continue
 
-				# getting subdirectory path to write test to correct path
-				subdir = os.path.basename(root)
-				subdirpath = os.path.join(app_destdir,subdir)
-				if not os.path.exists(subdirpath):
-					os.makedirs(subdirpath)
+                # command to execute the script
+                cmd = wrapper + " " + os.path.join(root,file)
 
-				testname = fname + "." + args_dict.shell
-				testpath = os.path.join(subdirpath,testname)
-				fd = open(testpath,'w')
-				header=load_modules(args_dict.shell)
-				fd.write(header)
-				fd.write(cmd)
-				fd.close()
+                # getting subdirectory path to write test to correct path
+                subdir = os.path.basename(root)
+                subdirpath = os.path.join(app_destdir,subdir)
+                if not os.path.exists(subdirpath):
+                    os.makedirs(subdirpath)
 
-				cmakelist = os.path.join(subdirpath,"CMakeLists.txt")
-				add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
-				msg = "Creating Test: " + testpath
-				logger.info(msg)
-				count = count + 1
+                testname = fname + "." + args_dict.shell
+                testpath = os.path.join(subdirpath,testname)
+                fd = open(testpath,'w')
+                header=load_modules(args_dict.shell)
+                fd.write(header)
+                fd.write(cmd)
+                fd.close()
 
-        			if args_dict.job_template != None:
-					generate_job(testpath,args_dict.shell,args_dict.job_template,emptylist)
+                cmakelist = os.path.join(subdirpath,"CMakeLists.txt")
+                add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
+                msg = "Creating Test: " + testpath
+                logger.info(msg)
+                count = count + 1
 
-			print "Generating ", count, "tests for ", os.path.basename(root)
+                if args_dict.job_template != None:
+                    generate_job(testpath,args_dict.shell,args_dict.job_template,emptylist)
 
-	print "Writing tests to ", app_destdir
+            print "Generating ", count, "tests for ", os.path.basename(root)
+
+    print "Writing tests to ", app_destdir

@@ -35,7 +35,7 @@ import glob
 sys.path.insert(0,os.path.abspath('.'))
 
 
-from framework.env import BUILDTEST_ROOT, BUILDTEST_LOGDIR, BUILDTEST_TESTDIR, BUILDTEST_JOB_EXTENSION, logID, config_opts
+from framework.env import BUILDTEST_ROOT, BUILDTEST_JOB_EXTENSION, logID, config_opts
 from framework.runtest import runtest_menu
 from framework.test.binarytest import generate_binary_test
 from framework.test.function import clean_tests
@@ -54,6 +54,9 @@ from framework.tools.scan import scantest
 from framework.tools.software import get_unique_software, software_version_relation
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.version import buildtest_version
+
+# column width for linewrap for argparse library
+os.environ['COLUMNS'] = "120"
 
 def main():
     """ entry point to buildtest """
@@ -86,6 +89,9 @@ def main():
 
             print "Creating log directory: ", bt_opts.logdir
             config_opts['BUILDTEST_LOGDIR']=bt_opts.logdir
+
+    if bt_opts.testdir:
+         config_opts['BUILDTEST_TESTDIR'] = bt_opts.testdir
 
     if bt_opts.clean_logs:
         clean_logs()

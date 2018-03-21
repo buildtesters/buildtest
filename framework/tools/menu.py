@@ -50,6 +50,7 @@ class buildtest_menu():
             parser = argparse.ArgumentParser(prog='buildtest', usage='%(prog)s [options]')
             parser.add_argument("-V", "--version", help="show program version number and exit",action="store_true")
             parser.add_argument("--logdir", help="Path to write buildtest logs. Override configuration BUILDTEST_LOGDIR")
+            parser.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
             group1 = parser.add_argument_group('Basic Options', 'buildtest basic options')
 
             group1.add_argument("--check-setup", help="Check buildtest configuration and determine if you have it setup properly for testing",action="store_true")

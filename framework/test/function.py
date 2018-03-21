@@ -28,7 +28,7 @@
 import os
 import shutil
 
-from framework.env import BUILDTEST_TESTDIR
+from framework.env import config_opts
 
 def add_arg_to_runcmd(runcmd,arglist):
         # add each argument to runcmd
@@ -41,6 +41,7 @@ def add_arg_to_runcmd(runcmd,arglist):
         return runcmd
 
 def clean_tests():
+    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
     if os.path.exists(BUILDTEST_TESTDIR):
         shutil.rmtree(BUILDTEST_TESTDIR)
         print "Removing test directory ", BUILDTEST_TESTDIR

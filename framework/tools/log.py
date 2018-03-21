@@ -55,6 +55,7 @@ def init_log():
     return logger,logpath,logfile
 
 def clean_logs():
+    BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
     if os.path.exists(BUILDTEST_LOGDIR):
         shutil.rmtree(BUILDTEST_LOGDIR)
         print "Removing log directory", BUILDTEST_LOGDIR
