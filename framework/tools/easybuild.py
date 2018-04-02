@@ -30,9 +30,11 @@ import re
 import sys
 import logging
 import subprocess
+
 from framework.env import logID, config_opts
-from framework.tools.file import stripHiddenFile, isHiddenFile
+from framework.tools.file import stripHiddenFile, isHiddenFile, string_in_file
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+
 
 # return root of module directory for all EasyBuild Trees in BUILDTEST_EBROOT
 def get_module_ebroot():
@@ -130,27 +132,67 @@ def list_toolchain():
         return toolchain
 
 def find_easyconfigs():
-        BUILDTEST_SOFTWARE_EBROOT = config_opts.get('DEFAULT','BUILDTEST_SOFTWARE_EBROOT')
-        BUILDTEST_EBROOT = config_opts['BUILDTEST_EBROOT']
+    """ returns easyconfigs files from a module tree. """
+    from framework.tools.modules import get_module_list
+    BUILDTEST_SOFTWARE_EBROOT = config_opts.get('DEFAULT','BUILDTEST_SOFTWARE_EBROOT')
+    BUILDTEST_EBROOT = config_opts['BUILDTEST_EBROOT']
 
-        swtree = get_software_ebroot()
+    modtree = get_module_ebroot()
 
-        easyconfigs = []
+    ec_list = []
+    no_ec_list = []
+    modulelist = get_module_list()
+    
 
-        for tree in swtree:
-            cmd = "find " + tree + " -type f -name *.eb "
-            print "Finding easyconfigs ..."
-            ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
-            output = ret.communicate()[0]
+    # look for variable root in modulefile
+    search_str = "local root ="
+    for module in  modulelist:
+        # if variable root found in module file then read file and find value assigned to root to get root of software
+        if string_in_file(search_str,module):
+            content = open(module).readlines()
+            for line in content:
+                if line.startswith(search_str):
+                    root_path = line.split()[-1]
+                    root_path = root_path.replace('"','')
+                    easybuild_path = os.path.join(root_path,"easybuild")
+                    # if directory exist then run the find command
+                    if os.path.exists(easybuild_path):
+                        cmd = "find " + easybuild_path + " -type f -name *.eb "
+                        ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
+                        easyconfig = ret.communicate()[0]
+                        easyconfig = easyconfig.strip("\n")
+                        #print cmd,easyconfig
+                        # only add easyconfigs to list using find command. This also avoids adding empty entries when no file was found
+                        if os.path.exists(easyconfig):
+                            ec_list.append(easyconfig)
+                        else:
+                            no_ec_list.append("Could not find easyconfig in " + easybuild_path)
+                    else:
+                        print "Unable to find directory: ", easybuild_path
+                    break
+                else:
+                    continue
 
-            easyconfigs =  output.splitlines()
-            print "EASYBUILD Tree:", tree
-            print "----------------------------"
-            print "$EBROOT=",tree
-            for ec in easyconfigs:
-                #print os.path.commonprefix([tree,ec]), ec
-                print ec.replace(tree,"${EBROOT}")
+    print "List of easyconfigs found in MODULETREES:", config_opts['BUILDTEST_EBROOT']
+    print
+    print "ID   |    easyconfig path"
+    print "-----|--------------------------------------------------------------------"
+    count = 1
+    for ec in ec_list:
+        print (str(count) + "\t |").expandtabs(4),ec
+        count = count + 1
 
+    if len(no_ec_list) > 0:
+        print
+        print "Unable to find easyconfigs for the following, please investigate this issue! \n"
+
+        for no_ec in  no_ec_list:
+            print no_ec
+    else:
+        print "All easyconfigs found!"
+
+    print "Total easyconfigs found:", len(ec_list)
+    print "Total module files searched:", len(modulelist)
 
 
 def check_software_version_in_easyconfig(easyconfig_repo):

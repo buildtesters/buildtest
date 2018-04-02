@@ -44,6 +44,7 @@ from framework.test.job import submit_job_to_scheduler
 from framework.test.sourcetest import recursive_gen_test
 from framework.test.testsets import run_testset
 from framework.tools.check_setup import check_buildtest_setup
+from framework.tools.file import create_dir
 from framework.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from framework.tools.find import find_all_tests, find_tests_by_arg
 from framework.tools.easybuild import list_toolchain, check_software_version_in_easyconfig,find_easyconfigs
@@ -116,8 +117,9 @@ def main():
         print_software_version_relation(software_dict)
         sys.exit(0)
 
-    if bt_opts.modules_to_easyconfigs:
+    if bt_opts.easyconfigs_in_moduletrees:
         find_easyconfigs()
+        sys.exit(0)
 
     # when no argument is specified to -fc then output all yaml files
     if bt_opts.findconfig == "all":
@@ -159,6 +161,10 @@ def main():
 
     logger,logpath,logfile = init_log()
     BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
+    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+
+    create_dir(BUILDTEST_LOGDIR)
+    create_dir(BUILDTEST_TESTDIR)
 
     cmd = "env | grep BUILDTEST"
     ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)

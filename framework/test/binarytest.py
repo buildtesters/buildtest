@@ -86,10 +86,6 @@ def generate_binary_test(args_dict,pkg):
                 logger.warning("File: %s was not found, will create it automatically", toplevel_cmakelist_file)
                 init_CMakeList(toplevel_cmakelist_file)
 
-        if not os.path.exists(BUILDTEST_TESTDIR):
-                logger.debug("Creating Directory: %s ", BUILDTEST_TESTDIR)
-                create_dir(BUILDTEST_TESTDIR)
-
         # if BUILDTEST_TESTDIR/CMakeLists.txt does not exist, then create it
         if os.path.isfile(testingdir_cmakelist_file) == False:
                 logger.warning("File: %s  was not found, will create it automatically", testingdir_cmakelist_file)

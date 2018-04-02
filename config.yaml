@@ -1,8 +1,8 @@
-BUILDTEST_MODULE_NAMING_SCHEME: HMNS
+BUILDTEST_MODULE_NAMING_SCHEME: FNS
 BUILDTEST_EBROOT:
-#    - /nfs/grid/software/easybuild/IvyBridge/redhat/7.3
+    - /nfs/grid/software/easybuild/IvyBridge/redhat/7.3
 #    - /nfs/grid/software/easybuild/Haswell/redhat/7.3
-    - /nfs/grid/software/RHEL7/easybuild
+#    - /nfs/grid/software/RHEL7/easybuild
 
 BUILDTEST_CONFIGS_REPO: /lustre/workspace/home/siddis14/buildtest-configs
 BUILDTEST_EASYCONFIG_REPO: /lustre/workspace/home/siddis14/easybuild-easyconfigs/easybuild/easyconfigs

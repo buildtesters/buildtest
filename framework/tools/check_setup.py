@@ -50,7 +50,7 @@ def check_buildtest_setup():
     BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
     BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
     BUILDTEST_TCL_REPO = config_opts['BUILDTEST_TCL_REPO']
-    
+
     print "Checking buildtest environment variables ..."
 
     ec = 0
@@ -140,6 +140,7 @@ def check_buildtest_setup():
     else:
         print "module commmand not found in system"
         print outputmsg, errormsg
+        sys.exit(1)
 
 
     # detecting whether we have Lmod or environment-modules
