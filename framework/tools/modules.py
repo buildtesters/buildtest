@@ -52,7 +52,7 @@ def get_module_list():
                 # skipping files that are symbolic links
                 if os.path.islink(os.path.join(root,file)):
                     continue
-                    
+
                 modulefiles.append(os.path.join(root,file))
 
     return modulefiles
@@ -93,3 +93,64 @@ module purge
 
         header = header + moduleload
         return header
+
+def diff_trees(args_trees):
+    """ display difference between module trees """
+
+    # no comma found between two trees
+    if args_trees.find(",") == -1:
+        print "Usage: --diff-trees /path/to/tree1,/path/to/tree2"
+        sys.exit(1)
+    else:
+        id = args_trees.find(",")
+        tree1 = args_trees[0:id]
+        tree2 = args_trees[id+1:len(args_trees)]
+        if not os.path.exists(tree1):
+            print "Path does not exist: ", tree1
+
+        if not os.path.exists(tree2):
+            print "Path does not exist: ", tree2
+
+        modlist1 = []
+        modlist2 = []
+
+        for tree in tree1:
+            for root, dirs, files in os.walk(tree1):
+                for file in files:
+                    # skipping files that are symbolic links
+                    if os.path.islink(os.path.join(root,file)):
+                        continue
+
+                    parent_dir = os.path.basename(root)
+                    modlist1.append(os.path.join(parent_dir,file))
+
+        for tree in tree2:
+            for root, dirs, files in os.walk(tree2):
+                for file in files:
+                    # skipping files that are symbolic links
+                    if os.path.islink(os.path.join(root,file)):
+                        continue
+
+                    parent_dir = os.path.basename(root)
+                    modlist2.append(os.path.join(parent_dir,file))
+
+        diff_set =  set(modlist1).symmetric_difference(set(modlist2))
+        if len(diff_set) == 0:
+            print "No difference found between module tree: ", tree1, "and module tree:", tree2
+            return
+
+        print "ID       |     Module                                                   |        Module Tree"
+        print "---------|--------------------------------------------------------------|------------------------------------------------------------------"
+
+        count = 1
+        # print difference set
+        for i in diff_set:
+            module_in_tree = ""
+            # finding which module tree the module belongs
+            if i in modlist1:
+                module_in_tree = tree1
+            if i in modlist2:
+                module_in_tree = tree2
+
+            print (str(count) + "\t |").expandtabs(8), (i + "\t |").expandtabs(60) , module_in_tree
+            count = count + 1

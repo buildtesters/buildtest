@@ -51,6 +51,7 @@ from framework.tools.easybuild import list_toolchain, check_software_version_in_
 from framework.tools.generate_yaml import create_system_yaml
 from framework.tools.log import init_log, clean_logs, update_logdir
 from framework.tools.menu import buildtest_menu
+from framework.tools.modules import diff_trees
 from framework.tools.print_functions import print_software_version_relation, print_software, print_toolchain
 from framework.tools.scan import scantest
 from framework.tools.software import get_unique_software, software_version_relation
@@ -119,6 +120,11 @@ def main():
 
     if bt_opts.easyconfigs_in_moduletrees:
         find_easyconfigs()
+        sys.exit(0)
+
+    if bt_opts.diff_trees:
+        args_trees = bt_opts.diff_trees
+        diff_trees(args_trees)
         sys.exit(0)
 
     # when no argument is specified to -fc then output all yaml files
