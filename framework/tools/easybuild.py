@@ -43,7 +43,7 @@ def get_module_ebroot():
         if os.path.exists(os.path.join(tree,"modules")):
             modroot.append(os.path.join(tree,"modules"))
         else:
-            print "Invalid EasyBuild Tree, please check your BUILDTEST_EBROOT in config.yaml"
+            print "Invalid EasyBuild Tree, unable to find directory:", os.path.join(tree,"modules")
             sys.exit(1)
     return modroot
 
@@ -54,7 +54,7 @@ def get_software_ebroot():
         if os.path.exists(os.path.join(tree,"software")):
             swroot.append(os.path.join(tree,"software"))
         else:
-            print "Invalid EasyBuild Tree, please check your BUILDTEST_EBROOT in config.yaml"
+            print "Invalid EasyBuild Tree, unable to find directory:", os.path.join(tree,"software")
             sys.exit(1)
 
     return swroot
@@ -208,7 +208,7 @@ def check_software_version_in_easyconfig(easyconfig_repo):
         tcversion = get_toolchain_version()
 
         logger = logging.getLogger(logID)
-        BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']        
+        BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
         # if user is testing a software package that is a hidden module file, strip the leading "." for checking
         if isHiddenFile(appversion):
                 appversion = stripHiddenFile(appversion)

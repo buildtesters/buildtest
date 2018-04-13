@@ -50,7 +50,12 @@ def create_file(filename):
 def create_dir(dirname):
         """Create directory if it doesn't exist"""
         if not os.path.isdir(dirname):
+            try:
                 os.makedirs(dirname)
+            except OSError:
+                print "Unable to create directory:", dirname
+                raise
+
 
 		logger = logging.getLogger(logID)
 		logger.debug("Creating Directory: %s", dirname)
@@ -64,7 +69,7 @@ def string_in_file(string,filename):
 
 def isHiddenFile(inputfile):
     """ Return true/false to indicate if its a hidden file """
-    
+
     if os.path.isdir(inputfile) == True:
         return False
 

@@ -49,9 +49,10 @@ from framework.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from framework.tools.find import find_all_tests, find_tests_by_arg
 from framework.tools.easybuild import list_toolchain, check_software_version_in_easyconfig,find_easyconfigs
 from framework.tools.generate_yaml import create_system_yaml
-from framework.tools.log import init_log, clean_logs, update_logdir
+from framework.tools.log import init_log, clean_logs
 from framework.tools.menu import buildtest_menu
 from framework.tools.modules import diff_trees
+from framework.tools.options import override_options_env_vars
 from framework.tools.print_functions import print_software_version_relation, print_software, print_toolchain
 from framework.tools.scan import scantest
 from framework.tools.software import get_unique_software, software_version_relation
@@ -77,12 +78,14 @@ def main():
 
     check_buildtest_setup()
 
+    override_options_env_vars()
+
     if bt_opts.version:
         buildtest_version()
         sys.exit(0)
 
     if bt_opts.logdir:
-        update_logdir(bt_opts.logdir)
+        config_opts['BUILDTEST_LOGDIR'] = bt_opts.logdir
 
     if bt_opts.testdir:
          config_opts['BUILDTEST_TESTDIR'] = bt_opts.testdir
@@ -236,7 +239,7 @@ def main():
 
         # check that the software,toolchain match the easyconfig.
         #ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIG_REPO)
-        # generate_binary_test(software,toolchain,verbose)        
+        # generate_binary_test(software,toolchain,verbose)
         source_app_dir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname)
 
         configdir=os.path.join(source_app_dir,"config")

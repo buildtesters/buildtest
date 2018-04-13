@@ -24,10 +24,8 @@
 # author: Shahzeb Siddiqui (Pfizer)
 
 BUILDTEST_ROOT=`pwd`
-BUILDTEST_TESTDIR=$BUILDTEST_ROOT"/testing"
 
 export BUILDTEST_ROOT
-export BUILDTEST_TESTDIR
 
 export PATH=$PWD:${PATH}
 eval "$(register-python-argcomplete buildtest)"
