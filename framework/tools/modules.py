@@ -58,41 +58,35 @@ def get_module_list():
     return modulefiles
 
 def load_modules(shell_type):
-        """
-        return a string that loads the software and toolchain module.
-        """
+    """
+    return a string that loads the software and toolchain module.
+    """
+    from framework.tools.menu import buildtest_menu
+    args_dict = buildtest_menu().parse_options()
+    software = args_dict.software
+    toolchain = args_dict.toolchain
 
-	from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
-	shell_magic = "#!/" + os.path.join("bin",shell_type)
+    #print software
 
-        appname = get_appname()
-        appversion = get_appversion()
-        tcname = get_toolchain_name()
-        tcversion = get_toolchain_version()
+    shell_magic = "#!/" + os.path.join("bin",shell_type)
 
-	BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
-	header = shell_magic
-        header+= """
-module purge
-"""
-        # for dummy toolchain you can load software directly. Ensure a clean environment by running module purge
-        if len(tcname) == 0:
-                moduleload = "module load " + appname + "/" + appversion  + "\n"
-        else:
-                if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
-                        moduleload = "module load " + tcname + "/" + tcversion + "\n"
-                        moduleload += "module load " + appname + "/" + appversion + "\n"
-                elif BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
-                        moduleload = "module load " + tcname + "/" + tcversion + "\n"
-                        toolchain_name = appname + "-" + tcversion
-                        appversion = appversion.replace(toolchain_name,'')
-                        if appversion[-1] == "-":
-                                appversion = appversion[:-1]
 
-                        moduleload += " module load " + appname + "/" + appversion + "-" + tcname + "-" + tcversion + "\n"
+    BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
+    header = shell_magic + "\n"
+    header+= "module purge \n"
+    # for dummy toolchain you can load software directly. Ensure a clean environment by running module purge
+    if toolchain == None:
+        moduleload = "module load " + software  + "\n"
+    else:
+        if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
+            moduleload = "module load " + toolchain + "\n"
+            moduleload += "module load " + software + "\n"
+        elif BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
+            moduleload = "module load " + software + "\n"
+            print moduleload
 
-        header = header + moduleload
-        return header
+    header = header + moduleload
+    return header
 
 def diff_trees(args_trees):
     """ display difference between module trees """

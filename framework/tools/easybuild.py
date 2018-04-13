@@ -142,7 +142,7 @@ def find_easyconfigs():
     ec_list = []
     no_ec_list = []
     modulelist = get_module_list()
-    
+
 
     # look for variable root in modulefile
     search_str = "local root ="
@@ -208,8 +208,7 @@ def check_software_version_in_easyconfig(easyconfig_repo):
         tcversion = get_toolchain_version()
 
         logger = logging.getLogger(logID)
-        BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
-
+        BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']        
         # if user is testing a software package that is a hidden module file, strip the leading "." for checking
         if isHiddenFile(appversion):
                 appversion = stripHiddenFile(appversion)
