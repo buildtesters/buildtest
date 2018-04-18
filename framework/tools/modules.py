@@ -133,18 +133,34 @@ def diff_trees(args_trees):
             print "No difference found between module tree: ", tree1, "and module tree:", tree2
             return
 
-        print "ID       |     Module                                                   |        Module Tree"
-        print "---------|--------------------------------------------------------------|------------------------------------------------------------------"
+        print "\t\t\t Comparing Module Trees for differences in module files"
+        print "\t\t\t -------------------------------------------------------"
+
+        print
+        print "Module Tree 1:", tree1
+        print "Module Tree 2:", tree2
+        print
+        print "ID       |     Module                                                   |   Module Tree 1    |   Module Tree 2"
+        print "---------|--------------------------------------------------------------|--------------------|----------------------"
 
         count = 1
         # print difference set
         for i in diff_set:
             module_in_tree = ""
+            value1 = "NOT FOUND"
+            value2 = "NOT FOUND"
             # finding which module tree the module belongs
             if i in modlist1:
                 module_in_tree = tree1
             if i in modlist2:
                 module_in_tree = tree2
 
-            print (str(count) + "\t |").expandtabs(8), (i + "\t |").expandtabs(60) , module_in_tree
+            if module_in_tree == tree1:
+                value1 = "FOUND"
+
+            if module_in_tree == tree2:
+                value2 = "FOUND"
+
+
+            print (str(count) + "\t |").expandtabs(8), (i + "\t |").expandtabs(60) , (value1 + "\t |").expandtabs(18), value2
             count = count + 1
