@@ -53,6 +53,9 @@ def get_module_list():
                 if os.path.islink(os.path.join(root,file)):
                     continue
 
+                if file == ".version":
+                        continue
+
                 modulefiles.append(os.path.join(root,file))
 
     return modulefiles

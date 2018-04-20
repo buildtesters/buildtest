@@ -47,7 +47,7 @@ from framework.tools.check_setup import check_buildtest_setup
 from framework.tools.file import create_dir
 from framework.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from framework.tools.find import find_all_tests, find_tests_by_arg
-from framework.tools.easybuild import list_toolchain, check_software_version_in_easyconfig,find_easyconfigs
+from framework.tools.easybuild import list_toolchain, check_software_version_in_easyconfig,find_easyconfigs, is_easybuild_app
 from framework.tools.generate_yaml import create_system_yaml
 from framework.tools.log import init_log, clean_logs
 from framework.tools.menu import buildtest_menu
@@ -97,7 +97,7 @@ def main():
         clean_tests()
 
     if bt_opts.module_naming_scheme:
-        print BUILDTEST_MODULE_NAMING_SCHEME
+        config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = bt_opts.module_naming_scheme
 
     if bt_opts.runtest:
         runtest_menu()
@@ -239,12 +239,13 @@ def main():
 
         # check that the software,toolchain match the easyconfig.
         #ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIG_REPO)
-        # generate_binary_test(software,toolchain,verbose)
-        source_app_dir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname)
 
+        is_easybuild_app()
+
+        source_app_dir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname)
         configdir=os.path.join(source_app_dir,"config")
         codedir=os.path.join(source_app_dir,"code")
-        BUILDTEST_LOGDIR=os.path.join(BUILDTEST_LOGDIR,"log",appname,appversion,tcname,tcversion)
+        BUILDTEST_LOGDIR=os.path.join(BUILDTEST_LOGDIR,appname,appversion,tcname,tcversion)
 
         # if directory tree for software is not present, create the directory
         if not os.path.exists(BUILDTEST_LOGDIR):

@@ -131,19 +131,12 @@ def list_toolchain():
 
         return toolchain
 
-def find_easyconfigs():
-    """ returns easyconfigs files from a module tree. """
-    from framework.tools.modules import get_module_list
-    BUILDTEST_SOFTWARE_EBROOT = config_opts.get('DEFAULT','BUILDTEST_SOFTWARE_EBROOT')
-    BUILDTEST_EBROOT = config_opts['BUILDTEST_EBROOT']
-
-    modtree = get_module_ebroot()
-
+def find_easyconfigs_from_modulelist(modulelist):
+    """return a list of easyconfigs from a list of module files"""
+    # list to store easyconfigs
     ec_list = []
+    # list to store if no easyconfigs found sometimes, found eb didn't generate easybuild directory where logs, easyconfig are placed.
     no_ec_list = []
-    modulelist = get_module_list()
-
-
     # look for variable root in modulefile
     search_str = "local root ="
     for module in  modulelist:
@@ -154,6 +147,7 @@ def find_easyconfigs():
                 if line.startswith(search_str):
                     root_path = line.split()[-1]
                     root_path = root_path.replace('"','')
+                    # trying to find directory easybuild inside the root of the installation directory of an application
                     easybuild_path = os.path.join(root_path,"easybuild")
                     # if directory exist then run the find command
                     if os.path.exists(easybuild_path):
@@ -161,7 +155,7 @@ def find_easyconfigs():
                         ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
                         easyconfig = ret.communicate()[0]
                         easyconfig = easyconfig.strip("\n")
-                        #print cmd,easyconfig
+
                         # only add easyconfigs to list using find command. This also avoids adding empty entries when no file was found
                         if os.path.exists(easyconfig):
                             ec_list.append(easyconfig)
@@ -172,6 +166,18 @@ def find_easyconfigs():
                     break
                 else:
                     continue
+
+    return ec_list,no_ec_list
+
+def find_easyconfigs():
+    """ returns easyconfigs files from a module tree. """
+    from framework.tools.modules import get_module_list
+
+    ec_list = []
+    no_ec_list = []
+    modulelist = get_module_list()
+
+    ec_list,no_ec_list = find_easyconfigs_from_modulelist(modulelist)
 
     print "List of easyconfigs found in MODULETREES:", config_opts['BUILDTEST_EBROOT']
     print
@@ -194,6 +200,34 @@ def find_easyconfigs():
     print "Total easyconfigs found:", len(ec_list)
     print "Total module files searched:", len(modulelist)
 
+
+def is_easybuild_app():
+    """ returns True if an easyconfig file found in installation directory """
+    app_name = get_appname()
+    app_ver = get_appversion()
+
+    modulefiles = []
+    modtrees = get_module_ebroot()
+    for tree in modtrees:
+        for root, dirs, files in os.walk(tree):
+            for file in files:
+                # skipping files that are symbolic links
+                if os.path.islink(os.path.join(root,file)):
+                    continue
+
+                # only add module file to list specified by -s <app>/<version>. The file name will be the version and directory will be the application name
+                if os.path.splitext(file)[0] == app_ver and os.path.basename(root) == app_name:
+                    modulefiles.append(os.path.join(root,file))
+
+    ec_list, no_ec_list = find_easyconfigs_from_modulelist(modulefiles)
+    # if no easyconfigs found then ec_list will be empty so we should stop and report this application is not built by easybuild. This feature can be changed in future
+    if len(ec_list) == 0:
+        print "Application:", os.path.join(app_name,app_ver), " is not built from Easybuild, cannot find easyconfig file in installation directory"
+        sys.exit(1)
+
+
+
+    return
 
 def check_software_version_in_easyconfig(easyconfig_repo):
         """
