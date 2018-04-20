@@ -47,7 +47,7 @@ from framework.tools.check_setup import check_buildtest_setup
 from framework.tools.file import create_dir
 from framework.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from framework.tools.find import find_all_tests, find_tests_by_arg
-from framework.tools.easybuild import list_toolchain, check_software_version_in_easyconfig,find_easyconfigs, is_easybuild_app
+from framework.tools.easybuild import list_toolchain, find_easyconfigs, is_easybuild_app
 from framework.tools.generate_yaml import create_system_yaml
 from framework.tools.log import init_log, clean_logs
 from framework.tools.menu import buildtest_menu
@@ -237,9 +237,7 @@ def main():
         logger.debug("Checking if software: %s/%s exists",appname,appversion)
 
 
-        # check that the software,toolchain match the easyconfig.
-        #ret=check_software_version_in_easyconfig(BUILDTEST_EASYCONFIG_REPO)
-
+        # check if software is an easybuild application
         is_easybuild_app()
 
         source_app_dir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname)
