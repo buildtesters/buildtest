@@ -178,15 +178,19 @@ def find_easyconfigs():
     modulelist = get_module_list()
 
     ec_list,no_ec_list = find_easyconfigs_from_modulelist(modulelist)
-
-    print "List of easyconfigs found in MODULETREES:", config_opts['BUILDTEST_EBROOT']
-    print
-    print "ID   |    easyconfig path"
-    print "-----|--------------------------------------------------------------------"
-    count = 1
-    for ec in ec_list:
-        print (str(count) + "\t |").expandtabs(4),ec
-        count = count + 1
+    
+    # if one or more easyconfigs found then display the path to easyconfigs
+    if len(ec_list) > 0:
+        print "List of easyconfigs found in MODULETREES:", config_opts['BUILDTEST_EBROOT']
+        print
+        print "ID   |    easyconfig path"
+        print "-----|--------------------------------------------------------------------"
+        count = 1
+        for ec in ec_list:
+            print (str(count) + "\t |").expandtabs(4),ec
+            count = count + 1
+    else:
+        print "No easyconfigs found!"
 
     if len(no_ec_list) > 0:
         print
@@ -194,8 +198,6 @@ def find_easyconfigs():
 
         for no_ec in  no_ec_list:
             print no_ec
-    else:
-        print "All easyconfigs found!"
 
     print "Total easyconfigs found:", len(ec_list)
     print "Total module files searched:", len(modulelist)

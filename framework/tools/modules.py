@@ -39,6 +39,23 @@ from framework.env import config_opts
 from framework.tools.easybuild import get_module_ebroot
 #from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
+def get_module_list_by_tree(mod_tree):
+    """ returns a list of module file paths given a module tree """
+
+    modulefiles = []
+
+    for root, dirs, files in os.walk(mod_tree):
+        for file in files:
+            # skipping files that are symbolic links
+            if os.path.islink(os.path.join(root,file)):
+                continue
+
+            if file == ".version":
+                    continue
+
+            modulefiles.append(os.path.join(root,file))
+
+    return modulefiles
 
 def get_module_list():
     """
@@ -104,66 +121,65 @@ def diff_trees(args_trees):
         tree2 = args_trees[id+1:len(args_trees)]
         if not os.path.exists(tree1):
             print "Path does not exist: ", tree1
+            sys.exit(1)
 
         if not os.path.exists(tree2):
             print "Path does not exist: ", tree2
+            sys.exit(1)
 
         modlist1 = []
         modlist2 = []
 
-        for tree in tree1:
-            for root, dirs, files in os.walk(tree1):
-                for file in files:
-                    # skipping files that are symbolic links
-                    if os.path.islink(os.path.join(root,file)):
-                        continue
+        list1 = get_module_list_by_tree(tree1)
+        list2 = get_module_list_by_tree(tree2)
 
-                    parent_dir = os.path.basename(root)
-                    modlist1.append(os.path.join(parent_dir,file))
+        # strip full path, just get a list module file in format app/version
+        for file in list1:
+            name = os.path.basename(os.path.dirname(file))
+            # strip out any file extension (.lua)
+            ver = os.path.basename(os.path.splitext(file)[0])
+            modlist1.append(os.path.join(name,ver))
 
-        for tree in tree2:
-            for root, dirs, files in os.walk(tree2):
-                for file in files:
-                    # skipping files that are symbolic links
-                    if os.path.islink(os.path.join(root,file)):
-                        continue
+        for file in list2:
+            name = os.path.basename(os.path.dirname(file))
+            # strip out any file extension (.lua)
+            ver = os.path.basename(os.path.splitext(file)[0])
+            modlist2.append(os.path.join(name,ver))
 
-                    parent_dir = os.path.basename(root)
-                    modlist2.append(os.path.join(parent_dir,file))
-
+        # convert list into set and do symmetric difference between two sets
         diff_set =  set(modlist1).symmetric_difference(set(modlist2))
         if len(diff_set) == 0:
             print "No difference found between module tree: ", tree1, "and module tree:", tree2
-            return
+        # print difference between two sets by printing module file and stating  FOUND or NOTFOUND in the appropriate columns for Module Tree 1 or 2
+        else:
+            print "\t\t\t Comparing Module Trees for differences in module files"
+            print "\t\t\t -------------------------------------------------------"
 
-        print "\t\t\t Comparing Module Trees for differences in module files"
-        print "\t\t\t -------------------------------------------------------"
+            print
+            print "Module Tree 1:", tree1
+            print "Module Tree 2:", tree2
+            print
+            print "ID       |     Module                                                   |   Module Tree 1    |   Module Tree 2"
+            print "---------|--------------------------------------------------------------|--------------------|----------------------"
 
-        print
-        print "Module Tree 1:", tree1
-        print "Module Tree 2:", tree2
-        print
-        print "ID       |     Module                                                   |   Module Tree 1    |   Module Tree 2"
-        print "---------|--------------------------------------------------------------|--------------------|----------------------"
+            count = 1
+            # print difference set
+            for i in diff_set:
+                module_in_tree = ""
+                value1 = "NOT FOUND"
+                value2 = "NOT FOUND"
+                # finding which module tree the module belongs
+                if i in modlist1:
+                    module_in_tree = tree1
+                if i in modlist2:
+                    module_in_tree = tree2
 
-        count = 1
-        # print difference set
-        for i in diff_set:
-            module_in_tree = ""
-            value1 = "NOT FOUND"
-            value2 = "NOT FOUND"
-            # finding which module tree the module belongs
-            if i in modlist1:
-                module_in_tree = tree1
-            if i in modlist2:
-                module_in_tree = tree2
+                if module_in_tree == tree1:
+                    value1 = "FOUND"
 
-            if module_in_tree == tree1:
-                value1 = "FOUND"
-
-            if module_in_tree == tree2:
-                value2 = "FOUND"
+                if module_in_tree == tree2:
+                    value2 = "FOUND"
 
 
-            print (str(count) + "\t |").expandtabs(8), (i + "\t |").expandtabs(60) , (value1 + "\t |").expandtabs(18), value2
-            count = count + 1
+                print (str(count) + "\t |").expandtabs(8), (i + "\t |").expandtabs(60) , (value1 + "\t |").expandtabs(18), value2
+                count = count + 1
