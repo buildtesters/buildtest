@@ -72,6 +72,7 @@ def main():
     #BUILDTEST_MODULE_NAMING_SCHEME = config_opts.get('DEFAULT','BUILDTEST_MODULE_NAMING_SCHEME')
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
     BUILDTEST_EASYCONFIG_REPO = config_opts['BUILDTEST_EASYCONFIG_REPO']
+    IGNORE_EASYBUILD=False
 
     parser = buildtest_menu()
     bt_opts = parser.parse_options()
@@ -89,6 +90,9 @@ def main():
 
     if bt_opts.testdir:
          config_opts['BUILDTEST_TESTDIR'] = bt_opts.testdir
+
+    if bt_opts.ignore_easybuild:
+        IGNORE_EASYBUILD=True
 
     if bt_opts.clean_logs:
         clean_logs()
@@ -237,8 +241,9 @@ def main():
         logger.debug("Checking if software: %s/%s exists",appname,appversion)
 
 
-        # check if software is an easybuild application
-        is_easybuild_app()
+        # check if software is an easybuild applicationa
+        if IGNORE_EASYBUILD == False:
+            is_easybuild_app()
 
         source_app_dir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname)
         configdir=os.path.join(source_app_dir,"config")

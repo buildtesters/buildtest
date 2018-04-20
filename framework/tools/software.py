@@ -134,7 +134,10 @@ def software_version_relation():
 
 
                         version = os.path.basename(app)
-                        version = os.path.splitext(version)[0]
+                        ext = os.path.splitext(version)[1]
+                        # only strip extension if .lua is found, otherwise add version as is
+                        if ext == "lua":
+                            version = os.path.splitext(version)[0]
 
                         # only add module version to set when module name is found in tree
                         version_set.add(version + " (" + app +")")
