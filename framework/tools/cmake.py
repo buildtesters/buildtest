@@ -77,7 +77,7 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
 	logger = logging.getLogger(logID)
 	BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
 	args_dict = buildtest_menu().parse_options()
-	shell_type = args_dict.shell
+	shell_type = config_opts['BUILDTEST_SHELL']
 
 	appname = get_appname()
 	appversion = get_appversion()

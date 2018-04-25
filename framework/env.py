@@ -39,7 +39,10 @@ BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
 PYTHON_APPS = ["Python","Anaconda2", "Anaconda3"]
 MPI_APPS = ["OpenMPI", "MPICH","MVAPICH2", "intel", "impi"]
 
-fd = open('config.yaml','r')
+#BUILDTEST_DEFAULT_CONFIG=os.path.join(BUILDTEST_ROOT,"config.yaml")
+#print BUILDTEST_DEFAULT_CONFIG
+#fd = open(BUILDTEST_DEFAULT_CONFIG,'r')
+fd = open("config.yaml",'r')
 config_opts = yaml.load(fd)
 
 #global logID

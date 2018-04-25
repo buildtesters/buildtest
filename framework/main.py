@@ -40,10 +40,11 @@ from framework.env import BUILDTEST_ROOT, BUILDTEST_JOB_EXTENSION, logID, config
 from framework.runtest import runtest_menu
 from framework.test.binarytest import generate_binary_test
 from framework.test.function import clean_tests
-from framework.test.job import submit_job_to_scheduler
+from framework.test.job import submit_job_to_scheduler, update_job_template
 from framework.test.sourcetest import recursive_gen_test
 from framework.test.testsets import run_testset
 from framework.tools.check_setup import check_buildtest_setup
+from framework.tools.config import show_configuration
 from framework.tools.file import create_dir
 from framework.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from framework.tools.find import find_all_tests, find_tests_by_arg
@@ -65,24 +66,24 @@ os.environ['COLUMNS'] = "120"
 def main():
     """ entry point to buildtest """
 
-
-
-    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
     IGNORE_EASYBUILD=False
 
     parser = buildtest_menu()
     bt_opts = parser.parse_options()
-
+    override_options_env_vars()
     check_buildtest_setup()
 
-    override_options_env_vars()
-    
+    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+
     if config_opts.get('BUILDTEST_IGNORE_EASYBUILD'):
         IGNORE_EASYBUILD=config_opts['BUILDTEST_IGNORE_EASYBUILD']
 
     if bt_opts.version:
         buildtest_version()
         sys.exit(0)
+
+    if bt_opts.show:
+        show_configuration()
 
     if bt_opts.logdir:
         config_opts['BUILDTEST_LOGDIR'] = bt_opts.logdir
@@ -150,15 +151,11 @@ def main():
 		find_tests_by_arg(bt_opts.findtest)
 		sys.exit(0)
 
-    if bt_opts.job_template is not None:
-        if not os.path.isfile(bt_opts.job_template):
-            print "Cant file job template file", bt_opts.job_template
-            sys.exit(1)
+    if bt_opts.shell:
+         config_opts['BUILDTEST_SHELL']=bt_opts.shell
 
-        # checking if extension is job template file extension is valid to detect type of scheduler
-        if os.path.splitext(bt_opts.job_template)[1]  not in BUILDTEST_JOB_EXTENSION:
-            print "Invalid file extension, must be one of the following extension", BUILDTEST_JOB_EXTENSION
-            sys.exit(1)
+    if bt_opts.job_template is not None:
+        update_job_template(bt_opts.job_template)
 
     if bt_opts.submitjob is not None:
         submit_job_to_scheduler(bt_opts.submitjob)
@@ -174,7 +171,7 @@ def main():
     logger,logpath,logfile = init_log()
     BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-
+    print config_opts['BUILDTEST_LOGDIR']
     create_dir(BUILDTEST_LOGDIR)
     create_dir(BUILDTEST_TESTDIR)
 
@@ -201,13 +198,13 @@ def main():
             for pkg in systempkg_list:
                 generate_binary_test(bt_opts,pkg)
         else:
+
             systempkg = bt_opts.system
             BUILDTEST_LOGDIR = os.path.join(BUILDTEST_LOGDIR,"system",systempkg)
             generate_binary_test(bt_opts,systempkg)
 
-        if not os.path.exists(BUILDTEST_LOGDIR):
-            os.makedirs(BUILDTEST_LOGDIR,0755)
-            logger.warning("Creating directory %s, to write log file", BUILDTEST_LOGDIR)
+        create_dir(BUILDTEST_LOGDIR)
+        logger.warning("Creating directory %s, to write log file", BUILDTEST_LOGDIR)
 
         destpath = os.path.join(BUILDTEST_LOGDIR,logfile)
         os.rename(logpath, destpath)
@@ -249,9 +246,8 @@ def main():
         codedir=os.path.join(source_app_dir,"code")
         BUILDTEST_LOGDIR=os.path.join(BUILDTEST_LOGDIR,appname,appversion,tcname,tcversion)
 
-        # if directory tree for software is not present, create the directory
-        if not os.path.exists(BUILDTEST_LOGDIR):
-            os.makedirs(BUILDTEST_LOGDIR)
+        # if directory tree for software log is not present, create the directory
+        create_dir(BUILDTEST_LOGDIR)
 
         logger.debug("Source App Directory: %s",  source_app_dir)
         logger.debug("Config Directory: %s ", configdir)

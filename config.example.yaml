@@ -1,4 +1,8 @@
 BUILDTEST_MODULE_NAMING_SCHEME: HMNS
+BUILDTEST_IGNORE_EASYBUILD: "False"
+BUILDTEST_SHELL: sh
+BUILDTEST_JOB_TEMPLATE: template/job.slurm
+
 BUILDTEST_MODULE_ROOT:
     - /nfs/grid/software/RHEL6/general
     - /nfs/grid/software/RHEL6/chemistry

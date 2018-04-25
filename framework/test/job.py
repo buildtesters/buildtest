@@ -30,7 +30,8 @@ import glob
 import subprocess
 import sys
 
-from framework.env import BUILDTEST_ROOT
+from framework.env import BUILDTEST_ROOT, BUILDTEST_JOB_EXTENSION, config_opts
+
 def detect_scheduler():
         """ detect scheduler for host system"""
         SCHEDULER_LSF = "LSF"
@@ -45,6 +46,21 @@ def detect_scheduler():
                         return SCHEDULER_LSF
                 if errcode == 0 and cmd == "sinfo":
                         return SCHEDULER_SLURM
+
+def update_job_template(job_template):
+
+    #config_opts['BUILDTEST_JOB_TEMPLATE']=bt_opts.job_template
+    if not os.path.isfile(job_template):
+        print "Cant file job template file", job_template
+        sys.exit(1)
+
+    # checking if extension is job template file extension is valid to detect type of scheduler
+    if os.path.splitext(job_template)[1]  not in BUILDTEST_JOB_EXTENSION:
+        print "Invalid file extension, must be one of the following extension", BUILDTEST_JOB_EXTENSION
+        sys.exit(1)
+
+    config_opts['BUILDTEST_JOB_TEMPLATE'] = job_template
+
 
 def generate_job(testpath,shell_type, jobtemplate, config):
         """ generate job script based on template file, shell type and path to
@@ -144,4 +160,3 @@ def submit_job_to_scheduler(job_path):
 
                 os.system(cmd)
                 print "Submitting Job:", job_path, " to scheduler"
-

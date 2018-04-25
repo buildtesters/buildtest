@@ -43,7 +43,6 @@ from framework.tools.modules import load_modules
 from framework.tools.cmake import  add_test_to_CMakeLists
 from framework.tools.parser.yaml_config import parse_config
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
-from framework.tools.menu import buildtest_menu
 
 
 def recursive_gen_test(configdir,codedir):
@@ -133,11 +132,11 @@ def generate_source_test(configmap,codedir,subdir):
     # if subdirectory exists, create subdirectory in destdir so we can write test script
     if subdir != "":
         # if sub directory does not exist, then create all directories and its parents directories
-        if os.path.exists(destdir) == False:
-            os.makedirs(destdir)
+        create_dir(destdir)
 
-    args_dict = buildtest_menu().parse_options()
-    shell_type = args_dict.shell
+    shell_type = config_opts['BUILDTEST_SHELL']
+    BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
+
     # testname is key value "name" with .sh extension
     testname=configmap["name"]+"."+shell_type
     testpath=os.path.join(destdir,testname)
@@ -337,18 +336,18 @@ def generate_source_test(configmap,codedir,subdir):
 
             logger.debug("runextracmd found in YAML config file")
             logger.debug("runextracmd: %s", str(configmap["runextracmd"]))
-            
+
         fd.close()
 
 
     if "scheduler" in configmap:
         generate_job_by_config(testpath,shell_type, configmap)
 
-        if args_dict.job_template != None:
+        if BUILDTEST_JOB_TEMPLATE != None:
             # generate job script based on template, if "scheduler" found in
             # then module below will do nothing and taken care off by
             # generate_job_by_config
-            generate_job(testpath,shell_type,args_dict.job_template,configmap)
+            generate_job(testpath,shell_type,BUILDTEST_JOB_TEMPLATE,configmap)
 
 
         # by default run the commands below which will add the test to CMakeLists.txt and update the logfile

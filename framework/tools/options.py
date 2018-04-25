@@ -32,7 +32,7 @@ from framework.env import config_opts
 def override_options_env_vars():
     """ override buildtest options by environment variables """
 
-    if os.environ.get('BUILDTEST_MODULE_NAMING_SCHEME') == "FNS" or os.environ.get('BUILDTEST_MODULE_NAMING_SCHEME') == "HMNS":
+    if os.environ.get('BUILDTEST_MODULE_NAMING_SCHEME'):# == "FNS" or os.environ.get('BUILDTEST_MODULE_NAMING_SCHEME') == "HMNS":
         config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = os.environ['BUILDTEST_MODULE_NAMING_SCHEME']
 
     if os.environ.get('BUILDTEST_LOGDIR'):
@@ -53,7 +53,7 @@ def override_options_env_vars():
             config_opts['BUILDTEST_MODULE_ROOT']=[]
             config_opts['BUILDTEST_MODULE_ROOT'].append(os.environ['BUILDTEST_MODULE_ROOT'])
 
-    if os.environ.get('BUILDTEST_IGNORE_EASYBUILD') == "True":
+    if os.environ.get('BUILDTEST_IGNORE_EASYBUILD'):
         config_opts['BUILDTEST_IGNORE_EASYBUILD']=os.environ['BUILDTEST_IGNORE_EASYBUILD']
 
     if os.environ.get('BUILDTEST_CONFIGS_REPO'):
@@ -73,3 +73,9 @@ def override_options_env_vars():
 
     if os.environ.get('BUILDTEST_PERL_REPO'):
         config_opts['BUILDTEST_PERL_REPO']=os.environ['BUILDTEST_PERL_REPO']
+
+    if os.environ.get('BUILDTEST_SHELL'):
+        config_opts['BUILDTEST_SHELL']=os.environ['BUILDTEST_SHELL']
+
+    if os.environ.get('BUILDTEST_JOB_TEMPLATE'):
+        config_opts['BUILDTEST_JOB_TEMPLATE']=os.environ['BUILDTEST_JOB_TEMPLATE']

@@ -31,7 +31,7 @@ import time
 import logging
 import os
 import sys
-from framework.env import BUILDTEST_ROOT, config_opts
+from framework.env import BUILDTEST_ROOT, config_opts, BUILDTEST_SHELLTYPES, BUILDTEST_JOB_EXTENSION
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 def check_buildtest_setup():
@@ -49,6 +49,9 @@ def check_buildtest_setup():
     BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
     BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
     BUILDTEST_TCL_REPO = config_opts['BUILDTEST_TCL_REPO']
+    BUILDTEST_IGNORE_EASYBUILD = config_opts['BUILDTEST_IGNORE_EASYBUILD']
+    BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
+    BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
 
     #print "Checking buildtest environment variables ..."
 
@@ -57,64 +60,83 @@ def check_buildtest_setup():
     time.sleep(0.1)
     if not os.path.exists(BUILDTEST_ROOT):
         ec = 1
-        print "STATUS: FAILED \t BUILDTEST_ROOT: ", BUILDTEST_ROOT, " does not exist"
+        print "ERROR:  \t BUILDTEST_ROOT: ", BUILDTEST_ROOT, " does not exist"
 
 
 
     time.sleep(0.1)
     if not os.path.exists(BUILDTEST_CONFIGS_REPO):
         ec = 1
-        print "STATUS: FAILED \t BUILDTEST_CONFIGS_REPO: ", BUILDTEST_CONFIGS_REPO, " does not exist"
+        print "ERROR:  \t BUILDTEST_CONFIGS_REPO: ", BUILDTEST_CONFIGS_REPO, " does not exist"
 
 
     time.sleep(0.1)
     for tree in BUILDTEST_MODULE_ROOT:
         if not os.path.exists(tree):
             ec = 1
-            print "STATUS: FAILED \t BUILDTEST_MODULE_ROOT:",tree, "does  not exists "
+            print "ERROR:  \t BUILDTEST_MODULE_ROOT:",tree, "does  not exists "
 
 
 
     time.sleep(0.1)
-    if BUILDTEST_MODULE_NAMING_SCHEME != "FNS" and  BUILDTEST_MODULE_NAMING_SCHEME != "HMNS":
+    if BUILDTEST_MODULE_NAMING_SCHEME not in ["FNS", "HMNS"]:
         ec = 1
-        print "STATUS: FAILED \t BUILDTEST_MODULE_NAMING_SCHEME", BUILDTEST_MODULE_NAMING_SCHEME, " valid values are {HMNS, FNS}"
+        print "ERROR:  \t BUILDTEST_MODULE_NAMING_SCHEME:", BUILDTEST_MODULE_NAMING_SCHEME, " valid values are {HMNS, FNS}"
+
+    time.sleep(0.1)
+
+    if BUILDTEST_IGNORE_EASYBUILD not in ["True", "False"]:
+        ec = 1
+        print "ERROR:  \t BUILDTEST_IGNORE_EASYBUILD:", BUILDTEST_IGNORE_EASYBUILD, " valid values are {True, False} "
 
     time.sleep(0.1)
     if not os.path.exists(BUILDTEST_R_REPO):
         ec = 1
-        print "STATUS: FAILED \t BUILDTEST_R_REPO: ", BUILDTEST_R_REPO, " does not exist"
-
-
+        print "ERROR:  \t BUILDTEST_R_REPO: ", BUILDTEST_R_REPO, " does not exist"
 
     time.sleep(0.1)
     if not os.path.exists(BUILDTEST_PERL_REPO):
         ec = 1
-        print "STATUS: FAILED \t BUILDTEST_PERL_REPO: ", BUILDTEST_PERL_REPO, " does not exist"
+        print "ERROR:  \t BUILDTEST_PERL_REPO: ", BUILDTEST_PERL_REPO, " does not exist"
 
 
 
     time.sleep(0.1)
     if not os.path.exists(BUILDTEST_PYTHON_REPO):
         ec = 1
-        print "STATUS: FAILED \t BUILDTEST_PYTHON_REPO: ", BUILDTEST_PYTHON_REPO, " does not exist"
+        print "ERROR:  \t BUILDTEST_PYTHON_REPO: ", BUILDTEST_PYTHON_REPO, " does not exist"
 
 
     time.sleep(0.1)
     if not os.path.exists(BUILDTEST_RUBY_REPO):
         ec = 1
-        print "STATUS: FAILED \t BUILDTEST_RUBY_REPO: ", BUILDTEST_RUBY_REPO, " does not exist"
+        print "ERROR:  \t BUILDTEST_RUBY_REPO: ", BUILDTEST_RUBY_REPO, " does not exist"
 
 
 
     time.sleep(0.1)
     if not os.path.exists(BUILDTEST_TCL_REPO):
         ec = 1
-        print "STATUS: FAILED \t BUILDTEST_TCL_REPO: ", BUILDTEST_TCL_REPO, " does not exist"
+        print "ERROR:  \t BUILDTEST_TCL_REPO: ", BUILDTEST_TCL_REPO, " does not exist"
 
 
     time.sleep(0.1)
+    if BUILDTEST_SHELL not in BUILDTEST_SHELLTYPES:
+        ec = 1
+        print "ERROR: \t BUILDTEST_SHELL:", BUILDTEST_SHELL, " not a valid value, must be one of the following:", BUILDTEST_SHELLTYPES
 
+    time.sleep(0.1)
+
+
+    if not os.path.exists(BUILDTEST_JOB_TEMPLATE):
+        ec = 1
+        print "ERROR:\t BUILDTEST_JOB_TEMPLATE: ", BUILDTEST_JOB_TEMPLATE, " does not exist"
+
+    if os.path.splitext(BUILDTEST_JOB_TEMPLATE)[1]  not in BUILDTEST_JOB_EXTENSION:
+        print "Invalid file extension:", BUILDTEST_JOB_EXTENSION, ", must be one of the following extension", BUILDTEST_JOB_EXTENSION
+
+
+    time.sleep(0.1)
     if ec != 0:
         print "Please fix your BUILDTEST configuration"
         sys.exit(1)

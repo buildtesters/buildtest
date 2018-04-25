@@ -27,3 +27,9 @@ BUILDTEST_LOGDIR: /tmp/buildtest/logs
 
 # path where to write buildtest tests
 BUILDTEST_TESTDIR: /tmp/buildtest/tests
+
+# Which shell to use when generating test
+BUILDTEST_SHELL: sh
+
+# job template for creating job scripts to be run with scheduler
+BUILDTEST_JOB_TEMPLATE: template/job.slurm

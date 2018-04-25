@@ -29,7 +29,6 @@ from framework.test.sourcetest import recursive_gen_test
 from framework.test.job import generate_job
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.env import config_opts, PYTHON_APPS, MPI_APPS, logID, config_opts
-from framework.tools.menu import buildtest_menu
 
 """
 This python module is used with the flag --testset to create test scripts that
@@ -101,7 +100,8 @@ def testset_generator(arg_dict, codedir):
     tcname=get_toolchain_name()
     tcver=get_toolchain_version()
 
-    args_dict = buildtest_menu().parse_options()
+    BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
+    BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
 
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
     cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
@@ -148,10 +148,10 @@ def testset_generator(arg_dict, codedir):
                 if not os.path.exists(subdirpath):
                     os.makedirs(subdirpath)
 
-                testname = fname + "." + args_dict.shell
+                testname = fname + "." + BUILDTEST_SHELL
                 testpath = os.path.join(subdirpath,testname)
                 fd = open(testpath,'w')
-                header=load_modules(args_dict.shell)
+                header=load_modules(BUILDTEST_SHELL)
                 fd.write(header)
                 fd.write(cmd)
                 fd.close()
@@ -162,8 +162,8 @@ def testset_generator(arg_dict, codedir):
                 logger.info(msg)
                 count = count + 1
 
-                if args_dict.job_template != None:
-                    generate_job(testpath,args_dict.shell,args_dict.job_template,emptylist)
+                if BUILDTEST_JOB_TEMPLATE != None:
+                    generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE,emptylist)
 
             print "Generating ", count, "tests for ", os.path.basename(root)
 

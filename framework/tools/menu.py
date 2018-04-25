@@ -53,6 +53,7 @@ class buildtest_menu():
             parser.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
             parser.add_argument("--diff-trees", help="Show difference between module trees")
             parser.add_argument("--ignore-easybuild", help="ignore if application is not built with easybuild",action="store_true")
+            parser.add_argument("--show", help="show buildtest environment configuration", action="store_true")
 
             group1 = parser.add_argument_group('Basic Options', 'buildtest basic options')
             group1.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
@@ -75,7 +76,7 @@ class buildtest_menu():
             group3 = parser.add_argument_group('Test Options', 'Options for building tests with buildtest')
             group3.add_argument("-s", "--software", help=" Specify software package to test", choices=software_list, metavar='INSTALLED-EASYBUILD-APPS')
             group3.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=toolchain_list, metavar='INSTALLED-EASYBUILD-TOOLCHAINS')
-            group3.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES, default="sh")
+            group3.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES)
             group3.add_argument("--system", help=""" Build test for system packages
                              To build all system package test use --system all """, choices=syspkg_list, metavar='SYSTEM-PACKAGE')
             group3.add_argument("--testset", help="Select the type of test set to run (Python, R, Ruby, Perl, Tcl, MPI)", choices=["Python","R","Ruby","Perl","Tcl","MPI"])
