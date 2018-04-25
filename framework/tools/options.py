@@ -54,9 +54,6 @@ def override_options_env_vars():
             config_opts['BUILDTEST_EBROOT'].append(os.environ['BUILDTEST_EBROOT'])
 
 
-    if os.environ.get('BUILDTEST_EASYCONFIG_REPO'):
-        config_opts['BUILDTEST_EASYCONFIG_REPO']=os.environ['BUILDTEST_EASYCONFIG_REPO']
-
     if os.environ.get('BUILDTEST_TCL_REPO'):
         config_opts['BUILDTEST_TCL_REPO']=os.environ['BUILDTEST_TCL_REPO']
 

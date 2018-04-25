@@ -42,7 +42,6 @@ def check_buildtest_setup():
 
     BUILDTEST_EBROOT = config_opts['BUILDTEST_EBROOT']
     BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
-    BUILDTEST_EASYCONFIG_REPO = config_opts['BUILDTEST_EASYCONFIG_REPO']
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
     BUILDTEST_PYTHON_REPO = config_opts['BUILDTEST_PYTHON_REPO']
@@ -51,7 +50,7 @@ def check_buildtest_setup():
     BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
     BUILDTEST_TCL_REPO = config_opts['BUILDTEST_TCL_REPO']
 
-    print "Checking buildtest environment variables ..."
+    #print "Checking buildtest environment variables ..."
 
     ec = 0
 
@@ -73,12 +72,6 @@ def check_buildtest_setup():
         if not os.path.exists(tree):
             ec = 1
             print "STATUS: FAILED \t BUILDTEST_EBROOT:",tree, "does  not exists "
-
-
-    time.sleep(0.1)
-    if not os.path.exists(BUILDTEST_EASYCONFIG_REPO):
-        ec = 1
-        print "STATUS: FAILED \t BUILDTEST_EASYCONFIG_REPO:", BUILDTEST_EASYCONFIG_REPO, " does not exist"
 
 
 
@@ -122,9 +115,7 @@ def check_buildtest_setup():
 
     time.sleep(0.1)
 
-    if ec == 0:
-        print "buildtest configuration  PASSED!"
-    else:
+    if ec != 0:
         print "Please fix your BUILDTEST configuration"
         sys.exit(1)
 
@@ -133,30 +124,8 @@ def check_buildtest_setup():
     (outputmsg,errormsg) = ret.communicate()
     ec = ret.returncode
 
-    if ec == 0:
-        print "Detecting module command .... "
-        print outputmsg, errormsg
-
-    else:
+    if ec != 0:
         print "module commmand not found in system"
         print outputmsg, errormsg
         sys.exit(1)
 
-
-    # detecting whether we have Lmod or environment-modules
-    # query Lmod rpm
-    cmd = "rpm -q Lmod"
-    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    (outputmsg,errormsg) = ret.communicate()
-    ec = ret.returncode
-    if ec == 0:
-        print "System detected Lmod found package - ", outputmsg
-
-
-    cmd = "rpm -q environment-modules"
-    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    (outputmsg) = ret.communicate()[0]
-    ec = ret.returncode
-
-    if ec == 0:
-        print "System detected environment-modules found package - ", outputmsg
