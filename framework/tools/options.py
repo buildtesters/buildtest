@@ -41,18 +41,23 @@ def override_options_env_vars():
     if os.environ.get('BUILDTEST_TESTDIR'):
         config_opts['BUILDTEST_TESTDIR']=os.environ['BUILDTEST_TESTDIR']
 
-    # multiple directories can be set separated by ":" for BUILDTEST_EBROOT as envrionment variable
-    if os.environ.get('BUILDTEST_EBROOT'):
+    # multiple directories can be set separated by ":" for BUILDTEST_MODULE_ROOT as envrionment variable
+    if os.environ.get('BUILDTEST_MODULE_ROOT'):
 
-        if os.environ.get('BUILDTEST_EBROOT').find(":") != -1:
-            ebroot_list = os.environ.get('BUILDTEST_EBROOT').split(":")
-            config_opts['BUILDTEST_EBROOT'] = []
+        if os.environ.get('BUILDTEST_MODULE_ROOT').find(":") != -1:
+            ebroot_list = os.environ.get('BUILDTEST_MODULE_ROOT').split(":")
+            config_opts['BUILDTEST_MODULE_ROOT'] = []
             for ebroot in ebroot_list:
-                config_opts['BUILDTEST_EBROOT'].append(ebroot)
+                config_opts['BUILDTEST_MODULE_ROOT'].append(ebroot)
         else:
-            config_opts['BUILDTEST_EBROOT']=[]
-            config_opts['BUILDTEST_EBROOT'].append(os.environ['BUILDTEST_EBROOT'])
+            config_opts['BUILDTEST_MODULE_ROOT']=[]
+            config_opts['BUILDTEST_MODULE_ROOT'].append(os.environ['BUILDTEST_MODULE_ROOT'])
 
+    if os.environ.get('BUILDTEST_IGNORE_EASYBUILD') == "True":
+        config_opts['BUILDTEST_IGNORE_EASYBUILD']=os.environ['BUILDTEST_IGNORE_EASYBUILD']
+
+    if os.environ.get('BUILDTEST_CONFIGS_REPO'):
+        config_opts['BUILDTEST_CONFIGS_REPO']=os.environ['BUILDTEST_CONFIGS_REPO']
 
     if os.environ.get('BUILDTEST_TCL_REPO'):
         config_opts['BUILDTEST_TCL_REPO']=os.environ['BUILDTEST_TCL_REPO']

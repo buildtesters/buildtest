@@ -64,7 +64,7 @@ class buildtest_menu():
             group2 = parser.add_argument_group('Find Options', 'buildtest options for finding software, toolchains, tests, yaml files')
 
             group2.add_argument("-lt", "--list-toolchain",help="retrieve a list of easybuild toolchain used for --toolchain option", action="store_true")
-            group2.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_EBROOT", action="store_true")
+            group2.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_MODULE_ROOT", action="store_true")
             group2.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
             group2.add_argument("-fc","--findconfig", help= """ Find buildtest YAML config files found in BUILDTEST_CONFIGS_REPO.
                                                  To find all yaml config files use -fc all """)

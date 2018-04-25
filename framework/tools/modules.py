@@ -36,7 +36,7 @@ import os
 import sys
 
 from framework.env import config_opts
-from framework.tools.easybuild import get_module_ebroot
+from framework.tools.easybuild import get_module_root
 #from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 def get_module_list_by_tree(mod_tree):
@@ -62,7 +62,7 @@ def get_module_list():
     returns a complete list of modules and full path in module tree
     """
     modulefiles = []
-    modtrees = get_module_ebroot()
+    modtrees = get_module_root()
     for tree in modtrees:
         for root, dirs, files in os.walk(tree):
             for file in files:

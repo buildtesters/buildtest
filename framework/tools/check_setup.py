@@ -40,7 +40,7 @@ def check_buildtest_setup():
     for module environment
     """
 
-    BUILDTEST_EBROOT = config_opts['BUILDTEST_EBROOT']
+    BUILDTEST_MODULE_ROOT = config_opts['BUILDTEST_MODULE_ROOT']
     BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
@@ -68,10 +68,10 @@ def check_buildtest_setup():
 
 
     time.sleep(0.1)
-    for tree in BUILDTEST_EBROOT:
+    for tree in BUILDTEST_MODULE_ROOT:
         if not os.path.exists(tree):
             ec = 1
-            print "STATUS: FAILED \t BUILDTEST_EBROOT:",tree, "does  not exists "
+            print "STATUS: FAILED \t BUILDTEST_MODULE_ROOT:",tree, "does  not exists "
 
 
 
@@ -128,4 +128,3 @@ def check_buildtest_setup():
         print "module commmand not found in system"
         print outputmsg, errormsg
         sys.exit(1)
-

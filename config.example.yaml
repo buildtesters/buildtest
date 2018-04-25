@@ -1,5 +1,5 @@
 BUILDTEST_MODULE_NAMING_SCHEME: HMNS
-BUILDTEST_EBROOT:
+BUILDTEST_MODULE_ROOT:
     - /nfs/grid/software/RHEL6/general
     - /nfs/grid/software/RHEL6/chemistry
     - /nfs/grid/software/RHEL7/non-easybuild/modules/all

@@ -67,9 +67,6 @@ def main():
 
 
 
-    #BUILDTEST_MODULE_EBROOT = config_opts['BUILDTEST_MODULE_EBROOT')
-    #BUILDTEST_EBROOT = config_opts['BUILDTEST_EBROOT')
-    #BUILDTEST_MODULE_NAMING_SCHEME = config_opts.get('DEFAULT','BUILDTEST_MODULE_NAMING_SCHEME')
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
     IGNORE_EASYBUILD=False
 
@@ -79,6 +76,9 @@ def main():
     check_buildtest_setup()
 
     override_options_env_vars()
+    
+    if config_opts.get('BUILDTEST_IGNORE_EASYBUILD'):
+        IGNORE_EASYBUILD=config_opts['BUILDTEST_IGNORE_EASYBUILD']
 
     if bt_opts.version:
         buildtest_version()
