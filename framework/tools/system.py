@@ -29,8 +29,8 @@ Functions for system package
 import os
 import stat
 import sys
-from stat import S_IXUSR, S_IXGRP, S_IXOTH
 import subprocess
+from stat import S_IXUSR, S_IXGRP, S_IXOTH
 from framework.env import config_opts
 
 def check_system_package_installed(pkg):
@@ -73,20 +73,11 @@ def get_binaries_from_systempackage(pkg):
 
 	return binarylist
 
-def systempackage_list():
-    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
-    if not os.path.exists(BUILDTEST_CONFIGS_REPO):
-        print "Non existent directory for BUILDTEST_CONFIGS_REPO ", BUILDTEST_CONFIGS_REPO
-        sys.exit(1)
-
-    dir = os.path.join(BUILDTEST_CONFIGS_REPO,"system")
-    return os.listdir(dir)
-
 def systempackage_installed_list():
-	cmd = """ rpm -qa --qf "%{NAME}\n" """
-	ret = subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE)
-	output = ret.communicate()[0]
-	pkglist = output.split("\n")
-	# delete last element which is a ""
-	pkglist = pkglist[:-1]
-	return pkglist
+    cmd = """ rpm -qa --qf "%{NAME}\n" """
+    ret = subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE)
+    output = ret.communicate()[0]
+    pkglist = output.split("\n")
+    # delete last element which is a ""
+    pkglist = pkglist[:-1]
+    return pkglist

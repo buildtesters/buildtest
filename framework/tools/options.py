@@ -29,10 +29,11 @@ import os
 
 from framework.env import config_opts
 
+
 def override_options_env_vars():
     """ override buildtest options by environment variables """
 
-    if os.environ.get('BUILDTEST_MODULE_NAMING_SCHEME'):# == "FNS" or os.environ.get('BUILDTEST_MODULE_NAMING_SCHEME') == "HMNS":
+    if os.environ.get('BUILDTEST_MODULE_NAMING_SCHEME'):
         config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = os.environ['BUILDTEST_MODULE_NAMING_SCHEME']
 
     if os.environ.get('BUILDTEST_LOGDIR'):

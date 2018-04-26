@@ -60,6 +60,7 @@ from framework.tools.software import get_unique_software, software_version_relat
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.version import buildtest_version
 
+
 # column width for linewrap for argparse library
 os.environ['COLUMNS'] = "120"
 
