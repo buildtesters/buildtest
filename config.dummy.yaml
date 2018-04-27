@@ -1,0 +1,39 @@
+# Module naming scheme
+BUILDTEST_MODULE_NAMING_SCHEME: FNS
+
+# List of all module trees
+BUILDTEST_MODULE_ROOT:
+
+# path to buildtest-configs repo
+BUILDTEST_CONFIGS_REPO:
+
+# path to Tcl-buildtest-config repo
+BUILDTEST_TCL_REPO:
+
+# path to Ruby-buildtest-config repo
+BUILDTEST_RUBY_REPO:
+
+# path to R-buildtest-config repo
+BUILDTEST_R_REPO:
+
+# path to Python-buildtest-config repo
+BUILDTEST_PYTHON_REPO:
+
+# path to Perl-buildtest-config repo
+BUILDTEST_PERL_REPO:
+
+# path where to write buildtest logs
+BUILDTEST_LOGDIR: /tmp/buildtest/logs
+
+# path where to write buildtest tests
+BUILDTEST_TESTDIR: /tmp/buildtest/tests
+
+# Which shell to use when generating test
+BUILDTEST_SHELL: sh
+
+# job template for creating job scripts to be run with scheduler
+BUILDTEST_JOB_TEMPLATE: template/job.slurm
+
+# BUILDTEST_IGNORE_EASYBUILD=False then buildtest will verify if app is built
+# by easybuild. 
+BUILDTEST_IGNORE_EASYBUILD: "False"

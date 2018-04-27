@@ -1,35 +1,25 @@
-# Module naming scheme
-BUILDTEST_MODULE_NAMING_SCHEME: FNS
-
-# List of all module trees
-BUILDTEST_MODULE_ROOT:
-
-# path to buildtest-configs repo
-BUILDTEST_CONFIGS_REPO:
-
-# path to Tcl-buildtest-config repo
-BUILDTEST_TCL_REPO:
-
-# path to Ruby-buildtest-config repo
-BUILDTEST_RUBY_REPO:
-
-# path to R-buildtest-config repo
-BUILDTEST_R_REPO:
-
-# path to Python-buildtest-config repo
-BUILDTEST_PYTHON_REPO:
-
-# path to Perl-buildtest-config repo
-BUILDTEST_PERL_REPO:
-
-# path where to write buildtest logs
-BUILDTEST_LOGDIR: /tmp/buildtest/logs
-
-# path where to write buildtest tests
-BUILDTEST_TESTDIR: /tmp/buildtest/tests
-
-# Which shell to use when generating test
+BUILDTEST_MODULE_NAMING_SCHEME: HMNS
+BUILDTEST_IGNORE_EASYBUILD: "False"
 BUILDTEST_SHELL: sh
-
-# job template for creating job scripts to be run with scheduler
 BUILDTEST_JOB_TEMPLATE: template/job.slurm
+
+BUILDTEST_MODULE_ROOT:
+    - /nfs/grid/software/RHEL6/general
+    - /nfs/grid/software/RHEL6/chemistry
+    - /nfs/grid/software/RHEL7/non-easybuild/modules/all
+    - /nfs/grid/software/easybuild/IvyBridge/redhat/7.3/modules/all
+#    - /nfs/grid/software/easybuild/Haswell/redhat/7.3/modules/all
+#    - /nfs/grid/software/easybuild/Broadwell/redhat/7.3/modules/all
+#    - /nfs/grid/software/easybuild/SkyLake/redhat/7.3/modules/all
+    - /nfs/grid/software/easybuild/commons/modules/all
+    - /nfs/grid/software/RHEL7/medsci/modules/all
+    - /nfs/grid/software/RHEL7/easybuild/modules/all
+
+BUILDTEST_CONFIGS_REPO: /lustre/workspace/home/siddis14/buildtest-configs
+BUILDTEST_TCL_REPO: /lustre/workspace/home/siddis14/Tcl-buildtest-config
+BUILDTEST_RUBY_REPO: /lustre/workspace/home/siddis14/Ruby-buildtest-config
+BUILDTEST_R_REPO: /lustre/workspace/home/siddis14/R-buildtest-config
+BUILDTEST_PYTHON_REPO: /lustre/workspace/home/siddis14/Python-buildtest-config
+BUILDTEST_PERL_REPO: /lustre/workspace/home/siddis14/Perl-buildtest-config
+BUILDTEST_LOGDIR: /tmp/buildtest
+BUILDTEST_TESTDIR: /tmp/buildtest-tests
