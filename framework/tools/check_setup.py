@@ -132,11 +132,13 @@ def check_buildtest_setup():
         ec = 1
         print "ERROR:\t BUILDTEST_JOB_TEMPLATE: ", BUILDTEST_JOB_TEMPLATE, " does not exist"
 
+    time.sleep(0.1)
+
     if os.path.splitext(BUILDTEST_JOB_TEMPLATE)[1]  not in BUILDTEST_JOB_EXTENSION:
         print "Invalid file extension:", BUILDTEST_JOB_EXTENSION, ", must be one of the following extension", BUILDTEST_JOB_EXTENSION
 
-
     time.sleep(0.1)
+
     if ec != 0:
         print "Please fix your BUILDTEST configuration"
         sys.exit(1)

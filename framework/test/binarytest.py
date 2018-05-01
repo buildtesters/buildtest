@@ -112,6 +112,8 @@ def process_binary_file(filename,args_dict,test_type,pkg):
     logger = logging.getLogger(logID)
     BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
     BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
+    BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
+    
     if test_type == "software":
 
         name = get_appname()
@@ -199,9 +201,9 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         logger.debug("Adding content: %s ",  add_test_str)
         fd.write(add_test_str)
 
-
-        if BUILDTEST_JOB_TEMPLATE is not None:
+        if BUILDTEST_ENABLE_JOB:
             generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE, content)
+
 
     fd.close()
 

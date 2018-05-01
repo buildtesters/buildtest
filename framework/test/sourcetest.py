@@ -136,6 +136,7 @@ def generate_source_test(configmap,codedir,subdir):
 
     shell_type = config_opts['BUILDTEST_SHELL']
     BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
+    BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
 
     # testname is key value "name" with .sh extension
     testname=configmap["name"]+"."+shell_type
@@ -339,15 +340,14 @@ def generate_source_test(configmap,codedir,subdir):
 
         fd.close()
 
+    if BUILDTEST_ENABLE_JOB:
+        if "scheduler" in configmap:
+            generate_job_by_config(testpath,shell_type, configmap)
 
-    if "scheduler" in configmap:
-        generate_job_by_config(testpath,shell_type, configmap)
-
-        if BUILDTEST_JOB_TEMPLATE != None:
-            # generate job script based on template, if "scheduler" found in
-            # then module below will do nothing and taken care off by
-            # generate_job_by_config
-            generate_job(testpath,shell_type,BUILDTEST_JOB_TEMPLATE,configmap)
+        # generate job script based on template, if "scheduler" found in
+        # then module below will do nothing and taken care off by
+        # generate_job_by_config
+        generate_job(testpath,shell_type,BUILDTEST_JOB_TEMPLATE,configmap)
 
 
         # by default run the commands below which will add the test to CMakeLists.txt and update the logfile

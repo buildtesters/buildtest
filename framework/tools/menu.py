@@ -90,6 +90,7 @@ class buildtest_menu():
 
 
             group5 = parser.add_argument_group('Job Scheduler Options', 'Options for interacting with Job Scheduler')
+            group5.add_argument("--enable-job", help="enable job script generation with buildtest", action="store_true")
             group5.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
             group5.add_argument("--submitjob", help = "specify a directory or job script to submit to resource scheduler")
 
