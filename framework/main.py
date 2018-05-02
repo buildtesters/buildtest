@@ -96,7 +96,7 @@ def main():
         IGNORE_EASYBUILD=True
 
     if bt_opts.enable_job:
-        config_opts['BUILDTEST_ENABLE_JOB']=True    
+        config_opts['BUILDTEST_ENABLE_JOB']=True
 
     if bt_opts.clean_logs:
         clean_logs()
@@ -175,7 +175,7 @@ def main():
     logger,logpath,logfile = init_log()
     BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-    print config_opts['BUILDTEST_LOGDIR']
+
     create_dir(BUILDTEST_LOGDIR)
     create_dir(BUILDTEST_TESTDIR)
 
@@ -245,7 +245,7 @@ def main():
         if IGNORE_EASYBUILD == False:
             is_easybuild_app()
 
-        source_app_dir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname)
+        source_app_dir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname.lower())
         configdir=os.path.join(source_app_dir,"config")
         codedir=os.path.join(source_app_dir,"code")
         BUILDTEST_LOGDIR=os.path.join(BUILDTEST_LOGDIR,appname,appversion,tcname,tcversion)
@@ -261,6 +261,7 @@ def main():
 
         # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)
         recursive_gen_test(configdir,codedir)
+
 
         # if flag --testset is set, then
         if bt_opts.testset is not  None:

@@ -41,6 +41,7 @@ from framework.test.function import add_arg_to_runcmd
 from framework.test.job import generate_job, generate_job_by_config
 from framework.tools.modules import load_modules
 from framework.tools.cmake import  add_test_to_CMakeLists
+from framework.tools.file import create_dir
 from framework.tools.parser.yaml_config import parse_config
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
@@ -48,7 +49,7 @@ from framework.tools.utility import get_appname, get_appversion, get_toolchain_n
 def recursive_gen_test(configdir,codedir):
         """ if config directory exists then process all .yaml files to build source test """
 
-	# only process yaml files if configdir directory is found
+	    # only process yaml files if configdir directory is found
         if os.path.isdir(configdir):
 
             logger = logging.getLogger(logID)
@@ -130,9 +131,10 @@ def generate_source_test(configmap,codedir,subdir):
     cmakelist=os.path.join(destdir,"CMakeLists.txt")
 
     # if subdirectory exists, create subdirectory in destdir so we can write test script
-    if subdir != "":
+    #if subdir != "":
         # if sub directory does not exist, then create all directories and its parents directories
-        create_dir(destdir)
+    create_dir(destdir)
+
 
     shell_type = config_opts['BUILDTEST_SHELL']
     BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
@@ -343,11 +345,11 @@ def generate_source_test(configmap,codedir,subdir):
     if BUILDTEST_ENABLE_JOB:
         if "scheduler" in configmap:
             generate_job_by_config(testpath,shell_type, configmap)
-
-        # generate job script based on template, if "scheduler" found in
-        # then module below will do nothing and taken care off by
-        # generate_job_by_config
-        generate_job(testpath,shell_type,BUILDTEST_JOB_TEMPLATE,configmap)
+        else:
+            # generate job script based on template, if "scheduler" found in
+            # then module below will do nothing and taken care off by
+            # generate_job_by_config
+            generate_job(testpath,shell_type,BUILDTEST_JOB_TEMPLATE,configmap)
 
 
         # by default run the commands below which will add the test to CMakeLists.txt and update the logfile

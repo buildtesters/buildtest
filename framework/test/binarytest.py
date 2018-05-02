@@ -68,7 +68,7 @@ def generate_binary_test(args_dict,pkg):
         if software is not None:
                 software=software.split("/")
                 appname,appversion=software
-                configdir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname)
+                configdir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname.lower())
                 test_type="software"
         elif system is not None:
                 configdir=os.path.join(BUILDTEST_CONFIGS_REPO,"system",pkg)
@@ -113,7 +113,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
     BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
     BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
     BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
-    
+
     if test_type == "software":
 
         name = get_appname()

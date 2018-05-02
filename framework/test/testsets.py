@@ -101,6 +101,7 @@ def testset_generator(arg_dict, codedir):
     tcver=get_toolchain_version()
 
     BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
+    BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
     BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
 
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
@@ -162,7 +163,7 @@ def testset_generator(arg_dict, codedir):
                 logger.info(msg)
                 count = count + 1
 
-                if BUILDTEST_JOB_TEMPLATE != None:
+                if BUILDTEST_ENABLE_JOB:
                     generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE,emptylist)
 
             print "Generating ", count, "tests for ", os.path.basename(root)
