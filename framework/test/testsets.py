@@ -38,57 +38,54 @@ don't require any YAML files.
 
 """
 def run_testset(arg_dict):
-	""" checks the testset parameter to determine which set of scripts to use to create tests """
+    """ checks the testset parameter to determine which set of scripts to use to create tests """
 
-	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
-	BUILDTEST_PYTHON_REPO = config_opts['BUILDTEST_PYTHON_REPO']
-	BUILDTEST_TCL_REPO = config_opts['BUILDTEST_TCL_REPO']
-	BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
-	BUILDTEST_PERL_REPO = config_opts['BUILDTEST_PERL_REPO']
-	BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
+    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+    BUILDTEST_PYTHON_REPO = config_opts['BUILDTEST_PYTHON_REPO']
+    BUILDTEST_TCL_REPO = config_opts['BUILDTEST_TCL_REPO']
+    BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
+    BUILDTEST_PERL_REPO = config_opts['BUILDTEST_PERL_REPO']
+    BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
 
-	appname = get_appname()
+    appname = get_appname()
 
-	source_app_dir=""
-	codedir=""
-	logcontent = ""
-	runtest = False
+    source_app_dir=""
+    codedir=""
+    logcontent = ""
+    runtest = False
 
-	if appname in PYTHON_APPS and arg_dict.testset == "Python":
-	        source_app_dir=os.path.join(BUILDTEST_PYTHON_REPO,"python")
-                runtest=True
+    if appname in PYTHON_APPS and arg_dict.testset == "Python":
+        source_app_dir=os.path.join(BUILDTEST_PYTHON_REPO,"python")
+        runtest=True
+    if appname in ["Perl"] and arg_dict.testset == "Perl":
+        source_app_dir=os.path.join(BUILDTEST_PERL_REPO,"perl")
+        runtest=True
+    # condition to run R testset
+    if appname in ["R"] and arg_dict.testset == "R":
+        source_app_dir=os.path.join(BUILDTEST_R_REPO,"R")
+        runtest=True
 
-        if appname in ["Perl"] and arg_dict.testset == "Perl":
-        	source_app_dir=os.path.join(BUILDTEST_PERL_REPO,"perl")
-                runtest=True
+    # condition to run R testset
+    if appname in ["Ruby"] and arg_dict.testset == "Ruby":
+        source_app_dir=os.path.join(BUILDTEST_RUBY_REPO,"ruby")
+        runtest=True
 
-        # condition to run R testset
-        if appname in ["R"] and arg_dict.testset == "R":
-        	source_app_dir=os.path.join(BUILDTEST_R_REPO,"R")
-                runtest=True
+    # condition to run R testset
+    if appname in ["Tcl"] and arg_dict.testset == "Tcl":
+        source_app_dir=os.path.join(BUILDTEST_TCL_REPO,"Tcl")
+        runtest=True
 
+    # for MPI we run recursive_gen_test since it processes YAML files
+    if appname in MPI_APPS and arg_dict.testset == "MPI":
+        source_app_dir=os.path.join(BUILDTEST_CONFIGS_REPO,"mpi")
+        configdir=os.path.join(source_app_dir,"config")
+        codedir=os.path.join(source_app_dir,"code")
+        recursive_gen_test(configdir,codedir)
+        return
 
-        # condition to run R testset
-        if appname in ["Ruby"] and arg_dict.testset == "Ruby":
-                source_app_dir=os.path.join(BUILDTEST_RUBY_REPO,"ruby")
-                runtest=True
-
-
-        # condition to run R testset
-        if appname in ["Tcl"] and arg_dict.testset == "Tcl":
-                source_app_dir=os.path.join(BUILDTEST_TCL_REPO,"Tcl")
-                runtest=True
-
-	# for MPI we run recursive_gen_test since it processes YAML files
-	if appname in MPI_APPS and arg_dict.testset == "MPI":
-		source_app_dir=os.path.join(BUILDTEST_CONFIGS_REPO,"mpi")
-		configdir=os.path.join(source_app_dir,"config")
-		codedir=os.path.join(source_app_dir,"code")
-		recursive_gen_test(configdir,codedir)
-		return
-        if runtest == True:
-        	codedir=os.path.join(source_app_dir,"code")
-                testset_generator(arg_dict,codedir)
+    if runtest == True:
+        codedir=os.path.join(source_app_dir,"code")
+        testset_generator(arg_dict,codedir)
 
 def testset_generator(arg_dict, codedir):
 
@@ -115,7 +112,7 @@ def testset_generator(arg_dict, codedir):
     emptylist = []
     if os.path.isdir(codedir):
         for root,subdirs,files in os.walk(codedir):
-
+            
             # skip to next item in loop when a sub-directory has no files
             if len(files) == 0:
                 continue

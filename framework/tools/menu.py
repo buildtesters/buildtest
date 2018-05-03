@@ -29,7 +29,7 @@ import argparse
 import argcomplete
 from framework.env import BUILDTEST_SHELLTYPES, config_opts
 from framework.tools.system import systempackage_installed_list
-from framework.tools.software import get_software_stack, get_toolchain_stack
+from framework.tools.software import get_software_stack, get_toolchain_stack,ebyaml_choices
 
 syspkg_list = os.listdir(os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"system"))
 # adding "all" as parameter to run all system package test
@@ -38,7 +38,7 @@ syspkg_list.append("all")
 
 pkglist = systempackage_installed_list()
 
-
+yaml_apps = ebyaml_choices()
 software_list = get_software_stack()
 toolchain_list = get_toolchain_stack()
 class buildtest_menu():
@@ -86,7 +86,7 @@ class buildtest_menu():
 
             group4 = parser.add_argument_group('YAML Options', 'Options for YAML configuration')
             group4.add_argument("--sysyaml", help = "generate binary test YAML configuration for system package", choices=pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
-            group4.add_argument("--ebyaml", help = "generate binary test YAML configuration for easybuild package (Not Implemented)")
+            group4.add_argument("--ebyaml", help = "generate binary test YAML configuration for easybuild package (Not Implemented)", choices=yaml_apps, metavar='YAML-APP-CHOICES')
 
 
             group5 = parser.add_argument_group('Job Scheduler Options', 'Options for interacting with Job Scheduler')

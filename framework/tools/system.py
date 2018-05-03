@@ -74,6 +74,8 @@ def get_binaries_from_systempackage(pkg):
 	return binarylist
 
 def systempackage_installed_list():
+    """return a list of installed system packages in a machine"""
+    
     cmd = """ rpm -qa --qf "%{NAME}\n" """
     ret = subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE)
     output = ret.communicate()[0]

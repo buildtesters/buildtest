@@ -30,42 +30,41 @@ import os
 import sys
 import yaml
 from framework.env import config_opts
+from framework.tools.file import create_dir
 from framework.tools.software import get_unique_software
 from framework.tools.system import check_system_package_installed, get_binaries_from_systempackage
 def create_system_yaml(name):
-	""" create YAML configuration for binary test for system package """
-	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+    """ create YAML configuration for binary test for system package """
+    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 
-	destdir = os.path.join(BUILDTEST_CONFIGS_REPO,"system",name)
-	yamlfile = os.path.join(destdir,"command.yaml")
+    destdir = os.path.join(BUILDTEST_CONFIGS_REPO,"system",name)
+    yamlfile = os.path.join(destdir,"command.yaml")
 
-	# if yaml file exists then exit out
-	if os.path.isfile(yamlfile):
-		print "YAML file already exists, please check: ", yamlfile
-		sys.exit(0)
+    # if yaml file exists then exit out
+    if os.path.isfile(yamlfile):
+        print "YAML file already exists, please check: ", yamlfile
+        sys.exit(0)
 
-	# if directory is not present then create it
-	if not os.path.isdir(destdir):
-		print "creating directory ", destdir
-		os.makedirs(destdir)
+    # if directory is not present then create it
+    create_dir(destdir)
 
-	# if package is not installed
-	if check_system_package_installed(name) == False:
-		print "Please install system package:", name, " before creating YAML file"
-		sys.exit(0)
+    # if package is not installed
+    if check_system_package_installed(name) == False:
+        print "Please install system package:", name, " before creating YAML file"
+        sys.exit(0)
 
-	# get binary from system package
-	binary = get_binaries_from_systempackage(name)
+    # get binary from system package
+    binary = get_binaries_from_systempackage(name)
 
-	# no test, then stop immediately
-	if len(binary) == 0:
-		print "There are no binaries found in package: ", name
-		sys.exit(0)
+    # no test, then stop immediately
+    if len(binary) == 0:
+        print "There are no binaries found in package: ", name
+        sys.exit(0)
 
-	fd = open(yamlfile,"w")
-	binarydict = { "binaries": binary }
-	with open(yamlfile, 'a') as outfile:
-		yaml.dump(binarydict, outfile, default_flow_style=False)
+    fd = open(yamlfile,"w")
+    binarydict = { "binaries": binary }
+    with open(yamlfile, 'a') as outfile:
+        yaml.dump(binarydict, outfile, default_flow_style=False)
 
-	print "Please check YAML file", yamlfile, " and fix test accordingly"
-	sys.exit(0)
+    print "Please check YAML file", yamlfile, " and fix test accordingly"
+    sys.exit(0)
