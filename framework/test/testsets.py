@@ -22,6 +22,7 @@
 
 import os
 import logging
+import subprocess
 
 from framework.tools.modules import load_modules
 from framework.tools.cmake import add_test_to_CMakeLists, setup_software_cmake
@@ -39,6 +40,10 @@ don't require any YAML files.
 """
 def run_testset(arg_dict):
     """ checks the testset parameter to determine which set of scripts to use to create tests """
+
+    print "--------------------------------------------"
+    print "[STAGE 3]: Building Testset"
+    print "--------------------------------------------"
 
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
     BUILDTEST_PYTHON_REPO = config_opts['BUILDTEST_PYTHON_REPO']
@@ -110,14 +115,26 @@ def testset_generator(arg_dict, codedir):
         setup_software_cmake()
 
     emptylist = []
+    testset_name = os.path.basename(os.path.dirname(codedir))
+
     if os.path.isdir(codedir):
+        totalcount = 0
         for root,subdirs,files in os.walk(codedir):
-            
+
+            package_name = os.path.basename(root)
+
+            if testset_name == "python":
+                ret = verify_python_library(package_name)
+                # if import package fails then skip test generation
+                if ret > 0:
+                    continue
+
             # skip to next item in loop when a sub-directory has no files
             if len(files) == 0:
                 continue
 
             count = 0
+
             for file in files:
                 # get file name without extension
                 fname = os.path.splitext(file)[0]
@@ -164,5 +181,18 @@ def testset_generator(arg_dict, codedir):
                     generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE,emptylist)
 
             print "Generating ", count, "tests for ", os.path.basename(root)
-
+            totalcount += count
+    print "Total Tests created in stage 3:", totalcount
     print "Writing tests to ", app_destdir
+
+def verify_python_library(python_lib):
+    """ check if python package exist for request python module, if it exists create test otherwise skip test creation"""
+
+    appname=get_appname()
+    appver=get_appversion()
+
+    cmd = "module purge; module load " + os.path.join(appname,appver) + "; python -c \"import " + python_lib + "\""
+
+    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    ret.communicate()
+    return ret.returncode

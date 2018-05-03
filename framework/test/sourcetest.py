@@ -56,7 +56,11 @@ def recursive_gen_test(configdir,codedir):
 
             logger.debug("Processing all YAML files in %s", configdir)
 
-            print "[SOURCETEST]: Processing all YAML files in ", configdir
+            print "--------------------------------------------"
+            print "[STAGE 2]: Building Source Tests"
+            print "--------------------------------------------"
+
+            print "Processing all YAML files in directory:", configdir
             count = 0
             for root,subdirs,files in os.walk(configdir):
 

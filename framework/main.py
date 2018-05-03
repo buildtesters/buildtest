@@ -69,6 +69,7 @@ def main():
 
     IGNORE_EASYBUILD=False
 
+
     parser = buildtest_menu()
     bt_opts = parser.parse_options()
     override_options_env_vars()
@@ -231,6 +232,8 @@ def main():
         tcname = get_toolchain_name()
         tcversion = get_toolchain_version()
 
+        print "Detecting Software: ", os.path.join(appname,appversion)
+        
         logger.debug("Generating Test from EB Application")
 
         logger.debug("Software: %s", appname)

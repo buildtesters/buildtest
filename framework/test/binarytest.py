@@ -114,6 +114,9 @@ def process_binary_file(filename,args_dict,test_type,pkg):
     BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
     BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
 
+    print "--------------------------------------------"
+    print "[STAGE 1]: Building Binary Tests"
+    print "--------------------------------------------"
     if test_type == "software":
 
         name = get_appname()
@@ -123,17 +126,19 @@ def process_binary_file(filename,args_dict,test_type,pkg):
 
         test_destdir,test_destdir_cmakelist = setup_software_cmake()
 
-
-        print "[BINARYTEST]: Processing YAML file for ", os.path.join(name,version), os.path.join(toolchain_name,toolchain_version), " at ", filename
+        print "Detecting Test Type: Software"
+        #print "[BINARYTEST]: Processing YAML file for ", os.path.join(name,version), os.path.join(toolchain_name,toolchain_version), " at ", filename
        # load preamble for test-script that initializes environment.
         header=load_modules(BUILDTEST_SHELL)
 
     else:
         system=args_dict.system
-        print "[BINARYTEST]: Processing YAML file for ", pkg , " at ", filename
+        print "Detecting Test Type: System Package"
+        #print "[BINARYTEST]: Processing YAML file for ", pkg , " at ", filename
         test_destdir,test_destdir_cmakelist = setup_system_cmake(pkg)
 
 
+    print "Processing Binary YAML configuration: ", filename.rstrip()
 
     logger.info("Reading File: %s", filename)
     fd=open(filename,'r')
@@ -209,8 +214,8 @@ def process_binary_file(filename,args_dict,test_type,pkg):
 
     print
     if test_type == "system":
-        print "Generating " + str(count) + " binary tests for package: " + pkg
+        print "Generating " + str(count) + " binary tests"
     else:
-        print "Generating " + str(count) + " binary tests for Application: " + name + "/" + version
+        print "Generating " + str(count) + " binary tests"
 
     print "Binary Tests are written in " + test_destdir
