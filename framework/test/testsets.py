@@ -136,6 +136,13 @@ def testset_generator(arg_dict, codedir):
                 if ret > 0:
                     continue
 
+            #print testset_name,package_name
+            if testset_name == "Ruby":
+                ret = verify_Ruby_gem(package_name)
+                # if import package fails then skip test generation
+                if ret > 0:
+                    continue
+
             # skip to next item in loop when a sub-directory has no files
             if len(files) == 0:
                 continue
@@ -221,7 +228,7 @@ def verify_python_library(python_lib):
 
 
 def verify_R_library(R_lib):
-    """ check if python package exist for request python module, if it exists create test otherwise skip test creation"""
+    """ check if R library exist for request R module, if it exists create test otherwise skip test creation"""
 
     logger = logging.getLogger(logID)
 
@@ -238,7 +245,7 @@ def verify_R_library(R_lib):
     return ret.returncode
 
 def verify_perl_module(perl_module):
-    """ check if python package exist for request python module, if it exists create test otherwise skip test creation"""
+    """ check if perl module exist for request perl module, if it exists create test otherwise skip test creation"""
 
     logger = logging.getLogger(logID)
     appname=get_appname()
@@ -247,6 +254,23 @@ def verify_perl_module(perl_module):
     cmd = "module purge; module load " + os.path.join(appname,appver) + "; perl -e \' use " +  perl_module + ";\'"
 
     logger.debug("Checking Perl Module " + perl_module)
+    logger.debug("Running command - " + cmd)
+
+    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    ret.communicate()
+    return ret.returncode
+
+def verify_Ruby_gem(Ruby_gem):
+    """ check if ruby gem exist for request ruby module, if it exists create test otherwise skip test creation"""
+
+    logger = logging.getLogger(logID)
+
+    appname=get_appname()
+    appver=get_appversion()
+
+    cmd = "module purge; module load " + os.path.join(appname,appver) + "; gem list -i " + Ruby_gem
+
+    logger.debug("Check Ruby gem:" + R_lib)
     logger.debug("Running command - " + cmd)
 
     ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
