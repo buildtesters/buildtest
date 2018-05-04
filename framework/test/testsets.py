@@ -59,24 +59,24 @@ def run_testset(arg_dict):
     logcontent = ""
     runtest = False
 
-    if appname in PYTHON_APPS and arg_dict.testset == "Python":
+    if appname.lower() in PYTHON_APPS and arg_dict.testset == "Python":
         source_app_dir=os.path.join(BUILDTEST_PYTHON_REPO,"python")
         runtest=True
-    if appname in ["Perl"] and arg_dict.testset == "Perl":
+    if appname.lower() in ["perl"] and arg_dict.testset == "Perl":
         source_app_dir=os.path.join(BUILDTEST_PERL_REPO,"perl")
         runtest=True
     # condition to run R testset
-    if appname in ["R"] and arg_dict.testset == "R":
+    if appname.lower() in ["r"] and arg_dict.testset == "R":
         source_app_dir=os.path.join(BUILDTEST_R_REPO,"R")
         runtest=True
 
     # condition to run R testset
-    if appname in ["Ruby"] and arg_dict.testset == "Ruby":
+    if appname.lower() in ["ruby"] and arg_dict.testset == "Ruby":
         source_app_dir=os.path.join(BUILDTEST_RUBY_REPO,"ruby")
         runtest=True
 
     # condition to run R testset
-    if appname in ["Tcl"] and arg_dict.testset == "Tcl":
+    if appname.lower() in ["tcl"] and arg_dict.testset == "Tcl":
         source_app_dir=os.path.join(BUILDTEST_TCL_REPO,"Tcl")
         runtest=True
 
@@ -129,6 +129,13 @@ def testset_generator(arg_dict, codedir):
                 if ret > 0:
                     continue
 
+            #print testset_name,package_name
+            if testset_name == "R":
+                ret = verify_R_library(package_name)
+                # if import package fails then skip test generation
+                if ret > 0:
+                    continue
+
             # skip to next item in loop when a sub-directory has no files
             if len(files) == 0:
                 continue
@@ -140,6 +147,16 @@ def testset_generator(arg_dict, codedir):
                 fname = os.path.splitext(file)[0]
                 # get file extension
                 ext = os.path.splitext(file)[1]
+
+                if testset_name == "perl":
+                    #print files, file
+                    #print root,files, file, fname
+                    perl_module = os.path.basename(root) + "::" + fname
+                    print perl_module
+                    ret = verify_perl_module(perl_module)
+                    # if import package fails then skip test generation
+                    if ret > 0:
+                        continue
 
                 if ext == ".py":
                     wrapper = "python"
@@ -188,10 +205,49 @@ def testset_generator(arg_dict, codedir):
 def verify_python_library(python_lib):
     """ check if python package exist for request python module, if it exists create test otherwise skip test creation"""
 
+    logger = logging.getLogger(logID)
+
     appname=get_appname()
     appver=get_appversion()
 
     cmd = "module purge; module load " + os.path.join(appname,appver) + "; python -c \"import " + python_lib + "\""
+
+    logger.debug("Check Python Package:" + python_lib)
+    logger.debug("Running command -" + cmd)
+
+    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    ret.communicate()
+    return ret.returncode
+
+
+def verify_R_library(R_lib):
+    """ check if python package exist for request python module, if it exists create test otherwise skip test creation"""
+
+    logger = logging.getLogger(logID)
+
+    appname=get_appname()
+    appver=get_appversion()
+
+    cmd = "module purge; module load " + os.path.join(appname,appver) + "; echo \"library(" + R_lib + ")\" | R -q --no-save "
+
+    logger.debug("Check R Package:" + R_lib)
+    logger.debug("Running command - " + cmd)
+
+    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    ret.communicate()
+    return ret.returncode
+
+def verify_perl_module(perl_module):
+    """ check if python package exist for request python module, if it exists create test otherwise skip test creation"""
+
+    logger = logging.getLogger(logID)
+    appname=get_appname()
+    appver=get_appversion()
+
+    cmd = "module purge; module load " + os.path.join(appname,appver) + "; perl -e \' use " +  perl_module + ";\'"
+
+    logger.debug("Checking Perl Module " + perl_module)
+    logger.debug("Running command - " + cmd)
 
     ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     ret.communicate()

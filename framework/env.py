@@ -36,7 +36,7 @@ BUILDTEST_ROOT = os.environ['BUILDTEST_ROOT']
 BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm", ".pbs"]
 BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
 
-PYTHON_APPS = ["Python","Anaconda2", "Anaconda3"]
+PYTHON_APPS = ["python","anaconda2", "anaconda3"]
 MPI_APPS = ["OpenMPI", "MPICH","MVAPICH2", "intel", "impi"]
 
 #BUILDTEST_DEFAULT_CONFIG=os.path.join(BUILDTEST_ROOT,"config.yaml")
