@@ -58,7 +58,6 @@ def run_testset(arg_dict):
     codedir=""
     logcontent = ""
     runtest = False
-
     if appname.lower() in PYTHON_APPS and arg_dict.testset == "Python":
         source_app_dir=os.path.join(BUILDTEST_PYTHON_REPO,"python")
         runtest=True
@@ -87,7 +86,6 @@ def run_testset(arg_dict):
         codedir=os.path.join(source_app_dir,"code")
         recursive_gen_test(configdir,codedir)
         return
-
     if runtest == True:
         codedir=os.path.join(source_app_dir,"code")
         testset_generator(arg_dict,codedir)
@@ -117,6 +115,7 @@ def testset_generator(arg_dict, codedir):
     emptylist = []
     testset_name = os.path.basename(os.path.dirname(codedir))
 
+    print codedir, testset_name
     if os.path.isdir(codedir):
         totalcount = 0
         for root,subdirs,files in os.walk(codedir):
@@ -217,7 +216,14 @@ def verify_python_library(python_lib):
     appname=get_appname()
     appver=get_appversion()
 
+    BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
     cmd = "module purge; module load " + os.path.join(appname,appver) + "; python -c \"import " + python_lib + "\""
+
+    if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
+        tcname = get_toolchain_name()
+        tcver = get_toolchain_version()
+        if len(tcname) > 0:
+            cmd = "module purge; module load " + os.path.join(tcname,tcver) + "; module load " + os.path.join(appname,appver) + "; python -c \"import " +  python_lib + "\""
 
     logger.debug("Check Python Package:" + python_lib)
     logger.debug("Running command -" + cmd)
@@ -235,7 +241,18 @@ def verify_R_library(R_lib):
     appname=get_appname()
     appver=get_appversion()
 
+    BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
+    cmd = ""
+
+
     cmd = "module purge; module load " + os.path.join(appname,appver) + "; echo \"library(" + R_lib + ")\" | R -q --no-save "
+
+    if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
+        tcname = get_toolchain_name()
+        tcver = get_toolchain_version()
+        if len(tcname) > 0:
+            cmd = "module purge; module load " + os.path.join(tcname,tcver) + "; module load " + os.path.join(appname,appver) + "; echo \"library(" + R_lib + ")\" | R -q --no-save "
+
 
     logger.debug("Check R Package:" + R_lib)
     logger.debug("Running command - " + cmd)
@@ -251,7 +268,14 @@ def verify_perl_module(perl_module):
     appname=get_appname()
     appver=get_appversion()
 
+    BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
     cmd = "module purge; module load " + os.path.join(appname,appver) + "; perl -e \' use " +  perl_module + ";\'"
+
+    if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
+        tcname = get_toolchain_name()
+        tcver = get_toolchain_version()
+        if len(tcname) > 0:
+            cmd = "module purge; module load " + os.path.join(tcname,tcver) + "; module load " + os.path.join(appname,appver) + "; perl -e \' use " + perl_module + ";\'"
 
     logger.debug("Checking Perl Module " + perl_module)
     logger.debug("Running command - " + cmd)
@@ -268,7 +292,14 @@ def verify_Ruby_gem(Ruby_gem):
     appname=get_appname()
     appver=get_appversion()
 
+    BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
     cmd = "module purge; module load " + os.path.join(appname,appver) + "; gem list -i " + Ruby_gem
+
+    if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
+        tcname = get_toolchain_name()
+        tcver = get_toolchain_version()
+        if len(tcname) > 0:
+            cmd = "module purge; module load " + os.path.join(tcname,tcver) + "; module load " + os.path.join(appname,appver) + "; gem list - i " + Ruby_gem
 
     logger.debug("Check Ruby gem:" + R_lib)
     logger.debug("Running command - " + cmd)
