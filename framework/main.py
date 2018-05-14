@@ -36,15 +36,13 @@ sys.path.insert(0,os.path.abspath('.'))
 
 
 
-from framework.env import BUILDTEST_ROOT, BUILDTEST_JOB_EXTENSION, logID, config_opts
-from framework.runtest import runtest_menu
+from framework.env import config_opts
 from framework.test.binarytest import generate_binary_test
 from framework.test.function import clean_tests
 from framework.test.job import submit_job_to_scheduler, update_job_template
 from framework.test.sourcetest import recursive_gen_test
 from framework.test.testsets import run_testset
-from framework.tools.check_setup import check_buildtest_setup
-from framework.tools.config import show_configuration
+from framework.tools.config import check_configuration, show_configuration
 from framework.tools.file import create_dir
 from framework.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from framework.tools.find import find_all_tests, find_tests_by_arg
@@ -53,13 +51,13 @@ from framework.tools.generate_yaml import create_system_yaml
 from framework.tools.log import init_log, clean_logs
 from framework.tools.menu import buildtest_menu
 from framework.tools.modules import diff_trees
-from framework.tools.options import override_options_env_vars
+from framework.tools.options import override_configuration
 from framework.tools.print_functions import print_software_version_relation, print_software, print_toolchain
 from framework.tools.scan import scantest
 from framework.tools.software import get_unique_software, software_version_relation
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.version import buildtest_version
-
+from framework.runtest import runtest_menu
 
 # column width for linewrap for argparse library
 os.environ['COLUMNS'] = "120"
@@ -69,13 +67,13 @@ def main():
 
     IGNORE_EASYBUILD=False
 
-
-    parser = buildtest_menu()
-    bt_opts = parser.parse_options()
-    override_options_env_vars()
-    check_buildtest_setup()
+    override_configuration()
+    check_configuration()
 
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+    print BUILDTEST_CONFIGS_REPO
+    parser = buildtest_menu()
+    bt_opts = parser.parse_options()
 
     if config_opts.get('BUILDTEST_IGNORE_EASYBUILD'):
         IGNORE_EASYBUILD=config_opts['BUILDTEST_IGNORE_EASYBUILD']
@@ -233,7 +231,7 @@ def main():
         tcversion = get_toolchain_version()
 
         print "Detecting Software: ", os.path.join(appname,appversion)
-        
+
         logger.debug("Generating Test from EB Application")
 
         logger.debug("Software: %s", appname)

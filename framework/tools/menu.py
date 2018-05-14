@@ -27,23 +27,27 @@
 import os
 import argparse
 import argcomplete
+
 from framework.env import BUILDTEST_SHELLTYPES, config_opts
+from framework.tools.options import override_configuration
 from framework.tools.system import systempackage_installed_list
 from framework.tools.software import get_software_stack, get_toolchain_stack,ebyaml_choices
 
-syspkg_list = os.listdir(os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"system"))
-# adding "all" as parameter to run all system package test
-syspkg_list.append("all")
 
-
-pkglist = systempackage_installed_list()
-
-yaml_apps = ebyaml_choices()
-software_list = get_software_stack()
-toolchain_list = get_toolchain_stack()
 class buildtest_menu():
 
         parser = {}
+        override_configuration()
+        syspkg_list = os.listdir(os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"system"))
+        # adding "all" as parameter to run all system package test
+        syspkg_list.append("all")
+
+
+        pkglist = systempackage_installed_list()
+
+        yaml_apps = ebyaml_choices()
+        software_list = get_software_stack()
+        toolchain_list = get_toolchain_stack()
 
         def __init__(self):
         # reports an error, issue with import
@@ -76,17 +80,17 @@ class buildtest_menu():
             group2.add_argument("--diff-trees", help="Show difference between two module trees")
 
             group3 = parser.add_argument_group('Test Options', 'Options for building tests with buildtest')
-            group3.add_argument("-s", "--software", help=" Specify software package to test", choices=software_list, metavar='INSTALLED-EASYBUILD-APPS')
-            group3.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=toolchain_list, metavar='INSTALLED-EASYBUILD-TOOLCHAINS')
+            group3.add_argument("-s", "--software", help=" Specify software package to test", choices=self.software_list, metavar='INSTALLED-EASYBUILD-APPS')
+            group3.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=self.toolchain_list, metavar='INSTALLED-EASYBUILD-TOOLCHAINS')
             group3.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES)
             group3.add_argument("--system", help=""" Build test for system packages
-                             To build all system package test use --system all """, choices=syspkg_list, metavar='SYSTEM-PACKAGE')
+                             To build all system package test use --system all """, choices=self.syspkg_list, metavar='SYSTEM-PACKAGE')
             group3.add_argument("--testset", help="Select the type of test set to run (Python, R, Ruby, Perl, Tcl, MPI)", choices=["Python","R","Ruby","Perl","Tcl","MPI"])
 
 
             group4 = parser.add_argument_group('YAML Options', 'Options for YAML configuration')
-            group4.add_argument("--sysyaml", help = "generate binary test YAML configuration for system package", choices=pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
-            group4.add_argument("--ebyaml", help = "generate binary test YAML configuration for easybuild package (Not Implemented)", choices=yaml_apps, metavar='YAML-APP-CHOICES')
+            group4.add_argument("--sysyaml", help = "generate binary test YAML configuration for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
+            group4.add_argument("--ebyaml", help = "generate binary test YAML configuration for easybuild package (Not Implemented)", choices=self.yaml_apps, metavar='YAML-APP-CHOICES')
 
 
             group5 = parser.add_argument_group('Job Scheduler Options', 'Options for interacting with Job Scheduler')

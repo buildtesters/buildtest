@@ -30,7 +30,7 @@ import os
 from framework.env import config_opts
 
 
-def override_options_env_vars():
+def override_configuration():
     """ override buildtest options by environment variables """
 
     if os.environ.get('BUILDTEST_MODULE_NAMING_SCHEME'):
@@ -61,6 +61,7 @@ def override_options_env_vars():
         config_opts['BUILDTEST_ENABLE_JOB']=os.environ['BUILDTEST_ENABLE_JOB']
 
     if os.environ.get('BUILDTEST_CONFIGS_REPO'):
+
         config_opts['BUILDTEST_CONFIGS_REPO']=os.environ['BUILDTEST_CONFIGS_REPO']
 
     if os.environ.get('BUILDTEST_TCL_REPO'):
