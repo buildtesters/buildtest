@@ -23,14 +23,15 @@
 """
 :author: Shahzeb Siddiqui (Pfizer)
 
-Functions for system package 
+Functions for system package
 """
 
 import os
 import stat
-from stat import S_IXUSR, S_IXGRP, S_IXOTH
+import sys
 import subprocess
-from framework.env import BUILDTEST_SOURCEDIR
+from stat import S_IXUSR, S_IXGRP, S_IXOTH
+from framework.env import config_opts
 
 def check_system_package_installed(pkg):
 	""" check if system package is installed and return True/False"""
@@ -43,23 +44,23 @@ def check_system_package_installed(pkg):
 		return True
 	else:
 		return False
-	
+
 def get_binaries_from_systempackage(pkg):
 	""" get binaries from system package that typically install in standard linux path and only those that are executable """
 
 	bindirs = [ "/usr/bin", "/bin", "/sbin", "/usr/sbin", "/usr/local/bin", "/usr/local/sbin" ]
 
-	cmd = "rpm -ql " + pkg  
+	cmd = "rpm -ql " + pkg
         ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
         (output,err) = ret.communicate()
-	
+
 	temp = output.splitlines()
 	output = temp
-	
+
 	binarylist = []
 
 	for file in output:
-		# if file doesn't exist but found during rpm -ql then skip file. 
+		# if file doesn't exist but found during rpm -ql then skip file.
 		if not os.path.isfile(file):
 			continue
 
@@ -72,18 +73,13 @@ def get_binaries_from_systempackage(pkg):
 
 	return binarylist
 
-def systempackage_list():
-	dir = os.path.join(BUILDTEST_SOURCEDIR,"system")
-	return os.listdir(dir)
-
 def systempackage_installed_list():
-	cmd = """ rpm -qa --qf "%{NAME}\n" """
-	ret = subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE)
-	output = ret.communicate()[0]
-	pkglist = output.split("\n")
-	# delete last element which is a ""
-	pkglist = pkglist[:-1]
-	return pkglist
-
-
-
+    """return a list of installed system packages in a machine"""
+    
+    cmd = """ rpm -qa --qf "%{NAME}\n" """
+    ret = subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE)
+    output = ret.communicate()[0]
+    pkglist = output.split("\n")
+    # delete last element which is a ""
+    pkglist = pkglist[:-1]
+    return pkglist

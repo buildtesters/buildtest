@@ -31,8 +31,8 @@ import os
 import sys
 import logging
 
-from framework.env import BUILDTEST_MODULE_NAMING_SCHEME, BUILDTEST_MODULE_EBROOT, logID
-from framework.tools.easybuild import list_toolchain
+from framework.env import logID, config_opts
+from framework.tools.easybuild import list_toolchain, get_module_root
 from framework.tools.modules import get_module_list
 from framework.tools.utility import sset
 
@@ -41,8 +41,10 @@ def get_unique_software():
         """
         returns a set of software packages found in the module tree
         """
+        modtrees = get_module_root()
         logger = logging.getLogger(logID)
-        logger.info("Traversing Module Tree: %s to find all unique software", BUILDTEST_MODULE_EBROOT)
+
+        logger.info("Traversing Module Tree: %s to find all unique software", modtrees)
 
         #moduletreelist=moduletrees.split(":")
         module_set=set()
@@ -88,7 +90,7 @@ def get_software_stack():
         return sorted(moduleversion_set)
 
 def get_toolchain_stack():
-	""" return a list of toolchain used as choices for -t option in 
+	""" return a list of toolchain used as choices for -t option in
 	buildtest menu"""
 
 
@@ -103,8 +105,8 @@ def get_toolchain_stack():
 		if appname in toolchains:
 			modified_toolchain_list.append(app)
 
-	return modified_toolchain_list		
-			
+	return modified_toolchain_list
+
 
 def software_version_relation():
         """
@@ -132,7 +134,10 @@ def software_version_relation():
 
 
                         version = os.path.basename(app)
-                        version = os.path.splitext(version)[0]
+                        ext = os.path.splitext(version)[1]
+                        # only strip extension if .lua is found, otherwise add version as is
+                        if ext == "lua":
+                            version = os.path.splitext(version)[0]
 
                         # only add module version to set when module name is found in tree
                         version_set.add(version + " (" + app +")")
@@ -140,3 +145,26 @@ def software_version_relation():
                 module_dict[item] = version_set
 
         return module_dict
+
+def ebyaml_choices():
+    """return a list of software packages for which you can generate yaml configuration for binary testing"""
+
+    yaml_apps = os.listdir(os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"ebapps"))
+
+    software_list = get_software_stack()
+    #print yaml_apps
+    remove_app_list = []
+
+    for module in software_list:
+        name = module.split("/")[0]
+
+        # if directory found in BUILDTEST_CONFIGS_REPO/ebapps then add module to remove list  assuming command.yaml is present in directory
+        if name.lower() in yaml_apps:
+            remove_app_list.append(module)
+
+    # remove module choices which already have a directory and possible command.yaml
+    for item in remove_app_list:
+        software_list.remove(item)
+
+    
+    return software_list
