@@ -1,19 +1,19 @@
 binaries:
-        - addr2line -v
-        - ar -V
-        - as --version
-        - c++filt -v
-        - dwp -V
-        - elfedit -v
-        - gprof -v
-        - ld -v   
-        - ld.bfd -v
-        - ld.gold -v
-        - nm -V
-        - objcopy -V
-        - objdump -V
-        - ranlib -v
-        - readelf -v
-        - size -v
-        - strings -v
-        - strip -V
+- /usr/bin/addr2line -v
+- /usr/bin/ar -V
+- /usr/bin/as --version
+- /usr/bin/c++filt -v 
+- /usr/bin/dwp -V
+- /usr/bin/elfedit -v
+- /usr/bin/gprof -v 
+- /usr/bin/ld -v 
+- /usr/bin/ld.bfd -v
+- /usr/bin/ld.gold -v 
+- /usr/bin/nm -V
+- /usr/bin/objcopy -V
+- /usr/bin/objdump -V
+- /usr/bin/ranlib -v
+- /usr/bin/readelf -v 
+- /usr/bin/size -v 
+- /usr/bin/strings -v 
+- /usr/bin/strip -V

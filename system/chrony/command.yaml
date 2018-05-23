@@ -1,3 +1,3 @@
 binaries:
-        - chronyc --version
-        - chronyd --version
+- /usr/bin/chronyc --version
+- /usr/sbin/chronyd --version

@@ -1,3 +1,4 @@
 binaries:
-        - getfacl -v
-        - setfacl -v
+- /usr/bin/chacl -l /
+- /usr/bin/getfacl -v
+- /usr/bin/setfacl -v
