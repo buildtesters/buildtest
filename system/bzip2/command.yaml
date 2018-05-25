@@ -1,0 +1,10 @@
+binaries:
+- /usr/bin/bunzip2 --help
+- /usr/bin/bzcat --help
+- which /usr/bin/bzcmp
+- which /usr/bin/bzdiff
+- which /usr/bin/bzgrep
+- /usr/bin/bzip2 --help
+- which /usr/bin/bzip2recover
+- which /usr/bin/bzless
+- /usr/bin/bzmore --help

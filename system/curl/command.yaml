@@ -1,2 +1,2 @@
 binaries:
-       - curl --version
+- /usr/bin/curl --version

@@ -1,2 +1,2 @@
 binaries:
-       - diffstat --version
+- /usr/bin/diffstat --version

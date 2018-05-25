@@ -1,6 +1,5 @@
-binaries:
-        - c++ -v
-        - g++ -v
-        - x86_64-redhat-linux-c++ -v
-        - x86_64-redhat-linux-g++ -v
-
+binaries: 
+- /usr/bin/c++ --version
+- /usr/bin/g++ --version
+- /usr/bin/x86_64-redhat-linux-c++ --version
+- /usr/bin/x86_64-redhat-linux-g++ --version

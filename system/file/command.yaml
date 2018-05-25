@@ -1,2 +1,2 @@
 binaries:
-        - file -v
+- /usr/bin/file --version

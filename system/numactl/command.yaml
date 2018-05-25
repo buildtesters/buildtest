@@ -1,3 +1,7 @@
 binaries:
-        - numactl -H
-        - numastat
+- which /usr/bin/memhog
+- which /usr/bin/migratepages
+- which /usr/bin/migspeed
+- /usr/bin/numactl -H
+- which /usr/bin/numademo
+- /usr/bin/numastat

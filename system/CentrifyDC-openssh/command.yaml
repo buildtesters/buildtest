@@ -1,4 +1,10 @@
 binaries:
-       - slogin localhost
-       - ssh localhost
-
+- which /usr/share/centrifydc/bin/scp
+- which /usr/share/centrifydc/bin/sftp
+- which /usr/share/centrifydc/bin/slogin
+- which /usr/share/centrifydc/bin/ssh
+- which /usr/share/centrifydc/bin/ssh-add
+- which /usr/share/centrifydc/bin/ssh-agent
+- which /usr/share/centrifydc/bin/ssh-keygen
+- which /usr/share/centrifydc/bin/ssh-keyscan
+- which /usr/share/centrifydc/bin/ssh-mergeconf

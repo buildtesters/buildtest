@@ -1,17 +1,17 @@
 binaries:
-        - free -V
-        - pgrep -V
-        - pkill -V 
-        - pmap -V
-        - ps -V 
-        - pwdx -V
-        - kill -l 
-        - slabtop -V
-        - nice --version
-        - tload -V 
-        - top -v
-        - uptime
-        - vmstat -V 
-        - w -V
-        - watch -v
-        - sysctl -V
+- /usr/bin/free -V
+- /usr/bin/pgrep -V
+- /usr/bin/pkill -V
+- /usr/bin/pmap -V
+- /usr/bin/ps -V
+- /usr/bin/pwdx -V
+- /usr/bin/skill -l
+- /usr/bin/slabtop -V
+- /usr/bin/snice -V
+- /usr/bin/tload -V
+- /usr/bin/top -v
+- /usr/bin/uptime
+- /usr/bin/vmstat -V
+- /usr/bin/w -V
+- /usr/bin/watch -v
+- /usr/sbin/sysctl -V

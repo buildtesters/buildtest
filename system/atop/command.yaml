@@ -1,2 +1,2 @@
 binaries:
-- /usr/bin/atop --help
+- which /usr/bin/atop

@@ -1,2 +1,2 @@
 binaries:
-        - pinfo -v
+        - /usr/bin/pinfo -v

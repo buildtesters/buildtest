@@ -1,9 +1,17 @@
 binaries:
-        - hwloc-bind --version
-        - hwloc-calc --version
-        - hwloc-distances --version
-        - hwloc-distrib --version
-        - hwloc-info
-        - hwloc-ls
-        - hwloc-ps -a
-        - lstopo-no-graphics
+- which /usr/bin/hwloc-annotate
+- which /usr/bin/hwloc-assembler
+- which /usr/bin/hwloc-assembler-remote
+- /usr/bin/hwloc-bind --version
+- /usr/bin/hwloc-calc --version
+- which /usr/bin/hwloc-compress-dir
+- /usr/bin/hwloc-diff --version
+- /usr/bin/hwloc-distances --version
+- /usr/bin/hwloc-distrib --version
+- which /usr/bin/hwloc-gather-topology 
+- /usr/bin/hwloc-info 
+- /usr/bin/hwloc-ls
+- /usr/bin/hwloc-patch --version
+- /usr/bin/hwloc-ps -a
+- /usr/bin/lstopo-no-graphics -l
+- which /usr/sbin/hwloc-dump-hwdata

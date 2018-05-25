@@ -1,2 +1,2 @@
 binaries:
-       - time ls
+- /usr/bin/time ls

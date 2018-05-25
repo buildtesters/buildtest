@@ -1,10 +1,10 @@
 binaries:
-        - c89 --version
-        - c99 --version
-        - cc --version
-        - gcc --version
-        - gcc-ar --version
-        - gcc-nm --version
-        - gcc-ranlib --version
-        - gcov --version
-        - x86_64-redhat-linux-gcc --version
+- /usr/bin/c89 --version
+- /usr/bin/c99 --version
+- /usr/bin/cc --version
+- /usr/bin/gcc --version
+- /usr/bin/gcc-ar --version
+- /usr/bin/gcc-nm --version
+- /usr/bin/gcc-ranlib --version
+- /usr/bin/gcov --version
+- /usr/bin/x86_64-redhat-linux-gcc --version

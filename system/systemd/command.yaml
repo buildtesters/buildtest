@@ -1,78 +1,92 @@
 binaries:
-        - systemd-analyze time
-        - systemd-analyze blame
-        - systemd-analyze critical-chain
-        - systemd-analyze plot
-        - systemd-analyze dot
-        - systemd-analyze dump
-        - systemd-ask-password -h
-        - systemd-cat --version
-        - systemd-cgls -h
-        - systemd-cgtop -h
-        - systemd-coredumpctl -h
-        - systemd-delta -h
-        - systemd-detect-virt -h
-        - systemd-escape -h
-        - systemd-firstboot -h
-        - systemd-hwdb -h
-        - systemd-inhibit -h
-        - systemd-loginctl -h
-        - systemd-machine-id-setup -h
-        - systemd-notify -h
-        - systemd-nspawn -h
-        - systemd-path -h
-        - systemd-run -h
-        - systemd-stdio-bridge -h
-        - systemd-tmpfiles -h
-        - systemd-tty-ask-password-agent -h
-        - timedatectl -h
-        - udevadm -h
-        - systemctl -l
-        - systemctl status autofs
-        - systemctl status centrify-sshd
-        - systemctl status cfengine3
-        - systemctl status chronyd 
-        - systemctl status crond 
-        - systemctl status dbus 
-        - systemctl status irqbalance
-        - systemctl status iscsi-shutdown
-        - systemctl status kdump
-        - systemctl status kmod-static-nodes
-        - systemctl status lvm2-lvmetad
-        - systemctl status lvm2-monitor
-        - systemctl status named
-        - systemctl status network
-        - systemctl status nfs-config
-        - systemctl status nscd
-        - systemctl status polkit
-        - systemctl status psacct
-        - systemctl status rdma
-        - systemctl status rhel-dmesg
-        - systemctl status rhel-import-state
-        - systemctl status rhel-loadmodules
-        - systemctl status rhel-readonly
-        - systemctl status rhnsd
-        - systemctl status rhsmcertd
-        - systemctl status rpc-gssd
-        - systemctl status rpcbind
-        - systemctl status rsyslog
-        - systemctl status sendmail
-        - systemctl status sm-client
-        - systemctl status smartd
-        - systemctl status snmpd
-        - systemctl status snmptrapd
-        - systemctl status sysstat
-        - systemctl status systemd-binfmt
-        - systemctl status systemd-journald
-        - systemctl status systemd-logind
-        - systemctl status systemd-random-seed
-        - systemctl status systemd-readahead-collect
-        - systemctl status systemd-readahead-replay
-        - systemctl status systemd-remount-fs
-        - systemctl status systemd-sysctl
-        - systemctl status systemtap
-        - systemctl status tuned
-        - systemctl status xinetd
-        - systemctl status ypbind
-
-
+- /usr/bin/bootctl status
+- /usr/bin/busctl --show-machine
+- /usr/bin/coredumpctl --version
+- /usr/bin/hostnamectl status
+- /usr/bin/journalctl --disk-usage
+- which /usr/bin/kernel-install 
+- /usr/bin/localectl status
+- /usr/bin/loginctl list-users
+- /usr/bin/machinectl  list
+- /usr/bin/systemctl -l
+- /usr/bin/systemd-analyze blame
+- /usr/bin/systemd-analyze critical-chain
+- /usr/bin/systemd-analyze plot
+- /usr/bin/systemd-analyze dot
+- /usr/bin/systemd-analyze dump
+- /usr/bin/systemd-ask-password -h
+- /usr/bin/systemd-cat --version
+- /usr/bin/systemd-cgls -h
+- /usr/bin/systemd-cgtop -h 
+- /usr/bin/systemd-coredumpctl -h
+- /usr/bin/systemd-delta -h
+- /usr/bin/systemd-detect-virt  -h
+- /usr/bin/systemd-escape -h
+- /usr/bin/systemd-firstboot -h 
+- /usr/bin/systemd-hwdb -h
+- /usr/bin/systemd-inhibit -h 
+- /usr/bin/systemd-loginctl -h
+- /usr/bin/systemd-machine-id-setup -h
+- /usr/bin/systemd-notify -h
+- /usr/bin/systemd-nspawn -h 
+- /usr/bin/systemd-path -h 
+- /usr/bin/systemd-run -h 
+- /usr/bin/systemd-stdio-bridge -h
+- /usr/bin/systemd-tmpfiles -h 
+- /usr/bin/systemd-tty-ask-password-agent -h 
+- /usr/bin/timedatectl -h 
+- /usr/bin/udevadm -h 
+- /usr/sbin/halt --help
+- /usr/sbin/init  --help
+- /usr/sbin/poweroff --help
+- /usr/sbin/reboot --help
+- /usr/sbin/runlevel --help
+- /usr/sbin/shutdown --help
+- /usr/sbin/telinit --help
+- /usr/sbin/udevadm --help
+- systemctl status autofs
+- systemctl status centrify-sshd
+- systemctl status cfengine3
+- systemctl status chronyd
+- systemctl status crond
+- systemctl status dbus
+- systemctl status irqbalance
+- systemctl status iscsi-shutdown
+- systemctl status kdump
+- systemctl status kmod-static-nodes
+- systemctl status lvm2-lvmetad
+- systemctl status lvm2-monitor
+- systemctl status named
+- systemctl status network
+- systemctl status nfs-config
+- systemctl status nscd
+- systemctl status polkit
+- systemctl status psacct
+- systemctl status rdma
+- systemctl status rhel-dmesg
+- systemctl status rhel-import-state
+- systemctl status rhel-loadmodules
+- systemctl status rhel-readonly
+- systemctl status rhnsd
+- systemctl status rhsmcertd
+- systemctl status rpc-gssd
+- systemctl status rpcbind
+- systemctl status rsyslog
+- systemctl status sendmail
+- systemctl status sm-client
+- systemctl status smartd
+- systemctl status snmpd
+- systemctl status snmptrapd
+- systemctl status sysstat
+- systemctl status systemd-binfmt
+- systemctl status systemd-journald
+- systemctl status systemd-logind
+- systemctl status systemd-random-seed
+- systemctl status systemd-readahead-collect
+- systemctl status systemd-readahead-replay
+- systemctl status systemd-remount-fs
+- systemctl status systemd-sysctl
+- systemctl status systemtap
+- systemctl status tuned
+- systemctl status xinetd
+- systemctl status ypbind
