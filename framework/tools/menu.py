@@ -86,7 +86,7 @@ class buildtest_menu():
             group3.add_argument("--system", help=""" Build test for system packages
                              To build all system package test use --system all """, choices=self.syspkg_list, metavar='SYSTEM-PACKAGE')
             group3.add_argument("--testset", help="Select the type of test set to run (Python, R, Ruby, Perl, Tcl, MPI)", choices=["Python","R","Ruby","Perl","Tcl","MPI"])
-
+            group3.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")
 
             group4 = parser.add_argument_group('YAML Options', 'Options for YAML configuration')
             group4.add_argument("--sysyaml", help = "generate binary test YAML configuration for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
