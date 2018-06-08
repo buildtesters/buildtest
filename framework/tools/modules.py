@@ -34,9 +34,10 @@ This python module does the following
 """
 import os
 import sys
-
+import subprocess
 from framework.env import config_opts
 from framework.tools.easybuild import get_module_root
+
 #from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 def get_module_list_by_tree(mod_tree):
@@ -183,3 +184,24 @@ def diff_trees(args_trees):
 
                 print (str(count) + "\t |").expandtabs(8), (i + "\t |").expandtabs(60) , (value1 + "\t |").expandtabs(18), value2
                 count = count + 1
+
+def module_load_test():
+    """ perform module load test for all modules in BUILDTEST_MODULE_ROOT"""
+    from framework.tools.software import get_software_stack
+    BUILDTEST_MODULE_ROOT = config_opts['BUILDTEST_MODULE_ROOT']
+    modulelist = get_software_stack()
+    for mod_file in modulelist:
+        cmd = ""
+        for tree in BUILDTEST_MODULE_ROOT:
+            cmd += "module use " + tree + ";"
+        cmd +=  "module purge; module load " + mod_file
+
+        ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        ret.communicate()
+
+        if ret.returncode == 0:
+            print "STATUS: PASSED - Testing module: " + mod_file
+        else:
+            print "STATUS: FAILED - Testing module: " + mod_file
+
+    sys.exit(0)

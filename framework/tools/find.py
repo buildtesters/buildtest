@@ -27,12 +27,12 @@ find functions for flags -fc and -ft
 :author: Shahzeb Siddiqui (Pfizer)
 """
 
-from framework.env import config_opts, BUILDTEST_SHELLTYPES
 import os
+from framework.env import config_opts, BUILDTEST_SHELLTYPES
 def find_all_yaml_configs():
 	""" find all yaml configs"""
 	count = 0
-	BUILDTEST_CONFIGS_REPO = configs_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
+	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 	for root, dirs, files in os.walk(BUILDTEST_CONFIGS_REPO):
         	for file in files:
                 	if file.endswith(".yaml"):
@@ -45,7 +45,7 @@ def find_all_yaml_configs():
 def find_yaml_configs_by_arg(find_arg):
 	"""find yaml configs based on argument"""
 	count = 0
-	BUILDTEST_CONFIGS_REPO = configs_opts['DEFAULT']['BUILDTEST_CONFIGS_REPO']
+	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
  	for root, dirs, files in os.walk(BUILDTEST_CONFIGS_REPO):
         	for file in files:
                 	if file.endswith(".yaml") and find_arg in os.path.basename(file):

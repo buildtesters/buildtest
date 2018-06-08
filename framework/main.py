@@ -50,7 +50,7 @@ from framework.tools.easybuild import list_toolchain, find_easyconfigs, is_easyb
 from framework.tools.generate_yaml import create_system_yaml
 from framework.tools.log import init_log, clean_logs
 from framework.tools.menu import buildtest_menu
-from framework.tools.modules import diff_trees
+from framework.tools.modules import diff_trees, module_load_test
 from framework.tools.options import override_configuration
 from framework.tools.print_functions import print_software_version_relation, print_software, print_toolchain
 from framework.tools.scan import scantest
@@ -71,7 +71,6 @@ def main():
     check_configuration()
 
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
-    print BUILDTEST_CONFIGS_REPO
     parser = buildtest_menu()
     bt_opts = parser.parse_options()
 
@@ -111,6 +110,7 @@ def main():
 
     if bt_opts.scantest:
         scantest()
+
 
 
     if bt_opts.list_toolchain is True:
@@ -153,6 +153,9 @@ def main():
 	elif bt_opts.findtest is not None:
 		find_tests_by_arg(bt_opts.findtest)
 		sys.exit(0)
+
+    if bt_opts.module_load_test:
+        module_load_test()
 
     if bt_opts.shell:
          config_opts['BUILDTEST_SHELL']=bt_opts.shell
