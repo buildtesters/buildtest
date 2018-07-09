@@ -55,6 +55,7 @@ from framework.tools.options import override_configuration
 from framework.tools.print_functions import print_software_version_relation, print_software, print_toolchain
 from framework.tools.scan import scantest
 from framework.tools.software import get_unique_software, software_version_relation
+from framework.tools.system import get_system_info
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.tools.version import buildtest_version
 from framework.runtest import runtest_menu
@@ -92,7 +93,7 @@ def main():
 
     if bt_opts.ignore_easybuild:
         IGNORE_EASYBUILD=True
-    
+
     if bt_opts.clean_build:
         config_opts['BUILDTEST_CLEAN_BUILD']=True
 
@@ -192,7 +193,8 @@ def main():
     for line in output:
         logger.debug(line)
 
-
+    get_system_info()
+        
     # generate system pkg test
     if bt_opts.system is not None:
         if bt_opts.system == "all":
