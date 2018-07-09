@@ -69,59 +69,63 @@ def update_CMakeLists(filename,tag):
                 fd.close()
 
 def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
-	""" update CMakeLists.txt with add_test command to allow ctest to run test """
+    """ update CMakeLists.txt with add_test command to allow ctest to run test """
 
-	fd=open(cmakelist,'a')
-	add_test_str=""
+    fd=open(cmakelist,'a')
+    add_test_str=""
 
-	logger = logging.getLogger(logID)
-	BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-	args_dict = buildtest_menu().parse_options()
-	shell_type = config_opts['BUILDTEST_SHELL']
+    logger = logging.getLogger(logID)
+    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+    args_dict = buildtest_menu().parse_options()
+    shell_type = config_opts['BUILDTEST_SHELL']
 
-	appname = get_appname()
-	appversion = get_appversion()
-	tcname = get_toolchain_name()
-	tcversion = get_toolchain_version()
+    appname = get_appname()
+    appversion = get_appversion()
+    tcname = get_toolchain_name()
+    tcversion = get_toolchain_version()
 
-        # if YAML files are in subdirectory of config directory then update CMakeList
-        # in app_destdir to add tag "add_subdirectory" for subdirectory so CMakeList
-        # can find tests in subdirectory
-	if subdir != "":
-		# only update the app_destdir/CMakeLists.txt if subdirectory doesn't exist. This avoids
-		# writing duplicate values when there are multiple tests in subdirectory
-		parent_cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
-               	cmake_content="add_subdirectory("+subdir+") \n"
-	 	ret = string_in_file(cmake_content,parent_cmakelist)
-		if ret == False:
-	               	fd1=open(parent_cmakelist,'a')
-		        fd1.write(cmake_content)
-        	       	fd1.close()
+    # if YAML files are in subdirectory of config directory then update CMakeList
+    # in app_destdir to add tag "add_subdirectory" for subdirectory so CMakeList
+    # can find tests in subdirectory
+    if subdir != "":
+        # only update the app_destdir/CMakeLists.txt if subdirectory doesn't exist. This avoids
+        # writing duplicate values when there are multiple tests in subdirectory
+        parent_cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
+        cmake_content="add_subdirectory("+subdir+") \n"
+        ret = string_in_file(cmake_content,parent_cmakelist)
+        if ret == False:
+            fd1=open(parent_cmakelist,'a')
+            fd1.write(cmake_content)
+            fd1.close()
 
-                # the string add_test in CMakeLists allows you to test script with ctest. The NAME tag is
-                # <name>-<version>-<toolchain-name>-<toolchain-version>-<subdir>-<testname>. This
-                # naming scheme should allow buildtest to reuse same YAML configs for multiple version
-                # built with any toolchains. Subdirectories come in handy when you need to organize tests
-		# effectively to avoid naming conflict
+        # the string add_test in CMakeLists allows you to test script with ctest. The NAME tag is
+        # <name>-<version>-<toolchain-name>-<toolchain-version>-<subdir>-<testname>. This
+        # naming scheme should allow buildtest to reuse same YAML configs for multiple version
+        # built with any toolchains. Subdirectories come in handy when you need to organize tests
+        # effectively to avoid naming conflict
 
-		# condition to check of toolchain exists, if so then add it to add_test()
-      		if tcname == "":
-			add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + subdir + "-" + testname + "\t COMMAND "+ shell_type + " " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
-		else:
-			add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"      + subdir + "-" + testname + "\t COMMAND " + shell_type + " "  +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
-	else:
-		if tcname == "":
-	         	add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + testname + "\t COMMAND  " + shell_type + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
-		else:
-	         	add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"  + testname + "\t COMMAND " + shell_type + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
-	fd.write(add_test_str)
-        fd.close()
-	logger.debug("Updating File " + cmakelist + " with: " + add_test_str + "\n")
+        # condition to check of toolchain exists, if so then add it to add_test()
+        if tcname == "":
+            add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + subdir + "-" + testname + "\t COMMAND "+ shell_type + " " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+        else:
+            add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"      + subdir + "-" + testname + "\t COMMAND " + shell_type + " "  +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+    else:
+        if tcname == "":
+            add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + testname + "\t COMMAND  " + shell_type + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+        else:
+            add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"  + testname + "\t COMMAND " + shell_type + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+
+    if not string_in_file(add_test_str,cmakelist):
+        fd.write(add_test_str)
+
+    fd.close()
+    logger.debug("Updating File " + cmakelist + " with: " + add_test_str + "\n")
 
 def setup_software_cmake():
 
     logger = logging.getLogger(logID)
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+    BUILDTEST_CLEAN_BUILD = config_opts['BUILDTEST_CLEAN_BUILD']
 
     name = get_appname()
     version = get_appversion()
@@ -179,9 +183,11 @@ def setup_software_cmake():
 
 
     # if test directory exist, delete and recreate it inorder for reproducible test builds
-    if os.path.isdir(test_destdir):
-        shutil.rmtree(test_destdir)
-        logger.debug("Removing test directory before creating test: %s", test_destdir)
+
+    if BUILDTEST_CLEAN_BUILD:
+        if os.path.isdir(test_destdir):
+            shutil.rmtree(test_destdir)
+            logger.debug("Removing test directory before creating test: %s", test_destdir)
 
     # create directories if they don't exist
     # Directory Format: <software>/<version>/toolchain-name>/<toolchain-version>
@@ -221,50 +227,53 @@ def setup_software_cmake():
     return test_destdir,test_toolchain_version_cmakelist
 
 def setup_system_cmake(pkg):
-        BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-	 # top level system directory and system package directory
-        test_system_dir=os.path.join(BUILDTEST_TESTDIR,"system")
-        test_destdir=os.path.join(BUILDTEST_TESTDIR,"system",pkg)
+    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+    BUILDTEST_CLEAN_BUILD = config_opts['BUILDTEST_CLEAN_BUILD']
 
-        # top level CMakeLists.txt in testing directory
-        test_cmakelist = os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
+    # top level system directory and system package directory
+    test_system_dir=os.path.join(BUILDTEST_TESTDIR,"system")
+    test_destdir=os.path.join(BUILDTEST_TESTDIR,"system",pkg)
 
-        # CMakeLists.txt that contains all system package directories to process
-        test_cmakelist_pkg = os.path.join(BUILDTEST_TESTDIR,"system","CMakeLists.txt")
+    # top level CMakeLists.txt in testing directory
+    test_cmakelist = os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
 
-        # CMakeLists.txt that contais the actual tests (add_test)
-        test_cmakelist_destdir=os.path.join(test_destdir,"CMakeLists.txt")
+    # CMakeLists.txt that contains all system package directories to process
+    test_cmakelist_pkg = os.path.join(BUILDTEST_TESTDIR,"system","CMakeLists.txt")
 
-	logger = logging.getLogger(logID)
+    # CMakeLists.txt that contais the actual tests (add_test)
+    test_cmakelist_destdir=os.path.join(test_destdir,"CMakeLists.txt")
 
-        logger.debug("Variables Assignments")
-        logger.debug("----------------------------------")
-        logger.debug("SYSTEM Test Directory: %s ", test_system_dir)
-        logger.debug("Testscript Destination Directory: %s", test_destdir)
-        logger.debug("CMakeList for BUILDTEST_TESTDIR: %s ", test_cmakelist)
-        logger.debug("CMakeList for $BUILDTEST_TESTDIR/system: %s",  test_cmakelist_pkg)
-        logger.debug("CMakeList for $BUILDTEST_TESTDIR/system/%s: %s" , pkg, test_cmakelist_destdir)
+    logger = logging.getLogger(logID)
 
+    logger.debug("Variables Assignments")
+    logger.debug("----------------------------------")
+    logger.debug("SYSTEM Test Directory: %s ", test_system_dir)
+    logger.debug("Testscript Destination Directory: %s", test_destdir)
+    logger.debug("CMakeList for BUILDTEST_TESTDIR: %s ", test_cmakelist)
+    logger.debug("CMakeList for $BUILDTEST_TESTDIR/system: %s",  test_cmakelist_pkg)
+    logger.debug("CMakeList for $BUILDTEST_TESTDIR/system/%s: %s" , pkg, test_cmakelist_destdir)
+
+    if BUILDTEST_CLEAN_BUILD:
         # if testdirectory exist, delete and recreate it inorder for reproducible test builds
         if os.path.isdir(test_destdir):
-                shutil.rmtree(test_destdir)
-                logger.debug("Removing directory: %s before creating tests ", test_destdir)
+            shutil.rmtree(test_destdir)
+            logger.debug("Removing directory: %s before creating tests ", test_destdir)
 
-        # create the directories if they don't exist
-        create_dir(test_system_dir)
-        create_dir(test_destdir)
+    # create the directories if they don't exist
+    create_dir(test_system_dir)
+    create_dir(test_destdir)
 
-        # create CMakeLists.txt files if they are not present
-        create_file(test_cmakelist)
-        create_file(test_cmakelist_pkg)
-        create_file(test_cmakelist_destdir)
+    # create CMakeLists.txt files if they are not present
+    create_file(test_cmakelist)
+    create_file(test_cmakelist_pkg)
+    create_file(test_cmakelist_destdir)
 
-        # update the CMakeLists.txt with the tag add_subdirectory(system)
-        update_CMakeLists(test_cmakelist,"system")
+    # update the CMakeLists.txt with the tag add_subdirectory(system)
+    update_CMakeLists(test_cmakelist,"system")
 
-        logger.debug("Updating %s with add_subdirectory(system)", test_cmakelist)
-        logger.debug("Updating %s with add_subdirectory(%s)", test_cmakelist_pkg,pkg)
-        # update CMakeLists.txt with the tag add_subdirectory(pkg) where pkg is the application name
-        update_CMakeLists(test_cmakelist_pkg,pkg)
+    logger.debug("Updating %s with add_subdirectory(system)", test_cmakelist)
+    logger.debug("Updating %s with add_subdirectory(%s)", test_cmakelist_pkg,pkg)
+    # update CMakeLists.txt with the tag add_subdirectory(pkg) where pkg is the application name
+    update_CMakeLists(test_cmakelist_pkg,pkg)
 
-	return test_destdir,test_cmakelist_destdir
+    return test_destdir,test_cmakelist_destdir

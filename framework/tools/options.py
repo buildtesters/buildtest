@@ -57,6 +57,9 @@ def override_configuration():
     if os.environ.get('BUILDTEST_IGNORE_EASYBUILD'):
         config_opts['BUILDTEST_IGNORE_EASYBUILD']=os.environ['BUILDTEST_IGNORE_EASYBUILD']
 
+    if os.environ.get('BUILDTEST_CLEAN_BUILD'):
+        config_opts['BUILDTEST_CLEAN_BUILD']=os.environ['BUILDTEST_CLEAN_BUILD']
+
     if os.environ.get('BUILDTEST_ENABLE_JOB'):
         config_opts['BUILDTEST_ENABLE_JOB']=os.environ['BUILDTEST_ENABLE_JOB']
 

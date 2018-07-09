@@ -92,6 +92,9 @@ def main():
 
     if bt_opts.ignore_easybuild:
         IGNORE_EASYBUILD=True
+    
+    if bt_opts.clean_build:
+        config_opts['BUILDTEST_CLEAN_BUILD']=True
 
     if bt_opts.enable_job:
         config_opts['BUILDTEST_ENABLE_JOB']=True
