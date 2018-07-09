@@ -35,9 +35,10 @@ from shutil import copyfile
 from framework.env import BUILDTEST_ROOT, config_opts, logID
 from framework.test.job import generate_job
 from framework.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake
-from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
-from framework.tools.file import create_dir
+from framework.tools.file import create_dir, string_in_file
 from framework.tools.modules import load_modules
+from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+
 
 
 def generate_binary_test(args_dict,pkg):
@@ -202,9 +203,9 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         else:
             add_test_str="add_test(NAME system-" + pkg + "-" + testname + "\t COMMAND " + BUILDTEST_SHELL + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 
-
-        logger.debug("Adding content: %s ",  add_test_str)
-        fd.write(add_test_str)
+        if not string_in_file(add_test_str,test_destdir_cmakelist):
+            logger.debug("Adding content: %s ",  add_test_str)
+            fd.write(add_test_str)
 
         if BUILDTEST_ENABLE_JOB:
             generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE, content)

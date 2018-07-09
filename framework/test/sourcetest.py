@@ -356,23 +356,23 @@ def generate_source_test(configmap,codedir,subdir):
             generate_job(testpath,shell_type,BUILDTEST_JOB_TEMPLATE,configmap)
 
 
-        # by default run the commands below which will add the test to CMakeLists.txt and update the logfile
-        if "iter" not in configmap:
-            add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
+    # by default run the commands below which will add the test to CMakeLists.txt and update the logfile
+    if "iter" not in configmap:
+        add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 
-            # print "Creating Test: " + testpath
+        # print "Creating Test: " + testpath
 
-            logger.debug("Creating Test: %s ", testpath)
-            logger.debug("[TEST START-BLOCK]")
+        logger.debug("Creating Test: %s ", testpath)
+        logger.debug("[TEST START-BLOCK]")
 
-            fd=open(testpath,'r')
-            content=fd.read().splitlines()
-            for line in content:
-                logger.debug(line)
+        fd=open(testpath,'r')
+        content=fd.read().splitlines()
+        for line in content:
+            logger.debug(line)
 
-            fd.close()
+        fd.close()
 
-            logger.debug("[TEST END-BLOCK]")
+        logger.debug("[TEST END-BLOCK]")
 
 
     if "procrange" in configmap:

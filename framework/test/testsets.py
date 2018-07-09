@@ -115,7 +115,6 @@ def testset_generator(arg_dict, codedir):
     emptylist = []
     testset_name = os.path.basename(os.path.dirname(codedir))
 
-    print codedir, testset_name
     if os.path.isdir(codedir):
         totalcount = 0
         for root,subdirs,files in os.walk(codedir):
