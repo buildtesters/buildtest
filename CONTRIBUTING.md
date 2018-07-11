@@ -45,7 +45,7 @@ git push origin devel
 To sync master branch, please do the same operation as you did with devel branch.
 
 
-### Branch
+### Feature Branch
 
 Please make sure to create a new branch when adding and new feature. Do not push to ``master`` or ``devel`` branch on your fork or upstream. 
 
