@@ -19,18 +19,24 @@ git clone git@github.com:YOUR\_GITHUB\_LOGIN/buildtest-framework.git
 
 ### Sync devel branch from upstream
 
-The devel from upstream will get Pull Requests from other contributors, inorder to sync your forked repo with upstream, run the commands below:
+The devel from upstream will get Pull Requests from other contributors, in-order to sync your forked repo with upstream, you will need to add a new remote called ``upstream``. To do this run the following command
 
 ```bash
 cd buildtest-framework
 git remote add upstream git@github.com:HPC-buildtest/buildtest-framework.git
+```
+
+Next we should sync the local ``devel`` branch by making sure we are in devel branch before pulling changes from ``upstream``
+
+```bash
 git branch devel
 git checkout devel
 git fetch upstream
-git pull upstream devel
+git pull -r upstream devel
 ```
 
-Once your local repo is in-sync with upstream lets push the changes to upstream fork 
+Once your local repo is in-sync with upstream lets push the changes to your fork in GitHub
+
 ```bash
 git checkout devel
 git push origin devel
@@ -39,9 +45,9 @@ git push origin devel
 To sync master branch, please do the same operation as you did with devel branch.
 
 
-### Branch
+### Feature Branch
 
-Please make sure to create a new branch when adding and new feature. Do not push to **master** or **devel** branch on your fork or upstream. 
+Please make sure to create a new branch when adding and new feature. Do not push to ``master`` or ``devel`` branch on your fork or upstream. 
 
 Create a new branch as follows
 
@@ -57,7 +63,7 @@ Once you are ready to push to your fork repo do the following
 git push origin featureX
 ```
 
-Once the branch is created in your fork, you can create a PR to the **devel** branch
+Once the branch is created in your fork, you can create a PR for the ``devel`` branch for ``upstream`` repo (https://github.com/HPC-buildtest/buildtest-framework)
 
 ### Review
 
