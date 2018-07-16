@@ -28,8 +28,11 @@ Application & Toolchain name & version query functions
 """
 
 import os
-import sys
 import logging
+import stat
+import subprocess
+import sys
+
 
 from framework.env import logID, config_opts
 from framework.tools.easybuild import list_toolchain, get_module_root
@@ -156,8 +159,7 @@ def ebyaml_choices():
     remove_app_list = []
 
     for module in software_list:
-        name = module.split("/")[0]
-
+        name = module
         # if directory found in BUILDTEST_CONFIGS_REPO/ebapps then add module to remove list  assuming command.yaml is present in directory
         if name.lower() in yaml_apps:
             remove_app_list.append(module)
@@ -166,5 +168,43 @@ def ebyaml_choices():
     for item in remove_app_list:
         software_list.remove(item)
 
-    
     return software_list
+
+def get_binaries_from_application(module):
+    """ return a list of binaries from $PATH variable defined in module file"""
+
+    cmd = "module show " + module
+    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+
+    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    output = ret.communicate()[1]
+    path_str = """prepend_path("PATH","""
+
+    path_list = []
+    for line in output.splitlines():
+        #print line, line.find(path_str)
+        if line.find(path_str) != -1:
+            # need to extract directory from  a string in the following format
+            # prepend_path("PATH","/nfs/grid/software/easybuild/IvyBridge/redhat/7.3/software/GCCcore/6.4.0/bin")
+
+            start_index = line.index(",") +2
+            end_index = line.rfind("\"")
+            # add directory to list that is being set by PATH variable in module file
+            path_list.append(line[start_index:end_index])
+
+    if len(path_list)  ==  0:
+        print "No $PATH set in your module " + module + " so no possible binaries can be found"
+        sys.exit(0)
+
+    binaries = []
+    for dir in path_list:
+        # check for files only if directory exists
+        for executable in os.listdir(dir):
+            executable_filepath = os.path.join(dir,executable)
+            # check only files that are executable
+            statmode = os.stat(executable_filepath)[stat.ST_MODE] & (stat.S_IXUSR|stat.S_IXGRP|stat.S_IXOTH)
+            # only add files that are executable
+            if statmode and not os.path.islink(executable_filepath):
+                binaries.append(executable)
+
+    return binaries
