@@ -1,0 +1,20 @@
+binaries:
+- nvprof -V
+- bin2c -V
+- cuobjdump -V
+- cuda-gdbserver --version
+- which cuda-install-samples-8.0.sh
+- ptxas -V
+- which nsight 
+- nvlink -V
+- gpu-library-advisor -V
+- cudafe --version
+- cuda-memcheck -V
+- cuda-gdb --version
+- nvcc -V
+- nvdisasm -V
+- nvprune -V
+- fatbinary -V 
+- which nvvp 
+- which uninstall_cuda_8.0.pl
+- cudafe++ --version

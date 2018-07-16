@@ -1,0 +1,21 @@
+binaries:
+- which nsight_ee_plugins_manage.sh
+- nvprof -V
+- which cuda-install-samples-9.1.sh
+- bin2c -V
+- cuobjdump -V
+- cuda-gdbserver --version
+- ptxas -V
+- which nsight
+- nvlink -V
+- which gpu-library-advisor
+- cudafe --version
+- cuda-memcheck -V
+- cuda-gdb --version
+- nvcc -V
+- nvdisasm -V
+- nvprune -V
+- fatbinary -V
+- which nvvp
+- which uninstall_cuda_9.1.pl
+- cudafe++ --version

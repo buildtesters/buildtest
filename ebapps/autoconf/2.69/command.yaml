@@ -1,0 +1,8 @@
+binaries:
+- ifnames -V
+- autoheader -V
+- autoupdate -V 
+- autoscan -V
+- autom4te -V 
+- autoconf -V 
+- autoreconf -V

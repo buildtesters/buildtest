@@ -1,0 +1,20 @@
+binaries:
+- nvprof -V
+- which uninstall_cuda_7.5.pl
+- bin2c -V
+- cuobjdump -V
+- cuda-gdbserver --version
+- filehash -V
+- ptxas -V
+- which nsight
+- nvlink -V
+- cudafe  --version
+- cuda-memcheck -V
+- cuda-gdb --version
+- which cuda-install-samples-7.5.sh
+- nvcc -V
+- nvdisasm -V
+- nvprune -V
+- fatbinary -V
+- which nvvp 
+- cudafe++ --version

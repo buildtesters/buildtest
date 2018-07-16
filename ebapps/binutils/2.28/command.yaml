@@ -1,0 +1,19 @@
+binaries:
+- ar -v
+- ranlib -v
+- objcopy -v
+- addr2line -v
+- nm -v
+- readelf -v
+- strip -V
+- strings -v
+- ld.bfd -v
+- ld -v
+- as --version
+- c++filt -v
+- gprof -v
+- size -v
+- objdump -v
+- dwp -v
+- elfedit -v
+- ld.gold -v

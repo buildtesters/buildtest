@@ -1,0 +1,8 @@
+binaries:
+- bzip2 --help
+- bunzip2 --help
+- which bzgrep
+- which bzdiff
+- which bzip2recover
+- bzcat --help
+- bzmore --help
