@@ -1,0 +1,25 @@
+binaries:
+- h5c++ --version
+- h5redeploy -help
+- h5copy --version
+- h5pcc --version
+- h5repack -V
+- h5clear -V
+- h5perf_serial
+- ph5diff -V
+- h5watch -V
+- h5pfc --version
+- which h5debug
+- h5ls -V
+- h5unjam -V
+- h5repart -V
+- h5format_convert -V
+- h52gif -V
+- h5import -V
+- gif2h5 -V
+- h5dump -V
+- h5mkgrp -V
+- h5jam -V
+- h5perf --help
+- h5diff -V
+- h5stat -V

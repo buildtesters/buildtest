@@ -1,0 +1,17 @@
+binaries: 
+- which htmldiff --version
+- ri --version
+- rspec --version
+- rdoc --version
+- bundler --version
+- which rubygems-cabin-test
+- gem --version
+- irb --version
+- launchy --version
+- tilt --help
+- rackup --version
+- erb --version
+- ruby --version
+- ldiff --version
+- rake --version
+- bundle --version

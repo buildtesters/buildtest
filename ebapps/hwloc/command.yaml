@@ -1,9 +1,0 @@
-binaries:
-        - hwloc-distances --version
-        - hwloc-distrib --version
-        - hwloc-info
-        - hwloc-ls
-        - hwloc-patch --version
-        - hwloc-ps -a
-        - lstopo
-        - lstopo-no-graphics

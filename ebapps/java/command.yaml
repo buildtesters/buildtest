@@ -1,7 +1,0 @@
-binaries:
-        - java -version
-        - javac -version
-        - javah -version
-        - javap -version
-        - jcmd -l
-

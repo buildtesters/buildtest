@@ -21,3 +21,4 @@ binaries:
    - shmemcc --version
    - shmemfort --version
    - shmemrun --version
+

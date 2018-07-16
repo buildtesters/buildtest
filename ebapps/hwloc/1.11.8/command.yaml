@@ -1,0 +1,16 @@
+binaries:
+- hwloc-info
+- which hwloc-assembler
+- which hwloc-compress-dir
+- hwloc-distances --version
+- which hwloc-assembler-remote
+- hwloc-patch --version
+- hwloc-ps -a
+- hwloc-distrib --version 
+- hwloc-diff --version
+- hwloc-bind --version
+- lstopo-no-graphics
+- hwloc-gather-topology
+- which hwloc-annotate
+- hwloc-calc --version
+- which hwloc-dump-hwdata

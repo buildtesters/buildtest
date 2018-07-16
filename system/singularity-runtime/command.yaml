@@ -1,0 +1,3 @@
+binaries:
+- /usr/bin/run-singularity --help
+- /usr/bin/singularity --help
