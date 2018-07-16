@@ -47,7 +47,7 @@ from framework.tools.file import create_dir
 from framework.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from framework.tools.find import find_all_tests, find_tests_by_arg
 from framework.tools.easybuild import list_toolchain, find_easyconfigs, is_easybuild_app
-from framework.tools.generate_yaml import create_system_yaml
+from framework.tools.generate_yaml import create_system_yaml, create_software_yaml
 from framework.tools.log import init_log, clean_logs
 from framework.tools.menu import buildtest_menu
 from framework.tools.modules import diff_trees, module_load_test
@@ -175,7 +175,7 @@ def main():
         create_system_yaml(bt_opts.sysyaml)
 
     if bt_opts.ebyaml != None:
-        raise NotImplementedError
+        create_software_yaml(bt_opts.ebyaml)
 
 
     logger,logpath,logfile = init_log()
@@ -194,7 +194,7 @@ def main():
         logger.debug(line)
 
     get_system_info()
-        
+
     # generate system pkg test
     if bt_opts.system is not None:
         if bt_opts.system == "all":
