@@ -79,6 +79,10 @@ def get_binaries_from_systempackage(pkg):
         if statmode and os.path.dirname(file) in bindirs:
             binarylist.append(file)
 
+    if len(binarylist) == 0:
+        print "There are no binaries found in package: ", name
+        sys.exit(0)
+
 	return binarylist
 
 def systempackage_installed_list():

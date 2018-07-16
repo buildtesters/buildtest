@@ -30,6 +30,7 @@ is only 1 binary yaml file that can generate multiple binary test
 """
 import logging
 import os
+import sys
 import yaml
 from shutil import copyfile
 from framework.env import BUILDTEST_ROOT, config_opts, logID
@@ -37,6 +38,7 @@ from framework.test.job import generate_job
 from framework.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake
 from framework.tools.file import create_dir, string_in_file
 from framework.tools.modules import load_modules
+from framework.tools.software import get_toolchain_stack
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 
@@ -62,14 +64,22 @@ def generate_binary_test(args_dict,pkg):
 
         BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 
-        #software=get_arg_software(args_dict)
-        #system=get_arg_system(args_dict)
-
         # determine whether we are running a binary test on ebapp or system package
         if software is not None:
-                software=software.split("/")
-                appname,appversion=software
-                configdir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname.lower())
+                toolchain_stack = get_toolchain_stack()
+                toolchain_name = [name.split("/")[0] for name in toolchain_stack]
+                # get module version
+                module_version = software.split("/")[1]
+                # remove any toolchain from module version when figuring path to yaml file
+                for tc in toolchain_name:
+                    idx = module_version.find(tc)
+
+                    if idx != -1:
+                        software = software.split("/")[0] + "/" + module_version[0:idx-1]
+
+                configdir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",software.lower())
+
+
                 test_type="software"
         elif system is not None:
                 configdir=os.path.join(BUILDTEST_CONFIGS_REPO,"system",pkg)
