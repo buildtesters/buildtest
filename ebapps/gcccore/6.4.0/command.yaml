@@ -1,0 +1,20 @@
+binaries:
+- gcc --version
+- gcc-nm -V
+- x86_64-pc-linux-gnu-g++ --version
+- cpp --version
+- x86_64-pc-linux-gnu-gfortran --version
+- gcov --version
+- gcov-dump -V 
+- x86_64-pc-linux-gnu-gcc --version
+- x86_64-pc-linux-gnu-gcc-ranlib -V 
+- x86_64-pc-linux-gnu-gcc-nm -V
+- g++ --version
+- gfortran --version
+- c++ --version
+- x86_64-pc-linux-gnu-gcc-6.4.0 --version
+- gcc-ar -V 
+- gcov-tool --version 
+- x86_64-pc-linux-gnu-c++ --version
+- x86_64-pc-linux-gnu-gcc-ar -V
+- gcc-ranlib -V
