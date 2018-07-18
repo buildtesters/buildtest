@@ -196,15 +196,27 @@ def get_binaries_from_application(module):
         print "No $PATH set in your module " + module + " so no possible binaries can be found"
         sys.exit(0)
 
-    binaries = []
+    binaries = {}
     for dir in path_list:
         # check for files only if directory exists
         for executable in os.listdir(dir):
             executable_filepath = os.path.join(dir,executable)
+
+            # skip loop if it is not a file
+            if not os.path.isfile(executable_filepath):
+                continue
             # check only files that are executable
             statmode = os.stat(executable_filepath)[stat.ST_MODE] & (stat.S_IXUSR|stat.S_IXGRP|stat.S_IXOTH)
             # only add files that are executable
+
+            ret = subprocess.Popen("sha256sum " + executable_filepath, shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+            output = ret.communicate()[0]
+            sha256sum = output.split(" ")[0]
+
+
             if statmode and not os.path.islink(executable_filepath):
-                binaries.append(executable)
+                # only add binaries with unique sha256 sum
+                if sha256sum not in binaries.keys():
+                    binaries[sha256sum] = executable
 
     return binaries
