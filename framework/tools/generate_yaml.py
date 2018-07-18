@@ -86,7 +86,6 @@ def create_software_yaml(module_name):
     module_name = module_name.lower()
     destdir = os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",module_name)
     yamlfile = os.path.join(destdir,"command.yaml")
-    
     # if yaml file exists then exit out
     if os.path.isfile(yamlfile):
         print "YAML file already exists, please check: ", yamlfile
@@ -95,8 +94,11 @@ def create_software_yaml(module_name):
     # if directory is not present then create it
     create_dir(destdir)
 
+    binary_list = []
+    [binary_list.extend([value]) for key,value in binary.items()]
+
     fd = open(yamlfile,"w")
-    binarydict = { "binaries": binary }
+    binarydict = { "binaries": binary_list }
     with open(yamlfile, 'a') as outfile:
         yaml.dump(binarydict, outfile, default_flow_style=False)
 
