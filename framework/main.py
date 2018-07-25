@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -269,7 +269,7 @@ def main():
         logger.debug("Code Directory: %s", codedir)
 
         setup_software_cmake()
-        
+
         generate_binary_test(bt_opts,None)
 
         # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)

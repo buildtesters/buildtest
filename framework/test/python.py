@@ -1,8 +1,8 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
-#   https://github.com/shahzebsiddiqui/buildtest
+#   https://github.com/HPC-buildtest/buildtest-framework
 #
 #  This file is part of buildtest.
 #
@@ -21,6 +21,9 @@
 #############################################################################
 
 """
+Support for building python package tests and checks if python libraries exists 
+
+
 :author: Shahzeb Siddiqui (Pfizer)
 """
 import logging

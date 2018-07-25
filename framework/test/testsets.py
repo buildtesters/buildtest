@@ -1,8 +1,8 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
-#   https://github.com/shahzebsiddiqui/buildtest
+#   https://github.com/HPC-buildtest/buildtest-framework
 #
 #  This file is part of buildtest.
 #
@@ -20,6 +20,14 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+"""
+This python module is used with the flag --testset to create test scripts that
+don't require any YAML files.
+
+:author: Shahzeb Siddiqui (Pfizer)
+
+"""
+
 import os
 import logging
 import subprocess
@@ -31,13 +39,7 @@ from framework.test.job import generate_job
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from framework.env import config_opts, PYTHON_APPS, MPI_APPS, logID, config_opts
 
-"""
-This python module is used with the flag --testset to create test scripts that
-don't require any YAML files.
 
-:author: Shahzeb Siddiqui (Pfizer)
-
-"""
 def run_testset(arg_dict):
     """ checks the testset parameter to determine which set of scripts to use to create tests """
 

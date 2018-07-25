@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -21,7 +21,8 @@
 #############################################################################
 
 """
-This file generates the job script
+This file generates the job scripts, detects scheduler, and submits jobs to scheduler
+
 :author: Shahzeb Siddiqui (Pfizer)
 """
 from shutil import copyfile

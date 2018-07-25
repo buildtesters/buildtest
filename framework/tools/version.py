@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -21,6 +21,8 @@
 #############################################################################
 
 """
+Display buildtest version
+
 :author: Shahzeb Siddiqui (Pfizer)
 """
 
@@ -29,4 +31,3 @@ from framework.env import BUILDTEST_VERSION
 def buildtest_version():
 	""" print the buildtest version"""
         print "buildtest version: " + BUILDTEST_VERSION
-
