@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -23,7 +23,7 @@
 """
 easybuild specific modules related to toolchain and easyconfigs
 
-:author: Shahzeb Siddiqui
+:author: Shahzeb Siddiqui (Pfizer)
 """
 import os
 import re

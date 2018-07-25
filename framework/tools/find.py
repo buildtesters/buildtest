@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #

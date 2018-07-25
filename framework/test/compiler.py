@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -154,4 +154,3 @@ def get_compiler(configmap,appname,tcname):
                                 compiler="ifort"
 
         return compiler,compiler_type
-

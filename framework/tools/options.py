@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -21,6 +21,8 @@
 #############################################################################
 
 """
+Overrides buildtest configuration via environment variable or command options
+
 :author: Shahzeb Siddiqui (Pfizer)
 """
 

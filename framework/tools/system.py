@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -21,9 +21,9 @@
 #############################################################################
 
 """
-:author: Shahzeb Siddiqui (Pfizer)
-
 Functions for system package
+
+:author: Shahzeb Siddiqui (Pfizer)
 """
 import logging
 import os

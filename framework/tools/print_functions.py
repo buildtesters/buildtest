@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -20,6 +20,12 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+"""
+
+print functions related to buildtest 
+
+:author: Shahzeb Siddiqui (Pfizer)
+"""
 from framework.tools.utility import sset
 
 def print_software_version_relation(software_dict):
