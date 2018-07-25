@@ -40,8 +40,10 @@ from framework.env import config_opts
 from framework.test.binarytest import generate_binary_test
 from framework.test.function import clean_tests
 from framework.test.job import submit_job_to_scheduler, update_job_template
+from framework.test.python import build_python_test
 from framework.test.sourcetest import recursive_gen_test
 from framework.test.testsets import run_testset
+from framework.tools.cmake import setup_software_cmake
 from framework.tools.config import check_configuration, show_configuration
 from framework.tools.file import create_dir
 from framework.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
@@ -266,6 +268,8 @@ def main():
         logger.debug("Config Directory: %s ", configdir)
         logger.debug("Code Directory: %s", codedir)
 
+        setup_software_cmake()
+        
         generate_binary_test(bt_opts,None)
 
         # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)
@@ -275,6 +279,9 @@ def main():
         # if flag --testset is set, then
         if bt_opts.testset is not  None:
             run_testset(bt_opts)
+
+        if bt_opts.python_package:
+                build_python_test(bt_opts.python_package)
 
         # moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to $BUILDTEST_LOGDIR/app/appver/tcname/tcver/buildtest_%H_%M_%d_%m_%Y.log
         os.rename(logpath, os.path.join(BUILDTEST_LOGDIR,logfile))
