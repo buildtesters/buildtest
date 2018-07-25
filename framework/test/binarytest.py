@@ -35,7 +35,7 @@ import yaml
 from shutil import copyfile
 from framework.env import BUILDTEST_ROOT, config_opts, logID
 from framework.test.job import generate_job
-from framework.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake
+from framework.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake, add_test_to_CMakeLists
 from framework.tools.file import create_dir, string_in_file
 from framework.tools.modules import load_modules
 from framework.tools.software import get_toolchain_stack
@@ -124,7 +124,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
     BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
     BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
     BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
-
+    subdir = ""
     print "--------------------------------------------"
     print "[STAGE 1]: Building Binary Tests"
     print "--------------------------------------------"
@@ -202,20 +202,17 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         logger.info("[END TEST-BLOCK]")
 
 
-        logger.debug("Updating CMakeList file: %s", test_destdir_cmakelist)
-        fd=open(test_destdir_cmakelist,'a')
+
         if test_type == "software":
-            # modify add_test string when toolchain is not defined
-            if len(toolchain_name) == 0:
-                add_test_str="add_test(NAME " + name + "-" + version + "-" + testname + "\t COMMAND " + BUILDTEST_SHELL + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
-            else:
-                add_test_str="add_test(NAME " + name + "-" + version + "-" + toolchain_name + "-" + toolchain_version + "-" + testname + "\t COMMAND " + BUILDTEST_SHELL + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
+            add_test_to_CMakeLists(test_destdir,subdir,test_destdir_cmakelist, testname)
         else:
+            logger.debug("Updating CMakeList file: %s", test_destdir_cmakelist)
+            fd=open(test_destdir_cmakelist,'a')
             add_test_str="add_test(NAME system-" + pkg + "-" + testname + "\t COMMAND " + BUILDTEST_SHELL + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 
-        if not string_in_file(add_test_str,test_destdir_cmakelist):
-            logger.debug("Adding content: %s ",  add_test_str)
-            fd.write(add_test_str)
+            if not string_in_file(add_test_str,test_destdir_cmakelist):
+                logger.debug("Adding content: %s ",  add_test_str)
+                fd.write(add_test_str)
 
         if BUILDTEST_ENABLE_JOB:
             generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE, content)

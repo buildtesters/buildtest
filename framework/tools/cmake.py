@@ -201,9 +201,9 @@ def setup_software_cmake():
         create_dir(test_toolchain_name_dir)
         create_dir(test_toolchain_version_dir)
 
-    # create CMakeList.txt file in each directory of <software>/<version>/<toolchain-name>/<toolchain-version> if it doesn't exist
+    # create CMakeList.txt file in each directory of $BUILDTEST_ROOT/<software>/<version>/<toolchain-name>/<toolchain-version> if it doesn't exist
+    create_file(test_cmakelist)
     create_file(test_ebapp_cmakelist)
-
     create_file(test_name_cmakelist)
     create_file(test_version_cmakelist)
 

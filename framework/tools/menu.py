@@ -29,6 +29,7 @@ import argparse
 import argcomplete
 
 from framework.env import BUILDTEST_SHELLTYPES, config_opts
+from framework.test.python import python_lib_choices
 from framework.tools.options import override_configuration
 from framework.tools.system import systempackage_installed_list
 from framework.tools.software import get_software_stack, get_toolchain_stack,ebyaml_choices
@@ -44,6 +45,7 @@ class buildtest_menu():
 
 
         pkglist = systempackage_installed_list()
+        python_choices = python_lib_choices()
 
         yaml_apps = ebyaml_choices()
         software_list = get_software_stack()
@@ -59,14 +61,14 @@ class buildtest_menu():
             parser.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
             parser.add_argument("--ignore-easybuild", help="ignore if application is not built with easybuild",action="store_true")
             parser.add_argument("--show", help="show buildtest environment configuration", action="store_true")
-            parser.add_argument("--clean-build", help="delete test directory before writing test scripts", action="store_true")
+            parser.add_argument("--clean-build", help="delete software test directory before writing test scripts", action="store_true")
 
             group1 = parser.add_argument_group('Basic Options', 'buildtest basic options')
             group1.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
             group1.add_argument("--scantest", help=""" Report all tests that can be built with buildtest by checking all available apps found
             in eb stack and system packages""", action="store_true")
-            group1.add_argument("--clean-logs", help="delete buildtest logs",action="store_true")
-            group1.add_argument("--clean-tests",help="delete testing directory",action="store_true")
+            group1.add_argument("--clean-logs", help="delete buildtest log directory ($BUILDTEST_LOGDIR)",action="store_true")
+            group1.add_argument("--clean-tests",help="delete testing directory ($BUILDTEST_TESTDIR)",action="store_true")
 
             group2 = parser.add_argument_group('Find Options', 'buildtest options for finding software, toolchains, tests, yaml files')
 
@@ -88,10 +90,10 @@ class buildtest_menu():
                              To build all system package test use --system all """, choices=self.syspkg_list, metavar='SYSTEM-PACKAGE')
             group3.add_argument("--testset", help="Select the type of test set to run (Python, R, Ruby, Perl, Tcl, MPI)", choices=["Python","R","Ruby","Perl","Tcl","MPI"])
             group3.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")
-
+            group3.add_argument("--python-package", help="build test for python packages", choices=self.python_choices,metavar='PYTHONPACKAGES')
             group4 = parser.add_argument_group('YAML Options', 'Options for YAML configuration')
-            group4.add_argument("--sysyaml", help = "generate binary test YAML configuration for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
-            group4.add_argument("--ebyaml", help = "generate binary test YAML configuration for easybuild package (Not Implemented)", choices=self.yaml_apps, metavar='YAML-APP-CHOICES')
+            group4.add_argument("--sysyaml", help = "generate YAML configuration for binary test for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
+            group4.add_argument("--ebyaml", help = "generate YAML configuration for binary test for software package", choices=self.yaml_apps, metavar='YAML-APP-CHOICES')
 
 
             group5 = parser.add_argument_group('Job Scheduler Options', 'Options for interacting with Job Scheduler')
@@ -101,6 +103,8 @@ class buildtest_menu():
 
             group6 = parser.add_argument_group('Miscellaneous Options', 'rest of buildtest options')
             group6.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
+
+
             self.parser = parser
 
         #argcomplete.autocomplete(parser)
