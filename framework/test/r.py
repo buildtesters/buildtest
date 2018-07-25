@@ -26,24 +26,24 @@ Support for building python package tests and checks if python libraries exists
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
+
 import logging
 import os
 import subprocess
 import sys
-from framework.env import config_opts, PYTHON_APPS, logID
+
+from framework.env import config_opts, logID
 from framework.test.job import generate_job
 from framework.tools.file import create_dir
 from framework.tools.modules import load_modules
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
-
-
-def build_python_test(python_lib):
-    """ responsible for creating python test for python library"""
+def build_r_package_test(r_lib):
+    """ responsible for creating r package tests """
 
     from framework.tools.cmake import add_test_to_CMakeLists, setup_software_cmake
 
-    BUILDTEST_PYTHON_REPO = config_opts['BUILDTEST_PYTHON_REPO']
+    BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
     BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
     BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
@@ -56,31 +56,31 @@ def build_python_test(python_lib):
 
     logger = logging.getLogger(logID)
 
-    if appname.lower() not in PYTHON_APPS:
-        print "ERROR: valid choices for software are the following: ", PYTHON_APPS
+    if appname.lower() != "r":
+        print "ERROR: software module does not appear to be R module "
         sys.exit(1)
 
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
     cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
-    python_package_dir = os.path.join(BUILDTEST_PYTHON_REPO,"python","code",python_lib)
+    r_package_dir = os.path.join(BUILDTEST_R_REPO,"R","code",r_lib)
 
     if not os.path.exists(cmakelist):
         setup_software_cmake()
 
-    check_python_library(python_lib)
+    check_R_library(r_lib)
     count = 0
     dummy_array=[]
-    for root,subdirs,files in os.walk(python_package_dir):
+    for root,subdirs,files in os.walk(r_package_dir):
 
         for file in files:
             filename_strip_ext = os.path.splitext(file)[0]
             ext = os.path.splitext(file)[1]
 
             # skip if file is not .py extension
-            if ext != ".py":
+            if ext != ".R":
                     continue
             # command to execute the script
-            cmd = "python " + os.path.join(root,file)
+            cmd = "Rscript " + os.path.join(root,file)
 
             # getting subdirectory path to write test to correct path
             subdir = os.path.basename(root)
@@ -106,14 +106,15 @@ def build_python_test(python_lib):
 
         print "Generating ", count, "tests for ", os.path.basename(root)
 
-def python_lib_choices():
-    """ return a list of python libraries for --python-package option """
-    BUILDTEST_PYTHON_REPO = config_opts['BUILDTEST_PYTHON_REPO']
-    python_choices =  os.listdir(os.path.join(BUILDTEST_PYTHON_REPO,"python","code"))
-    return python_choices
 
-def check_python_library(python_lib):
-    """ check if python package exist for request python module, if it exists create test otherwise skip test creation"""
+def r_lib_choices():
+    """ return a list of R libraries for --r-package option """
+    BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
+    r_choices =  os.listdir(os.path.join(BUILDTEST_R_REPO,"R","code"))
+    return r_choices
+
+def check_R_library(R_lib):
+    """ check if R library exist for request R module, if it exists create test otherwise skip test creation"""
 
     logger = logging.getLogger(logID)
 
@@ -121,22 +122,24 @@ def check_python_library(python_lib):
     appver=get_appversion()
 
     BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
-    cmd = "module purge; module load " + os.path.join(appname,appver) + "; python -c \"import " + python_lib + "\""
+    cmd = ""
+
+
+    cmd = "module purge; module load " + os.path.join(appname,appver) + "; echo \"library(" + R_lib + ")\" | R -q --no-save "
 
     if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
         tcname = get_toolchain_name()
         tcver = get_toolchain_version()
         if len(tcname) > 0:
-            cmd = "module purge; module load " + os.path.join(tcname,tcver) + "; module load " + os.path.join(appname,appver) + "; python -c \"import " +  python_lib + "\""
+            cmd = "module purge; module load " + os.path.join(tcname,tcver) + "; module load " + os.path.join(appname,appver) + "; echo \"library(" + R_lib + ")\" | R -q --no-save "
 
-    logger.debug("Check Python Package:" + python_lib)
-    logger.debug("Running command -" + cmd)
+
+    logger.debug("Check R Package:" + R_lib)
+    logger.debug("Running command - " + cmd)
 
     ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     ret.communicate()
     ret_code = ret.returncode
     if ret_code != 0:
-        print python_lib, "is not installed in software", os.path.join(appname,appver)
+        print R_lib, "is not installed in software", os.path.join(appname,appver)
         sys.exit(1)
-
-    
