@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -20,12 +20,15 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-
-from framework.env import config_opts
-#from framework.tools.menu import buildtest_menu
 """
+Utility methods for getting application name, version and toolchain name and version
+
 :author: Shahzeb Siddiqui (Pfizer)
 """
+
+
+from framework.env import config_opts
+
 class sset(set):
     def __str__(self):
         return ', '.join([str(i) for i in self])

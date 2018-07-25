@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -23,6 +23,7 @@
 """
 This module implements the --runtest feature of buildtest. This is an interactive
 menu for running tests and gives user another alternative other than ctest
+
 :author: Shahzeb Siddiqui (Pfizer)
 """
 import os

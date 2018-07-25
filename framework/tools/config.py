@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -20,6 +20,12 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+"""
+Checks buildtest configuration and reports any errors. Also display buildtest
+configuration using buildtest --show
+
+:author: Shahzeb Siddiqui (Pfizer)
+"""
 import os
 import sys
 import time
