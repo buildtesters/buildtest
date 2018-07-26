@@ -1,0 +1,8 @@
+Listen %PORT%
+RewriteEngine on
+RewriteRule   ^/$  /CDash/public/  [R]
+
+<Directory /var/www/html/CDash>
+   Order allow,deny
+   Allow from all
+</Directory>
