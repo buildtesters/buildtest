@@ -1,0 +1,39 @@
+Bootstrap: docker
+From: php:5.6.37-apache
+
+%labels
+	AUTHOR shahzebmsiddiqui@gmail.com
+
+
+%files
+	config.local.php 
+	cdash.conf.in 
+	run_server.sh
+	php.ini	/usr/local/etc/php/php.ini
+%post
+    apt-get update
+    apt-get install -y unzip nginx libxslt-dev libpng-dev libcurl4-openssl-dev
+    apt-get install -y mariadb-server mariadb-client
+
+    docker-php-ext-install pdo mysql xsl curl gd   
+    curl -o /var/www/html/CDash-2-4-0.zip https://public.kitware.com/Wiki/images/c/c0/CDash-2-4-0.zip
+    cd /var/www/html
+    unzip CDash-2-4-0.zip
+    mv /run_server.sh /var/www/html/run_server.sh
+    mv /cdash.conf.in /var/www/html/cdash.conf.in
+    mv /config.local.php /var/www/html/CDash/config/config.local.php
+    chmod a+rwx /var/www/html/run_server.sh
+    chmod -R a+rw /var/www/html/CDash
+	
+    # broken symlinks needed to be remove 		
+    #unlink /etc/apache2/mods-enabled/mpm_event.load
+    #unlink /etc/apache2/mods-enabled/mpm_event.conf
+    a2dismod mpm_event
+
+	
+    /etc/init.d/mysql start	
+
+
+%startscript
+	
+     /var/www/html/run_server.sh 80
