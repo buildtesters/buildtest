@@ -21,7 +21,7 @@
 #############################################################################
 
 """
-Support for building python package tests and checks if python libraries exists
+Support for building ruby package tests and checks if ruby libraries exists
 
 
 :author: Shahzeb Siddiqui (Pfizer)
@@ -38,12 +38,47 @@ from framework.tools.file import create_dir
 from framework.tools.modules import load_modules
 from framework.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
-def build_r_package_test(r_lib):
-    """ responsible for creating r package tests """
+
+def ruby_pkg_choices():
+    """ return a list of ruby packages for --ruby-package option """
+    BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
+    ruby_choices =  os.listdir(os.path.join(BUILDTEST_RUBY_REPO,"ruby","code"))
+    return ruby_choices
+
+def check_ruby_package(Ruby_gem):
+    """ check if ruby gem exist for request ruby module, if it exists create test otherwise skip test creation"""
+
+    logger = logging.getLogger(logID)
+
+    appname=get_appname()
+    appver=get_appversion()
+
+    BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
+    cmd = "module purge; module load " + os.path.join(appname,appver) + "; gem list -i " + Ruby_gem
+
+    if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
+        tcname = get_toolchain_name()
+        tcver = get_toolchain_version()
+        if len(tcname) > 0:
+            cmd = "module purge; module load " + os.path.join(tcname,tcver) + "; module load " + os.path.join(appname,appver) + "; gem list - i " + Ruby_gem
+
+    logger.debug("Check Ruby gem:" + Ruby_gem)
+    logger.debug("Running command - " + cmd)
+
+    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    ret.communicate()
+    ret_code = ret.returncode
+    if ret_code != 0:
+        print Ruby_gem, "is not installed in software", os.path.join(appname,appver)
+        sys.exit(1)
+
+def build_ruby_package_test(ruby_package):
+    """ build ruby package tests. Implements option --ruby-package """
+
 
     from framework.tools.cmake import add_test_to_CMakeLists, setup_software_cmake
 
-    BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
+    BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
     BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
     BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
@@ -56,31 +91,31 @@ def build_r_package_test(r_lib):
 
     logger = logging.getLogger(logID)
 
-    if appname.lower() != "r":
-        print "ERROR: software module does not appear to be R module "
+    if appname.lower() != "ruby":
+        print "ERROR: software module does not appear to be Ruby module "
         sys.exit(1)
 
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
     cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
-    r_package_dir = os.path.join(BUILDTEST_R_REPO,"R","code",r_lib)
+    ruby_package_dir = os.path.join(BUILDTEST_RUBY_REPO,"ruby","code",ruby_package)
 
     if not os.path.exists(cmakelist):
         setup_software_cmake()
 
-    check_R_library(r_lib)
+    check_ruby_package(ruby_package)
     count = 0
     dummy_array=[]
-    for root,subdirs,files in os.walk(r_package_dir):
+    for root,subdirs,files in os.walk(ruby_package_dir):
 
         for file in files:
             filename_strip_ext = os.path.splitext(file)[0]
             ext = os.path.splitext(file)[1]
 
             # skip if file is not .py extension
-            if ext != ".R":
+            if ext != ".rb":
                     continue
             # command to execute the script
-            cmd = "Rscript " + os.path.join(root,file)
+            cmd = "ruby " + os.path.join(root,file)
 
             # getting subdirectory path to write test to correct path
             subdir = os.path.basename(root)
@@ -105,41 +140,3 @@ def build_r_package_test(r_lib):
                 generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE,dummy_array)
 
         print "Generating ", count, "tests for ", os.path.basename(root)
-
-
-def r_pkg_choices():
-    """ return a list of R libraries for --r-package option """
-    BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
-    r_choices =  os.listdir(os.path.join(BUILDTEST_R_REPO,"R","code"))
-    return r_choices
-
-def check_R_library(R_lib):
-    """ check if R library exist for request R module, if it exists create test otherwise skip test creation"""
-
-    logger = logging.getLogger(logID)
-
-    appname=get_appname()
-    appver=get_appversion()
-
-    BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
-    cmd = ""
-
-
-    cmd = "module purge; module load " + os.path.join(appname,appver) + "; echo \"library(" + R_lib + ")\" | R -q --no-save "
-
-    if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
-        tcname = get_toolchain_name()
-        tcver = get_toolchain_version()
-        if len(tcname) > 0:
-            cmd = "module purge; module load " + os.path.join(tcname,tcver) + "; module load " + os.path.join(appname,appver) + "; echo \"library(" + R_lib + ")\" | R -q --no-save "
-
-
-    logger.debug("Check R Package:" + R_lib)
-    logger.debug("Running command - " + cmd)
-
-    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    ret.communicate()
-    ret_code = ret.returncode
-    if ret_code != 0:
-        print R_lib, "is not installed in software", os.path.join(appname,appver)
-        sys.exit(1)
