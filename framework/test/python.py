@@ -67,7 +67,7 @@ def build_python_test(python_lib):
     if not os.path.exists(cmakelist):
         setup_software_cmake()
 
-    check_python_library(python_lib)
+    check_python_package(python_lib)
     count = 0
     dummy_array=[]
     for root,subdirs,files in os.walk(python_package_dir):
@@ -106,13 +106,13 @@ def build_python_test(python_lib):
 
         print "Generating ", count, "tests for ", os.path.basename(root)
 
-def python_lib_choices():
+def python_pkg_choices():
     """ return a list of python libraries for --python-package option """
     BUILDTEST_PYTHON_REPO = config_opts['BUILDTEST_PYTHON_REPO']
     python_choices =  os.listdir(os.path.join(BUILDTEST_PYTHON_REPO,"python","code"))
     return python_choices
 
-def check_python_library(python_lib):
+def check_python_package(python_lib):
     """ check if python package exist for request python module, if it exists create test otherwise skip test creation"""
 
     logger = logging.getLogger(logID)
@@ -138,5 +138,3 @@ def check_python_library(python_lib):
     if ret_code != 0:
         print python_lib, "is not installed in software", os.path.join(appname,appver)
         sys.exit(1)
-
-    

@@ -42,6 +42,7 @@ from framework.test.function import clean_tests
 from framework.test.job import submit_job_to_scheduler, update_job_template
 from framework.test.python import build_python_test
 from framework.test.r import build_r_package_test
+from framework.test.ruby import build_ruby_package_test
 from framework.test.sourcetest import recursive_gen_test
 from framework.test.testsets import run_testset
 from framework.tools.cmake import setup_software_cmake
@@ -286,6 +287,9 @@ def main():
 
         if bt_opts.r_package:
             build_r_package_test(bt_opts.r_package)
+
+        if bt_opts.ruby_package:
+            build_ruby_package_test(bt_opts.ruby_package)
 
         # moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to $BUILDTEST_LOGDIR/app/appver/tcname/tcver/buildtest_%H_%M_%d_%m_%Y.log
         os.rename(logpath, os.path.join(BUILDTEST_LOGDIR,logfile))
