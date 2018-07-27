@@ -70,6 +70,7 @@ class buildtest_menu():
             parser.add_argument("--ignore-easybuild", help="ignore if application is not built with easybuild",action="store_true")
             parser.add_argument("--show", help="show buildtest environment configuration", action="store_true")
             parser.add_argument("--clean-build", help="delete software test directory before writing test scripts", action="store_true")
+            parser.add_argument("--show-keys", help="display yaml key description", action="store_true")
 
             group1 = parser.add_argument_group('Basic Options', 'buildtest basic options')
             group1.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
