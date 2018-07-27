@@ -57,6 +57,7 @@ from framework.tools.log import init_log, clean_logs
 from framework.tools.menu import buildtest_menu
 from framework.tools.modules import diff_trees, module_load_test
 from framework.tools.options import override_configuration
+from framework.tools.parser.yaml_config import show_yaml_keys
 from framework.tools.print_functions import print_software_version_relation, print_software, print_toolchain
 from framework.tools.scan import scantest
 from framework.tools.software import get_unique_software, software_version_relation
@@ -89,6 +90,9 @@ def main():
 
     if bt_opts.show:
         show_configuration()
+
+    if bt_opts.show_keys:
+        show_yaml_keys()
 
     if bt_opts.logdir:
         config_opts['BUILDTEST_LOGDIR'] = bt_opts.logdir
