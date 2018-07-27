@@ -34,6 +34,7 @@ from framework.env import BUILDTEST_SHELLTYPES, config_opts
 from framework.test.python import python_pkg_choices
 from framework.test.r import r_pkg_choices
 from framework.test.ruby import ruby_pkg_choices
+from framework.test.perl import perl_pkg_choices
 from framework.tools.options import override_configuration
 from framework.tools.system import systempackage_installed_list
 from framework.tools.software import get_software_stack, get_toolchain_stack,ebyaml_choices
@@ -52,6 +53,7 @@ class buildtest_menu():
         python_choices = python_pkg_choices()
         r_choices = r_pkg_choices()
         ruby_choices = ruby_pkg_choices()
+        perl_choices = perl_pkg_choices()
 
         yaml_apps = ebyaml_choices()
         software_list = get_software_stack()
@@ -96,9 +98,10 @@ class buildtest_menu():
                              To build all system package test use --system all """, choices=self.syspkg_list, metavar='SYSTEM-PACKAGE')
             group3.add_argument("--testset", help="Select the type of test set to run (Python, R, Ruby, Perl, Tcl, MPI)", choices=["Python","R","Ruby","Perl","Tcl","MPI"])
             group3.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")
-            group3.add_argument("--python-package", help="build test for python packages", choices=self.python_choices,metavar='PYTHON-PACKAGES')
+            group3.add_argument("--python-package", help="build test for Python packages", choices=self.python_choices,metavar='PYTHON-PACKAGES')
             group3.add_argument("--r-package", help="build test for R packages", choices=self.r_choices,metavar='R-PACKAGES')
             group3.add_argument("--ruby-package", help="build test for Ruby packages", choices=self.ruby_choices,metavar='RUBY-PACKAGES')
+            group3.add_argument("--perl-package", help="build test for Perl packages", choices=self.perl_choices,metavar='PERL-PACKAGES')
 
             group4 = parser.add_argument_group('YAML Options', 'Options for YAML configuration')
             group4.add_argument("--sysyaml", help = "generate YAML configuration for binary test for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
