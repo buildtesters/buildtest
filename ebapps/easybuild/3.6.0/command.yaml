@@ -1,0 +1,13 @@
+binaries:
+- logdaemon
+- easy_install
+- minimal_bash_completion.bash
+- optcomplete.bash
+- startlogdaemon
+- bootstrap_eb.py
+- install_eb_dep.sh
+- python-noenv
+- easy_install-2.7
+- python-stripped-env
+- eb
+- eb_bash_completion.bash
