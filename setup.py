@@ -1,8 +1,8 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
-#   https://github.com/shahzebsiddiqui/buildtest-framework
+#   https://github.com/HPC-buildtest/buildtest-configs
 #
 #    This file is part of buildtest.
 #
@@ -25,17 +25,29 @@
 @author: Shahzeb Siddiqui (Pfizer)
 """
 
-from setuptools import setup
+from setuptools import setup,find_packages
 
 
-setup(name='buildtest-configs',
+setup(
+      name='buildtest-configs',
       version='0.2.2',
       description="""Test configuration for buildtest-framework""",
       url='https://github.com/HPC-buildtest/buildtest-configs',
       author='Shahzeb Siddiqui',
       author_email='shahzebmsiddiqui@gmail.com',
       license='GPLv2',
+      classifiers=(
+        "Development Status :: 4 - Beta",
+        "Environment :: Console",
+        "Intended Audience :: System Administrators",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 2.6",
+        "Topic :: Software Development :: Build Tools",
+        "Topic :: Software Development :: Testing",
+      ),
       platforms = "Linux",
-      install_requires=['buildtest-framework==0.2.2'],      
-      zip_safe=False)
+      packages=find_packages(),
+      install_requires = [ 'buildtest-framework==0.2.2' ],
+      )
 

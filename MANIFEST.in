@@ -1,0 +1,5 @@
+recursive-include ebapps *
+recursive-include system * 
+recursive-include mpi * 
+include LICENSE
+include CONTRIBUTING.md
