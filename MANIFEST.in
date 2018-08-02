@@ -1,0 +1,9 @@
+recursive-include framework *
+recursive-include cdash *
+recursive-include template *
+include buildtest
+include *.yaml
+include CONTRIBUTING.md
+include README.rst
+include setup.sh
+include setup.py

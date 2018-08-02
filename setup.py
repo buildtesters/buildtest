@@ -1,8 +1,8 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
-#   https://github.com/shahzebsiddiqui/buildtest-framework
+#   https://github.com/HPC-buildtest/buildtest-framework
 #
 #    This file is part of buildtest.
 #
@@ -25,14 +25,25 @@
 @author: Shahzeb Siddiqui (Pfizer)
 """
 
-from setuptools import setup
+from distutils.core import setup
 
 
 setup(name='buildtest-framework',
-      version='1.1.1',
-      description='HPC Application Testing Framework',
-      url='https://github.com/shahzebsiddiqui/buildtest-framework',
+      version='0.2.0',
       author='Shahzeb Siddiqui',
       author_email='shahzebmsiddiqui@gmail.com',
+      description='HPC Application Testing Framework',
+      long_description=open('README.rst').read(),
+      url="https://github.com/HPC-buildtest/buildtest-framework",
       license='GPLv2',
+      classifiers=[
+            "Development Status :: 4 - Beta",
+            "Environment :: Console",
+            "Intended Audience :: System Administrators",
+            "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+            "Operating System :: POSIX :: Linux",
+            "Programming Language :: Python :: 2.6",
+            "Topic :: Software Development :: Build Tools",
+            "Topic :: Software Development :: Testing",
+       ],
       zip_safe=False)
