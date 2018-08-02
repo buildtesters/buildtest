@@ -32,6 +32,7 @@ setup(
       name='buildtest-configs',
       version='0.2.2',
       description="""Test configuration for buildtest-framework""",
+      long_description=open('README.rst').read(),
       url='https://github.com/HPC-buildtest/buildtest-configs',
       author='Shahzeb Siddiqui',
       author_email='shahzebmsiddiqui@gmail.com',
@@ -48,6 +49,6 @@ setup(
       ),
       platforms = "Linux",
       packages=find_packages(),
+      package_data = {'buildtest' : 'buildtest'},      
       install_requires = [ 'buildtest-framework==0.2.2' ],
       )
-
