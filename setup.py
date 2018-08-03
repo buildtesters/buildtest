@@ -49,6 +49,6 @@ setup(
       ),
       platforms = "Linux",
       packages=find_packages(),
-      package_data = {'buildtest' : 'buildtest'},      
+      include_package_data=True,
       install_requires = [ 'buildtest-framework==0.2.2' ],
       )
