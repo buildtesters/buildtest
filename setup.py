@@ -25,11 +25,11 @@
 @author: Shahzeb Siddiqui (Pfizer)
 """
 
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 
 setup(name='buildtest-framework',
-      version='0.2.0',
+      version='0.2.2',
       author='Shahzeb Siddiqui',
       author_email='shahzebmsiddiqui@gmail.com',
       description='HPC Application Testing Framework',
@@ -46,4 +46,16 @@ setup(name='buildtest-framework',
             "Topic :: Software Development :: Build Tools",
             "Topic :: Software Development :: Testing",
        ],
-      zip_safe=False)
+       packages=find_packages(),
+       #package_dir = {'framework': 'framework'},
+       #package_data={''}
+       scripts = [
+        'buildtest',
+        'setup.sh',
+        'config.yaml',
+       ],
+       install_requires = [
+            "argcomplete",
+            "pyyaml",
+       ]
+      )
