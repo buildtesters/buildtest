@@ -1,8 +1,8 @@
 ############################################################################
 #
-#  Copyright 2017
+#  Copyright 2017-2018
 #
-#   https://github.com/shahzebsiddiqui/buildtest-framework
+#   https://github.com/HPC-buildtest/buildtest-framework
 #
 #    This file is part of buildtest.
 #
@@ -25,14 +25,40 @@
 @author: Shahzeb Siddiqui (Pfizer)
 """
 
-from setuptools import setup
+from setuptools import setup, find_packages
+from buildtest.tools.config import BUILDTEST_VERSION
 
 
 setup(name='buildtest-framework',
-      version='1.1.1',
-      description='HPC Application Testing Framework',
-      url='https://github.com/shahzebsiddiqui/buildtest-framework',
+      version=BUILDTEST_VERSION,
       author='Shahzeb Siddiqui',
       author_email='shahzebmsiddiqui@gmail.com',
+      description='HPC Application Testing Framework',
+      long_description=open('README.rst').read(),
+      url="https://github.com/HPC-buildtest/buildtest-framework",
       license='GPLv2',
-      zip_safe=False)
+      classifiers=[
+            "Development Status :: 4 - Beta",
+            "Environment :: Console",
+            "Intended Audience :: System Administrators",
+            "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+            "Operating System :: POSIX :: Linux",
+            "Programming Language :: Python :: 2.6",
+            "Topic :: Software Development :: Build Tools",
+            "Topic :: Software Development :: Testing",
+       ],
+       packages=find_packages(),
+       include_package_data=True,
+       scripts = [
+        '_buildtest',
+       ],
+       install_requires = [
+            "argcomplete",
+            "pyyaml",
+	    "buildtest-configs",
+	    "Python-buildtest-config",
+	    "Perl-buildtest-config",
+	    "Ruby-buildtest-config",
+	    "R-buildtest-config",
+       ]
+      )
