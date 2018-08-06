@@ -78,12 +78,12 @@ def generate_binary_test(args_dict,pkg):
                     if idx != -1:
                         software = software.split("/")[0] + "/" + module_version[0:idx-1]
 
-                configdir=os.path.join(BUILDTEST_CONFIGS_REPO,"buildtest","ebapps",software.lower())
+                configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],software.lower())
 
 
                 test_type="software"
         elif system is not None:
-                configdir=os.path.join(BUILDTEST_CONFIGS_REPO,"buildtest","system",pkg)
+                configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],pkg)
                 test_type="system"
 
         commandfile=os.path.join(configdir,"command.yaml")

@@ -36,7 +36,7 @@ def scantest():
 
 	applist = get_unique_software()
 	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
-	eblist_sourcedir =  os.listdir(os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps"))
+	eblist_sourcedir =  os.listdir(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'])
 
 	ebapps_common=  set(applist) & set(eblist_sourcedir)
 	ebapps_uncommon=  list(set(applist) - set(eblist_sourcedir))
@@ -50,7 +50,7 @@ def scantest():
 	print "EBAPP            YAML TEST FOUND"
 	print "----------------------------------------"
 	for x in ebapps_common:
-		cmd  = "find " + os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",x) + """ -type f -name *.yaml | wc -l"""
+		cmd  = "find " + os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],x) + """ -type f -name *.yaml | wc -l"""
 		ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
 		output = ret.communicate()[0]
 
@@ -66,7 +66,7 @@ def scantest():
 """
 	print ebapps_uncommon
 
-	syspkg_sourcedir = os.listdir(os.path.join(BUILDTEST_CONFIGS_REPO,"system"))
+	syspkg_sourcedir = os.listdir(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'])
 
 
 	print """

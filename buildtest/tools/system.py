@@ -49,13 +49,15 @@ def check_system_package_installed(pkg):
     if ret.returncode == 0:
         return True
     else:
-        return False
+        print "Please install system package:", pkg, " before creating YAML file"
+        sys.exit(1)
 
 def get_binaries_from_systempackage(pkg):
     """ get binaries from system package that typically install in standard linux path and only those that are executable """
 
     bindirs = [ "/usr/bin", "/bin", "/sbin", "/usr/sbin", "/usr/local/bin", "/usr/local/sbin" ]
     cmd = ""
+    os_type = get_os_name()
     if os_type == "RHEL":
         cmd = "rpm -ql " + pkg
 
@@ -65,7 +67,7 @@ def get_binaries_from_systempackage(pkg):
     temp = output.splitlines()
     output = temp
 
-    binarylist = []
+    binaries = {}
 
     for file in output:
         # if file doesn't exist but found during rpm -ql then skip file.
@@ -75,15 +77,21 @@ def get_binaries_from_systempackage(pkg):
         # check only files that are executable
         statmode = os.stat(file)[stat.ST_MODE] & (stat.S_IXUSR|stat.S_IXGRP|stat.S_IXOTH)
 
-        # only add executable files found in array bindirs
-        if statmode and os.path.dirname(file) in bindirs:
-            binarylist.append(file)
+        ret = subprocess.Popen("sha256sum " + file, shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        output = ret.communicate()[0]
+        sha256sum = output.split(" ")[0]
 
-    if len(binarylist) == 0:
+        # only add executable files found in array bindirs
+        if statmode and os.path.dirname(file) in bindirs and not os.path.islink(file):
+            # only add binaries with unique sha256 sum
+            if sha256sum not in binaries.keys():
+                binaries[sha256sum] = file
+
+    if len(binaries) == 0:
         print "There are no binaries found in package: ", name
         sys.exit(0)
 
-	return binarylist
+    return binaries
 
 def systempackage_installed_list():
     """return a list of installed system packages in a machine"""

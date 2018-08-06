@@ -74,7 +74,7 @@ os.environ['COLUMNS'] = "120"
 def main():
     """ entry point to buildtest """
 
-    IGNORE_EASYBUILD=False
+    BUILDTEST_IGNORE_EASYBUILD=False
 
     override_configuration()
     check_configuration()
@@ -84,7 +84,7 @@ def main():
     bt_opts = parser.parse_options()
 
     if config_opts.get('BUILDTEST_IGNORE_EASYBUILD'):
-        IGNORE_EASYBUILD=config_opts['BUILDTEST_IGNORE_EASYBUILD']
+        BUILDTEST_IGNORE_EASYBUILD=config_opts['BUILDTEST_IGNORE_EASYBUILD']
 
     if bt_opts.version:
         buildtest_version()
@@ -103,7 +103,7 @@ def main():
          config_opts['BUILDTEST_TESTDIR'] = bt_opts.testdir
 
     if bt_opts.ignore_easybuild:
-        IGNORE_EASYBUILD=True
+        BUILDTEST_IGNORE_EASYBUILD=True
 
     if bt_opts.clean_build:
         config_opts['BUILDTEST_CLEAN_BUILD']=True
@@ -210,10 +210,10 @@ def main():
     if bt_opts.system is not None:
         if bt_opts.system == "all":
             systempkg = bt_opts.system
-            logger.info("Generating all system package tests from YAML files in %s", os.path.join(BUILDTEST_CONFIGS_REPO,"system"))
+            logger.info("Generating all system package tests from YAML files in %s", config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'])
 
             BUILDTEST_LOGDIR = os.path.join(BUILDTEST_LOGDIR,"system","all")
-            systempkg_list = os.listdir(os.path.join(BUILDTEST_CONFIGS_REPO,"system"))
+            systempkg_list = os.listdir(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'])
 
             logger.info("List of system packages to test: %s ", systempkg_list)
 
@@ -262,10 +262,10 @@ def main():
 
 
         # check if software is an easybuild applicationa
-        if IGNORE_EASYBUILD == False:
+        if BUILDTEST_IGNORE_EASYBUILD == False:
             is_easybuild_app()
 
-        source_app_dir=os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",appname.lower())
+        source_app_dir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],appname.lower())
         configdir=os.path.join(source_app_dir,"config")
         codedir=os.path.join(source_app_dir,"code")
         BUILDTEST_LOGDIR=os.path.join(BUILDTEST_LOGDIR,appname,appversion,tcname,tcversion)
@@ -283,7 +283,6 @@ def main():
 
         # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)
         recursive_gen_test(configdir,codedir)
-
 
         if bt_opts.python_package:
             build_python_test(bt_opts.python_package)
