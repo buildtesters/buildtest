@@ -97,7 +97,6 @@ class buildtest_menu():
             group3.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES)
             group3.add_argument("--system", help=""" Build test for system packages
                              To build all system package test use --system all """, choices=self.syspkg_list, metavar='SYSTEM-PACKAGE')
-            group3.add_argument("--testset", help="Select the type of test set to run (Python, R, Ruby, Perl, Tcl, MPI)", choices=["Python","R","Ruby","Perl","Tcl","MPI"])
             group3.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")
             group3.add_argument("--python-package", help="build test for Python packages", choices=self.python_choices,metavar='PYTHON-PACKAGES')
             group3.add_argument("--r-package", help="build test for R packages", choices=self.r_choices,metavar='R-PACKAGES')

@@ -48,7 +48,6 @@ from buildtest.test.r import build_r_package_test
 from buildtest.test.ruby import build_ruby_package_test
 from buildtest.test.perl import build_perl_package_test
 from buildtest.test.sourcetest import recursive_gen_test
-from buildtest.test.testsets import run_testset
 from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.config import check_configuration, show_configuration, config_opts
 from buildtest.tools.file import create_dir
@@ -285,10 +284,6 @@ def main():
         # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)
         recursive_gen_test(configdir,codedir)
 
-
-        # if flag --testset is set, then
-        if bt_opts.testset is not  None:
-            run_testset(bt_opts)
 
         if bt_opts.python_package:
             build_python_test(bt_opts.python_package)
