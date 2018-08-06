@@ -39,12 +39,47 @@ from buildtest.tools.file import create_dir
 from buildtest.tools.modules import load_modules
 from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
+def r_pkg_choices():
+    """ return a list of R libraries for --r-package option """
+    r_choices =  os.listdir(config_opts['BUILDTEST_R_TESTDIR'])
+    return r_choices
+
+def check_R_library(R_lib):
+    """ check if R library exist for request R module, if it exists create test otherwise skip test creation"""
+
+    logger = logging.getLogger(logID)
+
+    appname=get_appname()
+    appver=get_appversion()
+
+    BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
+    cmd = ""
+
+
+    cmd = "module purge; module load " + os.path.join(appname,appver) + "; echo \"library(" + R_lib + ")\" | R -q --no-save "
+
+    if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
+        tcname = get_toolchain_name()
+        tcver = get_toolchain_version()
+        if len(tcname) > 0:
+            cmd = "module purge; module load " + os.path.join(tcname,tcver) + "; module load " + os.path.join(appname,appver) + "; echo \"library(" + R_lib + ")\" | R -q --no-save "
+
+
+    logger.debug("Check R Package:" + R_lib)
+    logger.debug("Running command - " + cmd)
+
+    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    ret.communicate()
+    ret_code = ret.returncode
+    if ret_code != 0:
+        print R_lib, "is not installed in software", os.path.join(appname,appver)
+        sys.exit(1)
+
 def build_r_package_test(r_lib):
     """ responsible for creating r package tests """
 
     from buildtest.tools.cmake import add_test_to_CMakeLists, setup_software_cmake
 
-    BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
     BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
     BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
@@ -63,7 +98,7 @@ def build_r_package_test(r_lib):
 
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
     cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
-    r_package_dir = os.path.join(BUILDTEST_R_REPO,"buildtest","R","code",r_lib)
+    r_package_dir = os.path.join(config_opts['BUILDTEST_R_TESTDIR'],r_lib)
 
     if not os.path.exists(cmakelist):
         setup_software_cmake()
@@ -106,41 +141,3 @@ def build_r_package_test(r_lib):
                 generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE,dummy_array)
 
         print "Generating ", count, "tests for ", os.path.basename(root)
-
-
-def r_pkg_choices():
-    """ return a list of R libraries for --r-package option """
-    BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
-    r_choices =  os.listdir(os.path.join(BUILDTEST_R_REPO,"buildtest","R","code"))
-    return r_choices
-
-def check_R_library(R_lib):
-    """ check if R library exist for request R module, if it exists create test otherwise skip test creation"""
-
-    logger = logging.getLogger(logID)
-
-    appname=get_appname()
-    appver=get_appversion()
-
-    BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
-    cmd = ""
-
-
-    cmd = "module purge; module load " + os.path.join(appname,appver) + "; echo \"library(" + R_lib + ")\" | R -q --no-save "
-
-    if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
-        tcname = get_toolchain_name()
-        tcver = get_toolchain_version()
-        if len(tcname) > 0:
-            cmd = "module purge; module load " + os.path.join(tcname,tcver) + "; module load " + os.path.join(appname,appver) + "; echo \"library(" + R_lib + ")\" | R -q --no-save "
-
-
-    logger.debug("Check R Package:" + R_lib)
-    logger.debug("Running command - " + cmd)
-
-    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    ret.communicate()
-    ret_code = ret.returncode
-    if ret_code != 0:
-        print R_lib, "is not installed in software", os.path.join(appname,appver)
-        sys.exit(1)

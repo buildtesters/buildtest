@@ -54,6 +54,10 @@ fd = open(BUILDTEST_CONFIG_FILE,'r')
 
 config_opts = yaml.load(fd)
 
+config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM']=""
+config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE']=""
+
+
 #global logID
 logID = "buildtest"
 
