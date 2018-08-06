@@ -1,0 +1,63 @@
+#!/bin/bash
+
+############################################################################
+#
+#  Copyright 2017-2018
+#
+#   https://github.com/HPC-buildtest/buildtest-framework
+#
+#    This file is part of buildtest.
+#
+#    buildtest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    buildtest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
+#############################################################################
+
+# @author: Shahzeb Siddiqui (Pfizer)
+
+
+REQ_MAJ_PYVER=2
+REQ_MIN_PYVER=6
+REQ_PYVER=${REQ_MAJ_PYVER}.${REQ_MIN_PYVER}
+
+PYTHON=python$REQ_MAJ_PYVER
+which $PYTHON &> /dev/null
+if [ $? -ne 0 ]
+then
+    PYTHON=python
+    which $PYTHON &> /dev/null
+    if [ $? -ne 0 ]
+    then
+        echo "ERROR: $PYTHON not available in \$PATH?"
+        exit 1
+    fi
+fi
+
+# make sure Python version being used is compatible
+pyver=`$PYTHON -V 2>&1 | cut -f2 -d' '`
+pyver_maj=`echo $pyver | cut -f1 -d'.'`
+pyver_min=`echo $pyver | cut -f2 -d'.'`
+
+if [ $pyver_maj -ne $REQ_MAJ_PYVER ]
+then
+    echo "ERROR: buildtest is currently only compatible with Python v${REQ_MAJ_PYVER}.x, found v${pyver}" 1>&2
+    exit 2
+fi
+
+if [ $pyver_min -lt $REQ_MIN_PYVER ]
+then
+    echo "ERROR: buildtest requires Python v${REQ_PYVER} or a more recent v${REQ_MAJ_PYVER}.x, found v${pyver}." 1>&2
+    exit 3
+fi
+
+
+$PYTHON -m buildtest.main "$@"
