@@ -41,8 +41,7 @@ from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_n
 
 def ruby_pkg_choices():
     """ return a list of ruby packages for --ruby-package option """
-    BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
-    ruby_choices =  os.listdir(os.path.join(BUILDTEST_RUBY_REPO,"buildtest","ruby","code"))
+    ruby_choices =  os.listdir(config_opts['BUILDTEST_RUBY_TESTDIR'])
     return ruby_choices
 
 def check_ruby_package(Ruby_gem):
@@ -78,7 +77,6 @@ def build_ruby_package_test(ruby_package):
 
     from buildtest.tools.cmake import add_test_to_CMakeLists, setup_software_cmake
 
-    BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
     BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
     BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
@@ -97,7 +95,7 @@ def build_ruby_package_test(ruby_package):
 
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
     cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
-    ruby_package_dir = os.path.join(BUILDTEST_RUBY_REPO,"buildtest","ruby","code",ruby_package)
+    ruby_package_dir = os.path.join(config_opts['BUILDTEST_RUBY_TESTDIR'],ruby_package)
 
     if not os.path.exists(cmakelist):
         setup_software_cmake()

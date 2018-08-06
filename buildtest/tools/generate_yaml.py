@@ -37,9 +37,8 @@ from buildtest.tools.system import check_system_package_installed, get_binaries_
 
 def create_system_yaml(name):
     """ create YAML configuration for binary test for system package """
-    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 
-    destdir = os.path.join(BUILDTEST_CONFIGS_REPO,"system",name)
+    destdir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],name)
     yamlfile = os.path.join(destdir,"command.yaml")
 
     # if yaml file exists then exit out
@@ -50,16 +49,17 @@ def create_system_yaml(name):
     # if directory is not present then create it
     create_dir(destdir)
 
-    # if package is not installed
-    if check_system_package_installed(name) == False:
-        print "Please install system package:", name, " before creating YAML file"
-        sys.exit(0)
+    # check if package is installed in system before creating yaml files
+    check_system_package_installed(name)
 
     # get binary from system package
     binary = get_binaries_from_systempackage(name)
 
+    binary_list = []
+    [binary_list.extend([value]) for key,value in binary.items()]
+
     fd = open(yamlfile,"w")
-    binarydict = { "binaries": binary }
+    binarydict = { "binaries": binary_list }
     with open(yamlfile, 'a') as outfile:
         yaml.dump(binarydict, outfile, default_flow_style=False)
 
@@ -68,7 +68,6 @@ def create_system_yaml(name):
 
 def create_software_yaml(module_name):
     """ create yaml configuration for software packages """
-    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 
     binary = get_binaries_from_application(module_name)
 
@@ -86,7 +85,7 @@ def create_software_yaml(module_name):
 
 
     module_name = module_name.lower()
-    destdir = os.path.join(BUILDTEST_CONFIGS_REPO,"ebapps",module_name)
+    destdir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],module_name)
     yamlfile = os.path.join(destdir,"command.yaml")
     # if yaml file exists then exit out
     if os.path.isfile(yamlfile):

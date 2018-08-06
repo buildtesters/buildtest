@@ -89,3 +89,10 @@ def override_configuration():
 
     if os.environ.get('BUILDTEST_JOB_TEMPLATE'):
         config_opts['BUILDTEST_JOB_TEMPLATE']=os.environ['BUILDTEST_JOB_TEMPLATE']
+
+    config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'] = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/system")
+    config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'] = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/ebapps")
+    config_opts['BUILDTEST_R_TESTDIR'] = os.path.join(config_opts['BUILDTEST_R_REPO'],"buildtest/R/code")
+    config_opts['BUILDTEST_PERL_TESTDIR'] = os.path.join(config_opts['BUILDTEST_PERL_REPO'],"buildtest/perl/code")
+    config_opts['BUILDTEST_PYTHON_TESTDIR'] = os.path.join(config_opts['BUILDTEST_PYTHON_REPO'],"buildtest/python/code")
+    config_opts['BUILDTEST_RUBY_TESTDIR'] = os.path.join(config_opts['BUILDTEST_RUBY_REPO'],"buildtest/ruby/code")

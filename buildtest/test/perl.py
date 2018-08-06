@@ -41,8 +41,7 @@ from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_n
 
 def perl_pkg_choices():
     """ return a list of perl packages for --perl-package option """
-    BUILDTEST_PERL_REPO = config_opts['BUILDTEST_PERL_REPO']
-    perl_choices =  os.listdir(os.path.join(BUILDTEST_PERL_REPO,"buildtest","perl","code"))
+    perl_choices =  os.listdir(config_opts['BUILDTEST_PERL_TESTDIR'])
     return perl_choices
 
 def check_perl_package(perl_module):
@@ -77,7 +76,6 @@ def build_perl_package_test(perl_package):
 
     from buildtest.tools.cmake import add_test_to_CMakeLists, setup_software_cmake
 
-    BUILDTEST_PERL_REPO = config_opts['BUILDTEST_PERL_REPO']
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
     BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
     BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
@@ -96,7 +94,7 @@ def build_perl_package_test(perl_package):
 
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
     cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
-    perl_package_dir = os.path.join(BUILDTEST_PERL_REPO,"buildtest","perl","code",perl_package)
+    perl_package_dir = os.path.join(config_opts['BUILDTEST_PERL_TESTDIR'],perl_package)
 
     if not os.path.exists(cmakelist):
         setup_software_cmake()
