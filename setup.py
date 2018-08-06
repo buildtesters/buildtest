@@ -26,10 +26,11 @@
 """
 
 from setuptools import setup, find_packages
+from buildtest.tools.config import BUILDTEST_VERSION
 
 
 setup(name='buildtest-framework',
-      version='0.2.2',
+      version=BUILDTEST_VERSION,
       author='Shahzeb Siddiqui',
       author_email='shahzebmsiddiqui@gmail.com',
       description='HPC Application Testing Framework',
@@ -47,15 +48,17 @@ setup(name='buildtest-framework',
             "Topic :: Software Development :: Testing",
        ],
        packages=find_packages(),
-       #package_dir = {'framework': 'framework'},
-       #package_data={''}
+       include_package_data=True,
        scripts = [
-        'buildtest',
-        'setup.sh',
-        'config.yaml',
+        '_buildtest',
        ],
        install_requires = [
             "argcomplete",
             "pyyaml",
+	    "buildtest-configs",
+	    "Python-buildtest-config",
+	    "Perl-buildtest-config",
+	    "Ruby-buildtest-config",
+	    "R-buildtest-config",
        ]
       )
