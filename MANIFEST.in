@@ -1,5 +1,4 @@
 recursive-include buildtest *
-recursive-include cdash *
 graft template
 include _buildtest
 include CONTRIBUTING.md
