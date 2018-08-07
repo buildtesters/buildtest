@@ -32,7 +32,7 @@ import subprocess
 import time
 import glob
 
-from buildtest.tools.config import BUILDTEST_ROOT
+from buildtest.tools.config import BUILDTEST_ROOT, config_opts
 from buildtest.tools.menu import buildtest_menu
 
 def systempkg_menu(systempkg):
@@ -199,6 +199,8 @@ def eb_menu(ebpkg):
 
     app_tc_set = set()
 
+
+
     # translate directory path into app name/version and toolchain name/version
     for item in testroot_set:
         # directory format $BUILDTEST_TESTDIR/ebapps/software/version, ebapp only 2 directories up
@@ -223,32 +225,31 @@ def eb_menu(ebpkg):
             tcname_tcver = os.path.join(tcname,tcver)
             app_tc_set.add(app_ver+","+tcname_tcver)
 
-            # directory format $BUILDTEST_TESTDIR/ebapps/software/version/package, ebapp only 3 directories up
+        # directory format $BUILDTEST_TESTDIR/ebapps/software/version/package, ebapp only 3 directories up
+        elif os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(item)))) == "ebapp":
+            app = os.path.basename(os.path.dirname(os.path.dirname(item)))
+            ver = os.path.basename(os.path.dirname(item))
 
-            if os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(item)))) == "ebapp":
-                app = os.path.basename(os.path.dirname(os.path.dirname(item)))
-                ver = os.path.basename(os.path.dirname(item))
-
-	        app_ver = os.path.join(app,ver)
+            app_ver = os.path.join(app,ver)
             toolchain = "NONE"
             app_tc_set.add(app_ver+","+toolchain)
 
 
-            # directory format $BUILDTEST_TESTDIR/ebapps/software/version/toolchainname/toolchainver/package, ebapp only 5 directories up
-            if os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(item)))))) == "ebapp":
+        # directory format $BUILDTEST_TESTDIR/ebapps/software/version/toolchainname/toolchainver/package, ebapp only 5 directories up
+        elif os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(item)))))) == "ebapp":
 
-            	app = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(item)))))
-            	ver = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(item))))
-            	tcname = os.path.basename(os.path.dirname(os.path.dirname(item)))
-            	tcver = os.path.basename(os.path.dirname(item))
+            app = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(item)))))
+            ver = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(item))))
+            tcname = os.path.basename(os.path.dirname(os.path.dirname(item)))
+            tcver = os.path.basename(os.path.dirname(item))
 
-                app_ver = os.path.join(app,ver)
-                tcname_tcver = os.path.join(tcname,tcver)
-                app_tc_set.add(app_ver+","+tcname_tcver)
+            app_ver = os.path.join(app,ver)
+            tcname_tcver = os.path.join(tcname,tcver)
+            app_tc_set.add(app_ver+","+tcname_tcver)
 
 
-	app_tc_set = list(app_tc_set)
-	app_tc_set.sort()
+    app_tc_set = list(app_tc_set)
+    app_tc_set.sort()
 
     while True:
         os.system("clear")
@@ -438,11 +439,8 @@ def runtest_menu():
 
     os.system("clear")
 
-    cwd = BUILDTEST_ROOT
-    testing = os.path.join(cwd,"testing")
-    systempkg = os.path.join(testing,"system")
-    ebpkg = os.path.join(testing,"ebapp")
-
+    system_testdir = os.path.join(config_opts['BUILDTEST_TESTDIR'],"system")
+    software_testdir = os.path.join(config_opts['BUILDTEST_TESTDIR'],"ebapp")
     text = """
     	_________________________________________________________________________
         |\							                                           /|
@@ -491,8 +489,8 @@ def runtest_menu():
     	# force userinput to be integer in case its float or something else
     	userinput = int(userinput)
     	if userinput == 1:
-    		systempkg_menu(systempkg)
+    		systempkg_menu(system_testdir)
     	elif userinput == 2:
-    		eb_menu(ebpkg)
+    		eb_menu(software_testdir)
     	else:
     		print "Invalid Entry, please try again"
