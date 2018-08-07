@@ -49,7 +49,7 @@ from buildtest.test.ruby import build_ruby_package_test
 from buildtest.test.perl import build_perl_package_test
 from buildtest.test.sourcetest import recursive_gen_test
 from buildtest.tools.cmake import setup_software_cmake
-from buildtest.tools.config import check_configuration, show_configuration, config_opts
+from buildtest.tools.config import show_configuration, config_opts
 from buildtest.tools.file import create_dir
 from buildtest.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from buildtest.tools.find import find_all_tests, find_tests_by_arg
@@ -58,7 +58,6 @@ from buildtest.tools.generate_yaml import create_system_yaml, create_software_ya
 from buildtest.tools.log import init_log, clean_logs
 from buildtest.tools.menu import buildtest_menu
 from buildtest.tools.modules import diff_trees, module_load_test
-from buildtest.tools.options import override_configuration
 from buildtest.tools.parser.yaml_config import show_yaml_keys
 from buildtest.tools.print_functions import print_software_version_relation, print_software, print_toolchain
 from buildtest.tools.scan import scantest
@@ -75,9 +74,6 @@ def main():
     """ entry point to buildtest """
 
     BUILDTEST_IGNORE_EASYBUILD=False
-
-    override_configuration()
-    check_configuration()
 
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
     parser = buildtest_menu()

@@ -34,7 +34,7 @@ from buildtest.test.python import python_pkg_choices
 from buildtest.test.r import r_pkg_choices
 from buildtest.test.ruby import ruby_pkg_choices
 from buildtest.test.perl import perl_pkg_choices
-from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts
+from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, check_configuration
 from buildtest.tools.options import override_configuration
 from buildtest.tools.system import systempackage_installed_list
 from buildtest.tools.software import get_software_stack, get_toolchain_stack,ebyaml_choices
@@ -44,6 +44,7 @@ class buildtest_menu():
 
         parser = {}
         override_configuration()
+        check_configuration()
         syspkg_list = os.listdir(os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest","system"))
         # adding "all" as parameter to run all system package test
         syspkg_list.append("all")
