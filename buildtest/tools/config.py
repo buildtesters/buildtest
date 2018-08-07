@@ -123,16 +123,29 @@ def check_configuration():
         print "ERROR:  \t BUILDTEST_R_REPO: ", BUILDTEST_R_REPO, " does not exist"
 
     time.sleep(0.1)
+    if not os.path.exists(config_opts['BUILDTEST_R_TESTDIR']):
+        ec = 1
+        print "ERROR: \t BUILDTEST_R_TESTDIR: ", config_opts['BUILDTEST_R_TESTDIR'], " does not exist"
+
+    time.sleep(0.1)
     if not os.path.exists(BUILDTEST_PERL_REPO):
         ec = 1
         print "ERROR:  \t BUILDTEST_PERL_REPO: ", BUILDTEST_PERL_REPO, " does not exist"
 
-
+    time.sleep(0.1)
+    if not os.path.exists(config_opts['BUILDTEST_PERL_TESTDIR']):
+        ec = 1
+        print "ERROR: \t BUILDTEST_PERL_TESTDIR: ", config_opts['BUILDTEST_PERL_TESTDIR'], " does not exist"
 
     time.sleep(0.1)
     if not os.path.exists(BUILDTEST_PYTHON_REPO):
         ec = 1
         print "ERROR:  \t BUILDTEST_PYTHON_REPO: ", BUILDTEST_PYTHON_REPO, " does not exist"
+
+    time.sleep(0.1)
+    if not os.path.exists(config_opts['BUILDTEST_PYTHON_TESTDIR']):
+        ec = 1
+        print "ERROR: \t BUILDTEST_PYTHON_TESTDIR: ", config_opts['BUILDTEST_PYTHON_TESTDIR'], " does not exist"
 
 
     time.sleep(0.1)
@@ -140,6 +153,10 @@ def check_configuration():
         ec = 1
         print "ERROR:  \t BUILDTEST_RUBY_REPO: ", BUILDTEST_RUBY_REPO, " does not exist"
 
+    time.sleep(0.1)
+    if not os.path.exists(config_opts['BUILDTEST_RUBY_TESTDIR']):
+        ec = 1
+        print "ERROR: \t BUILDTEST_RUBY_TESTDIR: ", config_opts['BUILDTEST_RUBY_TESTDIR'], " does not exist"
 
 
     time.sleep(0.1)
@@ -163,6 +180,7 @@ def check_configuration():
     time.sleep(0.1)
 
     if os.path.splitext(BUILDTEST_JOB_TEMPLATE)[1]  not in BUILDTEST_JOB_EXTENSION:
+        ec = 1
         print "Invalid file extension:", BUILDTEST_JOB_EXTENSION, ", must be one of the following extension", BUILDTEST_JOB_EXTENSION
 
     time.sleep(0.1)
