@@ -34,57 +34,52 @@ from buildtest.tools.software import get_unique_software
 
 def scantest():
 
-	applist = get_unique_software()
-	BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
-	eblist_sourcedir =  os.listdir(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'])
+    applist = get_unique_software()
+    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+    eblist_sourcedir =  os.listdir(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'])
 
-	ebapps_common=  set(applist) & set(eblist_sourcedir)
-	ebapps_uncommon=  list(set(applist) - set(eblist_sourcedir))
+    ebapps_common=  set(applist) & set(eblist_sourcedir)
 
-	print """
-****************************************
-*     EB Apps with YAML configs:       *
-****************************************
-"""
+    print "\n"
+    print "Software Packages that can be tested with buildtest"
+    print "---------------------------------------------------"
 
-	print "EBAPP            YAML TEST FOUND"
-	print "----------------------------------------"
-	for x in ebapps_common:
-		cmd  = "find " + os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],x) + """ -type f -name *.yaml | wc -l"""
-		ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-		output = ret.communicate()[0]
+    software_test_list = []
+    for x in ebapps_common:
+        software_config_dir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],x)
+        yaml_found=False
+        for root, subdir, files in os.walk(software_config_dir):
+            for file in files:
+                if os.path.splitext(file)[1] == ".yaml":
+                    yaml_found=True
+        if yaml_found:
+                software_test_list.append(x)
 
-		# removing new line character
-		output = output.rstrip()
- 		print (x + "\t\t" + output).expandtabs(10)
-		#print " %-*s \t\t %s " % (x,output)
-
-	print """
-****************************************
-*     EB Apps without YAML configs:    *
-****************************************
-"""
-	print ebapps_uncommon
-
-	syspkg_sourcedir = os.listdir(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'])
+    software_test_list.sort()
+    for x in software_test_list:
+        print x
 
 
-	print """
-****************************************************
-*     System Package with/without YAML configs:    *
-****************************************************
-"""
 
-	for pkg in syspkg_sourcedir:
-		cmd = "rpm -q " + pkg
-		ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-		(output,errormsg) = ret.communicate()
+    syspkg_sourcedir = os.listdir(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'])
 
-		output = output.rstrip()
+    system_test_list = []
 
-		if ret.returncode == 0:
-			print "Found YAML config for system package: ", output
-		else:
-			print "Could not find YAML config for system package:", output
+    print "\n"
+    print "System Packages that can be tested with buildtest"
+    print "---------------------------------------------------"
 
-	sys.exit(0)
+    for pkg in syspkg_sourcedir:
+        cmd = "rpm -q " + pkg
+        ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        (output,errormsg) = ret.communicate()
+
+        output = output.rstrip()
+
+        if ret.returncode == 0:
+            system_test_list.append(pkg)
+
+    system_test_list.sort()
+    for x in system_test_list:
+        print x        
+    sys.exit(0)
