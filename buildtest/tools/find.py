@@ -39,10 +39,10 @@ def find_all_yaml_configs():
         for file in files:
             if file.endswith(".yaml"):
                 count+=1
-                print os.path.join(root,file)
+                print (os.path.join(root,file))
 
     print
-    print "Total YAML configs:", count
+    print ("Total YAML configs: ", count)
     sys.exit(0)
 
 def find_yaml_configs_by_arg(find_arg):
@@ -54,10 +54,10 @@ def find_yaml_configs_by_arg(find_arg):
         for file in files:
             if file.endswith(".yaml") and find_arg in os.path.basename(file):
                 count+=1
-                print os.path.join(root,file)
+                print (os.path.join(root,file))
 
     print
-    print "Total YAML configs: ", count
+    print ("Total YAML configs: ", count)
     sys.exit(0)
 
 def find_all_tests():
@@ -71,11 +71,11 @@ def find_all_tests():
             ext = ext[1:]
             if ext in BUILDTEST_SHELLTYPES:
                 count+=1
-                print os.path.join(root,file)
+                print (os.path.join(root,file))
 
 
     print
-    print "Total Test scripts:", count
+    print ("Total Test scripts: ", count)
     sys.exit(0)
 
 def find_tests_by_arg(find_arg):
@@ -89,9 +89,9 @@ def find_tests_by_arg(find_arg):
             ext = ext[1:]
             if ext in BUILDTEST_SHELLTYPES and find_arg in os.path.basename(file):
                 count+=1
-                print os.path.join(root,file)
+                print (os.path.join(root,file))
 
 
     print
-    print "Total Test scripts:", count
+    print ("Total Test scripts: ", count)
     sys.exit(0)

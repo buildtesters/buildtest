@@ -43,7 +43,7 @@ def get_module_root():
         if os.path.exists(tree):
             modroot.append(tree)
         else:
-            print "Unable to find directory: ", tree, "specified in BUILDTEST_MODULE_ROOT"
+            print ("Unable to find directory: %s specified in BUILDTEST_MODULE_ROOT",tree)
             sys.exit(1)
     return modroot
 
@@ -114,7 +114,7 @@ def list_toolchain():
 
         logger = logging.getLogger(logID)
         logger.info("List of EB Toolchains")
-        logger.info("--------------------------------------")
+        logger.info("--------------------------------------")        
         logger.info("EB Toolchains = %s", toolchain)
 
         return toolchain
@@ -141,8 +141,9 @@ def find_easyconfigs_from_modulelist(modulelist):
                     if os.path.exists(easybuild_path):
                         cmd = "find " + easybuild_path + " -type f -name *.eb "
                         ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
-                        easyconfig = ret.communicate()[0]
-                        easyconfig = easyconfig.strip("\n")
+                        easyconfig = ret.communicate()[0].rstrip().decode("utf-8")
+
+                        #easyconfig = easyconfig.strip("\n")
 
                         # only add easyconfigs to list using find command. This also avoids adding empty entries when no file was found
                         if os.path.exists(easyconfig):
@@ -150,13 +151,15 @@ def find_easyconfigs_from_modulelist(modulelist):
                         else:
                             no_ec_list.append("Could not find easyconfig in " + easybuild_path)
                     else:
-                        print "Unable to find directory: ", easybuild_path
+                        print ("Unable to find directory: %s", easybuild_path)
                         no_ec_list.append("Could not find directory: " + easybuild_path)
                     break
                 else:
                     continue
         else:
             no_ec_list.append("Reading File: " + module + " doesn't look like an easybuild generated module. Unable to find variable root")
+    #print (ec_list,type(ec_list))
+
     return ec_list,no_ec_list
 
 def find_easyconfigs():
@@ -171,26 +174,26 @@ def find_easyconfigs():
 
     # if one or more easyconfigs found then display the path to easyconfigs
     if len(ec_list) > 0:
-        print "List of easyconfigs found in MODULETREES:", config_opts['BUILDTEST_MODULE_ROOT']
+        print ("List of easyconfigs found in MODULETREES: ", config_opts['BUILDTEST_MODULE_ROOT'])
         print
-        print "ID   |    easyconfig path"
-        print "-----|--------------------------------------------------------------------"
+        print ("ID   |    easyconfig path")
+        print ("-----|--------------------------------------------------------------------")
         count = 1
         for ec in ec_list:
-            print (str(count) + "\t |").expandtabs(4),ec
+            print ((str(count) + "\t |").expandtabs(4),ec)
             count = count + 1
     else:
-        print "No easyconfigs found!"
+        print ("No easyconfigs found!")
 
     if len(no_ec_list) > 0:
         print
-        print "Unable to find easyconfigs for the following, please investigate this issue! \n"
+        print ("Unable to find easyconfigs for the following, please investigate this issue! \n")
 
         for no_ec in  no_ec_list:
-            print no_ec
+            print (no_ec)
 
-    print "Total easyconfigs found:", len(ec_list)
-    print "Total module files searched:", len(modulelist)
+    print ("Total easyconfigs found: ", len(ec_list))
+    print ("Total module files searched: ", len(modulelist))
 
 
 def is_easybuild_app():
@@ -214,7 +217,7 @@ def is_easybuild_app():
     ec_list, no_ec_list = find_easyconfigs_from_modulelist(modulefiles)
     # if no easyconfigs found then ec_list will be empty so we should stop and report this application is not built by easybuild. This feature can be changed in future
     if len(ec_list) == 0:
-        print "Application:", os.path.join(app_name,app_ver), " is not built from Easybuild, cannot find easyconfig file in installation directory"
+        print ("Application: %s is not built from Easybuild, cannot find easyconfig file in installation directory", os.path.join(app_name,app_ver))
         sys.exit(1)
 
     return

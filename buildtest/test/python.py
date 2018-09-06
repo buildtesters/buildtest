@@ -66,7 +66,7 @@ def check_python_package(python_lib):
     ret.communicate()
     ret_code = ret.returncode
     if ret_code != 0:
-        print python_lib, "is not installed in software", os.path.join(appname,appver)
+        print (python_lib, " is not installed in software ",  os.path.join(appname,appver))
         sys.exit(1)
 
 def build_python_test(python_lib):
@@ -87,7 +87,7 @@ def build_python_test(python_lib):
     logger = logging.getLogger(logID)
 
     if appname.lower() not in PYTHON_APPS:
-        print "ERROR: valid choices for software are the following: ", PYTHON_APPS
+        print ("ERROR: valid choices for software are the following: ", PYTHON_APPS)
         sys.exit(1)
 
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
@@ -134,4 +134,4 @@ def build_python_test(python_lib):
             if BUILDTEST_ENABLE_JOB:
                 generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE,dummy_array)
 
-        print "Generating ", count, "tests for ", os.path.basename(root)
+        print ("Generating", count, " tests for " ,os.path.basename(root))

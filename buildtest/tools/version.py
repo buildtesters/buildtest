@@ -29,5 +29,5 @@ Display buildtest version
 from buildtest.tools.config import BUILDTEST_VERSION
 
 def buildtest_version():
-	""" print the buildtest version"""
-        print "buildtest version: " + BUILDTEST_VERSION
+    """ print the buildtest version"""
+    print("buildtest version: ",  BUILDTEST_VERSION)

@@ -25,7 +25,7 @@
 # @author: Shahzeb Siddiqui (Pfizer)
 
 
-REQ_MAJ_PYVER=2
+REQ_MAJ_PYVER=3
 REQ_MIN_PYVER=6
 REQ_PYVER=${REQ_MAJ_PYVER}.${REQ_MIN_PYVER}
 

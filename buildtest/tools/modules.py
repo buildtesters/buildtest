@@ -72,7 +72,7 @@ def get_module_list():
                     continue
 
                 if file == ".version":
-                        continue
+                    continue
 
                 modulefiles.append(os.path.join(root,file))
 
@@ -104,7 +104,7 @@ def load_modules(shell_type):
             moduleload += "module load " + software + "\n"
         elif BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
             moduleload = "module load " + software + "\n"
-            print moduleload
+            print (moduleload)
 
     header = header + moduleload
     return header
@@ -114,18 +114,18 @@ def diff_trees(args_trees):
 
     # no comma found between two trees
     if args_trees.find(",") == -1:
-        print "Usage: --diff-trees /path/to/tree1,/path/to/tree2"
+        print ("Usage: --diff-trees /path/to/tree1,/path/to/tree2")
         sys.exit(1)
     else:
         id = args_trees.find(",")
         tree1 = args_trees[0:id]
         tree2 = args_trees[id+1:len(args_trees)]
         if not os.path.exists(tree1):
-            print "Path does not exist: ", tree1
+            print ("Path does not exist: ", tree1)
             sys.exit(1)
 
         if not os.path.exists(tree2):
-            print "Path does not exist: ", tree2
+            print ("Path does not exist: ", tree2)
             sys.exit(1)
 
         modlist1 = []
@@ -150,18 +150,18 @@ def diff_trees(args_trees):
         # convert list into set and do symmetric difference between two sets
         diff_set =  set(modlist1).symmetric_difference(set(modlist2))
         if len(diff_set) == 0:
-            print "No difference found between module tree: ", tree1, "and module tree:", tree2
+            print ("No difference found between module tree: ", tree1, " and module tree: ", tree2)
         # print difference between two sets by printing module file and stating  FOUND or NOTFOUND in the appropriate columns for Module Tree 1 or 2
         else:
-            print "\t\t\t Comparing Module Trees for differences in module files"
-            print "\t\t\t -------------------------------------------------------"
+            print ("\t\t\t Comparing Module Trees for differences in module files")
+            print ("\t\t\t -------------------------------------------------------")
 
             print
-            print "Module Tree 1:", tree1
-            print "Module Tree 2:", tree2
+            print ("Module Tree 1: ", tree1)
+            print ("Module Tree 2: ", tree2)
             print
-            print "ID       |     Module                                                   |   Module Tree 1    |   Module Tree 2"
-            print "---------|--------------------------------------------------------------|--------------------|----------------------"
+            print ("ID       |     Module                                                   |   Module Tree 1    |   Module Tree 2")
+            print ("---------|--------------------------------------------------------------|--------------------|----------------------")
 
             count = 1
             # print difference set
@@ -182,7 +182,7 @@ def diff_trees(args_trees):
                     value2 = "FOUND"
 
 
-                print (str(count) + "\t |").expandtabs(8), (i + "\t |").expandtabs(60) , (value1 + "\t |").expandtabs(18), value2
+                print ((str(count) + "\t |").expandtabs(8), (i + "\t |").expandtabs(60) , (value1 + "\t |").expandtabs(18), value2)
                 count = count + 1
 
 def module_load_test():
@@ -200,8 +200,8 @@ def module_load_test():
         ret.communicate()
 
         if ret.returncode == 0:
-            print "STATUS: PASSED - Testing module: " + mod_file
+            print ("STATUS: PASSED - Testing module: ", mod_file)
         else:
-            print "STATUS: FAILED - Testing module: " + mod_file
+            print ("STATUS: FAILED - Testing module: ", mod_file)
 
     sys.exit(0)

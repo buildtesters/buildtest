@@ -34,39 +34,39 @@ from datetime import datetime
 from buildtest.tools.config import logID
 
 def stripHiddenFile(file):
-	"""  removes the leading "." character from file """
-        file=file[1:]
-        return file
+    """  removes the leading "." character from file """
+    file=file[1:]
+    return file
 
 def create_file(filename):
-        """ Create an empty file if it doesn't exist   """
-        if not os.path.isfile(filename):
-                fd=open(filename,'w')
-                fd.close()
+    """ Create an empty file if it doesn't exist   """
+    if not os.path.isfile(filename):
+        fd=open(filename,'w')
+        fd.close()
 
-		logger = logging.getLogger(logID)
-		logger.debug("Creating File: %s", filename)
+    logger = logging.getLogger(logID)
+    logger.debug("Creating File: %s", filename)
 
 
 def create_dir(dirname):
-        """Create directory if it doesn't exist"""
-        if not os.path.isdir(dirname):
-            try:
-                os.makedirs(dirname)
-            except OSError:
-                print "Unable to create directory:", dirname
-                raise
+    """Create directory if it doesn't exist"""
+    if not os.path.isdir(dirname):
+        try:
+            os.makedirs(dirname)
+        except OSError:
+            print ("Unable to create directory: %s", dirname)
+            raise
 
 
-		logger = logging.getLogger(logID)
-		logger.debug("Creating Directory: %s", dirname)
+    logger = logging.getLogger(logID)
+    logger.debug("Creating Directory: %s", dirname)
 
 def string_in_file(string,filename):
-	""" returns true/false to indicate if string is in file """
-	if string in open(filename).read():
-		return True
-	else:
-		return False
+    """ returns true/false to indicate if string is in file """
+    if string in open(filename).read():
+        return True
+    else:
+        return False
 
 def isHiddenFile(inputfile):
     """ Return true/false to indicate if its a hidden file """

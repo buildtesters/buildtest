@@ -48,57 +48,57 @@ from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_n
 
 
 def recursive_gen_test(configdir,codedir):
-        """ if config directory exists then process all .yaml files to build source test """
+    """ if config directory exists then process all .yaml files to build source test """
 
-	    # only process yaml files if configdir directory is found
-        if os.path.isdir(configdir):
+    # only process yaml files if configdir directory is found
+    if os.path.isdir(configdir):
 
-            logger = logging.getLogger(logID)
+        logger = logging.getLogger(logID)
 
-            logger.debug("Processing all YAML files in %s", configdir)
+        logger.debug("Processing all YAML files in %s", configdir)
 
-            print "--------------------------------------------"
-            print "[STAGE 2]: Building Source Tests"
-            print "--------------------------------------------"
+        print ("--------------------------------------------")
+        print ("[STAGE 2]: Building Source Tests")
+        print ("--------------------------------------------")
 
-            print "Processing all YAML files in directory:", configdir
-            count = 0
-            for root,subdirs,files in os.walk(configdir):
+        print ("Processing all YAML files in directory: ", configdir)
+        count = 0
+        for root,subdirs,files in os.walk(configdir):
 
-                # skip to next element if subdirectory has no files
-                if len(files) == 0:
+            # skip to next element if subdirectory has no files
+            if len(files) == 0:
+                continue
+
+            #filepath=configdir+filename
+            for file in files:
+                filepath=os.path.join(root,file)
+                subdir=os.path.basename(root)
+                # if there is no subdirectory in configdir that means subdir would be set to "config" so it can
+                # be set to empty string in order to concat codedir and subdir. This way both subdirectory and
+                # and no subdirectory structure for yaml will work
+                if subdir == "config":
+                    subdir = ""
+
+                code_destdir=os.path.join(codedir,subdir)
+                logger.debug("Parsing YAML file: %s", filepath)
+                configmap=parse_config(filepath,code_destdir)
+                # error processing config file, then parse_config will return an empty dictionary
+                if len(configmap) == 0:
                     continue
 
-                #filepath=configdir+filename
-                for file in files:
-                    filepath=os.path.join(root,file)
-                    subdir=os.path.basename(root)
-                    # if there is no subdirectory in configdir that means subdir would be set to "config" so it can
-                    # be set to empty string in order to concat codedir and subdir. This way both subdirectory and
-                    # and no subdirectory structure for yaml will work
-                    if subdir == "config":
-                        subdir = ""
+                count = count + 1
+                generate_source_test(configmap,code_destdir,subdir)
 
-                    code_destdir=os.path.join(codedir,subdir)
-                    logger.debug("Parsing YAML file: %s", filepath)
-                    configmap=parse_config(filepath,code_destdir)
-                    # error processing config file, then parse_config will return an empty dictionary
-                    if len(configmap) == 0:
-                        continue
+        appname=get_appname()
+        appver=get_appversion()
+        tcname=get_toolchain_name()
+        tcver=get_toolchain_version()
+        BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+        destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
 
-                    count = count + 1
-                    generate_source_test(configmap,code_destdir,subdir)
-
-            appname=get_appname()
-            appver=get_appversion()
-            tcname=get_toolchain_name()
-            tcver=get_toolchain_version()
-            BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-            destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
-
-            print "Generating " + str(count) + " Source Tests and writing at ", destdir
-        else:
-            return
+        print ("Generating", count, " Source Tests and writing at ",destdir)
+    else:
+        return
 
 # generate test for source
 def generate_source_test(configmap,codedir,subdir):
@@ -230,7 +230,7 @@ def generate_source_test(configmap,codedir,subdir):
             	runcmd += cmd + "\n"
         else:
             msg = "runcmd is declared but value is not specified. Need runcmd to run executable \n"
-            print msg
+            print (msg)
             logger.debug.append("%s",msg)
             logging.warning("Unable to create test from YAML config, skipping test generation")
             return
@@ -246,7 +246,7 @@ def generate_source_test(configmap,codedir,subdir):
 
         # checking if either buildcmd or runcmd specified but not both, then report an error.
         if "buildcmd" in configmap and "runcmd" not in configmap or "buildcmd" not in configmap and "runcmd" in configmap:
-            print "Need to specify both key: buildcmd and runcmd"
+            print ("Need to specify both key: buildcmd and runcmd")
 
             logger.warning("Need to declare both key: buildcmd and runcmd. Skipping to next YAML config \n")
             return
@@ -263,7 +263,7 @@ def generate_source_test(configmap,codedir,subdir):
         if compiler_type == "gnu" or compiler_type == "intel" or compiler_type == "cuda":
 
             buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
-            #print buildcmd
+
             # set runcmd for mpi tags using mpirun otherwise just run executable
             if compiler in ["mpicc","mpic++","mpifort","mpiicc","mpiic++", "mpiifort"]:
 
@@ -362,8 +362,6 @@ def generate_source_test(configmap,codedir,subdir):
     if "iter" not in configmap:
         add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 
-        # print "Creating Test: " + testpath
-
         logger.debug("Creating Test: %s ", testpath)
         logger.debug("[TEST START-BLOCK]")
 
@@ -416,61 +414,61 @@ def generate_source_test(configmap,codedir,subdir):
             add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
 
 def create_procrange_test(testpath, startproc, proc_list,subdir):
-	""" create same mpi tests with varying parameter for -np """
-	destdir = os.path.dirname(testpath)
-	cmakelist = os.path.join(destdir,"CMakeLists.txt")
-	ext = os.path.splitext(testpath)[1]
-	fd=open(testpath,'r')
-	content = fd.read()
-	fd.close()
-	os.chdir(destdir)
+    """ create same mpi tests with varying parameter for -np """
+    destdir = os.path.dirname(testpath)
+    cmakelist = os.path.join(destdir,"CMakeLists.txt")
+    ext = os.path.splitext(testpath)[1]
+    fd=open(testpath,'r')
+    content = fd.read()
+    fd.close()
+    os.chdir(destdir)
 
-	for proc in proc_list:
-		newtestname = os.path.basename(testpath).rsplit("_",1)[0]
-		if proc == startproc:
-			continue
+    for proc in proc_list:
+        newtestname = os.path.basename(testpath).rsplit("_",1)[0]
+        if proc == startproc:
+            continue
 
-	 	newtestname += "_" + str(proc) + ext
-		# replace mpirun -np with value of proc
-		ret = re.sub("mpirun -np " + str(startproc), "mpirun -np " + str(proc) + " " ,content)
-		fd = open(newtestname,'w')
-		fd.write(ret)
-		fd.close()
-		add_test_to_CMakeLists(destdir,subdir,cmakelist,newtestname)
+        newtestname += "_" + str(proc) + ext
+        # replace mpirun -np with value of proc
+        ret = re.sub("mpirun -np " + str(startproc), "mpirun -np " + str(proc) + " " ,content)
+        fd = open(newtestname,'w')
+        fd.write(ret)
+        fd.close()
+        add_test_to_CMakeLists(destdir,subdir,cmakelist,newtestname)
 
 def create_threadrange_test(testpath,startthread,thread_list,subdir):
-	""" create a range of OpenMP thread test """
-	""" create same mpi tests with varying parameter for -np """
-        destdir = os.path.dirname(testpath)
-        cmakelist = os.path.join(destdir,"CMakeLists.txt")
-        ext = os.path.splitext(testpath)[1]
-        fd=open(testpath,'r')
-        content = fd.read()
+    """ create a range of OpenMP thread test """
+    """ create same mpi tests with varying parameter for -np """
+    destdir = os.path.dirname(testpath)
+    cmakelist = os.path.join(destdir,"CMakeLists.txt")
+    ext = os.path.splitext(testpath)[1]
+    fd=open(testpath,'r')
+    content = fd.read()
+    fd.close()
+    os.chdir(destdir)
+
+    for thread in thread_list:
+        ret = ""
+        # replace threadcnt for each testname <testname>_nthread_<threadcnt>.<shell_ext>
+        newtestname = os.path.basename(testpath).rsplit("_",1)[0]
+        if thread == startthread:
+            continue
+
+        newtestname += "_" + str(thread) + ext
+        # change value of OMP_NUM_THREAD in loop depending on type of shell
+        if ext == ".bash" or ext == ".sh":
+            ret = re.sub("export OMP_NUM_THREADS=" + str(startthread), "export OMP_NUM_THREADS=" + str(thread)  ,content)
+        else:
+            ret = re.sub("setenv OMP_NUM_THREADS " + str(startthread), "setenv OMP_NUM_THREADS " + str(thread)  ,content)
+
+        fd = open(newtestname,'w')
+        fd.write(ret)
         fd.close()
-        os.chdir(destdir)
-
-	for thread in thread_list:
-		ret = ""
-		# replace threadcnt for each testname <testname>_nthread_<threadcnt>.<shell_ext>
-		newtestname = os.path.basename(testpath).rsplit("_",1)[0]
-                if thread == startthread:
-                        continue
-
-                newtestname += "_" + str(thread) + ext
-                # change value of OMP_NUM_THREAD in loop depending on type of shell
-		if ext == ".bash" or ext == ".sh":
-	                ret = re.sub("export OMP_NUM_THREADS=" + str(startthread), "export OMP_NUM_THREADS=" + str(thread)  ,content)
-		else:
-	                ret = re.sub("setenv OMP_NUM_THREADS " + str(startthread), "setenv OMP_NUM_THREADS " + str(thread)  ,content)
-
-                fd = open(newtestname,'w')
-                fd.write(ret)
-                fd.close()
-                add_test_to_CMakeLists(destdir,subdir,cmakelist,newtestname)
+        add_test_to_CMakeLists(destdir,subdir,cmakelist,newtestname)
 
 def openmp_env_string(shell,threadcnt):
-	""" return environment variable for setting OpenMP threads as a string based on shell type """
-	if shell == "sh" or shell == "bash":
-        	return "export OMP_NUM_THREADS=" +  str(threadcnt) + "\n"
-        elif shell == "csh":
-        	return "setenv OMP_NUM_THREADS " +  str(threadcnt) + "\n"
+    """ return environment variable for setting OpenMP threads as a string based on shell type """
+    if shell == "sh" or shell == "bash":
+        return "export OMP_NUM_THREADS=" +  str(threadcnt) + "\n"
+    elif shell == "csh":
+        return "setenv OMP_NUM_THREADS " +  str(threadcnt) + "\n"

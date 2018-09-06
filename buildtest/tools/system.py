@@ -49,7 +49,7 @@ def check_system_package_installed(pkg):
     if ret.returncode == 0:
         return True
     else:
-        print "Please install system package:", pkg, " before creating YAML file"
+        print ("Please install system package: %s  before creating YAML file",pkg)
         sys.exit(1)
 
 def get_binaries_from_systempackage(pkg):
@@ -88,7 +88,7 @@ def get_binaries_from_systempackage(pkg):
                 binaries[sha256sum] = file
 
     if len(binaries) == 0:
-        print "There are no binaries found in package: ", name
+        print ("There are no binaries found in package: %s", name)
         sys.exit(0)
 
     return binaries
@@ -102,8 +102,9 @@ def systempackage_installed_list():
         cmd = """ rpm -qa --qf "%{NAME}\n" """
 
     ret = subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE)
-    output = ret.communicate()[0]
+    output = str(ret.communicate()[0])
     pkglist = output.split("\n")
+    
     # delete last element which is a ""
     pkglist = pkglist[:-1]
     return pkglist

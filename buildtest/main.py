@@ -192,26 +192,18 @@ def main():
     create_dir(BUILDTEST_LOGDIR)
     create_dir(BUILDTEST_TESTDIR)
 
-    cmd = "env | grep BUILDTEST"
-    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    output = ret.communicate()[0]
-    output = output.split("\n")
-
-    for line in output:
-        logger.debug(line)
-
     get_system_info()
 
     # generate system pkg test
     if bt_opts.system is not None:
         if bt_opts.system == "all":
             systempkg = bt_opts.system
-            logger.info("Generating all system package tests from YAML files in %s", config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'])
+            logger.info("Generating all system package tests from YAML files in ", config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'])
 
             BUILDTEST_LOGDIR = os.path.join(BUILDTEST_LOGDIR,"system","all")
             systempkg_list = os.listdir(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'])
 
-            logger.info("List of system packages to test: %s ", systempkg_list)
+            logger.info("List of system packages to test: ", systempkg_list)
 
             for pkg in systempkg_list:
                 generate_binary_test(bt_opts,pkg)
@@ -222,13 +214,13 @@ def main():
             generate_binary_test(bt_opts,systempkg)
 
         create_dir(BUILDTEST_LOGDIR)
-        logger.warning("Creating directory %s, to write log file", BUILDTEST_LOGDIR)
+        logger.warning("Creating directory %s , to write log file", BUILDTEST_LOGDIR)
 
         destpath = os.path.join(BUILDTEST_LOGDIR,logfile)
         os.rename(logpath, destpath)
         logger.info("Moving log file from %s to %s", logpath, destpath)
 
-        print "Writing Log file to:", destpath
+        print("Writing Log file to: ", destpath)
         sys.exit(0)
 
 	# when -s is specified
@@ -245,7 +237,7 @@ def main():
         tcname = get_toolchain_name()
         tcversion = get_toolchain_version()
 
-        print "Detecting Software: ", os.path.join(appname,appversion)
+        print("Detecting Software: ", os.path.join(appname,appversion))
 
         logger.debug("Generating Test from EB Application")
 
@@ -296,7 +288,7 @@ def main():
         os.rename(logpath, os.path.join(BUILDTEST_LOGDIR,logfile))
         logger.debug("Writing Log file to %s", os.path.join(BUILDTEST_LOGDIR,logfile))
 
-        print "Writing Log file: ", os.path.join(BUILDTEST_LOGDIR,logfile)
+        print ("Writing Log file: ", os.path.join(BUILDTEST_LOGDIR,logfile))
 
 if __name__ == "__main__":
         main()

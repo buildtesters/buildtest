@@ -40,9 +40,9 @@ def scantest():
 
     ebapps_common=  set(applist) & set(eblist_sourcedir)
 
-    print "\n"
-    print "Software Packages that can be tested with buildtest"
-    print "---------------------------------------------------"
+    print ("\n")
+    print ("Software Packages that can be tested with buildtest")
+    print ("---------------------------------------------------")
 
     software_test_list = []
     for x in ebapps_common:
@@ -57,7 +57,7 @@ def scantest():
 
     software_test_list.sort()
     for x in software_test_list:
-        print x
+        print (x)
 
 
 
@@ -65,9 +65,9 @@ def scantest():
 
     system_test_list = []
 
-    print "\n"
-    print "System Packages that can be tested with buildtest"
-    print "---------------------------------------------------"
+    print ("\n")
+    print ("System Packages that can be tested with buildtest")
+    print ("---------------------------------------------------")
 
     for pkg in syspkg_sourcedir:
         cmd = "rpm -q " + pkg
@@ -81,5 +81,5 @@ def scantest():
 
     system_test_list.sort()
     for x in system_test_list:
-        print x        
+        print (x)
     sys.exit(0)
