@@ -1,4 +1,4 @@
-BUILDTEST_MODULE_NAMING_SCHEME: HMNS
+BUILDTEST_MODULE_NAMING_SCHEME: FNS
 BUILDTEST_IGNORE_EASYBUILD: "False"
 BUILDTEST_CLEAN_BUILD: False
 BUILDTEST_ENABLE_JOB: False
@@ -6,8 +6,8 @@ BUILDTEST_SHELL: sh
 BUILDTEST_JOB_TEMPLATE: template/job.slurm
 
 BUILDTEST_MODULE_ROOT:
-     - /nfs/grid/software/easybuild/2018/IvyBridge/redhat/7.3/all
-#     - /nfs/grid/software/easybuild/2018/Haswell/redhat/7.3/all
+#     - /nfs/grid/software/easybuild/2018/IvyBridge/redhat/7.3/all
+     - /nfs/grid/software/easybuild/2018/Haswell/redhat/7.3/all
 #    - /nfs/grid/software/RHEL7/easybuild/modules/all/
 #    - /nfs/grid/software/RHEL7/non-easybuild/modules/all
     

@@ -34,7 +34,6 @@ from buildtest.tools.config import logID, config_opts
 
 def init_log():
 
-
     logfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
     BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
 
@@ -43,8 +42,8 @@ def init_log():
 	# if log directory is not created do it automatically. Typically first run in buildtest will
 	# after git clone will run into this condition
     if not os.path.exists(BUILDTEST_LOGDIR):
-        os.makedirs(BUILDTEST_LOGDIR,0755)
-        print "Creating Log directory: ", BUILDTEST_LOGDIR
+        os.makedirs(BUILDTEST_LOGDIR)
+        print ("Creating Log directory: %s", BUILDTEST_LOGDIR)
 
     #logging.basicConfig(filename=logfile)
     logger = logging.getLogger(logID)
@@ -61,4 +60,4 @@ def clean_logs():
     BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
     if os.path.exists(BUILDTEST_LOGDIR):
         shutil.rmtree(BUILDTEST_LOGDIR)
-        print "Removing log directory", BUILDTEST_LOGDIR
+        print ("Removing log directory %s", BUILDTEST_LOGDIR)

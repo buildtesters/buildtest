@@ -67,7 +67,7 @@ def check_perl_package(perl_module):
     ret.communicate()
     ret_code = ret.returncode
     if ret_code != 0:
-        print perl_module, "is not installed in software", os.path.join(appname,appver)
+        print (perl_module, " is not installed in software ", os.path.join(appname,appver))
         sys.exit(1)
 
 def build_perl_package_test(perl_package):
@@ -89,7 +89,7 @@ def build_perl_package_test(perl_package):
     logger = logging.getLogger(logID)
 
     if appname.lower() != "perl":
-        print "ERROR: software module does not appear to be Perl module "
+        print ("ERROR: software module does not appear to be Perl module ")
         sys.exit(1)
 
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
@@ -136,4 +136,4 @@ def build_perl_package_test(perl_package):
             if BUILDTEST_ENABLE_JOB:
                 generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE,dummy_array)
 
-        print "Generating ", count, "tests for ", os.path.basename(root)
+        print ("Generating", count, " tests for ", os.path.basename(root))

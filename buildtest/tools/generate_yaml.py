@@ -43,7 +43,7 @@ def create_system_yaml(name):
 
     # if yaml file exists then exit out
     if os.path.isfile(yamlfile):
-        print "YAML file already exists, please check: ", yamlfile
+        print ("YAML file already exists, please check: %s ", yamlfile)
         sys.exit(0)
 
     # if directory is not present then create it
@@ -63,7 +63,7 @@ def create_system_yaml(name):
     with open(yamlfile, 'a') as outfile:
         yaml.dump(binarydict, outfile, default_flow_style=False)
 
-    print "Please check YAML file", yamlfile, " and fix test accordingly"
+    print ("Please check YAML file %s and fix test accordingly", yamlfile)
     sys.exit(0)
 
 def create_software_yaml(module_name):
@@ -89,7 +89,7 @@ def create_software_yaml(module_name):
     yamlfile = os.path.join(destdir,"command.yaml")
     # if yaml file exists then exit out
     if os.path.isfile(yamlfile):
-        print "YAML file already exists, please check: ", yamlfile
+        print ("YAML file already exists, please check: %s ", yamlfile)
         sys.exit(0)
 
     # if directory is not present then create it
@@ -103,5 +103,5 @@ def create_software_yaml(module_name):
     with open(yamlfile, 'a') as outfile:
         yaml.dump(binarydict, outfile, default_flow_style=False)
 
-    print "Please check YAML file", yamlfile, " and fix test accordingly"
+    print ("Please check YAML file %s and fix test accordingly", yamlfile)
     sys.exit(0)

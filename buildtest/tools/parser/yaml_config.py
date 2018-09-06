@@ -82,81 +82,78 @@ yaml_keys = {
 
 
 def show_yaml_keys():
-    print '{:>20}'.format("Key"), "\t \t ", '{:<20}'.format("Description")
-    print '{:>20}'.format("--------------------------------------------------------------------------------")
+    print ('{:>20}'.format("Key"), "\t \t ", '{:<20}'.format("Description"))
+    print ('{:>20}'.format("--------------------------------------------------------------------------------"))
     for key in sorted(yaml_keys):
-        print  '{:>20}'.format(key), "\t \t ", '{:.<40}'.format(textwrap.fill(yaml_keys[key],120))
+        print  ('{:>20}'.format(key), "\t \t ", '{:.<40}'.format(textwrap.fill(yaml_keys[key],120)))
     sys.exit(1)
 
 def parse_config(filename,codedir):
-	"""
-	read config file and verify the key-value content with dictionary field
-	"""
-        fd=open(filename,'r')
-	content=yaml.load(fd)
-	# iterate over dictionary to seek any invalid keys
-	for key in content:
-		if key not in field:
-			print "ERROR: invalid key", key
-			sys.exit(1)
-		# key-value name must match the yaml file name, but strip out .yaml extension for comparison
-		if key == "name":
-			strip_ext=os.path.splitext(filename)[0]
-        	        # get name of file only for comparison with key value "name"
-                	testname=os.path.basename(strip_ext)
-                	if content[key] != testname:
-                        	print "Invalid value for key: ",key,":",content[key],". Value should be:", testname
-				sys.exit(1)
-		if key == "mpi":
-			if content[key] != "enabled":
-				print "Error processing YAML file: ", filename
-				print """ "mpi" key must take value "enabled" """
-				sys.exit(1)
-		# source must match a valid file name
-		if key == "source" or key == "inputfile":
-	                codefile=os.path.join(codedir,content[key])
-        	        if not os.path.exists(codefile):
-                	        print "Can't find source file: ",codefile, ". Verify source file in directory:", codedir
-				sys.exit(1)
-		# checking for invalid scheduler option
-		if key == "scheduler":
-			if content[key] not in field["scheduler"]:
-				print "Invalid scheduler option: ", key, " Please select on of the following:" , field["scheduler"]
-				sys.exit(1)
-		if key == "nproc" or key == "iter" or key =="jobslots":
-			# checking whether value of nproc and iter is integer
-			if not str(content[key]).isdigit():
-				print key + " key must be an integer value"
-				sys.exit(1)
-			# checking whether key is negative or zero
-			else:
-				if int(content[key]) <= 0:
-					print key + " must be greater than 0"
-					sys.exit(1)
-		if key == "procrange" or key == "threadrange":
-			# format procrange: 2,10,3
-			if len(content[key].split(",")) != 3:
-				print "Error processing YAML file: ", filename
-				print "Format expected: <start>,<end>,<interval> i.e 4,40,10"
-				sys.exit(1)
+    """
+    read config file and verify the key-value content with dictionary field
+    """
+    fd=open(filename,'r')
+    content=yaml.load(fd)
+    # iterate over dictionary to seek any invalid keys
+    for key in content:
+        if key not in field:
+            print ("ERROR: invalid key %s", key)
+            sys.exit(1)
+        # key-value name must match the yaml file name, but strip out .yaml extension for comparison
+        if key == "name":
+            strip_ext=os.path.splitext(filename)[0]
+            # get name of file only for comparison with key value "name"
+            testname=os.path.basename(strip_ext)
+            if content[key] != testname:
+                print ("Invalid value for key: %s : %s,  Value should be:", key, content[key], testname)
+                sys.exit(1)
+        if key == "mpi":
+            if content[key] != "enabled":
+                print("Error processing YAML file: %s", filename)
+                print (""" "mpi" key must take value "enabled" """)
+                sys.exit(1)
+        # source must match a valid file name
+        if key == "source" or key == "inputfile":
+            codefile=os.path.join(codedir,content[key])
+            if not os.path.exists(codefile):
+                print ("Can't find source file: %s . Verify source file in directory: %s", codefile, codedir)
+                sys.exit(1)
+        # checking for invalid scheduler option
+        if key == "scheduler":
+            if content[key] not in field["scheduler"]:
+                print ("Invalid scheduler option: %s. Please select on of the following:" , key,  field["scheduler"])
+                sys.exit(1)
+        if key == "nproc" or key == "iter" or key =="jobslots":
+            # checking whether value of nproc and iter is integer
+            if not str(content[key]).isdigit():
+                print ("%s key must be an integer value",key)
+                sys.exit(1)
+                # checking whether key is negative or zero
+            else:
+                if int(content[key]) <= 0:
+                    print ("%s must be greater than 0", key)
+            sys.exit(1)
+        if key == "procrange" or key == "threadrange":
+            # format procrange: 2,10,3
+            if len(content[key].split(",")) != 3:
+                print ("Error processing YAML file: %s", filename)
+                print ("Format expected: <start>,<end>,<interval> i.e 4,40,10")
+                sys.exit(1)
 
-			startproc = content[key].split(",")[0]
-			endproc = content[key].split(",")[1]
-			procinterval = content[key].split(",")[2]
-			if not startproc.isdigit():
-				print "Error in ", filename, " expecting integer but found",  startproc
-				sys.exit(1)
+            startproc = content[key].split(",")[0]
+            endproc = content[key].split(",")[1]
+            procinterval = content[key].split(",")[2]
+            if not startproc.isdigit():
+                print ("Error in %s expecting integer but found %s", filename, startproc)
+                sys.exit(1)
 
-			if not endproc.isdigit():
-				print "Error in ", filename, " expecting integer but found",  endproc
-				sys.exit(1)
+            if not endproc.isdigit():
+                print ("Error in %s expecting integer but found %s",  filename, endproc)
+                sys.exit(1)
 
-			if not procinterval.isdigit():
-				print "Error in ", filename, " expecting integer but found",  procinterval
-				sys.exit(1)
+            if not procinterval.isdigit():
+                print ("Error in %s  expecting integer but found %s", filename, procinterval)
+                sys.exit(1)
 
-
-
-
-	fd.close()
-	return content
+    fd.close()
+    return content

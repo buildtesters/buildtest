@@ -31,19 +31,19 @@ import shutil
 from buildtest.tools.config import config_opts
 
 def add_arg_to_runcmd(runcmd,arglist):
-        # add each argument to runcmd
-        for arg in arglist:
-        # skip argument if value is not specified, by default set to None
-                if arg == None:
-                        continue
-                # in case argument is not a string, convert it anyways
-                runcmd+= " " + str(arg)
-        return runcmd
+    # add each argument to runcmd
+    for arg in arglist:
+    # skip argument if value is not specified, by default set to None
+        if arg == None:
+            continue
+        # in case argument is not a string, convert it anyways
+        runcmd+= " " + str(arg)
+    return runcmd
 
 def clean_tests():
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
     if os.path.exists(BUILDTEST_TESTDIR):
         shutil.rmtree(BUILDTEST_TESTDIR)
-        print "Removing test directory ", BUILDTEST_TESTDIR
+        print ("Removing test directory ", BUILDTEST_TESTDIR)
     else:
-        print "BUILDTEST_TESTDIR directory does not exist, nothing to remove"
+        print ("BUILDTEST_TESTDIR directory does not exist, nothing to remove")

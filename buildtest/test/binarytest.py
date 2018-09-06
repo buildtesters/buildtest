@@ -60,8 +60,8 @@ def generate_binary_test(args_dict,pkg):
         toplevel_cmakelist_file=os.path.join(os.path.dirname(BUILDTEST_TESTDIR),"CMakeLists.txt")
         testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
 
-    	software = args_dict.software
-    	system = args_dict.system
+        software = args_dict.software
+        system = args_dict.system
 
         BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 
@@ -126,9 +126,9 @@ def process_binary_file(filename,args_dict,test_type,pkg):
     BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
     BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
     subdir = ""
-    print "--------------------------------------------"
-    print "[STAGE 1]: Building Binary Tests"
-    print "--------------------------------------------"
+    print ("--------------------------------------------")
+    print ("[STAGE 1]: Building Binary Tests")
+    print ("--------------------------------------------")
     if test_type == "software":
 
         name = get_appname()
@@ -138,19 +138,19 @@ def process_binary_file(filename,args_dict,test_type,pkg):
 
         test_destdir,test_destdir_cmakelist = setup_software_cmake()
 
-        print "Detecting Test Type: Software"
+        print ("Detecting Test Type: Software")
         #print "[BINARYTEST]: Processing YAML file for ", os.path.join(name,version), os.path.join(toolchain_name,toolchain_version), " at ", filename
        # load preamble for test-script that initializes environment.
         header=load_modules(BUILDTEST_SHELL)
 
     else:
         system=args_dict.system
-        print "Detecting Test Type: System Package"
+        print ("Detecting Test Type: System Package")
         #print "[BINARYTEST]: Processing YAML file for ", pkg , " at ", filename
         test_destdir,test_destdir_cmakelist = setup_system_cmake(pkg)
 
 
-    print "Processing Binary YAML configuration: ", filename.rstrip()
+    print ("Processing Binary YAML configuration: ", filename.rstrip())
 
     logger.info("Reading File: %s", filename)
     fd=open(filename,'r')
@@ -159,7 +159,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
     # if key binaries is not in yaml file, exit program
     if "binaries" not in content:
             logger.error("Can't find key: binaries in file %s", filename)
-            print "Can't find key: binaries in file %s", filename
+            print ("Can't find key: binaries in file %s", filename)
             sys.exit(1)
 
     # create a binary test script for each key,value item in dictionary
@@ -222,9 +222,10 @@ def process_binary_file(filename,args_dict,test_type,pkg):
     fd.close()
 
     print
-    if test_type == "system":
-        print "Generating " + str(count) + " binary tests"
-    else:
-        print "Generating " + str(count) + " binary tests"
+    #if test_type == "system":
+    #    print ("Generating ", count, " binary tests")
+    #else:
+    #    print ("Generating ", count, " binary tests")
 
-    print "Binary Tests are written in " + test_destdir
+    print ("Generating ", count, " binary tests")
+    print ("Binary Tests are written in ", test_destdir)

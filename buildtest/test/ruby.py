@@ -68,7 +68,7 @@ def check_ruby_package(Ruby_gem):
     ret.communicate()
     ret_code = ret.returncode
     if ret_code != 0:
-        print Ruby_gem, "is not installed in software", os.path.join(appname,appver)
+        print ( Ruby_gem, " is not installed in software ", os.path.join(appname,appver))
         sys.exit(1)
 
 def build_ruby_package_test(ruby_package):
@@ -90,7 +90,7 @@ def build_ruby_package_test(ruby_package):
     logger = logging.getLogger(logID)
 
     if appname.lower() != "ruby":
-        print "ERROR: software module does not appear to be Ruby module "
+        print ("ERROR: software module does not appear to be Ruby module ")
         sys.exit(1)
 
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
@@ -137,4 +137,4 @@ def build_ruby_package_test(ruby_package):
             if BUILDTEST_ENABLE_JOB:
                 generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE,dummy_array)
 
-        print "Generating ", count, "tests for ", os.path.basename(root)
+        print ("Generating ", count, " tests for ", os.path.basename(root))

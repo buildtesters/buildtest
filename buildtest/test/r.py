@@ -72,7 +72,7 @@ def check_R_library(R_lib):
     ret.communicate()
     ret_code = ret.returncode
     if ret_code != 0:
-        print R_lib, "is not installed in software", os.path.join(appname,appver)
+        print (R_lib, " is not installed in software ", os.path.join(appname,appver))
         sys.exit(1)
 
 def build_r_package_test(r_lib):
@@ -93,7 +93,7 @@ def build_r_package_test(r_lib):
     logger = logging.getLogger(logID)
 
     if appname.lower() != "r":
-        print "ERROR: software module does not appear to be R module "
+        print ("ERROR: software module does not appear to be R module ")
         sys.exit(1)
 
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
@@ -140,4 +140,4 @@ def build_r_package_test(r_lib):
             if BUILDTEST_ENABLE_JOB:
                 generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE,dummy_array)
 
-        print "Generating ", count, "tests for ", os.path.basename(root)
+        print ("Generating", count, " tests for ", os.path.basename(root))

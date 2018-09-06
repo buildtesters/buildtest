@@ -49,15 +49,15 @@ def systempkg_menu(systempkg):
         ||  ID    ||    System Package         ||
         =========================================   """
 
-        print text
+        print (text)
         count = 0
         for i in dirs:
-            print ("\t||").expandtabs(8) +  ("\t" + str(count)+"\t||").expandtabs(3), "\t".expandtabs(4) + (i + "\t||").expandtabs(24)
+            print (("\t||").expandtabs(8) +  ("\t" + str(count)+"\t||").expandtabs(3), "\t".expandtabs(4) + (i + "\t||").expandtabs(24))
             count = count + 1
 
-    	print "\
-	     ========================================== \
-"
+        print ("\
+            ========================================== \
+            ")
 
 
         text = """
@@ -71,7 +71,7 @@ def systempkg_menu(systempkg):
 
 		User Input: """
 
-        userinput = raw_input(text)
+        userinput = input(text)
 
         if userinput.lower() == "m":
             runtest_menu()
@@ -80,7 +80,7 @@ def systempkg_menu(systempkg):
 
         # check if user prompt is not integer, report error
         if not userinput.isdigit():
-            print "Invalid format for user input, please type a number"
+            print ("Invalid format for user input, please type a number")
             time.sleep(1)
             continue
 
@@ -88,10 +88,10 @@ def systempkg_menu(systempkg):
         if userinput >= 0 and userinput < count:
             break
         else:
-			print "Invalid entry, please try again"
-			time.sleep(1.0)
+            print ("Invalid entry, please try again")
+            time.sleep(1.0)
 
-    print "Selecting Package: " + dirs[userinput]
+    print ("Selecting Package: %s", dirs[userinput])
     systempkg_test_menu(systempkg, dirs[userinput])
 
 def systempkg_test_menu(systempkgpath, pkg_name):
@@ -120,19 +120,19 @@ def systempkg_test_menu(systempkgpath, pkg_name):
         os.system("clear")
         count = 0
         print
-        print ("\t" + "System Package: ").expandtabs(40), pkg_name
+        print (("\t" + "System Package: ").expandtabs(40), pkg_name)
         print
-        print """
+        print ("""
         ------------------------------------------------------------------------------
         |    ID   |                          TEST NAME			                      |
-        ------------------------------------------------------------------------------	"""
+        ------------------------------------------------------------------------------	""")
 
         for name in test_list:
-        	print "\t|".expandtabs(16),(str(count)+"\t|").expandtabs(8), (name + "\t| ").expandtabs(65)
+        	print ("\t|".expandtabs(16),(str(count)+"\t|").expandtabs(8), (name + "\t| ").expandtabs(65))
         	count = count + 1
         testcount = count
-        print "\
-        ------------------------------------------------------------------------------ "
+        print ("\
+        ------------------------------------------------------------------------------ ")
 
         userinput = userprompt()
 
@@ -158,8 +158,8 @@ def systempkg_test_menu(systempkgpath, pkg_name):
         	passrate = float(passed_test) * 100.0 / float(total_tests)
         	failrate = float(failed_test) * 100.0 / float(total_tests)
 
-        	print passrate, "% of tests passed -  ", passed_test, "/", total_tests
-        	print failrate, "% of tests failed - " , failed_test, "/", total_tests
+        	print (passrate, "% of tests passed - ", passed_test, "/", total_tests)
+        	print (failrate, "% of tests failed - ", failed_test, "/", total_tests)
 
 
         	time.sleep(3)
@@ -167,7 +167,7 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 
         # check if user prompt is not integer, report error
         if not userinput.isdigit():
-            print "Invalid format for user input, please type a number"
+            print ("Invalid format for user input, please type a number")
             time.sleep(1)
             continue
 
@@ -176,11 +176,11 @@ def systempkg_test_menu(systempkgpath, pkg_name):
 
         if userinput >= 0 and userinput < testcount:
         	output = launch_test(test_directory,files_as_list[userinput])[0]
-        	print output
+        	print (output)
 
         	time.sleep(3)
         else:
-        	print "Invalid Entry, please try again."
+        	print ("Invalid Entry, please try again.")
         	time.sleep(1.0)
 
 
@@ -258,16 +258,15 @@ def eb_menu(ebpkg):
                 ------------------------------------------------------------------
                 |  ID   |  Application               |  Toolchain                |
                 ------------------------------------------------------------------ """
-        print text
+        print (text)
 
-        for i in xrange(len(app_tc_set)):
-            	app = app_tc_set[i].split(",")[0]
-                toolchain = app_tc_set[i].split(",")[1]
+        for i in range(len(app_tc_set)):
+            app = app_tc_set[i].split(",")[0]
+            toolchain = app_tc_set[i].split(",")[1]
+            print ("\t|  ".expandtabs(16), (str(i)+"\t|  ").expandtabs(4), (app+"\t| ").expandtabs(25),(toolchain + "\t|").expandtabs(25))
 
-                print "\t|  ".expandtabs(16), (str(i)+"\t|  ").expandtabs(4), (app+"\t| ").expandtabs(25),(toolchain + "\t|").expandtabs(25)
-
-        print """\
-            ------------------------------------------------------------------ """
+        print ("""\
+            ------------------------------------------------------------------ """)
 
 
 
@@ -282,33 +281,33 @@ def eb_menu(ebpkg):
 
         User Input: """
 
-        userinput = raw_input(text)
+        userinput = input(text)
 
         if userinput.lower() == "m":
             runtest_menu()
         elif userinput.lower() == "e":
             sys.exit(0)
 
-    	# check if user prompt is not integer, report error
-    	if not userinput.isdigit():
-    		print "Invalid format for user input, please type a number"
-    		time.sleep(1)
-    		continue
+        # check if user prompt is not integer, report error
+        if not userinput.isdigit():
+            print ("Invalid format for user input, please type a number")
+            time.sleep(1)
+            continue
 
-    	# force input to be int for checking with Test ID
-    	userinput = int(userinput)
+        # force input to be int for checking with Test ID
+        userinput = int(userinput)
 
-    	if userinput >= 0 and userinput < len(app_tc_set):
-    		break;
-    	else:
-    		print "Invalid entry, please try again"
-    		time.sleep(1)
+        if userinput >= 0 and userinput < len(app_tc_set):
+            break;
+        else:
+            print ("Invalid entry, please try again")
+            time.sleep(1)
 
 
     app_selected = app_tc_set[userinput].split(",")[0]
     toolchain_selected = app_tc_set[userinput].split(",")[1]
 
-    print "Selected  APP: ", app_selected, " TOOLCHAIN: ",  toolchain_selected
+    print (" Application:", app_selected, "  Toolchain: ", toolchain_selected)
 
     os.system("clear")
 
@@ -331,18 +330,18 @@ def eb_menu(ebpkg):
     while True:
 
         print
-        print "Tests for Application: ", app_selected, " Toolchain: ", toolchain_selected
-        print """
+        print ("Tests for Application: ", app_selected, "  Toolchain: ", toolchain_selected)
+        print ("""
 	       ---------------------------------------------------------------------------------------------------------------------------------------------------
            |  ID    |  TEST NAME                                                                                                                             |
-	       --------------------------------------------------------------------------------------------------------------------------------------------------- """
+	       --------------------------------------------------------------------------------------------------------------------------------------------------- """)
 
-        for x in xrange(len(output_list)):
-        	print "\t|  ".expandtabs(8), (str(x) + "\t|").expandtabs(5), (output_list[x]+"\t|").expandtabs(45)
+        for x in range(len(output_list)):
+        	print ("\t|  ".expandtabs(8), (str(x) + "\t|").expandtabs(5), (output_list[x]+"\t|").expandtabs(45))
 
 
-        print """\
-           ---------------------------------------------------------------------------------------------------------------------------------------------------- """
+        print ("""\
+           ---------------------------------------------------------------------------------------------------------------------------------------------------- """)
         userinput = userprompt()
 
 
@@ -356,7 +355,7 @@ def eb_menu(ebpkg):
         elif userinput.lower() == "a":
         	total_pass = 0
         	total_fail = 0
-        	for i in xrange(len(output_list)):
+        	for i in range(len(output_list)):
         		(output,passtest,failtest) = launch_test(os.path.dirname(output_list[i]),output_list[i])
         		total_pass = total_pass + passtest
         		total_fail = total_fail + failtest
@@ -366,17 +365,17 @@ def eb_menu(ebpkg):
         	passrate = float(total_pass) * 100.0 / float(total_test)
         	failrate = float(total_fail) * 100.0 / float(total_test)
         	print
-        	print "---------------------------------------------------------"
-        	print "Results:"
-        	print "---------------------------------------------------------"
-        	print "PASS RATE: ", passrate, "% with ", total_pass, "/", total_test
-        	print "FAIL RATE: ", failrate, "% with ", total_fail, "/", total_test
+        	print( "---------------------------------------------------------")
+        	print( "Results:")
+        	print ("---------------------------------------------------------")
+        	print ("PASS RATE: ", passrate, "% with ", total_pass, "/", total_test)
+        	print ("FAIL RATE: ", failrate, "% with ", total_fail, "/", total_test)
 
         	time.sleep(3)
         	continue
 
         if not userinput.isdigit():
-            print "Invalid format for user input, please type a number"
+            print ("Invalid format for user input, please type a number")
             time.sleep(1)
             continue
 
@@ -384,34 +383,34 @@ def eb_menu(ebpkg):
 
         if userinput >= 0 and userinput < len(output_list):
         	outputmsg = launch_test(os.path.dirname(output_list[userinput]),output_list[userinput])[0]
-        	print outputmsg
+        	print (outputmsg)
         	time.sleep(3)
 
         else:
-        	print "Invalid entry, please try again"
+        	print ("Invalid entry, please try again")
 
 
 def launch_test(testdir,test):
-     os.chdir(testdir)
-     #args_dict = buildtest_menu().parse_args()
+    os.chdir(testdir)
+    #args_dict = buildtest_menu().parse_args()
 
-     shell_type = os.path.splitext(test)[1]
-     # remove leading .
-     shell_type = shell_type[1:]
+    shell_type = os.path.splitext(test)[1]
+    # remove leading .
+    shell_type = shell_type[1:]
 
-     cmd = "time " + shell_type + " " + test
-     ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-     (output,errormsg) = ret.communicate()
-     ec = ret.returncode
-     test_pass = 0
-     test_fail = 0
-     if ec == 0:
-            test_pass = 1
-            print "TEST ", test, " PASSED"
-     else:
-            test_fail = 1
-     	    print "TEST ", test, " FAILED"
-     return output, test_pass, test_fail
+    cmd = "time " + shell_type + " " + test
+    ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    (output,errormsg) = ret.communicate()
+    ec = ret.returncode
+    test_pass = 0
+    test_fail = 0
+    if ec == 0:
+        test_pass = 1
+        print ("TEST ", test, " PASSED")
+    else:
+        test_fail = 1
+        print ("TEST ", test, " FAILED")
+    return output, test_pass, test_fail
 
 
 def userprompt():
@@ -432,7 +431,7 @@ def userprompt():
                 User Input: """
 
 
-    userinput = raw_input(text)
+    userinput = input(text)
     return userinput
 
 def runtest_menu():
@@ -475,13 +474,13 @@ def runtest_menu():
 
 
     while True:
-    	userinput = raw_input(text)
+    	userinput = input(text)
 
     	if userinput.lower() == "e":
     		sys.exit(0)
 
     	if not userinput.isdigit():
-    		print "Invalid format for user input, please type a number"
+    		print ("Invalid format for user input, please type a number")
     		time.sleep(1)
     		continue
 
@@ -493,4 +492,4 @@ def runtest_menu():
     	elif userinput == 2:
     		eb_menu(software_testdir)
     	else:
-    		print "Invalid Entry, please try again"
+    		print ("Invalid Entry, please try again")

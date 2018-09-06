@@ -41,56 +41,56 @@ from buildtest.tools.utility import sset
 
 
 def get_unique_software():
-        """
-        returns a set of software packages found in the module tree
-        """
-        modtrees = get_module_root()
-        logger = logging.getLogger(logID)
+    """
+    returns a set of software packages found in the module tree
+    """
+    modtrees = get_module_root()
+    logger = logging.getLogger(logID)
 
-        logger.info("Traversing Module Tree: %s to find all unique software", modtrees)
+    logger.info("Traversing Module Tree: %s to find all unique software", modtrees)
 
-        #moduletreelist=moduletrees.split(":")
-        module_set=set()
-        #for moduletree in moduletreelist:
-        modulelist=get_module_list()
+    #moduletreelist=moduletrees.split(":")
+    module_set=set()
+    #for moduletree in moduletreelist:
+    modulelist=get_module_list()
 
-	# extract module name and add to module set
-        for module in modulelist:
-        	# extract the module name from filepath
-                modulename=os.path.basename(os.path.dirname(module))
-                module_set.add(modulename)
+    # extract module name and add to module set
+    for module in modulelist:
+	    # extract the module name from filepath
+        modulename=os.path.basename(os.path.dirname(module))
+        module_set.add(modulename)
 
-        logger.info("List of modules found:")
-        logger.info("----------------------------------------")
-        logger.info("Software = %s", list(module_set))
-        return sorted(module_set)
+    logger.info("List of modules found:")
+    logger.info("----------------------------------------")
+    logger.info("Software = %s", list(module_set))
+    return sorted(module_set)
 
 
 def get_software_stack():
-        """
-        returns a set of software-version collection found in module files. Duplicates are
-        ignored for instance, same package version is built with two different toolchains
-        """
-        moduleversion_set=set()
-        modulelist=get_module_list()
+    """
+    returns a set of software-version collection found in module files. Duplicates are
+    ignored for instance, same package version is built with two different toolchains
+    """
+    moduleversion_set=set()
+    modulelist=get_module_list()
 
-        for module in modulelist:
-                # extract the module name and version from the file path returned from find
-                modulename = os.path.basename(os.path.dirname(module))
-                version=os.path.basename(module)
+    for module in modulelist:
+        # extract the module name and version from the file path returned from find
+        modulename = os.path.basename(os.path.dirname(module))
+        version=os.path.basename(module)
 
-		ext = os.path.splitext(version)[1]
-                # skip .version files
-                if ext == ".version":
-                        continue
+        ext = os.path.splitext(version)[1]
+        # skip .version files
+        if ext == ".version":
+            continue
 
-                # if modulefile is lua extension then strip extension from version
-                if ext == ".lua":
-                        version=os.path.splitext(version)[0]
+        # if modulefile is lua extension then strip extension from version
+        if ext == ".lua":
+            version=os.path.splitext(version)[0]
 
-                moduleversion_set.add(modulename+"/"+version)
+        moduleversion_set.add(modulename+"/"+version)
 
-        return sorted(moduleversion_set)
+    return sorted(moduleversion_set)
 
 def get_toolchain_stack():
 	""" return a list of toolchain used as choices for -t option in
@@ -112,42 +112,41 @@ def get_toolchain_stack():
 
 
 def software_version_relation():
-        """
-        relationship between software name and version. The function will return a
-        dictionary with key values as software name and values will be a set of version
-        """
-        modulelist=get_module_list()
+    """
+    relationship between software name and version. The function will return a
+    dictionary with key values as software name and values will be a set of version
+    """
+    modulelist=get_module_list()
 
-        module_set=get_unique_software()
+    module_set=get_unique_software()
 
-        # dictionary used for keeping a relationship between software name and its corresponding versions found as modulefiles
-        module_dict = {}
-
-
-        # for every app iterate over module tree and add unique version in set, then add this to a dictionary. That way
-        # a dictionary can reference via key,value where key is application name and value is the list of versions
-        for item in  module_set:
-                version_set = set()
-                for app in modulelist:
-                        #logger.debug("ModuleFile: %s", app)
-                        name = os.path.basename(os.path.dirname(app))
-
-                        if item != name:
-                                continue
+    # dictionary used for keeping a relationship between software name and its corresponding versions found as modulefiles
+    module_dict = {}
 
 
-                        version = os.path.basename(app)
-                        ext = os.path.splitext(version)[1]
-                        # only strip extension if .lua is found, otherwise add version as is
-                        if ext == "lua":
-                            version = os.path.splitext(version)[0]
+    # for every app iterate over module tree and add unique version in set, then add this to a dictionary. That way
+    # a dictionary can reference via key,value where key is application name and value is the list of versions
+    for item in  module_set:
+        version_set = set()
+        for app in modulelist:
+            #logger.debug("ModuleFile: %s", app)
+            name = os.path.basename(os.path.dirname(app))
 
-                        # only add module version to set when module name is found in tree
-                        version_set.add(version + " (" + app +")")
+            if item != name:
+                continue
 
-                module_dict[item] = version_set
+            version = os.path.basename(app)
+            ext = os.path.splitext(version)[1]
+            # only strip extension if .lua is found, otherwise add version as is
+            if ext == "lua":
+                version = os.path.splitext(version)[0]
 
-        return module_dict
+            # only add module version to set when module name is found in tree
+            version_set.add(version + " (" + app +")")
+
+        module_dict[item] = version_set
+
+    return module_dict
 
 def ebyaml_choices():
     """return a list of software packages for which you can generate yaml configuration for binary testing"""
@@ -192,7 +191,7 @@ def get_binaries_from_application(module):
             path_list.append(line[start_index:end_index])
 
     if len(path_list)  ==  0:
-        print "No $PATH set in your module " + module + " so no possible binaries can be found"
+        print ("No $PATH set in your module %s so no possible binaries can be found",module)
         sys.exit(0)
 
     binaries = {}
