@@ -175,8 +175,8 @@ def get_binaries_from_application(module):
     cmd = "module show " + module
 
     ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    output = ret.communicate()[1]
-    path_str = """prepend_path("PATH","""
+    output = ret.communicate()[1].decode("utf-8")
+    path_str = "prepend_path(\"PATH\","
 
     path_list = []
     for line in output.splitlines():
@@ -208,7 +208,7 @@ def get_binaries_from_application(module):
             # only add files that are executable
 
             ret = subprocess.Popen("sha256sum " + executable_filepath, shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-            output = ret.communicate()[0]
+            output = ret.communicate()[0].decode("utf-8")
             sha256sum = output.split(" ")[0]
 
 

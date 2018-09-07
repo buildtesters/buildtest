@@ -59,7 +59,7 @@ class buildtest_menu():
         yaml_apps = ebyaml_choices()
         software_list = get_software_stack()
         toolchain_list = get_toolchain_stack()
-
+        
         def __init__(self):
         # reports an error, issue with import
         #software_list = get_unique_software_version(BUILDTEST_MODULE_EBROOT)

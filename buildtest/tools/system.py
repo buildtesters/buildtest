@@ -62,7 +62,7 @@ def get_binaries_from_systempackage(pkg):
         cmd = "rpm -ql " + pkg
 
     ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-    (output,err) = ret.communicate()
+    output = ret.communicate()[0].decode("utf-8")
 
     temp = output.splitlines()
     output = temp
@@ -77,8 +77,9 @@ def get_binaries_from_systempackage(pkg):
         # check only files that are executable
         statmode = os.stat(file)[stat.ST_MODE] & (stat.S_IXUSR|stat.S_IXGRP|stat.S_IXOTH)
 
-        ret = subprocess.Popen("sha256sum " + file, shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-        output = ret.communicate()[0]
+        ret = subprocess.Popen("sha256sum " + file, shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)        
+        output = ret.communicate()[0].decode("utf-8")
+
         sha256sum = output.split(" ")[0]
 
         # only add executable files found in array bindirs
@@ -102,9 +103,9 @@ def systempackage_installed_list():
         cmd = """ rpm -qa --qf "%{NAME}\n" """
 
     ret = subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE)
-    output = str(ret.communicate()[0])
+    output = ret.communicate()[0].decode("utf-8")
     pkglist = output.split("\n")
-    
+
     # delete last element which is a ""
     pkglist = pkglist[:-1]
     return pkglist
