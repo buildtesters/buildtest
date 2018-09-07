@@ -1,0 +1,5 @@
+binaries:
+- /usr/bin/at -V
+- which /usr/bin/batch
+- which /usr/sbin/atd
+- which /usr/sbin/atrun

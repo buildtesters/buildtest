@@ -30,7 +30,7 @@ from setuptools import setup,find_packages
 
 setup(
       name='buildtest-configs',
-      version='0.2.2',
+      version='0.4.0',
       description="""Test configuration for buildtest-framework""",
       long_description=open('README.rst').read(),
       url='https://github.com/HPC-buildtest/buildtest-configs',
@@ -50,5 +50,5 @@ setup(
       platforms = "Linux",
       packages=find_packages(),
       include_package_data=True,
-      install_requires = [ 'buildtest-framework==0.2.2' ],
+      install_requires = [ 'buildtest-framework==0.4.0' ],
       )
