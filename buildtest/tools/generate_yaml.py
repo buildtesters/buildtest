@@ -43,7 +43,7 @@ def create_system_yaml(name):
 
     # if yaml file exists then exit out
     if os.path.isfile(yamlfile):
-        print ("YAML file already exists, please check: %s ", yamlfile)
+        print ("YAML file already exists, please check: ", yamlfile)
         sys.exit(0)
 
     # if directory is not present then create it
@@ -56,14 +56,14 @@ def create_system_yaml(name):
     binary = get_binaries_from_systempackage(name)
 
     binary_list = []
-    [binary_list.extend([value]) for key,value in binary.items()]
+    [binary_list.extend(["which " + value]) for value in binary.values()]
 
     fd = open(yamlfile,"w")
     binarydict = { "binaries": binary_list }
     with open(yamlfile, 'a') as outfile:
         yaml.dump(binarydict, outfile, default_flow_style=False)
 
-    print ("Please check YAML file %s and fix test accordingly", yamlfile)
+    print ("Please check YAML file ", yamlfile, " and fix test accordingly")
     sys.exit(0)
 
 def create_software_yaml(module_name):
@@ -96,12 +96,17 @@ def create_software_yaml(module_name):
     create_dir(destdir)
 
     binary_list = []
-    [binary_list.extend([value]) for key,value in binary.items()]
+    #print (binary)
+
+    #for value in binary.values():
+    #    print(value,type(value))
+        #binary_list.extend("which" + value)
+    [binary_list.extend(["which " + value]) for value in binary.values()]
 
     fd = open(yamlfile,"w")
     binarydict = { "binaries": binary_list }
     with open(yamlfile, 'a') as outfile:
         yaml.dump(binarydict, outfile, default_flow_style=False)
 
-    print ("Please check YAML file %s and fix test accordingly", yamlfile)
+    print ("Please check YAML file ", yamlfile, " and fix test accordingly")
     sys.exit(0)
