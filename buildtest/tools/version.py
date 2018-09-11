@@ -25,9 +25,11 @@ Display buildtest version
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
+import sys
 
 from buildtest.tools.config import BUILDTEST_VERSION
 
 def buildtest_version():
     """ print the buildtest version"""
     print("buildtest version: ",  BUILDTEST_VERSION)
+    sys.exit(0)

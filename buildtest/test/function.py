@@ -42,8 +42,8 @@ def add_arg_to_runcmd(runcmd,arglist):
 
 def clean_tests():
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-    if os.path.exists(BUILDTEST_TESTDIR):
+    try:
         shutil.rmtree(BUILDTEST_TESTDIR)
         print ("Removing test directory ", BUILDTEST_TESTDIR)
-    else:
-        print ("BUILDTEST_TESTDIR directory does not exist, nothing to remove")
+    except OSError as err_msg:
+        print(f"{err_msg}")
