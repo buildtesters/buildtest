@@ -35,7 +35,7 @@ import yaml
 
 # read the BUILDTEST env vars from the shell environment that is sourced by setup.sh
 BUILDTEST_VERSION="0.4.0"
-BUILDTEST_ROOT = os.environ['BUILDTEST_ROOT']
+BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
 BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm", ".pbs"]
 BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
@@ -47,16 +47,17 @@ MPI_APPS = ["openmpi", "mpich","mvapich2", "intel", "impi"]
 #print BUILDTEST_DEFAULT_CONFIG
 #fd = open(BUILDTEST_DEFAULT_CONFIG,'r')
 BUILDTEST_CONFIG_FILE = os.path.join(os.getenv("HOME"),".local","buildtest","config.yaml")
-if not os.path.exists(BUILDTEST_CONFIG_FILE):
-    print ("FILE: %s  not found", BUILDTEST_CONFIG_FILE)
+#if not os.path.exists(BUILDTEST_CONFIG_FILE):
+#    print (f"FILE: {BUILDTEST_CONFIG_FILE} not found")
+try:
+    fd = open(BUILDTEST_CONFIG_FILE,'r')
+    config_opts = yaml.load(fd)
+    config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM']=""
+    config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE']=""
 
-fd = open(BUILDTEST_CONFIG_FILE,'r')
-
-config_opts = yaml.load(fd)
-
-config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM']=""
-config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE']=""
-
+except FileNotFoundError as err_msg:
+    print(f"{err_msg}")
+    raise
 
 #global logID
 logID = "buildtest"
@@ -86,6 +87,7 @@ def check_configuration():
     ec = 0
 
     time.sleep(0.1)
+
     if not os.path.exists(BUILDTEST_ROOT):
         ec = 1
         print ("ERROR:  \t BUILDTEST_ROOT: %s does not exist", BUILDTEST_ROOT)
@@ -199,9 +201,9 @@ def show_configuration():
     print ("\t buildtest configuration summary")
     print ("\t (C): Configuration File,  (E): Environment Variable")
     print
-    print (("BUILDTEST_ROOT" + "\t (E): %s").expandtabs(50), os.environ['BUILDTEST_ROOT'])
+    print (("BUILDTEST_ROOT" + "\t (E) =").expandtabs(50), os.environ['BUILDTEST_ROOT'])
     for key in sorted(config_opts):
-        if os.environ.get(key):
+        if os.getenv(key):
             type = "(E)"
         else:
             type = "(C)"
