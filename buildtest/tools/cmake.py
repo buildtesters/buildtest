@@ -50,7 +50,7 @@ ENABLE_TESTING()
 add_subdirectory(""" + BUILDTEST_TESTDIR + ")"
 
     try:
-        
+
         fd=open(filename,'w')
         fd.write(header)
         fd.close()
@@ -276,10 +276,10 @@ def setup_system_cmake(pkg):
 
     # update the CMakeLists.txt with the tag add_subdirectory(system)
     update_CMakeLists(test_cmakelist,"system")
+    #update CMakeLists.txt with the tag add_subdirectory(pkg) where pkg is the application name
+    update_CMakeLists(test_cmakelist_pkg,pkg)
 
     logger.debug("Updating %s with add_subdirectory(system)", test_cmakelist)
-    logger.debug("Updating %s with add_subdirectory(%s)", test_cmakelist_pkg,pkg)
-    # update CMakeLists.txt with the tag add_subdirectory(pkg) where pkg is the application name
-    update_CMakeLists(test_cmakelist_pkg,pkg)
+    logger.debug("Updating %s with add_subdirectory(%s)", test_cmakelist_pkg,pkg)    
 
     return test_destdir,test_cmakelist_destdir

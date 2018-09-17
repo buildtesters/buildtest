@@ -35,6 +35,7 @@ def find_all_yaml_configs():
     """ find all yaml configs"""
     count = 0
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+
     for root, dirs, files in os.walk(BUILDTEST_CONFIGS_REPO):
         for file in files:
             if file.endswith(".yaml"):

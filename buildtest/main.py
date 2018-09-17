@@ -190,22 +190,10 @@ def main():
 
     # generate system pkg test
     if bt_opts.system is not None:
-        if bt_opts.system == "all":
-            systempkg = bt_opts.system
-            logger.info("Generating all system package tests from YAML files in ", config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'])
-
-            BUILDTEST_LOGDIR = os.path.join(BUILDTEST_LOGDIR,"system","all")
-            systempkg_list = os.listdir(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'])
-
-            logger.info("List of system packages to test: ", systempkg_list)
-
-            for pkg in systempkg_list:
-                generate_binary_test(bt_opts,pkg)
-        else:
-
-            systempkg = bt_opts.system
-            BUILDTEST_LOGDIR = os.path.join(BUILDTEST_LOGDIR,"system",systempkg)
-            generate_binary_test(bt_opts,systempkg)
+        systempkg = bt_opts.system
+        BUILDTEST_LOGDIR = os.path.join(BUILDTEST_LOGDIR,"system",systempkg)
+        #setup_system_cmake()
+        generate_binary_test(bt_opts,systempkg)
 
         create_dir(BUILDTEST_LOGDIR)
         logger.warning("Creating directory %s , to write log file", BUILDTEST_LOGDIR)

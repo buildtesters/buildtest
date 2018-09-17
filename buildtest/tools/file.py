@@ -40,27 +40,28 @@ def stripHiddenFile(file):
 
 def create_file(filename):
     """ Create an empty file if it doesn't exist   """
-    try:
-        fd=open(filename,'w')
-        fd.close()
-    except OSError as err:
-        print (f"{err}")
-    
     logger = logging.getLogger(logID)
-    logger.debug("Creating File: %s", filename)
-
+    if not os.path.isfile(filename):
+        try:
+            fd=open(filename,'w')
+            logger.debug("Creating File: %s", filename)
+            fd.close()
+        except OSError as err:
+            print (f"{err}")
 
 def create_dir(dirname):
     """Create directory if it doesn't exist"""
+    logger = logging.getLogger(logID)
     if not os.path.isdir(dirname):
         try:
             os.makedirs(dirname)
+            logger.debug("Creating Directory: %s", dirname)
         except OSError as err:
             print (f"{err}")
             raise
 
-    logger = logging.getLogger(logID)
-    logger.debug("Creating Directory: %s", dirname)
+
+
 
 def string_in_file(string,filename):
     """ returns true/false to indicate if string is in file """
