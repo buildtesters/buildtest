@@ -1,3 +1,4 @@
+description: Binary test for acl
 binaries:
 - /usr/bin/chacl -l /
 - /usr/bin/getfacl -v

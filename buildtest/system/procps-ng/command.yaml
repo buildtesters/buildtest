@@ -1,3 +1,4 @@
+description: Binary test for procps-ng
 binaries:
 - /usr/bin/free -V
 - /usr/bin/pgrep -V

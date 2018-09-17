@@ -1,7 +1,6 @@
+description: Binary test for rpm
 binaries:
 - /bin/rpm --help
-- which /usr/bin/rpm2cpio 
+- find /usr/bin/rpm2cpio
 - /usr/bin/rpmdb --version
 - /usr/bin/rpmkeys --version
-- /usr/bin/rpmquery --version
-- /usr/bin/rpmverify --version

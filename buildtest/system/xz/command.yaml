@@ -1,12 +1,8 @@
+description: Binary test for xz
 binaries:
-- /usr/bin/unxz --help
 - /usr/bin/xz --help
-- /usr/bin/xzcat --help
-- /usr/bin/xzcmp  --help
 - /usr/bin/xzdec --help
 - /usr/bin/xzdiff --help
-- /usr/bin/xzegrep --help
-- /usr/bin/xzfgrep --help
 - /usr/bin/xzgrep --help
 - /usr/bin/xzless --help
 - /usr/bin/xzmore --help

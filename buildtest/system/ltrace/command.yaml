@@ -1,2 +1,3 @@
+description: Binary test for ltrace
 binaries:
-        - /usr/bin/ltrace --version
+- /usr/bin/ltrace --version

@@ -1,4 +1,6 @@
+description: Binary test for coreutils
 binaries:
+- find /usr/bin/[
 - /usr/bin/arch --version
 - /usr/bin/base64 --version
 - /usr/bin/basename --version

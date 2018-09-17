@@ -1,3 +1,4 @@
+description: Binary test for binutils
 binaries:
 - /usr/bin/addr2line -v
 - /usr/bin/ar -V

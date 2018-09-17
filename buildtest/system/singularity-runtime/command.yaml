@@ -1,3 +1,4 @@
+description: Binary test for singularity-runtime
 binaries:
 - /usr/bin/run-singularity --help
 - /usr/bin/singularity --help

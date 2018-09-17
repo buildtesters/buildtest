@@ -1,9 +1,9 @@
+description: Binary test for openssh-clients
 binaries:
-- which /usr/bin/scp
-- which /usr/bin/sftp
-- which /usr/bin/slogin 
-- which /usr/bin/ssh
-- which /usr/bin/ssh-add 
-- which /usr/bin/ssh-agent
-- which /usr/bin/ssh-copy-id
-- which /usr/bin/ssh-keyscan
+- find /usr/bin/scp
+- find /usr/bin/sftp
+- find /usr/bin/ssh
+- find /usr/bin/ssh-add
+- find /usr/bin/ssh-agent
+- find /usr/bin/ssh-copy-id
+- find /usr/bin/ssh-keyscan

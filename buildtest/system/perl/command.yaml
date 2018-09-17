@@ -1,15 +1,12 @@
+description: Binary test for perl
 binaries:
-- which /usr/bin/a2p
-- which /usr/bin/c2ph
+- find /usr/bin/a2p
+- find /usr/bin/c2ph
 - /usr/bin/find2perl
-- which /usr/bin/h2ph
+- find /usr/bin/h2ph
 - /usr/bin/perl -v
-#- /usr/bin/perl5.16.3
-- which /usr/bin/perlbug
-- which /usr/bin/perlthanks
-- which /usr/bin/pl2pm
-- which /usr/bin/pod2html
-- which /usr/bin/psed
-- which /usr/bin/pstruct
-- which /usr/bin/s2p
-- which /usr/bin/splain
+- find /usr/bin/perlbug
+- find /usr/bin/pl2pm
+- find /usr/bin/pod2html
+- find /usr/bin/psed
+- find /usr/bin/splain

@@ -1,4 +1,5 @@
+description: Binary test for ruby
 binaries:
-- /usr/bin/erb --version
+- /usr/bin/erb --version 
 - /usr/bin/ruby -v
-- which /usr/bin/testrb
+- find /usr/bin/testrb

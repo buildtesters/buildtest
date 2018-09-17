@@ -1,17 +1,17 @@
+description: Binary test for hwloc
 binaries:
-- which /usr/bin/hwloc-annotate
-- which /usr/bin/hwloc-assembler
-- which /usr/bin/hwloc-assembler-remote
+- find /usr/bin/hwloc-annotate
+- find /usr/bin/hwloc-assembler
+- find /usr/bin/hwloc-assembler-remote
 - /usr/bin/hwloc-bind --version
 - /usr/bin/hwloc-calc --version
-- which /usr/bin/hwloc-compress-dir
+- find /usr/bin/hwloc-compress-dir 
 - /usr/bin/hwloc-diff --version
 - /usr/bin/hwloc-distances --version
 - /usr/bin/hwloc-distrib --version
-- which /usr/bin/hwloc-gather-topology 
-- /usr/bin/hwloc-info 
-- /usr/bin/hwloc-ls
+- find /usr/bin/hwloc-gather-topology
+- /usr/bin/hwloc-info
 - /usr/bin/hwloc-patch --version
 - /usr/bin/hwloc-ps -a
 - /usr/bin/lstopo-no-graphics -l
-- which /usr/sbin/hwloc-dump-hwdata
+- find /usr/sbin/hwloc-dump-hwdata

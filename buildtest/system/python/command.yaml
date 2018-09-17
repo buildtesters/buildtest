@@ -1,5 +1,4 @@
+description: Binary test for python
 binaries:
 - /usr/bin/pydoc
-- /usr/bin/python -V
-- /usr/bin/python2 -V 
-#- /usr/bin/python2.7 -V
+- /usr/bin/python2.7 -V

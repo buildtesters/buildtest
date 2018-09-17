@@ -1,7 +1,8 @@
+description: Binary test for numactl
 binaries:
-- which /usr/bin/memhog
-- which /usr/bin/migratepages
-- which /usr/bin/migspeed
-- /usr/bin/numactl -H
-- which /usr/bin/numademo
+- find /usr/bin/memhog
+- find /usr/bin/migratepages
+- find /usr/bin/migspeed
+- /usr/bin/numactl -H 
+- find /usr/bin/numademo
 - /usr/bin/numastat

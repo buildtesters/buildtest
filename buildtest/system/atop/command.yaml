@@ -1,2 +1,4 @@
+description: Binary test for atop
 binaries:
-- which /usr/bin/atop
+- find /usr/bin/atop
+- find /usr/bin/atopd

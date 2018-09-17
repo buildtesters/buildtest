@@ -1,11 +1,9 @@
+description: Binary test for ncurses
 binaries:
-- /usr/bin/captoinfo -V
 - /usr/bin/clear -V
-- /usr/bin/infocmp -V
-- /usr/bin/infotocap -V
-- /usr/bin/reset -V
+- /usr/bin/infocmp -V 
 - /usr/bin/tabs "-0"
 - /usr/bin/tic -V
-- /usr/bin/toe -V
-- /usr/bin/tput -V
+- /usr/bin/toe -V 
+- /usr/bin/tput -V 
 - /usr/bin/tset -V

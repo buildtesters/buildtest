@@ -1,3 +1,4 @@
+description: Binary test for util-linux
 binaries: 
 - /usr/bin/cal
 - /usr/bin/chfn --version 
@@ -14,15 +15,12 @@ binaries:
 - /usr/bin/flock -V
 - /usr/bin/getopt -V
 - /usr/bin/hexdump -V
-- /usr/bin/i386 -V
 - /usr/bin/ionice -V
 - /usr/bin/ipcmk -V
 - /usr/bin/ipcrm -V
 - /usr/bin/ipcs -V
 - /usr/bin/isosize -V
 - /usr/bin/kill -l
-- /usr/bin/linux32 -V
-- /usr/bin/linux64 -V
 - /usr/bin/logger -V
 - /usr/bin/login -V
 - /usr/bin/look -V
@@ -30,7 +28,8 @@ binaries:
 - /usr/bin/lscpu 
 - /usr/bin/lsipc -V
 - /usr/bin/lslocks 
-- /usr/bin/lslogins 
+- /usr/bin/lslogins -V
+- /usr/bin/lsmem
 - /usr/bin/lsns 
 - /usr/bin/mcookie 
 - /usr/bin/more -V
@@ -100,3 +99,4 @@ binaries:
 - /usr/sbin/swapon -V
 - /usr/sbin/switch_root -V
 - /usr/sbin/wipefs -V
+- /usr/sbin/zramctl
