@@ -38,6 +38,7 @@ from buildtest.test.job import generate_job
 from buildtest.tools.config import BUILDTEST_ROOT, config_opts, logID
 from buildtest.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake, add_test_to_CMakeLists
 from buildtest.tools.file import create_dir, string_in_file
+from buildtest.tools.parser.yaml_config import parse_config
 from buildtest.tools.modules import load_modules
 from buildtest.tools.software import get_toolchain_stack
 from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
@@ -45,74 +46,74 @@ from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_n
 
 
 def generate_binary_test(args_dict,pkg):
-        """
-        This function generates binary test from command.yaml file. For ebapps apps the module
-        and any toolchain is loaded in advance. Each entry in command.yaml will generate a
-        separate testscript from this function. All tests will be stored in BUILDTEST_TESTDIR.
-        This function makes sure command.yaml exists and CMakeLists.txt is present in all
-        subdirectories in BUILDTEST_TESTDIR.
-        """
+    """
+    This function generates binary test from command.yaml file. For ebapps apps the module
+    and any toolchain is loaded in advance. Each entry in command.yaml will generate a
+    separate testscript from this function. All tests will be stored in BUILDTEST_TESTDIR.
+    This function makes sure command.yaml exists and CMakeLists.txt is present in all
+    subdirectories in BUILDTEST_TESTDIR.
+    """
 
-        # variable to indicate if it is a software or system package for binary test
-        test_type=""
-        BUILDTEST_TESTDIR=config_opts['BUILDTEST_TESTDIR']
-        # top level CMakeList.txt should be in same parent directory where BUILDTEST_TESTDIR is created
-        toplevel_cmakelist_file=os.path.join(os.path.dirname(BUILDTEST_TESTDIR),"CMakeLists.txt")
-        testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
+    # variable to indicate if it is a software or system package for binary test
+    test_type=""
+    BUILDTEST_TESTDIR=config_opts['BUILDTEST_TESTDIR']
+    # top level CMakeList.txt should be in same parent directory where BUILDTEST_TESTDIR is created
+    toplevel_cmakelist_file=os.path.join(os.path.dirname(BUILDTEST_TESTDIR),"CMakeLists.txt")
+    testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
 
-        software = args_dict.software
-        system = args_dict.system
+    software = args_dict.software
+    system = args_dict.system
 
-        BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 
-        # determine whether we are running a binary test on ebapp or system package
-        if software is not None:
-                toolchain_stack = get_toolchain_stack()
-                toolchain_name = [name.split("/")[0] for name in toolchain_stack]
-                # get module version
-                module_version = software.split("/")[1]
-                # remove any toolchain from module version when figuring path to yaml file
-                for tc in toolchain_name:
-                    idx = module_version.find(tc)
+    # determine whether we are running a binary test on ebapp or system package
+    if software is not None:
+            toolchain_stack = get_toolchain_stack()
+            toolchain_name = [name.split("/")[0] for name in toolchain_stack]
+            # get module version
+            module_version = software.split("/")[1]
+            # remove any toolchain from module version when figuring path to yaml file
+            for tc in toolchain_name:
+                idx = module_version.find(tc)
 
-                    if idx != -1:
-                        software = software.split("/")[0] + "/" + module_version[0:idx-1]
+                if idx != -1:
+                    software = software.split("/")[0] + "/" + module_version[0:idx-1]
 
-                configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],software.lower())
-
-
-                test_type="software"
-        elif system is not None:
-                configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],pkg)
-                test_type="system"
-
-        commandfile=os.path.join(configdir,"command.yaml")
-
-        logger = logging.getLogger(logID)
-
-        logger.debug("This is a %s binary test", test_type)
-        logger.debug("Processing YAML file: %s", commandfile)
-
-        # if CMakeLists.txt does not exist in top-level directory, create the header
-        if os.path.isfile(toplevel_cmakelist_file) == False:
-                logger.warning("File: %s was not found, will create it automatically", toplevel_cmakelist_file)
-                init_CMakeList(toplevel_cmakelist_file)
-
-        # if BUILDTEST_TESTDIR/CMakeLists.txt does not exist, then create it
-        if os.path.isfile(testingdir_cmakelist_file) == False:
-                logger.warning("File: %s  was not found, will create it automatically", testingdir_cmakelist_file)
-                fd=open(testingdir_cmakelist_file,'w')
-                fd.close()
-
-        # if command.yaml does not exist then report error
-        if os.path.isfile(commandfile) == False:
-                msg =  "Cannot find command file:" +  commandfile + "Skipping binary test for package:", pkg
-                logger.error("%s", msg)
-                return
+            configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],software.lower())
 
 
-        # if all checks have passed then proceed with generating test
-        process_binary_file(commandfile,args_dict,test_type,pkg)
+            test_type="software"
+    elif system is not None:
+            configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],pkg)
+            test_type="system"
+
+    commandfile=os.path.join(configdir,"command.yaml")
+
+    logger = logging.getLogger(logID)
+
+    logger.debug("This is a %s binary test", test_type)
+    logger.debug("Processing YAML file: %s", commandfile)
+
+    # if CMakeLists.txt does not exist in top-level directory, create the header
+    if os.path.isfile(toplevel_cmakelist_file) == False:
+        logger.warning("File: %s was not found, will create it automatically", toplevel_cmakelist_file)
+        init_CMakeList(toplevel_cmakelist_file)
+
+    # if BUILDTEST_TESTDIR/CMakeLists.txt does not exist, then create it
+    if os.path.isfile(testingdir_cmakelist_file) == False:
+        logger.warning("File: %s  was not found, will create it automatically", testingdir_cmakelist_file)
+        fd=open(testingdir_cmakelist_file,'w')
+        fd.close()
+
+    # if command.yaml does not exist then report error
+    if os.path.isfile(commandfile) == False:
+        msg =  "Cannot find command file:" +  commandfile + "Skipping binary test for package:", pkg
+        logger.error("%s", msg)
+        return
+
+    parse_config(commandfile)
+    # if all checks have passed then proceed with generating test
+    process_binary_file(commandfile,args_dict,test_type,pkg)
 
 def process_binary_file(filename,args_dict,test_type,pkg):
     """
@@ -153,7 +154,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
 
     logger.info("Reading File: %s", filename)
 
-    
+
     try:
         open(filename,'r')
     except OSError as err_msg:

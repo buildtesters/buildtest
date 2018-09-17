@@ -29,6 +29,7 @@ This module generates yaml configuration files
 import os
 import sys
 import yaml
+from datetime import datetime
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import create_dir
@@ -43,8 +44,8 @@ def create_system_yaml(name):
 
     # if yaml file exists then exit out
     if os.path.isfile(yamlfile):
-        print ("YAML file already exists, please check: ", yamlfile)
-        sys.exit(0)
+        # print ("YAML file already exists, please check: ", yamlfile)
+        yamlfile = os.path.join(destdir, datetime.now().strftime("command_%H_%M_%d_%m_%Y.yaml"))
 
     # if directory is not present then create it
     create_dir(destdir)
@@ -56,9 +57,11 @@ def create_system_yaml(name):
     binary = get_binaries_from_systempackage(name)
 
     binary_list = []
-    [binary_list.extend(["which " + value]) for value in binary.values()]
+    [binary_list.extend(["find " + value]) for value in binary.values()]
 
     fd = open(yamlfile,"w")
+    description = {"description": "Binary test for " + name}
+    yaml.dump(description,fd,default_flow_style=False)
     binarydict = { "binaries": binary_list }
     with open(yamlfile, 'a') as outfile:
         yaml.dump(binarydict, outfile, default_flow_style=False)

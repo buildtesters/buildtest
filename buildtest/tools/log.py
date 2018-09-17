@@ -43,7 +43,7 @@ def init_log():
 	# after git clone will run into this condition
     if not os.path.exists(BUILDTEST_LOGDIR):
         os.makedirs(BUILDTEST_LOGDIR)
-        print ("Creating Log directory: %s", BUILDTEST_LOGDIR)
+        print ("Creating Log directory: ", BUILDTEST_LOGDIR)
 
     #logging.basicConfig(filename=logfile)
     logger = logging.getLogger(logID)
