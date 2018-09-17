@@ -139,22 +139,29 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         test_destdir,test_destdir_cmakelist = setup_software_cmake()
 
         print ("Detecting Test Type: Software")
-        #print "[BINARYTEST]: Processing YAML file for ", os.path.join(name,version), os.path.join(toolchain_name,toolchain_version), " at ", filename
+
        # load preamble for test-script that initializes environment.
         header=load_modules(BUILDTEST_SHELL)
 
     else:
         system=args_dict.system
         print ("Detecting Test Type: System Package")
-        #print "[BINARYTEST]: Processing YAML file for ", pkg , " at ", filename
         test_destdir,test_destdir_cmakelist = setup_system_cmake(pkg)
 
 
     print ("Processing Binary YAML configuration: ", filename.rstrip())
 
     logger.info("Reading File: %s", filename)
+
+    
+    try:
+        open(filename,'r')
+    except OSError as err_msg:
+        print(f"{err_msg}")
+        raise
     fd=open(filename,'r')
     content=yaml.load(fd)
+
     logger.debug("Loading YAML content")
     # if key binaries is not in yaml file, exit program
     if "binaries" not in content:
