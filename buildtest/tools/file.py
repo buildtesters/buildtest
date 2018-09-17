@@ -40,10 +40,12 @@ def stripHiddenFile(file):
 
 def create_file(filename):
     """ Create an empty file if it doesn't exist   """
-    if not os.path.isfile(filename):
+    try:
         fd=open(filename,'w')
         fd.close()
-
+    except OSError as err:
+        print (f"{err}")
+    
     logger = logging.getLogger(logID)
     logger.debug("Creating File: %s", filename)
 
@@ -53,10 +55,9 @@ def create_dir(dirname):
     if not os.path.isdir(dirname):
         try:
             os.makedirs(dirname)
-        except OSError:
-            print ("Unable to create directory: %s", dirname)
+        except OSError as err:
+            print (f"{err}")
             raise
-
 
     logger = logging.getLogger(logID)
     logger.debug("Creating Directory: %s", dirname)

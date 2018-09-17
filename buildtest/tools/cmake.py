@@ -37,36 +37,42 @@ from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_n
 from buildtest.tools.menu import buildtest_menu
 
 def init_CMakeList(filename):
-        """
-        This is the content of BUILDTEST_ROOT/CMakeLists.txt
-        """
+    """
+    This is the content of BUILDTEST_ROOT/CMakeLists.txt
+    """
 
-        BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
 
-        header = """
+    header = """
 cmake_minimum_required(VERSION 2.8)
 include(CTest)
 ENABLE_TESTING()
 add_subdirectory(""" + BUILDTEST_TESTDIR + ")"
+
+    try:
+        
         fd=open(filename,'w')
         fd.write(header)
         fd.close()
+    except FileNotFoundError as err_msg:
+        print(f"{err_msg}")
+        raise
 
 
 def update_CMakeLists(filename,tag):
-        """
-        used for writing CMakeLists.txt with tag <software>, <version>, & toolchain
-        """
-        fd=open(filename,'r')
-        content=fd.read().strip().split("\n")
-        cmd="add_subdirectory("+tag+")"
-        if cmd not in content:
-                fd.close()
-                fd=open(filename,'a')
-                fd.write(cmd+"\n")
-                fd.close()
-        else:
-                fd.close()
+    """
+    used for writing CMakeLists.txt with tag <software>, <version>, & toolchain
+    """
+    fd=open(filename,'r')
+    content=fd.read().strip().split("\n")
+    cmd="add_subdirectory("+tag+")"
+    if cmd not in content:
+        fd.close()
+        fd=open(filename,'a')
+        fd.write(cmd+"\n")
+        fd.close()
+    else:
+        fd.close()
 
 def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
     """ update CMakeLists.txt with add_test command to allow ctest to run test """

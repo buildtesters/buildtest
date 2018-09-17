@@ -32,13 +32,12 @@ import os
 import subprocess
 import argparse
 import glob
-#sys.path.insert(0,os.path.abspath('.'))
 
 sys.path.insert(0,os.path.abspath('.'))
-
-
 os.environ["BUILDTEST_ROOT"]=os.path.dirname(os.path.dirname(__file__))
-os.environ["BUILDTEST_JOB_TEMPLATE"]=os.path.join(os.environ.get("BUILDTEST_ROOT"),"template/job.slurm")
+os.environ["BUILDTEST_JOB_TEMPLATE"]=os.path.join(os.getenv("BUILDTEST_ROOT"),"template/job.slurm")
+# column width for linewrap for argparse library
+os.environ['COLUMNS'] = "120"
 
 from buildtest.test.binarytest import generate_binary_test
 from buildtest.test.function import clean_tests
@@ -67,11 +66,9 @@ from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_n
 from buildtest.tools.version import buildtest_version
 from buildtest.runtest import runtest_menu
 
-# column width for linewrap for argparse library
-os.environ['COLUMNS'] = "120"
-
 def main():
     """ entry point to buildtest """
+
 
     BUILDTEST_IGNORE_EASYBUILD=False
 
@@ -84,7 +81,6 @@ def main():
 
     if bt_opts.version:
         buildtest_version()
-        sys.exit(0)
 
     if bt_opts.show:
         show_configuration()
@@ -121,8 +117,6 @@ def main():
 
     if bt_opts.scantest:
         scantest()
-
-
 
     if bt_opts.list_toolchain is True:
         toolchain_set=list_toolchain()
