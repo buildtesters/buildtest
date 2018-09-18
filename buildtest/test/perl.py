@@ -31,6 +31,7 @@ import logging
 import os
 import subprocess
 import sys
+import stat
 
 from buildtest.test.job import generate_job
 from buildtest.tools.config import config_opts, logID
@@ -127,6 +128,9 @@ def build_perl_package_test(perl_package):
             fd.write(cmd)
             fd.close()
 
+            # setting perm to 755 on testscript
+            os.chmod(testpath, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
+                    
             cmakelist = os.path.join(subdirpath,"CMakeLists.txt")
             add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
             msg = "Creating Test: " + testpath
