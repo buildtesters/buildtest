@@ -32,6 +32,7 @@ import logging
 import os
 import sys
 import yaml
+import stat
 from shutil import copyfile
 
 from buildtest.test.job import generate_job
@@ -166,9 +167,9 @@ def process_binary_file(filename,args_dict,test_type,pkg):
     logger.debug("Loading YAML content")
     # if key binaries is not in yaml file, exit program
     if "binaries" not in content:
-            logger.error("Can't find key: binaries in file %s", filename)
-            print ("Can't find key: binaries in file %s", filename)
-            sys.exit(1)
+        logger.error("Can't find key: binaries in file %s", filename)
+        print ("Can't find key: binaries in file %s", filename)
+        sys.exit(1)
 
     # create a binary test script for each key,value item in dictionary
     binarydict=content["binaries"]
@@ -197,6 +198,8 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         fd.write(key)
         fd.close()
 
+        # setting perm to 755 on testscript
+        os.chmod(testpath, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
         # reading test script for writing content of test in logcontent
         fd=open(testpath,'r')
         content=fd.read().splitlines()
@@ -207,10 +210,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         for line in content:
                 logger.info("%s", line)
 
-
         logger.info("[END TEST-BLOCK]")
-
-
 
         if test_type == "software":
             add_test_to_CMakeLists(test_destdir,subdir,test_destdir_cmakelist, testname)
@@ -226,14 +226,8 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         if BUILDTEST_ENABLE_JOB:
             generate_job(testpath,BUILDTEST_SHELL,BUILDTEST_JOB_TEMPLATE, content)
 
-
     fd.close()
 
     print
-    #if test_type == "system":
-    #    print ("Generating ", count, " binary tests")
-    #else:
-    #    print ("Generating ", count, " binary tests")
-
     print ("Generating ", count, " binary tests")
     print ("Binary Tests are written in ", test_destdir)

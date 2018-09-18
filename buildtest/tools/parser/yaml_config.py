@@ -93,15 +93,16 @@ def parse_config(filename,codedir="/"):
     """
     fd=open(filename,'r')
     content=yaml.load(fd)
+    
     # iterate over dictionary to seek any invalid keys
 
     # terminate early if description field is not found in yaml configuration
     if "description" not in content:
-
         print(f"Missing YAML field: description in file {filename}")
         sys.exit(0)
 
     for key in content:
+
         if key not in field:
             print ("ERROR: invalid key ", key)
             sys.exit(1)
@@ -132,13 +133,13 @@ def parse_config(filename,codedir="/"):
         if key == "nproc" or key == "iter" or key =="jobslots":
             # checking whether value of nproc and iter is integer
             if not str(content[key]).isdigit():
-                print ("%s key must be an integer value",key)
+                print (key," key must be an integer value")
                 sys.exit(1)
                 # checking whether key is negative or zero
             else:
                 if int(content[key]) <= 0:
-                    print ("%s must be greater than 0", key)
-            sys.exit(1)
+                    print (key, " must be greater than 0")
+                    sys.exit(1)
         if key == "procrange" or key == "threadrange":
             # format procrange: 2,10,3
             if len(content[key].split(",")) != 3:

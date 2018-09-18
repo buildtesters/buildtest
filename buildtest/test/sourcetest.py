@@ -74,7 +74,7 @@ def recursive_gen_test(configdir,codedir):
             for file in files:
                 filepath=os.path.join(root,file)
                 subdir=os.path.basename(root)
-                print (filepath)
+                
                 # if there is no subdirectory in configdir that means subdir would be set to "config" so it can
                 # be set to empty string in order to concat codedir and subdir. This way both subdirectory and
                 # and no subdirectory structure for yaml will work
@@ -85,11 +85,12 @@ def recursive_gen_test(configdir,codedir):
                 logger.debug("Parsing YAML file: %s", filepath)
                 configmap=parse_config(filepath,code_destdir)
                 # error processing config file, then parse_config will return an empty dictionary
-                print (configmap)
+
                 if len(configmap) == 0:
                     continue
 
                 count = count + 1
+
                 generate_source_test(configmap,code_destdir,subdir)
 
         appname=get_appname()
@@ -223,7 +224,7 @@ def generate_source_test(configmap,codedir,subdir):
             # for each element from dictionary configmap["buildcmd"], write
             # each instruction in buildcmd separated by newline
             for cmd in configmap["buildcmd"]:
-                        buildcmd += cmd + "\n"
+                buildcmd += cmd + "\n"
         else:
             msg = "buildcmd is declared but value is not specified \n"
             logger.debug("%s",msg)
@@ -241,12 +242,8 @@ def generate_source_test(configmap,codedir,subdir):
             logging.warning("Unable to create test from YAML config, skipping test generation")
             return
 
-
         fd.write(buildcmd)
         fd.write(runcmd)
-
-
-
     # otherwise generate the buildcmd and runcmd automatically
     else:
 
@@ -414,6 +411,8 @@ def generate_source_test(configmap,codedir,subdir):
             src_testpath=testpath_testname
             dest_testpathname=os.path.join(destdir,testname).replace('\n','')
             copyfile(src_testpath,dest_testpathname)
+            # setting perm to 755 on testscript
+            os.chmod(dest_testpathname, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
             out = "Iteration Test: " + dest_testpathname
             logger.info("%s",out)
             logger.debug("Adding test: %s to CMakeList", testname)

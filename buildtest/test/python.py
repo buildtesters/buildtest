@@ -30,6 +30,7 @@ import logging
 import os
 import subprocess
 import sys
+import stat
 
 from buildtest.test.job import generate_job
 from buildtest.tools.config import config_opts, PYTHON_APPS, logID
@@ -108,7 +109,7 @@ def build_python_test(python_lib):
 
             # skip if file is not .py extension
             if ext != ".py":
-                    continue
+                continue
             # command to execute the script
             cmd = "python " + os.path.join(root,file)
 
@@ -124,6 +125,10 @@ def build_python_test(python_lib):
             fd.write(header)
             fd.write(cmd)
             fd.close()
+            
+
+            # setting perm to 755 on testscript
+            os.chmod(testpath, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
 
             cmakelist = os.path.join(subdirpath,"CMakeLists.txt")
             add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
