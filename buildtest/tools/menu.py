@@ -34,6 +34,7 @@ from buildtest.test.python import python_pkg_choices
 from buildtest.test.r import r_pkg_choices
 from buildtest.test.ruby import ruby_pkg_choices
 from buildtest.test.perl import perl_pkg_choices
+from buildtest.test.run import test_list
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, check_configuration
 from buildtest.tools.options import override_configuration
 from buildtest.tools.system import systempackage_installed_list
@@ -45,7 +46,7 @@ class buildtest_menu():
         parser = {}
         override_configuration()
         check_configuration()
-        syspkg_list = os.listdir(os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest","system"))        
+        syspkg_list = os.listdir(os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest","system"))
 
         pkglist = systempackage_installed_list()
         python_choices = python_pkg_choices()
@@ -57,6 +58,8 @@ class buildtest_menu():
         software_list = get_software_stack()
         toolchain_list = get_toolchain_stack()
 
+        test_choices = test_list()
+        
         def __init__(self):
         # reports an error, issue with import
         #software_list = get_unique_software_version(BUILDTEST_MODULE_EBROOT)
@@ -113,7 +116,7 @@ class buildtest_menu():
 
             group6 = parser.add_argument_group('Miscellaneous Options', 'rest of buildtest options')
             group6.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
-
+            group6.add_argument("-r", "--run", help="Run test scripts via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
 
             self.parser = parser
 

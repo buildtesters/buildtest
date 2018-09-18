@@ -42,10 +42,11 @@ os.environ['COLUMNS'] = "120"
 from buildtest.test.binarytest import generate_binary_test
 from buildtest.test.function import clean_tests
 from buildtest.test.job import submit_job_to_scheduler, update_job_template
+from buildtest.test.perl import build_perl_package_test
 from buildtest.test.python import build_python_test
 from buildtest.test.r import build_r_package_test
 from buildtest.test.ruby import build_ruby_package_test
-from buildtest.test.perl import build_perl_package_test
+from buildtest.test.run import run_test_buildtest
 from buildtest.test.sourcetest import recursive_gen_test
 from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.config import show_configuration, config_opts
@@ -164,6 +165,9 @@ def main():
 
     if bt_opts.shell:
          config_opts['BUILDTEST_SHELL']=bt_opts.shell
+
+    if bt_opts.run:
+        run_test_buildtest(bt_opts.run)
 
     if bt_opts.job_template is not None:
         update_job_template(bt_opts.job_template)

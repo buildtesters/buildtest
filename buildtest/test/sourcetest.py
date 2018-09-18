@@ -33,6 +33,7 @@ import re
 import sys
 import os
 import logging
+import stat
 from shutil import copyfile
 
 
@@ -73,6 +74,7 @@ def recursive_gen_test(configdir,codedir):
             for file in files:
                 filepath=os.path.join(root,file)
                 subdir=os.path.basename(root)
+                print (filepath)
                 # if there is no subdirectory in configdir that means subdir would be set to "config" so it can
                 # be set to empty string in order to concat codedir and subdir. This way both subdirectory and
                 # and no subdirectory structure for yaml will work
@@ -83,6 +85,7 @@ def recursive_gen_test(configdir,codedir):
                 logger.debug("Parsing YAML file: %s", filepath)
                 configmap=parse_config(filepath,code_destdir)
                 # error processing config file, then parse_config will return an empty dictionary
+                print (configmap)
                 if len(configmap) == 0:
                     continue
 
@@ -125,7 +128,7 @@ def generate_source_test(configmap,codedir,subdir):
     sourcefilepath = ""
     executable = ""
     buildopts = ""
-    envvars = ""
+    environment = ""
     env_msg = []
     # app_destdir is root of test directory
     app_destdir = os.path.join(BUILDTEST_TESTDIR,"ebapp",appname,appver,tcname,tcver)
@@ -157,11 +160,11 @@ def generate_source_test(configmap,codedir,subdir):
     if "buildopts" in configmap:
         flags=configmap["buildopts"]
 
-    if "envvars" in configmap:
-        envvars = configmap["envvars"]
-        for key in envvars.keys():
+    if "environment" in configmap:
+        environment = configmap["environment"]
+        for key in environment.keys():
             # append value from function openmp_env_string into env_msg that sets OpenMP environment variable according to shell
-            env_msg.append(openmp_env_string(shell_type,envvars[key]))
+            env_msg.append(openmp_env_string(shell_type,environment[key]))
 
     if "procrange" in configmap:
         procrange = configmap["procrange"]
@@ -193,6 +196,9 @@ def generate_source_test(configmap,codedir,subdir):
     fd=open(testpath,'w')
     header=load_modules(shell_type)
     fd.write(header)
+
+    # setting perm to 755 on testscript
+    os.chmod(testpath, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
 
     # string used for generating the compilation step
     buildcmd=""
@@ -327,7 +333,7 @@ def generate_source_test(configmap,codedir,subdir):
         if "outputfile" in configmap:
             runcmd +=  " > " + configmap["outputfile"]
 
-        if "envvars" in configmap:
+        if "environment" in configmap:
             for key in env_msg:
                 fd.write(key)
 
