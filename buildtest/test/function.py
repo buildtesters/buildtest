@@ -29,7 +29,7 @@ import os
 import shutil
 
 from buildtest.tools.config import config_opts
-
+"""
 def add_arg_to_runcmd(runcmd,arglist):
     # add each argument to runcmd
     for arg in arglist:
@@ -39,7 +39,7 @@ def add_arg_to_runcmd(runcmd,arglist):
         # in case argument is not a string, convert it anyways
         runcmd+= " " + str(arg)
     return runcmd
-
+"""
 def clean_tests():
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
     try:

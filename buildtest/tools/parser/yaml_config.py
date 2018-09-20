@@ -91,9 +91,16 @@ def parse_config(filename,codedir="/"):
     """
     read config file and verify the key-value content with dictionary field
     """
+    # if file extenstion is not "yaml" then return immediately
+    ext = os.path.splitext(filename)[1]
+    ext = ext[1:]
+
+    if ext != "yaml":
+        return None
+
     fd=open(filename,'r')
     content=yaml.load(fd)
-    
+
     # iterate over dictionary to seek any invalid keys
 
     # terminate early if description field is not found in yaml configuration

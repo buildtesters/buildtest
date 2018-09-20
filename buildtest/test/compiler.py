@@ -70,7 +70,7 @@ def get_compiler(configmap,appname,tcname):
                 compiler_type="intel"
 
         # if application is GCC then compiler type is gnu
-        if appname in ["GCC"]:
+        if appname in ["GCC", "GCCcore"]:
                 compiler_type = "gnu"
 
         if appname in ["Java"]:

@@ -38,7 +38,7 @@ from shutil import copyfile
 
 
 from buildtest.test.compiler import get_compiler
-from buildtest.test.function import add_arg_to_runcmd
+#from buildtest.test.function import add_arg_to_runcmd
 from buildtest.test.job import generate_job, generate_job_by_config
 from buildtest.tools.cmake import  add_test_to_CMakeLists
 from buildtest.tools.config import  config_opts, logID
@@ -74,7 +74,7 @@ def recursive_gen_test(configdir,codedir):
             for file in files:
                 filepath=os.path.join(root,file)
                 subdir=os.path.basename(root)
-                
+
                 # if there is no subdirectory in configdir that means subdir would be set to "config" so it can
                 # be set to empty string in order to concat codedir and subdir. This way both subdirectory and
                 # and no subdirectory structure for yaml will work
@@ -86,6 +86,8 @@ def recursive_gen_test(configdir,codedir):
                 configmap=parse_config(filepath,code_destdir)
                 # error processing config file, then parse_config will return an empty dictionary
 
+                if configmap is None:
+                    continue
                 if len(configmap) == 0:
                     continue
 
@@ -156,17 +158,6 @@ def generate_source_test(configmap,codedir,subdir):
     # name of the executable is the value of source tag with ".exe" extension
     executable=configmap["source"]+".exe"
 
-    flags=""
-    # if buildopts key exists in dictionary, then add flags to compilation step (buildcmd)
-    if "buildopts" in configmap:
-        flags=configmap["buildopts"]
-
-    if "environment" in configmap:
-        environment = configmap["environment"]
-        for key in environment.keys():
-            # append value from function openmp_env_string into env_msg that sets OpenMP environment variable according to shell
-            env_msg.append(openmp_env_string(shell_type,environment[key]))
-
     if "procrange" in configmap:
         procrange = configmap["procrange"]
         startproc =  int(procrange.split(",")[0])
@@ -184,14 +175,7 @@ def generate_source_test(configmap,codedir,subdir):
         testname=configmap["name"]+"_nthread_"+str(startthread)+"."+shell_type
         testpath = os.path.join(destdir,testname)
         thread_list = range(startthread,endthread+1,threadinterval)
-        openmp_env_str = openmp_env_string(shell_type,startthread)
-
-    logger.debug("Test Name: %s", testname)
-    logger.debug("Test Path: %s", testpath)
-    logger.debug("Source File: %s", sourcefilepath)
-    logger.debug("Executable Name: %s",  executable)
-    logger.debug("Build Flags: %s",  flags)
-
+        openmp_env_str = get_environment_variable(shell_type,"OMP_NUM_THREADS",startthread)
 
     # write the preamble to test-script to initialize app environment using module cmds
     fd=open(testpath,'w')
@@ -200,6 +184,29 @@ def generate_source_test(configmap,codedir,subdir):
 
     # setting perm to 755 on testscript
     os.chmod(testpath, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
+    flags=""
+    # if buildopts key exists in dictionary, then add flags to compilation step (buildcmd)
+    if "buildopts" in configmap:
+        flags=configmap["buildopts"]
+
+    logger.debug("Test Name: %s", testname)
+    logger.debug("Test Path: %s", testpath)
+    logger.debug("Source File: %s", sourcefilepath)
+    logger.debug("Executable Name: %s",  executable)
+    logger.debug("Build Flags: %s",  flags)
+
+    if "environment" in configmap:
+        environment = configmap["environment"]
+
+        # loop over a list of tuples that content environment name and value
+        for variable in environment:
+            # extract value from list of tuple, since variables.keys() will only return one tuple we just index the first element
+            env_key = list(variable.keys())[0]
+            env_value = list(variable.values())[0]
+
+            env_msg.append(get_environment_variable(shell_type,env_key,env_value))
+        for variable in env_msg:
+            fd.write(variable)
 
     # string used for generating the compilation step
     buildcmd=""
@@ -267,6 +274,7 @@ def generate_source_test(configmap,codedir,subdir):
 
             buildcmd = compiler + " -o " + executable + " " + sourcefilepath + " " + flags + "\n"
 
+
             # set runcmd for mpi tags using mpirun otherwise just run executable
             if compiler in ["mpicc","mpic++","mpifort","mpiicc","mpiic++", "mpiifort"]:
 
@@ -287,17 +295,17 @@ def generate_source_test(configmap,codedir,subdir):
                     logger.debug("nproc key not found in YAML config file, will set nproc = 1")
                     # add argument to runcmd in MPI jobs
                     if "args" in configmap:
-                        arglist = configmap["args"]
+                        args = configmap["args"]
                         runcmd = "mpirun -np " + nproc + " ./" + executable
-                        runcmd = add_arg_to_runcmd(runcmd,arglist)
+                        runcmd += " " + args
                     else:
                         runcmd = "mpirun -np " + nproc + " ./" + executable
             else:
                 # add argument to runcmd in general jobs
                 if "args" in configmap:
-                    arglist = configmap["args"]
+                    args = configmap["args"]
                     runcmd = "./" + executable
-                    runcmd = add_arg_to_runcmd(runcmd,arglist)
+                    runcmd += " " + args
                 else:
                     runcmd = "./" + executable
 
@@ -330,12 +338,9 @@ def generate_source_test(configmap,codedir,subdir):
         if "outputfile" in configmap:
             runcmd +=  " > " + configmap["outputfile"]
 
-        if "environment" in configmap:
-            for key in env_msg:
-                fd.write(key)
-
         if "threadrange" in configmap:
             fd.write(openmp_env_str)
+
 
         fd.write(buildcmd)
         fd.write(runcmd)
@@ -439,6 +444,8 @@ def create_procrange_test(testpath, startproc, proc_list,subdir):
         fd = open(newtestname,'w')
         fd.write(ret)
         fd.close()
+        # setting perm to 755 on testscript
+        os.chmod(newtestname, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
         add_test_to_CMakeLists(destdir,subdir,cmakelist,newtestname)
 
 def create_threadrange_test(testpath,startthread,thread_list,subdir):
@@ -469,11 +476,13 @@ def create_threadrange_test(testpath,startthread,thread_list,subdir):
         fd = open(newtestname,'w')
         fd.write(ret)
         fd.close()
+        # setting perm to 755 on testscript
+        os.chmod(newtestname, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
         add_test_to_CMakeLists(destdir,subdir,cmakelist,newtestname)
 
-def openmp_env_string(shell,threadcnt):
+def get_environment_variable(shell,key, value):
     """ return environment variable for setting OpenMP threads as a string based on shell type """
     if shell == "sh" or shell == "bash":
-        return "export OMP_NUM_THREADS=" +  str(threadcnt) + "\n"
+        return "export " + key + "=" +  str(value) + "\n"
     elif shell == "csh":
-        return "setenv OMP_NUM_THREADS " +  str(threadcnt) + "\n"
+        return "setenv " + key + " " +  str(value) + "\n"
