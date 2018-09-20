@@ -1,2 +1,3 @@
 name: hello.pl
+description: hello world in perl
 source: hello.pl

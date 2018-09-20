@@ -1,6 +1,7 @@
+description: Binary test for Anaconda2/5.1.0
 binaries:
 - which jupyter-qtconsole
-- which 2to3-3.6
+- which 2to3
 - which bzip2
 - which ncursesw6-config
 - which pcre-config
@@ -20,6 +21,7 @@ binaries:
 - which h5c++
 - which djpeg
 - which numba
+- which smtpd.py
 - which gdbus
 - which blaze-server
 - which h5redeploy
@@ -67,7 +69,6 @@ binaries:
 - which flask
 - which lconvert
 - which epylint
-- which easy_install-3.6
 - which rcc
 - which patchelf
 - which rst2html.py
@@ -77,6 +78,7 @@ binaries:
 - which spyder
 - which cairo-trace
 - which h5repack
+- which idle
 - which py.test
 - which h5clear
 - which jupyter
@@ -123,8 +125,6 @@ binaries:
 - which isort
 - which pcretest
 - which tiffset
-- which python3.6m-config
-- which ipython3
 - which h5watch
 - which jupyter-kernel
 - which xsltproc
@@ -139,12 +139,14 @@ binaries:
 - which conda-develop
 - which dask-scheduler
 - which pep8
+- which grin
 - which tset
 - which jupyter-nbextension
 - which infocmp
 - which tiffcrop
 - which pycc
 - which symilar
+- which python2.7
 - which cygdb
 - which chardetect
 - which instance_events
@@ -202,7 +204,6 @@ binaries:
 - which fax2tiff
 - which jsonschema
 - which fc-scan
-- which iptest3
 - which jupyter-trust
 - which hb-view
 - which pyrcc5
@@ -210,13 +211,13 @@ binaries:
 - which gst-discoverer-1.0
 - which gst-stats-1.0
 - which fixqt4headers.pl
-- which pyvenv-3.6
 - which fits2bitmap
 - which h52gif
 - which h5import
 - which conda-index
 - which tic
 - which pttree
+- which iptest2
 - which qmlplugindump
 - which qmlprofiler
 - which sphinx-quickstart
@@ -230,6 +231,7 @@ binaries:
 - which qdbusxml2cpp
 - which slencheck
 - which isympy
+- which easy_install-2.7
 - which bzip2recover
 - which jupyter-notebook
 - which ppm2tiff
@@ -259,6 +261,7 @@ binaries:
 - which vba_extract.py
 - which taskadmin
 - which dask-submit
+- which ipython
 - which gst-typefind-1.0
 - which qhelpconverter
 - which gobject-query
@@ -272,6 +275,7 @@ binaries:
 - which tiff2ps
 - which gst-inspect-1.0
 - which bokeh
+- which grind
 - which fitsdiff
 - which tiffmedian
 - which anaconda-navigator
@@ -288,7 +292,6 @@ binaries:
 - which jupyter-console
 - which qlalr
 - which sqlite3_analyzer
-- which deactivate
 - which rst2odt_prepstyles.py
 - which conda
 - which qdbusviewer
@@ -301,17 +304,16 @@ binaries:
 - which conda-env
 - which dynamodb_load
 - which dbus-daemon
-- which pydoc3.6
-- which python3.6
+- which python2.7-config
 - which conda-metapackage
 - which raw2tiff
 - which rstpep2html.py
-- which activate
 - which dltest
 - which conda-build
 - which png-fix-itxt
 - which qmltestrunner
 - which h5diff
+- which pydoc
 - which c_rehash
 - which sphinx-apidoc
 - which lrelease
@@ -323,5 +325,4 @@ binaries:
 - which h5stat
 - which cfadmin
 - which qdbus
-- which idle3.6
 - which derb

@@ -1,0 +1,6 @@
+name: omp_dotprod_openmp.f
+description: OpenMP dot product example in Fortran
+source:  omp_dotprod_openmp.f
+buildopts: -O2 -fopenmp
+environment:
+- OMP_NUM_THREADS: 2

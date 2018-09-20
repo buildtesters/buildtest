@@ -1,0 +1,6 @@
+name: omp_reduction.c
+description: OpenMP Reduction example in C
+source:  omp_reduction.c
+buildopts: -O2 -fopenmp
+environment:
+- OMP_NUM_THREADS: 2

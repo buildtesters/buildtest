@@ -1,5 +1,0 @@
-name: omp_reduction.c
-source:  omp_reduction.c
-buildopts: -O2 -fopenmp
-envvars:
-        OMP_NUM_THREADS : 2

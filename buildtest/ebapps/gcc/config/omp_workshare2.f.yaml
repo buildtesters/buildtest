@@ -1,5 +1,0 @@
-name: omp_workshare2.f
-source:  omp_workshare2.f
-buildopts: -O2 -fopenmp
-envvars:
-        OMP_NUM_THREADS : 2

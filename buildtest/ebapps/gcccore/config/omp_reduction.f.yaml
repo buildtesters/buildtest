@@ -1,0 +1,6 @@
+name: omp_reduction.f
+description: OpenMP Reduction example in Fortran
+source:  omp_reduction.f
+buildopts: -O2 -fopenmp
+environment:
+- OMP_NUM_THREADS: 2

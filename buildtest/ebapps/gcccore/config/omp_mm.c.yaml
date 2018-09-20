@@ -1,4 +1,5 @@
 name: omp_mm.c
+description: OpenMP Matrix Multiplication program in C
 source:  omp_mm.c
 buildopts: -O2 -fopenmp
 threadrange: 2,16,2

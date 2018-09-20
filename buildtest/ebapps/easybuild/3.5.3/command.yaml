@@ -1,4 +1,4 @@
-description: Binary test for EasyBuild/3.6.0
+description: Binary test for EasyBuild/3.5.3
 binaries:
 - which logdaemon
 - which easy_install

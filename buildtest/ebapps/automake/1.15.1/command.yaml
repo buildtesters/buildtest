@@ -1,5 +1,4 @@
+description: Binary test for Automake/1.15.1
 binaries:
-- automake-1.15 --version
-- aclocal-1.15 --version
-- aclocal --version
-- automake --version
+- which automake-1.15
+- which aclocal-1.15

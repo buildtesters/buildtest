@@ -1,5 +1,6 @@
 name: omp_dotprod_openmp.c
+description: OpenMP dot product example in C
 source:  omp_dotprod_openmp.c
 buildopts: -O2 -fopenmp
-envvars:
-        OMP_NUM_THREADS : 2
+environment:
+- OMP_NUM_THREADS: 2

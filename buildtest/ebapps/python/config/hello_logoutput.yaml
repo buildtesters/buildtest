@@ -1,3 +1,4 @@
 name: hello_logoutput
+description: "Hello World example and redirect output to file"
 source: hello_logoutput.py
 outputfile: hello.out

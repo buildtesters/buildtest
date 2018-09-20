@@ -1,0 +1,6 @@
+name: omp_workshare2.f
+description: OpenMP Loop work sharing example 2 in Fortran
+source:  omp_workshare2.f
+buildopts: -O2 -fopenmp
+environment:
+- OMP_NUM_THREADS: 2

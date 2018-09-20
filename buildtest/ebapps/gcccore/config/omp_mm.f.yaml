@@ -1,0 +1,6 @@
+name: omp_mm.f
+description: OpenMP Matrix Multiplication program in Fortran
+source:  omp_mm.f
+buildopts: -O2 -fopenmp
+environment:
+- OMP_NUM_THREADS: 2

@@ -1,0 +1,4 @@
+name : hello.cpp
+description: Hello World program in C++ with custom build options
+source : hello.cpp
+buildopts : -O2

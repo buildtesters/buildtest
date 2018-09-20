@@ -1,0 +1,6 @@
+name: omp_orphan.f
+description: OpenMP Parallel Region with Orphan Directive 
+source:  omp_orphan.f
+buildopts: -O2 -fopenmp
+environment:
+- OMP_NUM_THREADS: 2

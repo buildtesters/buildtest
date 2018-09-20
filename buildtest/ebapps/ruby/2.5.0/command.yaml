@@ -1,3 +1,4 @@
+description: Ruby package test
 binaries: 
 - which htmldiff --version
 - ri --version

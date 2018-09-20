@@ -1,11 +1,12 @@
+description: Binary test for GCCcore/6.4.0
 binaries:
-- x86_64-pc-linux-gnu-gfortran --version
+- gcc --version
 - gcc-nm -V
 - x86_64-pc-linux-gnu-g++ --version
-- gcc --version
-- gcov-tool --version
-- x86_64-pc-linux-gnu-gcc-ranlib -V
-- gcc-ar -V
 - cpp --version
+- x86_64-pc-linux-gnu-gfortran --version
 - gcov --version
 - gcov-dump -V
+- x86_64-pc-linux-gnu-gcc-ranlib -V
+- gcc-ar -V
+- gcov-tool --version

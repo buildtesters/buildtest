@@ -1,0 +1,6 @@
+name: omp_hello.f
+description: OpenMP hello world program in Fortran
+source:  omp_hello.f
+buildopts: -O2 -fopenmp
+environment:
+- OMP_NUM_THREADS: 2

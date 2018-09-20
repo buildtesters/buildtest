@@ -1,8 +1,9 @@
+description: Binary test for BEDTools/2.27.1
 binaries:
 - which tagBam
 - which getOverlap
 - which genomeCoverageBed
-- bedtools --version
+- which bedtools
 - which linksBed
 - which bamToFastq
 - which pairToPair

@@ -1,0 +1,6 @@
+name: omp_workshare2.c
+description: OpenMP Loop work sharing example 2 in C
+source:  omp_workshare2.c
+buildopts: -O2 -fopenmp
+environment:
+- OMP_NUM_THREADS: 2

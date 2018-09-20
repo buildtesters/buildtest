@@ -1,0 +1,6 @@
+name: omp_getEnvInfo.f
+description: OpenMP Get environment info in Fortran
+source:  omp_getEnvInfo.f
+buildopts: -O2 -fopenmp
+environment:
+- OMP_NUM_THREADS: 2
