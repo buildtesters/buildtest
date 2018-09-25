@@ -34,7 +34,7 @@ import subprocess
 import yaml
 
 # read the BUILDTEST env vars from the shell environment that is sourced by setup.sh
-BUILDTEST_VERSION="0.4.0"
+BUILDTEST_VERSION="0.4.1"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
 BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm", ".pbs"]
@@ -201,7 +201,7 @@ def show_configuration():
     print ("\t buildtest configuration summary")
     print ("\t (C): Configuration File,  (E): Environment Variable")
     print
-    print (("BUILDTEST_ROOT" + "\t (E) =").expandtabs(50), os.environ['BUILDTEST_ROOT'])
+    print (("BUILDTEST_ROOT" + "\t (E) =").expandtabs(50), os.getenv("BUILDTEST_ROOT"))
     for key in sorted(config_opts):
         if os.getenv(key):
             type = "(E)"

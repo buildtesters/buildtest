@@ -118,33 +118,11 @@ def software_version_relation():
     """
     modulelist=get_module_list()
 
-    module_set=get_unique_software()
-
-    # dictionary used for keeping a relationship between software name and its corresponding versions found as modulefiles
+    # dictionary used for keeping a relationship between software name and its corresponding modulefile
     module_dict = {}
-
-
-    # for every app iterate over module tree and add unique version in set, then add this to a dictionary. That way
-    # a dictionary can reference via key,value where key is application name and value is the list of versions
-    for item in  module_set:
-        version_set = set()
-        for app in modulelist:
-            #logger.debug("ModuleFile: %s", app)
-            name = os.path.basename(os.path.dirname(app))
-
-            if item != name:
-                continue
-
-            version = os.path.basename(app)
-            ext = os.path.splitext(version)[1]
-            # only strip extension if .lua is found, otherwise add version as is
-            if ext == "lua":
-                version = os.path.splitext(version)[0]
-
-            # only add module version to set when module name is found in tree
-            version_set.add(version + " (" + app +")")
-
-        module_dict[item] = version_set
+    # create a dictionary where key is modulefile path and the value is application name
+    for app in modulelist:
+        module_dict[app] = os.path.basename(os.path.dirname(app))
 
     return module_dict
 

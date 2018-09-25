@@ -32,7 +32,7 @@ import subprocess
 import time
 import glob
 
-from buildtest.tools.config import BUILDTEST_ROOT, config_opts
+from buildtest.tools.config import config_opts
 from buildtest.tools.menu import buildtest_menu
 
 def systempkg_menu(systempkg):
@@ -102,7 +102,7 @@ def systempkg_test_menu(systempkgpath, pkg_name):
     # get all files with .sh extension for system package tests
     for dirpath, dirs, files in os.walk(os.path.join(systempkgpath,pkg_name)):
     	for file in files:
-    		if file.endswith(".sh"):
+    		if file.endswith(".sh") or file.endswith(".csh") or file.endswith(".bash"):
     			files_as_list.append(os.path.join(dirpath,file))
 
 
@@ -402,6 +402,7 @@ def launch_test(testdir,test):
     ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     (output,errormsg) = ret.communicate()
     ec = ret.returncode
+    output = output.decode("utf-8")
     test_pass = 0
     test_fail = 0
     if ec == 0:

@@ -26,24 +26,40 @@ print functions related to buildtest
 
 :author: Shahzeb Siddiqui (Pfizer)
 """
+import csv
+import os
 from buildtest.tools.utility import sset
+
+def print_software_version_relation_csv(software_dict):
+    """ print output of -svr in json"""
+    filename = "software_list.csv"
+    with open(filename,'w',newline='') as csvfile:
+        fieldnames = ['software','modulefile' ]
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        keylist = software_dict.keys()
+        keylist = sorted(keylist)
+        for key in keylist:
+            writer.writerow({"software": software_dict[key], "modulefile": key})
+        print (f"Writing content to CSV file: {os.path.abspath(filename)}")
 
 def print_software_version_relation(software_dict):
     """print output of -svr"""
     text = """
- ID  |        Software            |      Versions
+ ID  |        Software            |      ModuleFile Path
 -----|----------------------------|----------------------------- """
     print (text)
     id = 0
     keylist = software_dict.keys()
+    keylist = sorted(keylist)
 
     modulecnt = 0
 
     for key in keylist:
         id = id + 1
-        for value in sset(software_dict[key]):
-            print ((str(id) + "\t |").expandtabs(4) , "\t" + (key + "\t |" ).expandtabs(25) + "\t" +  value)
-            modulecnt += 1
+        #for value in sset(software_dict[key]):
+        print ((str(id) + "\t |").expandtabs(4) , "\t" + (software_dict[key] + "\t |" ).expandtabs(25) + "\t" +  key)
+        modulecnt += 1
 
     print ("Total Software Modules Found: ", modulecnt)
 

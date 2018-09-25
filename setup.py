@@ -54,7 +54,7 @@ setup(name='buildtest-framework',
        ],
        install_requires = [
             "argcomplete",
-            "pyyaml",
+            "PyYAML",
 	    "buildtest-configs",
 	    "Python-buildtest-config",
 	    "Perl-buildtest-config",

@@ -32,6 +32,7 @@ import os
 import subprocess
 import argparse
 import glob
+import json
 
 sys.path.insert(0,os.path.abspath('.'))
 os.environ["BUILDTEST_ROOT"]=os.path.dirname(os.path.dirname(__file__))
@@ -59,7 +60,7 @@ from buildtest.tools.log import init_log, clean_logs
 from buildtest.tools.menu import buildtest_menu
 from buildtest.tools.modules import diff_trees, module_load_test
 from buildtest.tools.parser.yaml_config import show_yaml_keys
-from buildtest.tools.print_functions import print_software_version_relation, print_software, print_toolchain
+from buildtest.tools.print_functions import print_software_version_relation, print_software, print_toolchain, print_software_version_relation_csv
 from buildtest.tools.scan import scantest
 from buildtest.tools.software import get_unique_software, software_version_relation
 from buildtest.tools.system import get_system_info
@@ -75,6 +76,7 @@ def main():
 
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
     parser = buildtest_menu()
+
     bt_opts = parser.parse_options()
 
     if config_opts.get('BUILDTEST_IGNORE_EASYBUILD'):
@@ -121,17 +123,29 @@ def main():
 
     if bt_opts.list_toolchain is True:
         toolchain_set=list_toolchain()
-        print_toolchain(toolchain_set)
+        if bt_opts.format == "stdout":
+            print_toolchain(toolchain_set)
+        elif bt_opts.format == "json":
+            json.dump(toolchain_set, sys.stdout, indent=4, sort_keys=True)
         sys.exit(0)
 
     if bt_opts.list_unique_software:
         software_set=get_unique_software()
-        print_software(software_set)
+
+        if bt_opts.format == "stdout":
+            print_software(software_set)
+        elif bt_opts.format == "json":
+            json.dump(software_set, sys.stdout, indent=4, sort_keys=True)
         sys.exit(0)
 
     if bt_opts.software_version_relation:
         software_dict = software_version_relation()
-        print_software_version_relation(software_dict)
+        #print (software_dict, type(software_dict))
+        if bt_opts.format == "stdout":
+            print_software_version_relation(software_dict)            
+        elif bt_opts.format == "csv":
+            print_software_version_relation_csv(software_dict)
+
         sys.exit(0)
 
     if bt_opts.easyconfigs_in_moduletrees:
