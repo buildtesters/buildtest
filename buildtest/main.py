@@ -54,7 +54,7 @@ from buildtest.tools.config import show_configuration, config_opts
 from buildtest.tools.file import create_dir
 from buildtest.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from buildtest.tools.find import find_all_tests, find_tests_by_arg
-from buildtest.tools.easybuild import list_toolchain, find_easyconfigs, is_easybuild_app
+from buildtest.tools.easybuild import find_easyconfigs, is_easybuild_app
 from buildtest.tools.generate_yaml import create_system_yaml, create_software_yaml
 from buildtest.tools.log import init_log, clean_logs
 from buildtest.tools.menu import buildtest_menu
@@ -121,6 +121,8 @@ def main():
     if bt_opts.scantest:
         scantest()
 
+    """
+    print (bt_opts)
     if bt_opts.list_toolchain is True:
         toolchain_set=list_toolchain()
         if bt_opts.format == "stdout":
@@ -142,13 +144,14 @@ def main():
         software_dict = software_version_relation()
         #print (software_dict, type(software_dict))
         if bt_opts.format == "stdout":
-            print_software_version_relation(software_dict)            
+            print_software_version_relation(software_dict)
         elif bt_opts.format == "csv":
             print_software_version_relation_csv(software_dict)
 
         sys.exit(0)
+    """
 
-    if bt_opts.easyconfigs_in_moduletrees:
+    if bt_opts.easyconfigs:
         find_easyconfigs()
         sys.exit(0)
 
@@ -177,8 +180,8 @@ def main():
     if bt_opts.module_load_test:
         module_load_test()
 
-    if bt_opts.shell:
-         config_opts['BUILDTEST_SHELL']=bt_opts.shell
+    ##if bt_opts.shell:
+    ##     config_opts['BUILDTEST_SHELL']=bt_opts.shell
 
     if bt_opts.run:
         run_test_buildtest(bt_opts.run)

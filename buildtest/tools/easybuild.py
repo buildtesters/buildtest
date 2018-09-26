@@ -47,7 +47,7 @@ def get_module_root():
             sys.exit(1)
     return modroot
 
-def list_toolchain():
+def get_toolchains():
         """
         return the set of toolchains found in the easyconfig directory
         """
@@ -114,7 +114,7 @@ def list_toolchain():
 
         logger = logging.getLogger(logID)
         logger.info("List of EB Toolchains")
-        logger.info("--------------------------------------")        
+        logger.info("--------------------------------------")
         logger.info("EB Toolchains = %s", toolchain)
 
         return toolchain

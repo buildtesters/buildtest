@@ -35,7 +35,7 @@ import sys
 
 
 from buildtest.tools.config import logID, config_opts
-from buildtest.tools.easybuild import list_toolchain, get_module_root
+from buildtest.tools.easybuild import get_toolchains, get_module_root
 from buildtest.tools.modules import get_module_list
 from buildtest.tools.utility import sset
 
@@ -98,7 +98,7 @@ def get_toolchain_stack():
 
 
 	software_stack = get_software_stack()
-	toolchains = list_toolchain()
+	toolchains = get_toolchains()
 
 	modified_toolchain_list = []
 	for app in software_stack:
