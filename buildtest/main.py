@@ -43,7 +43,7 @@ os.environ['COLUMNS'] = "120"
 from buildtest.tools.menu import buildtest_menu
 
 
-from buildtest.test.job import submit_job_to_scheduler, update_job_template
+from buildtest.test.job import submit_job_to_scheduler
 from buildtest.test.run import run_test_buildtest
 from buildtest.tools.config import show_configuration, config_opts
 from buildtest.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
@@ -84,9 +84,6 @@ def main():
     if bt_opts.logdir:
         config_opts['BUILDTEST_LOGDIR'] = bt_opts.logdir
 
-    if bt_opts.enable_job:
-        config_opts['BUILDTEST_ENABLE_JOB']=True
-
     if bt_opts.clean_logs:
         clean_logs()
 
@@ -126,9 +123,7 @@ def main():
 
     if bt_opts.run:
         run_test_buildtest(bt_opts.run)
-
-    if bt_opts.job_template is not None:
-        update_job_template(bt_opts.job_template)
+    
 
     if bt_opts.submitjob is not None:
         submit_job_to_scheduler(bt_opts.submitjob)

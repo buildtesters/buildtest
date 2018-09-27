@@ -75,6 +75,7 @@ class buildtest_menu():
             parser.add_argument("--clean-logs", help="delete buildtest log directory ($BUILDTEST_LOGDIR)",action="store_true")
 
             parser.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")
+            parser.add_argument("--submitjob", help = "specify a directory or job script to submit to resource scheduler")
 
             group2 = parser.add_argument_group('Find Options', 'buildtest options for finding software, toolchains, tests, yaml files')
             group2.add_argument("-fc","--findconfig", help= """ Find buildtest YAML config files found in BUILDTEST_CONFIGS_REPO.
@@ -88,11 +89,6 @@ class buildtest_menu():
             group4 = parser.add_argument_group('YAML Options', 'Options for YAML configuration')
             group4.add_argument("--sysyaml", help = "generate YAML configuration for binary test for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
             group4.add_argument("--ebyaml", help = "generate YAML configuration for binary test for software package", choices=self.yaml_apps, metavar='YAML-APP-CHOICES')
-
-            group5 = parser.add_argument_group('Job Scheduler Options', 'Options for interacting with Job Scheduler')
-            group5.add_argument("--enable-job", help="enable job script generation with buildtest", action="store_true")
-            group5.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
-            group5.add_argument("--submitjob", help = "specify a directory or job script to submit to resource scheduler")
 
             group6 = parser.add_argument_group('Miscellaneous Options', 'rest of buildtest options')
             group6.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
@@ -120,6 +116,8 @@ class buildtest_menu():
             parser_build.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
             parser_build.add_argument("--clean-build", help="delete software test directory before writing test scripts", action="store_true")
             parser_build.add_argument("--ignore-easybuild", help="ignore if application is not built with easybuild",action="store_true")
+            parser_build.add_argument("--enable-job", help="enable job script generation with buildtest", action="store_true")
+            parser_build.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
             parser_build.set_defaults(func=func_build_subcmd)
 
             self.parser = parser

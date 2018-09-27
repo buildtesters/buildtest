@@ -34,6 +34,7 @@ from buildtest.tools.file import create_dir
 from buildtest.tools.log import init_log
 from buildtest.test.function import clean_tests
 from buildtest.test.binarytest import generate_binary_test
+from buildtest.test.job import update_job_template
 from buildtest.test.perl import build_perl_package_test
 from buildtest.test.python import build_python_test
 from buildtest.test.r import build_r_package_test
@@ -60,6 +61,10 @@ def func_build_subcmd(args):
         config_opts['BUILDTEST_TESTDIR'] = args.testdir
     if args.ignore_easybuild:
         config_opts["BUILDTEST_IGNORE_EASYBUILD"]=True
+    if args.enable_job:
+        config_opts['BUILDTEST_ENABLE_JOB']=True
+    if args.job_template:
+        update_job_template(args.job_template)
 
     logdir = config_opts['BUILDTEST_LOGDIR']
     testdir = config_opts['BUILDTEST_TESTDIR']
