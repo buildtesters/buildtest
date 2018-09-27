@@ -82,10 +82,9 @@ def load_modules(shell_type):
     """
     return a string that loads the software and toolchain module.
     """
-    from buildtest.tools.menu import buildtest_menu
-    args_dict = buildtest_menu().parse_options()
-    software = args_dict.software
-    toolchain = args_dict.toolchain
+
+    software = config_opts["BUILDTEST_SOFTWARE"]
+    toolchain = config_opts["BUILDTEST_TOOLCHAIN"]
 
     #print software
 

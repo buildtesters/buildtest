@@ -34,7 +34,7 @@ import logging
 from buildtest.tools.config import config_opts, logID
 from buildtest.tools.file import create_dir, create_file,string_in_file
 from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
-from buildtest.tools.menu import buildtest_menu
+
 
 def init_CMakeList(filename):
     """
@@ -82,7 +82,7 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
 
     logger = logging.getLogger(logID)
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-    args_dict = buildtest_menu().parse_options()
+    
     shell_type = config_opts['BUILDTEST_SHELL']
 
     appname = get_appname()
@@ -280,6 +280,6 @@ def setup_system_cmake(pkg):
     update_CMakeLists(test_cmakelist_pkg,pkg)
 
     logger.debug("Updating %s with add_subdirectory(system)", test_cmakelist)
-    logger.debug("Updating %s with add_subdirectory(%s)", test_cmakelist_pkg,pkg)    
+    logger.debug("Updating %s with add_subdirectory(%s)", test_cmakelist_pkg,pkg)
 
     return test_destdir,test_cmakelist_destdir

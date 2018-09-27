@@ -202,7 +202,7 @@ def is_easybuild_app():
     app_ver = get_appversion()
 
     modulefiles = []
-    modtrees = get_module_ebroot()
+    modtrees = get_module_root()
     for tree in modtrees:
         for root, dirs, files in os.walk(tree):
             for file in files:
