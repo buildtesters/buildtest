@@ -42,7 +42,7 @@ os.environ['COLUMNS'] = "120"
 
 from buildtest.tools.menu import buildtest_menu
 
-from buildtest.test.function import clean_tests
+
 from buildtest.test.job import submit_job_to_scheduler, update_job_template
 from buildtest.test.run import run_test_buildtest
 from buildtest.tools.config import show_configuration, config_opts
@@ -85,23 +85,14 @@ def main():
     if bt_opts.logdir:
         config_opts['BUILDTEST_LOGDIR'] = bt_opts.logdir
 
-    if bt_opts.testdir:
-         config_opts['BUILDTEST_TESTDIR'] = bt_opts.testdir
-
     if bt_opts.ignore_easybuild:
         config["BUILDTEST_IGNORE_EASYBUILD"]=True
-
-    if bt_opts.clean_build:
-        config_opts['BUILDTEST_CLEAN_BUILD']=True
 
     if bt_opts.enable_job:
         config_opts['BUILDTEST_ENABLE_JOB']=True
 
     if bt_opts.clean_logs:
         clean_logs()
-
-    if bt_opts.clean_tests:
-        clean_tests()
 
     if bt_opts.module_naming_scheme:
         config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = bt_opts.module_naming_scheme

@@ -32,7 +32,7 @@ import sys
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import create_dir
 from buildtest.tools.log import init_log
-
+from buildtest.test.function import clean_tests
 from buildtest.test.binarytest import generate_binary_test
 from buildtest.test.perl import build_perl_package_test
 from buildtest.test.python import build_python_test
@@ -48,14 +48,22 @@ from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_n
 def func_build_subcmd(args):
     """ entry point for build subcommand """
     logger,logpath,logfile = init_log()
+
+
+    if args.shell:
+        config_opts['BUILDTEST_SHELL']=args.shell
+    if args.clean_tests:
+        clean_tests()
+    if args.clean_build:
+        config_opts['BUILDTEST_CLEAN_BUILD']=True
+    if args.testdir:
+        config_opts['BUILDTEST_TESTDIR'] = args.testdir
+
     logdir = config_opts['BUILDTEST_LOGDIR']
     testdir = config_opts['BUILDTEST_TESTDIR']
 
     create_dir(logdir)
     create_dir(testdir)
-
-    if args.shell:
-        config_opts['BUILDTEST_SHELL']=args.shell
 
     if args.system:
         func_build_system(args, logger, logdir, logpath, logfile)
@@ -131,7 +139,7 @@ def func_build_software(args, logger, logdir, logpath, logfile):
     logger.debug("Code Directory: %s", codedir)
 
     setup_software_cmake()
-    
+
     generate_binary_test(args,None)
     sys.exit(0)
     # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)

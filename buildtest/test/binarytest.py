@@ -86,7 +86,7 @@ def generate_binary_test(args_dict,pkg):
 
 
         test_type="software"
-    elif args.system:
+    elif args_dict.system:
         configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],pkg)
         test_type="system"
 
@@ -169,7 +169,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         raise
     fd=open(filename,'r')
     content=yaml.load(fd)
-    
+
     logger.debug("Loading YAML content")
     # if key binaries is not in yaml file, exit program
     if "binaries" not in content:

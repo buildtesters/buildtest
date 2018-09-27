@@ -67,18 +67,14 @@ class buildtest_menu():
             parser = argparse.ArgumentParser(prog='buildtest', usage='%(prog)s [options]')
             parser.add_argument("-V", "--version", help="show program version number and exit",action="store_true")
             parser.add_argument("--logdir", help="Path to write buildtest logs. Override configuration BUILDTEST_LOGDIR")
-            parser.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
             parser.add_argument("--ignore-easybuild", help="ignore if application is not built with easybuild",action="store_true")
             parser.add_argument("--show", help="show buildtest environment configuration", action="store_true")
-            parser.add_argument("--clean-build", help="delete software test directory before writing test scripts", action="store_true")
             parser.add_argument("--show-keys", help="display yaml key description", action="store_true")
-
-
             parser.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
             parser.add_argument("--scantest", help=""" Report all tests that can be built with buildtest by checking all available apps found
             in eb stack and system packages""", action="store_true")
             parser.add_argument("--clean-logs", help="delete buildtest log directory ($BUILDTEST_LOGDIR)",action="store_true")
-            parser.add_argument("--clean-tests",help="delete testing directory ($BUILDTEST_TESTDIR)",action="store_true")
+
             parser.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")
 
             group2 = parser.add_argument_group('Find Options', 'buildtest options for finding software, toolchains, tests, yaml files')
@@ -121,6 +117,9 @@ class buildtest_menu():
             parser_build.add_argument("--r-package", help="build test for R packages", choices=self.r_choices,metavar='R-PACKAGES')
             parser_build.add_argument("--ruby-package", help="build test for Ruby packages", choices=self.ruby_choices,metavar='RUBY-PACKAGES')
             parser_build.add_argument("--perl-package", help="build test for Perl packages", choices=self.perl_choices,metavar='PERL-PACKAGES')
+            parser_build.add_argument("--clean-tests",help="delete testing directory ($BUILDTEST_TESTDIR)",action="store_true")
+            parser_build.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
+            parser_build.add_argument("--clean-build", help="delete software test directory before writing test scripts", action="store_true")
             parser_build.set_defaults(func=func_build_subcmd)
 
             self.parser = parser
