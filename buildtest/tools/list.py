@@ -30,14 +30,16 @@ Methods for list subcommand
 import json
 import sys
 
-from buildtest.tools.easybuild import get_toolchains
+from buildtest.tools.easybuild import get_toolchains, find_easyconfigs
 from buildtest.tools.print_functions import print_software, print_toolchain, print_software_version_relation, print_software_version_relation_csv
 from buildtest.tools.software import get_unique_software, software_version_relation
 
 def func_list_subcmd(args):
     """ entry method for list subcommand"""
-    print (args)
-    if args.list_toolchain:
+
+    if args.easyconfigs:
+        find_easyconfigs()
+    elif args.list_toolchain:
         list_toolchain(args)
     elif args.list_unique_software:
         list_software(args)

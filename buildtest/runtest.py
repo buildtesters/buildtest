@@ -106,6 +106,11 @@ def systempkg_test_menu(systempkgpath, pkg_name):
     			files_as_list.append(os.path.join(dirpath,file))
 
 
+    # if no test found then go back to previous menu
+    if len(files_as_list) == 0:
+        print(f"No Test found for system package: {pkg_name}")
+        time.sleep(1)
+        systempkg_menu(systempkgpath)
     test_list = []
     count = 0
 

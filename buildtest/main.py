@@ -48,7 +48,6 @@ from buildtest.test.run import run_test_buildtest
 from buildtest.tools.config import show_configuration, config_opts
 from buildtest.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from buildtest.tools.find import find_all_tests, find_tests_by_arg
-from buildtest.tools.easybuild import find_easyconfigs, is_easybuild_app
 from buildtest.tools.generate_yaml import create_system_yaml, create_software_yaml
 from buildtest.tools.log import clean_logs
 
@@ -102,10 +101,6 @@ def main():
 
     if bt_opts.scantest:
         scantest()
-
-    if bt_opts.easyconfigs:
-        find_easyconfigs()
-        sys.exit(0)
 
     if bt_opts.diff_trees:
         args_trees = bt_opts.diff_trees

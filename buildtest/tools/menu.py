@@ -99,7 +99,7 @@ class buildtest_menu():
             group6.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
             group6.add_argument("-r", "--run", help="Run test scripts via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
 
-            subparsers = parser.add_subparsers(help='subcommand help')
+            subparsers = parser.add_subparsers(help='subcommand help', dest="sub_command")
             parser_find = subparsers.add_parser('list', help='list help')
             parser_find.add_argument('-lt', "--list-toolchain", help="retrieve a list of easybuild toolchain used for --toolchain option", action="store_true")
             parser_find.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_MODULE_ROOT", action="store_true")
@@ -129,5 +129,7 @@ class buildtest_menu():
 
                 argcomplete.autocomplete(self.parser)
                 args = self.parser.parse_args()
-                args.func(args)
+                
+                if args.sub_command:
+                    args.func(args)
                 return args
