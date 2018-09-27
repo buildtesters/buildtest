@@ -38,8 +38,6 @@ import subprocess
 from buildtest.tools.config import config_opts
 from buildtest.tools.easybuild import get_module_root
 
-#from tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
-
 def get_module_list_by_tree(mod_tree):
     """ returns a list of module file paths given a module tree """
 
@@ -57,6 +55,24 @@ def get_module_list_by_tree(mod_tree):
             modulefiles.append(os.path.join(root,file))
 
     return modulefiles
+def strip_toolchain_from_module(modulename):
+    """
+    When module file has toolchain in version remove it (ex.  Python/2.7.14-intel-2018a  should return  Python/2.7.14 )
+    """
+    from buildtest.tools.software import get_toolchain_stack
+
+    toolchain_stack = get_toolchain_stack()
+    toolchain_name = [name.split("/")[0] for name in toolchain_stack]
+    # get module version
+    module_version = modulename.split("/")[1]
+    # remove any toolchain from module version when figuring path to yaml file
+    for tc in toolchain_name:
+        idx = module_version.find(tc)
+
+        if idx != -1:
+            modulename_strip_toolchain = modulename.split("/")[0] + "/" + module_version[0:idx-1]
+
+    return modulename_strip_toolchain
 
 def get_module_list():
     """

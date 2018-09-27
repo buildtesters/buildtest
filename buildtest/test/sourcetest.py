@@ -38,7 +38,7 @@ from shutil import copyfile
 
 
 from buildtest.test.compiler import get_compiler
-#from buildtest.test.function import add_arg_to_runcmd
+from buildtest.test.function import add_arg_to_runcmd
 from buildtest.test.job import generate_job, generate_job_by_config
 from buildtest.tools.cmake import  add_test_to_CMakeLists
 from buildtest.tools.config import  config_opts, logID

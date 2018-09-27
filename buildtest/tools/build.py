@@ -58,6 +58,8 @@ def func_build_subcmd(args):
         config_opts['BUILDTEST_CLEAN_BUILD']=True
     if args.testdir:
         config_opts['BUILDTEST_TESTDIR'] = args.testdir
+    if args.ignore_easybuild:
+        config_opts["BUILDTEST_IGNORE_EASYBUILD"]=True
 
     logdir = config_opts['BUILDTEST_LOGDIR']
     testdir = config_opts['BUILDTEST_TESTDIR']
@@ -96,14 +98,6 @@ def func_build_software(args, logger, logdir, logpath, logfile):
 
     config_opts["BUILDTEST_SOFTWARE"] = args.software
     config_opts["BUILDTEST_TOOLCHAIN"] = args.toolchain
-    """
-    software=args.software.split("/")
-
-    if args.toolchain is None:
-        toolchain="dummy/dummy".split("/")
-    else:
-        toolchain=args.toolchain.split("/")
-    """
 
     appname=get_appname()
     appversion=get_appversion()
@@ -141,20 +135,20 @@ def func_build_software(args, logger, logdir, logpath, logfile):
     setup_software_cmake()
 
     generate_binary_test(args,None)
-    sys.exit(0)
+
     # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)
     recursive_gen_test(configdir,codedir)
 
-    if bt_opts.python_package:
+    if args.python_package:
         build_python_test(args.python_package)
 
-    if bt_opts.r_package:
+    if args.r_package:
         build_r_package_test(args.r_package)
 
-    if bt_opts.ruby_package:
+    if args.ruby_package:
         build_ruby_package_test(args.ruby_package)
 
-    if bt_opts.perl_package:
+    if args.perl_package:
         build_perl_package_test(args.perl_package)
 
     # moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to $BUILDTEST_LOGDIR/app/appver/tcname/tcver/buildtest_%H_%M_%d_%m_%Y.log

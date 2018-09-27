@@ -84,9 +84,6 @@ def main():
     if bt_opts.logdir:
         config_opts['BUILDTEST_LOGDIR'] = bt_opts.logdir
 
-    if bt_opts.ignore_easybuild:
-        config["BUILDTEST_IGNORE_EASYBUILD"]=True
-
     if bt_opts.enable_job:
         config_opts['BUILDTEST_ENABLE_JOB']=True
 

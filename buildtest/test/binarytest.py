@@ -40,7 +40,7 @@ from buildtest.tools.config import BUILDTEST_ROOT, config_opts, logID
 from buildtest.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake, add_test_to_CMakeLists
 from buildtest.tools.file import create_dir, string_in_file
 from buildtest.tools.parser.yaml_config import parse_config
-from buildtest.tools.modules import load_modules
+from buildtest.tools.modules import load_modules, strip_toolchain_from_module
 from buildtest.tools.software import get_toolchain_stack
 from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
@@ -69,20 +69,9 @@ def generate_binary_test(args_dict,pkg):
 
     # determine whether we are running a binary test on ebapp or system package
     if args_dict.software:
-        """
-            toolchain_stack = get_toolchain_stack()
-            toolchain_name = [name.split("/")[0] for name in toolchain_stack]
-            # get module version
-            module_version = software.split("/")[1]
-            # remove any toolchain from module version when figuring path to yaml file
-            for tc in toolchain_name:
-                idx = module_version.find(tc)
-
-                if idx != -1:
-                    software = software.split("/")[0] + "/" + module_version[0:idx-1]
-        """
-        software = get_appname() + "/" + get_appversion()
-        configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],software.lower())
+        software = args_dict.software
+        software_strip_toolchain = strip_toolchain_from_module(software)
+        configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],software_strip_toolchain.lower())
 
 
         test_type="software"
@@ -110,7 +99,8 @@ def generate_binary_test(args_dict,pkg):
 
     # if command.yaml does not exist then report error
     if os.path.isfile(commandfile) == False:
-        msg =  "Cannot find command file:" +  commandfile + "Skipping binary test for package:", pkg
+        msg =  "Cannot find command file:" +  commandfile
+        print(msg)
         logger.error("%s", msg)
         return
 
