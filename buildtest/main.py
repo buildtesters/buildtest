@@ -40,31 +40,22 @@ os.environ["BUILDTEST_JOB_TEMPLATE"]=os.path.join(os.getenv("BUILDTEST_ROOT"),"t
 # column width for linewrap for argparse library
 os.environ['COLUMNS'] = "120"
 
-from buildtest.test.binarytest import generate_binary_test
+from buildtest.tools.menu import buildtest_menu
+
 from buildtest.test.function import clean_tests
 from buildtest.test.job import submit_job_to_scheduler, update_job_template
-from buildtest.test.perl import build_perl_package_test
-from buildtest.test.python import build_python_test
-from buildtest.test.r import build_r_package_test
-from buildtest.test.ruby import build_ruby_package_test
 from buildtest.test.run import run_test_buildtest
-from buildtest.test.sourcetest import recursive_gen_test
-from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.config import show_configuration, config_opts
-from buildtest.tools.file import create_dir
 from buildtest.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from buildtest.tools.find import find_all_tests, find_tests_by_arg
 from buildtest.tools.easybuild import find_easyconfigs, is_easybuild_app
 from buildtest.tools.generate_yaml import create_system_yaml, create_software_yaml
-from buildtest.tools.log import init_log, clean_logs
-from buildtest.tools.menu import buildtest_menu
+from buildtest.tools.log import clean_logs
+
 from buildtest.tools.modules import diff_trees, module_load_test
 from buildtest.tools.parser.yaml_config import show_yaml_keys
-from buildtest.tools.print_functions import print_software_version_relation, print_software, print_toolchain, print_software_version_relation_csv
 from buildtest.tools.scan import scantest
-from buildtest.tools.software import get_unique_software, software_version_relation
 from buildtest.tools.system import get_system_info
-from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 from buildtest.tools.version import buildtest_version
 from buildtest.runtest import runtest_menu
 
@@ -72,7 +63,7 @@ def main():
     """ entry point to buildtest """
 
 
-    BUILDTEST_IGNORE_EASYBUILD=False
+    config_opts["BUILDTEST_IGNORE_EASYBUILD"]=False
 
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
     parser = buildtest_menu()
@@ -98,7 +89,7 @@ def main():
          config_opts['BUILDTEST_TESTDIR'] = bt_opts.testdir
 
     if bt_opts.ignore_easybuild:
-        BUILDTEST_IGNORE_EASYBUILD=True
+        config["BUILDTEST_IGNORE_EASYBUILD"]=True
 
     if bt_opts.clean_build:
         config_opts['BUILDTEST_CLEAN_BUILD']=True
@@ -120,36 +111,6 @@ def main():
 
     if bt_opts.scantest:
         scantest()
-
-    """
-    print (bt_opts)
-    if bt_opts.list_toolchain is True:
-        toolchain_set=list_toolchain()
-        if bt_opts.format == "stdout":
-            print_toolchain(toolchain_set)
-        elif bt_opts.format == "json":
-            json.dump(toolchain_set, sys.stdout, indent=4, sort_keys=True)
-        sys.exit(0)
-
-    if bt_opts.list_unique_software:
-        software_set=get_unique_software()
-
-        if bt_opts.format == "stdout":
-            print_software(software_set)
-        elif bt_opts.format == "json":
-            json.dump(software_set, sys.stdout, indent=4, sort_keys=True)
-        sys.exit(0)
-
-    if bt_opts.software_version_relation:
-        software_dict = software_version_relation()
-        #print (software_dict, type(software_dict))
-        if bt_opts.format == "stdout":
-            print_software_version_relation(software_dict)
-        elif bt_opts.format == "csv":
-            print_software_version_relation_csv(software_dict)
-
-        sys.exit(0)
-    """
 
     if bt_opts.easyconfigs:
         find_easyconfigs()
@@ -180,9 +141,6 @@ def main():
     if bt_opts.module_load_test:
         module_load_test()
 
-    ##if bt_opts.shell:
-    ##     config_opts['BUILDTEST_SHELL']=bt_opts.shell
-
     if bt_opts.run:
         run_test_buildtest(bt_opts.run)
 
@@ -200,98 +158,8 @@ def main():
         create_software_yaml(bt_opts.ebyaml)
 
 
-    logger,logpath,logfile = init_log()
-    BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
-    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-
-    create_dir(BUILDTEST_LOGDIR)
-    create_dir(BUILDTEST_TESTDIR)
-
     get_system_info()
 
-    # generate system pkg test
-    if bt_opts.system is not None:
-        systempkg = bt_opts.system
-        BUILDTEST_LOGDIR = os.path.join(BUILDTEST_LOGDIR,"system",systempkg)
-        #setup_system_cmake()
-        generate_binary_test(bt_opts,systempkg)
-
-        create_dir(BUILDTEST_LOGDIR)
-        logger.warning("Creating directory %s , to write log file", BUILDTEST_LOGDIR)
-
-        destpath = os.path.join(BUILDTEST_LOGDIR,logfile)
-        os.rename(logpath, destpath)
-        logger.info("Moving log file from %s to %s", logpath, destpath)
-
-        print("Writing Log file to: ", destpath)
-        sys.exit(0)
-
-	# when -s is specified
-    if bt_opts.software is not None:
-        software=bt_opts.software.split("/")
-
-        if bt_opts.toolchain is None:
-            toolchain="dummy/dummy".split("/")
-        else:
-            toolchain=bt_opts.toolchain.split("/")
-
-        appname=get_appname()
-        appversion=get_appversion()
-        tcname = get_toolchain_name()
-        tcversion = get_toolchain_version()
-
-        print("Detecting Software: ", os.path.join(appname,appversion))
-
-        logger.debug("Generating Test from EB Application")
-
-        logger.debug("Software: %s", appname)
-        logger.debug("Software Version: %s", appversion)
-        logger.debug("Toolchain: %s", tcname)
-        logger.debug("Toolchain Version: %s", tcversion)
-
-        logger.debug("Checking if software: %s/%s exists",appname,appversion)
-
-
-        # check if software is an easybuild applicationa
-        if BUILDTEST_IGNORE_EASYBUILD == False:
-            is_easybuild_app()
-
-        source_app_dir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],appname.lower())
-        configdir=os.path.join(source_app_dir,"config")
-        codedir=os.path.join(source_app_dir,"code")
-        BUILDTEST_LOGDIR=os.path.join(BUILDTEST_LOGDIR,appname,appversion,tcname,tcversion)
-
-        # if directory tree for software log is not present, create the directory
-        create_dir(BUILDTEST_LOGDIR)
-
-        logger.debug("Source App Directory: %s",  source_app_dir)
-        logger.debug("Config Directory: %s ", configdir)
-        logger.debug("Code Directory: %s", codedir)
-
-        setup_software_cmake()
-
-        generate_binary_test(bt_opts,None)
-
-        # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)
-        recursive_gen_test(configdir,codedir)
-
-        if bt_opts.python_package:
-            build_python_test(bt_opts.python_package)
-
-        if bt_opts.r_package:
-            build_r_package_test(bt_opts.r_package)
-
-        if bt_opts.ruby_package:
-            build_ruby_package_test(bt_opts.ruby_package)
-
-        if bt_opts.perl_package:
-            build_perl_package_test(bt_opts.perl_package)
-
-        # moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to $BUILDTEST_LOGDIR/app/appver/tcname/tcver/buildtest_%H_%M_%d_%m_%Y.log
-        os.rename(logpath, os.path.join(BUILDTEST_LOGDIR,logfile))
-        logger.debug("Writing Log file to %s", os.path.join(BUILDTEST_LOGDIR,logfile))
-
-        print ("Writing Log file: ", os.path.join(BUILDTEST_LOGDIR,logfile))
 
 if __name__ == "__main__":
         main()

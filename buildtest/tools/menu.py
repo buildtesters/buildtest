@@ -35,6 +35,7 @@ from buildtest.test.r import r_pkg_choices
 from buildtest.test.ruby import ruby_pkg_choices
 from buildtest.test.perl import perl_pkg_choices
 from buildtest.test.run import test_list
+from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, check_configuration
 from buildtest.tools.list import func_list_subcmd
 from buildtest.tools.options import override_configuration
@@ -62,8 +63,6 @@ class buildtest_menu():
         test_choices = test_list()
 
         def __init__(self):
-        # reports an error, issue with import
-        #software_list = get_unique_software_version(BUILDTEST_MODULE_EBROOT)
 
             parser = argparse.ArgumentParser(prog='buildtest', usage='%(prog)s [options]')
             parser.add_argument("-V", "--version", help="show program version number and exit",action="store_true")
@@ -95,7 +94,6 @@ class buildtest_menu():
             group4.add_argument("--sysyaml", help = "generate YAML configuration for binary test for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
             group4.add_argument("--ebyaml", help = "generate YAML configuration for binary test for software package", choices=self.yaml_apps, metavar='YAML-APP-CHOICES')
 
-
             group5 = parser.add_argument_group('Job Scheduler Options', 'Options for interacting with Job Scheduler')
             group5.add_argument("--enable-job", help="enable job script generation with buildtest", action="store_true")
             group5.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
@@ -114,7 +112,6 @@ class buildtest_menu():
             parser_find.add_argument("--format", help="Output format type", choices=["csv", "json", "stdout"], default="stdout")
             parser_find.set_defaults(func=func_list_subcmd)
 
-            #build_subparser  = parser.add_subparsers(help="build tests from yaml configuration")
             parser_build = subparsers.add_parser('build', help='build help')
             parser_build.add_argument("-s", "--software", help=" Specify software package to test", choices=self.software_list, metavar='INSTALLED-EASYBUILD-APPS')
             parser_build.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=self.toolchain_list, metavar='INSTALLED-EASYBUILD-TOOLCHAINS')
@@ -124,14 +121,9 @@ class buildtest_menu():
             parser_build.add_argument("--r-package", help="build test for R packages", choices=self.r_choices,metavar='R-PACKAGES')
             parser_build.add_argument("--ruby-package", help="build test for Ruby packages", choices=self.ruby_choices,metavar='RUBY-PACKAGES')
             parser_build.add_argument("--perl-package", help="build test for Perl packages", choices=self.perl_choices,metavar='PERL-PACKAGES')
+            parser_build.set_defaults(func=func_build_subcmd)
 
             self.parser = parser
-
-        #argcomplete.autocomplete(parser)
-        #args = parser.parse_args()
-
-        #return vars(args)
-
 
         def parse_options(self):
                 """ return argument as a dictionary"""

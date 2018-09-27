@@ -62,13 +62,14 @@ def generate_binary_test(args_dict,pkg):
     toplevel_cmakelist_file=os.path.join(os.path.dirname(BUILDTEST_TESTDIR),"CMakeLists.txt")
     testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
 
-    software = args_dict.software
+    #software = args_dict.software
     system = args_dict.system
 
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 
     # determine whether we are running a binary test on ebapp or system package
-    if software is not None:
+    if args_dict.software:
+        """
             toolchain_stack = get_toolchain_stack()
             toolchain_name = [name.split("/")[0] for name in toolchain_stack]
             # get module version
@@ -79,14 +80,15 @@ def generate_binary_test(args_dict,pkg):
 
                 if idx != -1:
                     software = software.split("/")[0] + "/" + module_version[0:idx-1]
+        """
+        software = get_appname() + "/" + get_appversion()
+        configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],software.lower())
 
-            configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],software.lower())
 
-
-            test_type="software"
-    elif system is not None:
-            configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],pkg)
-            test_type="system"
+        test_type="software"
+    elif args.system:
+        configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],pkg)
+        test_type="system"
 
     commandfile=os.path.join(configdir,"command.yaml")
 
@@ -113,6 +115,8 @@ def generate_binary_test(args_dict,pkg):
         return
 
     parse_config(commandfile)
+
+
     # if all checks have passed then proceed with generating test
     process_binary_file(commandfile,args_dict,test_type,pkg)
 
@@ -131,6 +135,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
     print ("--------------------------------------------")
     print ("[STAGE 1]: Building Binary Tests")
     print ("--------------------------------------------")
+
     if test_type == "software":
 
         name = get_appname()
@@ -141,6 +146,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         test_destdir,test_destdir_cmakelist = setup_software_cmake()
 
         print ("Detecting Test Type: Software")
+
 
        # load preamble for test-script that initializes environment.
         header=load_modules(BUILDTEST_SHELL)
@@ -163,7 +169,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         raise
     fd=open(filename,'r')
     content=yaml.load(fd)
-
+    
     logger.debug("Loading YAML content")
     # if key binaries is not in yaml file, exit program
     if "binaries" not in content:

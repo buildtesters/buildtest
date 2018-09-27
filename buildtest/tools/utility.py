@@ -35,17 +35,13 @@ class sset(set):
 
 def get_appname():
     """return application name from -s option"""
-    from buildtest.tools.menu import buildtest_menu
-    args_dict = buildtest_menu().parse_options()
-    software = args_dict.software
+    software = config_opts["BUILDTEST_SOFTWARE"]
     software = software.split('/')
     return software[0]
 
 def get_appversion():
     """return application version from -s option"""
-    from buildtest.tools.menu import buildtest_menu
-    args_dict = buildtest_menu().parse_options()
-    software = args_dict.software
+    software = config_opts["BUILDTEST_SOFTWARE"]
     software = software.split('/')
     BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
     if BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
@@ -58,7 +54,7 @@ def get_appversion():
         # must strip toolchain to get the version
         else:
             appversion = software[1].replace(tc,'')
-            print (appversion)
+
             if appversion[-1] == "-":
                 appversion = appversion[:-1]
                 return appversion
@@ -73,9 +69,8 @@ def get_toolchain():
 
 def get_toolchain_name():
     """return toolchain  name from -t option"""
-    from buildtest.tools.menu import buildtest_menu
-    args_dict = buildtest_menu().parse_options()
-    toolchain = args_dict.toolchain
+    toolchain = config_opts["BUILDTEST_TOOLCHAIN"]
+
 
     # checking if toolchain is defined in argument
     if toolchain is  None:
@@ -86,9 +81,7 @@ def get_toolchain_name():
 
 def get_toolchain_version():
     """return toolchain version from -t option"""
-    from buildtest.tools.menu import buildtest_menu
-    args_dict = buildtest_menu().parse_options()
-    toolchain = args_dict.toolchain
+    toolchain = config_opts["BUILDTEST_TOOLCHAIN"]
 
     # checking if toolchain is defined in argument
     if toolchain is None:
