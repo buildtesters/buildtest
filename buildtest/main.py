@@ -44,7 +44,6 @@ from buildtest.tools.menu import buildtest_menu
 
 
 from buildtest.test.job import submit_job_to_scheduler
-from buildtest.test.run import run_test_buildtest
 from buildtest.tools.config import show_configuration, config_opts
 from buildtest.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from buildtest.tools.find import find_all_tests, find_tests_by_arg
@@ -56,7 +55,6 @@ from buildtest.tools.parser.yaml_config import show_yaml_keys
 from buildtest.tools.scan import scantest
 from buildtest.tools.system import get_system_info
 from buildtest.tools.version import buildtest_version
-from buildtest.runtest import runtest_menu
 
 def main():
     """ entry point to buildtest """
@@ -90,8 +88,6 @@ def main():
     if bt_opts.module_naming_scheme:
         config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = bt_opts.module_naming_scheme
 
-    if bt_opts.runtest:
-        runtest_menu()
 
     if bt_opts.scantest:
         scantest()
@@ -120,10 +116,6 @@ def main():
 
     if bt_opts.module_load_test:
         module_load_test()
-
-    if bt_opts.run:
-        run_test_buildtest(bt_opts.run)
-    
 
     if bt_opts.submitjob is not None:
         submit_job_to_scheduler(bt_opts.submitjob)

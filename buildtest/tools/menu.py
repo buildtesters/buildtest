@@ -39,6 +39,7 @@ from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, check_configuration
 from buildtest.tools.list import func_list_subcmd
 from buildtest.tools.options import override_configuration
+from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.system import systempackage_installed_list
 from buildtest.tools.software import get_software_stack, get_toolchain_stack,ebyaml_choices
 
@@ -90,9 +91,9 @@ class buildtest_menu():
             group4.add_argument("--sysyaml", help = "generate YAML configuration for binary test for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
             group4.add_argument("--ebyaml", help = "generate YAML configuration for binary test for software package", choices=self.yaml_apps, metavar='YAML-APP-CHOICES')
 
-            group6 = parser.add_argument_group('Miscellaneous Options', 'rest of buildtest options')
-            group6.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
-            group6.add_argument("-r", "--run", help="Run test scripts via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
+            #group6 = parser.add_argument_group('Miscellaneous Options', 'rest of buildtest options')
+            #group6.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
+            #group6.add_argument("-r", "--run", help="Run test scripts via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
 
             subparsers = parser.add_subparsers(help='subcommand help', dest="sub_command")
             parser_find = subparsers.add_parser('list', help='list help')
@@ -119,6 +120,12 @@ class buildtest_menu():
             parser_build.add_argument("--enable-job", help="enable job script generation with buildtest", action="store_true")
             parser_build.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
             parser_build.set_defaults(func=func_build_subcmd)
+
+            parser_run = subparsers.add_parser('run', help='run help')
+            parser_run.add_argument("-i", "--interactive", help="Run the test interactively", action="store_true")
+            parser_run.add_argument("-r", "--run", help="Run test scripts via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
+            parser_run.set_default(func=func_run_subcmd)
+            
 
             self.parser = parser
 
