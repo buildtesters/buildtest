@@ -33,13 +33,15 @@ import time
 import glob
 
 from buildtest.tools.config import config_opts
-from buildtest.tools.menu import buildtest_menu
 
 def systempkg_menu(systempkg):
 
+    try:
+        dirs = [ d for d in os.listdir(systempkg) if os.path.isdir(os.path.join(systempkg,d)) ]
+    except OSError as err_msg:
+        print(f"{err_msg}")
+        raise
 
-    dirs = [ d for d in os.listdir(systempkg) if os.path.isdir(os.path.join(systempkg,d)) ]
-    #totalcount = count
     while True:
         os.system("clear")
 
@@ -322,8 +324,7 @@ def eb_menu(ebpkg):
     	testdir = os.path.join(ebpkg,app_selected,toolchain_selected)
 
 
-    #args_dict = buildtest_menu().parse_options()
-    #	print args_dict, type(args_dict)
+
     output_list = []
     # adding all tests from a eb package in a list for printing
     for dirpath, subdir, files in os.walk(testdir):
@@ -397,8 +398,6 @@ def eb_menu(ebpkg):
 
 def launch_test(testdir,test):
     os.chdir(testdir)
-    #args_dict = buildtest_menu().parse_args()
-
     shell_type = os.path.splitext(test)[1]
     # remove leading .
     shell_type = shell_type[1:]

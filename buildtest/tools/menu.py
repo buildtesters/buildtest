@@ -34,7 +34,7 @@ from buildtest.test.python import python_pkg_choices
 from buildtest.test.r import r_pkg_choices
 from buildtest.test.ruby import ruby_pkg_choices
 from buildtest.test.perl import perl_pkg_choices
-from buildtest.test.run import test_list
+from buildtest.test.run.testname import test_list
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, check_configuration
 from buildtest.tools.list import func_list_subcmd
@@ -118,7 +118,8 @@ class buildtest_menu():
 
             parser_run = subparsers.add_parser('run', help='run help')
             parser_run.add_argument("-i", "--interactive", help="Run the test interactively", action="store_true")
-            parser_run.add_argument("-t", "--testname", help="Run test scripts via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
+            parser_run.add_argument("-t", "--testname", help="Run a single testscript via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
+            parser_run.add_argument("-a", "--app", help="Run test suite by  application via buildtest")
             parser_run.set_defaults(func=func_run_subcmd)
 
 

@@ -19,8 +19,8 @@
 # @author: Shahzeb Siddiqui (Pfizer)
 
 import sys
-from buildtest.test.run import run_test_buildtest
-from buildtest.test.runtest import runtest_menu
+from buildtest.test.run.testname import run_test_buildtest
+from buildtest.test.run.interactive import runtest_menu
 
 def func_run_subcmd(args):
     """ run subcommand entry point """
