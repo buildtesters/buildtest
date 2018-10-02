@@ -65,14 +65,18 @@ def strip_toolchain_from_module(modulename):
     toolchain_name = [name.split("/")[0] for name in toolchain_stack]
     # get module version
     module_version = modulename.split("/")[1]
+
+    app_name = modulename.split("/")[0]
+    # if application is a toolchain then return modulename as is without stripping toolchain
+    if app_name in toolchain_name:
+        return modulename
     # remove any toolchain from module version when figuring path to yaml file
     for tc in toolchain_name:
         idx = module_version.find(tc)
 
         if idx != -1:
-            modulename_strip_toolchain = modulename.split("/")[0] + "/" + module_version[0:idx-1]
-
-    return modulename_strip_toolchain
+            modulename_strip_toolchain = modulename.split("/")[0] + "/" + module_version[0:idx-1]            
+            return modulename_strip_toolchain
 
 def get_module_list():
     """

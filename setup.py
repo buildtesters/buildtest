@@ -28,7 +28,7 @@
 from setuptools import setup, find_packages
 from buildtest.tools.config import BUILDTEST_VERSION
 
-
+VERSION="0.4.0"
 setup(name='buildtest-framework',
       version=BUILDTEST_VERSION,
       author='Shahzeb Siddiqui',
@@ -56,9 +56,9 @@ setup(name='buildtest-framework',
             "argcomplete",
             "PyYAML",
 	    "buildtest-configs",
-	    "Python-buildtest-config",
-	    "Perl-buildtest-config",
-	    "Ruby-buildtest-config",
-	    "R-buildtest-config",
+	    "Python-buildtest-config=="+VERSION,
+	    "Perl-buildtest-config=="+VERSION,
+	    "Ruby-buildtest-config=="+VERSION,
+	    "R-buildtest-config=="+VERSION,
        ]
       )
