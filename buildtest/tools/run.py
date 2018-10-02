@@ -18,13 +18,15 @@
 
 # @author: Shahzeb Siddiqui (Pfizer)
 
+import sys
 from buildtest.test.run import run_test_buildtest
-from buildtest.runtest import runtest_menu
+from buildtest.test.runtest import runtest_menu
 
 def func_run_subcmd(args):
-  
-  if args.interactive:
-    runtest_menu()
-  if args.run:
-    run_test_buildtest(args.run)
+    """ run subcommand entry point """
+    if args.interactive:
+        runtest_menu()
+    if args.testname:
+        run_test_buildtest(args.testname)
 
+    sys.exit(0)

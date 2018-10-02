@@ -86,14 +86,9 @@ class buildtest_menu():
 
             group2.add_argument("--diff-trees", help="Show difference between two module trees")
 
-
             group4 = parser.add_argument_group('YAML Options', 'Options for YAML configuration')
             group4.add_argument("--sysyaml", help = "generate YAML configuration for binary test for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
             group4.add_argument("--ebyaml", help = "generate YAML configuration for binary test for software package", choices=self.yaml_apps, metavar='YAML-APP-CHOICES')
-
-            #group6 = parser.add_argument_group('Miscellaneous Options', 'rest of buildtest options')
-            #group6.add_argument("--runtest", help="Run the test interactively through runtest.py", action="store_true")
-            #group6.add_argument("-r", "--run", help="Run test scripts via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
 
             subparsers = parser.add_subparsers(help='subcommand help', dest="sub_command")
             parser_find = subparsers.add_parser('list', help='list help')
@@ -123,9 +118,9 @@ class buildtest_menu():
 
             parser_run = subparsers.add_parser('run', help='run help')
             parser_run.add_argument("-i", "--interactive", help="Run the test interactively", action="store_true")
-            parser_run.add_argument("-r", "--run", help="Run test scripts via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
-            parser_run.set_default(func=func_run_subcmd)
-            
+            parser_run.add_argument("-t", "--testname", help="Run test scripts via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
+            parser_run.set_defaults(func=func_run_subcmd)
+
 
             self.parser = parser
 
