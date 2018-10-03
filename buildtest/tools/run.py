@@ -21,6 +21,7 @@
 import sys
 from buildtest.test.run.app import run_app_test
 from buildtest.test.run.testname import run_test_buildtest
+from buildtest.test.run.system import run_system_test
 from buildtest.test.run.interactive import runtest_menu
 
 def func_run_subcmd(args):
@@ -31,4 +32,6 @@ def func_run_subcmd(args):
         run_test_buildtest(args.testname)
     if args.app:
         run_app_test(args.app)
+    if args.systempkg:
+        run_system_test(args.systempkg)
     sys.exit(0)

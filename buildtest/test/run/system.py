@@ -22,8 +22,8 @@
 
 """
 
-This module will run an entire test suite for an application. This implements
-_buildtest run --app 
+This module will run an entire test suite for a system package. This implements
+_buildtest run --system
 
 :author: Shahzeb Siddiqui
 
@@ -32,37 +32,24 @@ _buildtest run --app
 import os
 import sys
 from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
-def run_app_choices():
+def run_system_choices():
     """
     generate choice field for _buildtest run --app
     """
-    root_testdir = config_opts["BUILDTEST_TESTDIR"]
-    app_root_testdir = os.path.join(root_testdir,"ebapp")
-    app_name_list = [ f.path for f in os.scandir(app_root_testdir) if f.is_dir()]
 
-    app_choices_fullpath = []
-    for app in app_name_list:
-        app_ver_list = [ f.path for f in os.scandir(app) if f.is_dir()]
-        if len(app_ver_list) > 0:
-            app_choices_fullpath += app_ver_list
+    system_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"system")
+    systempkg_list = [ os.path.basename(f.path) for f in os.scandir(system_root_testdir) if f.is_dir()]
 
-    app_choices = []
-    for path in app_choices_fullpath:
-        name = os.path.basename(os.path.dirname(path))
-        ver = os.path.basename(path)
+    return systempkg_list
 
-        app_choices.append(os.path.join(name,ver))
-
-    return app_choices
-
-def run_app_test(app_name):
+def run_system_test(systempkg):
     """
-    implementation for _buildtest run --app to execute all tests in the test directory
+    implementation for _buildtest run --systempkg to execute all tests in the test directory
     """
 
-    app_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"ebapp")
+    system_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"system")
 
-    tests = [ f.path for f in os.scandir(os.path.join(app_root_testdir,app_name)) if os.path.splitext(f)[1] in [".sh", ".bash", ".csh"]]
+    tests = [ f.path for f in os.scandir(os.path.join(system_root_testdir,systempkg)) if os.path.splitext(f)[1] in [".sh", ".bash", ".csh"]]
 
     count_test = len(tests)
 
@@ -72,4 +59,4 @@ def run_app_test(app_name):
         os.system(test)
         print ("---------------------------------------------------------")
 
-    print (f"Executed {count_test} tests for software: {app_name}")
+    print (f"Executed {count_test} tests for system package: {systempkg}")

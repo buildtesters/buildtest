@@ -1,3 +1,9 @@
+############################################################################
+#
+#  Copyright 2017-2018
+#
+#   https://github.com/HPC-buildtest/buildtest-framework
+#
 #  This file is part of buildtest.
 #
 #    buildtest is free software: you can redistribute it and/or modify
@@ -13,6 +19,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
+
 """
 
 This module will run test scripts via buildtest and capture output and additional

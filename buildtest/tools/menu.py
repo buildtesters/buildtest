@@ -31,6 +31,7 @@ import argparse
 import argcomplete
 
 from buildtest.test.run.app import run_app_choices
+from buildtest.test.run.system import run_system_choices
 from buildtest.test.python import python_pkg_choices
 from buildtest.test.r import r_pkg_choices
 from buildtest.test.ruby import ruby_pkg_choices
@@ -64,6 +65,7 @@ class buildtest_menu():
 
         test_choices = test_list()
         app_choices = run_app_choices()
+        systempkg_choices = run_system_choices()
         def __init__(self):
 
             parser = argparse.ArgumentParser(prog='buildtest', usage='%(prog)s [options]')
@@ -120,7 +122,8 @@ class buildtest_menu():
             parser_run = subparsers.add_parser('run', help='run help')
             parser_run.add_argument("-i", "--interactive", help="Run the test interactively", action="store_true")
             parser_run.add_argument("-t", "--testname", help="Run a single testscript via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
-            parser_run.add_argument("-a", "--app", help="Run test suite by  application via buildtest", choices=self.app_choices, metavar='APPLICATION-TEST-SUITE')
+            parser_run.add_argument("-a", "--app", help="Run test suite for application via buildtest", choices=self.app_choices, metavar='APPLICATION-TEST-SUITE')
+            parser_run.add_argument("-s", "--systempkg", help="Run test suite for system package via buildtest", choices=self.systempkg_choices, metavar='SYSTEMPACKAGE-TEST-SUITE')
             parser_run.set_defaults(func=func_run_subcmd)
 
 
