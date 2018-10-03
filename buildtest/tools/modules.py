@@ -75,7 +75,7 @@ def strip_toolchain_from_module(modulename):
         idx = module_version.find(tc)
 
         if idx != -1:
-            modulename_strip_toolchain = modulename.split("/")[0] + "/" + module_version[0:idx-1]            
+            modulename_strip_toolchain = modulename.split("/")[0] + "/" + module_version[0:idx-1]
             return modulename_strip_toolchain
 
 def get_module_list():

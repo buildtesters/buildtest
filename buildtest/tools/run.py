@@ -19,6 +19,7 @@
 # @author: Shahzeb Siddiqui (Pfizer)
 
 import sys
+from buildtest.test.run.app import run_app_test
 from buildtest.test.run.testname import run_test_buildtest
 from buildtest.test.run.interactive import runtest_menu
 
@@ -28,5 +29,6 @@ def func_run_subcmd(args):
         runtest_menu()
     if args.testname:
         run_test_buildtest(args.testname)
-
+    if args.app:
+        run_app_test(args.app)
     sys.exit(0)
