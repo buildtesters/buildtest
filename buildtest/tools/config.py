@@ -34,7 +34,7 @@ import subprocess
 import yaml
 
 # read the BUILDTEST env vars from the shell environment that is sourced by setup.sh
-BUILDTEST_VERSION="0.4.1"
+BUILDTEST_VERSION="0.5.0"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
 BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm", ".pbs"]
