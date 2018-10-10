@@ -77,7 +77,7 @@ def get_binaries_from_systempackage(pkg):
         # check only files that are executable
         statmode = os.stat(file)[stat.ST_MODE] & (stat.S_IXUSR|stat.S_IXGRP|stat.S_IXOTH)
 
-        ret = subprocess.Popen("sha256sum " + file, shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)        
+        ret = subprocess.Popen("sha256sum " + file, shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         output = ret.communicate()[0].decode("utf-8")
 
         sha256sum = output.split(" ")[0]
@@ -89,7 +89,7 @@ def get_binaries_from_systempackage(pkg):
                 binaries[sha256sum] = file
 
     if len(binaries) == 0:
-        print ("There are no binaries found in package: %s", name)
+        print ("There are no binaries found in package: ", pkg)
         sys.exit(0)
 
     return binaries
