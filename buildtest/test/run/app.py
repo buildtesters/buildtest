@@ -23,7 +23,7 @@
 """
 
 This module will run an entire test suite for an application. This implements
-_buildtest run --app 
+_buildtest run --app
 
 :author: Shahzeb Siddiqui
 
@@ -38,6 +38,10 @@ def run_app_choices():
     """
     root_testdir = config_opts["BUILDTEST_TESTDIR"]
     app_root_testdir = os.path.join(root_testdir,"ebapp")
+
+    # if there is no directory $BUILDTEST_TESTDIR then return an empty list
+    if not os.path.exists(app_root_testdir):
+        return []
     app_name_list = [ f.path for f in os.scandir(app_root_testdir) if f.is_dir()]
 
     app_choices_fullpath = []

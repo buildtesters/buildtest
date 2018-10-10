@@ -38,6 +38,9 @@ def run_system_choices():
     """
 
     system_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"system")
+    # if there is no directory $BUILDTEST_TESTDIR then return an empty list
+    if not os.path.exists(system_root_testdir):
+        return []
     systempkg_list = [ os.path.basename(f.path) for f in os.scandir(system_root_testdir) if f.is_dir()]
 
     return systempkg_list
@@ -48,6 +51,8 @@ def run_system_test(systempkg):
     """
 
     system_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"system")
+
+
 
     tests = [ f.path for f in os.scandir(os.path.join(system_root_testdir,systempkg)) if os.path.splitext(f)[1] in [".sh", ".bash", ".csh"]]
 
