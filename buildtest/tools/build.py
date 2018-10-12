@@ -32,6 +32,7 @@ import sys
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import create_dir
 from buildtest.tools.log import init_log
+from buildtest.tools.software import get_software_stack
 from buildtest.test.function import clean_tests
 from buildtest.test.binarytest import generate_binary_test
 from buildtest.test.job import update_job_template
@@ -43,8 +44,6 @@ from buildtest.test.sourcetest import recursive_gen_test
 from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.easybuild import is_easybuild_app
 from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
-
-
 
 def func_build_subcmd(args):
     """ entry point for build subcommand """
@@ -78,8 +77,14 @@ def func_build_subcmd(args):
     if args.all_systempkg:
         packages = os.listdir(os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest","system"))
         for pkg in packages:
-            #func_build_system(pkg, logger,logdir,logpath,logfile)
             generate_binary_test(pkg,"systempackage")
+
+    if args.all_apps:
+        app_list = get_software_stack()
+        for app in app_list:
+            config_opts["BUILDTEST_SOFTWARE"] = app
+            config_opts["BUILDTEST_TOOLCHAIN"] = None
+            generate_binary_test(app,"software")
 
     if args.system:
         func_build_system(args.system, logger, logdir, logpath, logfile)

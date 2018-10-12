@@ -65,7 +65,12 @@ def generate_binary_test(name,test_type=None):
     # determine whether we are running a binary test on ebapp or system package
     if test_type == "software":
         software_strip_toolchain = strip_toolchain_from_module(name)
-        configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],software_strip_toolchain.lower())
+        
+        # this condition is only true when it is application without toolchain (i.e Bison/3.0.4)
+        if software_strip_toolchain == None:
+            configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],name.lower())
+        else:
+            configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],software_strip_toolchain.lower())
 
     else:
         configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],name)
