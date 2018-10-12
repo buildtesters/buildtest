@@ -1,0 +1,4 @@
+description: Binary test for Tcl/8.6.7
+binaries:
+- which tclsh8.6
+- which sqlite3_analyzer

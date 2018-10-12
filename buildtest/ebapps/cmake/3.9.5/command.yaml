@@ -1,0 +1,6 @@
+description: Binary test for CMake/3.9.5
+binaries:
+- which ccmake
+- which ctest
+- which cpack
+- which cmake

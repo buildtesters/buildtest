@@ -1,0 +1,22 @@
+description: Binary test for icc/2018.1.163
+binaries:
+- which icc
+- which profdcg
+- which xiar
+- which gfx_sys_check
+- which dbmerge
+- which icc.cfg
+- which mcpcom
+- which loopprofileviewer.sh
+- which map_opts
+- which libintelremotemon.so
+- which libcilkrts.so.5
+- which proforder
+- which offload_extract
+- which profmergesampling
+- which loopprofileviewer.csh
+- which x86_64-linux.env
+- which tselect
+- which profmerge
+- which codecov
+- which xild

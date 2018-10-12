@@ -1,0 +1,3 @@
+description: Binary test for xprop/1.2.3
+binaries:
+- which xprop

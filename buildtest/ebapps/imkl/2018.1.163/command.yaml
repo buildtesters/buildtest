@@ -1,0 +1,4 @@
+description: Binary test for imkl/2018.1.163
+binaries:
+- which mklvars.csh
+- which mklvars.sh

@@ -1,0 +1,26 @@
+description: Binary test for HDF5/1.10.1
+binaries:
+- which h5c++
+- which h5redeploy
+- which h5copy
+- which h5pcc
+- which h5repack
+- which h5clear
+- which h5perf_serial
+- which ph5diff
+- which h5watch
+- which h5pfc
+- which h5debug
+- which h5ls
+- which h5unjam
+- which h5repart
+- which h5format_convert
+- which h52gif
+- which h5import
+- which gif2h5
+- which h5dump
+- which h5mkgrp
+- which h5jam
+- which h5perf
+- which h5diff
+- which h5stat

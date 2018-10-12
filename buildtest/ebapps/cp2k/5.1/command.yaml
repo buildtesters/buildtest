@@ -1,0 +1,13 @@
+description: Binary test for CP2K/5.1
+binaries:
+- which dbcsr_performance_driver.popt
+- which dbcsr_test_csr_conversions.popt
+- which cp2k_shell.popt
+- which graph.popt
+- which dbcsr_tensor_unittest.popt
+- which libcp2k_unittest.popt
+- which cp2k.popt
+- which dbcsr_unittest.popt
+- which dbcsr_example_2.popt
+- which dbcsr_example_1.popt
+- which dbcsr_example_3.popt

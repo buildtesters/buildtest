@@ -1,0 +1,4 @@
+description: Binary test for NASM/2.13.01
+binaries:
+- which nasm
+- which ndisasm

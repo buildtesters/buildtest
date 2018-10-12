@@ -1,0 +1,3 @@
+description: Binary test for help2man/1.47.4
+binaries:
+- which help2man

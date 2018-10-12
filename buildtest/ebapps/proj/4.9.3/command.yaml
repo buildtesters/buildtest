@@ -1,0 +1,6 @@
+description: Binary test for PROJ/4.9.3
+binaries:
+- which proj
+- which nad2bin
+- which cs2cs
+- which geod

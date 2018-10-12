@@ -1,0 +1,11 @@
+description: Binary test for ncurses/6.0
+binaries:
+- which ncursesw6-config
+- which tabs
+- which tset
+- which infocmp
+- which ncurses6-config
+- which toe
+- which tic
+- which clear
+- which tput

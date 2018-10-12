@@ -1,0 +1,7 @@
+description: Binary test for intltool/0.51.0
+binaries:
+- which intltoolize
+- which intltool-extract
+- which intltool-prepare
+- which intltool-update
+- which intltool-merge

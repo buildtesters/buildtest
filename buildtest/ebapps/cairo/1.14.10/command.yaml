@@ -1,0 +1,4 @@
+description: Binary test for cairo/1.14.10
+binaries:
+- which cairo-sphinx
+- which cairo-trace

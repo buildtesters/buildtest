@@ -1,0 +1,5 @@
+description: Binary test for JasPer/2.0.14
+binaries:
+- which imgcmp
+- which jasper
+- which imginfo

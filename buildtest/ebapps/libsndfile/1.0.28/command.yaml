@@ -1,0 +1,12 @@
+description: Binary test for libsndfile/1.0.28
+binaries:
+- which sndfile-interleave
+- which sndfile-play
+- which sndfile-metadata-set
+- which sndfile-metadata-get
+- which sndfile-salvage
+- which sndfile-deinterleave
+- which sndfile-concat
+- which sndfile-convert
+- which sndfile-info
+- which sndfile-cmp

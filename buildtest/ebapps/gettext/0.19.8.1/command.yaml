@@ -1,0 +1,24 @@
+description: Binary test for gettext/0.19.8.1
+binaries:
+- which recode-sr-latin
+- which msgcomm
+- which msgmerge
+- which msggrep
+- which gettext
+- which msginit
+- which ngettext
+- which msgattrib
+- which msgunfmt
+- which msgfilter
+- which msgen
+- which xgettext
+- which msgconv
+- which gettextize
+- which msgfmt
+- which autopoint
+- which gettext.sh
+- which msgcmp
+- which msgexec
+- which msguniq
+- which msgcat
+- which envsubst

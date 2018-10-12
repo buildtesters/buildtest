@@ -1,0 +1,19 @@
+description: Binary test for binutils/2.28
+binaries:
+- which ar
+- which ranlib
+- which objcopy
+- which addr2line
+- which nm
+- which readelf
+- which strip
+- which strings
+- which ld.bfd
+- which as
+- which c++filt
+- which gprof
+- which size
+- which objdump
+- which dwp
+- which elfedit
+- which ld.gold

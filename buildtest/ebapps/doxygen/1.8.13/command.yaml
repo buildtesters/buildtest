@@ -1,0 +1,3 @@
+description: Binary test for Doxygen/1.8.13
+binaries:
+- which doxygen

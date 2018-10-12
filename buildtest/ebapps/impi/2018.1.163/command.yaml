@@ -1,0 +1,29 @@
+description: Binary test for impi/2018.1.163
+binaries:
+- which mpitune
+- which mpivars.sh.orig.eb
+- which hydra_nameserver
+- which mpiicc
+- which mpiexec.hydra
+- which IMB-NBC
+- which mpiicpc
+- which mpif90
+- which cpuinfo
+- which mpigxx
+- which llamaMPIClient.py
+- which compchk.sh
+- which mpivars.csh.orig.eb
+- which mpicc
+- which mpirun
+- which mpiifort
+- which hydra_persist
+- which pmi_proxy
+- which mpifc
+- which mpivars.csh
+- which mpicxx
+- which IMB-MPI1
+- which mpicleanup
+- which IMB-RMA
+- which mpif77
+- which mpigcc
+- which mpivars.sh

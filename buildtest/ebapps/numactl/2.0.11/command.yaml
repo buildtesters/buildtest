@@ -1,0 +1,8 @@
+description: Binary test for numactl/2.0.11
+binaries:
+- which migratepages
+- which migspeed
+- which memhog
+- which numactl
+- which numademo
+- which numastat

@@ -1,0 +1,8 @@
+description: Binary test for NAMD/2.12
+binaries:
+- which psfgen
+- which charmrun
+- which sortreplicas
+- which namd2
+- which flipdcd
+- which flipbinpdb

@@ -1,0 +1,7 @@
+description: Binary test for netCDF/4.5.0
+binaries:
+- which ncdump
+- which ncgen3
+- which nccopy
+- which ncgen
+- which nc-config

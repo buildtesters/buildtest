@@ -1,0 +1,5 @@
+description: Binary test for libxsmm/1.8.3
+binaries:
+- which libxsmm_convwino_generator
+- which libxsmm_conv_generator
+- which libxsmm_gemm_generator

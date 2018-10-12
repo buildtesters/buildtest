@@ -1,0 +1,6 @@
+description: Binary test for Guile/1.8.8
+binaries:
+- which guile-config
+- which guile
+- which guile-snarf
+- which guile-tools

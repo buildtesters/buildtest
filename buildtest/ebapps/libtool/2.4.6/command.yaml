@@ -1,0 +1,4 @@
+description: Binary test for libtool/2.4.6
+binaries:
+- which libtoolize
+- which libtool

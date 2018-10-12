@@ -1,0 +1,7 @@
+description: Binary test for FFTW/3.3.7
+binaries:
+- which fftw-wisdom-to-conf
+- which fftw-wisdom
+- which fftwf-wisdom
+- which fftwq-wisdom
+- which fftwl-wisdom

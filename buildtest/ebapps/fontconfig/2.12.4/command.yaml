@@ -1,0 +1,10 @@
+description: Binary test for fontconfig/2.12.4
+binaries:
+- which fc-cache
+- which fc-list
+- which fc-cat
+- which fc-match
+- which fc-query
+- which fc-scan
+- which fc-validate
+- which fc-pattern

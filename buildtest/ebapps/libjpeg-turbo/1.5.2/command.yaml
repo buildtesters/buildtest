@@ -1,0 +1,8 @@
+description: Binary test for libjpeg-turbo/1.5.2
+binaries:
+- which rdjpgcom
+- which djpeg
+- which jpegtran
+- which tjbench
+- which cjpeg
+- which wrjpgcom

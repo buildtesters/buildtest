@@ -1,0 +1,5 @@
+description: Binary test for PCRE/8.41
+binaries:
+- which pcre-config
+- which pcregrep
+- which pcretest

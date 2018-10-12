@@ -1,0 +1,4 @@
+description: Binary test for cURL/7.56.1
+binaries:
+- which curl-config
+- which curl

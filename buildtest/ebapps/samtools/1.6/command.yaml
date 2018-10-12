@@ -1,0 +1,25 @@
+description: Binary test for SAMtools/1.6
+binaries:
+- which md5fa
+- which bowtie2sam.pl
+- which r2plot.lua
+- which samtools
+- which vcfutils.lua
+- which wgsim
+- which novo2sam.pl
+- which samtools.pl
+- which psl2sam.pl
+- which maq2sam-long
+- which varfilter.py
+- which maq2sam-short
+- which md5sum-lite
+- which export2sam.pl
+- which sam2vcf.pl
+- which soap2sam.pl
+- which seq_cache_populate.pl
+- which plot-bamstats
+- which blast2sam.pl
+- which interpolate_sam.pl
+- which zoom2sam.pl
+- which ace2sam
+- which wgsim_eval.pl

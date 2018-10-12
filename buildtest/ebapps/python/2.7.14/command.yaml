@@ -1,0 +1,8 @@
+description: Binary test for Python/2.7.14
+binaries:
+- which 2to3
+- which smtpd.py
+- which idle
+- which python2.7
+- which python2.7-config
+- which pydoc

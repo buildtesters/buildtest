@@ -1,0 +1,22 @@
+description: Binary test for ifort/2018.1.163
+binaries:
+- which profdcg
+- which xiar
+- which ifort.cfg
+- which ifort
+- which dbmerge
+- which loopprofileviewer.sh
+- which map_opts
+- which fpp
+- which fortcom
+- which libintelremotemon.so
+- which libcilkrts.so.5
+- which proforder
+- which offload_extract
+- which profmergesampling
+- which loopprofileviewer.csh
+- which x86_64-linux.env
+- which tselect
+- which profmerge
+- which codecov
+- which xild

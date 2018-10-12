@@ -1,0 +1,18 @@
+description: Binary test for Ruby/2.5.0
+binaries:
+- which htmldiff
+- which ri
+- which rspec
+- which rdoc
+- which bundler
+- which rubygems-cabin-test
+- which gem
+- which irb
+- which launchy
+- which tilt
+- which rackup
+- which erb
+- which ruby
+- which ldiff
+- which rake
+- which bundle

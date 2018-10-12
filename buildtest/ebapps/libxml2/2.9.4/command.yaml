@@ -1,0 +1,5 @@
+description: Binary test for libxml2/2.9.4
+binaries:
+- which xmllint
+- which xml2-config
+- which xmlcatalog

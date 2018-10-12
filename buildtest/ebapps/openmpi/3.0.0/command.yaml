@@ -1,0 +1,13 @@
+description: Binary test for OpenMPI/3.0.0
+binaries:
+- which orted
+- which oshmem_info
+- which ompi_info
+- which orte-top
+- which orterun
+- which orte-info
+- which orte-server
+- which orte-clean
+- which orte-ps
+- which orte-dvm
+- which opal_wrapper

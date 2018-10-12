@@ -1,0 +1,7 @@
+description: Binary test for bzip2/1.0.6
+binaries:
+- which bzip2
+- which bzgrep
+- which bzdiff
+- which bzip2recover
+- which bzmore

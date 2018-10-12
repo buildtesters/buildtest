@@ -1,0 +1,3 @@
+description: Binary test for NWChem/6.8.revision47
+binaries:
+- which nwchem

@@ -1,0 +1,11 @@
+description: Binary test for Bowtie2/2.3.4
+binaries:
+- which bowtie2-build-l
+- which bowtie2-align-s
+- which bowtie2
+- which bowtie2-inspect-s
+- which bowtie2-build-s
+- which bowtie2-inspect
+- which bowtie2-inspect-l
+- which bowtie2-align-l
+- which bowtie2-build

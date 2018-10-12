@@ -1,0 +1,5 @@
+description: Binary test for GSL/2.4
+binaries:
+- which gsl-randist
+- which gsl-config
+- which gsl-histogram

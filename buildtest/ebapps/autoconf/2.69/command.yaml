@@ -1,0 +1,9 @@
+description: Binary test for Autoconf/2.69
+binaries:
+- which ifnames
+- which autoheader
+- which autoupdate
+- which autoscan
+- which autom4te
+- which autoconf
+- which autoreconf

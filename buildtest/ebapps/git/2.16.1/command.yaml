@@ -1,0 +1,7 @@
+description: Binary test for git/2.16.1
+binaries:
+- which git-receive-pack
+- which git-shell
+- which git-upload-pack
+- which git-cvsserver
+- which gitk

@@ -1,0 +1,10 @@
+description: Binary test for GROMACS/2016.5
+binaries:
+- which GMXRC.bash
+- which demux.pl
+- which GMXRC
+- which GMXRC.zsh
+- which xplor2gmx.pl
+- which gmx_mpi
+- which GMXRC.csh
+- which gmx

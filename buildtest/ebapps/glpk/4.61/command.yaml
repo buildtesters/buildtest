@@ -1,0 +1,3 @@
+description: Binary test for GLPK/4.61
+binaries:
+- which glpsol

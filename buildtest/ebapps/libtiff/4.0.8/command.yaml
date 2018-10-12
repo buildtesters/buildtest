@@ -1,0 +1,20 @@
+description: Binary test for LibTIFF/4.0.8
+binaries:
+- which pal2rgb
+- which tiffcp
+- which tiff2rgba
+- which tiffdump
+- which tiffsplit
+- which tiffset
+- which tiffcrop
+- which tiffdither
+- which fax2ps
+- which tiff2pdf
+- which fax2tiff
+- which tiffcmp
+- which ppm2tiff
+- which tiff2ps
+- which tiffmedian
+- which tiffinfo
+- which tiff2bw
+- which raw2tiff

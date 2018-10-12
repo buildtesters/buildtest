@@ -1,0 +1,10 @@
+description: Binary test for XZ/5.2.3
+binaries:
+- which xzdiff
+- which lzmadec
+- which xz
+- which xzless
+- which xzdec
+- which lzmainfo
+- which xzgrep
+- which xzmore

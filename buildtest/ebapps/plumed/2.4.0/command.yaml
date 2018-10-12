@@ -1,0 +1,5 @@
+description: Binary test for PLUMED/2.4.0
+binaries:
+- which plumed-patch
+- which plumed
+- which plumed-config

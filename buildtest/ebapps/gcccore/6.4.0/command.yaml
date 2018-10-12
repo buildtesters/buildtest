@@ -1,0 +1,12 @@
+description: Binary test for GCCcore/6.4.0
+binaries:
+- which gcc
+- which gcc-nm
+- which x86_64-pc-linux-gnu-g++
+- which cpp
+- which x86_64-pc-linux-gnu-gfortran
+- which gcov
+- which gcov-dump
+- which x86_64-pc-linux-gnu-gcc-ranlib
+- which gcc-ar
+- which gcov-tool

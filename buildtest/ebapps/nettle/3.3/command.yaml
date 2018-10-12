@@ -1,0 +1,7 @@
+description: Binary test for nettle/3.3
+binaries:
+- which pkcs1-conv
+- which sexp-conv
+- which nettle-lfib-stream
+- which nettle-pbkdf2
+- which nettle-hash

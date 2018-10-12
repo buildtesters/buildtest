@@ -1,0 +1,17 @@
+description: Binary test for hwloc/1.11.8
+binaries:
+- which hwloc-info
+- which hwloc-assembler
+- which hwloc-compress-dir
+- which hwloc-distances
+- which hwloc-assembler-remote
+- which hwloc-patch
+- which hwloc-ps
+- which hwloc-distrib
+- which hwloc-diff
+- which hwloc-bind
+- which lstopo-no-graphics
+- which hwloc-gather-topology
+- which hwloc-annotate
+- which hwloc-calc
+- which hwloc-dump-hwdata

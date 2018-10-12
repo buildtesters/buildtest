@@ -1,0 +1,3 @@
+description: Binary test for expat/2.2.4
+binaries:
+- which xmlwf

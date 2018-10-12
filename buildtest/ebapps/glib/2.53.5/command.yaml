@@ -1,0 +1,17 @@
+description: Binary test for GLib/2.53.5
+binaries:
+- which gdbus-codegen
+- which gdbus
+- which gtester-report
+- which glib-compile-resources
+- which gio
+- which gtester
+- which glib-gettextize
+- which gapplication
+- which gsettings
+- which gio-querymodules
+- which glib-genmarshal
+- which glib-mkenums
+- which glib-compile-schemas
+- which gobject-query
+- which gresource
