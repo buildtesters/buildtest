@@ -1,3 +1,0 @@
-description: Binary test for gcc-c++
-binaries:
-- /usr/bin/c++ --version

@@ -1,9 +1,0 @@
-description: Binary test for ncurses
-binaries:
-- /usr/bin/clear -V
-- /usr/bin/infocmp -V 
-- /usr/bin/tabs "-0"
-- /usr/bin/tic -V
-- /usr/bin/toe -V 
-- /usr/bin/tput -V 
-- /usr/bin/tset -V

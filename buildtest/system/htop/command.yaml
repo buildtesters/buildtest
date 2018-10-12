@@ -1,3 +1,0 @@
-description: Binary test for htop
-binaries:
-- /usr/bin/htop --version

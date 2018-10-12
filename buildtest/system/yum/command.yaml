@@ -1,3 +1,0 @@
-description: Binary test for yum
-binaries:
-- /usr/bin/yum --version

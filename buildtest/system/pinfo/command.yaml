@@ -1,3 +1,0 @@
-description: Binary test for pinfo
-binaries:
-- /usr/bin/pinfo -v

@@ -1,8 +1,0 @@
-description: Binary test for xz
-binaries:
-- /usr/bin/xz --help
-- /usr/bin/xzdec --help
-- /usr/bin/xzdiff --help
-- /usr/bin/xzgrep --help
-- /usr/bin/xzless --help
-- /usr/bin/xzmore --help

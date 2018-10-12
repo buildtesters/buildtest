@@ -1,3 +1,0 @@
-description: Binary test for gcc-gfortran
-binaries:
-- /usr/bin/gfortran -v

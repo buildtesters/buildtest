@@ -1,7 +1,0 @@
-description: Binary test for bzip2
-binaries:
-- find /usr/bin/bzdiff
-- find /usr/bin/bzgrep
-- /usr/bin/bzip2 --help
-- find /usr/bin/bzip2recover
-- /usr/bin/bzmore --help

@@ -1,3 +1,0 @@
-description: Binary test for file
-binaries:
-- /usr/bin/file --version

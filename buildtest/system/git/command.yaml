@@ -1,5 +1,0 @@
-description: Binary test for git
-binaries:
-- /usr/bin/git --version
-- find /usr/bin/git-shell
-- find /usr/bin/git-upload-pack

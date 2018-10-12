@@ -1,3 +1,0 @@
-description: Binary test for time
-binaries:
-- /usr/bin/time ls

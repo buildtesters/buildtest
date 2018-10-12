@@ -1,4 +1,0 @@
-description: Binary test for chrony
-binaries:
-- /usr/bin/chronyc --version
-- /usr/sbin/chronyd --version

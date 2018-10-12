@@ -1,3 +1,0 @@
-description: Binary test for firefox
-binaries:
-- /usr/bin/firefox --help

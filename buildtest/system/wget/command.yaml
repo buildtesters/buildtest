@@ -1,3 +1,0 @@
-description: Binary test for wget
-binaries:
-- /usr/bin/wget -V

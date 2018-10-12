@@ -1,6 +1,0 @@
-description: Binary test for zip
-binaries:
-- /usr/bin/zip --help 
-- /usr/bin/zipcloak --help
-- /usr/bin/zipnote -v 
-- /usr/bin/zipsplit -h

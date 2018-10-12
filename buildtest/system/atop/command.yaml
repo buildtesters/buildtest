@@ -1,4 +1,0 @@
-description: Binary test for atop
-binaries:
-- find /usr/bin/atop
-- find /usr/bin/atopd
