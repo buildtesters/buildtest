@@ -1,0 +1,7 @@
+description: Binary test for openscap-utils
+binaries:
+- which /usr/bin/oscap-chroot
+- which /usr/bin/oscap-docker
+- which /usr/bin/oscap-ssh
+- which /usr/bin/oscap-vm
+- which /usr/bin/scap-as-rpm

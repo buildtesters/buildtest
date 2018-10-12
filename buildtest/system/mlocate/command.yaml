@@ -1,0 +1,4 @@
+description: Binary test for mlocate
+binaries:
+- which /usr/bin/locate
+- which /usr/bin/updatedb

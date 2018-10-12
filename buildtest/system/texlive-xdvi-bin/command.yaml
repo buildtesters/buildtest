@@ -1,0 +1,4 @@
+description: Binary test for texlive-xdvi-bin
+binaries:
+- which /usr/bin/xdvi
+- which /usr/bin/xdvi-xaw

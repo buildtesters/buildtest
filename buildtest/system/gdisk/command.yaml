@@ -1,0 +1,6 @@
+description: Binary test for gdisk
+binaries:
+- which /usr/sbin/cgdisk
+- which /usr/sbin/fixparts
+- which /usr/sbin/gdisk
+- which /usr/sbin/sgdisk

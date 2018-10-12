@@ -1,0 +1,3 @@
+description: Binary test for js
+binaries:
+- which /usr/bin/js

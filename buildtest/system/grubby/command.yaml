@@ -1,0 +1,5 @@
+description: Binary test for grubby
+binaries:
+- which /usr/sbin/grubby
+- which /usr/sbin/installkernel
+- which /usr/sbin/new-kernel-pkg

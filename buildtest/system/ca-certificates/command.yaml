@@ -1,0 +1,4 @@
+description: Binary test for ca-certificates
+binaries:
+- which /usr/bin/ca-legacy
+- which /usr/bin/update-ca-trust

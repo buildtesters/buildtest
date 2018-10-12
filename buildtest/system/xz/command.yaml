@@ -1,0 +1,8 @@
+description: Binary test for xz
+binaries:
+- which /usr/bin/xz
+- which /usr/bin/xzdec
+- which /usr/bin/xzdiff
+- which /usr/bin/xzgrep
+- which /usr/bin/xzless
+- which /usr/bin/xzmore

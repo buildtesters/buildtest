@@ -1,0 +1,3 @@
+description: Binary test for systemtap-sdt-devel
+binaries:
+- which /usr/bin/dtrace

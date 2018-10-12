@@ -1,0 +1,4 @@
+description: Binary test for xorg-x11-xkb-utils
+binaries:
+- which /usr/bin/setxkbmap
+- which /usr/bin/xkbcomp

@@ -1,0 +1,4 @@
+description: Binary test for plymouth
+binaries:
+- which /usr/bin/plymouth
+- which /usr/sbin/plymouthd

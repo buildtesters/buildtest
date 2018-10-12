@@ -1,0 +1,18 @@
+description: Binary test for xorg-x11-server-utils
+binaries:
+- which /usr/bin/iceauth
+- which /usr/bin/sessreg
+- which /usr/bin/showrgb
+- which /usr/bin/xgamma
+- which /usr/bin/xhost
+- which /usr/bin/xinput
+- which /usr/bin/xkill
+- which /usr/bin/xmodmap
+- which /usr/bin/xrandr
+- which /usr/bin/xrdb
+- which /usr/bin/xrefresh
+- which /usr/bin/xset
+- which /usr/bin/xsetmode
+- which /usr/bin/xsetpointer
+- which /usr/bin/xsetroot
+- which /usr/bin/xstdcmap

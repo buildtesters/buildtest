@@ -1,0 +1,5 @@
+description: Binary test for keyutils
+binaries:
+- which /bin/keyctl
+- which /sbin/key.dns_resolver
+- which /sbin/request-key

@@ -1,0 +1,4 @@
+description: Binary test for libxml2
+binaries:
+- which /usr/bin/xmlcatalog
+- which /usr/bin/xmllint

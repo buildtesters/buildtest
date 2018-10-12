@@ -1,0 +1,9 @@
+description: Binary test for man-db
+binaries:
+- which /usr/bin/catman
+- which /usr/bin/lexgrog
+- which /usr/bin/man
+- which /usr/bin/mandb
+- which /usr/bin/manpath
+- which /usr/bin/whatis
+- which /usr/sbin/accessdb

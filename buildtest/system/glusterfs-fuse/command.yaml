@@ -1,0 +1,5 @@
+description: Binary test for glusterfs-fuse
+binaries:
+- which /sbin/mount.glusterfs
+- which /usr/bin/fusermount-glusterfs
+- which /usr/sbin/glusterfsd

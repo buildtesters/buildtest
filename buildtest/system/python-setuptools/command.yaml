@@ -1,0 +1,4 @@
+description: Binary test for python-setuptools
+binaries:
+- which /usr/bin/easy_install
+- which /usr/bin/easy_install-2.7

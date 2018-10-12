@@ -1,0 +1,3 @@
+description: Binary test for microcode_ctl
+binaries:
+- which /usr/sbin/intel-microcode2ucode

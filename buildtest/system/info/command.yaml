@@ -1,0 +1,5 @@
+description: Binary test for info
+binaries:
+- which /sbin/install-info
+- which /usr/bin/info
+- which /usr/bin/infokey

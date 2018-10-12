@@ -1,0 +1,7 @@
+description: Binary test for ppp
+binaries:
+- which /usr/sbin/chat
+- which /usr/sbin/pppd
+- which /usr/sbin/pppdump
+- which /usr/sbin/pppoe-discovery
+- which /usr/sbin/pppstats

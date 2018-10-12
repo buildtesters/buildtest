@@ -1,0 +1,17 @@
+description: Binary test for expect
+binaries:
+- which /usr/bin/autoexpect
+- which /usr/bin/dislocate
+- which /usr/bin/expect
+- which /usr/bin/ftp-rfc
+- which /usr/bin/kibitz
+- which /usr/bin/lpunlock
+- which /usr/bin/mkpasswd
+- which /usr/bin/passmass
+- which /usr/bin/rftp
+- which /usr/bin/rlogin-cwd
+- which /usr/bin/timed-read
+- which /usr/bin/timed-run
+- which /usr/bin/unbuffer
+- which /usr/bin/weather
+- which /usr/bin/xkibitz

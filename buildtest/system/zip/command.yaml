@@ -1,0 +1,6 @@
+description: Binary test for zip
+binaries:
+- which /usr/bin/zip
+- which /usr/bin/zipcloak
+- which /usr/bin/zipnote
+- which /usr/bin/zipsplit

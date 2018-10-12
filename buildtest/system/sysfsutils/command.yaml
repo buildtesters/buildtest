@@ -1,0 +1,4 @@
+description: Binary test for sysfsutils
+binaries:
+- which /usr/bin/get_module
+- which /usr/bin/systool

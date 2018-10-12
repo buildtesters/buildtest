@@ -1,0 +1,19 @@
+description: Binary test for binutils
+binaries:
+- which /usr/bin/addr2line
+- which /usr/bin/ar
+- which /usr/bin/as
+- which /usr/bin/c++filt
+- which /usr/bin/dwp
+- which /usr/bin/elfedit
+- which /usr/bin/gprof
+- which /usr/bin/ld.bfd
+- which /usr/bin/ld.gold
+- which /usr/bin/nm
+- which /usr/bin/objcopy
+- which /usr/bin/objdump
+- which /usr/bin/ranlib
+- which /usr/bin/readelf
+- which /usr/bin/size
+- which /usr/bin/strings
+- which /usr/bin/strip

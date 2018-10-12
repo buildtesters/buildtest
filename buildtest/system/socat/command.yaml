@@ -1,0 +1,5 @@
+description: Binary test for socat
+binaries:
+- which /usr/bin/filan
+- which /usr/bin/procan
+- which /usr/bin/socat

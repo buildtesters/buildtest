@@ -1,0 +1,12 @@
+description: Binary test for libbluray
+binaries:
+- which /usr/bin/bd_info
+- which /usr/bin/bdsplice
+- which /usr/bin/clpi_dump
+- which /usr/bin/hdmv_test
+- which /usr/bin/index_dump
+- which /usr/bin/libbluray_test
+- which /usr/bin/list_titles
+- which /usr/bin/mobj_dump
+- which /usr/bin/mpls_dump
+- which /usr/bin/sound_dump

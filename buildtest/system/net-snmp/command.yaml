@@ -1,0 +1,7 @@
+description: Binary test for net-snmp
+binaries:
+- which /usr/bin/agentxtrap
+- which /usr/bin/net-snmp-create-v3-user
+- which /usr/bin/snmpconf
+- which /usr/sbin/snmpd
+- which /usr/sbin/snmptrapd

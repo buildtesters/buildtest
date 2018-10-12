@@ -1,0 +1,3 @@
+description: Binary test for rpm-sign
+binaries:
+- which /usr/bin/rpmsign

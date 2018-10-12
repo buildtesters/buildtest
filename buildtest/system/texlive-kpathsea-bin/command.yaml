@@ -1,0 +1,12 @@
+description: Binary test for texlive-kpathsea-bin
+binaries:
+- which /usr/bin/kpseaccess
+- which /usr/bin/kpsereadlink
+- which /usr/bin/kpsestat
+- which /usr/bin/kpsewhich
+- which /usr/bin/mkocp
+- which /usr/bin/mkofm
+- which /usr/bin/mktexlsr
+- which /usr/bin/mktexmf
+- which /usr/bin/mktexpk
+- which /usr/bin/mktextfm

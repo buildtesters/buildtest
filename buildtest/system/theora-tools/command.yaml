@@ -1,0 +1,6 @@
+description: Binary test for theora-tools
+binaries:
+- which /usr/bin/png2theora
+- which /usr/bin/theora_dump_video
+- which /usr/bin/theora_encode
+- which /usr/bin/theora_player

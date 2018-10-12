@@ -1,0 +1,3 @@
+description: Binary test for yum
+binaries:
+- which /usr/bin/yum

@@ -1,0 +1,5 @@
+description: Binary test for libraw1394
+binaries:
+- which /usr/bin/dumpiso
+- which /usr/bin/sendiso
+- which /usr/bin/testlibraw

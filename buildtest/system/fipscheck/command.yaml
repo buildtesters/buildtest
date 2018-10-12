@@ -1,0 +1,4 @@
+description: Binary test for fipscheck
+binaries:
+- which /usr/bin/fipscheck
+- which /usr/bin/fipshmac

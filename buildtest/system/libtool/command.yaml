@@ -1,0 +1,4 @@
+description: Binary test for libtool
+binaries:
+- which /usr/bin/libtool
+- which /usr/bin/libtoolize

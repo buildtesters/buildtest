@@ -1,0 +1,4 @@
+description: Binary test for device-mapper
+binaries:
+- which /usr/sbin/blkdeactivate
+- which /usr/sbin/dmsetup

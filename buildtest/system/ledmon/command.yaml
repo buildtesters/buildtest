@@ -1,0 +1,4 @@
+description: Binary test for ledmon
+binaries:
+- which /usr/sbin/ledctl
+- which /usr/sbin/ledmon

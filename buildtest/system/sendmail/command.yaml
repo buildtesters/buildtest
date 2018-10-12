@@ -1,0 +1,8 @@
+description: Binary test for sendmail
+binaries:
+- which /usr/bin/rmail.sendmail
+- which /usr/sbin/mailstats
+- which /usr/sbin/makemap
+- which /usr/sbin/praliases
+- which /usr/sbin/sendmail.sendmail
+- which /usr/sbin/smrsh

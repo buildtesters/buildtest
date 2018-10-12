@@ -1,0 +1,30 @@
+description: Binary test for ghostscript
+binaries:
+- which /usr/bin/dvipdf
+- which /usr/bin/eps2eps
+- which /usr/bin/font2c
+- which /usr/bin/gs
+- which /usr/bin/gsbj
+- which /usr/bin/gsdj
+- which /usr/bin/gsdj500
+- which /usr/bin/gslj
+- which /usr/bin/gslp
+- which /usr/bin/gsnd
+- which /usr/bin/lprsetup.sh
+- which /usr/bin/pdf2dsc
+- which /usr/bin/pdf2ps
+- which /usr/bin/pf2afm
+- which /usr/bin/pfbtopfa
+- which /usr/bin/pphs
+- which /usr/bin/printafm
+- which /usr/bin/ps2ascii
+- which /usr/bin/ps2epsi
+- which /usr/bin/ps2pdf
+- which /usr/bin/ps2pdf12
+- which /usr/bin/ps2pdf13
+- which /usr/bin/ps2pdf14
+- which /usr/bin/ps2pdfwr
+- which /usr/bin/ps2ps
+- which /usr/bin/ps2ps2
+- which /usr/bin/unix-lpr.sh
+- which /usr/bin/wftopfa

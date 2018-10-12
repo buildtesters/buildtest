@@ -1,0 +1,26 @@
+description: Binary test for kbd
+binaries:
+- which /bin/dumpkeys
+- which /bin/kbd_mode
+- which /bin/loadkeys
+- which /bin/setfont
+- which /bin/unicode_start
+- which /bin/unicode_stop
+- which /usr/bin/chvt
+- which /usr/bin/deallocvt
+- which /usr/bin/fgconsole
+- which /usr/bin/getkeycodes
+- which /usr/bin/kbdinfo
+- which /usr/bin/kbdrate
+- which /usr/bin/loadunimap
+- which /usr/bin/mapscrn
+- which /usr/bin/openvt
+- which /usr/bin/psfxtable
+- which /usr/bin/resizecons
+- which /usr/bin/setkeycodes
+- which /usr/bin/setleds
+- which /usr/bin/setmetamode
+- which /usr/bin/setvtrgb
+- which /usr/bin/showconsolefont
+- which /usr/bin/showkey
+- which /usr/bin/vlock

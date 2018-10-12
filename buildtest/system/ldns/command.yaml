@@ -1,0 +1,28 @@
+description: Binary test for ldns
+binaries:
+- which /usr/bin/drill
+- which /usr/bin/ldns-chaos
+- which /usr/bin/ldns-compare-zones
+- which /usr/bin/ldns-dane
+- which /usr/bin/ldns-dpa
+- which /usr/bin/ldns-gen-zone
+- which /usr/bin/ldns-key2ds
+- which /usr/bin/ldns-keyfetcher
+- which /usr/bin/ldns-keygen
+- which /usr/bin/ldns-mx
+- which /usr/bin/ldns-notify
+- which /usr/bin/ldns-nsec3-hash
+- which /usr/bin/ldns-read-zone
+- which /usr/bin/ldns-resolver
+- which /usr/bin/ldns-revoke
+- which /usr/bin/ldns-rrsig
+- which /usr/bin/ldns-signzone
+- which /usr/bin/ldns-test-edns
+- which /usr/bin/ldns-testns
+- which /usr/bin/ldns-update
+- which /usr/bin/ldns-verify-zone
+- which /usr/bin/ldns-version
+- which /usr/bin/ldns-walk
+- which /usr/bin/ldns-zcat
+- which /usr/bin/ldns-zsplit
+- which /usr/bin/ldnsd

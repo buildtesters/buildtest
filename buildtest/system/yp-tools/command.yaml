@@ -1,0 +1,9 @@
+description: Binary test for yp-tools
+binaries:
+- which /usr/bin/ypcat
+- which /usr/bin/ypchfn
+- which /usr/bin/ypmatch
+- which /usr/bin/ypwhich
+- which /usr/sbin/yppoll
+- which /usr/sbin/ypset
+- which /usr/sbin/yptest

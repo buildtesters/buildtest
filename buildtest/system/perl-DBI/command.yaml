@@ -1,0 +1,5 @@
+description: Binary test for perl-DBI
+binaries:
+- which /usr/bin/dbilogstrip
+- which /usr/bin/dbiprof
+- which /usr/bin/dbiproxy

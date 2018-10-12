@@ -1,0 +1,6 @@
+description: Binary test for gdb
+binaries:
+- which /usr/bin/gcore
+- which /usr/bin/gdb
+- which /usr/bin/gdb-add-index
+- which /usr/bin/gstack

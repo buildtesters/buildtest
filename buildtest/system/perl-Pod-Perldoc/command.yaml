@@ -1,0 +1,3 @@
+description: Binary test for perl-Pod-Perldoc
+binaries:
+- which /usr/bin/perldoc

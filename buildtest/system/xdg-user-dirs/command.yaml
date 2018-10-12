@@ -1,0 +1,4 @@
+description: Binary test for xdg-user-dirs
+binaries:
+- which /usr/bin/xdg-user-dir
+- which /usr/bin/xdg-user-dirs-update

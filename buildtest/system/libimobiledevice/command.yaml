@@ -1,0 +1,15 @@
+description: Binary test for libimobiledevice
+binaries:
+- which /usr/bin/idevice_id
+- which /usr/bin/idevicebackup
+- which /usr/bin/idevicebackup2
+- which /usr/bin/idevicedate
+- which /usr/bin/idevicedebugserverproxy
+- which /usr/bin/idevicediagnostics
+- which /usr/bin/ideviceenterrecovery
+- which /usr/bin/ideviceimagemounter
+- which /usr/bin/ideviceinfo
+- which /usr/bin/idevicepair
+- which /usr/bin/ideviceprovision
+- which /usr/bin/idevicescreenshot
+- which /usr/bin/idevicesyslog

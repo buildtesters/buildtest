@@ -1,0 +1,16 @@
+description: Binary test for libselinux-utils
+binaries:
+- which /usr/sbin/avcstat
+- which /usr/sbin/getenforce
+- which /usr/sbin/getsebool
+- which /usr/sbin/matchpathcon
+- which /usr/sbin/selabel_digest
+- which /usr/sbin/selabel_lookup
+- which /usr/sbin/selabel_lookup_best_match
+- which /usr/sbin/selabel_partial_match
+- which /usr/sbin/selinux_restorecon
+- which /usr/sbin/selinuxconlist
+- which /usr/sbin/selinuxdefcon
+- which /usr/sbin/selinuxenabled
+- which /usr/sbin/selinuxexeccon
+- which /usr/sbin/setenforce

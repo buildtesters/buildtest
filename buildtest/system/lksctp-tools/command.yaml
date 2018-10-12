@@ -1,0 +1,7 @@
+description: Binary test for lksctp-tools
+binaries:
+- which /usr/bin/checksctp
+- which /usr/bin/sctp_darn
+- which /usr/bin/sctp_status
+- which /usr/bin/sctp_test
+- which /usr/bin/withsctp

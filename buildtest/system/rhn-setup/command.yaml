@@ -1,0 +1,5 @@
+description: Binary test for rhn-setup
+binaries:
+- which /usr/sbin/rhn_register
+- which /usr/sbin/rhnreg_ks
+- which /usr/sbin/spacewalk-channel

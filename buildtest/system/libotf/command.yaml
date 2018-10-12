@@ -1,0 +1,6 @@
+description: Binary test for libotf
+binaries:
+- which /usr/bin/otfdump
+- which /usr/bin/otflist
+- which /usr/bin/otftobdf
+- which /usr/bin/otfview

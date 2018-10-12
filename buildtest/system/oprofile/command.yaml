@@ -1,0 +1,14 @@
+description: Binary test for oprofile
+binaries:
+- which /usr/bin/ocount
+- which /usr/bin/op-check-perfevents
+- which /usr/bin/opannotate
+- which /usr/bin/oparchive
+- which /usr/bin/opcontrol
+- which /usr/bin/operf
+- which /usr/bin/opgprof
+- which /usr/bin/ophelp
+- which /usr/bin/opimport
+- which /usr/bin/opjitconv
+- which /usr/bin/opreport
+- which /usr/bin/oprofiled

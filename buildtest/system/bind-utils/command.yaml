@@ -1,0 +1,6 @@
+description: Binary test for bind-utils
+binaries:
+- which /usr/bin/dig
+- which /usr/bin/host
+- which /usr/bin/nslookup
+- which /usr/bin/nsupdate

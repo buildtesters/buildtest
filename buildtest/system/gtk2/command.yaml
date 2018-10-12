@@ -1,0 +1,5 @@
+description: Binary test for gtk2
+binaries:
+- which /usr/bin/gtk-query-immodules-2.0-64
+- which /usr/bin/gtk-update-icon-cache
+- which /usr/bin/update-gtk-immodules

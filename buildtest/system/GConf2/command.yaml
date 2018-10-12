@@ -1,0 +1,5 @@
+description: Binary test for GConf2
+binaries:
+- which /usr/bin/gconf-merge-tree
+- which /usr/bin/gconftool-2
+- which /usr/bin/gsettings-data-convert

@@ -1,0 +1,3 @@
+description: Binary test for xinetd
+binaries:
+- which /usr/sbin/xinetd

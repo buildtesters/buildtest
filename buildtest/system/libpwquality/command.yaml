@@ -1,0 +1,4 @@
+description: Binary test for libpwquality
+binaries:
+- which /usr/bin/pwmake
+- which /usr/bin/pwscore

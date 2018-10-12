@@ -1,0 +1,3 @@
+description: Binary test for alsa-lib
+binaries:
+- which /usr/bin/aserver

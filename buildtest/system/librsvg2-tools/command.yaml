@@ -1,0 +1,4 @@
+description: Binary test for librsvg2-tools
+binaries:
+- which /usr/bin/rsvg-convert
+- which /usr/bin/rsvg-view-3

@@ -1,0 +1,6 @@
+description: Binary test for unzip
+binaries:
+- which /usr/bin/funzip
+- which /usr/bin/unzip
+- which /usr/bin/unzipsfx
+- which /usr/bin/zipgrep

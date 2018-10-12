@@ -1,0 +1,12 @@
+description: Binary test for patchutils
+binaries:
+- which /usr/bin/dehtmldiff
+- which /usr/bin/editdiff
+- which /usr/bin/espdiff
+- which /usr/bin/filterdiff
+- which /usr/bin/fixcvsdiff
+- which /usr/bin/interdiff
+- which /usr/bin/recountdiff
+- which /usr/bin/rediff
+- which /usr/bin/splitdiff
+- which /usr/bin/unwrapdiff

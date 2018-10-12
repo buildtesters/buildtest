@@ -1,0 +1,4 @@
+description: Binary test for texlive-metafont-bin
+binaries:
+- which /usr/bin/mf
+- which /usr/bin/mf-nowin

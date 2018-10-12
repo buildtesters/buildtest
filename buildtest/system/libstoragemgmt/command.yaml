@@ -1,0 +1,5 @@
+description: Binary test for libstoragemgmt
+binaries:
+- which /usr/bin/lsmcli
+- which /usr/bin/lsmd
+- which /usr/bin/simc_lsmplugin

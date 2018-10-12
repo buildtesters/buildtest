@@ -1,0 +1,6 @@
+description: Binary test for lldpad
+binaries:
+- which /usr/sbin/dcbtool
+- which /usr/sbin/lldpad
+- which /usr/sbin/lldptool
+- which /usr/sbin/vdptool

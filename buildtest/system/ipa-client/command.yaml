@@ -1,0 +1,8 @@
+description: Binary test for ipa-client
+binaries:
+- which /usr/sbin/ipa-certupdate
+- which /usr/sbin/ipa-client-automount
+- which /usr/sbin/ipa-client-install
+- which /usr/sbin/ipa-getkeytab
+- which /usr/sbin/ipa-join
+- which /usr/sbin/ipa-rmkeytab

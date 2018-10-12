@@ -1,0 +1,6 @@
+description: Binary test for device-mapper-multipath
+binaries:
+- which /usr/sbin/mpathconf
+- which /usr/sbin/mpathpersist
+- which /usr/sbin/multipath
+- which /usr/sbin/multipathd

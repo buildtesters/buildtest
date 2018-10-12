@@ -1,0 +1,9 @@
+description: Binary test for ntp
+binaries:
+- which /usr/bin/ntpstat
+- which /usr/sbin/ntp-keygen
+- which /usr/sbin/ntpd
+- which /usr/sbin/ntpdc
+- which /usr/sbin/ntpq
+- which /usr/sbin/ntptime
+- which /usr/sbin/tickadj

@@ -1,0 +1,7 @@
+description: Binary test for cracklib
+binaries:
+- which /usr/sbin/cracklib-check
+- which /usr/sbin/cracklib-format
+- which /usr/sbin/cracklib-packer
+- which /usr/sbin/cracklib-unpacker
+- which /usr/sbin/create-cracklib-dict

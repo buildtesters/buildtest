@@ -1,0 +1,6 @@
+description: Binary test for libosinfo
+binaries:
+- which /usr/bin/osinfo-db-validate
+- which /usr/bin/osinfo-detect
+- which /usr/bin/osinfo-install-script
+- which /usr/bin/osinfo-query

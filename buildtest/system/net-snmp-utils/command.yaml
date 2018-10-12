@@ -1,0 +1,20 @@
+description: Binary test for net-snmp-utils
+binaries:
+- which /usr/bin/encode_keychange
+- which /usr/bin/snmpbulkget
+- which /usr/bin/snmpbulkwalk
+- which /usr/bin/snmpdelta
+- which /usr/bin/snmpdf
+- which /usr/bin/snmpget
+- which /usr/bin/snmpgetnext
+- which /usr/bin/snmpnetstat
+- which /usr/bin/snmpset
+- which /usr/bin/snmpstatus
+- which /usr/bin/snmptable
+- which /usr/bin/snmptest
+- which /usr/bin/snmptls
+- which /usr/bin/snmptranslate
+- which /usr/bin/snmptrap
+- which /usr/bin/snmpusm
+- which /usr/bin/snmpvacm
+- which /usr/bin/snmpwalk

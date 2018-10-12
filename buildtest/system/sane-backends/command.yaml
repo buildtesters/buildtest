@@ -1,0 +1,5 @@
+description: Binary test for sane-backends
+binaries:
+- which /usr/bin/sane-find-scanner
+- which /usr/bin/scanimage
+- which /usr/sbin/saned

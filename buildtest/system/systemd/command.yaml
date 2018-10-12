@@ -1,0 +1,33 @@
+description: Binary test for systemd
+binaries:
+- which /usr/bin/bootctl
+- which /usr/bin/busctl
+- which /usr/bin/coredumpctl
+- which /usr/bin/hostnamectl
+- which /usr/bin/journalctl
+- which /usr/bin/kernel-install
+- which /usr/bin/localectl
+- which /usr/bin/loginctl
+- which /usr/bin/machinectl
+- which /usr/bin/systemctl
+- which /usr/bin/systemd-analyze
+- which /usr/bin/systemd-ask-password
+- which /usr/bin/systemd-cat
+- which /usr/bin/systemd-cgls
+- which /usr/bin/systemd-cgtop
+- which /usr/bin/systemd-delta
+- which /usr/bin/systemd-detect-virt
+- which /usr/bin/systemd-escape
+- which /usr/bin/systemd-firstboot
+- which /usr/bin/systemd-hwdb
+- which /usr/bin/systemd-inhibit
+- which /usr/bin/systemd-machine-id-setup
+- which /usr/bin/systemd-notify
+- which /usr/bin/systemd-nspawn
+- which /usr/bin/systemd-path
+- which /usr/bin/systemd-run
+- which /usr/bin/systemd-stdio-bridge
+- which /usr/bin/systemd-tmpfiles
+- which /usr/bin/systemd-tty-ask-password-agent
+- which /usr/bin/timedatectl
+- which /usr/bin/udevadm

@@ -1,0 +1,5 @@
+description: Binary test for icedtea-web
+binaries:
+- which /usr/bin/itweb-settings.itweb
+- which /usr/bin/javaws.itweb
+- which /usr/bin/policyeditor.itweb

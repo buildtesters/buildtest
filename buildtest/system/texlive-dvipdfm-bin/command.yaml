@@ -1,0 +1,3 @@
+description: Binary test for texlive-dvipdfm-bin
+binaries:
+- which /usr/bin/dvipdft

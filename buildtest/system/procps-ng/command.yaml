@@ -1,0 +1,18 @@
+description: Binary test for procps-ng
+binaries:
+- which /usr/bin/free
+- which /usr/bin/pgrep
+- which /usr/bin/pkill
+- which /usr/bin/pmap
+- which /usr/bin/ps
+- which /usr/bin/pwdx
+- which /usr/bin/skill
+- which /usr/bin/slabtop
+- which /usr/bin/snice
+- which /usr/bin/tload
+- which /usr/bin/top
+- which /usr/bin/uptime
+- which /usr/bin/vmstat
+- which /usr/bin/w
+- which /usr/bin/watch
+- which /usr/sbin/sysctl

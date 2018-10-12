@@ -1,0 +1,3 @@
+description: Binary test for hostname
+binaries:
+- which /bin/hostname

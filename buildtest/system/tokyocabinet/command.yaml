@@ -1,0 +1,20 @@
+description: Binary test for tokyocabinet
+binaries:
+- which /usr/bin/tcamgr
+- which /usr/bin/tcamttest
+- which /usr/bin/tcatest
+- which /usr/bin/tcbmgr
+- which /usr/bin/tcbmttest
+- which /usr/bin/tcbtest
+- which /usr/bin/tcfmgr
+- which /usr/bin/tcfmttest
+- which /usr/bin/tcftest
+- which /usr/bin/tchmgr
+- which /usr/bin/tchmttest
+- which /usr/bin/tchtest
+- which /usr/bin/tctmgr
+- which /usr/bin/tctmttest
+- which /usr/bin/tcttest
+- which /usr/bin/tcucodec
+- which /usr/bin/tcumttest
+- which /usr/bin/tcutest

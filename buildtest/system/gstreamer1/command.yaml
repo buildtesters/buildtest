@@ -1,0 +1,5 @@
+description: Binary test for gstreamer1
+binaries:
+- which /usr/bin/gst-inspect-1.0
+- which /usr/bin/gst-launch-1.0
+- which /usr/bin/gst-typefind-1.0

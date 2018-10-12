@@ -1,0 +1,4 @@
+description: Binary test for compat-gcc-44
+binaries:
+- which /usr/bin/gcc44
+- which /usr/bin/gcov44

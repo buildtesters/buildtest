@@ -1,0 +1,8 @@
+description: Binary test for opensp
+binaries:
+- which /usr/bin/onsgmls
+- which /usr/bin/osgmlnorm
+- which /usr/bin/ospam
+- which /usr/bin/ospcat
+- which /usr/bin/ospent
+- which /usr/bin/osx

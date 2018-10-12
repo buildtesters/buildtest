@@ -1,0 +1,4 @@
+description: Binary test for bc
+binaries:
+- which /usr/bin/bc
+- which /usr/bin/dc

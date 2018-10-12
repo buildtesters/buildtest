@@ -1,0 +1,4 @@
+description: Binary test for grafana
+binaries:
+- which /usr/sbin/grafana-cli
+- which /usr/sbin/grafana-server

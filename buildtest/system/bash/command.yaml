@@ -1,0 +1,16 @@
+description: Binary test for bash
+binaries:
+- which /usr/bin/alias
+- which /usr/bin/bash
+- which /usr/bin/bashbug-64
+- which /usr/bin/bg
+- which /usr/bin/cd
+- which /usr/bin/command
+- which /usr/bin/fc
+- which /usr/bin/fg
+- which /usr/bin/getopts
+- which /usr/bin/jobs
+- which /usr/bin/read
+- which /usr/bin/umask
+- which /usr/bin/unalias
+- which /usr/bin/wait

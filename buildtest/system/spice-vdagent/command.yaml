@@ -1,0 +1,4 @@
+description: Binary test for spice-vdagent
+binaries:
+- which /usr/bin/spice-vdagent
+- which /usr/sbin/spice-vdagentd

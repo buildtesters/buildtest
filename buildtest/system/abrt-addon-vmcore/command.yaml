@@ -1,0 +1,5 @@
+description: Binary test for abrt-addon-vmcore
+binaries:
+- which /usr/bin/abrt-action-analyze-vmcore
+- which /usr/bin/abrt-action-check-oops-for-hw-error
+- which /usr/sbin/abrt-harvest-vmcore

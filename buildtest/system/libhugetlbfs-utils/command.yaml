@@ -1,0 +1,7 @@
+description: Binary test for libhugetlbfs-utils
+binaries:
+- which /usr/bin/huge_page_setup_helper.py
+- which /usr/bin/hugeadm
+- which /usr/bin/hugectl
+- which /usr/bin/hugeedit
+- which /usr/bin/pagesize

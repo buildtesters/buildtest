@@ -1,0 +1,6 @@
+description: Binary test for cmake
+binaries:
+- which /usr/bin/ccmake
+- which /usr/bin/cmake
+- which /usr/bin/cpack
+- which /usr/bin/ctest

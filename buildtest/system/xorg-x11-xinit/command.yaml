@@ -1,0 +1,4 @@
+description: Binary test for xorg-x11-xinit
+binaries:
+- which /usr/bin/startx
+- which /usr/bin/xinit

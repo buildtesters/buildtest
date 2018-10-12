@@ -1,0 +1,8 @@
+description: Binary test for enscript
+binaries:
+- which /usr/bin/diffpp
+- which /usr/bin/enscript
+- which /usr/bin/mkafmmap
+- which /usr/bin/over
+- which /usr/bin/sliceprint
+- which /usr/bin/states

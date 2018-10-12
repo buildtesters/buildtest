@@ -1,0 +1,4 @@
+description: Binary test for oddjob
+binaries:
+- which /usr/bin/oddjob_request
+- which /usr/sbin/oddjobd

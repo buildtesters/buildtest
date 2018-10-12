@@ -1,0 +1,3 @@
+description: Binary test for perl-Pod-Checker
+binaries:
+- which /usr/bin/podchecker

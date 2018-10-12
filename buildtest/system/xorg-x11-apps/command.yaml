@@ -1,0 +1,24 @@
+description: Binary test for xorg-x11-apps
+binaries:
+- which /usr/bin/luit
+- which /usr/bin/oclock
+- which /usr/bin/x11perf
+- which /usr/bin/x11perfcomp
+- which /usr/bin/xbiff
+- which /usr/bin/xclipboard
+- which /usr/bin/xclock
+- which /usr/bin/xconsole
+- which /usr/bin/xcursorgen
+- which /usr/bin/xcutsel
+- which /usr/bin/xdpr
+- which /usr/bin/xeyes
+- which /usr/bin/xfd
+- which /usr/bin/xfontsel
+- which /usr/bin/xload
+- which /usr/bin/xlogo
+- which /usr/bin/xmag
+- which /usr/bin/xmessage
+- which /usr/bin/xpr
+- which /usr/bin/xvidtune
+- which /usr/bin/xwd
+- which /usr/bin/xwud

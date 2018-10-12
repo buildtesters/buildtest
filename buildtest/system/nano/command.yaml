@@ -1,0 +1,3 @@
+description: Binary test for nano
+binaries:
+- which /usr/bin/nano

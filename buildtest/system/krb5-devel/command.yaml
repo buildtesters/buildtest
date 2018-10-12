@@ -1,0 +1,11 @@
+description: Binary test for krb5-devel
+binaries:
+- which /usr/bin/gss-client
+- which /usr/bin/krb5-config
+- which /usr/bin/sclient
+- which /usr/bin/sim_client
+- which /usr/bin/uuclient
+- which /usr/sbin/gss-server
+- which /usr/sbin/sim_server
+- which /usr/sbin/sserver
+- which /usr/sbin/uuserver

@@ -1,0 +1,4 @@
+description: Binary test for sgml-common
+binaries:
+- which /usr/bin/install-catalog
+- which /usr/bin/sgmlwhich

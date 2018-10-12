@@ -1,0 +1,5 @@
+description: Binary test for pciutils
+binaries:
+- which /usr/sbin/lspci
+- which /usr/sbin/setpci
+- which /usr/sbin/update-pciids

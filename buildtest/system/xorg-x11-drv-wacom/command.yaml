@@ -1,0 +1,4 @@
+description: Binary test for xorg-x11-drv-wacom
+binaries:
+- which /usr/bin/isdv4-serial-inputattach
+- which /usr/bin/xsetwacom

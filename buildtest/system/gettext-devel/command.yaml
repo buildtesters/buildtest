@@ -1,0 +1,4 @@
+description: Binary test for gettext-devel
+binaries:
+- which /usr/bin/autopoint
+- which /usr/bin/gettextize

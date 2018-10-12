@@ -1,0 +1,15 @@
+description: Binary test for compat-db47
+binaries:
+- which /usr/bin/berkeley_db47_svc
+- which /usr/bin/db47_archive
+- which /usr/bin/db47_checkpoint
+- which /usr/bin/db47_codegen
+- which /usr/bin/db47_deadlock
+- which /usr/bin/db47_dump
+- which /usr/bin/db47_hotbackup
+- which /usr/bin/db47_load
+- which /usr/bin/db47_printlog
+- which /usr/bin/db47_recover
+- which /usr/bin/db47_stat
+- which /usr/bin/db47_upgrade
+- which /usr/bin/db47_verify

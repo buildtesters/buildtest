@@ -1,0 +1,5 @@
+description: Binary test for gutenprint-cups
+binaries:
+- which /usr/bin/cups-calibrate
+- which /usr/sbin/cups-genppd.5.2
+- which /usr/sbin/cups-genppdupdate

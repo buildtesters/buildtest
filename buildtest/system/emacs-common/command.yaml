@@ -1,0 +1,7 @@
+description: Binary test for emacs-common
+binaries:
+- which /usr/bin/ebrowse
+- which /usr/bin/emacsclient
+- which /usr/bin/etags.emacs
+- which /usr/bin/gctags
+- which /usr/bin/grep-changelog

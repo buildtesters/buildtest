@@ -1,0 +1,6 @@
+description: Binary test for nettle
+binaries:
+- which /usr/bin/nettle-hash
+- which /usr/bin/nettle-lfib-stream
+- which /usr/bin/pkcs1-conv
+- which /usr/bin/sexp-conv

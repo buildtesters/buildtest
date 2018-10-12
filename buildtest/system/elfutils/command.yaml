@@ -1,0 +1,18 @@
+description: Binary test for elfutils
+binaries:
+- which /usr/bin/eu-addr2line
+- which /usr/bin/eu-ar
+- which /usr/bin/eu-elfcmp
+- which /usr/bin/eu-elfcompress
+- which /usr/bin/eu-elflint
+- which /usr/bin/eu-findtextrel
+- which /usr/bin/eu-make-debug-archive
+- which /usr/bin/eu-nm
+- which /usr/bin/eu-objdump
+- which /usr/bin/eu-ranlib
+- which /usr/bin/eu-readelf
+- which /usr/bin/eu-size
+- which /usr/bin/eu-stack
+- which /usr/bin/eu-strings
+- which /usr/bin/eu-strip
+- which /usr/bin/eu-unstrip

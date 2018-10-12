@@ -1,0 +1,4 @@
+description: Binary test for lftp
+binaries:
+- which /usr/bin/lftp
+- which /usr/bin/lftpget

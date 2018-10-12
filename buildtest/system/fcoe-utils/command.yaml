@@ -1,0 +1,8 @@
+description: Binary test for fcoe-utils
+binaries:
+- which /usr/sbin/fcnsq
+- which /usr/sbin/fcoeadm
+- which /usr/sbin/fcoemon
+- which /usr/sbin/fcping
+- which /usr/sbin/fcrls
+- which /usr/sbin/fipvlan

@@ -1,0 +1,4 @@
+description: Binary test for perl-podlators
+binaries:
+- which /usr/bin/pod2man
+- which /usr/bin/pod2text

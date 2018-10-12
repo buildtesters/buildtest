@@ -1,0 +1,4 @@
+description: Binary test for xorg-x11-drv-synaptics
+binaries:
+- which /usr/bin/synclient
+- which /usr/bin/syndaemon

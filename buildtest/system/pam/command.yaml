@@ -1,0 +1,10 @@
+description: Binary test for pam
+binaries:
+- which /usr/sbin/faillock
+- which /usr/sbin/mkhomedir_helper
+- which /usr/sbin/pam_console_apply
+- which /usr/sbin/pam_tally2
+- which /usr/sbin/pam_timestamp_check
+- which /usr/sbin/pwhistory_helper
+- which /usr/sbin/unix_chkpwd
+- which /usr/sbin/unix_update

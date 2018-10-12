@@ -1,0 +1,5 @@
+description: Binary test for dracut
+binaries:
+- which /usr/bin/dracut
+- which /usr/bin/lsinitrd
+- which /usr/bin/mkinitrd

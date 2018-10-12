@@ -1,0 +1,3 @@
+description: Binary test for motif-devel
+binaries:
+- which /usr/bin/uil

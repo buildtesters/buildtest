@@ -1,0 +1,10 @@
+description: Binary test for xdg-utils
+binaries:
+- which /usr/bin/xdg-desktop-icon
+- which /usr/bin/xdg-desktop-menu
+- which /usr/bin/xdg-email
+- which /usr/bin/xdg-icon-resource
+- which /usr/bin/xdg-mime
+- which /usr/bin/xdg-open
+- which /usr/bin/xdg-screensaver
+- which /usr/bin/xdg-settings

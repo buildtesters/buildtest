@@ -1,0 +1,6 @@
+description: Binary test for dmidecode
+binaries:
+- which /usr/sbin/biosdecode
+- which /usr/sbin/dmidecode
+- which /usr/sbin/ownership
+- which /usr/sbin/vpddecode

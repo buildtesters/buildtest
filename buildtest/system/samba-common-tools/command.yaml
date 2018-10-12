@@ -1,0 +1,8 @@
+description: Binary test for samba-common-tools
+binaries:
+- which /usr/bin/net
+- which /usr/bin/pdbedit
+- which /usr/bin/profiles
+- which /usr/bin/smbcontrol
+- which /usr/bin/smbpasswd
+- which /usr/bin/testparm

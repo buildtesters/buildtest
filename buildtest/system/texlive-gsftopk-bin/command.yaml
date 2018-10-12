@@ -1,0 +1,3 @@
+description: Binary test for texlive-gsftopk-bin
+binaries:
+- which /usr/bin/gsftopk

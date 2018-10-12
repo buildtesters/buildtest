@@ -1,0 +1,14 @@
+description: Binary test for imake
+binaries:
+- which /usr/bin/ccmakedep
+- which /usr/bin/cleanlinks
+- which /usr/bin/gccmakedep
+- which /usr/bin/imake
+- which /usr/bin/lndir
+- which /usr/bin/makedepend
+- which /usr/bin/makeg
+- which /usr/bin/mergelib
+- which /usr/bin/mkdirhier
+- which /usr/bin/mkhtmlindex
+- which /usr/bin/revpath
+- which /usr/bin/xmkmf

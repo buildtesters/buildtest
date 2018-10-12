@@ -1,0 +1,3 @@
+description: Binary test for star
+binaries:
+- which /usr/bin/star

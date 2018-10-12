@@ -1,0 +1,4 @@
+description: Binary test for ed
+binaries:
+- which /bin/ed
+- which /bin/red

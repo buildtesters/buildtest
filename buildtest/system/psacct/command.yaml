@@ -1,0 +1,8 @@
+description: Binary test for psacct
+binaries:
+- which /usr/bin/ac
+- which /usr/bin/lastcomm
+- which /usr/sbin/accton
+- which /usr/sbin/dump-acct
+- which /usr/sbin/dump-utmp
+- which /usr/sbin/sa

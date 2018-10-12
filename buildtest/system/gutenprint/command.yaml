@@ -1,0 +1,4 @@
+description: Binary test for gutenprint
+binaries:
+- which /usr/bin/escputil
+- which /usr/bin/ijsgutenprint.5.2

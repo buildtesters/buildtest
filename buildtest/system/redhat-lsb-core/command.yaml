@@ -1,0 +1,4 @@
+description: Binary test for redhat-lsb-core
+binaries:
+- which /usr/bin/lsb_release
+- which /usr/sbin/redhat_lsb_trigger.x86_64

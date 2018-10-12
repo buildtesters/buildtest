@@ -1,0 +1,4 @@
+description: Binary test for hpijs
+binaries:
+- which /usr/bin/hpcups-update-ppds
+- which /usr/bin/hpijs

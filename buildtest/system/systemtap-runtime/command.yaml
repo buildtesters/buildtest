@@ -1,0 +1,7 @@
+description: Binary test for systemtap-runtime
+binaries:
+- which /usr/bin/stap-merge
+- which /usr/bin/stap-report
+- which /usr/bin/stapdyn
+- which /usr/bin/staprun
+- which /usr/bin/stapsh

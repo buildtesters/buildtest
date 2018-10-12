@@ -1,0 +1,8 @@
+description: Binary test for httpd
+binaries:
+- which /usr/sbin/apachectl
+- which /usr/sbin/fcgistarter
+- which /usr/sbin/htcacheclean
+- which /usr/sbin/httpd
+- which /usr/sbin/rotatelogs
+- which /usr/sbin/suexec

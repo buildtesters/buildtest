@@ -1,0 +1,4 @@
+description: Binary test for postfix-perl-scripts
+binaries:
+- which /usr/sbin/pflogsumm
+- which /usr/sbin/qshape

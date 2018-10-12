@@ -1,0 +1,7 @@
+description: Binary test for unixODBC
+binaries:
+- which /usr/bin/dltest
+- which /usr/bin/isql
+- which /usr/bin/iusql
+- which /usr/bin/odbc_config
+- which /usr/bin/odbcinst

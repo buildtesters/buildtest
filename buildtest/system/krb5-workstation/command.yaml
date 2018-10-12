@@ -1,0 +1,12 @@
+description: Binary test for krb5-workstation
+binaries:
+- which /usr/bin/k5srvutil
+- which /usr/bin/kadmin
+- which /usr/bin/kdestroy
+- which /usr/bin/kinit
+- which /usr/bin/klist
+- which /usr/bin/kpasswd
+- which /usr/bin/ksu
+- which /usr/bin/kswitch
+- which /usr/bin/ktutil
+- which /usr/bin/kvno

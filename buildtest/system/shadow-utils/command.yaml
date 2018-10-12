@@ -1,0 +1,16 @@
+description: Binary test for shadow-utils
+binaries:
+- which /usr/bin/chage
+- which /usr/bin/gpasswd
+- which /usr/bin/lastlog
+- which /usr/bin/newgrp
+- which /usr/sbin/chpasswd
+- which /usr/sbin/groupadd
+- which /usr/sbin/grpck
+- which /usr/sbin/grpconv
+- which /usr/sbin/grpunconv
+- which /usr/sbin/newusers
+- which /usr/sbin/pwck
+- which /usr/sbin/pwconv
+- which /usr/sbin/pwunconv
+- which /usr/sbin/vipw

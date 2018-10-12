@@ -1,0 +1,7 @@
+description: Binary test for bzip2
+binaries:
+- which /usr/bin/bzdiff
+- which /usr/bin/bzgrep
+- which /usr/bin/bzip2
+- which /usr/bin/bzip2recover
+- which /usr/bin/bzmore

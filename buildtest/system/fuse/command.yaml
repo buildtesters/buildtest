@@ -1,0 +1,5 @@
+description: Binary test for fuse
+binaries:
+- which /usr/bin/fusermount
+- which /usr/bin/ulockmgr_server
+- which /usr/sbin/mount.fuse

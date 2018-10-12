@@ -1,0 +1,3 @@
+description: Binary test for expat
+binaries:
+- which /usr/bin/xmlwf

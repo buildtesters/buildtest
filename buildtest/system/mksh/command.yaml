@@ -1,0 +1,4 @@
+description: Binary test for mksh
+binaries:
+- which /bin/lksh
+- which /bin/mksh

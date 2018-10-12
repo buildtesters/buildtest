@@ -1,0 +1,5 @@
+description: Binary test for cscope
+binaries:
+- which /usr/bin/cscope
+- which /usr/bin/cscope-indexer
+- which /usr/bin/ocs

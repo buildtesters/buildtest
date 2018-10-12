@@ -1,0 +1,3 @@
+description: Binary test for docbook-style-dsssl
+binaries:
+- which /usr/bin/collateindex.pl

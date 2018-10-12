@@ -1,0 +1,7 @@
+description: Binary test for glibc
+binaries:
+- which /sbin/ldconfig
+- which /sbin/sln
+- which /usr/sbin/glibc_post_upgrade.x86_64
+- which /usr/sbin/iconvconfig
+- which /usr/sbin/iconvconfig.i686

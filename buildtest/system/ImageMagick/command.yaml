@@ -1,0 +1,13 @@
+description: Binary test for ImageMagick
+binaries:
+- which /usr/bin/animate
+- which /usr/bin/compare
+- which /usr/bin/composite
+- which /usr/bin/conjure
+- which /usr/bin/convert
+- which /usr/bin/display
+- which /usr/bin/identify
+- which /usr/bin/import
+- which /usr/bin/mogrify
+- which /usr/bin/montage
+- which /usr/bin/stream

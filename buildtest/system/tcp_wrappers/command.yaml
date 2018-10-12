@@ -1,0 +1,6 @@
+description: Binary test for tcp_wrappers
+binaries:
+- which /usr/sbin/safe_finger
+- which /usr/sbin/tcpd
+- which /usr/sbin/tcpdmatch
+- which /usr/sbin/try-from

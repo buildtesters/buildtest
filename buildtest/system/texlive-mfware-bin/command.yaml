@@ -1,0 +1,8 @@
+description: Binary test for texlive-mfware-bin
+binaries:
+- which /usr/bin/gftodvi
+- which /usr/bin/gftopk
+- which /usr/bin/gftype
+- which /usr/bin/mft
+- which /usr/bin/pktogf
+- which /usr/bin/pktype

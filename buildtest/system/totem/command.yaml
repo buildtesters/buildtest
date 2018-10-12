@@ -1,0 +1,5 @@
+description: Binary test for totem
+binaries:
+- which /usr/bin/totem
+- which /usr/bin/totem-audio-preview
+- which /usr/bin/totem-video-thumbnailer

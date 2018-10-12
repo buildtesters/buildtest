@@ -1,0 +1,6 @@
+description: Binary test for rpm
+binaries:
+- which /bin/rpm
+- which /usr/bin/rpm2cpio
+- which /usr/bin/rpmdb
+- which /usr/bin/rpmkeys

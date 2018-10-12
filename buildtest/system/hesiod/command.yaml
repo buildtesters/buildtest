@@ -1,0 +1,3 @@
+description: Binary test for hesiod
+binaries:
+- which /usr/bin/hesinfo

@@ -1,0 +1,4 @@
+description: Binary test for rubygem-rdoc
+binaries:
+- which /usr/bin/rdoc
+- which /usr/bin/ri

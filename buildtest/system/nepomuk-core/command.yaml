@@ -1,0 +1,9 @@
+description: Binary test for nepomuk-core
+binaries:
+- which /usr/bin/nepomuk-simpleresource-rcgen
+- which /usr/bin/nepomuk2-rcgen
+- which /usr/bin/nepomukbackup
+- which /usr/bin/nepomukcleaner
+- which /usr/bin/nepomukindexer
+- which /usr/bin/nepomukserver
+- which /usr/bin/nepomukservicestub

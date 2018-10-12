@@ -1,0 +1,3 @@
+description: Binary test for targetcli
+binaries:
+- which /usr/bin/targetcli

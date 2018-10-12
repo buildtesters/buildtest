@@ -1,0 +1,4 @@
+description: Binary test for pango
+binaries:
+- which /usr/bin/pango-querymodules-64
+- which /usr/bin/pango-view

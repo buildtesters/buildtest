@@ -1,0 +1,14 @@
+description: Binary test for btrfs-progs
+binaries:
+- which /usr/sbin/btrfs
+- which /usr/sbin/btrfs-convert
+- which /usr/sbin/btrfs-debug-tree
+- which /usr/sbin/btrfs-find-root
+- which /usr/sbin/btrfs-image
+- which /usr/sbin/btrfs-map-logical
+- which /usr/sbin/btrfs-select-super
+- which /usr/sbin/btrfs-show-super
+- which /usr/sbin/btrfs-zero-log
+- which /usr/sbin/btrfstune
+- which /usr/sbin/fsck.btrfs
+- which /usr/sbin/mkfs.btrfs

@@ -1,0 +1,4 @@
+description: Binary test for enchant
+binaries:
+- which /usr/bin/enchant
+- which /usr/bin/enchant-lsmod

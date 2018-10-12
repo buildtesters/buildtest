@@ -1,0 +1,5 @@
+description: Binary test for wavpack
+binaries:
+- which /usr/bin/wavpack
+- which /usr/bin/wvgain
+- which /usr/bin/wvunpack

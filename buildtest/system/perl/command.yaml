@@ -1,0 +1,12 @@
+description: Binary test for perl
+binaries:
+- which /usr/bin/a2p
+- which /usr/bin/c2ph
+- which /usr/bin/find2perl
+- which /usr/bin/h2ph
+- which /usr/bin/perl
+- which /usr/bin/perlbug
+- which /usr/bin/pl2pm
+- which /usr/bin/pod2html
+- which /usr/bin/psed
+- which /usr/bin/splain

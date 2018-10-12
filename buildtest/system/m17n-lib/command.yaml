@@ -1,0 +1,3 @@
+description: Binary test for m17n-lib
+binaries:
+- which /usr/bin/m17n-conv

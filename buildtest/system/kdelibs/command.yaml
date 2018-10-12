@@ -1,0 +1,22 @@
+description: Binary test for kdelibs
+binaries:
+- which /usr/bin/checkXML
+- which /usr/bin/kbuildsycoca4
+- which /usr/bin/kcookiejar4
+- which /usr/bin/kde4-config
+- which /usr/bin/kded4
+- which /usr/bin/kdeinit4
+- which /usr/bin/kdeinit4_shutdown
+- which /usr/bin/kdeinit4_wrapper
+- which /usr/bin/kfilemetadatareader
+- which /usr/bin/kjs
+- which /usr/bin/kjscmd
+- which /usr/bin/kmailservice
+- which /usr/bin/kross
+- which /usr/bin/kshell4
+- which /usr/bin/ktelnetservice
+- which /usr/bin/kunittestmodrunner
+- which /usr/bin/kwrapper4
+- which /usr/bin/meinproc4
+- which /usr/bin/meinproc4_simple
+- which /usr/bin/nepomuk-rcgen

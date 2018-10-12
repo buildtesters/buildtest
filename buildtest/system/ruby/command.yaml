@@ -1,0 +1,5 @@
+description: Binary test for ruby
+binaries:
+- which /usr/bin/erb
+- which /usr/bin/ruby
+- which /usr/bin/testrb

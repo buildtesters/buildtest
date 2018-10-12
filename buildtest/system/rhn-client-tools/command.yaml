@@ -1,0 +1,3 @@
+description: Binary test for rhn-client-tools
+binaries:
+- which /usr/sbin/rhn-profile-sync

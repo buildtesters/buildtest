@@ -1,0 +1,4 @@
+description: Binary test for python-nose
+binaries:
+- which /usr/bin/nosetests
+- which /usr/bin/nosetests-2.7

@@ -1,0 +1,4 @@
+description: Binary test for x86info
+binaries:
+- which /usr/sbin/lsmsr
+- which /usr/sbin/x86info

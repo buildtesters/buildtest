@@ -1,0 +1,5 @@
+description: Binary test for teamd
+binaries:
+- which /usr/bin/bond2team
+- which /usr/bin/teamd
+- which /usr/bin/teamdctl

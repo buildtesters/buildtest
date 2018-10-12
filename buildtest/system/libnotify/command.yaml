@@ -1,0 +1,3 @@
+description: Binary test for libnotify
+binaries:
+- which /usr/bin/notify-send

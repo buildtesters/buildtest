@@ -1,0 +1,6 @@
+description: Binary test for libcap
+binaries:
+- which /usr/sbin/capsh
+- which /usr/sbin/getcap
+- which /usr/sbin/getpcaps
+- which /usr/sbin/setcap

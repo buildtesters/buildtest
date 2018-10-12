@@ -1,0 +1,9 @@
+description: Binary test for libcdio
+binaries:
+- which /usr/bin/cd-drive
+- which /usr/bin/cd-info
+- which /usr/bin/cd-read
+- which /usr/bin/cdda-player
+- which /usr/bin/iso-info
+- which /usr/bin/iso-read
+- which /usr/bin/mmc-tool

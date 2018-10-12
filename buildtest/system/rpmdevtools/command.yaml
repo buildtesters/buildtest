@@ -1,0 +1,22 @@
+description: Binary test for rpmdevtools
+binaries:
+- which /usr/bin/annotate-output
+- which /usr/bin/checkbashisms
+- which /usr/bin/licensecheck
+- which /usr/bin/manpage-alert
+- which /usr/bin/rpmdev-bumpspec
+- which /usr/bin/rpmdev-checksig
+- which /usr/bin/rpmdev-cksum
+- which /usr/bin/rpmdev-diff
+- which /usr/bin/rpmdev-extract
+- which /usr/bin/rpmdev-newinit
+- which /usr/bin/rpmdev-newspec
+- which /usr/bin/rpmdev-packager
+- which /usr/bin/rpmdev-rmdevelrpms
+- which /usr/bin/rpmdev-setuptree
+- which /usr/bin/rpmdev-sort
+- which /usr/bin/rpmdev-vercmp
+- which /usr/bin/rpmdev-wipetree
+- which /usr/bin/rpminfo
+- which /usr/bin/rpmls
+- which /usr/bin/spectool

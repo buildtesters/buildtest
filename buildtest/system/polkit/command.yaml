@@ -1,0 +1,6 @@
+description: Binary test for polkit
+binaries:
+- which /usr/bin/pkaction
+- which /usr/bin/pkcheck
+- which /usr/bin/pkexec
+- which /usr/bin/pkttyagent

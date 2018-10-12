@@ -1,0 +1,9 @@
+description: Binary test for tracker
+binaries:
+- which /usr/bin/tracker-control
+- which /usr/bin/tracker-import
+- which /usr/bin/tracker-info
+- which /usr/bin/tracker-search
+- which /usr/bin/tracker-sparql
+- which /usr/bin/tracker-stats
+- which /usr/bin/tracker-tag

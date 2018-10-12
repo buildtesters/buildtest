@@ -1,0 +1,9 @@
+description: Binary test for gcc
+binaries:
+- which /usr/bin/c89
+- which /usr/bin/c99
+- which /usr/bin/gcc
+- which /usr/bin/gcc-ar
+- which /usr/bin/gcc-nm
+- which /usr/bin/gcc-ranlib
+- which /usr/bin/gcov

@@ -1,0 +1,9 @@
+description: Binary test for genisoimage
+binaries:
+- which /usr/bin/genisoimage
+- which /usr/bin/isodebug
+- which /usr/bin/isodump
+- which /usr/bin/isoinfo
+- which /usr/bin/isovfy
+- which /usr/bin/pitchplay
+- which /usr/bin/readmult

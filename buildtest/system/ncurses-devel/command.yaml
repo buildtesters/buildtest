@@ -1,0 +1,4 @@
+description: Binary test for ncurses-devel
+binaries:
+- which /usr/bin/ncurses5-config
+- which /usr/bin/ncursesw5-config

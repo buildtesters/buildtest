@@ -1,0 +1,4 @@
+description: Binary test for python-ethtool
+binaries:
+- which /usr/sbin/pethtool
+- which /usr/sbin/pifconfig

@@ -1,0 +1,31 @@
+description: Binary test for grub2-tools
+binaries:
+- which /usr/bin/grub2-editenv
+- which /usr/bin/grub2-file
+- which /usr/bin/grub2-fstest
+- which /usr/bin/grub2-glue-efi
+- which /usr/bin/grub2-kbdcomp
+- which /usr/bin/grub2-menulst2cfg
+- which /usr/bin/grub2-mkfont
+- which /usr/bin/grub2-mkimage
+- which /usr/bin/grub2-mklayout
+- which /usr/bin/grub2-mknetdir
+- which /usr/bin/grub2-mkpasswd-pbkdf2
+- which /usr/bin/grub2-mkrelpath
+- which /usr/bin/grub2-mkrescue
+- which /usr/bin/grub2-mkstandalone
+- which /usr/bin/grub2-render-label
+- which /usr/bin/grub2-script-check
+- which /usr/bin/grub2-syslinux2cfg
+- which /usr/sbin/grub2-bios-setup
+- which /usr/sbin/grub2-get-kernel-settings
+- which /usr/sbin/grub2-install
+- which /usr/sbin/grub2-macbless
+- which /usr/sbin/grub2-mkconfig
+- which /usr/sbin/grub2-ofpathname
+- which /usr/sbin/grub2-probe
+- which /usr/sbin/grub2-reboot
+- which /usr/sbin/grub2-rpm-sort
+- which /usr/sbin/grub2-set-default
+- which /usr/sbin/grub2-setpassword
+- which /usr/sbin/grub2-sparc64-setup

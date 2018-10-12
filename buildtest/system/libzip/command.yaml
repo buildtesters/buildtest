@@ -1,0 +1,5 @@
+description: Binary test for libzip
+binaries:
+- which /usr/bin/zipcmp
+- which /usr/bin/zipmerge
+- which /usr/bin/ziptorrent

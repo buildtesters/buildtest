@@ -1,0 +1,4 @@
+description: Binary test for gupnp-dlna
+binaries:
+- which /usr/bin/gupnp-dlna-info-2.0
+- which /usr/bin/gupnp-dlna-ls-profiles-2.0

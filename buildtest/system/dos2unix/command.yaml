@@ -1,0 +1,4 @@
+description: Binary test for dos2unix
+binaries:
+- which /usr/bin/dos2unix
+- which /usr/bin/unix2dos

@@ -1,0 +1,4 @@
+description: Binary test for ksh
+binaries:
+- which /bin/ksh93
+- which /usr/bin/shcomp

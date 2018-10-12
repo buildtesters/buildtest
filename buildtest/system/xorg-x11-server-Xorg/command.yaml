@@ -1,0 +1,5 @@
+description: Binary test for xorg-x11-server-Xorg
+binaries:
+- which /usr/bin/Xorg
+- which /usr/bin/cvt
+- which /usr/bin/gtf

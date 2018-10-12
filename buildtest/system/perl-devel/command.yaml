@@ -1,0 +1,5 @@
+description: Binary test for perl-devel
+binaries:
+- which /usr/bin/h2xs
+- which /usr/bin/libnetcfg
+- which /usr/bin/perlivp

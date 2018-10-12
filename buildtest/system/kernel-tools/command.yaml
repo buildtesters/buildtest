@@ -1,0 +1,8 @@
+description: Binary test for kernel-tools
+binaries:
+- which /usr/bin/centrino-decode
+- which /usr/bin/cpupower
+- which /usr/bin/powernow-k8-decode
+- which /usr/bin/tmon
+- which /usr/bin/turbostat
+- which /usr/bin/x86_energy_perf_policy

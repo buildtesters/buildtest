@@ -1,0 +1,8 @@
+description: Binary test for iprutils
+binaries:
+- which /usr/sbin/iprconfig
+- which /usr/sbin/iprdbg
+- which /usr/sbin/iprdump
+- which /usr/sbin/iprinit
+- which /usr/sbin/iprsos
+- which /usr/sbin/iprupdate

@@ -1,0 +1,3 @@
+description: Binary test for bridge-utils
+binaries:
+- which /usr/sbin/brctl

@@ -1,0 +1,5 @@
+description: Binary test for sdparm
+binaries:
+- which /usr/bin/sas_disk_blink
+- which /usr/bin/scsi_ch_swp
+- which /usr/bin/sdparm

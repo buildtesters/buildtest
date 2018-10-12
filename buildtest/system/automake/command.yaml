@@ -1,0 +1,4 @@
+description: Binary test for automake
+binaries:
+- which /usr/bin/aclocal
+- which /usr/bin/automake

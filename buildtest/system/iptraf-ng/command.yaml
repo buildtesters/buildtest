@@ -1,0 +1,4 @@
+description: Binary test for iptraf-ng
+binaries:
+- which /usr/sbin/iptraf-ng
+- which /usr/sbin/rvnamed-ng

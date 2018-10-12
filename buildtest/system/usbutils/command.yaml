@@ -1,0 +1,6 @@
+description: Binary test for usbutils
+binaries:
+- which /usr/bin/lsusb
+- which /usr/bin/lsusb.py
+- which /usr/bin/usb-devices
+- which /usr/bin/usbhid-dump

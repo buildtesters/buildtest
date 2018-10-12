@@ -1,0 +1,3 @@
+description: Binary test for shared-mime-info
+binaries:
+- which /usr/bin/update-mime-database

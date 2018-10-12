@@ -1,0 +1,3 @@
+description: Binary test for texlive-tex-bin
+binaries:
+- which /usr/bin/tex

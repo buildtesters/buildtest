@@ -1,0 +1,4 @@
+description: Binary test for usb_modeswitch
+binaries:
+- which /usr/sbin/usb_modeswitch
+- which /usr/sbin/usb_modeswitch_dispatcher

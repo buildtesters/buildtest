@@ -1,0 +1,13 @@
+description: Binary test for gnupg2
+binaries:
+- which /usr/bin/gpg-agent
+- which /usr/bin/gpg-connect-agent
+- which /usr/bin/gpg-zip
+- which /usr/bin/gpg2
+- which /usr/bin/gpgconf
+- which /usr/bin/gpgparsemail
+- which /usr/bin/gpgsplit
+- which /usr/bin/gpgv2
+- which /usr/bin/watchgnupg
+- which /usr/sbin/addgnupghome
+- which /usr/sbin/applygnupgdefaults

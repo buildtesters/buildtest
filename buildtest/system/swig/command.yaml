@@ -1,0 +1,4 @@
+description: Binary test for swig
+binaries:
+- which /usr/bin/ccache-swig
+- which /usr/bin/swig

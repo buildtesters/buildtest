@@ -1,0 +1,3 @@
+description: Binary test for device-mapper-event
+binaries:
+- which /usr/sbin/dmeventd

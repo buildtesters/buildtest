@@ -1,0 +1,5 @@
+description: Binary test for mdadm
+binaries:
+- which /usr/sbin/mdadm
+- which /usr/sbin/mdmon
+- which /usr/sbin/raid-check

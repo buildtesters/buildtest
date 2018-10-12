@@ -1,0 +1,17 @@
+description: Binary test for libdb-utils
+binaries:
+- which /usr/bin/db_archive
+- which /usr/bin/db_checkpoint
+- which /usr/bin/db_deadlock
+- which /usr/bin/db_dump
+- which /usr/bin/db_dump185
+- which /usr/bin/db_hotbackup
+- which /usr/bin/db_load
+- which /usr/bin/db_log_verify
+- which /usr/bin/db_printlog
+- which /usr/bin/db_recover
+- which /usr/bin/db_replicate
+- which /usr/bin/db_stat
+- which /usr/bin/db_tuner
+- which /usr/bin/db_upgrade
+- which /usr/bin/db_verify

@@ -1,0 +1,12 @@
+description: Binary test for blktrace
+binaries:
+- which /usr/bin/blkiomon
+- which /usr/bin/blkparse
+- which /usr/bin/blkrawverify
+- which /usr/bin/blktrace
+- which /usr/bin/bno_plot.py
+- which /usr/bin/btrace
+- which /usr/bin/btrecord
+- which /usr/bin/btreplay
+- which /usr/bin/btt
+- which /usr/bin/verify_blkparse

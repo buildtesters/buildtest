@@ -1,0 +1,3 @@
+description: Binary test for soundtouch
+binaries:
+- which /usr/bin/soundstretch

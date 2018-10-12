@@ -1,0 +1,14 @@
+description: Binary test for libuser
+binaries:
+- which /usr/bin/lchfn
+- which /usr/bin/lchsh
+- which /usr/sbin/lchage
+- which /usr/sbin/lgroupadd
+- which /usr/sbin/lgroupdel
+- which /usr/sbin/lgroupmod
+- which /usr/sbin/lid
+- which /usr/sbin/lnewusers
+- which /usr/sbin/lpasswd
+- which /usr/sbin/luseradd
+- which /usr/sbin/luserdel
+- which /usr/sbin/lusermod

@@ -1,0 +1,9 @@
+description: Binary test for xorg-x11-font-utils
+binaries:
+- which /usr/bin/bdftopcf
+- which /usr/bin/bdftruncate
+- which /usr/bin/fonttosfnt
+- which /usr/bin/mkfontdir
+- which /usr/bin/mkfontscale
+- which /usr/bin/ucs2any
+- which /usr/bin/xorg-x11-fonts-update-dirs

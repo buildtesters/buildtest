@@ -1,0 +1,23 @@
+description: Binary test for gettext
+binaries:
+- which /usr/bin/envsubst
+- which /usr/bin/gettext
+- which /usr/bin/gettext.sh
+- which /usr/bin/msgattrib
+- which /usr/bin/msgcat
+- which /usr/bin/msgcmp
+- which /usr/bin/msgcomm
+- which /usr/bin/msgconv
+- which /usr/bin/msgen
+- which /usr/bin/msgexec
+- which /usr/bin/msgfilter
+- which /usr/bin/msgfmt
+- which /usr/bin/msggrep
+- which /usr/bin/msghack
+- which /usr/bin/msginit
+- which /usr/bin/msgmerge
+- which /usr/bin/msgunfmt
+- which /usr/bin/msguniq
+- which /usr/bin/ngettext
+- which /usr/bin/recode-sr-latin
+- which /usr/bin/xgettext

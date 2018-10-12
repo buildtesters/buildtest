@@ -1,0 +1,8 @@
+description: Binary test for kexec-tools
+binaries:
+- which /sbin/kdump
+- which /sbin/kexec
+- which /sbin/makedumpfile
+- which /sbin/mkdumprd
+- which /sbin/vmcore-dmesg
+- which /usr/bin/kdumpctl

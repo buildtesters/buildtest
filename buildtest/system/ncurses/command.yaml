@@ -1,0 +1,9 @@
+description: Binary test for ncurses
+binaries:
+- which /usr/bin/clear
+- which /usr/bin/infocmp
+- which /usr/bin/tabs
+- which /usr/bin/tic
+- which /usr/bin/toe
+- which /usr/bin/tput
+- which /usr/bin/tset

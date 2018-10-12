@@ -1,0 +1,4 @@
+description: Binary test for strace
+binaries:
+- which /usr/bin/strace
+- which /usr/bin/strace-log-merge

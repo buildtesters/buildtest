@@ -1,0 +1,29 @@
+description: Binary test for pcp
+binaries:
+- which /usr/bin/dbpmda
+- which /usr/bin/pcp
+- which /usr/bin/pmafm
+- which /usr/bin/pmdate
+- which /usr/bin/pmdiff
+- which /usr/bin/pmdumplog
+- which /usr/bin/pmfind
+- which /usr/bin/pmgenmap
+- which /usr/bin/pmie
+- which /usr/bin/pmie2col
+- which /usr/bin/pmieconf
+- which /usr/bin/pminfo
+- which /usr/bin/pmlc
+- which /usr/bin/pmlogcheck
+- which /usr/bin/pmlogconf
+- which /usr/bin/pmlogextract
+- which /usr/bin/pmlogger
+- which /usr/bin/pmloglabel
+- which /usr/bin/pmlogmv
+- which /usr/bin/pmlogsummary
+- which /usr/bin/pmprobe
+- which /usr/bin/pmpython
+- which /usr/bin/pmsocks
+- which /usr/bin/pmstat
+- which /usr/bin/pmstore
+- which /usr/bin/pmtrace
+- which /usr/bin/pmval

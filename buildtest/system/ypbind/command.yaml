@@ -1,0 +1,3 @@
+description: Binary test for ypbind
+binaries:
+- which /usr/sbin/ypbind

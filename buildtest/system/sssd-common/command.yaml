@@ -1,0 +1,6 @@
+description: Binary test for sssd-common
+binaries:
+- which /usr/bin/sss_ssh_authorizedkeys
+- which /usr/bin/sss_ssh_knownhostsproxy
+- which /usr/sbin/sss_cache
+- which /usr/sbin/sssd

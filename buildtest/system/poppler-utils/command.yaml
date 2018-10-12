@@ -1,0 +1,13 @@
+description: Binary test for poppler-utils
+binaries:
+- which /usr/bin/pdfdetach
+- which /usr/bin/pdffonts
+- which /usr/bin/pdfimages
+- which /usr/bin/pdfinfo
+- which /usr/bin/pdfseparate
+- which /usr/bin/pdftocairo
+- which /usr/bin/pdftohtml
+- which /usr/bin/pdftoppm
+- which /usr/bin/pdftops
+- which /usr/bin/pdftotext
+- which /usr/bin/pdfunite

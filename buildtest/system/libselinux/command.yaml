@@ -1,0 +1,3 @@
+description: Binary test for libselinux
+binaries:
+- which /usr/sbin/sefcontext_compile

@@ -1,0 +1,6 @@
+description: Binary test for CentrifyDC
+binaries:
+- which /usr/bin/adgpresult
+- which /usr/bin/dzsh
+- which /usr/bin/sctool
+- which /usr/sbin/adclient

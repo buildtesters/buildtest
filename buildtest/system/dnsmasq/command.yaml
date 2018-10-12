@@ -1,0 +1,3 @@
+description: Binary test for dnsmasq
+binaries:
+- which /usr/sbin/dnsmasq

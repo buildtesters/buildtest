@@ -1,0 +1,6 @@
+description: Binary test for diffutils
+binaries:
+- which /usr/bin/cmp
+- which /usr/bin/diff
+- which /usr/bin/diff3
+- which /usr/bin/sdiff

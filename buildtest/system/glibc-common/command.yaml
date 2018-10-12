@@ -1,0 +1,19 @@
+description: Binary test for glibc-common
+binaries:
+- which /usr/bin/catchsegv
+- which /usr/bin/gencat
+- which /usr/bin/getconf
+- which /usr/bin/getent
+- which /usr/bin/iconv
+- which /usr/bin/ldd
+- which /usr/bin/locale
+- which /usr/bin/localedef
+- which /usr/bin/makedb
+- which /usr/bin/pldd
+- which /usr/bin/rpcgen
+- which /usr/bin/sotruss
+- which /usr/bin/sprof
+- which /usr/bin/tzselect
+- which /usr/sbin/build-locale-archive
+- which /usr/sbin/zdump
+- which /usr/sbin/zic

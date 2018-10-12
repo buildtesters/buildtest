@@ -1,0 +1,5 @@
+description: Binary test for GeoIP
+binaries:
+- which /usr/bin/geoiplookup
+- which /usr/bin/geoiplookup6
+- which /usr/bin/geoipupdate

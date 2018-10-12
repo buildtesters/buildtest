@@ -1,0 +1,3 @@
+description: Binary test for sshpass
+binaries:
+- which /usr/bin/sshpass

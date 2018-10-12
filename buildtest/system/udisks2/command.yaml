@@ -1,0 +1,4 @@
+description: Binary test for udisks2
+binaries:
+- which /usr/bin/udisksctl
+- which /usr/sbin/umount.udisks2

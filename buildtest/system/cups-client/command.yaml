@@ -1,0 +1,11 @@
+description: Binary test for cups-client
+binaries:
+- which /usr/bin/cancel.cups
+- which /usr/bin/lp.cups
+- which /usr/bin/lpoptions
+- which /usr/bin/lppasswd
+- which /usr/bin/lpq.cups
+- which /usr/bin/lpr.cups
+- which /usr/bin/lprm.cups
+- which /usr/bin/lpstat.cups
+- which /usr/sbin/lpc.cups

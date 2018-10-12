@@ -1,0 +1,9 @@
+description: Binary test for libsmi
+binaries:
+- which /usr/bin/smicache
+- which /usr/bin/smidiff
+- which /usr/bin/smidump
+- which /usr/bin/smilint
+- which /usr/bin/smiquery
+- which /usr/bin/smistrip
+- which /usr/bin/smixlate

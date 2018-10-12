@@ -1,0 +1,19 @@
+description: Binary test for iproute
+binaries:
+- which /usr/sbin/arpd
+- which /usr/sbin/bridge
+- which /usr/sbin/cbq
+- which /usr/sbin/devlink
+- which /usr/sbin/genl
+- which /usr/sbin/ifcfg
+- which /usr/sbin/ifstat
+- which /usr/sbin/ip
+- which /usr/sbin/lnstat
+- which /usr/sbin/nstat
+- which /usr/sbin/routef
+- which /usr/sbin/routel
+- which /usr/sbin/rtacct
+- which /usr/sbin/rtmon
+- which /usr/sbin/rtpr
+- which /usr/sbin/ss
+- which /usr/sbin/tc

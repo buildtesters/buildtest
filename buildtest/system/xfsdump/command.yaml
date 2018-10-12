@@ -1,0 +1,5 @@
+description: Binary test for xfsdump
+binaries:
+- which /usr/sbin/xfsdump
+- which /usr/sbin/xfsinvutil
+- which /usr/sbin/xfsrestore

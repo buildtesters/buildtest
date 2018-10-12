@@ -1,0 +1,23 @@
+description: Binary test for bind
+binaries:
+- which /usr/sbin/arpaname
+- which /usr/sbin/ddns-confgen
+- which /usr/sbin/dnssec-checkds
+- which /usr/sbin/dnssec-coverage
+- which /usr/sbin/dnssec-dsfromkey
+- which /usr/sbin/dnssec-importkey
+- which /usr/sbin/dnssec-keyfromlabel
+- which /usr/sbin/dnssec-keygen
+- which /usr/sbin/dnssec-revoke
+- which /usr/sbin/dnssec-settime
+- which /usr/sbin/dnssec-signzone
+- which /usr/sbin/dnssec-verify
+- which /usr/sbin/genrandom
+- which /usr/sbin/isc-hmac-fixup
+- which /usr/sbin/lwresd
+- which /usr/sbin/named-checkconf
+- which /usr/sbin/named-checkzone
+- which /usr/sbin/named-journalprint
+- which /usr/sbin/nsec3hash
+- which /usr/sbin/rndc
+- which /usr/sbin/rndc-confgen

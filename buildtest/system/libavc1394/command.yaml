@@ -1,0 +1,5 @@
+description: Binary test for libavc1394
+binaries:
+- which /usr/bin/dvcont
+- which /usr/bin/mkrfc2734
+- which /usr/bin/panelctl

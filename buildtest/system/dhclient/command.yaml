@@ -1,0 +1,4 @@
+description: Binary test for dhclient
+binaries:
+- which /usr/sbin/dhclient
+- which /usr/sbin/dhclient-script

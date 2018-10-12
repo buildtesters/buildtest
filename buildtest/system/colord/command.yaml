@@ -1,0 +1,7 @@
+description: Binary test for colord
+binaries:
+- which /usr/bin/cd-create-profile
+- which /usr/bin/cd-fix-profile
+- which /usr/bin/cd-iccdump
+- which /usr/bin/cd-it8
+- which /usr/bin/colormgr

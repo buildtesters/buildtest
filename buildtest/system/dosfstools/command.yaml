@@ -1,0 +1,5 @@
+description: Binary test for dosfstools
+binaries:
+- which /usr/sbin/fatlabel
+- which /usr/sbin/fsck.fat
+- which /usr/sbin/mkfs.fat

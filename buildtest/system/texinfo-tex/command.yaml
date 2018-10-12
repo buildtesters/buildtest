@@ -1,0 +1,5 @@
+description: Binary test for texinfo-tex
+binaries:
+- which /usr/bin/pdftexi2dvi
+- which /usr/bin/texi2dvi
+- which /usr/bin/texindex

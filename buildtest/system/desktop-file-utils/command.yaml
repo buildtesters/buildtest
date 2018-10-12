@@ -1,0 +1,5 @@
+description: Binary test for desktop-file-utils
+binaries:
+- which /usr/bin/desktop-file-install
+- which /usr/bin/desktop-file-validate
+- which /usr/bin/update-desktop-database

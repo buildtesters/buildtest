@@ -1,0 +1,3 @@
+description: Binary test for perl-JSON-PP
+binaries:
+- which /usr/bin/json_pp

@@ -1,0 +1,12 @@
+description: Binary test for rcs
+binaries:
+- which /usr/bin/ci
+- which /usr/bin/co
+- which /usr/bin/ident
+- which /usr/bin/merge
+- which /usr/bin/rcs
+- which /usr/bin/rcsclean
+- which /usr/bin/rcsdiff
+- which /usr/bin/rcsfreeze
+- which /usr/bin/rcsmerge
+- which /usr/bin/rlog

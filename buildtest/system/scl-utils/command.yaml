@@ -1,0 +1,5 @@
+description: Binary test for scl-utils
+binaries:
+- which /usr/bin/scl
+- which /usr/bin/scl_enabled
+- which /usr/bin/scl_source

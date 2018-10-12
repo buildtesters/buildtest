@@ -1,0 +1,3 @@
+description: Binary test for pcre-devel
+binaries:
+- which /usr/bin/pcre-config

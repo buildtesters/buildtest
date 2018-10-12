@@ -1,0 +1,9 @@
+description: Binary test for autoconf
+binaries:
+- which /usr/bin/autoconf
+- which /usr/bin/autoheader
+- which /usr/bin/autom4te
+- which /usr/bin/autoreconf
+- which /usr/bin/autoscan
+- which /usr/bin/autoupdate
+- which /usr/bin/ifnames

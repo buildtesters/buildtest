@@ -1,0 +1,15 @@
+description: Binary test for gzip
+binaries:
+- which /usr/bin/gunzip
+- which /usr/bin/gzexe
+- which /usr/bin/gzip
+- which /usr/bin/zcat
+- which /usr/bin/zcmp
+- which /usr/bin/zdiff
+- which /usr/bin/zegrep
+- which /usr/bin/zfgrep
+- which /usr/bin/zforce
+- which /usr/bin/zgrep
+- which /usr/bin/zless
+- which /usr/bin/zmore
+- which /usr/bin/znew

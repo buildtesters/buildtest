@@ -1,0 +1,8 @@
+description: Binary test for httpd-tools
+binaries:
+- which /usr/bin/ab
+- which /usr/bin/htdbm
+- which /usr/bin/htdigest
+- which /usr/bin/htpasswd
+- which /usr/bin/httxt2dbm
+- which /usr/bin/logresolve

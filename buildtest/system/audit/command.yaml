@@ -1,0 +1,11 @@
+description: Binary test for audit
+binaries:
+- which /sbin/audispd
+- which /sbin/auditctl
+- which /sbin/auditd
+- which /sbin/aureport
+- which /sbin/ausearch
+- which /usr/bin/aulast
+- which /usr/bin/aulastlog
+- which /usr/bin/ausyscall
+- which /usr/bin/auvirt

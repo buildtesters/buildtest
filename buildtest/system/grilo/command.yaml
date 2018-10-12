@@ -1,0 +1,5 @@
+description: Binary test for grilo
+binaries:
+- which /usr/bin/grilo-test-ui-0.2
+- which /usr/bin/grl-inspect-0.2
+- which /usr/bin/grl-launch-0.2

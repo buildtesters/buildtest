@@ -1,0 +1,3 @@
+description: Binary test for crontabs
+binaries:
+- which /usr/bin/run-parts

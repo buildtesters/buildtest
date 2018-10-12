@@ -1,0 +1,4 @@
+description: Binary test for gtk3
+binaries:
+- which /usr/bin/gtk-launch
+- which /usr/bin/gtk-query-immodules-3.0-64

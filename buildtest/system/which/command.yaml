@@ -1,0 +1,3 @@
+description: Binary test for which
+binaries:
+- which /usr/bin/which

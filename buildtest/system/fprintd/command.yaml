@@ -1,0 +1,6 @@
+description: Binary test for fprintd
+binaries:
+- which /usr/bin/fprintd-delete
+- which /usr/bin/fprintd-enroll
+- which /usr/bin/fprintd-list
+- which /usr/bin/fprintd-verify

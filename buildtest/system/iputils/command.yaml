@@ -1,0 +1,9 @@
+description: Binary test for iputils
+binaries:
+- which /usr/bin/ping
+- which /usr/bin/tracepath
+- which /usr/bin/tracepath6
+- which /usr/sbin/arping
+- which /usr/sbin/clockdiff
+- which /usr/sbin/ifenslave
+- which /usr/sbin/rdisc

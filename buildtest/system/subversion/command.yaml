@@ -1,0 +1,10 @@
+description: Binary test for subversion
+binaries:
+- which /usr/bin/svn
+- which /usr/bin/svnadmin
+- which /usr/bin/svndumpfilter
+- which /usr/bin/svnlook
+- which /usr/bin/svnrdump
+- which /usr/bin/svnserve
+- which /usr/bin/svnsync
+- which /usr/bin/svnversion

@@ -1,0 +1,5 @@
+description: Binary test for acl
+binaries:
+- which /usr/bin/chacl
+- which /usr/bin/getfacl
+- which /usr/bin/setfacl

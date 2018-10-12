@@ -1,0 +1,20 @@
+description: Binary test for gvfs
+binaries:
+- which /usr/bin/gvfs-cat
+- which /usr/bin/gvfs-copy
+- which /usr/bin/gvfs-info
+- which /usr/bin/gvfs-less
+- which /usr/bin/gvfs-ls
+- which /usr/bin/gvfs-mime
+- which /usr/bin/gvfs-mkdir
+- which /usr/bin/gvfs-monitor-dir
+- which /usr/bin/gvfs-monitor-file
+- which /usr/bin/gvfs-mount
+- which /usr/bin/gvfs-move
+- which /usr/bin/gvfs-open
+- which /usr/bin/gvfs-rename
+- which /usr/bin/gvfs-rm
+- which /usr/bin/gvfs-save
+- which /usr/bin/gvfs-set-attribute
+- which /usr/bin/gvfs-trash
+- which /usr/bin/gvfs-tree

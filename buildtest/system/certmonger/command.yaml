@@ -1,0 +1,8 @@
+description: Binary test for certmonger
+binaries:
+- which /usr/bin/certmaster-getcert
+- which /usr/bin/getcert
+- which /usr/bin/ipa-getcert
+- which /usr/bin/local-getcert
+- which /usr/bin/selfsign-getcert
+- which /usr/sbin/certmonger

@@ -1,0 +1,4 @@
+description: Binary test for traceroute
+binaries:
+- which /usr/bin/tcptraceroute
+- which /usr/bin/traceroute

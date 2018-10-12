@@ -1,0 +1,3 @@
+description: Binary test for perl-HTML-Tree
+binaries:
+- which /usr/bin/htmltree

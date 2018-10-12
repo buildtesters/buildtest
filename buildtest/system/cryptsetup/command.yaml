@@ -1,0 +1,3 @@
+description: Binary test for cryptsetup
+binaries:
+- which /usr/sbin/cryptsetup

@@ -1,0 +1,7 @@
+description: Binary test for intltool
+binaries:
+- which /usr/bin/intltool-extract
+- which /usr/bin/intltool-merge
+- which /usr/bin/intltool-prepare
+- which /usr/bin/intltool-update
+- which /usr/bin/intltoolize

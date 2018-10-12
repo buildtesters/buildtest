@@ -1,0 +1,4 @@
+description: Binary test for motif
+binaries:
+- which /usr/bin/mwm
+- which /usr/bin/xmbind

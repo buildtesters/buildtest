@@ -1,0 +1,17 @@
+description: Binary test for cups
+binaries:
+- which /usr/bin/cupstestdsc
+- which /usr/bin/cupstestppd
+- which /usr/bin/ppdc
+- which /usr/bin/ppdhtml
+- which /usr/bin/ppdi
+- which /usr/bin/ppdmerge
+- which /usr/bin/ppdpo
+- which /usr/sbin/cupsaccept
+- which /usr/sbin/cupsaddsmb
+- which /usr/sbin/cupsctl
+- which /usr/sbin/cupsd
+- which /usr/sbin/cupsfilter
+- which /usr/sbin/lpadmin
+- which /usr/sbin/lpinfo
+- which /usr/sbin/lpmove

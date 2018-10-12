@@ -1,0 +1,4 @@
+description: Binary test for usermode
+binaries:
+- which /usr/bin/consolehelper
+- which /usr/sbin/userhelper

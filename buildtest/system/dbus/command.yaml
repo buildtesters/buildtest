@@ -1,0 +1,7 @@
+description: Binary test for dbus
+binaries:
+- which /bin/dbus-cleanup-sockets
+- which /bin/dbus-daemon
+- which /bin/dbus-monitor
+- which /bin/dbus-send
+- which /bin/dbus-uuidgen

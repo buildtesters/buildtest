@@ -1,0 +1,4 @@
+description: Binary test for rubygem-bundler
+binaries:
+- which /usr/bin/bundle
+- which /usr/bin/bundler

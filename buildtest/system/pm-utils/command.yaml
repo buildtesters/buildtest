@@ -1,0 +1,6 @@
+description: Binary test for pm-utils
+binaries:
+- which /usr/bin/on_ac_power
+- which /usr/bin/pm-is-supported
+- which /usr/sbin/pm-powersave
+- which /usr/sbin/pm-utils-bugreport-info.sh

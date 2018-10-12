@@ -1,0 +1,14 @@
+description: Binary test for initscripts
+binaries:
+- which /usr/bin/ipcalc
+- which /usr/bin/usleep
+- which /usr/sbin/consoletype
+- which /usr/sbin/genhostid
+- which /usr/sbin/ifdown
+- which /usr/sbin/ifup
+- which /usr/sbin/netreport
+- which /usr/sbin/ppp-watch
+- which /usr/sbin/service
+- which /usr/sbin/sushell
+- which /usr/sbin/sys-unconfig
+- which /usr/sbin/usernetctl

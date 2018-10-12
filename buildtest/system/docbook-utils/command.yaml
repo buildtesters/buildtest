@@ -1,0 +1,11 @@
+description: Binary test for docbook-utils
+binaries:
+- which /usr/bin/db2html
+- which /usr/bin/docbook2html
+- which /usr/bin/docbook2man
+- which /usr/bin/docbook2rtf
+- which /usr/bin/docbook2tex
+- which /usr/bin/docbook2texi
+- which /usr/bin/docbook2txt
+- which /usr/bin/jw
+- which /usr/bin/sgmldiff

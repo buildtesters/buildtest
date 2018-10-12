@@ -1,0 +1,5 @@
+description: Binary test for grep
+binaries:
+- which /bin/egrep
+- which /bin/fgrep
+- which /bin/grep

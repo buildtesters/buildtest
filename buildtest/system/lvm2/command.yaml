@@ -1,0 +1,8 @@
+description: Binary test for lvm2
+binaries:
+- which /usr/sbin/fsadm
+- which /usr/sbin/lvm
+- which /usr/sbin/lvmconf
+- which /usr/sbin/lvmdump
+- which /usr/sbin/lvmetad
+- which /usr/sbin/lvmpolld

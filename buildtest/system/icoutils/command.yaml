@@ -1,0 +1,6 @@
+description: Binary test for icoutils
+binaries:
+- which /usr/bin/extresso
+- which /usr/bin/genresscript
+- which /usr/bin/icotool
+- which /usr/bin/wrestool

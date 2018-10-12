@@ -1,0 +1,3 @@
+description: Binary test for python-rtslib
+binaries:
+- which /usr/bin/targetctl

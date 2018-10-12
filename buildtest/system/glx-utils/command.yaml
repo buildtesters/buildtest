@@ -1,0 +1,6 @@
+description: Binary test for glx-utils
+binaries:
+- which /usr/bin/glxgears
+- which /usr/bin/glxinfo
+- which /usr/bin/glxinfo64
+- which /usr/bin/xdriinfo

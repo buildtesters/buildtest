@@ -1,0 +1,4 @@
+description: Binary test for cyrus-sasl-lib
+binaries:
+- which /usr/sbin/sasldblistusers2
+- which /usr/sbin/saslpasswd2

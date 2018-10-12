@@ -1,0 +1,3 @@
+description: Binary test for openjade
+binaries:
+- which /usr/bin/openjade

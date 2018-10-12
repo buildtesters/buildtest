@@ -1,0 +1,4 @@
+description: Binary test for texlive-tex4ht-bin
+binaries:
+- which /usr/bin/t4ht
+- which /usr/bin/tex4ht

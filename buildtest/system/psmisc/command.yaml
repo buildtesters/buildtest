@@ -1,0 +1,7 @@
+description: Binary test for psmisc
+binaries:
+- which /usr/bin/killall
+- which /usr/bin/peekfd
+- which /usr/bin/prtstat
+- which /usr/bin/pstree
+- which /usr/sbin/fuser

@@ -1,0 +1,21 @@
+description: Binary test for nfs-utils
+binaries:
+- which /sbin/mount.nfs
+- which /sbin/osd_login
+- which /sbin/rpc.statd
+- which /usr/sbin/blkmapd
+- which /usr/sbin/exportfs
+- which /usr/sbin/mountstats
+- which /usr/sbin/nfsdcltrack
+- which /usr/sbin/nfsidmap
+- which /usr/sbin/nfsiostat
+- which /usr/sbin/nfsstat
+- which /usr/sbin/rpc.gssd
+- which /usr/sbin/rpc.idmapd
+- which /usr/sbin/rpc.mountd
+- which /usr/sbin/rpc.nfsd
+- which /usr/sbin/rpc.svcgssd
+- which /usr/sbin/rpcdebug
+- which /usr/sbin/showmount
+- which /usr/sbin/sm-notify
+- which /usr/sbin/start-statd

@@ -1,0 +1,7 @@
+description: Binary test for perl-XML-Twig
+binaries:
+- which /usr/bin/xml_grep
+- which /usr/bin/xml_merge
+- which /usr/bin/xml_pp
+- which /usr/bin/xml_spellcheck
+- which /usr/bin/xml_split

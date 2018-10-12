@@ -1,0 +1,8 @@
+description: Binary test for gstreamer-tools
+binaries:
+- which /usr/bin/gst-feedback
+- which /usr/bin/gst-inspect
+- which /usr/bin/gst-launch
+- which /usr/bin/gst-typefind
+- which /usr/bin/gst-xmlinspect
+- which /usr/bin/gst-xmllaunch

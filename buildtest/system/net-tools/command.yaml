@@ -1,0 +1,14 @@
+description: Binary test for net-tools
+binaries:
+- which /bin/netstat
+- which /sbin/arp
+- which /sbin/ether-wake
+- which /sbin/ifconfig
+- which /sbin/ipmaddr
+- which /sbin/iptunnel
+- which /sbin/mii-diag
+- which /sbin/mii-tool
+- which /sbin/nameif
+- which /sbin/plipconfig
+- which /sbin/route
+- which /sbin/slattach

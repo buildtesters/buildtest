@@ -1,0 +1,4 @@
+description: Binary test for tcpdump
+binaries:
+- which /usr/sbin/tcpdump
+- which /usr/sbin/tcpslice

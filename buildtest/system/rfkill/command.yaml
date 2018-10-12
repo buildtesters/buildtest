@@ -1,0 +1,3 @@
+description: Binary test for rfkill
+binaries:
+- which /sbin/rfkill

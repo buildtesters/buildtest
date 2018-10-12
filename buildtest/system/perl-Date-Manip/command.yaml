@@ -1,0 +1,4 @@
+description: Binary test for perl-Date-Manip
+binaries:
+- which /usr/bin/dm_date
+- which /usr/bin/dm_zdump

@@ -1,0 +1,22 @@
+description: Binary test for xfsprogs
+binaries:
+- which /usr/sbin/fsck.xfs
+- which /usr/sbin/mkfs.xfs
+- which /usr/sbin/xfs_admin
+- which /usr/sbin/xfs_bmap
+- which /usr/sbin/xfs_copy
+- which /usr/sbin/xfs_db
+- which /usr/sbin/xfs_estimate
+- which /usr/sbin/xfs_freeze
+- which /usr/sbin/xfs_fsr
+- which /usr/sbin/xfs_growfs
+- which /usr/sbin/xfs_info
+- which /usr/sbin/xfs_io
+- which /usr/sbin/xfs_logprint
+- which /usr/sbin/xfs_mdrestore
+- which /usr/sbin/xfs_metadump
+- which /usr/sbin/xfs_mkfile
+- which /usr/sbin/xfs_ncheck
+- which /usr/sbin/xfs_quota
+- which /usr/sbin/xfs_repair
+- which /usr/sbin/xfs_rtcp

@@ -1,0 +1,14 @@
+description: Binary test for quota
+binaries:
+- which /usr/bin/quota
+- which /usr/bin/quotasync
+- which /usr/sbin/convertquota
+- which /usr/sbin/edquota
+- which /usr/sbin/quot
+- which /usr/sbin/quotacheck
+- which /usr/sbin/quotaon
+- which /usr/sbin/quotastats
+- which /usr/sbin/repquota
+- which /usr/sbin/rpc.rquotad
+- which /usr/sbin/setquota
+- which /usr/sbin/xqmstats

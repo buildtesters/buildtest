@@ -1,0 +1,3 @@
+description: Binary test for vim-minimal
+binaries:
+- which /usr/bin/vi

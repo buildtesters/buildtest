@@ -1,0 +1,6 @@
+description: Binary test for wpa_supplicant
+binaries:
+- which /usr/sbin/eapol_test
+- which /usr/sbin/wpa_cli
+- which /usr/sbin/wpa_passphrase
+- which /usr/sbin/wpa_supplicant

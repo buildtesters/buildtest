@@ -1,0 +1,18 @@
+description: Binary test for e2fsprogs
+binaries:
+- which /usr/bin/chattr
+- which /usr/bin/lsattr
+- which /usr/sbin/badblocks
+- which /usr/sbin/debugfs
+- which /usr/sbin/dumpe2fs
+- which /usr/sbin/e2freefrag
+- which /usr/sbin/e2fsck
+- which /usr/sbin/e2image
+- which /usr/sbin/e2label
+- which /usr/sbin/e2undo
+- which /usr/sbin/e4defrag
+- which /usr/sbin/filefrag
+- which /usr/sbin/logsave
+- which /usr/sbin/mke2fs
+- which /usr/sbin/mklost+found
+- which /usr/sbin/resize2fs

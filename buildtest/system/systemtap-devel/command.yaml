@@ -1,0 +1,5 @@
+description: Binary test for systemtap-devel
+binaries:
+- which /usr/bin/stap
+- which /usr/bin/stap-prep
+- which /usr/bin/stap-report

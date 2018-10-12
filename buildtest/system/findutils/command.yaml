@@ -1,0 +1,5 @@
+description: Binary test for findutils
+binaries:
+- which /usr/bin/find
+- which /usr/bin/oldfind
+- which /usr/bin/xargs

@@ -1,0 +1,4 @@
+description: Binary test for texlive-dvips-bin
+binaries:
+- which /usr/bin/afm2tfm
+- which /usr/bin/dvips

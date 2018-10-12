@@ -1,0 +1,10 @@
+description: Binary test for nss-tools
+binaries:
+- which /usr/bin/certutil
+- which /usr/bin/cmsutil
+- which /usr/bin/crlutil
+- which /usr/bin/modutil
+- which /usr/bin/pk12util
+- which /usr/bin/signtool
+- which /usr/bin/signver
+- which /usr/bin/ssltap

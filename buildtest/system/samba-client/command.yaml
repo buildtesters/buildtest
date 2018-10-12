@@ -1,0 +1,21 @@
+description: Binary test for samba-client
+binaries:
+- which /usr/bin/cifsdd
+- which /usr/bin/dbwrap_tool
+- which /usr/bin/nmblookup
+- which /usr/bin/oLschema2ldif
+- which /usr/bin/regdiff
+- which /usr/bin/regpatch
+- which /usr/bin/regshell
+- which /usr/bin/regtree
+- which /usr/bin/rpcclient
+- which /usr/bin/samba-regedit
+- which /usr/bin/sharesec
+- which /usr/bin/smbcacls
+- which /usr/bin/smbclient
+- which /usr/bin/smbcquotas
+- which /usr/bin/smbget
+- which /usr/bin/smbprint
+- which /usr/bin/smbspool
+- which /usr/bin/smbtar
+- which /usr/bin/smbtree

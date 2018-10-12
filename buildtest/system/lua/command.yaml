@@ -1,0 +1,4 @@
+description: Binary test for lua
+binaries:
+- which /usr/bin/lua
+- which /usr/bin/luac

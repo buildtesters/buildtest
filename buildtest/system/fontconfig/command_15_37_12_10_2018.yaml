@@ -1,0 +1,10 @@
+description: Binary test for fontconfig
+binaries:
+- which /usr/bin/fc-cache
+- which /usr/bin/fc-cat
+- which /usr/bin/fc-list
+- which /usr/bin/fc-match
+- which /usr/bin/fc-pattern
+- which /usr/bin/fc-query
+- which /usr/bin/fc-scan
+- which /usr/bin/fc-validate

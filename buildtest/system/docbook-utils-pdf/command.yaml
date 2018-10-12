@@ -1,0 +1,5 @@
+description: Binary test for docbook-utils-pdf
+binaries:
+- which /usr/bin/docbook2dvi
+- which /usr/bin/docbook2pdf
+- which /usr/bin/docbook2ps

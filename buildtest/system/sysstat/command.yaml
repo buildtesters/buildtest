@@ -1,0 +1,10 @@
+description: Binary test for sysstat
+binaries:
+- which /usr/bin/cifsiostat
+- which /usr/bin/iostat
+- which /usr/bin/mpstat
+- which /usr/bin/nfsiostat-sysstat
+- which /usr/bin/pidstat
+- which /usr/bin/sadf
+- which /usr/bin/sar
+- which /usr/bin/tapestat

@@ -1,0 +1,8 @@
+description: Binary test for cifs-utils
+binaries:
+- which /usr/bin/cifscreds
+- which /usr/bin/getcifsacl
+- which /usr/bin/setcifsacl
+- which /usr/sbin/cifs.idmap
+- which /usr/sbin/cifs.upcall
+- which /usr/sbin/mount.cifs

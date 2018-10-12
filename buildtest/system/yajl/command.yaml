@@ -1,0 +1,4 @@
+description: Binary test for yajl
+binaries:
+- which /usr/bin/json_reformat
+- which /usr/bin/json_verify

@@ -1,0 +1,5 @@
+description: Binary test for system-config-printer
+binaries:
+- which /usr/bin/install-printerdriver
+- which /usr/bin/system-config-printer
+- which /usr/bin/system-config-printer-applet

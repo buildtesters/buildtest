@@ -1,0 +1,6 @@
+description: Binary test for crypto-utils
+binaries:
+- which /usr/bin/certwatch
+- which /usr/bin/genkey
+- which /usr/bin/keyrand
+- which /usr/bin/keyutil

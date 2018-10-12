@@ -1,0 +1,14 @@
+description: Binary test for abrt-addon-ccpp
+binaries:
+- which /usr/bin/abrt-action-analyze-backtrace
+- which /usr/bin/abrt-action-analyze-c
+- which /usr/bin/abrt-action-analyze-ccpp-local
+- which /usr/bin/abrt-action-analyze-core
+- which /usr/bin/abrt-action-analyze-vulnerability
+- which /usr/bin/abrt-action-generate-backtrace
+- which /usr/bin/abrt-action-generate-core-backtrace
+- which /usr/bin/abrt-action-install-debuginfo
+- which /usr/bin/abrt-action-list-dsos
+- which /usr/bin/abrt-action-perform-ccpp-analysis
+- which /usr/bin/abrt-action-trim-files
+- which /usr/sbin/abrt-install-ccpp-hook

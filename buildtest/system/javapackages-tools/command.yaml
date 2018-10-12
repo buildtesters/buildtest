@@ -1,0 +1,14 @@
+description: Binary test for javapackages-tools
+binaries:
+- which /usr/bin/abs2rel
+- which /usr/bin/build-classpath
+- which /usr/bin/build-classpath-directory
+- which /usr/bin/build-jar-repository
+- which /usr/bin/check-binary-files
+- which /usr/bin/clean-binary-files
+- which /usr/bin/create-jar-links
+- which /usr/bin/diff-jars
+- which /usr/bin/find-jar
+- which /usr/bin/jvmjar
+- which /usr/bin/rebuild-jar-repository
+- which /usr/bin/xmvn-builddep

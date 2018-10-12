@@ -1,0 +1,5 @@
+description: Binary test for abrt-addon-kerneloops
+binaries:
+- which /usr/bin/abrt-action-analyze-oops
+- which /usr/bin/abrt-action-save-kernel-data
+- which /usr/bin/abrt-dump-oops

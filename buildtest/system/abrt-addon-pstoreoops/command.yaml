@@ -1,0 +1,4 @@
+description: Binary test for abrt-addon-pstoreoops
+binaries:
+- which /usr/bin/abrt-merge-pstoreoops
+- which /usr/sbin/abrt-harvest-pstoreoops

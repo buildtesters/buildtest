@@ -1,0 +1,12 @@
+description: Binary test for wireshark
+binaries:
+- which /usr/sbin/capinfos
+- which /usr/sbin/dftest
+- which /usr/sbin/dumpcap
+- which /usr/sbin/editcap
+- which /usr/sbin/mergecap
+- which /usr/sbin/randpkt
+- which /usr/sbin/rawshark
+- which /usr/sbin/reordercap
+- which /usr/sbin/text2pcap
+- which /usr/sbin/tshark

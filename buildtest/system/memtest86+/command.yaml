@@ -1,0 +1,4 @@
+description: Binary test for memtest86+
+binaries:
+- which /usr/sbin/memtest-setup
+- which /usr/sbin/new-memtest-pkg

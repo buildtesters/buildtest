@@ -1,0 +1,10 @@
+description: Binary test for abrt
+binaries:
+- which /usr/bin/abrt-action-analyze-xorg
+- which /usr/bin/abrt-action-notify
+- which /usr/bin/abrt-action-save-package-data
+- which /usr/bin/abrt-handle-upload
+- which /usr/bin/abrt-watch-log
+- which /usr/sbin/abrt-auto-reporting
+- which /usr/sbin/abrt-server
+- which /usr/sbin/abrtd

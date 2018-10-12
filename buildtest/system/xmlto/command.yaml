@@ -1,0 +1,4 @@
+description: Binary test for xmlto
+binaries:
+- which /usr/bin/xmlif
+- which /usr/bin/xmlto

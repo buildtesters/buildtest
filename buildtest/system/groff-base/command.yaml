@@ -1,0 +1,15 @@
+description: Binary test for groff-base
+binaries:
+- which /usr/bin/eqn
+- which /usr/bin/groff
+- which /usr/bin/grops
+- which /usr/bin/grotty
+- which /usr/bin/neqn
+- which /usr/bin/nroff
+- which /usr/bin/pic
+- which /usr/bin/post-grohtml
+- which /usr/bin/pre-grohtml
+- which /usr/bin/preconv
+- which /usr/bin/soelim
+- which /usr/bin/tbl
+- which /usr/bin/troff

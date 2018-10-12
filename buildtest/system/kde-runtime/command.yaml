@@ -1,0 +1,32 @@
+description: Binary test for kde-runtime
+binaries:
+- which /usr/bin/kcmshell4
+- which /usr/bin/kde-cp
+- which /usr/bin/kde-mv
+- which /usr/bin/kde-open
+- which /usr/bin/kde4
+- which /usr/bin/kde4-menu
+- which /usr/bin/kdebugdialog
+- which /usr/bin/keditfiletype
+- which /usr/bin/kfile4
+- which /usr/bin/kglobalaccel
+- which /usr/bin/khelpcenter
+- which /usr/bin/khotnewstuff-upload
+- which /usr/bin/khotnewstuff4
+- which /usr/bin/kiconfinder
+- which /usr/bin/kioclient
+- which /usr/bin/kmimetypefinder
+- which /usr/bin/knotify4
+- which /usr/bin/kquitapp
+- which /usr/bin/kreadconfig
+- which /usr/bin/kstart
+- which /usr/bin/ksvgtopng
+- which /usr/bin/ktraderclient
+- which /usr/bin/ktrash
+- which /usr/bin/kuiserver
+- which /usr/bin/kwalletd
+- which /usr/bin/kwriteconfig
+- which /usr/bin/nepomukcontroller
+- which /usr/bin/plasma-remote-helper
+- which /usr/bin/plasmapkg
+- which /usr/bin/solid-hardware

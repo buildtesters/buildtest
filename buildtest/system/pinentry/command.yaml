@@ -1,0 +1,4 @@
+description: Binary test for pinentry
+binaries:
+- which /usr/bin/pinentry
+- which /usr/bin/pinentry-curses

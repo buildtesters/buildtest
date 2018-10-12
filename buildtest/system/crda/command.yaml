@@ -1,0 +1,5 @@
+description: Binary test for crda
+binaries:
+- which /usr/sbin/crda
+- which /usr/sbin/regdbdump
+- which /usr/sbin/setregdomain

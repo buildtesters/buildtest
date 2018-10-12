@@ -1,0 +1,9 @@
+description: Binary test for policycoreutils
+binaries:
+- which /usr/bin/secon
+- which /usr/sbin/fixfiles
+- which /usr/sbin/load_policy
+- which /usr/sbin/semodule
+- which /usr/sbin/sestatus
+- which /usr/sbin/setfiles
+- which /usr/sbin/setsebool

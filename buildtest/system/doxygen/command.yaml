@@ -1,0 +1,3 @@
+description: Binary test for doxygen
+binaries:
+- which /usr/bin/doxygen

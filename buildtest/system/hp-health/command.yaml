@@ -1,0 +1,6 @@
+description: Binary test for hp-health
+binaries:
+- which /sbin/hpasmcli
+- which /sbin/hpbootcfg
+- which /sbin/hplog
+- which /sbin/hpuid

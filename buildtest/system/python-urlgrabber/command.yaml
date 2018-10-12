@@ -1,0 +1,3 @@
+description: Binary test for python-urlgrabber
+binaries:
+- which /usr/bin/urlgrabber

@@ -1,0 +1,10 @@
+description: Binary test for mtools
+binaries:
+- which /usr/bin/amuFormat.sh
+- which /usr/bin/mcheck
+- which /usr/bin/mcomp
+- which /usr/bin/mkmanifest
+- which /usr/bin/mtools
+- which /usr/bin/mxtar
+- which /usr/bin/tgz
+- which /usr/bin/uz

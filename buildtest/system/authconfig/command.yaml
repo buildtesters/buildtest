@@ -1,0 +1,3 @@
+description: Binary test for authconfig
+binaries:
+- which /usr/sbin/cacertdir_rehash

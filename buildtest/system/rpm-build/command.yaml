@@ -1,0 +1,5 @@
+description: Binary test for rpm-build
+binaries:
+- which /usr/bin/gendiff
+- which /usr/bin/rpmbuild
+- which /usr/bin/rpmspec

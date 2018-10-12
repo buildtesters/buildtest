@@ -1,0 +1,4 @@
+description: Binary test for singularitypro26-runtime
+binaries:
+- which /usr/bin/run-singularity
+- which /usr/bin/singularity

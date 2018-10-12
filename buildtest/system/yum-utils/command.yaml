@@ -1,0 +1,25 @@
+description: Binary test for yum-utils
+binaries:
+- which /usr/bin/debuginfo-install
+- which /usr/bin/find-repos-of-install
+- which /usr/bin/needs-restarting
+- which /usr/bin/package-cleanup
+- which /usr/bin/repo-graph
+- which /usr/bin/repo-rss
+- which /usr/bin/repoclosure
+- which /usr/bin/repodiff
+- which /usr/bin/repomanage
+- which /usr/bin/repoquery
+- which /usr/bin/reposync
+- which /usr/bin/repotrack
+- which /usr/bin/show-changed-rco
+- which /usr/bin/show-installed
+- which /usr/bin/verifytree
+- which /usr/bin/yum-builddep
+- which /usr/bin/yum-config-manager
+- which /usr/bin/yum-debug-dump
+- which /usr/bin/yum-debug-restore
+- which /usr/bin/yum-groups-manager
+- which /usr/bin/yumdownloader
+- which /usr/sbin/yum-complete-transaction
+- which /usr/sbin/yumdb

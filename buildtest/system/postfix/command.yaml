@@ -1,0 +1,18 @@
+description: Binary test for postfix
+binaries:
+- which /usr/bin/rmail.postfix
+- which /usr/sbin/postalias
+- which /usr/sbin/postcat
+- which /usr/sbin/postconf
+- which /usr/sbin/postdrop
+- which /usr/sbin/postfix
+- which /usr/sbin/postkick
+- which /usr/sbin/postlock
+- which /usr/sbin/postlog
+- which /usr/sbin/postmap
+- which /usr/sbin/postmulti
+- which /usr/sbin/postqueue
+- which /usr/sbin/postsuper
+- which /usr/sbin/sendmail.postfix
+- which /usr/sbin/smtp-sink
+- which /usr/sbin/smtp-source

@@ -1,0 +1,8 @@
+description: Binary test for pnm2ppa
+binaries:
+- which /usr/bin/calibrate_ppa
+- which /usr/bin/detect_ppa
+- which /usr/bin/pbm2ppa
+- which /usr/bin/pbmtpg
+- which /usr/bin/pnm2ppa
+- which /usr/bin/test_ppa

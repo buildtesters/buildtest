@@ -1,0 +1,5 @@
+description: Binary test for git
+binaries:
+- which /usr/bin/git
+- which /usr/bin/git-shell
+- which /usr/bin/git-upload-pack

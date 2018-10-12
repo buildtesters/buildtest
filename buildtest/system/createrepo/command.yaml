@@ -1,0 +1,5 @@
+description: Binary test for createrepo
+binaries:
+- which /usr/bin/createrepo
+- which /usr/bin/mergerepo
+- which /usr/bin/modifyrepo

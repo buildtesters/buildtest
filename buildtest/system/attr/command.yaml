@@ -1,0 +1,5 @@
+description: Binary test for attr
+binaries:
+- which /usr/bin/attr
+- which /usr/bin/getfattr
+- which /usr/bin/setfattr

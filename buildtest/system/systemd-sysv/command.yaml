@@ -1,0 +1,3 @@
+description: Binary test for systemd-sysv
+binaries:
+- which /usr/bin/systemd-sysv-convert

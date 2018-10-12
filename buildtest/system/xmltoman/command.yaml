@@ -1,0 +1,4 @@
+description: Binary test for xmltoman
+binaries:
+- which /usr/bin/xmlmantohtml
+- which /usr/bin/xmltoman

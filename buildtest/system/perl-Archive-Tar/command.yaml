@@ -1,0 +1,5 @@
+description: Binary test for perl-Archive-Tar
+binaries:
+- which /usr/bin/ptar
+- which /usr/bin/ptardiff
+- which /usr/bin/ptargrep

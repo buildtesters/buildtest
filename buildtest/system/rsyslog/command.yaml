@@ -1,0 +1,4 @@
+description: Binary test for rsyslog
+binaries:
+- which /usr/bin/rsyslog-recover-qi.pl
+- which /usr/sbin/rsyslogd

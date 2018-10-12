@@ -1,0 +1,14 @@
+description: Binary test for libcgroup-tools
+binaries:
+- which /usr/bin/cgclassify
+- which /usr/bin/cgcreate
+- which /usr/bin/cgdelete
+- which /usr/bin/cgexec
+- which /usr/bin/cgget
+- which /usr/bin/cgset
+- which /usr/bin/cgsnapshot
+- which /usr/bin/lscgroup
+- which /usr/bin/lssubsys
+- which /usr/sbin/cgclear
+- which /usr/sbin/cgconfigparser
+- which /usr/sbin/cgrulesengd

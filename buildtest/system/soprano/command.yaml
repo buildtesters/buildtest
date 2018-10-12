@@ -1,0 +1,5 @@
+description: Binary test for soprano
+binaries:
+- which /usr/bin/onto2vocabularyclass
+- which /usr/bin/sopranocmd
+- which /usr/bin/sopranod

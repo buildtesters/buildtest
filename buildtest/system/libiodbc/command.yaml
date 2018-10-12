@@ -1,0 +1,4 @@
+description: Binary test for libiodbc
+binaries:
+- which /usr/bin/iodbctest
+- which /usr/bin/iodbctestw

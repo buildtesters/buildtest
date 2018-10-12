@@ -1,0 +1,7 @@
+description: Binary test for glib2
+binaries:
+- which /usr/bin/gapplication
+- which /usr/bin/gdbus
+- which /usr/bin/gio-querymodules-64
+- which /usr/bin/glib-compile-schemas
+- which /usr/bin/gsettings

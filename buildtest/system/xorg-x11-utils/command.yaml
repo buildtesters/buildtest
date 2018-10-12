@@ -1,0 +1,11 @@
+description: Binary test for xorg-x11-utils
+binaries:
+- which /usr/bin/edid-decode
+- which /usr/bin/xdpyinfo
+- which /usr/bin/xev
+- which /usr/bin/xlsatoms
+- which /usr/bin/xlsclients
+- which /usr/bin/xlsfonts
+- which /usr/bin/xprop
+- which /usr/bin/xvinfo
+- which /usr/bin/xwininfo

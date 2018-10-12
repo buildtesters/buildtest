@@ -1,0 +1,4 @@
+description: Binary test for chkconfig
+binaries:
+- which /sbin/chkconfig
+- which /usr/sbin/alternatives

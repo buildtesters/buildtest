@@ -1,0 +1,3 @@
+description: Binary test for libplist
+binaries:
+- which /usr/bin/plistutil-1.10

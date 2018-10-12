@@ -1,0 +1,3 @@
+description: Binary test for byacc
+binaries:
+- which /usr/bin/yacc

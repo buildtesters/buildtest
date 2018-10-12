@@ -1,0 +1,3 @@
+description: Binary test for libgpg-error
+binaries:
+- which /usr/bin/gpg-error

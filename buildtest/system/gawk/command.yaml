@@ -1,0 +1,6 @@
+description: Binary test for gawk
+binaries:
+- which /usr/bin/dgawk
+- which /usr/bin/gawk
+- which /usr/bin/igawk
+- which /usr/bin/pgawk

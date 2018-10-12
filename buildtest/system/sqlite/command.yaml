@@ -1,0 +1,3 @@
+description: Binary test for sqlite
+binaries:
+- which /usr/bin/sqlite3

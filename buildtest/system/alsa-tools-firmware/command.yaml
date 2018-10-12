@@ -1,0 +1,6 @@
+description: Binary test for alsa-tools-firmware
+binaries:
+- which /usr/bin/hdsploader
+- which /usr/bin/mixartloader
+- which /usr/bin/usx2yloader
+- which /usr/bin/vxloader

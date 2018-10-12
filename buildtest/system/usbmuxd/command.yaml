@@ -1,0 +1,4 @@
+description: Binary test for usbmuxd
+binaries:
+- which /usr/bin/iproxy
+- which /usr/sbin/usbmuxd

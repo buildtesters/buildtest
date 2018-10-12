@@ -1,0 +1,3 @@
+description: Binary test for raptor2
+binaries:
+- which /usr/bin/rapper
