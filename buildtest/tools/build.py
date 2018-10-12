@@ -64,7 +64,7 @@ def func_build_subcmd(args):
     if args.enable_job:
         config_opts['BUILDTEST_ENABLE_JOB']=True
     if args.module_naming_scheme:
-        config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = args.module_naming_scheme    
+        config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = args.module_naming_scheme
     if args.job_template:
         update_job_template(args.job_template)
 
@@ -75,22 +75,25 @@ def func_build_subcmd(args):
     create_dir(logdir)
     create_dir(testdir)
 
+    if args.all_systempkg:
+        packages = os.listdir(os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest","system"))
+        for pkg in packages:
+            #func_build_system(pkg, logger,logdir,logpath,logfile)
+            generate_binary_test(pkg,"systempackage")
+
     if args.system:
-        func_build_system(args, logger, logdir, logpath, logfile)
+        func_build_system(args.system, logger, logdir, logpath, logfile)
     elif args.software:
         func_build_software(args, logger, logdir, logpath, logfile)
 
     sys.exit(0)
 
-def func_build_system(args, logger, logdir, logpath, logfile):
+def func_build_system(systempkg, logger, logdir, logpath, logfile):
     """ method implementation for "_buildtest build --system" """
 
-
-
-    systempkg = args.system
     system_logdir = os.path.join(logdir,"system",systempkg)
     #setup_system_cmake()
-    generate_binary_test(args,systempkg)
+    generate_binary_test(systempkg,"systempackage")
 
     create_dir(system_logdir)
     logger.warning("Creating directory %s , to write log file", system_logdir)
@@ -142,7 +145,7 @@ def func_build_software(args, logger, logdir, logpath, logfile):
 
     setup_software_cmake()
 
-    generate_binary_test(args,None)
+    generate_binary_test(args.software,"software")
 
     # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)
     recursive_gen_test(configdir,codedir)

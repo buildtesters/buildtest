@@ -46,7 +46,7 @@ from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_n
 
 
 
-def generate_binary_test(args_dict,pkg):
+def generate_binary_test(name,test_type=None):
     """
     This function generates binary test from command.yaml file. For ebapps apps the module
     and any toolchain is loaded in advance. Each entry in command.yaml will generate a
@@ -55,29 +55,20 @@ def generate_binary_test(args_dict,pkg):
     subdirectories in BUILDTEST_TESTDIR.
     """
 
-    # variable to indicate if it is a software or system package for binary test
-    test_type=""
     BUILDTEST_TESTDIR=config_opts['BUILDTEST_TESTDIR']
     # top level CMakeList.txt should be in same parent directory where BUILDTEST_TESTDIR is created
     toplevel_cmakelist_file=os.path.join(os.path.dirname(BUILDTEST_TESTDIR),"CMakeLists.txt")
     testingdir_cmakelist_file=os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
 
-    #software = args_dict.software
-    system = args_dict.system
-
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 
     # determine whether we are running a binary test on ebapp or system package
-    if args_dict.software:
-        software = args_dict.software
-        software_strip_toolchain = strip_toolchain_from_module(software)
+    if test_type == "software":
+        software_strip_toolchain = strip_toolchain_from_module(name)
         configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],software_strip_toolchain.lower())
 
-
-        test_type="software"
-    elif args_dict.system:
-        configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],pkg)
-        test_type="system"
+    else:
+        configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],name)
 
     commandfile=os.path.join(configdir,"command.yaml")
 
@@ -108,9 +99,9 @@ def generate_binary_test(args_dict,pkg):
 
 
     # if all checks have passed then proceed with generating test
-    process_binary_file(commandfile,args_dict,test_type,pkg)
+    process_binary_file(commandfile,test_type,name)
 
-def process_binary_file(filename,args_dict,test_type,pkg):
+def process_binary_file(filename,test_type,pkg):
     """
     Module responsible for actually creating the test scripts for binary tests along
     with CMakeLists.txt in subdirectories under $BUILDTEST_TESTDIR. This module
@@ -142,7 +133,7 @@ def process_binary_file(filename,args_dict,test_type,pkg):
         header=load_modules(BUILDTEST_SHELL)
 
     else:
-        system=args_dict.system
+        system=pkg
         print ("Detecting Test Type: System Package")
         test_destdir,test_destdir_cmakelist = setup_system_cmake(pkg)
 

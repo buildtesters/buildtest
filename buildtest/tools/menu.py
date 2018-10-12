@@ -76,7 +76,6 @@ class buildtest_menu():
             parser.add_argument("--scantest", help=""" Report all tests that can be built with buildtest by checking all available apps found
             in eb stack and system packages""", action="store_true")
             parser.add_argument("--clean-logs", help="delete buildtest log directory ($BUILDTEST_LOGDIR)",action="store_true")
-
             parser.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")
             parser.add_argument("--submitjob", help = "specify a directory or job script to submit to resource scheduler")
 
@@ -104,8 +103,9 @@ class buildtest_menu():
             parser_build = subparsers.add_parser('build', help='build help')
             parser_build.add_argument("-s", "--software", help=" Specify software package to test", choices=self.software_list, metavar='INSTALLED-EASYBUILD-APPS')
             parser_build.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=self.toolchain_list, metavar='INSTALLED-EASYBUILD-TOOLCHAINS')
-            parser_build.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES)
             parser_build.add_argument("--system", help=" Build test for system packages", choices=self.syspkg_list, metavar='SYSTEM-PACKAGE')
+            parser_build.add_argument("--all-systempkg", help="build tests for all system packages from buildtest repository ", action="store_true")
+            parser_build.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES)
             parser_build.add_argument("--python-package", help="build test for Python packages", choices=self.python_choices,metavar='PYTHON-PACKAGES')
             parser_build.add_argument("--r-package", help="build test for R packages", choices=self.r_choices,metavar='R-PACKAGES')
             parser_build.add_argument("--ruby-package", help="build test for Ruby packages", choices=self.ruby_choices,metavar='RUBY-PACKAGES')
