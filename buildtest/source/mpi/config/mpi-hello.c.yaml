@@ -1,0 +1,5 @@
+name : mpi-hello.c
+source : hello.c
+buildopts : -O2
+mpi: enabled
+nproc: 6

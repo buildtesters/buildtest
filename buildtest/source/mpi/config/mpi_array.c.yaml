@@ -1,0 +1,5 @@
+name: mpi_array.c
+source: mpi_array.c
+mpi: enabled
+buildopts: -O2
+nproc: 4

@@ -1,6 +1,0 @@
-name : simple_xy_wr.c
-source : simple_xy_wr.c
-buildopts: -lnetcdf
-runextracmd:
-        - ncdump simple_xy.nc
-        - rm simple_xy.nc

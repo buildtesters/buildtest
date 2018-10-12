@@ -1,4 +1,0 @@
-description: R package test
-binaries:
-- Rscript --version
-- R --version

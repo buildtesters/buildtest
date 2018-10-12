@@ -1,5 +1,0 @@
-binaries:
-- which install.sh
-- which git-lfs
-- git lfs version
-- git lfs env

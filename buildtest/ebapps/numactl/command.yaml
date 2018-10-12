@@ -1,3 +1,0 @@
-binaries:
-       - numactl -H
-       - numastat

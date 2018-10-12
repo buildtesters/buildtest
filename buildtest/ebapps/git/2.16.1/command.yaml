@@ -1,8 +1,0 @@
-binaries:
-- which git-receive-pack
-- git --version
-- which git-shell
-- which git-upload-archive
-- which git-upload-pack
-- git-cvsserver --version
-- which gitk

@@ -1,5 +1,0 @@
-binaries:
-- guile-config --version
-- guile -v
-- which guile-snarf
-- guile-tools --version
