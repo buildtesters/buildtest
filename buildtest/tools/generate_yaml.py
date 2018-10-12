@@ -33,7 +33,7 @@ from datetime import datetime
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import create_dir
-from buildtest.tools.software import get_unique_software, get_toolchain_stack, get_binaries_from_application
+from buildtest.tools.software import get_unique_software, get_software_stack, get_toolchain_stack, get_binaries_from_application
 from buildtest.tools.system import check_system_package_installed, get_binaries_from_systempackage
 
 def create_system_yaml(name):
@@ -73,7 +73,9 @@ def create_software_yaml(module_name):
     """ create yaml configuration for software packages """
 
     binary = get_binaries_from_application(module_name)
-
+    # get_binary_from_application return None if there are no binaries found in application.
+    if binary == None:
+        return
     toolchain_stack = get_toolchain_stack()
     toolchain_name = [name.split("/")[0] for name in toolchain_stack]
     # get module version
@@ -115,4 +117,9 @@ def create_software_yaml(module_name):
         yaml.dump(binarydict, outfile, default_flow_style=False)
 
     print ("Please check YAML file ", yamlfile, " and fix test accordingly")
-    sys.exit(0)
+
+
+def create_all_software_yaml():
+    list = get_software_stack()
+    for item in list:
+        create_software_yaml(item)

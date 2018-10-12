@@ -169,8 +169,8 @@ def get_binaries_from_application(module):
             path_list.append(line[start_index:end_index])
 
     if len(path_list)  ==  0:
-        print ("No $PATH set in your module %s so no possible binaries can be found",module)
-        sys.exit(0)
+        print ("No $PATH set in your module ", module, "  so no possible binaries can be found")
+        return None
 
     binaries = {}
     for dir in path_list:
