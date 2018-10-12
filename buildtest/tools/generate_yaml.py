@@ -34,7 +34,7 @@ from datetime import datetime
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import create_dir
 from buildtest.tools.software import get_unique_software, get_software_stack, get_toolchain_stack, get_binaries_from_application
-from buildtest.tools.system import check_system_package_installed, get_binaries_from_systempackage
+from buildtest.tools.system import check_system_package_installed, get_binaries_from_systempackage, systempackage_installed_list
 
 def create_system_yaml(name):
     """ create YAML configuration for binary test for system package """
@@ -55,9 +55,11 @@ def create_system_yaml(name):
 
     # get binary from system package
     binary = get_binaries_from_systempackage(name)
-
+    # get_binary_from_application return None if there are no binaries found in application.
+    if binary == None:
+        return
     binary_list = []
-    [binary_list.extend(["find " + value]) for value in binary.values()]
+    [binary_list.extend(["which " + value]) for value in binary.values()]
 
     fd = open(yamlfile,"w")
     description = {"description": "Binary test for " + name}
@@ -67,7 +69,7 @@ def create_system_yaml(name):
         yaml.dump(binarydict, outfile, default_flow_style=False)
 
     print ("Please check YAML file ", yamlfile, " and fix test accordingly")
-    sys.exit(0)
+
 
 def create_software_yaml(module_name):
     """ create yaml configuration for software packages """
@@ -120,6 +122,13 @@ def create_software_yaml(module_name):
 
 
 def create_all_software_yaml():
+    """ run create_software_yaml for every application in software stack """
     list = get_software_stack()
     for item in list:
         create_software_yaml(item)
+
+def create_all_system_yaml():
+    """ run create_system_yaml for every system package installed in system """
+    list = systempackage_installed_list()
+    for item in list:
+        create_system_yaml(item)

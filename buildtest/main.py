@@ -47,7 +47,7 @@ from buildtest.test.job import submit_job_to_scheduler
 from buildtest.tools.config import show_configuration, config_opts
 from buildtest.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from buildtest.tools.find import find_all_tests, find_tests_by_arg
-from buildtest.tools.generate_yaml import create_system_yaml, create_software_yaml
+from buildtest.tools.generate_yaml import create_system_yaml, create_software_yaml, create_all_software_yaml, create_all_system_yaml
 from buildtest.tools.log import clean_logs
 
 from buildtest.tools.modules import diff_trees, module_load_test
@@ -121,9 +121,12 @@ def main():
     if bt_opts.sysyaml is not None:
         create_system_yaml(bt_opts.sysyaml)
 
-    if bt_opts.ebyaml != None:
+    if bt_opts.ebyaml is not None:
         create_software_yaml(bt_opts.ebyaml)
-
+    if bt_opts.all_software_yaml:
+        create_all_software_yaml()
+    if bt_opts.all_system_yaml:
+        create_all_system_yaml()
 
     get_system_info()
 
