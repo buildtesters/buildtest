@@ -42,6 +42,7 @@ def run_app_choices():
     # if there is no directory $BUILDTEST_TESTDIR then return an empty list
     if not os.path.exists(app_root_testdir):
         return []
+
     app_name_list = [ f.path for f in os.scandir(app_root_testdir) if f.is_dir()]
 
     app_choices_fullpath = []

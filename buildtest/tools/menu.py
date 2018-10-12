@@ -73,7 +73,6 @@ class buildtest_menu():
             parser.add_argument("--logdir", help="Path to write buildtest logs. Override configuration BUILDTEST_LOGDIR")
             parser.add_argument("--show", help="show buildtest environment configuration", action="store_true")
             parser.add_argument("--show-keys", help="display yaml key description", action="store_true")
-            parser.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
             parser.add_argument("--scantest", help=""" Report all tests that can be built with buildtest by checking all available apps found
             in eb stack and system packages""", action="store_true")
             parser.add_argument("--clean-logs", help="delete buildtest log directory ($BUILDTEST_LOGDIR)",action="store_true")
@@ -117,6 +116,7 @@ class buildtest_menu():
             parser_build.add_argument("--ignore-easybuild", help="ignore if application is not built with easybuild",action="store_true")
             parser_build.add_argument("--enable-job", help="enable job script generation with buildtest", action="store_true")
             parser_build.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
+            parser_build.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
             parser_build.set_defaults(func=func_build_subcmd)
 
             parser_run = subparsers.add_parser('run', help='run help')

@@ -63,8 +63,11 @@ def func_build_subcmd(args):
         config_opts["BUILDTEST_IGNORE_EASYBUILD"]=True
     if args.enable_job:
         config_opts['BUILDTEST_ENABLE_JOB']=True
+    if args.module_naming_scheme:
+        config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = args.module_naming_scheme    
     if args.job_template:
         update_job_template(args.job_template)
+
 
     logdir = config_opts['BUILDTEST_LOGDIR']
     testdir = config_opts['BUILDTEST_TESTDIR']

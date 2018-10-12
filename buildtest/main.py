@@ -85,9 +85,6 @@ def main():
     if bt_opts.clean_logs:
         clean_logs()
 
-    if bt_opts.module_naming_scheme:
-        config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = bt_opts.module_naming_scheme
-
 
     if bt_opts.scantest:
         scantest()
