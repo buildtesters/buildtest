@@ -34,7 +34,7 @@ import sys
 
 from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
 
-def run_test_buildtest(testname,test_output="no"):
+def run_testname(testname,test_output="no"):
     """ test script to run """
 
     try:

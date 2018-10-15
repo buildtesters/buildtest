@@ -20,7 +20,7 @@
 
 import sys
 from buildtest.test.run.app import run_app_test
-from buildtest.test.run.testname import run_test_buildtest
+from buildtest.test.run.testname import run_testname
 from buildtest.test.run.system import run_system_test
 from buildtest.test.run.interactive import runtest_menu
 
@@ -29,7 +29,7 @@ def func_run_subcmd(args):
     if args.interactive:
         runtest_menu()
     if args.testname:
-        run_test_buildtest(args.testname, args.output)
+        run_testname(args.testname, args.output)
     if args.app:
         run_app_test(args.app,args.output)
     if args.systempkg:
