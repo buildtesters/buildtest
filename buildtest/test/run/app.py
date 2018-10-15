@@ -30,6 +30,7 @@ _buildtest run --app
 """
 
 import os
+import subprocess
 import sys
 from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
 def run_app_choices():
@@ -60,21 +61,34 @@ def run_app_choices():
 
     return app_choices
 
-def run_app_test(app_name):
+def run_app_test(app_name, test_output):
     """
     implementation for _buildtest run --app to execute all tests in the test directory
     """
 
     app_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"ebapp")
-
-    tests = [ f.path for f in os.scandir(os.path.join(app_root_testdir,app_name)) if os.path.splitext(f)[1] in [".sh", ".bash", ".csh"]]
+    output_redirect=""
+    if test_output == "yes":
+        output_redirect = " >/dev/stdout 2>&1"
+    else:
+        output_redirect = " >/dev/null 2>&1"
+    tests = [ f.path + output_redirect  for f in os.scandir(os.path.join(app_root_testdir,app_name)) if os.path.splitext(f)[1] in [".sh", ".bash", ".csh"]]
 
     count_test = len(tests)
-
+    
     for test in tests:
         print (f"Executing Test: {test}")
         print ("---------------------------------------------------------")
-        os.system(test)
+        ret = subprocess.Popen(test,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        output = ret.communicate()[0].decode("utf-8")
+
+        ret_code = ret.returncode
+        if test_output == "yes":
+            print(output)
+        if ret_code == 0:
+            print("Test Successful")
+        else:
+            print("Test Failed")
         print ("---------------------------------------------------------")
 
     print (f"Executed {count_test} tests for software: {app_name}")

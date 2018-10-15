@@ -31,7 +31,7 @@ def func_run_subcmd(args):
     if args.testname:
         run_test_buildtest(args.testname)
     if args.app:
-        run_app_test(args.app)
+        run_app_test(args.app,args.output)
     if args.systempkg:
         run_system_test(args.systempkg)
     sys.exit(0)
