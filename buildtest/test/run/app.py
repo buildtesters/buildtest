@@ -61,7 +61,7 @@ def run_app_choices():
 
     return app_choices
 
-def run_app_test(app_name, test_output):
+def run_app_test(app_name, test_output="no"):
     """
     implementation for _buildtest run --app to execute all tests in the test directory
     """
@@ -75,7 +75,7 @@ def run_app_test(app_name, test_output):
     tests = [ f.path + output_redirect  for f in os.scandir(os.path.join(app_root_testdir,app_name)) if os.path.splitext(f)[1] in [".sh", ".bash", ".csh"]]
 
     count_test = len(tests)
-    
+
     for test in tests:
         print (f"Executing Test: {test}")
         print ("---------------------------------------------------------")

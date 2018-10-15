@@ -29,11 +29,12 @@ metrics that will be stored in json format
 
 """
 import os
+import subprocess
 import sys
 
 from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
 
-def run_test_buildtest(testname):
+def run_test_buildtest(testname,test_output="no"):
     """ test script to run """
 
     try:
@@ -42,7 +43,26 @@ def run_test_buildtest(testname):
         print (err_msg)
         sys.exit(1)
 
-    os.system(testname)
+    output_redirect=""
+    if test_output == "yes":
+        output_redirect = " >/dev/stdout 2>&1"
+    else:
+        output_redirect = " >/dev/null 2>&1"
+
+    testname += output_redirect
+    print (f"Executing Test: {testname}")
+    print ("---------------------------------------------------------")
+    ret = subprocess.Popen(testname,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    output = ret.communicate()[0].decode("utf-8")
+
+    ret_code = ret.returncode
+    if test_output == "yes":
+        print(output)
+    if ret_code == 0:
+        print("Test Successful")
+    else:
+        print("Test Failed")
+    print ("---------------------------------------------------------")
     sys.exit(0)
 
 def test_list():

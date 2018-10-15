@@ -29,9 +29,9 @@ def func_run_subcmd(args):
     if args.interactive:
         runtest_menu()
     if args.testname:
-        run_test_buildtest(args.testname)
+        run_test_buildtest(args.testname, args.output)
     if args.app:
         run_app_test(args.app,args.output)
     if args.systempkg:
-        run_system_test(args.systempkg)
+        run_system_test(args.systempkg, args.output)
     sys.exit(0)
