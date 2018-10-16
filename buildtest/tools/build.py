@@ -136,21 +136,23 @@ def func_build_software(args, logger, logdir, logpath, logfile):
     if config_opts["BUILDTEST_IGNORE_EASYBUILD"] == False:
         is_easybuild_app()
 
-    source_app_dir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],appname.lower())
-    configdir=os.path.join(source_app_dir,"config")
-    codedir=os.path.join(source_app_dir,"code")
     logdir=os.path.join(logdir,appname,appversion,tcname,tcversion)
 
     # if directory tree for software log is not present, create the directory
     create_dir(logdir)
 
+    setup_software_cmake()
+
+    generate_binary_test(args.software,"software")
+
+    source_app_dir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/source",appname.lower())
+    configdir=os.path.join(source_app_dir,"config")
+    codedir=os.path.join(source_app_dir,"code")
+
     logger.debug("Source App Directory: %s",  source_app_dir)
     logger.debug("Config Directory: %s ", configdir)
     logger.debug("Code Directory: %s", codedir)
 
-    setup_software_cmake()
-
-    generate_binary_test(args.software,"software")
 
     # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)
     recursive_gen_test(configdir,codedir)
