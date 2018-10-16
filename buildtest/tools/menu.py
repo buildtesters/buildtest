@@ -44,6 +44,7 @@ from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.system import systempackage_installed_list
 from buildtest.tools.software import get_software_stack, get_toolchain_stack,ebyaml_choices
+from buildtest.tools.yaml import func_yaml_subcmd
 
 
 class buildtest_menu():
@@ -87,12 +88,6 @@ class buildtest_menu():
 
             group2.add_argument("--diff-trees", help="Show difference between two module trees")
 
-            group4 = parser.add_argument_group('YAML Options', 'Options for YAML configuration')
-            group4.add_argument("--sysyaml", help = "generate YAML configuration for binary test for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
-            group4.add_argument("--ebyaml", help = "generate YAML configuration for binary test for software package", choices=self.yaml_apps, metavar='YAML-APP-CHOICES')
-            group4.add_argument("--all-software-yaml", help = "Automate option --ebyaml for all software packages found in BUILDTEST_MODULE_ROOT ",action="store_true")
-            group4.add_argument("--all-system-yaml", help = "Automate option --sysyaml for all system packages installed ",action="store_true")
-
             subparsers = parser.add_subparsers(help='subcommand help', dest="sub_command")
             parser_find = subparsers.add_parser('list', help='list help')
             parser_find.add_argument('-lt', "--list-toolchain", help="retrieve a list of easybuild toolchain used for --toolchain option", action="store_true")
@@ -102,6 +97,13 @@ class buildtest_menu():
             parser_find.add_argument("-bs", "--buildtest-software", help="list buildtest software found in buildtest repository",action="store_true")
             parser_find.add_argument("--format", help="Output format type", choices=["csv", "json", "stdout"], default="stdout")
             parser_find.set_defaults(func=func_list_subcmd)
+
+            parser_yaml = subparsers.add_parser('yaml', help='Options for building YAML configuration')
+            parser_yaml.add_argument("--sysyaml", help = "generate YAML configuration for binary test for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
+            parser_yaml.add_argument("--ebyaml", help = "generate YAML configuration for binary test for software package", choices=self.yaml_apps, metavar='YAML-APP-CHOICES')
+            parser_yaml.add_argument("--all-software-yaml", help = "Automate option --ebyaml for all software packages found in BUILDTEST_MODULE_ROOT ",action="store_true")
+            parser_yaml.add_argument("--all-system-yaml", help = "Automate option --sysyaml for all system packages installed ",action="store_true")
+            parser_yaml.set_defaults(func=func_yaml_subcmd)
 
             parser_build = subparsers.add_parser('build', help='build help')
             parser_build.add_argument("-s", "--software", help=" Specify software package to test", choices=self.software_list, metavar='INSTALLED-EASYBUILD-APPS')
