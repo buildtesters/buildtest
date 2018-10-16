@@ -99,10 +99,12 @@ class buildtest_menu():
             parser_find.set_defaults(func=func_list_subcmd)
 
             parser_yaml = subparsers.add_parser('yaml', help='Options for building YAML configuration')
-            parser_yaml.add_argument("--sysyaml", help = "generate YAML configuration for binary test for system package", choices=self.pkglist, metavar='INSTALLED-SYSTEM-PACKAGE')
-            parser_yaml.add_argument("--ebyaml", help = "generate YAML configuration for binary test for software package", choices=self.yaml_apps, metavar='YAML-APP-CHOICES')
+            parser_yaml.add_argument("-s", "--systempkg", help = "generate YAML configuration for binary test for system package", choices=self.pkglist, metavar='YAML-SYSTEMPACKAGE-CHOICES')
+            parser_yaml.add_argument("-a", "--app", help = "generate YAML configuration for binary test for software package", choices=self.yaml_apps, metavar='YAML-APP-CHOICES')
             parser_yaml.add_argument("--all-software-yaml", help = "Automate option --ebyaml for all software packages found in BUILDTEST_MODULE_ROOT ",action="store_true")
             parser_yaml.add_argument("--all-system-yaml", help = "Automate option --sysyaml for all system packages installed ",action="store_true")
+            parser_yaml.add_argument("-r,", "--rebuild", help="rebuild binary test yaml file even if it already exist ", action="store_true")
+            parser_yaml.add_argument("-o", "--overwrite", help="rebuild and overwrite existing binary test yaml file", action="store_true")
             parser_yaml.set_defaults(func=func_yaml_subcmd)
 
             parser_build = subparsers.add_parser('build', help='build help')
