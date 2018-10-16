@@ -1,0 +1,14 @@
+description: Binary test for EasyBuild/3.5.3
+binaries:
+- which logdaemon
+- which easy_install
+- which minimal_bash_completion.bash
+- which optcomplete.bash
+- which startlogdaemon
+- which bootstrap_eb.py
+- which install_eb_dep.sh
+- which python-noenv
+- which easy_install-2.7
+- which python-stripped-env
+- which eb
+- which eb_bash_completion.bash

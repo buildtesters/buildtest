@@ -1,0 +1,22 @@
+description: Binary test for CUDA/9.1.85
+binaries:
+- which nsight_ee_plugins_manage.sh
+- which nvprof
+- which cuda-install-samples-9.1.sh
+- which bin2c
+- which cuobjdump
+- which cuda-gdbserver
+- which ptxas
+- which nsight
+- which nvlink
+- which gpu-library-advisor
+- which cudafe
+- which cuda-memcheck
+- which cuda-gdb
+- which nvcc
+- which nvdisasm
+- which nvprune
+- which fatbinary
+- which nvvp
+- which uninstall_cuda_9.1.pl
+- which cudafe++

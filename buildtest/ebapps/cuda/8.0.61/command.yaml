@@ -1,0 +1,21 @@
+description: Binary test for CUDA/8.0.61
+binaries:
+- which nvprof
+- which bin2c
+- which cuobjdump
+- which cuda-gdbserver
+- which cuda-install-samples-8.0.sh
+- which ptxas
+- which nsight
+- which nvlink
+- which gpu-library-advisor
+- which cudafe
+- which cuda-memcheck
+- which cuda-gdb
+- which nvcc
+- which nvdisasm
+- which nvprune
+- which fatbinary
+- which nvvp
+- which uninstall_cuda_8.0.pl
+- which cudafe++

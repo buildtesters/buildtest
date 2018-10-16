@@ -1,0 +1,21 @@
+description: Binary test for CUDA/7.5.18
+binaries:
+- which nvprof
+- which uninstall_cuda_7.5.pl
+- which bin2c
+- which cuobjdump
+- which cuda-gdbserver
+- which filehash
+- which ptxas
+- which nsight
+- which nvlink
+- which cudafe
+- which cuda-memcheck
+- which cuda-gdb
+- which cuda-install-samples-7.5.sh
+- which nvcc
+- which nvdisasm
+- which nvprune
+- which fatbinary
+- which nvvp
+- which cudafe++

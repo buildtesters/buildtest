@@ -1,0 +1,5 @@
+description: Binary test for IGV/2.3.98-Java-1.8.0_152
+binaries:
+- which igv.sh
+- which igv.command
+- which igv.bat
