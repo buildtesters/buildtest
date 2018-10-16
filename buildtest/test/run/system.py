@@ -62,7 +62,8 @@ def run_system_test(systempkg, test_output="no"):
     tests = [ f.path + output_redirect for f in os.scandir(os.path.join(system_root_testdir,systempkg)) if os.path.splitext(f)[1] in [".sh", ".bash", ".csh"]]
 
     count_test = len(tests)
-
+    passed_test = 0
+    failed_test = 0
     for test in tests:
         print (f"Executing Test: {test}")
         print ("---------------------------------------------------------")
@@ -74,8 +75,17 @@ def run_system_test(systempkg, test_output="no"):
             print(output)
         if ret_code == 0:
             print("Test Successful")
+            passed_test += 1
         else:
             print("Test Failed")
+            failed_test += 1
         print ("---------------------------------------------------------")
 
-    print (f"Executed {count_test} tests for system package: {systempkg}")
+    print
+    print
+    print("==============================================================")
+    print("                         Test summary                         ")
+    print("System Package: ", systempkg)
+    print(f"Executed {count_test} tests")
+    print(f"Passed Tests: {passed_test}    Percentage: {passed_test*100/count_test}%")
+    print(f"Passed Tests: {failed_test}    Percentage: {failed_test*100/count_test}%")

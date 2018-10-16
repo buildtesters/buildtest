@@ -76,6 +76,8 @@ def run_app_test(app_name, test_output="no"):
 
     count_test = len(tests)
 
+    passed_test = 0
+    failed_test = 0
     for test in tests:
         print (f"Executing Test: {test}")
         print ("---------------------------------------------------------")
@@ -87,8 +89,17 @@ def run_app_test(app_name, test_output="no"):
             print(output)
         if ret_code == 0:
             print("Test Successful")
+            passed_test += 1
         else:
             print("Test Failed")
+            failed_test +=1
         print ("---------------------------------------------------------")
 
-    print (f"Executed {count_test} tests for software: {app_name}")
+    print
+    print
+    print("==============================================================")
+    print("                         Test summary                         ")
+    print("Application: ", app_name)
+    print(f"Executed {count_test} tests")
+    print(f"Passed Tests: {passed_test}    Percentage: {passed_test*100/count_test}%")
+    print(f"Passed Tests: {failed_test}    Percentage: {failed_test*100/count_test}%")
