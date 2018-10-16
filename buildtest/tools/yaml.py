@@ -47,10 +47,10 @@ def func_yaml_subcmd(args):
         create_system_yaml(args.systempkg, args.rebuild, args.overwrite)
 
     if args.all_software_yaml:
-        create_all_software_yaml()
+        create_all_software_yaml(args.rebuild, args.overwrite)
 
     if args.all_system_yaml:
-        create_all_system_yaml()
+        create_all_system_yaml(args.rebuild, args.overwrite)
 
     sys.exit(0)
 
@@ -152,14 +152,14 @@ def create_software_yaml(module_name, rebuild=False, overwrite=False):
     print ("Please check YAML file ", yamlfile, " and fix test accordingly")
 
 
-def create_all_software_yaml():
+def create_all_software_yaml(rebuild=False,overwrite=False):
     """ run create_software_yaml for every application in software stack """
     list = get_software_stack()
     for item in list:
-        create_software_yaml(item)
+        create_software_yaml(item,rebuild,overwrite)
 
-def create_all_system_yaml():
+def create_all_system_yaml(rebuild=False,overwrite=False):
     """ run create_system_yaml for every system package installed in system """
     list = systempackage_installed_list()
     for item in list:
-        create_system_yaml(item)
+        create_system_yaml(item,rebuild,overwrite)
