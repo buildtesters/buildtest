@@ -130,8 +130,8 @@ class buildtest_menu():
             parser_run = subparsers.add_parser('run', help='run help')
             parser_run.add_argument("-i", "--interactive", help="Run the test interactively", action="store_true")
             parser_run.add_argument("-t", "--testname", help="Run a single testscript via buildtest", choices=self.test_choices, metavar='TEST-CHOICES')
-            parser_run.add_argument("-a", "--app", help="Run test suite for application via buildtest", choices=self.app_choices, metavar='APPLICATION-TEST-SUITE')
-            parser_run.add_argument("-s", "--systempkg", help="Run test suite for system package via buildtest", choices=self.systempkg_choices, metavar='SYSTEMPACKAGE-TEST-SUITE')
+            parser_run.add_argument("-s", "--software", help="Run test suite for application via buildtest", choices=self.app_choices, metavar='SOFTWARE-TEST-SUITE')
+            parser_run.add_argument("-p", "--package", help="Run test suite for system package via buildtest", choices=self.systempkg_choices, metavar='PACKAGE-TEST-SUITE')
             parser_run.add_argument("--output", help="display output of test to console", choices=["yes","no"], default="no")
             parser_run.set_defaults(func=func_run_subcmd)
 

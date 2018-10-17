@@ -16,7 +16,11 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# @author: Shahzeb Siddiqui (Pfizer)
+"""
+buildtest run subcommand entry point
+
+:author: Shahzeb Siddqiui
+"""
 
 import sys
 from buildtest.test.run.app import run_app_test
@@ -30,8 +34,8 @@ def func_run_subcmd(args):
         runtest_menu()
     if args.testname:
         run_testname(args.testname, args.output)
-    if args.app:
-        run_app_test(args.app,args.output)
-    if args.systempkg:
-        run_system_test(args.systempkg, args.output)
+    if args.software:
+        run_app_test(args.software,args.output)
+    if args.package:
+        run_system_test(args.package, args.output)
     sys.exit(0)
