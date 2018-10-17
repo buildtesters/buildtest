@@ -27,6 +27,8 @@ from buildtest.test.run.app import run_app_test
 from buildtest.test.run.testname import run_testname
 from buildtest.test.run.system import run_system_test
 from buildtest.test.run.interactive import runtest_menu
+from buildtest.test.run.app import run_app_choices
+from buildtest.test.run.system import run_system_choices
 
 def func_run_subcmd(args):
     """ run subcommand entry point """
@@ -38,4 +40,12 @@ def func_run_subcmd(args):
         run_app_test(args.software,args.output)
     if args.package:
         run_system_test(args.package, args.output)
+    if args.all_software:
+        stack = run_app_choices()
+        for software in stack:
+            run_app_test(software,args.output)
+    if args.all_package:
+        stack = run_system_choices()
+        for package in stack:
+            run_system_test(package,args.output)
     sys.exit(0)
