@@ -40,16 +40,16 @@ from buildtest.tools.system import check_system_package_installed, get_binaries_
 def func_yaml_subcmd(args):
     """ entry point to _buildtest yaml """
 
-    if args.app:
-        create_software_yaml(args.app, args.rebuild, args.overwrite)
+    if args.software:
+        create_software_yaml(args.software, args.rebuild, args.overwrite)
 
-    if args.systempkg:
-        create_system_yaml(args.systempkg, args.rebuild, args.overwrite)
+    if args.package:
+        create_system_yaml(args.package, args.rebuild, args.overwrite)
 
-    if args.all_software_yaml:
+    if args.all_software:
         create_all_software_yaml(args.rebuild, args.overwrite)
 
-    if args.all_system_yaml:
+    if args.all_package:
         create_all_system_yaml(args.rebuild, args.overwrite)
 
     sys.exit(0)
