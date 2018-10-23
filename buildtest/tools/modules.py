@@ -49,7 +49,7 @@ def get_module_list_by_tree(mod_tree):
             if os.path.islink(os.path.join(root,file)):
                 continue
 
-            if file == ".version":
+            if file.startswith(".version"):
                     continue
 
             modulefiles.append(os.path.join(root,file))
@@ -90,8 +90,8 @@ def get_module_list():
                 # skipping files that are symbolic links
                 if os.path.islink(os.path.join(root,file)):
                     continue
-
-                if file == ".version":
+		# skip any file that starts with .version
+                if file.startswith(".version"):
                     continue
 
                 modulefiles.append(os.path.join(root,file))
