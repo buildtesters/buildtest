@@ -58,8 +58,8 @@ def func_build_subcmd(args):
         config_opts['BUILDTEST_CLEAN_BUILD']=True
     if args.testdir:
         config_opts['BUILDTEST_TESTDIR'] = args.testdir
-    if args.ignore_easybuild:
-        config_opts["BUILDTEST_IGNORE_EASYBUILD"]=True
+    if args.easybuild:
+        config_opts["BUILDTEST_EASYBUILD"]=True
     if args.enable_job:
         config_opts['BUILDTEST_ENABLE_JOB']=True
     if args.module_naming_scheme:
@@ -133,7 +133,7 @@ def func_build_software(args, logger, logdir, logpath, logfile):
 
 
     # check if software is an easybuild applicationa
-    if config_opts["BUILDTEST_IGNORE_EASYBUILD"] == False:
+    if config_opts["BUILDTEST_EASYBUILD"] == True:
         is_easybuild_app()
 
     logdir=os.path.join(logdir,appname,appversion,tcname,tcversion)

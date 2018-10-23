@@ -36,7 +36,7 @@ import json
 
 sys.path.insert(0,os.path.abspath('.'))
 os.environ["BUILDTEST_ROOT"]=os.path.dirname(os.path.dirname(__file__))
-os.environ["BUILDTEST_JOB_TEMPLATE"]=os.path.join(os.getenv("BUILDTEST_ROOT"),"template/job.slurm")
+#os.environ["BUILDTEST_JOB_TEMPLATE"]=os.path.join(os.getenv("BUILDTEST_ROOT"),"template/job.slurm")
 # column width for linewrap for argparse library
 os.environ['COLUMNS'] = "120"
 
@@ -57,16 +57,10 @@ from buildtest.tools.version import buildtest_version
 def main():
     """ entry point to buildtest """
 
-
-    config_opts["BUILDTEST_IGNORE_EASYBUILD"]=False
-
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
     parser = buildtest_menu()
 
     bt_opts = parser.parse_options()
-
-    if config_opts.get('BUILDTEST_IGNORE_EASYBUILD'):
-        BUILDTEST_IGNORE_EASYBUILD=config_opts['BUILDTEST_IGNORE_EASYBUILD']
 
     if bt_opts.version:
         buildtest_version()

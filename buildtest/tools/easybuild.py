@@ -217,7 +217,7 @@ def is_easybuild_app():
     ec_list, no_ec_list = find_easyconfigs_from_modulelist(modulefiles)
     # if no easyconfigs found then ec_list will be empty so we should stop and report this application is not built by easybuild. This feature can be changed in future
     if len(ec_list) == 0:
-        print ("Application: %s is not built from Easybuild, cannot find easyconfig file in installation directory", os.path.join(app_name,app_ver))
+        print (f"Application: {os.path.join(app_name,app_ver)} is not built from Easybuild, cannot find easyconfig file in installation directory")
         sys.exit(1)
 
     return

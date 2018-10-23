@@ -30,6 +30,8 @@ Overrides buildtest configuration via environment variable or command options
 import os
 
 from buildtest.tools.config import config_opts
+from distutils.util import strtobool
+
 
 
 def override_configuration():
@@ -56,14 +58,27 @@ def override_configuration():
             config_opts['BUILDTEST_MODULE_ROOT']=[]
             config_opts['BUILDTEST_MODULE_ROOT'].append(os.environ['BUILDTEST_MODULE_ROOT'])
 
-    if os.environ.get('BUILDTEST_IGNORE_EASYBUILD'):
-        config_opts['BUILDTEST_IGNORE_EASYBUILD']=os.environ['BUILDTEST_IGNORE_EASYBUILD']
+    if os.environ.get('BUILDTEST_EASYBUILD'):
+        truth_value = strtobool(os.environ['BUILDTEST_EASYBUILD'])
+        if truth_value == 1:
+            config_opts['BUILDTEST_EASYBUILD']=True
+        else:
+            config_opts['BUILDTEST_EASYBUILD']=False
+
 
     if os.environ.get('BUILDTEST_CLEAN_BUILD'):
-        config_opts['BUILDTEST_CLEAN_BUILD']=os.environ['BUILDTEST_CLEAN_BUILD']
+        truth_value = strtobool(os.environ['BUILDTEST_CLEAN_BUILD'])
+        if truth_value == 1:
+            config_opts['BUILDTEST_CLEAN_BUILD']=True
+        else:
+            config_opts['BUILDTEST_CLEAN_BUILD']=False
 
     if os.environ.get('BUILDTEST_ENABLE_JOB'):
-        config_opts['BUILDTEST_ENABLE_JOB']=os.environ['BUILDTEST_ENABLE_JOB']
+        truth_value = strtobool(os.environ['BUILDTEST_ENABLE_JOB'])
+        if truth_value == 1:
+            config_opts['BUILDTEST_ENABLE_JOB']=True
+        else:
+            config_opts['BUILDTEST_ENABLE_JOB']=False        
 
     if os.environ.get('BUILDTEST_CONFIGS_REPO'):
 

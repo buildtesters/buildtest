@@ -121,7 +121,7 @@ class buildtest_menu():
             parser_build.add_argument("--clean-tests",help="delete testing directory ($BUILDTEST_TESTDIR)",action="store_true")
             parser_build.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
             parser_build.add_argument("--clean-build", help="delete software test directory before writing test scripts", action="store_true")
-            parser_build.add_argument("--ignore-easybuild", help="ignore if application is not built with easybuild",action="store_true")
+            parser_build.add_argument("-eb","--easybuild", help="check if application is built by easybuild",action="store_true")
             parser_build.add_argument("--enable-job", help="enable job script generation with buildtest", action="store_true")
             parser_build.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
             parser_build.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
