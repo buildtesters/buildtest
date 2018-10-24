@@ -1,0 +1,16 @@
+description: Binary test for openmpi3/3.1.0
+binaries:
+- which aggregate_profile.pl
+- which ompi_info
+- which opal_wrapper
+- which orte-clean
+- which orte-dvm
+- which orte-info
+- which orte-ps
+- which orte-server
+- which orte-top
+- which orted
+- which orterun
+- which oshmem_info
+- which profile2mat.pl
+- which prun.ompi

@@ -1,0 +1,25 @@
+description: Binary test for EasyBuild/3.6.1
+binaries:
+- which bootstrap_eb.py
+- which easy_install
+- which easy_install-2.7
+- which eb
+- which eb_bash_completion.bash
+- which install_eb_dep.sh
+- which logdaemon
+- which minimal_bash_completion.bash
+- which optcomplete.bash
+- which python-noenv
+- which python-stripped-env
+- which startlogdaemon
+- which RC2lua.tcl
+- which addto
+- which clearMT_cmd
+- which computeHashSum
+- which lmod
+- which ml_cmd
+- which sh_to_modulefile
+- which spider
+- which spiderCacheSupport
+- which tcl2lua.tcl
+- which update_lmod_system_cache_files

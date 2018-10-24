@@ -1,0 +1,8 @@
+description: Binary test for metis/5.1.0
+binaries:
+- which cmpfillin
+- which gpmetis
+- which graphchk
+- which m2gmetis
+- which mpmetis
+- which ndmetis
