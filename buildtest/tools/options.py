@@ -78,7 +78,14 @@ def override_configuration():
         if truth_value == 1:
             config_opts['BUILDTEST_ENABLE_JOB']=True
         else:
-            config_opts['BUILDTEST_ENABLE_JOB']=False        
+            config_opts['BUILDTEST_ENABLE_JOB']=False
+
+    if os.environ.get('BUILDTEST_OHPC'):
+        truth_value = strtobool(os.environ['BUILDTEST_OHPC'])
+        if truth_value == 1:
+            config_opts['BUILDTEST_OHPC']=True
+        else:
+            config_opts['BUILDTEST_OHPC']=False
 
     if os.environ.get('BUILDTEST_CONFIGS_REPO'):
 

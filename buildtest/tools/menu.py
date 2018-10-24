@@ -104,6 +104,7 @@ class buildtest_menu():
             parser_yaml.add_argument("--all-package", help = "Generate YAML configuration for all system packages installed ",action="store_true")
             parser_yaml.add_argument("-r,", "--rebuild", help="rebuild binary test yaml file even if it already exist ", action="store_true")
             parser_yaml.add_argument("-o", "--overwrite", help="rebuild and overwrite existing binary test yaml file", action="store_true")
+            parser_yaml.add_argument("--ohpc", help="Indicate to buildtest this is a OpenHPC package. YAML files will be written in $BUILDTEST_CONFIGS_REPO/ohpc", action="store_true")
             parser_yaml.set_defaults(func=func_yaml_subcmd)
 
             parser_build = subparsers.add_parser('build', help='build help')
@@ -125,6 +126,7 @@ class buildtest_menu():
             parser_build.add_argument("--enable-job", help="enable job script generation with buildtest", action="store_true")
             parser_build.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
             parser_build.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
+            parser_build.add_argument("--ohpc", help="Indicate to buildtest this is a OpenHPC package. YAML files will be processed from $BUILDTEST_CONFIGS_REPO/ohpc", action="store_true")
             parser_build.set_defaults(func=func_build_subcmd)
 
             parser_run = subparsers.add_parser('run', help='run help')

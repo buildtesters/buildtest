@@ -35,10 +35,14 @@ from buildtest.tools.config import config_opts
 from buildtest.tools.file import create_dir
 from buildtest.tools.software import get_unique_software, get_software_stack, get_toolchain_stack, get_binaries_from_application
 from buildtest.tools.system import check_system_package_installed, get_binaries_from_systempackage, systempackage_installed_list
-
+from buildtest.tools.ohpc import check_ohpc
 
 def func_yaml_subcmd(args):
     """ entry point to _buildtest yaml """
+
+    if args.ohpc:
+        check_ohpc()
+        config_opts["BUILDTEST_OHPC"]=True
 
     if args.software:
         create_software_yaml(args.software, args.rebuild, args.overwrite)
@@ -115,8 +119,14 @@ def create_software_yaml(module_name, rebuild=False, overwrite=False):
 
 
 
+
     lowercase_module_name = module_name.lower()
-    destdir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],lowercase_module_name)
+
+    if config_opts["BUILDTEST_OHPC"]:
+        destdir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"ohpc",lowercase_module_name)
+    else:
+        destdir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],lowercase_module_name)
+
     yamlfile = os.path.join(destdir,"command.yaml")
     # if yaml file exists and --rebuild, --overwrite is not specified then do nothing and return from method
     if os.path.isfile(yamlfile) and not rebuild and not overwrite:
