@@ -88,4 +88,4 @@ def run_system_test(systempkg, test_output="no"):
     print("System Package: ", systempkg)
     print(f"Executed {count_test} tests")
     print(f"Passed Tests: {passed_test}    Percentage: {passed_test*100/count_test}%")
-    print(f"Passed Tests: {failed_test}    Percentage: {failed_test*100/count_test}%")
+    print(f"Failed Tests: {failed_test}    Percentage: {failed_test*100/count_test}%")

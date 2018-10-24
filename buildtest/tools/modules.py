@@ -114,6 +114,13 @@ def load_modules(shell_type):
     BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
     header = shell_magic + "\n"
     header+= "module purge \n"
+
+    #print (len(config_opts["BUILDTEST_PREPEND_MODULES"]))
+    if len(config_opts["BUILDTEST_PREPEND_MODULES"]) > 0:
+        for module in config_opts["BUILDTEST_PREPEND_MODULES"]:
+            #print (module)
+            header += "module load " + module + "\n"
+
     # for dummy toolchain you can load software directly. Ensure a clean environment by running module purge
     if toolchain == None:
         moduleload = "module load " + software  + "\n"

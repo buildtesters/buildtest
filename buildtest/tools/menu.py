@@ -79,7 +79,6 @@ class buildtest_menu():
             parser.add_argument("--clean-logs", help="delete buildtest log directory ($BUILDTEST_LOGDIR)",action="store_true")
             parser.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")
             parser.add_argument("--submitjob", help = "specify a directory or job script to submit to resource scheduler")
-
             group2 = parser.add_argument_group('Find Options', 'buildtest options for finding software, toolchains, tests, yaml files')
             group2.add_argument("-fc","--findconfig", help= """ Find buildtest YAML config files found in BUILDTEST_CONFIGS_REPO.
                                                  To find all yaml config files use -fc all """)
@@ -111,6 +110,7 @@ class buildtest_menu():
             parser_build.add_argument("-s", "--software", help=" Specify software package to test", choices=self.software_list, metavar='INSTALLED-SOFTWARE')
             parser_build.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=self.toolchain_list, metavar='INSTALLED-SOFTWARE-TOOLCHAINS')
             parser_build.add_argument("-p", "--package", help=" Build test for system packages", choices=self.syspkg_list, metavar='SYSTEM-PACKAGE')
+            parser_build.add_argument("--prepend-modules", help= "Prepend modules in test script prior to loading application module. Use this option with Hierarchical Module Naming Scheme", choices=self.software_list,  metavar='INSTALLED-SOFTWARE',action="append")
             parser_build.add_argument("--all-package", help="build tests for all system packages from buildtest repository ", action="store_true")
             parser_build.add_argument("--all-software", help="build tests for all software from buildtest repository ", action="store_true")
             parser_build.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES)

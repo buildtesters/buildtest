@@ -102,4 +102,4 @@ def run_app_test(app_name, test_output="no"):
     print("Application: ", app_name)
     print(f"Executed {count_test} tests")
     print(f"Passed Tests: {passed_test}    Percentage: {passed_test*100/count_test}%")
-    print(f"Passed Tests: {failed_test}    Percentage: {failed_test*100/count_test}%")
+    print(f"Failed Tests: {failed_test}    Percentage: {failed_test*100/count_test}%")

@@ -150,23 +150,32 @@ def ebyaml_choices():
 def get_binaries_from_application(module):
     """ return a list of binaries from $PATH variable defined in module file"""
 
-    cmd = "module show " + module
 
-    ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    output = ret.communicate()[1].decode("utf-8")
+    cmd = "$LMOD_CMD bash show " + module
+
+    #os.system(cmd)
+    ret = subprocess.Popen(cmd, shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    output = ret.communicate()[0].decode("utf-8")
+
+    #output,error = ret.communicate()
+
     path_str = "prepend_path(\"PATH\","
 
     path_list = []
+
+
     for line in output.splitlines():
-        #print line, line.find(path_str)
+
         if line.find(path_str) != -1:
             # need to extract directory from  a string in the following format
             # prepend_path("PATH","/nfs/grid/software/easybuild/IvyBridge/redhat/7.3/software/GCCcore/6.4.0/bin")
 
             start_index = line.index(",") +2
             end_index = line.rfind("\"")
-            # add directory to list that is being set by PATH variable in module file
-            path_list.append(line[start_index:end_index])
+            # only add directory if it exists and is part of $PATH variable
+            if os.path.exists(line[start_index:end_index]):
+                # add directory to list that is being set by PATH variable in module file
+                path_list.append(line[start_index:end_index])
 
     if len(path_list)  ==  0:
         print ("No $PATH set in your module ", module, "  so no possible binaries can be found")

@@ -66,8 +66,10 @@ def func_build_subcmd(args):
         config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = args.module_naming_scheme
     if args.job_template:
         update_job_template(args.job_template)
+    if args.prepend_modules:
+        config_opts["BUILDTEST_PREPEND_MODULES"]   = args.prepend_modules
 
-
+    
     logdir = config_opts['BUILDTEST_LOGDIR']
     testdir = config_opts['BUILDTEST_TESTDIR']
 
