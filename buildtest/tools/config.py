@@ -190,6 +190,9 @@ def check_configuration():
         ec = 1
         print (f"Invalid file extension: {job_template_extension} must be one of the following extension {BUILDTEST_JOB_EXTENSION}")
 
+    # if BUILDTEST_PREPEND_MODULES not defined then declare as empty list in dictionary
+    if "BUILDTEST_PREPEND_MODULES" not in  list(config_opts.keys()):
+        config_opts["BUILDTEST_PREPEND_MODULES"] = []
 
     time.sleep(0.1)
 

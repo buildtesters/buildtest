@@ -43,6 +43,7 @@ from buildtest.test.ruby import build_ruby_package_test
 from buildtest.test.sourcetest import recursive_gen_test
 from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.easybuild import is_easybuild_app
+from buildtest.tools.ohpc import check_ohpc
 from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 def func_build_subcmd(args):
@@ -68,8 +69,10 @@ def func_build_subcmd(args):
         update_job_template(args.job_template)
     if args.prepend_modules:
         config_opts["BUILDTEST_PREPEND_MODULES"]   = args.prepend_modules
+    if args.ohpc:
+        check_ohpc()
+        config_opts["BUILDTEST_OHPC"] = True
 
-    
     logdir = config_opts['BUILDTEST_LOGDIR']
     testdir = config_opts['BUILDTEST_TESTDIR']
 

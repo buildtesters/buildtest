@@ -111,7 +111,7 @@ class buildtest_menu():
             parser_build.add_argument("-s", "--software", help=" Specify software package to test", choices=self.software_list, metavar='INSTALLED-SOFTWARE')
             parser_build.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=self.toolchain_list, metavar='INSTALLED-SOFTWARE-TOOLCHAINS')
             parser_build.add_argument("-p", "--package", help=" Build test for system packages", choices=self.syspkg_list, metavar='SYSTEM-PACKAGE')
-            parser_build.add_argument("--prepend-modules", help= "Prepend modules in test script prior to loading application module. Use this option with Hierarchical Module Naming Scheme", choices=self.software_list,  metavar='INSTALLED-SOFTWARE',action="append")
+            parser_build.add_argument("--prepend-modules", help= "Prepend modules in test script prior to loading application module. Use this option with Hierarchical Module Naming Scheme", choices=self.software_list,  metavar='INSTALLED-SOFTWARE',action="append", default=[])
             parser_build.add_argument("--all-package", help="build tests for all system packages from buildtest repository ", action="store_true")
             parser_build.add_argument("--all-software", help="build tests for all software from buildtest repository ", action="store_true")
             parser_build.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES)

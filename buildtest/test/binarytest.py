@@ -65,7 +65,7 @@ def generate_binary_test(name,test_type=None):
     # determine whether we are running a binary test on ebapp or system package
     if test_type == "software":
         software_strip_toolchain = strip_toolchain_from_module(name)
-        
+
         # this condition is only true when it is application without toolchain (i.e Bison/3.0.4)
         if software_strip_toolchain == None:
             configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],name.lower())
@@ -75,7 +75,11 @@ def generate_binary_test(name,test_type=None):
     else:
         configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],name)
 
-    commandfile=os.path.join(configdir,"command.yaml")
+    if config_opts["BUILDTEST_OHPC"]:
+        commandfile = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"ohpc",name.lower(),"command.yaml")
+    else:
+        commandfile=os.path.join(configdir,"command.yaml")
+
 
     logger = logging.getLogger(logID)
 
@@ -183,10 +187,12 @@ def process_binary_file(filename,test_type,pkg):
 
         if test_type == "software":
             fd.write(header)
+
         else:
               shell_magic = "#!/" + os.path.join("bin",BUILDTEST_SHELL)
               fd.write(shell_magic + "\n")
               fd.write("module purge \n")
+
         fd.write(key)
         fd.close()
 

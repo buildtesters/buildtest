@@ -35,8 +35,6 @@ def check_ohpc():
         cmd = "rpm -q " + packages_required
         ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
         ret.communicate()
-        #output,err_msg = ret.communicate()
-
 
         ret_code = ret.returncode
         if ret_code != 0:
