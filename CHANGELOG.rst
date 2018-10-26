@@ -2,6 +2,12 @@
 CHANGELOG
 =================
 
+
+v0.6.3 (Oct 26, 2018)
+----------------------------
+- OpenHPC yaml files are moved from $BUILDTEST_CONFIGS_REPO/ohpc to  $BUILDTEST_CONFIGS_REPO/buildtest/ohpc
+- This led to minor fix on how buildtest will write yaml files via ``_buildtest yaml --ohpc`` and build tests via ``_buildtest build --ohpc``
+
 v0.6.2 (Oct 26, 2018)
 ----------------------------
 - Add OpenHPC integration with buildtest with option ``--ophc``. This is available for ``build`` and ``yaml`` subcommand

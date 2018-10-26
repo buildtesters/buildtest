@@ -76,7 +76,7 @@ def generate_binary_test(name,test_type=None):
         configdir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'],name)
 
     if config_opts["BUILDTEST_OHPC"]:
-        commandfile = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"ohpc",name.lower(),"command.yaml")
+        commandfile = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"buildtest/ohpc",name.lower(),"command.yaml")
     else:
         commandfile=os.path.join(configdir,"command.yaml")
 

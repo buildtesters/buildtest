@@ -123,7 +123,7 @@ def create_software_yaml(module_name, rebuild=False, overwrite=False):
     lowercase_module_name = module_name.lower()
 
     if config_opts["BUILDTEST_OHPC"]:
-        destdir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"ohpc",lowercase_module_name)
+        destdir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/ohpc",lowercase_module_name)
     else:
         destdir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],lowercase_module_name)
 
