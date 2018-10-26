@@ -64,9 +64,11 @@ def buildtest_software_list(format="stdout"):
                 abs_dir_path = os.path.join(root,dir)
                 child = os.path.basename(abs_dir_path)
                 parent = os.path.basename(os.path.dirname(abs_dir_path))
-                if parent != "ebapp":
-                    choices.append(os.path.join(parent,child))
 
+                if parent != "ebapps":
+
+                    choices.append(os.path.join(parent,child))
+    choices = sorted(choices)
     if format=="stdout":
         print_software(choices)
     elif format=="json":
