@@ -28,6 +28,8 @@ print functions related to buildtest
 """
 import csv
 import os
+from collections import OrderedDict
+from operator import itemgetter
 from buildtest.tools.utility import sset
 
 def print_software_version_relation_csv(software_dict):
@@ -50,15 +52,17 @@ def print_software_version_relation(software_dict):
 -----|----------------------------|----------------------------- """
     print (text)
     id = 0
-    keylist = software_dict.keys()
-    keylist = sorted(keylist)
+
+    sorted_dict = OrderedDict(sorted(software_dict.items(), key = itemgetter(1)))
+
+    keylist = sorted_dict.keys()
 
     modulecnt = 0
 
     for key in keylist:
         id = id + 1
         #for value in sset(software_dict[key]):
-        print ((str(id) + "\t |").expandtabs(4) , "\t" + (software_dict[key] + "\t |" ).expandtabs(25) + "\t" +  key)
+        print ((str(id) + "\t |").expandtabs(4) , "\t" + (sorted_dict[key] + "\t |" ).expandtabs(25) + "\t" +  key)
         modulecnt += 1
 
     print ("Total Software Modules Found: ", modulecnt)
