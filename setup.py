@@ -27,7 +27,7 @@
 
 from setuptools import setup,find_packages
 
-VERSION='0.6.1'
+VERSION='0.6.3'
 setup(
       name='buildtest-configs',
       version=VERSION,
