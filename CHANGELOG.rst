@@ -2,9 +2,15 @@
 CHANGELOG
 =================
 
-v0.6.2
------------------
-
+v0.6.2 (Oct 26, 2018)
+----------------------------
+- Add OpenHPC integration with buildtest with option ``--ophc``. This is available for ``build`` and ``yaml`` subcommand
+- Rename option ``--ignore-easybuild`` to ``--easybuild``. When this is set, buildtest will check if software is easybuild software.
+- BUILDTEST_EASYBUILD and BUILDTEST_OHPC can be defined in configuration file or environment variable
+- Fix sorting issue with output for ``_buidltest list -svr`` and ``_buildtest list -bs``
+- Add option ``--prepend-modules`` that can prepend modules to test script before loading application module.
+- buildtest will now ignore all .version* files as pose to .version file, this is due to Lmod 7 and how OpenHPC module files have hidden modules with format .versionX.Y.Z
+-
 
 v0.6.1 (Oct 18, 2018)
 ---------------------------
@@ -141,7 +147,7 @@ v0.1.8 (Feb 27, 2018)
 - Support for yaml keys **scheduler** and **jobslot** to enable jobscript creation from yaml files. See https://github.com/HPC-buildtest/buildtest-framework/pull/52/commits/0fe4189df0694bef586e9d8e4565ec4cc3e169c9
 - Further support for scheduler and automatic detection. Currently supports LSF and SLURM.
 
-v0.1.7 (Feb 27th, 2018)
+v0.1.7 (Feb 27, 2018)
 ------------------------
 
 - Add support for creating LSF Job scripts via templates. Use **buildtest --job-template** see https://github.com/HPC-buildtest/buildtest-framework/commit/927dc09e347fdafa7020d7cfd3016fd8f430ac10
@@ -157,7 +163,7 @@ v0.1.7 (Feb 27th, 2018)
 - Add support for **--testset Ruby** see https://github.com/HPC-buildtest/buildtest-framework/commit/c6b7133b5fc4b0690b8040d0e437784567cc1963
 - Print software in alphabetical order for -svr option see https://github.com/HPC-buildtest/buildtest-framework/commit/fcf61019c644cd305e459234a85c5d39df06433f
 
-v0.1.6 (Feb 27th, 2018)
+v0.1.6 (Feb 27, 2018)
 -------------------------
 
 - Add support for FlatNamingScheme in buildtest, added flag ``--module-naming-scheme`` to control setting
@@ -173,7 +179,7 @@ v0.1.6 (Feb 27th, 2018)
 - Fix issue when no toolchain is provided in CMakeList.txt
 - Optimize nested loop when performing --software-version-relationship
 
-v0.1.5 (Feb 27th, 2018)
+v0.1.5 (Feb 27, 2018)
 ------------------------------
 
 The buildtest repo has been moved from http://github.com/shahzebsiddiqui to http://github.com/HPC-buildtest
@@ -204,7 +210,7 @@ v0.1.4 (Feb 27, 2018)
 - Add support for Perl with --testset https://github.com/shahzebsiddiqui/buildtest/commit/cc96eb9f825bed997a13d8dd13e43e4074ad1b03
 - Add for more logging support in module and eb verification
 
-v0.1.3 (Feb 27th, 2018)
+v0.1.3 (Feb 27, 2018)
 --------------------------
 
 There have been several changes in the buildtest framework to allow for more capabilities.
@@ -221,7 +227,7 @@ this allows for multiple packages to reuse tests across different apps. For inst
 - Switching BUILDTEST_MODULEROOT to BUILDTEST_MODULE_EBROOT to emphasize module tree should be coming from what easybuild generates.
 - Fixed some bugs pertaining to CMakeLists.txt
 
-v0.1.2 (Feb 27th, 2018)
+v0.1.2 (Feb 27, 2018)
 ----------------------------
 
 The current release add supports for logging by default.
@@ -238,7 +244,7 @@ buildtest will now report useful operations for each function call that can be u
 - buildtest can now search YAML configs and buildtest generated test scripts using the command **-fc** and **-ft**
 - Now all buildtest-config files are removed and migrated to https://github.com/shahzebsiddiqui/buildtest-configs
 
-v0.1.1 (Feb 27th, 2018)
+v0.1.1 (Feb 27, 2018)
 ------------------------
 
 
@@ -286,7 +292,7 @@ Tests for the following EB apps have been added:
 
 Added python documentation header for each function and GPL license section in all the files
 
-v0.1.0 (Feb 26th, 2017)
+v0.1.0 (Feb 26, 2017)
 ------------------------
 
 buildtest generates test scripts from YAML files. The following apps have tests:

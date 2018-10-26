@@ -1,17 +1,19 @@
-BUILDTEST_MODULE_NAMING_SCHEME: HMNS
-BUILDTEST_IGNORE_EASYBUILD: "False"
+BUILDTEST_CONFIGS_REPO: /home/siddis14/github/buildtest-configs
+BUILDTEST_RUBY_REPO: /home/siddis14/github/Ruby-buildtest-config
+BUILDTEST_R_REPO: /home/siddis14/github/R-buildtest-config
+BUILDTEST_PYTHON_REPO: /home/siddis14/github/Python-buildtest-config
+BUILDTEST_PERL_REPO: /home/siddis14/github/Perl-buildtest-config
+BUILDTEST_LOGDIR: /tmp/buildtest
+BUILDTEST_TESTDIR: /tmp/buildtest-tests
+
+UILDTEST_MODULE_NAMING_SCHEME: FNS
+BUILDTEST_EASYBUILD: False
+BUILDTEST_CLEAN_BUILD: False
+BUILDTEST_ENABLE_JOB: False
+BUILDTEST_OHPC: False
 BUILDTEST_SHELL: sh
 BUILDTEST_JOB_TEMPLATE: template/job.slurm
 
 BUILDTEST_MODULE_ROOT:
-    - /nfs/grid/software/RHEL6/general
-    - /nfs/grid/software/RHEL6/chemistry
-
-BUILDTEST_CONFIGS_REPO: /lustre/workspace/home/siddis14/buildtest-configs
-BUILDTEST_TCL_REPO: /lustre/workspace/home/siddis14/Tcl-buildtest-config
-BUILDTEST_RUBY_REPO: /lustre/workspace/home/siddis14/Ruby-buildtest-config
-BUILDTEST_R_REPO: /lustre/workspace/home/siddis14/R-buildtest-config
-BUILDTEST_PYTHON_REPO: /lustre/workspace/home/siddis14/Python-buildtest-config
-BUILDTEST_PERL_REPO: /lustre/workspace/home/siddis14/Perl-buildtest-config
-BUILDTEST_LOGDIR: /tmp/buildtest
-BUILDTEST_TESTDIR: /tmp/buildtest-tests
+    - /clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all
+    - /clust/app/easybuild/2018/commons/modules/all
