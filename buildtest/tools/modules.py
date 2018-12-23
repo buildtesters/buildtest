@@ -30,13 +30,22 @@ This python module does the following
 	 - check if toolchain exists based on argument -t
 	 - check if easyconfig passes
 
-:author: Shahzeb Siddiqui (Pfizer)
+author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 import os
 import sys
 import subprocess
 from buildtest.tools.config import config_opts
 from buildtest.tools.easybuild import get_module_root
+
+def func_module_subcmd(args):
+    """ entry point for module subcommand """
+
+    if args.diff_trees:
+        diff_trees(args.diff_trees)
+    if args.module_load_test:
+        module_load_test()
+
 
 def get_module_list_by_tree(mod_tree):
     """ returns a list of module file paths given a module tree """
@@ -135,6 +144,27 @@ def load_modules(shell_type):
     header = header + moduleload
     return header
 
+def module_load_test():
+    """ perform module load test for all modules in BUILDTEST_MODULE_ROOT"""
+    from buildtest.tools.software import get_software_stack
+    BUILDTEST_MODULE_ROOT = config_opts['BUILDTEST_MODULE_ROOT']
+    modulelist = get_software_stack()
+    for mod_file in modulelist:
+        cmd = ""
+        for tree in BUILDTEST_MODULE_ROOT:
+            cmd += "module use " + tree + ";"
+        cmd +=  "module purge; module load " + mod_file
+
+        ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        ret.communicate()
+
+        if ret.returncode == 0:
+            print ("STATUS: PASSED - Testing module: ", mod_file)
+        else:
+            print ("STATUS: FAILED - Testing module: ", mod_file)
+
+    sys.exit(0)
+
 def diff_trees(args_trees):
     """ display difference between module trees """
 
@@ -210,24 +240,3 @@ def diff_trees(args_trees):
 
                 print ((str(count) + "\t |").expandtabs(8), (i + "\t |").expandtabs(60) , (value1 + "\t |").expandtabs(18), value2)
                 count = count + 1
-
-def module_load_test():
-    """ perform module load test for all modules in BUILDTEST_MODULE_ROOT"""
-    from buildtest.tools.software import get_software_stack
-    BUILDTEST_MODULE_ROOT = config_opts['BUILDTEST_MODULE_ROOT']
-    modulelist = get_software_stack()
-    for mod_file in modulelist:
-        cmd = ""
-        for tree in BUILDTEST_MODULE_ROOT:
-            cmd += "module use " + tree + ";"
-        cmd +=  "module purge; module load " + mod_file
-
-        ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-        ret.communicate()
-
-        if ret.returncode == 0:
-            print ("STATUS: PASSED - Testing module: ", mod_file)
-        else:
-            print ("STATUS: FAILED - Testing module: ", mod_file)
-
-    sys.exit(0)

@@ -23,7 +23,7 @@
 """
 Functions for system package
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 import logging
 import os

@@ -22,7 +22,7 @@
 
 """
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 
 import os

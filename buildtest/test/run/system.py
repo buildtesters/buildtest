@@ -25,7 +25,7 @@
 This module will run an entire test suite for a system package. This implements
 _buildtest run --system
 
-:author: Shahzeb Siddiqui
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 
 """
 

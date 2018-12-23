@@ -24,7 +24,7 @@
 
 print functions related to buildtest
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 import csv
 import os

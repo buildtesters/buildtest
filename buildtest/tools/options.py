@@ -23,7 +23,7 @@
 """
 Overrides buildtest configuration via environment variable or command options
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 
 

@@ -25,7 +25,7 @@ This python module generates the binary test by processing all yaml
 files and create .sh scripts along with the CMakeLists configuration. There
 is only 1 binary yaml file that can generate multiple binary test
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 
 """
 import logging

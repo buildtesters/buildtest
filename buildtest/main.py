@@ -24,7 +24,7 @@
 """
 The entry point to buildtest
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 
 import sys
@@ -48,7 +48,6 @@ from buildtest.tools.config import show_configuration, config_opts
 from buildtest.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
 from buildtest.tools.find import find_all_tests, find_tests_by_arg
 from buildtest.tools.log import clean_logs
-from buildtest.tools.modules import diff_trees, module_load_test
 from buildtest.tools.parser.yaml_config import show_yaml_keys
 from buildtest.tools.scan import scantest
 from buildtest.tools.system import get_system_info
@@ -81,11 +80,6 @@ def main():
     if bt_opts.scantest:
         scantest()
 
-    if bt_opts.diff_trees:
-        args_trees = bt_opts.diff_trees
-        diff_trees(args_trees)
-        sys.exit(0)
-
     # when no argument is specified to -fc then output all yaml files
     if bt_opts.findconfig == "all":
         find_all_yaml_configs()
@@ -103,8 +97,6 @@ def main():
         find_tests_by_arg(bt_opts.findtest)
 
 
-    if bt_opts.module_load_test:
-        module_load_test()
 
     if bt_opts.submitjob is not None:
         submit_job_to_scheduler(bt_opts.submitjob)

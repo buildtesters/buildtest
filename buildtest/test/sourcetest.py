@@ -26,7 +26,7 @@ files and create .sh scripts along with the CMakeLists configuration. There
 is only 1 binary yaml file that can generate multiple binary test, while
 source test has 1 YAML file and generates only 1 test
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 
 import re

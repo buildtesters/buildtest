@@ -23,7 +23,7 @@
 """
 This python module will implement the --scantest feature of buildtest
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 
 import os

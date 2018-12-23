@@ -23,7 +23,7 @@
 """
 Methods related to buildtest logging
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 import os
 import shutil

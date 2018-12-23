@@ -19,7 +19,7 @@
 """
 buildtest run subcommand entry point
 
-:author: Shahzeb Siddqiui
+:author: Shahzeb Siddqiui (shahzebmsiddiqui@gmail.com)
 """
 
 import sys

@@ -24,7 +24,7 @@
 Checks buildtest configuration and reports any errors. Also display buildtest
 configuration using buildtest --show
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 import os
 import sys

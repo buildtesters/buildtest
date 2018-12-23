@@ -24,7 +24,7 @@
 Support for building python package tests and checks if python libraries exists
 
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 
 import logging

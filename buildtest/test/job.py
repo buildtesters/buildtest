@@ -23,7 +23,7 @@
 """
 This file generates the job scripts, detects scheduler, and submits jobs to scheduler
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 from shutil import copyfile
 import os

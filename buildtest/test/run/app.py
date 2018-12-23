@@ -25,7 +25,7 @@
 This module will run an entire test suite for an application. This implements
 _buildtest run --app
 
-:author: Shahzeb Siddiqui
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 
 """
 

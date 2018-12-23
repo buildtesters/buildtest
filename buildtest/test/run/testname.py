@@ -25,7 +25,7 @@
 This module will run test scripts via buildtest and capture output and additional
 metrics that will be stored in json format
 
-:author: Shahzeb Siddiqui
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 
 """
 import os

@@ -23,7 +23,7 @@
 """
 Utility methods for getting application name, version and toolchain name and version
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 
 

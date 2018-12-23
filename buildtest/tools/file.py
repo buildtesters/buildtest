@@ -25,7 +25,7 @@ file, and directory and strip hidden file character. This module also
 provides function to update log file, check if file is hidden and determine
 if a string is found in file
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 import os
 import logging

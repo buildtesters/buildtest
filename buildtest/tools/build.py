@@ -23,7 +23,7 @@
 """
 buildtest build subcommand methods
 
-:author: Shahzeb Siddqiui
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 import os
 import sys

@@ -23,7 +23,7 @@
 All CMake related functions neccessary for writing configuration when writing
 the tests.
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 
 
@@ -82,7 +82,7 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
 
     logger = logging.getLogger(logID)
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-    
+
     shell_type = config_opts['BUILDTEST_SHELL']
 
     appname = get_appname()

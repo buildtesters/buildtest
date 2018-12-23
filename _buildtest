@@ -22,7 +22,7 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-# @author: Shahzeb Siddiqui (Pfizer)
+# @author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 
 
 REQ_MAJ_PYVER=3

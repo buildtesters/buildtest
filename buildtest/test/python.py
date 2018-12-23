@@ -24,7 +24,7 @@
 Support for building python package tests and checks if python libraries exists
 
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 import logging
 import os
@@ -125,7 +125,7 @@ def build_python_test(python_lib):
             fd.write(header)
             fd.write(cmd)
             fd.close()
-            
+
 
             # setting perm to 755 on testscript
             os.chmod(testpath, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)

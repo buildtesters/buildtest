@@ -23,7 +23,7 @@
 """
 easybuild specific modules related to toolchain and easyconfigs
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 import os
 import re

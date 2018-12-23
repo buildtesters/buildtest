@@ -24,7 +24,7 @@
 Support for building perl package tests and checks if perl modules exists
 
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 
 import logging
@@ -130,7 +130,7 @@ def build_perl_package_test(perl_package):
 
             # setting perm to 755 on testscript
             os.chmod(testpath, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
-                    
+
             cmakelist = os.path.join(subdirpath,"CMakeLists.txt")
             add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname)
             msg = "Creating Test: " + testpath

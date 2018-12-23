@@ -24,7 +24,7 @@
 This module implements the --runtest feature of buildtest. This is an interactive
 menu for running tests and gives user another alternative other than ctest
 
-:author: Shahzeb Siddiqui (Pfizer)
+:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 import os
 import sys
