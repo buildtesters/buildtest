@@ -72,7 +72,15 @@ def run_app_test(app_name, test_output="no"):
         output_redirect = " >/dev/stdout 2>&1"
     else:
         output_redirect = " >/dev/null 2>&1"
-    tests = [ f.path + output_redirect  for f in os.scandir(os.path.join(app_root_testdir,app_name)) if os.path.splitext(f)[1] in [".sh", ".bash", ".csh"]]
+
+    tests = []
+    # traverse test directory tree and add tests to a list object
+    for root, subdir, files in os.walk(os.path.join(app_root_testdir,app_name)):
+        for file in files:
+            # only add test with valid shell extensions
+            if os.path.splitext(file)[1] in [".sh", ".bash", ".csh"]:
+                tests.append(os.path.join(root,file) + output_redirect)
+
 
     count_test = len(tests)
 
@@ -103,3 +111,16 @@ def run_app_test(app_name, test_output="no"):
     print(f"Executed {count_test} tests")
     print(f"Passed Tests: {passed_test}    Percentage: {passed_test*100/count_test}%")
     print(f"Failed Tests: {failed_test}    Percentage: {failed_test*100/count_test}%")
+
+    actual_ratio = passed_test/count_test
+    success_threshold = float(config_opts['BUILDTEST_SUCCESS_THRESHOLD'])
+
+
+    print
+    print
+    diff_ratio = abs(actual_ratio-success_threshold)
+    if actual_ratio < success_threshold:
+        print ("WARNING: Threshold of " + str(success_threshold*100) + "% was not achieved by " + app_name)
+        print (app_name  + " has a " + str(actual_ratio*100) + "% passed rate with a difference of " + str(diff_ratio) + " from the threshold" )
+    else:
+        print ("SUCCESS: Threshold of " + str(success_threshold*100) + "% was achieved")

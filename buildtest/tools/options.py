@@ -112,6 +112,12 @@ def override_configuration():
     if os.environ.get('BUILDTEST_JOB_TEMPLATE'):
         config_opts['BUILDTEST_JOB_TEMPLATE']=os.environ['BUILDTEST_JOB_TEMPLATE']
 
+    if os.environ.get('BUILDTEST_SUCCESS_THRESHOLD'):
+        threshold = float(os.environ.get('BUILDTEST_SUCCESS_THRESHOLD'))
+
+        if threshold >= 0.0 and threshold <= 1.0:
+            config_opts['BUILDTEST_SUCCESS_THRESHOLD']=threshold
+
     config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'] = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/system")
     config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'] = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/ebapps")
     config_opts['BUILDTEST_R_TESTDIR'] = os.path.join(config_opts['BUILDTEST_R_REPO'],"buildtest/R/code")
