@@ -137,12 +137,11 @@ class buildtest_menu():
             parser_run.add_argument("-s", "--software", help="Run test suite for application via buildtest", choices=self.app_choices, metavar='SOFTWARE-TEST-SUITE')
             parser_run.add_argument("-p", "--package", help="Run test suite for system package via buildtest", choices=self.systempkg_choices, metavar='PACKAGE-TEST-SUITE')
             parser_run.add_argument("--all-software", help="Run test suite for all software packages", action="store_true")
-            parser_run.add_argument("--all-package", help="Run test suite for all system packages", action="store_true")
-            parser_run.add_argument("--output", help="display output of test to console", choices=["yes","no"], default="no")
+            parser_run.add_argument("--all-package", help="Run test suite for all system packages", action="store_true")            
             parser_run.set_defaults(func=func_run_subcmd)
 
             parser_module = subparsers.add_parser('module', help='Options for module file')
-            parser_module.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")            
+            parser_module.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")
             parser_module.add_argument("--diff-trees", help="Show difference between two module trees")
             parser_module.set_defaults(func=func_module_subcmd)
 

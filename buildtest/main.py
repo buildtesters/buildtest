@@ -57,9 +57,12 @@ def main():
     """ entry point to buildtest """
 
     BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
+    get_system_info()
     parser = buildtest_menu()
 
     bt_opts = parser.parse_options()
+
+
 
     if bt_opts.version:
         buildtest_version()
@@ -102,7 +105,7 @@ def main():
         submit_job_to_scheduler(bt_opts.submitjob)
         sys.exit(0)
 
-    get_system_info()
+
 
 
 if __name__ == "__main__":

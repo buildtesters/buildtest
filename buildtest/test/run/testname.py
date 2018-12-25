@@ -31,10 +31,10 @@ metrics that will be stored in json format
 import os
 import subprocess
 import sys
-
+from datetime import datetime
 from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
 
-def run_testname(testname,test_output="no"):
+def run_testname(testname):
     """ test script to run """
 
     try:
@@ -43,26 +43,29 @@ def run_testname(testname,test_output="no"):
         print (err_msg)
         sys.exit(1)
 
-    output_redirect=""
-    if test_output == "yes":
-        output_redirect = " >/dev/stdout 2>&1"
-    else:
-        output_redirect = " >/dev/null 2>&1"
+    from buildtest.tools.run import write_system_info
 
-    testname += output_redirect
+    runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
+    run_output_file = os.path.join(config_opts["BUILDTEST_RUN_DIR"],runfile)
+
+    fd = open(run_output_file,"w")
+    write_system_info(fd)
+    fd.write("------------------------ START OF TEST -------------------------------------- \n")
+
+
     print (f"Executing Test: {testname}")
-    print ("---------------------------------------------------------")
     ret = subprocess.Popen(testname,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     output = ret.communicate()[0].decode("utf-8")
-
     ret_code = ret.returncode
-    if test_output == "yes":
-        print(output)
-    if ret_code == 0:
-        print("Test Successful")
-    else:
-        print("Test Failed")
-    print ("---------------------------------------------------------")
+
+    fd.write("Test Name:" + testname + "\n")
+    fd.write("Return Code: " + str(ret_code) + "\n")
+    fd.write("---------- START OF TEST OUTPUT ---------------- \n")
+    fd.write(output)
+    fd.write("------------ END OF TEST OUTPUT ---------------- \n")
+
+    fd.close()
+    print ("Writing results to " + run_output_file)
     sys.exit(0)
 
 def test_list():

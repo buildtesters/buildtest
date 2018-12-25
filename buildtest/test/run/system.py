@@ -32,6 +32,7 @@ _buildtest run --system
 import os
 import subprocess
 import sys
+from datetime import datetime
 from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
 def run_system_choices():
     """
@@ -46,46 +47,52 @@ def run_system_choices():
 
     return systempkg_list
 
-def run_system_test(systempkg, test_output="no"):
+def run_system_test(systempkg):
     """
     implementation for _buildtest run --systempkg to execute all tests in the test directory
     """
 
+
+
+    from buildtest.tools.run import write_system_info
+
     system_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"system")
 
-    output_redirect=""
-    if test_output == "yes":
-        output_redirect = " >/dev/stdout 2>&1"
-    else:
-        output_redirect = " >/dev/null 2>&1"
-    
+    runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
+    run_output_file = os.path.join(config_opts["BUILDTEST_RUN_DIR"],runfile)
+
+    fd = open(run_output_file,"w")
+    write_system_info(fd,pkg_name=systempkg)
+    fd.write("------------------------ START OF TEST -------------------------------------- \n")
+
+
     tests = []
     # traverse test directory tree and add tests to a list object
     for root, subdir, files in os.walk(os.path.join(system_root_testdir,systempkg)):
         for file in files:
             # only add test with valid shell extensions
             if os.path.splitext(file)[1] in [".sh", ".bash", ".csh"]:
-                tests.append(os.path.join(root,file) + output_redirect)
+                tests.append(os.path.join(root,file))
 
     count_test = len(tests)
     passed_test = 0
     failed_test = 0
-    for test in tests:
-        print (f"Executing Test: {test}")
-        print ("---------------------------------------------------------")
+    for test in tests:    
         ret = subprocess.Popen(test,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
         output = ret.communicate()[0].decode("utf-8")
 
         ret_code = ret.returncode
-        if test_output == "yes":
-            print(output)
+        fd.write("Test Name:" + test + "\n")
+        fd.write("Return Code: " + str(ret_code) + "\n")
+        fd.write("---------- START OF TEST OUTPUT ---------------- \n")
+        fd.write(output)
+        fd.write("------------ END OF TEST OUTPUT ---------------- \n")
+
         if ret_code == 0:
-            print("Test Successful")
             passed_test += 1
         else:
-            print("Test Failed")
             failed_test += 1
-        print ("---------------------------------------------------------")
+
 
     print
     print
@@ -108,3 +115,6 @@ def run_system_test(systempkg, test_output="no"):
         print (systempkg  + " has a " + str(actual_ratio*100) + "% passed rate with a difference of " + str(diff_ratio) + " from the threshold" )
     else:
         print ("SUCCESS: Threshold of " + str(success_threshold*100) + "% was achieved")
+
+    print ("Writing results to " + run_output_file)
+    fd.close()

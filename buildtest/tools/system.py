@@ -35,6 +35,8 @@ import subprocess
 from stat import S_IXUSR, S_IXGRP, S_IXOTH
 from buildtest.tools.config import config_opts, logID
 
+system = {}
+
 def check_system_package_installed(pkg):
     """ check if system package is installed and return True/False"""
 
@@ -126,32 +128,39 @@ def get_os_name():
     else:
         return UNKNOWN
 
+def command_path(cmd):
+    """return full path of a linux command"""
+    find_cmd = "which " + cmd
+    ret = subprocess.Popen(find_cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    output = ret.communicate()[0].decode("utf-8")
+    return output
+
+def get_env_snapshot():
+    """ return output of Linux command env  """
+    ret = subprocess.Popen("env",shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    output = ret.communicate()[0].decode("utf-8")
+    return output
 
 def get_system_info():
     """ get system info and write in log file """
 
-    logger = logging.getLogger(logID)
-    logger.debug("System Specification")
-    logger.debug("-----------------------------------")
-    os_name = platform.linux_distribution()[0]
-    os_ver = platform.linux_distribution()[1]
-    system = platform.system()
-    kernel_release = platform.release()
-    processor_family = platform.processor()
-    node = platform.node()
-    python_ver = platform.python_version()
+
+
+    system["OS_NAME"] = platform.linux_distribution()[0]
+    system["OS_VERSION"] = platform.linux_distribution()[1]
+    system["SYSTEM"] = platform.system()
+    system["KERNEL_RELEASE"] = platform.release()
+    system["PROCESSOR_FAMILY"] = platform.processor()
+    system["HOSTNAME"] = platform.node()
+    system["PYTHON_VERSION"] = platform.python_version()
+    system["PLATFORM"] = platform.platform()
+    system["LIBC_VERSION"] = platform.libc_ver()[1]
+    system["PYTHON_ABSPATH"] = command_path("python")
+    system["ENV"] = get_env_snapshot()
 
     if system == 'Linux':
         logger.debug("Trying to determine total memory size on Linux via /proc/meminfo")
         meminfo = open('/proc/meminfo').read()
         mem_mo = re.match(r'^MemTotal:\s*(\d+)\s*kB', meminfo, re.M)
         if mem_mo:
-            memtotal = int(mem_mo.group(1)) / 1024
-
-    logger.debug("Operating System: %s %s", os_name, os_ver)
-    logger.debug("System: %s", system)
-    logger.debug("Kernel Release: %s", kernel_release)
-    logger.debug("Processor Family: %s", processor_family)
-    logger.debug("Hostname: %s", node)
-    logger.debug("Python Version: %s", python_ver)
-    logger.debug("Total Memory: %s MB", memtotal)
+            system["MEMORY_TOTAL"] = int(mem_mo.group(1)) / 1024

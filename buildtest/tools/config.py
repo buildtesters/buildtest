@@ -54,6 +54,7 @@ try:
     config_opts = yaml.load(fd)
     config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM']=""
     config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE']=""
+    config_opts['BUILDTEST_VERSION'] = BUILDTEST_VERSION
 
 except FileNotFoundError as err_msg:
     print(f"{err_msg}")
