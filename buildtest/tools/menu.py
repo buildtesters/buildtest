@@ -37,6 +37,7 @@ from buildtest.test.r import r_pkg_choices
 from buildtest.test.ruby import ruby_pkg_choices
 from buildtest.test.perl import perl_pkg_choices
 from buildtest.test.run.testname import test_list
+from buildtest.tools.benchmark import func_benchmark_osu_subcmd
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, check_configuration
 from buildtest.tools.list import func_list_subcmd
@@ -137,13 +138,24 @@ class buildtest_menu():
             parser_run.add_argument("-s", "--software", help="Run test suite for application via buildtest", choices=self.app_choices, metavar='SOFTWARE-TEST-SUITE')
             parser_run.add_argument("-p", "--package", help="Run test suite for system package via buildtest", choices=self.systempkg_choices, metavar='PACKAGE-TEST-SUITE')
             parser_run.add_argument("--all-software", help="Run test suite for all software packages", action="store_true")
-            parser_run.add_argument("--all-package", help="Run test suite for all system packages", action="store_true")            
+            parser_run.add_argument("--all-package", help="Run test suite for all system packages", action="store_true")
             parser_run.set_defaults(func=func_run_subcmd)
 
             parser_module = subparsers.add_parser('module', help='Options for module file')
             parser_module.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")
             parser_module.add_argument("--diff-trees", help="Show difference between two module trees")
             parser_module.set_defaults(func=func_module_subcmd)
+
+            parser_benchmark = subparsers.add_parser('benchmark', help="Options for Benchmark menu")
+            subparsers_benchmark = parser_benchmark.add_subparsers(help='subcommand help', dest="sub_command")
+            osu_parser = subparsers_benchmark.add_parser('osu', help = "OSU MicroBenchmark sub menu")
+
+            osu_parser.add_argument("-r", "--run", help ="Run Benchmark", action="store_true")
+            osu_parser.add_argument("-i", "--info", help="show yaml key description", action="store_true")
+            osu_parser.add_argument("-l", "--list", help="List of tests available for OSU Benchmark", action="store_true")
+            osu_parser.add_argument("-c", "--config", help="OSU Yaml Configuration File")
+
+            osu_parser.set_defaults(func=func_benchmark_osu_subcmd)
 
             self.parser = parser
         def parse_options(self):
