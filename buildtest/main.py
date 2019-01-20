@@ -56,13 +56,10 @@ from buildtest.tools.version import buildtest_version
 def main():
     """ entry point to buildtest """
 
-    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
     get_system_info()
     parser = buildtest_menu()
 
     bt_opts = parser.parse_options()
-
-
 
     if bt_opts.version:
         buildtest_version()
@@ -99,14 +96,9 @@ def main():
     elif bt_opts.findtest is not None:
         find_tests_by_arg(bt_opts.findtest)
 
-
-
     if bt_opts.submitjob is not None:
         submit_job_to_scheduler(bt_opts.submitjob)
         sys.exit(0)
-
-
-
 
 if __name__ == "__main__":
         main()

@@ -63,6 +63,28 @@ except FileNotFoundError as err_msg:
 #global logID
 logID = "buildtest"
 
+FILES_config = ["BUILDTEST_JOB_TEMPLATE"]
+DIR_config = ["BUILDTEST_CONFIGS_REPO","BUILDTEST_RUBY_REPO","BUILDTEST_R_REPO","BUILDTEST_PYTHON_REPO","BUILDTEST_LOGDIR","BUILDTEST_TESTDIR","BUILDTEST_RUN_DIR"]
+config_yaml_keys = {
+    'BUILDTEST_MODULE_NAMING_SCHEME': type("str"),
+    'BUILDTEST_EASYBUILD': type(True),
+    'BUILDTEST_CLEAN_BUILD': type(True),
+    'BUILDTEST_ENABLE_JOB': type(True),
+    'BUILDTEST_OHPC': type(True),
+    'BUILDTEST_SHELL': type("str"),
+    'BUILDTEST_JOB_TEMPLATE': type("file"),
+    'BUILDTEST_SUCCESS_THRESHOLD': type(1.0),
+    'BUILDTEST_MODULE_ROOT': type([]),
+    'BUILDTEST_CONFIGS_REPO': type("str"),
+    'BUILDTEST_RUBY_REPO': type("str"),
+    'BUILDTEST_R_REPO': type("str"),
+    'BUILDTEST_PYTHON_REPO': type("str"),
+    'BUILDTEST_LOGDIR': type("str"),
+    'BUILDTEST_TESTDIR': type("str"),
+    'BUILDTEST_RUN_DIR': type("str"),
+    'BUILDTEST_EMAIL': type(True),
+}
+values_BUILDTEST_MODULE_NAMING_SCHEME = ["HMNS", "FNS"]
 
 def check_configuration():
     """
@@ -70,136 +92,60 @@ def check_configuration():
     for module environment
     """
 
-    """
-    BUILDTEST_MODULE_ROOT = config_opts['BUILDTEST_MODULE_ROOT']
-    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
-    BUILDTEST_PYTHON_REPO = config_opts['BUILDTEST_PYTHON_REPO']
-    BUILDTEST_PERL_REPO = config_opts['BUILDTEST_PERL_REPO']
-    BUILDTEST_R_REPO = config_opts['BUILDTEST_R_REPO']
-    BUILDTEST_RUBY_REPO = config_opts['BUILDTEST_RUBY_REPO']
-    BUILDTEST_EASYBUILD = config_opts['BUILDTEST_EASYBUILD']
-    BUILDTEST_SHELL = config_opts['BUILDTEST_SHELL']
-    BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
-    """
     #print "Checking buildtest environment variables ..."
 
     ec = 0
+    print ("Check Configuration")
 
-    time.sleep(0.1)
+    keylist = config_yaml_keys.keys()
+    valuelist = config_yaml_keys.values()
 
-    if not os.path.exists(BUILDTEST_ROOT):
-        ec = 1
-        print ("ERROR:  \t BUILDTEST_ROOT: %{BUILDTEST_ROOT} does not exist")
-
-
-
-    time.sleep(0.1)
-    if not os.path.exists(config_opts['BUILDTEST_CONFIGS_REPO']):
-        ec = 1
-        print (f"""ERROR:  \t BUILDTEST_CONFIGS_REPO: {config_opts['BUILDTEST_CONFIGS_REPO']} does not exist""")
-
-
-    time.sleep(0.1)
-    if not os.path.exists(config_opts["BUILDTEST_R_REPO"]):
-        ec = 1
-        print (f"""ERROR:  \t BUILDTEST_R_REPO: {config_opts["BUILDTEST_R_REPO"]} does not exist""")
-
-    time.sleep(0.1)
-    if not os.path.exists(config_opts['BUILDTEST_R_TESTDIR']):
-        ec = 1
-        print (f"""ERROR: \t BUILDTEST_R_TESTDIR: {config_opts['BUILDTEST_R_TESTDIR']}  does not exist""")
-
-    time.sleep(0.1)
-    if not os.path.exists(config_opts["BUILDTEST_PERL_REPO"]):
-        ec = 1
-        print (f"""ERROR:  \t BUILDTEST_PERL_REPO: {config_opts["BUILDTEST_PERL_REPO"]} does not exist""")
-
-    time.sleep(0.1)
-    if not os.path.exists(config_opts['BUILDTEST_PERL_TESTDIR']):
-        ec = 1
-        print (f"""ERROR: \t BUILDTEST_PERL_TESTDIR: {config_opts['BUILDTEST_PERL_TESTDIR']} does not exist""")
-
-    time.sleep(0.1)
-    if not os.path.exists(config_opts["BUILDTEST_PYTHON_REPO"]):
-        ec = 1
-        print (f"""ERROR:  \t BUILDTEST_PYTHON_REPO: {config_opts["BUILDTEST_PYTHON_REPO"]} does not exist""")
-
-    time.sleep(0.1)
-    if not os.path.exists(config_opts['BUILDTEST_PYTHON_TESTDIR']):
-        ec = 1
-        print (f"""ERROR: \t BUILDTEST_PYTHON_TESTDIR: {config_opts['BUILDTEST_PYTHON_TESTDIR']} does not exist""")
-
-
-    time.sleep(0.1)
-    if not os.path.exists(config_opts["BUILDTEST_RUBY_REPO"]):
-        ec = 1
-        print (f"""ERROR:  \t BUILDTEST_RUBY_REPO: {config_opts["BUILDTEST_RUBY_REPO"]} does not exist""")
-
-    time.sleep(0.1)
-    if not os.path.exists(config_opts['BUILDTEST_RUBY_TESTDIR']):
-        ec = 1
-        print (f"""ERROR: \t BUILDTEST_RUBY_TESTDIR: %{config_opts['BUILDTEST_RUBY_TESTDIR']} does not exist""")
-
-    time.sleep(0.1)
-    for tree in config_opts["BUILDTEST_MODULE_ROOT"]:
-        if not os.path.exists(tree):
+    # check if any key is not found in config.yaml file
+    for key in keylist:
+        if key not in config_opts:
+            print ("Unable to find key: " + key + " in your configuration file: " + BUILDTEST_CONFIG_FILE)
             ec = 1
-            print (f"ERROR:  \t BUILDTEST_MODULE_ROOT: {tree} does  not exists ")
 
 
+    for key,value in zip(keylist,valuelist):
 
-    time.sleep(0.1)
-    if config_opts["BUILDTEST_MODULE_NAMING_SCHEME"] not in ["FNS", "HMNS"]:
-        ec = 1
-        print (f"""ERROR:  \t BUILDTEST_MODULE_NAMING_SCHEME: {config_opts["BUILDTEST_MODULE_NAMING_SCHEME"]} valid values are {"HMNS", "FNS"}""")
+        if value is not type(config_opts[key]):
+            print ("Invalid Type for key:" + key + " expecting type: " + str(value) + " current type: " + str(type(config_opts[key])))
+            ec = 1
 
-    time.sleep(0.1)
+        # check if BUILDTEST_MODULE_NAMING_SCHEME is either "FNS" or "HMNS"
+        if key == "BUILDTEST_MODULE_NAMING_SCHEME" and config_opts[key] not in values_BUILDTEST_MODULE_NAMING_SCHEME:
+            print (key + " expects value " + str(values_BUILDTEST_MODULE_NAMING_SCHEME) + " current value is " + str(config_opts[key]))
+            ec = 1
 
-    if config_opts["BUILDTEST_EASYBUILD"] not in [True, False]:
-        ec = 1
-        print (f"""ERROR:  \t BUILDTEST_EASYBUILD: {config_opts["BUILDTEST_EASYBUILD"]} valid values are {True, False} """)
+        if key == "BUILDTEST_SHELL" and config_opts[key] not in BUILDTEST_SHELLTYPES:
+            print (key + " expects value " + str(BUILDTEST_SHELLTYPES) + " current value is " + str(config_opts[key]))
+            ec = 1
 
-    time.sleep(0.1)
-    if config_opts["BUILDTEST_CLEAN_BUILD"] not in [True, False]:
-        ec = 1
-        print (f"""ERROR:  \t BUILDTEST_CLEAN_BUILD: {config_opts["BUILDTEST_CLEAN_BUILD"]} valid values are {True, False} """)
+        # check if BUILDTEST_SUCCESS_THRESHOLD is between 0.0 and 1.0
+        if key == "BUILDTEST_SUCCESS_THRESHOLD" and (config_opts[key] < 0.0 or  config_opts[key] > 1.0):
+            print (key + " must be between [0.0-1.0]" + " current value is " + str(config_opts[key]))
+            ec = 1
 
-
-    time.sleep(0.1)
-    if config_opts["BUILDTEST_SHELL"] not in BUILDTEST_SHELLTYPES:
-        ec = 1
-        print (f"""ERROR: \t BUILDTEST_SHELL: {config_opts["BUILDTEST_SHELL"]} not a valid value, must be one of the following: {BUILDTEST_SHELLTYPES}""" )
-
-    time.sleep(0.1)
+        if key == "BUILDTEST_JOB_TEMPLATE" and os.path.splitext(config_opts[key])[1] not in BUILDTEST_JOB_EXTENSION:
+            #print (f"Invalid file extension: {config_opts[key])[1]} must be one of the following extension {BUILDTEST_JOB_EXTENSION}")
+            print ("Invalid File extension " + str(os.path.splitext(config_opts[key])[1]) + " must be one of the following extension" + str(BUILDTEST_JOB_EXTENSION))
+            ec = 1
 
 
-    time.sleep(0.1)
-    if config_opts["BUILDTEST_ENABLE_JOB"] not in [True, False]:
-        ec = 1
-        print (f"""ERROR:  \t BUILDTEST_ENABLE_JOB: {config_opts["BUILDTEST_ENABLE_JOB"]} valid values are {True, False} """)
+        # if yaml key is of type FILE, check if file exists
+        if key in FILES_config:
+            if not os.path.exists(config_opts[key]):
+                print (config_opts[key] + " is an invalid file path please check your file")
+                ec = 1
 
-    if not os.path.exists(config_opts["BUILDTEST_JOB_TEMPLATE"]):
-        ec = 1
-        print (f"""ERROR:\t BUILDTEST_JOB_TEMPLATE: {config_opts["BUILDTEST_JOB_TEMPLATE"]} does not exist""")
-
-    time.sleep(0.1)
-
-    job_template_extension = os.path.splitext(config_opts["BUILDTEST_JOB_TEMPLATE"])[1]
-
-    if job_template_extension  not in BUILDTEST_JOB_EXTENSION:
-        ec = 1
-        print (f"Invalid file extension: {job_template_extension} must be one of the following extension {BUILDTEST_JOB_EXTENSION}")
-
-    # if BUILDTEST_PREPEND_MODULES not defined then declare as empty list in dictionary
-    if "BUILDTEST_PREPEND_MODULES" not in  list(config_opts.keys()):
-        config_opts["BUILDTEST_PREPEND_MODULES"] = []
-
-    time.sleep(0.1)
-
-    if ec != 0:
-        print ("Please fix your BUILDTEST configuration")
-        sys.exit(1)
+        # if yaml key is of type FILE, check if file exists
+        if value in DIR_config:
+            if not os.path.isdir(config_opts[key]):
+                print (config_opts[key] + " has an invalid directory path please check your path")
+                ec = 1
+    if (ec):
+        sys.exit(0)
 
     cmd = "module --version"
     ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -212,16 +158,25 @@ def check_configuration():
         print (errormsg)
         sys.exit(1)
 
+
+    # if BUILDTEST_PREPEND_MODULES not defined then declare as empty list in dictionary
+    if "BUILDTEST_PREPEND_MODULES" not in  list(config_opts.keys()):
+        config_opts["BUILDTEST_PREPEND_MODULES"] = []
+
+
+
 def show_configuration():
     """ show buildtest configuration """
-
+    exclude_list = ["BUILDTEST_CONFIGS_REPO_SOFTWARE", "BUILDTEST_CONFIGS_REPO_SYSTEM", "BUILDTEST_PERL_TESTDIR", "BUILDTEST_PYTHON_TESTDIR", "BUILDTEST_RUBY_TESTDIR", "BUILDTEST_R_TESTDIR", "BUILDTEST_VERSION"]
     print
     print ("\t buildtest configuration summary")
     print ("\t (C): Configuration File,  (E): Environment Variable")
     print
-    print (("BUILDTEST_ROOT" + "\t (E) =").expandtabs(50), os.getenv("BUILDTEST_ROOT"))
+    
 
     for key in sorted(config_opts):
+        if key in exclude_list:
+            continue
         if os.getenv(key):
             type = "(E)"
         else:
