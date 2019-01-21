@@ -1,0 +1,15 @@
+usage: buildtest [options] list [-h] [-lt] [-ls] [-svr] [-ec] [-bs] [--format {csv,json,stdout}]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -lt, --list-toolchain
+                        retrieve a list of easybuild toolchain used for --toolchain option
+  -ls, --list-unique-software
+                        retrieve all unique software found in your module tree specified by BUILDTEST_MODULE_ROOT
+  -svr, --software-version-relation
+                        retrieve a relationship between software and version found in module files
+  -ec, --easyconfigs    Return a list of easyconfigs from a easybuild module tree
+  -bs, --buildtest-software
+                        list buildtest software found in buildtest repository
+  --format {csv,json,stdout}
+                        Output format type

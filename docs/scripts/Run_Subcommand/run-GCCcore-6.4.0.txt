@@ -1,0 +1,25 @@
+Test project /tmp/build
+      Start  1: GCCcore-6.4.0-which_gcc.sh
+ 1/10 Test  #1: GCCcore-6.4.0-which_gcc.sh ..............................   Passed    0.15 sec
+      Start  2: GCCcore-6.4.0-which_gcc-nm.sh
+ 2/10 Test  #2: GCCcore-6.4.0-which_gcc-nm.sh ...........................   Passed    0.14 sec
+      Start  3: GCCcore-6.4.0-which_x86_64-pc-linux-gnu-g++.sh
+ 3/10 Test  #3: GCCcore-6.4.0-which_x86_64-pc-linux-gnu-g++.sh ..........   Passed    0.15 sec
+      Start  4: GCCcore-6.4.0-which_cpp.sh
+ 4/10 Test  #4: GCCcore-6.4.0-which_cpp.sh ..............................   Passed    0.15 sec
+      Start  5: GCCcore-6.4.0-which_x86_64-pc-linux-gnu-gfortran.sh
+ 5/10 Test  #5: GCCcore-6.4.0-which_x86_64-pc-linux-gnu-gfortran.sh .....   Passed    0.15 sec
+      Start  6: GCCcore-6.4.0-which_gcov.sh
+ 6/10 Test  #6: GCCcore-6.4.0-which_gcov.sh .............................   Passed    0.15 sec
+      Start  7: GCCcore-6.4.0-which_gcov-dump.sh
+ 7/10 Test  #7: GCCcore-6.4.0-which_gcov-dump.sh ........................   Passed    0.14 sec
+      Start  8: GCCcore-6.4.0-which_x86_64-pc-linux-gnu-gcc-ranlib.sh
+ 8/10 Test  #8: GCCcore-6.4.0-which_x86_64-pc-linux-gnu-gcc-ranlib.sh ...   Passed    0.14 sec
+      Start  9: GCCcore-6.4.0-which_gcc-ar.sh
+ 9/10 Test  #9: GCCcore-6.4.0-which_gcc-ar.sh ...........................   Passed    0.14 sec
+      Start 10: GCCcore-6.4.0-which_gcov-tool.sh
+10/10 Test #10: GCCcore-6.4.0-which_gcov-tool.sh ........................   Passed    0.14 sec
+
+100% tests passed, 0 tests failed out of 10
+
+Total Test time (real) =   1.47 sec

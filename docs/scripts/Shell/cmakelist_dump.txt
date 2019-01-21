@@ -1,0 +1,6 @@
+[siddis14@amrndhl1157 buildtest-framework]$ cat /hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/testing/ebapp/GCC/5.4.0-2.27/CMakeLists.txt  | head -n 4
+add_test(NAME GCC-5.4.0-2.27-c++_--version.bash  COMMAND bash c++_--version.bash         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_test(NAME GCC-5.4.0-2.27-cpp_--version.bash  COMMAND bash cpp_--version.bash         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_test(NAME GCC-5.4.0-2.27-g++_--version.bash  COMMAND bash g++_--version.bash         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+add_test(NAME GCC-5.4.0-2.27-gcc_--version.bash  COMMAND bash gcc_--version.bash         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+

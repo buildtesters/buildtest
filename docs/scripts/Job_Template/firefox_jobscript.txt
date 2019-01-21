@@ -1,0 +1,8 @@
+--------------------------------------------
+[STAGE 1]: Building Binary Tests
+--------------------------------------------
+Detecting Test Type: System Package
+Processing Binary YAML configuration:  /home/siddis14/github/buildtest-configs/buildtest/system/firefox/command.yaml
+Generating  1  binary tests
+Binary Tests are written in  /tmp/buildtest-tests/system/firefox
+Writing Log file to:  /tmp/buildtest/system/firefox/buildtest_15_10_26_10_2018.log

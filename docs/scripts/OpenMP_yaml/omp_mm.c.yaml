@@ -1,0 +1,5 @@
+name: omp_mm.c
+source:  omp_mm.c
+buildopts: -O2 -fopenmp
+threadrange: 2,16,2
+

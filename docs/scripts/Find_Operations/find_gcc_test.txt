@@ -1,0 +1,6 @@
+[siddis14@amrndhl1157 buildtest-framework]$ buildtest -ft gcc
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/testing/ebapp/GCC/5.4.0-2.27/gcc_--version.sh
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/testing/ebapp/GCC/5.4.0-2.27/gcc-ar_--version.sh
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/testing/ebapp/GCC/5.4.0-2.27/gcc-ranlib_--version.sh
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/testing/ebapp/GCC/5.4.0-2.27/gcc-nm_--version.sh
+

@@ -1,0 +1,17 @@
+[siddis14@amrndhl1157 buildtest-framework]$ buildtest -fc hello
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/mpi/config/mpi-hello.c.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/mpi/config/mpi-hello.cpp.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/mpi/config/hello_arg.c.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/mpi/config/mpi-hello.f.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/ebapps/GCC/config/omp_hello.f.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/ebapps/GCC/config/hello.c.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/ebapps/GCC/config/hello.f.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/ebapps/GCC/config/omp_hello.c.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/ebapps/GCC/config/hello.cpp.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/ebapps/intel/config/hello.c.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/ebapps/intel/config/hello.f.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/ebapps/intel/config/hello.cpp.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/ebapps/Perl/config/hello.pl.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/ebapps/Python/config/hello_logoutput.yaml
+/hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/ebapps/R/config/hello.R.yaml
+

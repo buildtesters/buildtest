@@ -1,0 +1,9 @@
+Detecting Software:  Perl/5.26.0-GCCcore-6.4.0
+--------------------------------------------
+[STAGE 1]: Building Binary Tests
+--------------------------------------------
+Detecting Test Type: Software
+Processing Binary YAML configuration:  /home/siddis14/github/buildtest-configs/buildtest/ebapps/perl/5.26.0/command.yaml
+Generating  104  binary tests
+Binary Tests are written in  /tmp/buildtest-tests/ebapp/Perl/5.26.0-GCCcore-6.4.0/
+Algorithm  is not installed in software  Perl/5.26.0-GCCcore-6.4.0

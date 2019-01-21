@@ -1,0 +1,14 @@
+Detecting Software:  Python/2.7.14-GCCcore-6.4.0-bare
+--------------------------------------------
+[STAGE 1]: Building Binary Tests
+--------------------------------------------
+Detecting Test Type: Software
+Processing Binary YAML configuration:  /home/siddis14/github/buildtest-configs/buildtest/ebapps/python/2.7.14/command.yaml
+Generating  6  binary tests
+Binary Tests are written in  /tmp/buildtest-tests/ebapp/Python/2.7.14-GCCcore-6.4.0-bare/
+--------------------------------------------
+[STAGE 2]: Building Source Tests
+--------------------------------------------
+Processing all YAML files in directory:  /home/siddis14/github/buildtest-configs/buildtest/source/python/config
+Generating 4  Source Tests and writing at  /tmp/buildtest-tests/ebapp/Python/2.7.14-GCCcore-6.4.0-bare/
+Bottleneck  is not installed in software  Python/2.7.14-GCCcore-6.4.0-bare

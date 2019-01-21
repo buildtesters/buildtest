@@ -1,0 +1,33 @@
+[siddis14@amrndhl1295 buildtest-framework]$ module spider OpenMPI/2.0.0
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  OpenMPI: OpenMPI/2.0.0
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Description:
+      The Open MPI Project is an open source MPI-2 implementation. - Homepage: http://www.open-mpi.org/
+
+     Other possible modules matches:
+        openmpi
+
+    You will need to load all module(s) on any one of the lines below before the "OpenMPI/2.0.0" module is available to load.
+
+      GCC/5.4.0-2.27
+
+    Help:
+      The Open MPI Project is an open source MPI-2 implementation. - Homepage: http://www.open-mpi.org/
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  To find other possible module matches do:
+      module -r spider '.*OpenMPI/2.0.0.*'
+
+
+
+
+[siddis14@amrndhl1295 buildtebuildtest -s OpenMPI/2.0.0 -t GCC/5.4.0-2.25
+Checking Software Exists ... SUCCESS
+Checking Toolchain Exists ... SUCCESS
+Checking easyconfig file ... FAILED
+Can't find easyconfig file with argument: -s OpenMPI/2.0.0 -t GCC/5.4.0-2.25
+Writing Logfile:  /hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/log/buildtest_17_36_22_08_2017.log
+
+

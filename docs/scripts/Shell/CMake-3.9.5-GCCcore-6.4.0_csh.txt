@@ -1,0 +1,9 @@
+Detecting Software:  CMake/3.9.5-GCCcore-6.4.0
+--------------------------------------------
+[STAGE 1]: Building Binary Tests
+--------------------------------------------
+Detecting Test Type: Software
+Processing Binary YAML configuration:  /home/siddis14/github/buildtest-configs/buildtest/ebapps/cmake/3.9.5/command.yaml
+Generating  4  binary tests
+Binary Tests are written in  /tmp/buildtest-tests/ebapp/CMake/3.9.5-GCCcore-6.4.0/
+Writing Log file:  /tmp/buildtest/CMake/3.9.5-GCCcore-6.4.0/buildtest_15_11_26_10_2018.log

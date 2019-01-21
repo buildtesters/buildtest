@@ -1,0 +1,34 @@
+Executing Test: /tmp/buildtest-tests/system/gcc/which__usr_bin_c89.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/system/gcc/which__usr_bin_c99.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/system/gcc/which__usr_bin_gcc.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/system/gcc/which__usr_bin_gcc-ar.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/system/gcc/which__usr_bin_gcc-nm.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/system/gcc/which__usr_bin_gcc-ranlib.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/system/gcc/which__usr_bin_gcov.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+==============================================================
+                         Test summary                         
+System Package:  gcc
+Executed 7 tests
+Passed Tests: 7    Percentage: 100.0%
+Failed Tests: 0    Percentage: 0.0%

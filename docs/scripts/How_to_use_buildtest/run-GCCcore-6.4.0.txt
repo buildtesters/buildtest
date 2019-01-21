@@ -1,0 +1,174 @@
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/which_gcc.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/which_gcc-nm.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/which_x86_64-pc-linux-gnu-g++.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/which_cpp.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/which_x86_64-pc-linux-gnu-gfortran.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/which_gcov.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/which_gcov-dump.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/which_x86_64-pc-linux-gnu-gcc-ranlib.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/which_gcc-ar.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/which_gcov-tool.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_hello.f.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/hello.c.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/hello.f.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_getEnvInfo.f.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_workshare1.f.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_dotprod_serial.c.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_hello.c_nthread_5.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_hello.c_nthread_9.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_hello.c_nthread_13.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_hello.c_nthread_17.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_getEnvInfo.c.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_workshare2.c.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_workshare2.f.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_orphan.c.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_dotprod_openmp.c.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_reduction.f.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_workshare1.c.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_mm.f.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/hello.cpp.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_reduction.c.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/arglist.c.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_mm.c_nthread_2.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_mm.c_nthread_4.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_mm.c_nthread_6.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_mm.c_nthread_8.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_mm.c_nthread_10.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_mm.c_nthread_12.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_mm.c_nthread_14.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_mm.c_nthread_16.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_dotprod_openmp.f.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_orphan.f.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/omp_dotprod_serial.f.sh >/dev/null 2>&1
+---------------------------------------------------------
+Test Successful
+---------------------------------------------------------
+==============================================================
+                         Test summary                         
+Application:  GCCcore/6.4.0
+Executed 42 tests
+Passed Tests: 42    Percentage: 100.0%
+Failed Tests: 0    Percentage: 0.0%

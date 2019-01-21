@@ -1,0 +1,7 @@
+[hpcswadm@hpcv27 scripts]$ git clone git@github.com:HPC-buildtest/buildtest-framework.git
+[hpcswadm@hpcv27 scripts]$ cd buildtest-framework
+[hpcswadm@hpcv27 scripts]$ git clone git@github.com:HPC-buildtest/buildtest-configs.git
+[hpcswadm@hpcv27 scripts]$ git clone git@github.com:HPC-buildtest/R-buildtest-config.git
+[hpcswadm@hpcv27 scripts]$ git clone git@github.com:HPC-buildtest/Python-buildtest-config.git
+[hpcswadm@hpcv27 scripts]$ git clone git@github.com:HPC-buildtest/Perl-buildtest-config.git
+[hpcswadm@hpcv27 scripts]$ git clone git@github.com:HPC-buildtest/Ruby-buildtest-config.git

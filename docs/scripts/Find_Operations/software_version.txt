@@ -1,0 +1,36 @@
+[siddis14@amrndhl1157 buildtest-framework]$ buildtest -svr
+
+ID   |        Software            |      Versions
+-----|----------------------------|-----------------------------
+1    |  ACTC                      |     .1.1.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/intel/2017.1.132-GCC-5.4.0-2.27/impi/2017.1.132/ACTC/.1.1.lua)
+2    |  Advisor                   |     2017_update1.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/Core/Advisor/2017_update1.lua)
+3    |  Amber                     |     14-AmberTools-15-patchlevel-13-13.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/intel/2017.1.132-GCC-5.4.0-2.27/impi/2017.1.132/Amber/14-AmberTools-15-patchlevel-13-13.lua)
+4    |  Anaconda2                 |     5.1.0.lua (/nfs/grid/software/easybuild/commons/modules/all/Anaconda2/5.1.0.lua)
+4    |  Anaconda2                 |     4.2.0.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/Core/Anaconda2/4.2.0.lua)
+5    |  Anaconda3                 |     5.1.0.lua (/nfs/grid/software/easybuild/commons/modules/all/Anaconda3/5.1.0.lua)
+5    |  Anaconda3                 |     4.2.0.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/Core/Anaconda3/4.2.0.lua)
+6    |  Aspera-Connect            |     3.6.1.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/Core/Aspera-Connect/3.6.1.lua)
+7    |  Autoconf                  |     2.69-GCCcore-6.4.0.lua (/nfs/grid/software/easybuild/IvyBridge/redhat/7.3/modules/all/Autoconf/2.69-GCCcore-6.4.0.lua)
+7    |  Autoconf                  |     .2.69.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/Compiler/GCC/5.4.0-2.27/Autoconf/.2.69.lua)
+7    |  Autoconf                  |     .2.69.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/Compiler/GCCcore/5.4.0/Autoconf/.2.69.lua)
+7    |  Autoconf                  |     .2.69.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/intel/2017.1.132-GCC-5.4.0-2.27/impi/2017.1.132/Autoconf/.2.69.lua)
+
+
+
+...
+
+323  |  xorg-macros               |     .1.19.0.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/intel/2017.1.132-GCC-5.4.0-2.27/impi/2017.1.132/xorg-macros/.1.19.0.lua)
+324  |  xprop                     |     .1.2.2.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/intel/2017.1.132-GCC-5.4.0-2.27/impi/2017.1.132/xprop/.1.2.2.lua)
+325  |  xproto                    |     .7.0.28.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/intel/2017.1.132-GCC-5.4.0-2.27/impi/2017.1.132/xproto/.7.0.28.lua)
+326  |  xtrans                    |     .1.3.5.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/intel/2017.1.132-GCC-5.4.0-2.27/impi/2017.1.132/xtrans/.1.3.5.lua)
+327  |  zlib                      |     .1.2.8.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/intel/2017.1.132-GCC-5.4.0-2.27/impi/2017.1.132/zlib/.1.2.8.lua)
+327  |  zlib                      |     .1.2.8.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/intel-CUDA/2017.1.132-GCC-5.4.0-2.27-8.0.44/impi/2017.1.132/zlib/.1.2.8.lua)
+327  |  zlib                      |     .1.2.8.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/GCC/5.4.0-2.27/OpenMPI/2.0.0/zlib/.1.2.8.lua)
+327  |  zlib                      |     1.2.11-GCCcore-6.4.0.lua (/nfs/grid/software/easybuild/IvyBridge/redhat/7.3/modules/all/zlib/1.2.11-GCCcore-6.4.0.lua)
+327  |  zlib                      |     1.2.11.lua (/nfs/grid/software/easybuild/IvyBridge/redhat/7.3/modules/all/zlib/1.2.11.lua)
+327  |  zlib                      |     .1.2.8.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/Core/zlib/.1.2.8.lua)
+327  |  zlib                      |     .1.2.8.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/Compiler/GCCcore/5.4.0/zlib/.1.2.8.lua)
+327  |  zlib                      |     .1.2.8.lua (/nfs/grid/software/RHEL7/easybuild/modules/all/Compiler/GCCcore/6.2.0/zlib/.1.2.8.lua)
+Total Software Modules Found:  700
+
+

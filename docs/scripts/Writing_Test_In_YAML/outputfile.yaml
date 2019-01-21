@@ -1,0 +1,4 @@
+name: hello_logoutput
+source: hello_logoutput.py
+outputfile: hello.out
+

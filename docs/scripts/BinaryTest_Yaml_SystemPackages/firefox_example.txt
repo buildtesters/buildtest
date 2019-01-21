@@ -1,0 +1,3 @@
+[siddis14@amrndhl1157 buildtest-framework]$ _buildtest yaml --package firefox
+creating directory  /hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/system/firefox
+Please check YAML file /hpc/grid/hpcws/hpcengineers/siddis14/buildtest-framework/buildtest-configs/system/firefox/command.yaml  and fix test accordingly

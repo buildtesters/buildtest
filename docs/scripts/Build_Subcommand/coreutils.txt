@@ -1,0 +1,8 @@
+--------------------------------------------
+[STAGE 1]: Building Binary Tests
+--------------------------------------------
+Detecting Test Type: System Package
+Processing Binary YAML configuration:  /home/siddis14/github/buildtest-configs/buildtest/system/coreutils/command.yaml
+Generating  102  binary tests
+Binary Tests are written in  /tmp/buildtest-tests/system/coreutils
+Writing Log file to:  /tmp/buildtest/system/coreutils/buildtest_15_12_26_10_2018.log

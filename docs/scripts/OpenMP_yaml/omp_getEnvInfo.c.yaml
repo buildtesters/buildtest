@@ -1,0 +1,6 @@
+name: omp_getEnvInfo.c
+source:  omp_getEnvInfo.c
+buildopts: -O2 -fopenmp
+envvars:
+        OMP_NUM_THREADS : 2
+

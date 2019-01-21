@@ -1,0 +1,15 @@
+Detecting Software:  Python/2.7.14-intel-2018a
+--------------------------------------------
+[STAGE 1]: Building Binary Tests
+--------------------------------------------
+Detecting Test Type: Software
+Processing Binary YAML configuration:  /home/siddis14/github/buildtest-configs/buildtest/ebapps/python/2.7.14/command.yaml
+Generating  6  binary tests
+Binary Tests are written in  /tmp/buildtest-tests/ebapp/Python/2.7.14-intel-2018a/
+--------------------------------------------
+[STAGE 2]: Building Source Tests
+--------------------------------------------
+Processing all YAML files in directory:  /home/siddis14/github/buildtest-configs/buildtest/source/python/config
+Generating 4  Source Tests and writing at  /tmp/buildtest-tests/ebapp/Python/2.7.14-intel-2018a/
+Generating 1  tests for  dateutil
+Writing Log file:  /tmp/buildtest/Python/2.7.14-intel-2018a/buildtest_15_12_26_10_2018.log
