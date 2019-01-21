@@ -1,15 +1,27 @@
+| |license| |status| |versions| |downloads|
+
+.. |license| image:: https://img.shields.io/pypi/l/buildtest-framework.svg
+.. |status| image:: https://img.shields.io/pypi/status/buildtest-framework.svg
+.. |versions| image:: https://img.shields.io/pypi/pyversions/buildtest-framework.svg
+.. |downloads| image:: https://img.shields.io/pypi/dw/buildtest-framework.svg
+
+
 buildtest-framework
 -------------------
 
-Description
------------
-The buildtest repository is an **Automatic Test Generation Framework** for writing test cases suited to work well in a HPC environment.  This framework heavily relies that your application is built with  `EasyBuild <https://easybuild.readthedocs.io/en/latest/>`_
-and your system has  `Lmod <http://lmod.readthedocs.io/en/latest/010_user.html>`_ or `Environment Modules <http://modules.sourceforge.net>`_ for managing modules
+`buildtest <http://buildtestdocs.readthedocs.io/en/latest/>`_ is a HPC Software
+Testing Framework designed to build tests quickly and verify an entire software stack
+
+
 
 Documentation
 -------------
 Please see `buildtest documentation <http://buildtestdocs.readthedocs.io/en/latest/>`_  for more details.
 
-Contact
--------
-email: shahzebmsiddiqui@gmail.com
+
+Slack
+------
+
+Join us at hpcbuildtest.slack.com   
+
+
