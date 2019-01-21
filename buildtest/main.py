@@ -45,8 +45,6 @@ from buildtest.tools.menu import buildtest_menu
 
 from buildtest.test.job import submit_job_to_scheduler
 from buildtest.tools.config import show_configuration, config_opts
-from buildtest.tools.find import find_all_yaml_configs, find_yaml_configs_by_arg
-from buildtest.tools.find import find_all_tests, find_tests_by_arg
 from buildtest.tools.log import clean_logs
 from buildtest.tools.parser.yaml_config import show_yaml_keys
 from buildtest.tools.scan import scantest
@@ -79,22 +77,6 @@ def main():
 
     if bt_opts.scantest:
         scantest()
-
-    # when no argument is specified to -fc then output all yaml files
-    if bt_opts.findconfig == "all":
-        find_all_yaml_configs()
-
-    # find yaml configs by argument instead of reporting all yaml files
-    elif bt_opts.findconfig is not None:
-        find_yaml_configs_by_arg(bt_opts.findconfig)
-
-	# report all buildtest generated test scripts
-    if bt_opts.findtest == "all":
-        find_all_tests()
-
-    # find test by argument instead of all tests
-    elif bt_opts.findtest is not None:
-        find_tests_by_arg(bt_opts.findtest)
 
     if bt_opts.submitjob is not None:
         submit_job_to_scheduler(bt_opts.submitjob)

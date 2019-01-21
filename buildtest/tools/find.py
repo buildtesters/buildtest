@@ -31,6 +31,18 @@ import os
 import sys
 from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
 
+def func_find_subcmd(args):
+    """ entry method for list subcommand"""
+
+    if args.findconfig == "all":
+        find_all_yaml_configs()
+    if args.findconfig:
+        find_yaml_configs_by_arg(args.findconfig)
+    if args.findtest == "all":
+        find_all_tests()
+    if args.findtest:
+        find_tests_by_arg(args.find_tests_by_arg)
+
 def find_all_yaml_configs():
     """ find all yaml configs"""
     count = 0
