@@ -36,17 +36,6 @@ from buildtest.tools.file import stripHiddenFile, isHiddenFile, string_in_file
 from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
 
-# module trees in BUILDTEST_MODULE_ROOT as a list
-def get_module_root():
-    modroot = []
-    for tree in config_opts['BUILDTEST_MODULE_ROOT']:
-        if os.path.exists(tree):
-            modroot.append(tree)
-        else:
-            print ("Unable to find directory: %s specified in BUILDTEST_MODULE_ROOT",tree)
-            sys.exit(1)
-    return modroot
-
 def get_toolchains():
         """
         return the set of toolchains found in the easyconfig directory
@@ -202,7 +191,7 @@ def is_easybuild_app():
     app_ver = get_appversion()
 
     modulefiles = []
-    modtrees = get_module_root()
+    modtrees = config_opts["BUILDTEST_MODULE_ROOT"]
     for tree in modtrees:
         for root, dirs, files in os.walk(tree):
             for file in files:

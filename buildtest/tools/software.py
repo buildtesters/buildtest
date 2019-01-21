@@ -35,7 +35,7 @@ import sys
 
 
 from buildtest.tools.config import logID, config_opts
-from buildtest.tools.easybuild import get_toolchains, get_module_root
+from buildtest.tools.easybuild import get_toolchains
 from buildtest.tools.modules import get_module_list
 from buildtest.tools.utility import sset
 
@@ -44,7 +44,7 @@ def get_unique_software():
     """
     returns a set of software packages found in the module tree
     """
-    modtrees = get_module_root()
+    modtrees = config_opts["BUILDTEST_MODULE_ROOT"]
     logger = logging.getLogger(logID)
 
     logger.info("Traversing Module Tree: %s to find all unique software", modtrees)

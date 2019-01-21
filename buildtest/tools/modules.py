@@ -36,7 +36,7 @@ import os
 import sys
 import subprocess
 from buildtest.tools.config import config_opts
-from buildtest.tools.easybuild import get_module_root
+
 
 def func_module_subcmd(args):
     """ entry point for module subcommand """
@@ -92,7 +92,7 @@ def get_module_list():
     returns a complete list of modules and full path in module tree
     """
     modulefiles = []
-    modtrees = get_module_root()
+    modtrees = config_opts["BUILDTEST_MODULE_ROOT"]
     for tree in modtrees:
         for root, dirs, files in os.walk(tree):
             for file in files:

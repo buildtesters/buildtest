@@ -132,6 +132,11 @@ def check_configuration():
             print ("Invalid File extension " + str(os.path.splitext(config_opts[key])[1]) + " must be one of the following extension" + str(BUILDTEST_JOB_EXTENSION))
             ec = 1
 
+        if key == "BUILDTEST_MODULE_ROOT":
+            for module_root in config_opts[key]:
+                if not os.path.isdir(module_root):
+                    print (module_root + " directory does not exist, specified in BUILDTEST_MODULE_ROOT")
+                    ec = 1
 
         # if yaml key is of type FILE, check if file exists
         if key in FILES_config:
@@ -172,7 +177,7 @@ def show_configuration():
     print ("\t buildtest configuration summary")
     print ("\t (C): Configuration File,  (E): Environment Variable")
     print
-    
+
 
     for key in sorted(config_opts):
         if key in exclude_list:
