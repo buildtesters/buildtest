@@ -93,7 +93,7 @@ Additional Features
 
 Useful Links
 -------------
-* buildtest_ - The buildtest documentation
+
 * buildtest-framework_ - The buildtest Testing framework
 * buildtest-configs_ - buildtest YAML configs for generic apps
 * R-buildtest-config_ - R test scripts repository
@@ -104,7 +104,7 @@ Useful Links
 Join the buildtest slack channel (http://hpcbuildtest.slack.com) to get connected
 with the community. To join this channel please email **shahzebmsiddiqui@gmail.com**
 
-.. _buildtest: https://github.com/HPC-buildtest/buildtest
+
 .. _buildtest-framework: https://github.com/HPC-buildtest/buildtest-framework
 .. _buildtest-configs: https://github.com/HPC-buildtest/buildtest-configs
 .. _R-buildtest-config: https://github.com/HPC-buildtest/R-buildtest-config

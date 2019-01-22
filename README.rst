@@ -9,19 +9,17 @@
 buildtest-framework
 -------------------
 
-`buildtest <http://buildtestdocs.readthedocs.io/en/latest/>`_ is a HPC Software
+`buildtest <http://buildtest.readthedocs.io/en/latest/>`_ is a HPC Software
 Testing Framework designed to build tests quickly and verify an entire software stack
 
 
 
 Documentation
 -------------
-Please see `buildtest documentation <http://buildtestdocs.readthedocs.io/en/latest/>`_  for more details.
+Please see `buildtest documentation <http://buildtest.readthedocs.io/en/latest/>`_  for more details.
 
 
 Slack
 ------
 
-Join us at hpcbuildtest.slack.com   
-
-
+Join us at http://hpcbuildtest.slack.com
