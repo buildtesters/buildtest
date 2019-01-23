@@ -1,0 +1,32 @@
+.. table: buildtest YAML keys
+
+
+
+================           	==============================================================================================================================================                          
+Key                        	Description
+================           	==============================================================================================================================================                          
+name           	   		Name of the test script. It must match the name of the yaml file.  
+source         	   		Name of the source file to compile. Error if file not found        
+envvars				A list to declare environment variables inside the test script
+buildopts     		   	build options passed to build command.                             
+buildcmd      	   	   	| A list of commands to be executed for building the program. Must include **runcmd** key for running the code. If test doesn't 
+				| require anything to run, then declare runcmd with no value                 
+runcmd         	   		| A list of commands to be executed in order after the buildcmd. The **buildcmd** must be specified, if nothing to build set 
+	           		| buildcmd key no value. Use this key to run the program 
+runextracmd     		| Add extra commands after running code, only used when **buildcmd** 
+               			  and **runcmd** are not specified and additional instructions need  to be specified                                                   
+inputfile      			inputfile is used to change stdin to a file that is passed to executable     
+outputfile     			outputfile is used to change stdout to a file                      
+iter          			Create N tests scripts from a particular YAML file                 
+args          			specify arguments to an executable                                 
+mpi           			| enable mpi. Sets the compiler wrapper accordingly.                
+              			|  **value: [enabled]**                                               
+nproc         			Argument to -np to indicate number of processes to use with mpirun 
+cuda          			|  enable cuda. Sets the compiler wrapper to nvcc. (Not implemented)  
+              			|  **value: [enabled]**                                               
+binaries      			list of binary command to execute in command.yaml                  
+threadrange			Specify range for OpenMP thread for buildtest to create a parameterized set of test scripts. Format: <start>,<end>,<interval>
+procrange			Specify range for MPI process (argument to -np) for buildtest to create a parameterized set of test scripts. Format: <start>,<end>, <interval>
+scheduler			Specify type of resource scheduler to create job script automatically. Valid options : [ LSF, SLURM, PBS ]. **PBS not implemented yet!**
+jobslots			Specify total job slots to use in jobscript.
+================           	==============================================================================================================================================
