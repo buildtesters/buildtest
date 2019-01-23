@@ -1,6 +1,5 @@
-pip==9.0.1
-virtualenv==15.0.1
-Sphinx==1.5.3
-sphinxcontrib-programoutput==0.10
-sphinx-rtd-theme==0.2.4
-
+pip
+virtualenv
+Sphinx
+sphinxcontrib-programoutput
+sphinx-rtd-theme

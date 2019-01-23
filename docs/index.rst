@@ -1,7 +1,7 @@
 buildtest - Software Testing Framework
 =========================================
 
-Welcome to buildtest_ documentation. buildtest is a HPC Application Testing
+Welcome to buildtest documentation. buildtest is a HPC Application Testing
 Framework designed to build tests quickly and verify an entire HPC software stack
 
 This documentation was last rebuild on |today| and is intended for version |version|.

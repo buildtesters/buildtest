@@ -14,7 +14,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../buildtest'))
+sys.path.insert(0, os.path.abspath('../buildtest/'))
 
 
 # -- Project information -----------------------------------------------------
