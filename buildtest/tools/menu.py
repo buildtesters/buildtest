@@ -77,8 +77,7 @@ class buildtest_menu():
             parser.add_argument("--logdir", help="Path to write buildtest logs. Override configuration BUILDTEST_LOGDIR")
             parser.add_argument("--show", help="show buildtest environment configuration", action="store_true")
             parser.add_argument("--show-keys", help="display yaml key description", action="store_true")
-            parser.add_argument("--scantest", help=""" Report all tests that can be built with buildtest by checking all available apps found
-            in eb stack and system packages""", action="store_true")
+            parser.add_argument("--scantest", help=""" Report all application that buildtest can be build.""", action="store_true")
             parser.add_argument("--clean-logs", help="delete buildtest log directory ($BUILDTEST_LOGDIR)",action="store_true")
             parser.add_argument("--submitjob", help = "specify a directory or job script to submit to resource scheduler")
 
@@ -117,6 +116,7 @@ class buildtest_menu():
             parser_build.add_argument("--all-package", help="build tests for all system packages from buildtest repository ", action="store_true")
             parser_build.add_argument("--all-software", help="build tests for all software from buildtest repository ", action="store_true")
             parser_build.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES)
+            parser_build.add_argument("-b", "--binary", help="Conduct binary test for a package", action="store_true")
             parser_build.add_argument("--python-package", help="build test for Python packages", choices=self.python_choices,metavar='PYTHON-PACKAGES')
             parser_build.add_argument("--r-package", help="build test for R packages", choices=self.r_choices,metavar='R-PACKAGES')
             parser_build.add_argument("--ruby-package", help="build test for Ruby packages", choices=self.ruby_choices,metavar='RUBY-PACKAGES')

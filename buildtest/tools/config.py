@@ -71,6 +71,7 @@ config_yaml_keys = {
     'BUILDTEST_CLEAN_BUILD': type(True),
     'BUILDTEST_ENABLE_JOB': type(True),
     'BUILDTEST_OHPC': type(True),
+    'BUILDTEST_BINARY': type(True),
     'BUILDTEST_SHELL': type("str"),
     'BUILDTEST_JOB_TEMPLATE': type("file"),
     'BUILDTEST_SUCCESS_THRESHOLD': type(1.0),

@@ -69,6 +69,9 @@ def func_build_subcmd(args):
         update_job_template(args.job_template)
     if args.prepend_modules:
         config_opts["BUILDTEST_PREPEND_MODULES"]   = args.prepend_modules
+    if args.binary:
+        config_opts["BUILDTEST_BINARY"] = args.binary
+        args.binary
     if args.ohpc:
         check_ohpc()
         config_opts["BUILDTEST_OHPC"] = True
@@ -99,7 +102,7 @@ def func_build_subcmd(args):
     sys.exit(0)
 
 def func_build_system(systempkg, logger, logdir, logpath, logfile):
-    """ method implementation for "_buildtest build --system" """
+    """ method implementation for "_buildtest build --package" """
 
     system_logdir = os.path.join(logdir,"system",systempkg)
     #setup_system_cmake()
@@ -127,7 +130,7 @@ def func_build_software(args, logger, logdir, logpath, logfile):
 
     print("Detecting Software: ", os.path.join(appname,appversion))
 
-    logger.debug("Generating Test from EB Application")
+    logger.debug("Generating Test from Application")
 
     logger.debug("Software: %s", appname)
     logger.debug("Software Version: %s", appversion)
@@ -147,8 +150,8 @@ def func_build_software(args, logger, logdir, logpath, logfile):
     create_dir(logdir)
 
     setup_software_cmake()
-
-    generate_binary_test(args.software,"software")
+    if config_opts["BUILDTEST_BINARY"]:
+        generate_binary_test(args.software,"software")
 
     source_app_dir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/source",appname.lower())
     configdir=os.path.join(source_app_dir,"config")
