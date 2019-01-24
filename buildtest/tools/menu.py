@@ -55,7 +55,7 @@ class buildtest_menu():
         parser = {}
         override_configuration()
         check_configuration()
-        syspkg_list = os.listdir(os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest","system"))
+
 
         pkglist = systempackage_installed_list()
         python_choices = python_pkg_choices()
@@ -111,7 +111,7 @@ class buildtest_menu():
             parser_build = subparsers.add_parser('build', help='options for building tests')
             parser_build.add_argument("-s", "--software", help=" Specify software package to test", choices=self.software_list, metavar='INSTALLED-SOFTWARE')
             parser_build.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=self.toolchain_list, metavar='INSTALLED-SOFTWARE-TOOLCHAINS')
-            parser_build.add_argument("-p", "--package", help=" Build test for system packages", choices=self.syspkg_list, metavar='SYSTEM-PACKAGE')
+            parser_build.add_argument("-p", "--package", help=" Build test for system packages", choices=self.pkglist, metavar='SYSTEM-PACKAGE')
             parser_build.add_argument("--prepend-modules", help= "Prepend modules in test script prior to loading application module. Use this option with Hierarchical Module Naming Scheme", choices=self.software_list,  metavar='INSTALLED-SOFTWARE',action="append", default=[])
             parser_build.add_argument("--all-package", help="build tests for all system packages from buildtest repository ", action="store_true")
             parser_build.add_argument("--all-software", help="build tests for all software from buildtest repository ", action="store_true")
