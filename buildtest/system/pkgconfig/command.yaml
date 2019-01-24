@@ -1,3 +1,0 @@
-description: Binary test for pkgconfig
-binaries:
-- which /usr/bin/pkg-config

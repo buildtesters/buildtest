@@ -1,3 +1,0 @@
-description: Binary test for redhat-access-insights
-binaries:
-- which /usr/bin/redhat-access-insights

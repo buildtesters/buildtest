@@ -1,3 +1,0 @@
-description: Binary test for pcp-export-pcp2graphite
-binaries:
-- which /usr/bin/pcp2graphite

@@ -1,3 +1,0 @@
-description: Binary test for gdk-pixbuf2
-binaries:
-- which /usr/bin/gdk-pixbuf-query-loaders-64

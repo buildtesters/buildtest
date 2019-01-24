@@ -1,3 +1,0 @@
-description: Binary test for perl-Encode
-binaries:
-- which /usr/bin/piconv

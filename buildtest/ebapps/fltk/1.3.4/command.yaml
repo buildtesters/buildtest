@@ -1,4 +1,0 @@
-description: Binary test for FLTK/1.3.4
-binaries:
-- which fluid
-- which fltk-config

@@ -1,3 +1,0 @@
-description: Binary test for avahi-autoipd
-binaries:
-- which /usr/sbin/avahi-autoipd

@@ -1,3 +1,0 @@
-description: Binary test for qt
-binaries:
-- which /usr/bin/qdbus

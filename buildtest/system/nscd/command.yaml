@@ -1,3 +1,0 @@
-description: Binary test for nscd
-binaries:
-- which /usr/sbin/nscd

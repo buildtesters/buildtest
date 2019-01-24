@@ -1,3 +1,0 @@
-description: Binary test for p11-kit
-binaries:
-- which /usr/bin/p11-kit

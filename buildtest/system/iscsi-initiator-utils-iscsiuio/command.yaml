@@ -1,3 +1,0 @@
-description: Binary test for iscsi-initiator-utils-iscsiuio
-binaries:
-- which /usr/sbin/iscsiuio

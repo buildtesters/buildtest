@@ -1,3 +1,0 @@
-description: Binary test for libidn
-binaries:
-- which /usr/bin/idn

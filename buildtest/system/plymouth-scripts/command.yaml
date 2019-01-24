@@ -1,3 +1,0 @@
-description: Binary test for plymouth-scripts
-binaries:
-- which /usr/sbin/plymouth-set-default-theme

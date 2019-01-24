@@ -1,4 +1,0 @@
-description: Binary test for tuned
-binaries:
-- which /usr/sbin/tuned
-- which /usr/sbin/tuned-adm

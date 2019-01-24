@@ -1,3 +1,0 @@
-description: Binary test for hunspell
-binaries:
-- which /usr/bin/hunspell

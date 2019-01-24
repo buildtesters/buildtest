@@ -1,3 +1,0 @@
-description: Binary test for tcl
-binaries:
-- which /usr/bin/tclsh8.5

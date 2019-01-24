@@ -1,3 +1,0 @@
-description: Binary test for iftop
-binaries:
-- which /usr/sbin/iftop

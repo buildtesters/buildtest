@@ -1,3 +1,0 @@
-description: Binary test for libcroco
-binaries:
-- which /usr/bin/csslint-0.6

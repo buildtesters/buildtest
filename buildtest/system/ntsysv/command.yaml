@@ -1,3 +1,0 @@
-description: Binary test for ntsysv
-binaries:
-- which /usr/sbin/ntsysv

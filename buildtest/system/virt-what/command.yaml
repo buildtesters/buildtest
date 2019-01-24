@@ -1,3 +1,0 @@
-description: Binary test for virt-what
-binaries:
-- which /usr/sbin/virt-what

@@ -1,3 +1,0 @@
-description: Binary test for firefox
-binaries:
-- which /usr/bin/firefox

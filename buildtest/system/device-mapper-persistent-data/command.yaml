@@ -1,3 +1,0 @@
-description: Binary test for device-mapper-persistent-data
-binaries:
-- which /usr/sbin/pdata_tools

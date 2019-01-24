@@ -1,3 +1,0 @@
-description: Binary test for m4
-binaries:
-- which /usr/bin/m4

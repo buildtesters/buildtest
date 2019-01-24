@@ -1,3 +1,0 @@
-description: Binary test for diffstat
-binaries:
-- which /usr/bin/diffstat

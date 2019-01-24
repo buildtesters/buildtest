@@ -1,3 +1,0 @@
-description: Binary test for setserial
-binaries:
-- which /bin/setserial

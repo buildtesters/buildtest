@@ -1,3 +1,0 @@
-description: Binary test for libieee1284
-binaries:
-- which /usr/bin/libieee1284_test

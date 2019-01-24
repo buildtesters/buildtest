@@ -1,3 +1,0 @@
-description: Binary test for lshw
-binaries:
-- which /usr/sbin/lshw

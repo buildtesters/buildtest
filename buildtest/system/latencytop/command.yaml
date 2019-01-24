@@ -1,3 +1,0 @@
-description: Binary test for latencytop
-binaries:
-- which /usr/sbin/latencytop

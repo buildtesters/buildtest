@@ -1,3 +1,0 @@
-description: Binary test for dstat
-binaries:
-- which /usr/bin/dstat

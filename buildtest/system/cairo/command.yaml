@@ -1,3 +1,0 @@
-description: Binary test for cairo
-binaries:
-- which /usr/bin/cairo-sphinx

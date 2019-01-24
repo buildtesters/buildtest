@@ -1,3 +1,0 @@
-description: Binary test for perl-Test-Harness
-binaries:
-- which /usr/bin/prove

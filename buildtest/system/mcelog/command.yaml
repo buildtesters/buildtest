@@ -1,3 +1,0 @@
-description: Binary test for mcelog
-binaries:
-- which /usr/sbin/mcelog

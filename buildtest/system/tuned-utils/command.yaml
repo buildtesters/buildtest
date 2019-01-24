@@ -1,3 +1,0 @@
-description: Binary test for tuned-utils
-binaries:
-- which /usr/bin/powertop2tuned

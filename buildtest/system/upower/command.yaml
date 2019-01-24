@@ -1,3 +1,0 @@
-description: Binary test for upower
-binaries:
-- which /usr/bin/upower

@@ -1,3 +1,0 @@
-description: Binary test for cpp
-binaries:
-- which /usr/bin/cpp

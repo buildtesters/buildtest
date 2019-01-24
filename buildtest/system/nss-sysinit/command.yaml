@@ -1,3 +1,0 @@
-description: Binary test for nss-sysinit
-binaries:
-- which /usr/bin/setup-nsssysinit.sh

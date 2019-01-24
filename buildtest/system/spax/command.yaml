@@ -1,3 +1,0 @@
-description: Binary test for spax
-binaries:
-- which /usr/bin/spax

@@ -1,3 +1,0 @@
-description: Binary test for rubygems
-binaries:
-- which /usr/bin/gem

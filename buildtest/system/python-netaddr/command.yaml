@@ -1,3 +1,0 @@
-description: Binary test for python-netaddr
-binaries:
-- which /usr/bin/netaddr

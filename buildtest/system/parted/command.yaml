@@ -1,4 +1,0 @@
-description: Binary test for parted
-binaries:
-- which /sbin/parted
-- which /sbin/partprobe

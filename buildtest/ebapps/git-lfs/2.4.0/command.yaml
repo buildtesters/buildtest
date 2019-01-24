@@ -1,4 +1,0 @@
-description: Binary test for git-lfs/2.4.0
-binaries:
-- which install.sh
-- which git-lfs

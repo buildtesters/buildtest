@@ -1,3 +1,0 @@
-description: Binary test for perl-ExtUtils-ParseXS
-binaries:
-- which /usr/bin/xsubpp

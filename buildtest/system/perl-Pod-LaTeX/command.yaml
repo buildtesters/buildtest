@@ -1,3 +1,0 @@
-description: Binary test for perl-Pod-LaTeX
-binaries:
-- which /usr/bin/pod2latex

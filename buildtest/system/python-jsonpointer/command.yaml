@@ -1,3 +1,0 @@
-description: Binary test for python-jsonpointer
-binaries:
-- which /usr/bin/jsonpointer

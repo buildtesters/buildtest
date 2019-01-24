@@ -1,3 +1,0 @@
-description: Binary test for irqbalance
-binaries:
-- which /usr/sbin/irqbalance

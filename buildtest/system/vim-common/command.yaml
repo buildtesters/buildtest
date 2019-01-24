@@ -1,3 +1,0 @@
-description: Binary test for vim-common
-binaries:
-- which /usr/bin/xxd

@@ -1,6 +1,0 @@
-description: Binary test for deltarpm
-binaries:
-- which /usr/bin/applydeltarpm
-- which /usr/bin/combinedeltarpm
-- which /usr/bin/makedeltarpm
-- which /usr/bin/rpmdumpheader

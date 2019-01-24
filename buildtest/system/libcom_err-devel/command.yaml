@@ -1,3 +1,0 @@
-description: Binary test for libcom_err-devel
-binaries:
-- which /usr/bin/compile_et

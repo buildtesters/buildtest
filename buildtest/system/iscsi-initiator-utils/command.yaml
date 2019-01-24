@@ -1,6 +1,0 @@
-description: Binary test for iscsi-initiator-utils
-binaries:
-- which /usr/sbin/iscsi-iname
-- which /usr/sbin/iscsiadm
-- which /usr/sbin/iscsid
-- which /usr/sbin/iscsistart

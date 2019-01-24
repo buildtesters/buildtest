@@ -1,5 +1,0 @@
-description: Binary test for smartmontools
-binaries:
-- which /usr/sbin/smartctl
-- which /usr/sbin/smartd
-- which /usr/sbin/update-smart-drivedb

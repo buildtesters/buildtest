@@ -1,3 +1,0 @@
-description: Binary test for libreport-plugin-mailx
-binaries:
-- which /usr/bin/reporter-mailx

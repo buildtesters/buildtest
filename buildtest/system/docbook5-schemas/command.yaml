@@ -1,3 +1,0 @@
-description: Binary test for docbook5-schemas
-binaries:
-- which /usr/bin/db4-entities.pl

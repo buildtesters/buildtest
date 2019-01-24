@@ -1,3 +1,0 @@
-description: Binary test for screen
-binaries:
-- which /usr/bin/screen

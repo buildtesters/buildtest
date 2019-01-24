@@ -1,3 +1,0 @@
-description: Binary test for texlive-luatex-bin
-binaries:
-- which /usr/bin/luatex

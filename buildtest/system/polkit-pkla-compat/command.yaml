@@ -1,4 +1,0 @@
-description: Binary test for polkit-pkla-compat
-binaries:
-- which /usr/bin/pkla-admin-identities
-- which /usr/bin/pkla-check-authorization

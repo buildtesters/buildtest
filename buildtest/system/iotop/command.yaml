@@ -1,3 +1,0 @@
-description: Binary test for iotop
-binaries:
-- which /usr/sbin/iotop

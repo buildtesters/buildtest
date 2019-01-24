@@ -1,3 +1,0 @@
-description: Binary test for libiptcdata
-binaries:
-- which /usr/bin/iptc

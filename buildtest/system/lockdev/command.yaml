@@ -1,3 +1,0 @@
-description: Binary test for lockdev
-binaries:
-- which /usr/sbin/lockdev

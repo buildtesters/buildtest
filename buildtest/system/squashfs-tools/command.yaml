@@ -1,4 +1,0 @@
-description: Binary test for squashfs-tools
-binaries:
-- which /usr/sbin/mksquashfs
-- which /usr/sbin/unsquashfs

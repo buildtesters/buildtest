@@ -1,6 +1,0 @@
-description: Binary test for syslinux
-binaries:
-- which /usr/bin/gethostip
-- which /usr/bin/isohybrid
-- which /usr/bin/memdiskfind
-- which /usr/bin/syslinux

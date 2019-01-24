@@ -1,3 +1,0 @@
-description: Binary test for avahi
-binaries:
-- which /usr/sbin/avahi-daemon

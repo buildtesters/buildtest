@@ -1,3 +1,0 @@
-description: Binary test for perl-IO-Compress
-binaries:
-- which /usr/bin/zipdetails

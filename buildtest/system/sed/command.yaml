@@ -1,3 +1,0 @@
-description: Binary test for sed
-binaries:
-- which /bin/sed

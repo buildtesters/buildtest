@@ -1,3 +1,0 @@
-description: Binary test for abrt-addon-xorg
-binaries:
-- which /usr/bin/abrt-dump-xorg

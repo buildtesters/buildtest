@@ -1,4 +1,0 @@
-description: Binary test for texlive-makeindex-bin
-binaries:
-- which /usr/bin/makeindex
-- which /usr/bin/mkindex

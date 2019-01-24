@@ -1,3 +1,0 @@
-description: Binary test for latrace
-binaries:
-- which /usr/bin/latrace

@@ -1,3 +1,0 @@
-description: Binary test for emacs
-binaries:
-- which /usr/bin/emacs-24.3

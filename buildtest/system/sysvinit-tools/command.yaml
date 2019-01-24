@@ -1,6 +1,0 @@
-description: Binary test for sysvinit-tools
-binaries:
-- which /usr/bin/last
-- which /usr/bin/mesg
-- which /usr/bin/wall
-- which /usr/sbin/killall5

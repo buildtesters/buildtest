@@ -1,4 +1,0 @@
-description: Binary test for rng-tools
-binaries:
-- which /usr/bin/rngtest
-- which /usr/sbin/rngd

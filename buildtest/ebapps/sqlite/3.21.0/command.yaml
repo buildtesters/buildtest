@@ -1,3 +1,0 @@
-description: Binary test for SQLite/3.21.0
-binaries:
-- which sqlite3

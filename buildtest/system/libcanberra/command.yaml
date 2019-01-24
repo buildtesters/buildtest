@@ -1,3 +1,0 @@
-description: Binary test for libcanberra
-binaries:
-- which /usr/bin/canberra-boot

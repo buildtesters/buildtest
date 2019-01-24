@@ -1,3 +1,0 @@
-description: Binary test for pcp-system-tools
-binaries:
-- which /usr/bin/pmrep

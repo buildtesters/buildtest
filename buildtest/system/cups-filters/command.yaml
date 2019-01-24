@@ -1,3 +1,0 @@
-description: Binary test for cups-filters
-binaries:
-- which /usr/sbin/cups-browsed

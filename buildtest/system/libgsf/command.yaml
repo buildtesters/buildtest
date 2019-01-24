@@ -1,3 +1,0 @@
-description: Binary test for libgsf
-binaries:
-- which /usr/bin/gsf-office-thumbnailer

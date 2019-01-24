@@ -1,3 +1,0 @@
-description: Binary test for sos
-binaries:
-- which /usr/sbin/sosreport

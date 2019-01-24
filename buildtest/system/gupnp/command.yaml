@@ -1,3 +1,0 @@
-description: Binary test for gupnp
-binaries:
-- which /usr/bin/gupnp-binding-tool

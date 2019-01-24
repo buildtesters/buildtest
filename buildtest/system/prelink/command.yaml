@@ -1,4 +1,0 @@
-description: Binary test for prelink
-binaries:
-- which /usr/bin/execstack
-- which /usr/sbin/prelink

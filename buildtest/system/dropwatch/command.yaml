@@ -1,3 +1,0 @@
-description: Binary test for dropwatch
-binaries:
-- which /usr/bin/dropwatch

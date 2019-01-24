@@ -1,3 +1,0 @@
-description: Binary test for libtar
-binaries:
-- which /usr/bin/libtar

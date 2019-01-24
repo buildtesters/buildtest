@@ -1,3 +1,0 @@
-description: Binary test for compat-gcc-44-gfortran
-binaries:
-- which /usr/bin/gfortran44

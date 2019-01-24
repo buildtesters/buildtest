@@ -1,3 +1,0 @@
-description: Binary test for p11-kit-trust
-binaries:
-- which /usr/bin/trust

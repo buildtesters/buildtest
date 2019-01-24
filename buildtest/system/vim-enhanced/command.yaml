@@ -1,4 +1,0 @@
-description: Binary test for vim-enhanced
-binaries:
-- which /usr/bin/vim
-- which /usr/bin/vimtutor

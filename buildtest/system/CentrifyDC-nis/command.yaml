@@ -1,3 +1,0 @@
-description: Binary test for CentrifyDC-nis
-binaries:
-- which /usr/sbin/adnisd

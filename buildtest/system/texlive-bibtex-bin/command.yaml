@@ -1,3 +1,0 @@
-description: Binary test for texlive-bibtex-bin
-binaries:
-- which /usr/bin/bibtex

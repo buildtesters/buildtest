@@ -1,3 +1,0 @@
-description: Binary test for dwz
-binaries:
-- which /usr/bin/dwz

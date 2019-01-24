@@ -1,3 +1,0 @@
-description: Binary test for perl-Pod-Usage
-binaries:
-- which /usr/bin/pod2usage

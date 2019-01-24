@@ -1,3 +1,0 @@
-description: Binary test for dejagnu
-binaries:
-- which /usr/bin/runtest

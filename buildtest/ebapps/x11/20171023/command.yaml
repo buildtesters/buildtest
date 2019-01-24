@@ -1,4 +1,0 @@
-description: Binary test for X11/20171023
-binaries:
-- which cxpm
-- which sxpm

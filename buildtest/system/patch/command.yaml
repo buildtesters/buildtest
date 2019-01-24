@@ -1,3 +1,0 @@
-description: Binary test for patch
-binaries:
-- which /usr/bin/patch

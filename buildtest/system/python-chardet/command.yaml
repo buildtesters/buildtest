@@ -1,3 +1,0 @@
-description: Binary test for python-chardet
-binaries:
-- which /usr/bin/chardetect

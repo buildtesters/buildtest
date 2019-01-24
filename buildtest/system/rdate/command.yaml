@@ -1,3 +1,0 @@
-description: Binary test for rdate
-binaries:
-- which /usr/bin/rdate

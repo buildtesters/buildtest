@@ -1,3 +1,0 @@
-description: Binary test for cronie-anacron
-binaries:
-- which /usr/sbin/anacron

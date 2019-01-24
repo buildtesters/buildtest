@@ -1,4 +1,0 @@
-description: Binary test for Bison/3.0.4
-binaries:
-- which yacc
-- which bison

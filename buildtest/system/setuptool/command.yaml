@@ -1,3 +1,0 @@
-description: Binary test for setuptool
-binaries:
-- which /usr/sbin/setup

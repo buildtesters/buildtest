@@ -1,4 +1,0 @@
-description: Binary test for redland
-binaries:
-- which /usr/bin/rdfproc
-- which /usr/bin/redland-db-upgrade

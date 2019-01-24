@@ -1,3 +1,0 @@
-description: Binary test for adcli
-binaries:
-- which /usr/sbin/adcli

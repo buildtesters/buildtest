@@ -1,3 +1,0 @@
-description: Binary test for dbus-glib
-binaries:
-- which /usr/bin/dbus-binding-tool

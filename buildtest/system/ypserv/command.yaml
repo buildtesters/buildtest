@@ -1,6 +1,0 @@
-description: Binary test for ypserv
-binaries:
-- which /usr/sbin/rpc.yppasswdd
-- which /usr/sbin/rpc.ypxfrd
-- which /usr/sbin/yppush
-- which /usr/sbin/ypserv

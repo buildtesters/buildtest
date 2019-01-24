@@ -1,3 +1,0 @@
-description: Binary test for indent
-binaries:
-- which /usr/bin/indent

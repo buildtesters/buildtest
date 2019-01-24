@@ -1,3 +1,0 @@
-description: Binary test for rhnsd
-binaries:
-- which /usr/sbin/rhnsd

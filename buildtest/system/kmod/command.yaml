@@ -1,4 +1,0 @@
-description: Binary test for kmod
-binaries:
-- which /usr/bin/kmod
-- which /usr/sbin/weak-modules

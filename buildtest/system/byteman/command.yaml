@@ -1,6 +1,0 @@
-description: Binary test for byteman
-binaries:
-- which /usr/bin/bmcheck
-- which /usr/bin/bminstall
-- which /usr/bin/bmjava
-- which /usr/bin/bmsubmit

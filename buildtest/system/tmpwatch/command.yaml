@@ -1,3 +1,0 @@
-description: Binary test for tmpwatch
-binaries:
-- which /usr/sbin/tmpwatch

@@ -1,3 +1,0 @@
-description: Binary test for libxslt
-binaries:
-- which /usr/bin/xsltproc

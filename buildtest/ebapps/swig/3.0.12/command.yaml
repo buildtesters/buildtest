@@ -1,4 +1,0 @@
-description: Binary test for SWIG/3.0.12
-binaries:
-- which ccache-swig
-- which swig

@@ -1,3 +1,0 @@
-description: Binary test for perl-CPAN
-binaries:
-- which /usr/bin/cpan

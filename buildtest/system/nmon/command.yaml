@@ -1,3 +1,0 @@
-description: Binary test for nmon
-binaries:
-- which /usr/bin/nmon

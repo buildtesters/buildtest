@@ -1,3 +1,0 @@
-description: Binary test for gssproxy
-binaries:
-- which /usr/sbin/gssproxy

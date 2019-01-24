@@ -1,3 +1,0 @@
-description: Binary test for passwd
-binaries:
-- which /usr/bin/passwd

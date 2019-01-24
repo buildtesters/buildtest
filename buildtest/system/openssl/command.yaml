@@ -1,3 +1,0 @@
-description: Binary test for openssl
-binaries:
-- which /usr/bin/openssl

@@ -1,3 +1,0 @@
-description: Binary test for libcdio-paranoia
-binaries:
-- which /usr/bin/cd-paranoia

@@ -1,3 +1,0 @@
-description: Binary test for libreport-plugin-ureport
-binaries:
-- which /usr/bin/reporter-ureport

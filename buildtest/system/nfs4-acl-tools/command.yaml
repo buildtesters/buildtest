@@ -1,4 +1,0 @@
-description: Binary test for nfs4-acl-tools
-binaries:
-- which /usr/bin/nfs4_getfacl
-- which /usr/bin/nfs4_setfacl

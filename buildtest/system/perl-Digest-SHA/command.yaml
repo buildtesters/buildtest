@@ -1,3 +1,0 @@
-description: Binary test for perl-Digest-SHA
-binaries:
-- which /usr/bin/shasum

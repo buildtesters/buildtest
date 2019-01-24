@@ -1,3 +1,0 @@
-description: Binary test for foomatic-filters
-binaries:
-- which /usr/bin/foomatic-rip

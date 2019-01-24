@@ -1,3 +1,0 @@
-description: Binary test for libreport-cli
-binaries:
-- which /usr/bin/report-cli

@@ -1,3 +1,0 @@
-description: Binary test for lynx
-binaries:
-- which /usr/bin/lynx

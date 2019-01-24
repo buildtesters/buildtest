@@ -1,3 +1,0 @@
-description: Binary test for elinks
-binaries:
-- which /usr/bin/elinks

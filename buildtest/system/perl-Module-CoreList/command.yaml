@@ -1,3 +1,0 @@
-description: Binary test for perl-Module-CoreList
-binaries:
-- which /usr/bin/corelist

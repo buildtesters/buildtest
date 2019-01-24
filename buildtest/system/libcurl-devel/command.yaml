@@ -1,3 +1,0 @@
-description: Binary test for libcurl-devel
-binaries:
-- which /usr/bin/curl-config

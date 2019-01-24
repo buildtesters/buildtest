@@ -1,3 +1,0 @@
-description: Binary test for dmraid-events
-binaries:
-- which /sbin/dm_dso_reg_tool

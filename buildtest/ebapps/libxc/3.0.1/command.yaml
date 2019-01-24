@@ -1,3 +1,0 @@
-description: Binary test for libxc/3.0.1
-binaries:
-- which xc-info

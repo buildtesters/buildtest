@@ -1,5 +1,0 @@
-description: Binary test for cyrus-sasl
-binaries:
-- which /usr/sbin/pluginviewer
-- which /usr/sbin/saslauthd
-- which /usr/sbin/testsaslauthd

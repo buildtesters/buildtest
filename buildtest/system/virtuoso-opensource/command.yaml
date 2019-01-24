@@ -1,3 +1,0 @@
-description: Binary test for virtuoso-opensource
-binaries:
-- which /usr/bin/virtuoso-t

@@ -1,3 +1,0 @@
-description: Binary test for numpy-f2py
-binaries:
-- which /usr/bin/f2py

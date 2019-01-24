@@ -1,4 +1,0 @@
-description: Binary test for sudo
-binaries:
-- which /usr/bin/sudo
-- which /usr/sbin/visudo

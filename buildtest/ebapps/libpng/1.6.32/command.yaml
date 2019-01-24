@@ -1,5 +1,0 @@
-description: Binary test for libpng/1.6.32
-binaries:
-- which pngfix
-- which libpng16-config
-- which png-fix-itxt

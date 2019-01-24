@@ -1,3 +1,0 @@
-description: Binary test for tar
-binaries:
-- which /usr/bin/tar

@@ -1,3 +1,0 @@
-description: Binary test for ethtool
-binaries:
-- which /usr/sbin/ethtool

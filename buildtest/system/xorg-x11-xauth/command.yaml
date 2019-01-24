@@ -1,3 +1,0 @@
-description: Binary test for xorg-x11-xauth
-binaries:
-- which /usr/bin/xauth

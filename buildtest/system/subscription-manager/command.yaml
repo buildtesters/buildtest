@@ -1,6 +1,0 @@
-description: Binary test for subscription-manager
-binaries:
-- which /usr/bin/rct
-- which /usr/bin/rhsm-debug
-- which /usr/bin/rhsmcertd
-- which /usr/sbin/subscription-manager

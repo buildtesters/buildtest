@@ -1,3 +1,0 @@
-description: Binary test for GEOS/3.6.2
-binaries:
-- which geos-config

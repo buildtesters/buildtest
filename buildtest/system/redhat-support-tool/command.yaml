@@ -1,3 +1,0 @@
-description: Binary test for redhat-support-tool
-binaries:
-- which /usr/bin/redhat-support-tool

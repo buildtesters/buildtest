@@ -1,4 +1,0 @@
-description: Binary test for abrt-dbus
-binaries:
-- which /usr/sbin/abrt-configuration
-- which /usr/sbin/abrt-dbus

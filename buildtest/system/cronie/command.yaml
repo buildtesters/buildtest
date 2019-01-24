@@ -1,4 +1,0 @@
-description: Binary test for cronie
-binaries:
-- which /usr/bin/crontab
-- which /usr/sbin/crond

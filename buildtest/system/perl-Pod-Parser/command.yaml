@@ -1,3 +1,0 @@
-description: Binary test for perl-Pod-Parser
-binaries:
-- which /usr/bin/podselect

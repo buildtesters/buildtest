@@ -1,4 +1,0 @@
-description: Binary test for python
-binaries:
-- which /usr/bin/pydoc
-- which /usr/bin/python2.7

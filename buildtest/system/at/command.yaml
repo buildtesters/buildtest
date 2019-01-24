@@ -1,6 +1,0 @@
-description: Binary test for at
-binaries:
-- which /usr/bin/at
-- which /usr/bin/batch
-- which /usr/sbin/atd
-- which /usr/sbin/atrun

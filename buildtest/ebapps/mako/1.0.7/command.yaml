@@ -1,3 +1,0 @@
-description: Binary test for Mako/1.0.7
-binaries:
-- which mako-render

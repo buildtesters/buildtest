@@ -1,3 +1,0 @@
-description: Binary test for libsecret
-binaries:
-- which /usr/bin/secret-tool

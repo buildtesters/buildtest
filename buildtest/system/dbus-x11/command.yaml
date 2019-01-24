@@ -1,3 +1,0 @@
-description: Binary test for dbus-x11
-binaries:
-- which /usr/bin/dbus-launch

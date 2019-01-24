@@ -1,3 +1,0 @@
-description: Binary test for unbound-libs
-binaries:
-- which /usr/sbin/unbound-anchor

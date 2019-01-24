@@ -1,3 +1,0 @@
-description: Binary test for system-config-printer-libs
-binaries:
-- which /usr/bin/scp-dbus-service

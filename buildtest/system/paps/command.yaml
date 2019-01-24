@@ -1,3 +1,0 @@
-description: Binary test for paps
-binaries:
-- which /usr/bin/paps

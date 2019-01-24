@@ -1,4 +1,0 @@
-description: Binary test for os-prober
-binaries:
-- which /usr/bin/linux-boot-prober
-- which /usr/bin/os-prober

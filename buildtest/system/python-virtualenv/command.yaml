@@ -1,3 +1,0 @@
-description: Binary test for python-virtualenv
-binaries:
-- which /usr/bin/virtualenv

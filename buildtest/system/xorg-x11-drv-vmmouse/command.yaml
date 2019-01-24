@@ -1,3 +1,0 @@
-description: Binary test for xorg-x11-drv-vmmouse
-binaries:
-- which /usr/bin/vmmouse_detect

@@ -1,3 +1,0 @@
-description: Binary test for gcr
-binaries:
-- which /usr/bin/gcr-viewer

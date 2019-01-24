@@ -1,3 +1,0 @@
-description: Binary test for gcc-c++
-binaries:
-- which /usr/bin/c++

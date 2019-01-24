@@ -1,4 +1,0 @@
-description: Binary test for texinfo
-binaries:
-- which /usr/bin/pod2texi
-- which /usr/bin/texi2any

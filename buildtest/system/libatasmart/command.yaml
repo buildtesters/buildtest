@@ -1,4 +1,0 @@
-description: Binary test for libatasmart
-binaries:
-- which /usr/sbin/skdump
-- which /usr/sbin/sktest

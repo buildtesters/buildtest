@@ -1,3 +1,0 @@
-description: Binary test for ftp
-binaries:
-- which /usr/bin/ftp

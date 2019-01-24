@@ -1,3 +1,0 @@
-description: Binary test for cgdcbxd
-binaries:
-- which /usr/sbin/cgdcbxd

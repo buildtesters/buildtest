@@ -1,3 +1,0 @@
-description: Binary test for LAMMPS/16Mar18
-binaries:
-- which lmp_intel_cpu_intelmpi

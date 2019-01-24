@@ -1,4 +1,0 @@
-description: Binary test for xorg-x11-server-Xvfb
-binaries:
-- which /usr/bin/Xvfb
-- which /usr/bin/xvfb-run

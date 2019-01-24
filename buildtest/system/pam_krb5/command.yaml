@@ -1,3 +1,0 @@
-description: Binary test for pam_krb5
-binaries:
-- which /usr/bin/afs5log

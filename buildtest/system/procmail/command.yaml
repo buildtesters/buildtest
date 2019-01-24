@@ -1,6 +1,0 @@
-description: Binary test for procmail
-binaries:
-- which /usr/bin/formail
-- which /usr/bin/lockfile
-- which /usr/bin/mailstat
-- which /usr/bin/procmail

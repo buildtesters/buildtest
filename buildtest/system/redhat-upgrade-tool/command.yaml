@@ -1,3 +1,0 @@
-description: Binary test for redhat-upgrade-tool
-binaries:
-- which /usr/bin/redhat-upgrade-tool

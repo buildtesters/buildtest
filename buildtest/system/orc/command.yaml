@@ -1,3 +1,0 @@
-description: Binary test for orc
-binaries:
-- which /usr/bin/orc-bugreport

@@ -1,3 +1,0 @@
-description: Binary test for powertop
-binaries:
-- which /usr/sbin/powertop

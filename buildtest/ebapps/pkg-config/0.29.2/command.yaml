@@ -1,3 +1,0 @@
-description: Binary test for pkg-config/0.29.2
-binaries:
-- which pkg-config

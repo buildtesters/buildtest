@@ -1,3 +1,0 @@
-description: Binary test for bison
-binaries:
-- which /usr/bin/bison

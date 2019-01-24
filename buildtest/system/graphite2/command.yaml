@@ -1,3 +1,0 @@
-description: Binary test for graphite2
-binaries:
-- which /usr/bin/gr2fonttest
