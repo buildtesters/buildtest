@@ -154,10 +154,10 @@ def get_binaries_from_application(module):
     cmd = "$LMOD_CMD bash show " + module
 
     #os.system(cmd)
-    ret = subprocess.Popen(cmd, shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    output = ret.communicate()[0].decode("utf-8")
+    ret = subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    error,output = ret.communicate()
+    output = output.decode("utf-8")
 
-    #output,error = ret.communicate()
 
     path_str = "prepend_path(\"PATH\","
 
