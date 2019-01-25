@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017-2018
+#  Copyright 2017-2019
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -20,17 +20,6 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-"""
-
-
-:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
-"""
-from buildtest.test.benchmark.osu import run_osu_microbenchmark, list_osu_tests, osu_info
-
-def func_benchmark_osu_subcmd(args):
-    if args.run:
-        run_osu_microbenchmark(args.config)
-    if args.list:
-        list_osu_tests()
-    if args.info:
-        osu_info()
+def func_benchmark_hpcg_subcmd(args):
+    print (args)
+    return

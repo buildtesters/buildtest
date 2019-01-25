@@ -37,7 +37,9 @@ from buildtest.test.r import r_pkg_choices
 from buildtest.test.ruby import ruby_pkg_choices
 from buildtest.test.perl import perl_pkg_choices
 from buildtest.test.run.testname import test_list
-from buildtest.tools.benchmark import func_benchmark_osu_subcmd
+from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
+from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
+from buildtest.benchmark.hpcg import func_benchmark_hpcg_subcmd
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, check_configuration
 from buildtest.tools.find import func_find_subcmd
@@ -147,14 +149,20 @@ class buildtest_menu():
 
             parser_benchmark = subparsers.add_parser('benchmark', help="Options for Benchmark menu")
             subparsers_benchmark = parser_benchmark.add_subparsers(help='subcommand help', dest="sub_command")
-            osu_parser = subparsers_benchmark.add_parser('osu', help = "OSU MicroBenchmark sub menu")
 
+            osu_parser = subparsers_benchmark.add_parser('osu', help = "OSU MicroBenchmark sub menu")
+            hpl_parser = subparsers_benchmark.add_parser('hpl', help ="High Performance Linpack sub menu")
+            hpcg_parser = subparsers_benchmark.add_parser('hpcg', help="High Performance Conjugate Gradient sub menu")
             osu_parser.add_argument("-r", "--run", help ="Run Benchmark", action="store_true")
             osu_parser.add_argument("-i", "--info", help="show yaml key description", action="store_true")
             osu_parser.add_argument("-l", "--list", help="List of tests available for OSU Benchmark", action="store_true")
             osu_parser.add_argument("-c", "--config", help="OSU Yaml Configuration File")
-
             osu_parser.set_defaults(func=func_benchmark_osu_subcmd)
+
+            hpl_parser.set_defaults(func=func_benchmark_hpl_subcmd)
+            hpcg_parser.set_defaults(func=func_benchmark_hpcg_subcmd)
+
+
 
             self.parser = parser
         def parse_options(self):
