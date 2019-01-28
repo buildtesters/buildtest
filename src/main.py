@@ -72,7 +72,6 @@ def main():
     if bt_opts.clean_logs:
         clean_logs()
 
-
     if bt_opts.scantest:
         scantest()
 

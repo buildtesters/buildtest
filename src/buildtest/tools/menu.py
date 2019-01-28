@@ -56,6 +56,7 @@ class buildtest_menu():
     override_configuration()
     check_configuration()
 
+    #test_category = ["mpi"]
     pkglist = systempackage_installed_list()
     python_choices = python_pkg_choices()
     r_choices = r_pkg_choices()
@@ -78,7 +79,7 @@ class buildtest_menu():
         parser.add_argument("--scantest", help=""" Report all application that buildtest can be build.""", action="store_true")
         parser.add_argument("--clean-logs", help="delete buildtest log directory ($BUILDTEST_LOGDIR)",action="store_true")
         parser.add_argument("--submitjob", help = "specify a directory or job script to submit to resource scheduler")
-
+        #parser.add_argument("-C", "--category", help="select test category for building tests", choices=self.test_category, metavar="TEST-CATEGORY")
         subparsers = parser.add_subparsers(help='subcommand help', dest="sub_command")
         # -------------------------------- list menu --------------------------
         parser_list = subparsers.add_parser('list', help='list help')
@@ -100,12 +101,14 @@ class buildtest_menu():
 
         # -------------------------------- yaml  menu --------------------------
         parser_yaml = subparsers.add_parser('yaml', help='Options for building YAML configuration')
+        """
         parser_yaml.add_argument("-p", "--package", help = "generate YAML configuration for binary test for system package", choices=self.pkglist, metavar='YAML-PACKAGE-CHOICES')
         parser_yaml.add_argument("-s", "--software", help = "generate YAML configuration for binary test for software package", choices=self.yaml_apps, metavar='YAML-SOFTWARE-CHOICES')
         parser_yaml.add_argument("--all-software", help = "Generate YAML configuration for all software packages ",action="store_true")
         parser_yaml.add_argument("--all-package", help = "Generate YAML configuration for all system packages installed ",action="store_true")
         parser_yaml.add_argument("-r,", "--rebuild", help="rebuild binary test yaml file even if it already exist ", action="store_true")
         parser_yaml.add_argument("-o", "--overwrite", help="rebuild and overwrite existing binary test yaml file", action="store_true")
+        """
         parser_yaml.add_argument("--ohpc", help="Indicate to buildtest this is a OpenHPC package. YAML files will be written in $BUILDTEST_CONFIGS_REPO/ohpc", action="store_true")
         parser_yaml.set_defaults(func=func_yaml_subcmd)
 

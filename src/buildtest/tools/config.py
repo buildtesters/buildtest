@@ -41,6 +41,10 @@ BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
 PYTHON_APPS = ["python","anaconda2", "anaconda3"]
 MPI_APPS = ["openmpi", "mpich","mvapich2", "intel", "impi"]
 
+MPI_C_LIST = ["mpicc", "mpiicc"]
+MPI_F_LIST = ["mpifort", "mpifc", "mpif90", "mpif77"]
+MPI_CPP_LIST = ["mpic++", "mpicxx", "mpiicpc"]
+MPI_LIST = MPI_C_LIST + MPI_F_LIST + MPI_CPP_LIST
 #BUILDTEST_DEFAULT_CONFIG=os.path.join(BUILDTEST_ROOT,"config.yaml")
 #print BUILDTEST_DEFAULT_CONFIG
 #fd = open(BUILDTEST_DEFAULT_CONFIG,'r')
