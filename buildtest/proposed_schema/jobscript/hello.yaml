@@ -1,0 +1,65 @@
+test:
+  - name: hello_c_lsf
+    source: hello.c
+    cflags: -O2
+    job:
+      type: "lsf"
+      num_procs: 4
+      num_nodes: 2
+      memory_size: "1G"
+      time: "00:10:00"
+      resources: "-R sandybridge"
+    mpi: 
+      type: openmpi
+      num_procs: 4
+    clean: True
+    module: 
+    - GCC
+    - OpenMPI
+
+  - name: hello_c_slurm
+    source: hello.c
+    cflags: -O2
+    job:
+      type: "slurm"
+      num_procs: 4
+      num_nodes: 2
+      memory_size: "1G"
+      time: "00:10:00"
+    mpi: 
+      type: openmpi
+    clean: True
+    module: 
+    - GCC
+    - OpenMPI
+
+------------------- hello_c_lsf.sh ----------------------
+
+#!/bin/sh
+#BSUB -J "hello_c_lsf"
+#BSUB -W 00:10:00
+#BSUB -N 2
+#BSUB -n 4
+#BSUB -M 1G
+#BSUB -R sandybridge
+module purge
+module load GCC
+module load OpenMPI
+mpicc -O2 src/hello.c -o hello_c_openmpi_gcc
+mpirun -np 4 ./hello_c_openmpi_gcc
+rm ./hello_c_openmpi_gcc
+
+------------------- hello_c_slurm.sh ----------------------
+
+#!/bin/sh
+#SBATCH -J "hello_c_slurm"
+#SBATCH -t 00:10:00
+#SBATCH -N 2
+#SBATCH -n 4
+#SBATCH --mem 1G
+module purge
+module load GCC
+module load OpenMPI
+mpicc -O2 src/hello.c -o hello_c_openmpi_gcc
+srun -n 4 ./hello_c_openmpi_gcc
+rm ./hello_c_openmpi_gcc
