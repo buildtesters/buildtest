@@ -25,6 +25,7 @@ Getting Started
    Setup.rst
    Buildtest_Variables.rst
    How_to_use_BuildTest.rst
+   Command_Reference.rst
 
 Introspection Operations
 -------------------------
@@ -88,7 +89,6 @@ Additional Features
 
     EasyBuild_Integration
     OHPC_Integration
-
 
 
 Useful Links

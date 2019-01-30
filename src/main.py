@@ -40,7 +40,7 @@ os.environ["BUILDTEST_ROOT"]=os.path.dirname(os.path.dirname(__file__))
 # column width for linewrap for argparse library
 os.environ['COLUMNS'] = "120"
 
-from buildtest.tools.menu import buildtest_menu
+from buildtest.tools.menu import menu, parse_options
 from buildtest.test.job import submit_job_to_scheduler
 from buildtest.tools.config import show_configuration, config_opts
 from buildtest.tools.log import clean_logs
@@ -53,30 +53,31 @@ def main():
     """entry point to buildtest"""
 
     get_system_info()
-    parser = buildtest_menu()
 
-    bt_opts = parser.parse_options()
+    parser = menu()
 
-    if bt_opts.version:
+    parsed_opts = parse_options(parser)
+
+    if parsed_opts.version:
         buildtest_version()
 
-    if bt_opts.show:
+    if parsed_opts.show:
         show_configuration()
 
-    if bt_opts.show_keys:
+    if parsed_opts.show_keys:
         show_yaml_keys()
 
-    if bt_opts.logdir:
-        config_opts['BUILDTEST_LOGDIR'] = bt_opts.logdir
+    if parsed_opts.logdir:
+        config_opts['BUILDTEST_LOGDIR'] = parsed_opts.logdir
 
-    if bt_opts.clean_logs:
+    if parsed_opts.clean_logs:
         clean_logs()
 
-    if bt_opts.scantest:
+    if parsed_opts.scantest:
         scantest()
 
-    if bt_opts.submitjob is not None:
-        submit_job_to_scheduler(bt_opts.submitjob)
+    if parsed_opts.submitjob is not None:
+        submit_job_to_scheduler(parsed_opts.submitjob)
         sys.exit(0)
 
 if __name__ == "__main__":
