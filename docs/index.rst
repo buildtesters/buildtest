@@ -79,7 +79,7 @@ Jobscript Features
    job_template.rst
    automate_batchjobs.rst
 
-Additional Features
+Miscellaneous
 --------------------
 
 .. toctree::
@@ -87,7 +87,7 @@ Additional Features
 
     easybuild_integration.rst
     ohpc_integration.rst
-
+    contributing.rst
 
 Useful Links
 -------------
