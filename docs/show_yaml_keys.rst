@@ -1,6 +1,6 @@
 .. _show_yaml_keys:
 
-Show yaml keys (``_buildtest --show-keys``)
+Show yaml keys (``buildtest --show-keys``)
 --------------------------------------------
 
 buildtest comes with an option ``--show-keys`` that provides a description of all
@@ -8,7 +8,7 @@ yaml keys support by buildtest when writing yaml configuration.
 
 .. code::
 
-    [siddis14@prometheus buildtest-framework]$ _buildtest --show-keys
+    [siddis14@prometheus buildtest-framework]$ buildtest --show-keys
                      Key              Description
     --------------------------------------------------------------------------------
                 binaries              list of binary command to execute in command.yaml

@@ -1,0 +1,43 @@
+# root of buildtest-configs repo
+BUILDTEST_CONFIGS_REPO:
+
+# root of Ruby-buildtest-config repo
+BUILDTEST_RUBY_REPO:
+
+# root of R-buildtest-config repo
+BUILDTEST_R_REPO: 
+
+#  root of Python-buildtest-config repo
+BUILDTEST_PYTHON_REPO:
+
+#  root of Perl-buildtest-config repo
+BUILDTEST_PERL_REPO:
+
+# Specify Module Naming Scheme for your module tree. Valid Options: [FNS, HMNS]
+BUILDTEST_MODULE_NAMING_SCHEME: 
+
+# easybuild integration. Valid Options: [True, False]
+BUILDTEST_EASYBUILD: False
+# Delete Build Directory before writing tests.  Valid Options: [True, False]
+BUILDTEST_CLEAN_BUILD: False
+# enable support for job scripts. Valid Options: [True, False]
+BUILDTEST_ENABLE_JOB: False
+# OpenHPC integration. Valid options: [True, False]
+BUILDTEST_OHPC: False
+# binary test support. Valid options [True, False]
+BUILDTEST_BINARY: False
+# Configure shell when running test. Valid options [bash, csh, sh]. Default: [sh]
+BUILDTEST_SHELL: sh
+# Specify job template script to generate test
+BUILDTEST_JOB_TEMPLATE: 
+# list root of module tree where modules are installed. Specify multiple module tree as a list
+BUILDTEST_MODULE_ROOT:
+# criteria for success threshold when running job. Valid Option: [0.0-1.0]    
+BUILDTEST_SUCCESS_THRESHOLD: 0.90
+
+# directory where buildtest logs will be written. 
+BUILDTEST_LOGDIR: 
+# directory where test scripts will be generated
+BUILDTEST_TESTDIR: 
+# directory where buildtest will write .run files
+BUILDTEST_RUN_DIR: 

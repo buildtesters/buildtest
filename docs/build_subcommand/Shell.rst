@@ -1,4 +1,4 @@
-Shell Types (``_buildtest build --shell <shell>``)
+Shell Types (``buildtest build --shell <shell>``)
 ====================================================
 
 
@@ -9,13 +9,13 @@ Currently, buildtest supports the following shell types
 - bash
 - csh
 
-To create tests for different shell types use ``_buildtest build --shell <shell-type>``.
+To create tests for different shell types use ``buildtest build --shell <shell-type>``.
 You may set the environment variable ``BUILDTEST_SHELL`` or set this in your
 ``config.yaml``
 
 
 Let's build test for ``CMake/3.9.5-GCCcore-6.4.0`` with ``csh`` support by
-running ``_buildtest build -s CMake/3.9.5-GCCcore-6.4.0 --shell csh``
+running ``buildtest build -s CMake/3.9.5-GCCcore-6.4.0 --shell csh``
 
 
 .. program-output:: cat scripts/Shell/CMake-3.9.5-GCCcore-6.4.0_csh.txt
@@ -25,7 +25,7 @@ Now let's check the test files
 .. program-output:: cat scripts/Shell/CMake-3.9.5-GCCcore-6.4.0_csh_listing.txt
 
 
-Let's rerun this with bash: ``_buildtest build -s CMake/3.9.5-GCCcore-6.4.0 --shell bash``
+Let's rerun this with bash: ``buildtest build -s CMake/3.9.5-GCCcore-6.4.0 --shell bash``
 
 
 .. program-output:: cat scripts/Shell/CMake-3.9.5-GCCcore-6.4.0_bash.txt
@@ -61,7 +61,7 @@ You will notice the key ``environment`` will declare the environment variable ac
 used for generating the test. For ``bash`` and ``sh`` the keyword ``export`` is used whereas for ``csh``
 the keyword is ``setenv``
 
-If you run ``_buildtest build -s GCCcore/6.4.0 --shell bash`` to build the following test and look at generated test ``omp_hello_f.bash`` you
+If you run ``buildtest build -s GCCcore/6.4.0 --shell bash`` to build the following test and look at generated test ``omp_hello_f.bash`` you
 will see the environment variable is set using keyword ``export``
 
 .. program-output:: cat scripts/Shell/GCCcore-6.4.0_omp_hello.f.bash

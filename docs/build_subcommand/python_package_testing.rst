@@ -1,4 +1,4 @@
-Building Tests for Python  Packages (``_buildtest build --python-package <PYTHON-PACKAGE>``)
+Building Tests for Python  Packages (``buildtest build --python-package <PYTHON-PACKAGE>``)
 =================================================================================================
 
 buildtest comes with option to build test for python packages to test python packages
@@ -6,7 +6,7 @@ are working as expected. The Python tests are coming from the repository
 https://github.com/HPC-buildtest/Python-buildtest-config
 
 In buildtest this repository is defined by variable ``BUILDTEST_PYTHON_REPO`` that
-can be tweaked by environment variable or configuration file (``config.yaml``)
+can be tweaked by environment variable or configuration file (``settings.yaml``)
 
 buildtest supports tab completion for option ``--python-package`` which will show
 a list of python packages available for testing.
@@ -15,7 +15,7 @@ To illustrate the tab completion feature see command below
 
 .. code::
 
-    [siddis14@prometheus buildtest-framework]$ _buildtest build --python-package
+    [siddis14@prometheus buildtest-framework]$ buildtest build --python-package
     anaconda-client  Babel            bitarray         cdecimal         cryptography     deap             mpi4py           nose             paramiko         pytz
     astriod          backports_abc    blist            chest            Cython           funcsigs         netaddr          numpy            paycheck         scipy
     astropy          beautifulsoup4   Bottleneck       colorama         dateutil         mock             netifaces        os               pyparsing        setuptools

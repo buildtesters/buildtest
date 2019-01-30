@@ -30,7 +30,7 @@ In this example below buildtest detects ``gnu7/7.3.0`` is not a easybuild app.
 
 ::
 
-    (buildtest) buildtest-framework[devel] $ _buildtest build -s gnu7/7.3.0 --easybuild
+    (buildtest) buildtest-framework[devel] $ buildtest build -s gnu7/7.3.0 --easybuild
     Detecting Software:  gnu7/7.3.0
     Application: gnu7/7.3.0 is not built from Easybuild, cannot find easyconfig file in installation directory
 
@@ -43,7 +43,7 @@ buildtest will do the following check
 5. Check if there is an easyconfig inside the sub-directory.
 
 
-buildtest can also return a list of easyconfigs from a module tree (``_buildtest list --easyconfigs``).
+buildtest can also return a list of easyconfigs from a module tree (``buildtest list --easyconfigs``).
 For more details see :ref:`list_easyconfigs`
 
 The implementation for easyconfig retrieval is very similar to how buildtest

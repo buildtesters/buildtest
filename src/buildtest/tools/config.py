@@ -48,7 +48,7 @@ MPI_LIST = MPI_C_LIST + MPI_F_LIST + MPI_CPP_LIST
 #BUILDTEST_DEFAULT_CONFIG=os.path.join(BUILDTEST_ROOT,"config.yaml")
 #print BUILDTEST_DEFAULT_CONFIG
 #fd = open(BUILDTEST_DEFAULT_CONFIG,'r')
-BUILDTEST_CONFIG_FILE = os.path.join(os.getenv("HOME"),".local","buildtest","config.yaml")
+BUILDTEST_CONFIG_FILE = os.path.join(os.getenv("HOME"),".buildtest/settings.yml")
 #if not os.path.exists(BUILDTEST_CONFIG_FILE):
 #    print (f"FILE: {BUILDTEST_CONFIG_FILE} not found")
 try:
@@ -85,7 +85,6 @@ config_yaml_keys = {
     'BUILDTEST_LOGDIR': type("str"),
     'BUILDTEST_TESTDIR': type("str"),
     'BUILDTEST_RUN_DIR': type("str"),
-    'BUILDTEST_EMAIL': type(True),
 }
 values_BUILDTEST_MODULE_NAMING_SCHEME = ["HMNS", "FNS"]
 
@@ -96,7 +95,6 @@ def check_configuration():
     #print "Checking buildtest environment variables ..."
 
     ec = 0
-    print ("Check Configuration")
 
     keylist = config_yaml_keys.keys()
     valuelist = config_yaml_keys.values()

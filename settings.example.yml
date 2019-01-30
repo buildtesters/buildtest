@@ -3,17 +3,23 @@ BUILDTEST_RUBY_REPO: /home/siddis14/github/Ruby-buildtest-config
 BUILDTEST_R_REPO: /home/siddis14/github/R-buildtest-config
 BUILDTEST_PYTHON_REPO: /home/siddis14/github/Python-buildtest-config
 BUILDTEST_PERL_REPO: /home/siddis14/github/Perl-buildtest-config
-BUILDTEST_LOGDIR: /tmp/buildtest
-BUILDTEST_TESTDIR: /tmp/buildtest-tests
 
-UILDTEST_MODULE_NAMING_SCHEME: FNS
+BUILDTEST_MODULE_NAMING_SCHEME: FNS
 BUILDTEST_EASYBUILD: False
 BUILDTEST_CLEAN_BUILD: False
-BUILDTEST_ENABLE_JOB: False
+BUILDTEST_ENABLE_JOB: True
 BUILDTEST_OHPC: False
+BUILDTEST_BINARY: False
 BUILDTEST_SHELL: sh
-BUILDTEST_JOB_TEMPLATE: template/job.slurm
+BUILDTEST_JOB_TEMPLATE: /home/siddis14/github/buildtest-framework/template/job.slurm
 
 BUILDTEST_MODULE_ROOT:
-    - /clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all
+    - /clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all 
+    - /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all 
     - /clust/app/easybuild/2018/commons/modules/all
+    
+BUILDTEST_SUCCESS_THRESHOLD: 1.00
+
+BUILDTEST_LOGDIR: /tmp/buildtest/logs
+BUILDTEST_TESTDIR: /tmp/buildtest/tests
+BUILDTEST_RUN_DIR: /tmp

@@ -6,5 +6,5 @@ __________________
    :maxdepth: 1
    :glob:
 
-   Build_Subcommand/build.rst
-   Build_Subcommand/*
+   build_subcommand/build.rst
+   build_subcommand/*

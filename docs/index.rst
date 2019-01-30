@@ -13,8 +13,8 @@ Introduction to buildtest
    :glob:
    :maxdepth: 2
 
-   What_is_buildtest
-   Architecture
+   what_is_buildtest.rst
+   architecture.rst
 
 Getting Started
 ---------------
@@ -22,10 +22,10 @@ Getting Started
 .. toctree::
    :maxdepth: 2
 
-   Setup.rst
-   Buildtest_Variables.rst
-   How_to_use_BuildTest.rst
-   Command_Reference.rst
+   setup.rst
+   configuring_buildtest.rst
+   how_to_use_buildtest.rst
+   command_reference.rst
 
 Introspection Operations
 -------------------------
@@ -33,11 +33,11 @@ Introspection Operations
 .. toctree::
    :maxdepth: 1
 
-   Show_Configuration.rst
+   show_configuration.rst
    scan_test.rst
-   List_Subcommand.rst
-   Find_Operations.rst
-   Module_Operations.rst
+   list_subcommand.rst
+   find_operations.rst
+   module_operations.rst
 
 Building tests
 -----------------
@@ -45,7 +45,7 @@ Building tests
 .. toctree::
    :maxdepth: 2
 
-   Build_Operations.rst
+   build_operations.rst
 
 Running tests
 --------------
@@ -53,7 +53,7 @@ Running tests
 .. toctree::
    :maxdepth: 2
 
-   Run_Subcommand
+   run_subcommand.rst
 
 
 buildtest YAML Framework
@@ -62,14 +62,12 @@ buildtest YAML Framework
 .. toctree::
    :maxdepth: 2
 
-   Yaml_Subcommand.rst
-   BinaryTest_Yaml_Application.rst
-   BinaryTest_Yaml_SystemPackages.rst
+   yaml_subcommand.rst
    show_yaml_keys.rst
-   Writing_Test_In_YAML.rst
-   MPI_yaml.rst
-   OpenMP_yaml.rst
-   Jobscript_yaml_configuration.rst
+   writing_test_in_yaml.rst
+   mpi_yaml.rst
+   openmp_yaml.rst
+   jobscript_yaml_configuration.rst
 
 
 Jobscript Features
@@ -78,8 +76,8 @@ Jobscript Features
 .. toctree::
    :maxdepth: 2
 
-   Job_Template
-   Automate_BatchJobs
+   job_template.rst
+   automate_batchjobs.rst
 
 Additional Features
 --------------------
@@ -87,8 +85,8 @@ Additional Features
 .. toctree::
     :maxdepth: 2
 
-    EasyBuild_Integration
-    OHPC_Integration
+    easybuild_integration.rst
+    ohpc_integration.rst
 
 
 Useful Links

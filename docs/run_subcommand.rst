@@ -1,63 +1,63 @@
 .. _Run_Subcommand:
 
-Running Test with buildtest (``_buildtest run``)
+Running Test with buildtest (``buildtest run``)
 =================================================
 
 
 .. program-output:: cat scripts/Run_Subcommand/help.txt
 
-Interactive Testing (``_buildtest run --interactive``)
+Interactive Testing (``buildtest run --interactive``)
 ----------------------------------------------------------
 
 buildtest comes with a menu driven test that can be used
-as an alternate method to ``ctest``. Just run ``_buildtest run --interactive``
+as an alternate method to ``ctest``. Just run ``buildtest run --interactive``
 after you created a few tests and follow the prompt to navigate to
 the appropriate test
 
-.. program-output:: cat scripts/How_to_use_buildtest/runtest.txt
+.. program-output:: cat scripts/how_to_use_buildtest/runtest.txt
 
 
-Running Individual Tests (``_buildtest run --testname``)
+Running Individual Tests (``buildtest run --testname``)
 ----------------------------------------------------------
 
 You may run individual tests via buildtest using option ``--testname``.
 
 ::
 
-    (buildtest-0.5.0) [siddis14@adwnode1 buildtest-framework]$ _buildtest run --testname  /tmp/buildtest-tests/system/gcc/which__usr_bin_gcc.sh
+    (buildtest-0.5.0) [siddis14@adwnode1 buildtest-framework]$ buildtest run --testname  /tmp/buildtest-tests/system/gcc/which__usr_bin_gcc.sh
     Executing Test: /tmp/buildtest-tests/system/gcc/which__usr_bin_gcc.sh >/dev/null 2>&1
     ---------------------------------------------------------
     Test Successful
     ---------------------------------------------------------
 
 
-Run an Application Test Suite (``_buildtest run --software``)
+Run an Application Test Suite (``buildtest run --software``)
 ---------------------------------------------------------------
 
 buildtest can run test written in ``$BUILDTEST_TESTDIR`` for a particular application
 specified by option ``--software``. The choice field for this option is populated based
 on directories found in ``$BUILDTEST_TESTDIR`` which were created by subsequent runs
-of ``_buildtest build -s <application>``.
+of ``buildtest build -s <application>``.
 
 ::
 
-    (buildtest) [siddis14@adwnode11 buildtest-framework]$ ./_buildtest run --software
+    (buildtest) [siddis14@adwnode11 buildtest-framework]$ buildtest run --software
     GCC/6.4.0-2.28             GCCcore/6.4.0              Perl/5.26.0-GCCcore-6.4.0
 
 
-Shown below is an output of ``_buildtest run --software GCCcore/6.4.0`` which attempts
+Shown below is an output of ``buildtest run --software GCCcore/6.4.0`` which attempts
 to run all tests for application ``GCCcore/6.4.0``
 
 .. program-output:: tail -n 15 scripts/Run_Subcommand/app_GCCcore.txt
 
 
-Run a System Package Test Suite (``_buildtest run --package``)
+Run a System Package Test Suite (``buildtest run --package``)
 ------------------------------------------------------------------
 
 Similarly, ``buildtest run --package`` is used to run test suite for system packages
-that were built by option ``_buildtest build --package <package>``
+that were built by option ``buildtest build --package <package>``
 
-Shown below is an output of ``_buildtest run --package gcc``
+Shown below is an output of ``buildtest run --package gcc``
 
 .. program-output:: cat scripts/Run_Subcommand/systempkg_gcc.txt
 
@@ -96,25 +96,3 @@ by running the following
 
 
 .. program-output:: cat scripts/Run_Subcommand/run-GCCcore-6.4.0.txt
-
-Output Test Results (``--output``)
--------------------------------------
-
-By default output of test is disabled when using ``_buildtest run`` command. To enable
-output specify ``--output yes`` when running a test to view the output to STDOUT.
-
-Example below illustrates when output is enabled.
-
-::
-
-    (buildtest) [siddis14@adwnode1 buildtest-framework]$ _buildtest run -t /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/hello.c.sh --output yes
-    Executing Test: /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/hello.c.sh >/dev/stdout 2>&1
-    ---------------------------------------------------------
-    hello world
-
-    Test Successful
-    ---------------------------------------------------------
-
-
-This option can work with other run options like ``--software``, ``--package``, ``--all-software``
-and ``--all-package``

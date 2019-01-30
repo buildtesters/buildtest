@@ -48,7 +48,7 @@ example for building slurm job script using option ``--enable-job``
 
 .. code::
 
-    [siddis14@prometheus buildtest-framework]$ _buildtest -s icc/2018.1.163-GCC-6.4.0-2.28 --enable-job
+    [siddis14@prometheus buildtest-framework]$ buildtest -s icc/2018.1.163-GCC-6.4.0-2.28 --enable-job
     Detecting Software:  icc/2018.1.163-GCC-6.4.0-2.28
     --------------------------------------------
     [STAGE 1]: Building Binary Tests
@@ -128,7 +128,7 @@ buildtest will create job scripts with the following extensions
 Generated SLURM Job
 -------------------
 
-.. code:: shell
+::
 
     #!/bin/sh
     #SBATCH -N 1
@@ -143,7 +143,8 @@ Generated SLURM Job
 
 Generated LSF Job
 -----------------------
-.. code:: shell
+
+::
 
     #!/bin/sh
     #BSUB -n 1

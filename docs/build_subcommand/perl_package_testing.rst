@@ -1,4 +1,4 @@
-Building Tests for Perl packages (``_buildtest --perl-package <PERL-PACKAGE>``)
+Building Tests for Perl packages (``buildtest --perl-package <PERL-PACKAGE>``)
 ===============================================================================
 
 buildtest comes with option to build test for perl packages to verify perl packages
@@ -15,7 +15,7 @@ To illustrate the tab completion feature see command below
 
 .. code::
 
-    siddis14@prometheus buildtest-framework]$ _buildtest build --perl-package
+    siddis14@prometheus buildtest-framework]$ buildtest build --perl-package
     Algorithm  AnyData    AppConfig  Authen
 
 
@@ -23,7 +23,7 @@ To build perl package test you must specify a ``Perl`` module. buildtest will
 generate the binarytest along with any test from perl package specified by
 option ``--perl-package``.
 
-The command ``_buildtest build -s Perl/5.26.0-GCCcore-6.4.0 --perl-package AnyData``
+The command ``buildtest build -s Perl/5.26.0-GCCcore-6.4.0 --perl-package AnyData``
 will build Perl test along with Perl package ``AnyData``
 
 .. program-output:: cat scripts/perl_packagetest_AnyData.txt
@@ -38,7 +38,7 @@ missing package.
 To illustrate see the following example where we try building test for perl package
 ``Algorithm``.
 
-``_buildtest build -s Perl/5.26.0-GCCcore-6.4.0 --perl-package Algorithm``
+``buildtest build -s Perl/5.26.0-GCCcore-6.4.0 --perl-package Algorithm``
 
 .. program-output:: cat scripts/perl_packagetest_Algorithm.txt
 

@@ -2,6 +2,5 @@ Command Reference
 ===================
 
 .. argparse::
-   :filename: ../src/buildtest/tools/menu.py
-   :func: menu
+   :ref: buildtest.tools.menu.menu
    :prog: buildtest

@@ -1,10 +1,10 @@
 .. _Automate_BatchJobs:
 
-Automate Batch Job submission (``_buildtest --submitjob``)
+Automate Batch Job submission (``buildtest --submitjob``)
 ============================================================
 
 buildtest can even automate batch job submission once you have created the
-jobscripts via buildtest. To do this you need to use ``_buildtest --submitjob``
+jobscripts via buildtest. To do this you need to use ``buildtest --submitjob``
 flag.
 
 **--submitjob** will take a directory or file to your job script. If it is a
@@ -14,18 +14,18 @@ will submit all jobscripts in the particular directory to the scheduler.
 Job Submission by File
 ----------------------
 
-.. code:: shell
+::
 
-   [siddis14@amrndhl1228 buildtest-framework]$  _buildtest --submitjob /lustre/workspace/home/siddis14/buildtest-framework/testing/ebapp/Perl/5.22.1/foss/.2016.03/Algorithm/diff.lsf
+   [siddis14@amrndhl1228 buildtest-framework]$  buildtest --submitjob /lustre/workspace/home/siddis14/buildtest-framework/testing/ebapp/Perl/5.22.1/foss/.2016.03/Algorithm/diff.lsf
    Job <2531> is submitted to queue <short>.
    Submitting Job: /lustre/workspace/home/siddis14/buildtest-framework/testing/ebapp/Perl/5.22.1/foss/.2016.03/Algorithm/diff.lsf  to scheduler
 
 Job Submission by Directory
 ---------------------------
 
-.. code:: shell
+::
 
-   [siddis14@amrndhl1228 buildtest-framework]$ _buildtest --submitjob /lustre/workspace/home/siddis14/buildtest-framework/testing/ebapp/Perl/5.22.1/foss/.2016.03/
+   [siddis14@amrndhl1228 buildtest-framework]$ buildtest --submitjob /lustre/workspace/home/siddis14/buildtest-framework/testing/ebapp/Perl/5.22.1/foss/.2016.03/
    Job <2532> is submitted to queue <short>.
    Submitting Job: /lustre/workspace/home/siddis14/buildtest-framework/testing/ebapp/Perl/5.22.1/foss/.2016.03/perl_-v.lsf  to scheduler
    Job <2533> is submitted to queue <short>.

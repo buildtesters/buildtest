@@ -1,53 +1,70 @@
-.. _Buildtest_Variables:
-
 Configuring buildtest
 _______________________
 
 .. contents::
    :backlinks: none
-   
+
 Configuration File
 --------------------
 
-To configure buildtest you will need to create a YAML file at ``$HOME/.local/buildtest/config.yaml``.
-This file is responsible for configuring  buildtest to work for your test system. Shown below is an example
-configuration file that we will go over in further detail.
+To configure buildtest you will need to create a YAML file at ``$HOME/.buildtest/settings.yml``.
+This file is responsible for configuring  buildtest to work for your test system. Shown below is the
+configuration file that can be found in the git repo.
 
 
-**Example Configuration**
+**Configuration File**
 
 ::
 
-    (buildtest) [siddis14@gorgon buildtest-framework]$ cat ~/.local/buildtest/config.yaml
-    BUILDTEST_MODULE_NAMING_SCHEME: FNS
+    # root of buildtest-configs repo
+    BUILDTEST_CONFIGS_REPO:
+
+    # root of Ruby-buildtest-config repo
+    BUILDTEST_RUBY_REPO:
+
+    # root of R-buildtest-config repo
+    BUILDTEST_R_REPO:
+
+    #  root of Python-buildtest-config repo
+    BUILDTEST_PYTHON_REPO:
+
+    #  root of Perl-buildtest-config repo
+    BUILDTEST_PERL_REPO:
+
+    # Specify Module Naming Scheme for your module tree. Valid Options: [FNS, HMNS]
+    BUILDTEST_MODULE_NAMING_SCHEME:
+
+    # easybuild integration. Valid Options: [True, False]
     BUILDTEST_EASYBUILD: False
+    # Delete Build Directory before writing tests.  Valid Options: [True, False]
     BUILDTEST_CLEAN_BUILD: False
+    # enable support for job scripts. Valid Options: [True, False]
     BUILDTEST_ENABLE_JOB: False
+    # OpenHPC integration. Valid options: [True, False]
     BUILDTEST_OHPC: False
+    # binary test support. Valid options [True, False]
+    BUILDTEST_BINARY: False
+    # Configure shell when running test. Valid options [bash, csh, sh]. Default: [sh]
     BUILDTEST_SHELL: sh
-    BUILDTEST_JOB_TEMPLATE: /home/siddis14/github/buildtest-framework/template/job.slurm
-
+    # Specify job template script to generate test
+    BUILDTEST_JOB_TEMPLATE:
+    # list root of module tree where modules are installed. Specify multiple module tree as a list
     BUILDTEST_MODULE_ROOT:
-    - /clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all
-    - /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all
-    - /clust/app/easybuild/2018/commons/modules/all
+    # criteria for success threshold when running job. Valid Option: [0.0-1.0]
+    BUILDTEST_SUCCESS_THRESHOLD: 0.90
 
-    BUILDTEST_SUCCESS_THRESHOLD: 1.00
-
-    BUILDTEST_CONFIGS_REPO: /home/siddis14/github/buildtest-configs
-    BUILDTEST_RUBY_REPO: /home/siddis14/github/Ruby-buildtest-config
-    BUILDTEST_R_REPO: /home/siddis14/github/R-buildtest-config
-    BUILDTEST_PYTHON_REPO: /home/siddis14/github/Python-buildtest-config
-    BUILDTEST_PERL_REPO: /home/siddis14/github/Perl-buildtest-config
-    BUILDTEST_LOGDIR: /tmp/buildtest/logs
-    BUILDTEST_TESTDIR: /tmp/buildtest/tests
-    BUILDTEST_RUN_DIR: /tmp
+    # directory where buildtest logs will be written.
+    BUILDTEST_LOGDIR:
+    # directory where test scripts will be generated
+    BUILDTEST_TESTDIR:
+    # directory where buildtest will write .run files
+    BUILDTEST_RUN_DIR:
 
 
 Variable Description
 ---------------------
 
-.. include:: Buildtest_Variables/buildtest-environment.txt
+.. include:: configuring_buildtest/buildtest-environment.txt
 
 
 Adding a module tree
@@ -158,9 +175,9 @@ where test are written. This will allow user to keep test if they ran the follow
 
 ::
 
-        _buildtest build -p gcc  --shell sh
-        _buildtest build -p gcc --shell csh
-        _buildtest build -p gcc --shell bash
+        buildtest build -p gcc  --shell sh
+        buildtest build -p gcc --shell csh
+        buildtest build -p gcc --shell bash
 
 If you want buildtest to delete the build directory before writing any tests you can set
 BUILDTEST_CLEAN_BUILD to True as follows
@@ -190,7 +207,7 @@ See example below where tests are written to ``/tmp/buildtest/tests``
 
 ::
 
-    (buildtest) [siddis14@gorgon buildtest-framework]$ _buildtest build -s GCCcore/6.4.0
+    (buildtest) [siddis14@gorgon buildtest-framework]$ buildtest build -s GCCcore/6.4.0
     Check Configuration
     Creating Log directory:  /tmp/buildtest/logs
     Detecting Software:  GCCcore/6.4.0
@@ -289,8 +306,34 @@ an invalid extension
     Invalid File extension .slurm1 must be one of the following extension['.lsf', '.slurm', '.pbs']
 
 
+For more information check out :ref:`Job_Template`
 
+Test Threshold
+----------------
 
+buildtest provides a mechanism to set a success threshold during test execution that
+can be used to determine if your software passes or fails.
 
-For more information check out
-:ref:`Job_Template`
+This can be set by using ``BUILDTEST_SUCCESS_THRESHOLD`` which is a value between ``[0.0-1.0]``
+which will be used when running test.
+
+::
+    if success_threshold >= <passed tests>/< total tests>
+        SUCCESS
+    else
+        FAIL
+
+Here is an example test run where all test have passed and success threshold is 1.0
+
+::
+
+    (siddis14-TgVBs13r) buildtest-framework[master !x?] $ buildtest run -s GCCcore/6.4.0
+    Check Configuration
+    ==============================================================
+                             Test summary
+    Application:  GCCcore/6.4.0
+    Executed 32 tests
+    Passed Tests: 32    Percentage: 100.0%
+    Failed Tests: 0    Percentage: 0.0%
+    SUCCESS: Threshold of 100.0% was achieved
+    Writing results to /tmp/buildtest_10_26_30_01_2019.run

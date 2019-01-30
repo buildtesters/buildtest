@@ -66,21 +66,21 @@ To get started just clone all the repos related to buildtest in your filesystem
 
 .. program-output:: cat scripts/Setup/clonerepo.txt
 
-Once you clone the repos you will want to edit your ``config.yaml`` file to specify
+Once you clone the repos you will want to edit your ``settings.yml`` file to specify
 buildtest configuration
 
 
-Take a look at file ``$BUILDTEST_ROOT/config.dummy.yaml`` and copy this file to
-``$HOME/.local/buildtest/config.yaml`` and edit the file accordingly. You can refer
-to ``config.example.yaml`` for more details
+Take a look at file ``$BUILDTEST_ROOT/settings.yml`` and copy this file to
+``$HOME/.buildtest/settings.yml`` and edit the file accordingly. You can refer
+to ``settings.example.yml`` for more details
 
-.. Note:: Failure to copy config.yaml to $HOME/.local/buildtest/config.yaml will result in  an error
+.. Note:: Failure to copy settings.yml to $HOME/.buildtest/settings.yml will result in  an error
 
 Each site will have to customize their buildtest configuration to reflect the root of the module trees.
-You may specify multiple module trees  in ``config.yaml`` for variable ``BUILDTEST_MODULE_ROOT``.
+You may specify multiple module trees  in ``settings.yml`` for variable ``BUILDTEST_MODULE_ROOT``.
 
 You may specify any of the ``BUILDTEST_*`` variables with exception of ``BUILDTEST_ROOT``
-using environment variables which will override values specified in  ``config.yaml``.
+using environment variables which will override values specified in  ``settings.yml``.
 
 The environment variables are used by buildtest to determine the path where to retrieve
 module files, yaml configs and write test scripts. You can also reference
@@ -94,26 +94,26 @@ Before you start using buildtest you may want to setup autocomplete feature in y
 
 ::
 
-    eval "$(register-python-argcomplete _buildtest)"
+    eval "$(register-python-argcomplete buildtest)"
 
 This command works for ``bash`` or  ``sh`` shell, if you are using ``tcsh`` you
 can run
 
 ::
 
-    eval `register-python-argcomplete --shell tcsh _buildtest`
+    eval `register-python-argcomplete --shell tcsh buildtest`
 
 For more details on argcomplete please visit https://pypi.org/project/argcomplete/
 
 This will setup auto-complete on buildtest arguments which will be useful when
 building tests.
 
-buildtest version (``_buildtest -V``)
+buildtest version (``buildtest -V``)
 -------------------------------------
 
 You can check the current version of buildtest by running the following
 
-.. code::
+::
 
-   [siddis14@amrndhl1157 buildtest-framework]$ _buildtest -V
-   buildtest version: 0.6.2
+    (siddis14-TgVBs13r) buildtest-framework[master !x?] $ buildtest -V
+    buildtest version:  0.6.3

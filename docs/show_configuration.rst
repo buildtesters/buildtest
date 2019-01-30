@@ -1,17 +1,17 @@
 .. _Show_Configuration:
 
 
-Show Configuration (``_buildtest --show``)
+Show Configuration (``buildtest --show``)
 =============================================
 
-buildtest can display it's configuration by running ``_buildtest --show``. The
+buildtest can display it's configuration by running ``buildtest --show``. The
 configuration can be changed by the following.
 
  1. Command Line
  2. Environment Variable (``BUILDTEST_``)
- 3. Configuration File (``config.yaml``)
+ 3. Configuration File (``settings.yml``)
 
-buildtest will read configuration from file ``config.yaml`` and override any configuration
+buildtest will read configuration from file ``settings.yml`` and override any configuration
 by environment variables that start with ``BUILDTEST_``. The command line may
 override the environment variables at runtime.
 
@@ -20,7 +20,7 @@ Shown below is a sample configuration from buildtest.
 
 .. code::
 
-    (buildtest) [siddis14@gorgon buildtest-framework]$ _buildtest --show
+    (buildtest) [siddis14@gorgon buildtest-framework]$ buildtest --show
     Check Configuration
      buildtest configuration summary
      (C): Configuration File,  (E): Environment Variable
@@ -47,10 +47,10 @@ Shown below is a sample configuration from buildtest.
 
 
 
-``_buildtest --show`` will update the output as you set any BUILDTEST environment
+``buildtest --show`` will update the output as you set any BUILDTEST environment
 variables.
 
-For instance, if you want to customize the buildtest log via environment variable. ``_buildtest --show`` will report
+For instance, if you want to customize the buildtest log via environment variable. ``buildtest --show`` will report
 which values are overridden by environment variable with a notation **(E)**.
 
 See example below
@@ -58,11 +58,11 @@ See example below
 ::
 
     (buildtest) [siddis14@gorgon buildtest-framework]$ export BUILDTEST_LOGDIR=/tmp
-    (buildtest) [siddis14@gorgon buildtest-framework]$ _buildtest --show | grep BUILDTEST_LOGDIR
+    (buildtest) [siddis14@gorgon buildtest-framework]$ buildtest --show | grep BUILDTEST_LOGDIR
     BUILDTEST_LOGDIR                                   (E) = /tmp
 
 
 
 .. Note:: if you plan to customize your buildtest configuration with configuration file
     and environment variable, always check your shell environment first to avoid having
-    values overridden accidently
+    values overridden accidentally

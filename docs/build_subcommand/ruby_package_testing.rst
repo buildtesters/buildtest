@@ -1,4 +1,4 @@
-Building Tests for Ruby packages (``_buildtest build --ruby-package <RUBY-PACKAGE>``)
+Building Tests for Ruby packages (``buildtest build --ruby-package <RUBY-PACKAGE>``)
 =======================================================================================
 
 buildtest comes with option to build test for ruby packages to verify ruby packages
@@ -15,14 +15,14 @@ To illustrate the tab completion feature see command below
 
 ::
 
-    [siddis14@prometheus buildtest-framework]$ _buildtest --ruby-package
+    [siddis14@prometheus buildtest-framework]$ buildtest build --ruby-package
     addressable  bigdecimal
 
 To build ruby package test you must specify a ``ruby`` module. buildtest will
 generate the binarytest along with any test from ruby package specified by
 option ``--ruby-package``.
 
-The command ``_buildtest build -s Ruby/2.5.0-intel-2018a --ruby-package addressable``
+The command ``buildtest build -s Ruby/2.5.0-intel-2018a --ruby-package addressable``
 will build Ruby test along with any tests for Ruby package ``addressable``
 
 .. program-output:: cat scripts/ruby_packagetest_addressable.txt

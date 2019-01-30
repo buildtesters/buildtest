@@ -88,7 +88,7 @@ in the module tree. This information is processed further by stripping full
 path to extract the module name depending if you specified BUILDTEST_MODULE_NAMING_SCHEME
 as Flat Naming Scheme (FNS) or Hierarchical Module Naming Scheme (HMNS). This
 can be specified in the buildtest command line ``buildtest build --module-naming-scheme`` or
-environment variable ``$BUILDTEST_MODULE_NAMING_SCHEME`` or in ``config.yaml``
+environment variable ``$BUILDTEST_MODULE_NAMING_SCHEME`` or in ``settings.yml``
 
 The software module stack is used to populate the choice entries for ``--software``
 and ``--toolchain``.
@@ -125,7 +125,7 @@ into the following issue
 
 .. code::
 
-   [siddis14@amrndhl1157 buildtest-framework]$ _buildtest build -s ruby/2.2.4
+   [siddis14@amrndhl1157 buildtest-framework]$ buildtest build -s ruby/2.2.4
    Application: ruby/2.2.4  is not built from Easybuild, cannot find easyconfig file in installation directory
 
 By default easybuild will check if the software is an easybuild app and will exit
@@ -141,7 +141,7 @@ Testing Directory Structure
 -------------------------------
 
 buildtest will write the tests in the directory specified by **BUILDTEST_TESTDIR**. This value
-can be specified in ``config.yaml``, or environment variable ``$BUILDTEST_TESTDIR`` or command line
+can be specified in ``settings.yaml``, or environment variable ``$BUILDTEST_TESTDIR`` or command line
 ``buildtest --testdir <path>``.
 
 
@@ -150,7 +150,7 @@ Recall that CTest is the Testing Framework that automatically generates Makefile
 to build and run the test. CTest will utilize *CMakeLists.txt* that will invoke
 CTest api to run the the test.
 
-.. include:: Architecture/cmakelist_layout.txt
+.. include:: architecture/cmakelist_layout.txt
 
 Whenever you build the test, you must specify the software and version
 and this must match the name of the module you are trying to test, otherwise
@@ -166,11 +166,11 @@ CMake Configuration
 CMakeLists.txt for $BUILDTEST_TESTDIR/ebapps/GCC/CMakeLists.txt would like
 this for ``GCC-5.4.0-2.27`` and ``GCC-6.2.0-2.27`` test
 
-.. program-output:: cat scripts/Architecture/GCC/CMakeLists.txt
+.. program-output:: cat scripts/architecture/GCC/CMakeLists.txt
 
 The CMakeLists.txt in your test directory will look something like this
 
-.. program-output:: cat scripts/Architecture/GCC/test/CMakeLists.txt
+.. program-output:: cat scripts/architecture/GCC/test/CMakeLists.txt
 
 Source Code Layout
 --------------------

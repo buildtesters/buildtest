@@ -1,5 +1,3 @@
-.. _What_is_buildtest:
-
 What is buildtest
 =================
 
@@ -101,4 +99,3 @@ The project is divided into several repos.
 - https://github.com/HPC-buildtest/R-buildtest-config - This repo contains all R code for each R package used by buildtest  for generating tests for R packages
 - https://github.com/HPC-buildtest/Perl-buildtest-config - This repo contains all Perl code for each Perl package used by buildtest  for generating tests for Perl packages
 - https://github.com/HPC-buildtest/Ruby-buildtest-config - This repo contains all Ruby code for each Ruby package used by buildtest  for generating tests for Ruby packages
-- https://github.com/HPC-buildtest/buildtest - This repo is used to host the documentation found at http://buildtestdocs.readthedocs.io/en/latest/
