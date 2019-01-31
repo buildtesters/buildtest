@@ -35,25 +35,20 @@ Introspection Operations
 
    show_configuration.rst
    scan_test.rst
-   list_subcommand.rst
-   find_operations.rst
-   module_operations.rst
 
-Building tests
+
+Subcommands
 -----------------
 
 .. toctree::
    :maxdepth: 2
 
-   build_operations.rst
-
-Running tests
---------------
-
-.. toctree::
-   :maxdepth: 2
-
+   list_subcommand.rst
+   find_subcommand.rst
+   module_subcommand.rst
+   build_subcommand.rst
    run_subcommand.rst
+   yaml_subcommand.rst
 
 
 buildtest YAML Framework
@@ -62,7 +57,7 @@ buildtest YAML Framework
 .. toctree::
    :maxdepth: 2
 
-   yaml_subcommand.rst
+
    show_yaml_keys.rst
    writing_test_in_yaml.rst
    mpi_yaml.rst
@@ -76,7 +71,6 @@ Jobscript Features
 .. toctree::
    :maxdepth: 2
 
-   job_template.rst
    automate_batchjobs.rst
 
 Miscellaneous

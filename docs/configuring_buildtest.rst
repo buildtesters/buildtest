@@ -318,6 +318,7 @@ This can be set by using ``BUILDTEST_SUCCESS_THRESHOLD`` which is a value betwee
 which will be used when running test.
 
 ::
+
     if success_threshold >= <passed tests>/< total tests>
         SUCCESS
     else

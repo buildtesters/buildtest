@@ -1,6 +1,3 @@
-.. _Show_Configuration:
-
-
 Show Configuration (``buildtest --show``)
 =============================================
 

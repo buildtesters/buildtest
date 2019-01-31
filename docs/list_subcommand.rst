@@ -1,13 +1,8 @@
-.. _list_operations:
-
-List Operations
-================
+List Subcommand (``buildtest list``)
+=======================================
 
 .. contents::
    :backlinks: none
-
-List Subcommand (``buildtest list``)
----------------------------------------
 
 buildtest comes with a set of options for listing useful info such as
 
@@ -16,7 +11,7 @@ buildtest comes with a set of options for listing useful info such as
 3. List software-modulefile relationship
 4. List of easyconfigs
 
-.. program-output:: cat scripts/List_Subcommand/help.txt
+.. program-output:: cat scripts/list_subcommand/help.txt
 
 
 List Software (``buildtest list -ls``)
@@ -29,7 +24,7 @@ short option ``buildtest list -ls``
 buildtest determines the software list based on the module trees specified in ``BUILDTEST_MODULE_ROOT``
 and processes each module tree and returns a  unique software list
 
-.. program-output:: head -n 15 scripts/List_Subcommand/software.txt
+.. program-output:: head -n 15 scripts/list_subcommand/software.txt
 
 List Toolchains (``buildtest list -lt``)
 ---------------------------------------------------------------
@@ -42,7 +37,7 @@ taken the list of toolchains from eb and defined them in buildtest. Any app
 built with the any of the toolchains can be used with buildtest to generate
 tests.
 
-.. program-output:: head -n 15 scripts/List_Subcommand/toolchain.txt
+.. program-output:: head -n 15 scripts/list_subcommand/toolchain.txt
 
 
 Software Version Relationship (``buildtest list -svr``)
@@ -54,7 +49,7 @@ then you want to use ``buildtest list --software-version-relation`` or short opt
 
 The output will be sorted by software and each entry will correspond to the full path of the modulefile.
 
-.. program-output:: head -n 15 scripts/List_Subcommand/software_version.txt
+.. program-output:: head -n 15 scripts/list_subcommand/software_version.txt
 
 .. _list_easyconfigs:
 
@@ -71,7 +66,7 @@ some **warning** or **error** messages which is intended.
 buildtest will attempt to search for any file with ``.eb`` extension  in ``easybuild`` directory
 that is part of install directory of each software for every easybuild app.
 
-.. program-output:: head -n 15 scripts/List_Subcommand/easyconfigs.txt
+.. program-output:: head -n 15 scripts/list_subcommand/easyconfigs.txt
 
 If an easyconfig is not found you may get the following message
 
@@ -85,7 +80,7 @@ Listing buildtest software (``buildtest list --buildtest-software``)
 buildtest can report the software packages supported by buildtest which are found in
 BUILDTEST_CONFIGS_REPO
 
-.. program-output:: head -n 15 scripts/List_Subcommand/buildtest_software.txt
+.. program-output:: head -n 15 scripts/list_subcommand/buildtest_software.txt
 
 
 Formatting output (``buildtest list --format``)
@@ -100,14 +95,14 @@ will output result in json or csv format.
 
 Let's run ``buildtest list -ls --format=stdout``
 
-.. program-output:: cat scripts/List_Subcommand/software_format_stdout.txt
+.. program-output:: cat scripts/list_subcommand/software_format_stdout.txt
 
 buildtest will write content of csv to file. Let's run ``buildtest list -svr --format=csv``
 
-.. program-output:: cat scripts/List_Subcommand/software_format_csv.txt
+.. program-output:: cat scripts/list_subcommand/software_format_csv.txt
 
-.. program-output:: head scripts/List_Subcommand/software_list.csv
+.. program-output:: head scripts/list_subcommand/software_list.csv
 
 To print output in json let's run ``buildtest list -ls --format=json``
 
-.. program-output:: cat scripts/List_Subcommand/software_format_json.txt
+.. program-output:: cat scripts/list_subcommand/software_format_json.txt

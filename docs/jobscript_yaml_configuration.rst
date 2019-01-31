@@ -1,6 +1,3 @@
-.. _Jobscript_yaml_configuration:
-
-
 Configuring Job scripts from yaml configuration
 ===============================================
 

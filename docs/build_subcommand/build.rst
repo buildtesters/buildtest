@@ -8,7 +8,7 @@ Build Subcommand (``buildtest build``)
 ----------------------------------------
 
 
-.. program-output:: cat scripts/Build_Subcommand/help.txt
+.. program-output:: cat scripts/build_subcommand/help.txt
 
 Building tests for Software Packages
 -------------------------------------
@@ -23,7 +23,7 @@ demonstrate this lets run the following
 
 The output will be the following
 
-.. program-output:: cat scripts/Build_Subcommand/CMake-3.9.5-GCCcore-6.4.0.txt
+.. program-output:: cat scripts/build_subcommand/CMake-3.9.5-GCCcore-6.4.0.txt
 
 Building test for System Packages
 ----------------------------------
@@ -40,7 +40,7 @@ To demonstrate this example, lets build the test for package ``coreutils``
 
 The output will be the following
 
-.. program-output:: cat scripts/Build_Subcommand/coreutils.txt
+.. program-output:: cat scripts/build_subcommand/coreutils.txt
 
 When to use ``--toolchain`` option
 ------------------------------------

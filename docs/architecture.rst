@@ -1,5 +1,3 @@
-.. _Architecture:
-
 buildtest Architecture
 =======================
 

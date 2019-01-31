@@ -17,7 +17,7 @@ The templates can be found at ``$BUILDTEST_ROOT/template/``
 
 Shown below is a LSF Job Template
 
-.. program-output:: cat scripts/Job_Template/job.lsf
+.. program-output:: cat scripts/build_subcommand/job_template/job.lsf
 
 Feel free to change or bring or specify your own job template. buildtest will
 use job template and create job script for each test script with the same template
@@ -34,7 +34,7 @@ by ``--job-template`` option or with variable ``BUILDTEST_JOB_TEMPLATE``
 Let's run the following ``buildtest build --package firefox --job-template template/job.lsf --enable-job`` to
 build LSF job scripts
 
-.. program-output:: cat scripts/Job_Template/firefox_jobscript.txt
+.. program-output:: cat scripts/build_subcommand/job_template/firefox_jobscript.txt
 
 
 Job templates work with option ``--package`` and ``--software``. Let's try another example
@@ -43,4 +43,4 @@ building job scripts with a software package ``GCCcore/6.4.0`` with lsf job temp
 
 ``buildtest build -s GCCcore/6.4.0 --job-template template/job.lsf --enable-job``
 
-.. program-output:: cat scripts/Job_Template/GCCcore-6.4.0_lsf_job.txt
+.. program-output:: cat scripts/build_subcommand/job_template/GCCcore-6.4.0_lsf_job.txt

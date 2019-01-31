@@ -1,5 +1,3 @@
-.. _OpenMP_yaml:
-
 Building OpenMP program with YAML configuration
 ===============================================
 

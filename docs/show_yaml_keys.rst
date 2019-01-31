@@ -1,7 +1,5 @@
-.. _show_yaml_keys:
-
 Show yaml keys (``buildtest --show-keys``)
---------------------------------------------
+===========================================
 
 buildtest comes with an option ``--show-keys`` that provides a description of all
 yaml keys support by buildtest when writing yaml configuration.

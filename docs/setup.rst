@@ -64,7 +64,7 @@ Installing buildtest via git
 
 To get started just clone all the repos related to buildtest in your filesystem
 
-.. program-output:: cat scripts/Setup/clonerepo.txt
+.. program-output:: cat scripts/setup/clonerepo.txt
 
 Once you clone the repos you will want to edit your ``settings.yml`` file to specify
 buildtest configuration

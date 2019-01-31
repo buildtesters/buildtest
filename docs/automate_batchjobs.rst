@@ -1,5 +1,3 @@
-.. _Automate_BatchJobs:
-
 Automate Batch Job submission (``buildtest --submitjob``)
 ============================================================
 

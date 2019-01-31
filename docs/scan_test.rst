@@ -1,5 +1,3 @@
-.. _scan_test:
-
 What can you test with buildtest? Use ``buildtest --scantest``
 =================================================================
 

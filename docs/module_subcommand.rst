@@ -1,6 +1,4 @@
-.. _module_operations:
-
-Module Operations
+Module Subcommand
 ==================
 
 ::
@@ -16,8 +14,8 @@ Module Operations
                             Show difference between two module trees
 
 
-Difference Between Module Trees (``buildtest --diff-trees``)
----------------------------------------------------------------
+Difference Between Module Trees (``buildtest module --diff-trees``)
+--------------------------------------------------------------------
 
 buildtest can report difference between two module trees and report which software is present
 in which tree. This may be useful if you plan to have a **stage** and **prod** module tree
@@ -35,7 +33,7 @@ count of module files in a large HPC facility.
 
 .. code::
 
-   [siddis14@amrndhl1157 buildtest-framework]$ buildtest --diff-trees /nfs/grid/software/easybuild/2018/Broadwell/redhat/7.3/all,/clust/app/easybuild/2018/SkyLake/redhat/7.3/modules/all
+   [siddis14@amrndhl1157 buildtest-framework]$ buildtest module --diff-trees /nfs/grid/software/easybuild/2018/Broadwell/redhat/7.3/all,/clust/app/easybuild/2018/SkyLake/redhat/7.3/modules/all
                             Comparing Module Trees for differences in module files
                             -------------------------------------------------------
 
@@ -62,11 +60,11 @@ If there is no difference between module trees you will get the following.
 .. code::
 
 
-   [siddis14@amrndhl1157 buildtest-framework]$ buildtest --diff-trees /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all,/clust/app/easybuild/2018/SkyLake/redhat/7.3/modules/all
+   [siddis14@amrndhl1157 buildtest-framework]$ buildtest module --diff-trees /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all,/clust/app/easybuild/2018/SkyLake/redhat/7.3/modules/all
    No difference found between module tree:  /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all and module tree: /clust/app/easybuild/2018/SkyLake/redhat/7.3/modules/all
 
-Module Load Testing (``buildtest --module-load-test``)
----------------------------------------------------------
+Module Load Testing (``buildtest module --module-load-test``)
+--------------------------------------------------------------
 
 .. Note:: This is an experimental feature
 
@@ -90,7 +88,7 @@ Let's start the test
 
 .. code::
 
-  [siddis14@amrndhl1228 buildtest-framework]$ buildtest --module-load-test
+  [siddis14@amrndhl1228 buildtest-framework]$ buildtest module --module-load-test
   STATUS: PASSED - Testing module: VNL-ATK/2016.4
   STATUS: PASSED - Testing module: anaconda2/4.2.0-chemistry
   STATUS: PASSED - Testing module: anaconda3/4.2.0-chemistry
@@ -117,7 +115,7 @@ of you have Hierarchical-Module-Naming-Scheme (HMNS) this may not work where som
 modules depend on other modules to be loaded in advance.
 
 You may specify multiple module trees in ``BUILDTEST_MODULE_ROOT`` for testing
-``buildtest --module-load-test`` but you may run module conflicts if two or more trees
+``buildtest module --module-load-test`` but you may run module conflicts if two or more trees
 consist of same module file. In that case, you may be testing module file that may
 be first in ``MODULEPATH``.
 

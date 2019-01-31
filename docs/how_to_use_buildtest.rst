@@ -1,6 +1,3 @@
-.. _How_to_use_BuildTest:
-
-
 How to use buildtest
 ====================
 
