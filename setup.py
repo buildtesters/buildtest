@@ -1,6 +1,6 @@
 ############################################################################
 #
-#  Copyright 2017-2018
+#  Copyright 2017-2019
 #
 #   https://github.com/HPC-buildtest/buildtest-framework
 #
@@ -21,11 +21,13 @@
 #############################################################################
 
 
-"""
-@author: Shahzeb Siddiqui (Pfizer)
-"""
 
 from setuptools import setup, find_packages
+
+import os
+import sys
+sys.path.insert(0, os.path.abspath('src'))
+
 from buildtest.tools.config import BUILDTEST_VERSION
 
 setup(name='buildtest-framework',
@@ -49,7 +51,7 @@ setup(name='buildtest-framework',
        packages=find_packages(),
        include_package_data=True,
        scripts = [
-        '_buildtest',
+        'buildtest',
        ],
        install_requires = [
             "argcomplete",

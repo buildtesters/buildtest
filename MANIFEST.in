@@ -1,6 +1,7 @@
-recursive-include buildtest *
+recursive-include src *
 graft template
-include _buildtest
-include CONTRIBUTING.md
+include buildtest
+include CONTRIBUTING.rst
 include README.rst
 include setup.py
+include settings.yml
