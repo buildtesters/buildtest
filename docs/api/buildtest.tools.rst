@@ -11,174 +11,28 @@ Subpackages
 Submodules
 ----------
 
-buildtest.tools.benchmark module
---------------------------------
+.. toctree::
 
-.. automodule:: buildtest.tools.benchmark
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.build module
-----------------------------
-
-.. automodule:: buildtest.tools.build
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.cmake module
-----------------------------
-
-.. automodule:: buildtest.tools.cmake
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.config module
------------------------------
-
-.. automodule:: buildtest.tools.config
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.easybuild module
---------------------------------
-
-.. automodule:: buildtest.tools.easybuild
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.file module
----------------------------
-
-.. automodule:: buildtest.tools.file
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.find module
----------------------------
-
-.. automodule:: buildtest.tools.find
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.list module
----------------------------
-
-.. automodule:: buildtest.tools.list
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.log module
---------------------------
-
-.. automodule:: buildtest.tools.log
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.menu module
----------------------------
-
-.. automodule:: buildtest.tools.menu
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.modules module
-------------------------------
-
-.. automodule:: buildtest.tools.modules
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.ohpc module
----------------------------
-
-.. automodule:: buildtest.tools.ohpc
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.options module
-------------------------------
-
-.. automodule:: buildtest.tools.options
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.print\_functions module
----------------------------------------
-
-.. automodule:: buildtest.tools.print_functions
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.run module
---------------------------
-
-.. automodule:: buildtest.tools.run
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.scan module
----------------------------
-
-.. automodule:: buildtest.tools.scan
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.software module
--------------------------------
-
-.. automodule:: buildtest.tools.software
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.system module
------------------------------
-
-.. automodule:: buildtest.tools.system
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.utility module
-------------------------------
-
-.. automodule:: buildtest.tools.utility
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.version module
-------------------------------
-
-.. automodule:: buildtest.tools.version
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.yaml module
----------------------------
-
-.. automodule:: buildtest.tools.yaml
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
+   buildtest.tools.build
+   buildtest.tools.cmake
+   buildtest.tools.config
+   buildtest.tools.easybuild
+   buildtest.tools.file
+   buildtest.tools.find
+   buildtest.tools.list
+   buildtest.tools.log
+   buildtest.tools.menu
+   buildtest.tools.modules
+   buildtest.tools.ohpc
+   buildtest.tools.options
+   buildtest.tools.print_functions
+   buildtest.tools.run
+   buildtest.tools.scan
+   buildtest.tools.software
+   buildtest.tools.system
+   buildtest.tools.utility
+   buildtest.tools.version
+   buildtest.tools.yaml
 
 Module contents
 ---------------

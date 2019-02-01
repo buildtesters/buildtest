@@ -20,7 +20,7 @@ help:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 apidocs:
-	sphinx-apidoc -f -o api ../buildtest
+	sphinx-apidoc -f -e  -o api ../src/buildtest
 
 view:
 	firefox _build/html/index.html

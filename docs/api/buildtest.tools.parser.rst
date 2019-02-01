@@ -4,22 +4,10 @@ buildtest.tools.parser package
 Submodules
 ----------
 
-buildtest.tools.parser.functions module
----------------------------------------
+.. toctree::
 
-.. automodule:: buildtest.tools.parser.functions
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-buildtest.tools.parser.yaml\_config module
-------------------------------------------
-
-.. automodule:: buildtest.tools.parser.yaml_config
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
+   buildtest.tools.parser.functions
+   buildtest.tools.parser.yaml_config
 
 Module contents
 ---------------

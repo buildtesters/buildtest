@@ -6,20 +6,9 @@ Subpackages
 
 .. toctree::
 
+    buildtest.benchmark
     buildtest.test
     buildtest.tools
-
-Submodules
-----------
-
-buildtest.main module
----------------------
-
-.. automodule:: buildtest.main
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------
