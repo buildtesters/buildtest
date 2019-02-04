@@ -106,8 +106,6 @@ def menu():
     parser_build.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=toolchain_list, metavar='INSTALLED-SOFTWARE-TOOLCHAINS')
     parser_build.add_argument("-p", "--package", help=" Build test for system packages", choices=pkglist, metavar='SYSTEM-PACKAGE')
     parser_build.add_argument("--prepend-modules", help= "Prepend modules in test script prior to loading application module. Use this option with Hierarchical Module Naming Scheme", choices=software_list,  metavar='INSTALLED-SOFTWARE',action="append", default=[])
-    parser_build.add_argument("--all-package", help="build tests for all system packages from buildtest repository ", action="store_true")
-    parser_build.add_argument("--all-software", help="build tests for all software from buildtest repository ", action="store_true")
     parser_build.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES)
     parser_build.add_argument("-b", "--binary", help="Conduct binary test for a package", action="store_true")
     parser_build.add_argument("--python-package", help="build test for Python packages", choices=python_choices,metavar='PYTHON-PACKAGES')

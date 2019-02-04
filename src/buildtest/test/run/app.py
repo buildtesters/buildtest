@@ -23,7 +23,7 @@
 """
 
 This module will run an entire test suite for an application. This implements
-_buildtest run --app
+_buildtest run --software
 
 """
 
@@ -112,9 +112,9 @@ def run_app_test(app_name):
     print("==============================================================")
     print("                         Test summary                         ")
     print("Application: ", app_name)
-    print(f"Executed {count_test} tests")
-    print(f"Passed Tests: {passed_test}    Percentage: {passed_test*100/count_test}%")
-    print(f"Failed Tests: {failed_test}    Percentage: {failed_test*100/count_test}%")
+    print("Executed " + str(count_test) + " tests")
+    print("Passed Tests: " + str(passed_test) +  " Percentage: " + str(passed_test*100/count_test) + "%")
+    print("Failed Tests: " + str(failed_test) + "  Percentage: " + str(failed_test*100/count_test) + "%")
 
     actual_ratio = passed_test/count_test
     success_threshold = float(config_opts['BUILDTEST_SUCCESS_THRESHOLD'])

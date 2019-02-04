@@ -38,7 +38,7 @@ def systempkg_menu(systempkg):
     try:
         dirs = [ d for d in os.listdir(systempkg) if os.path.isdir(os.path.join(systempkg,d)) ]
     except OSError as err_msg:
-        print(f"{err_msg}")
+        print(err_msg)
         raise
 
     while True:

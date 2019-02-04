@@ -37,5 +37,5 @@ def check_ohpc():
 
     ret_code = ret.returncode
     if ret_code != 0:
-        print(f"This system is not configured with OpenHPC. Package {packages_required} is not installed.")
+        print("This system is not configured with OpenHPC. Package " + packages_required + " is not installed.")
         sys.exit(0)

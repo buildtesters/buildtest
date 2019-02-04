@@ -45,7 +45,7 @@ def create_file(filename):
             logger.debug("Creating File: %s", filename)
             fd.close()
         except OSError as err:
-            print (f"{err}")
+            print (err)
 
 def create_dir(dirname):
     """Create directory if it doesn't exist"""
@@ -55,7 +55,7 @@ def create_dir(dirname):
             os.makedirs(dirname)
             logger.debug("Creating Directory: %s", dirname)
         except OSError as err:
-            print (f"{err}")
+            print (err)
             raise
 
 def string_in_file(string,filename):

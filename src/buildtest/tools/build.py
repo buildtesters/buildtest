@@ -80,18 +80,6 @@ def func_build_subcmd(args):
     create_dir(logdir)
     create_dir(testdir)
 
-    if args.all_package:
-        packages = os.listdir(os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest","system"))
-        for pkg in packages:
-            generate_binary_test(pkg,"systempackage")
-
-    if args.all_software:
-        app_list = get_software_stack()
-        for app in app_list:
-            config_opts["BUILDTEST_SOFTWARE"] = app
-            config_opts["BUILDTEST_TOOLCHAIN"] = None
-            generate_binary_test(app,"software")
-
     if args.package:
         func_build_system(args.package, logger, logdir, logpath, logfile)
     elif args.software:

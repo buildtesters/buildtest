@@ -59,7 +59,7 @@ try:
     config_opts['BUILDTEST_VERSION'] = BUILDTEST_VERSION
 
 except FileNotFoundError as err_msg:
-    print(f"{err_msg}")
+    print(err_msg)
     raise
 
 #global logID

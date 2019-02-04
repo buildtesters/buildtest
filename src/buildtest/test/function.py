@@ -44,4 +44,4 @@ def clean_tests():
         shutil.rmtree(BUILDTEST_TESTDIR)
         print ("Removing test directory ", BUILDTEST_TESTDIR)
     except OSError as err_msg:
-        print(f"{err_msg}")
+        print(err_msg)

@@ -55,7 +55,7 @@ add_subdirectory(""" + BUILDTEST_TESTDIR + ")"
         fd.write(header)
         fd.close()
     except FileNotFoundError as err_msg:
-        print(f"{err_msg}")
+        print(err_msg)
         raise
 
 

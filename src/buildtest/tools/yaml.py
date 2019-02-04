@@ -30,9 +30,6 @@ import yaml
 from datetime import datetime
 
 from buildtest.tools.config import config_opts
-from buildtest.tools.file import create_dir
-from buildtest.tools.software import get_unique_software, get_software_stack, get_toolchain_stack, get_binaries_from_application
-from buildtest.tools.system import check_system_package_installed, get_binaries_from_systempackage, systempackage_installed_list
 from buildtest.tools.ohpc import check_ohpc
 
 def func_yaml_subcmd(args):
@@ -42,66 +39,4 @@ def func_yaml_subcmd(args):
         check_ohpc()
         config_opts["BUILDTEST_OHPC"]=True
 
-    if args.software:
-        create_software_yaml(args.software, args.rebuild, args.overwrite)
-
     sys.exit(0)
-
-
-def create_software_yaml(module_name, rebuild=False, overwrite=False):
-    """ create yaml configuration for software packages """
-
-    binary = get_binaries_from_application(module_name)
-    # get_binary_from_application return None if there are no binaries found in application.
-    if binary == None:
-        return
-    toolchain_stack = get_toolchain_stack()
-    toolchain_name = [name.split("/")[0] for name in toolchain_stack]
-    # get module version
-    module_version = module_name.split("/")[1]
-    # remove any toolchain from module version when figuring path to yaml file
-    for tc in toolchain_name:
-        idx = module_version.find(tc)
-
-        if idx != -1:
-            module_name = module_name.split("/")[0] + "/" + module_version[0:idx-1]
-
-
-
-
-    lowercase_module_name = module_name.lower()
-
-    if config_opts["BUILDTEST_OHPC"]:
-        destdir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/ohpc",lowercase_module_name)
-    else:
-        destdir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'],lowercase_module_name)
-
-    yamlfile = os.path.join(destdir,"command.yaml")
-    # if yaml file exists and --rebuild, --overwrite is not specified then do nothing and return from method
-    if os.path.isfile(yamlfile) and not rebuild and not overwrite:
-        print(f"File already exist: {yamlfile}")
-        return
-    # if yaml file exist and --rebuild is specified.
-    elif os.path.isfile(yamlfile) and rebuild and not overwrite:
-        yamlfile = os.path.join(destdir, datetime.now().strftime("command_%H_%M_%d_%m_%Y.yaml"))
-    elif os.path.isfile(yamlfile) and overwrite:
-        print(f"Overwriting content of yaml file: {yamlfile}")
-
-
-    # if directory is not present then create it
-    create_dir(destdir)
-
-    binary_list = []
-
-    [binary_list.extend(["which " + value]) for value in binary.values()]
-    binarydict = { "binaries": binary_list }
-
-    fd = open(yamlfile,"w")
-    description = {"description": "Binary test for " + module_name}
-    yaml.dump(description,fd,default_flow_style=False)
-
-
-    with open(yamlfile, 'a') as outfile:
-        yaml.dump(binarydict, outfile, default_flow_style=False)
-
-    print ("Please check YAML file ", yamlfile, " and fix test accordingly")

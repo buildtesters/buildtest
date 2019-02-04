@@ -100,7 +100,7 @@ def parse_config(filename,codedir="/"):
 
     # terminate early if description field is not found in yaml configuration
     if "description" not in content:
-        print(f"Missing YAML field: description in file {filename}")
+        print("Missing YAML field: description in file " + filename)
         sys.exit(0)
 
     for key in content:
