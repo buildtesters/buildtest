@@ -31,7 +31,7 @@ import sys
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.easybuild import get_toolchains, find_easyconfigs
-from buildtest.tools.print_functions import print_software, print_toolchain, print_software_version_relation, print_software_version_relation_csv
+from buildtest.tools.print_functions import print_software, print_toolchain, print_software_version_relation
 from buildtest.tools.software import get_unique_software, software_version_relation
 
 def func_list_subcmd(args):
@@ -53,6 +53,7 @@ def func_list_subcmd(args):
 def buildtest_software_list(format="stdout"):
     """ list software packages found in buildtest repository """
     root = config_opts["BUILDTEST_CONFIGS_REPO_SOFTWARE"]
+    print (root)
     dir = os.listdir(root)
     choices = []
 
@@ -67,37 +68,38 @@ def buildtest_software_list(format="stdout"):
 
                     choices.append(os.path.join(parent,child))
     choices = sorted(choices)
-    if format=="stdout":
-        print_software(choices)
-    elif format=="json":
+    if format=="json":
         json.dump(choices, sys.stdout, indent=4, sort_keys=True)
+    elif format=="json":
+        print_software(choices)
 
 def list_toolchain(args):
     """ implementation for  "buildtest list -lt" """
     toolchain_set=get_toolchains()
-    if args.format == "stdout":
-        print_toolchain(toolchain_set)
-    elif args.format == "json":
+    if args.format == "json":
         json.dump(toolchain_set, sys.stdout, indent=4, sort_keys=True)
-
+    else:
+        print_toolchain(toolchain_set)
 
 def list_software(args):
     """ implementation for  "buildtest list -ls" """
     software_set=get_unique_software()
 
-    if args.format == "stdout":
-        print_software(software_set)
-    elif args.format == "json":
+    if args.format == "json":
         json.dump(software_set, sys.stdout, indent=4, sort_keys=True)
+    else:
+        print_software(software_set)
+
 
 
 def list_software_version_relation(args):
     """ implementation for  "buildtest list -svr" """
     software_dict = software_version_relation()
 
-    if args.format == "stdout":
+    if args.format == "json":
+        json.dump(software_dict, sys.stdout, indent=4, sort_keys=True)
+    else:
         print_software_version_relation(software_dict)
-    elif args.format == "csv":
-        print_software_version_relation_csv(software_dict)
+
 
     sys.exit(0)

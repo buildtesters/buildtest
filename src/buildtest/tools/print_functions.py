@@ -29,19 +29,6 @@ from collections import OrderedDict
 from operator import itemgetter
 from buildtest.tools.utility import sset
 
-def print_software_version_relation_csv(software_dict):
-    """ print output of "buildtest list -svr" in json"""
-    filename = "software_list.csv"
-    with open(filename,'w',newline='') as csvfile:
-        fieldnames = ['software','modulefile' ]
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        keylist = software_dict.keys()
-        keylist = sorted(keylist)
-        for key in keylist:
-            writer.writerow({"software": software_dict[key], "modulefile": key})
-        print (f"Writing content to CSV file: {os.path.abspath(filename)}")
-
 def print_software_version_relation(software_dict):
     """print output of "buildtest list -svr" """
     text = """

@@ -85,7 +85,7 @@ def menu():
     parser_list.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
     parser_list.add_argument("-ec","--easyconfigs", help="Return a list of easyconfigs from a easybuild module tree",action="store_true")
     parser_list.add_argument("-bs", "--buildtest-software", help="list buildtest software found in buildtest repository",action="store_true")
-    parser_list.add_argument("--format", help="Output format type", choices=["csv", "json", "stdout"], default="stdout")
+    parser_list.add_argument("--format", help="Output format type", choices=["json"])
     parser_list.set_defaults(func=func_list_subcmd)
 
     # -------------------------------- find menu ---------------------------
