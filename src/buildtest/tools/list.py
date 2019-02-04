@@ -45,33 +45,8 @@ def func_list_subcmd(args):
         list_software(args)
     elif args.software_version_relation:
         list_software_version_relation(args)
-    elif args.buildtest_software:
-        buildtest_software_list(args.format)
 
     sys.exit(0)
-
-def buildtest_software_list(format="stdout"):
-    """ list software packages found in buildtest repository """
-    root = config_opts["BUILDTEST_CONFIGS_REPO_SOFTWARE"]
-    print (root)
-    dir = os.listdir(root)
-    choices = []
-
-    for root, dirs, files in os.walk(root):
-        for dir in dirs:
-            if os.path.isdir(os.path.join(root,dir)):
-                abs_dir_path = os.path.join(root,dir)
-                child = os.path.basename(abs_dir_path)
-                parent = os.path.basename(os.path.dirname(abs_dir_path))
-
-                if parent != "ebapps":
-
-                    choices.append(os.path.join(parent,child))
-    choices = sorted(choices)
-    if format=="json":
-        json.dump(choices, sys.stdout, indent=4, sort_keys=True)
-    elif format=="json":
-        print_software(choices)
 
 def list_toolchain(args):
     """ implementation for  "buildtest list -lt" """

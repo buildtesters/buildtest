@@ -1,4 +1,4 @@
-usage: buildtest [options] list [-h] [-lt] [-ls] [-svr] [-ec] [-bs] [--format {csv,json,stdout}]
+usage: buildtest [options] list [-h] [-lt] [-ls] [-svr] [-ec] [--format {json}]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -9,7 +9,4 @@ optional arguments:
   -svr, --software-version-relation
                         retrieve a relationship between software and version found in module files
   -ec, --easyconfigs    Return a list of easyconfigs from a easybuild module tree
-  -bs, --buildtest-software
-                        list buildtest software found in buildtest repository
-  --format {csv,json,stdout}
-                        Output format type
+  --format {json}       Output format type

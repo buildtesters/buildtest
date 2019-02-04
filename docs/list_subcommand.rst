@@ -74,34 +74,13 @@ If an easyconfig is not found you may get the following message
 
     Could not find easyconfig in /clust/app/easybuild/2018/IvyBridge/redhat/7.3/software/NWChem/6.8.revision47-intel-2018a-2017-12-14-Python-2.7.14/easybuild
 
-Listing buildtest software (``buildtest list --buildtest-software``)
-----------------------------------------------------------------------
-
-buildtest can report the software packages supported by buildtest which are found in
-BUILDTEST_CONFIGS_REPO
-
-.. program-output:: head -n 15 scripts/list_subcommand/buildtest_software.txt
-
 
 Formatting output (``buildtest list --format``)
 ------------------------------------------------------
 
 buildtest provides ``--format`` option to control output behavior of ``buildtest list``.
-You may let buildtest output to standard output which is the default behavior if
-you select ``--format=stdout``.
+Currently, buildtest only supports json format that can be passed using ``--format=json``
 
-buildtest also supports json and csv output, where ``--format=json`` and ``--format=csv``
-will output result in json or csv format.
-
-Let's run ``buildtest list -ls --format=stdout``
-
-.. program-output:: cat scripts/list_subcommand/software_format_stdout.txt
-
-buildtest will write content of csv to file. Let's run ``buildtest list -svr --format=csv``
-
-.. program-output:: cat scripts/list_subcommand/software_format_csv.txt
-
-.. program-output:: head scripts/list_subcommand/software_list.csv
 
 To print output in json let's run ``buildtest list -ls --format=json``
 
