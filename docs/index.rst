@@ -48,6 +48,7 @@ Subcommands
    module_subcommand.rst
    build_subcommand.rst
    run_subcommand.rst
+   benchmark_subcommand.rst
    yaml_subcommand.rst
 
 
