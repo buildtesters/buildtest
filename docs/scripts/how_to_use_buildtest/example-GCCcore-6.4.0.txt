@@ -1,14 +1,7 @@
 Detecting Software:  GCCcore/6.4.0
 --------------------------------------------
-[STAGE 1]: Building Binary Tests
---------------------------------------------
-Detecting Test Type: Software
-Processing Binary YAML configuration:  /home/siddis14/github/buildtest-configs/buildtest/ebapps/gcccore/6.4.0/command.yaml
-Generating  10  binary tests
-Binary Tests are written in  /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/
---------------------------------------------
 [STAGE 2]: Building Source Tests
 --------------------------------------------
 Processing all YAML files in directory:  /home/siddis14/github/buildtest-configs/buildtest/source/gcccore/config
-Generating 22  Source Tests and writing at  /tmp/buildtest-tests/ebapp/GCCcore/6.4.0/
-Writing Log file:  /tmp/buildtest/GCCcore/6.4.0/buildtest_15_10_26_10_2018.log
+Generating 22  Source Tests and writing at  /tmp/buildtest/tests/ebapp/GCCcore/6.4.0/
+Writing Log file:  /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_22_08_03_02_2019.log

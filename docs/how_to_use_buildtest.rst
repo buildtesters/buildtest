@@ -23,7 +23,7 @@ Building the Test
 
 Whenever you want to build a test, check your module environment (``module av``) to find out what software package
 exist on your system. Let's build test for ``GCCcore/6.4.0`` module using buildtest by running
-``_buildtest build -s GCCcore/6.4.0``
+``buildtest build -s GCCcore/6.4.0``
 
 .. program-output:: cat scripts/how_to_use_buildtest/example-GCCcore-6.4.0.txt
 
@@ -32,7 +32,9 @@ Running The Test
 -----------------
 
 You can run the in several ways. The easiest way to run the test is via buildtest
-using ``_buildtest run -a GCCcore/6.4.0``
+using ``buildtest run -s GCCcore/6.4.0``
+
+Here is the output of the following test
 
 .. program-output:: cat scripts/how_to_use_buildtest/run-GCCcore-6.4.0.txt
 
@@ -48,30 +50,27 @@ following.
 
 ::
 
-    (buildtest-0.5.0) [siddis14@adwnode1 buildtest-framework]$ buildtest
-    build               -fc                 -ft                 list                run                 --show-keys         --version
-    --clean-logs        --findconfig        -h                  --logdir            --scantest          --submitjob         yaml
-    --diff-trees        --findtest          --help              --module-load-test  --show              -V
+    (siddis14-TgVBs13r) buildtest-framework[master !?] $ buildtest
+    benchmark     --clean-logs  -h            list          module        --scantest    --show-keys   -V            yaml
+    build         find          --help        --logdir      run           --show        --submitjob   --version
 
 
 .. Note:: You will need to press the TAB key few times before it shows all the
-   args
+   arguments
 
-TAB completion works for choice parameters on options: ``--shell``, ``--software``,
-``--toolchain``, ``--package``, ``--python-package``, ``--perl-package``, ``--r-package``,
-``--ruby-package``, ``--testname``,
+TAB completion works for all options and sub-menu
 
-TAB complete on ``buildtest build --software``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TAB completion on  software
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-TAB complete on ``_buildtest build --software`` option will present all unique
+TAB completiont works on ``buildtest build --software`` option will present all unique
 software found in module tree defined by ``BUILDTEST_MODULE_ROOT``
 
 
 ::
 
-    (buildtest) [siddis14@adwnode1 buildtest-framework]$ _buildtest build --software
+    (buildtest) [siddis14@adwnode1 buildtest-framework]$ buildtest build --software
     Display all 125 possibilities? (y or n)
     Autoconf/2.69-GCCcore-6.4.0                                 GROMACS/2016.5-intel-2018a                                  ncurses/6.0
     Automake/1.15.1-GCCcore-6.4.0                               GSL/2.4-GCCcore-6.4.0                                       ncurses/6.0-GCCcore-6.4.0
@@ -81,7 +80,7 @@ software found in module tree defined by ``BUILDTEST_MODULE_ROOT``
     binutils/2.28                                               help2man/1.47.4-GCCcore-6.4.0                               NLopt/2.4.2-intel-2018a
    --More--
 
-TAB complete on ``buildtest build --toolchain``
+TAB complete on toolchains
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 TAB completion on ``buildtest build --toolchain`` will present all
@@ -94,26 +93,23 @@ easybuild toolchains installed in the software stack
     GCC/6.4.0-2.28                      gompi/2018a                         iimpi/2018a
 
 
-TAB complete on ``buildtest build --package``
+TAB complete on system packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TAB completion on ``_buildtest build --package`` will display all the system package that have a yaml
-file typically found in directory ``$BUILDTEST_CONFIGS_REPO/buildtest/system`` directory.
+TAB completion on building tests for system package works (i.e ``buildtest build --package``).
+The output will display all the system package found in your system
+
 
 ::
 
-    (buildtest) [siddis14@adwnode1 buildtest-framework]$ buildtest build --package
-    acl                  CentrifyDC-openssh   file                 git                  ncurses              powertop             sed                  util-linux           zip
-    at                   chrony               firefox              htop                 numactl              procps-ng            singularity-runtime  wget
-    atop                 coreutils            gcc                  hwloc                openssh-clients      python               strace               which
-    binutils             curl                 gcc-c++              iptables             perl                 rpm                  systemd              xz
-    bzip2                diffstat             gcc-gfortran         ltrace               pinfo                ruby                 time                 yum
+    (siddis14-TgVBs13r) buildtest-framework[master !?] $ buildtest build -p
+    Display all 2238 possibilities? (y or n)
 
 
-TAB completion on ``_buildtest run --testname``
+TAB completion on ``buildtest run --testname``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can run individual test via buildtest using ``--testname`` option and this supports
+You can run individual test via buildtest using ``buildtest run --testname`` option and this supports
 tab completion.
 
 ::
@@ -134,7 +130,7 @@ TAB completion on ``buildtest run --software``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 TAB completion works on ``buildtest run --software`` which return a list of software
-you can run tests that were generated by ``_buildtest build -s <module>``
+you can run tests that were generated by ``buildtest build -s <module>``
 
 ::
 
@@ -152,7 +148,7 @@ system package you can run tests that were generated by ``buildtest build --pack
 
 ::
 
-    (buildtest) [siddis14@adwnode1 buildtest-framework]$ _buildtest run --package
+    (buildtest) [siddis14@adwnode1 buildtest-framework]$ buildtest run --package
     acl        at         atop       binutils   bzip2      chrony     coreutils  curl       gcc        wget
 
 
@@ -161,7 +157,7 @@ System Package Test
 
 buildtest can generate tests for system packages using the option
 ``buildtest build --package <package>``. Currently, system package test only
-perform santiy check against binaries found in the system. The framework will automatically generate
+perform sanity check against binaries found in the system. The framework will automatically generate
 binary test by checking the system default paths i.e ``/usr/bin``, ``/usr/local/bin``, ``/usr/sbin``.
 
 For instance to build test for the system package ``gcc`` you can do the following
