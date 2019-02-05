@@ -34,41 +34,165 @@ import subprocess
 from stat import S_IXUSR, S_IXGRP, S_IXOTH
 from buildtest.tools.config import config_opts, logID
 
-system = {}
+class BuildTestCommand():
+    ret = []
+    out = ""
+    err = ""
+    def execute(self,cmd):
+        """ execute a system command and return output and error"""
+        self.ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        (self.out,self.err) = self.ret.communicate()
+        self.out = self.out.decode("utf-8")
+        self.err = self.err.decode("utf-8")
+        return (self.out,self.err)
+    def which(self,cmd):
+        """ run which against the command """
+        which_cmd = "which " + cmd
+        self.ret = subprocess.Popen(which_cmd,shell=True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        (self.out,self.err) = self.ret.communicate()
+        self.out = self.out.decode("utf-8")
+        self.err = self.err.decode("utf-8")
+        return (self.out,self.err)
+    def returnCode(self):
+        return self.ret.returncode
+    def get_output(self):
+        return self.out
+    def get_error(self):
+        return self.err
 
-def check_system_package_installed(pkg):
-    """ check if system package is installed and return True/False"""
+class BuildTestSystem():
+    system = {}
 
-    cmd = ""
-    os_type = get_os_name()
-    if os_type == "RHEL":
-        cmd = "rpm -q " + pkg
+    def __init__(self):
+        """ checking site configuration """
 
-    ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-    ret.communicate()
+        self.system["OS_NAME"] = platform.linux_distribution()[0]
+        self.system["OS_VERSION"] = platform.linux_distribution()[1]
+        self.system["SYSTEM"] = platform.system()
+        self.system["KERNEL_RELEASE"] = platform.release()
+        self.system["PROCESSOR_FAMILY"] = platform.processor()
+        self.system["HOSTNAME"] = platform.node()
+        self.system["PYTHON_VERSION"] = platform.python_version()
+        self.system["PLATFORM"] = platform.platform()
+        self.system["LIBC_VERSION"] = platform.libc_ver()[1]
+        self.system["SCHEDULER"] = self.check_scheduler()
+        if self.system["SYSTEM"] == 'Linux':
+            #logger.debug("Trying to determine total memory size on Linux via /proc/meminfo")
+            meminfo = open('/proc/meminfo').read()
+            mem_mo = re.match(r'^MemTotal:\s*(\d+)\s*kB', meminfo, re.M)
+            if mem_mo:
+                self.system["MEMORY_TOTAL"] = int(mem_mo.group(1)) / 1024
 
-    if ret.returncode == 0:
-        return True
-    else:
-        print ("Please install system package: %s  before creating YAML file",pkg)
-        sys.exit(1)
+        cmd = BuildTestCommand()
+        cmd.execute("env")
+        self.system["ENV"] = cmd.get_output()
+
+        cmd.which("python")
+        self.system["PYTHON"]= cmd.get_output()
+
+        if self.system["SCHEDULER"] == "LSF":
+            self.get_lsf_configuration()
+        if self.system["SCHEDULER"] == "SLURM":
+            self.get_slurm_configuration()
+
+
+    def get_lsf_configuration(self):
+        """ return lsf queues and compute nodes part of the LSF cluster"""
+        cmd = BuildTestCommand()
+        query = """ bqueues | cut -d " " -f 1 """
+
+        cmd.execute(query)
+        out = cmd.get_output()
+
+        queue_names = out.split("\n")
+        # remove the first and last entry. First entry is just header and last entry is empty string
+        del queue_names[0]
+        del queue_names[-1]
+
+
+        self.system["QUEUES"] = queue_names
+
+        query = """ bhosts -w | cut -d " " -f 1 """
+        cmd.execute(query)
+        out = cmd.get_output()
+
+        compute_nodes =  out.split("\n")
+        del compute_nodes[0]
+        del compute_nodes[-1]
+
+        self.system["COMPUTENODES"] = compute_nodes
+
+    def get_slurm_configuration(self):
+        """ return slurm queues and compute nodes part of the SLURM cluster"""
+        pass
+
+    def check_scheduler(self):
+        """ check for batch scheduler"""
+        lsf_cmd = BuildTestCommand()
+        lsf_cmd.execute("bhosts")
+        lsf_ec_code = lsf_cmd.returnCode()
+
+        slurm_cmd = BuildTestCommand()
+        slurm_cmd.execute("sinfo")
+        slurm_ec_code = slurm_cmd.returnCode()
+
+        if lsf_ec_code == 0:
+            return "LSF"
+        if slurm_ec_code == 0:
+            return "SLURM"
+
+        return None
+
+    def check_system_requirements(self):
+        """ checking system requirements"""
+        req_pass=True
+        # If system is not Linux
+
+        if self.system["SYSTEM"] != "Linux":
+            req_pass=False
+
+        # Check if LMOD_CMD is defined which is an environment variable set typically if LMOD is installed
+        # There are many ways to check if Lmod is installed
+        lmod_dir = os.getenv("LMOD_CMD")
+
+        if lmod_dir == None:
+            req_pass=False
+
+        if self.system["OS_NAME"] != "Red Hat Enterprise Linux Server":
+            req_pass=False
+
+        if self.system["SCHEDULER"] == None:
+            req_pass=False
+
+        if not req_pass:
+            msg = """
+System Requirements not satisfied.
+
+Requirements:
+1. System must be Linux
+2. Lmod must be installed
+3. Operating System: RHEL
+4. Scheduler must be LSF or SLURM
+"""
+            print(msg)
+            sys.exit(1)
+
+
+
 
 def get_binaries_from_systempackage(pkg):
     """ get binaries from system package that typically install in standard linux path and only those that are executable """
 
     bindirs = [ "/usr/bin", "/bin", "/sbin", "/usr/sbin", "/usr/local/bin", "/usr/local/sbin" ]
-    cmd = ""
-    os_type = get_os_name()
-    if os_type == "RHEL":
-        cmd = "rpm -ql " + pkg
-
-    ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-    output = ret.communicate()[0].decode("utf-8")
+    cmd = BuildTestCommand()
+    query = "rpm -ql " + pkg
+    cmd.execute(query)
+    output = cmd.get_output()
 
     temp = output.splitlines()
     output = temp
 
-    binaries = {}
+    binaries = []
 
     for file in output:
         # if file doesn't exist but found during rpm -ql then skip file.
@@ -78,16 +202,9 @@ def get_binaries_from_systempackage(pkg):
         # check only files that are executable
         statmode = os.stat(file)[stat.ST_MODE] & (stat.S_IXUSR|stat.S_IXGRP|stat.S_IXOTH)
 
-        ret = subprocess.Popen("sha256sum " + file, shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-        output = ret.communicate()[0].decode("utf-8")
-
-        sha256sum = output.split(" ")[0]
-
         # only add executable files found in array bindirs
         if statmode and os.path.dirname(file) in bindirs and not os.path.islink(file):
-            # only add binaries with unique sha256 sum
-            if sha256sum not in binaries.keys():
-                binaries[sha256sum] = file
+            binaries.append(file)
 
     if len(binaries) == 0:
         print ("There are no binaries found in package: ", pkg)
@@ -97,67 +214,14 @@ def get_binaries_from_systempackage(pkg):
 
 def systempackage_installed_list():
     """return a list of installed system packages in a machine"""
-    cmd = ""
-    os_type = get_os_name()
 
-    if os_type == 'RHEL':
-        cmd = """ rpm -qa --qf "%{NAME}\n" """
+    cmd = BuildTestCommand()
+    query = """ rpm -qa --qf "%{NAME}\n" """
+    cmd.execute(query)
+    pkglist = cmd.get_output()
 
-    ret = subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE)
-    output = ret.communicate()[0].decode("utf-8")
-    pkglist = output.split("\n")
+    pkglist = pkglist.split("\n")
 
-    # delete last element which is a ""
-    pkglist = pkglist[:-1]
+    # delete last element which is an empty string
+    del pkglist[-1]
     return pkglist
-
-def get_os_name():
-    """ Return Operating System Name"""
-    os_name = platform.linux_distribution()[0].strip().lower()
-
-    os_name_map = {
-        'red hat enterprise linux server': 'RHEL',
-        'scientific linux sl': 'SL',
-        'scientific linux': 'SL',
-        'suse linux enterprise server': 'SLES',
-    }
-
-    if os_name:
-        return os_name_map.get(os_name, os_name)
-    else:
-        return UNKNOWN
-
-def command_path(cmd):
-    """return full path of a linux command"""
-    find_cmd = "which " + cmd
-    ret = subprocess.Popen(find_cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    output = ret.communicate()[0].decode("utf-8")
-    return output
-
-def get_env_snapshot():
-    """ return output of Linux command env  """
-    ret = subprocess.Popen("env",shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    output = ret.communicate()[0].decode("utf-8")
-    return output
-
-def get_system_info():
-    """ get system info and write in log file """
-
-    system["OS_NAME"] = platform.linux_distribution()[0]
-    system["OS_VERSION"] = platform.linux_distribution()[1]
-    system["SYSTEM"] = platform.system()
-    system["KERNEL_RELEASE"] = platform.release()
-    system["PROCESSOR_FAMILY"] = platform.processor()
-    system["HOSTNAME"] = platform.node()
-    system["PYTHON_VERSION"] = platform.python_version()
-    system["PLATFORM"] = platform.platform()
-    system["LIBC_VERSION"] = platform.libc_ver()[1]
-    system["PYTHON_ABSPATH"] = command_path("python")
-    system["ENV"] = get_env_snapshot()
-
-    if system == 'Linux':
-        logger.debug("Trying to determine total memory size on Linux via /proc/meminfo")
-        meminfo = open('/proc/meminfo').read()
-        mem_mo = re.match(r'^MemTotal:\s*(\d+)\s*kB', meminfo, re.M)
-        if mem_mo:
-            system["MEMORY_TOTAL"] = int(mem_mo.group(1)) / 1024

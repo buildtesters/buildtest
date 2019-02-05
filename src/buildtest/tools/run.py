@@ -31,7 +31,7 @@ from buildtest.test.run.interactive import runtest_menu
 from buildtest.test.run.app import run_app_choices
 from buildtest.test.run.system import run_system_choices
 from buildtest.tools.config import config_opts
-from buildtest.tools.system import system
+from buildtest.tools.system import BuildTestSystem
 
 
 def func_run_subcmd(args):
@@ -56,6 +56,7 @@ def func_run_subcmd(args):
 
 def write_system_info(fd,app_name=None,pkg_name=None):
     """ write system information into run file """
+    system = BuildTestSystem().system
     fd.write("-------------------------- SYSTEM INFO --------------------------------------\n")
     fd.write("Date:" + str(datetime.now()) + "\n")
     fd.write("buildtest version: " + config_opts["BUILDTEST_VERSION"] + "\n")
@@ -63,17 +64,6 @@ def write_system_info(fd,app_name=None,pkg_name=None):
         fd.write("Application:" + app_name + "\n")
     if pkg_name:
         fd.write("System Package:" + pkg_name + "\n")
-    fd.write("SYSTEM: " + system["SYSTEM"] + "\n")
-    fd.write("OPERATING SYSTEM: " + system["OS_NAME"] + "\n")
-    fd.write("OPERATING SYSTEM VERSION: " + system["OS_VERSION"] + "\n")
-    fd.write("KERNEL RELEASE: " + system["KERNEL_RELEASE"] + "\n")
-    fd.write("PROCESSOR FAMILY: " + system["PROCESSOR_FAMILY"] + "\n")
-    fd.write("PLATFORM: " + system["PLATFORM"] + "\n")
-    fd.write("GLIBC VERSION:" + system["LIBC_VERSION"] + "\n")
-    fd.write("HOSTNAME: " + system["HOSTNAME"] + "\n")
-    fd.write("PYTHON VERSION: " + system["PYTHON_VERSION"] + "\n")
-    fd.write("PYTHON ABSOLUTE PATH: " + system["PYTHON_ABSPATH"] + "\n")
-    fd.write("\n")
-    fd.write("----------------------------- ENV SNAPSHOT ----------------------------------\n")
-    fd.write(system["ENV"] + "\n")
-    fd.write("\n")
+
+    for key in system:
+        fd.write(key + ":" + str(system[key]) + "\n")        

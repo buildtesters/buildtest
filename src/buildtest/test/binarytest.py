@@ -106,7 +106,7 @@ def generate_binary_test(name,test_type=None):
         binary_tests = get_binaries_from_systempackage(name)
 
     count = 0
-    for key in binary_tests.values():
+    for key in binary_tests:
         count = count + 1
         name_str=key.replace(" ","_")
 

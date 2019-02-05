@@ -50,7 +50,7 @@ def run_testname(testname):
     fd.write("------------------------ START OF TEST -------------------------------------- \n")
 
 
-    print (f"Executing Test: {testname}")
+    print ("Executing Test: " + testname)
     ret = subprocess.Popen(testname,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     output = ret.communicate()[0].decode("utf-8")
     ret_code = ret.returncode

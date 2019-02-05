@@ -35,7 +35,9 @@ import sys
 from buildtest.tools.config import logID, config_opts
 from buildtest.tools.easybuild import get_toolchains
 from buildtest.tools.modules import get_module_list
+from buildtest.tools.system import BuildTestCommand
 from buildtest.tools.utility import sset
+
 
 
 def get_unique_software():
@@ -141,11 +143,14 @@ def ebyaml_choices():
 def get_binaries_from_application(module):
     """ return a list of binaries from $PATH variable defined in module file"""
 
-    cmd = "$LMOD_CMD bash show " + module
-    ret = subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    error,output = ret.communicate()
-    output = output.decode("utf-8")
+    cmd = BuildTestCommand()
+    query = "$LMOD_CMD bash show " + module
+    cmd.execute(query)
 
+    # output of $LMOD_CMD bash show  seems to be backward
+    output = cmd.get_error()
+
+    print (output)
     path_str = "prepend_path(\"PATH\","
 
     path_list = []
@@ -167,7 +172,8 @@ def get_binaries_from_application(module):
         print ("No $PATH set in your module ", module, "  so no possible binaries can be found")
         return None
 
-    binaries = {}
+    binaries = []
+
     for dir in path_list:
         # check for files only if directory exists
         for executable in os.listdir(dir):
@@ -179,15 +185,8 @@ def get_binaries_from_application(module):
             # check only files that are executable
             statmode = os.stat(executable_filepath)[stat.ST_MODE] & (stat.S_IXUSR|stat.S_IXGRP|stat.S_IXOTH)
 
-            # only add files that are executable
-            ret = subprocess.Popen("sha256sum " + executable_filepath, shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-            output = ret.communicate()[0].decode("utf-8")
-            sha256sum = output.split(" ")[0]
-
             # skip link files and check if file is executable
             if statmode and not os.path.islink(executable_filepath):
-                # only add binaries with unique sha256 sum
-                if sha256sum not in binaries.keys():
-                    binaries[sha256sum] = executable
+                binaries.append(executable)
 
     return binaries

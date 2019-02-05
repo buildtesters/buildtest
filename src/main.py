@@ -46,13 +46,16 @@ from buildtest.tools.config import show_configuration, config_opts
 from buildtest.tools.log import clean_logs
 from buildtest.tools.parser.yaml_config import show_yaml_keys
 from buildtest.tools.scan import scantest
-from buildtest.tools.system import get_system_info
+from buildtest.tools.system import BuildTestSystem
 from buildtest.tools.version import buildtest_version
+
+
 
 def main():
     """entry point to buildtest"""
+    buildtest_system = BuildTestSystem()
+    buildtest_system.check_system_requirements()
 
-    get_system_info()
 
     parser = menu()
 
