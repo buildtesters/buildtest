@@ -34,10 +34,6 @@ from buildtest.tools.software import get_software_stack
 from buildtest.test.function import clean_tests
 from buildtest.test.binarytest import generate_binary_test
 from buildtest.test.job import update_job_template
-from buildtest.test.perl import build_perl_package_test
-from buildtest.test.python import build_python_test
-from buildtest.test.r import build_r_package_test
-from buildtest.test.ruby import build_ruby_package_test
 from buildtest.test.sourcetest import recursive_gen_test
 from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.easybuild import is_easybuild_app
@@ -150,18 +146,6 @@ def func_build_software(args, logger, logdir, logpath, logfile):
 
     # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)
     recursive_gen_test(configdir,codedir)
-
-    if args.python_package:
-        build_python_test(args.python_package)
-
-    if args.r_package:
-        build_r_package_test(args.r_package)
-
-    if args.ruby_package:
-        build_ruby_package_test(args.ruby_package)
-
-    if args.perl_package:
-        build_perl_package_test(args.perl_package)
 
     # moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to $BUILDTEST_LOGDIR/app/appver/tcname/tcver/buildtest_%H_%M_%d_%m_%Y.log
     os.rename(logpath, os.path.join(logdir,logfile))

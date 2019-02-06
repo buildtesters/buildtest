@@ -7,17 +7,10 @@ buildtest is composed of the following repositories
 
 - `buildtest-framework`_ : buildtest framework and documentation (``https://buildtest.readthedocs.io/en/latest/``)
 - `buildtest-configs`_ : buildtest yaml configurations
-- `Python-buildtest-config`_ : Python repository for python packages
-- `Perl-buildtest-config`_ : Perl repository for perl packages
-- `Ruby-buildtest-config`_ : Ruby repository for ruby packages
-- `R-buildtest-config`_ : R repository for R packages
 
 .. _buildtest-framework: https://github.com/HPC-buildtest/buildtest-framework
 .. _buildtest-configs: https://github.com/HPC-buildtest/buildtest-configs
-.. _Python-buildtest-config: https://github.com/HPC-buildtest/Python-buildtest-config
-.. _Perl-buildtest-config: https://github.com/HPC-buildtest/Perl-buildtest-config
-.. _R-buildtest-config: https://github.com/HPC-buildtest/R-buildtest-config
-.. _Ruby-buildtest-config: https://github.com/HPC-buildtest/Ruby-buildtest-config
+
 
 Reporting an Issue
 -------------------

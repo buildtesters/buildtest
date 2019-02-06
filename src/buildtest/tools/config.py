@@ -66,7 +66,7 @@ except FileNotFoundError as err_msg:
 logID = "buildtest"
 
 FILES_config = ["BUILDTEST_JOB_TEMPLATE"]
-DIR_config = ["BUILDTEST_CONFIGS_REPO","BUILDTEST_RUBY_REPO","BUILDTEST_R_REPO","BUILDTEST_PYTHON_REPO","BUILDTEST_LOGDIR","BUILDTEST_TESTDIR","BUILDTEST_RUN_DIR"]
+DIR_config = ["BUILDTEST_CONFIGS_REPO","BUILDTEST_LOGDIR","BUILDTEST_TESTDIR","BUILDTEST_RUN_DIR"]
 config_yaml_keys = {
     'BUILDTEST_MODULE_NAMING_SCHEME': type("str"),
     'BUILDTEST_EASYBUILD': type(True),
@@ -79,9 +79,6 @@ config_yaml_keys = {
     'BUILDTEST_SUCCESS_THRESHOLD': type(1.0),
     'BUILDTEST_MODULE_ROOT': type([]),
     'BUILDTEST_CONFIGS_REPO': type("str"),
-    'BUILDTEST_RUBY_REPO': type("str"),
-    'BUILDTEST_R_REPO': type("str"),
-    'BUILDTEST_PYTHON_REPO': type("str"),
     'BUILDTEST_LOGDIR': type("str"),
     'BUILDTEST_TESTDIR': type("str"),
     'BUILDTEST_RUN_DIR': type("str"),

@@ -1,8 +1,4 @@
 BUILDTEST_CONFIGS_REPO: /home/siddis14/github/buildtest-configs
-BUILDTEST_RUBY_REPO: /home/siddis14/github/Ruby-buildtest-config
-BUILDTEST_R_REPO: /home/siddis14/github/R-buildtest-config
-BUILDTEST_PYTHON_REPO: /home/siddis14/github/Python-buildtest-config
-BUILDTEST_PERL_REPO: /home/siddis14/github/Perl-buildtest-config
 
 BUILDTEST_MODULE_NAMING_SCHEME: FNS
 BUILDTEST_EASYBUILD: False

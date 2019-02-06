@@ -1,18 +1,6 @@
 # root of buildtest-configs repo
 BUILDTEST_CONFIGS_REPO:
 
-# root of Ruby-buildtest-config repo
-BUILDTEST_RUBY_REPO:
-
-# root of R-buildtest-config repo
-BUILDTEST_R_REPO: 
-
-#  root of Python-buildtest-config repo
-BUILDTEST_PYTHON_REPO:
-
-#  root of Perl-buildtest-config repo
-BUILDTEST_PERL_REPO:
-
 # Specify Module Naming Scheme for your module tree. Valid Options: [FNS, HMNS]
 BUILDTEST_MODULE_NAMING_SCHEME: 
 

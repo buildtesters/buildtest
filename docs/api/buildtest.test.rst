@@ -17,10 +17,6 @@ Submodules
    buildtest.test.compiler
    buildtest.test.function
    buildtest.test.job
-   buildtest.test.perl
-   buildtest.test.python
-   buildtest.test.r
-   buildtest.test.ruby
    buildtest.test.sourcetest
 
 Module contents

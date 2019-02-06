@@ -89,10 +89,7 @@ Useful Links
 
 * buildtest-framework_ - The buildtest Testing framework
 * buildtest-configs_ - buildtest YAML configs for generic apps
-* R-buildtest-config_ - R test scripts repository
-* Perl-buildtest-config_ - Perl test scripts repository
-* Python-buildtest-config_ - Python test scripts repository
-* Ruby-buildtest-config_ - Ruby test scripts repository
+
 
 Join the buildtest slack channel (http://hpcbuildtest.slack.com) to get connected
 with the community. To join this channel please email **shahzebmsiddiqui@gmail.com**
@@ -100,11 +97,6 @@ with the community. To join this channel please email **shahzebmsiddiqui@gmail.c
 
 .. _buildtest-framework: https://github.com/HPC-buildtest/buildtest-framework
 .. _buildtest-configs: https://github.com/HPC-buildtest/buildtest-configs
-.. _R-buildtest-config: https://github.com/HPC-buildtest/R-buildtest-config
-.. _Perl-buildtest-config: https://github.com/HPC-buildtest/Perl-buildtest-config
-.. _Python-buildtest-config: https://github.com/HPC-buildtest/Python-buildtest-config
-.. _Ruby-buildtest-config: https://github.com/HPC-buildtest/Ruby-buildtest-config
-
 
 
 Indices and tables

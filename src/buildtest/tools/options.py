@@ -86,21 +86,6 @@ def override_configuration():
 
         config_opts['BUILDTEST_CONFIGS_REPO']=os.environ['BUILDTEST_CONFIGS_REPO']
 
-    if os.environ.get('BUILDTEST_TCL_REPO'):
-        config_opts['BUILDTEST_TCL_REPO']=os.environ['BUILDTEST_TCL_REPO']
-
-    if os.environ.get('BUILDTEST_RUBY_REPO'):
-        config_opts['BUILDTEST_RUBY_REPO']=os.environ['BUILDTEST_RUBY_REPO']
-
-    if os.environ.get('BUILDTEST_R_REPO'):
-        config_opts['BUILDTEST_R_REPO']=os.environ['BUILDTEST_R_REPO']
-
-    if os.environ.get('BUILDTEST_PYTHON_REPO'):
-        config_opts['BUILDTEST_PYTHON_REPO']=os.environ['BUILDTEST_PYTHON_REPO']
-
-    if os.environ.get('BUILDTEST_PERL_REPO'):
-        config_opts['BUILDTEST_PERL_REPO']=os.environ['BUILDTEST_PERL_REPO']
-
     if os.environ.get('BUILDTEST_SHELL'):
         config_opts['BUILDTEST_SHELL']=os.environ['BUILDTEST_SHELL']
 
@@ -120,7 +105,4 @@ def override_configuration():
 
     config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'] = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/system")
     config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'] = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/ebapps")
-    config_opts['BUILDTEST_R_TESTDIR'] = os.path.join(config_opts['BUILDTEST_R_REPO'],"buildtest/R/code")
-    config_opts['BUILDTEST_PERL_TESTDIR'] = os.path.join(config_opts['BUILDTEST_PERL_REPO'],"buildtest/perl/code")
-    config_opts['BUILDTEST_PYTHON_TESTDIR'] = os.path.join(config_opts['BUILDTEST_PYTHON_REPO'],"buildtest/python/code")
-    config_opts['BUILDTEST_RUBY_TESTDIR'] = os.path.join(config_opts['BUILDTEST_RUBY_REPO'],"buildtest/ruby/code")
+    

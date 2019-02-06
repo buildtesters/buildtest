@@ -150,7 +150,6 @@ def get_binaries_from_application(module):
     # output of $LMOD_CMD bash show  seems to be backward
     output = cmd.get_error()
 
-    print (output)
     path_str = "prepend_path(\"PATH\","
 
     path_list = []

@@ -30,10 +30,6 @@ import argcomplete
 
 from buildtest.test.run.app import run_app_choices
 from buildtest.test.run.system import run_system_choices
-from buildtest.test.python import python_pkg_choices
-from buildtest.test.r import r_pkg_choices
-from buildtest.test.ruby import ruby_pkg_choices
-from buildtest.test.perl import perl_pkg_choices
 from buildtest.test.run.testname import test_list
 from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
 from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
@@ -58,10 +54,6 @@ def menu():
 
     #test_category = ["mpi"]
     pkglist = systempackage_installed_list()
-    python_choices = python_pkg_choices()
-    r_choices = r_pkg_choices()
-    ruby_choices = ruby_pkg_choices()
-    perl_choices = perl_pkg_choices()
     software_list = get_software_stack()
     toolchain_list = get_toolchain_stack()
     test_choices = test_list()
@@ -108,10 +100,6 @@ def menu():
     parser_build.add_argument("--prepend-modules", help= "Prepend modules in test script prior to loading application module. Use this option with Hierarchical Module Naming Scheme", choices=software_list,  metavar='INSTALLED-SOFTWARE',action="append", default=[])
     parser_build.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES)
     parser_build.add_argument("-b", "--binary", help="Conduct binary test for a package", action="store_true")
-    parser_build.add_argument("--python-package", help="build test for Python packages", choices=python_choices,metavar='PYTHON-PACKAGES')
-    parser_build.add_argument("--r-package", help="build test for R packages", choices=r_choices,metavar='R-PACKAGES')
-    parser_build.add_argument("--ruby-package", help="build test for Ruby packages", choices=ruby_choices,metavar='RUBY-PACKAGES')
-    parser_build.add_argument("--perl-package", help="build test for Perl packages", choices=perl_choices,metavar='PERL-PACKAGES')
     parser_build.add_argument("--clean-tests",help="delete testing directory ($BUILDTEST_TESTDIR)",action="store_true")
     parser_build.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
     parser_build.add_argument("--clean-build", help="delete software test directory before writing test scripts", action="store_true")
