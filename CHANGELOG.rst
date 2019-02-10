@@ -2,6 +2,26 @@
 CHANGELOG
 =================
 
+Latest Release (TBD)
+----------------------
+-  Remove option ``--python-package``, ``--perl-package``, ``--ruby-package``, ``--r-package`` from **build** menu. Also delete all reference in documentation and delete repository
+- ``--buildtest-software`` option is removed
+- ``--format`` option in list submenu only supports **json**. Previously it also supported **csv**
+- Rename all test scripts for documentation and rst files to be lower case
+- Convert CONTRIBUTING guide from Markdown to Restructured Text (RsT) and add Contributing section in documentation
+- Change buildtest config file path to be $HOME/.buildtest/settings.yml
+- Use sphinx-argparse to automate argparse documentation
+- Rename main program **_buildtest** to **buildtest** and changed source code directory layout
+- Add option ``-b`` or ``--binary`` for native support for sanity check on binary commands in framework without using yaml files
+- Update requirements.txt
+- Migrate documentation to buildtest-framework
+- Create subcommand **find** and move option ``-ft`` and ``-fc`` to this menu
+- Add logo for license, version, download, status to README.rst
+- Type checking support for buildtest configuration file
+- Remove option ``--output`` from **run** submenu
+- Add support for OSU Benchmark  and add this to benchmark submenu and document this page
+- Add threshold value for running test. This can be configured using BUILDTEST_SUCCESS_THRESHOLD
+- Create submenu ``module`` and move option ``--diff-trees`` and ``--module-load-test`` to this menu
 
 v0.6.3 (Oct 26, 2018)
 ----------------------------
