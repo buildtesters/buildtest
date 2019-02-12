@@ -58,7 +58,7 @@ TEMPLATE_MPI = {
 }
 SUPPORTED_COMPILERS = ['gnu','intel']
 TEMPLATE_VARS = {
-    'foo' : 'bar'
+    'foo': 'bar'
 }
 TEMPLATE_GENERAL = {
     'source': "file.c",
@@ -67,6 +67,7 @@ TEMPLATE_GENERAL = {
     'module': ["gcc","zlib"],
     'compiler': "gnu",
     'ldflags': "-lm",
+    'args': "args1 args2 args3",
     'slurm': TEMPLATE_JOB_SLURM,
     'lsf': TEMPLATE_JOB_LSF,
     'mpi': TEMPLATE_MPI,
@@ -108,6 +109,7 @@ class BuildTestYaml():
         self.test_class = test_class
         self.shell = shell
         self.parent_dir = os.path.basename(os.path.dirname(self.yaml_file))
+        self.args = ""
     def _check_keys(self, dict):
         """ check keys specified in YAML file with buildtest templates and type check value """
         mpi_keys =  None
@@ -181,6 +183,9 @@ class BuildTestYaml():
         if "flags" in test_dict:
             flags = test_dict['flags']
 
+        if "args" in test_dict:
+            self.args = test_dict["args"]
+
         compiler = test_dict['compiler']
         ldflags = ""
         if "ldflags" in test_dict:
@@ -227,7 +232,7 @@ class BuildTestYaml():
         testscript_dict["module"] = module_str
         testscript_dict["workdir"] = "cd " + workdir + "\n"
         testscript_dict["command"] = cmd
-        testscript_dict["run"] = "./" + exec_name + "\n"
+        testscript_dict["run"] = "./" + exec_name + " " + self.args + "\n"
         testscript_dict["post_run"] = "rm ./" + exec_name + "\n"
 
         #print (testscript_dict)
