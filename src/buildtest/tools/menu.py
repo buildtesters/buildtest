@@ -43,7 +43,7 @@ from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.system import systempackage_installed_list
 from buildtest.tools.software import get_software_stack, get_toolchain_stack
-from buildtest.tools.yaml import func_yaml_subcmd
+from buildtest.tools.yaml import func_yaml_subcmd, get_all_yaml_files
 
 
 def menu():
@@ -52,13 +52,15 @@ def menu():
     override_configuration()
     check_configuration()
 
-    #test_category = ["mpi"]
+    test_class = ["compilers", "mpi"]
     pkglist = systempackage_installed_list()
     software_list = get_software_stack()
     toolchain_list = get_toolchain_stack()
     test_choices = test_list()
     app_choices = run_app_choices()
     systempkg_choices = run_system_choices()
+    yaml_config_list = get_all_yaml_files()
+
 
     parser = argparse.ArgumentParser(prog='buildtest', usage='%(prog)s [options]')
     parser.add_argument("-V", "--version", help="show program version number and exit",action="store_true")
@@ -98,8 +100,10 @@ def menu():
     parser_build.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=toolchain_list, metavar='INSTALLED-SOFTWARE-TOOLCHAINS')
     parser_build.add_argument("-p", "--package", help=" Build test for system packages", choices=pkglist, metavar='SYSTEM-PACKAGE')
     parser_build.add_argument("--prepend-modules", help= "Prepend modules in test script prior to loading application module. Use this option with Hierarchical Module Naming Scheme", choices=software_list,  metavar='INSTALLED-SOFTWARE',action="append", default=[])
-    parser_build.add_argument("--shell", help=""" Select the type of shell when running test""", choices=BUILDTEST_SHELLTYPES)
+    parser_build.add_argument("--shell", help=" Select the type of shell when running test", choices=BUILDTEST_SHELLTYPES)
     parser_build.add_argument("-b", "--binary", help="Conduct binary test for a package", action="store_true")
+    parser_build.add_argument("-c", "--conf", help="specify test configuration script", choices=yaml_config_list,metavar='CONFIGURATION-FILE')
+    parser_build.add_argument("--suite", help="specify test suite", choices=test_class)
     parser_build.add_argument("--clean-tests",help="delete testing directory ($BUILDTEST_TESTDIR)",action="store_true")
     parser_build.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
     parser_build.add_argument("--clean-build", help="delete software test directory before writing test scripts", action="store_true")
@@ -108,6 +112,7 @@ def menu():
     parser_build.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
     parser_build.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
     parser_build.add_argument("--ohpc", help="Indicate to buildtest this is a OpenHPC package. YAML files will be processed from $BUILDTEST_CONFIGS_REPO/ohpc", action="store_true")
+
     parser_build.set_defaults(func=func_build_subcmd)
 
     # -------------------------------- run menu ----------------------------

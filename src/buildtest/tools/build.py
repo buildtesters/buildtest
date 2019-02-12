@@ -39,6 +39,8 @@ from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.easybuild import is_easybuild_app
 from buildtest.tools.ohpc import check_ohpc
 from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+from buildtest.tools.yaml import BuildTestYaml, get_all_yaml_files
+from buildtest.tools.system import BuildTestCommand
 
 def func_build_subcmd(args):
     """ entry point for build subcommand """
@@ -49,6 +51,7 @@ def func_build_subcmd(args):
         config_opts['BUILDTEST_SHELL']=args.shell
     if args.clean_tests:
         clean_tests()
+
     if args.clean_build:
         config_opts['BUILDTEST_CLEAN_BUILD']=True
     if args.testdir:
@@ -65,7 +68,7 @@ def func_build_subcmd(args):
         config_opts["BUILDTEST_PREPEND_MODULES"]   = args.prepend_modules
     if args.binary:
         config_opts["BUILDTEST_BINARY"] = args.binary
-        args.binary
+
     if args.ohpc:
         check_ohpc()
         config_opts["BUILDTEST_OHPC"] = True
@@ -75,6 +78,27 @@ def func_build_subcmd(args):
 
     create_dir(logdir)
     create_dir(testdir)
+
+    if args.suite:
+        create_dir(os.path.join(testdir,"suite",args.suite))
+        yaml_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"], "buildtest","suite",args.suite)
+        yaml_files = get_all_yaml_files(yaml_dir)
+
+        testsuite_components = os.listdir(yaml_dir)
+        # precreate direcorties for each component for test suite in BUILDTEST_TESTDIR
+        for component in testsuite_components:
+            create_dir(os.path.join(testdir,"suite",args.suite,component))
+
+        for file in yaml_files:
+            parent_dir = os.path.basename(os.path.dirname(file))
+            #print (parent_dir, file)
+            builder = BuildTestBuilder(file,args.suite, parent_dir)
+            builder.build()
+
+    if args.conf:
+        pass
+        #builder = BuildTestBuilder(args.conf,args.suite)
+        #builder.build()
 
     if args.package:
         func_build_system(args.package, logger, logdir, logpath, logfile)
@@ -152,3 +176,41 @@ def func_build_software(args, logger, logdir, logpath, logfile):
     logger.debug("Writing Log file to %s", os.path.join(logdir,logfile))
 
     print ("Writing Log file: ", os.path.join(logdir,logfile))
+
+class BuildTestBuilder():
+    """ class responsible for building a test"""
+    yaml_dict = {}
+    test_dict = {}
+    def __init__(self,yaml,test_suite,parent_dir):
+        self.testdir = config_opts["BUILDTEST_TESTDIR"]
+        self.shell = config_opts["BUILDTEST_SHELL"]
+        yaml_dict = BuildTestYaml(yaml,test_suite)
+        self.yaml_dict, self.test_dict = yaml_dict.parse()
+        self.testname = self.yaml_dict["name"] + "." + self.shell
+        self.test_suite = test_suite
+        self.parent_dir = parent_dir
+    def build(self):
+        """ logic to build the test script"""
+
+        test_dir  = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",self.test_suite,self.parent_dir)
+
+
+        abs_test_path = os.path.join(test_dir,self.testname)
+        print("Writing Test: " + abs_test_path)
+        fd = open(abs_test_path, "w")
+
+        shell_path = BuildTestCommand().which(self.shell)[0]
+
+        fd.write("#!" + shell_path)        
+
+        if "lsf" in self.test_dict:
+            fd.write(self.test_dict["lsf"])
+        if "slurm" in self.test_dict:
+            fd.write(self.test_dict["slurm"])
+
+        fd.write(self.test_dict["module"])
+        fd.write(self.test_dict["workdir"])
+        [ fd.write(k + " ") for k in self.test_dict["command"] ]
+        fd.write("\n")
+        fd.write(self.test_dict["run"])
+        fd.write(self.test_dict["post_run"])
