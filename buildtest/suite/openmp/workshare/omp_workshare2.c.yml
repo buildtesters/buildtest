@@ -1,0 +1,9 @@
+test:
+    source: omp_workshare2.c
+    vars:
+        OMP_NUM_THREADS: 4
+    ldflags: "-fopenmp"
+    compiler: gnu
+    module: 
+        - gcc
+

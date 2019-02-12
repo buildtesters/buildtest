@@ -1,0 +1,9 @@
+test:
+    source: omp_hello.c
+    vars:
+        OMP_NUM_THREADS: 6
+
+    compiler: gnu
+    ldflags: "-fopenmp"
+    module:
+    -   gcc

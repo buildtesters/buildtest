@@ -1,0 +1,6 @@
+test:
+    source: hello.f90
+    flags: -O3
+    compiler: intel
+    module:
+      - intel

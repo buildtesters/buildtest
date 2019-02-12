@@ -1,0 +1,11 @@
+test:
+  source: hello.c
+  flags: "-O2"
+  lsf:
+    M: "200M"
+    n: "4" 
+    R: "sandybridge"
+    W: "01:00"
+  compiler: gnu
+  module: 
+  - gcc

@@ -1,0 +1,5 @@
+test:
+    source: omp_dotprod_serial.c
+    compiler: gnu
+    module:
+        - gcc

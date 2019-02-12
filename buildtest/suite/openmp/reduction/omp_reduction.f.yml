@@ -1,0 +1,9 @@
+test:
+    source: omp_reduction.f
+    flags: "-O3"
+    vars:
+        OMP_NUM_THREADS: 8
+    ldflags: "-fopenmp"
+    compiler: gnu
+    module:
+       - gcc
