@@ -131,3 +131,76 @@ def run_app_test(app_name):
 
     print ("Writing results to " + run_output_file)
     fd.close()
+
+def run_suite(suite):
+    """implementation for buildtest run --suite to execute all tests in the test directory"""
+    from buildtest.tools.run import write_system_info
+
+    app_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",suite)
+
+
+    runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
+    run_output_file = os.path.join(config_opts["BUILDTEST_RUN_DIR"],runfile)
+
+    fd = open(run_output_file,"w")
+    write_system_info(fd)
+    fd.write("------------------------ START OF TEST -------------------------------------- \n")
+
+
+    tests = []
+    # traverse test directory tree and add tests to a list object
+    for root, subdir, files in os.walk(app_root_testdir):
+        for file in files:
+            # only add test with valid shell extensions
+            if os.path.splitext(file)[1] in [".sh", ".bash", ".csh"]:
+                tests.append(os.path.join(root,file))
+
+
+    count_test = len(tests)
+
+    passed_test = 0
+    failed_test = 0
+
+    for test in tests:
+
+        ret = subprocess.Popen(test,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        output = ret.communicate()[0]
+        output=output.decode("utf-8")
+
+
+        ret_code = ret.returncode
+        fd.write("Test Name:" + test + "\n")
+        fd.write("Return Code: " + str(ret_code) + "\n")
+        fd.write("---------- START OF TEST OUTPUT ---------------- \n")
+        fd.write(output)
+        fd.write("------------ END OF TEST OUTPUT ---------------- \n")
+
+
+        if ret_code == 0:
+            passed_test += 1
+        else:
+            failed_test +=1
+
+    print
+    print
+    print("==============================================================")
+    print("                         Test summary                         ")
+    print("Executed " + str(count_test) + " tests")
+    print("Passed Tests: " + str(passed_test) +  " Percentage: " + str(passed_test*100/count_test) + "%")
+    print("Failed Tests: " + str(failed_test) + "  Percentage: " + str(failed_test*100/count_test) + "%")
+
+    actual_ratio = passed_test/count_test
+    success_threshold = float(config_opts['BUILDTEST_SUCCESS_THRESHOLD'])
+
+
+    print
+    print
+    diff_ratio = abs(actual_ratio-success_threshold)
+    if actual_ratio < success_threshold:
+        print ("WARNING: Threshold of " + str(success_threshold*100) + "% was not achieved by " + suite)
+        print (" Current Results are " + str(actual_ratio*100) + "% passed rate with a difference of " + str(diff_ratio) + " from the threshold" )
+    else:
+        print ("SUCCESS: Threshold of " + str(success_threshold*100) + "% was achieved")
+
+    print ("Writing results to " + run_output_file)
+    fd.close()

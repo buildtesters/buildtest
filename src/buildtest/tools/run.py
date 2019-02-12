@@ -28,7 +28,7 @@ from buildtest.test.run.app import run_app_test
 from buildtest.test.run.testname import run_testname
 from buildtest.test.run.system import run_system_test
 from buildtest.test.run.interactive import runtest_menu
-from buildtest.test.run.app import run_app_choices
+from buildtest.test.run.app import run_app_choices, run_suite
 from buildtest.test.run.system import run_system_choices
 from buildtest.tools.config import config_opts
 from buildtest.tools.system import BuildTestSystem
@@ -42,6 +42,8 @@ def func_run_subcmd(args):
         run_testname(args.testname)
     if args.software:
         run_app_test(args.software)
+    if args.suite:
+        run_suite(args.suite)
     if args.package:
         run_system_test(args.package)
     if args.all_software:
@@ -66,4 +68,4 @@ def write_system_info(fd,app_name=None,pkg_name=None):
         fd.write("System Package:" + pkg_name + "\n")
 
     for key in system:
-        fd.write(key + ":" + str(system[key]) + "\n")        
+        fd.write(key + ":" + str(system[key]) + "\n")

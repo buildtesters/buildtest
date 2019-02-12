@@ -56,7 +56,6 @@ def main():
     buildtest_system = BuildTestSystem()
     buildtest_system.check_system_requirements()
 
-
     parser = menu()
 
     parsed_opts = parse_options(parser)

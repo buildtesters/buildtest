@@ -52,7 +52,8 @@ def menu():
     override_configuration()
     check_configuration()
 
-    test_class = ["compilers", "mpi"]
+    test_class = ["compilers", "mpi", "openmp"]
+    run_test_class = os.listdir(os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"buildtest","suite"))
     pkglist = systempackage_installed_list()
     software_list = get_software_stack()
     toolchain_list = get_toolchain_stack()
@@ -103,7 +104,7 @@ def menu():
     parser_build.add_argument("--shell", help=" Select the type of shell when running test", choices=BUILDTEST_SHELLTYPES)
     parser_build.add_argument("-b", "--binary", help="Conduct binary test for a package", action="store_true")
     parser_build.add_argument("-c", "--conf", help="specify test configuration script", choices=yaml_config_list,metavar='CONFIGURATION-FILE')
-    parser_build.add_argument("--suite", help="specify test suite", choices=test_class)
+    parser_build.add_argument("-S", "--suite", help="specify test suite", choices=test_class)
     parser_build.add_argument("--clean-tests",help="delete testing directory ($BUILDTEST_TESTDIR)",action="store_true")
     parser_build.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
     parser_build.add_argument("--clean-build", help="delete software test directory before writing test scripts", action="store_true")
@@ -121,6 +122,7 @@ def menu():
     parser_run.add_argument("-t", "--testname", help="Run a single testscript via buildtest", choices=test_choices, metavar='TEST-CHOICES')
     parser_run.add_argument("-s", "--software", help="Run test suite for application via buildtest", choices=app_choices, metavar='SOFTWARE-TEST-SUITE')
     parser_run.add_argument("-p", "--package", help="Run test suite for system package via buildtest", choices=systempkg_choices, metavar='PACKAGE-TEST-SUITE')
+    parser_run.add_argument("-S", "--suite", help="Run the test suite",choices=run_test_class)
     parser_run.add_argument("--all-software", help="Run test suite for all software packages", action="store_true")
     parser_run.add_argument("--all-package", help="Run test suite for all system packages", action="store_true")
     parser_run.set_defaults(func=func_run_subcmd)

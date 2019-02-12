@@ -25,7 +25,7 @@ buildtest build subcommand methods
 """
 import os
 import sys
-
+import stat
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import create_dir
@@ -184,9 +184,10 @@ class BuildTestBuilder():
     def __init__(self,yaml,test_suite,parent_dir):
         self.testdir = config_opts["BUILDTEST_TESTDIR"]
         self.shell = config_opts["BUILDTEST_SHELL"]
-        yaml_dict = BuildTestYaml(yaml,test_suite)
+        yaml_dict = BuildTestYaml(yaml,test_suite,self.shell)
         self.yaml_dict, self.test_dict = yaml_dict.parse()
-        self.testname = self.yaml_dict["name"] + "." + self.shell
+        self.testname = '%s.%s' % (os.path.basename(yaml),self.shell)
+        #self.testname = self.yaml_dict["name"] + "." + self.shell
         self.test_suite = test_suite
         self.parent_dir = parent_dir
     def build(self):
@@ -201,7 +202,7 @@ class BuildTestBuilder():
 
         shell_path = BuildTestCommand().which(self.shell)[0]
 
-        fd.write("#!" + shell_path)        
+        fd.write("#!" + shell_path)
 
         if "lsf" in self.test_dict:
             fd.write(self.test_dict["lsf"])
@@ -209,8 +210,15 @@ class BuildTestBuilder():
             fd.write(self.test_dict["slurm"])
 
         fd.write(self.test_dict["module"])
+
+        if "vars" in self.test_dict:
+            fd.write(self.test_dict["vars"])
+
         fd.write(self.test_dict["workdir"])
         [ fd.write(k + " ") for k in self.test_dict["command"] ]
         fd.write("\n")
         fd.write(self.test_dict["run"])
         fd.write(self.test_dict["post_run"])
+
+        # setting perm to 755 on testscript
+        os.chmod(abs_test_path, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)

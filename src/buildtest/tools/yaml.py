@@ -33,6 +33,7 @@ from ruamel.yaml import YAML
 from buildtest.tools.config import config_opts
 from buildtest.tools.ohpc import check_ohpc
 from buildtest.tools.software import get_software_stack
+from buildtest.test.sourcetest import get_environment_variable
 
 TEMPLATE_JOB_SLURM = {
     'nodes': "10",
@@ -56,13 +57,16 @@ TEMPLATE_MPI = {
    'num_procs':  4
 }
 SUPPORTED_COMPILERS = ['gnu','intel']
+TEMPLATE_VARS = {
+    'foo' : 'bar'
+}
 TEMPLATE_GENERAL = {
-    "name": "test_name",
     'source': "file.c",
     'flags': "-O3 -fast",
-    'clean': True,
+    'vars': TEMPLATE_VARS,
     'module': ["gcc","zlib"],
     'compiler': "gnu",
+    'ldflags': "-lm",
     'slurm': TEMPLATE_JOB_SLURM,
     'lsf': TEMPLATE_JOB_LSF,
     'mpi': TEMPLATE_MPI,
@@ -88,7 +92,7 @@ class BuildTestYaml():
 
 
     yaml_file = ""
-    def __init__(self,yaml_file,test_class):
+    def __init__(self,yaml_file,test_class,shell):
         if not os.path.exists(yaml_file):
             print("Invalid File Path: " + yaml_file)
             sys.exit(1)
@@ -100,10 +104,13 @@ class BuildTestYaml():
         self.yaml_file=yaml_file
         self.lsf = False
         self.slurm = False
+        self.vars = False
         self.test_class = test_class
+        self.shell = shell
+        self.parent_dir = os.path.basename(os.path.dirname(self.yaml_file))
     def _check_keys(self, dict):
         """ check keys specified in YAML file with buildtest templates and type check value """
-        lsf_keys = slurm_keys = mpi_keys = None
+        mpi_keys =  None
         for k,v in dict.items():
             if k not in TEMPLATE_GENERAL.keys():
                 print("Invalid Key: " + k)
@@ -120,16 +127,19 @@ class BuildTestYaml():
                     print (v + " is not a supported compiler:")
                     sys.exit(0)
 
+            if k == "vars":
+                self.vars = True
             if k == "lsf":
-                lsf_keys = dict['lsf']
+                self.lsf = True
+
             if k == "slurm":
-                slurm_keys = dict['slurm']
+                self.slurm = True
+
             if k == "mpi":
                 mpi_keys = dict['mpi']
 
-        if lsf_keys is not None:
-            self.lsf = True
-            for k,v in lsf_keys.items():
+        if self.lsf:
+            for k,v in dict['lsf'].items():
                 if k not in TEMPLATE_JOB_LSF.keys():
                     print("Invalid Key: " + k)
                     sys.exit(1)
@@ -139,9 +149,8 @@ class BuildTestYaml():
                     print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_JOB_LSF[k])))
                     sys.exit(1)
 
-        if slurm_keys is not None:
-            self.slurm = True
-            for k,v in slurm_keys.items():
+        if self.slurm:
+            for k,v in  dict['slurm'].items():
                 if k not in TEMPLATE_JOB_SLURM.keys():
                     print("Invalid Key: " + k)
                     sys.exit(1)
@@ -150,6 +159,7 @@ class BuildTestYaml():
                     print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_JOB_SLURM[k])))
                     sys.exit(1)
 
+
     def parse(self):
         """ parse a yaml file to determine if content follows buildtest yaml schema"""
         fd=open(self.yaml_file,'r')
@@ -157,7 +167,9 @@ class BuildTestYaml():
         test_dict = content['test']
         self._check_keys(test_dict)
 
+        flags = ""
         testscript_dict = {}
+
         if self.lsf:
             testscript_dict["lsf"] = lsf_key_parse(test_dict['lsf'])
         if self.slurm:
@@ -165,12 +177,17 @@ class BuildTestYaml():
 
         module_key_dict = test_dict['module']
         srcfile = test_dict['source']
-        flags = test_dict['flags']
-        compiler = test_dict['compiler']
 
-        exec_name = '%s.exe' % os.path.splitext(srcfile)[0]
+        if "flags" in test_dict:
+            flags = test_dict['flags']
+
+        compiler = test_dict['compiler']
+        ldflags = ""
+        if "ldflags" in test_dict:
+            ldflags = test_dict['ldflags']
+        exec_name = '%s.exe' % srcfile
         class_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"buildtest","suite")
-        updated_srcfile = os.path.join(class_dir, "compilers/helloworld/src",test_dict["source"])
+        updated_srcfile = os.path.join(class_dir, self.test_class, self.parent_dir,"src",test_dict["source"])
         test_dict['source'] = updated_srcfile
         ext = os.path.splitext(test_dict['source'])[1]
 
@@ -179,16 +196,16 @@ class BuildTestYaml():
 
         if language == "c":
             cc = get_compiler(language,compiler)
-            cmd += [cc,flags,'-o',exec_name,updated_srcfile]
+            cmd += [cc,flags,'-o',exec_name,updated_srcfile, ldflags]
         if language == "c++":
             cxx = get_compiler(language,compiler)
-            cmd += [cxx,flags,'-o',exec_name,updated_srcfile]
+            cmd += [cxx,flags,'-o',exec_name,updated_srcfile, ldflags]
         if language == "fortran":
             fc = get_compiler(language,compiler)
-            cmd += [fc,flags,'-o',exec_name,updated_srcfile]
+            cmd += [fc,flags,'-o',exec_name,updated_srcfile, ldflags]
         if language == "cuda":
             nvcc = get_compiler(language,compiler)
-            cmd += [nvcc,flags,'-o',exec_name,updated_srcfile]
+            cmd += [nvcc,flags,'-o',exec_name,updated_srcfile, ldflags]
 
         modulelist = get_software_stack()
         module_str = "module purge \n"
@@ -198,7 +215,15 @@ class BuildTestYaml():
                 if os.path.dirname(module.lower()) == k:
                     module_str += "module load " + os.path.dirname(module) + "\n"
 
-        workdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",self.test_class,"helloworld")
+        env_vars = ""
+        # if vars key is defined then get all environment variables
+        if self.vars:
+            for k,v in test_dict['vars'].items():
+                env_vars += get_environment_variable(self.shell,k,v)
+
+        workdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",self.test_class,self.parent_dir)
+
+        testscript_dict["vars"] = env_vars
         testscript_dict["module"] = module_str
         testscript_dict["workdir"] = "cd " + workdir + "\n"
         testscript_dict["command"] = cmd
