@@ -26,9 +26,10 @@ buildtest build subcommand methods
 import os
 import sys
 import stat
+import yaml
 
 from buildtest.tools.config import config_opts
-from buildtest.tools.file import create_dir
+from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.log import init_log
 from buildtest.tools.software import get_software_stack
 from buildtest.test.function import clean_tests
@@ -39,7 +40,7 @@ from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.easybuild import is_easybuild_app
 from buildtest.tools.ohpc import check_ohpc
 from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
-from buildtest.tools.yaml import BuildTestYaml, get_all_yaml_files
+from buildtest.tools.yaml import BuildTestYamlSingleSource
 from buildtest.tools.system import BuildTestCommand
 
 def func_build_subcmd(args):
@@ -82,7 +83,8 @@ def func_build_subcmd(args):
     if args.suite:
         create_dir(os.path.join(testdir,"suite",args.suite))
         yaml_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"], "buildtest","suite",args.suite)
-        yaml_files = get_all_yaml_files(yaml_dir)
+
+        yaml_files = walk_tree(yaml_dir,".yml")
 
         testsuite_components = os.listdir(yaml_dir)
         # precreate direcorties for each component for test suite in BUILDTEST_TESTDIR
@@ -92,13 +94,13 @@ def func_build_subcmd(args):
         for file in yaml_files:
             parent_dir = os.path.basename(os.path.dirname(file))
             #print (parent_dir, file)
-            builder = BuildTestBuilder(file,args.suite, parent_dir)
-            builder.build()
+            fd=open(file,'r')
+            content = yaml.load(fd)
 
-    if args.conf:
-        pass
-        #builder = BuildTestBuilder(args.conf,args.suite)
-        #builder.build()
+
+            if content["testblock"] == "singlesource":
+                builder = BuildTestBuilderSingleSource(file,args.suite, parent_dir)
+                builder.build()
 
     if args.package:
         func_build_system(args.package, logger, logdir, logpath, logfile)
@@ -106,6 +108,55 @@ def func_build_subcmd(args):
         func_build_software(args, logger, logdir, logpath, logfile)
 
     sys.exit(0)
+
+class BuildTestBuilderSingleSource():
+    """ class responsible for building a test"""
+    yaml_dict = {}
+    test_dict = {}
+    def __init__(self,yaml,test_suite,parent_dir):
+        self.testdir = config_opts["BUILDTEST_TESTDIR"]
+        self.shell = config_opts["BUILDTEST_SHELL"]
+        yaml_dict = BuildTestYamlSingleSource(yaml,test_suite,self.shell)
+        self.yaml_dict, self.test_dict = yaml_dict.parse()
+        self.testname = '%s.%s' % (os.path.basename(yaml),self.shell)
+        #self.testname = self.yaml_dict["name"] + "." + self.shell
+        self.test_suite = test_suite
+        self.parent_dir = parent_dir
+    def build(self):
+        """ logic to build the test script"""
+
+        test_dir  = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",self.test_suite,self.parent_dir)
+
+
+        abs_test_path = os.path.join(test_dir,self.testname)
+        print("Writing Test: " + abs_test_path)
+        fd = open(abs_test_path, "w")
+
+        shell_path = BuildTestCommand().which(self.shell)[0]
+
+        fd.write("#!" + shell_path)
+
+        if "lsf" in self.test_dict:
+            fd.write(self.test_dict["lsf"])
+        if "slurm" in self.test_dict:
+            fd.write(self.test_dict["slurm"])
+
+        fd.write(self.test_dict["module"])
+
+        if "vars" in self.test_dict:
+            fd.write(self.test_dict["vars"])
+
+        fd.write(self.test_dict["workdir"])
+        [ fd.write(k + " ") for k in self.test_dict["command"] ]
+        fd.write("\n")
+
+        if "run" in self.test_dict:
+            fd.write(self.test_dict["run"])
+            fd.write(self.test_dict["post_run"])
+
+        # setting perm to 755 on testscript
+        os.chmod(abs_test_path, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
+
 
 def func_build_system(systempkg, logger, logdir, logpath, logfile):
     """ method implementation for "buildtest build --package" """
@@ -176,49 +227,3 @@ def func_build_software(args, logger, logdir, logpath, logfile):
     logger.debug("Writing Log file to %s", os.path.join(logdir,logfile))
 
     print ("Writing Log file: ", os.path.join(logdir,logfile))
-
-class BuildTestBuilder():
-    """ class responsible for building a test"""
-    yaml_dict = {}
-    test_dict = {}
-    def __init__(self,yaml,test_suite,parent_dir):
-        self.testdir = config_opts["BUILDTEST_TESTDIR"]
-        self.shell = config_opts["BUILDTEST_SHELL"]
-        yaml_dict = BuildTestYaml(yaml,test_suite,self.shell)
-        self.yaml_dict, self.test_dict = yaml_dict.parse()
-        self.testname = '%s.%s' % (os.path.basename(yaml),self.shell)
-        #self.testname = self.yaml_dict["name"] + "." + self.shell
-        self.test_suite = test_suite
-        self.parent_dir = parent_dir
-    def build(self):
-        """ logic to build the test script"""
-
-        test_dir  = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",self.test_suite,self.parent_dir)
-
-
-        abs_test_path = os.path.join(test_dir,self.testname)
-        print("Writing Test: " + abs_test_path)
-        fd = open(abs_test_path, "w")
-
-        shell_path = BuildTestCommand().which(self.shell)[0]
-
-        fd.write("#!" + shell_path)
-
-        if "lsf" in self.test_dict:
-            fd.write(self.test_dict["lsf"])
-        if "slurm" in self.test_dict:
-            fd.write(self.test_dict["slurm"])
-
-        fd.write(self.test_dict["module"])
-
-        if "vars" in self.test_dict:
-            fd.write(self.test_dict["vars"])
-
-        fd.write(self.test_dict["workdir"])
-        [ fd.write(k + " ") for k in self.test_dict["command"] ]
-        fd.write("\n")
-        fd.write(self.test_dict["run"])
-        fd.write(self.test_dict["post_run"])
-
-        # setting perm to 755 on testscript
-        os.chmod(abs_test_path, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)

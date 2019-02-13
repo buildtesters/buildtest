@@ -24,11 +24,21 @@
 Methods related to buildtest logging
 """
 import os
+import sys
 import shutil
 import logging
 from datetime import datetime
 
 from buildtest.tools.config import logID, config_opts
+
+class BuildTestError(Exception):
+    def __init__(self,msg,*args):
+        if args:
+            msg = msg % args
+        self.msg = msg        
+    def __str__(self):
+        return(repr(self.msg))
+
 
 def init_log():
     """ initialize log file attributes """

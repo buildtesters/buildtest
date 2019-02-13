@@ -30,6 +30,28 @@ import logging
 from datetime import datetime
 
 from buildtest.tools.config import logID
+from buildtest.tools.log import BuildTestError
+
+
+def isFile(file):
+    if not os.path.isfile(file):
+        raise BuildTestError("Invalid File Path %s. "  % file)
+
+
+def isDir(self,dir):
+    if not os.path.isdir(dir):
+        raise BuildTestError("Invalid Directory Path %s" % dir)
+
+def walk_tree(root_dir,ext):
+    """ traverse a directory tree and return list of files based on extension type"""
+    list_files = []
+
+    for root, subdir, files in os.walk(root_dir):
+        for file in files:
+            if file.endswith(ext):
+               list_files.append(os.path.join(root,file))
+
+    return list_files
 
 def stripHiddenFile(file):
     """  removes the leading "." character from file """

@@ -34,6 +34,7 @@ from buildtest.tools.config import config_opts
 from buildtest.tools.ohpc import check_ohpc
 from buildtest.tools.software import get_software_stack
 from buildtest.test.sourcetest import get_environment_variable
+from buildtest.tools.file import isFile
 
 TEMPLATE_JOB_SLURM = {
     'nodes': "10",
@@ -62,6 +63,7 @@ TEMPLATE_VARS = {
 }
 TEMPLATE_GENERAL = {
     'source': "file.c",
+    'input': "inputfile",
     'flags': "-O3 -fast",
     'vars': TEMPLATE_VARS,
     'module': ["gcc","zlib"],
@@ -74,42 +76,27 @@ TEMPLATE_GENERAL = {
 }
 
 #TEMPLATE = ['test', TEMPLATE_GENERAL]
-def get_all_yaml_files(root_dir=None):
-    """ return a list of all yml files"""
 
-    if root_dir == None:
-        root_dir = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/suite")
-
-
-    yaml_list = []
-
-    for root, dirs, files in os.walk(root_dir):
-        for file in files:
-
-            if file.endswith(".yml"):
-                yaml_list.append(os.path.join(root,file))
-    return yaml_list
-class BuildTestYaml():
-
+class BuildTestYamlSingleSource():
 
     yaml_file = ""
-    def __init__(self,yaml_file,test_class,shell):
-        if not os.path.exists(yaml_file):
-            print("Invalid File Path: " + yaml_file)
-            sys.exit(1)
+    def __init__(self,yaml_file,test_suite,shell):
+
+        isFile(yaml_file)
+
         ext = os.path.splitext(yaml_file)[1]
 
         if ext != ".yml":
             print("Invalid File extension: " + ext)
             sys.exit(1)
+
         self.yaml_file=yaml_file
-        self.lsf = False
-        self.slurm = False
-        self.vars = False
-        self.test_class = test_class
+        self.test_suite = test_suite
         self.shell = shell
         self.parent_dir = os.path.basename(os.path.dirname(self.yaml_file))
-        self.args = ""
+        self.test_suite_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"buildtest","suite")
+        self.srcdir = os.path.join(self.test_suite_dir, self.test_suite, self.parent_dir,"src")
+
     def _check_keys(self, dict):
         """ check keys specified in YAML file with buildtest templates and type check value """
         mpi_keys =  None
@@ -122,120 +109,105 @@ class BuildTestYaml():
             if type(v) != type(TEMPLATE_GENERAL[k]):
                     print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_GENERAL[k])))
                     sys.exit(1)
+    def _check_compiler(self,compiler):
+        # check if compiler value is in list of supported compiler supported
+        if compiler not in SUPPORTED_COMPILERS:
+            print (compiler + " is not a supported compiler:")
+            sys.exit(0)
 
-            # check if compiler value is in list of supported compiler supported
-            if k == "compiler":
-                if v not in SUPPORTED_COMPILERS:
-                    print (v + " is not a supported compiler:")
-                    sys.exit(0)
+    def _check_lsf(self,lsf_dict):
+        for k,v in lsf_dict.items():
+            if k not in TEMPLATE_JOB_LSF.keys():
+                print("Invalid Key: " + k)
+                sys.exit(1)
 
-            if k == "vars":
-                self.vars = True
-            if k == "lsf":
-                self.lsf = True
+            if type(v) != type(TEMPLATE_JOB_LSF[k]):
+                print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_JOB_LSF[k])))
+                sys.exit(1)
+    def _check_slurm(self,slurm_dict):
+        for k,v in  slurm_dict.items():
+            if k not in TEMPLATE_JOB_SLURM.keys():
+                print("Invalid Key: " + k)
+                sys.exit(1)
 
-            if k == "slurm":
-                self.slurm = True
-
-            if k == "mpi":
-                mpi_keys = dict['mpi']
-
-        if self.lsf:
-            for k,v in dict['lsf'].items():
-                if k not in TEMPLATE_JOB_LSF.keys():
-                    print("Invalid Key: " + k)
-                    sys.exit(1)
-
-
-                if type(v) != type(TEMPLATE_JOB_LSF[k]):
-                    print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_JOB_LSF[k])))
-                    sys.exit(1)
-
-        if self.slurm:
-            for k,v in  dict['slurm'].items():
-                if k not in TEMPLATE_JOB_SLURM.keys():
-                    print("Invalid Key: " + k)
-                    sys.exit(1)
-
-                if type(v) != type(TEMPLATE_JOB_SLURM[k]):
-                    print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_JOB_SLURM[k])))
-                    sys.exit(1)
-
+            if type(v) != type(TEMPLATE_JOB_SLURM[k]):
+                print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_JOB_SLURM[k])))
+                sys.exit(1)
 
     def parse(self):
         """ parse a yaml file to determine if content follows buildtest yaml schema"""
+        flags = module_str = env_vars = ""
+        testscript_dict = {}
+
         fd=open(self.yaml_file,'r')
         content=yaml.load(fd)
         test_dict = content['test']
         self._check_keys(test_dict)
 
-        flags = ""
-        testscript_dict = {}
+        srcfile = os.path.join(self.srcdir,test_dict['source'])
+        isFile(srcfile)
 
-        if self.lsf:
-            testscript_dict["lsf"] = lsf_key_parse(test_dict['lsf'])
-        if self.slurm:
-            testscript_dict["slurm"] = slurm_key_parse(test_dict['slurm'])
-
-        module_key_dict = test_dict['module']
-        srcfile = test_dict['source']
-
-        if "flags" in test_dict:
-            flags = test_dict['flags']
-
-        if "args" in test_dict:
-            self.args = test_dict["args"]
-
-        compiler = test_dict['compiler']
-        ldflags = ""
-        if "ldflags" in test_dict:
-            ldflags = test_dict['ldflags']
-        exec_name = '%s.exe' % srcfile
-        class_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"buildtest","suite")
-        updated_srcfile = os.path.join(class_dir, self.test_class, self.parent_dir,"src",test_dict["source"])
-        test_dict['source'] = updated_srcfile
-        ext = os.path.splitext(test_dict['source'])[1]
-
+        ext = os.path.splitext(srcfile)[1]
         language = get_programming_language(ext)
+        exec_name = '%s.exe' % test_dict['source']
         cmd = []
 
-        if language == "c":
-            cc = get_compiler(language,compiler)
-            cmd += [cc,flags,'-o',exec_name,updated_srcfile, ldflags]
-        if language == "c++":
-            cxx = get_compiler(language,compiler)
-            cmd += [cxx,flags,'-o',exec_name,updated_srcfile, ldflags]
-        if language == "fortran":
-            fc = get_compiler(language,compiler)
-            cmd += [fc,flags,'-o',exec_name,updated_srcfile, ldflags]
-        if language == "cuda":
-            nvcc = get_compiler(language,compiler)
-            cmd += [nvcc,flags,'-o',exec_name,updated_srcfile, ldflags]
+        if "lsf" in test_dict:
+            self._check_lsf(test_dict['lsf'])
+            testscript_dict["lsf"] = lsf_key_parse(test_dict['lsf'])
+        if "slurm" in test_dict:
+            self._check_slurm(test_dict['slurm'])
+            testscript_dict["slurm"] = slurm_key_parse(test_dict['slurm'])
 
-        modulelist = get_software_stack()
-        module_str = "module purge \n"
-        # go through all modules in software stack and check if name matches one specified specified in module yaml construct
-        for module in modulelist:
-            for k in module_key_dict:
-                if os.path.dirname(module.lower()) == k:
-                    module_str += "module load " + os.path.dirname(module) + "\n"
+        if "input" in test_dict:
+            inputfile = os.path.join(self.srcdir,test_dict['input'])
+            isFile(inputfile)
+        if "compiler" in test_dict:
+            self._check_compiler(test_dict['compiler'])
+            compiler_name = get_compiler(language,test_dict['compiler'])
+            cmd += [compiler_name]
 
-        env_vars = ""
+            if "flags" in test_dict:
+                cmd += [test_dict['flags']]
+
+            cmd += ['-o',exec_name,srcfile]
+
+            if "ldflags" in test_dict:
+                cmd += [test_dict['ldflags']]
+
+        if "input" in test_dict:
+            cmd += ["<", os.path.join(self.srcdir,inputfile) ]
+
+        # if module key is defined then figure out module load
+        if "module" in test_dict:
+            module_key_dict = test_dict['module']
+            modulelist = get_software_stack()
+            module_str = "module purge \n"
+            # go through all modules in software stack and check if name matches one specified specified in module yaml construct
+            for module in modulelist:
+                for k in module_key_dict:
+                    if os.path.dirname(module.lower()) == k:
+                        module_str += "module load " + os.path.dirname(module) + "\n"
+
         # if vars key is defined then get all environment variables
-        if self.vars:
+        if "vars" in test_dict:
             for k,v in test_dict['vars'].items():
                 env_vars += get_environment_variable(self.shell,k,v)
 
-        workdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",self.test_class,self.parent_dir)
+        workdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",self.test_suite,self.parent_dir)
 
         testscript_dict["vars"] = env_vars
         testscript_dict["module"] = module_str
         testscript_dict["workdir"] = "cd " + workdir + "\n"
         testscript_dict["command"] = cmd
-        testscript_dict["run"] = "./" + exec_name + " " + self.args + "\n"
+
+        if "args" in test_dict:
+            testscript_dict["run"] = "./" + exec_name + " " + test_dict["args"] + "\n"
+        else:
+            testscript_dict["run"] = "./" + exec_name + "\n"
+
         testscript_dict["post_run"] = "rm ./" + exec_name + "\n"
 
-        #print (testscript_dict)
         return test_dict, testscript_dict
 
 def get_compiler(language, compiler):
@@ -268,6 +240,8 @@ def get_programming_language(ext):
         return "fortran"
     if ext in ['.cu']:
         return "cuda"
+    if ext in ['.py']:
+        return "python"
 
 
 def get_compiler_wrapper(filext, compiler_choice):
