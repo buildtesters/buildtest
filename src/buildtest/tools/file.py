@@ -38,9 +38,10 @@ def isFile(file):
         raise BuildTestError("Invalid File Path %s. "  % file)
 
 
-def isDir(self,dir):
+def isDir(dir):
     if not os.path.isdir(dir):
         raise BuildTestError("Invalid Directory Path %s" % dir)
+    return True    
 
 def walk_tree(root_dir,ext):
     """ traverse a directory tree and return list of files based on extension type"""

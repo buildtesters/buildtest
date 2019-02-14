@@ -24,12 +24,13 @@
 buildtest build subcommand methods
 """
 import os
+import shutil
 import sys
 import stat
 import yaml
 
 from buildtest.tools.config import config_opts
-from buildtest.tools.file import create_dir, walk_tree
+from buildtest.tools.file import create_dir, isDir, walk_tree
 from buildtest.tools.log import init_log
 from buildtest.tools.software import get_software_stack
 from buildtest.test.function import clean_tests
@@ -81,10 +82,15 @@ def func_build_subcmd(args):
     create_dir(testdir)
 
     if args.suite:
-        create_dir(os.path.join(testdir,"suite",args.suite))
+        test_suite_dir = os.path.join(testdir,"suite",args.suite)
+        create_dir(test_suite_dir)
         yaml_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"], "buildtest","suite",args.suite)
 
         yaml_files = walk_tree(yaml_dir,".yml")
+
+        if config_opts["BUILDTEST_CLEAN_BUILD"]:
+            if isDir(test_suite_dir):
+                shutil.rmtree(test_suite_dir)
 
         testsuite_components = os.listdir(yaml_dir)
         # precreate direcorties for each component for test suite in BUILDTEST_TESTDIR
@@ -124,7 +130,7 @@ class BuildTestBuilderSingleSource():
         self.parent_dir = parent_dir
     def build(self):
         """ logic to build the test script"""
-    
+
         # if this is a LSF job script then create .lsf extension for testname
         if "lsf" in self.test_dict:
             self.testname = '%s.%s' % (os.path.basename(self.yaml),"lsf")
