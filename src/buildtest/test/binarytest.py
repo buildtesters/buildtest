@@ -34,7 +34,6 @@ import yaml
 import stat
 from shutil import copyfile
 
-from buildtest.test.job import generate_job
 from buildtest.tools.config import BUILDTEST_ROOT, config_opts, logID
 from buildtest.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake, add_test_to_CMakeLists
 from buildtest.tools.file import create_dir, string_in_file
@@ -154,9 +153,6 @@ def generate_binary_test(name,test_type=None):
             if not string_in_file(add_test_str,test_destdir_cmakelist):
                 logger.debug("Adding content: %s ",  add_test_str)
                 fd.write(add_test_str)
-
-        if config_opts["BUILDTEST_ENABLE_JOB"]:
-            generate_job(testpath,config_opts["BUILDTEST_SHELL"],config_opts["BUILDTEST_JOB_TEMPLATE"], content)
 
     fd.close()
 

@@ -30,6 +30,7 @@ from buildtest.test.run.system import run_system_test
 from buildtest.test.run.interactive import runtest_menu
 from buildtest.test.run.app import run_app_choices, run_suite
 from buildtest.test.run.system import run_system_choices
+from buildtest.test.job import submit_job_to_scheduler
 from buildtest.tools.config import config_opts
 from buildtest.tools.system import BuildTestSystem
 
@@ -46,6 +47,8 @@ def func_run_subcmd(args):
         run_suite(args.suite)
     if args.package:
         run_system_test(args.package)
+    if args.job:
+        submit_job_to_scheduler(args.suite)
     if args.all_software:
         stack = run_app_choices()
         for software in stack:
@@ -58,7 +61,9 @@ def func_run_subcmd(args):
 
 def write_system_info(fd,app_name=None,pkg_name=None):
     """ write system information into run file """
-    system = BuildTestSystem().system
+    system_info = BuildTestSystem()
+    system = system_info.get_system()
+
     fd.write("-------------------------- SYSTEM INFO --------------------------------------\n")
     fd.write("Date:" + str(datetime.now()) + "\n")
     fd.write("buildtest version: " + config_opts["BUILDTEST_VERSION"] + "\n")

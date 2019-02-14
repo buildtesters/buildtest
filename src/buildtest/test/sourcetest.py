@@ -36,7 +36,6 @@ from shutil import copyfile
 
 from buildtest.test.compiler import get_compiler
 from buildtest.test.function import add_arg_to_runcmd
-from buildtest.test.job import generate_job, generate_job_by_config
 from buildtest.tools.cmake import  add_test_to_CMakeLists
 from buildtest.tools.config import  config_opts, logID
 from buildtest.tools.file import create_dir
@@ -143,8 +142,6 @@ def generate_source_test(configmap,codedir,subdir):
 
 
     shell_type = config_opts['BUILDTEST_SHELL']
-    BUILDTEST_JOB_TEMPLATE = config_opts['BUILDTEST_JOB_TEMPLATE']
-    BUILDTEST_ENABLE_JOB = config_opts['BUILDTEST_ENABLE_JOB']
 
     # testname is key value "name" with .sh extension
     testname=configmap["name"]+"."+shell_type
@@ -350,16 +347,6 @@ def generate_source_test(configmap,codedir,subdir):
             logger.debug("runextracmd: %s", str(configmap["runextracmd"]))
 
         fd.close()
-
-    if BUILDTEST_ENABLE_JOB:
-        if "scheduler" in configmap:
-            generate_job_by_config(testpath,shell_type, configmap)
-        else:
-            # generate job script based on template, if "scheduler" found in
-            # then module below will do nothing and taken care off by
-            # generate_job_by_config
-            generate_job(testpath,shell_type,BUILDTEST_JOB_TEMPLATE,configmap)
-
 
     # by default run the commands below which will add the test to CMakeLists.txt and update the logfile
     if "iter" not in configmap:

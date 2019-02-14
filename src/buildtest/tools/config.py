@@ -65,17 +65,15 @@ except FileNotFoundError as err_msg:
 #global logID
 logID = "buildtest"
 
-FILES_config = ["BUILDTEST_JOB_TEMPLATE"]
+
 DIR_config = ["BUILDTEST_CONFIGS_REPO","BUILDTEST_LOGDIR","BUILDTEST_TESTDIR","BUILDTEST_RUN_DIR"]
 config_yaml_keys = {
     'BUILDTEST_MODULE_NAMING_SCHEME': type("str"),
     'BUILDTEST_EASYBUILD': type(True),
     'BUILDTEST_CLEAN_BUILD': type(True),
-    'BUILDTEST_ENABLE_JOB': type(True),
     'BUILDTEST_OHPC': type(True),
     'BUILDTEST_BINARY': type(True),
     'BUILDTEST_SHELL': type("str"),
-    'BUILDTEST_JOB_TEMPLATE': type("file"),
     'BUILDTEST_SUCCESS_THRESHOLD': type(1.0),
     'BUILDTEST_MODULE_ROOT': type([]),
     'BUILDTEST_CONFIGS_REPO': type("str"),
@@ -123,22 +121,11 @@ def check_configuration():
             print (key + " must be between [0.0-1.0]" + " current value is " + str(config_opts[key]))
             ec = 1
 
-        if key == "BUILDTEST_JOB_TEMPLATE" and os.path.splitext(config_opts[key])[1] not in BUILDTEST_JOB_EXTENSION:
-            #print (f"Invalid file extension: {config_opts[key])[1]} must be one of the following extension {BUILDTEST_JOB_EXTENSION}")
-            print ("Invalid File extension " + str(os.path.splitext(config_opts[key])[1]) + " must be one of the following extension" + str(BUILDTEST_JOB_EXTENSION))
-            ec = 1
-
         if key == "BUILDTEST_MODULE_ROOT":
             for module_root in config_opts[key]:
                 if not os.path.isdir(module_root):
                     print (module_root + " directory does not exist, specified in BUILDTEST_MODULE_ROOT")
-                    ec = 1
-
-        # if yaml key is of type FILE, check if file exists
-        if key in FILES_config:
-            if not os.path.exists(config_opts[key]):
-                print (config_opts[key] + " is an invalid file path please check your file")
-                ec = 1
+                    ec = 1        
 
         # if yaml key is of type FILE, check if file exists
         if value in DIR_config:

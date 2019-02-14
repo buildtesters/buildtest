@@ -72,7 +72,6 @@ def menu():
     parser.add_argument("--show-keys", help="display yaml key description", action="store_true")
     parser.add_argument("--scantest", help=""" Report all application that buildtest can be build.""", action="store_true")
     parser.add_argument("--clean-logs", help="delete buildtest log directory ($BUILDTEST_LOGDIR)",action="store_true")
-    parser.add_argument("--submitjob", help = "specify a directory or job script to submit to resource scheduler")
     #parser.add_argument("-C", "--category", help="select test category for building tests", choices=self.test_category, metavar="TEST-CATEGORY")
     subparsers = parser.add_subparsers(help='subcommand help', dest="subcommand")
     # -------------------------------- list menu --------------------------
@@ -109,9 +108,7 @@ def menu():
     parser_build.add_argument("--clean-tests",help="delete testing directory ($BUILDTEST_TESTDIR)",action="store_true")
     parser_build.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
     parser_build.add_argument("--clean-build", help="delete software test directory before writing test scripts", action="store_true")
-    parser_build.add_argument("-eb","--easybuild", help="check if application is built by easybuild",action="store_true")
-    parser_build.add_argument("--enable-job", help="enable job script generation with buildtest", action="store_true")
-    parser_build.add_argument("--job-template", help = "specify  job template file to create job submission script for the test to run with resource scheduler")
+    parser_build.add_argument("-eb","--easybuild", help="check if application is built by easybuild",action="store_true")    
     parser_build.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
     parser_build.add_argument("--ohpc", help="Indicate to buildtest this is a OpenHPC package. YAML files will be processed from $BUILDTEST_CONFIGS_REPO/ohpc", action="store_true")
 
@@ -124,6 +121,7 @@ def menu():
     parser_run.add_argument("-s", "--software", help="Run test suite for application via buildtest", choices=app_choices, metavar='SOFTWARE-TEST-SUITE')
     parser_run.add_argument("-p", "--package", help="Run test suite for system package via buildtest", choices=systempkg_choices, metavar='PACKAGE-TEST-SUITE')
     parser_run.add_argument("-S", "--suite", help="Run the test suite",choices=run_test_class)
+    parser_run.add_argument("-j", "--job", help = "Submit jobs to resource scheduler",action="store_true")
     parser_run.add_argument("--all-software", help="Run test suite for all software packages", action="store_true")
     parser_run.add_argument("--all-package", help="Run test suite for all system packages", action="store_true")
     parser_run.set_defaults(func=func_run_subcmd)

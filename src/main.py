@@ -41,7 +41,6 @@ os.environ["BUILDTEST_ROOT"]=os.path.dirname(os.path.dirname(__file__))
 os.environ['COLUMNS'] = "120"
 
 from buildtest.tools.menu import menu, parse_options
-from buildtest.test.job import submit_job_to_scheduler
 from buildtest.tools.config import show_configuration, config_opts
 from buildtest.tools.log import clean_logs
 from buildtest.tools.parser.yaml_config import show_yaml_keys
@@ -77,10 +76,6 @@ def main():
 
     if parsed_opts.scantest:
         scantest()
-
-    if parsed_opts.submitjob is not None:
-        submit_job_to_scheduler(parsed_opts.submitjob)
-        sys.exit(0)
 
 if __name__ == "__main__":
         main()

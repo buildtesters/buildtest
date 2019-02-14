@@ -35,7 +35,6 @@ from buildtest.tools.log import init_log
 from buildtest.tools.software import get_software_stack
 from buildtest.test.function import clean_tests
 from buildtest.test.binarytest import generate_binary_test
-from buildtest.test.job import update_job_template
 from buildtest.test.sourcetest import recursive_gen_test
 from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.easybuild import is_easybuild_app
@@ -60,16 +59,13 @@ def func_build_subcmd(args):
         config_opts['BUILDTEST_TESTDIR'] = args.testdir
     if args.easybuild:
         config_opts["BUILDTEST_EASYBUILD"]=True
-    if args.enable_job:
-        config_opts['BUILDTEST_ENABLE_JOB']=True
     if args.module_naming_scheme:
         config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = args.module_naming_scheme
-    if args.job_template:
-        update_job_template(args.job_template)
     if args.prepend_modules:
         config_opts["BUILDTEST_PREPEND_MODULES"]   = args.prepend_modules
     if args.binary:
         config_opts["BUILDTEST_BINARY"] = args.binary
+
 
     if args.ohpc:
         check_ohpc()

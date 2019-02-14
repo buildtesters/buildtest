@@ -68,13 +68,6 @@ def override_configuration():
         else:
             config_opts['BUILDTEST_CLEAN_BUILD']=False
 
-    if os.environ.get('BUILDTEST_ENABLE_JOB'):
-        truth_value = strtobool(os.environ['BUILDTEST_ENABLE_JOB'])
-        if truth_value == 1:
-            config_opts['BUILDTEST_ENABLE_JOB']=True
-        else:
-            config_opts['BUILDTEST_ENABLE_JOB']=False
-
     if os.environ.get('BUILDTEST_OHPC'):
         truth_value = strtobool(os.environ['BUILDTEST_OHPC'])
         if truth_value == 1:
@@ -89,8 +82,6 @@ def override_configuration():
     if os.environ.get('BUILDTEST_SHELL'):
         config_opts['BUILDTEST_SHELL']=os.environ['BUILDTEST_SHELL']
 
-    if os.environ.get('BUILDTEST_JOB_TEMPLATE'):
-        config_opts['BUILDTEST_JOB_TEMPLATE']=os.environ['BUILDTEST_JOB_TEMPLATE']
 
     if os.environ.get('BUILDTEST_SUCCESS_THRESHOLD'):
         threshold = float(os.environ.get('BUILDTEST_SUCCESS_THRESHOLD'))
@@ -105,4 +96,3 @@ def override_configuration():
 
     config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'] = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/system")
     config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'] = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/ebapps")
-    

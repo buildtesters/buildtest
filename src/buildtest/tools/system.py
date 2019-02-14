@@ -95,7 +95,8 @@ class BuildTestSystem():
         if self.system["SCHEDULER"] == "SLURM":
             self.get_slurm_configuration()
 
-
+    def get_system(self):
+        return self.system        
     def get_lsf_configuration(self):
         """ return lsf queues and compute nodes part of the LSF cluster"""
         cmd = BuildTestCommand()

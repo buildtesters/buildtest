@@ -1,3 +1,0 @@
-#SBATCH -N 1
-#SBATCH -q short
-#SBATCH -t 00:02
