@@ -57,11 +57,11 @@ TEMPLATE_MPI = {
    'type': "openmpi",
    'num_procs':  4
 }
-SUPPORTED_COMPILERS = ['gnu','intel']
+SUPPORTED_COMPILERS = ['gnu','intel','cuda']
 TEMPLATE_VARS = {
     'foo': 'bar'
 }
-TEMPLATE_GENERAL = {
+TEMPLATE_SINGLESOURCE = {
     'source': "file.c",
     'input': "inputfile",
     'flags': "-O3 -fast",
@@ -72,10 +72,7 @@ TEMPLATE_GENERAL = {
     'args': "args1 args2 args3",
     'slurm': TEMPLATE_JOB_SLURM,
     'lsf': TEMPLATE_JOB_LSF,
-    'mpi': TEMPLATE_MPI,
 }
-
-#TEMPLATE = ['test', TEMPLATE_GENERAL]
 
 class BuildTestYamlSingleSource():
 
@@ -101,13 +98,13 @@ class BuildTestYamlSingleSource():
         """ check keys specified in YAML file with buildtest templates and type check value """
         mpi_keys =  None
         for k,v in dict.items():
-            if k not in TEMPLATE_GENERAL.keys():
+            if k not in TEMPLATE_SINGLESOURCE.keys():
                 print("Invalid Key: " + k)
                 sys.exit(1)
 
             # type checking against corresponding value of key in template
-            if type(v) != type(TEMPLATE_GENERAL[k]):
-                    print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_GENERAL[k])))
+            if type(v) != type(TEMPLATE_SINGLESOURCE[k]):
+                    print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_SINGLESOURCE[k])))
                     sys.exit(1)
     def _check_compiler(self,compiler):
         # check if compiler value is in list of supported compiler supported
@@ -155,6 +152,7 @@ class BuildTestYamlSingleSource():
         if "lsf" in test_dict:
             self._check_lsf(test_dict['lsf'])
             testscript_dict["lsf"] = lsf_key_parse(test_dict['lsf'])
+            
         if "slurm" in test_dict:
             self._check_slurm(test_dict['slurm'])
             testscript_dict["slurm"] = slurm_key_parse(test_dict['slurm'])
@@ -180,14 +178,14 @@ class BuildTestYamlSingleSource():
 
         # if module key is defined then figure out module load
         if "module" in test_dict:
-            module_key_dict = test_dict['module']
             modulelist = get_software_stack()
             module_str = "module purge \n"
             # go through all modules in software stack and check if name matches one specified specified in module yaml construct
-            for module in modulelist:
-                for k in module_key_dict:
-                    if os.path.dirname(module.lower()) == k:
+            for module_yaml in test_dict["module"]:
+                for module in  modulelist:
+                    if os.path.dirname(module.lower()) == module_yaml:
                         module_str += "module load " + os.path.dirname(module) + "\n"
+                        break
 
         # if vars key is defined then get all environment variables
         if "vars" in test_dict:
@@ -242,11 +240,6 @@ def get_programming_language(ext):
         return "cuda"
     if ext in ['.py']:
         return "python"
-
-
-def get_compiler_wrapper(filext, compiler_choice):
-    """ get compiler wrapper """
-
 
 def lsf_key_parse(lsf_dict):
     """ parse lsf keys """

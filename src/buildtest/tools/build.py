@@ -116,14 +116,21 @@ class BuildTestBuilderSingleSource():
     def __init__(self,yaml,test_suite,parent_dir):
         self.testdir = config_opts["BUILDTEST_TESTDIR"]
         self.shell = config_opts["BUILDTEST_SHELL"]
+        self.yaml = yaml
         yaml_dict = BuildTestYamlSingleSource(yaml,test_suite,self.shell)
         self.yaml_dict, self.test_dict = yaml_dict.parse()
-        self.testname = '%s.%s' % (os.path.basename(yaml),self.shell)
-        #self.testname = self.yaml_dict["name"] + "." + self.shell
+        self.testname = '%s.%s' % (os.path.basename(self.yaml),self.shell)
         self.test_suite = test_suite
         self.parent_dir = parent_dir
     def build(self):
         """ logic to build the test script"""
+    
+        # if this is a LSF job script then create .lsf extension for testname
+        if "lsf" in self.test_dict:
+            self.testname = '%s.%s' % (os.path.basename(self.yaml),"lsf")
+        # if this is a slurm job script then create .lsf extension for testname
+        if "slurm" in self.test_dict:
+            self.testname = '%s.%s' % (os.path.basename(self.yaml),"slurm")
 
         test_dir  = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",self.test_suite,self.parent_dir)
 

@@ -152,7 +152,7 @@ def run_suite(suite):
     for root, subdir, files in os.walk(app_root_testdir):
         for file in files:
             # only add test with valid shell extensions
-            if os.path.splitext(file)[1] in [".sh", ".bash", ".csh"]:
+            if os.path.splitext(file)[1] in [".sh", ".bash", ".csh", ".lsf", ".slurm"]:
                 tests.append(os.path.join(root,file))
 
 
