@@ -1,3 +1,4 @@
+testblock: singlesource
 test:
     source: omp_hello.c
     vars:

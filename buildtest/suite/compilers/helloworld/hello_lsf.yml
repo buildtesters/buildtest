@@ -1,3 +1,4 @@
+testblock: singlesource
 test:
   source: hello.c
   flags: "-O2"

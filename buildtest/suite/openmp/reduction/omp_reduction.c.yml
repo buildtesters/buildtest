@@ -1,3 +1,4 @@
+testblock: singlesource
 test:
     source: omp_reduction.c
     flags: "-O3"

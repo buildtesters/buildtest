@@ -1,3 +1,4 @@
+testblock: singlesource
 test:
     source: hello.f90
     flags: -O3

@@ -1,3 +1,4 @@
+testblock: singlesource
 test:
   source: hello.cpp
   flags: "-O2"
