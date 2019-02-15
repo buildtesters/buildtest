@@ -125,7 +125,7 @@ def check_configuration():
             for module_root in config_opts[key]:
                 if not os.path.isdir(module_root):
                     print (module_root + " directory does not exist, specified in BUILDTEST_MODULE_ROOT")
-                    ec = 1        
+                    ec = 1
 
         # if yaml key is of type FILE, check if file exists
         if value in DIR_config:

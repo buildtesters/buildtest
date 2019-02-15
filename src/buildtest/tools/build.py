@@ -83,7 +83,7 @@ def func_build_subcmd(args):
         yaml_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"], "buildtest","suite",args.suite)
 
         yaml_files = walk_tree(yaml_dir,".yml")
-
+        
         if config_opts["BUILDTEST_CLEAN_BUILD"]:
             if isDir(test_suite_dir):
                 shutil.rmtree(test_suite_dir)
@@ -116,11 +116,10 @@ class BuildTestBuilderSingleSource():
     yaml_dict = {}
     test_dict = {}
     def __init__(self,yaml,test_suite,parent_dir):
-        self.testdir = config_opts["BUILDTEST_TESTDIR"]
         self.shell = config_opts["BUILDTEST_SHELL"]
         self.yaml = yaml
-        yaml_dict = BuildTestYamlSingleSource(yaml,test_suite,self.shell)
-        self.yaml_dict, self.test_dict = yaml_dict.parse()
+        yaml_parser = BuildTestYamlSingleSource(yaml,test_suite,self.shell)
+        self.yaml_dict, self.test_dict = yaml_parser.parse()
         self.testname = '%s.%s' % (os.path.basename(self.yaml),self.shell)
         self.test_suite = test_suite
         self.parent_dir = parent_dir
@@ -138,12 +137,13 @@ class BuildTestBuilderSingleSource():
 
 
         abs_test_path = os.path.join(test_dir,self.testname)
-        print("Writing Test: " + abs_test_path)
+        print(f'Writing Test: {abs_test_path}')
         fd = open(abs_test_path, "w")
 
+        # return the shell path i.e #!/bin/bash, #!/bin/sh
         shell_path = BuildTestCommand().which(self.shell)[0]
 
-        fd.write("#!" + shell_path)
+        fd.write(f'#!{shell_path}')
 
         if "lsf" in self.test_dict:
             fd.write(self.test_dict["lsf"])

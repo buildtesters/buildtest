@@ -23,7 +23,7 @@
 """
 
 This module will run an entire test suite for an application. This implements
-_buildtest run --software
+buildtest run --software
 
 """
 
@@ -33,6 +33,7 @@ import sys
 from datetime import datetime
 
 from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
+from buildtest.tools.file import walk_tree_multi_ext
 
 def run_app_choices():
     """generate choice field for buildtest run --app"""
@@ -61,7 +62,7 @@ def run_app_choices():
     return app_choices
 
 def run_app_test(app_name):
-    """implementation for _buildtest run --app to execute all tests in the test directory"""
+    """implementation for buildtest run --software to execute all tests in the test directory"""
     from buildtest.tools.run import write_system_info
 
     app_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"ebapp")
@@ -147,17 +148,9 @@ def run_suite(suite):
     fd.write("------------------------ START OF TEST -------------------------------------- \n")
 
 
-    tests = []
-    # traverse test directory tree and add tests to a list object
-    for root, subdir, files in os.walk(app_root_testdir):
-        for file in files:
-            # only add test with valid shell extensions
-            if os.path.splitext(file)[1] in [".sh", ".bash", ".csh", ".lsf", ".slurm"]:
-                tests.append(os.path.join(root,file))
-
+    tests = walk_tree_multi_ext(app_root_testdir,[".sh", ".bash", ".csh", ".lsf", ".slurm"])
 
     count_test = len(tests)
-
     passed_test = 0
     failed_test = 0
 
@@ -166,11 +159,10 @@ def run_suite(suite):
         ret = subprocess.Popen(test,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
         output = ret.communicate()[0]
         output=output.decode("utf-8")
-
-
         ret_code = ret.returncode
-        fd.write("Test Name:" + test + "\n")
-        fd.write("Return Code: " + str(ret_code) + "\n")
+
+        fd.write('Test Name: %s \n' % (test))
+        fd.write('Return Code: %d \n' % (ret_code))
         fd.write("---------- START OF TEST OUTPUT ---------------- \n")
         fd.write(output)
         fd.write("------------ END OF TEST OUTPUT ---------------- \n")
@@ -185,9 +177,10 @@ def run_suite(suite):
     print
     print("==============================================================")
     print("                         Test summary                         ")
-    print("Executed " + str(count_test) + " tests")
-    print("Passed Tests: " + str(passed_test) +  " Percentage: " + str(passed_test*100/count_test) + "%")
-    print("Failed Tests: " + str(failed_test) + "  Percentage: " + str(failed_test*100/count_test) + "%")
+    print(f"Executed {count_test} tests")
+    print(f'Passed Tests: {passed_test} with ratio: {passed_test*100/count_test}%')
+    print(f'Failed Tests: {failed_test} with ratio: {failed_test*100/count_test}%')
+
 
     actual_ratio = passed_test/count_test
     success_threshold = float(config_opts['BUILDTEST_SUCCESS_THRESHOLD'])
@@ -197,10 +190,10 @@ def run_suite(suite):
     print
     diff_ratio = abs(actual_ratio-success_threshold)
     if actual_ratio < success_threshold:
-        print ("WARNING: Threshold of " + str(success_threshold*100) + "% was not achieved by " + suite)
-        print (" Current Results are " + str(actual_ratio*100) + "% passed rate with a difference of " + str(diff_ratio) + " from the threshold" )
+        print (f'WARNING: Threshold of {success_threshold*100} % was not achieved by "suite:{suite}"')
+        print ("Current Result is {:.2f} % pass rate with a difference of {:.3f} from the threshold".format(actual_ratio*100,diff_ratio) )
     else:
-        print ("SUCCESS: Threshold of " + str(success_threshold*100) + "% was achieved")
+        print (f"SUCCESS: Threshold of {success_threshold*100} % was achieved")
 
-    print ("Writing results to " + run_output_file)
+    print (f"Writing results to {run_output_file}")
     fd.close()

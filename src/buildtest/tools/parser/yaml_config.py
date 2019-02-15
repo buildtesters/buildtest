@@ -78,6 +78,7 @@ yaml_keys = {
 
 
 def show_yaml_keys():
+    """implements --show-keys"""
     print ('{:>20}'.format("Key"), "\t \t ", '{:<20}'.format("Description"))
     print ('{:>20}'.format("--------------------------------------------------------------------------------"))
     for key in sorted(yaml_keys):

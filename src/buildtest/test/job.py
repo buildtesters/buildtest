@@ -56,4 +56,4 @@ def submit_job_to_scheduler(suite):
                     elif system["SCHEDULER"] == "SLURM":
                         cmd = job_launcher + " " + os.path.join(root,file)
                     os.system(cmd)
-                    print ("Submitting Job: ",os.path.join(root,file), " to scheduler")
+                    print (f"Submitting Job: {os.path.join(root,file)} to scheduler")

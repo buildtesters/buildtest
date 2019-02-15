@@ -28,6 +28,7 @@ This module implements the options -fc and -ft for "buildtest find"
 import os
 import sys
 from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
+from buildtest.tools.file import walk_tree, walk_tree_multi_ext
 
 def func_find_subcmd(args):
     """ entry method for find subcommand"""
@@ -39,70 +40,49 @@ def func_find_subcmd(args):
     if args.findtest == "all":
         find_all_tests()
     if args.findtest:
-        find_tests_by_arg(args.find_tests_by_arg)
+        find_tests_by_arg(args.findtest)
 
 def find_all_yaml_configs():
     """ find all yaml configs"""
-    count = 0
-    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
 
-    for root, dirs, files in os.walk(BUILDTEST_CONFIGS_REPO):
-        for file in files:
-            if file.endswith(".yaml"):
-                count+=1
-                print (os.path.join(root,file))
+    yml_files = walk_tree(config_opts['BUILDTEST_CONFIGS_REPO'],".yml")
+    for f in yml_files:
+        print(f)
+    print (f"Total YAML Configuration Files: {len(yml_files)}")
 
-    print
-    print ("Total YAML configs: ", count)
     sys.exit(0)
 
 def find_yaml_configs_by_arg(find_arg):
     """find yaml configs based on argument"""
     count = 0
 
-    BUILDTEST_CONFIGS_REPO = config_opts['BUILDTEST_CONFIGS_REPO']
-    for root, dirs, files in os.walk(BUILDTEST_CONFIGS_REPO):
-        for file in files:
-            if file.endswith(".yaml") and find_arg in os.path.basename(file):
-                count+=1
-                print (os.path.join(root,file))
+    yml_files = walk_tree(config_opts['BUILDTEST_CONFIGS_REPO'],".yml")
 
-    print
-    print ("Total YAML configs: ", count)
+    for file in yml_files:
+        if find_arg in os.path.basename(file):
+            print(file)
+            count+=1
+    print (f"Total YAML configs: {count}")
     sys.exit(0)
 
 def find_all_tests():
     """find all test scripts in $BUILDTEST_TESTDIR"""
-    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-    count = 0
-    for root, dirs, files in os.walk(BUILDTEST_TESTDIR):
-        for file in files:
-            ext = os.path.splitext(file)[1]
-            # remove leading . from extension
-            ext = ext[1:]
-            if ext in BUILDTEST_SHELLTYPES:
-                count+=1
-                print (os.path.join(root,file))
+    test_list = walk_tree_multi_ext(config_opts["BUILDTEST_TESTDIR"],[".sh",".csh",".bash",".lsf",".slurm"])
+    for test in test_list:
+        print(test)
+    print (f'{len(test_list)} Test scripts found in {config_opts["BUILDTEST_TESTDIR"]}')
 
-
-    print
-    print ("Total Test scripts: ", count)
     sys.exit(0)
 
 def find_tests_by_arg(find_arg):
     """find all test scripts in $BUILDTEST_TESTDIR"""
     count = 0
-    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
-    for root, dirs, files in os.walk(BUILDTEST_TESTDIR):
-        for file in files:
-            ext = os.path.splitext(file)[1]
-            # remove leading . from extension
-            ext = ext[1:]
-            if ext in BUILDTEST_SHELLTYPES and find_arg in os.path.basename(file):
-                count+=1
-                print (os.path.join(root,file))
 
+    test_list = walk_tree_multi_ext(config_opts['BUILDTEST_TESTDIR'],[".sh",".csh",".bash",".lsf",".slurm"])
+    for test in test_list:
+        if find_arg in os.path.basename(test):
+            print(test)
+            count+=1
+    print (f"{count} Test found with name {find_arg} in its filename")
 
-    print
-    print ("Total Test scripts: ", count)
     sys.exit(0)
