@@ -41,9 +41,8 @@ os.environ["BUILDTEST_ROOT"]=os.path.dirname(os.path.dirname(__file__))
 os.environ['COLUMNS'] = "120"
 
 from buildtest.tools.menu import menu, parse_options
-from buildtest.tools.config import show_configuration, config_opts
+from buildtest.tools.config import config_opts
 from buildtest.tools.log import clean_logs
-from buildtest.tools.parser.yaml_config import show_yaml_keys
 from buildtest.tools.scan import scantest
 from buildtest.tools.system import BuildTestSystem
 from buildtest.tools.version import buildtest_version
@@ -61,12 +60,6 @@ def main():
 
     if parsed_opts.version:
         buildtest_version()
-
-    if parsed_opts.show:
-        show_configuration()
-
-    if parsed_opts.show_keys:
-        show_yaml_keys()
 
     if parsed_opts.logdir:
         config_opts['BUILDTEST_LOGDIR'] = parsed_opts.logdir

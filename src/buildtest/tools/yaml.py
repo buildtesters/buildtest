@@ -74,6 +74,35 @@ TEMPLATE_SINGLESOURCE = {
     'lsf': TEMPLATE_JOB_LSF,
 }
 
+KEY_DESCRIPTION = {
+    'source': "Specify the name of the source file that is in the \"src\" directory relative to yaml configuration",
+    'input': "Specify input file for the executable. This file must be in \"src\" directory",
+    'flags': "Specify the build flags for compiling the source program",
+    'vars': "Specify a list of environment variables that will be declared in the test script",
+    'module': "Specify a list of modules to be loaded in the test script. All modules are lowercase without a version",
+    'compiler': "Specify a compiler that will be used for compiling the source program",
+    'ldflags': "Flags that will be passed to linkder (ld)",
+    'args': "Input arguments to be passed to the executable",
+    'slurm': "Specify SLURM configuration",
+    'lsf': "Specify LSF configuration",
+}
+LSF_KEY_DESC = {
+    'M': ["#BSUB -M", "Memory Limit"],
+    'n': ["#BSUB -n", "Submits a parallel job and specifies the number of processors required to run the job"],
+    'R': ["#BSUB -R", "Runs the job on a host that meets the specified resource requirements"],
+    'T': ["#BSUB -T", "Sets the limit of the number of concurrent threads to thread_limit for the whole job"],
+    'W': ["#BSUB -W", "Sets the runtime limit of the job."]
+}
+SLURM_KEY_DESC = {
+    'nodes':  ["#SBATCH --nodes", "number of nodes on which to run (N = min[-max])"],
+    'cpus-per-task': ["#SBATCH --cpus-per-task", "number of cpus required per task."],
+    'ntasks': ["#SBATCH --ntasks", "number of tasks to run."],
+    'ntasks-per-node': ["#SBATCH --ntasks-per-node", "number of tasks to invoke on each node"],
+    'mem': ["#SBATCH --mem", "minimum amount of real memory."],
+    'mem-per-cpu':["#SBATCH --mem-per-cpu", "maximum amount of real memory per allocated"],
+    'time': ["#SBATCH --time", "time limit"],
+    'constraint': ["#SBATCH --constraint", "specify a list of constraints"]
+}
 class BuildTestYamlSingleSource():
 
     yaml_file = ""
@@ -152,7 +181,7 @@ class BuildTestYamlSingleSource():
         if "lsf" in test_dict:
             self._check_lsf(test_dict['lsf'])
             testscript_dict["lsf"] = lsf_key_parse(test_dict['lsf'])
-            
+
         if "slurm" in test_dict:
             self._check_slurm(test_dict['slurm'])
             testscript_dict["slurm"] = slurm_key_parse(test_dict['slurm'])

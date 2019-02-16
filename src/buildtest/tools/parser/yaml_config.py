@@ -77,14 +77,6 @@ yaml_keys = {
 }
 
 
-def show_yaml_keys():
-    """implements --show-keys"""
-    print ('{:>20}'.format("Key"), "\t \t ", '{:<20}'.format("Description"))
-    print ('{:>20}'.format("--------------------------------------------------------------------------------"))
-    for key in sorted(yaml_keys):
-        print  ('{:>20}'.format(key), "\t \t ", '{:.<40}'.format(textwrap.fill(yaml_keys[key],120)))
-    sys.exit(1)
-
 def parse_config(filename,codedir="/"):
     """read config file and verify the key-value content with dictionary field"""
     # if file extenstion is not "yaml" then return immediately
