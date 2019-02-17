@@ -31,7 +31,7 @@ import sys
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.easybuild import get_toolchains, find_easyconfigs
-from buildtest.tools.print_functions import print_software, print_toolchain, print_software_version_relation
+from buildtest.tools.print_functions import print_software, print_software_version_relation
 from buildtest.tools.software import get_unique_software, software_version_relation
 
 def func_list_subcmd(args):
@@ -39,22 +39,12 @@ def func_list_subcmd(args):
 
     if args.easyconfigs:
         find_easyconfigs()
-    elif args.list_toolchain:
-        list_toolchain(args)
     elif args.list_unique_software:
         list_software(args)
     elif args.software_version_relation:
         list_software_version_relation(args)
 
     sys.exit(0)
-
-def list_toolchain(args):
-    """ implementation for  "buildtest list -lt" """
-    toolchain_set=get_toolchains()
-    if args.format == "json":
-        json.dump(toolchain_set, sys.stdout, indent=4, sort_keys=True)
-    else:
-        print_toolchain(toolchain_set)
 
 def list_software(args):
     """ implementation for  "buildtest list -ls" """
@@ -64,8 +54,6 @@ def list_software(args):
         json.dump(software_set, sys.stdout, indent=4, sort_keys=True)
     else:
         print_software(software_set)
-
-
 
 def list_software_version_relation(args):
     """ implementation for  "buildtest list -svr" """

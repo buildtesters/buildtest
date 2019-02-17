@@ -67,15 +67,3 @@ ID  |     Software
 
 
     print ("Total Software Packages: ", count)
-
-def print_toolchain(toolchain_set):
-    """ print option for "buildtest list -lt" """
-    count = 1
-    text =  """
-ID  |     Toolchains
-----|-----------------------------  """
-
-    print (text)
-    for item in toolchain_set:
-        print ((str(count) + "\t|").expandtabs(4), item)
-        count = count + 1

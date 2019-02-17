@@ -74,8 +74,7 @@ def menu():
     #parser.add_argument("-C", "--category", help="select test category for building tests", choices=self.test_category, metavar="TEST-CATEGORY")
     subparsers = parser.add_subparsers(help='subcommand help', dest="subcommand")
     # -------------------------------- list menu --------------------------
-    parser_list = subparsers.add_parser('list', help='list help')
-    parser_list.add_argument('-lt', "--list-toolchain", help="retrieve a list of easybuild toolchain used for --toolchain option", action="store_true")
+    parser_list = subparsers.add_parser('list', help='list help')    
     parser_list.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_MODULE_ROOT", action="store_true")
     parser_list.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
     parser_list.add_argument("-ec","--easyconfigs", help="Return a list of easyconfigs from a easybuild module tree",action="store_true")

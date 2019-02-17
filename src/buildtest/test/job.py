@@ -29,7 +29,7 @@ import glob
 import subprocess
 import sys
 
-from buildtest.tools.config import BUILDTEST_ROOT, BUILDTEST_JOB_EXTENSION, config_opts
+from buildtest.tools.config import config_opts
 from buildtest.tools.system import BuildTestSystem
 
 def submit_job_to_scheduler(suite):

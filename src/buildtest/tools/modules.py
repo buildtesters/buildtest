@@ -34,7 +34,7 @@ import os
 import sys
 import subprocess
 from buildtest.tools.config import config_opts
-from buildtest.tools.file import string_in_file
+from buildtest.tools.file import string_in_file, isDir
 
 
 def func_module_subcmd(args):
@@ -92,7 +92,7 @@ def get_module_list_by_tree(mod_tree):
                 modulefiles.append(os.path.join(root,file))
 
     return modulefiles
-    
+
 def load_modules(shell_type):
     """return a string that loads the software and toolchain module."""
 

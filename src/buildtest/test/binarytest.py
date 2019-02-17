@@ -34,12 +34,11 @@ import yaml
 import stat
 from shutil import copyfile
 
-from buildtest.tools.config import BUILDTEST_ROOT, config_opts, logID
+from buildtest.tools.config import config_opts, logID
 from buildtest.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake, add_test_to_CMakeLists
-from buildtest.tools.file import create_dir, string_in_file
-from buildtest.tools.parser.yaml_config import parse_config
-from buildtest.tools.modules import load_modules, strip_toolchain_from_module
-from buildtest.tools.software import get_toolchain_stack, get_binaries_from_application
+from buildtest.tools.file import string_in_file
+from buildtest.tools.modules import load_modules
+from buildtest.tools.software import get_binaries_from_application
 from buildtest.tools.system import get_binaries_from_systempackage
 from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
 
