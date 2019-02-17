@@ -106,7 +106,7 @@ SLURM_KEY_DESC = {
 class BuildTestYamlSingleSource():
 
     yaml_file = ""
-    def __init__(self,yaml_file,test_suite,shell):
+    def __init__(self,yaml_file,test_suite,shell,software_module=None):
 
         isFile(yaml_file)
 
@@ -122,6 +122,7 @@ class BuildTestYamlSingleSource():
         self.parent_dir = os.path.basename(os.path.dirname(self.yaml_file))
         self.test_suite_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"buildtest","suite")
         self.srcdir = os.path.join(self.test_suite_dir, self.test_suite, self.parent_dir,"src")
+        self.software_module = software_module
 
     def _check_keys(self, dict):
         """ check keys specified in YAML file with buildtest templates and type check value """
@@ -205,6 +206,7 @@ class BuildTestYamlSingleSource():
         if "input" in test_dict:
             cmd += ["<", os.path.join(self.srcdir,inputfile) ]
 
+
         # if module key is defined then figure out module load
         if "module" in test_dict:
             modulelist = get_software_stack()
@@ -212,6 +214,10 @@ class BuildTestYamlSingleSource():
             # go through all modules in software stack and check if name matches one specified specified in module yaml construct
             for module_yaml in test_dict["module"]:
                 for module in  modulelist:
+                    # when -s <module> is specified and module name matches one in YAML file then add the version specific module to shell script
+                    if self.software_module and os.path.dirname(self.software_module.lower()) == module_yaml:
+                        module_str += "module load %s \n" % (self.software_module)
+                        break
                     if os.path.dirname(module.lower()) == module_yaml:
                         module_str += "module load " + os.path.dirname(module) + "\n"
                         break

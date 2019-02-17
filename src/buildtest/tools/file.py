@@ -46,7 +46,7 @@ def isDir(dir):
 def walk_tree(root_dir,ext):
     """ traverse a directory tree and return list of files based on extension type"""
     list_files = []
-
+    isDir(root_dir)
     for root, subdir, files in os.walk(root_dir):
         for file in files:
             if file.endswith(ext):
@@ -58,6 +58,7 @@ def walk_tree_multi_ext(root_dir,ext_list):
         extension is a list as pose to a single string
     """
     list_files = []
+    isDir(root_dir)
     for root, subdir, files in os.walk(root_dir):
         for file in files:
             # return a list of True, False based on file extension

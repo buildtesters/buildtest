@@ -83,31 +83,30 @@ def func_build_subcmd(args):
         yaml_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"], "buildtest","suite",args.suite)
 
         yaml_files = walk_tree(yaml_dir,".yml")
-        
+
         if config_opts["BUILDTEST_CLEAN_BUILD"]:
             if isDir(test_suite_dir):
                 shutil.rmtree(test_suite_dir)
 
         testsuite_components = os.listdir(yaml_dir)
-        # precreate direcorties for each component for test suite in BUILDTEST_TESTDIR
+        # precreate directories for each component in test suite in BUILDTEST_TESTDIR
         for component in testsuite_components:
             create_dir(os.path.join(testdir,"suite",args.suite,component))
 
         for file in yaml_files:
             parent_dir = os.path.basename(os.path.dirname(file))
-            #print (parent_dir, file)
             fd=open(file,'r')
             content = yaml.load(fd)
 
 
             if content["testblock"] == "singlesource":
-                builder = BuildTestBuilderSingleSource(file,args.suite, parent_dir)
+                builder = BuildTestBuilderSingleSource(file,args.suite, parent_dir,args.software)
                 builder.build()
 
     if args.package:
         func_build_system(args.package, logger, logdir, logpath, logfile)
-    elif args.software:
-        func_build_software(args, logger, logdir, logpath, logfile)
+    #elif args.software:
+    #    func_build_software(args, logger, logdir, logpath, logfile)
 
     sys.exit(0)
 
@@ -115,14 +114,15 @@ class BuildTestBuilderSingleSource():
     """ class responsible for building a test"""
     yaml_dict = {}
     test_dict = {}
-    def __init__(self,yaml,test_suite,parent_dir):
+    def __init__(self,yaml,test_suite,parent_dir,software_module=None):
         self.shell = config_opts["BUILDTEST_SHELL"]
         self.yaml = yaml
-        yaml_parser = BuildTestYamlSingleSource(yaml,test_suite,self.shell)
-        self.yaml_dict, self.test_dict = yaml_parser.parse()
         self.testname = '%s.%s' % (os.path.basename(self.yaml),self.shell)
         self.test_suite = test_suite
         self.parent_dir = parent_dir
+        self.software_module = software_module
+        yaml_parser = BuildTestYamlSingleSource(yaml,test_suite,self.shell,self.software_module)
+        self.yaml_dict, self.test_dict = yaml_parser.parse()
     def build(self):
         """ logic to build the test script"""
 
