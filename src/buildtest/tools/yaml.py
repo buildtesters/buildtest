@@ -33,7 +33,6 @@ from ruamel.yaml import YAML
 from buildtest.tools.config import config_opts
 from buildtest.tools.ohpc import check_ohpc
 from buildtest.tools.software import get_software_stack
-from buildtest.test.sourcetest import get_environment_variable
 from buildtest.tools.file import isFile
 
 TEMPLATE_JOB_SLURM = {
@@ -242,6 +241,12 @@ class BuildTestYamlSingleSource():
         testscript_dict["post_run"] = "rm ./" + exec_name + "\n"
 
         return test_dict, testscript_dict
+def get_environment_variable(shell,key,value):
+    """ get environment variable based on shell type"""
+    if shell == "sh" or shell == "bash":
+        return "export %s=%s \n" %(key,value)
+    elif shell == "csh":
+        return ("setenv %s %s \n" %(key,value))
 
 def get_compiler(language, compiler):
     """ return compiler based on language"""

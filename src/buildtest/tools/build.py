@@ -35,7 +35,6 @@ from buildtest.tools.log import init_log
 from buildtest.tools.software import get_software_stack
 from buildtest.test.function import clean_tests
 from buildtest.test.binarytest import generate_binary_test
-from buildtest.test.sourcetest import recursive_gen_test
 from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.easybuild import is_easybuild_app
 from buildtest.tools.ohpc import check_ohpc
@@ -105,8 +104,8 @@ def func_build_subcmd(args):
 
     if args.package:
         func_build_system(args.package, logger, logdir, logpath, logfile)
-    #elif args.software:
-    #    func_build_software(args, logger, logdir, logpath, logfile)
+    elif args.software:
+        func_build_software(args, logger, logdir, logpath, logfile)
 
     sys.exit(0)
 
@@ -218,18 +217,6 @@ def func_build_software(args, logger, logdir, logpath, logfile):
     setup_software_cmake()
     if config_opts["BUILDTEST_BINARY"]:
         generate_binary_test(args.software,"software")
-
-    source_app_dir=os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/source",appname.lower())
-    configdir=os.path.join(source_app_dir,"config")
-    codedir=os.path.join(source_app_dir,"code")
-
-    logger.debug("Source App Directory: %s",  source_app_dir)
-    logger.debug("Config Directory: %s ", configdir)
-    logger.debug("Code Directory: %s", codedir)
-
-
-    # this generates all the compilation tests found in application directory ($BUILDTEST_CONFIGS_REPO/ebapps/<software>)
-    recursive_gen_test(configdir,codedir)
 
     # moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to $BUILDTEST_LOGDIR/app/appver/tcname/tcver/buildtest_%H_%M_%d_%m_%Y.log
     os.rename(logpath, os.path.join(logdir,logfile))

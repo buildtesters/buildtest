@@ -34,6 +34,7 @@ import os
 import sys
 import subprocess
 from buildtest.tools.config import config_opts
+from buildtest.tools.file import string_in_file
 
 
 def func_module_subcmd(args):
@@ -44,24 +45,6 @@ def func_module_subcmd(args):
     if args.module_load_test:
         module_load_test()
 
-
-def get_module_list_by_tree(mod_tree):
-    """ returns a list of module file paths given a module tree """
-
-    modulefiles = []
-
-    for root, dirs, files in os.walk(mod_tree):
-        for file in files:
-            # skipping files that are symbolic links
-            if os.path.islink(os.path.join(root,file)):
-                continue
-
-            if file.startswith(".version"):
-                    continue
-
-            modulefiles.append(os.path.join(root,file))
-
-    return modulefiles
 def strip_toolchain_from_module(modulename):
     """When module file has toolchain in version remove it (ex.  Python/2.7.14-intel-2018a  should return  Python/2.7.14 )"""
     from buildtest.tools.software import get_toolchain_stack
@@ -88,19 +71,28 @@ def get_module_list():
     modulefiles = []
     modtrees = config_opts["BUILDTEST_MODULE_ROOT"]
     for tree in modtrees:
+        isDir(tree)
         for root, dirs, files in os.walk(tree):
             for file in files:
-                # skipping files that are symbolic links
-                if os.path.islink(os.path.join(root,file)):
-                    continue
-		# skip any file that starts with .version
-                if file.startswith(".version"):
-                    continue
-
-                modulefiles.append(os.path.join(root,file))
+                # only add modules with .lua extension or files that have #%Module which is for environment modules
+                if file.endswith(".lua") or string_in_file("#%Module",os.path.join(root,file)):
+                    modulefiles.append(os.path.join(root,file))
 
     return modulefiles
 
+def get_module_list_by_tree(mod_tree):
+    """ returns a list of module file paths given a module tree """
+
+    modulefiles = []
+
+    isDir(mod_tree)
+    for root, dirs, files in os.walk(mod_tree):
+        for file in files:
+            if file.endswith(".lua") or string_in_file("#%Module",os.path.join(root,file)):
+                modulefiles.append(os.path.join(root,file))
+
+    return modulefiles
+    
 def load_modules(shell_type):
     """return a string that loads the software and toolchain module."""
 
