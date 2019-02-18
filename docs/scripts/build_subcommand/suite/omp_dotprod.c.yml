@@ -1,0 +1,9 @@
+testblock: singlesource
+test:
+    source: omp_dotprod.c
+    vars:
+        OMP_NUM_THREADS: 2
+    compiler: gnu
+    ldflags: "-fopenmp"
+    module:
+        - gcc
