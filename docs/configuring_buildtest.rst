@@ -14,39 +14,7 @@ configuration file that can be found in the git repo.
 
 **Configuration File**
 
-::
-
-    # root of buildtest-configs repo
-    BUILDTEST_CONFIGS_REPO:
-
-    # Specify Module Naming Scheme for your module tree. Valid Options: [FNS, HMNS]
-    BUILDTEST_MODULE_NAMING_SCHEME:
-
-    # easybuild integration. Valid Options: [True, False]
-    BUILDTEST_EASYBUILD: False
-    # Delete Build Directory before writing tests.  Valid Options: [True, False]
-    BUILDTEST_CLEAN_BUILD: False
-    # enable support for job scripts. Valid Options: [True, False]
-    BUILDTEST_ENABLE_JOB: False
-    # OpenHPC integration. Valid options: [True, False]
-    BUILDTEST_OHPC: False
-    # binary test support. Valid options [True, False]
-    BUILDTEST_BINARY: False
-    # Configure shell when running test. Valid options [bash, csh, sh]. Default: [sh]
-    BUILDTEST_SHELL: sh
-    # Specify job template script to generate test
-    BUILDTEST_JOB_TEMPLATE:
-    # list root of module tree where modules are installed. Specify multiple module tree as a list
-    BUILDTEST_MODULE_ROOT:
-    # criteria for success threshold when running job. Valid Option: [0.0-1.0]
-    BUILDTEST_SUCCESS_THRESHOLD: 0.90
-
-    # directory where buildtest logs will be written.
-    BUILDTEST_LOGDIR:
-    # directory where test scripts will be generated
-    BUILDTEST_TESTDIR:
-    # directory where buildtest will write .run files
-    BUILDTEST_RUN_DIR:
+.. program-output:: cat scripts/configuring_buildtest/settings.yml
 
 
 Variable Description
@@ -116,7 +84,7 @@ The module naming scheme is assumed to be consistent across all module trees def
 If you specify an invalid value for ``BUILDTEST_MODULE_NAMING_SCHEME`` you will get the following message
 
 .. Error::
-	BUILDTEST_MODULE_NAMING_SCHEME expects value ['HMNS', 'FNS'] current value is custom
+	BUILDTEST_MODULE_NAMING_SCHEME expects value ['HMNS', 'FNS']
 
 
 Configure Shell
@@ -180,38 +148,20 @@ Configure Test Directory
 buildtest will write test scripts in ``BUILDTEST_TESTDIR``. This can be specified
 in configuration file or environment variable.
 
-Setting ``BUILDTEST_TESTDIR`` to ``/tmp/buildtest/tests`` can be done as follows
+Setting ``BUILDTEST_TESTDIR`` to ``/home/siddis14/tmp/`` can be done as follows
 
 ::
 
-    BUILDTEST_TESTDIR: /tmp/buildtest/tests
+    BUILDTEST_TESTDIR: /home/siddis14/tmp/
 
 If the directory does not exist, buildtest will create it assuming you have the appropriate
 permissions.
 
-You may specify this at the command line via ``--testdir``
+You may specify this at the command line via ``buildtest build --testdir``
 
-See example below where tests are written to ``/tmp/buildtest/tests``
+See example below where we customize testdir at runtime using the command line option
 
-::
-
-    (buildtest) [siddis14@gorgon buildtest-framework]$ buildtest build -s GCCcore/6.4.0
-    Check Configuration
-    Creating Log directory:  /tmp/buildtest/logs
-    Detecting Software:  GCCcore/6.4.0
-    --------------------------------------------
-    [STAGE 1]: Building Binary Tests
-    --------------------------------------------
-    Detecting Test Type: Software
-    Processing Binary YAML configuration:  /home/siddis14/github/buildtest-configs/buildtest/ebapps/gcccore/6.4.0/command.yaml
-    Generating  10  binary tests
-    Binary Tests are written in  /tmp/buildtest/tests/ebapp/GCCcore/6.4.0/
-    --------------------------------------------
-    [STAGE 2]: Building Source Tests
-    --------------------------------------------
-    Processing all YAML files in directory:  /home/siddis14/github/buildtest-configs/buildtest/source/gcccore/config
-    Generating 22  Source Tests and writing at  /tmp/buildtest/tests/ebapp/GCCcore/6.4.0/
-    Writing Log file:  /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_21_20_20_01_2019.log
+.. program-output:: cat scripts/build_subcommand/custom_test_dir.txt
 
 
 Log Directory
@@ -269,32 +219,6 @@ configuration file
 
 For more details check out :ref:`OHPC_Integration`
 
-Job Integration
-----------------
-
-buildtest can support job script creation so you can submit tests to your batch scheduler.
-To enable this feature you will need to set ``BUILDTEST_ENABLE_JOB``
-
-::
-
-    BUILDTEST_ENABLE_JOB: True
-
-By default this is disabled.
-
-
-
-When set this will automatically create job scripts based on the variable ``BUILDTEST_JOB_TEMPLATE``
-along with the test scripts in the same directory.
-
-BUILDTEST_JOB_TEMPLATE can be set at configuration file or as environment variable. buildtest will
-check if file exists and if it contains a valid extension. You may get the following message if you specify
-an invalid extension
-
-.. Error::
-    Invalid File extension .slurm1 must be one of the following extension['.lsf', '.slurm', '.pbs']
-
-
-For more information check out :ref:`Job_Template`
 
 Test Threshold
 ----------------

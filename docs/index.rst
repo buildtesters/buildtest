@@ -45,27 +45,6 @@ Subcommands
    show_subcommand.rst
 
 
-buildtest YAML Framework
-------------------------
-
-.. toctree::
-   :maxdepth: 2
-
-
-   writing_test_in_yaml.rst
-   mpi_yaml.rst
-   openmp_yaml.rst
-   jobscript_yaml_configuration.rst
-
-
-Jobscript Features
-------------------
-
-.. toctree::
-   :maxdepth: 2
-
-   automate_batchjobs.rst
-
 Miscellaneous
 --------------------
 

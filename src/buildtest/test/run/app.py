@@ -33,7 +33,7 @@ import sys
 from datetime import datetime
 
 from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
-from buildtest.tools.file import walk_tree_multi_ext
+from buildtest.tools.file import walk_tree_multi_ext,create_dir
 
 def run_app_choices():
     """generate choice field for buildtest run --app"""
@@ -139,8 +139,9 @@ def run_suite(suite):
 
     app_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",suite)
 
-
+    create_dir(config_opts["BUILDTEST_RUN_DIR"])
     runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
+
     run_output_file = os.path.join(config_opts["BUILDTEST_RUN_DIR"],runfile)
 
     fd = open(run_output_file,"w")

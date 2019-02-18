@@ -1,7 +1,7 @@
 usage: buildtest [options]
 
 positional arguments:
-  {list,find,yaml,build,run,module,benchmark}
+  {list,find,yaml,build,run,module,show,benchmark}
                         subcommand help
     list                list help
     find                find configuration files and test
@@ -9,15 +9,12 @@ positional arguments:
     build               options for building tests
     run                 options for running test
     module              module load testing and difference between module trees
+    show                show sub menu
     benchmark           Benchmark Menu
 
 optional arguments:
   -h, --help            show this help message and exit
   -V, --version         show program version number and exit
   --logdir LOGDIR       Path to write buildtest logs. Override configuration BUILDTEST_LOGDIR
-  --show                show buildtest environment configuration
-  --show-keys           display yaml key description
   --scantest            Report all application that buildtest can be build.
   --clean-logs          delete buildtest log directory ($BUILDTEST_LOGDIR)
-  --submitjob SUBMITJOB
-                        specify a directory or job script to submit to resource scheduler

@@ -1,7 +1,2 @@
 Detecting Software:  GCCcore/6.4.0
---------------------------------------------
-[STAGE 2]: Building Source Tests
---------------------------------------------
-Processing all YAML files in directory:  /home/siddis14/github/buildtest-configs/buildtest/source/gcccore/config
-Generating 22  Source Tests and writing at  /tmp/buildtest/tests/ebapp/GCCcore/6.4.0/
-Writing Log file:  /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_13_56_04_02_2019.log
+Writing Log file:  /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_19_30_17_02_2019.log

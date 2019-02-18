@@ -1,8 +1,8 @@
 ==============================================================
                          Test summary                         
 Application:  GCCcore/6.4.0
-Executed 64 tests
-Passed Tests: 64    Percentage: 100.0%
-Failed Tests: 0    Percentage: 0.0%
+Executed 51 tests
+Passed Tests: 51 Percentage: 100.0%
+Failed Tests: 0  Percentage: 0.0%
 SUCCESS: Threshold of 100.0% was achieved
-Writing results to /tmp/buildtest_13_56_04_02_2019.run
+Writing results to /tmp/buildtest/run/buildtest_19_30_17_02_2019.run
