@@ -1,0 +1,8 @@
+buildtest build --package gcc --testdir /home/siddis14/tmp/
+--------------------------------------------
+[STAGE 1]: Building Binary Tests
+--------------------------------------------
+Detecting System Package: gcc
+Generating  8  binary tests
+Binary Tests are written in  /home/siddis14/tmp/system/gcc
+Writing Log file to:  /tmp/buildtest/logs/system/gcc/buildtest_20_02_17_02_2019.log

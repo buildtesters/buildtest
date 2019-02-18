@@ -29,16 +29,6 @@ Getting Started
    how_to_use_buildtest.rst
    command_reference.rst
 
-Introspection Operations
--------------------------
-
-.. toctree::
-   :maxdepth: 1
-
-   show_configuration.rst
-   scan_test.rst
-
-
 Subcommands
 -----------------
 
@@ -52,6 +42,7 @@ Subcommands
    run_subcommand.rst
    benchmark_subcommand.rst
    yaml_subcommand.rst
+   show_subcommand.rst
 
 
 buildtest YAML Framework
@@ -61,7 +52,6 @@ buildtest YAML Framework
    :maxdepth: 2
 
 
-   show_yaml_keys.rst
    writing_test_in_yaml.rst
    mpi_yaml.rst
    openmp_yaml.rst

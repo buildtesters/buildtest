@@ -70,7 +70,7 @@ Once you clone the repos you will want to edit your ``settings.yml`` file to spe
 buildtest configuration
 
 
-Take a look at file ``$BUILDTEST_ROOT/settings.yml`` and copy this file to
+Take a look at ``settings.yml`` and copy this file to
 ``$HOME/.buildtest/settings.yml`` and edit the file accordingly. You can refer
 to ``settings.example.yml`` for more details
 
@@ -79,13 +79,9 @@ to ``settings.example.yml`` for more details
 Each site will have to customize their buildtest configuration to reflect the root of the module trees.
 You may specify multiple module trees  in ``settings.yml`` for variable ``BUILDTEST_MODULE_ROOT``.
 
-You may specify any of the ``BUILDTEST_*`` variables with exception of ``BUILDTEST_ROOT``
-using environment variables which will override values specified in  ``settings.yml``.
+You may specify any of the ``BUILDTEST_*`` variables as environment variables which will 
+override values specified in  ``settings.yml``.
 
-The environment variables are used by buildtest to determine the path where to retrieve
-module files, yaml configs and write test scripts. You can also reference
-these variables in yaml configs to write custom build and run commands. The testscript can
-reference source directory via **BUILDTEST_CONFIGS_REPO** to find files of interest
 
 Setting up auto-complete on buildtest arguments
 -----------------------------------------------
@@ -105,8 +101,7 @@ can run
 
 For more details on argcomplete please visit https://pypi.org/project/argcomplete/
 
-This will setup auto-complete on buildtest arguments which will be useful when
-building tests.
+.. Note:: It is highly recommended to setup auto-complete feature when using buildtest  
 
 buildtest version (``buildtest -V``)
 -------------------------------------

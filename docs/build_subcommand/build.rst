@@ -1,42 +1,32 @@
-Build Tests
+Build Overview
 =================
 
 .. contents::
    :backlinks: none
 
-Build Subcommand (``buildtest build``)
-----------------------------------------
+Build Options (``buildtest build --help``)
+---------------------------------------------
 
 
 .. program-output:: cat scripts/build_subcommand/help.txt
 
-Building tests for Software Packages
--------------------------------------
+Test Suites
+-------------
 
+Tests are categorized into test suite which can be found at https://github.com/HPC-buildtest/buildtest-configs/tree/master/buildtest/suite.
+To run a test suite, you will need to run with ``buildtest build -S <suite>``  which will run all tests defined in the suite.
 
-To build test via buildtest you will need to use ``buildtest build -s`` option. To
-demonstrate this lets run the following
+To know more about test suite see :ref:`Suite`
 
-::
-
-    buildtest build -s CMake/3.9.5-GCCcore-6.4.0
-
-The output will be the following
-
-.. program-output:: cat scripts/build_subcommand/CMake-3.9.5-GCCcore-6.4.0.txt
 
 Building test for System Packages
 ----------------------------------
 
 To build test for system package you will want to use ``buildtest build --package`` and
-specify the name of the system package. This should be a system package that is installed
+specify the name of the system package. This will be a system package installed
 in your system.
 
-To demonstrate this example, lets build the test for package ``coreutils``
-
-::
-
-    buildtest build --package coreutils
+For instance, lets build the tests for ``coreutils`` package by running ``buildtest build --package coreutils``
 
 The output will be the following
 
@@ -69,14 +59,4 @@ If you want to customize the path to BUILDTEST_TESTDIR you may use the option ``
 or update the environment variable ``BUILDTEST_TESTDIR``. The command line option will override
 environment variable and environment variable will override configuration value.
 
-::
-
-    (buildtest-0.5.0) [siddis14@adwnode1 buildtest-framework]$ buildtest build --package gcc --testdir /home/siddis14/tmp/
-    --------------------------------------------
-    [STAGE 1]: Building Binary Tests
-    --------------------------------------------
-    Detecting Test Type: System Package
-    Processing Binary YAML configuration:  /home/siddis14/github/buildtest-configs/buildtest/system/gcc/command.yaml
-    Generating  7  binary tests
-    Binary Tests are written in  /home/siddis14/tmp/system/gcc
-    Writing Log file to:  /tmp/buildtest/system/gcc/buildtest_12_38_17_10_2018.log
+.. program-output:: cat scripts/build_subcommand/custom_test_dir.txt

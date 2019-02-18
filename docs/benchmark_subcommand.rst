@@ -1,4 +1,4 @@
-Benchmark Subcommand
+Benchmark Subcommands
 ______________________
 
 

@@ -1,5 +1,11 @@
-Module Subcommand
+Module Subcommands
 ==================
+
+.. contents::
+   :backlinks: none
+
+Module Options (``buildtest module --help``)
+----------------------------------------------
 
 ::
 

@@ -1,4 +1,4 @@
-Run Subcommand
+Run Subcommands
 ==================
 
 

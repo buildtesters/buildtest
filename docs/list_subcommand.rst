@@ -1,17 +1,22 @@
-List Subcommand (``buildtest list``)
+List Subcommands (``buildtest list``)
 =======================================
 
 .. contents::
    :backlinks: none
 
-buildtest comes with a set of options for listing useful info such as
-
-1. Unique software
-2. List of toolchain
-3. List software-modulefile relationship
-4. List of easyconfigs
+List Options (``buildtest list --help``)
+-----------------------------------------
 
 .. program-output:: cat scripts/list_subcommand/help.txt
+
+
+buildtest comes with a set of options for listing useful info such as
+
+-  List Unique software
+
+-  List software-modulefile relationship
+
+-  List of easyconfigs
 
 
 List Software (``buildtest list -ls``)
@@ -25,19 +30,6 @@ buildtest determines the software list based on the module trees specified in ``
 and processes each module tree and returns a  unique software list
 
 .. program-output:: head -n 15 scripts/list_subcommand/software.txt
-
-List Toolchains (``buildtest list -lt``)
----------------------------------------------------------------
-
-buildtest can list the easybuild toolchain list by running ``buildtest list --list-toolchain`` or
-short option ``buildtest list -lt``
-
-This will get the same result defined by **eb --list-toolchains**, we have
-taken the list of toolchains from eb and defined them in buildtest. Any app
-built with the any of the toolchains can be used with buildtest to generate
-tests.
-
-.. program-output:: head -n 15 scripts/list_subcommand/toolchain.txt
 
 
 Software Version Relationship (``buildtest list -svr``)
@@ -70,7 +62,7 @@ that is part of install directory of each software for every easybuild app.
 
 If an easyconfig is not found you may get the following message
 
-::
+.. Error::
 
     Could not find easyconfig in /clust/app/easybuild/2018/IvyBridge/redhat/7.3/software/NWChem/6.8.revision47-intel-2018a-2017-12-14-Python-2.7.14/easybuild
 

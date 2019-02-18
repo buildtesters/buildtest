@@ -1,9 +1,7 @@
 usage: buildtest [options] build [-h] [-s INSTALLED-SOFTWARE] [-t INSTALLED-SOFTWARE-TOOLCHAINS] [-p SYSTEM-PACKAGE]
-                                 [--prepend-modules INSTALLED-SOFTWARE] [--all-package] [--all-software]
-                                 [--shell {sh,bash,csh}] [--python-package PYTHON-PACKAGES] [--r-package R-PACKAGES]
-                                 [--ruby-package RUBY-PACKAGES] [--perl-package PERL-PACKAGES] [--clean-tests]
-                                 [--testdir TESTDIR] [--clean-build] [-eb] [--enable-job]
-                                 [--job-template JOB_TEMPLATE] [-mns {HMNS,FNS}] [--ohpc]
+                                 [--prepend-modules INSTALLED-SOFTWARE] [--shell {sh,bash,csh}] [-b]
+                                 [-S {compilers,python,openmp,cuda}] [--clean-tests] [--testdir TESTDIR]
+                                 [--clean-build] [-eb] [-mns {HMNS,FNS}] [--ohpc]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -16,26 +14,15 @@ optional arguments:
   --prepend-modules INSTALLED-SOFTWARE
                         Prepend modules in test script prior to loading application module. Use this option with
                         Hierarchical Module Naming Scheme
-  --all-package         build tests for all system packages from buildtest repository
-  --all-software        build tests for all software from buildtest repository
   --shell {sh,bash,csh}
                         Select the type of shell when running test
-  --python-package PYTHON-PACKAGES
-                        build test for Python packages
-  --r-package R-PACKAGES
-                        build test for R packages
-  --ruby-package RUBY-PACKAGES
-                        build test for Ruby packages
-  --perl-package PERL-PACKAGES
-                        build test for Perl packages
+  -b, --binary          Conduct binary test for a package
+  -S {compilers,python,openmp,cuda}, --suite {compilers,python,openmp,cuda}
+                        specify test suite
   --clean-tests         delete testing directory ($BUILDTEST_TESTDIR)
   --testdir TESTDIR     Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR
   --clean-build         delete software test directory before writing test scripts
   -eb, --easybuild      check if application is built by easybuild
-  --enable-job          enable job script generation with buildtest
-  --job-template JOB_TEMPLATE
-                        specify job template file to create job submission script for the test to run with resource
-                        scheduler
   -mns {HMNS,FNS}, --module-naming-scheme {HMNS,FNS}
                         Specify module naming scheme for easybuild apps
   --ohpc                Indicate to buildtest this is a OpenHPC package. YAML files will be processed from
