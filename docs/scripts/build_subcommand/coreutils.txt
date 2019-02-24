@@ -5,4 +5,4 @@ buildtest build --package coreutils
 Detecting System Package: coreutils
 Generating  102  binary tests
 Binary Tests are written in  /tmp/buildtest/tests/system/coreutils
-Writing Log file to:  /tmp/buildtest/logs/system/coreutils/buildtest_11_23_18_02_2019.log
+Writing Log file to:  /tmp/buildtest/logs/system/coreutils/buildtest_17_33_24_02_2019.log

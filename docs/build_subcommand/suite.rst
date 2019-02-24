@@ -106,4 +106,55 @@ Next let's run the test by running
     buildtest run -S openmp
 
 
-.. program-output:: cat scripts/build_subcommand/suite/run_openmp.txt     
+.. program-output:: cat scripts/build_subcommand/suite/run_openmp.txt
+
+How modules are loaded
+----------------------------
+
+The YAML configuration ``module`` specify the list of module file that are loaded in the test script assuming your site has
+that software module.
+
+Let's take a look at the hello world example discussed earlier
+
+.. program-output:: cat scripts/build_subcommand/suite/hello_gnu.yml
+
+The ``module`` key will take a list of module files in lower case without a version to be version agnostic. In this example there is
+only one module ``gcc``. buildtest will load the gcc module if your site has the module in any of the case format below
+
+- gcc
+
+- Gcc
+
+- gCc
+
+- gcC
+
+- GCc
+
+- GCC
+
+
+buildtest allows users to override the module load by using ``buildtest build --software`` where user
+may specify their own module version and it will override the one from YAML file assuming it was declared
+in the configuration.
+
+Let's see an example where we run the following ``buildtest build -S compilers -s GCC/6.4.0-2.28``
+
+.. program-output:: cat scripts/build_subcommand/suite/build_compilers_GCC-6.4.0-2.28.txt
+
+Every yaml configuration in test suite that has ``gcc`` defined in ``module`` keyword will be replaced
+with ``GCC/6.4.0-2.28`` in the test script module load.
+
+The test script will have ``module load GCC/6.4.0-2.28`` in the test script which should work with your site even
+though the yaml configuration makes no reference to specific version.
+
+::
+
+    buildtest-framework[master !?] $ cat /tmp/buildtest/tests/suite/compilers/helloworld/hello_gnu.yml.sh
+    #!/bin/sh
+    module purge
+    module load GCC/6.4.0-2.28
+    cd /tmp/buildtest/tests/suite/compilers/helloworld
+    g++ -O3 -o hello.cpp.exe /home/siddis14/github/buildtest-configs/buildtest/suite/compilers/helloworld/src/hello.cpp
+    ./hello.cpp.exe
+    rm ./hello.cpp.exe

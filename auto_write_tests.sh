@@ -19,6 +19,7 @@ buildtest run -S compilers > docs/scripts/build_subcommand/suite/run_compilers.t
 buildtest build -S openmp > docs/scripts/build_subcommand/suite/build_openmp.txt
 buildtest run -S openmp > docs/scripts/build_subcommand/suite/run_openmp.txt
 
+buildtest build -S compilers -s GCC/6.4.0-2.28 > docs/scripts/build_subcommand/suite/build_compilers_GCC-6.4.0-2.28.txt
 # List Subcommand
 buildtest list --help > docs/scripts/list_subcommand/help.txt
 

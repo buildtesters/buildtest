@@ -1,0 +1,7 @@
+Writing Test: /tmp/buildtest/tests/suite/compilers/helloworld/hello_slurm.yml.slurm
+Writing Test: /tmp/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
+Writing Test: /tmp/buildtest/tests/suite/compilers/helloworld/hello_gnu.yml.sh
+Writing Test: /tmp/buildtest/tests/suite/compilers/helloworld/hello_args.c.yml.sh
+Writing Test: /tmp/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml.sh
+Detecting Software:  GCC/6.4.0-2.28
+Writing Log file:  /tmp/buildtest/logs/GCC/6.4.0-2.28/buildtest_17_33_24_02_2019.log
