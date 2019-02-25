@@ -20,14 +20,13 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-"""
-Checks buildtest configuration and reports any errors. Also display buildtest
-configuration using buildtest --show
-"""
+
+import yaml
 import os
 import sys
 import subprocess
-import yaml
+from shutil import copy
+
 
 # read the BUILDTEST env vars from the shell environment that is sourced by setup.sh
 BUILDTEST_VERSION="0.6.3"
@@ -43,22 +42,52 @@ MPI_C_LIST = ["mpicc", "mpiicc"]
 MPI_F_LIST = ["mpifort", "mpifc", "mpif90", "mpif77"]
 MPI_CPP_LIST = ["mpic++", "mpicxx", "mpiicpc"]
 MPI_LIST = MPI_C_LIST + MPI_F_LIST + MPI_CPP_LIST
-#BUILDTEST_DEFAULT_CONFIG=os.path.join(BUILDTEST_ROOT,"config.yaml")
-#print BUILDTEST_DEFAULT_CONFIG
-#fd = open(BUILDTEST_DEFAULT_CONFIG,'r')
-BUILDTEST_CONFIG_FILE = os.path.join(os.getenv("HOME"),".buildtest/settings.yml")
-#if not os.path.exists(BUILDTEST_CONFIG_FILE):
-#    print (f"FILE: {BUILDTEST_CONFIG_FILE} not found")
-try:
-    fd = open(BUILDTEST_CONFIG_FILE,'r')
-    config_opts = yaml.load(fd)
-    config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM']=""
-    config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE']=""
-    config_opts['BUILDTEST_VERSION'] = BUILDTEST_VERSION
 
-except FileNotFoundError as err_msg:
-    print(err_msg)
-    raise
+
+buildtest_home_conf_dir = os.path.join(os.getenv("HOME"), ".buildtest")
+BUILDTEST_CONFIG_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml")
+
+DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"),"settings.yml")
+
+if not os.path.isdir(buildtest_home_conf_dir):
+    print(f"Creating buildtest configuration directory: {buildtest_home_conf_dir}")
+    os.makedirs(buildtest_home_conf_dir)
+
+# if the file $HOME/.buildtest/settings.yml does not exist copy the default file into the appropriate location
+if not os.path.exists(BUILDTEST_CONFIG_FILE):
+    copy(DEFAULT_CONFIG_FILE,BUILDTEST_CONFIG_FILE)
+    print(f"Copying Default Configuration {DEFAULT_CONFIG_FILE} to {BUILDTEST_CONFIG_FILE}")
+
+
+fd = open(BUILDTEST_CONFIG_FILE, 'r')
+config_opts = yaml.load(fd)
+
+# if MODULEPATH is not declared set BUILDTEST_MODULE_ROOT to None even if it was set in configuration file. User should fix their environment
+if os.getenv("MODULEPATH") == None:
+    config_opts["BUILDTEST_MODULE_ROOT"] = None
+else:
+    config_opts["BUILDTEST_MODULE_ROOT"] = os.getenv("MODULEPATH").split(":")
+
+
+# The section below causes import error, trying to clone buildtest-configs and write yaml content back to file.
+"""
+# get parent directory where buildtest-framework is cloned
+parent_BUILDTEST_ROOT = os.path.dirname(os.getenv("BUILDTEST_ROOT"))
+os.chdir(parent_BUILDTEST_ROOT)
+# if buildtest-configs does not exist in parent directory then clone it
+if not os.path.exists("buildtest-configs"):
+    print("Cloning repo buildtest-configs")
+    git_clone = "git clone git@github.com:HPC-buildtest/buildtest-configs.git"
+    os.system(git_clone)
+
+config_opts["BUILDTEST_CONFIGS_REPO"] = os.path.abspath("buildtest-configs")
+
+with open(BUILDTEST_CONFIG_FILE,'w') as outfile:
+    yaml.dump(config_opts,outfile,default_flow_style=False)
+"""
+
+
+config_opts['BUILDTEST_VERSION'] = BUILDTEST_VERSION
 
 #global logID
 logID = "buildtest"
@@ -81,9 +110,10 @@ config_yaml_keys = {
 }
 values_BUILDTEST_MODULE_NAMING_SCHEME = ["HMNS", "FNS"]
 
+
 def check_configuration():
-    """Reports buildtest configuration and checks each BUILDTEST environment variable and check
-    for module environment"""
+    """ Reports buildtest configuration and checks each BUILDTEST environment variable and check
+    for module environment """
 
     #print "Checking buildtest environment variables ..."
 
@@ -120,10 +150,13 @@ def check_configuration():
             ec = 1
 
         if key == "BUILDTEST_MODULE_ROOT":
-            for module_root in config_opts[key]:
-                if not os.path.isdir(module_root):
-                    print (module_root + " directory does not exist, specified in BUILDTEST_MODULE_ROOT")
-                    ec = 1
+            if config_opts["BUILDTEST_MODULE_ROOT"] == None:
+                print(f"Please specify a module tree to BUILDTEST_MODULE_ROOT in configuration {BUILDTEST_CONFIG_FILE}")
+            else:
+                for module_root in config_opts[key]:
+                    if not os.path.isdir(module_root):
+                        print (module_root + " directory does not exist, specified in BUILDTEST_MODULE_ROOT")
+                        ec = 1
 
         # if yaml key is of type FILE, check if file exists
         if value in DIR_config:
@@ -152,8 +185,8 @@ def check_configuration():
 
 
 def show_configuration():
-    """ show buildtest configuration. Implements "buildtest --show" """
-    exclude_list = ["BUILDTEST_CONFIGS_REPO_SOFTWARE", "BUILDTEST_CONFIGS_REPO_SYSTEM", "BUILDTEST_PERL_TESTDIR", "BUILDTEST_PYTHON_TESTDIR", "BUILDTEST_RUBY_TESTDIR", "BUILDTEST_R_TESTDIR", "BUILDTEST_VERSION"]
+    """ show buildtest configuration. Implements buildtest --show """
+    exclude_list = ["BUILDTEST_PERL_TESTDIR", "BUILDTEST_PYTHON_TESTDIR", "BUILDTEST_RUBY_TESTDIR", "BUILDTEST_R_TESTDIR", "BUILDTEST_VERSION"]
     print
     print ("\t buildtest configuration summary")
     print ("\t (C): Configuration File,  (E): Environment Variable")

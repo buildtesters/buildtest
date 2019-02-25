@@ -94,27 +94,6 @@ def software_version_relation():
 
     return module_dict
 
-def ebyaml_choices():
-    """return a list of software packages for which you can generate yaml configuration for binary testing"""
-
-    yaml_apps = os.listdir(config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'])
-
-    software_list = get_software_stack()
-    #print yaml_apps
-    remove_app_list = []
-
-    for module in software_list:
-        name = module
-        # if directory found in BUILDTEST_CONFIGS_REPO/ebapps then add module to remove list  assuming command.yaml is present in directory
-        if name.lower() in yaml_apps:
-            remove_app_list.append(module)
-
-    # remove module choices which already have a directory and possible command.yaml
-    for item in remove_app_list:
-        software_list.remove(item)
-
-    return software_list
-
 def get_binaries_from_application(module):
     """ return a list of binaries from $PATH variable defined in module file"""
 

@@ -27,7 +27,7 @@ Submodules
    buildtest.tools.options
    buildtest.tools.print_functions
    buildtest.tools.run
-   buildtest.tools.scan
+   buildtest.tools.show
    buildtest.tools.software
    buildtest.tools.system
    buildtest.tools.utility

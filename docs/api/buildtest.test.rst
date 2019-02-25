@@ -14,10 +14,7 @@ Submodules
 .. toctree::
 
    buildtest.test.binarytest
-   buildtest.test.compiler
-   buildtest.test.function
    buildtest.test.job
-   buildtest.test.sourcetest
 
 Module contents
 ---------------

@@ -1,7 +1,7 @@
-buildtest.tools.scan module
+buildtest.tools.show module
 ===========================
 
-.. automodule:: buildtest.tools.scan
+.. automodule:: buildtest.tools.show
     :members:
     :undoc-members:
     :show-inheritance:

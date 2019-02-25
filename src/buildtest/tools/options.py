@@ -94,5 +94,3 @@ def override_configuration():
         if os.path.exists(run_dir):
             config_opts['BUILDTEST_RUN_DIR']=run_dir
 
-    config_opts['BUILDTEST_CONFIGS_REPO_SYSTEM'] = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/system")
-    config_opts['BUILDTEST_CONFIGS_REPO_SOFTWARE'] = os.path.join(config_opts['BUILDTEST_CONFIGS_REPO'],"buildtest/ebapps")

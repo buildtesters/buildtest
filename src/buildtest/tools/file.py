@@ -42,6 +42,7 @@ def isDir(dir):
         raise BuildTestError("Invalid Directory Path %s" % dir)
     return True
 
+
 def walk_tree(root_dir,ext):
     """ traverse a directory tree and return list of files based on extension type"""
     list_files = []
@@ -52,10 +53,11 @@ def walk_tree(root_dir,ext):
                list_files.append(os.path.join(root,file))
 
     return list_files
+
+
 def walk_tree_multi_ext(root_dir,ext_list):
     """ traverse a directory tree and return list of files based on extension type where
-        extension is a list as pose to a single string
-    """
+    extension is a list as pose to a single string """
     list_files = []
     isDir(root_dir)
     for root, subdir, files in os.walk(root_dir):
@@ -67,10 +69,12 @@ def walk_tree_multi_ext(root_dir,ext_list):
 
     return list_files
 
+
 def stripHiddenFile(file):
     """  removes the leading "." character from file """
     file=file[1:]
     return file
+
 
 def create_file(filename):
     """ Create an empty file if it doesn't exist   """
@@ -83,6 +87,7 @@ def create_file(filename):
         except OSError as err:
             print (err)
 
+
 def create_dir(dirname):
     """Create directory if it doesn't exist"""
     logger = logging.getLogger(logID)
@@ -94,7 +99,9 @@ def create_dir(dirname):
             print (err)
             raise
 
+
 def string_in_file(string,filename):
+
     """ returns true/false to indicate if string is in file """
     if string in open(filename).read():
         return True

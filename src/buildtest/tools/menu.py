@@ -29,11 +29,8 @@ import argparse
 import argcomplete
 
 from buildtest.test.run.app import run_app_choices
-from buildtest.test.run.system import run_system_choices
 from buildtest.test.run.testname import test_list
-from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
-from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
-from buildtest.benchmark.hpcg import func_benchmark_hpcg_subcmd
+from buildtest.test.run.system import run_system_choices
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, check_configuration
 from buildtest.tools.file import create_dir
@@ -46,10 +43,16 @@ from buildtest.tools.show import func_show_subcmd
 from buildtest.tools.system import systempackage_installed_list
 from buildtest.tools.software import get_software_stack
 from buildtest.tools.yaml import func_yaml_subcmd
-
+from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
+from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
+from buildtest.benchmark.hpcg import func_benchmark_hpcg_subcmd
 
 def menu():
     """ buildtest menu"""
+
+
+
+
     parser = {}
     override_configuration()
     check_configuration()
@@ -61,14 +64,17 @@ def menu():
     run_test_class = os.listdir(test_suite_dir)
     pkglist = systempackage_installed_list()
     software_list = get_software_stack()
+
+
     test_choices = test_list()
+
     app_choices = run_app_choices()
+
     systempkg_choices = run_system_choices()
 
     parser = argparse.ArgumentParser(prog='buildtest', usage='%(prog)s [options]')
     parser.add_argument("-V", "--version", help="show program version number and exit",action="store_true")
     parser.add_argument("--logdir", help="Path to write buildtest logs. Override configuration BUILDTEST_LOGDIR")
-    parser.add_argument("--scantest", help=""" Report all application that buildtest can be build.""", action="store_true")
     parser.add_argument("--clean-logs", help="delete buildtest log directory ($BUILDTEST_LOGDIR)",action="store_true")
     #parser.add_argument("-C", "--category", help="select test category for building tests", choices=self.test_category, metavar="TEST-CATEGORY")
     subparsers = parser.add_subparsers(help='subcommand help', dest="subcommand")

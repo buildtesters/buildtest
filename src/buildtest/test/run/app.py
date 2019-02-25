@@ -29,11 +29,10 @@ buildtest run --software
 
 import os
 import subprocess
-import sys
 from datetime import datetime
 
-from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
-from buildtest.tools.file import walk_tree_multi_ext,create_dir
+from buildtest.tools.config import config_opts
+
 
 def run_app_choices():
     """generate choice field for buildtest run --app"""
@@ -136,7 +135,7 @@ def run_app_test(app_name):
 def run_suite(suite):
     """implementation for buildtest run --suite to execute all tests in the test directory"""
     from buildtest.tools.run import write_system_info
-
+    from buildtest.tools.file import walk_tree_multi_ext, create_dir
     app_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",suite)
 
     create_dir(config_opts["BUILDTEST_RUN_DIR"])

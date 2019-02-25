@@ -28,40 +28,39 @@ The entry point to buildtest
 import sys
 import os
 
-sys.path.insert(0,os.path.join('.','src'))
+sys.path.insert(0,os.path.join('.', 'src'))
 os.environ["BUILDTEST_ROOT"]=os.path.dirname(os.path.dirname(__file__))
 # column width for linewrap for argparse library
 os.environ['COLUMNS'] = "120"
 
-from buildtest.tools.menu import menu, parse_options
-from buildtest.tools.config import config_opts
-from buildtest.tools.log import clean_logs
-from buildtest.tools.scan import scantest
-from buildtest.tools.system import BuildTestSystem
-from buildtest.tools.version import buildtest_version
 
+from buildtest.tools.config import config_opts
+from buildtest.tools.system import BuildTestSystem
+from buildtest.tools.menu import menu, parse_options
+from buildtest.tools.version import buildtest_version
 
 
 def main():
     """entry point to buildtest"""
+
     buildtest_system = BuildTestSystem()
     buildtest_system.check_system_requirements()
+
 
     parser = menu()
 
     parsed_opts = parse_options(parser)
 
     if parsed_opts.version:
+
         buildtest_version()
 
     if parsed_opts.logdir:
         config_opts['BUILDTEST_LOGDIR'] = parsed_opts.logdir
 
+    from buildtest.tools.log import clean_logs
     if parsed_opts.clean_logs:
         clean_logs()
-
-    if parsed_opts.scantest:
-        scantest()
 
 if __name__ == "__main__":
         main()

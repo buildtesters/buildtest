@@ -27,13 +27,14 @@ buildtest run --system
 
 import os
 import subprocess
-import sys
 from datetime import datetime
-from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
-def run_system_choices():
-    """generate choice field for _buildtest run --app"""
+from buildtest.tools.config import config_opts
 
-    system_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"system")
+
+def run_system_choices():
+    """generate choice field for _buildtest run --package"""
+
+    system_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"], "system")
     # if there is no directory $BUILDTEST_TESTDIR then return an empty list
     if not os.path.exists(system_root_testdir):
         return []

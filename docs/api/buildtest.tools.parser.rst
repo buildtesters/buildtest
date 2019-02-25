@@ -7,7 +7,6 @@ Submodules
 .. toctree::
 
    buildtest.tools.parser.functions
-   buildtest.tools.parser.yaml_config
 
 Module contents
 ---------------

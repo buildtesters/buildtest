@@ -74,7 +74,8 @@ def get_module_list():
         for root, dirs, files in os.walk(tree):
             for file in files:
                 # only add modules with .lua extension or files that have #%Module which is for environment modules
-                if file.endswith(".lua") or string_in_file("#%Module",os.path.join(root,file)):
+                #if file.endswith(".lua") or string_in_file("#%Module", os.path.join(root,file)):
+                if file.endswith(".lua"):
                     modulefiles.append(os.path.join(root,file))
 
     return modulefiles
