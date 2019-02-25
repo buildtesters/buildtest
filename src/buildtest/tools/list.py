@@ -26,11 +26,9 @@
 Methods for list subcommand
 """
 import json
-import os
 import sys
 
-from buildtest.tools.config import config_opts
-from buildtest.tools.easybuild import get_toolchains, find_easyconfigs
+from buildtest.tools.easybuild import find_easyconfigs
 from buildtest.tools.print_functions import print_software, print_software_version_relation
 from buildtest.tools.software import get_unique_software, software_version_relation
 
@@ -63,6 +61,3 @@ def list_software_version_relation(args):
         json.dump(software_dict, sys.stdout, indent=4, sort_keys=True)
     else:
         print_software_version_relation(software_dict)
-
-
-    sys.exit(0)

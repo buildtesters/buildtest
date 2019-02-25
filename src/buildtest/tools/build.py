@@ -32,8 +32,6 @@ import yaml
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import create_dir, isDir, walk_tree
 from buildtest.tools.log import init_log
-from buildtest.tools.software import get_software_stack
-from buildtest.test.function import clean_tests
 from buildtest.test.binarytest import generate_binary_test
 from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.easybuild import is_easybuild_app
@@ -223,3 +221,13 @@ def func_build_software(args, logger, logdir, logpath, logfile):
     logger.debug("Writing Log file to %s", os.path.join(logdir,logfile))
 
     print ("Writing Log file: ", os.path.join(logdir,logfile))
+
+def clean_tests():
+    """ cleans all the tests in BUILDTEST_TESTDIR. This implements buildtest build --clean-tests"""
+    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+    try:
+        shutil.rmtree(BUILDTEST_TESTDIR)
+        print ("Removing test directory ", BUILDTEST_TESTDIR)
+    except OSError as err_msg:
+        print(err_msg)
+

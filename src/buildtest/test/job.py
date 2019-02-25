@@ -23,11 +23,9 @@
 """
 This file generates the job scripts, detects scheduler, and submits jobs to scheduler
 """
-from shutil import copyfile
+
 import os
-import glob
-import subprocess
-import sys
+
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.system import BuildTestSystem

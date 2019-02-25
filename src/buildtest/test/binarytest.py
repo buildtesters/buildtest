@@ -29,10 +29,8 @@ For application it will search for binaries found in $PATH set by module file
 
 import logging
 import os
-import sys
-import yaml
 import stat
-from shutil import copyfile
+
 
 from buildtest.tools.config import config_opts, logID
 from buildtest.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake, add_test_to_CMakeLists

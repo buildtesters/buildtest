@@ -24,15 +24,14 @@
 Functions for system package
 """
 
-import logging
+
 import os
 import platform
 import re
 import stat
 import sys
 import subprocess
-from stat import S_IXUSR, S_IXGRP, S_IXOTH
-from buildtest.tools.config import config_opts, logID
+
 
 class BuildTestCommand():
     ret = []

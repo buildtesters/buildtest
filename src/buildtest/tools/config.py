@@ -26,8 +26,6 @@ configuration using buildtest --show
 """
 import os
 import sys
-import time
-import logging
 import subprocess
 import yaml
 

@@ -28,17 +28,10 @@ Application & Toolchain name & version query functions
 import os
 import logging
 import stat
-import subprocess
-import sys
-
 
 from buildtest.tools.config import logID, config_opts
-from buildtest.tools.easybuild import get_toolchains
 from buildtest.tools.modules import get_module_list
 from buildtest.tools.system import BuildTestCommand
-from buildtest.tools.utility import sset
-
-
 
 def get_unique_software():
     """returns a set of software packages found in the module tree"""
@@ -87,24 +80,6 @@ def get_software_stack():
         moduleversion_set.add(modulename+"/"+version)
 
     return sorted(moduleversion_set)
-
-def get_toolchain_stack():
-	""" return a list of toolchain used as choices for buildtest build -t option in buildtest menu"""
-
-
-	software_stack = get_software_stack()
-	toolchains = get_toolchains()
-
-	modified_toolchain_list = []
-	for app in software_stack:
-		# get app name, format: <app>/<version>
-		appname = app.split("/")[0]
-		# if software is part of easybuild toolchain list
-		if appname in toolchains:
-			modified_toolchain_list.append(app)
-
-	return modified_toolchain_list
-
 
 def software_version_relation():
     """relationship between software name and version. The function will return a

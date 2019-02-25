@@ -23,17 +23,10 @@
 
 """
 The entry point to buildtest
-
-:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
 """
 
 import sys
 import os
-import subprocess
-import argparse
-import glob
-import json
-
 
 sys.path.insert(0,os.path.join('.','src'))
 os.environ["BUILDTEST_ROOT"]=os.path.dirname(os.path.dirname(__file__))

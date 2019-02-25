@@ -23,11 +23,10 @@
 """
 print functions related to buildtest
 """
-import csv
-import os
+
 from collections import OrderedDict
 from operator import itemgetter
-from buildtest.tools.utility import sset
+
 
 def print_software_version_relation(software_dict):
     """print output of "buildtest list -svr" """

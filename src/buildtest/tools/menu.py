@@ -44,7 +44,7 @@ from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.show import func_show_subcmd
 from buildtest.tools.system import systempackage_installed_list
-from buildtest.tools.software import get_software_stack, get_toolchain_stack
+from buildtest.tools.software import get_software_stack
 from buildtest.tools.yaml import func_yaml_subcmd
 
 
@@ -61,7 +61,6 @@ def menu():
     run_test_class = os.listdir(test_suite_dir)
     pkglist = systempackage_installed_list()
     software_list = get_software_stack()
-    toolchain_list = get_toolchain_stack()
     test_choices = test_list()
     app_choices = run_app_choices()
     systempkg_choices = run_system_choices()
@@ -97,7 +96,6 @@ def menu():
     # -------------------------------- build menu --------------------------
     parser_build = subparsers.add_parser('build', help='options for building tests')
     parser_build.add_argument("-s", "--software", help=" Specify software package to test", choices=software_list, metavar='INSTALLED-SOFTWARE')
-    parser_build.add_argument("-t", "--toolchain",help=" Specify toolchain for the software package", choices=toolchain_list, metavar='INSTALLED-SOFTWARE-TOOLCHAINS')
     parser_build.add_argument("-p", "--package", help=" Build test for system packages", choices=pkglist, metavar='SYSTEM-PACKAGE')
     parser_build.add_argument("--prepend-modules", help= "Prepend modules in test script prior to loading application module. Use this option with Hierarchical Module Naming Scheme", choices=software_list,  metavar='INSTALLED-SOFTWARE',action="append", default=[])
     parser_build.add_argument("--shell", help=" Select the type of shell when running test", choices=BUILDTEST_SHELLTYPES)

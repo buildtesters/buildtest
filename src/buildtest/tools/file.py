@@ -27,7 +27,6 @@ if a string is found in file
 """
 import os
 import logging
-from datetime import datetime
 
 from buildtest.tools.config import logID
 from buildtest.tools.log import BuildTestError
@@ -98,19 +97,6 @@ def create_dir(dirname):
 def string_in_file(string,filename):
     """ returns true/false to indicate if string is in file """
     if string in open(filename).read():
-        return True
-    else:
-        return False
-
-def isHiddenFile(inputfile):
-    """ Return True/False to indicate if its a hidden file """
-
-    if os.path.isdir(inputfile) == True:
-        return False
-
-    cmd = "basename " + inputfile
-    filename=os.popen(cmd).read().strip()
-    if filename[0] == ".":
         return True
     else:
         return False

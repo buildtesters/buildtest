@@ -24,7 +24,6 @@
 Methods related to buildtest logging
 """
 import os
-import sys
 import shutil
 import logging
 from datetime import datetime

@@ -27,8 +27,6 @@ buildtest yaml subcommand entry point
 import os
 import sys
 import yaml
-from datetime import datetime
-from ruamel.yaml import YAML
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.ohpc import check_ohpc

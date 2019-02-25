@@ -27,7 +27,7 @@ This module implements the options -fc and -ft for "buildtest find"
 
 import os
 import sys
-from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
+from buildtest.tools.config import config_opts
 from buildtest.tools.file import walk_tree, walk_tree_multi_ext
 
 def func_find_subcmd(args):

@@ -24,85 +24,13 @@
 easybuild specific modules related to toolchain and easyconfigs
 """
 import os
-import re
 import sys
-import logging
 import subprocess
 
-from buildtest.tools.config import logID, config_opts
-from buildtest.tools.file import stripHiddenFile, isHiddenFile, string_in_file
-from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+from buildtest.tools.config import config_opts
+from buildtest.tools.file import string_in_file
+from buildtest.tools.utility import get_appname, get_appversion
 
-
-def get_toolchains():
-    """return the set of toolchains found in the easyconfig directory"""
-    toolchain = [
-    "ClangGCC",
-    "CrayCCE",
-    "CrayGNU",
-    "CrayIntel",
-    "CrayPGI",
-    "GCC",
-    "GCCcore",
-    "GNU",
-    "PGI",
-    "cgmpich",
-    "cgmpolf",
-    "cgmvapich2",
-    "cgmvolf",
-    "cgompi",
-    "cgoolf",
-    "dummy",
-    "foss",
-    "gcccuda",
-    "gimkl",
-    "gimpi",
-    "gmacml",
-    "gmpich",
-    "gmpich2",
-    "gmpolf",
-    "gmvapich2",
-    "gmvolf",
-    "goalf",
-    "gompi",
-    "gompic",
-    "goolf",
-    "goolfc",
-    "gpsmpi",
-    "gpsolf",
-    "gqacml",
-    "iccifort",
-    "iccifortcuda",
-    "ictce",
-    "iimkl",
-    "iimpi",
-    "iimpic",
-    "iiqmpi",
-    "impich",
-    "impmkl",
-    "intel",
-    "intel-para",
-    "intelcuda",
-    "iomkl",
-    "iompi",
-    "ipsmpi",
-    "iqacml",
-    "ismkl",
-    "pomkl",
-    "pompi",
-    "xlcxlf",
-    "xlmpich",
-    "xlmpich2",
-    "xlmvapich2",
-    "xlompi",
-    ]
-
-    logger = logging.getLogger(logID)
-    logger.info("List of EB Toolchains")
-    logger.info("--------------------------------------")
-    logger.info("EB Toolchains = %s", toolchain)
-
-    return toolchain
 
 def find_easyconfigs_from_modulelist(modulelist):
     """return a list of easyconfigs from a list of module files"""
