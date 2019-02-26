@@ -28,6 +28,8 @@ with anything
 
 import subprocess
 import sys
+
+
 def check_ohpc():
     """ check if ohpc-release package is installed in system"""
     packages_required = "ohpc-release"

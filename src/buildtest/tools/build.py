@@ -2,27 +2,30 @@
 #
 #  Copyright 2017-2019
 #
-#   https://github.com/HPC-buildtest/buildtest-framework
+#  https://github.com/HPC-buildtest/buildtest-framework
 #
 #  This file is part of buildtest.
 #
-#    buildtest is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+#  buildtest is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
 #
-#    buildtest is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+#  buildtest is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU General Public License
+#  along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
 """
-buildtest build subcommand methods
+This module contains all the methods related to "buildtest build" which is used
+for building test scripts from yaml configuration.
 """
+
+
 import os
 import shutil
 import sys
@@ -36,12 +39,17 @@ from buildtest.test.binarytest import generate_binary_test
 from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.easybuild import is_easybuild_app
 from buildtest.tools.ohpc import check_ohpc
-from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+from buildtest.tools.utility import get_appname, get_appversion
+from buildtest.tools.utility import  get_toolchain_name, get_toolchain_version
 from buildtest.tools.yaml import BuildTestYamlSingleSource
 from buildtest.tools.system import BuildTestCommand
 
+
 def func_build_subcmd(args):
-    """ entry point for build subcommand """
+    """ Entry point for build sub-command. The args variable is a list of
+        options passed through command line. Each option is checked and
+        appropriate action is taken in this method or calls another method. """
+
     logger,logpath,logfile = init_log()
 
 
@@ -57,9 +65,9 @@ def func_build_subcmd(args):
     if args.easybuild:
         config_opts["BUILDTEST_EASYBUILD"]=True
     if args.module_naming_scheme:
-        config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = args.module_naming_scheme
+        config_opts['BUILDTEST_MODULE_NAMING_SCHEME']=args.module_naming_scheme
     if args.prepend_modules:
-        config_opts["BUILDTEST_PREPEND_MODULES"]   = args.prepend_modules
+        config_opts["BUILDTEST_PREPEND_MODULES"] = args.prepend_modules
     if args.binary:
         config_opts["BUILDTEST_BINARY"] = args.binary
 
@@ -77,7 +85,8 @@ def func_build_subcmd(args):
     if args.suite:
         test_suite_dir = os.path.join(testdir,"suite",args.suite)
         create_dir(test_suite_dir)
-        yaml_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"], "buildtest","suite",args.suite)
+        yaml_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
+                                "buildtest","suite",args.suite)
 
         yaml_files = walk_tree(yaml_dir,".yml")
 
@@ -86,7 +95,8 @@ def func_build_subcmd(args):
                 shutil.rmtree(test_suite_dir)
 
         testsuite_components = os.listdir(yaml_dir)
-        # precreate directories for each component in test suite in BUILDTEST_TESTDIR
+        # pre-creates directories for each component in test suite in
+        # BUILDTEST_TESTDIR
         for component in testsuite_components:
             create_dir(os.path.join(testdir,"suite",args.suite,component))
 
@@ -97,7 +107,8 @@ def func_build_subcmd(args):
 
 
             if content["testblock"] == "singlesource":
-                builder = BuildTestBuilderSingleSource(file,args.suite, parent_dir,args.software)
+                builder = BuildTestBuilderSingleSource(file,args.suite,
+                                                       parent_dir,args.software)
                 builder.build()
 
     if args.package:
@@ -108,10 +119,17 @@ def func_build_subcmd(args):
     sys.exit(0)
 
 class BuildTestBuilderSingleSource():
-    """ class responsible for building a test"""
+    """ Class responsible for building a single source test."""
     yaml_dict = {}
     test_dict = {}
     def __init__(self,yaml,test_suite,parent_dir,software_module=None):
+        """ Entry point to class. This method will set all class variables.
+
+            :param yaml: The yaml file to be processed
+            :param test_suite: Name of the test suite (buildtest build -S <suite>)
+            :param parent_dir: parent directory where test script will be written
+            :param software_module: Name of software module to write in test script.
+        """
         self.shell = config_opts["BUILDTEST_SHELL"]
         self.yaml = yaml
         self.testname = '%s.%s' % (os.path.basename(self.yaml),self.shell)
@@ -121,7 +139,19 @@ class BuildTestBuilderSingleSource():
         yaml_parser = BuildTestYamlSingleSource(yaml,test_suite,self.shell,self.software_module)
         self.yaml_dict, self.test_dict = yaml_parser.parse()
     def build(self):
-        """ logic to build the test script"""
+        """ Logic to build the test script.
+
+            This class will invoke class BuildTestYamlSingleSource to return a
+            dictionary that will contain all the information required to write
+            the test script.
+
+            This method will write the test script with one of the shell
+            extensions (.bash, .csh, .sh) depending on what shell was requested.
+
+            For a job script the shell extension .lsf or .slurm will be inserted.
+            The test script will be set with 755 permission upon completion.
+
+        """
 
         # if this is a LSF job script then create .lsf extension for testname
         if "lsf" in self.test_dict:
@@ -165,7 +195,18 @@ class BuildTestBuilderSingleSource():
 
 
 def func_build_system(systempkg, logger, logdir, logpath, logfile):
-    """ method implementation for "buildtest build --package" """
+    """ This method implements details for "buildtest build --package" and
+        invokes method "generate_binary_test" to get all the binary tests and
+        write them in the appropriate location.
+
+
+       :param systempkg: Name of the system package
+       :param logger:
+       :param logdir:
+       :param logpath:
+       :param logfile:
+
+    """
 
     system_logdir = os.path.join(logdir,"system",systempkg)
     #setup_system_cmake()
@@ -180,8 +221,18 @@ def func_build_system(systempkg, logger, logdir, logpath, logfile):
 
     print("Writing Log file to: ", destpath)
 
+
 def func_build_software(args, logger, logdir, logpath, logfile):
-    """implementation for "buildtest build -s " """
+    """ This method implements option "buildtest build -s" which is
+        used for building binary test for software modules.
+
+        :param args:
+        :param logger:
+        :param logdir:
+        :param logpath:
+        :param logfile:
+
+    """
 
     config_opts["BUILDTEST_SOFTWARE"] = args.software
     config_opts["BUILDTEST_TOOLCHAIN"] = args.toolchain
@@ -223,11 +274,11 @@ def func_build_software(args, logger, logdir, logpath, logfile):
     print ("Writing Log file: ", os.path.join(logdir,logfile))
 
 def clean_tests():
-    """ cleans all the tests in BUILDTEST_TESTDIR. This implements buildtest build --clean-tests"""
-    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+    """ cleans all the tests in BUILDTEST_TESTDIR.
+        This implements "buildtest build --clean-tests" """
     try:
-        shutil.rmtree(BUILDTEST_TESTDIR)
-        print ("Removing test directory ", BUILDTEST_TESTDIR)
+        shutil.rmtree(config_opts['BUILDTEST_TESTDIR'])
+        print (f"Removing test directory {config_opts['BUILDTEST_TESTDIR']}")
     except OSError as err_msg:
         print(err_msg)
 

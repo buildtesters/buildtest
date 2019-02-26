@@ -1,29 +1,28 @@
 ############################################################################
 #
-#  Copyright 2017-2018
+#  Copyright 2017-2019
 #
-#   https://github.com/HPC-buildtest/buildtest-framework
+#  https://github.com/HPC-buildtest/buildtest-framework
 #
 #  This file is part of buildtest.
 #
-#    buildtest is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+#  buildtest is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
 #
-#    buildtest is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+#  buildtest is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU General Public License
+#  along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
-"""
-All CMake related functions neccessary for writing configuration when writing
-the tests.
 
-:author: Shahzeb Siddiqui (shahzebmsiddiqui@gmail.com)
+"""
+All CMake related functions necessary for writing configuration when writing
+the tests.
 """
 
 
@@ -37,21 +36,17 @@ from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_n
 
 
 def init_CMakeList(filename):
-    """
-    This is the content of BUILDTEST_ROOT/CMakeLists.txt
-    """
-
-    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
+    """ This method writes the content of BUILDTEST_ROOT/CMakeLists.txt. """
 
     header = """
 cmake_minimum_required(VERSION 2.8)
 include(CTest)
 ENABLE_TESTING()
-add_subdirectory(""" + BUILDTEST_TESTDIR + ")"
+add_subdirectory(""" + config_opts['BUILDTEST_TESTDIR'] + ")"
 
     try:
 
-        fd=open(filename,'w')
+        fd=open(filename, 'w')
         fd.write(header)
         fd.close()
     except FileNotFoundError as err_msg:
@@ -59,23 +54,28 @@ add_subdirectory(""" + BUILDTEST_TESTDIR + ")"
         raise
 
 
-def update_CMakeLists(filename,tag):
+def update_cmakelists(filename, tag):
+    """ This method updates CMakeLists.txt with tag add_subdirectory() that has
+        name of subdirectory where CMakeList.txt resides.
+
+        :param filename: CMakeLists.txt that needs to be updated
+        :param tag: Name of the subdirectory to be be added in CMakeLists.txt
     """
-    used for writing CMakeLists.txt with tag <software>, <version>, & toolchain
-    """
-    fd=open(filename,'r')
+    fd=open(filename, 'r')
     content=fd.read().strip().split("\n")
     cmd="add_subdirectory("+tag+")"
     if cmd not in content:
         fd.close()
-        fd=open(filename,'a')
+        fd=open(filename, 'a')
         fd.write(cmd+"\n")
         fd.close()
     else:
         fd.close()
 
 def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
-    """ update CMakeLists.txt with add_test command to allow ctest to run test """
+    """ This method inserts the add_test() command in CMakeLists.txt used for
+        adding tests so ctest can run the test.
+    """
 
     fd=open(cmakelist,'a')
     add_test_str=""
@@ -220,15 +220,15 @@ def setup_software_cmake():
 
 
     # update CMakeLists.txt with tags add_subdirectory(ebapp)
-    update_CMakeLists(test_cmakelist,"ebapp")
+    update_cmakelists(test_cmakelist, "ebapp")
 
     # update CMakeLists.txt with tags add_subdirectory(X) where X=name|version|toolchain-name|toolchain-version
-    update_CMakeLists(test_ebapp_cmakelist,name)
-    update_CMakeLists(test_name_cmakelist,version)
+    update_cmakelists(test_ebapp_cmakelist, name)
+    update_cmakelists(test_name_cmakelist, version)
 
     if len(toolchain_name) != 0:
-        update_CMakeLists(test_version_cmakelist,toolchain_name)
-        update_CMakeLists(test_toolchain_name_cmakelist,toolchain_version)
+        update_cmakelists(test_version_cmakelist, toolchain_name)
+        update_cmakelists(test_toolchain_name_cmakelist, toolchain_version)
 
     return test_destdir,test_toolchain_version_cmakelist
 
@@ -275,9 +275,9 @@ def setup_system_cmake(pkg):
     create_file(test_cmakelist_destdir)
 
     # update the CMakeLists.txt with the tag add_subdirectory(system)
-    update_CMakeLists(test_cmakelist,"system")
+    update_cmakelists(test_cmakelist, "system")
     #update CMakeLists.txt with the tag add_subdirectory(pkg) where pkg is the application name
-    update_CMakeLists(test_cmakelist_pkg,pkg)
+    update_cmakelists(test_cmakelist_pkg, pkg)
 
     logger.debug("Updating %s with add_subdirectory(system)", test_cmakelist)
     logger.debug("Updating %s with add_subdirectory(%s)", test_cmakelist_pkg,pkg)
