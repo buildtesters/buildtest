@@ -33,14 +33,13 @@ import stat
 import yaml
 
 from buildtest.tools.config import config_opts
-from buildtest.tools.file import create_dir, isDir, walk_tree
+from buildtest.tools.file import create_dir, is_dir, walk_tree
 from buildtest.tools.log import init_log
 from buildtest.test.binarytest import generate_binary_test
 from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.easybuild import is_easybuild_app
 from buildtest.tools.ohpc import check_ohpc
 from buildtest.tools.utility import get_appname, get_appversion
-from buildtest.tools.utility import  get_toolchain_name, get_toolchain_version
 from buildtest.tools.yaml import BuildTestYamlSingleSource
 from buildtest.tools.system import BuildTestCommand
 
@@ -91,7 +90,7 @@ def func_build_subcmd(args):
         yaml_files = walk_tree(yaml_dir,".yml")
 
         if config_opts["BUILDTEST_CLEAN_BUILD"]:
-            if isDir(test_suite_dir):
+            if is_dir(test_suite_dir):
                 shutil.rmtree(test_suite_dir)
 
         testsuite_components = os.listdir(yaml_dir)
@@ -235,12 +234,10 @@ def func_build_software(args, logger, logdir, logpath, logfile):
     """
 
     config_opts["BUILDTEST_SOFTWARE"] = args.software
-    config_opts["BUILDTEST_TOOLCHAIN"] = args.toolchain
+
 
     appname=get_appname()
     appversion=get_appversion()
-    tcname = get_toolchain_name()
-    tcversion = get_toolchain_version()
 
     print("Detecting Software: ", os.path.join(appname,appversion))
 
@@ -248,17 +245,13 @@ def func_build_software(args, logger, logdir, logpath, logfile):
 
     logger.debug("Software: %s", appname)
     logger.debug("Software Version: %s", appversion)
-    logger.debug("Toolchain: %s", tcname)
-    logger.debug("Toolchain Version: %s", tcversion)
-
-    logger.debug("Checking if software: %s/%s exists",appname,appversion)
 
 
     # check if software is an easybuild applicationa
     if config_opts["BUILDTEST_EASYBUILD"] == True:
         is_easybuild_app()
 
-    logdir=os.path.join(logdir,appname,appversion,tcname,tcversion)
+    logdir=os.path.join(logdir,appname,appversion)
 
     # if directory tree for software log is not present, create the directory
     create_dir(logdir)

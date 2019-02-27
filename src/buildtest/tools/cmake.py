@@ -32,7 +32,7 @@ import logging
 
 from buildtest.tools.config import config_opts, logID
 from buildtest.tools.file import create_dir, create_file,string_in_file
-from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+from buildtest.tools.utility import get_appname, get_appversion
 
 
 def init_CMakeList(filename):
@@ -81,14 +81,12 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
     add_test_str=""
 
     logger = logging.getLogger(logID)
-    BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']
 
     shell_type = config_opts['BUILDTEST_SHELL']
 
     appname = get_appname()
     appversion = get_appversion()
-    tcname = get_toolchain_name()
-    tcversion = get_toolchain_version()
+
 
     # if YAML files are in subdirectory of config directory then update CMakeList
     # in app_destdir to add tag "add_subdirectory" for subdirectory so CMakeList
@@ -97,10 +95,10 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
         # only update the app_destdir/CMakeLists.txt if subdirectory doesn't exist. This avoids
         # writing duplicate values when there are multiple tests in subdirectory
         parent_cmakelist = os.path.join(app_destdir,"CMakeLists.txt")
-        cmake_content="add_subdirectory("+subdir+") \n"
-        ret = string_in_file(cmake_content,parent_cmakelist)
-        if ret == False:
-            fd1=open(parent_cmakelist,'a')
+        cmake_content = "add_subdirectory(" + subdir + ") \n"
+        ret = string_in_file(cmake_content, parent_cmakelist)
+        if not ret:
+            fd1=open(parent_cmakelist, 'a')
             fd1.write(cmake_content)
             fd1.close()
 
@@ -110,22 +108,17 @@ def add_test_to_CMakeLists(app_destdir,subdir,cmakelist,testname):
         # built with any toolchains. Subdirectories come in handy when you need to organize tests
         # effectively to avoid naming conflict
 
-        # condition to check of toolchain exists, if so then add it to add_test()
-        if tcname == "":
-            add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + subdir + "-" + testname + "\t COMMAND "+ shell_type + " " +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
-        else:
-            add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"      + subdir + "-" + testname + "\t COMMAND " + shell_type + " "  +  testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
-    else:
-        if tcname == "":
-            add_test_str="add_test(NAME " + appname + "-" + appversion + "-"  + testname + "\t COMMAND  " + shell_type + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
-        else:
-            add_test_str="add_test(NAME " + appname + "-" + appversion + "-" + tcname + "-" + tcversion + "-"  + testname + "\t COMMAND " + shell_type + " " + testname + "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) \n"
 
-    if not string_in_file(add_test_str,cmakelist):
+
+    add_test_str = "add_test(NAME {}-{}-{} \t COMMAND {} {} ".format(appname, appversion,testname, shell_type, testname)
+    add_test_str += "\t WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} ) \n"
+
+    if not string_in_file(add_test_str, cmakelist):
         fd.write(add_test_str)
 
     fd.close()
     logger.debug("Updating File " + cmakelist + " with: " + add_test_str + "\n")
+
 
 def setup_software_cmake():
 
@@ -135,31 +128,26 @@ def setup_software_cmake():
 
     name = get_appname()
     version = get_appversion()
-    toolchain_name = get_toolchain_name()
-    toolchain_version = get_toolchain_version()
 
     # if top level software directory is not present, create it
-    test_ebapp_dir=os.path.join(BUILDTEST_TESTDIR,"ebapp")
+    test_ebapp_dir = os.path.join(BUILDTEST_TESTDIR, "ebapp")
 
-    # variables to reference each subdirectory in <software>/<version>/<toolchain-name>/<toolchain-version>
-    test_name_dir=os.path.join(test_ebapp_dir,name)
-    test_version_dir=os.path.join(test_name_dir,version)
-    test_toolchain_name_dir=os.path.join(test_version_dir,toolchain_name)
-    test_toolchain_version_dir=os.path.join(test_toolchain_name_dir,toolchain_version)
+    # variables to reference each subdirectory in <software>/<version>
+    test_name_dir = os.path.join(test_ebapp_dir, name)
+    test_version_dir = os.path.join(test_name_dir, version)
+
 
     # BUILDTEST_TESTDIR/CMakeLists.txt
-    test_cmakelist = os.path.join(BUILDTEST_TESTDIR,"CMakeLists.txt")
+    test_cmakelist = os.path.join(BUILDTEST_TESTDIR, "CMakeLists.txt")
 
     # BUILDTEST_TESTDIR/ebapps/CMakeLists.txt
-    test_ebapp_cmakelist = os.path.join(test_ebapp_dir,"CMakeLists.txt")
+    test_ebapp_cmakelist = os.path.join(test_ebapp_dir, "CMakeLists.txt")
 
     # CMakeLists.txt files in <software>/<version>/<toolchain-name>/<toolchain-version>
-    test_name_cmakelist = os.path.join(test_name_dir,"CMakeLists.txt")
-    test_version_cmakelist = os.path.join(test_version_dir,"CMakeLists.txt")
-    test_toolchain_name_cmakelist = os.path.join(test_toolchain_name_dir,"CMakeLists.txt")
-    test_toolchain_version_cmakelist = os.path.join(test_toolchain_version_dir,"CMakeLists.txt")
+    test_name_cmakelist = os.path.join(test_name_dir, "CMakeLists.txt")
+    test_version_cmakelist = os.path.join(test_version_dir, "CMakeLists.txt")
 
-    test_destdir=test_toolchain_version_dir
+    test_destdir = test_version_dir
 
 
     logger.debug("----------------------------------------")
@@ -169,8 +157,6 @@ def setup_software_cmake():
     logger.debug("EB Directory in $BUILDTEST_TESTDIR: %s ", test_ebapp_dir)
     logger.debug("EB Application Directory: %s", test_name_dir)
     logger.debug("EB Application Version Directory: %s", test_version_dir)
-    logger.debug("EB Toolchain Name Directory: %s", test_toolchain_name_dir)
-    logger.debug("EB Toolchain Version Directory: %s", test_toolchain_version_dir)
 
     logger.debug("\n")
     logger.debug("Test Directory for EB Application: %s ", test_destdir)
@@ -184,8 +170,6 @@ def setup_software_cmake():
     logger.debug("$BUILDTEST_TESTDIR CMakeList Path: %s ", test_cmakelist)
     logger.debug("EB Application CMakeList Path: %s ", test_name_cmakelist)
     logger.debug("EB Application Version CMakeList Path: %s", test_version_cmakelist)
-    logger.debug("EB Toolchain Name CMakeList Path: %s", test_toolchain_name_cmakelist)
-    logger.debug("EB Toolchain Version CMakeList Path: %s", test_toolchain_version_cmakelist)
 
 
     # if test directory exist, delete and recreate it inorder for reproducible test builds
@@ -202,21 +186,11 @@ def setup_software_cmake():
     create_dir(test_version_dir)
 
 
-
-    if len(toolchain_name) != 0:
-        create_dir(test_toolchain_name_dir)
-        create_dir(test_toolchain_version_dir)
-
     # create CMakeList.txt file in each directory of $BUILDTEST_ROOT/<software>/<version>/<toolchain-name>/<toolchain-version> if it doesn't exist
     create_file(test_cmakelist)
     create_file(test_ebapp_cmakelist)
     create_file(test_name_cmakelist)
     create_file(test_version_cmakelist)
-
-
-    if len(toolchain_name) != 0:
-        create_file(test_toolchain_name_cmakelist)
-        create_file(test_toolchain_version_cmakelist)
 
 
     # update CMakeLists.txt with tags add_subdirectory(ebapp)
@@ -226,11 +200,8 @@ def setup_software_cmake():
     update_cmakelists(test_ebapp_cmakelist, name)
     update_cmakelists(test_name_cmakelist, version)
 
-    if len(toolchain_name) != 0:
-        update_cmakelists(test_version_cmakelist, toolchain_name)
-        update_cmakelists(test_toolchain_name_cmakelist, toolchain_version)
-
-    return test_destdir,test_toolchain_version_cmakelist
+    print(os.path.join(test_destdir,"CMakeLists.txt"))
+    return test_destdir, os.path.join(test_destdir,"CMakeLists.txt")
 
 def setup_system_cmake(pkg):
     BUILDTEST_TESTDIR = config_opts['BUILDTEST_TESTDIR']

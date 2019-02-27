@@ -31,7 +31,7 @@ import yaml
 from buildtest.tools.config import config_opts
 from buildtest.tools.ohpc import check_ohpc
 from buildtest.tools.software import get_software_stack
-from buildtest.tools.file import isFile
+from buildtest.tools.file import is_file
 
 TEMPLATE_JOB_SLURM = {
     'nodes': "10",
@@ -105,7 +105,7 @@ class BuildTestYamlSingleSource():
     yaml_file = ""
     def __init__(self,yaml_file,test_suite,shell,software_module=None):
 
-        isFile(yaml_file)
+        is_file(yaml_file)
 
         ext = os.path.splitext(yaml_file)[1]
 
@@ -169,7 +169,7 @@ class BuildTestYamlSingleSource():
         self._check_keys(test_dict)
 
         srcfile = os.path.join(self.srcdir,test_dict['source'])
-        isFile(srcfile)
+        is_file(srcfile)
 
         ext = os.path.splitext(srcfile)[1]
         language = get_programming_language(ext)
@@ -186,7 +186,7 @@ class BuildTestYamlSingleSource():
 
         if "input" in test_dict:
             inputfile = os.path.join(self.srcdir,test_dict['input'])
-            isFile(inputfile)
+            is_file(inputfile)
         if "compiler" in test_dict:
             self._check_compiler(test_dict['compiler'])
             compiler_name = get_compiler(language,test_dict['compiler'])

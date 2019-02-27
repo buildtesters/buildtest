@@ -42,49 +42,10 @@ def get_appversion():
     software = software.split('/')
     BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
     if BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
-        tc = get_toolchain()
-        tcname = get_toolchain_name()
-        # when toolchain is not specified modulename is something like Python/2.7.14
-        if tcname == "":
-            return software[1]
-        # when toolchain is part of modulename then it is something like Python/2.7.14-GCCcore-6.4.0.
-        # must strip toolchain to get the version
-        else:
-            appversion = software[1].replace(tc,'')
-
-            if appversion[-1] == "-":
-                appversion = appversion[:-1]
-                return appversion
+       return software[1]
     else:
         return software[1]
 
 def get_application_name():
     """ get application name including the application version separated by "-" """
     return get_appname() + '-' + get_appversion()
-
-def get_toolchain():
-    """ get toolchain name including the toolchain version separated by "-" """
-    return get_toolchain_name() + '-' + get_toolchain_version()
-
-def get_toolchain_name():
-    """return toolchain  name from buildtest build -t option"""
-    toolchain = config_opts["BUILDTEST_TOOLCHAIN"]
-
-
-    # checking if toolchain is defined in argument
-    if toolchain is  None:
-            return ""
-    else:
-        toolchain = toolchain.split("/")
-        return toolchain[0]
-
-def get_toolchain_version():
-    """return toolchain version from buildtest build -t option"""
-    toolchain = config_opts["BUILDTEST_TOOLCHAIN"]
-
-    # checking if toolchain is defined in argument
-    if toolchain is None:
-        return ""
-    else:
-        toolchain = toolchain.split("/")
-        return toolchain[1]

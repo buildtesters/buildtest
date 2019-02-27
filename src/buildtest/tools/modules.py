@@ -33,7 +33,7 @@ import os
 import sys
 import subprocess
 from buildtest.tools.config import config_opts
-from buildtest.tools.file import string_in_file, isDir
+from buildtest.tools.file import string_in_file, is_dir
 
 
 def func_module_subcmd(args):
@@ -70,7 +70,7 @@ def get_module_list():
     modulefiles = []
     modtrees = config_opts["BUILDTEST_MODULE_ROOT"]
     for tree in modtrees:
-        isDir(tree)
+        is_dir(tree)
         for root, dirs, files in os.walk(tree):
             for file in files:
                 # only add modules with .lua extension or files that have #%Module which is for environment modules
@@ -85,7 +85,7 @@ def get_module_list_by_tree(mod_tree):
 
     modulefiles = []
 
-    isDir(mod_tree)
+    is_dir(mod_tree)
     for root, dirs, files in os.walk(mod_tree):
         for file in files:
             if file.endswith(".lua") or string_in_file("#%Module",os.path.join(root,file)):
@@ -97,7 +97,6 @@ def load_modules(shell_type):
     """return a string that loads the software and toolchain module."""
 
     software = config_opts["BUILDTEST_SOFTWARE"]
-    toolchain = config_opts["BUILDTEST_TOOLCHAIN"]
 
     #print software
 
@@ -111,19 +110,10 @@ def load_modules(shell_type):
     #print (len(config_opts["BUILDTEST_PREPEND_MODULES"]))
     if len(config_opts["BUILDTEST_PREPEND_MODULES"]) > 0:
         for module in config_opts["BUILDTEST_PREPEND_MODULES"]:
-            #print (module)
             header += "module load " + module + "\n"
 
-    # for dummy toolchain you can load software directly. Ensure a clean environment by running module purge
-    if toolchain == None:
-        moduleload = "module load " + software  + "\n"
-    else:
-        if BUILDTEST_MODULE_NAMING_SCHEME == "HMNS":
-            moduleload = "module load " + toolchain + "\n"
-            moduleload += "module load " + software + "\n"
-        elif BUILDTEST_MODULE_NAMING_SCHEME == "FNS":
-            moduleload = "module load " + software + "\n"
-            print (moduleload)
+    moduleload = "module load " + software + "\n"
+
 
     header = header + moduleload
     return header

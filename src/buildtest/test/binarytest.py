@@ -38,7 +38,7 @@ from buildtest.tools.file import string_in_file
 from buildtest.tools.modules import load_modules
 from buildtest.tools.software import get_binaries_from_application
 from buildtest.tools.system import get_binaries_from_systempackage
-from buildtest.tools.utility import get_appname, get_appversion, get_toolchain_name, get_toolchain_version
+from buildtest.tools.utility import get_appname, get_appversion
 
 
 
@@ -84,8 +84,6 @@ def generate_binary_test(name,test_type=None):
 
         name = get_appname()
         version = get_appversion()
-        toolchain_name = get_toolchain_name()
-        toolchain_version = get_toolchain_version()
 
         test_destdir,test_destdir_cmakelist = setup_software_cmake()
 
@@ -141,7 +139,10 @@ def generate_binary_test(name,test_type=None):
         logger.info("[END TEST-BLOCK]")
 
         if test_type == "software":
-            add_test_to_CMakeLists(test_destdir,subdir,test_destdir_cmakelist, testname)
+            add_test_to_CMakeLists(test_destdir,
+                                   subdir,
+                                   test_destdir_cmakelist,
+                                   testname)
         else:
             logger.debug("Updating CMakeList file: %s", test_destdir_cmakelist)
             fd=open(test_destdir_cmakelist,'a')

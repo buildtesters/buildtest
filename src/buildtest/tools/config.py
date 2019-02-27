@@ -31,8 +31,10 @@ from shutil import copy
 BUILDTEST_VERSION="0.6.3"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
-BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm", ".pbs"]
+BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm"]
 BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
+
+BUILDTEST_TEST_EXT = BUILDTEST_JOB_EXTENSION + ["."+ i for i in BUILDTEST_SHELLTYPES]
 
 PYTHON_APPS = ["python","anaconda2", "anaconda3"]
 MPI_APPS = ["openmpi", "mpich","mvapich2", "intel", "impi"]
@@ -73,7 +75,8 @@ else:
     config_opts["BUILDTEST_MODULE_ROOT"] = os.getenv("MODULEPATH").split(":")
 
 
-# The section below causes import error, trying to clone buildtest-configs and write yaml content back to file.
+# The section below causes import error, trying to clone buildtest-configs and
+# write yaml content back to file.
 """
 # get parent directory where buildtest-framework is cloned
 parent_BUILDTEST_ROOT = os.path.dirname(os.getenv("BUILDTEST_ROOT"))
