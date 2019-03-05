@@ -32,7 +32,8 @@ from buildtest.test.run.app import run_app_choices
 from buildtest.test.run.testname import test_list
 from buildtest.test.run.system import run_system_choices
 from buildtest.tools.build import func_build_subcmd
-from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, check_configuration
+from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
+    check_configuration
 from buildtest.tools.file import create_dir
 from buildtest.tools.find import func_find_subcmd
 from buildtest.tools.list import func_list_subcmd
@@ -50,17 +51,15 @@ from buildtest.benchmark.hpcg import func_benchmark_hpcg_subcmd
 def menu():
     """ buildtest menu"""
 
-
-
-
-    parser = {}
     override_configuration()
     check_configuration()
 
-    test_suite_dir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite")
+    test_suite_dir = os.path.join(config_opts["BUILDTEST_TESTDIR"], "suite")
     create_dir(test_suite_dir)
 
-    test_class = os.listdir(os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"buildtest","suite"))
+    test_class = os.listdir(os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
+                                         "buildtest",
+                                         "suite"))
     run_test_class = os.listdir(test_suite_dir)
     pkglist = systempackage_installed_list()
     software_list = get_software_stack()
@@ -73,96 +72,237 @@ def menu():
     systempkg_choices = run_system_choices()
 
     parser = argparse.ArgumentParser(prog='buildtest', usage='%(prog)s [options]')
-    parser.add_argument("-V", "--version", help="show program version number and exit",action="store_true")
-    parser.add_argument("--logdir", help="Path to write buildtest logs. Override configuration BUILDTEST_LOGDIR")
-    parser.add_argument("--clean-logs", help="delete buildtest log directory ($BUILDTEST_LOGDIR)",action="store_true")
-    #parser.add_argument("-C", "--category", help="select test category for building tests", choices=self.test_category, metavar="TEST-CATEGORY")
-    subparsers = parser.add_subparsers(help='subcommand help', dest="subcommand")
+    parser.add_argument("-V",
+                        "--version",
+                        help="show program version number and exit",
+                        action="store_true")
+    parser.add_argument("--logdir",
+                        help="Path to write buildtest logs. Override "
+                             + "configuration BUILDTEST_LOGDIR")
+    parser.add_argument("--clean-logs",
+                        help="delete buildtest log directory $BUILDTEST_LOGDIR",
+                        action="store_true")
+
+    subparsers = parser.add_subparsers(help='subcommand help',
+                                       dest="subcommand")
+
     # -------------------------------- list menu --------------------------
-    parser_list = subparsers.add_parser('list', help='list help')    
-    parser_list.add_argument("-ls", "--list-unique-software",help="retrieve all unique software found in your module tree specified by BUILDTEST_MODULE_ROOT", action="store_true")
-    parser_list.add_argument("-svr", "--software-version-relation", help="retrieve a relationship between software and version found in module files", action="store_true")
-    parser_list.add_argument("-ec","--easyconfigs", help="Return a list of easyconfigs from a easybuild module tree",action="store_true")
-    parser_list.add_argument("--format", help="Output format type", choices=["json"])
+    parser_list = subparsers.add_parser('list',
+                                        help="Options for listing software,"
+                                             + "easyconfigs and module files.")
+    parser_list.add_argument("-ls",
+                             "--list-unique-software",
+                             help="retrieve all unique software found in your "
+                                  + "module tree specified by "
+                                  + "BUILDTEST_MODULE_ROOT",
+                             action="store_true")
+
+    parser_list.add_argument("-svr",
+                             "--software-version-relation",
+                             help="retrieve software and path to module files "
+                                  + "grouped by software alphabetically",
+                             action="store_true")
+    parser_list.add_argument("-ec",
+                             "--easyconfigs",
+                             help="Return a list of easyconfigs from a "
+                                  + "module tree",
+                             action="store_true")
+    parser_list.add_argument("--format",
+                             help="Output format type",
+                             choices=["json"])
     parser_list.set_defaults(func=func_list_subcmd)
 
     # -------------------------------- find menu ---------------------------
-    parser_find = subparsers.add_parser('find', help='find configuration files and test')
-    parser_find.add_argument("-fc","--findconfig", help= """ Find buildtest YAML config files found in BUILDTEST_CONFIGS_REPO.
-                                         To find all yaml config files use -fc all """)
-    parser_find.add_argument("-ft", "--findtest", help="""Find test scripts generated by buildtest defined by BUILDTEST_TESTDIR.
-                                 To find all test scripts use -ft all """)
+    parser_find = subparsers.add_parser('find',
+                                        help="find configuration files and "
+                                             + "test scripts")
+    parser_find.add_argument("-fc",
+                             "--findconfig",
+                             help="Find buildtest YAML "
+                                  + "config files. To find all yaml files use"
+                                    " -fc all")
+
+    parser_find.add_argument("-ft",
+                             "--findtest",
+                             help="Find generated test scripts. To find all "
+                                  + "testscripts use -ft all")
     parser_find.set_defaults(func=func_find_subcmd)
 
     # -------------------------------- yaml  menu --------------------------
-    parser_yaml = subparsers.add_parser('yaml', help='Options for building YAML configuration')
-    parser_yaml.add_argument("--ohpc", help="Indicate to buildtest this is a OpenHPC package. YAML files will be written in $BUILDTEST_CONFIGS_REPO/ohpc", action="store_true")
+    parser_yaml = subparsers.add_parser('yaml',
+                                        help="Options for building "
+                                             + "YAML configuration")
+    parser_yaml.add_argument("--ohpc",
+                             help="Build YAML configuration for OpenHPC "
+                                  + "package. YAML files will be written in "
+                                  + "$BUILDTEST_CONFIGS_REPO/ohpc",
+                             action="store_true")
     parser_yaml.set_defaults(func=func_yaml_subcmd)
 
     # -------------------------------- build menu --------------------------
-    parser_build = subparsers.add_parser('build', help='options for building tests')
-    parser_build.add_argument("-s", "--software", help=" Specify software package to test", choices=software_list, metavar='INSTALLED-SOFTWARE')
-    parser_build.add_argument("-p", "--package", help=" Build test for system packages", choices=pkglist, metavar='SYSTEM-PACKAGE')
-    parser_build.add_argument("--prepend-modules", help= "Prepend modules in test script prior to loading application module. Use this option with Hierarchical Module Naming Scheme", choices=software_list,  metavar='INSTALLED-SOFTWARE',action="append", default=[])
-    parser_build.add_argument("--shell", help=" Select the type of shell when running test", choices=BUILDTEST_SHELLTYPES)
-    parser_build.add_argument("-b", "--binary", help="Conduct binary test for a package", action="store_true")
-    parser_build.add_argument("-S", "--suite", help="specify test suite", choices=test_class)
-    parser_build.add_argument("--clean-tests",help="delete testing directory ($BUILDTEST_TESTDIR)",action="store_true")
-    parser_build.add_argument("--testdir", help="Path to write buildtest tests. Overrides configuration BUILDTEST_TESTDIR")
-    parser_build.add_argument("--clean-build", help="delete software test directory before writing test scripts", action="store_true")
-    parser_build.add_argument("-eb","--easybuild", help="check if application is built by easybuild",action="store_true")
-    parser_build.add_argument("-mns", "--module-naming-scheme", help="Specify module naming scheme for easybuild apps", choices=["HMNS","FNS"])
-    parser_build.add_argument("--ohpc", help="Indicate to buildtest this is a OpenHPC package. YAML files will be processed from $BUILDTEST_CONFIGS_REPO/ohpc", action="store_true")
+    parser_build = subparsers.add_parser('build',
+                                         help="Options for building tests")
+    parser_build.add_argument("-s",
+                              "--software",
+                              help=" Specify software package to test",
+                              choices=software_list,
+                              metavar='INSTALLED-SOFTWARE')
+    parser_build.add_argument("-p",
+                              "--package",
+                              help="Build test for system packages",
+                              choices=pkglist,
+                              metavar='SYSTEM-PACKAGE')
+    parser_build.add_argument("--prepend-modules",
+                              help="Prepend modules in test script prior to "
+                                   +"loading application module.",
+                              choices=software_list,
+                              metavar='INSTALLED-SOFTWARE',
+                              action="append",
+                              default=[])
+    parser_build.add_argument("--shell",
+                              help=" Select the type of shell for testscript",
+                              choices=BUILDTEST_SHELLTYPES)
+    parser_build.add_argument("-b", "--binary",
+                              help="Conduct binary test for a package",
+                              action="store_true")
+    parser_build.add_argument("-S",
+                              "--suite",
+                              help="specify test suite",
+                              choices=test_class)
+    parser_build.add_argument("--clean-tests",
+                              help="delete test directory $BUILDTEST_TESTDIR",
+                              action="store_true")
+    parser_build.add_argument("--testdir",
+                              help="Specify alternate test directory to write "
+                                   + "test. This overrides configuration "
+                                   + "BUILDTEST_TESTDIR")
+    parser_build.add_argument("--clean-build",
+                              help="delete software test directory before "
+                                   + "writing test scripts",
+                              action="store_true")
+    parser_build.add_argument("-eb",
+                              "--easybuild",
+                              help="check if application is built by easybuild",
+                              action="store_true")
+    parser_build.add_argument("-mns",
+                              "--module-naming-scheme",
+                              help="Specify module naming scheme your "
+                                   + "module tree",
+                              choices=["HMNS","FNS"])
+    parser_build.add_argument("--ohpc",
+                              help="Indicate to buildtest this is a OpenHPC "
+                                   + "package. YAML files will be processed "
+                                   + "from $BUILDTEST_CONFIGS_REPO/ohpc",
+                              action="store_true")
 
     parser_build.set_defaults(func=func_build_subcmd)
 
     # -------------------------------- run menu ----------------------------
-    parser_run = subparsers.add_parser('run', help='options for running test')
-    parser_run.add_argument("-i", "--interactive", help="Run the test interactively", action="store_true")
-    parser_run.add_argument("-t", "--testname", help="Run a single testscript via buildtest", choices=test_choices, metavar='TEST-CHOICES')
-    parser_run.add_argument("-s", "--software", help="Run test suite for application via buildtest", choices=app_choices, metavar='SOFTWARE-TEST-SUITE')
-    parser_run.add_argument("-p", "--package", help="Run test suite for system package via buildtest", choices=systempkg_choices, metavar='PACKAGE-TEST-SUITE')
-    parser_run.add_argument("-S", "--suite", help="Run the test suite",choices=run_test_class)
-    parser_run.add_argument("-j", "--job", help = "Submit jobs to resource scheduler",action="store_true")
-    parser_run.add_argument("--all-software", help="Run test suite for all software packages", action="store_true")
-    parser_run.add_argument("--all-package", help="Run test suite for all system packages", action="store_true")
+    parser_run = subparsers.add_parser('run',
+                                       help='options for running test')
+    parser_run.add_argument("-i",
+                            "--interactive",
+                            help="Run the test interactively",
+                            action="store_true")
+    parser_run.add_argument("-t",
+                            "--testname",
+                            help="Run a single testscript",
+                            choices=test_choices,
+                            metavar='TEST-CHOICES')
+    parser_run.add_argument("-s",
+                            "--software",
+                            help="Run test suite for application",
+                            choices=app_choices,
+                            metavar='SOFTWARE-TEST-SUITE')
+    parser_run.add_argument("-p",
+                            "--package",
+                            help="Run test suite for system package",
+                            choices=systempkg_choices,
+                            metavar='PACKAGE-TEST-SUITE')
+    parser_run.add_argument("-S",
+                            "--suite",
+                            help="Run the test suite",
+                            choices=run_test_class)
+    parser_run.add_argument("-j",
+                            "--job",
+                            help = "Submit jobs to resource scheduler",
+                            action="store_true")
+    parser_run.add_argument("--all-software",
+                            help="Run test suite for all software packages",
+                            action="store_true")
+    parser_run.add_argument("--all-package",
+                            help="Run test suite for all system packages",
+                            action="store_true")
     parser_run.set_defaults(func=func_run_subcmd)
 
     # -------------------------------- module menu --------------------------
-    parser_module = subparsers.add_parser('module', help='module load testing and difference between module trees')
-    parser_module.add_argument("--module-load-test", help="conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT", action="store_true")
-    parser_module.add_argument("--diff-trees", help="Show difference between two module trees")
+    parser_module = subparsers.add_parser('module',
+                                          help="Options for module load "
+                                               + "testing and report diff "
+                                               + "between module trees")
+    parser_module.add_argument("--module-load-test",
+                               help="conduct module load test for all modules "
+                                    + "defined in BUILDTEST_MODULE_ROOT",
+                               action="store_true")
+    parser_module.add_argument("--diff-trees",
+                               help="Show difference between two module trees")
     parser_module.set_defaults(func=func_module_subcmd)
 
-    parser_show = subparsers.add_parser('show', help='show sub menu')
-    parser_show.add_argument("-c","--config",help="show buildtest environment configuration", action="store_true")
-    parser_show.add_argument("-k","--keys", help="show yaml keys",choices = ["singlesource"],default="singlesource")
+    parser_show = subparsers.add_parser('show',
+                                        help='show sub menu')
+    parser_show.add_argument("-c","--config",
+                             help="show buildtest environment configuration",
+                             action="store_true")
+    parser_show.add_argument("-k","--keys",
+                             help="show yaml keys",
+                             choices = ["singlesource"],
+                             default="singlesource")
     parser_show.set_defaults(func=func_show_subcmd)
 
     # -------------------------------- benchmark menu ----------------------
-    parser_benchmark = subparsers.add_parser('benchmark', help="Benchmark Menu")
-    subparsers_benchmark = parser_benchmark.add_subparsers(help='subcommand help', dest="benchmark_subcommand")
+    parser_benchmark = subparsers.add_parser('benchmark',
+                                             help="Benchmark Menu")
+    subparsers_benchmark = parser_benchmark.add_subparsers(help='subcommand help',
+                                                           dest="benchmark_subcommand")
 
     # -------------------------------- osu  menu ---------------------------
-    osu_parser = subparsers_benchmark.add_parser('osu', help = "OSU MicroBenchmark sub menu")
-    osu_parser.add_argument("-r", "--run", help ="Run Benchmark", action="store_true")
-    osu_parser.add_argument("-i", "--info", help="show yaml key description", action="store_true")
-    osu_parser.add_argument("-l", "--list", help="List of tests available for OSU Benchmark", action="store_true")
-    osu_parser.add_argument("-c", "--config", help="OSU Yaml Configuration File")
+    osu_parser = subparsers_benchmark.add_parser('osu',
+                                                 help = "OSU MicroBenchmark sub menu")
+    osu_parser.add_argument("-r",
+                            "--run",
+                            help ="Run Benchmark",
+                            action="store_true")
+    osu_parser.add_argument("-i",
+                            "--info",
+                            help="show yaml key description",
+                            action="store_true")
+    osu_parser.add_argument("-l",
+                            "--list",
+                            help="List of tests available for OSU Benchmark",
+                            action="store_true")
+    osu_parser.add_argument("-c",
+                            "--config",
+                            help="OSU Yaml Configuration File")
     osu_parser.set_defaults(func=func_benchmark_osu_subcmd)
 
     # -------------------------------- HPL  menu ---------------------------
-    hpl_parser = subparsers_benchmark.add_parser('hpl', help ="High Performance Linpack sub menu")
+    hpl_parser = subparsers_benchmark.add_parser('hpl',
+                                                 help="High Performance "
+                                                      + "Linpack sub menu")
     hpl_parser.set_defaults(func=func_benchmark_hpl_subcmd)
 
     # -------------------------------- HPCG  menu ---------------------------
-    hpcg_parser = subparsers_benchmark.add_parser('hpcg', help="High Performance Conjugate Gradient sub menu")
+    hpcg_parser = subparsers_benchmark.add_parser('hpcg',
+                                                  help="High Performance "
+                                                       + "Conjugate Gradient "
+                                                       + "sub menu")
     hpcg_parser.set_defaults(func=func_benchmark_hpcg_subcmd)
 
     return parser
 
 def parse_options(parser):
-    """return parser as a dictionary and apply argument completion on parser object"""
+    """Return parsed arguments and apply argument completion to make use of
+    argcomplete library."""
     argcomplete.autocomplete(parser)
     args = parser.parse_args()
 
