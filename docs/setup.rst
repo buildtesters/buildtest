@@ -24,57 +24,37 @@ You need the following packages to get started.
 If you want to build Lmod or environment-modules manually please see http://lmod.readthedocs.io/en/latest/030_installing.html
 or https://modules.readthedocs.io/en/stable/INSTALL.html for more details
 
-Installing buildtest via pip
-----------------------------
 
-If you want to install buildtest you can use ``pip`` to install all the buildtest
-packages.
-
-Run the following assuming you have pip
-
-.. code::
-
-    pip install buildtest-framework --user
-
-Make sure your $PATH has ``$HOME/.local/bin`` in its path to pick up buildtest
-automatically
-
-Installing buildtest via conda
-------------------------------
-
-If you have Anaconda you may install buildtest via ``conda`` to ensure your
-python environment is setup properly.
-
-First install python > 3.6 or higher in your conda environment
-
-.. code::
-
-    conda create -n buildtest python>=3.6
-
-Next, get in to your conda environment
-
-.. code::
-
-    source activate buildtest
-
-Next you will  install ``buildtest`` inside your conda environment via ``pip install buildtest-framework --user``
-
-Installing buildtest via git
+Installing buildtest
 ----------------------------
 
 To get started just clone all the repos related to buildtest in your filesystem
 
 .. program-output:: cat scripts/setup/clonerepo.txt
 
-Once you clone the repos you will want to edit your ``settings.yml`` file to specify
-buildtest configuration
+Once you clone the repos you will want to install the python dependencies for buildtest which can be done
+by running
 
+::
 
-Take a look at ``settings.yml`` and copy this file to
-``$HOME/.buildtest/settings.yml`` and edit the file accordingly. You can refer
-to ``settings.example.yml`` for more details
+    pip install docs/requirements.txt
+
+The `requirements.txt <https://github.com/HPC-buildtest/buildtest-framework/blob/master/docs/requirements.txt>`_ can
+be installed in your pip, virtual environment, or conda environment.
+
+Next you will want to create a directory ``.buildtest`` in your home directory and copy the ``settings.yml`` file
+to this location
+
+::
+
+    mkdir $HOME/.buildtest
+    cp settings.yml $HOME/.buildtest/settings.yml
+
 
 .. Note:: Failure to copy settings.yml to $HOME/.buildtest/settings.yml will result in  an error
+
+Next, edit the ``settings.yml`` file to specify buildtest configuration, see :ref:`configuring_buildtest` for details
+on the configuration variables.
 
 Each site will have to customize their buildtest configuration to reflect the root of the module trees.
 You may specify multiple module trees  in ``settings.yml`` for variable ``BUILDTEST_MODULE_ROOT``.

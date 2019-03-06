@@ -3,10 +3,25 @@ Contributing Guide
 
 This document explains how you can contribute back to buildtest.
 
-buildtest is composed of the following repositories
+There are many ways you can help contribute to buildtest that may include
 
-- `buildtest-framework`_ : buildtest framework and documentation (``https://buildtest.readthedocs.io/en/latest/``)
-- `buildtest-configs`_ : buildtest yaml configurations
+- File an `issue <https://github.com/HPC-buildtest/buildtest-framework/issues>`_ with the framework
+- Proofread documentation and report or fix issues
+- Participate in discussions and join the slack `channel <http://hpcbuildtest.slack.com>`_
+- Share your tests
+- Provide feedback on buildtest options.
+
+    1. What features you *like*/*dislike*
+    2. What features you would like to have
+    3. What testing capabilities matter most for you
+
+
+
+
+buildtest is composed of two repositories
+
+- `buildtest-framework`_ : buildtest framework and `documentation <https://buildtest.readthedocs.io/en/latest/>`_
+- `buildtest-configs`_ : buildtest yaml configurations and test scripts
 
 .. _buildtest-framework: https://github.com/HPC-buildtest/buildtest-framework
 .. _buildtest-configs: https://github.com/HPC-buildtest/buildtest-configs
@@ -15,8 +30,10 @@ buildtest is composed of the following repositories
 Reporting an Issue
 -------------------
 
-Please report all issues related to framework to https://github.com/HPC-buildtest/buildtest-framework/issues.
-Any issues related to yaml configurations  files can be reported to https://github.com/HPC-buildtest/buildtest-configs
+Please report all issues regarding the framework at https://github.com/HPC-buildtest/buildtest-framework/issues
+
+Any issues related to specific tests or yaml configurations  should be reported at
+https://github.com/HPC-buildtest/buildtest-configs
 
 Reference to CONTRIBUTING guides
 ---------------------------------
