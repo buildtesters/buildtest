@@ -32,8 +32,8 @@ if you face similar issue. If all else fails please create a ticket.
 Slack
 ------
 
-If you are new to buildtest then join us the  `Slack Channel <http://hpcbuildtest.slack.com>`_ to get help and discuss
-everything about buildtest
+Click the `Join Slack Channel <https://hpcbuildtest.herokuapp.com/>`_ to get in touch with the buildtest community.
+If you already have an account then access the Slack Channel `here  <https://hpcbuildtest.slack.com>`_
 
 Contributing Back
 -------------------
