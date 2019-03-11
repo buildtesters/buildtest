@@ -54,6 +54,7 @@ Miscellaneous
     easybuild_integration.rst
     ohpc_integration.rst
     contributing.rst
+    references.rst
 
 Useful Links
 -------------
