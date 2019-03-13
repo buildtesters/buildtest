@@ -80,17 +80,6 @@ software found in module tree defined by ``BUILDTEST_MODULE_ROOT``
     binutils/2.28                                               help2man/1.47.4-GCCcore-6.4.0                               NLopt/2.4.2-intel-2018a
    --More--
 
-TAB complete on toolchains
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-TAB completion on ``buildtest build --toolchain`` will present all
-easybuild toolchains installed in the software stack
-
-::
-
-    (buildtest) [siddis14@adwnode1 buildtest-framework]$ buildtest build --toolchain
-    foss/2018a                          GCCcore/6.4.0                       iccifort/2018.1.163-GCC-6.4.0-2.28  intel/2018a
-    GCC/6.4.0-2.28                      gompi/2018a                         iimpi/2018a
 
 
 TAB complete on system packages

@@ -17,18 +17,19 @@ buildtest will read configuration from ``settings.yml``. User may override any c
 values by environment variables that start with ``BUILDTEST_``. The command line will 
 override environment variables and configuration variables runtime.
 
-Shown below is a sample configuration from buildtest.
+Shown below is a sample configuration from buildtest by running ``buildtest show --config``.
 
 
 .. program-output:: cat scripts/show_subcommand/configuration.txt
 
 
 
-``buildtest show --show`` will update the output as you set any BUILDTEST environment
+``buildtest show --config`` will show the updated configuration if you set any ``BUILDTEST_*`` environment
 variables.
 
-For instance, if you want to customize the buildtest log via environment variable. ``buildtest --show`` will report
-which values are overridden by environment variable with a notation **(E)**.
+For instance, if you want to override buildtest log using ``BUILDTEST_LOGDIR`` environment variable then
+``buildtest show --config`` will report the overridden value denoted with **(E)** to indicate configuration was set
+by environment variable.
 
 See example below
 

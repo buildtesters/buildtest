@@ -41,39 +41,3 @@ test is created it is added in CMakeList.txt if you check the file you will
 notice the extension is also configured in CMakeList.txt
 
 .. program-output:: cat scripts/build_subcommand/shell/CMake-3.9.5-GCCcore-6.4.0_CMakelists.txt
-
-Configuring Environment Variable for different shells
------------------------------------------------------
-
-Let's dive deeper into a OpenMP helloworld example that changes its test output
-according to different shells. For instance, we have the following yaml file that
-will build OpenMP hello world program using multi-threading.
-
-.. code::
-
-    name: omp_hello.f
-    source:  omp_hello.f
-    buildopts: -O2 -fopenmp
-    environment:
-            OMP_NUM_THREADS : 2
-
-You will notice the key ``environment`` will declare the environment variable according to the shell
-used for generating the test. For ``bash`` and ``sh`` the keyword ``export`` is used whereas for ``csh``
-the keyword is ``setenv``
-
-If you run ``buildtest build -s GCCcore/6.4.0 --shell bash`` to build the following test and look at generated test ``omp_hello_f.bash`` you
-will see the environment variable is set using keyword ``export``
-
-.. program-output:: cat scripts/build_subcommand/shell/GCCcore-6.4.0_omp_hello.f.bash
-
-
-
-If you compare this with ``csh`` test script for ``omp_hello_f``  the only difference will be the lines responsible for setting environment
-variable ``OMP_NUM_THREADS``
-
-.. program-output:: cat scripts/build_subcommand/shell/GCCcore-6.4.0_omp_hello.f.csh
-
-
-.. Note:: Notice that ``environment`` doesn't specify whether to use **export** or **setenv** but rather
-    keeps configuration generic and buildtest will figure out what keyword to append in front depending
-    on the shell type.

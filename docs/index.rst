@@ -3,8 +3,9 @@ buildtest - Software Testing Framework
 
 .. Note:: This project is under development, the official release will be in 2020.
 
-Welcome to buildtest! **buildtest** is a framework to automate software stack testing for
-HPC facilities.
+Welcome to buildtest! **buildtest** is a framework for writing tests to conduct software stack testing for
+HPC facilities. The goal of buildtest is to abstract test complexity such that a user can write test with minimal knowledge
+of the system and the test is reusable between HPC sites. For more details on buildtest check :ref:`summary_of_buildtest`
 
 This documentation was last rebuild on |today| and is intended for version |version|.
 
@@ -63,8 +64,11 @@ Useful Links
 * buildtest-configs_ - buildtest YAML configs for generic apps
 
 
-Join the buildtest slack channel (http://hpcbuildtest.slack.com) to get connected
-with the community. To join this channel please email **shahzebmsiddiqui@gmail.com**
+Slack
+------
+
+Click `Join <https://hpcbuildtest.herokuapp.com/>` the Slack Channel to get connected with the community. The slack
+url is http://hpcbuildtest.slack.com
 
 
 .. _buildtest-framework: https://github.com/HPC-buildtest/buildtest-framework

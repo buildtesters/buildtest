@@ -23,15 +23,14 @@ Module Options (``buildtest module --help``)
 Difference Between Module Trees (``buildtest module --diff-trees``)
 --------------------------------------------------------------------
 
-buildtest can report difference between two module trees and report which software is present
-in which tree. This may be useful if you plan to have a **stage** and **prod** module tree
-and you want to keep these trees in sync.
+buildtest can report differences between two module trees that can be useful if you deploy your software in a
+**stage/prod** module tree and you want to keep these trees in sync.
 
 If your HPC site builds software stack for each architecture and your environment is
-heterogeneous then ``--diff-trees`` will be helpful.
+heterogeneous then ``--diff-trees`` option will be helpful.
 
 
-buildtest takes two trees as argument for --diff-trees option ``buildtest --diff-tree tree1,tree2``
+buildtest takes two trees as argument in the form of ``buildtest --diff-tree tree1,tree2``
 where trees are separated by a comma. The tree must point to the root of the module tree in your
 system and buildtest will walk through the entire tree. We expect this operation to be quick
 given that the module tree is on the order of few thousand module files which is a reasonable
@@ -71,9 +70,6 @@ If there is no difference between module trees you will get the following.
 
 Module Load Testing (``buildtest module --module-load-test``)
 --------------------------------------------------------------
-
-.. Note:: This is an experimental feature
-
 
 buildtest provides feature to test ``module load`` functionality on all module files
 in a module tree. This assumes you have the module tree in ``MODULEPATH`` in order
@@ -116,13 +112,11 @@ Let's start the test
   STATUS: PASSED - Testing module: xds/20161205
 
 
-buildtest will attempt to load each module from module-tree individually, in case
-of you have Hierarchical-Module-Naming-Scheme (HMNS) this may not work where some
-modules depend on other modules to be loaded in advance.
+buildtest will attempt to run ``module load`` against each module to verify modules are working properly.
 
-You may specify multiple module trees in ``BUILDTEST_MODULE_ROOT`` for testing
-``buildtest module --module-load-test`` but you may run module conflicts if two or more trees
-consist of same module file. In that case, you may be testing module file that may
-be first in ``MODULEPATH``.
+You may specify multiple module trees using ``BUILDTEST_MODULE_ROOT`` for testing
+``buildtest module --module-load-test`` but you may run into module clashing if you have two or more occurrence of
+module file in two or more trees. In that case, you may be testing ``module load`` for module file that comes
+first in ``MODULEPATH``.
 
 To use this feature properly, it is best to use this with one module tree at a time.

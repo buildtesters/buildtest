@@ -1,3 +1,5 @@
+.. _summary_of_buildtest:
+
 Summary of buildtest
 ======================
 

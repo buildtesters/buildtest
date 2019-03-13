@@ -27,7 +27,7 @@ integration.
 You would want to configure your configuration file to specify BUILDTEST_MODULE_ROOT to
 the root of the software stack.
 
-Shown below is an example found in buildtest configuration (``$HOME/.local/buildtest/config.yaml``) that
+Shown below is an example found in buildtest configuration (``$HOME/.buildtest/settings.yaml``) that
 tests the gnu7 and openmpi3 stack.
 
 ::
@@ -38,7 +38,7 @@ tests the gnu7 and openmpi3 stack.
         - /opt/ohpc/pub/moduledeps/gnu7
         - /opt/ohpc/pub/moduledeps/gnu7-openmpi3
 
-The YAML configuration for OHPC Software Stack is found at https://github.com/shahzebsiddiqui/buildtest-configs/tree/devel/ohpc
+The YAML configuration for OHPC Software Stack can be found at https://github.com/HPC-buildtest/buildtest-configs/tree/master/buildtest/ohpc
 
 Building tests for OpenHPC software
 -------------------------------------
@@ -51,7 +51,7 @@ Shown below is an example build of gnu7/7.3.0 with buildtest.
 
 ::
 
-    (buildtest) buildtest-framework[devel] $ _buildtest build -s gnu7/7.3.0 --ohpc
+    (buildtest) buildtest-framework[devel] $ buildtest build -s gnu7/7.3.0 --ohpc
     Detecting Software:  gnu7/7.3.0
     --------------------------------------------
     [STAGE 1]: Building Binary Tests
@@ -66,7 +66,7 @@ To run the test you dont need to anything special just run as follows
 
 ::
 
-    _buildtest run -s gnu7/7.3.0
+    buildtest run -s gnu7/7.3.0
 
 
 OpenHPC will use a Hierarchical Module Naming Scheme which will require some modules (i.e compiler, mpi) to be
@@ -77,7 +77,7 @@ hdf5. This can be achieved using option ``--prepend-modules`` as follows
 
 ::
 
-    (buildtest) buildtest-framework[devel] $ _buildtest build -s hdf5/1.10.2 --prepend-modules gnu7/7.3.0 --prepend-modules openmpi3/3.1.0
+    (buildtest) buildtest-framework[devel] $ buildtest build -s hdf5/1.10.2 --prepend-modules gnu7/7.3.0 --prepend-modules openmpi3/3.1.0
     Detecting Software:  hdf5/1.10.2
     --------------------------------------------
     [STAGE 1]: Building Binary Tests
@@ -103,13 +103,13 @@ This will result in the test scripts to have the following modules loaded before
 Build YAML configuration for OpenHPC software
 ----------------------------------------------
 
-To build yaml configuration for OpenHPC software you can use the option ``_buildtest yaml --ohpc``.
+To build yaml configuration for OpenHPC software you can use the option ``buildtest yaml --ohpc``.
 
 buildtest will write the yaml configuration at ``$BUILDTEST_CONFIGS_REPO/buildtest/ohpc/${software}/${version}/command.yaml``
 
 ::
 
-    (buildtest) buildtest-framework[devel] $ _buildtest yaml -s gnu7/7.3.0 --ohpc
+    (buildtest) buildtest-framework[devel] $ buildtest yaml -s gnu7/7.3.0 --ohpc
     Please check YAML file  /lustre/workspace/home/siddis14/buildtest-configs/buildtest/ohpc/gnu7/7.3.0/command.yaml  and fix test accordingly
 
 How buildtest checks for OpenHPC Configuration
@@ -126,7 +126,7 @@ to build ncurses package.
 
 ::
 
-    (buildtest-0.6.3) [siddis14@adwnode1 buildtest-framework]$ _buildtest build --ohpc -s ncurses/6.0-GCCcore-6.4.0
+    (buildtest-0.6.3) [siddis14@adwnode1 buildtest-framework]$ buildtest build --ohpc -s ncurses/6.0-GCCcore-6.4.0
     This system is not configured with OpenHPC. Package ohpc-release is not installed.
 
 You will expect the same result if you were trying to create yaml files for particular software
@@ -136,5 +136,5 @@ For instance the following will fail
 
 ::
 
-    (buildtest-0.6.3) [siddis14@adwnode1 buildtest-framework]$ _buildtest yaml --ohpc -s ncurses/6.0-GCCcore-6.4.0
+    (buildtest-0.6.3) [siddis14@adwnode1 buildtest-framework]$ buildtest yaml --ohpc -s ncurses/6.0-GCCcore-6.4.0
     This system is not configured with OpenHPC. Package ohpc-release is not installed.

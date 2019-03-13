@@ -11,7 +11,7 @@ Setup
 Requirements
 ------------
 
-buildtest is compatible with RHEL/Centos
+buildtest is supported on Redhat or Centos
 
 You need the following packages to get started.
 
@@ -21,14 +21,17 @@ You need the following packages to get started.
 
 - CMake ``yum install cmake``
 
-If you want to build Lmod or environment-modules manually please see http://lmod.readthedocs.io/en/latest/030_installing.html
-or https://modules.readthedocs.io/en/stable/INSTALL.html for more details
+If you want to build Lmod or environment-modules see the following links
+
+- http://lmod.readthedocs.io/en/latest/030_installing.html
+
+- https://modules.readthedocs.io/en/stable/INSTALL.html
 
 
 Installing buildtest
 ----------------------------
 
-To get started just clone all the repos related to buildtest in your filesystem
+To get started clone the buildtest repos in your filesystem
 
 .. program-output:: cat scripts/setup/clonerepo.txt
 
@@ -51,16 +54,19 @@ to this location
     cp settings.yml $HOME/.buildtest/settings.yml
 
 
-.. Note:: Failure to copy settings.yml to $HOME/.buildtest/settings.yml will result in  an error
+.. Note:: Failure to copy settings.yml to ``$HOME/.buildtest/settings.yml`` will result in  an error
 
 Next, edit the ``settings.yml`` file to specify buildtest configuration, see :ref:`configuring_buildtest` for details
-on the configuration variables.
+on how to configure buildtest.
 
 Each site will have to customize their buildtest configuration to reflect the root of the module trees.
-You may specify multiple module trees  in ``settings.yml`` for variable ``BUILDTEST_MODULE_ROOT``.
+You may specify multiple module trees  in ``settings.yml`` using variable ``BUILDTEST_MODULE_ROOT``.
 
 You may specify any of the ``BUILDTEST_*`` variables as environment variables which will 
 override values specified in  ``settings.yml``.
+
+You may want to add buildtest to your path by running ``export PATH=$PWD:$PATH`` assuming buildtest is in the current
+directory
 
 
 Setting up auto-complete on buildtest arguments
@@ -81,7 +87,7 @@ can run
 
 For more details on argcomplete please visit https://pypi.org/project/argcomplete/
 
-.. Note:: It is highly recommended to setup auto-complete feature when using buildtest  
+.. Note:: It is highly recommended to setup auto-complete feature when using buildtest to make use of tab completion
 
 buildtest version (``buildtest -V``)
 -------------------------------------

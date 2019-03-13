@@ -22,7 +22,7 @@ http://mvapich.cse.ohio-state.edu/benchmarks/
 
 
 To get a sense of all the test available from this benchmark supported by buildtest you
-can run `_buildtest benchmark osu -l` which will give a listing all of tests.
+can run ``buildtest benchmark osu -l`` which will give a listing all of tests.
 
 ::
 
