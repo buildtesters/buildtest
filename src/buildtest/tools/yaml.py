@@ -25,6 +25,7 @@ buildtest yaml subcommand entry point
 """
 
 import os
+import subprocess
 import sys
 import yaml
 
@@ -32,6 +33,7 @@ from buildtest.tools.config import config_opts
 from buildtest.tools.ohpc import check_ohpc
 from buildtest.tools.software import get_software_stack
 from buildtest.tools.file import is_file
+
 
 TEMPLATE_JOB_SLURM = {
     'nodes': "10",
@@ -298,6 +300,60 @@ def func_yaml_subcmd(args):
 
     if args.ohpc:
         check_ohpc()
-        config_opts["BUILDTEST_OHPC"]=True
+        config_opts["BUILDTEST_OHPC"] = True
+    if args.maintainer:
+        update_maintainer(args)
 
     sys.exit(0)
+
+
+def update_maintainer(args):
+    """Update maintainer key in test configuration."""
+
+    git_user_name = subprocess.getoutput(
+        "git config --get user.name").rstrip().lower()
+    git_user_email = subprocess.getoutput(
+        "git config --get user.email").rstrip().lower()
+
+    entry = (f"{git_user_name} {git_user_email}")
+
+    fd = open(args.config, "r")
+    content = yaml.load(fd)
+    fd.close()
+
+    # if user wants to be maintainer of file
+    if args.maintainer == "yes":
+
+        # if user the first maintainer to file
+        if "maintainer" not in content:
+            content["maintainer"] = []
+            content["maintainer"].append(entry)
+        else:
+            if entry not in content["maintainer"]:
+                content["maintainer"].append(entry)
+                print (f"Adding Maintainer: {entry} to file {args.config}")
+            else:
+                print (f"{entry} is already a maintainer")
+
+
+        write_fd = open(args.config, "w")
+        yaml.dump(content, write_fd, default_flow_style=False)
+        write_fd.close()
+
+    # if user wants to be removed from maintainer
+    else:
+        # if maintainer key found then only check if user exist in list,
+        # otherwise no action is needed
+        if "maintainer" in content:
+            if entry in content["maintainer"]:
+                write_fd = open(args.config, "w")
+                content["maintainer"].remove(entry)
+                yaml.dump(content, write_fd, default_flow_style=False)
+                write_fd.close()
+
+                print (f"Removing Maintainer: {entry} from file {args.config}")
+            else:
+                print (f"{entry} is not a maintainer of file {args.config}")
+
+    print (f"----------------- FILE:{args.config} ----------------------")
+    print (yaml.dump(content, default_flow_style=False))

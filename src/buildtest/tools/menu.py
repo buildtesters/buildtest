@@ -34,7 +34,7 @@ from buildtest.test.run.system import run_system_choices
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
     check_configuration
-from buildtest.tools.file import create_dir
+from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.find import func_find_subcmd
 from buildtest.tools.list import func_list_subcmd
 from buildtest.tools.modules import func_module_subcmd
@@ -60,6 +60,11 @@ def menu():
     test_class = os.listdir(os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
                                          "buildtest",
                                          "suite"))
+    yaml_choices = walk_tree(os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
+                                          "buildtest",
+                                          "suite"),".yml")
+
+
     run_test_class = os.listdir(test_suite_dir)
     pkglist = systempackage_installed_list()
     software_list = get_software_stack()
@@ -137,6 +142,13 @@ def menu():
                                   + "package. YAML files will be written in "
                                   + "$BUILDTEST_CONFIGS_REPO/ohpc",
                              action="store_true")
+    parser_yaml.add_argument("-m", "--maintainer",
+                             help="Add as maintainer to test",
+                             choices=["yes", "no"]),
+    parser_yaml.add_argument("config",
+                             help="Select the Yaml Configuration",
+                             choices=yaml_choices,
+                             metavar="YAML CONFIGURATION LIST")
     parser_yaml.set_defaults(func=func_yaml_subcmd)
 
     # -------------------------------- build menu --------------------------
