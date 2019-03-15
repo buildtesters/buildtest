@@ -31,27 +31,26 @@ If you want to build Lmod or environment-modules see the following links
 Installing buildtest
 ----------------------------
 
-To get started clone the buildtest repos in your filesystem
+To get started clone the buildtest repos in your filesystem::
 
-.. program-output:: cat scripts/setup/clonerepo.txt
+    $ git clone git@github.com:HPC-buildtest/buildtest-framework.git
+    $ git clone git@github.com:HPC-buildtest/buildtest-configs.git
+
 
 Once you clone the repos you will want to install the python dependencies for buildtest which can be done
 by running
 
 ::
 
-    pip install docs/requirements.txt
+    $ pip install docs/requirements.txt
 
 The `requirements.txt <https://github.com/HPC-buildtest/buildtest-framework/blob/master/docs/requirements.txt>`_ can
 be installed in your pip, virtual environment, or conda environment.
 
-Next you will want to create a directory ``.buildtest`` in your home directory and copy the ``settings.yml`` file
-to this location
+Next you will want to create a directory ``.buildtest`` in your home directory and copy the ``settings.yml`` file::
 
-::
-
-    mkdir $HOME/.buildtest
-    cp settings.yml $HOME/.buildtest/settings.yml
+    $ mkdir $HOME/.buildtest
+    $ cp settings.yml $HOME/.buildtest/settings.yml
 
 
 .. Note:: Failure to copy settings.yml to ``$HOME/.buildtest/settings.yml`` will result in  an error
@@ -92,9 +91,9 @@ For more details on argcomplete please visit https://pypi.org/project/argcomplet
 buildtest version (``buildtest -V``)
 -------------------------------------
 
-You can check the current version of buildtest by running the following
+You can check the current version of buildtest by running the following:
 
 ::
 
-    (siddis14-TgVBs13r) buildtest-framework[master !x?] $ buildtest -V
+    $ buildtest -V
     buildtest version:  0.6.3

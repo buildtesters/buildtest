@@ -32,18 +32,14 @@ Adding a module tree
 read all module files and use this to figure out what modules can be tested.
 
 Let's assume ``/opt/apps`` and ``/workspace/apps`` are root of the module tree,
-so we can specify this in your configuration as follows
-
-::
+so we can specify this in your configuration as follows::
 
 	BUILDTEST_MODULE_ROOT:
-		- /opt/apps
-		- /workspace/apps
+        - /opt/apps
+        - /workspace/apps
 
 
-If you want to set this as environment variable you can do the following
-
-::
+If you want to set this as environment variable you can do the following::
 
 	export BUILDTEST_MODULE_ROOT=/opt/apps:/workspace/apps
 
@@ -67,17 +63,13 @@ one tree.
 **Hierarchical Module Naming Scheme** is when you have nested module trees where ``MODULEPATH`` is set in some module files (compiler, mpi).
 Typically the module naming format is ``<APP>/<VERSION>``.
 
-To set flat naming scheme you can set the following
-
-::
+To set flat naming scheme you can set the following::
 
 	BUILDTEST_MODULE_NAMING_SCHEME: FNS
 
 
 
-To set hierarchical module naming scheme you can set the following
-
-::
+To set hierarchical module naming scheme you can set the following::
 
 	BUILDTEST_MODULE_NAMING_SCHEME: HMNS
 
@@ -95,15 +87,11 @@ Configure Shell
 buildtest supports test creation for ``sh``, ``bash``, and ``csh``. The test are created
 with the appropriate extension. The default shell is ``sh``.
 
-To configure the shell use the variable ``BUILDTEST_SHELL`` in your configuration file
-
-::
+To configure the shell use the variable ``BUILDTEST_SHELL`` in your configuration file::
 
 	BUILDTEST_SHELL: sh
 
-To change the shell to ``bash`` or ```csh`` you can do either
-
-::
+To change the shell to ``bash`` or ```csh`` you can do either::
 
 	BUILDTEST_SHELL: bash
 	BUILDTEST_SHELL: csh
@@ -122,27 +110,21 @@ buildtest will write test in ``BUILDTEST_TESTDIR``. Often times, you may want to
 tests across subsequent builds.
 
 For instance you may be interested in building test for different shell and preserve all tests during the
-previous builds, this can be done by setting ``BUILDTEST_CLEAN_BUILD`` as follows
-
-::
+previous builds, this can be done by setting ``export BUILDTEST_CLEAN_BUILD=False`` or set in configuration as follows::
 
     BUILDTEST_CLEAN_BUILD: False
 
-Setting ``BUILDTEST_CLEAN_BUILD`` to ``False`` tells buildtest to preserve build directory
-where test are written. This will allow user to keep test if they ran the following
+Setting ``BUILDTEST_CLEAN_BUILD`` to ``False`` instructs buildtest to preserve build directory
+where test are written. This will allow user to keep test if they ran the following::
 
-::
-
-        buildtest build -p gcc  --shell sh
-        buildtest build -p gcc --shell csh
-        buildtest build -p gcc --shell bash
+        $ buildtest build -p gcc  --shell sh
+        $ buildtest build -p gcc --shell csh
+        $ buildtest build -p gcc --shell bash
 
 If you want buildtest to delete the build directory before writing any tests you can set
-BUILDTEST_CLEAN_BUILD to True as follows
+``export BUILDTEST_CLEAN_BUILD=True`` or set the following in configuration file::
 
-::
-
-        BUILDTEST_CLEAN_BUILD: True
+    BUILDTEST_CLEAN_BUILD: True
 
 Configure Test Directory
 -------------------------
@@ -150,11 +132,15 @@ Configure Test Directory
 buildtest will write test scripts in ``BUILDTEST_TESTDIR``. This can be specified
 in configuration file or environment variable.
 
-Setting ``BUILDTEST_TESTDIR`` to ``/home/siddis14/tmp/`` can be done as follows
+For instance you may want to set the testing directory to ``$HOME/tmp`` which can be done in configuration::
 
-::
+    BUILDTEST_TESTDIR: "${HOME}/tmp/"
 
-    BUILDTEST_TESTDIR: /home/siddis14/tmp/
+This can be done via environment variable as::
+
+    export BUILDTEST_TESTDIR=$HOME/tmp
+
+
 
 If the directory does not exist, buildtest will create it assuming you have the appropriate
 permissions.
@@ -172,11 +158,9 @@ Log Directory
 buildtest will write the logs specified by ``BUILDTEST_LOGDIR`` this can be set at the
 configuration file or environment variable.
 
-Setting this at the configuration file can be done as follows
+Setting this at the configuration file can be done as follows::
 
-::
-
-        BUILDTEST_LOGDIR: /tmp/buildtest/logs
+    BUILDTEST_LOGDIR: /tmp/buildtest/logs
 
 
 Once this is set you will find a log file per execution. For instance, if you build
@@ -189,23 +173,19 @@ tests for ``GCCcore/6.4.0``, you will find the logs in the following path
 All log files are named as follows ``buildtest_HH_MM_DD_MM_YYYY.log`` to preserve the
 date and time stamp.
 
-Here is an example for a buildtest log file from Jan 20th 2019
+Here is an example for a buildtest log file from Jan 20th 2019::
 
-::
-
-    (buildtest) [siddis14@gorgon buildtest-framework]$ ls -l /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_21_20_20_01_2019.log
+    $ ls -l /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_21_20_20_01_2019.log
     -rw-r--r-- 1 siddis14 amer 81358 Jan 20 21:20 /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_21_20_20_01_2019.log
 
 Easybuild Check
 ----------------
 
-To enable easybuild check on module files you can set ``BUILDTEST_EASYBUILD`` as follows
-
-::
+To enable easybuild check on module files you can set ``BUILDTEST_EASYBUILD`` as follows::
 
     BUILDTEST_EASYBUILD: True
 
-The default mode to disable easybuild check
+By default easybuild check is disabled
 
 For more details on easybuild integration check out  :ref:`EasyBuild_Integration`
 
@@ -213,9 +193,7 @@ OpenHPC Integration
 --------------------
 
 If you want to build software for OpenHPC software stack you can set the following in your
-configuration file
-
-::
+configuration file::
 
     BUILDTEST_OHPC: True
 
@@ -242,7 +220,7 @@ Here is an example test run where all test have passed and success threshold is 
 
 ::
 
-    (siddis14-TgVBs13r) buildtest-framework[master !x?] $ buildtest run -s GCCcore/6.4.0
+    $ buildtest run -s GCCcore/6.4.0
     Check Configuration
     ==============================================================
                              Test summary
