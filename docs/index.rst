@@ -17,7 +17,7 @@ Introduction to buildtest
    :maxdepth: 2
 
    what_is_buildtest.rst
-   architecture.rst
+
 
 Getting Started
 ---------------

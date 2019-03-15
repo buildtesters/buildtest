@@ -28,6 +28,7 @@ import subprocess
 from shutil import copy
 
 
+
 BUILDTEST_VERSION="0.6.3"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
@@ -66,6 +67,7 @@ if not os.path.exists(BUILDTEST_CONFIG_FILE):
 fd = open(BUILDTEST_CONFIG_FILE, 'r')
 config_opts = yaml.load(fd)
 
+
 # if MODULEPATH is not declared set BUILDTEST_MODULE_ROOT to None. In this event
 #  user should fix their environment
 if os.getenv("MODULEPATH") == None:
@@ -100,10 +102,12 @@ config_opts['BUILDTEST_VERSION'] = BUILDTEST_VERSION
 logID = "buildtest"
 
 
-DIR_config = [ "BUILDTEST_CONFIGS_REPO",
-              "BUILDTEST_LOGDIR",
-              "BUILDTEST_TESTDIR",
-              "BUILDTEST_RUN_DIR" ]
+config_directory_types = [
+   "BUILDTEST_CONFIGS_REPO",
+  "BUILDTEST_LOGDIR",
+  "BUILDTEST_TESTDIR",
+  "BUILDTEST_RUN_DIR",
+]
 config_yaml_keys = {
     'BUILDTEST_MODULE_NAMING_SCHEME': type("str"),
     'BUILDTEST_EASYBUILD': type(True),
@@ -133,6 +137,7 @@ def check_configuration():
 
 
     ec = 0
+
 
     keylist = config_yaml_keys.keys()
     valuelist = config_yaml_keys.values()
@@ -183,12 +188,15 @@ def check_configuration():
                                + " specified in BUILDTEST_MODULE_ROOT")
                         ec = 1
 
-        # if yaml key is of type FILE, check if file exists
-        if value in DIR_config:
+
+        if key in config_directory_types:
+            # expand variables for directory configuration
+            config_opts[key] = os.path.expandvars(config_opts[key])
+
+            # create the directory if it doesn't exist
             if not os.path.isdir(config_opts[key]):
-                print (f"{config_opts[key]} has an invalid directory path "
-                       + " lease check your configuration")
-                ec = 1
+                os.makedirs(config_opts[key])
+
     if (ec):
         sys.exit(0)
 
