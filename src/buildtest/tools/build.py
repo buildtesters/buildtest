@@ -30,6 +30,7 @@ import os
 import shutil
 import sys
 import stat
+import subprocess
 import yaml
 
 from buildtest.tools.config import config_opts
@@ -89,25 +90,36 @@ def func_build_subcmd(args):
 
         yaml_files = walk_tree(yaml_dir,".yml")
 
+        if args.verbose >= 1:
+            print (f"Found {len(yaml_files)} yml files from directory {yaml_dir}")
+
         if config_opts["BUILDTEST_CLEAN_BUILD"]:
             if is_dir(test_suite_dir):
                 shutil.rmtree(test_suite_dir)
+                if args.verbose >= 1:
+                    print (f"Removing test directory: {test_suite_dir}")
 
         testsuite_components = os.listdir(yaml_dir)
         # pre-creates directories for each component in test suite in
         # BUILDTEST_TESTDIR
         for component in testsuite_components:
-            create_dir(os.path.join(testdir,"suite",args.suite,component))
+            component_dir = os.path.join(testdir,"suite",args.suite,component)
+            create_dir(component_dir)
+            if args.verbose >= 2:
+                print (f"Creating Directory {component_dir}")
 
         for file in yaml_files:
             parent_dir = os.path.basename(os.path.dirname(file))
             fd=open(file,'r')
             content = yaml.load(fd)
 
-
+            if args.verbose >= 2:
+                print (f"Loading Yaml Content from file: {file}")
             if content["testblock"] == "singlesource":
-                builder = BuildTestBuilderSingleSource(file,args.suite,
-                                                       parent_dir,args.software)
+                builder = BuildTestBuilderSingleSource(file,
+                                                       args,
+                                                       parent_dir)
+
                 builder.build()
 
     if args.package:
@@ -121,7 +133,7 @@ class BuildTestBuilderSingleSource():
     """ Class responsible for building a single source test."""
     yaml_dict = {}
     test_dict = {}
-    def __init__(self,yaml,test_suite,parent_dir,software_module=None):
+    def __init__(self,yaml,args,parent_dir):
         """ Entry point to class. This method will set all class variables.
 
             :param yaml: The yaml file to be processed
@@ -132,11 +144,11 @@ class BuildTestBuilderSingleSource():
         self.shell = config_opts["BUILDTEST_SHELL"]
         self.yaml = yaml
         self.testname = '%s.%s' % (os.path.basename(self.yaml),self.shell)
-        self.test_suite = test_suite
+        self.test_suite = args.suite
         self.parent_dir = parent_dir
-        self.software_module = software_module
-        yaml_parser = BuildTestYamlSingleSource(yaml,test_suite,self.shell,self.software_module)
+        yaml_parser = BuildTestYamlSingleSource(self.yaml,args,self.shell)
         self.yaml_dict, self.test_dict = yaml_parser.parse()
+        self.verbose = args.verbose
     def build(self):
         """ Logic to build the test script.
 
@@ -189,9 +201,19 @@ class BuildTestBuilderSingleSource():
             fd.write(self.test_dict["run"])
             fd.write(self.test_dict["post_run"])
 
+        fd.close()
         # setting perm to 755 on testscript
         os.chmod(abs_test_path, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
 
+        if self.verbose >= 1:
+            print (f"Changing permission to 755 for test: {abs_test_path}")
+
+        if self.verbose >= 2:
+            test_output = subprocess.getoutput(f"cat {abs_test_path}").splitlines()
+            print ("{:_<80}".format(""))
+            for line in test_output:
+                print (line)
+            print ("{:_<80}".format(""))
 
 def func_build_system(systempkg, logger, logdir, logpath, logfile):
     """ This method implements details for "buildtest build --package" and

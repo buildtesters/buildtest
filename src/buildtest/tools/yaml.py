@@ -105,7 +105,7 @@ SLURM_KEY_DESC = {
 class BuildTestYamlSingleSource():
 
     yaml_file = ""
-    def __init__(self,yaml_file,test_suite,shell,software_module=None):
+    def __init__(self,yaml_file,args,shell):
 
         is_file(yaml_file)
 
@@ -116,15 +116,22 @@ class BuildTestYamlSingleSource():
             sys.exit(1)
 
         self.yaml_file=yaml_file
-        self.test_suite = test_suite
+        self.test_suite = args.suite
         self.shell = shell
         self.parent_dir = os.path.basename(os.path.dirname(self.yaml_file))
-        self.test_suite_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"buildtest","suite")
-        self.srcdir = os.path.join(self.test_suite_dir, self.test_suite, self.parent_dir,"src")
-        self.software_module = software_module
+        self.test_suite_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
+                                           "buildtest",
+                                           "suite")
+        self.srcdir = os.path.join(self.test_suite_dir,
+                                   self.test_suite,
+                                   self.parent_dir,
+                                   "src")
+        self.software_module = args.software
+        self.verbose = args.verbose
 
     def _check_keys(self, dict):
-        """ check keys specified in YAML file with buildtest templates and type check value """
+        """Check keys specified in YAML file with buildtest templates and
+        type check value. """
         mpi_keys =  None
         for k,v in dict.items():
             if k not in TEMPLATE_SINGLESOURCE.keys():
@@ -133,7 +140,9 @@ class BuildTestYamlSingleSource():
 
             # type checking against corresponding value of key in template
             if type(v) != type(TEMPLATE_SINGLESOURCE[k]):
-                    print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_SINGLESOURCE[k])))
+                    print(f"Type mismatch for key: {k}"
+                          + f"Got Type: {str(type(v))} +  Expecting Type:"
+                          + str(type(TEMPLATE_SINGLESOURCE[k])))
                     sys.exit(1)
     def _check_compiler(self,compiler):
         # check if compiler value is in list of supported compiler supported
@@ -148,7 +157,8 @@ class BuildTestYamlSingleSource():
                 sys.exit(1)
 
             if type(v) != type(TEMPLATE_JOB_LSF[k]):
-                print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_JOB_LSF[k])))
+                print(f"Type mismatch for key: {k} Got Type: {str(type(v))}"
+                      + f"Expecting Type: {str(type(TEMPLATE_JOB_LSF[k]))}" )
                 sys.exit(1)
     def _check_slurm(self,slurm_dict):
         for k,v in  slurm_dict.items():
@@ -157,33 +167,52 @@ class BuildTestYamlSingleSource():
                 sys.exit(1)
 
             if type(v) != type(TEMPLATE_JOB_SLURM[k]):
-                print("Type mismatch for key: " + k  + " Got Type: " + str(type(v)) + " Expecting Type:" + str(type(TEMPLATE_JOB_SLURM[k])))
+                print(f"Type mismatch for key: {k} Got Type: {str(type(v))}"
+                      + f"Expecting Type: {str(type(TEMPLATE_JOB_SLURM[k]))}")
                 sys.exit(1)
 
     def parse(self):
-        """ parse a yaml file to determine if content follows buildtest yaml schema"""
-        flags = module_str = env_vars = ""
+        """ Parse yaml file to determine if content follows the defined yaml
+        schema."""
+        module_str = env_vars = ""
         testscript_dict = {}
 
         fd=open(self.yaml_file,'r')
         content=yaml.load(fd)
+
+        if self.verbose >= 2:
+            print ("{:_<80}".format(""))
+            print (yaml.dump(content,default_flow_style=False))
+            print ("{:_<80}".format(""))
+
         test_dict = content['test']
         self._check_keys(test_dict)
+        if self.verbose >= 1:
+            print (f"Key Check PASSED for file {self.yaml_file}")
 
         srcfile = os.path.join(self.srcdir,test_dict['source'])
         is_file(srcfile)
 
+        if self.verbose >= 2:
+            print (f"Source File {srcfile} exists!")
         ext = os.path.splitext(srcfile)[1]
         language = get_programming_language(ext)
+        if self.verbose >= 1:
+            print (f"Programming Language Detected: {language}")
         exec_name = '%s.exe' % test_dict['source']
         cmd = []
 
         if "lsf" in test_dict:
             self._check_lsf(test_dict['lsf'])
+            if self.verbose >= 1:
+                print ("LSF Keys Passed")
+
             testscript_dict["lsf"] = lsf_key_parse(test_dict['lsf'])
 
         if "slurm" in test_dict:
             self._check_slurm(test_dict['slurm'])
+            if self.verbose >= 1:
+                print ("SLURM Keys Passed")
             testscript_dict["slurm"] = slurm_key_parse(test_dict['slurm'])
 
         if "input" in test_dict:
@@ -191,6 +220,8 @@ class BuildTestYamlSingleSource():
             is_file(inputfile)
         if "compiler" in test_dict:
             self._check_compiler(test_dict['compiler'])
+            if self.verbose >= 1:
+                print ("Compiler Check Passed")
             compiler_name = get_compiler(language,test_dict['compiler'])
             cmd += [compiler_name]
 
@@ -210,23 +241,32 @@ class BuildTestYamlSingleSource():
         if "module" in test_dict:
             modulelist = get_software_stack()
             module_str = "module purge \n"
-            # go through all modules in software stack and check if name matches one specified specified in module yaml construct
+            # go through all modules in software stack and check if name matches
+            # one specified specified in module yaml construct
             for module_yaml in test_dict["module"]:
                 for module in  modulelist:
-                    # when -s <module> is specified and module name matches one in YAML file then add the version specific module to shell script
+                    # when -s <module> is specified and module name matches one
+                    # in YAML file then add the version specific module
                     if self.software_module and os.path.dirname(self.software_module.lower()) == module_yaml:
-                        module_str += "module load %s \n" % (self.software_module)
+                        module_str += f"module load {self.software_module} \n"
                         break
                     if os.path.dirname(module.lower()) == module_yaml:
-                        module_str += "module load " + os.path.dirname(module) + "\n"
+                        module_str += f"module load {os.path.dirname(module)} \n"
                         break
 
         # if vars key is defined then get all environment variables
         if "vars" in test_dict:
             for k,v in test_dict['vars'].items():
+                if self.verbose >= 1:
+                    print (f"Detecting environment {k}={v}")
+
                 env_vars += get_environment_variable(self.shell,k,v)
 
-        workdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",self.test_suite,self.parent_dir)
+
+        workdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],
+                               "suite",
+                               self.test_suite,
+                               self.parent_dir)
 
         testscript_dict["vars"] = env_vars
         testscript_dict["module"] = module_str
@@ -234,11 +274,11 @@ class BuildTestYamlSingleSource():
         testscript_dict["command"] = cmd
 
         if "args" in test_dict:
-            testscript_dict["run"] = "./" + exec_name + " " + test_dict["args"] + "\n"
+            testscript_dict["run"] = f"./{exec_name} {test_dict['args']} \n"
         else:
-            testscript_dict["run"] = "./" + exec_name + "\n"
+            testscript_dict["run"] = f"./{exec_name} \n"
 
-        testscript_dict["post_run"] = "rm ./" + exec_name + "\n"
+        testscript_dict["post_run"] = f"rm ./{exec_name} \n"
 
         return test_dict, testscript_dict
 def get_environment_variable(shell,key,value):
@@ -274,7 +314,8 @@ def get_programming_language(ext):
         return "c"
     if ext in ['.cc', '.cxx', '.cpp', '.c++', '.C']:
          return "c++"
-    if ext in ['.f90', '.f95', '.f03', '.f', '.F', '.F90', '.FPP', '.FOR', '.FTN', '.for', '.ftn']:
+    if ext in ['.f90', '.f95', '.f03', '.f', '.F', '.F90', '.FPP', '.FOR',
+               '.FTN', '.for', '.ftn']:
         return "fortran"
     if ext in ['.cu']:
         return "cuda"

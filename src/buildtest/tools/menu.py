@@ -206,6 +206,11 @@ def menu():
                                    + "package. YAML files will be processed "
                                    + "from $BUILDTEST_CONFIGS_REPO/ohpc",
                               action="store_true")
+    parser_build.add_argument("-v", "--verbose",
+                              help="verbosity level",
+                              action="count",
+                              default=0)
+
 
     parser_build.set_defaults(func=func_build_subcmd)
 
