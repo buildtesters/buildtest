@@ -90,6 +90,7 @@ def generate_binary_test(name,test_type=None):
         print ("Detecting Software:" + name )
 
         binary_tests = get_binaries_from_application(name)
+
        # load preamble for test-script that initializes environment.
         header=load_modules(config_opts["BUILDTEST_SHELL"])
 

@@ -33,6 +33,8 @@ BUILDTEST_VERSION="0.6.3"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
 BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm"]
+BUILDTEST_TESTSCRIPT_EXTENSION = BUILDTEST_JOB_EXTENSION + \
+                                 [".sh", ".csh", ".bash"]
 BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
 
 BUILDTEST_TEST_EXT = BUILDTEST_JOB_EXTENSION + ["."+ i for i in BUILDTEST_SHELLTYPES]
@@ -77,28 +79,8 @@ else:
     config_opts["BUILDTEST_MODULE_ROOT"] = os.getenv("MODULEPATH").split(":")
 
 
-# The section below causes import error, trying to clone buildtest-configs and
-# write yaml content back to file.
-"""
-# get parent directory where buildtest-framework is cloned
-parent_BUILDTEST_ROOT = os.path.dirname(os.getenv("BUILDTEST_ROOT"))
-os.chdir(parent_BUILDTEST_ROOT)
-# if buildtest-configs does not exist in parent directory then clone it
-if not os.path.exists("buildtest-configs"):
-    print("Cloning repo buildtest-configs")
-    git_clone = "git clone git@github.com:HPC-buildtest/buildtest-configs.git"
-    os.system(git_clone)
-
-config_opts["BUILDTEST_CONFIGS_REPO"] = os.path.abspath("buildtest-configs")
-
-with open(BUILDTEST_CONFIG_FILE,'w') as outfile:
-    yaml.dump(config_opts,outfile,default_flow_style=False)
-"""
-
-
 config_opts['BUILDTEST_VERSION'] = BUILDTEST_VERSION
 
-#global logID
 logID = "buildtest"
 
 

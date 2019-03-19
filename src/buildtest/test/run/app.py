@@ -31,11 +31,11 @@ import os
 import subprocess
 from datetime import datetime
 
-from buildtest.tools.config import config_opts
+from buildtest.tools.config import config_opts, BUILDTEST_TESTSCRIPT_EXTENSION
 
 
 def run_app_choices():
-    """generate choice field for buildtest run --app"""
+    """Generate choice field for buildtest run --software"""
     root_testdir = config_opts["BUILDTEST_TESTDIR"]
     app_root_testdir = os.path.join(root_testdir,"ebapp")
 
@@ -61,7 +61,8 @@ def run_app_choices():
     return app_choices
 
 def run_app_test(app_name):
-    """implementation for buildtest run --software to execute all tests in the test directory"""
+    """Implementation for buildtest run --software to execute all tests in the
+    test directory."""
     from buildtest.tools.run import write_system_info
 
     app_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"ebapp")
@@ -71,7 +72,7 @@ def run_app_test(app_name):
 
     fd = open(run_output_file,"w")
     write_system_info(fd,app_name=app_name)
-    fd.write("------------------------ START OF TEST -------------------------------------- \n")
+    fd.write("------------------START OF TEST ------------------ \n")
 
 
     tests = []
@@ -89,7 +90,10 @@ def run_app_test(app_name):
     failed_test = 0
     for test in tests:
 
-        ret = subprocess.Popen(test,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        ret = subprocess.Popen(test,
+                               shell=True,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
         output = ret.communicate()[0]
         output=output.decode("utf-8")
 
@@ -112,9 +116,9 @@ def run_app_test(app_name):
     print("==============================================================")
     print("                         Test summary                         ")
     print("Application: ", app_name)
-    print("Executed " + str(count_test) + " tests")
-    print("Passed Tests: " + str(passed_test) +  " Percentage: " + str(passed_test*100/count_test) + "%")
-    print("Failed Tests: " + str(failed_test) + "  Percentage: " + str(failed_test*100/count_test) + "%")
+    print(f"Executed {count_test} tests")
+    print(f"Passed Tests: {passed_test} Percentage: {(passed_test*100/count_test)}%")
+    print(f"Failed Tests: {failed_test} Percentage: {(failed_test*100/count_test)}%")
 
     actual_ratio = passed_test/count_test
     success_threshold = float(config_opts['BUILDTEST_SUCCESS_THRESHOLD'])
@@ -124,16 +128,18 @@ def run_app_test(app_name):
     print
     diff_ratio = abs(actual_ratio-success_threshold)
     if actual_ratio < success_threshold:
-        print ("WARNING: Threshold of " + str(success_threshold*100) + "% was not achieved by " + app_name)
-        print (app_name  + " has a " + str(actual_ratio*100) + "% passed rate with a difference of " + str(diff_ratio) + " from the threshold" )
+        print ("WARNING: Threshold of {success_threshold*100}% not satisfied")
+        print (f"{app_name} has a {actual_ratio*100}% passed rate with a "
+               + f"difference of  {diff_ratio} from the threshold" )
     else:
-        print ("SUCCESS: Threshold of " + str(success_threshold*100) + "% was achieved")
+        print (f"SUCCESS: Threshold of {success_threshold*100}% was achieved")
 
     print ("Writing results to " + run_output_file)
     fd.close()
 
 def run_suite(suite):
-    """implementation for buildtest run --suite to execute all tests in the test directory"""
+    """Implementation for buildtest run --suite to execute all tests in the
+    test directory."""
     from buildtest.tools.run import write_system_info
     from buildtest.tools.file import walk_tree_multi_ext, create_dir
     app_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",suite)
@@ -145,10 +151,10 @@ def run_suite(suite):
 
     fd = open(run_output_file,"w")
     write_system_info(fd)
-    fd.write("------------------------ START OF TEST -------------------------------------- \n")
+    fd.write("----------- START OF TEST ---------------- \n")
 
 
-    tests = walk_tree_multi_ext(app_root_testdir,[".sh", ".bash", ".csh", ".lsf", ".slurm"])
+    tests = walk_tree_multi_ext(app_root_testdir,BUILDTEST_TESTSCRIPT_EXTENSION)
 
     count_test = len(tests)
     passed_test = 0
@@ -156,7 +162,10 @@ def run_suite(suite):
 
     for test in tests:
 
-        ret = subprocess.Popen(test,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        ret = subprocess.Popen(test,
+                               shell=True,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
         output = ret.communicate()[0]
         output=output.decode("utf-8")
         ret_code = ret.returncode

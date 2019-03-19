@@ -25,7 +25,6 @@ buildtest run subcommand entry point
 import sys
 from datetime import datetime
 from buildtest.test.run.app import run_app_test
-from buildtest.test.run.testname import run_testname
 from buildtest.test.run.system import run_system_test
 from buildtest.test.run.interactive import runtest_menu
 from buildtest.test.run.app import run_app_choices, run_suite
@@ -38,8 +37,6 @@ def func_run_subcmd(args):
     """ run subcommand entry point """
     if args.interactive:
         runtest_menu()
-    if args.testname:
-        run_testname(args.testname)
     if args.software:
         run_app_test(args.software)
     if args.suite:
@@ -48,14 +45,6 @@ def func_run_subcmd(args):
         run_system_test(args.package)
     if args.job:
         submit_job_to_scheduler(args.suite)
-    if args.all_software:
-        stack = run_app_choices()
-        for software in stack:
-            run_app_test(software,args.output)
-    if args.all_package:
-        stack = run_system_choices()
-        for package in stack:
-            run_system_test(package,args.output)
     sys.exit(0)
 
 def write_system_info(fd,app_name=None,pkg_name=None):

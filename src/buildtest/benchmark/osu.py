@@ -31,7 +31,8 @@ from datetime import datetime
 from buildtest.tools.config import config_opts
 from buildtest.tools.run import write_system_info
 
-dict_keys1 = ["proc", "min_message_size", "max_message_size", "iter_msg_size", "max_mem_per_proc", "warmup_iter", "calls", "full_format"]
+dict_keys1 = ["proc", "min_message_size", "max_message_size", "iter_msg_size",
+              "max_mem_per_proc", "warmup_iter", "calls", "full_format"]
 dict_keys2 = ["proc", "iter_msg_size", "warmup_iter", "calls", "full_format"]
 dict_keys3 = ["iter", "warmup_iter"]
 dict_keys4 = ["win_option", "sync_option", "warmup_iter", "iter"]
@@ -131,7 +132,10 @@ def run_osu_microbenchmark(config):
     """run the OSU benchmark"""
 
     if config == None:
-        config = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"buildtest/benchmark/osu.yaml")
+        config = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
+                              "buildtest",
+                              "benchmark",
+                              "osu.yaml")
 
     ext = os.path.splitext(config)[1]
     ext = ext[1:]
@@ -161,7 +165,7 @@ def run_osu_microbenchmark(config):
         fd.write("module load " + modulefile +  "\n")
         fd.write(mpi_cmd)
         fd.close()
-        os.chmod(testname, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
+        os.chmod(testname, stat.S_IRWXU|stat.S_IRGRP|stat.S_IXGRP|stat.S_IROTH|stat.S_IXOTH)
         testlist.append(testname)
     print ("Tests Generation complete. All tests are written under /tmp/osu* \n")
 
@@ -170,12 +174,15 @@ def run_osu_microbenchmark(config):
 
     fd = open(run_output_file,"w")
     write_system_info(fd)
-    fd.write("------------------------ START OF TEST -------------------------------------- \n")
+    header = "{:-<45} START OF TEST {:-<45} \n".format("", "")
+    fd.write(header)
 
     for test in testlist:
         name = os.path.splitext(os.path.basename(test))[0]
         print (name + "[ " + test + " ]         [RUNNING]" )
-        ret = subprocess.Popen(test,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        ret = subprocess.Popen(test,shell=True,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
         output = ret.communicate()[0]
         output=output.decode("utf-8")
 
@@ -188,14 +195,16 @@ def run_osu_microbenchmark(config):
 
         fd.write("Test Name:" + test + "\n")
         fd.write("Return Code: " + str(ret_code) + "\n")
-        fd.write("---------- START OF TEST OUTPUT ---------------- \n")
+        header = "{:-<45} START OF TEST OUTPUT {:-<45} \n".format("", "")
+        footer = "{:-<45} END OF TEST OUTPUT {:-<45} \n".format("", "")
+        fd.write(header)
         fd.write(output)
-        fd.write("------------ END OF TEST OUTPUT ---------------- \n")
+        fd.write(footer)
 
     print ("Writing Test Results to " + run_output_file)
 
 def list_osu_tests():
-    """List available tests in OSU MicroBenchmark"""
+    """List of tests in OSU MicroBenchmark."""
 
     print ("""
     -------------------- TEST BREAKDOWN ---------------------------------
@@ -231,16 +240,16 @@ def list_osu_tests():
     osu_iscatter - MPI_Iscatter Latency Test
     -----------------------------------------------------------------
 
-    ------------------------- POINT-TO-POINT MPI BENCHMARKS -------------------------
+    ----------------- POINT-TO-POINT MPI BENCHMARKS -----------------
     osu_latency - Latency Test
     osu_latency_mt - Multi-threaded Latency Test
     osu_bw - Bandwidth Test
     osu_bibw - Bidirectional Bandwidth Test
     osu_mbw_mr - Multiple Bandwidth / Message Rate Test
     osu_multi_lat - Multi-pair Latency Test
-    -----------------------------------------------------------------------------
+    -----------------------------------------------------------------
 
-    ------------------------- COLLECTIVE MPI BENCHMARKS -------------------------
+    ---------------- COLLECTIVE MPI BENCHMARKS ----------------------
     osu_allgather - MPI_Allgather Latency Test
     osu_allgatherv - MPI_Allgatherv Latency Test
     osu_allreduce - MPI_Allreduce Latency Test
@@ -254,9 +263,9 @@ def list_osu_tests():
     osu_reduce_scatter - MPI_Reduce_scatter Latency Test
     osu_scatter - MPI_Scatter Latency Test
     osu_scatterv - MPI_Scatterv Latency Test
-    -----------------------------------------------------------------------------
+    -----------------------------------------------------------------
 
-    ------------------ NON-BLOCKING COLLECTIVE MPI BENCHMARKS -------------------
+    ------------ NON-BLOCKING COLLECTIVE MPI BENCHMARKS -------------
     osu_iallgather - MPI_Iallgather Latency Test
     osu_iallgatherv - MPI_Iallgatherv Latency Test
     osu_iallreduce - MPI_Iallreduce Latency Test
@@ -270,9 +279,9 @@ def list_osu_tests():
     osu_ireduce - MPI_Ireduce Latency Test
     osu_iscatter - MPI_Iscatter Latency Test
     osu_iscatterv - MPI_Iscatterv Latency Test
-    -----------------------------------------------------------------------------
+    -----------------------------------------------------------------
 
-    ------------------------- ONE-SIDED MPI BENCHMARKS -------------------------
+    ------------------- ONE-SIDED MPI BENCHMARKS --------------------
     osu_put_latency - Latency Test for Put with Active/Passive Synchronization
     osu_get_latency - Latency Test for Get with Active/Passive Synchronization
     osu_put_bw - Bandwidth Test for Put with Active/Passive Synchronization
@@ -282,7 +291,7 @@ def list_osu_tests():
     osu_cas_latency - Latency Test for Compare and Swap with Active/Passive Synchronization
     osu_fop_latency - Latency Test for Fetch and Op with Active/Passive Synchronization
     osu_get_acc_latency - Latency Test for Get_accumulate with Active/Passive Synchronization
-    -----------------------------------------------------------------------------
+   -----------------------------------------------------------------
 
     For more information please refer to http://mvapich.cse.ohio-state.edu/benchmarks/
 

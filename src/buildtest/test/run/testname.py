@@ -31,39 +31,6 @@ import sys
 from datetime import datetime
 from buildtest.tools.config import config_opts, BUILDTEST_SHELLTYPES
 
-def run_testname(testname):
-    """run a single test script"""
-
-    try:
-        open(testname,"r")
-    except OSError as err_msg:
-        print (err_msg)
-        sys.exit(1)
-
-    from buildtest.tools.run import write_system_info
-
-    runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
-    run_output_file = os.path.join(config_opts["BUILDTEST_RUN_DIR"],runfile)
-
-    fd = open(run_output_file,"w")
-    write_system_info(fd)
-    fd.write("------------------------ START OF TEST -------------------------------------- \n")
-
-
-    print ("Executing Test: " + testname)
-    ret = subprocess.Popen(testname,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-    output = ret.communicate()[0].decode("utf-8")
-    ret_code = ret.returncode
-
-    fd.write("Test Name:" + testname + "\n")
-    fd.write("Return Code: " + str(ret_code) + "\n")
-    fd.write("---------- START OF TEST OUTPUT ---------------- \n")
-    fd.write(output)
-    fd.write("------------ END OF TEST OUTPUT ---------------- \n")
-
-    fd.close()
-    print ("Writing results to " + run_output_file)
-    sys.exit(0)
 
 def test_list():
     """ return a list of test found in BUILDTEST_TESTDIR"""

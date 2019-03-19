@@ -29,7 +29,6 @@ import argparse
 import argcomplete
 
 from buildtest.test.run.app import run_app_choices
-from buildtest.test.run.testname import test_list
 from buildtest.test.run.system import run_system_choices
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
@@ -69,14 +68,19 @@ def menu():
     pkglist = systempackage_installed_list()
     software_list = get_software_stack()
 
-
-    test_choices = test_list()
-
     app_choices = run_app_choices()
 
     systempkg_choices = run_system_choices()
+    epilog_str = "buildtest documentation" + \
+                 "https://buildtest.readthedocs.io/en/latest/index.html"
+    description_str = "buildtest is a software testing framework designed " + \
+        "for HPC facilities to verify their Software Stack. buildtest " + \
+        "abstracts test complexity into YAML files that is interpreted" + \
+        "by buildtest into shell script"
 
-    parser = argparse.ArgumentParser(prog='buildtest', usage='%(prog)s [options]')
+    parser = argparse.ArgumentParser(prog='buildtest',
+                                     description=description_str,
+                                     epilog=epilog_str)
     parser.add_argument("-V",
                         "--version",
                         help="show program version number and exit",
@@ -92,9 +96,11 @@ def menu():
                                        dest="subcommand")
 
     # -------------------------------- list menu --------------------------
+
     parser_list = subparsers.add_parser('list',
                                         help="Options for listing software,"
                                              + "easyconfigs and module files.")
+
     parser_list.add_argument("-ls",
                              "--list-unique-software",
                              help="retrieve all unique software found in your "
@@ -133,6 +139,7 @@ def menu():
                                   + "testscripts use -ft all")
     parser_find.set_defaults(func=func_find_subcmd)
 
+
     # -------------------------------- yaml  menu --------------------------
     parser_yaml = subparsers.add_parser('yaml',
                                         help="Options for building "
@@ -149,6 +156,18 @@ def menu():
                              help="Select the Yaml Configuration",
                              choices=yaml_choices,
                              metavar="YAML CONFIGURATION LIST")
+
+    parser_yaml_use_subparser = parser_yaml.add_subparsers(
+        help='Load a Test Scope')
+
+
+    parser_yaml_use = parser_yaml_use_subparser.add_parser('load',
+                                                 help="Load a Test Scope")
+    parser_yaml_use.add_argument("config",
+                                 choices=yaml_choices,
+                                 metavar="YAML")
+
+
     parser_yaml.set_defaults(func=func_yaml_subcmd)
 
     # -------------------------------- build menu --------------------------
@@ -196,11 +215,6 @@ def menu():
                               "--easybuild",
                               help="check if application is built by easybuild",
                               action="store_true")
-    parser_build.add_argument("-mns",
-                              "--module-naming-scheme",
-                              help="Specify module naming scheme your "
-                                   + "module tree",
-                              choices=["HMNS","FNS"])
     parser_build.add_argument("--ohpc",
                               help="Indicate to buildtest this is a OpenHPC "
                                    + "package. YAML files will be processed "
@@ -221,11 +235,6 @@ def menu():
                             "--interactive",
                             help="Run the test interactively",
                             action="store_true")
-    parser_run.add_argument("-t",
-                            "--testname",
-                            help="Run a single testscript",
-                            choices=test_choices,
-                            metavar='TEST-CHOICES')
     parser_run.add_argument("-s",
                             "--software",
                             help="Run test suite for application",
@@ -243,12 +252,6 @@ def menu():
     parser_run.add_argument("-j",
                             "--job",
                             help = "Submit jobs to resource scheduler",
-                            action="store_true")
-    parser_run.add_argument("--all-software",
-                            help="Run test suite for all software packages",
-                            action="store_true")
-    parser_run.add_argument("--all-package",
-                            help="Run test suite for all system packages",
                             action="store_true")
     parser_run.set_defaults(func=func_run_subcmd)
 
