@@ -24,11 +24,9 @@ buildtest run subcommand entry point
 
 import sys
 from datetime import datetime
-from buildtest.test.run.app import run_app_test
-from buildtest.test.run.system import run_system_test
+from buildtest.test.run.system import run_system_test, run_app_test, run_suite
 from buildtest.test.run.interactive import runtest_menu
-from buildtest.test.run.app import run_app_choices, run_suite
-from buildtest.test.run.system import run_system_choices
+
 from buildtest.test.job import submit_job_to_scheduler
 from buildtest.tools.system import BuildTestSystem
 

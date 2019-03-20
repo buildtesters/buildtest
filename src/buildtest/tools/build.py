@@ -122,7 +122,7 @@ def func_build_subcmd(args):
 
     if args.package:
         func_build_system(args.package, logger, logdir, logpath, logfile)
-    elif args.software:
+    if args.software:
         func_build_software(args, logger, logdir, logpath, logfile)
 
     sys.exit(0)

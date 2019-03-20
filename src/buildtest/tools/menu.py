@@ -28,8 +28,7 @@ import os
 import argparse
 import argcomplete
 
-from buildtest.test.run.app import run_app_choices
-from buildtest.test.run.system import run_system_choices
+from buildtest.test.run.system import run_app_choices, run_system_choices
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
     check_configuration

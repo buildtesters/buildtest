@@ -48,7 +48,7 @@ def init_log():
     logfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
     BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
 
-    logpath = os.path.join(BUILDTEST_LOGDIR,logfile)
+    logpath = os.path.join(BUILDTEST_LOGDIR, logfile)
 
 	# if log directory is not present create it automatically
     if not os.path.exists(BUILDTEST_LOGDIR):
