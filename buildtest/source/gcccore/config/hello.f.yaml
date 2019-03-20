@@ -1,4 +1,0 @@
-name : hello.f
-description: Hello World program in Fortran
-source : hello.f90
-buildopts: -O2

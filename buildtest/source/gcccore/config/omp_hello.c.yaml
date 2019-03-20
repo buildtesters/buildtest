@@ -1,5 +1,0 @@
-name: omp_hello.c
-description: Hello World OpenMP program in C
-source:  omp_hello.c
-buildopts: -O2 -fopenmp
-threadrange: 5,20,4

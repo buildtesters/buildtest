@@ -1,4 +1,0 @@
-name: array
-description: Create 3 copies of a python test
-source: array.py
-iter: 3

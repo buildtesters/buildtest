@@ -1,4 +1,0 @@
-name: arg
-description: Passing argument to python script
-source: arg.py
-args:  hello world

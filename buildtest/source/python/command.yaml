@@ -1,6 +1,0 @@
-binaries:
-        - pip -V
-        - python -V
-        - cython -V
-        - nosetests -V
-        - virtualenv --version

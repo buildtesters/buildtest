@@ -1,4 +1,0 @@
-name: omp_dotprod_serial.f
-description: OpenMP dot product serial Fortran program
-source:  omp_dotprod_serial.f
-buildopts: -O2

@@ -1,4 +1,0 @@
-name: omp_dotprod_serial.c
-description: OpenMP dot product serial program in C
-source:  omp_dotprod_serial.c
-buildopts: -O2 

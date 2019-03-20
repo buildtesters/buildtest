@@ -1,4 +1,0 @@
-name: readline
-description: "Example of reading input file by a python script"
-source: readline.py
-inputfile: readline.dat

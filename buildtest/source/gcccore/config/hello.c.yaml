@@ -1,4 +1,0 @@
-name: hello.c
-description: Hello World program in C
-source:  hello.c
-buildopts: -O2

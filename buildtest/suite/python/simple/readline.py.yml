@@ -1,0 +1,6 @@
+testblock: python
+test:
+    source: readline.py
+    input: readline.dat
+    module:
+        - python
