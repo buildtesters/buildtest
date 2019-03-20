@@ -21,12 +21,11 @@
 #############################################################################
 
 import textwrap
-import sys
 from buildtest.tools.config import show_configuration
 from buildtest.tools.yaml import KEY_DESCRIPTION,SLURM_KEY_DESC, LSF_KEY_DESC
 
 def func_show_subcmd(args):
-    """entry point to show sub command"""
+    """Entry point to show sub command."""
     if args.config:
         show_configuration()
 
@@ -35,28 +34,37 @@ def func_show_subcmd(args):
 
 
 def show_yaml_keys():
-    """implements buildtest show -k """
+    """Implements buildtest show -k. This method display the yaml keys
+     for a particular testblock."""
 
     print ('{:>50}'.format("General Keys"))
 
-    print ('{:20} | {:<30}'.format("Keys","Description"))
+    print ('{:20} | {:<30}'.format("Keys", "Description"))
     print('{:-<100}'.format(""))
     for k in sorted(KEY_DESCRIPTION):
-        print('{:20} | {:<30}'.format(k,textwrap.fill(KEY_DESCRIPTION[k],120)))
+        print('{:20} | {:<30}'.format(k, textwrap.fill(KEY_DESCRIPTION[k], 120)))
 
     print()
     print ('{:>50}'.format("LSF Keys"))
     print()
-    print ('{:20} | {:<30} | {:<30}'.format("Keys","LSF Equivalents","Description"))
+    print ('{:20} | {:<30} | {:<30}'.format("Keys",
+                                            "LSF Equivalents",
+                                            "Description"))
     print('{:-<100}'.format(""))
     for k in sorted(LSF_KEY_DESC):
-        print('{:20} | {:<30} | {:<30}'.format(k,textwrap.fill(LSF_KEY_DESC[k][0],120),textwrap.fill(LSF_KEY_DESC[k][1],120)))
+        print('{:20} | {:<30} | {:<30}'.format(k,
+                                        textwrap.fill(LSF_KEY_DESC[k][0],120),
+                                        textwrap.fill(LSF_KEY_DESC[k][1],120)))
 
     print()
     print ('{:>50}'.format("SLURM Keys"))
     print()
-    print ('{:20} | {:<30} | {:<30}'.format("Keys","Slurm Equivalents","Description"))
+    print ('{:20} | {:<30} | {:<30}'.format("Keys",
+                                            "Slurm Equivalents",
+                                            "Description"))
     print('{:-<100}'.format(""))
     for k in sorted(SLURM_KEY_DESC):
-        print('{:20} | {:<30} | {:<30}'.format(k,textwrap.fill(SLURM_KEY_DESC[k][0],120),textwrap.fill(SLURM_KEY_DESC[k][1],120)))
-    sys.exit(0)
+        print('{:20} | {:<30} | {:<30}'.format(k,
+                                    textwrap.fill(SLURM_KEY_DESC[k][0],120),
+                                    textwrap.fill(SLURM_KEY_DESC[k][1],120)))
+

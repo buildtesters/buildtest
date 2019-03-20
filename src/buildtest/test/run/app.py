@@ -31,7 +31,7 @@ import os
 import subprocess
 from datetime import datetime
 
-from buildtest.tools.config import config_opts, BUILDTEST_TESTSCRIPT_EXTENSION
+from buildtest.tools.config import config_opts, BUILDTEST_TEST_EXT
 
 
 def run_app_choices():
@@ -80,7 +80,7 @@ def run_app_test(app_name):
     for root, subdir, files in os.walk(os.path.join(app_root_testdir,app_name)):
         for file in files:
             # only add test with valid shell extensions
-            if os.path.splitext(file)[1] in [".sh", ".bash", ".csh"]:
+            if os.path.splitext(file)[1] in BUILDTEST_TEST_EXT:
                 tests.append(os.path.join(root,file))
 
 
@@ -128,7 +128,7 @@ def run_app_test(app_name):
     print
     diff_ratio = abs(actual_ratio-success_threshold)
     if actual_ratio < success_threshold:
-        print ("WARNING: Threshold of {success_threshold*100}% not satisfied")
+        print (f"WARNING: Threshold of {success_threshold*100}% not satisfied")
         print (f"{app_name} has a {actual_ratio*100}% passed rate with a "
                + f"difference of  {diff_ratio} from the threshold" )
     else:
@@ -154,7 +154,7 @@ def run_suite(suite):
     fd.write("----------- START OF TEST ---------------- \n")
 
 
-    tests = walk_tree_multi_ext(app_root_testdir,BUILDTEST_TESTSCRIPT_EXTENSION)
+    tests = walk_tree_multi_ext(app_root_testdir,BUILDTEST_TEST_EXT)
 
     count_test = len(tests)
     passed_test = 0

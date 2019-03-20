@@ -58,4 +58,5 @@ def main():
 
 
 if __name__ == "__main__":
-        main()
+    """Entry Point, invoking main() method"""
+    main()

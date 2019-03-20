@@ -33,11 +33,11 @@ BUILDTEST_VERSION="0.6.3"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
 BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm"]
-BUILDTEST_TESTSCRIPT_EXTENSION = BUILDTEST_JOB_EXTENSION + \
-                                 [".sh", ".csh", ".bash"]
+
 BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
 
-BUILDTEST_TEST_EXT = BUILDTEST_JOB_EXTENSION + ["."+ i for i in BUILDTEST_SHELLTYPES]
+BUILDTEST_TEST_EXT = BUILDTEST_JOB_EXTENSION + \
+                     ["."+ i for i in BUILDTEST_SHELLTYPES]
 
 PYTHON_APPS = ["python","anaconda2", "anaconda3"]
 MPI_APPS = ["openmpi", "mpich","mvapich2", "intel", "impi"]

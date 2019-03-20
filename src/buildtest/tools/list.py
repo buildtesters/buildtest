@@ -44,16 +44,15 @@ def func_list_subcmd(args):
 
     if args.easyconfigs:
         find_easyconfigs()
-    elif args.list_unique_software:
+    if args.list_unique_software:
         list_software(args)
-    elif args.software_version_relation:
+    if args.software_version_relation:
         list_software_version_relation(args)
 
-    sys.exit(0)
 
 
 def list_software(args):
-    """ This method implements "buildtest list -ls" """
+    """ This method implements buildtest list -ls """
     software_set=get_unique_software()
 
     if args.format == "json":
@@ -73,7 +72,7 @@ def list_software(args):
 
 
 def list_software_version_relation(args):
-    """ This method implements  "buildtest list -svr" """
+    """ This method implements  buildtest list -svr """
     software_dict = software_version_relation()
 
     if args.format == "json":

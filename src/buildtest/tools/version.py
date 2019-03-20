@@ -20,9 +20,7 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-"""
-Display buildtest version
-"""
+
 import sys
 
 from buildtest.tools.config import BUILDTEST_VERSION
