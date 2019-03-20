@@ -31,10 +31,10 @@ following:
 
 import json
 import sys
+from collections import OrderedDict
+from operator import itemgetter
 
 from buildtest.tools.easybuild import find_easyconfigs
-from buildtest.tools.print_functions import print_software, \
-                                            print_software_version_relation
 from buildtest.tools.software import get_unique_software, \
                                     software_version_relation
 
@@ -59,7 +59,17 @@ def list_software(args):
     if args.format == "json":
         json.dump(software_set, sys.stdout, indent=4, sort_keys=True)
     else:
-        print_software(software_set)
+        count = 0
+        text = """
+        ID  |     Software
+        ----|-----------------------------  """
+
+        print (text)
+        for item in software_set:
+            count = count + 1
+            print ((str(count) + "\t|").expandtabs(4), item)
+
+        print ("Total Software Packages: ", count)
 
 
 def list_software_version_relation(args):
@@ -69,4 +79,25 @@ def list_software_version_relation(args):
     if args.format == "json":
         json.dump(software_dict, sys.stdout, indent=4, sort_keys=True)
     else:
-        print_software_version_relation(software_dict)
+        text = """
+         ID  |        Software            |      ModuleFile Path
+        -----|----------------------------|----------------------------- """
+        print (text)
+        id = 0
+
+        sorted_dict = OrderedDict(
+            sorted(software_dict.items(), key=itemgetter(1)))
+
+        keylist = sorted_dict.keys()
+
+        modulecnt = 0
+
+        for key in keylist:
+            id = id + 1
+            # for value in sset(software_dict[key]):
+            print ((str(id) + "\t |").expandtabs(4),
+                   "\t" + (sorted_dict[key] + "\t |").expandtabs(
+                       25) + "\t" + key)
+            modulecnt += 1
+
+        print ("Total Software Modules Found: ", modulecnt)
