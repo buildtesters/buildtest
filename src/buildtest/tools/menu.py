@@ -70,35 +70,59 @@ def menu():
     app_choices = run_app_choices()
 
     systempkg_choices = run_system_choices()
-    epilog_str = "buildtest documentation" + \
+    epilog_str = "Documentation: " + \
                  "https://buildtest.readthedocs.io/en/latest/index.html"
     description_str = "buildtest is a software testing framework designed " + \
         "for HPC facilities to verify their Software Stack. buildtest " + \
         "abstracts test complexity into YAML files that is interpreted" + \
         "by buildtest into shell script"
 
+
     parser = argparse.ArgumentParser(prog='buildtest',
+                                     formatter_class=argparse.RawDescriptionHelpFormatter,
                                      description=description_str,
                                      epilog=epilog_str)
-    parser.add_argument("-V",
-                        "--version",
-                        help="show program version number and exit",
-                        action="store_true")
-    parser.add_argument("--logdir",
-                        help="Path to write buildtest logs. Override "
-                             + "configuration BUILDTEST_LOGDIR")
-    parser.add_argument("--clean-logs",
-                        help="delete buildtest log directory $BUILDTEST_LOGDIR",
-                        action="store_true")
 
-    subparsers = parser.add_subparsers(help='subcommand help',
-                                       dest="subcommand")
+
+    list_title = "Options for listing software, module files, and  easyconfigs"
+    show_title = "Options for displaying buildtest configuration"
+    find_title = "Find configuration files and test scripts"
+    build_title = "Options for building test scripts"
+    run_title = "Run Tests"
+    benchmark_title = "Run Benchmark"
+    yaml_title = "Yaml commands for buildtest"
+    module_title = "Options for module load testing and report diff between module trees"
+    command_description = f"""
+Info:
+    list        {list_title}
+    show        {show_title}
+    find        {find_title}
+           
+    
+Build:
+    build       {build_title}
+    run         {run_title}
+    benchmark   {benchmark_title}
+
+Misc:
+    yaml        {yaml_title}
+    module      {module_title}
+    """
+    subparsers = parser.add_subparsers(title='commands', description=command_description)
+
+    # ---------------------------------- sub parsers -----------------------
+    parser_list = subparsers.add_parser('list')
+    parser_find = subparsers.add_parser('find')
+    parser_yaml = subparsers.add_parser('yaml')
+    parser_build = subparsers.add_parser('build')
+    parser_run = subparsers.add_parser('run')
+    parser_module = subparsers.add_parser('module')
+    parser_show = subparsers.add_parser('show')
+    parser_benchmark = subparsers.add_parser('benchmark')
+
 
     # -------------------------------- list menu --------------------------
 
-    parser_list = subparsers.add_parser('list',
-                                        help="Options for listing software,"
-                                             + "easyconfigs and module files.")
 
     parser_list.add_argument("-ls",
                              "--list-unique-software",
@@ -123,9 +147,7 @@ def menu():
     parser_list.set_defaults(func=func_list_subcmd)
 
     # -------------------------------- find menu ---------------------------
-    parser_find = subparsers.add_parser('find',
-                                        help="find configuration files and "
-                                             + "test scripts")
+
     parser_find.add_argument("-fc",
                              "--findconfig",
                              help="Find buildtest YAML "
@@ -140,9 +162,7 @@ def menu():
 
 
     # -------------------------------- yaml  menu --------------------------
-    parser_yaml = subparsers.add_parser('yaml',
-                                        help="Options for building "
-                                             + "YAML configuration")
+
     parser_yaml.add_argument("--ohpc",
                              help="Build YAML configuration for OpenHPC "
                                   + "package. YAML files will be written in "
@@ -170,8 +190,7 @@ def menu():
     parser_yaml.set_defaults(func=func_yaml_subcmd)
 
     # -------------------------------- build menu --------------------------
-    parser_build = subparsers.add_parser('build',
-                                         help="Options for building tests")
+
     parser_build.add_argument("-s",
                               "--software",
                               help=" Specify software package to test",
@@ -228,8 +247,7 @@ def menu():
     parser_build.set_defaults(func=func_build_subcmd)
 
     # -------------------------------- run menu ----------------------------
-    parser_run = subparsers.add_parser('run',
-                                       help='options for running test')
+
     parser_run.add_argument("-i",
                             "--interactive",
                             help="Run the test interactively",
@@ -255,10 +273,7 @@ def menu():
     parser_run.set_defaults(func=func_run_subcmd)
 
     # -------------------------------- module menu --------------------------
-    parser_module = subparsers.add_parser('module',
-                                          help="Options for module load "
-                                               + "testing and report diff "
-                                               + "between module trees")
+
     parser_module.add_argument("--module-load-test",
                                help="conduct module load test for all modules "
                                     + "defined in BUILDTEST_MODULE_ROOT",
@@ -267,8 +282,9 @@ def menu():
                                help="Show difference between two module trees")
     parser_module.set_defaults(func=func_module_subcmd)
 
-    parser_show = subparsers.add_parser('show',
-                                        help='show sub menu')
+    # -------------------------------- show menu --------------------------
+
+
     parser_show.add_argument("-c","--config",
                              help="show buildtest environment configuration",
                              action="store_true")
@@ -279,8 +295,7 @@ def menu():
     parser_show.set_defaults(func=func_show_subcmd)
 
     # -------------------------------- benchmark menu ----------------------
-    parser_benchmark = subparsers.add_parser('benchmark',
-                                             help="Benchmark Menu")
+
     subparsers_benchmark = parser_benchmark.add_subparsers(help='subcommand help',
                                                            dest="benchmark_subcommand")
 
@@ -316,6 +331,19 @@ def menu():
                                                        + "Conjugate Gradient "
                                                        + "sub menu")
     hpcg_parser.set_defaults(func=func_benchmark_hpcg_subcmd)
+
+    # ------------------------------ Miscellaneous Options -----------------------
+    misc_group = parser.add_argument_group("Miscellaneous Options ")
+    misc_group.add_argument("-V",
+                            "--version",
+                            help="show program version number and exit",
+                            action="store_true")
+    misc_group.add_argument("--logdir",
+                            help="Path to write buildtest logs. Override "
+                                 + "configuration BUILDTEST_LOGDIR")
+    misc_group.add_argument("--clean-logs",
+                            help="delete buildtest log directory $BUILDTEST_LOGDIR",
+                            action="store_true")
 
     return parser
 
