@@ -290,8 +290,7 @@ Misc:
                              action="store_true")
     parser_show.add_argument("-k","--keys",
                              help="show yaml keys",
-                             choices = ["singlesource"],
-                             default="singlesource")
+                             choices = ["singlesource"])
     parser_show.set_defaults(func=func_show_subcmd)
 
     # -------------------------------- benchmark menu ----------------------

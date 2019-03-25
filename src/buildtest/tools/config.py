@@ -178,7 +178,6 @@ def check_configuration():
 
         if key in config_directory_types:
             # expand variables for directory configuration
-            print(config_opts[key],key)
             config_opts[key] = os.path.expandvars(config_opts[key])
 
             # create the directory if it doesn't exist
