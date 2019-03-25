@@ -108,7 +108,7 @@ Misc:
     yaml        {yaml_title}
     module      {module_title}
     """
-    subparsers = parser.add_subparsers(title='commands', description=command_description)
+    subparsers = parser.add_subparsers(title='commands', description=command_description,dest="subcommand")
 
     # ---------------------------------- sub parsers -----------------------
     parser_list = subparsers.add_parser('list')

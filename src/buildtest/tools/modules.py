@@ -150,13 +150,9 @@ def diff_trees(args_trees):
         id = args_trees.find(",")
         tree1 = args_trees[0:id]
         tree2 = args_trees[id+1:len(args_trees)]
-        if not os.path.exists(tree1):
-            print ("Path does not exist: ", tree1)
-            sys.exit(1)
 
-        if not os.path.exists(tree2):
-            print ("Path does not exist: ", tree2)
-            sys.exit(1)
+        is_dir(tree1)
+        is_dir(tree2)
 
         modlist1 = []
         modlist2 = []
