@@ -76,13 +76,14 @@ if os.getenv("MODULEPATH") == None:
     config_opts["BUILDTEST_MODULE_ROOT"] = None
 else:
     # otherwise set this to MODULEPATH
+    tree_list = []
     #config_opts["BUILDTEST_MODULE_ROOT"] = os.getenv("MODULEPATH").split(":")
     for tree in os.getenv("MODULEPATH").split(":"):
         if os.path.isdir(tree):
-            config_opts["BUILDTEST_MODULE_ROOT"].append(tree)
+            tree_list.append(tree)
         #else:
             #print (f"Skipping module tree {tree} because path does not exist")
-
+    config_opts["BUILDTEST_MODULE_ROOT"] = tree_list	
 config_opts['BUILDTEST_VERSION'] = BUILDTEST_VERSION
 
 logID = "buildtest"
@@ -177,6 +178,7 @@ def check_configuration():
 
         if key in config_directory_types:
             # expand variables for directory configuration
+            print(config_opts[key],key)
             config_opts[key] = os.path.expandvars(config_opts[key])
 
             # create the directory if it doesn't exist
