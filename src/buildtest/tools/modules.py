@@ -33,7 +33,8 @@ import json
 import os
 import sys
 import subprocess
-from buildtest.tools.config import config_opts
+import yaml
+from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import string_in_file, is_dir
 
 
@@ -44,7 +45,39 @@ def func_module_subcmd(args):
         diff_trees(args.diff_trees)
     if args.module_load_test:
         module_load_test()
+    if args.list:
+        for tree in config_opts["BUILDTEST_MODULE_ROOT"]:
+            print (tree)
+    if args.add:
+        is_dir(args.add)
+        fd = open(BUILDTEST_CONFIG_FILE,"r")
+        content = yaml.load(fd)
+        fd.close()
 
+        content["BUILDTEST_MODULE_ROOT"].append(args.add)
+        # converting to set to avoid adding duplicate entries
+        module_tree_set = set(content["BUILDTEST_MODULE_ROOT"])
+        module_tree_set.add(args.add)
+
+        content["BUILDTEST_MODULE_ROOT"] = list(module_tree_set)
+
+        fd = open(BUILDTEST_CONFIG_FILE,"w")
+        yaml.dump(content,fd,default_flow_style=False)
+        fd.close()
+
+        print (f"Adding module tree: {args.add}")
+        print (f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
+    if args.rm:
+        fd = open(BUILDTEST_CONFIG_FILE,"r")
+        content = yaml.load(fd)
+        content["BUILDTEST_MODULE_ROOT"].remove(args.rm)
+        fd.close()
+
+        fd = open(BUILDTEST_CONFIG_FILE,"w")
+        yaml.dump(content,fd,default_flow_style=False)
+        fd.close()
+        print (f"Removing module tree: {args.rm}")
+        print (f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
 
 class BuildTestModule():
     def __init__(self):
