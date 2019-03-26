@@ -49,8 +49,12 @@ from buildtest.benchmark.hpcg import func_benchmark_hpcg_subcmd
 def menu():
     """ buildtest menu"""
 
+
+
     override_configuration()
     check_configuration()
+
+
 
     test_suite_dir = os.path.join(config_opts["BUILDTEST_TESTDIR"], "suite")
     create_dir(test_suite_dir)

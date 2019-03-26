@@ -72,18 +72,21 @@ config_opts = yaml.load(fd)
 
 # if MODULEPATH is not declared set BUILDTEST_MODULE_ROOT to None. In this event
 #  user should fix their environment
-if os.getenv("MODULEPATH") == None:
-    config_opts["BUILDTEST_MODULE_ROOT"] = None
-else:
-    # otherwise set this to MODULEPATH
-    tree_list = []
-    #config_opts["BUILDTEST_MODULE_ROOT"] = os.getenv("MODULEPATH").split(":")
-    for tree in os.getenv("MODULEPATH").split(":"):
-        if os.path.isdir(tree):
-            tree_list.append(tree)
-        #else:
-            #print (f"Skipping module tree {tree} because path does not exist")
-    config_opts["BUILDTEST_MODULE_ROOT"] = tree_list	
+if config_opts["BUILDTEST_MODULE_ROOT"] == None:
+
+    if os.getenv("MODULEPATH") == None:
+        config_opts["BUILDTEST_MODULE_ROOT"] = None
+    else:
+        # otherwise set this to MODULEPATH
+        tree_list = []
+        #config_opts["BUILDTEST_MODULE_ROOT"] = os.getenv("MODULEPATH").split(":")
+        for tree in os.getenv("MODULEPATH").split(":"):
+            if os.path.isdir(tree):
+                tree_list.append(tree)
+            #else:
+                #print (f"Skipping module tree {tree} because path does not exist")
+        config_opts["BUILDTEST_MODULE_ROOT"] = tree_list
+
 config_opts['BUILDTEST_VERSION'] = BUILDTEST_VERSION
 
 logID = "buildtest"

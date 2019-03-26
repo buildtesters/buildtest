@@ -33,28 +33,6 @@ from buildtest.tools.config import logID, config_opts
 from buildtest.tools.modules import get_module_list
 from buildtest.tools.system import BuildTestCommand
 
-def get_unique_software():
-    """returns a set of software packages found in the module tree"""
-    modtrees = config_opts["BUILDTEST_MODULE_ROOT"]
-    logger = logging.getLogger(logID)
-
-    logger.info("Traversing Module Tree: %s to find all unique software", modtrees)
-
-    #moduletreelist=moduletrees.split(":")
-    module_set=set()
-    #for moduletree in moduletreelist:
-    modulelist=get_module_list()
-
-    # extract module name and add to module set
-    for module in modulelist:
-	    # extract the module name from filepath
-        modulename=os.path.basename(os.path.dirname(module))
-        module_set.add(modulename)
-
-    logger.info("List of modules found:")
-    logger.info("----------------------------------------")
-    logger.info("Software = %s", list(module_set))
-    return sorted(module_set)
 
 
 def get_software_stack():
@@ -80,19 +58,6 @@ def get_software_stack():
         moduleversion_set.add(modulename+"/"+version)
 
     return sorted(moduleversion_set)
-
-def software_version_relation():
-    """relationship between software name and version. The function will return a
-    dictionary with key values as software name and values will be a set of version """
-    modulelist=get_module_list()
-
-    # dictionary used for keeping a relationship between software name and its corresponding modulefile
-    module_dict = {}
-    # create a dictionary where key is modulefile path and the value is application name
-    for app in modulelist:
-        module_dict[app] = os.path.basename(os.path.dirname(app))
-
-    return module_dict
 
 def get_binaries_from_application(module):
     """ return a list of binaries from $PATH variable defined in module file"""

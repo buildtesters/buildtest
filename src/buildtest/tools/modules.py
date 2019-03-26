@@ -29,6 +29,7 @@ This python module does the following
 	 - check if toolchain exists based on argument -t
 	 - check if easyconfig passes
 """
+import json
 import os
 import sys
 import subprocess
@@ -43,6 +44,22 @@ def func_module_subcmd(args):
         diff_trees(args.diff_trees)
     if args.module_load_test:
         module_load_test()
+
+
+class BuildTestModule():
+    def __init__(self):
+
+        self.moduletree = ':'.join(map(str,config_opts["BUILDTEST_MODULE_ROOT"] ))
+
+        cmd = f"$LMOD_DIR/spider -o spider-json {self.moduletree}"
+        out = subprocess.check_output(cmd, shell=True).decode("utf-8")
+        self.module_dict = json.loads(out)
+
+    def get_module_spider_json(self):
+        return self.module_dict
+    def get_unique_modules(self):
+        """Return a list of unique full name canonical modules """
+        return sorted(self.module_dict.keys())
 
 def strip_toolchain_from_module(modulename):
     """When module file has toolchain in version remove it (ex.  Python/2.7.14-intel-2018a  should return  Python/2.7.14 )"""
@@ -66,15 +83,14 @@ def strip_toolchain_from_module(modulename):
             return modulename_strip_toolchain
 
 def get_module_list():
-    """returns a complete list of modules and full path in module tree"""
+    """returns a list of modules from module tree with fullpath to module file. """
     modulefiles = []
     modtrees = config_opts["BUILDTEST_MODULE_ROOT"]
     for tree in modtrees:
         is_dir(tree)
         for root, dirs, files in os.walk(tree):
             for file in files:
-                # only add modules with .lua extension or files that have #%Module which is for environment modules
-                #if file.endswith(".lua") or string_in_file("#%Module", os.path.join(root,file)):
+                # only add modules with .lua extension or files that have #%Module as part of first line
                 if file.endswith(".lua"):
                     modulefiles.append(os.path.join(root,file))
 

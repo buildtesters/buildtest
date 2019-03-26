@@ -34,9 +34,9 @@ import sys
 from collections import OrderedDict
 from operator import itemgetter
 
+from buildtest.tools.modules import BuildTestModule
 from buildtest.tools.easybuild import find_easyconfigs
-from buildtest.tools.software import get_unique_software, \
-                                    software_version_relation
+
 
 
 def func_list_subcmd(args):
@@ -53,50 +53,46 @@ def func_list_subcmd(args):
 
 def list_software(args):
     """ This method implements buildtest list -ls """
-    software_set=get_unique_software()
+
+    module_obj = BuildTestModule()
+    module_set = module_obj.get_unique_modules()
 
     if args.format == "json":
-        json.dump(software_set, sys.stdout, indent=4, sort_keys=True)
+        json.dump(module_set, sys.stdout, indent=4, sort_keys=True)
     else:
         count = 0
         text = """
-        ID  |     Software
-        ----|-----------------------------  """
+ID  |     Software
+----|-----------------------------  """
 
         print (text)
-        for item in software_set:
+        for item in module_set:
             count = count + 1
             print ((str(count) + "\t|").expandtabs(4), item)
 
-        print ("Total Software Packages: ", count)
+        print ("Total Software Packages: ", len(module_set))
 
 
 def list_software_version_relation(args):
     """ This method implements  buildtest list -svr """
-    software_dict = software_version_relation()
+    module_obj = BuildTestModule()
+    module_dict = module_obj.get_module_spider_json()
 
     if args.format == "json":
-        json.dump(software_dict, sys.stdout, indent=4, sort_keys=True)
+        json.dump(module_dict, sys.stdout, indent=4, sort_keys=True)
     else:
         text = """
-         ID  |        Software            |      ModuleFile Path
-        -----|----------------------------|----------------------------- """
+    ID  |        Module Name                         |      ModuleFile Path
+    ----|--------------------------------------------|----------------------------- """
         print (text)
-        id = 0
+        sorted_keys = sorted(module_dict.keys())
+        count = 0
+        for mod_name in sorted_keys:
+            for mpath in module_dict[mod_name].keys():
+                count+=1
+                print ((str(count) + "\t |").expandtabs(4),
+                       "\t" + (module_dict[mod_name][mpath]["full"] + "\t |").expandtabs(
+                           40) + "\t" + module_dict[mod_name][mpath]["path"])
 
-        sorted_dict = OrderedDict(
-            sorted(software_dict.items(), key=itemgetter(1)))
 
-        keylist = sorted_dict.keys()
-
-        modulecnt = 0
-
-        for key in keylist:
-            id = id + 1
-            # for value in sset(software_dict[key]):
-            print ((str(id) + "\t |").expandtabs(4),
-                   "\t" + (sorted_dict[key] + "\t |").expandtabs(
-                       25) + "\t" + key)
-            modulecnt += 1
-
-        print ("Total Software Modules Found: ", modulecnt)
+        print (f"Total Software Modules: {count}")
