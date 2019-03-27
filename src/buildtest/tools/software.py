@@ -30,40 +30,20 @@ import logging
 import stat
 
 from buildtest.tools.config import logID, config_opts
-from buildtest.tools.modules import get_module_list
+from buildtest.tools.modules import get_module_list, BuildTestModule
 from buildtest.tools.system import BuildTestCommand
 
-
-
-def get_software_stack():
-    """returns a set of software-version collection found in module files. Duplicates are
-    ignored for instance, same package version is built with two different toolchains"""
-    moduleversion_set=set()
-    modulelist=get_module_list()
-
-    for module in modulelist:
-        # extract the module name and version from the file path returned from find
-        modulename = os.path.basename(os.path.dirname(module))
-        version=os.path.basename(module)
-
-        ext = os.path.splitext(version)[1]
-        # skip .version files
-        if ext == ".version":
-            continue
-
-        # if modulefile is lua extension then strip extension from version
-        if ext == ".lua":
-            version=os.path.splitext(version)[0]
-
-        moduleversion_set.add(modulename+"/"+version)
-
-    return sorted(moduleversion_set)
 
 def get_binaries_from_application(module):
     """ return a list of binaries from $PATH variable defined in module file"""
 
+    module_obj = BuildTestModule()
+    parent_mod = module_obj.get_parent_modules(module)
+    query = ""
+    for item in parent_mod:
+        query+= f"module try-load {item}; "
     cmd = BuildTestCommand()
-    query = "$LMOD_CMD bash show " + module
+    query += "$LMOD_CMD bash show " + module
     cmd.execute(query)
 
     # output of $LMOD_CMD bash show  seems to be backward

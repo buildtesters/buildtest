@@ -35,12 +35,11 @@ from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
 from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.find import func_find_subcmd
 from buildtest.tools.list import func_list_subcmd
-from buildtest.tools.modules import func_module_subcmd
+from buildtest.tools.modules import func_module_subcmd, BuildTestModule
 from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.show import func_show_subcmd
 from buildtest.tools.system import systempackage_installed_list
-from buildtest.tools.software import get_software_stack
 from buildtest.tools.yaml import func_yaml_subcmd
 from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
 from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
@@ -69,7 +68,8 @@ def menu():
 
     run_test_class = os.listdir(test_suite_dir)
     pkglist = systempackage_installed_list()
-    software_list = get_software_stack()
+    module_obj = BuildTestModule()
+    module_stack = module_obj.get_unique_software_modules()
 
     app_choices = run_app_choices()
 
@@ -198,7 +198,7 @@ Misc:
     parser_build.add_argument("-s",
                               "--software",
                               help=" Specify software package to test",
-                              choices=software_list,
+                              choices=module_stack,
                               metavar='INSTALLED-SOFTWARE')
     parser_build.add_argument("-p",
                               "--package",
@@ -208,7 +208,7 @@ Misc:
     parser_build.add_argument("--prepend-modules",
                               help="Prepend modules in test script prior to "
                                    +"loading application module.",
-                              choices=software_list,
+                              choices=module_stack,
                               metavar='INSTALLED-SOFTWARE',
                               action="append",
                               default=[])

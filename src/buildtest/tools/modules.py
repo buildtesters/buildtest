@@ -93,7 +93,30 @@ class BuildTestModule():
     def get_unique_modules(self):
         """Return a list of unique full name canonical modules """
         return sorted(self.module_dict.keys())
+    def get_unique_software_modules(self):
+        """Return a set with list of unique software module names"""
+        software_set = set()
+        sorted_keys = sorted(self.module_dict.keys())
+        for k in sorted_keys:
+            for mod_file in self.module_dict[k].keys():
+                software_set.add(self.module_dict[k][mod_file]["full"])
 
+        return sorted(list(software_set))
+
+    def get_parent_modules(self,modname):
+        """Get Parent module for specified module file."""
+        for key in self.module_dict.keys():
+            for mod_file in self.module_dict[key].keys():
+                if modname == self.module_dict[key][mod_file]["full"]:
+                    mod_parent_list = self.module_dict[key][mod_file]["parent"]
+                    parent_module = []
+                    # parent: is a list, only care about one entry which
+                    # contain list of modules to be loaded separated by :
+                    # First entry is default:<mod1>:<mod2> so skip first
+                    # element
+                    for entry in mod_parent_list[0].split(":")[1:]:
+                        parent_module.append(entry)
+                    return parent_module
 def strip_toolchain_from_module(modulename):
     """When module file has toolchain in version remove it (ex.  Python/2.7.14-intel-2018a  should return  Python/2.7.14 )"""
     from buildtest.tools.software import get_toolchain_stack
@@ -142,41 +165,19 @@ def get_module_list_by_tree(mod_tree):
 
     return modulefiles
 
-def load_modules(shell_type):
-    """return a string that loads the software and toolchain module."""
-
-    software = config_opts["BUILDTEST_SOFTWARE"]
-
-    #print software
-
-    shell_magic = "#!/" + os.path.join("bin",shell_type)
-
-
-    BUILDTEST_MODULE_NAMING_SCHEME = config_opts['BUILDTEST_MODULE_NAMING_SCHEME']
-    header = shell_magic + "\n"
-    header+= "module purge \n"
-
-    #print (len(config_opts["BUILDTEST_PREPEND_MODULES"]))
-    if len(config_opts["BUILDTEST_PREPEND_MODULES"]) > 0:
-        for module in config_opts["BUILDTEST_PREPEND_MODULES"]:
-            header += "module load " + module + "\n"
-
-    moduleload = "module load " + software + "\n"
-
-
-    header = header + moduleload
-    return header
-
 def module_load_test():
     """perform module load test for all modules in BUILDTEST_MODULE_ROOT"""
-    from buildtest.tools.software import get_software_stack
-    BUILDTEST_MODULE_ROOT = config_opts['BUILDTEST_MODULE_ROOT']
-    modulelist = get_software_stack()
-    for mod_file in modulelist:
-        cmd = ""
-        for tree in BUILDTEST_MODULE_ROOT:
-            cmd += "module use " + tree + ";"
-        cmd +=  "module purge; module load " + mod_file
+
+    module_obj = BuildTestModule()
+    module_stack = module_obj.get_unique_software_modules()
+
+    for mod_file in module_stack:
+        cmd = "module purge"
+
+        parent_modules = module_obj.get_parent_modules(mod_file)
+        for item in parent_modules:
+            cmd += "module try-load {} ".format(item)
+        cmd +=  "module load " + mod_file
 
         ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
         ret.communicate()

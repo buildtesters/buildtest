@@ -31,7 +31,7 @@ import yaml
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.ohpc import check_ohpc
-from buildtest.tools.software import get_software_stack
+from buildtest.tools.modules import BuildTestModule
 from buildtest.tools.file import is_file
 
 
@@ -239,7 +239,9 @@ class BuildTestYamlSingleSource():
 
         # if module key is defined then figure out module load
         if "module" in test_dict:
-            modulelist = get_software_stack()
+            module_obj = BuildTestModule()
+            modulelist = module_obj.get_unique_software_modules()
+
             module_str = "module purge \n"
             # go through all modules in software stack and check if name matches
             # one specified specified in module yaml construct
@@ -248,7 +250,13 @@ class BuildTestYamlSingleSource():
                     # when -s <module> is specified and module name matches one
                     # in YAML file then add the version specific module
                     if self.software_module and os.path.dirname(self.software_module.lower()) == module_yaml:
+                        parent_module = module_obj.get_parent_module(
+                            self.software_module)
+                        for mod in parent_module:
+                            module_str += f"module try-load {mod} "
                         module_str += f"module load {self.software_module} \n"
+                        print (module_str)
+                        sys.exit(0)
                         break
                     if os.path.dirname(module.lower()) == module_yaml:
                         module_str += f"module load {os.path.dirname(module)} \n"

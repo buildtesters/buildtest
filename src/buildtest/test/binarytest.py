@@ -35,9 +35,10 @@ import stat
 from buildtest.tools.config import config_opts, logID
 from buildtest.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake, add_test_to_CMakeLists
 from buildtest.tools.file import string_in_file
-from buildtest.tools.modules import load_modules
+from buildtest.tools.modules import BuildTestModule
 from buildtest.tools.software import get_binaries_from_application
-from buildtest.tools.system import get_binaries_from_systempackage
+from buildtest.tools.system import get_binaries_from_systempackage, \
+    BuildTestCommand
 from buildtest.tools.utility import get_appname, get_appversion
 
 
@@ -80,27 +81,26 @@ def generate_binary_test(name,test_type=None):
     print ("[STAGE 1]: Building Binary Tests")
     print ("--------------------------------------------")
     binary_tests = []
+    preload_modules = ""
     if test_type == "software":
 
-        name = get_appname()
-        version = get_appversion()
-
+        #name = get_appname()
         test_destdir,test_destdir_cmakelist = setup_software_cmake()
-
         print ("Detecting Software:" + name )
-
         binary_tests = get_binaries_from_application(name)
-
-       # load preamble for test-script that initializes environment.
-        header=load_modules(config_opts["BUILDTEST_SHELL"])
-
+        module_obj = BuildTestModule()
+        parent_module = module_obj.get_parent_modules(name)
+        for item in parent_module:
+            preload_modules += f"module try-load {item};"
+        print (preload_modules)
     else:
-        system=name
         print ("Detecting System Package: " + name)
         test_destdir,test_destdir_cmakelist = setup_system_cmake(name)
         binary_tests = get_binaries_from_systempackage(name)
 
     count = 0
+    shell_path =  BuildTestCommand().which(config_opts["BUILDTEST_SHELL"])[
+        0]
     for key in binary_tests:
         count = count + 1
         name_str=key.replace(" ","_")
@@ -114,13 +114,12 @@ def generate_binary_test(name,test_type=None):
         logger.debug("Creating and Opening  test file: %s for writing ",  testpath)
         fd=open(testpath,'w')
 
-        if test_type == "software":
-            fd.write(header)
+        shell_magic = f"#!{shell_path}"
+        fd.write(shell_magic + "\n")
 
-        else:
-              shell_magic = "#!/" + os.path.join("bin",config_opts["BUILDTEST_SHELL"])
-              fd.write(shell_magic + "\n")
-              fd.write("module purge \n")
+        if test_type == "software":
+            fd.write(f"{preload_modules} \n")
+            fd.write(f"module load {name} \n")
 
         fd.write("which " + key)
         fd.close()

@@ -1,6 +1,3 @@
-# Specify Module Naming Scheme for your module tree. Valid Options: [FNS, HMNS]
-BUILDTEST_MODULE_NAMING_SCHEME: FNS
-
 # easybuild integration. Valid Options: [True, False]
 BUILDTEST_EASYBUILD: False
 
@@ -17,7 +14,7 @@ BUILDTEST_BINARY: False
 BUILDTEST_SHELL: sh
 
 # list root of module tree where modules are installed. Specify multiple module tree as a list
-BUILDTEST_MODULE_ROOT:
+BUILDTEST_MODULE_ROOT: []
 
 # criteria for success threshold when running job. Valid Option: [0.0-1.0]    
 BUILDTEST_SUCCESS_THRESHOLD: 1.0

@@ -70,12 +70,12 @@ fd = open(BUILDTEST_CONFIG_FILE, 'r')
 config_opts = yaml.load(fd)
 
 
-# if MODULEPATH is not declared set BUILDTEST_MODULE_ROOT to None. In this event
-#  user should fix their environment
-if config_opts["BUILDTEST_MODULE_ROOT"] == None:
+# if BUILDTEST_MODULE_ROOT is empty list then check if MODULEPATH is defined
+# and set result to BUILDTEST_MODULE_ROOT
+if len(config_opts["BUILDTEST_MODULE_ROOT"]) == 0:
 
     if os.getenv("MODULEPATH") == None:
-        config_opts["BUILDTEST_MODULE_ROOT"] = None
+        config_opts["BUILDTEST_MODULE_ROOT"] = []
     else:
         # otherwise set this to MODULEPATH
         tree_list = []
@@ -99,7 +99,6 @@ config_directory_types = [
   "BUILDTEST_RUN_DIR",
 ]
 config_yaml_keys = {
-    'BUILDTEST_MODULE_NAMING_SCHEME': type("str"),
     'BUILDTEST_EASYBUILD': type(True),
     'BUILDTEST_CLEAN_BUILD': type(True),
     'BUILDTEST_OHPC': type(True),
@@ -112,7 +111,7 @@ config_yaml_keys = {
     'BUILDTEST_TESTDIR': type("str"),
     'BUILDTEST_RUN_DIR': type("str"),
 }
-values_BUILDTEST_MODULE_NAMING_SCHEME = ["HMNS", "FNS"]
+
 
 
 def check_configuration():
@@ -144,14 +143,6 @@ def check_configuration():
             print(f"Invalid Type for key: {key}")
             print(f"Expecting type: {str(value)}")
             print(f"Current type: {str(type(config_opts[key]))}")
-            ec = 1
-
-        # check if BUILDTEST_MODULE_NAMING_SCHEME is either "FNS" or "HMNS"
-        if (key == "BUILDTEST_MODULE_NAMING_SCHEME" and
-            config_opts[key] not in values_BUILDTEST_MODULE_NAMING_SCHEME):
-            print (f"{key} expects value "
-                   + f"{str(values_BUILDTEST_MODULE_NAMING_SCHEME)} current "
-                   + f"value is {str(config_opts[key])}" )
             ec = 1
 
         if (key == "BUILDTEST_SHELL" and

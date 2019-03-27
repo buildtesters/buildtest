@@ -30,10 +30,7 @@ from buildtest.tools.config import config_opts
 from distutils.util import strtobool
 
 def override_configuration():
-    """ override buildtest options by environment variables """
-
-    if os.environ.get('BUILDTEST_MODULE_NAMING_SCHEME'):
-        config_opts['BUILDTEST_MODULE_NAMING_SCHEME'] = os.environ['BUILDTEST_MODULE_NAMING_SCHEME']
+    """Override buildtest options by environment variables """
 
     if os.environ.get('BUILDTEST_LOGDIR'):
         config_opts['BUILDTEST_LOGDIR']=os.environ['BUILDTEST_LOGDIR']
@@ -41,14 +38,15 @@ def override_configuration():
     if os.environ.get('BUILDTEST_TESTDIR'):
         config_opts['BUILDTEST_TESTDIR']=os.environ['BUILDTEST_TESTDIR']
 
-    # multiple directories can be set separated by ":" for BUILDTEST_MODULE_ROOT as envrionment variable
+    # multiple directories can be set separated by ":" for
+    # BUILDTEST_MODULE_ROOT as envrionment variable
     if os.environ.get('BUILDTEST_MODULE_ROOT'):
 
         if os.environ.get('BUILDTEST_MODULE_ROOT').find(":") != -1:
-            ebroot_list = os.environ.get('BUILDTEST_MODULE_ROOT').split(":")
+            mod_trees = os.environ.get('BUILDTEST_MODULE_ROOT').split(":")
             config_opts['BUILDTEST_MODULE_ROOT'] = []
-            for ebroot in ebroot_list:
-                config_opts['BUILDTEST_MODULE_ROOT'].append(ebroot)
+            for tree in mod_trees:
+                config_opts['BUILDTEST_MODULE_ROOT'].append(tree)
         else:
             config_opts['BUILDTEST_MODULE_ROOT']=[]
             config_opts['BUILDTEST_MODULE_ROOT'].append(os.environ['BUILDTEST_MODULE_ROOT'])
