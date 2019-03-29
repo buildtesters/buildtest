@@ -3,8 +3,6 @@ maintainer:
 test:
   compiler: gnu
   ldflags: -fopenmp
-  module:
-  - gcc
   source: omp_hello.f
   vars:
     OMP_NUM_THREADS: 6

@@ -7,5 +7,3 @@ test:
     nodes: "4" 
     time: "01:00"
   compiler: gnu
-  module: 
-  - gcc

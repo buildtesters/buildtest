@@ -6,5 +6,3 @@ test:
         OMP_NUM_THREADS: 8
     ldflags: "-fopenmp"
     compiler: gnu
-    module:
-       - gcc

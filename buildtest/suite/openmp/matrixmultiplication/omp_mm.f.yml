@@ -5,5 +5,3 @@ test:
         OMP_NUM_THREADS: 4
     compiler: gnu
     ldflags: "-fopenmp"
-    module:
-        - gcc

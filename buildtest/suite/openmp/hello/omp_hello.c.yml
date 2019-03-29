@@ -6,5 +6,3 @@ test:
 
     compiler: gnu
     ldflags: "-fopenmp"
-    module:
-    -   gcc

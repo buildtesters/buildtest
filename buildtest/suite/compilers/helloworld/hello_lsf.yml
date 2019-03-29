@@ -8,5 +8,3 @@ test:
     R: "sandybridge"
     W: "01:00"
   compiler: gnu
-  module: 
-  - gcc
