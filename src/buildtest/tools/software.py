@@ -30,14 +30,13 @@ import logging
 import stat
 
 from buildtest.tools.config import logID, config_opts
-from buildtest.tools.modules import get_module_list, BuildTestModule
+from buildtest.tools.modules import module_obj
 from buildtest.tools.system import BuildTestCommand
 
 
 def get_binaries_from_application(module):
     """ return a list of binaries from $PATH variable defined in module file"""
 
-    module_obj = BuildTestModule()
     parent_mod = module_obj.get_parent_modules(module)
     query = ""
     for item in parent_mod:

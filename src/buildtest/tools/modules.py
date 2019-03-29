@@ -38,6 +38,8 @@ from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import string_in_file, is_dir
 
 
+
+
 def func_module_subcmd(args):
     """ entry point for module subcommand """
 
@@ -102,12 +104,20 @@ class BuildTestModule():
                 software_set.add(self.module_dict[k][mod_file]["full"])
 
         return sorted(list(software_set))
-
+    def check_module(self,module):
+        """Check if module is in list of unique_software_modules and return
+        True or False"""
+        if module in self.get_unique_modules():
+            return True
+        else:
+            return False
     def get_parent_modules(self,modname):
         """Get Parent module for specified module file."""
         for key in self.module_dict.keys():
             for mod_file in self.module_dict[key].keys():
+                print (key,self.module_dict[key])
                 if modname == self.module_dict[key][mod_file]["full"]:
+
                     mod_parent_list = self.module_dict[key][mod_file]["parent"]
                     parent_module = []
                     # parent: is a list, only care about one entry which
@@ -117,6 +127,8 @@ class BuildTestModule():
                     for entry in mod_parent_list[0].split(":")[1:]:
                         parent_module.append(entry)
                     return parent_module
+
+        return []
 def strip_toolchain_from_module(modulename):
     """When module file has toolchain in version remove it (ex.  Python/2.7.14-intel-2018a  should return  Python/2.7.14 )"""
     from buildtest.tools.software import get_toolchain_stack
@@ -165,10 +177,11 @@ def get_module_list_by_tree(mod_tree):
 
     return modulefiles
 
+module_obj = BuildTestModule()
 def module_load_test():
     """perform module load test for all modules in BUILDTEST_MODULE_ROOT"""
 
-    module_obj = BuildTestModule()
+    #module_obj = BuildTestModule()
     module_stack = module_obj.get_unique_software_modules()
 
     for mod_file in module_stack:

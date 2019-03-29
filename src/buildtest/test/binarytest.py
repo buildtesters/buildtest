@@ -33,9 +33,10 @@ import stat
 
 
 from buildtest.tools.config import config_opts, logID
-from buildtest.tools.cmake import init_CMakeList, setup_software_cmake, setup_system_cmake, add_test_to_CMakeLists
+from buildtest.tools.cmake import init_CMakeList, setup_software_cmake, \
+    setup_system_cmake, add_test_to_CMakeLists
 from buildtest.tools.file import string_in_file
-from buildtest.tools.modules import BuildTestModule
+from buildtest.tools.modules import module_obj
 from buildtest.tools.software import get_binaries_from_application
 from buildtest.tools.system import get_binaries_from_systempackage, \
     BuildTestCommand
@@ -44,11 +45,12 @@ from buildtest.tools.utility import get_appname, get_appversion
 
 
 def generate_binary_test(name,test_type=None):
-    """This method generates binary test. For application the module
-    and any toolchain is loaded in advance. A separate test is created for each binary command. Every
-    test is written in BUILDTEST_TESTDIR under the appropriate subdirectory to distinguish between different
-    application version. Each test is added to CMakeLists.txt. In each test the command "which" is run against every
-    binary to ensure file exists. """
+    """This method generates binary test. For software the modules and any
+    parent modules are loaded in advance. A separate test is created for each
+    binary command. Every test is written in BUILDTEST_TESTDIR in the
+    appropriate subdirectory to distinguish between different
+    application version. Each test is added to CMakeLists.txt. In each test
+    the command "which" is run against every binary to ensure file exists."""
     subdir=""
 
     # top level CMakeList.txt should be in same parent directory where BUILDTEST_TESTDIR is created
@@ -68,12 +70,14 @@ def generate_binary_test(name,test_type=None):
 
     # if CMakeLists.txt does not exist in top-level directory, create the header
     if os.path.isfile(toplevel_cmakelist_file) == False:
-        logger.warning("File: %s was not found, will create it automatically", toplevel_cmakelist_file)
+        logger.warning("File: %s was not found, will create it automatically",
+                       toplevel_cmakelist_file)
         init_CMakeList(toplevel_cmakelist_file)
 
     # if BUILDTEST_TESTDIR/CMakeLists.txt does not exist, then create it
     if os.path.isfile(testingdir_cmakelist_file) == False:
-        logger.warning("File: %s  was not found, will create it automatically", testingdir_cmakelist_file)
+        logger.warning("File: %s  was not found, will create it automatically",
+                       testingdir_cmakelist_file)
         fd=open(testingdir_cmakelist_file,'w')
         fd.close()
 
@@ -88,7 +92,7 @@ def generate_binary_test(name,test_type=None):
         test_destdir,test_destdir_cmakelist = setup_software_cmake()
         print ("Detecting Software:" + name )
         binary_tests = get_binaries_from_application(name)
-        module_obj = BuildTestModule()
+
         parent_module = module_obj.get_parent_modules(name)
         for item in parent_module:
             preload_modules += f"module try-load {item};"

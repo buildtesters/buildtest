@@ -34,7 +34,7 @@ import sys
 from collections import OrderedDict
 from operator import itemgetter
 
-from buildtest.tools.modules import BuildTestModule
+from buildtest.tools.modules import module_obj
 from buildtest.tools.easybuild import find_easyconfigs
 
 
@@ -54,7 +54,7 @@ def func_list_subcmd(args):
 def list_software(args):
     """ This method implements buildtest list -ls """
 
-    module_obj = BuildTestModule()
+
     module_set = module_obj.get_unique_modules()
 
     if args.format == "json":
@@ -75,7 +75,7 @@ ID  |     Software
 
 def list_software_version_relation(args):
     """ This method implements  buildtest list -svr """
-    module_obj = BuildTestModule()
+
     module_dict = module_obj.get_module_spider_json()
 
     if args.format == "json":
