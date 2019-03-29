@@ -1,0 +1,7 @@
+testblock: singlesource
+test:
+    source: hello.c
+    flags: -O3
+    compiler: gnu
+    module:
+      - gcc

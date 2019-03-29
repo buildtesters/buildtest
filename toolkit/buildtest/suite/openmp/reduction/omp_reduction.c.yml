@@ -1,0 +1,8 @@
+testblock: singlesource
+test:
+    source: omp_reduction.c
+    flags: "-O3"
+    vars:
+        OMP_NUM_THREADS: 8
+    ldflags: "-fopenmp"
+    compiler: gnu

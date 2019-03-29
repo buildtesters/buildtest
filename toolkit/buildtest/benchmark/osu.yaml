@@ -1,0 +1,314 @@
+benchmark:
+  module: OSU-Micro-Benchmarks/5.3.2-foss-2018a
+
+  test: 
+  - name: osu_allgather
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_allgatherv
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_allreduce
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_alltoall
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_alltoallv
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_barrier
+    proc : 2
+    iter_msg_size : 1000
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_bcast
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_bibw
+    iter: 100
+    warmup_iter: 200
+
+  - name: osu_bw
+    iter: 100
+    warmup_iter: 200
+
+  - name: osu_cas_latency
+    win_option: allocate
+    sync_option: flush
+    warmup_iter: 100
+    iter: 10000
+
+  - name: osu_fop_latency
+    win_option: allocate
+    sync_option: flush
+    warmup_iter: 100
+    iter: 10000
+
+  - name: osu_gather
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_gatherv
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format: true
+
+
+  - name: osu_acc_latency
+    win_option: allocate
+    sync_option: flush
+    iter: 10000
+    warmup_iter: 100
+   
+  - name: osu_get_bw
+    win_option: allocate
+    sync_option: flush
+    iter: 10000
+    warmup_iter: 100
+
+
+  - name: osu_get_latency
+    win_option: allocate
+    sync_option: flush
+    iter: 10000
+    warmup_iter: 100
+
+
+  - name: osu_iallgather
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+
+  - name: osu_iallgatherv
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+
+  - name: osu_ialltoall
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_ialltoallv
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_ialltoallw
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_ibarrier
+    proc : 2
+    iter_msg_size : 1000
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+
+  - name: osu_ibcast
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_igather
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_igatherv
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+
+  - name: osu_iscatter
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_iscatterv
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_latency
+    iter: 10000
+    warmup_iter: 100
+
+  - name: osu_latency_mt
+    iter: 10000
+    warmup_iter: 100
+    threads: 2
+
+  - name: osu_multi_lat
+    proc: 2
+    iter: 10000
+    warmup_iter: 100
+
+  - name: osu_put_bibw
+    win_option: allocate
+    sync_option: pscw
+    iter: 10000
+    warmup_iter: 100
+
+  - name: osu_put_bw
+    win_option: allocate
+    sync_option: flush
+    iter: 10000
+    warmup_iter: 100
+
+  - name: osu_put_latency
+    win_option: allocate
+    sync_option: flush
+    iter: 10000
+    warmup_iter: 100
+
+  - name: osu_reduce
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_reduce_scatter
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_scatter
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true
+
+  - name: osu_scatterv
+    proc : 2
+    min_message_size : 2
+    max_message_size : 1048576
+    iter_msg_size : 1000
+    max_mem_per_proc: 536870912
+    warmup_iter: 200
+    calls: 100
+    full_format : true

@@ -1,0 +1,5 @@
+name : mpi-hello.cpp
+source : hello.cpp
+buildopts : -O2
+mpi: enabled
+nproc: 2

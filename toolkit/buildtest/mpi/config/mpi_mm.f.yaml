@@ -1,0 +1,7 @@
+name: mpi_mm.f
+source: mpi_mm.f
+mpi: enabled
+buildopts: -O2
+nproc: 4
+scheduler: "SLURM"
+jobslots: 4

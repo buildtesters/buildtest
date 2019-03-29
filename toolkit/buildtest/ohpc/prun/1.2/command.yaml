@@ -1,0 +1,3 @@
+description: Binary test for prun/1.2
+binaries:
+- which prun

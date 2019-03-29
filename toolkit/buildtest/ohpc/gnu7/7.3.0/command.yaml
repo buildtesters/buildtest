@@ -1,0 +1,12 @@
+description: Binary test for gnu7/7.3.0
+binaries:
+- which cpp
+- which gcov
+- which gcov-dump
+- which gcov-tool
+- which c++
+- which gcc
+- which gcc-ar
+- which gcc-nm
+- which gcc-ranlib
+- which gfortran

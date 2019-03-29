@@ -1,0 +1,4 @@
+description: Binary test for trilinos/12.12.1
+binaries:
+- which nvcc_wrapper
+- which phalanx_create_evaluator.py

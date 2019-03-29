@@ -1,0 +1,8 @@
+description: Binary test for ptscotch/6.0.4
+binaries:
+- which dggath
+- which dgmap
+- which dgord
+- which dgpart
+- which dgscat
+- which dgtst

@@ -1,0 +1,5 @@
+name: mpi_ping.c
+source: mpi_ping.c
+mpi: enabled
+buildopts: -O2
+nproc: 4

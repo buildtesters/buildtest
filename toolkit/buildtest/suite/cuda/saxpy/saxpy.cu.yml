@@ -1,0 +1,6 @@
+testblock: singlesource
+test:
+    source: saxpy.cu
+    compiler: cuda    
+    module:
+        - cuda

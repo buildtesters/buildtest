@@ -1,0 +1,4 @@
+name: omp_dotprod_mpi.c
+source:  omp_dotprod_mpi.c
+buildopts: -O2 
+mpi: enabled

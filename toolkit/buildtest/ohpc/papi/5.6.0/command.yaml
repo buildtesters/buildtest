@@ -1,0 +1,15 @@
+description: Binary test for papi/5.6.0
+binaries:
+- which papi_avail
+- which papi_clockres
+- which papi_command_line
+- which papi_component_avail
+- which papi_cost
+- which papi_decode
+- which papi_error_codes
+- which papi_event_chooser
+- which papi_mem_info
+- which papi_multiplex_cost
+- which papi_native_avail
+- which papi_version
+- which papi_xml_event_info
