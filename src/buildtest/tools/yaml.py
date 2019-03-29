@@ -31,7 +31,7 @@ import yaml
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.ohpc import check_ohpc
-from buildtest.tools.modules import BuildTestModule
+from buildtest.tools.modules import module_obj
 from buildtest.tools.file import is_file
 
 
@@ -65,7 +65,6 @@ TEMPLATE_SINGLESOURCE = {
     'input': "inputfile",
     'flags': "-O3 -fast",
     'vars': TEMPLATE_VARS,
-    'module': ["gcc","zlib"],
     'compiler': "gnu",
     'ldflags': "-lm",
     'args': "args1 args2 args3",
@@ -78,7 +77,6 @@ KEY_DESCRIPTION = {
     'input': "Specify input file for the executable. This file must be in \"src\" directory",
     'flags': "Specify the build flags for compiling the source program",
     'vars': "Specify a list of environment variables that will be declared in the test script",
-    'module': "Specify a list of modules to be loaded in the test script. All modules are lowercase without a version",
     'compiler': "Specify a compiler that will be used for compiling the source program",
     'ldflags': "Flags that will be passed to linkder (ld)",
     'args': "Input arguments to be passed to the executable",
@@ -237,30 +235,7 @@ class BuildTestYamlSingleSource():
             cmd += ["<", os.path.join(self.srcdir,inputfile) ]
 
 
-        # if module key is defined then figure out module load
-        if "module" in test_dict:
-            module_obj = BuildTestModule()
-            modulelist = module_obj.get_unique_software_modules()
-
-            module_str = "module purge \n"
-            # go through all modules in software stack and check if name matches
-            # one specified specified in module yaml construct
-            for module_yaml in test_dict["module"]:
-                for module in  modulelist:
-                    # when -s <module> is specified and module name matches one
-                    # in YAML file then add the version specific module
-                    if self.software_module and os.path.dirname(self.software_module.lower()) == module_yaml:
-                        parent_module = module_obj.get_parent_module(
-                            self.software_module)
-                        for mod in parent_module:
-                            module_str += f"module try-load {mod} "
-                        module_str += f"module load {self.software_module} \n"
-                        print (module_str)
-                        sys.exit(0)
-                        break
-                    if os.path.dirname(module.lower()) == module_yaml:
-                        module_str += f"module load {os.path.dirname(module)} \n"
-                        break
+        module_str = "module purge"
 
         # if vars key is defined then get all environment variables
         if "vars" in test_dict:
@@ -277,7 +252,7 @@ class BuildTestYamlSingleSource():
                                self.parent_dir)
 
         testscript_dict["vars"] = env_vars
-        testscript_dict["module"] = module_str
+        testscript_dict["module"] = module_str + "\n"
         testscript_dict["workdir"] = "cd " + workdir + "\n"
         testscript_dict["command"] = cmd
 

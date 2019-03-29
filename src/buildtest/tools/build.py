@@ -110,7 +110,7 @@ def func_build_subcmd(args):
             parent_dir = os.path.basename(os.path.dirname(file))
             fd=open(file,'r')
             content = yaml.load(fd)
-
+            fd.close()
             if args.verbose >= 2:
                 print (f"Loading Yaml Content from file: {file}")
             if content["testblock"] == "singlesource":
@@ -120,6 +120,19 @@ def func_build_subcmd(args):
 
                 builder.build()
 
+    if args.config:
+        file = args.config
+        parent_dir = os.path.basename(os.path.dirname(file))
+        args.suite = os.path.basename(os.path.dirname(os.path.dirname(file)))
+        fd = open(file,'r')
+        content = yaml.load(fd)
+        fd.close()
+
+        if content["testblock"] == "singlesource":
+            builder = BuildTestBuilderSingleSource(file,
+                                                   args,
+                                                   parent_dir)
+            builder.build()
     if args.package:
         func_build_system(args.package, logger, logdir, logpath, logfile)
     if args.software:
@@ -201,7 +214,11 @@ class BuildTestBuilderSingleSource():
 
         fd.close()
         # setting perm to 755 on testscript
-        os.chmod(abs_test_path, stat.S_IRWXU |  stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH)
+        os.chmod(abs_test_path, stat.S_IRWXU |
+                                stat.S_IRGRP |
+                                stat.S_IXGRP |
+                                stat.S_IROTH |
+                                stat.S_IXOTH)
 
         if self.verbose >= 1:
             print (f"Changing permission to 755 for test: {abs_test_path}")

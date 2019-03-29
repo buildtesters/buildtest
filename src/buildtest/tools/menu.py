@@ -175,21 +175,6 @@ Misc:
     parser_yaml.add_argument("-m", "--maintainer",
                              help="Add as maintainer to test",
                              choices=["yes", "no"]),
-    parser_yaml.add_argument("config",
-                             help="Select the Yaml Configuration",
-                             choices=yaml_choices,
-                             metavar="YAML CONFIGURATION LIST")
-
-    parser_yaml_use_subparser = parser_yaml.add_subparsers(
-        help='Load a Test Scope')
-
-
-    parser_yaml_use = parser_yaml_use_subparser.add_parser('load',
-                                                 help="Load a Test Scope")
-    parser_yaml_use.add_argument("config",
-                                 choices=yaml_choices,
-                                 metavar="YAML")
-
 
     parser_yaml.set_defaults(func=func_yaml_subcmd)
 
@@ -215,6 +200,11 @@ Misc:
     parser_build.add_argument("--shell",
                               help=" Select the type of shell for testscript",
                               choices=BUILDTEST_SHELLTYPES)
+    parser_build.add_argument("-c",
+                              "--config",
+                              help="Specify test configuration",
+                              choices=yaml_choices,
+                              metavar="TEST CONFIGURATION")
     parser_build.add_argument("-b", "--binary",
                               help="Conduct binary test for a package",
                               action="store_true")
