@@ -48,12 +48,8 @@ from buildtest.benchmark.hpcg import func_benchmark_hpcg_subcmd
 def menu():
     """ buildtest menu"""
 
-
-
     override_configuration()
     check_configuration()
-
-
 
     test_suite_dir = os.path.join(config_opts["BUILDTEST_TESTDIR"], "suite")
     create_dir(test_suite_dir)
@@ -242,10 +238,6 @@ Misc:
 
     # -------------------------------- run menu ----------------------------
 
-    parser_run.add_argument("-i",
-                            "--interactive",
-                            help="Run the test interactively",
-                            action="store_true")
     parser_run.add_argument("-s",
                             "--software",
                             help="Run test suite for application",
