@@ -37,10 +37,8 @@ from buildtest.tools.config import config_opts
 from buildtest.tools.file import create_dir, is_dir, walk_tree
 from buildtest.tools.log import init_log
 from buildtest.test.binarytest import generate_binary_test
-from buildtest.tools.cmake import setup_software_cmake
 from buildtest.tools.easybuild import is_easybuild_app
 from buildtest.tools.ohpc import check_ohpc
-from buildtest.tools.utility import get_appname, get_appversion
 from buildtest.tools.yaml import BuildTestYamlSingleSource
 from buildtest.tools.system import BuildTestCommand
 
@@ -161,18 +159,17 @@ class BuildTestBuilderSingleSource():
         self.yaml_dict, self.test_dict = yaml_parser.parse()
         self.verbose = args.verbose
     def build(self):
-        """ Logic to build the test script.
+        """Logic to build the test script.
 
-            This class will invoke class BuildTestYamlSingleSource to return a
-            dictionary that will contain all the information required to write
-            the test script.
+        This class will invoke class BuildTestYamlSingleSource to return a
+        dictionary that will contain all the information required to write
+        the test script.
 
-            This method will write the test script with one of the shell
-            extensions (.bash, .csh, .sh) depending on what shell was requested.
+        This method will write the test script with one of the shell
+        extensions (.bash, .csh, .sh) depending on what shell was requested.
 
-            For a job script the shell extension .lsf or .slurm will be inserted.
-            The test script will be set with 755 permission upon completion.
-
+        For a job script the shell extension .lsf or .slurm will be inserted.
+        The test script will be set with 755 permission upon completion.
         """
 
         # if this is a LSF job script then create .lsf extension for testname
@@ -182,7 +179,10 @@ class BuildTestBuilderSingleSource():
         if "slurm" in self.test_dict:
             self.testname = '%s.%s' % (os.path.basename(self.yaml),"slurm")
 
-        test_dir  = os.path.join(config_opts["BUILDTEST_TESTDIR"],"suite",self.test_suite,self.parent_dir)
+        test_dir  = os.path.join(config_opts["BUILDTEST_TESTDIR"],
+                                 "suite",
+                                 self.test_suite,
+                                 self.parent_dir)
 
 
         abs_test_path = os.path.join(test_dir,self.testname)
@@ -232,20 +232,12 @@ class BuildTestBuilderSingleSource():
 
 def func_build_system(systempkg, logger, logdir, logpath, logfile):
     """ This method implements details for "buildtest build --package" and
-        invokes method "generate_binary_test" to get all the binary tests and
-        write them in the appropriate location.
-
-
-       :param systempkg: Name of the system package
-       :param logger:
-       :param logdir:
-       :param logpath:
-       :param logfile:
-
+        invokes method "generate_binary_test" to get all the binaries and
+        write the test scripts in BUILTEST_TESTDIR.
     """
 
     system_logdir = os.path.join(logdir,"system",systempkg)
-    #setup_system_cmake()
+
     generate_binary_test(systempkg,"systempackage")
 
     create_dir(system_logdir)
@@ -261,43 +253,26 @@ def func_build_system(systempkg, logger, logdir, logpath, logfile):
 def func_build_software(args, logger, logdir, logpath, logfile):
     """ This method implements option "buildtest build -s" which is
         used for building binary test for software modules.
-
-        :param args:
-        :param logger:
-        :param logdir:
-        :param logpath:
-        :param logfile:
-
     """
 
-    config_opts["BUILDTEST_SOFTWARE"] = args.software
-
-
-    appname=get_appname()
-    appversion=get_appversion()
-
-    print("Detecting Software: ", os.path.join(appname,appversion))
+    print("Detecting Software: ", args.software)
 
     logger.debug("Generating Test from Application")
 
-    logger.debug("Software: %s", appname)
-    logger.debug("Software Version: %s", appversion)
-
-
     # check if software is an easybuild applicationa
     if config_opts["BUILDTEST_EASYBUILD"] == True:
-        is_easybuild_app()
+        is_easybuild_app(args.software)
 
-    logdir=os.path.join(logdir,appname,appversion)
+    logdir=os.path.join(logdir,args.software)
 
     # if directory tree for software log is not present, create the directory
     create_dir(logdir)
 
-    setup_software_cmake()
     if config_opts["BUILDTEST_BINARY"]:
         generate_binary_test(args.software,"software")
 
-    # moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to $BUILDTEST_LOGDIR/app/appver/tcname/tcver/buildtest_%H_%M_%d_%m_%Y.log
+    # moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to
+    # $BUILDTEST_LOGDIR/<module-name>/buildtest_%H_%M_%d_%m_%Y.log
     os.rename(logpath, os.path.join(logdir,logfile))
     logger.debug("Writing Log file to %s", os.path.join(logdir,logfile))
 
@@ -305,10 +280,10 @@ def func_build_software(args, logger, logdir, logpath, logfile):
 
 def clean_tests():
     """ cleans all the tests in BUILDTEST_TESTDIR.
-        This implements "buildtest build --clean-tests" """
+        This implements "buildtest build --clean-tests"
+    """
     try:
         shutil.rmtree(config_opts['BUILDTEST_TESTDIR'])
         print (f"Removing test directory {config_opts['BUILDTEST_TESTDIR']}")
     except OSError as err_msg:
         print(err_msg)
-

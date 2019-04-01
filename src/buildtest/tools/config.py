@@ -69,7 +69,9 @@ if not os.path.exists(BUILDTEST_CONFIG_FILE):
 fd = open(BUILDTEST_CONFIG_FILE, 'r')
 config_opts = yaml.load(fd)
 
-
+config_opts["BUILDTEST_CONFIGS_REPO"]= os.path.join(os.environ[
+                                                        "BUILDTEST_ROOT"],\
+                                       "toolkit")
 # if BUILDTEST_MODULE_ROOT is empty list then check if MODULEPATH is defined
 # and set result to BUILDTEST_MODULE_ROOT
 if len(config_opts["BUILDTEST_MODULE_ROOT"]) == 0:
@@ -93,7 +95,6 @@ logID = "buildtest"
 
 
 config_directory_types = [
-   "BUILDTEST_CONFIGS_REPO",
   "BUILDTEST_LOGDIR",
   "BUILDTEST_TESTDIR",
   "BUILDTEST_RUN_DIR",
@@ -106,7 +107,6 @@ config_yaml_keys = {
     'BUILDTEST_SHELL': type("str"),
     'BUILDTEST_SUCCESS_THRESHOLD': type(1.0),
     'BUILDTEST_MODULE_ROOT': type([]),
-    'BUILDTEST_CONFIGS_REPO': type("str"),
     'BUILDTEST_LOGDIR': type("str"),
     'BUILDTEST_TESTDIR': type("str"),
     'BUILDTEST_RUN_DIR': type("str"),

@@ -73,9 +73,6 @@ def override_configuration():
         else:
             config_opts['BUILDTEST_OHPC']=False
 
-    if os.environ.get('BUILDTEST_CONFIGS_REPO'):
-
-        config_opts['BUILDTEST_CONFIGS_REPO']=os.environ['BUILDTEST_CONFIGS_REPO']
 
     if os.environ.get('BUILDTEST_SHELL'):
         config_opts['BUILDTEST_SHELL']=os.environ['BUILDTEST_SHELL']

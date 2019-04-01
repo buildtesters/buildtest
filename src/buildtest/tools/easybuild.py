@@ -34,8 +34,6 @@ import subprocess
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import string_in_file, walk_tree
 from buildtest.tools.modules import get_module_list
-from buildtest.tools.utility import get_appname, get_appversion
-
 
 def find_easyconfigs_from_modulelist(modulelist):
     """This method returns a list of easyconfig from a list of module files."""
@@ -116,30 +114,21 @@ def find_easyconfigs():
     print (f"Total module files searched: {len(modulelist)}")
 
 
-def is_easybuild_app():
+def is_easybuild_app(name):
     """ This method returns True if an easyconfig file found in
         installation directory. """
-    app_name = get_appname()
-    app_ver = get_appversion()
 
-    modulefiles = []
-    modtrees = config_opts["BUILDTEST_MODULE_ROOT"]
-    for tree in modtrees:
-        for root, dirs, files in os.walk(tree):
-            for file in files:
-                # skipping files that are symbolic links
-                if os.path.islink(os.path.join(root,file)):
-                    continue
-
-                # only add module file to list specified by -s <app>/<version>.
-                if  (os.path.splitext(file)[0] == app_ver \
-                    and os.path.basename(root) == app_name):
-                    modulefiles.append(os.path.join(root,file))
+    """
+    TODO: Implement Easybuild Check 
+    """
 
     ec_list, no_ec_list = find_easyconfigs_from_modulelist(modulefiles)
-    # if no easyconfigs found then ec_list will be empty so we should stop and report this application is not built by easybuild. This feature can be changed in future
+    # if no easyconfigs found then ec_list will be empty so we should stop and
+    # report this application is not built by easybuild.
     if len(ec_list) == 0:
-        print ("Application: " + os.path.join(app_name,app_ver) + " is not built from Easybuild, cannot find easyconfig file in installation directory")
+        print (f"Application: {os.path.join(app_name,app_ver)} is not built "
+               f"from Easybuild, cannot find easyconfig file in installation "
+               f"directory")
         sys.exit(1)
 
     return
