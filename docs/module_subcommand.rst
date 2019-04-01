@@ -9,15 +9,17 @@ Module Options (``buildtest module --help``)
 
 ::
 
-    (buildtest) [siddis14@gorgon buildtest-framework]$ buildtest module --help
-    Check Configuration
-    usage: buildtest [options] module [-h] [--module-load-test] [--diff-trees DIFF_TREES]
+    usage: buildtest module [-h] [--module-load-test] [--diff-trees DIFF_TREES] [-a Module Tree] [-l] [-r Module Tree]
 
-    optional arguments:
-      -h, --help            show this help message and exit
-      --module-load-test    conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT
-      --diff-trees DIFF_TREES
-                            Show difference between two module trees
+   optional arguments:
+     -h, --help            show this help message and exit
+     --module-load-test    conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT
+     --diff-trees DIFF_TREES
+                           Show difference between two module trees
+     -a Module Tree        add a module tree
+     -l                    list module trees
+     -r Module Tree        remove a module tree
+
 
 
 Difference Between Module Trees (``buildtest module --diff-trees``)
@@ -76,7 +78,8 @@ in a module tree. This assumes you have the module tree in ``MODULEPATH`` in ord
 for ``module`` command to work properly.
 
 To use this feature specify the appropriate module tree for parameter ``BUILDTEST_MODULE_ROOT`` in
-``config.yaml`` or via environment variable. To use this feature you need to use ``buildtest --module-load-test``
+``config.yaml`` or via environment variable. To use this feature you need to use
+``buildtest module --module-load-test``
 
 To demonstrate let's start off with an example where we test module load for a single module tree.
 

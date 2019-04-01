@@ -1,15 +1,11 @@
-usage: buildtest [options] run [-h] [-i] [-t TEST-CHOICES] [-s SOFTWARE-TEST-SUITE] [-p PACKAGE-TEST-SUITE]
-                               [--all-software] [--all-package] [--output {yes,no}]
+usage: buildtest run [-h] [-s SOFTWARE-TEST-SUITE] [-p PACKAGE-TEST-SUITE] [-S {compilers,openmp}] [-j]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -i, --interactive     Run the test interactively
-  -t TEST-CHOICES, --testname TEST-CHOICES
-                        Run a single testscript via buildtest
   -s SOFTWARE-TEST-SUITE, --software SOFTWARE-TEST-SUITE
-                        Run test suite for application via buildtest
+                        Run test suite for application
   -p PACKAGE-TEST-SUITE, --package PACKAGE-TEST-SUITE
-                        Run test suite for system package via buildtest
-  --all-software        Run test suite for all software packages
-  --all-package         Run test suite for all system packages
-  --output {yes,no}     display output of test to console
+                        Run test suite for system package
+  -S {compilers,openmp}, --suite {compilers,openmp}
+                        Run the test suite
+  -j, --job             Submit jobs to resource scheduler

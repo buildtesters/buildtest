@@ -9,9 +9,10 @@ _______________________
 Configuration File
 --------------------
 
-To configure buildtest you will need to create a YAML file at ``$HOME/.buildtest/settings.yml``.
-This file is responsible for configuring  buildtest to work for your test system. Shown below is the
-configuration file that can be found in the git repo.
+To configure buildtest you will need to create a YAML file at
+``$HOME/.buildtest/settings.yml``. This file is responsible for configuring
+buildtest to work for your test system. Shown below is the configuration file
+that can be found in the git repo.
 
 
 **Configuration File**
@@ -28,8 +29,9 @@ Variable Description
 Adding a module tree
 ---------------------
 
-``BUILDTEST_MODULE_ROOT`` colon separated list of root of a module tree in your system. buildtest will
-read all module files and use this to figure out what modules can be tested.
+``BUILDTEST_MODULE_ROOT`` colon separated list of root of a module tree in your
+system. buildtest will read all module files and use this to figure out what
+modules can be tested.
 
 Let's assume ``/opt/apps`` and ``/workspace/apps`` are root of the module tree,
 so we can specify this in your configuration as follows::
@@ -43,51 +45,22 @@ If you want to set this as environment variable you can do the following::
 
 	export BUILDTEST_MODULE_ROOT=/opt/apps:/workspace/apps
 
-If you set an invalid directory path in ``BUILDTEST_MODULE_ROOT`` you will get the following
-message
+If you set an invalid directory path in ``BUILDTEST_MODULE_ROOT`` you will get
+the following message
 
 .. Error::
     /opt/apps directory does not exist, specified in BUILDTEST_MODULE_ROOT
     /workspace/apps directory does not exist, specified in BUILDTEST_MODULE_ROOT
 
 
-Configure Module Naming Scheme
--------------------------------
-
-To configure the module naming scheme in buildtest you can set the variable ``BUILDTEST_MODULE_NAMING_SCHEME``
-in your configuration file.
-
-**Flat Naming Scheme** is when your module names are in format ``<APP>/<VERSION>-<TOOLCHAIN>`` and all modules are under
-one tree.
-
-**Hierarchical Module Naming Scheme** is when you have nested module trees where ``MODULEPATH`` is set in some module files (compiler, mpi).
-Typically the module naming format is ``<APP>/<VERSION>``.
-
-To set flat naming scheme you can set the following::
-
-	BUILDTEST_MODULE_NAMING_SCHEME: FNS
-
-
-
-To set hierarchical module naming scheme you can set the following::
-
-	BUILDTEST_MODULE_NAMING_SCHEME: HMNS
-
-The module naming scheme is assumed to be consistent across all module trees defined in ``BUILDTEST_MODULE_ROOT``
-
-If you specify an invalid value for ``BUILDTEST_MODULE_NAMING_SCHEME`` you will get the following message
-
-.. Error::
-	BUILDTEST_MODULE_NAMING_SCHEME expects value ['HMNS', 'FNS']
-
-
 Configure Shell
 ----------------
 
-buildtest supports test creation for ``sh``, ``bash``, and ``csh``. The test are created
-with the appropriate extension. The default shell is ``sh``.
+buildtest supports test creation for ``sh``, ``bash``, and ``csh``. The test
+are created with the appropriate extension. The default shell is ``sh``.
 
-To configure the shell use the variable ``BUILDTEST_SHELL`` in your configuration file::
+To configure the shell use the variable ``BUILDTEST_SHELL`` in your
+configuration file::
 
 	BUILDTEST_SHELL: sh
 
@@ -106,23 +79,26 @@ If you specify an invalid value you may get the following message
 Clean Build
 -------------
 
-buildtest will write test in ``BUILDTEST_TESTDIR``. Often times, you may want to preserve
-tests across subsequent builds.
+buildtest will write test in ``BUILDTEST_TESTDIR``. Often times, you may want
+to preserve tests across subsequent builds.
 
-For instance you may be interested in building test for different shell and preserve all tests during the
-previous builds, this can be done by setting ``export BUILDTEST_CLEAN_BUILD=False`` or set in configuration as follows::
+For instance you may be interested in building test for different shell and
+preserve all tests during the previous builds, this can be done by setting
+``export BUILDTEST_CLEAN_BUILD=False`` or set in configuration as follows::
 
     BUILDTEST_CLEAN_BUILD: False
 
-Setting ``BUILDTEST_CLEAN_BUILD`` to ``False`` instructs buildtest to preserve build directory
-where test are written. This will allow user to keep test if they ran the following::
+Setting ``BUILDTEST_CLEAN_BUILD`` to ``False`` instructs buildtest to preserve
+build directory where test are written. This will allow user to keep test if
+they ran the following::
 
         $ buildtest build -p gcc  --shell sh
         $ buildtest build -p gcc --shell csh
         $ buildtest build -p gcc --shell bash
 
-If you want buildtest to delete the build directory before writing any tests you can set
-``export BUILDTEST_CLEAN_BUILD=True`` or set the following in configuration file::
+If you want buildtest to delete the build directory before writing any tests
+you can set ``export BUILDTEST_CLEAN_BUILD=True`` or set the following in
+configuration file::
 
     BUILDTEST_CLEAN_BUILD: True
 
@@ -132,7 +108,8 @@ Configure Test Directory
 buildtest will write test scripts in ``BUILDTEST_TESTDIR``. This can be specified
 in configuration file or environment variable.
 
-For instance you may want to set the testing directory to ``$HOME/tmp`` which can be done in configuration::
+For instance you may want to set the testing directory to ``$HOME/tmp`` which
+can be done in configuration::
 
     BUILDTEST_TESTDIR: "${HOME}/tmp/"
 
@@ -142,8 +119,8 @@ This can be done via environment variable as::
 
 
 
-If the directory does not exist, buildtest will create it assuming you have the appropriate
-permissions.
+If the directory does not exist, buildtest will create it assuming you have the
+appropriate permissions.
 
 You may specify this at the command line via ``buildtest build --testdir``
 

@@ -266,12 +266,14 @@ Misc:
                                action="store_true")
     parser_module.add_argument("--diff-trees",
                                help="Show difference between two module trees")
-    parser_module.add_argument("-a", help="add a module tree", dest="add")
+    parser_module.add_argument("-a", help="add a module tree", dest="add",
+                               metavar="Module Tree")
     parser_module.add_argument("-l", help="list module trees",
                                action="store_true", dest="list")
-    parser_module.add_argument("-r", help="remove a module trees",
+    parser_module.add_argument("-r", help="remove a module tree",
                                choices=config_opts["BUILDTEST_MODULE_ROOT"],
-                               dest="rm")
+                               dest="rm",
+                               metavar="Module Tree")
     parser_module.set_defaults(func=func_module_subcmd)
 
     # -------------------------------- show menu --------------------------

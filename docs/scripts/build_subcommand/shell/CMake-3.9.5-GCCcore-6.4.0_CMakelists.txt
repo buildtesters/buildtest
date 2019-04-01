@@ -1,8 +1,0 @@
-add_test(NAME CMake-3.9.5-GCCcore-6.4.0-which_ccmake.csh	 COMMAND  csh which_ccmake.csh	 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 
-add_test(NAME CMake-3.9.5-GCCcore-6.4.0-which_ctest.csh	 COMMAND  csh which_ctest.csh	 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 
-add_test(NAME CMake-3.9.5-GCCcore-6.4.0-which_cpack.csh	 COMMAND  csh which_cpack.csh	 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 
-add_test(NAME CMake-3.9.5-GCCcore-6.4.0-which_cmake.csh	 COMMAND  csh which_cmake.csh	 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 
-add_test(NAME CMake-3.9.5-GCCcore-6.4.0-which_ccmake.bash	 COMMAND  bash which_ccmake.bash	 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 
-add_test(NAME CMake-3.9.5-GCCcore-6.4.0-which_ctest.bash	 COMMAND  bash which_ctest.bash	 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 
-add_test(NAME CMake-3.9.5-GCCcore-6.4.0-which_cpack.bash	 COMMAND  bash which_cpack.bash	 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 
-add_test(NAME CMake-3.9.5-GCCcore-6.4.0-which_cmake.bash	 COMMAND  bash which_cmake.bash	 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 

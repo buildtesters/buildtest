@@ -1,15 +1,8 @@
-usage: buildtest [options] yaml [-h] [-p YAML-PACKAGE-CHOICES] [-s YAML-SOFTWARE-CHOICES] [--all-software]
-                                [--all-package] [-r,] [-o] [--ohpc]
+usage: buildtest yaml [-h] [--ohpc] [-m {yes,no}]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -p YAML-PACKAGE-CHOICES, --package YAML-PACKAGE-CHOICES
-                        generate YAML configuration for binary test for system package
-  -s YAML-SOFTWARE-CHOICES, --software YAML-SOFTWARE-CHOICES
-                        generate YAML configuration for binary test for software package
-  --all-software        Generate YAML configuration for all software packages
-  --all-package         Generate YAML configuration for all system packages installed
-  -r,, --rebuild        rebuild binary test yaml file even if it already exist
-  -o, --overwrite       rebuild and overwrite existing binary test yaml file
-  --ohpc                Indicate to buildtest this is a OpenHPC package. YAML files will be written in
+  --ohpc                Build YAML configuration for OpenHPC package. YAML files will be written in
                         $BUILDTEST_CONFIGS_REPO/ohpc
+  -m {yes,no}, --maintainer {yes,no}
+                        Add as maintainer to test
