@@ -132,7 +132,7 @@ def func_build_subcmd(args):
                                                    parent_dir)
             builder.build()
     if args.package:
-        func_build_system(args.package, logger, logdir, logpath, logfile)
+        func_build_system(args, logger, logdir, logpath, logfile)
     if args.software:
         func_build_software(args, logger, logdir, logpath, logfile)
 
@@ -230,21 +230,27 @@ class BuildTestBuilderSingleSource():
                 print (line)
             print ("{:_<80}".format(""))
 
-def func_build_system(systempkg, logger, logdir, logpath, logfile):
+def func_build_system(args, logger, logdir, logpath, logfile):
     """ This method implements details for "buildtest build --package" and
         invokes method "generate_binary_test" to get all the binaries and
         write the test scripts in BUILTEST_TESTDIR.
     """
 
-    system_logdir = os.path.join(logdir,"system",systempkg)
+    system_logdir = os.path.join(logdir,"system",args.package)
 
-    generate_binary_test(systempkg,"systempackage")
+    generate_binary_test(args.package,args.verbose,"systempackage")
+
 
     create_dir(system_logdir)
     logger.warning("Creating directory %s , to write log file", system_logdir)
 
     destpath = os.path.join(system_logdir,logfile)
     os.rename(logpath, destpath)
+
+    if args.verbose >= 1:
+        print (f"Creating Log Directory: {system_logdir}")
+        print (f"Renaming Log file {logpath} --> {destpath}")
+
     logger.info("Moving log file from %s to %s", logpath, destpath)
 
     print("Writing Log file to: ", destpath)
@@ -269,7 +275,7 @@ def func_build_software(args, logger, logdir, logpath, logfile):
     create_dir(logdir)
 
     if config_opts["BUILDTEST_BINARY"]:
-        generate_binary_test(args.software,"software")
+        generate_binary_test(args.software,args.verbose,"software")
 
     # moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to
     # $BUILDTEST_LOGDIR/<module-name>/buildtest_%H_%M_%d_%m_%Y.log

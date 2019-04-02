@@ -39,7 +39,7 @@ from buildtest.tools.software import get_binaries_from_application
 from buildtest.tools.system import get_binaries_from_systempackage, \
     BuildTestCommand
 
-def generate_binary_test(name,test_type=None):
+def generate_binary_test(name,verbose,test_type=None):
     """This method generates binary test. For software the modules and any
     parent modules are loaded in advance. A separate test is created for each
     binary command. Every test is written in BUILDTEST_TESTDIR in the
@@ -59,18 +59,21 @@ def generate_binary_test(name,test_type=None):
 
     logger.debug("This is a %s binary test", test_type)
 
-    print ("--------------------------------------------")
-    print ("[STAGE 1]: Building Binary Tests")
-    print ("--------------------------------------------")
     binary_tests = []
     preload_modules = ""
+
+
+
     if test_type == "software":
 
         print ("Detecting Software:" + name )
+
         binary_tests = get_binaries_from_application(name)
 
         parent_module = module_obj.get_parent_modules(name)
-
+        if verbose >= 1:
+            print(f"Parent modules for {name} are the following: " \
+                  f"{parent_module}")
         for item in parent_module:
             preload_modules += f"module try-load {item};"
 
@@ -85,6 +88,13 @@ def generate_binary_test(name,test_type=None):
         binary_tests = get_binaries_from_systempackage(name)
 
     create_dir(test_destdir)
+
+    if verbose >= 1:
+        print (f"The following binaries were found in application: {name}")
+        print (binary_tests)
+        print (f"Test Destination Directory: {test_destdir}")
+        print (f"Creating Test Destination Directory")
+
     count = 0
     shell_path =  BuildTestCommand().which(config_opts["BUILDTEST_SHELL"])[
         0]
@@ -112,7 +122,8 @@ def generate_binary_test(name,test_type=None):
 
         fd.write("which " + key)
         fd.close()
-
+        if verbose >= 1:
+            print (f"Writing Test: {testpath} and setting permission to 755")
         # setting perm to 755 on testscript
         os.chmod(testpath,
                  stat.S_IRWXU |
@@ -124,14 +135,18 @@ def generate_binary_test(name,test_type=None):
         fd=open(testpath,'r')
         content=fd.read().splitlines()
         fd.close()
-
+        if verbose >= 2:
+            print ("{:_<80}".format(""))
         logger.info("Content of test file: %s ", testpath)
         logger.info("[START TEST-BLOCK]")
         for line in content:
                 logger.info("%s", line)
-
+                if verbose >= 2:
+                    print (line)
         logger.info("[END TEST-BLOCK]")
 
+        if verbose >= 2:
+            print ("{:_<80}".format(""))
     print
     print ("Generating ", count, " binary tests")
     print ("Binary Tests are written in ", test_destdir)
