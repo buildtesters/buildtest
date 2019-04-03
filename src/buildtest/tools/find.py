@@ -47,8 +47,6 @@ def func_find_subcmd(args):
     if args.findtest:
         find_tests_by_arg(args.findtest)
 
-    sys.exit(0)
-
 def find_all_yaml_configs():
     """ This method find all yaml configuration."""
 
@@ -78,19 +76,16 @@ def find_all_tests():
                                     BUILDTEST_TEST_EXT)
     for test in test_list:
         print(test)
-    print (f'{len(test_list)} Test scripts found in " + '
+    print (f'{len(test_list)} Test scripts found in '
            f'{config_opts["BUILDTEST_TESTDIR"]}')
 
 
 def find_tests_by_arg(find_arg):
     """find all test scripts in $BUILDTEST_TESTDIR"""
-    count = 0
-
     test_list = walk_tree_multi_ext(config_opts['BUILDTEST_TESTDIR'],
                                     BUILDTEST_TEST_EXT)
     for test in test_list:
         if find_arg in os.path.basename(test):
             print(test)
-            count+=1
-    print (f"{count} Test found with name {find_arg} in its filename")
+    print (f"{len(test_list)} Test found with name {find_arg} in its filename")
 

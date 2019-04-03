@@ -104,6 +104,13 @@ class BuildTestModule():
                 software_set.add(self.module_dict[k][mod_file]["full"])
 
         return sorted(list(software_set))
+    def get_modulefile_path(self):
+        """Return a list of absolute path for all module files"""
+        module_path_list  = []
+        for k in self.get_unique_modules():
+            module_path_list += self.module_dict[k].keys()
+        return module_path_list
+
     def check_module(self,module):
         """Check if module is in list of unique_software_modules and return
         True or False"""
@@ -115,7 +122,6 @@ class BuildTestModule():
         """Get Parent module for specified module file."""
         for key in self.module_dict.keys():
             for mod_file in self.module_dict[key].keys():
-                print (key,self.module_dict[key])
                 if modname == self.module_dict[key][mod_file]["full"]:
 
                     mod_parent_list = self.module_dict[key][mod_file]["parent"]
@@ -126,43 +132,10 @@ class BuildTestModule():
                     # element
                     for entry in mod_parent_list[0].split(":")[1:]:
                         parent_module.append(entry)
+
                     return parent_module
 
         return []
-def strip_toolchain_from_module(modulename):
-    """When module file has toolchain in version remove it (ex.  Python/2.7.14-intel-2018a  should return  Python/2.7.14 )"""
-    from buildtest.tools.software import get_toolchain_stack
-
-    toolchain_stack = get_toolchain_stack()
-    toolchain_name = [name.split("/")[0] for name in toolchain_stack]
-    # get module version
-    module_version = modulename.split("/")[1]
-
-    app_name = modulename.split("/")[0]
-    # if application is a toolchain then return modulename as is without stripping toolchain
-    if app_name in toolchain_name:
-        return modulename
-    # remove any toolchain from module version when figuring path to yaml file
-    for tc in toolchain_name:
-        idx = module_version.find(tc)
-
-        if idx != -1:
-            modulename_strip_toolchain = modulename.split("/")[0] + "/" + module_version[0:idx-1]
-            return modulename_strip_toolchain
-
-def get_module_list():
-    """returns a list of modules from module tree with fullpath to module file. """
-    modulefiles = []
-    modtrees = config_opts["BUILDTEST_MODULE_ROOT"]
-    for tree in modtrees:
-        is_dir(tree)
-        for root, dirs, files in os.walk(tree):
-            for file in files:
-                # only add modules with .lua extension or files that have #%Module as part of first line
-                if file.endswith(".lua"):
-                    modulefiles.append(os.path.join(root,file))
-
-    return modulefiles
 
 def get_module_list_by_tree(mod_tree):
     """ returns a list of module file paths given a module tree """
@@ -179,27 +152,65 @@ def get_module_list_by_tree(mod_tree):
 
 module_obj = BuildTestModule()
 def module_load_test():
-    """perform module load test for all modules in BUILDTEST_MODULE_ROOT"""
+    """Perform module load test for all modules in BUILDTEST_MODULE_ROOT"""
 
-    #module_obj = BuildTestModule()
     module_stack = module_obj.get_unique_software_modules()
+    out_file = "/tmp/modules-load.out"
+    err_file = "/tmp/modules-load.err"
 
+    fd_out = open(out_file,"w")
+    fd_err = open(err_file, "w")
+    failed_modules = []
+    passed_modules = []
+    count = 0
     for mod_file in module_stack:
-        cmd = "module purge"
+        count+=1
+        cmd = "module purge; "
 
         parent_modules = module_obj.get_parent_modules(mod_file)
         for item in parent_modules:
-            cmd += "module try-load {} ".format(item)
+            cmd += "module try-load {};  ".format(item)
         cmd +=  "module load " + mod_file
 
-        ret = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-        ret.communicate()
+
+        ret = subprocess.Popen(cmd,
+                               shell=True,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+        out,err = ret.communicate()
 
         if ret.returncode == 0:
-            print ("STATUS: PASSED - Testing module: ", mod_file)
-        else:
-            print ("STATUS: FAILED - Testing module: ", mod_file)
+            msg = f"RUN: {count}/{len(module_stack)} STATUS: PASSED - " \
+                  f"Testing module: {mod_file}"
+            print (msg)
+            passed_modules.append(mod_file)
 
+            fd_out.write(msg + "\n")
+            fd_out.write(cmd + "\n")
+        else:
+            msg = f"RUN: {count}/{len(module_stack)} STATUS: FAILED - " \
+                  f"Testing module: {mod_file}"
+            print (msg)
+            failed_modules.append(mod_file)
+
+            fd_err.write(msg + "\n")
+            fd_err.write(cmd + "\n")
+
+            for line in err.decode("utf-8").splitlines():
+                fd_err.write(line)
+    fd_out.close()
+    fd_err.close()
+    print (f"Writing Results to {out_file}")
+    print (f"Writing Results to {err_file}")
+
+
+    print ("{:_<80}".format(""))
+    print ("{:>40}".format("Module Load Summary"))
+    print ("{:<40} {}".format("Module Trees:",
+                              config_opts["BUILDTEST_MODULE_ROOT"]))
+    print ("{:<40} {}".format("PASSED: ", len(passed_modules)))
+    print ("{:<40} {}".format("FAILED: ", len(failed_modules)))
+    print ("{:_<80}".format(""))
     sys.exit(0)
 
 def diff_trees(args_trees):

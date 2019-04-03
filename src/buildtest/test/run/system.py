@@ -48,7 +48,7 @@ def run_system_choices():
 def run_app_choices():
     """Generate choice field for buildtest run --software"""
     root_testdir = config_opts["BUILDTEST_TESTDIR"]
-    app_root_testdir = os.path.join(root_testdir,"ebapp")
+    app_root_testdir = os.path.join(root_testdir,"software")
 
     # if there is no directory $BUILDTEST_TESTDIR then return an empty list
     if not os.path.exists(app_root_testdir):
@@ -98,7 +98,8 @@ def run_app_test(app_name):
     test directory."""
     from buildtest.tools.run import write_system_info
 
-    app_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"ebapp")
+    app_root_testdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],
+                                    "software")
     test_destdir = os.path.join(app_root_testdir,app_name)
 
     runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")

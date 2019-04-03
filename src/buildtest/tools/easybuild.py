@@ -33,7 +33,7 @@ import subprocess
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import string_in_file, walk_tree
-from buildtest.tools.modules import get_module_list
+from buildtest.tools.modules import module_obj
 
 def find_easyconfigs_from_modulelist(modulelist):
     """This method returns a list of easyconfig from a list of module files."""
@@ -62,11 +62,12 @@ def find_easyconfigs_from_modulelist(modulelist):
                     # installation directory of an application
                     easybuild_path = os.path.join(root_path, "easybuild")
                     # if directory exist then run the find command
-                    eb_file = walk_tree(easybuild_path, ".eb")
+                    if os.path.isdir(easybuild_path):
+                        eb_file = walk_tree(easybuild_path, ".eb")
 
-                    # only add to list ec_list if there is an easyconfig file
-                    if len(eb_file) > 0:
-                        ec_list += eb_file
+                        # only add to list ec_list if there is an easyconfig file
+                        if len(eb_file) > 0:
+                            ec_list += eb_file
 
                     break
                 else:
@@ -83,8 +84,7 @@ def find_easyconfigs():
     """ This method prints the easyconfig lists in a table format and it
         implements buildtest list --easyconfigs. """
 
-
-    modulelist = get_module_list()
+    modulelist = module_obj.get_modulefile_path()
 
     ec_list,no_ec_list = find_easyconfigs_from_modulelist(modulelist)
 
