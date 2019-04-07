@@ -26,12 +26,12 @@ Variable Description
 .. include:: configuring_buildtest/buildtest-environment.txt
 
 
-Adding a module tree
----------------------
+Configuring Module Trees
+--------------------------
 
-``BUILDTEST_MODULE_ROOT`` colon separated list of root of a module tree in your
-system. buildtest will read all module files and use this to figure out what
-modules can be tested.
+``BUILDTEST_MODULE_ROOT`` takes colon separated list of root of a module tree
+ in your system that serves as module files. buildtest will read all module
+ files and use this to figure out what modules can be tested.
 
 Let's assume ``/opt/apps`` and ``/workspace/apps`` are root of the module tree,
 so we can specify this in your configuration as follows::
@@ -52,6 +52,43 @@ the following message
     /opt/apps directory does not exist, specified in BUILDTEST_MODULE_ROOT
     /workspace/apps directory does not exist, specified in BUILDTEST_MODULE_ROOT
 
+If you don't specify a module tree for BUILDTEST_MODULE_ROOT then buildtest
+will read the value of MODULEPATH.
+
+You may add,remove and list module tree.
+
+To see the list of module tree you can run ``buildtest module -l``::
+
+    $ buildtest module -l
+    /nfs/grid/software/moduledomains
+    /etc/modulefiles
+    /usr/share/modulefiles
+    /usr/share/lmod/lmod/modulefiles/Core
+
+At this time you will notice BUILDTEST_MODULE_ROOT is not set and it takes
+value of MODULEPATH::
+
+    $ cat ~/.buildtest/settings.yml  | grep -i BUILDTEST_MODULE_ROOT
+    BUILDTEST_MODULE_ROOT: []
+
+    $ echo $MODULEPATH
+    /nfs/grid/software/moduledomains:/etc/modulefiles:/usr/share/modulefiles:/usr/share/modulefiles/Linux:/usr/share/modulefiles/Core:/usr/share/lmod/lmod/modulefiles/Core
+
+
+You can add new module tree through command line using ``buildtest module
+-a`` which will update the configuration file::
+
+    $ buildtest module -a /usr/share/lmod/lmod/modulefiles/Core
+    Adding module tree: /usr/share/lmod/lmod/modulefiles/Core
+    Configuration File: /home/siddis14/.buildtest/settings.yml has been updated
+
+
+Similarly you can remove module tree from your configuration via
+``buildtest module -r``::
+
+    (siddis14-TgVBs13r) buildtest-framework[master !?] $ buildtest module -r /etc/modulefiles
+    Removing module tree: /etc/modulefiles
+    Configuration File: /home/siddis14/.buildtest/settings.yml has been updated
 
 Configure Shell
 ----------------

@@ -34,7 +34,6 @@ Installing buildtest
 To get started clone the buildtest repos in your filesystem::
 
     $ git clone git@github.com:HPC-buildtest/buildtest-framework.git
-    $ git clone git@github.com:HPC-buildtest/buildtest-configs.git
 
 
 Once you clone the repos you will want to install the python dependencies for buildtest which can be done
@@ -47,13 +46,15 @@ by running
 The `requirements.txt <https://github.com/HPC-buildtest/buildtest-framework/blob/master/docs/requirements.txt>`_ can
 be installed in your pip, virtual environment, or conda environment.
 
+To configure buildtest source the file ``sourceme.sh``::
+
+    $ source sourceme.sh
+
+
 Next you will want to create a directory ``.buildtest`` in your home directory and copy the ``settings.yml`` file::
 
     $ mkdir $HOME/.buildtest
     $ cp settings.yml $HOME/.buildtest/settings.yml
-
-
-.. Note:: Failure to copy settings.yml to ``$HOME/.buildtest/settings.yml`` will result in  an error
 
 Next, edit the ``settings.yml`` file to specify buildtest configuration, see :ref:`configuring_buildtest` for details
 on how to configure buildtest.
@@ -64,8 +65,7 @@ You may specify multiple module trees  in ``settings.yml`` using variable ``BUIL
 You may specify any of the ``BUILDTEST_*`` variables as environment variables which will 
 override values specified in  ``settings.yml``.
 
-You may want to add buildtest to your path by running ``export PATH=$PWD:$PATH`` assuming buildtest is in the current
-directory
+
 
 
 Setting up auto-complete on buildtest arguments
