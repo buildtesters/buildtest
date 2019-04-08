@@ -38,18 +38,6 @@ def override_configuration():
     if os.environ.get('BUILDTEST_TESTDIR'):
         config_opts['BUILDTEST_TESTDIR']=os.environ['BUILDTEST_TESTDIR']
 
-    # multiple directories can be set separated by ":" for
-    # BUILDTEST_MODULE_ROOT as envrionment variable
-    if os.environ.get('BUILDTEST_MODULE_ROOT'):
-
-        if os.environ.get('BUILDTEST_MODULE_ROOT').find(":") != -1:
-            mod_trees = os.environ.get('BUILDTEST_MODULE_ROOT').split(":")
-            config_opts['BUILDTEST_MODULE_ROOT'] = []
-            for tree in mod_trees:
-                config_opts['BUILDTEST_MODULE_ROOT'].append(tree)
-        else:
-            config_opts['BUILDTEST_MODULE_ROOT']=[]
-            config_opts['BUILDTEST_MODULE_ROOT'].append(os.environ['BUILDTEST_MODULE_ROOT'])
 
     if os.environ.get('BUILDTEST_EASYBUILD'):
         truth_value = strtobool(os.environ['BUILDTEST_EASYBUILD'])
