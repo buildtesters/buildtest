@@ -15,35 +15,21 @@ There are many ways you can help contribute to buildtest that may include
     2. What features you would like to have
     3. What testing capabilities matter most for you
 
-
-
-
-buildtest is composed of two repositories
-
-- `buildtest-framework`_ : buildtest framework and `documentation <https://buildtest.readthedocs.io/en/latest/>`_
-- `buildtest-configs`_ : buildtest yaml configurations and test scripts
-
-.. _buildtest-framework: https://github.com/HPC-buildtest/buildtest-framework
-.. _buildtest-configs: https://github.com/HPC-buildtest/buildtest-configs
-
-
 Reporting an Issue
 -------------------
 
 Please report all issues regarding the framework at https://github.com/HPC-buildtest/buildtest-framework/issues
 
-Any issues related to specific tests or yaml configurations  should be reported at
-https://github.com/HPC-buildtest/buildtest-configs
 
 Reference to CONTRIBUTING guides
 ---------------------------------
 
 Please see the following contributing guide for additional reference
 
- - `contributing buildtest-framework`_
+ - `Contributing To buildtest Framework`_
 
- - `contributing buildtest-configs`_
+ - `Test Contribution Guide`_
 
 
-.. _contributing buildtest-framework: https://github.com/HPC-buildtest/buildtest-framework/blob/master/CONTRIBUTING.rst
-.. _contributing buildtest-configs: https://github.com/HPC-buildtest/buildtest-configs/blob/master/CONTRIBUTING.rst
+.. _Contributing To buildtest Framework: https://github.com/HPC-buildtest/buildtest-framework/blob/master/CONTRIBUTING.rst
+.. _Test Contribution Guide: https://github.com/HPC-buildtest/buildtest-framework/blob/master/toolkit/CONTRIBUTING.rst

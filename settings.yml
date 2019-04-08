@@ -19,10 +19,7 @@ BUILDTEST_MODULE_ROOT: []
 # criteria for success threshold when running job. Valid Option: [0.0-1.0]    
 BUILDTEST_SUCCESS_THRESHOLD: 1.0
 
-# root of buildtest-configs repo
-BUILDTEST_CONFIGS_REPO:
-
-# directory where buildtest logs will be written. 
+# directory where buildtest logs will be written.
 BUILDTEST_LOGDIR: /tmp/buildtest/logs
 
 # directory where test scripts will be generated

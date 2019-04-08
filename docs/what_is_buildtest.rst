@@ -99,8 +99,3 @@ EnvironmentModules_ or Lmod_ so you can load the software environment.
 
 
 buildtest is available on Github at https://github.com/HPC-buildtest
-
-The project is divided into two repos.
-
-- https://github.com/HPC-buildtest/buildtest-framework - This repo is the framework used to drive buildtest
-- https://github.com/HPC-buildtest/buildtest-configs - This repo consist of YAML files and source code used by buildtest to generate test.
