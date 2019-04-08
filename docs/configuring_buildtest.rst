@@ -14,9 +14,6 @@ To configure buildtest you will need to create a YAML file at
 buildtest to work for your test system. Shown below is the configuration file
 that can be found in the git repo.
 
-
-**Configuration File**
-
 .. program-output:: cat scripts/configuring_buildtest/settings.yml
 
 
@@ -29,9 +26,9 @@ Variable Description
 Configuring Module Trees
 --------------------------
 
-``BUILDTEST_MODULE_ROOT`` takes colon separated list of root of a module tree
- in your system that serves as module files. buildtest will read all module
- files and use this to figure out what modules can be tested.
+**BUILDTEST_MODULE_ROOT** takes colon separated list of root of a module tree
+in your system that serves as module files. buildtest will read all module
+files and use this to figure out what modules can be tested.
 
 Let's assume ``/opt/apps`` and ``/workspace/apps`` are root of the module tree,
 so we can specify this in your configuration as follows::
@@ -40,17 +37,12 @@ so we can specify this in your configuration as follows::
         - /opt/apps
         - /workspace/apps
 
-
-If you want to set this as environment variable you can do the following::
-
-	export BUILDTEST_MODULE_ROOT=/opt/apps:/workspace/apps
-
 If you set an invalid directory path in ``BUILDTEST_MODULE_ROOT`` you will get
 the following message
 
 .. Error::
     /opt/apps directory does not exist, specified in BUILDTEST_MODULE_ROOT
-    /workspace/apps directory does not exist, specified in BUILDTEST_MODULE_ROOT
+
 
 If you don't specify a module tree for BUILDTEST_MODULE_ROOT then buildtest
 will read the value of MODULEPATH.

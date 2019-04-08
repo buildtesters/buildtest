@@ -1,19 +1,12 @@
-BUILDTEST_MODULE_NAMING_SCHEME: FNS
-BUILDTEST_EASYBUILD: False
-BUILDTEST_CLEAN_BUILD: False
-BUILDTEST_OHPC: False
-BUILDTEST_EMAIL: True
-BUILDTEST_BINARY: False
-BUILDTEST_SHELL: sh
-
+BUILDTEST_BINARY: true
+BUILDTEST_CLEAN_BUILD: false
+BUILDTEST_EASYBUILD: false
+BUILDTEST_LOGDIR: $HOME/buildtest
 BUILDTEST_MODULE_ROOT:
-    - /clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all
-    - /clust/app/easybuild/2018/commons/modules/all
-#    - /nfs/grid/software/RHEL6/chemistry
-
-BUILDTEST_SUCCESS_THRESHOLD: 1.00
-
-BUILDTEST_CONFIGS_REPO: /home/siddis14/github/buildtest-configs
-BUILDTEST_LOGDIR: /tmp/buildtest/logs
-BUILDTEST_TESTDIR: /tmp/buildtest/tests
-BUILDTEST_RUN_DIR: /tmp/buildtest/run
+- /usr/share/lmod/lmod/modulefiles/Core
+- /nfs/grid/software/moduledomains
+BUILDTEST_OHPC: false
+BUILDTEST_RUN_DIR: /tmp/buildtest
+BUILDTEST_SHELL: sh
+BUILDTEST_SUCCESS_THRESHOLD: 1.0
+BUILDTEST_TESTDIR: $HOME/buildtest

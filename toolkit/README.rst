@@ -1,50 +1,42 @@
-| |status| |versions| |downloads|
+Test Contribution
+------------------
 
-.. |status| image:: https://img.shields.io/pypi/status/buildtest-framework.svg
-.. |versions| image:: https://img.shields.io/pypi/pyversions/buildtest-framework.svg
-.. |downloads| image:: https://img.shields.io/pypi/dw/buildtest-framework.svg
+buildtest will accept community contribution on test scripts. If you are new to buildtest
+and just want to contribute your test scripts, then please add the test in
+`toolkit/contrib <https://github
+.com/HPC-buildtest/buildtest-configs/tree/master/contrib>`_ directory.
 
-buildtest
----------
+Each contributor will put their test in ``contrib/<GITUSER>`` directory which
+helps organize test by individuals and keep track of contribution in case we
+need to reach out to individual for further assistance.
 
-buildtest is a software stack testing framework that automates test creation and execution to help HPC facilities to
-better support and validate their software stack. buildtest is a central repository with collection of tests for all
-scientific software that is installed in HPC. buildtest makes use of `YAML <https://yaml.org/>`_ configuration to write
-test configuration that is reusable and adaptable to other HPC sites.
+Shown below is a directory structure for git user ``shahzebsiddiqui``
 
-To get started with buildtest see `Setup Section <https://buildtest.readthedocs.io/en/latest/setup.html>`_
+::
 
+ contrib/
+ └── shahzebsiddiqui
+     └── helloworld
+         ├── hello.sh
+         ├── hello.yml
+         └── src
+             └── hello.c
 
-buildtest-configs
-----------------------
+Inside your directory ``contrib/<GITUSER>`` create a directory name that signifies name of
+test. Any source code goes in ``src`` sub-directory and you may attach the yml configuration
+and/or test script to run the source code.
 
-**buildtest-configs** is composed of YAML configuration and source code for test scripts that will be compiled by
-buildtest. This repository is a test toolkit to conduct software testing at your HPC facility.
+You may add multiple sourcefiles, header files, and test scripts related to same test name but please
+keep the volume of files to a minimum to avoid further complexity. The team will review your contribution
+and add any changes to the core test toolkit if accepted.
 
+Review
+-------
 
-Documentation
--------------
+Someone from the **buildtest team** will review the PR and get back to you with
+the feedback. If the reviewer requests some changes, then the user is requested
+to make changes and update the branch used for sending PR
 
-buildtest `documentation <http://buildtest.readthedocs.io/en/latest/>`_  is your source for getting help with buildtest.
-If you get stuck check out the `current issues <https://github.com/HPC-buildtest/buildtest-framework/issues>`_ to see
-if you face similar issue. If all else fails please create a ticket.
-
-Slack
-------
-
-Click the `Join Slack Channel <https://hpcbuildtest.herokuapp.com/>`_ to get in touch with the buildtest community.
-If you already have an account then access the Slack Channel `here  <https://hpcbuildtest.slack.com>`_
-
-Contributing Back
--------------------
-
-We would love to get your contribution, if you are not sure check out the
-`Contribution Guide <https://buildtest.readthedocs.io/en/latest/contributing.html>`_ to get started.
-
-
-LICENSE
---------
-
-buildtest is licensed with GPLv3. See
-`LICENSE <https://github.com/HPC-buildtest/buildtest-configs/blob/master/LICENSE>`_ for more details
-
+If a PR is closed and you want to make slight adjustment, just open the PR and
+make the change in your branch. If everything looks fine and PR is merged, you
+can delete your local branch.

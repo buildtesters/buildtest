@@ -32,4 +32,4 @@ Please see the following contributing guide for additional reference
 
 
 .. _Contributing To buildtest Framework: https://github.com/HPC-buildtest/buildtest-framework/blob/master/CONTRIBUTING.rst
-.. _Test Contribution Guide: https://github.com/HPC-buildtest/buildtest-framework/blob/master/toolkit/CONTRIBUTING.rst
+.. _Test Contribution Guide: https://github.com/HPC-buildtest/buildtest-framework/blob/master/toolkit/README.rst
