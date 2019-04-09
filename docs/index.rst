@@ -25,6 +25,7 @@ Getting Started
 .. toctree::
    :maxdepth: 2
 
+   concepts.rst
    setup.rst
    configuring_buildtest.rst
    how_to_use_buildtest.rst
