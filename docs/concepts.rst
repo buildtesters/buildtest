@@ -96,8 +96,10 @@ To get a list of unique software you could run ``module -t spider``::
     Aspera-Connect/3.6.1
 
 
-In buildtest you can get this by calling ``BuildTestModules`` class and
-invoke the method ``get_unique_modules`` as shown below
+Though ``module -t spider`` gives you the output it is not the best way to
+retrieve the result but rather use the ``spider`` utility. In buildtest you
+can get this by calling ``BuildTestModules`` class and invoke the method
+``get_unique_modules`` as shown below
 
 
 .. code-block:: python
@@ -207,3 +209,139 @@ Implementation for ``get_modulefile_path()`` is described below
             for k in self.get_unique_modules():
                 module_path_list += self.module_dict[k].keys()
             return module_path_list
+
+Get Parent Modules
+~~~~~~~~~~~~~~~~~~~
+
+Parent modules are modules that need to be loaded first before loading the
+module of interest. In *Hiearchical Module Naming Scheme* you will have some
+modules that load another module tree (**MODULEPATH**) typically these are
+set in compilers, mpi, numlibs modules.
+
+Luckily ``spider`` has way to retrieve parent modules for any module
+defined by the key ``parent`` in the json object.
+
+.. code-block:: console
+    :linenos:
+    :emphasize-lines: 10-13
+
+    "/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/GCC/5.4.0-2.27/OpenMPI/2.0.0/zlib/.1.2.8.lua": {
+            "Description": "zlib is designed to be a free, general-purpose, legally unencumbered -- that is,\n not covered by any patents -- lossless data-compression library for use on virtually any\n computer hardware and operating system.",
+            "epoch": 1506614076,
+            "full": "zlib/.1.2.8",
+            "full_lower": "zlib/.1.2.8",
+            "help": "\nDescription\n===========\nzlib is designed to be a free, general-purpose, legally unencumbered -- that is,\n not covered by any patents -- lossless data-compression library for use on virtually any\n computer hardware and operating system.\n\n\nMore information\n================\n - Homepage: http://www.zlib.net/\n",
+            "markedDefault": false,
+            "name": "zlib",
+            "name_lower": "zlib",
+            "parent": [
+                "default:eb/2017:GCC/5.4.0-2.27:OpenMPI/2.0.0",
+                "default:medsci:hpc/eb-2017-core:GCC/5.4.0-2.27:OpenMPI/2.0.0"
+            ],
+            "path": "/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/GCC/5.4.0-2.27/OpenMPI/2.0.0/zlib/.1.2.8.lua",
+            "whatis": [
+                "Description: zlib is designed to be a free, general-purpose, legally unencumbered -- that is,\n not covered by any patents -- lossless data-compression library for use on virtually any\n computer hardware and operating system.",
+                "Homepage: http://www.zlib.net/"
+            ]
+        },
+
+In this example, the module ``zlib/.1.2.8`` is in a Hierarchical Tree built
+by ``GCC/5.4.0`` and ``OpenMPI/2.0.0``. The ``parent`` key is a list of
+different module combination that can be used to load this module.
+
+Shown below is one way to load ``zlib/.1.2.8`` using the first combination
+of parent modules.
+
+.. code-block:: console
+
+    buildtest-framework[master !?] $ ml
+    No modules loaded
+    buildtest-framework[master !?] $ ml eb/2017 GCC/5.4.0-2.27 OpenMPI/2.0.0 zlib/.1.2.8
+    buildtest-framework[master !?] $ ml
+
+    Currently Loaded Modules:
+      1) eb/2017          3) binutils/.2.27   5) numactl/2.0.11   7) OpenMPI/2.0.0                  9) FFTW/3.3.4                                    11) zlib/.1.2.8
+      2) GCCcore/.5.4.0   4) GCC/5.4.0-2.27   6) hwloc/1.11.3     8) OpenBLAS/0.2.19-LAPACK-3.6.0  10) ScaLAPACK/2.0.2-OpenBLAS-0.2.19-LAPACK-3.6.0
+
+We can confirm this by running the second combination to load ``zlib/.1.2.8``
+
+.. code-block:: console
+
+    (siddis14-TgVBs13r) docs[master !?] $ ml
+    No modules loaded
+    (siddis14-TgVBs13r) docs[master !?] $ ml medsci hpc/eb-2017-core GCC/5.4.0-2.27 OpenMPI/2.0.0 zlib/.1.2.8
+    (siddis14-TgVBs13r) docs[master !?] $ ml
+
+    Currently Loaded Modules:
+      1) medsci             3) GCCcore/.5.4.0   5) GCC/5.4.0-2.27   7) hwloc/1.11.3    9) OpenBLAS/0.2.19-LAPACK-3.6.0  11) ScaLAPACK/2.0.2-OpenBLAS-0.2.19-LAPACK-3.6.0
+      2) hpc/eb-2017-core   4) binutils/.2.27   6) numactl/2.0.11   8) OpenMPI/2.0.0  10) FFTW/3.3.4                    12) zlib/.1.2.8
+
+
+
+
+In buildtest we can get the parent for any module with the following code
+
+.. code-block:: python
+
+    module_name = "GCC/5.4.0-2.27"
+    module = BuildTestModule
+    parent_module = module.get_parent_modules(module_name)
+
+The method ``get_parent_modules`` returns a list of modules to be loaded for
+the specified module. In the implementation we only get the first entry of
+the ``parent`` key since it doesn't matter which parent modules are loaded.
+
+The implementation for ``get_parent_modules`` can be shown below
+
+.. code-block:: python
+
+    def get_parent_modules(self,modname):
+        """Get Parent module for specified module file."""
+        for key in self.module_dict.keys():
+            for mod_file in self.module_dict[key].keys():
+                if modname == self.module_dict[key][mod_file]["full"]:
+
+                    mod_parent_list = self.module_dict[key][mod_file]["parent"]
+                    parent_module = []
+                    # parent: is a list, only care about one entry which
+                    # contain list of modules to be loaded separated by :
+                    # First entry is default:<mod1>:<mod2> so skip first
+                    # element
+                    for entry in mod_parent_list[0].split(":")[1:]:
+                        parent_module.append(entry)
+
+                    return parent_module
+
+        return []
+
+How does buildtest leverage modules
+------------------------------------
+
+buildtest will inject modules when writing test script. When you build a test
+via yaml file, user can specify a module file via ``buildtest build -s
+<module>`` to insert module into the script.
+
+For instance, running a binary test such as the utility ``ompi_info`` from
+OpenMPI can be done as follows
+
+::
+
+    (siddis14-TgVBs13r) buildtest-framework[master !?] $ buildtest build -s  OpenMPI/2.0.0
+    Detecting Software:  OpenMPI/2.0.0
+    Detecting Software:OpenMPI/2.0.0
+    Generating  12  binary tests
+    Binary Tests are written in  /home/siddis14/buildtest/software/OpenMPI/2.0.0
+    Writing Log file:  /home/siddis14/buildtest/OpenMPI/2.0.0/buildtest_16_05_09_04_2019.log
+
+The binary test are written in ``/home/siddis14/buildtest/software/OpenMPI/2.0.0``
+and as you see the ``ompi_info.sh`` will load the parent modules before loading
+``OpenMPI/2.0.0``
+
+::
+
+    (siddis14-TgVBs13r) buildtest-framework[master !?] $ cat /home/siddis14/buildtest/software/OpenMPI/2.0.0/ompi_info.sh
+    #!/bin/sh
+
+    module try-load eb/2017;module try-load GCC/5.4.0-2.27;
+    module load OpenMPI/2.0.0
+    which ompi_info
