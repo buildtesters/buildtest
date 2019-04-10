@@ -171,7 +171,7 @@ def module_load_test():
         for item in parent_modules:
             cmd += "module try-load {};  ".format(item)
         cmd +=  "module load " + mod_file
-
+        print (cmd)
 
         ret = subprocess.Popen(cmd,
                                shell=True,
@@ -198,6 +198,7 @@ def module_load_test():
 
             for line in err.decode("utf-8").splitlines():
                 fd_err.write(line)
+        print ("{:_<80}".format(""))
     fd_out.close()
     fd_err.close()
     print (f"Writing Results to {out_file}")
