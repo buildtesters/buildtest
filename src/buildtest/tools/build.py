@@ -200,6 +200,16 @@ class BuildTestBuilderSingleSource():
             fd.write(self.test_dict["slurm"])
 
         fd.write(self.test_dict["module"])
+        cmd = "module -t list"
+        out = subprocess.getoutput(cmd)
+        # output of module -t list when no modules are loaded is "No modules
+        #  loaded"
+        if out != "No modules loaded":
+            out = out.split()
+            # module load each module
+            for i in out:
+                fd.write(f"module load {i} \n")
+
 
         if "vars" in self.test_dict:
             fd.write(self.test_dict["vars"])
