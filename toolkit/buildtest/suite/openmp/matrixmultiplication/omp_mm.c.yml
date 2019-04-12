@@ -1,7 +1,6 @@
 testblock: singlesource
-test:
-    source: omp_mm.c
-    vars:
-        OMP_NUM_THREADS: 4
-    compiler: gnu
-    ldflags: "-fopenmp"
+source: omp_mm.c
+vars:
+    OMP_NUM_THREADS: 4
+compiler: gnu
+ldflags: "-fopenmp"

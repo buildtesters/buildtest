@@ -171,6 +171,8 @@ class BuildTestBuilderSingleSource():
         For a job script the shell extension .lsf or .slurm will be inserted.
         The test script will be set with 755 permission upon completion.
         """
+        #print (self.yaml_dict)
+        #if "variants" in self.yaml_dict:
 
         # if this is a LSF job script then create .lsf extension for testname
         if "lsf" in self.test_dict:
@@ -183,9 +185,13 @@ class BuildTestBuilderSingleSource():
                                  "suite",
                                  self.test_suite,
                                  self.parent_dir)
+        create_dir(test_dir)
+        abs_test_path = os.path.join(test_dir, self.testname)
 
+        self._write_test(abs_test_path)
 
-        abs_test_path = os.path.join(test_dir,self.testname)
+    def _write_test(self,abs_test_path):
+
         print(f'Writing Test: {abs_test_path}')
         fd = open(abs_test_path, "w")
 

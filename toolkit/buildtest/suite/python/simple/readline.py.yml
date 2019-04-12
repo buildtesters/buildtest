@@ -1,6 +1,4 @@
 testblock: python
-test:
-    source: readline.py
-    input: readline.dat
-    module:
-        - python
+source: readline.py
+input: readline.dat
+

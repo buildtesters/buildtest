@@ -1,9 +1,8 @@
 testblock: singlesource
-test:
-  source: hello.cpp
-  flags: "-O2"
-  slurm:
-    mem: "200M"
-    nodes: "4" 
-    time: "01:00"
-  compiler: gnu
+source: hello.cpp
+flags: "-O2"
+slurm:
+  mem: "200M"
+  nodes: "4"
+  time: "01:00"
+compiler: gnu

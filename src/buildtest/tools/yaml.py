@@ -60,6 +60,11 @@ SUPPORTED_COMPILERS = ['gnu','intel','cuda']
 TEMPLATE_VARS = {
     'foo': 'bar'
 }
+TEMPLATE_VARIANT = [
+    {'variant': {"flags": "-O1"}},
+    {'variant': {"flags": "-O3"}},
+]
+
 TEMPLATE_SINGLESOURCE = {
     'source': "file.c",
     'input': "inputfile",
@@ -70,6 +75,10 @@ TEMPLATE_SINGLESOURCE = {
     'args': "args1 args2 args3",
     'slurm': TEMPLATE_JOB_SLURM,
     'lsf': TEMPLATE_JOB_LSF,
+    'variants': TEMPLATE_VARIANT,
+    'maintainer': [
+        "shahzeb siddiqui shahzebmsiddiqui@gmail.com"
+    ]
 }
 
 KEY_DESCRIPTION = {
@@ -132,6 +141,9 @@ class BuildTestYamlSingleSource():
         type check value. """
         mpi_keys =  None
         for k,v in dict.items():
+            # ignore key testblock
+            if k == "testblock":
+                continue
             if k not in TEMPLATE_SINGLESOURCE.keys():
                 print("Invalid Key: " + k)
                 sys.exit(1)
@@ -176,14 +188,13 @@ class BuildTestYamlSingleSource():
         testscript_dict = {}
 
         fd=open(self.yaml_file,'r')
-        content=yaml.load(fd)
+        test_dict=yaml.load(fd)
 
         if self.verbose >= 2:
             print ("{:_<80}".format(""))
-            print (yaml.dump(content,default_flow_style=False))
+            print (yaml.dump(test_dict,default_flow_style=False))
             print ("{:_<80}".format(""))
 
-        test_dict = content['test']
         self._check_keys(test_dict)
         if self.verbose >= 1:
             print (f"Key Check PASSED for file {self.yaml_file}")

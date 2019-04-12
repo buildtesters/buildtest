@@ -1,5 +1,4 @@
 testblock: singlesource
-test:
-    source: hello.cpp
-    flags: -O3
-    compiler: gnu
+source: hello.cpp
+flags: -O3
+compiler: gnu

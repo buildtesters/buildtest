@@ -1,5 +1,4 @@
 testblock: singlesource
-test:
-    source: hello_args.c
-    compiler: gnu
-    args: hello world
+source: hello_args.c
+compiler: gnu
+args: hello world
