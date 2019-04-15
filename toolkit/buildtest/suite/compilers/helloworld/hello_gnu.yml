@@ -1,4 +1,6 @@
-testblock: singlesource
-source: hello.cpp
-flags: -O3
 compiler: gnu
+flags: -O3
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+source: hello.cpp
+testblock: singlesource

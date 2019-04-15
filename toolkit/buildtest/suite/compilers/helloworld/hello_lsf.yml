@@ -1,9 +1,11 @@
-testblock: singlesource
-source: hello.c
-flags: "-O2"
-lsf:
-  M: "200M"
-  n: "4"
-  R: "sandybridge"
-  W: "01:00"
 compiler: gnu
+flags: -O2
+lsf:
+  M: 200M
+  R: sandybridge
+  W: 01:00
+  n: '4'
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+source: hello.c
+testblock: singlesource

@@ -1,3 +1,5 @@
-testblock: singlesource
-source: saxpy.cu
 compiler: cuda
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+source: saxpy.cu
+testblock: singlesource

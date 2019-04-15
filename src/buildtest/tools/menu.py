@@ -171,7 +171,8 @@ Misc:
     parser_yaml.add_argument("-m", "--maintainer",
                              help="Add as maintainer to test",
                              choices=["yes", "no"]),
-
+    parser_yaml.add_argument("config", help="configuration file",
+                             choices=yaml_choices)
     parser_yaml.set_defaults(func=func_yaml_subcmd)
 
     # -------------------------------- build menu --------------------------

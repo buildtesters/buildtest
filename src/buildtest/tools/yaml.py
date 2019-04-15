@@ -358,7 +358,6 @@ def update_maintainer(args):
 
     # if user wants to be maintainer of file
     if args.maintainer == "yes":
-
         # if user the first maintainer to file
         if "maintainer" not in content:
             content["maintainer"] = []
@@ -369,6 +368,7 @@ def update_maintainer(args):
                 print (f"Adding Maintainer: {entry} to file {args.config}")
             else:
                 print (f"{entry} is already a maintainer")
+                return
 
 
         write_fd = open(args.config, "w")
@@ -383,12 +383,19 @@ def update_maintainer(args):
             if entry in content["maintainer"]:
                 write_fd = open(args.config, "w")
                 content["maintainer"].remove(entry)
+                # if no maintainers are left after removal, then delete the
+                # key. It may be worth changing this behavior to ensure one
+                # maintainer is always present
+                if len(content["maintainer"]) == 0:
+                    del(content["maintainer"])
+
                 yaml.dump(content, write_fd, default_flow_style=False)
                 write_fd.close()
 
                 print (f"Removing Maintainer: {entry} from file {args.config}")
             else:
                 print (f"{entry} is not a maintainer of file {args.config}")
+                return
 
     print (f"----------------- FILE:{args.config} ----------------------")
     print (yaml.dump(content, default_flow_style=False))

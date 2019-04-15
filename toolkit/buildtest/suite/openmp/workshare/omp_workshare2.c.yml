@@ -1,7 +1,8 @@
-testblock: singlesource
-source: omp_workshare2.c
-vars:
-    OMP_NUM_THREADS: 4
-ldflags: "-fopenmp"
 compiler: gnu
-
+ldflags: -fopenmp
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+source: omp_workshare2.c
+testblock: singlesource
+vars:
+  OMP_NUM_THREADS: 4

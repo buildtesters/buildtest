@@ -1,6 +1,8 @@
-testblock: singlesource
-source: omp_dotprod.f
-vars:
-    OMP_NUM_THREADS: 4
 compiler: gnu
-ldflags: "-fopenmp"
+ldflags: -fopenmp
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+source: omp_dotprod.f
+testblock: singlesource
+vars:
+  OMP_NUM_THREADS: 4

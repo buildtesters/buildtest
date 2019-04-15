@@ -1,8 +1,10 @@
-testblock: singlesource
-source: hello.cpp
-flags: "-O2"
-slurm:
-  mem: "200M"
-  nodes: "4"
-  time: "01:00"
 compiler: gnu
+flags: -O2
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+slurm:
+  mem: 200M
+  nodes: '4'
+  time: 01:00
+source: hello.cpp
+testblock: singlesource
