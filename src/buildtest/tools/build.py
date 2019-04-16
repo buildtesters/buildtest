@@ -130,20 +130,21 @@ def func_build_subcmd(args):
                                                    parent_dir)
             builder.build()
 
-    if args.binary:
+    # if binary test is True then generate binary test for all loaded modules
+    if config_opts["BUILDTEST_BINARY"]:
         cmd = "module -t list"
         out = subprocess.getoutput(cmd)
         # output of module -t list when no modules are loaded is "No modules
         #  loaded"
         if out != "No modules loaded":
             out = out.split()
-
+            # for every loaded module generate binary test
             for package in out:
                 generate_binary_test(package, args.verbose, "software")
+
     if args.package:
         func_build_system(args, logger, logdir, logpath, logfile)
-    if args.software:
-        func_build_software(args, logger, logdir, logpath, logfile)
+
 
 
 def func_build_system(args, logger, logdir, logpath, logfile):
@@ -171,34 +172,6 @@ def func_build_system(args, logger, logdir, logpath, logfile):
 
     print("Writing Log file to: ", destpath)
 
-
-def func_build_software(args, logger, logdir, logpath, logfile):
-    """ This method implements option "buildtest build -s" which is
-        used for building binary test for software modules.
-    """
-
-    print("Detecting Software: ", args.software)
-
-    logger.debug("Generating Test from Application")
-
-    # check if software is an easybuild applicationa
-    if config_opts["BUILDTEST_EASYBUILD"] == True:
-        is_easybuild_app(args.software)
-
-    logdir=os.path.join(logdir,args.software)
-
-    # if directory tree for software log is not present, create the directory
-    create_dir(logdir)
-
-    if config_opts["BUILDTEST_BINARY"]:
-        generate_binary_test(args.software,args.verbose,"software")
-
-    # moving log file from $BUILDTEST_LOGDIR/buildtest_%H_%M_%d_%m_%Y.log to
-    # $BUILDTEST_LOGDIR/<module-name>/buildtest_%H_%M_%d_%m_%Y.log
-    os.rename(logpath, os.path.join(logdir,logfile))
-    logger.debug("Writing Log file to %s", os.path.join(logdir,logfile))
-
-    print ("Writing Log file: ", os.path.join(logdir,logfile))
 
 def clean_tests():
     """ cleans all the tests in BUILDTEST_TESTDIR.
