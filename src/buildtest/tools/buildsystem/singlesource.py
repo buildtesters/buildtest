@@ -26,17 +26,21 @@ The file implements the singlesource build system responsible
 import os
 import stat
 import subprocess
+import yaml
+import sys
 
 from buildtest.tools.config import config_opts
-from buildtest.tools.file import create_dir
-from buildtest.tools.yaml import BuildTestYamlSingleSource
+from buildtest.tools.file import create_dir, is_file
+from buildtest.tools.yaml import TEMPLATE_SINGLESOURCE, SUPPORTED_COMPILERS, \
+    TEMPLATE_JOB_LSF, TEMPLATE_JOB_SLURM, get_programming_language, \
+    get_compiler, lsf_key_parse, slurm_key_parse, get_environment_variable
 from buildtest.tools.system import BuildTestCommand
 
 class BuildTestBuilderSingleSource():
     """ Class responsible for building a single source test."""
     yaml_dict = {}
     test_dict = {}
-    def __init__(self,yaml,args,parent_dir):
+    def __init__(self, yaml, args, parent_dir):
         """ Entry point to class. This method will set all class variables.
 
             :param yaml: The yaml file to be processed
@@ -45,19 +49,168 @@ class BuildTestBuilderSingleSource():
             :param software_module: Name of software module to write in test script.
         """
         self.shell = config_opts["BUILDTEST_SHELL"]
-        self.yaml = yaml
-        self.testname = '%s.%s' % (os.path.basename(self.yaml),self.shell)
+        self.conf_file = yaml
+        self.testname = '%s.%s' % (os.path.basename(self.conf_file),self.shell)
         self.test_suite = args.suite
         self.parent_dir = parent_dir
-        yaml_parser = BuildTestYamlSingleSource(self.yaml,args,self.shell)
-        self.yaml_dict, self.test_dict = yaml_parser.parse()
-        self.verbose = args.verbose
-    def build(self):
-        """Logic to build the test script.
 
-        This class will invoke class BuildTestYamlSingleSource to return a
-        dictionary that will contain all the information required to write
-        the test script.
+        self.test_suite_dir = os.path.join(
+            config_opts["BUILDTEST_CONFIGS_REPO"],
+            "buildtest",
+            "suite")
+        self.srcdir = os.path.join(self.test_suite_dir,
+                                   self.test_suite,
+                                   self.parent_dir,
+                                   "src")
+        self.verbose = args.verbose
+
+        self.yaml_dict, self.test_dict = self._parse()
+
+
+    def _check_keys(self, dict):
+        """Check keys specified in YAML file with buildtest templates and
+        type check value. """
+        mpi_keys =  None
+        for k,v in dict.items():
+            # ignore key testblock
+            if k == "testblock":
+                continue
+            if k not in TEMPLATE_SINGLESOURCE.keys():
+                print("Invalid Key: " + k)
+                sys.exit(1)
+
+            # type checking against corresponding value of key in template
+            if type(v) != type(TEMPLATE_SINGLESOURCE[k]):
+                    print(f"Type mismatch for key: {k}"
+                          + f"Got Type: {str(type(v))} +  Expecting Type:"
+                          + str(type(TEMPLATE_SINGLESOURCE[k])))
+                    sys.exit(1)
+    def _check_compiler(self,compiler):
+        # check if compiler value is in list of supported compiler supported
+        if compiler not in SUPPORTED_COMPILERS:
+            print (compiler + " is not a supported compiler:")
+            sys.exit(0)
+
+    def _check_lsf(self,lsf_dict):
+        for k,v in lsf_dict.items():
+            if k not in TEMPLATE_JOB_LSF.keys():
+                print("Invalid Key: " + k)
+                sys.exit(1)
+
+            if type(v) != type(TEMPLATE_JOB_LSF[k]):
+                print(f"Type mismatch for key: {k} Got Type: {str(type(v))}"
+                      + f"Expecting Type: {str(type(TEMPLATE_JOB_LSF[k]))}" )
+                sys.exit(1)
+    def _check_slurm(self,slurm_dict):
+        for k,v in  slurm_dict.items():
+            if k not in TEMPLATE_JOB_SLURM.keys():
+                print("Invalid Key: " + k)
+                sys.exit(1)
+
+            if type(v) != type(TEMPLATE_JOB_SLURM[k]):
+                print(f"Type mismatch for key: {k} Got Type: {str(type(v))}"
+                      + f"Expecting Type: {str(type(TEMPLATE_JOB_SLURM[k]))}")
+                sys.exit(1)
+
+    def _parse(self):
+        """ Parse yaml file to determine if content follows the defined yaml
+        schema."""
+        env_vars = ""
+        testscript_dict = {}
+
+        fd=open(self.conf_file,'r')
+        test_dict=yaml.safe_load(fd)
+
+        if self.verbose >= 2:
+            print ("{:_<80}".format(""))
+            print (yaml.dump(test_dict,default_flow_style=False))
+            print ("{:_<80}".format(""))
+
+        self._check_keys(test_dict)
+        if self.verbose >= 1:
+            print (f"Key Check PASSED for file {self.conf_file}")
+
+        srcfile = os.path.join(self.srcdir,test_dict['source'])
+        is_file(srcfile)
+
+        if self.verbose >= 2:
+            print (f"Source File {srcfile} exists!")
+        ext = os.path.splitext(srcfile)[1]
+        language = get_programming_language(ext)
+        if self.verbose >= 1:
+            print (f"Programming Language Detected: {language}")
+        exec_name = '%s.exe' % test_dict['source']
+        cmd = []
+
+        if "lsf" in test_dict:
+            self._check_lsf(test_dict['lsf'])
+            if self.verbose >= 1:
+                print ("LSF Keys Passed")
+
+            testscript_dict["lsf"] = lsf_key_parse(test_dict['lsf'])
+
+        if "slurm" in test_dict:
+            self._check_slurm(test_dict['slurm'])
+            if self.verbose >= 1:
+                print ("SLURM Keys Passed")
+            testscript_dict["slurm"] = slurm_key_parse(test_dict['slurm'])
+
+        if "input" in test_dict:
+            inputfile = os.path.join(self.srcdir,test_dict['input'])
+            is_file(inputfile)
+        if "compiler" in test_dict:
+            self._check_compiler(test_dict['compiler'])
+            if self.verbose >= 1:
+                print ("Compiler Check Passed")
+            compiler_name = get_compiler(language,test_dict['compiler'])
+            cmd += [compiler_name]
+
+            if "flags" in test_dict:
+                cmd += [test_dict['flags']]
+
+            cmd += ['-o',exec_name,srcfile]
+
+            if "ldflags" in test_dict:
+                cmd += [test_dict['ldflags']]
+
+        if "input" in test_dict:
+            cmd += ["<", os.path.join(self.srcdir,inputfile) ]
+
+
+        module_str = "module purge"
+        # env_list used for storing environment variables
+        env_list = []
+        # if vars key is defined then get all environment variables
+        if "vars" in test_dict:
+            for k,v in test_dict['vars'].items():
+                if self.verbose >= 1:
+                    print (f"Detecting environment {k}={v}")
+
+                env_vars = get_environment_variable(self.shell,k,v)
+                # add each environment key=value into list
+                env_list.append(env_vars)
+
+        workdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],
+                               "suite",
+                               self.test_suite,
+                               self.parent_dir)
+        if len(env_list) > 0:
+            testscript_dict["vars"] = '\n'.join(env_list) + "\n"
+
+        testscript_dict["module"] = module_str + "\n"
+        testscript_dict["workdir"] = "cd " + workdir + "\n"
+        testscript_dict["command"] = cmd
+
+        if "args" in test_dict:
+            testscript_dict["run"] = f"./{exec_name} {test_dict['args']} \n"
+        else:
+            testscript_dict["run"] = f"./{exec_name} \n"
+
+        testscript_dict["post_run"] = f"rm ./{exec_name} \n"
+
+        return test_dict, testscript_dict
+    def build(self):
+        """This method builds the test script.
 
         This method will write the test script with one of the shell
         extensions (.bash, .csh, .sh) depending on what shell was requested.
@@ -65,15 +218,16 @@ class BuildTestBuilderSingleSource():
         For a job script the shell extension .lsf or .slurm will be inserted.
         The test script will be set with 755 permission upon completion.
         """
+
         #print (self.yaml_dict)
         #if "variants" in self.yaml_dict:
 
         # if this is a LSF job script then create .lsf extension for testname
         if "lsf" in self.test_dict:
-            self.testname = '%s.%s' % (os.path.basename(self.yaml),"lsf")
+            self.testname = '%s.%s' % (os.path.basename(self.conf_file),"lsf")
         # if this is a slurm job script then create .lsf extension for testname
         if "slurm" in self.test_dict:
-            self.testname = '%s.%s' % (os.path.basename(self.yaml),"slurm")
+            self.testname = '%s.%s' % (os.path.basename(self.conf_file),"slurm")
 
         test_dir  = os.path.join(config_opts["BUILDTEST_TESTDIR"],
                                  "suite",

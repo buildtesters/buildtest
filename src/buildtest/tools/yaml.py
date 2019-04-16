@@ -108,178 +108,13 @@ SLURM_KEY_DESC = {
     'time': ["#SBATCH --time", "time limit"],
     'constraint': ["#SBATCH --constraint", "specify a list of constraints"]
 }
-class BuildTestYamlSingleSource():
 
-    yaml_file = ""
-    def __init__(self,yaml_file,args,shell):
-
-        is_file(yaml_file)
-
-        ext = os.path.splitext(yaml_file)[1]
-
-        if ext != ".yml":
-            print("Invalid File extension: " + ext)
-            sys.exit(1)
-
-        self.yaml_file=yaml_file
-        self.test_suite = args.suite
-        self.shell = shell
-        self.parent_dir = os.path.basename(os.path.dirname(self.yaml_file))
-        self.test_suite_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
-                                           "buildtest",
-                                           "suite")
-        self.srcdir = os.path.join(self.test_suite_dir,
-                                   self.test_suite,
-                                   self.parent_dir,
-                                   "src")
-        self.software_module = args.software
-        self.verbose = args.verbose
-
-    def _check_keys(self, dict):
-        """Check keys specified in YAML file with buildtest templates and
-        type check value. """
-        mpi_keys =  None
-        for k,v in dict.items():
-            # ignore key testblock
-            if k == "testblock":
-                continue
-            if k not in TEMPLATE_SINGLESOURCE.keys():
-                print("Invalid Key: " + k)
-                sys.exit(1)
-
-            # type checking against corresponding value of key in template
-            if type(v) != type(TEMPLATE_SINGLESOURCE[k]):
-                    print(f"Type mismatch for key: {k}"
-                          + f"Got Type: {str(type(v))} +  Expecting Type:"
-                          + str(type(TEMPLATE_SINGLESOURCE[k])))
-                    sys.exit(1)
-    def _check_compiler(self,compiler):
-        # check if compiler value is in list of supported compiler supported
-        if compiler not in SUPPORTED_COMPILERS:
-            print (compiler + " is not a supported compiler:")
-            sys.exit(0)
-
-    def _check_lsf(self,lsf_dict):
-        for k,v in lsf_dict.items():
-            if k not in TEMPLATE_JOB_LSF.keys():
-                print("Invalid Key: " + k)
-                sys.exit(1)
-
-            if type(v) != type(TEMPLATE_JOB_LSF[k]):
-                print(f"Type mismatch for key: {k} Got Type: {str(type(v))}"
-                      + f"Expecting Type: {str(type(TEMPLATE_JOB_LSF[k]))}" )
-                sys.exit(1)
-    def _check_slurm(self,slurm_dict):
-        for k,v in  slurm_dict.items():
-            if k not in TEMPLATE_JOB_SLURM.keys():
-                print("Invalid Key: " + k)
-                sys.exit(1)
-
-            if type(v) != type(TEMPLATE_JOB_SLURM[k]):
-                print(f"Type mismatch for key: {k} Got Type: {str(type(v))}"
-                      + f"Expecting Type: {str(type(TEMPLATE_JOB_SLURM[k]))}")
-                sys.exit(1)
-
-    def parse(self):
-        """ Parse yaml file to determine if content follows the defined yaml
-        schema."""
-        module_str = env_vars = ""
-        testscript_dict = {}
-
-        fd=open(self.yaml_file,'r')
-        test_dict=yaml.safe_load(fd)
-
-        if self.verbose >= 2:
-            print ("{:_<80}".format(""))
-            print (yaml.dump(test_dict,default_flow_style=False))
-            print ("{:_<80}".format(""))
-
-        self._check_keys(test_dict)
-        if self.verbose >= 1:
-            print (f"Key Check PASSED for file {self.yaml_file}")
-
-        srcfile = os.path.join(self.srcdir,test_dict['source'])
-        is_file(srcfile)
-
-        if self.verbose >= 2:
-            print (f"Source File {srcfile} exists!")
-        ext = os.path.splitext(srcfile)[1]
-        language = get_programming_language(ext)
-        if self.verbose >= 1:
-            print (f"Programming Language Detected: {language}")
-        exec_name = '%s.exe' % test_dict['source']
-        cmd = []
-
-        if "lsf" in test_dict:
-            self._check_lsf(test_dict['lsf'])
-            if self.verbose >= 1:
-                print ("LSF Keys Passed")
-
-            testscript_dict["lsf"] = lsf_key_parse(test_dict['lsf'])
-
-        if "slurm" in test_dict:
-            self._check_slurm(test_dict['slurm'])
-            if self.verbose >= 1:
-                print ("SLURM Keys Passed")
-            testscript_dict["slurm"] = slurm_key_parse(test_dict['slurm'])
-
-        if "input" in test_dict:
-            inputfile = os.path.join(self.srcdir,test_dict['input'])
-            is_file(inputfile)
-        if "compiler" in test_dict:
-            self._check_compiler(test_dict['compiler'])
-            if self.verbose >= 1:
-                print ("Compiler Check Passed")
-            compiler_name = get_compiler(language,test_dict['compiler'])
-            cmd += [compiler_name]
-
-            if "flags" in test_dict:
-                cmd += [test_dict['flags']]
-
-            cmd += ['-o',exec_name,srcfile]
-
-            if "ldflags" in test_dict:
-                cmd += [test_dict['ldflags']]
-
-        if "input" in test_dict:
-            cmd += ["<", os.path.join(self.srcdir,inputfile) ]
-
-
-        module_str = "module purge"
-
-        # if vars key is defined then get all environment variables
-        if "vars" in test_dict:
-            for k,v in test_dict['vars'].items():
-                if self.verbose >= 1:
-                    print (f"Detecting environment {k}={v}")
-
-                env_vars += get_environment_variable(self.shell,k,v)
-
-
-        workdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],
-                               "suite",
-                               self.test_suite,
-                               self.parent_dir)
-
-        testscript_dict["vars"] = env_vars
-        testscript_dict["module"] = module_str + "\n"
-        testscript_dict["workdir"] = "cd " + workdir + "\n"
-        testscript_dict["command"] = cmd
-
-        if "args" in test_dict:
-            testscript_dict["run"] = f"./{exec_name} {test_dict['args']} \n"
-        else:
-            testscript_dict["run"] = f"./{exec_name} \n"
-
-        testscript_dict["post_run"] = f"rm ./{exec_name} \n"
-
-        return test_dict, testscript_dict
 def get_environment_variable(shell,key,value):
     """ get environment variable based on shell type"""
     if shell == "sh" or shell == "bash":
-        return "export %s=%s \n" %(key,value)
+        return "export %s=%s" %(key,value)
     elif shell == "csh":
-        return ("setenv %s %s \n" %(key,value))
+        return ("setenv %s %s" %(key,value))
 
 def get_compiler(language, compiler):
     """ return compiler based on language"""
@@ -323,11 +158,11 @@ def lsf_key_parse(lsf_dict):
     return lsf_str
 
 def slurm_key_parse(slurm_dict):
-    """ parse lsf keys """
-    lsf_str = ""
+    """ parse slurm keys """
+    slurm_str = ""
     for key,val in slurm_dict.items():
-        lsf_str += "#SBATCH -" + key + " " + str(val) + "\n"
-    return lsf_str
+        slurm_str += "#SBATCH -" + key + " " + str(val) + "\n"
+    return slurm_str
 
 def func_yaml_subcmd(args):
     """ entry point to _buildtest yaml """
