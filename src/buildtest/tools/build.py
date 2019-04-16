@@ -28,7 +28,7 @@ for building test scripts from yaml configuration.
 
 import os
 import shutil
-
+import subprocess
 import yaml
 
 from buildtest.tools.config import config_opts
@@ -129,6 +129,17 @@ def func_build_subcmd(args):
                                                    args,
                                                    parent_dir)
             builder.build()
+
+    if args.binary:
+        cmd = "module -t list"
+        out = subprocess.getoutput(cmd)
+        # output of module -t list when no modules are loaded is "No modules
+        #  loaded"
+        if out != "No modules loaded":
+            out = out.split()
+
+            for package in out:
+                generate_binary_test(package, args.verbose, "software")
     if args.package:
         func_build_system(args, logger, logdir, logpath, logfile)
     if args.software:

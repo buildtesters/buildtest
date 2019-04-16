@@ -59,16 +59,13 @@ def generate_binary_test(name,verbose,test_type=None):
 
     logger.debug("This is a %s binary test", test_type)
 
-    binary_tests = []
     preload_modules = ""
-
-
 
     if test_type == "software":
 
         print ("Detecting Software:" + name )
 
-        binary_tests = get_binaries_from_application(name)
+        tmp_bin_list = get_binaries_from_application(name)
 
         parent_module = module_obj.get_parent_modules(name)
         if verbose >= 1:
@@ -85,7 +82,12 @@ def generate_binary_test(name,verbose,test_type=None):
         test_destdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"system",\
                        name)
 
-        binary_tests = get_binaries_from_systempackage(name)
+        tmp_bin_list = get_binaries_from_systempackage(name)
+    binary_tests = tmp_bin_list
+
+    if binary_tests is None:
+        print (f"There are no binaries for package: {name}")
+        return
 
     create_dir(test_destdir)
 
@@ -94,6 +96,8 @@ def generate_binary_test(name,verbose,test_type=None):
         print (binary_tests)
         print (f"Test Destination Directory: {test_destdir}")
         print (f"Creating Test Destination Directory")
+
+
 
     count = 0
     shell_path =  BuildTestCommand().which(config_opts["BUILDTEST_SHELL"])[

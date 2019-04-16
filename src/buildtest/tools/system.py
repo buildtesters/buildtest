@@ -208,7 +208,7 @@ def get_binaries_from_systempackage(pkg):
 
     if len(binaries) == 0:
         print ("There are no binaries found in package: ", pkg)
-        return None
+        return []
 
     return binaries
 
