@@ -53,7 +53,7 @@ def func_module_subcmd(args):
     if args.add:
         is_dir(args.add)
         fd = open(BUILDTEST_CONFIG_FILE,"r")
-        content = yaml.load(fd)
+        content = yaml.safe_load(fd)
         fd.close()
 
         content["BUILDTEST_MODULE_ROOT"].append(args.add)
@@ -71,7 +71,7 @@ def func_module_subcmd(args):
         print (f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
     if args.rm:
         fd = open(BUILDTEST_CONFIG_FILE,"r")
-        content = yaml.load(fd)
+        content = yaml.safe_load(fd)
         content["BUILDTEST_MODULE_ROOT"].remove(args.rm)
         fd.close()
 

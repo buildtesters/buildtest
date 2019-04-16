@@ -146,7 +146,7 @@ def run_osu_microbenchmark(config):
 
     print ("Reading Yaml file: " + config + "\n")
     fd=open(config,'r')
-    content=yaml.load(fd)
+    content=yaml.safe_load(fd)
     print ("Loading YAML content \n")
     modulefile = content["benchmark"]["module"]
     num_tests = len(content["benchmark"]["test"])

@@ -31,7 +31,6 @@ import yaml
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.ohpc import check_ohpc
-from buildtest.tools.modules import module_obj
 from buildtest.tools.file import is_file
 
 
@@ -188,7 +187,7 @@ class BuildTestYamlSingleSource():
         testscript_dict = {}
 
         fd=open(self.yaml_file,'r')
-        test_dict=yaml.load(fd)
+        test_dict=yaml.safe_load(fd)
 
         if self.verbose >= 2:
             print ("{:_<80}".format(""))
@@ -339,9 +338,6 @@ def func_yaml_subcmd(args):
     if args.maintainer:
         update_maintainer(args)
 
-    sys.exit(0)
-
-
 def update_maintainer(args):
     """Update maintainer key in test configuration."""
 
@@ -353,7 +349,7 @@ def update_maintainer(args):
     entry = (f"{git_user_name} {git_user_email}")
 
     fd = open(args.config, "r")
-    content = yaml.load(fd)
+    content = yaml.safe_load(fd)
     fd.close()
 
     # if user wants to be maintainer of file

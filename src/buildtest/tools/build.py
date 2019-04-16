@@ -28,19 +28,17 @@ for building test scripts from yaml configuration.
 
 import os
 import shutil
-import sys
-import stat
-import subprocess
+
 import yaml
 
 from buildtest.tools.config import config_opts
+from buildtest.tools.buildsystem.singlesource import \
+    BuildTestBuilderSingleSource
 from buildtest.tools.file import create_dir, is_dir, walk_tree
 from buildtest.tools.log import init_log
 from buildtest.test.binarytest import generate_binary_test
 from buildtest.tools.easybuild import is_easybuild_app
 from buildtest.tools.ohpc import check_ohpc
-from buildtest.tools.yaml import BuildTestYamlSingleSource
-from buildtest.tools.system import BuildTestCommand
 
 
 def func_build_subcmd(args):
@@ -107,7 +105,7 @@ def func_build_subcmd(args):
         for file in yaml_files:
             parent_dir = os.path.basename(os.path.dirname(file))
             fd=open(file,'r')
-            content = yaml.load(fd)
+            content = yaml.safe_load(fd)
             fd.close()
             if args.verbose >= 2:
                 print (f"Loading Yaml Content from file: {file}")
@@ -123,7 +121,7 @@ def func_build_subcmd(args):
         parent_dir = os.path.basename(os.path.dirname(file))
         args.suite = os.path.basename(os.path.dirname(os.path.dirname(file)))
         fd = open(file,'r')
-        content = yaml.load(fd)
+        content = yaml.safe_load(fd)
         fd.close()
 
         if content["testblock"] == "singlesource":
@@ -136,115 +134,6 @@ def func_build_subcmd(args):
     if args.software:
         func_build_software(args, logger, logdir, logpath, logfile)
 
-    sys.exit(0)
-
-class BuildTestBuilderSingleSource():
-    """ Class responsible for building a single source test."""
-    yaml_dict = {}
-    test_dict = {}
-    def __init__(self,yaml,args,parent_dir):
-        """ Entry point to class. This method will set all class variables.
-
-            :param yaml: The yaml file to be processed
-            :param test_suite: Name of the test suite (buildtest build -S <suite>)
-            :param parent_dir: parent directory where test script will be written
-            :param software_module: Name of software module to write in test script.
-        """
-        self.shell = config_opts["BUILDTEST_SHELL"]
-        self.yaml = yaml
-        self.testname = '%s.%s' % (os.path.basename(self.yaml),self.shell)
-        self.test_suite = args.suite
-        self.parent_dir = parent_dir
-        yaml_parser = BuildTestYamlSingleSource(self.yaml,args,self.shell)
-        self.yaml_dict, self.test_dict = yaml_parser.parse()
-        self.verbose = args.verbose
-    def build(self):
-        """Logic to build the test script.
-
-        This class will invoke class BuildTestYamlSingleSource to return a
-        dictionary that will contain all the information required to write
-        the test script.
-
-        This method will write the test script with one of the shell
-        extensions (.bash, .csh, .sh) depending on what shell was requested.
-
-        For a job script the shell extension .lsf or .slurm will be inserted.
-        The test script will be set with 755 permission upon completion.
-        """
-        #print (self.yaml_dict)
-        #if "variants" in self.yaml_dict:
-
-        # if this is a LSF job script then create .lsf extension for testname
-        if "lsf" in self.test_dict:
-            self.testname = '%s.%s' % (os.path.basename(self.yaml),"lsf")
-        # if this is a slurm job script then create .lsf extension for testname
-        if "slurm" in self.test_dict:
-            self.testname = '%s.%s' % (os.path.basename(self.yaml),"slurm")
-
-        test_dir  = os.path.join(config_opts["BUILDTEST_TESTDIR"],
-                                 "suite",
-                                 self.test_suite,
-                                 self.parent_dir)
-        create_dir(test_dir)
-        abs_test_path = os.path.join(test_dir, self.testname)
-
-        self._write_test(abs_test_path)
-
-    def _write_test(self,abs_test_path):
-
-        print(f'Writing Test: {abs_test_path}')
-        fd = open(abs_test_path, "w")
-
-        # return the shell path i.e #!/bin/bash, #!/bin/sh
-        shell_path = BuildTestCommand().which(self.shell)[0]
-
-        fd.write(f'#!{shell_path}')
-
-        if "lsf" in self.test_dict:
-            fd.write(self.test_dict["lsf"])
-        if "slurm" in self.test_dict:
-            fd.write(self.test_dict["slurm"])
-
-        fd.write(self.test_dict["module"])
-        cmd = "module -t list"
-        out = subprocess.getoutput(cmd)
-        # output of module -t list when no modules are loaded is "No modules
-        #  loaded"
-        if out != "No modules loaded":
-            out = out.split()
-            # module load each module
-            for i in out:
-                fd.write(f"module load {i} \n")
-
-
-        if "vars" in self.test_dict:
-            fd.write(self.test_dict["vars"])
-
-        fd.write(self.test_dict["workdir"])
-        [ fd.write(k + " ") for k in self.test_dict["command"] ]
-        fd.write("\n")
-
-        if "run" in self.test_dict:
-            fd.write(self.test_dict["run"])
-            fd.write(self.test_dict["post_run"])
-
-        fd.close()
-        # setting perm to 755 on testscript
-        os.chmod(abs_test_path, stat.S_IRWXU |
-                                stat.S_IRGRP |
-                                stat.S_IXGRP |
-                                stat.S_IROTH |
-                                stat.S_IXOTH)
-
-        if self.verbose >= 1:
-            print (f"Changing permission to 755 for test: {abs_test_path}")
-
-        if self.verbose >= 2:
-            test_output = subprocess.getoutput(f"cat {abs_test_path}").splitlines()
-            print ("{:_<80}".format(""))
-            for line in test_output:
-                print (line)
-            print ("{:_<80}".format(""))
 
 def func_build_system(args, logger, logdir, logpath, logfile):
     """ This method implements details for "buildtest build --package" and

@@ -67,7 +67,7 @@ if not os.path.exists(BUILDTEST_CONFIG_FILE):
 
 
 fd = open(BUILDTEST_CONFIG_FILE, 'r')
-config_opts = yaml.load(fd)
+config_opts = yaml.safe_load(fd)
 
 config_opts["BUILDTEST_CONFIGS_REPO"]= os.path.join(os.environ[
                                                         "BUILDTEST_ROOT"],\
