@@ -77,6 +77,8 @@ def list_software_version_relation(args):
     """ This method implements  buildtest list -svr """
 
     module_dict = module_obj.get_module_spider_json()
+    lmod_version = module_obj.get_version()
+    major_ver = lmod_version[0]
 
     if args.format == "json":
         json.dump(module_dict, sys.stdout, indent=4, sort_keys=True)
@@ -90,9 +92,16 @@ def list_software_version_relation(args):
         for mod_name in sorted_keys:
             for mpath in module_dict[mod_name].keys():
                 count+=1
+                fullName = ""
+                if major_ver == 6:
+                    fullName = module_dict[mod_name][mpath]["full"]
+                elif major_ver == 7:
+                    fullName = module_dict[mod_name][mpath]["fullName"]
+
+
                 print ((str(count) + "\t |").expandtabs(4),
-                       "\t" + (module_dict[mod_name][mpath]["full"] + "\t |").expandtabs(
-                           40) + "\t" + module_dict[mod_name][mpath]["path"])
+                       "\t" + (fullName + "\t |").expandtabs(
+                           40) + "\t" + mpath)
 
 
         print (f"Total Software Modules: {count}")

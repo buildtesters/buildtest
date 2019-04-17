@@ -89,7 +89,8 @@ class BuildTestModule():
         cmd = f"$LMOD_DIR/spider -o spider-json {self.moduletree}"
         out = subprocess.check_output(cmd, shell=True).decode("utf-8")
         self.module_dict = json.loads(out)
-
+        version = self.get_version()
+        self.major_ver = version[0]
     def get_module_spider_json(self):
         return self.module_dict
     def get_unique_modules(self):
@@ -101,7 +102,10 @@ class BuildTestModule():
         sorted_keys = sorted(self.module_dict.keys())
         for k in sorted_keys:
             for mod_file in self.module_dict[k].keys():
-                software_set.add(self.module_dict[k][mod_file]["full"])
+                if self.major_ver == 6:
+                    software_set.add(self.module_dict[k][mod_file]["full"])
+                elif self.major_ver == 7:
+                    software_set.add(self.module_dict[k][mod_file]["fullName"])
 
         return sorted(list(software_set))
     def get_modulefile_path(self):
@@ -122,9 +126,30 @@ class BuildTestModule():
         """Get Parent module for specified module file."""
         for key in self.module_dict.keys():
             for mod_file in self.module_dict[key].keys():
-                if modname == self.module_dict[key][mod_file]["full"]:
+                mod_full_name = parent_mod_name = ""
 
-                    mod_parent_list = self.module_dict[key][mod_file]["parent"]
+                if self.major_ver == 6:
+                    mod_full_name = self.module_dict[key][mod_file]["full"]
+                elif self.major_ver == 7:
+                    mod_full_name = self.module_dict[key][mod_file]["fullName"]
+
+                if modname == mod_full_name:
+                    if self.major_ver == 6:
+                        parent_mod_name = self.module_dict[key][mod_file]["parent"]
+                    elif self.major_ver == 7:
+                        # for modules that dont have any parent the dictionary
+                        # does not declare parentAA key in Lmod 7. in that
+                        # case return empty list
+                        if "parentAA" not in self.module_dict[key][mod_file]:
+                            parent_mod_name = []
+                        # otherwise retrieve first index from parentAA.
+                        # ParentAA is a list of list
+                        else:
+                            parent_mod_name = self.module_dict[key][mod_file]["parentAA"][0]
+
+                        return parent_mod_name
+
+                    mod_parent_list = parent_mod_name
                     parent_module = []
                     # parent: is a list, only care about one entry which
                     # contain list of modules to be loaded separated by :
@@ -136,6 +161,11 @@ class BuildTestModule():
                     return parent_module
 
         return []
+    def get_version(self):
+        """Return Lmod version"""
+        cmd = os.getenv("LMOD_VERSION")
+        version = [int(v) for v in cmd.split(".")]
+        return version
 
 def get_module_list_by_tree(mod_tree):
     """ returns a list of module file paths given a module tree """
