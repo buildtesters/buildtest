@@ -9,7 +9,7 @@ tee $script_dir/buildtest-show-key.txt <<<"buildtest show -k singlesource" | bas
 
 # build Subcommand
 tee $script_dir/buildtest-build-help.txt <<<"buildtest build --help" | bash >> $script_dir/buildtest-build-help.txt
-tee $script_dir/gcc-binary-test.txt <<< "buildtest build --package gcc --testdir $HOME/tmp" | bash >> $script_dir/gcc-binary-test.txt
+tee $script_dir/custom-testdir.txt <<< "buildtest build --package gcc --testdir $HOME/tmp" | bash >> $script_dir/custom-testdir.txt
 tee $script_dir/coreutils-binary-test.txt <<<"buildtest build --package coreutils" | bash >> $script_dir/coreutils-binary-test.txt
 
 tee $script_dir/build-compilers-suite.txt <<<"buildtest build -S compilers" |bash>> $script_dir/build-compilers-suite.txt
@@ -23,6 +23,10 @@ tee $script_dir/build-shell-bash.txt <<<"BUILDTEST_SHELL=bash buildtest build -c
 
 # List Subcommand
 tee $script_dir/buildtest-list-help.txt <<<"buildtest list --help" | bash >> $script_dir/buildtest-list-help.txt
+tee $script_dir/buildtest-list-software.txt <<< "buildtest list -ls" | bash >> $script_dir/buildtest-list-software.txt
+tee $script_dir/buildtest-list-software-modules.txt <<< "buildtest list -svr" | bash >> $script_dir/buildtest-list-software-modules.txt
+tee $script_dir/buildtest-list-easyconfigs.txt <<< "buildtest list --easyconfigs" | bash >> $script_dir/buildtest-list-easyconfigs.txt
+tee $script_dir/buildtest-list-software-format.txt <<< "buildtest list -ls --format=json" | bash >> $script_dir/buildtest-list-software-format.txt
 
 # Find Subcommand
 tee $script_dir/buildtest-find-help.txt <<<"buildtest find --help" | bash >> $script_dir/buildtest-find-help.txt

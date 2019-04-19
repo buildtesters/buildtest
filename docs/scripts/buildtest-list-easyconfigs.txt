@@ -1,0 +1,512 @@
+buildtest list --easyconfigs
+List of easyconfigs found in MODULETREES: ['/clust/app/easybuild/2018/commons/modules/all', '/clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all', '/nfs/grid/software/moduledomains', '/etc/modulefiles', '/usr/share/modulefiles', '/usr/share/lmod/lmod/modulefiles/Core']
+ID   |  easyconfig path
+____ | ________________________________________________________________________________
+   1 | /clust/app/easybuild/2018/commons/software/Anaconda2/5.1.0/easybuild/Anaconda2-5.1.0.eb
+   2 | /clust/app/easybuild/2018/commons/software/Anaconda3/5.1.0/easybuild/Anaconda3-5.1.0.eb
+   3 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Autoconf/2.69-GCCcore-6.4.0/easybuild/Autoconf-2.69-GCCcore-6.4.0.eb
+   4 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Automake/1.15.1-GCCcore-6.4.0/easybuild/Automake-1.15.1-GCCcore-6.4.0.eb
+   5 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Autotools/20170619-GCCcore-6.4.0/easybuild/Autotools-20170619-GCCcore-6.4.0.eb
+   6 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/BEDTools/2.27.1-intel-2018a/easybuild/BEDTools-2.27.1-intel-2018a.eb
+   7 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/BWA/0.7.17-intel-2018a/easybuild/BWA-0.7.17-intel-2018a.eb
+   8 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/BamTools/2.5.1-intel-2018a/easybuild/BamTools-2.5.1-intel-2018a.eb
+   9 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Bison/3.0.4/easybuild/Bison-3.0.4.eb
+  10 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Bison/3.0.4-GCCcore-6.4.0/easybuild/Bison-3.0.4-GCCcore-6.4.0.eb
+  11 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Boost/1.65.1-intel-2018a-Python-2.7.14/easybuild/Boost-1.65.1-intel-2018a-Python-2.7.14.eb
+  12 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Bowtie2/2.3.4-intel-2018a/easybuild/Bowtie2-2.3.4-intel-2018a.eb
+  13 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/CMake/3.9.1-GCCcore-6.4.0/easybuild/CMake-3.9.1-GCCcore-6.4.0.eb
+  14 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/CMake/3.9.5-GCCcore-6.4.0/easybuild/CMake-3.9.5-GCCcore-6.4.0.eb
+  15 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/CP2K/5.1-intel-2018a/easybuild/CP2K-5.1-intel-2018a.eb
+  16 | /clust/app/easybuild/2018/commons/software/CUDA/9.1.85/easybuild/CUDA-9.1.85.eb
+  17 | /clust/app/easybuild/2018/commons/software/CUDA/7.5.18/easybuild/CUDA-7.5.18.eb
+  18 | /clust/app/easybuild/2018/commons/software/CUDA/8.0.61/easybuild/CUDA-8.0.61.eb
+  19 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Doxygen/1.8.13-GCCcore-6.4.0/easybuild/Doxygen-1.8.13-GCCcore-6.4.0.eb
+  20 | /clust/app/easybuild/2018/commons/software/EasyBuild/3.6.0/easybuild/EasyBuild-3.6.0.eb
+  21 | /clust/app/easybuild/2018/commons/software/EasyBuild/3.5.3/easybuild/EasyBuild-3.5.3.eb
+  22 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/FFTW/3.3.7-intel-2018a/easybuild/FFTW-3.3.7-intel-2018a.eb
+  23 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/FFTW/3.3.6-intel-2018a/easybuild/FFTW-3.3.6-intel-2018a.eb
+  24 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/FFTW/3.3.7-gompi-2018a/easybuild/FFTW-3.3.7-gompi-2018a.eb
+  25 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/FLTK/1.3.4-intel-2018a/easybuild/FLTK-1.3.4-intel-2018a.eb
+  26 | /nfs/grid/software/RHEL7/easybuild/software/Core/FLUENT/18.2/easybuild/FLUENT-18.2.eb
+  27 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/GCC/6.4.0-2.28/easybuild/GCC-6.4.0-2.28.eb
+  28 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/GCCcore/6.4.0/easybuild/GCCcore-6.4.0.eb
+  29 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/GDAL/2.2.2-intel-2018a-Python-2.7.14/easybuild/GDAL-2.2.2-intel-2018a-Python-2.7.14.eb
+  30 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/GEOS/3.6.2-intel-2018a-Python-2.7.14/easybuild/GEOS-3.6.2-intel-2018a-Python-2.7.14.eb
+  31 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/GLPK/4.61-intel-2018a/easybuild/GLPK-4.61-intel-2018a.eb
+  32 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/GLib/2.53.5-GCCcore-6.4.0/easybuild/GLib-2.53.5-GCCcore-6.4.0.eb
+  33 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/GMP/6.1.2-GCCcore-6.4.0/easybuild/GMP-6.1.2-GCCcore-6.4.0.eb
+  34 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/GROMACS/2016.5-intel-2018a/easybuild/GROMACS-2016.5-intel-2018a.eb
+  35 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/GSL/2.4-GCCcore-6.4.0/easybuild/GSL-2.4-GCCcore-6.4.0.eb
+  36 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Guile/1.8.8-GCCcore-6.4.0/easybuild/Guile-1.8.8-GCCcore-6.4.0.eb
+  37 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/HDF5/1.10.1-intel-2018a/easybuild/HDF5-1.10.1-intel-2018a.eb
+  38 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/HMMER/3.1b2-intel-2018a/easybuild/HMMER-3.1b2-intel-2018a.eb
+  39 | /clust/app/easybuild/2018/commons/software/IGV/2.3.98-Java-1.8.0_152/easybuild/IGV-2.3.98-Java-1.8.0_152.eb
+  40 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/JAGS/4.3.0-intel-2018a/easybuild/JAGS-4.3.0-intel-2018a.eb
+  41 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/JasPer/2.0.14-GCCcore-6.4.0/easybuild/JasPer-2.0.14-GCCcore-6.4.0.eb
+  42 | /clust/app/easybuild/2018/commons/software/Java/1.8.0_152/easybuild/Java-1.8.0_152.eb
+  43 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/LAMMPS/16Mar18-intel-2018a/easybuild/LAMMPS-16Mar18-intel-2018a.eb
+  44 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/LLVM/5.0.1-GCCcore-6.4.0/easybuild/LLVM-5.0.1-GCCcore-6.4.0.eb
+  45 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/LibTIFF/4.0.8-intel-2018a/easybuild/LibTIFF-4.0.8-intel-2018a.eb
+  46 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Libint/1.1.6-intel-2018a/easybuild/Libint-1.1.6-intel-2018a.eb
+  47 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/M4/1.4.18-GCCcore-6.4.0/easybuild/M4-1.4.18-GCCcore-6.4.0.eb
+  48 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/M4/1.4.17/easybuild/M4-1.4.17.eb
+  49 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/M4/1.4.18/easybuild/M4-1.4.18.eb
+  50 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Mako/1.0.7-intel-2018a-Python-2.7.14/easybuild/Mako-1.0.7-intel-2018a-Python-2.7.14.eb
+  51 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Mesa/17.2.4-intel-2018a/easybuild/Mesa-17.2.4-intel-2018a.eb
+  52 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/NAMD/2.12-intel-2018a-mpi/easybuild/NAMD-2.12-intel-2018a-mpi.eb
+  53 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/NASM/2.13.01-GCCcore-6.4.0/easybuild/NASM-2.13.01-GCCcore-6.4.0.eb
+  54 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/NLopt/2.4.2-intel-2018a/easybuild/NLopt-2.4.2-intel-2018a.eb
+  55 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/OSU-Micro-Benchmarks/5.3.2-foss-2018a/easybuild/OSU-Micro-Benchmarks-5.3.2-foss-2018a.eb
+  56 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/OpenBLAS/0.2.20-GCC-6.4.0-2.28/easybuild/OpenBLAS-0.2.20-GCC-6.4.0-2.28.eb
+  57 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/easybuild/OpenMPI-3.0.0-GCC-6.4.0-2.28.eb
+  58 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/PCRE/8.41-GCCcore-6.4.0/easybuild/PCRE-8.41-GCCcore-6.4.0.eb
+  59 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/PEAR/0.9.8-intel-2018a/easybuild/PEAR-0.9.8-intel-2018a.eb
+  60 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/PLUMED/2.4.0-intel-2018a/easybuild/PLUMED-2.4.0-intel-2018a.eb
+  61 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/PROJ/4.9.3-intel-2018a/easybuild/PROJ-4.9.3-intel-2018a.eb
+  62 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Perl/5.26.0-GCCcore-6.4.0/easybuild/Perl-5.26.0-GCCcore-6.4.0.eb
+  63 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Python/2.7.14-GCCcore-6.4.0-bare/easybuild/Python-2.7.14-GCCcore-6.4.0-bare.eb
+  64 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Python/2.7.14-GCCcore-6.4.0/easybuild/Python-2.7.14-GCCcore-6.4.0.eb
+  65 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Python/2.7.14-intel-2018a/easybuild/Python-2.7.14-intel-2018a.eb
+  66 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/R/3.4.3-intel-2018a-X11-20171023/easybuild/R-3.4.3-intel-2018a-X11-20171023.eb
+  67 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/RELION/2.1-intel-2018a/easybuild/RELION-2.1-intel-2018a.eb
+  68 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Ruby/2.5.0-intel-2018a/easybuild/Ruby-2.5.0-intel-2018a.eb
+  69 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/SAMtools/1.6-intel-2018a/easybuild/SAMtools-1.6-intel-2018a.eb
+  70 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/SQLite/3.20.1-GCCcore-6.4.0/easybuild/SQLite-3.20.1-GCCcore-6.4.0.eb
+  71 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/SQLite/3.21.0-GCCcore-6.4.0/easybuild/SQLite-3.21.0-GCCcore-6.4.0.eb
+  72 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/SWIG/3.0.12-intel-2018a-Python-2.7.14/easybuild/SWIG-3.0.12-intel-2018a-Python-2.7.14.eb
+  73 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20/easybuild/ScaLAPACK-2.0.2-gompi-2018a-OpenBLAS-0.2.20.eb
+  74 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Szip/2.1.1-GCCcore-6.4.0/easybuild/Szip-2.1.1-GCCcore-6.4.0.eb
+  75 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Tcl/8.6.7-GCCcore-6.4.0/easybuild/Tcl-8.6.7-GCCcore-6.4.0.eb
+  76 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Tcl/8.6.8-GCCcore-6.4.0/easybuild/Tcl-8.6.8-GCCcore-6.4.0.eb
+  77 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/Tk/8.6.7-intel-2018a/easybuild/Tk-8.6.7-intel-2018a.eb
+  78 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/X11/20171023-GCCcore-6.4.0/easybuild/X11-20171023-GCCcore-6.4.0.eb
+  79 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/XML-Parser/2.44_01-GCCcore-6.4.0-Perl-5.26.0/easybuild/XML-Parser-2.44_01-GCCcore-6.4.0-Perl-5.26.0.eb
+  80 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/XZ/5.2.3-GCCcore-6.4.0/easybuild/XZ-5.2.3-GCCcore-6.4.0.eb
+  81 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/binutils/2.28-GCCcore-6.4.0/easybuild/binutils-2.28-GCCcore-6.4.0.eb
+  82 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/binutils/2.28/easybuild/binutils-2.28.eb
+  83 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/bzip2/1.0.6-GCCcore-6.4.0/easybuild/bzip2-1.0.6-GCCcore-6.4.0.eb
+  84 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/cURL/7.56.1-GCCcore-6.4.0/easybuild/cURL-7.56.1-GCCcore-6.4.0.eb
+  85 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/cairo/1.14.10-GCCcore-6.4.0/easybuild/cairo-1.14.10-GCCcore-6.4.0.eb
+  86 | /clust/app/easybuild/2018/commons/software/cuDNN/7.1-CUDA-9.1.85/easybuild/cuDNN-7.1-CUDA-9.1.85.eb
+  87 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/expat/2.2.4-GCCcore-6.4.0/easybuild/expat-2.2.4-GCCcore-6.4.0.eb
+  88 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/flex/2.6.4-GCCcore-6.4.0/easybuild/flex-2.6.4-GCCcore-6.4.0.eb
+  89 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/flex/2.6.3/easybuild/flex-2.6.3.eb
+  90 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/fontconfig/2.12.4-GCCcore-6.4.0/easybuild/fontconfig-2.12.4-GCCcore-6.4.0.eb
+  91 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/foss/2018a/easybuild/foss-2018a.eb
+  92 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/freetype/2.8-GCCcore-6.4.0/easybuild/freetype-2.8-GCCcore-6.4.0.eb
+  93 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/gc/7.6.0-GCCcore-6.4.0/easybuild/gc-7.6.0-GCCcore-6.4.0.eb
+  94 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/gettext/0.19.8.1/easybuild/gettext-0.19.8.1.eb
+  95 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/gettext/0.19.8.1-GCCcore-6.4.0/easybuild/gettext-0.19.8.1-GCCcore-6.4.0.eb
+  96 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/git/2.16.1-intel-2018a/easybuild/git-2.16.1-intel-2018a.eb
+  97 | /clust/app/easybuild/2018/commons/software/git-lfs/2.4.0/easybuild/git-lfs-2.4.0.eb
+  98 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/gompi/2018a/easybuild/gompi-2018a.eb
+  99 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/gperf/3.1-GCCcore-6.4.0/easybuild/gperf-3.1-GCCcore-6.4.0.eb
+ 100 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/help2man/1.47.4/easybuild/help2man-1.47.4.eb
+ 101 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/help2man/1.47.4-GCCcore-6.4.0/easybuild/help2man-1.47.4-GCCcore-6.4.0.eb
+ 102 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/hwloc/1.11.8-GCCcore-6.4.0/easybuild/hwloc-1.11.8-GCCcore-6.4.0.eb
+ 103 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/icc/2018.1.163-GCC-6.4.0-2.28/easybuild/icc-2018.1.163-GCC-6.4.0-2.28.eb
+ 104 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/iccifort/2018.1.163-GCC-6.4.0-2.28/easybuild/iccifort-2018.1.163-GCC-6.4.0-2.28.eb
+ 105 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/ifort/2018.1.163-GCC-6.4.0-2.28/easybuild/ifort-2018.1.163-GCC-6.4.0-2.28.eb
+ 106 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/iimpi/2018a/easybuild/iimpi-2018a.eb
+ 107 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/imkl/2018.1.163-iimpi-2018a/easybuild/imkl-2018.1.163-iimpi-2018a.eb
+ 108 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/easybuild/impi-2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28.eb
+ 109 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/intel/2018a/easybuild/intel-2018a.eb
+ 110 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/intltool/0.51.0-GCCcore-6.4.0-Perl-5.26.0/easybuild/intltool-0.51.0-GCCcore-6.4.0-Perl-5.26.0.eb
+ 111 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libGLU/9.0.0-intel-2018a/easybuild/libGLU-9.0.0-intel-2018a.eb
+ 112 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libdrm/2.4.88-GCCcore-6.4.0/easybuild/libdrm-2.4.88-GCCcore-6.4.0.eb
+ 113 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libffi/3.2.1-GCCcore-6.4.0/easybuild/libffi-3.2.1-GCCcore-6.4.0.eb
+ 114 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libjpeg-turbo/1.5.2-GCCcore-6.4.0/easybuild/libjpeg-turbo-1.5.2-GCCcore-6.4.0.eb
+ 115 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libmatheval/1.1.11-GCCcore-6.4.0/easybuild/libmatheval-1.1.11-GCCcore-6.4.0.eb
+ 116 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libpng/1.6.32-GCCcore-6.4.0/easybuild/libpng-1.6.32-GCCcore-6.4.0.eb
+ 117 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libreadline/7.0-GCCcore-6.4.0/easybuild/libreadline-7.0-GCCcore-6.4.0.eb
+ 118 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libsndfile/1.0.28-GCCcore-6.4.0/easybuild/libsndfile-1.0.28-GCCcore-6.4.0.eb
+ 119 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libtool/2.4.6-GCCcore-6.4.0/easybuild/libtool-2.4.6-GCCcore-6.4.0.eb
+ 120 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libunistring/0.9.7-GCCcore-6.4.0/easybuild/libunistring-0.9.7-GCCcore-6.4.0.eb
+ 121 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libxc/3.0.1-intel-2018a/easybuild/libxc-3.0.1-intel-2018a.eb
+ 122 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libxml2/2.9.4-GCCcore-6.4.0/easybuild/libxml2-2.9.4-GCCcore-6.4.0.eb
+ 123 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/libxsmm/1.8.3-intel-2018a/easybuild/libxsmm-1.8.3-intel-2018a.eb
+ 124 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/ncurses/6.0-GCCcore-6.4.0/easybuild/ncurses-6.0-GCCcore-6.4.0.eb
+ 125 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/ncurses/6.0/easybuild/ncurses-6.0.eb
+ 126 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/netCDF/4.5.0-intel-2018a/easybuild/netCDF-4.5.0-intel-2018a.eb
+ 127 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/netCDF-Fortran/4.4.4-intel-2018a/easybuild/netCDF-Fortran-4.4.4-intel-2018a.eb
+ 128 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/nettle/3.3-GCCcore-6.4.0/easybuild/nettle-3.3-GCCcore-6.4.0.eb
+ 129 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/numactl/2.0.11-GCCcore-6.4.0/easybuild/numactl-2.0.11-GCCcore-6.4.0.eb
+ 130 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/pixman/0.34.0-GCCcore-6.4.0/easybuild/pixman-0.34.0-GCCcore-6.4.0.eb
+ 131 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/pkg-config/0.29.2-GCCcore-6.4.0/easybuild/pkg-config-0.29.2-GCCcore-6.4.0.eb
+ 132 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/tbb/2018_U2-intel-2018a/easybuild/tbb-2018_U2-intel-2018a.eb
+ 133 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/util-linux/2.31-GCCcore-6.4.0/easybuild/util-linux-2.31-GCCcore-6.4.0.eb
+ 134 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/xorg-macros/1.19.2-intel-2018a/easybuild/xorg-macros-1.19.2-intel-2018a.eb
+ 135 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/xprop/1.2.3-intel-2018a/easybuild/xprop-1.2.3-intel-2018a.eb
+ 136 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/zlib/1.2.11/easybuild/zlib-1.2.11.eb
+ 137 | /clust/app/easybuild/2018/Broadwell/redhat/7.3/software/zlib/1.2.11-GCCcore-6.4.0/easybuild/zlib-1.2.11-GCCcore-6.4.0.eb
+
+
+Unable to find easyconfigs for the following, please investigate this issue! 
+
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/20140726 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/2015-workaround Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/20150316 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/2016-01-x64 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/3212u1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/R/3.1.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/R/3.2.3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/R/3.1.3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/R/3.1.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/R/2.15.3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/R/3.2.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/RHEL6-apps.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/aaron/0.8 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/acellera/latest Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/acemd/3212u3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/acl/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/acl/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/acl/current+intel-15.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/adxv/1.9.10 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/agdock/intel Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/agdock/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/alientrimmer/0.4.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/allosmod/git Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/amber/14+intel-14.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/amber/18 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/amber/14+gcc-4.8+cuda-6.0.37 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/amber/14+gcc-4.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/amber/14+gcc-4.8+cuda-6.5.14 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/amber/tools17 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/amber/14 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/amber2gromacs/0.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/amberTools/17 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/anaconda2/4.2.0-chemistry Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/anaconda3/4.2.0-chemistry Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/anaconda3/3.6.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/anaconda3/3.6.6 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/apache-ant/1.9.7 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/apbs/1.4.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/aria2/1.26.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/arp/7.3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/atompair/dev Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/atompair/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/autodock/vina-1.1.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/bam2x/0.2.5 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/bamutil/1.0.13 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/bats/git Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/bcftools/1.3.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/beagle/4.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/biki/1.3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/blast/2.2.29+ Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/bomb/2.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/bomb/0615 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/boss/0615 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/boss/4.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/bowtie/1.1.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/bwa/0.7.12 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/ccp4/6.5 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/ccp4/7.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/ccp4/6.4.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/cctsoft Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/cellprofiler/2.1.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/chimera/20150612-osmesa Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/chimera/20150611 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/chimera/1.10.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/clinpharm Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/clustalw/2.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/cmake/3.0.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/cmake/3.9.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/corina/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/corina/4.02 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/corina/3.491 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/corina/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/corina_util/20141112 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/cosmotherm/2014 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/cp2k/4.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/cp2k/3.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/csdPythonApi/2018 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/csdPythonApi/0.7 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/csds/2015 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/csds/2015-update1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/csds/2014 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/csds/2018 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/csds/2016-x64 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/csds/2015-x64 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/cstools/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/ctf/140609 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/curp/1.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/dejavu/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/deprecated Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/discoverystudio/ds41-client Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/dragon/6.0.40 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/dragon/7.0.10 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/dssp/2.2.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/dynamicpfido/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/easybuild Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/eb/2017.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/eb/2018.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/fastx/0.0.13 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/ffmpeg/3.2.4-n6ulc43.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/software/spack/dev/share/spack/lmod/linux-rhel7-x86_64/openmpi/3.1.3-bs5h3cj/Core/fftw/3.3.8-67xoq34.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/fftw/3.3.7 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/flap/2.1.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/flap/test Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/flap/2.1.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/forge/10.4.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/fpocket/2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/ftrees/2.4.5 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/gaussian/g16.a03.sse4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gaussian/g16.a03.legacy Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/gaussian/g16.a03.legacy Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gaussian/g16.a03.avx Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gaussian/g16.a03.avx2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gaussian/g09.d01.em64t.sse4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gaussian/g16.a03.sse4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/gaussian/g16.a03.avx Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/gaussian/g16.a03.avx2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/gcc/4.9.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/gcc/4.8 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/gcc/6.4.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/gcc/4.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/gcc/4.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/gcc/5.2.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/globalOpt/0.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/goldsuite/5.2.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/goldsuite/5.3.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/goldsuite/5.3.0-x64 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gphl/20160708 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/gphl/20170508 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/grace/5.1.25 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/grace/5.1.25 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/grid/22c Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gromacs/4.6.6+gcc-4.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gromacs/5.0.6+intel-14.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/gromacs/2016.3+rhel-7.3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/software/spack/dev/share/spack/lmod/linux-rhel7-x86_64/openmpi/3.1.3-bs5h3cj/Core/gromacs/2018.1-orqoszc.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/gromacs/2018.1-orqoszc.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/gromacs/5.0.7 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/gromacs/4.6.7 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/gromacs/2016.3+intel-16.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gromacs/5.1.0+intel-14.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gromacs/4.6.5+intel-14.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gromacs/4.6.6+intel-14.0+needham Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/gromacs/2018.1.plumed Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/gromacs/2018.4-45ev4jn.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/software/spack/dev/share/spack/lmod/linux-rhel7-x86_64/openmpi/3.1.3-bs5h3cj/Core/gromacs/2018.4-unxhn3r.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/gromacs/4.6.6+intel-14.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/hdf5/1.8.15 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/hkl2000/706e Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/hpc/eb-2017-core.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/hpcc/tools Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/hpcc-modulenv-setup Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/htslib/1.3.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/htslib/1.3.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/icm/3.8 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/ipe/gamma Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/ipe/0.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/ipe/beta Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/java/1.8.0_45 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/java/1.8.0_40 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/java/1.8.0_72 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/java/1.8.0_101 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/java/1.7.0_60 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/java/1.6.0_45 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/java/1.7.0_79 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/jellyfish/2.2.6 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/jmol/14.2.15 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/jupyter/4.1.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/kallisto/0.42.5 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/knime/2.10.4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/lammps/18Oct14+gcc-4.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/lammps/28June14+gcc-4.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/lapack/3.8.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/libxml2/2.9.7 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/ligandscout/20171108 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/ligandscout/4.09.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/ligandscout/4.09.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/ljmedchemsoft Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /usr/share/lmod/lmod/modulefiles/Core/lmod/6.5.1.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/log-module-usage Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/lsf/.9.1+hpc3t Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/lsf/.9.1+hpcc1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/lsf/.9.1+hpc1p Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/lsf/foo.tcl Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/materialsStudio/2017 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/materialsStudio/8.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/matlab/R2017a.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/matlab/R2010b Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/mcpro/3.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/mcpro/0817 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/mcpro/0615 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/mcpro/2.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/mcpro-REST/0615 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/medsci Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/mgltools/1.5.6 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/modeller/9.16 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/modeller/9.18 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/moe/2016-08 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/cct/moe/afs-2011.10 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/moe/2014-09 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/moe/2016-08 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/moe/2015-10 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/cct/moe/afs-2010.10 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/moe/2013-0802 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/moe/2014-0901 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/cct/moe/afs-2012.10 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/cct/moe/afs-2013.08 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/moe/2015-1001 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/mogulbuilder/1.6 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/moka/3.1.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/moka/2.6.6 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/moka/3.0.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/moka/2.6.6 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/moka/3.2.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/moka/3.2.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/moltbx/4.1-537 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/motioncorr/2.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/motioncorr/1.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/movit/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/mpich/3.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/mpich2/1.2.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/muscle/3.8.31 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/mutinf/20140715 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/namd/2.10-intel Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/namd/2.9-intel Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/netcdf/4.3.3.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/netcdf/4.4.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/numdiff/5.8.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/oic/12_1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/omics Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/openBabel/2.4.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/openbabel/20160621 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/openbabel/2.3.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/openeye/2016 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/openeye/2014.06.04 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/openeye/2018 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/openeyetk/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/openmm/6.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/openmpi/.3.1.3-bs5h3cj.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/openmpi/1.4.3+gcc-5.2.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/openmpi/1.8.1+gcc-4.8 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/openmpi/1.10.1+gcc-5.2.0+ofed3.1.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/openmpi/1.8.1+gcc-4.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/openmpi/1.10.0+gcc-5.2.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/openmpi/1.8.4+gcc-4.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/openmpi/2.1.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/openms/1.11.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/optipng/0.7.7 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/oracle-instantclient/11.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/oracle-instantclient/12.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/oracleclient/12.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/packmol/1.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/parallel/20140922 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/pcat/6.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/pcat/6.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/pcat/5.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/pcat/6.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/pcat/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/pcre/8.35 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/pear/0.9.10 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/perl/5.20.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/perl/5.24.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/perl64bit/5.26.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/pharmsci Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/phenix/dev1999 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/phenix/dev1833 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/pigz/2.3.3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/software/spack/dev/share/spack/lmod/linux-rhel7-x86_64/openmpi/3.1.3-bs5h3cj/Core/plumed/2.4.2-kgdtnfu.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/plumed/2.4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/postgresql/9.3.4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/postgresql/9.4.4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/profit/3.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/psi4/1.0.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/ptools/2.3.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/ptools/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/ptools/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/pycharm/4.5.4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/pycharm/2016.1.4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/pylsfjob/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/pymol/1.7.6.3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/pymol/1.7.4.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/pymol/1.8.2.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/pymol/1.7.0.3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/pymol/1.7.2.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/python/anaconda-2.0.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/python/anaconda-4.0.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/python/2.7.8 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/python/anaconda-2.2.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/python3/anaconda3-2.0.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/python3/anaconda3-2.3.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/python3/3.4.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/qe/5.3.0 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/qt/4.8.6 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/quantumEspresso/6.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/rdkit/2015.03.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/rdock/2013.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/relion/1.4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/relion/1.3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/resmap/1.1.4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/rosetta/2015.35.58091 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/rstudio/0.98.1103 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/ru Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/ruby/2.2.4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/ruby/2.2.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/samtools/1.3.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/scalapack/2.0.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/scalpel/0.5.3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/schrodinger/adv-2017-3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2014-4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2015-1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2016-4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2016-2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/schrodinger/adv-2016-3-preview-autots Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2016-3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/schrodinger/ws-2014-12-15 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/schrodinger/adv-2017-4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/cct/schrodinger/afs-2012-u2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/schrodinger/ws-2014-3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/schrodinger/adv-2017-2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2014-3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/cct/schrodinger/afs-2011-u1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2015-3 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2014-1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/cct/schrodinger/afs-2013-2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2016-1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2014-2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2015-4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/schrodinger/adv-2018-1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/schrodinger/adv-2015-2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/schrodinger/adv-2017-1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/schrodinger/mp-2014-4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/scons/2.4.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/seaview/4.5.4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /usr/share/lmod/lmod/modulefiles/Core/settarg/6.5.1.lua Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/shelx/2005 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/silcsbio/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/siterestricted Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/smina/apr292017 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/somatic-sniper/1.0.4 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/sqlite/3081002 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/star/2.5 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/statistics Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/subversion/1.8.13 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/superstar/2.1.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/superstar/2.1.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/swig/3.0.10 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/pharmsci/modulefiles/pharmsci/swig/3.0.12 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/tcl/8.6.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/deprecated/tcl/8.4.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/omics/template Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/terachem/1.5K Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/terachem/1.93P Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/terachem/1.9 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL7/medsci/modules/all/tinker/8.1.2 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/tmolex/4.11 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/turbomole/7.02 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/turbomole/66 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/upsalla/current Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/general/use.own Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/use.own.eb/append Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/moduledomains/use.own.eb/prepend Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/usearch/8.1.1861 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/vmd/1.9.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/volsurf/1.0.7.1 Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/hpcc/hpcmodfiles/cct/volsurf/afs-1.0.7.d Unable to find variable root in module file. This module is not generated by easybuild
+Reading File: /nfs/grid/software/RHEL6/chemistry/xds/20120315 Unable to find variable root in module file. This module is not generated by easybuild
+Total easyconfigs found:137
+Total module files searched: 823

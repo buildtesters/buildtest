@@ -6,6 +6,17 @@ buildtest find -ft all
 /home/siddis14/buildtest/software/bzip2/1.0.6-GCCcore-6.4.0/bzdiff.sh
 /home/siddis14/buildtest/software/bzip2/1.0.6-GCCcore-6.4.0/bunzip2.sh
 /home/siddis14/buildtest/software/bzip2/1.0.6-GCCcore-6.4.0/bzgrep.sh
+/home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/orterun.sh
+/home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/ompi_info.sh
+/home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/opal_wrapper.sh
+/home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/oshmem_info.sh
+/home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/orte-top.sh
+/home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/orte-dvm.sh
+/home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/orte-info.sh
+/home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/orted.sh
+/home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/orte-clean.sh
+/home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/orte-ps.sh
+/home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/orte-server.sh
 /home/siddis14/buildtest/software/OpenMPI/2.0.0/orterun.sh
 /home/siddis14/buildtest/software/OpenMPI/2.0.0/ompi_info.sh
 /home/siddis14/buildtest/software/OpenMPI/2.0.0/opal_wrapper.sh
@@ -350,6 +361,12 @@ buildtest find -ft all
 /home/siddis14/buildtest/software/Anaconda3/5.1.0/tiffinfo.sh
 /home/siddis14/buildtest/software/Anaconda3/5.1.0/pngfix.sh
 /home/siddis14/buildtest/software/Anaconda3/5.1.0/qmleasing.sh
+/home/siddis14/buildtest/software/numactl/2.0.11-GCCcore-6.4.0/migspeed.sh
+/home/siddis14/buildtest/software/numactl/2.0.11-GCCcore-6.4.0/memhog.sh
+/home/siddis14/buildtest/software/numactl/2.0.11-GCCcore-6.4.0/migratepages.sh
+/home/siddis14/buildtest/software/numactl/2.0.11-GCCcore-6.4.0/numactl.sh
+/home/siddis14/buildtest/software/numactl/2.0.11-GCCcore-6.4.0/numademo.sh
+/home/siddis14/buildtest/software/numactl/2.0.11-GCCcore-6.4.0/numastat.sh
 /home/siddis14/buildtest/software/binutils/2.28-GCCcore-6.4.0/ar.sh
 /home/siddis14/buildtest/software/binutils/2.28-GCCcore-6.4.0/gprof.sh
 /home/siddis14/buildtest/software/binutils/2.28-GCCcore-6.4.0/ld.bfd.sh
@@ -406,6 +423,21 @@ buildtest find -ft all
 /home/siddis14/buildtest/software/GCCcore/6.4.0/x86_64-pc-linux-gnu-gcc-6.4.0.csh
 /home/siddis14/buildtest/software/GCCcore/6.4.0/gcov-dump.sh
 /home/siddis14/buildtest/software/GCCcore/6.4.0/gcov-tool.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-ps.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-info.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-distances.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-assembler.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-diff.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-dump-hwdata.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/lstopo-no-graphics.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-compress-dir.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-calc.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-distrib.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-assembler-remote.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-annotate.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-gather-topology.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-bind.sh
+/home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0/hwloc-patch.sh
 /home/siddis14/buildtest/system/gcc/_usr_bin_gcc-nm.sh
 /home/siddis14/buildtest/system/gcc/_usr_bin_gcc-ranlib.sh
 /home/siddis14/buildtest/system/gcc/_usr_bin_x86_64-redhat-linux-gcc.sh
@@ -541,8 +573,8 @@ buildtest find -ft all
 /home/siddis14/buildtest/suite/openmp/reduction/omp_reduction.f.yml.sh
 /home/siddis14/buildtest/suite/cuda/saxpy/flags_saxpy.cu.yml.sh
 /home/siddis14/buildtest/suite/cuda/saxpy/saxpy.cu.yml.sh
-542 Test scripts found in /home/siddis14/buildtest
+574 Test scripts found in /home/siddis14/buildtest
 /home/siddis14/buildtest/software/Anaconda3/5.1.0/easy_install.sh
 /home/siddis14/buildtest/software/Anaconda3/5.1.0/easy_install-3.6.sh
 /home/siddis14/buildtest/system/coreutils/_usr_bin_install.sh
-542 Test found with name all in its filename
+574 Test found with name all in its filename

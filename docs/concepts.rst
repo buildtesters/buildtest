@@ -66,6 +66,8 @@ like this::
     }
 
 
+.. Note:: Please note the output above is from Lmod 6, there are slight difference in the format in Lmod 7 that we will discuss later
+
 In buildtest this is handled by class ``BuildTestModule``. The spider output
 returns a dictionary that contains details of all modules based on MODULEPATH,
 along with full path to module files, and the metadata for a module.
@@ -162,14 +164,53 @@ The implementation of ``get_unique_software_modules()`` is shown below
 .. code-block:: python
 
         def get_unique_software_modules(self):
-            """Return a set with list of unique software module names"""
-            software_set = set()
-            sorted_keys = sorted(self.module_dict.keys())
-            for k in sorted_keys:
-                for mod_file in self.module_dict[k].keys():
+        """Return a set with list of unique software module names"""
+        software_set = set()
+        sorted_keys = sorted(self.module_dict.keys())
+        for k in sorted_keys:
+            for mod_file in self.module_dict[k].keys():
+                if self.major_ver == 6:
                     software_set.add(self.module_dict[k][mod_file]["full"])
+                elif self.major_ver == 7:
+                    software_set.add(self.module_dict[k][mod_file]["fullName"])
 
-            return sorted(list(software_set))
+        return sorted(list(software_set))
+
+
+.. note:: Lmod 6 and 7 have some difference in the dictionary, just to name a
+    few. The key ``full`` has been changed to ``fullName`` in Lmod 7. Here is an example
+    dictionary format from Lmod 7
+
+.. code-block:: console
+    :linenos:
+    :emphasize-lines: 19
+
+         "gompi": {
+            "/gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/gompi/2018b.lua": {
+                "pV": "000002018.*b.*zfinal",
+                "Description": "GNU Compiler Collection (GCC) based compiler toolchain,\n including OpenMPI for MPI support.",
+                "whatis": [
+                    "Description: GNU Compiler Collection (GCC) based compiler toolchain,\n including OpenMPI for MPI support.",
+                    "Homepage: (none)"
+                ],
+                "wV": "000002018.*b.*zfinal",
+                "help": "\nDescription\n===========\nGNU Compiler Collection (GCC) based compiler toolchain,\n including OpenMPI for MPI support.\n\n\nMore information\n================\n - Homepag
+    e: (none)\n",
+                "parentAA": [
+                    [
+                        "eb/2019"
+                    ]
+                ],
+                "hidden": false,
+                "Version": "2018b",
+                "fullName": "gompi/2018b"
+            }
+        },
+
+
+Due to this slight change, buildtest will check the Lmod version before
+checking for the full module name retrieved by key ``full`` in Lmod 6 or
+``fullName`` in Lmod 7.
 
 Module File Path
 ~~~~~~~~~~~~~~~~~
@@ -245,6 +286,9 @@ defined by the key ``parent`` in the json object.
             ]
         },
 
+.. Note:: The output above is from Lmod 6 and ``parent`` key is one of those
+ keys that has changed in Lmod 7 which will be discussed later
+
 In this example, the module ``zlib/.1.2.8`` is in a Hierarchical Tree built
 by ``GCC/5.4.0`` and ``OpenMPI/2.0.0``. The ``parent`` key is a list of
 different module combination that can be used to load this module.
@@ -263,7 +307,8 @@ of parent modules.
       1) eb/2017          3) binutils/.2.27   5) numactl/2.0.11   7) OpenMPI/2.0.0                  9) FFTW/3.3.4                                    11) zlib/.1.2.8
       2) GCCcore/.5.4.0   4) GCC/5.4.0-2.27   6) hwloc/1.11.3     8) OpenBLAS/0.2.19-LAPACK-3.6.0  10) ScaLAPACK/2.0.2-OpenBLAS-0.2.19-LAPACK-3.6.0
 
-We can confirm this by running the second combination to load ``zlib/.1.2.8``
+We can confirm this by running the second parent combination to load ``zlib/
+.1.2.8``
 
 .. code-block:: console
 
@@ -277,6 +322,40 @@ We can confirm this by running the second combination to load ``zlib/.1.2.8``
       2) hpc/eb-2017-core   4) binutils/.2.27   6) numactl/2.0.11   8) OpenMPI/2.0.0  10) FFTW/3.3.4                    12) zlib/.1.2.8
 
 
+Recall in Lmod 6, ``parent`` is a list with modules separated by colon
+separator (``:``) and each entry starts with word ``default``.
+
+In Lmod 7 the parent key is renamed to ``parentAA`` see below
+
+.. code-block:: console
+    :linenos:
+    :emphasize-lines: 12-16
+
+         "gompi": {
+            "/gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/gompi/2018b.lua": {
+                "pV": "000002018.*b.*zfinal",
+                "Description": "GNU Compiler Collection (GCC) based compiler toolchain,\n including OpenMPI for MPI support.",
+                "whatis": [
+                    "Description: GNU Compiler Collection (GCC) based compiler toolchain,\n including OpenMPI for MPI support.",
+                    "Homepage: (none)"
+                ],
+                "wV": "000002018.*b.*zfinal",
+                "help": "\nDescription\n===========\nGNU Compiler Collection (GCC) based compiler toolchain,\n including OpenMPI for MPI support.\n\n\nMore information\n================\n - Homepag
+    e: (none)\n",
+                "parentAA": [
+                    [
+                        "eb/2019"
+                    ]
+                ],
+                "hidden": false,
+                "Version": "2018b",
+                "fullName": "gompi/2018b"
+            }
+        },
+
+
+The ``parentAA`` is now a **list of list** where each list corresponds to a
+set of parent modules to be loaded before loading actual module.
 
 
 In buildtest we can get the parent for any module with the following code
@@ -288,20 +367,41 @@ In buildtest we can get the parent for any module with the following code
     parent_module = module.get_parent_modules(module_name)
 
 The method ``get_parent_modules`` returns a list of modules to be loaded for
-the specified module. In the implementation we only get the first entry of
-the ``parent`` key since it doesn't matter which parent modules are loaded.
+the specified module. In the implementation we only get the first parent
+combination of modules.
 
 The implementation for ``get_parent_modules`` can be shown below
 
 .. code-block:: python
 
-    def get_parent_modules(self,modname):
+     def get_parent_modules(self,modname):
         """Get Parent module for specified module file."""
         for key in self.module_dict.keys():
             for mod_file in self.module_dict[key].keys():
-                if modname == self.module_dict[key][mod_file]["full"]:
+                mod_full_name = parent_mod_name = ""
 
-                    mod_parent_list = self.module_dict[key][mod_file]["parent"]
+                if self.major_ver == 6:
+                    mod_full_name = self.module_dict[key][mod_file]["full"]
+                elif self.major_ver == 7:
+                    mod_full_name = self.module_dict[key][mod_file]["fullName"]
+
+                if modname == mod_full_name:
+                    if self.major_ver == 6:
+                        parent_mod_name = self.module_dict[key][mod_file]["parent"]
+                    elif self.major_ver == 7:
+                        # for modules that dont have any parent the dictionary
+                        # does not declare parentAA key in Lmod 7. in that
+                        # case return empty list
+                        if "parentAA" not in self.module_dict[key][mod_file]:
+                            parent_mod_name = []
+                        # otherwise retrieve first index from parentAA.
+                        # ParentAA is a list of list
+                        else:
+                            parent_mod_name = self.module_dict[key][mod_file]["parentAA"][0]
+
+                        return parent_mod_name
+
+                    mod_parent_list = parent_mod_name
                     parent_module = []
                     # parent: is a list, only care about one entry which
                     # contain list of modules to be loaded separated by :
@@ -318,30 +418,63 @@ How does buildtest leverage modules
 ------------------------------------
 
 buildtest will inject modules when writing test script. When you build a test
-via yaml file, user can specify a module file via ``buildtest build -s
-<module>`` to insert module into the script.
+from a configuration file you can load modules into
+your test script. See :ref:`Testing_With_Modules` for more details.
+
 
 For instance, running a binary test such as the utility ``ompi_info`` from
-OpenMPI can be done as follows
+OpenMPI can be done by loading the openmpi module and running the binary
+test via ``buildtest build --binary`` or set ``BUILDTEST_BINARY=True``.
+
+Below is a list of modules when loading openmpi
 
 ::
 
-    (siddis14-TgVBs13r) buildtest-framework[master !?] $ buildtest build -s  OpenMPI/2.0.0
-    Detecting Software:  OpenMPI/2.0.0
-    Detecting Software:OpenMPI/2.0.0
-    Generating  12  binary tests
-    Binary Tests are written in  /home/siddis14/buildtest/software/OpenMPI/2.0.0
-    Writing Log file:  /home/siddis14/buildtest/OpenMPI/2.0.0/buildtest_16_05_09_04_2019.log
+    (siddis14-TgVBs13r) buildtest-framework[master !?+] $ ml
 
-The binary test are written in ``/home/siddis14/buildtest/software/OpenMPI/2.0.0``
-and as you see the ``ompi_info.sh`` will load the parent modules before loading
-``OpenMPI/2.0.0``
+    Currently Loaded Modules:
+      1) eb/2018         3) binutils/2.28-GCCcore-6.4.0   5) zlib/1.2.11-GCCcore-6.4.0      7) hwloc/1.11.8-GCCcore-6.4.0
+      2) GCCcore/6.4.0   4) GCC/6.4.0-2.28                6) numactl/2.0.11-GCCcore-6.4.0   8) OpenMPI/3.0.0-GCC-6.4.0-2.28
+
+Let's run the binary test, buildtest will attempt to test every module.
 
 ::
 
-    (siddis14-TgVBs13r) buildtest-framework[master !?] $ cat /home/siddis14/buildtest/software/OpenMPI/2.0.0/ompi_info.sh
+    (siddis14-TgVBs13r) buildtest-framework[master !?+] $ buildtest build -b
+    Detecting Software:eb/2018
+    No $PATH set in your module  eb/2018   so no possible binaries can be found
+    There are no binaries for package: eb/2018
+    Detecting Software:GCCcore/6.4.0
+    Generating  19  binary tests
+    Binary Tests are written in  /home/siddis14/buildtest/software/GCCcore/6.4.0
+    Detecting Software:binutils/2.28-GCCcore-6.4.0
+    Generating  18  binary tests
+    Binary Tests are written in  /home/siddis14/buildtest/software/binutils/2.28-GCCcore-6.4.0
+    Detecting Software:GCC/6.4.0-2.28
+    No $PATH set in your module  GCC/6.4.0-2.28   so no possible binaries can be found
+    There are no binaries for package: GCC/6.4.0-2.28
+    Detecting Software:zlib/1.2.11-GCCcore-6.4.0
+    No $PATH set in your module  zlib/1.2.11-GCCcore-6.4.0   so no possible binaries can be found
+    There are no binaries for package: zlib/1.2.11-GCCcore-6.4.0
+    Detecting Software:numactl/2.0.11-GCCcore-6.4.0
+    Generating  6  binary tests
+    Binary Tests are written in  /home/siddis14/buildtest/software/numactl/2.0.11-GCCcore-6.4.0
+    Detecting Software:hwloc/1.11.8-GCCcore-6.4.0
+    Generating  15  binary tests
+    Binary Tests are written in  /home/siddis14/buildtest/software/hwloc/1.11.8-GCCcore-6.4.0
+    Detecting Software:OpenMPI/3.0.0-GCC-6.4.0-2.28
+    Generating  11  binary tests
+    Binary Tests are written in  /home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28
+
+
+
+The test for ``ompi_info`` is written with the appropriate module.
+
+::
+
+   $ cat /home/siddis14/buildtest/software/OpenMPI/3.0.0-GCC-6.4.0-2.28/ompi_info.sh
     #!/bin/sh
 
-    module try-load eb/2017;module try-load GCC/5.4.0-2.27;
-    module load OpenMPI/2.0.0
+
+    module load OpenMPI/3.0.0-GCC-6.4.0-2.28
     which ompi_info

@@ -188,7 +188,7 @@ If you want to customize the path to BUILDTEST_TESTDIR you may use the option ``
 or update the environment variable ``BUILDTEST_TESTDIR``. The command line option will override
 environment variable and environment variable will override configuration value.
 
-.. program-output:: cat scripts/gcc-binary-test.txt
+.. program-output:: cat scripts/custom-testdir.txt
 
 Shell Types
 --------------

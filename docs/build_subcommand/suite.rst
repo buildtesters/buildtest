@@ -93,6 +93,8 @@ Next let's run the test suite by running ``buildtest run -S openmp``
 
 .. program-output:: cat scripts/run-openmp-suite.txt
 
+.. _Testing_With_Modules:
+
 Testing with modules
 --------------------
 

@@ -1,9 +1,0 @@
-/home/siddis14/github/buildtest-configs/buildtest/suite/compilers/helloworld/hello_slurm.yml
-/home/siddis14/github/buildtest-configs/buildtest/suite/compilers/helloworld/hello_lsf.yml
-/home/siddis14/github/buildtest-configs/buildtest/suite/compilers/helloworld/hello_gnu.yml
-/home/siddis14/github/buildtest-configs/buildtest/suite/compilers/helloworld/hello_args.c.yml
-/home/siddis14/github/buildtest-configs/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml
-/home/siddis14/github/buildtest-configs/buildtest/suite/openmp/hello/omp_hello.c.yml
-/home/siddis14/github/buildtest-configs/buildtest/suite/openmp/hello/omp_hello.f.yml
-/home/siddis14/github/buildtest-configs/buildtest/proposed_schema/jobscript/hello1.yml
-Total YAML configs: 8

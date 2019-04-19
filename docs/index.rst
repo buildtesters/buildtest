@@ -29,6 +29,7 @@ Getting Started
    setup.rst
    configuring_buildtest.rst
    building_test.rst
+   introspection.rst
    how_to_use_buildtest.rst
    command_reference.rst
 
@@ -38,14 +39,10 @@ Subcommands
 .. toctree::
    :maxdepth: 2
 
-   list_subcommand.rst
-   find_subcommand.rst
    module_subcommand.rst
-   build_subcommand.rst
    run_subcommand.rst
    benchmark_subcommand.rst
    yaml_subcommand.rst
-   show_subcommand.rst
 
 
 Miscellaneous

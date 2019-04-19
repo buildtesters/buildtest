@@ -155,7 +155,7 @@ You may specify this at the command line via ``buildtest build --testdir``
 
 See example below where we customize testdir at runtime using the command line option
 
-.. program-output:: cat scripts/build_subcommand/custom_test_dir.txt
+.. program-output:: cat scripts/custom-testdir.txt
 
 
 Log Directory
