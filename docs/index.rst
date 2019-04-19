@@ -28,6 +28,7 @@ Getting Started
    concepts.rst
    setup.rst
    configuring_buildtest.rst
+   building_test.rst
    how_to_use_buildtest.rst
    command_reference.rst
 

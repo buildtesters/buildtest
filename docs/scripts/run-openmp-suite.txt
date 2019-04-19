@@ -1,0 +1,10 @@
+buildtest run -S openmp
+Running All Tests from Test Directory: /home/siddis14/buildtest/suite/openmp
+==============================================================
+                         Test summary                         
+Package:  openmp
+Executed 14 tests
+Passed Tests: 14 Percentage: 100.0%
+Failed Tests: 0 Percentage: 0.0%
+SUCCESS: Threshold of 100.0% was achieved
+Writing results to /tmp/buildtest/buildtest_09_53_19_04_2019.run

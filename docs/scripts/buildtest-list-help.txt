@@ -1,0 +1,11 @@
+buildtest list --help
+usage: buildtest list [-h] [-ls] [-svr] [-ec] [--format {json}]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -ls, --list-unique-software
+                        retrieve all unique software found in your module tree specified by BUILDTEST_MODULE_ROOT
+  -svr, --software-version-relation
+                        retrieve software and path to module files grouped by software alphabetically
+  -ec, --easyconfigs    Return a list of easyconfigs from a module tree
+  --format {json}       Output format type

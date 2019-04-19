@@ -1,0 +1,11 @@
+buildtest run -S compilers
+Running All Tests from Test Directory: /home/siddis14/buildtest/suite/compilers
+==============================================================
+                         Test summary                         
+Package:  compilers
+Executed 7 tests
+Passed Tests: 5 Percentage: 71.42857142857143%
+Failed Tests: 2 Percentage: 28.571428571428573%
+WARNING: Threshold of 100.0% was not satisfied
+compilers has a 71.42857142857143% passed rate with a difference of 0.2857 from the threshold
+Writing results to /tmp/buildtest/buildtest_09_53_19_04_2019.run

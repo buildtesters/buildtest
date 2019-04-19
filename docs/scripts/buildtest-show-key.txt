@@ -1,0 +1,36 @@
+buildtest show -k singlesource
+                                      General Keys
+Keys                 | Description                   
+----------------------------------------------------------------------------------------------------
+args                 | Input arguments to be passed to the executable
+compiler             | Specify a compiler that will be used for compiling the source program
+flags                | Specify the build flags for compiling the source program
+input                | Specify input file for the executable. This file must be in "src" directory
+ldflags              | Flags that will be passed to linkder (ld)
+lsf                  | Specify LSF configuration     
+slurm                | Specify SLURM configuration   
+source               | Specify the name of the source file that is in the "src" directory relative to yaml configuration
+vars                 | Specify a list of environment variables that will be declared in the test script
+
+                                          LSF Keys
+
+Keys                 | LSF Equivalents                | Description                   
+----------------------------------------------------------------------------------------------------
+M                    | #BSUB -M                       | Memory Limit                  
+R                    | #BSUB -R                       | Runs the job on a host that meets the specified resource requirements
+T                    | #BSUB -T                       | Sets the limit of the number of concurrent threads to thread_limit for the whole job
+W                    | #BSUB -W                       | Sets the runtime limit of the job.
+n                    | #BSUB -n                       | Submits a parallel job and specifies the number of processors required to run the job
+
+                                        SLURM Keys
+
+Keys                 | Slurm Equivalents              | Description                   
+----------------------------------------------------------------------------------------------------
+constraint           | #SBATCH --constraint           | specify a list of constraints 
+cpus-per-task        | #SBATCH --cpus-per-task        | number of cpus required per task.
+mem                  | #SBATCH --mem                  | minimum amount of real memory.
+mem-per-cpu          | #SBATCH --mem-per-cpu          | maximum amount of real memory per allocated
+nodes                | #SBATCH --nodes                | number of nodes on which to run (N = min[-max])
+ntasks               | #SBATCH --ntasks               | number of tasks to run.       
+ntasks-per-node      | #SBATCH --ntasks-per-node      | number of tasks to invoke on each node
+time                 | #SBATCH --time                 | time limit                    

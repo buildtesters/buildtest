@@ -1,5 +1,0 @@
-Writing Test: /tmp/buildtest/tests/suite/compilers/helloworld/hello_slurm.yml.slurm
-Writing Test: /tmp/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
-Writing Test: /tmp/buildtest/tests/suite/compilers/helloworld/hello_gnu.yml.sh
-Writing Test: /tmp/buildtest/tests/suite/compilers/helloworld/hello_args.c.yml.sh
-Writing Test: /tmp/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml.sh

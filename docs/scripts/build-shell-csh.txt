@@ -1,0 +1,2 @@
+buildtest build -c /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml --shell csh
+Writing Test: /home/siddis14/buildtest/suite/compilers/helloworld/hello_gnu.yml.csh

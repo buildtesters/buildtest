@@ -1,0 +1,27 @@
+buildtest build --help
+usage: buildtest build [-h] [-s INSTALLED-SOFTWARE] [-p SYSTEM-PACKAGE] [--prepend-modules INSTALLED-SOFTWARE]
+                       [--shell {sh,bash,csh}] [-c TEST CONFIGURATION] [-b] [-S {compilers,python,openmp,cuda}]
+                       [--clean-tests] [--testdir TESTDIR] [--clean-build] [-eb] [--ohpc] [-v]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -s INSTALLED-SOFTWARE, --software INSTALLED-SOFTWARE
+                        Specify software package to test
+  -p SYSTEM-PACKAGE, --package SYSTEM-PACKAGE
+                        Build test for system packages
+  --prepend-modules INSTALLED-SOFTWARE
+                        Prepend modules in test script prior to loading application module.
+  --shell {sh,bash,csh}
+                        Select the type of shell for testscript
+  -c TEST CONFIGURATION, --config TEST CONFIGURATION
+                        Specify test configuration
+  -b, --binary          Conduct binary test for a package
+  -S {compilers,python,openmp,cuda}, --suite {compilers,python,openmp,cuda}
+                        specify test suite
+  --clean-tests         delete test directory $BUILDTEST_TESTDIR
+  --testdir TESTDIR     Specify alternate test directory to write test. This overrides configuration BUILDTEST_TESTDIR
+  --clean-build         delete software test directory before writing test scripts
+  -eb, --easybuild      check if application is built by easybuild
+  --ohpc                Indicate to buildtest this is a OpenHPC package. YAML files will be processed from
+                        $BUILDTEST_CONFIGS_REPO/ohpc
+  -v, --verbose         verbosity level

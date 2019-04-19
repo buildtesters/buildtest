@@ -1,0 +1,15 @@
+buildtest show -c
+	 buildtest configuration summary
+	 (C): Configuration File,  (E): Environment Variable
+BUILDTEST_BINARY                                   (C) = False
+BUILDTEST_CLEAN_BUILD                              (C) = False
+BUILDTEST_CONFIGS_REPO                             (C) = /home/siddis14/buildtest-framework/toolkit
+BUILDTEST_EASYBUILD                                (C) = False
+BUILDTEST_LOGDIR                                   (C) = /home/siddis14/buildtest
+BUILDTEST_MODULE_ROOT                              (C) = /clust/app/easybuild/2018/commons/modules/all:/clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all:/nfs/grid/software/moduledomains:/etc/modulefiles:/usr/share/modulefiles:/usr/share/lmod/lmod/modulefiles/Core
+BUILDTEST_OHPC                                     (C) = False
+BUILDTEST_PREPEND_MODULES                          (C) = []
+BUILDTEST_RUN_DIR                                  (C) = /tmp/buildtest
+BUILDTEST_SHELL                                    (C) = sh
+BUILDTEST_SUCCESS_THRESHOLD                        (C) = 1.0
+BUILDTEST_TESTDIR                                  (C) = /home/siddis14/buildtest

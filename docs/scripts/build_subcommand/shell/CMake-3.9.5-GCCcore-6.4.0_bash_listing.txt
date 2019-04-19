@@ -1,4 +1,0 @@
--rwxr-xr-x 1 siddis14 amer 76 Oct 26 15:11 /tmp/buildtest-tests/ebapp/CMake/3.9.5-GCCcore-6.4.0/which_ccmake.bash
--rwxr-xr-x 1 siddis14 amer 75 Oct 26 15:11 /tmp/buildtest-tests/ebapp/CMake/3.9.5-GCCcore-6.4.0/which_cmake.bash
--rwxr-xr-x 1 siddis14 amer 75 Oct 26 15:11 /tmp/buildtest-tests/ebapp/CMake/3.9.5-GCCcore-6.4.0/which_cpack.bash
--rwxr-xr-x 1 siddis14 amer 75 Oct 26 15:11 /tmp/buildtest-tests/ebapp/CMake/3.9.5-GCCcore-6.4.0/which_ctest.bash

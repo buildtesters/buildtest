@@ -1,0 +1,9 @@
+buildtest find --help
+usage: buildtest find [-h] [-fc FINDCONFIG] [-ft FINDTEST]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -fc FINDCONFIG, --findconfig FINDCONFIG
+                        Find buildtest YAML config files. To find all yaml files use -fc all
+  -ft FINDTEST, --findtest FINDTEST
+                        Find generated test scripts. To find all testscripts use -ft all
