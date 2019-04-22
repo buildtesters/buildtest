@@ -52,10 +52,30 @@ TEMPLATE_JOB_LSF = {
     "W": "01:00:00",
 }
 TEMPLATE_MPI = {
-   'type': "openmpi",
-   'num_procs':  4
+    'wrapper': "mpicc",
+    'launcher': "mpirun",
+    'procs': 4
 }
 SUPPORTED_COMPILERS = ['gnu','intel','cuda']
+SUPPORTED_MPI_WRAPPERS = [
+    "mpicc",
+    "mpifort",
+    "mpicxx",
+    "mpiicc",
+    "mpiifort",
+    "mpiicpc"
+]
+SUPPORTED_MPI_LAUNCHERS = [
+    "mpirun",
+    "mpiexec",
+    "srun"
+]
+SUPPORTED_MPI_FLAVORS = [
+    "openmpi",
+    "intelmpi",
+    "mpich",
+    "mvapich2"
+]
 TEMPLATE_VARS = {
     'foo': 'bar'
 }
@@ -75,6 +95,7 @@ TEMPLATE_SINGLESOURCE = {
     'slurm': TEMPLATE_JOB_SLURM,
     'lsf': TEMPLATE_JOB_LSF,
     'variants': TEMPLATE_VARIANT,
+    'mpi': TEMPLATE_MPI,
     'maintainer': [
         "shahzeb siddiqui shahzebmsiddiqui@gmail.com"
     ]
@@ -135,6 +156,34 @@ def get_compiler(language, compiler):
 
     if language == "cuda":
         return "nvcc"
+
+def get_mpi_wrapper(language, compiler):
+    if language == "c" and compiler == "gnu":
+        return "mpicc"
+    if language == "c++" and compiler == "gnu":
+        return "mpicxx"
+    if language == "fortran" and compiler == "gnu":
+        return "mpifort"
+
+    if language == "c" and compiler == "intel":
+        return "mpiicc"
+    if language == "c++" and compiler == "intel":
+        return "mpiicpc"
+    if language == "fortran" and compiler == "intel":
+        return "mpiifort"
+
+def get_mpi_launcher(mpi_flavor,scheduler):
+    if scheduler == "SLURM":
+        return "srun"
+    if mpi_flavor == "openmpi":
+        return "mpirun"
+    elif mpi_flavor == "intelmpi":
+        return "mpiexec"
+    elif mpi_flavor == "mpich":
+        return "mpiexec"
+    elif mpi_flavor == "mvapich2":
+        return "mpiexec"
+
 
 def get_programming_language(ext):
     """ return Programming Language  based on extension"""

@@ -1,0 +1,14 @@
+source: mpi_mm.f
+compiler: intel
+lsf:
+  M: 200M
+  n: '4'
+mpi:
+  flavor: intelmpi
+  procs: '4'
+flags: -O2
+
+
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+testblock: singlesource

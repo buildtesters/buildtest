@@ -1,0 +1,12 @@
+source: hello.c
+compiler: intel
+lsf:
+  M: 200M
+  n: '4'
+mpi:
+  flavor: openmpi
+  procs: '4'
+flags: -O2
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+testblock: singlesource

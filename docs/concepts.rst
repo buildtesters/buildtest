@@ -78,7 +78,7 @@ Get Unique Software
 
 To get a list of unique software you could run ``module -t spider``::
 
-    buildtest-framework[master !?+] $ module -t spider | head -n 10
+    $ module -t spider | head -n 10
     20140726
     2015-workaround
     20150316
@@ -307,8 +307,7 @@ of parent modules.
       1) eb/2017          3) binutils/.2.27   5) numactl/2.0.11   7) OpenMPI/2.0.0                  9) FFTW/3.3.4                                    11) zlib/.1.2.8
       2) GCCcore/.5.4.0   4) GCC/5.4.0-2.27   6) hwloc/1.11.3     8) OpenBLAS/0.2.19-LAPACK-3.6.0  10) ScaLAPACK/2.0.2-OpenBLAS-0.2.19-LAPACK-3.6.0
 
-We can confirm this by running the second parent combination to load ``zlib/
-.1.2.8``
+We can confirm this by running the second parent combination to load ``zlib/.1.2.8``
 
 .. code-block:: console
 

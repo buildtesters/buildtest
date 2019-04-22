@@ -32,9 +32,11 @@ import sys
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import create_dir, is_file
 from buildtest.tools.yaml import TEMPLATE_SINGLESOURCE, SUPPORTED_COMPILERS, \
-    TEMPLATE_JOB_LSF, TEMPLATE_JOB_SLURM, get_programming_language, \
-    get_compiler, lsf_key_parse, slurm_key_parse, get_environment_variable
-from buildtest.tools.system import BuildTestCommand
+    SUPPORTED_MPI_WRAPPERS, SUPPORTED_MPI_LAUNCHERS, SUPPORTED_MPI_FLAVORS, \
+    TEMPLATE_JOB_LSF, TEMPLATE_JOB_SLURM, \
+    get_programming_language, get_compiler, lsf_key_parse, slurm_key_parse, \
+    get_environment_variable, get_mpi_wrapper, get_mpi_launcher
+from buildtest.tools.system import BuildTestCommand, BuildTestSystem
 
 class BuildTestBuilderSingleSource():
     """ Class responsible for building a single source test."""
@@ -89,6 +91,10 @@ class BuildTestBuilderSingleSource():
         # check if compiler value is in list of supported compiler supported
         if compiler not in SUPPORTED_COMPILERS:
             print (compiler + " is not a supported compiler:")
+            sys.exit(0)
+    def _check_mpi(self,mpi_wrapper):
+        if mpi_wrapper not in SUPPORTED_MPI_WRAPPERS:
+            print (f"{mpi_wrapper} is not supported mpi wrapper")
             sys.exit(0)
 
     def _check_lsf(self,lsf_dict):
@@ -163,18 +169,28 @@ class BuildTestBuilderSingleSource():
             if self.verbose >= 1:
                 print ("Compiler Check Passed")
             compiler_name = get_compiler(language,test_dict['compiler'])
-            cmd += [compiler_name]
+
+            if "mpi" in test_dict:
+                if "wrapper" not in test_dict["mpi"].keys():
+                    mpi_wrapper = get_mpi_wrapper(language,test_dict['compiler'])
+                    cmd.append(mpi_wrapper)
+                else:
+                    self._check_mpi(test_dict["mpi"]["wrapper"])
+                    cmd.append(test_dict["mpi"]["wrapper"])
+            else:
+                cmd.append([compiler_name])
 
             if "flags" in test_dict:
-                cmd += [test_dict['flags']]
+                cmd.append(test_dict['flags'])
 
             cmd += ['-o',exec_name,srcfile]
 
             if "ldflags" in test_dict:
-                cmd += [test_dict['ldflags']]
+                cmd.append(test_dict['ldflags'])
+
 
         if "input" in test_dict:
-            cmd += ["<", os.path.join(self.srcdir,inputfile) ]
+            cmd += ["<", os.path.join(self.srcdir,inputfile)]
 
 
         module_str = "module purge"
@@ -200,11 +216,36 @@ class BuildTestBuilderSingleSource():
         testscript_dict["module"] = module_str + "\n"
         testscript_dict["workdir"] = "cd " + workdir + "\n"
         testscript_dict["command"] = cmd
+        testscript_dict["run"] = []
 
-        if "args" in test_dict:
-            testscript_dict["run"] = f"./{exec_name} {test_dict['args']} \n"
+        if "launcher" in test_dict["mpi"].keys():
+            if test_dict["mpi"]["launcher"] not in SUPPORTED_MPI_LAUNCHERS:
+                print (f'{test_dict["mpi"]["launcher"]} is not a valid MPI '
+                       f'launcher')
+                sys.exit(0)
+
+            testscript_dict["run"].append(test_dict["mpi"]["launcher"])
         else:
-            testscript_dict["run"] = f"./{exec_name} \n"
+            system = BuildTestSystem()
+            system_dict = system.get_system()
+            scheduler = system_dict["SCHEDULER"]
+            if test_dict["mpi"]["flavor"] not in SUPPORTED_MPI_FLAVORS:
+                print (f'{test_dict["mpi"]["launcher"]} is not a valid MPI '
+                       f'flavor')
+                sys.exit(0)
+
+            mpi_flavor = test_dict["mpi"]["flavor"]
+            mpi_launcher = get_mpi_launcher(mpi_flavor,scheduler)
+            testscript_dict["run"].append(mpi_launcher)
+
+        testscript_dict["run"].append("-n")
+        testscript_dict["run"].append(test_dict["mpi"]["procs"])
+
+        testscript_dict["run"].append(exec_name)
+        if "args" in test_dict:
+            testscript_dict["run"].append(test_dict['args'])
+
+        testscript_dict["run"].append("\n")
 
         testscript_dict["post_run"] = f"rm ./{exec_name} \n"
 
@@ -273,7 +314,7 @@ class BuildTestBuilderSingleSource():
         fd.write("\n")
 
         if "run" in self.test_dict:
-            fd.write(self.test_dict["run"])
+            [fd.write(k + " ") for k in self.test_dict["run"]]
             fd.write(self.test_dict["post_run"])
 
         fd.close()
