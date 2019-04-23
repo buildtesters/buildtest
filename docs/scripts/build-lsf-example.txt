@@ -1,0 +1,34 @@
+buildtest build -c /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml -vv
+________________________________________________________________________________
+compiler: gnu
+flags: -O2
+lsf:
+  M: 200M
+  R: sandybridge
+  W: 01:00
+  n: '4'
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+source: hello.c
+testblock: singlesource
+
+________________________________________________________________________________
+Key Check PASSED for file /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml
+Source File /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c exists!
+Programming Language Detected: c
+LSF Keys Passed
+Compiler Check Passed
+Writing Test: /home/siddis14/buildtest/suite/compilers/helloworld/hello_lsf.yml.lsf
+Changing permission to 755 for test: /home/siddis14/buildtest/suite/compilers/helloworld/hello_lsf.yml.lsf
+________________________________________________________________________________
+#!/bin/sh
+#BSUB -M 200M
+#BSUB -R sandybridge
+#BSUB -W 01:00
+#BSUB -n 4
+module purge
+cd /home/siddis14/buildtest/suite/compilers/helloworld
+gcc -O2 -o hello.c.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c 
+hello.c.exe 
+ rm ./hello.c.exe 
+________________________________________________________________________________

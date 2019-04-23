@@ -1,0 +1,36 @@
+buildtest build -c /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_slurm.yml -vv
+________________________________________________________________________________
+compiler: gnu
+flags: -O2
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+slurm:
+  mem: 200M
+  nodes: '4'
+  time: 01:00
+source: hello.cpp
+testblock: singlesource
+
+________________________________________________________________________________
+Key Check PASSED for file /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_slurm.yml
+Source File /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp exists!
+Programming Language Detected: c++
+SLURM Keys Passed
+Compiler Check Passed
+Writing Test: /home/siddis14/suite/compilers/helloworld/hello_slurm.yml.slurm
+Changing permission to 755 for test: /home/siddis14/suite/compilers/helloworld/hello_slurm.yml.slurm
+________________________________________________________________________________
+#!/bin/sh
+#SBATCH --mem 200M
+#SBATCH --nodes 4
+#SBATCH --time 01:00
+module purge
+module load shared
+module load slurm/17.11.8
+module load DefaultModules
+cd /home/siddis14/suite/compilers/helloworld
+g++ -O2 -o hello.cpp.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp
+hello.cpp.exe
+ rm ./hello.cpp.exe
+________________________________________________________________________________
+

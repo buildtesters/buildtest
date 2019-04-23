@@ -21,6 +21,11 @@ tee $script_dir/run-openmp-suite.txt <<<"buildtest run -S openmp"| bash>>$script
 tee $script_dir/build-shell-csh.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml --shell csh" | bash >>$script_dir/build-shell-csh.txt
 tee $script_dir/build-shell-bash.txt <<<"BUILDTEST_SHELL=bash buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml" | bash >>$script_dir/build-shell-bash.txt
 
+# lsf example
+tee $script_dir/build-lsf-example.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml -vv""" | bash >>$script_dir/build-lsf-example.txt
+# slurm example
+tee $script_dir/build-slurm-example.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
+
 # List Subcommand
 tee $script_dir/buildtest-list-help.txt <<<"buildtest list --help" | bash >> $script_dir/buildtest-list-help.txt
 tee $script_dir/buildtest-list-software.txt <<< "buildtest list -ls" | bash >> $script_dir/buildtest-list-software.txt

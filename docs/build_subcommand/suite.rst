@@ -6,8 +6,8 @@ Test Suite
 Test suite is a collection of yaml files and source code grouped in a directory of
 similar types of test.
 
-Currently, there is 3 test suites **compilers**, **cuda**, **openmp**. The test suites
-can be found at https://github.com/HPC-buildtest/buildtest-framework/tree/master/toolkit/buildtest/suite
+Currently, there is 4 test suites **compilers**, **cuda**, **openmp** and
+**mpi**. The  test suites can be found at https://github.com/HPC-buildtest/buildtest-framework/tree/master/toolkit/buildtest/suite
 
 Hello World C++
 ----------------
@@ -164,3 +164,82 @@ running ``module -t list`` and insert each module in a separate line. This
 gives user freedom to load whatever module they want when creating test, though
 this puts responsibility on user to understand the testscript.
 
+LSF Job Example
+----------------
+
+buildtest supports creation of job scripts for LSF batch scheduler.
+Test scripts with the extension **.lsf** will denote the test script is LSF job
+scripts.
+
+Let's see an example configuration for LSF job
+
+.. code-block:: console
+    :linenos:
+    :emphasize-lines: 3-7
+
+        compiler: gnu
+        flags: -O2
+        lsf:
+          M: 200M
+          R: sandybridge
+          W: 01:00
+          n: '4'
+        maintainer:
+        - shahzeb siddiqui shahzebmsiddiqui@gmail.com
+        source: hello.c
+        testblock: singlesource
+
+
+The lsf section starts with keyword ``lsf:`` defined in line 3. The LSF keys
+are named based on ``bsub`` options which makes it easy to associate the key to
+the equivalent bsub command. In this example above lines **4-7** describe the
+LSF parameters . These include ``200MB`` of memory with ``1hr`` walltime, ``4``
+tasks and requesting ``sandybridge`` resource.
+
+.. note:: Only a subset of lsf keys are exposed in yaml
+
+You can run ``buildtest show -k singlesource`` to see description of all
+keys or refer to  :ref:`show_keys`
+
+We can run this as follows
+
+
+.. program-output:: cat scripts/build-lsf-example.txt
+
+SLURM Job Example
+-------------------
+
+buildtest supports job script for SLURM. Similar to LSF, the test script
+will be denoted with extension **.slurm** and start with the keyword
+``slurm:`` in configuration. For more details on slurm keys in yaml  file
+see :ref:`show_keys`
+
+Here is an example configuration for SLURM job
+
+.. code-block::
+    :linenos:
+    :emphasize-lines: 5-8
+
+        compiler: gnu
+        flags: -O2
+        maintainer:
+        - shahzeb siddiqui shahzebmsiddiqui@gmail.com
+        slurm:
+          mem: 200M
+          nodes: '4'
+          time: 01:00
+        source: hello.cpp
+        testblock: singlesource
+
+
+Line 5 ``slurm:`` starts the slurm section. Slurm keys are named based on
+``sbatch`` options so it is easy to remember.
+
+.. note:: Only a subset of slurm keys are exposed in yaml
+
+Line 6-8 define the slurm parameters, in this case we request for ``200M``
+memory, with ``4`` nodes and walltime of ``1h``.
+
+We can run this as follows
+
+.. program-output:: cat scripts/build-slurm-example.txt

@@ -174,6 +174,8 @@ See example below
     and environment variable, always check your shell environment first to avoid having
     values overridden accidentally
 
+.. _show_keys:
+
 Show Keys
 -----------
 
