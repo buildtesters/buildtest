@@ -1,0 +1,12 @@
+source: mpi_ping.c
+compiler: gnu
+lsf:
+  M: 200M
+  n: '8'
+mpi:
+  flavor: openmpi
+  procs: '8'
+flags: -O2
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+testblock: singlesource
