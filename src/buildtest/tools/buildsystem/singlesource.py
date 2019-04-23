@@ -178,7 +178,7 @@ class BuildTestBuilderSingleSource():
                     self._check_mpi(test_dict["mpi"]["wrapper"])
                     cmd.append(test_dict["mpi"]["wrapper"])
             else:
-                cmd.append([compiler_name])
+                cmd.append(compiler_name)
 
             if "flags" in test_dict:
                 cmd.append(test_dict['flags'])
@@ -217,31 +217,39 @@ class BuildTestBuilderSingleSource():
         testscript_dict["workdir"] = "cd " + workdir + "\n"
         testscript_dict["command"] = cmd
         testscript_dict["run"] = []
+        # build the run command for mpi jobs
+        if "mpi" in test_dict.keys():
+            # if launcher is specified in configuration check if it is valid
+            #  and add it directly as part of run command
+            if "launcher" in test_dict["mpi"].keys():
+                if test_dict["mpi"]["launcher"] not in SUPPORTED_MPI_LAUNCHERS:
+                    print (f'{test_dict["mpi"]["launcher"]} is not a valid MPI '
+                           f'launcher')
+                    sys.exit(0)
 
-        if "launcher" in test_dict["mpi"].keys():
-            if test_dict["mpi"]["launcher"] not in SUPPORTED_MPI_LAUNCHERS:
-                print (f'{test_dict["mpi"]["launcher"]} is not a valid MPI '
-                       f'launcher')
-                sys.exit(0)
+                testscript_dict["run"].append(test_dict["mpi"]["launcher"])
+            # if launcher is not specified, buildtest will detect system for
+            #  scheduler and determine MPI launcher based on mpi flavor and
+            # launcher
+            else:
+                system = BuildTestSystem()
+                system_dict = system.get_system()
+                scheduler = system_dict["SCHEDULER"]
+                if test_dict["mpi"]["flavor"] not in SUPPORTED_MPI_FLAVORS:
+                    print (f'{test_dict["mpi"]["launcher"]} is not a valid MPI '
+                           f'flavor')
+                    sys.exit(0)
 
-            testscript_dict["run"].append(test_dict["mpi"]["launcher"])
+                mpi_flavor = test_dict["mpi"]["flavor"]
+                mpi_launcher = get_mpi_launcher(mpi_flavor,scheduler)
+                testscript_dict["run"].append(mpi_launcher)
+
+
+            testscript_dict["run"].append("-n")
+            testscript_dict["run"].append(test_dict["mpi"]["procs"])
         else:
-            system = BuildTestSystem()
-            system_dict = system.get_system()
-            scheduler = system_dict["SCHEDULER"]
-            if test_dict["mpi"]["flavor"] not in SUPPORTED_MPI_FLAVORS:
-                print (f'{test_dict["mpi"]["launcher"]} is not a valid MPI '
-                       f'flavor')
-                sys.exit(0)
+            testscript_dict["run"].append(exec_name)
 
-            mpi_flavor = test_dict["mpi"]["flavor"]
-            mpi_launcher = get_mpi_launcher(mpi_flavor,scheduler)
-            testscript_dict["run"].append(mpi_launcher)
-
-        testscript_dict["run"].append("-n")
-        testscript_dict["run"].append(test_dict["mpi"]["procs"])
-
-        testscript_dict["run"].append(exec_name)
         if "args" in test_dict:
             testscript_dict["run"].append(test_dict['args'])
 
