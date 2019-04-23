@@ -248,7 +248,7 @@ class BuildTestBuilderSingleSource():
             testscript_dict["run"].append("-n")
             testscript_dict["run"].append(test_dict["mpi"]["procs"])
         else:
-            testscript_dict["run"].append(exec_name)
+            testscript_dict["run"].append(f"./{exec_name}")
 
         if "args" in test_dict:
             testscript_dict["run"].append(test_dict['args'])

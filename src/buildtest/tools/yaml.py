@@ -210,7 +210,7 @@ def slurm_key_parse(slurm_dict):
     """ parse slurm keys """
     slurm_str = ""
     for key,val in slurm_dict.items():
-        slurm_str += "#SBATCH -" + key + " " + str(val) + "\n"
+        slurm_str += "#SBATCH --" + key + " " + str(val) + "\n"
     return slurm_str
 
 def func_yaml_subcmd(args):
