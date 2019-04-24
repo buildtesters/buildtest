@@ -6,7 +6,7 @@ Subpackages
 
 .. toctree::
 
-    buildtest.tools.parser
+    buildtest.tools.buildsystem
 
 Submodules
 ----------
@@ -14,7 +14,6 @@ Submodules
 .. toctree::
 
    buildtest.tools.build
-   buildtest.tools.cmake
    buildtest.tools.config
    buildtest.tools.easybuild
    buildtest.tools.file
@@ -25,12 +24,10 @@ Submodules
    buildtest.tools.modules
    buildtest.tools.ohpc
    buildtest.tools.options
-   buildtest.tools.print_functions
    buildtest.tools.run
    buildtest.tools.show
    buildtest.tools.software
    buildtest.tools.system
-   buildtest.tools.utility
    buildtest.tools.version
    buildtest.tools.yaml
 

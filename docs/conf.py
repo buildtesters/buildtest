@@ -14,8 +14,8 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../src'))
 
+sys.path.insert(0, os.path.join(os.getenv("BUILDTEST_ROOT"),'src'))
 
 # -- Project information -----------------------------------------------------
 
@@ -94,6 +94,10 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 html_context = {
+    # "display_github": True,  # Integrate GitHub
+    # "github_user": "shahzebmsiddiqui",  # Username
+    # "github_repo": "buildtest-framework",  # Repo name
+    # "github_version": "master",  # Version
     'css_files': [
         '_static/theme_overrides.css',  # override wide tables in RTD theme
         ],
