@@ -72,22 +72,22 @@ config_opts = yaml.safe_load(fd)
 config_opts["BUILDTEST_CONFIGS_REPO"]= os.path.join(os.environ[
                                                         "BUILDTEST_ROOT"],\
                                        "toolkit")
-# if BUILDTEST_MODULE_ROOT is empty list then check if MODULEPATH is defined
-# and set result to BUILDTEST_MODULE_ROOT
-if len(config_opts["BUILDTEST_MODULE_ROOT"]) == 0:
+# if BUILDTEST_MODULEPATH is empty list then check if MODULEPATH is defined
+# and set result to BUILDTEST_MODULEPATH
+if len(config_opts["BUILDTEST_MODULEPATH"]) == 0:
 
     if os.getenv("MODULEPATH") == None:
-        config_opts["BUILDTEST_MODULE_ROOT"] = []
+        config_opts["BUILDTEST_MODULEPATH"] = []
     else:
         # otherwise set this to MODULEPATH
         tree_list = []
-        #config_opts["BUILDTEST_MODULE_ROOT"] = os.getenv("MODULEPATH").split(":")
+        #config_opts["BUILDTEST_MODULEPATH"] = os.getenv("MODULEPATH").split(":")
         for tree in os.getenv("MODULEPATH").split(":"):
             if os.path.isdir(tree):
                 tree_list.append(tree)
             #else:
                 #print (f"Skipping module tree {tree} because path does not exist")
-        config_opts["BUILDTEST_MODULE_ROOT"] = tree_list
+        config_opts["BUILDTEST_MODULEPATH"] = tree_list
 
 config_opts['BUILDTEST_VERSION'] = BUILDTEST_VERSION
 
@@ -106,7 +106,7 @@ config_yaml_keys = {
     'BUILDTEST_BINARY': type(True),
     'BUILDTEST_SHELL': type("str"),
     'BUILDTEST_SUCCESS_THRESHOLD': type(1.0),
-    'BUILDTEST_MODULE_ROOT': type([]),
+    'BUILDTEST_MODULEPATH': type([]),
     'BUILDTEST_LOGDIR': type("str"),
     'BUILDTEST_TESTDIR': type("str"),
     'BUILDTEST_RUN_DIR': type("str"),
@@ -158,15 +158,15 @@ def check_configuration():
             print(f"Current value is {str(config_opts[key])}")
             ec = 1
 
-        if key == "BUILDTEST_MODULE_ROOT":
-            if config_opts["BUILDTEST_MODULE_ROOT"] == None:
-                print("Please specify a module tree to BUILDTEST_MODULE_ROOT"
+        if key == "BUILDTEST_MODULEPATH":
+            if config_opts["BUILDTEST_MODULEPATH"] == None:
+                print("Please specify a module tree to BUILDTEST_MODULEPATH"
                      + f"in configuration {BUILDTEST_CONFIG_FILE}")
             else:
                 for module_root in config_opts[key]:
                     if not os.path.isdir(module_root):
                         print (f"{module_root} directory does not exist"
-                               + " specified in BUILDTEST_MODULE_ROOT")
+                               + " specified in BUILDTEST_MODULEPATH")
                         ec = 1
 
 
@@ -220,7 +220,7 @@ def show_configuration():
         else:
             type = "(C)"
 
-        if key == "BUILDTEST_MODULE_ROOT":
+        if key == "BUILDTEST_MODULEPATH":
             tree = ""
             for mod_tree in config_opts[key]:
                 tree += mod_tree + ":"

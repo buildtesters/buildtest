@@ -26,7 +26,7 @@ buildtest can report the software list by running the following ``buildtest list
 short option ``buildtest list -ls``
 
 
-buildtest determines the software list based on the module trees specified in ``BUILDTEST_MODULE_ROOT``
+buildtest determines the software list based on the module trees specified in ``BUILDTEST_MODULEPATH``
 and processes each module tree and returns a  unique software list
 
 .. program-output:: head -n 15 scripts/buildtest-list-software.txt
@@ -48,7 +48,7 @@ The output will be sorted by software and each entry will correspond to the full
 List easyconfigs from module trees (``buildtest list --easyconfigs``)
 -------------------------------------------------------------------------
 
-buildtest can return a list of easyconfigs from module trees defined in ``BUILDTEST_MODULE_ROOT``.
+buildtest can return a list of easyconfigs from module trees defined in ``BUILDTEST_MODULEPATH``.
 You can run ``buildtest list --easyconfigs`` or short option ``buildtest list -ec``.
 
 buildtest will report full path to easyconfigs and also report any errors if it can't find
@@ -159,7 +159,7 @@ See example below
         BUILDTEST_CONFIGS_REPO                             (C) = /home/siddis14/buildtest-framework/toolkit
         BUILDTEST_EASYBUILD                                (C) = False
         BUILDTEST_LOGDIR                                   (E) = /home/siddis14
-        BUILDTEST_MODULE_ROOT                              (C) = /clust/app/easybuild/2018/commons/modules/all:/clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all:/nfs/grid/software/moduledomains:/etc/modulefiles:/usr/share/modulefiles:/usr/share/lmod/lmod/modulefiles/Core
+        BUILDTEST_MODULEPATH                              (C) = /clust/app/easybuild/2018/commons/modules/all:/clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all:/nfs/grid/software/moduledomains:/etc/modulefiles:/usr/share/modulefiles:/usr/share/lmod/lmod/modulefiles/Core
         BUILDTEST_OHPC                                     (C) = False
         BUILDTEST_PREPEND_MODULES                          (C) = []
         BUILDTEST_RUN_DIR                                  (C) = /tmp/buildtest

@@ -65,7 +65,7 @@ TAB completion on  software
 
 
 TAB completiont works on ``buildtest build --software`` option will present all unique
-software found in module tree defined by ``BUILDTEST_MODULE_ROOT``
+software found in module tree defined by ``BUILDTEST_MODULEPATH``
 
 
 ::

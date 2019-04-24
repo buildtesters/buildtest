@@ -14,16 +14,16 @@ BUILDTEST_BINARY: False
 BUILDTEST_SHELL: sh
 
 # list root of module tree where modules are installed. Specify multiple module tree as a list
-BUILDTEST_MODULE_ROOT: []
+BUILDTEST_MODULEPATH: []
 
 # criteria for success threshold when running job. Valid Option: [0.0-1.0]    
 BUILDTEST_SUCCESS_THRESHOLD: 1.0
 
 # directory where buildtest logs will be written.
-BUILDTEST_LOGDIR: /tmp/buildtest/logs
+BUILDTEST_LOGDIR: /tmp/$USER/buildtest/logs
 
 # directory where test scripts will be generated
-BUILDTEST_TESTDIR: /tmp/buildtest/tests
+BUILDTEST_TESTDIR: /tmp/$USER/buildtest/tests
 
 # directory where buildtest will write .run files
-BUILDTEST_RUN_DIR: /tmp/buildtest/run
+BUILDTEST_RUN_DIR: /tmp/$USER/buildtest/run

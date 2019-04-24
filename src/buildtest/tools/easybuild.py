@@ -91,7 +91,7 @@ def find_easyconfigs():
     # if one or more easyconfigs found then display the path to easyconfigs
     if len(ec_list) > 0:
         print ("List of easyconfigs found in MODULETREES: %s"
-               % (config_opts['BUILDTEST_MODULE_ROOT']))
+               % (config_opts['BUILDTEST_MODULEPATH']))
         print
         print ("ID   |  easyconfig path")
         print("{:_<4} | {:_<80}".format ("", ""))

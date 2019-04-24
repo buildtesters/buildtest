@@ -128,7 +128,7 @@ Misc:
                              "--list-unique-software",
                              help="retrieve all unique software found in your "
                                   + "module tree specified by "
-                                  + "BUILDTEST_MODULE_ROOT",
+                                  + "BUILDTEST_MODULEPATH",
                              action="store_true")
 
     parser_list.add_argument("-svr",
@@ -263,7 +263,7 @@ Misc:
 
     parser_module.add_argument("--module-load-test",
                                help="conduct module load test for all modules "
-                                    + "defined in BUILDTEST_MODULE_ROOT",
+                                    + "defined in BUILDTEST_MODULEPATH",
                                action="store_true")
     parser_module.add_argument("--diff-trees",
                                help="Show difference between two module trees")
@@ -272,7 +272,7 @@ Misc:
     parser_module.add_argument("-l", help="list module trees",
                                action="store_true", dest="list")
     parser_module.add_argument("-r", help="remove a module tree",
-                               choices=config_opts["BUILDTEST_MODULE_ROOT"],
+                               choices=config_opts["BUILDTEST_MODULEPATH"],
                                dest="rm",
                                metavar="Module Tree")
     parser_module.set_defaults(func=func_module_subcmd)

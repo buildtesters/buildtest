@@ -48,7 +48,7 @@ def func_module_subcmd(args):
     if args.module_load_test:
         module_load_test()
     if args.list:
-        for tree in config_opts["BUILDTEST_MODULE_ROOT"]:
+        for tree in config_opts["BUILDTEST_MODULEPATH"]:
             print (tree)
     if args.add:
         is_dir(args.add)
@@ -56,12 +56,12 @@ def func_module_subcmd(args):
         content = yaml.safe_load(fd)
         fd.close()
 
-        content["BUILDTEST_MODULE_ROOT"].append(args.add)
+        content["BUILDTEST_MODULEPATH"].append(args.add)
         # converting to set to avoid adding duplicate entries
-        module_tree_set = set(content["BUILDTEST_MODULE_ROOT"])
+        module_tree_set = set(content["BUILDTEST_MODULEPATH"])
         module_tree_set.add(args.add)
 
-        content["BUILDTEST_MODULE_ROOT"] = list(module_tree_set)
+        content["BUILDTEST_MODULEPATH"] = list(module_tree_set)
 
         fd = open(BUILDTEST_CONFIG_FILE,"w")
         yaml.dump(content,fd,default_flow_style=False)
@@ -72,7 +72,7 @@ def func_module_subcmd(args):
     if args.rm:
         fd = open(BUILDTEST_CONFIG_FILE,"r")
         content = yaml.safe_load(fd)
-        content["BUILDTEST_MODULE_ROOT"].remove(args.rm)
+        content["BUILDTEST_MODULEPATH"].remove(args.rm)
         fd.close()
 
         fd = open(BUILDTEST_CONFIG_FILE,"w")
@@ -84,7 +84,7 @@ def func_module_subcmd(args):
 class BuildTestModule():
     def __init__(self):
 
-        self.moduletree = ':'.join(map(str,config_opts["BUILDTEST_MODULE_ROOT"] ))
+        self.moduletree = ':'.join(map(str,config_opts["BUILDTEST_MODULEPATH"] ))
 
         cmd = f"$LMOD_DIR/spider -o spider-json {self.moduletree}"
         out = subprocess.check_output(cmd, shell=True).decode("utf-8")
@@ -182,7 +182,7 @@ def get_module_list_by_tree(mod_tree):
 
 module_obj = BuildTestModule()
 def module_load_test():
-    """Perform module load test for all modules in BUILDTEST_MODULE_ROOT"""
+    """Perform module load test for all modules in BUILDTEST_MODULEPATH"""
 
     module_stack = module_obj.get_unique_software_modules()
     out_file = "/tmp/modules-load.out"
@@ -238,7 +238,7 @@ def module_load_test():
     print ("{:_<80}".format(""))
     print ("{:>40}".format("Module Load Summary"))
     print ("{:<40} {}".format("Module Trees:",
-                              config_opts["BUILDTEST_MODULE_ROOT"]))
+                              config_opts["BUILDTEST_MODULEPATH"]))
     print ("{:<40} {}".format("PASSED: ", len(passed_modules)))
     print ("{:<40} {}".format("FAILED: ", len(failed_modules)))
     print ("{:_<80}".format(""))

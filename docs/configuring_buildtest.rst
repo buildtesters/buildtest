@@ -26,25 +26,25 @@ Variable Description
 Configuring Module Trees
 --------------------------
 
-**BUILDTEST_MODULE_ROOT** takes colon separated list of root of a module tree
+**BUILDTEST_MODULEPATH** takes colon separated list of root of a module tree
 in your system that serves as module files. buildtest will read all module
 files and use this to figure out what modules can be tested.
 
 Let's assume ``/opt/apps`` and ``/workspace/apps`` are root of the module tree,
 so we can specify this in your configuration as follows::
 
-	BUILDTEST_MODULE_ROOT:
+	BUILDTEST_MODULEPATH:
         - /opt/apps
         - /workspace/apps
 
-If you set an invalid directory path in ``BUILDTEST_MODULE_ROOT`` you will get
+If you set an invalid directory path in ``BUILDTEST_MODULEPATH`` you will get
 the following message
 
 .. Error::
-    /opt/apps directory does not exist, specified in BUILDTEST_MODULE_ROOT
+    /opt/apps directory does not exist, specified in BUILDTEST_MODULEPATH
 
 
-If you don't specify a module tree for BUILDTEST_MODULE_ROOT then buildtest
+If you don't specify a module tree for BUILDTEST_MODULEPATH then buildtest
 will read the value of MODULEPATH.
 
 You may add,remove and list module tree.
@@ -57,11 +57,11 @@ To see the list of module tree you can run ``buildtest module -l``::
     /usr/share/modulefiles
     /usr/share/lmod/lmod/modulefiles/Core
 
-At this time you will notice BUILDTEST_MODULE_ROOT is not set and it takes
+At this time you will notice BUILDTEST_MODULEPATH is not set and it takes
 value of MODULEPATH::
 
-    $ cat ~/.buildtest/settings.yml  | grep -i BUILDTEST_MODULE_ROOT
-    BUILDTEST_MODULE_ROOT: []
+    $ cat ~/.buildtest/settings.yml  | grep -i BUILDTEST_MODULEPATH
+    BUILDTEST_MODULEPATH: []
 
     $ echo $MODULEPATH
     /nfs/grid/software/moduledomains:/etc/modulefiles:/usr/share/modulefiles:/usr/share/modulefiles/Linux:/usr/share/modulefiles/Core:/usr/share/lmod/lmod/modulefiles/Core

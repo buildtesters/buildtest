@@ -13,7 +13,7 @@ Module Options (``buildtest module --help``)
 
    optional arguments:
      -h, --help            show this help message and exit
-     --module-load-test    conduct module load test for all modules defined in BUILDTEST_MODULE_ROOT
+     --module-load-test    conduct module load test for all modules defined in BUILDTEST_MODULEPATH
      --diff-trees DIFF_TREES
                            Show difference between two module trees
      -a Module Tree        add a module tree
@@ -77,7 +77,7 @@ buildtest provides feature to test ``module load`` functionality on all module f
 in a module tree. This assumes you have the module tree in ``MODULEPATH`` in order
 for ``module`` command to work properly.
 
-To use this feature specify the appropriate module tree for parameter ``BUILDTEST_MODULE_ROOT`` in
+To use this feature specify the appropriate module tree for parameter ``BUILDTEST_MODULEPATH`` in
 ``config.yaml`` or via environment variable. To use this feature you need to use
 ``buildtest module --module-load-test``
 
@@ -85,8 +85,8 @@ To demonstrate let's start off with an example where we test module load for a s
 
 .. code::
 
-  [siddis14@amrndhl1228 buildtest-framework]$ buildtest --show | grep BUILDTEST_MODULE_ROOT
-  BUILDTEST_MODULE_ROOT                              (C) = /nfs/grid/software/RHEL7/non-easybuild/modules/all
+  [siddis14@amrndhl1228 buildtest-framework]$ buildtest --show | grep BUILDTEST_MODULEPATH
+  BUILDTEST_MODULEPATH                              (C) = /nfs/grid/software/RHEL7/non-easybuild/modules/all
 
 
 Let's start the test
@@ -117,7 +117,7 @@ Let's start the test
 
 buildtest will attempt to run ``module load`` against each module to verify modules are working properly.
 
-You may specify multiple module trees using ``BUILDTEST_MODULE_ROOT`` for testing
+You may specify multiple module trees using ``BUILDTEST_MODULEPATH`` for testing
 ``buildtest module --module-load-test`` but you may run into module clashing if you have two or more occurrence of
 module file in two or more trees. In that case, you may be testing ``module load`` for module file that comes
 first in ``MODULEPATH``.

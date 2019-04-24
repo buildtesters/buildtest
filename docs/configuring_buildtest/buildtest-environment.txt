@@ -9,7 +9,7 @@
 +--------------------------------+-----------------------------------------------------------+------------------------------+
 | BUILDTEST_TESTDIR              |    directory where test scripts will be generated         |  ``<directory>``             |
 +--------------------------------+-----------------------------------------------------------+------------------------------+
-| BUILDTEST_MODULE_ROOT          |    colon separated list of root of module trees           |  ``<directory>``             |
+| BUILDTEST_MODULEPATH           |    colon separated list of root of module trees           |  ``<directory>``             |
 +--------------------------------+-----------------------------------------------------------+------------------------------+
 | BUILDTEST_SHELL                |    shell type to use when generating tests                | ``shell``, ``csh``, ``bash`` |
 +--------------------------------+-----------------------------------------------------------+------------------------------+

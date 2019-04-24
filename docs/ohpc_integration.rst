@@ -24,7 +24,7 @@ You may set this as environment variables
 You may specify the option ``--ohpc`` at the command line which will enable OpenHPC
 integration.
 
-You would want to configure your configuration file to specify BUILDTEST_MODULE_ROOT to
+You would want to configure your configuration file to specify BUILDTEST_MODULEPATH to
 the root of the software stack.
 
 Shown below is an example found in buildtest configuration (``$HOME/.buildtest/settings.yaml``) that
@@ -33,7 +33,7 @@ tests the gnu7 and openmpi3 stack.
 ::
 
 
-    BUILDTEST_MODULE_ROOT:
+    BUILDTEST_MODULEPATH:
         - /opt/ohpc/pub/modulefiles
         - /opt/ohpc/pub/moduledeps/gnu7
         - /opt/ohpc/pub/moduledeps/gnu7-openmpi3

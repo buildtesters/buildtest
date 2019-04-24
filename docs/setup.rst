@@ -60,7 +60,7 @@ Next, edit the ``settings.yml`` file to specify buildtest configuration, see :re
 on how to configure buildtest.
 
 Each site will have to customize their buildtest configuration to reflect the root of the module trees.
-You may specify multiple module trees  in ``settings.yml`` using variable ``BUILDTEST_MODULE_ROOT``.
+You may specify multiple module trees  in ``settings.yml`` using variable ``BUILDTEST_MODULEPATH``.
 
 You may specify any of the ``BUILDTEST_*`` variables as environment variables which will 
 override values specified in  ``settings.yml``.
