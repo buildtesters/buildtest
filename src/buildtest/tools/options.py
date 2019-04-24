@@ -25,9 +25,10 @@ Overrides buildtest configuration via environment variable or command options
 """
 
 import os
+from distutils.util import strtobool
 
 from buildtest.tools.config import config_opts
-from distutils.util import strtobool
+from buildtest.tools.log import BuildTestError
 
 def override_configuration():
     """Override buildtest options by environment variables """
@@ -63,8 +64,13 @@ def override_configuration():
 def bool_config_override(key):
     """override boolean configuration via environment varaible"""
     if os.environ.get(key):
-        truth_value = strtobool(os.environ[key])
-        if truth_value == 1:
-            config_opts[key]=True
-        else:
-            config_opts[key]=False
+        try:
+            truth_value = strtobool(os.environ[key])
+            if truth_value == 1:
+                config_opts[key] = True
+            else:
+                config_opts[key] = False
+        except ValueError:
+            values = ["y","yes","t","true","on",1,"n","f","false","off",0]
+            raise BuildTestError(f"Must be one of the following {values}")
+
