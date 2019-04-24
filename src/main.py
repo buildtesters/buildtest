@@ -22,8 +22,7 @@
 import sys
 import os
 
-sys.path.insert(0,os.path.join('.', 'src'))
-os.environ["BUILDTEST_ROOT"]=os.path.dirname(os.path.dirname(__file__))
+sys.path.insert(0,os.path.join(os.getenv("BUILDTEST_ROOT"), 'src'))
 # column width for linewrap for argparse library
 os.environ['COLUMNS'] = "120"
 

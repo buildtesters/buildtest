@@ -59,5 +59,6 @@ then
     exit 3
 fi
 
+cd $BUILDTEST_ROOT
 
 $PYTHON -m src.main "$@"
