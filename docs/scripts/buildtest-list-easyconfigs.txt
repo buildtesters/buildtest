@@ -1,5 +1,5 @@
 buildtest list --easyconfigs
-List of easyconfigs found in MODULETREES: ['/clust/app/easybuild/2018/commons/modules/all', '/clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all', '/nfs/grid/software/moduledomains', '/etc/modulefiles', '/usr/share/modulefiles', '/usr/share/lmod/lmod/modulefiles/Core']
+List of easyconfigs found in MODULETREES: ['/nfs/grid/software/moduledomains', '/etc/modulefiles', '/usr/share/modulefiles', '/usr/share/lmod/lmod/modulefiles/Core']
 ID   |  easyconfig path
 ____ | ________________________________________________________________________________
    1 | /clust/app/easybuild/2018/commons/software/Anaconda2/5.1.0/easybuild/Anaconda2-5.1.0.eb
