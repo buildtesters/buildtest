@@ -33,17 +33,14 @@ from buildtest.tools.log import BuildTestError
 def override_configuration():
     """Override buildtest options by environment variables """
 
-    if os.environ.get('BUILDTEST_LOGDIR'):
-        config_opts['BUILDTEST_LOGDIR']=os.environ['BUILDTEST_LOGDIR']
-
-    if os.environ.get('BUILDTEST_TESTDIR'):
-        config_opts['BUILDTEST_TESTDIR']=os.environ['BUILDTEST_TESTDIR']
-
     bool_config_override("BUILDTEST_BINARY")
     bool_config_override("BUILDTEST_EASYBUILD")
     bool_config_override("BUILDTEST_CLEAN_BUILD")
     bool_config_override("BUILDTEST_OHPC")
 
+    dir_config_override("BUILDTEST_LOGDIR")
+    dir_config_override("BUILDTEST_TESTDIR")
+    dir_config_override("BUILDTEST_RUN_DIR")
 
     if os.environ.get('BUILDTEST_SHELL'):
         config_opts['BUILDTEST_SHELL']=os.environ['BUILDTEST_SHELL']
@@ -55,14 +52,11 @@ def override_configuration():
         if threshold >= 0.0 and threshold <= 1.0:
             config_opts['BUILDTEST_SUCCESS_THRESHOLD']=threshold
 
-    if os.environ.get('BUILDTEST_RUN_DIR'):
-        run_dir = os.environ.get('BUILDTEST_RUN_DIR')
-        if os.path.exists(run_dir):
-            config_opts['BUILDTEST_RUN_DIR']=run_dir
+
 
 
 def bool_config_override(key):
-    """override boolean configuration via environment varaible"""
+    """override boolean configuration via environment variable"""
     if os.environ.get(key):
         try:
             truth_value = strtobool(os.environ[key])
@@ -74,3 +68,9 @@ def bool_config_override(key):
             values = ["y","yes","t","true","on",1,"n","f","false","off",0]
             raise BuildTestError(f"Must be one of the following {values}")
 
+def dir_config_override(key):
+    """override directory configuration via environment variable"""
+    if os.environ.get(key):
+        run_dir = os.environ.get(key)
+        if os.path.exists(run_dir):
+            config_opts[key]=run_dir
