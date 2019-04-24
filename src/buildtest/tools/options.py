@@ -38,28 +38,10 @@ def override_configuration():
     if os.environ.get('BUILDTEST_TESTDIR'):
         config_opts['BUILDTEST_TESTDIR']=os.environ['BUILDTEST_TESTDIR']
 
-
-    if os.environ.get('BUILDTEST_EASYBUILD'):
-        truth_value = strtobool(os.environ['BUILDTEST_EASYBUILD'])
-        if truth_value == 1:
-            config_opts['BUILDTEST_EASYBUILD']=True
-        else:
-            config_opts['BUILDTEST_EASYBUILD']=False
-
-
-    if os.environ.get('BUILDTEST_CLEAN_BUILD'):
-        truth_value = strtobool(os.environ['BUILDTEST_CLEAN_BUILD'])
-        if truth_value == 1:
-            config_opts['BUILDTEST_CLEAN_BUILD']=True
-        else:
-            config_opts['BUILDTEST_CLEAN_BUILD']=False
-
-    if os.environ.get('BUILDTEST_OHPC'):
-        truth_value = strtobool(os.environ['BUILDTEST_OHPC'])
-        if truth_value == 1:
-            config_opts['BUILDTEST_OHPC']=True
-        else:
-            config_opts['BUILDTEST_OHPC']=False
+    bool_config_override("BUILDTEST_BINARY")
+    bool_config_override("BUILDTEST_EASYBUILD")
+    bool_config_override("BUILDTEST_CLEAN_BUILD")
+    bool_config_override("BUILDTEST_OHPC")
 
 
     if os.environ.get('BUILDTEST_SHELL'):
@@ -77,3 +59,12 @@ def override_configuration():
         if os.path.exists(run_dir):
             config_opts['BUILDTEST_RUN_DIR']=run_dir
 
+
+def bool_config_override(key):
+    """override boolean configuration via environment varaible"""
+    if os.environ.get(key):
+        truth_value = strtobool(os.environ[key])
+        if truth_value == 1:
+            config_opts[key]=True
+        else:
+            config_opts[key]=False
