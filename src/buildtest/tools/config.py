@@ -196,11 +196,6 @@ def check_configuration():
         sys.exit(1)
 
 
-    # if BUILDTEST_PREPEND_MODULES not defined then declare as empty list
-    if "BUILDTEST_PREPEND_MODULES" not in  list(config_opts.keys()):
-        config_opts["BUILDTEST_PREPEND_MODULES"] = []
-
-
 
 def show_configuration():
     """ This method display buildtest configuration to terminal and this

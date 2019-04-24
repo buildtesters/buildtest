@@ -187,13 +187,6 @@ Misc:
                               help="Build test for system packages",
                               choices=pkglist,
                               metavar='SYSTEM-PACKAGE')
-    parser_build.add_argument("--prepend-modules",
-                              help="Prepend modules in test script prior to "
-                                   +"loading application module.",
-                              choices=module_stack,
-                              metavar='INSTALLED-SOFTWARE',
-                              action="append",
-                              default=[])
     parser_build.add_argument("--shell",
                               help=" Select the type of shell for testscript",
                               choices=BUILDTEST_SHELLTYPES)

@@ -60,8 +60,6 @@ def func_build_subcmd(args):
         config_opts['BUILDTEST_TESTDIR'] = args.testdir
     if args.easybuild:
         config_opts["BUILDTEST_EASYBUILD"]=True
-    if args.prepend_modules:
-        config_opts["BUILDTEST_PREPEND_MODULES"] = args.prepend_modules
     if args.binary:
         config_opts["BUILDTEST_BINARY"] = args.binary
 
