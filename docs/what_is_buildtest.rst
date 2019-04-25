@@ -58,44 +58,44 @@ in your system.
 How was buildtest started?
 ---------------------------
 
-Our institution was going to move our HPC cluster to another Data Center (DC), and my task was to
-conduct software testing before and after the DC move. This project started out by writing
-individual test scripts to test specific features of a software. Most of the software testing was geared
-for compilers, mpi, R, Python, etc... Each test script could be run adhoc or via master script
-that would run everything. Originally buildtest was built using BASH and then ported over
-to Python due to language limitation of BASH.
+Our institution was going to move our HPC cluster to another Data Center (DC),
+and my task was to conduct software testing before and after the DC move. This
+project started out by writing individual test scripts to test specific
+features of a software. Most of the software testing was geared for ``compilers``,
+``mpi``, ``R``, ``Python``, etc... Each test script could be run adhoc or via
+master script that would run everything. Originally buildtest was implemented in bash and
+then ported over to Python due to language limitation of bash.
 
 Description
 -----------
 
-**buildtest** is a framework to automate software testing for entire software stack designed for
-HPC sites to validate their software stack by running the tests provided by buildtest repository.
+**buildtest** is a framework to automate testing for software stack in HPC
+sites. buildtest aims to abstract test complexity so the user can
+focus on writing test with minimal knowledge of the system. buildtest provides
+a rich set of YAML keys with `key`, `value` pairs to define test options that
+buildtest will parse and create a shell-script.
 
-buildtest will parse a YAML configuration that defines the test in high-level abstraction into
-a shell-script that can be run via job scheduler, ctest, buildtest, or manually.  buildtest assumes
-your software is installed  and your facility has module environment either
-EnvironmentModules_ or Lmod_ so you can load the software environment.
+buildtest supports job submission to batch scheduler currently
+``LSF`` and ``SLURM``. buildtest assumes your software is installed  and your
+facility has module environment Lmod_ so you can
+load the software environment.
 
-.. _EnvironmentModules: http://modules.sourceforge.net/
+
 .. _Lmod: https://github.com/TACC/Lmod
 
-**buildtest features**
+buildtest features
 -------------------------------
-
+0
  - Provide a rich YAML API to write test configuration that is **reusable** and **site agnostic**
  - Verify modulefiles can be loaded and conduct ``module load`` testing.
  - Sanity check for binaries for application and system packages
  - List software packages provided by ``MODULEPATH``
  - Support for logging
  - Search for YAML and test scripts
- - Run tests through multiple ways
- - Scan tests and report which ones can be built with buildtest
+ - Summary of run output
  - Support for multiple shells (csh, bash, sh)
  - Generate job scripts (SLURM, LSF) for each test and automate job submission
  - Support for benchmark
 
 
-.. _CMake: https://cmake.org/documentation/
-
-
-buildtest is available on Github at https://github.com/HPC-buildtest
+buildtest is available on Github at https://github.com/HPC-buildtest/buildtest-framework

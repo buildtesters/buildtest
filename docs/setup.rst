@@ -17,16 +17,11 @@ You need the following packages to get started.
 
 - Python > 3.6 or higher
 
-- Lmod ``yum install Lmod`` or environment-modules ``yum install environment-modules``
+- Lmod ``yum install Lmod``
 
-- CMake ``yum install cmake``
-
-If you want to build Lmod or environment-modules see the following links
+If you want to build Lmod see the following links
 
 - http://lmod.readthedocs.io/en/latest/030_installing.html
-
-- https://modules.readthedocs.io/en/stable/INSTALL.html
-
 
 Installing buildtest
 ----------------------------
@@ -44,29 +39,13 @@ by running
     $ pip install docs/requirements.txt
 
 The `requirements.txt <https://github.com/HPC-buildtest/buildtest-framework/blob/master/docs/requirements.txt>`_ can
-be installed in your pip, virtual environment, or conda environment.
+be installed via pip in your python environment (`virtualenv <https://virtualenv.pypa.io/en/latest/>`_,
+`conda <https://conda.io/>`_ or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_
+.
 
 To configure buildtest source the file ``sourceme.sh``::
 
     $ source sourceme.sh
-
-
-Next you will want to create a directory ``.buildtest`` in your home directory and copy the ``settings.yml`` file::
-
-    $ mkdir $HOME/.buildtest
-    $ cp settings.yml $HOME/.buildtest/settings.yml
-
-Next, edit the ``settings.yml`` file to specify buildtest configuration, see :ref:`configuring_buildtest` for details
-on how to configure buildtest.
-
-Each site will have to customize their buildtest configuration to reflect the root of the module trees.
-You may specify multiple module trees  in ``settings.yml`` using variable ``BUILDTEST_MODULEPATH``.
-
-You may specify any of the ``BUILDTEST_*`` variables as environment variables which will 
-override values specified in  ``settings.yml``.
-
-
-
 
 Setting up auto-complete on buildtest arguments
 -----------------------------------------------

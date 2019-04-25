@@ -1,2 +1,0 @@
-Detecting Software:  GCCcore/6.4.0
-Writing Log file:  /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_19_30_17_02_2019.log

@@ -2,4 +2,4 @@ buildtest build --package gcc --testdir /home/siddis14/tmp
 Detecting System Package: gcc
 Generating  8  binary tests
 Binary Tests are written in  /home/siddis14/tmp/system/gcc
-Writing Log file to:  /tmp/siddis14/buildtest/system/gcc/buildtest_13_14_24_04_2019.log
+Writing Log file to:  /tmp/siddis14/buildtest/system/gcc/buildtest_14_41_25_04_2019.log

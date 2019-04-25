@@ -102,7 +102,7 @@ To change the shell to ``bash`` or ```csh`` you can do either::
 If you specify an invalid value you may get the following message
 
 .. Error::
-	BUILDTEST_SHELL expects value ['sh', 'bash', 'csh'] current value is tcsh
+	BUILDTEST_SHELL expects value [``sh``, ``bash``, ``csh``] current value	is tcsh
 
 
 Clean Build

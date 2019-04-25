@@ -29,7 +29,7 @@ short option ``buildtest list -ls``
 buildtest determines the software list based on the module trees specified in ``BUILDTEST_MODULEPATH``
 and processes each module tree and returns a  unique software list
 
-.. program-output:: head -n 15 scripts/buildtest-list-software.txt
+.. program-output:: cat scripts/buildtest-list-software.txt
 
 
 Software Version Relationship (``buildtest list -svr``)
@@ -41,7 +41,7 @@ then you want to use ``buildtest list --software-version-relation`` or short opt
 
 The output will be sorted by software and each entry will correspond to the full path of the modulefile.
 
-.. program-output:: head -n 15 scripts/buildtest-list-software-modules.txt
+.. program-output:: cat scripts/buildtest-list-software-modules.txt
 
 .. _list_easyconfigs:
 

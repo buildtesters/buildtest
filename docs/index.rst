@@ -1,77 +1,73 @@
-buildtest - Software Testing Framework
-=========================================
+buildtest
+==========
 
 .. Note:: This project is under development, the official release will be in 2020.
 
-Welcome to buildtest! **buildtest** is a framework for writing tests to conduct software stack testing for
-HPC facilities. The goal of buildtest is to abstract test complexity such that a user can write test with minimal knowledge
-of the system and the test is reusable between HPC sites. For more details on buildtest check :ref:`summary_of_buildtest`
+Welcome to `buildtest <https://github.com/HPC-buildtest/buildtest-framework>`_  is
+a framework for automating tests creation  to conduct software stack testing for
+HPC facilities. buildtest aims to abstract test complexity such that a user can
+focus on writing test with minimal knowledge of the system. Test configuration
+are reusable between HPC sites with the goal of sharing tests between the
+HPC community.
+
+For more details on buildtest check :ref:`summary_of_buildtest`
 
 This documentation was last rebuild on |today| and is intended for version |version|.
 
-Introduction to buildtest
--------------------------
 
 .. toctree::
-   :glob:
    :maxdepth: 2
+   :caption: Background
 
    what_is_buildtest.rst
+   concepts.rst
+   feature_overview.rst
 
-
-Getting Started
----------------
 
 .. toctree::
    :maxdepth: 2
+   :caption: Reference
 
-   concepts.rst
    setup.rst
    configuring_buildtest.rst
    building_test.rst
    introspection.rst
-   how_to_use_buildtest.rst
-   command_reference.rst
-
-Subcommands
------------------
-
-.. toctree::
-   :maxdepth: 2
-
-   module_subcommand.rst
-   run_subcommand.rst
+   module_operation.rst
+   running_tests.rst
    benchmark_subcommand.rst
    yaml_subcommand.rst
 
 
-Miscellaneous
---------------------
+.. toctree::
+   :maxdepth: 2
+   :caption: Extensions
+
+   easybuild_integration.rst
+   ohpc_integration.rst
 
 .. toctree::
-    :maxdepth: 2
+   :maxdepth: 2
+   :caption: Development Guide
 
-    easybuild_integration.rst
-    ohpc_integration.rst
-    contributing.rst
-    references.rst
-
-Useful Links
--------------
-
-* buildtest-framework_ - The buildtest Testing framework
-* buildtest-configs_ - buildtest YAML configs for generic apps
+   command_reference.rst
+   contributing.rst
+   references.rst
 
 
 Slack
 ------
 
-Click `Join <https://hpcbuildtest.herokuapp.com/>` the Slack Channel to get connected with the community. The slack
-url is http://hpcbuildtest.slack.com
+`Join <https://hpcbuildtest.herokuapp.com/>`_ the Slack Channel to get
+connected. The slack channel can be accessed at http://hpcbuildtest.slack.com
 
+Related Projects
+-----------------
 
-.. _buildtest-framework: https://github.com/HPC-buildtest/buildtest-framework
-.. _buildtest-configs: https://github.com/HPC-buildtest/buildtest-configs
+- `ReFrame: <https://reframe-hpc.readthedocs.io/en/stable/>`_ ``Re`` gression ``FRAME`` work for Software Testing
+
+- `EasyBuild: <https://easybuild.readthedocs.io/en/latest/>`_ end-end software build framework with 1000+ software used for building tuned application for HPC clusters
+
+- `Spack: <https://spack.readthedocs.io/en/latest/>`_  is ``S`` upercomputing ``PACK`` age Manager that supports 1000+ software packages and extremely efficient in combinatorial builds
 
 
 Indices and tables

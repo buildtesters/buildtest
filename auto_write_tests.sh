@@ -18,6 +18,11 @@ tee $script_dir/run-compilers-suite.txt <<<"buildtest run -S compilers"|bash>> $
 tee $script_dir/build-openmp-suite.txt <<<"buildtest build -S openmp" |bash>>$script_dir/build-openmp-suite.txt
 tee $script_dir/run-openmp-suite.txt <<<"buildtest run -S openmp"| bash>>$script_dir/run-openmp-suite.txt
 
+
+tee $script_dir/build-single-configuration.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration.txt
+
+tee $script_dir/build-single-configuration-module.txt <<<"ml eb/2018; ml GCC; buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration-module.txt
+
 tee $script_dir/build-shell-csh.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml --shell csh" | bash >>$script_dir/build-shell-csh.txt
 tee $script_dir/build-shell-bash.txt <<<"BUILDTEST_SHELL=bash buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml" | bash >>$script_dir/build-shell-bash.txt
 
@@ -37,3 +42,8 @@ tee $script_dir/buildtest-list-software-format.txt <<< "buildtest list -ls --for
 tee $script_dir/buildtest-find-help.txt <<<"buildtest find --help" | bash >> $script_dir/buildtest-find-help.txt
 tee $script_dir/buildtest-find-configs.txt <<<"buildtest find -fc all" | bash >> $script_dir/buildtest-find-configs.txt
 tee $script_dir/buildtest-find-test.txt <<<"buildtest find -ft all" | bash >> $script_dir/buildtest-find-test.txt
+
+# module load test
+tee $script_dir/module-load.txt <<<"buildtest module --module-load-test" | bash >> $script_dir/module-load.txt
+tee $script_dir/module-diff.txt <<<"buildtest module --diff-trees /clust/app/easybuild/2018/commons/modules/all,/usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module-diff.txt
+tee $script_dir/module-diff-v2.txt <<< "buildtest module --diff-trees /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all,/clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all" | bash >> $script_dir/module-diff-v2.txt
