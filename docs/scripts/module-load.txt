@@ -1,0 +1,63 @@
+buildtest module --module-load-test
+module load RHEL6-apps
+RUN: 1/18 STATUS: PASSED - Testing module: RHEL6-apps
+________________________________________________________________________________
+module load cctsoft
+RUN: 2/18 STATUS: PASSED - Testing module: cctsoft
+________________________________________________________________________________
+module load clinpharm
+RUN: 3/18 STATUS: PASSED - Testing module: clinpharm
+________________________________________________________________________________
+module load deprecated
+RUN: 4/18 STATUS: PASSED - Testing module: deprecated
+________________________________________________________________________________
+module load easybuild
+RUN: 5/18 STATUS: PASSED - Testing module: easybuild
+________________________________________________________________________________
+module load eb/2017
+RUN: 6/18 STATUS: PASSED - Testing module: eb/2017
+________________________________________________________________________________
+module load eb/2018
+RUN: 7/18 STATUS: PASSED - Testing module: eb/2018
+________________________________________________________________________________
+module load ljmedchemsoft
+RUN: 8/18 STATUS: PASSED - Testing module: ljmedchemsoft
+________________________________________________________________________________
+module load lmod/6.5.1
+RUN: 9/18 STATUS: PASSED - Testing module: lmod/6.5.1
+________________________________________________________________________________
+module load medsci
+RUN: 10/18 STATUS: PASSED - Testing module: medsci
+________________________________________________________________________________
+module load omics
+RUN: 11/18 STATUS: PASSED - Testing module: omics
+________________________________________________________________________________
+module load pharmsci
+RUN: 12/18 STATUS: PASSED - Testing module: pharmsci
+________________________________________________________________________________
+module load ru
+RUN: 13/18 STATUS: PASSED - Testing module: ru
+________________________________________________________________________________
+module load settarg/6.5.1
+RUN: 14/18 STATUS: PASSED - Testing module: settarg/6.5.1
+________________________________________________________________________________
+module load siterestricted
+RUN: 15/18 STATUS: PASSED - Testing module: siterestricted
+________________________________________________________________________________
+module load statistics
+RUN: 16/18 STATUS: PASSED - Testing module: statistics
+________________________________________________________________________________
+module load use.own.eb/append
+RUN: 17/18 STATUS: PASSED - Testing module: use.own.eb/append
+________________________________________________________________________________
+module load use.own.eb/prepend
+RUN: 18/18 STATUS: PASSED - Testing module: use.own.eb/prepend
+________________________________________________________________________________
+Writing Results to /tmp/modules-load.out
+Writing Results to /tmp/modules-load.err
+________________________________________________________________________________
+                     Module Load Summary
+Module Trees:                            ['/nfs/grid/software/moduledomains', '/etc/modulefiles', '/usr/share/modulefiles', '/usr/share/lmod/lmod/modulefiles/Core']
+PASSED:                                  18
+FAILED:                                  0
+________________________________________________________________________________

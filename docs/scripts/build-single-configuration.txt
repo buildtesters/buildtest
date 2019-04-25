@@ -1,0 +1,24 @@
+buildtest build -c /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml -vv
+________________________________________________________________________________
+compiler: gnu
+flags: -O3
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+source: hello.cpp
+testblock: singlesource
+
+________________________________________________________________________________
+Key Check PASSED for file /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml
+Source File /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp exists!
+Programming Language Detected: c++
+Compiler Check Passed
+Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
+________________________________________________________________________________
+#!/bin/sh
+module purge
+cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+g++ -O3 -o hello.cpp.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp 
+./hello.cpp.exe 
+ rm ./hello.cpp.exe 
+________________________________________________________________________________
