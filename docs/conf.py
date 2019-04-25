@@ -15,7 +15,9 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.getenv("BUILDTEST_ROOT"),'src'))
+
+BUILDTEST_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(BUILDTEST_ROOT,'src'))
 
 # -- Project information -----------------------------------------------------
 
