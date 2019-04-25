@@ -69,24 +69,46 @@ class BuildTestModule():
         return self.module_dict
     def get_unique_modules(self):
         """Return a list of unique full name canonical modules """
-        return sorted(self.module_dict.keys())
-    def get_unique_software_modules(self):
-        """Return a set with list of unique software module names"""
+        unique_modules_set = set()
+        for module in self.module_dict.keys():
+            for mpath in self.module_dict[module].keys():
+                for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                    if tree in mpath:
+                        unique_modules_set.add(module)
+                        break
+        return sorted(list(unique_modules_set))
+
+    def get_unique_fname_modules(self):
+        """Return a list of unique canonical fullname of module
+        where abspath to module is in one of the
+        directories defined by BUILDTEST_MODULEPATH"""
         software_set = set()
-        sorted_keys = sorted(self.module_dict.keys())
-        for k in sorted_keys:
-            for mod_file in self.module_dict[k].keys():
+
+        for module in self.get_unique_modules():
+            for mpath in self.module_dict[module].keys():
+                fname = ""
                 if self.major_ver == 6:
-                    software_set.add(self.module_dict[k][mod_file]["full"])
+                    fname = self.module_dict[module][mpath]["full"]
                 elif self.major_ver == 7:
-                    software_set.add(self.module_dict[k][mod_file]["fullName"])
+                    fname = self.module_dict[module][mpath]["fullName"]
+
+                # only add module files that belong in directories specified
+                #  by BUILDTEST_MODULEPATH.
+                for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                    if tree in mpath:
+                        software_set.add(fname)
+                        break
 
         return sorted(list(software_set))
     def get_modulefile_path(self):
         """Return a list of absolute path for all module files"""
         module_path_list  = []
         for k in self.get_unique_modules():
-            module_path_list += self.module_dict[k].keys()
+            for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                for mpath in self.module_dict[k].keys():
+                    if tree in mpath:
+                        module_path_list.append(mpath)
+
         return module_path_list
 
     def check_module(self,module):
@@ -192,7 +214,7 @@ def module_tree_rm(tree):
 def module_load_test():
     """Perform module load test for all modules in BUILDTEST_MODULEPATH"""
 
-    module_stack = module_obj.get_unique_software_modules()
+    module_stack = module_obj.get_unique_fname_modules()
     out_file = "/tmp/modules-load.out"
     err_file = "/tmp/modules-load.err"
 
@@ -203,8 +225,7 @@ def module_load_test():
     count = 0
     for mod_file in module_stack:
         count+=1
-        cmd = "module purge; "
-
+        cmd = ""
         parent_modules = module_obj.get_parent_modules(mod_file)
         for item in parent_modules:
             cmd += "module try-load {};  ".format(item)

@@ -65,7 +65,7 @@ def menu():
     run_test_class = os.listdir(test_suite_dir)
     pkglist = systempackage_installed_list()
 
-    module_stack = module_obj.get_unique_software_modules()
+    module_stack = module_obj.get_unique_fname_modules()
 
     app_choices = run_app_choices()
 

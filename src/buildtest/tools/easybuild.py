@@ -68,6 +68,10 @@ def find_easyconfigs_from_modulelist(modulelist):
                         # only add to list ec_list if there is an easyconfig file
                         if len(eb_file) > 0:
                             ec_list += eb_file
+                        else:
+                            no_ec_list.append(f"Reading File: {module}. "
+                                              f"Unable to find any .eb file "
+                                              f"in {easybuild_path} ")
 
                     break
                 else:

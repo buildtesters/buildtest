@@ -31,9 +31,8 @@ following:
 
 import json
 import sys
-from collections import OrderedDict
-from operator import itemgetter
 
+from buildtest.tools.config import config_opts
 from buildtest.tools.modules import module_obj
 from buildtest.tools.easybuild import find_easyconfigs
 
@@ -87,21 +86,23 @@ def list_software_version_relation(args):
     ID  |        Module Name                         |      ModuleFile Path
     ----|--------------------------------------------|----------------------------- """
         print (text)
-        sorted_keys = sorted(module_dict.keys())
+
         count = 0
-        for mod_name in sorted_keys:
-            for mpath in module_dict[mod_name].keys():
-                count+=1
-                fullName = ""
-                if major_ver == 6:
-                    fullName = module_dict[mod_name][mpath]["full"]
-                elif major_ver == 7:
-                    fullName = module_dict[mod_name][mpath]["fullName"]
+        for module in module_obj.get_unique_modules():
+            for mpath in module_dict[module].keys():
+                for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                    if tree in mpath:
+
+                        count+=1
+                        fullName = ""
+                        if major_ver == 6:
+                            fullName = module_dict[module][mpath]["full"]
+                        elif major_ver == 7:
+                            fullName = module_dict[module][mpath]["fullName"]
 
 
-                print ((str(count) + "\t |").expandtabs(4),
-                       "\t" + (fullName + "\t |").expandtabs(
-                           40) + "\t" + mpath)
+                        print ((str(count) + "\t |").expandtabs(4),
+                               "\t" + (fullName + "\t |").expandtabs(40) + "\t" + mpath)
 
 
         print (f"Total Software Modules: {count}")
