@@ -1,7 +1,6 @@
 benchmark:
-  module: OSU-Micro-Benchmarks/5.3.2-foss-2018a
 
-  test: 
+  test:
   - name: osu_allgather
     proc : 2
     min_message_size : 2

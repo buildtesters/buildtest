@@ -148,8 +148,7 @@ def run_osu_microbenchmark(config):
     fd=open(config,'r')
     content=yaml.safe_load(fd)
     print ("Loading YAML content \n")
-    modulefile = content["benchmark"]["module"]
-    num_tests = len(content["benchmark"]["test"])
+
 
     testlist = []
 
@@ -162,7 +161,17 @@ def run_osu_microbenchmark(config):
         testname = "/tmp/" + i["name"] + ".sh"
         fd = open(testname,"w")
         fd.write("#!/bin/sh" + "\n")
-        fd.write("module load " + modulefile +  "\n")
+        cmd = "module -t list"
+
+        out = subprocess.getoutput(cmd)
+        # output of module -t list when no modules are loaded is "No modules
+        #  loaded"
+        if out != "No modules loaded":
+            out = out.split()
+            # module load each module
+            for i in out:
+                fd.write(f"module load {i} \n")
+
         fd.write(mpi_cmd)
         fd.close()
         os.chmod(testname, stat.S_IRWXU|stat.S_IRGRP|stat.S_IXGRP|stat.S_IROTH|stat.S_IXOTH)
