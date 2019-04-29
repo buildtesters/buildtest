@@ -61,14 +61,14 @@ def list_software(args):
     else:
         count = 0
         text = """
-ID  |     Software
-----|-----------------------------  """
+        Software
+-----------------------------  """
 
         print (text)
         for item in module_set:
-            count = count + 1
-            print ((str(count) + "\t|").expandtabs(4), item)
+            print (item)
 
+        print ("\n")
         print ("Total Software Packages: ", len(module_set))
 
 
@@ -83,8 +83,8 @@ def list_software_version_relation(args):
         json.dump(module_dict, sys.stdout, indent=4, sort_keys=True)
     else:
         text = """
-    ID  |        Module Name                         |      ModuleFile Path
-    ----|--------------------------------------------|----------------------------- """
+        Full Module Name                 |      ModuleFile Path
+-----------------------------------------|----------------------------- """
         print (text)
 
         count = 0
@@ -101,8 +101,7 @@ def list_software_version_relation(args):
                             fullName = module_dict[module][mpath]["fullName"]
 
 
-                        print ((str(count) + "\t |").expandtabs(4),
-                               "\t" + (fullName + "\t |").expandtabs(40) + "\t" + mpath)
+                        print ((fullName + "\t |").expandtabs(40) + "\t" + mpath)
 
-
+        print ("\n")
         print (f"Total Software Modules: {count}")
