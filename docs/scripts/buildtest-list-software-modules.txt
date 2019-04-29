@@ -1,23 +1,27 @@
 buildtest list -svr
 
-    ID  |        Module Name                         |      ModuleFile Path
-    ----|--------------------------------------------|----------------------------- 
-1    | 	RHEL6-apps                               |	/nfs/grid/software/moduledomains/RHEL6-apps.lua
-2    | 	cctsoft                                  |	/nfs/grid/software/moduledomains/cctsoft
-3    | 	clinpharm                                |	/nfs/grid/software/moduledomains/clinpharm
-4    | 	deprecated                               |	/nfs/grid/software/moduledomains/deprecated
-5    | 	easybuild                                |	/nfs/grid/software/moduledomains/easybuild
-6    | 	eb/2017                                  |	/nfs/grid/software/moduledomains/eb/2017.lua
-7    | 	eb/2018                                  |	/nfs/grid/software/moduledomains/eb/2018.lua
-8    | 	ljmedchemsoft                            |	/nfs/grid/software/moduledomains/ljmedchemsoft
-9    | 	lmod/6.5.1                               |	/usr/share/lmod/lmod/modulefiles/Core/lmod/6.5.1.lua
-10   | 	medsci                                   |	/nfs/grid/software/moduledomains/medsci
-11   | 	omics                                    |	/nfs/grid/software/moduledomains/omics
-12   | 	pharmsci                                 |	/nfs/grid/software/moduledomains/pharmsci
-13   | 	ru                                       |	/nfs/grid/software/moduledomains/ru
-14   | 	settarg/6.5.1                            |	/usr/share/lmod/lmod/modulefiles/Core/settarg/6.5.1.lua
-15   | 	siterestricted                           |	/nfs/grid/software/moduledomains/siterestricted
-16   | 	statistics                               |	/nfs/grid/software/moduledomains/statistics
-17   | 	use.own.eb/append                        |	/nfs/grid/software/moduledomains/use.own.eb/append
-18   | 	use.own.eb/prepend                       |	/nfs/grid/software/moduledomains/use.own.eb/prepend
+        Full Module Name                 |      ModuleFile Path
+-----------------------------------------|----------------------------- 
+[32mRHEL6-apps                               |	/nfs/grid/software/moduledomains/RHEL6-apps.lua[0m
+cctsoft                                  |	/nfs/grid/software/moduledomains/cctsoft
+clinpharm                                |	/nfs/grid/software/moduledomains/clinpharm
+deprecated                               |	/nfs/grid/software/moduledomains/deprecated
+easybuild                                |	/nfs/grid/software/moduledomains/easybuild
+[32meb/2017                                  |	/nfs/grid/software/moduledomains/eb/2017.lua[0m
+[32meb/2018                                  |	/nfs/grid/software/moduledomains/eb/2018.lua[0m
+ljmedchemsoft                            |	/nfs/grid/software/moduledomains/ljmedchemsoft
+[32mlmod/6.5.1                               |	/usr/share/lmod/lmod/modulefiles/Core/lmod/6.5.1.lua[0m
+medsci                                   |	/nfs/grid/software/moduledomains/medsci
+omics                                    |	/nfs/grid/software/moduledomains/omics
+pharmsci                                 |	/nfs/grid/software/moduledomains/pharmsci
+ru                                       |	/nfs/grid/software/moduledomains/ru
+[32msettarg/6.5.1                            |	/usr/share/lmod/lmod/modulefiles/Core/settarg/6.5.1.lua[0m
+siterestricted                           |	/nfs/grid/software/moduledomains/siterestricted
+statistics                               |	/nfs/grid/software/moduledomains/statistics
+use.own.eb/append                        |	/nfs/grid/software/moduledomains/use.own.eb/append
+use.own.eb/prepend                       |	/nfs/grid/software/moduledomains/use.own.eb/prepend
+
+
 Total Software Modules: 18
+[32mTotal LUA Modules: 10[0m
+Total non LUA Modules: 13

@@ -30,7 +30,9 @@ following:
 """
 
 import json
+import os
 import sys
+from termcolor import colored, cprint
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.modules import module_obj
@@ -88,6 +90,7 @@ def list_software_version_relation(args):
         print (text)
 
         count = 0
+        lua_modules = non_lua_modules = 0
         for module in module_obj.get_unique_modules():
             for mpath in module_dict[module].keys():
                 for tree in config_opts["BUILDTEST_MODULEPATH"]:
@@ -100,8 +103,17 @@ def list_software_version_relation(args):
                         elif major_ver == 7:
                             fullName = module_dict[module][mpath]["fullName"]
 
-
-                        print ((fullName + "\t |").expandtabs(40) + "\t" + mpath)
+                        if os.path.splitext(mpath)[1] == ".lua":
+                            text = (fullName + "\t |").expandtabs(40) + "\t" + mpath
+                            cprint(text,'green')
+                            lua_modules+=1
+                            lua_modules+=1
+                        else:
+                            print ((fullName + "\t |").expandtabs(40) + "\t" + mpath)
+                            non_lua_modules+=1
 
         print ("\n")
         print (f"Total Software Modules: {count}")
+        msg = f"Total LUA Modules: {lua_modules}"
+        cprint(msg,'green')
+        print(f"Total non LUA Modules: {non_lua_modules}")

@@ -1,21 +1,23 @@
 buildtest list -ls
 
-ID  |     Software
-----|-----------------------------  
-1   | RHEL6-apps
-2   | cctsoft
-3   | clinpharm
-4   | deprecated
-5   | easybuild
-6   | eb
-7   | ljmedchemsoft
-8   | lmod
-9   | medsci
-10  | omics
-11  | pharmsci
-12  | ru
-13  | settarg
-14  | siterestricted
-15  | statistics
-16  | use.own.eb
+        Software
+-----------------------------  
+RHEL6-apps
+cctsoft
+clinpharm
+deprecated
+easybuild
+eb
+ljmedchemsoft
+lmod
+medsci
+omics
+pharmsci
+ru
+settarg
+siterestricted
+statistics
+use.own.eb
+
+
 Total Software Packages:  16
