@@ -63,12 +63,3 @@ def init_log():
     logger.setLevel(logging.DEBUG)
 
     return logger, logpath, logfile
-
-
-def clean_logs():
-    """ Delete log directory. this method implements
-        buildtest --clean-logs option"""
-    BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
-    if os.path.exists(BUILDTEST_LOGDIR):
-        shutil.rmtree(BUILDTEST_LOGDIR)
-        print ("Removing log directory %s", BUILDTEST_LOGDIR)

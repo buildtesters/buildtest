@@ -328,9 +328,6 @@ Misc:
     misc_group.add_argument("--logdir",
                             help="Path to write buildtest logs. Override "
                                  + "configuration BUILDTEST_LOGDIR")
-    misc_group.add_argument("--clean-logs",
-                            help="delete buildtest log directory $BUILDTEST_LOGDIR",
-                            action="store_true")
 
     return parser
 

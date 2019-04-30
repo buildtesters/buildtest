@@ -30,7 +30,6 @@ os.environ['COLUMNS'] = "120"
 from buildtest.tools.config import config_opts
 from buildtest.tools.menu import menu, parse_options
 from buildtest.tools.system import BuildTestSystem
-from buildtest.tools.log import clean_logs
 from buildtest.tools.version import buildtest_version
 
 
@@ -50,10 +49,6 @@ def main():
 
     if parsed_opts.logdir:
         config_opts['BUILDTEST_LOGDIR'] = parsed_opts.logdir
-
-
-    if parsed_opts.clean_logs:
-        clean_logs()
 
 
 if __name__ == "__main__":
