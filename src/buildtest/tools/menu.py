@@ -268,6 +268,9 @@ Misc:
                               "--easybuild",
                               help="reports modules that are built by easybuild",
                               action="store_true")
+    parser_module.add_argument("--spack",
+                               help="reports modules that are built by spack",
+                               action="store_true")
     parser_module.set_defaults(func=func_module_subcmd)
 
     # -------------------------------- show menu --------------------------

@@ -119,16 +119,3 @@ def find_easyconfigs():
     print (f"Total easyconfigs found:{len(ec_list)}")
     print (f"Total module files searched: {len(modulelist)}")
 
-
-def check_easybuild_module():
-    """ This method returns True if an easyconfig file found in
-        installation directory. """
-    module_list = module_obj.get_modulefile_path()
-
-    eb_string = "-- Built with EasyBuild version"
-    for mpath in module_list:
-        if not string_in_file(eb_string,mpath):
-            print (f"Module: {mpath} is not built with Easybuild")
-        else:
-            print(f"Module: {mpath} is built with Easybuild")
-

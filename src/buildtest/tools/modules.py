@@ -46,15 +46,15 @@ def func_module_subcmd(args):
     if args.module_load_test:
         module_load_test()
     if args.list:
-        for tree in config_opts["BUILDTEST_MODULEPATH"]:
-            print (tree)
+        [print (tree) for tree in config_opts["BUILDTEST_MODULEPATH"]]
     if args.add:
         module_tree_add(args.add)
     if args.rm:
         module_tree_rm(args.rm)
     if args.easybuild:
-        from buildtest.tools.easybuild import check_easybuild_module
         check_easybuild_module()
+    if args.spack:
+        check_spack_module()
 
 
 class BuildTestModule():
@@ -346,3 +346,25 @@ def diff_trees(args_trees):
 
                 print ((str(count) + "\t |").expandtabs(8), (i + "\t |").expandtabs(60) , (value1 + "\t |").expandtabs(18), value2)
                 count = count + 1
+
+def check_easybuild_module():
+    """This method reports modules that are built by easybuild."""
+    module_list = module_obj.get_modulefile_path()
+
+    eb_string = "Built with EasyBuild version"
+    for mpath in module_list:
+        if not string_in_file(eb_string,mpath):
+            print (f"Module: {mpath} is not built with Easybuild")
+        else:
+            print(f"Module: {mpath} is built with Easybuild")
+
+def check_spack_module():
+    """Report modules that are built by spack"""
+    module_list = module_obj.get_modulefile_path()
+
+    spack_string = "Module file created by spack"
+    for mpath in module_list:
+        if not string_in_file(spack_string, mpath):
+            print(f"Module: {mpath} is not built with Spack")
+        else:
+            print(f"Module: {mpath} is built with Spack")
