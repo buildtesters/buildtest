@@ -80,4 +80,59 @@ first in ``MODULEPATH``.
 
 To use this feature properly, it is best to use this with one module tree at a time.
 
+Module Trees Operation
+-----------------------
+
+buildtest supports adding, removing and listing module trees. Internally, buildtest
+is modifying ``BUILDTEST_MODULEPATH`` which is synonymous to ``MODULEPATH`` though,
+buildtest makes use of ``BUILDTEST_MODULEPATH`` when querying modules using ``spider``
+command.
+
+At your site, you may be interested in testing software by each stack.
+
+By default, ``BUILDTEST_MODULEPATH`` is set to an empty list ``[]`` in configuration
+file ``$HOME/.buildtest/settings.yml``. In this case, ``BUILDTEST_MODULEPATH``
+will read from ``MODULEPATH``.
+
+Listing Module Tree
+~~~~~~~~~~~~~~~~~~~~
+
+To list the module trees in buildtest you can run ``buildtest module -l`` which
+shows one module tree per line
+
+.. code-block:: console
+
+    $ buildtest module -l
+    /nfs/grid/software/moduledomains
+    /etc/modulefiles
+    /usr/share/modulefiles
+    /usr/share/lmod/lmod/modulefiles/Core
+
+For this run, ``BUILDTEST_MODULEPATH`` is not set in configuration file so it is
+reading from ``MODULEPATH``
+
+.. code-block:: console
+
+    $ cat ~/.buildtest/settings.yml  | grep -i BUILDTEST_MODULEPATH
+    BUILDTEST_MODULEPATH: []
+
+Adding Module Tree
+~~~~~~~~~~~~~~~~~~~~
+
+You can add new module tree through command line using ``buildtest module -a /path/to/tree``
+which will update the configuration file::
+
+    $ buildtest module -a /usr/share/lmod/lmod/modulefiles/Core
+    Adding module tree: /usr/share/lmod/lmod/modulefiles/Core
+    Configuration File: /home/siddis14/.buildtest/settings.yml has been updated
+
+
+Removing Module Tree
+~~~~~~~~~~~~~~~~~~~~~
+
+Similarly you can remove module tree from your configuration via ``buildtest module -r /path/to/tree``::
+
+    (siddis14-TgVBs13r) buildtest-framework[master !?] $ buildtest module -r /etc/modulefiles
+    Removing module tree: /etc/modulefiles
+    Configuration File: /home/siddis14/.buildtest/settings.yml has been updated
 

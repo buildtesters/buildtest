@@ -10,12 +10,12 @@ official documentation: https://lmod.readthedocs.io/en/latest/136_spider.html
 
 buildtest will run the following command during the setup::
 
-    $LMOD_DIR/spider -o spider-json $MODULEPATH
+    $LMOD_DIR/spider -o spider-json $BUILDTEST_MODULEPATH
 
 The above output is not readable since it is in json so you can pipe this to
 the following::
 
-    $LMOD_DIR/spider -o spider-json | python -m json.tool
+    $LMOD_DIR/spider -o spider-json $BUILDTEST_MODULEPATH | python -m json.tool
 
 In buildtest we make use of `json <https://docs.python.org/3/library/json
 .html>`_ library to convert output to json. The output will look something
@@ -109,15 +109,27 @@ can get this by calling ``BuildTestModules`` class and invoke the method
     module = BuildTestModule()
     module.get_unique_modules()
 
-The method ``get_unique_modules()`` is returning the keys from the dictionary
+The method ``get_unique_modules()`` is returning the keys from the dictionary. It checks
+if abspath of module is in one of the module trees in ``BUILDTEST_MODULEPATH``
+so that it retrieves unique module only defined by ``BUILDTEST_MODULEPATH``. Typically,
+``spider`` will retrieve all modules that may belong to other module trees and we
+dont want that.
 
 .. code-block:: python
 
       def get_unique_modules(self):
         """Return a list of unique full name canonical modules """
-        return sorted(self.module_dict.keys())
+        unique_modules_set = set()
+        for module in self.module_dict.keys():
+            for mpath in self.module_dict[module].keys():
+                for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                    if tree in mpath:
+                        unique_modules_set.add(module)
+                        break
+        return sorted(list(unique_modules_set))
 
-``buildtest list --list-software`` will return a list of unique software
+The above method is typically used by ``buildtest list --list-software`` to return
+a list of unique software.
 
 Get Unique Module Versions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -130,9 +142,9 @@ Lmod will resolve to the default version even if user doesn't specify this.
 .. code-block:: python
 
         module = BuildTestModule()
-        module.get_unique_software_modules()
+        module.get_unique_fname_modules()
 
-The method ``get_unique_software_modules()`` returns a sorted list of module
+The method ``get_unique_fname_modules()`` returns a sorted list of module
 full name. Recall from the dictionary we are retrieving the keyword ``full``
 from the dictionary
 
@@ -159,23 +171,35 @@ from the dictionary
             ]
         },
 
-The implementation of ``get_unique_software_modules()`` is shown below
+The implementation of ``get_unique_fname_modules()`` is shown below.
 
 .. code-block:: python
 
-        def get_unique_software_modules(self):
-        """Return a set with list of unique software module names"""
+       def get_unique_fname_modules(self):
+        """Return a list of unique canonical fullname of module
+        where abspath to module is in one of the
+        directories defined by BUILDTEST_MODULEPATH"""
         software_set = set()
-        sorted_keys = sorted(self.module_dict.keys())
-        for k in sorted_keys:
-            for mod_file in self.module_dict[k].keys():
+
+        for module in self.get_unique_modules():
+            for mpath in self.module_dict[module].keys():
+                fname = ""
                 if self.major_ver == 6:
-                    software_set.add(self.module_dict[k][mod_file]["full"])
+                    fname = self.module_dict[module][mpath]["full"]
                 elif self.major_ver == 7:
-                    software_set.add(self.module_dict[k][mod_file]["fullName"])
+                    fname = self.module_dict[module][mpath]["fullName"]
+
+                # only add module files that belong in directories specified
+                #  by BUILDTEST_MODULEPATH.
+                for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                    if tree in mpath:
+                        software_set.add(fname)
+                        break
 
         return sorted(list(software_set))
 
+Also note we make use of set to avoid duplicate entries and only add modules to
+set whose filepath is in ``BUILDTEST_MODULEPATH``.
 
 .. note:: Lmod 6 and 7 have some difference in the dictionary, just to name a
     few. The key ``full`` has been changed to ``fullName`` in Lmod 7. Here is an example
@@ -240,16 +264,23 @@ The lines of interest are the following
     }
 
 
-Implementation for ``get_modulefile_path()`` is described below
+Implementation for ``get_modulefile_path()`` is described below.
 
 .. code-block:: python
 
-        def get_modulefile_path(self):
-            """Return a list of absolute path for all module files"""
-            module_path_list  = []
-            for k in self.get_unique_modules():
-                module_path_list += self.module_dict[k].keys()
-            return module_path_list
+      def get_modulefile_path(self):
+        """Return a list of absolute path for all module files"""
+        module_path_list  = []
+        for k in self.get_unique_modules():
+            for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                for mpath in self.module_dict[k].keys():
+                    if tree in mpath:
+                        module_path_list.append(mpath)
+
+        return module_path_list
+
+This method is used to return a list of modulefile paths in ``BUILDTEST_MODULEPATH``.
+
 
 Get Parent Modules
 ~~~~~~~~~~~~~~~~~~~
