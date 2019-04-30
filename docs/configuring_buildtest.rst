@@ -184,28 +184,6 @@ Here is an example for a buildtest log file from Jan 20th 2019::
     $ ls -l /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_21_20_20_01_2019.log
     -rw-r--r-- 1 siddis14 amer 81358 Jan 20 21:20 /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_21_20_20_01_2019.log
 
-Easybuild Check
-----------------
-
-To enable easybuild check on module files you can set ``BUILDTEST_EASYBUILD`` as follows::
-
-    BUILDTEST_EASYBUILD: True
-
-By default easybuild check is disabled
-
-For more details on easybuild integration check out  :ref:`EasyBuild_Integration`
-
-OpenHPC Integration
---------------------
-
-If you want to build software for OpenHPC software stack you can set the following in your
-configuration file::
-
-    BUILDTEST_OHPC: True
-
-For more details check out :ref:`OHPC_Integration`
-
-
 Test Threshold
 ----------------
 

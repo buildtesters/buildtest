@@ -40,13 +40,6 @@ This documentation was last rebuild on |today| and is intended for version |vers
 
 .. toctree::
    :maxdepth: 2
-   :caption: Extensions
-
-   easybuild_integration.rst
-   ohpc_integration.rst
-
-.. toctree::
-   :maxdepth: 2
    :caption: Development Guide
 
    command_reference.rst

@@ -7,18 +7,7 @@ Module Operation
 Module Options (``buildtest module --help``)
 ----------------------------------------------
 
-::
-
-    usage: buildtest module [-h] [--module-load-test] [--diff-trees DIFF_TREES] [-a Module Tree] [-l] [-r Module Tree]
-
-   optional arguments:
-     -h, --help            show this help message and exit
-     --module-load-test    conduct module load test for all modules defined in BUILDTEST_MODULEPATH
-     --diff-trees DIFF_TREES
-                           Show difference between two module trees
-     -a Module Tree        add a module tree
-     -l                    list module trees
-     -r Module Tree        remove a module tree
+.. program-output:: cat scripts/buildtest-module-help.txt
 
 
 
@@ -135,4 +124,38 @@ Similarly you can remove module tree from your configuration via ``buildtest mod
     (siddis14-TgVBs13r) buildtest-framework[master !?] $ buildtest module -r /etc/modulefiles
     Removing module tree: /etc/modulefiles
     Configuration File: /home/siddis14/.buildtest/settings.yml has been updated
+
+
+Report Easybuild Modules
+--------------------------
+
+buildtest can detect modules that are built by `Easybuild <https://easybuild.readthedocs.io/en/latest/>`_.
+An easybuild module will a string in module file denoting it was built by easybuild
+with the version of the easybuild::
+
+    Built with EasyBuild version 3.7.1
+
+buildtest will check all module trees defined by ``BUILDTEST_MODULEPATH`` and search
+for string without the version number. To enable this feature you can
+run ``buildtest module -eb`` or long option ``buildtest module --easybuild``.
+
+Shown below is the ``tail`` output of the command.
+
+.. program-output:: tail scripts/easybuild-modules.txt
+
+Report Spack Modules
+--------------------
+
+buildtest can detect `Spack <https://spack.readthedocs.io/en/latest/>`_ modules. A
+spack module has a string to denote this module was created by spack with timestamp of module
+creation. Shown below is an example::
+
+    Module file created by spack (https://github.com/spack/spack) on 2019-04-11 11:38:31.191604
+
+
+buildtest will search for string ``Module file created by spack`` in modulefile. buildtest
+will run this for all modules in module trees defined by ``BUILDTEST_MODULEPATH``.
+
+
+
 

@@ -43,7 +43,9 @@ tee $script_dir/buildtest-find-help.txt <<<"buildtest find --help" | bash >> $sc
 tee $script_dir/buildtest-find-configs.txt <<<"buildtest find -fc all" | bash >> $script_dir/buildtest-find-configs.txt
 tee $script_dir/buildtest-find-test.txt <<<"buildtest find -ft all" | bash >> $script_dir/buildtest-find-test.txt
 
-# module load test
+# module commands 
+tee $script_dir/buildtest-module-help.txt <<<"buildtest module --help" | bash >> $script_dir/buildtest-module-help.txt
 tee $script_dir/module-load.txt <<<"buildtest module --module-load-test" | bash >> $script_dir/module-load.txt
 tee $script_dir/module-diff.txt <<<"buildtest module --diff-trees /clust/app/easybuild/2018/commons/modules/all,/usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module-diff.txt
 tee $script_dir/module-diff-v2.txt <<< "buildtest module --diff-trees /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all,/clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all" | bash >> $script_dir/module-diff-v2.txt
+tee $script_dir/easybuild-modules.txt <<<"ml eb/2018; buildtest module --easybuild" | bash >> $script_dir/easybuild-modules.txt

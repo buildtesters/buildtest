@@ -352,19 +352,31 @@ def check_easybuild_module():
     module_list = module_obj.get_modulefile_path()
 
     eb_string = "Built with EasyBuild version"
+    count = 0
     for mpath in module_list:
         if not string_in_file(eb_string,mpath):
             print (f"Module: {mpath} is not built with Easybuild")
         else:
             print(f"Module: {mpath} is built with Easybuild")
+            count+=1
+
+    print ("\n")
+    print (f"Total Easybuild Modules: {count}")
+    print (f"Total Modules Searched: {len(module_list)}")
 
 def check_spack_module():
     """Report modules that are built by spack"""
     module_list = module_obj.get_modulefile_path()
 
     spack_string = "Module file created by spack"
+    count = 0
     for mpath in module_list:
         if not string_in_file(spack_string, mpath):
             print(f"Module: {mpath} is not built with Spack")
         else:
             print(f"Module: {mpath} is built with Spack")
+            count+=1
+
+    print("\n")
+    print(f"Total Easybuild Modules: {count}")
+    print(f"Total Modules Searched: {len(module_list)}")

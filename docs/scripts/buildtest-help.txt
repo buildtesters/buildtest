@@ -1,5 +1,5 @@
 buildtest --help
-usage: buildtest [-h] [-V] [--logdir LOGDIR] [--clean-logs] {list,find,yaml,build,run,module,show,benchmark} ...
+usage: buildtest [-h] [-V] [--logdir LOGDIR] {list,find,yaml,build,run,module,show,benchmark} ...
 
 buildtest is a software testing framework designed for HPC facilities to verify their Software Stack. buildtest abstracts test complexity into YAML files that is interpretedby buildtest into shell script
 
@@ -29,6 +29,5 @@ commands:
 Miscellaneous Options :
   -V, --version         show program version number and exit
   --logdir LOGDIR       Path to write buildtest logs. Override configuration BUILDTEST_LOGDIR
-  --clean-logs          delete buildtest log directory $BUILDTEST_LOGDIR
 
 Documentation: https://buildtest.readthedocs.io/en/latest/index.html
