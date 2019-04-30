@@ -37,7 +37,6 @@ from buildtest.tools.buildsystem.singlesource import \
 from buildtest.tools.file import create_dir, is_dir, walk_tree
 from buildtest.tools.log import init_log
 from buildtest.test.binarytest import generate_binary_test
-from buildtest.tools.easybuild import is_easybuild_app
 from buildtest.tools.ohpc import check_ohpc
 
 
@@ -58,8 +57,6 @@ def func_build_subcmd(args):
         config_opts['BUILDTEST_CLEAN_BUILD']=True
     if args.testdir:
         config_opts['BUILDTEST_TESTDIR'] = args.testdir
-    if args.easybuild:
-        config_opts["BUILDTEST_EASYBUILD"]=True
     if args.binary:
         config_opts["BUILDTEST_BINARY"] = args.binary
 

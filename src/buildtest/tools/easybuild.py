@@ -27,9 +27,11 @@ files and the installation directory for .eb files.
 This module determines if a software module is a easybuild module by checking
 if an easyconfig is found in the installation directory
 """
+import json
 import os
-import sys
 import subprocess
+import sys
+
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import string_in_file, walk_tree
@@ -118,21 +120,15 @@ def find_easyconfigs():
     print (f"Total module files searched: {len(modulelist)}")
 
 
-def is_easybuild_app(name):
+def check_easybuild_module():
     """ This method returns True if an easyconfig file found in
         installation directory. """
+    module_list = module_obj.get_modulefile_path()
 
-    """
-    TODO: Implement Easybuild Check 
-    """
+    eb_string = "-- Built with EasyBuild version"
+    for mpath in module_list:
+        if not string_in_file(eb_string,mpath):
+            print (f"Module: {mpath} is not built with Easybuild")
+        else:
+            print(f"Module: {mpath} is built with Easybuild")
 
-    ec_list, no_ec_list = find_easyconfigs_from_modulelist(modulefiles)
-    # if no easyconfigs found then ec_list will be empty so we should stop and
-    # report this application is not built by easybuild.
-    if len(ec_list) == 0:
-        print (f"Application: {os.path.join(app_name,app_ver)} is not built "
-               f"from Easybuild, cannot find easyconfig file in installation "
-               f"directory")
-        sys.exit(1)
-
-    return

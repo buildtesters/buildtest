@@ -213,10 +213,6 @@ Misc:
                               help="delete software test directory before "
                                    + "writing test scripts",
                               action="store_true")
-    parser_build.add_argument("-eb",
-                              "--easybuild",
-                              help="check if application is built by easybuild",
-                              action="store_true")
     parser_build.add_argument("--ohpc",
                               help="Indicate to buildtest this is a OpenHPC "
                                    + "package. YAML files will be processed "
@@ -268,6 +264,10 @@ Misc:
                                choices=config_opts["BUILDTEST_MODULEPATH"],
                                dest="rm",
                                metavar="Module Tree")
+    parser_module.add_argument("-eb",
+                              "--easybuild",
+                              help="reports modules that are built by easybuild",
+                              action="store_true")
     parser_module.set_defaults(func=func_module_subcmd)
 
     # -------------------------------- show menu --------------------------

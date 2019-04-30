@@ -38,8 +38,6 @@ from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import string_in_file, is_dir
 
 
-
-
 def func_module_subcmd(args):
     """ entry point for module subcommand """
 
@@ -54,6 +52,10 @@ def func_module_subcmd(args):
         module_tree_add(args.add)
     if args.rm:
         module_tree_rm(args.rm)
+    if args.easybuild:
+        from buildtest.tools.easybuild import check_easybuild_module
+        check_easybuild_module()
+
 
 class BuildTestModule():
     def __init__(self):
