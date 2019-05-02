@@ -130,8 +130,7 @@ Report Easybuild Modules
 --------------------------
 
 buildtest can detect modules that are built by `Easybuild <https://easybuild.readthedocs.io/en/latest/>`_.
-An easybuild module will a string in module file denoting it was built by easybuild
-with the version of the easybuild::
+An easybuild module will contain a string in module file as follows::
 
     Built with EasyBuild version 3.7.1
 

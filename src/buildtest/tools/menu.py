@@ -32,6 +32,7 @@ from buildtest.test.run.system import run_app_choices, run_system_choices
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
     check_configuration
+from buildtest.tools.collection import func_collection_subcmd
 from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.find import func_find_subcmd
 from buildtest.tools.list import func_list_subcmd
@@ -91,6 +92,7 @@ def menu():
     run_title = "Run Tests"
     benchmark_title = "Run Benchmark"
     yaml_title = "Yaml commands for buildtest"
+    collection_title = "Module Collection Operation"
     module_title = "Options for module load testing and report diff between module trees"
     command_description = f"""
 Info:
@@ -106,6 +108,7 @@ Build:
 
 Misc:
     yaml        {yaml_title}
+    collection  {collection_title}
     module      {module_title}
     """
     subparsers = parser.add_subparsers(title='commands', description=command_description,dest="subcommand")
@@ -118,6 +121,7 @@ Misc:
     parser_run = subparsers.add_parser('run')
     parser_module = subparsers.add_parser('module')
     parser_show = subparsers.add_parser('show')
+    parser_collection = subparsers.add_parser('collection')
     parser_benchmark = subparsers.add_parser('benchmark')
 
 
@@ -283,6 +287,14 @@ Misc:
                              help="show yaml keys",
                              choices = ["singlesource"])
     parser_show.set_defaults(func=func_show_subcmd)
+
+    # -------------------------------- collection menu ----------------------
+
+    parser_collection.add_argument("-l", "--list", action="store_true",
+                                   help="list the module collection")
+    parser_collection.add_argument("-a", "--add", action="store_true",
+                                   help="add a module collection")
+    parser_collection.set_defaults(func=func_collection_subcmd)
 
     # -------------------------------- benchmark menu ----------------------
 
