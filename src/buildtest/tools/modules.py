@@ -51,6 +51,8 @@ def func_module_subcmd(args):
         module_tree_add(args.add)
     if args.rm:
         module_tree_rm(args.rm)
+    if args.find:
+        find_modules()
     if args.easybuild:
         check_easybuild_module()
     if args.spack:
@@ -73,11 +75,14 @@ class BuildTestModule():
         """Return a list of unique full name canonical modules """
         unique_modules_set = set()
         for module in self.module_dict.keys():
+            unique_modules_set.add(module)
+            """
             for mpath in self.module_dict[module].keys():
                 for tree in config_opts["BUILDTEST_MODULEPATH"]:
                     if tree in mpath:
                         unique_modules_set.add(module)
                         break
+            """
         return sorted(list(unique_modules_set))
 
     def get_unique_fname_modules(self):
@@ -96,10 +101,11 @@ class BuildTestModule():
 
                 # only add module files that belong in directories specified
                 #  by BUILDTEST_MODULEPATH.
-                for tree in config_opts["BUILDTEST_MODULEPATH"]:
-                    if tree in mpath:
-                        software_set.add(fname)
-                        break
+                software_set.add(fname)
+                #for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                #    if tree in mpath:
+                #        software_set.add(fname)
+                #        break
 
         return sorted(list(software_set))
     def get_modulefile_path(self):
@@ -164,6 +170,19 @@ class BuildTestModule():
         cmd = os.getenv("LMOD_VERSION")
         version = [int(v) for v in cmd.split(".")]
         return version
+
+def find_modules():
+    """Retrieve all modules by name and how to load them"""
+    unique_modules = module_obj.get_unique_fname_modules()
+    module_dict = module_obj.get_module_spider_json()
+    for module in unique_modules:
+        parent = module_obj.get_parent_modules(module)
+        cmd = "module load "
+        for x in parent:
+            cmd += f" {x}"
+        cmd += f" {module}"
+        print(cmd)
+
 
 def get_module_list_by_tree(mod_tree):
     """ returns a list of module file paths given a module tree """

@@ -93,9 +93,26 @@ def list_software_version_relation(args):
         lua_modules = non_lua_modules = 0
         for module in module_obj.get_unique_modules():
             for mpath in module_dict[module].keys():
+                count += 1
+                fullName = ""
+                if major_ver == 6:
+                    fullName = module_dict[module][mpath]["full"]
+                elif major_ver == 7:
+                    fullName = module_dict[module][mpath]["fullName"]
+
+                if os.path.splitext(mpath)[1] == ".lua":
+                    text = (fullName + "\t |").expandtabs(40) + "\t" + mpath
+                    cprint(text, 'green')
+                    lua_modules += 1
+                    lua_modules += 1
+                else:
+                    print((fullName + "\t |").expandtabs(40) + "\t" + mpath)
+                    non_lua_modules += 1
+            """                
+            for mpath in module_dict[module].keys():
                 for tree in config_opts["BUILDTEST_MODULEPATH"]:
                     if tree in mpath:
-
+                        
                         count+=1
                         fullName = ""
                         if major_ver == 6:
@@ -111,6 +128,7 @@ def list_software_version_relation(args):
                         else:
                             print ((fullName + "\t |").expandtabs(40) + "\t" + mpath)
                             non_lua_modules+=1
+            """
 
         print ("\n")
         print (f"Total Software Modules: {count}")
