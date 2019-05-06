@@ -45,10 +45,10 @@ def func_list_subcmd(args):
 
     if args.easyconfigs:
         find_easyconfigs()
-    if args.list_unique_software:
+    if args.software:
         list_software(args)
-    if args.software_version_relation:
-        list_software_version_relation(args)
+    if args.modules:
+        list_modules(args)
 
 
 
@@ -61,19 +61,14 @@ def list_software(args):
         stack = module_obj.get_unique_modules_by_tree()
 
     module_set = stack
-    if args.format == "json":
-        json.dump(module_set, sys.stdout, indent=4, sort_keys=True)
-    else:
-        count = 0
 
-        for item in module_set:
-            print (item)
+    [ print (item) for item in module_set]
 
-        print ("\n")
-        print ("Total Software Packages: ", len(module_set))
+    print ("\n")
+    print ("Total Software Packages: ", len(module_set))
 
 
-def list_software_version_relation(args):
+def list_modules(args):
     """ This method implements  buildtest list -svr """
 
     module_dict = module_obj.get_module_spider_json()
@@ -106,7 +101,6 @@ def list_software_version_relation(args):
             if os.path.splitext(mpath)[1] == ".lua":
                 text = (fullName + "\t |").expandtabs(40) + "\t" + mpath
                 cprint(text, 'green')
-                lua_modules += 1
                 lua_modules += 1
             else:
                 print((fullName + "\t |").expandtabs(40) + "\t" + mpath)

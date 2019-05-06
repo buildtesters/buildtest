@@ -129,29 +129,27 @@ Misc:
     # -------------------------------- list menu --------------------------
 
 
-    parser_list.add_argument("-ls",
-                             "--list-unique-software",
-                             help="retrieve all unique software found in your "
-                                  + "module tree specified by "
-                                  + "BUILDTEST_MODULEPATH",
+    parser_list.add_argument("-s",
+                             "--software",
+                             help="get unique software from Lmod spider command ",
                              action="store_true")
 
-    parser_list.add_argument("-svr",
-                             "--software-version-relation",
-                             help="retrieve software and path to module files "
-                                  + "grouped by software alphabetically",
+    parser_list.add_argument("-m",
+                             "--modules",
+                             help="get full module name and path to module files ",
                              action="store_true")
     parser_list.add_argument("-ec",
                              "--easyconfigs",
                              help="Return a list of easyconfigs from a "
                                   + "module tree",
                              action="store_true")
-    parser_list.add_argument("--format",
-                             help="Output format type",
-                             choices=["json"])
+
     parser_list.add_argument("-v","--view",
                              choices=["all", "current"],
-                             help="List Unique Software using spider command",
+                             help= """ Control output of spider command.
+
+                                  all:     Retrieve all records
+                                  current: Retrieve record where module path is in BUILDTEST_MODULEPATH""",
                              default="current")
     parser_list.set_defaults(func=func_list_subcmd)
 
@@ -287,10 +285,10 @@ Misc:
     subparsers_module = parser_module.add_subparsers()
     parser_moduleload = subparsers_module.add_parser('loadtest',
                                                  help="module load test")
-    parser_moduleload.add_argument("-t","--tree",
-                                   action="store_true",
-                                   help="conduct module load test for trees in "
-                                        "BUILDTEST_MODULEPATH")
+    parser_moduleload.add_argument("-v","--view",
+                                   choices=["current","all"],
+                                   default="current",
+                                   help="conduct module load test")
     parser_moduleload.set_defaults(func=module_load_test)
 
     parser_module.set_defaults(func=func_module_subcmd)

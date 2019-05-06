@@ -271,7 +271,7 @@ def module_tree_rm(tree):
 def module_load_test(args):
     """Perform module load test for all modules in BUILDTEST_MODULEPATH"""
 
-    if args.tree == True:
+    if args.view == "current":
         stack =  module_obj.get_unique_fname_modules_by_tree()
     else:
         stack = module_obj.get_unique_fname_modules()
