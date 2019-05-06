@@ -55,18 +55,17 @@ def func_list_subcmd(args):
 def list_software(args):
     """ This method implements buildtest list -ls """
 
+    if args.view == "all":
+        stack = module_obj.get_unique_modules()
+    else:
+        stack = module_obj.get_unique_modules_by_tree()
 
-    module_set = module_obj.get_unique_modules()
-
+    module_set = stack
     if args.format == "json":
         json.dump(module_set, sys.stdout, indent=4, sort_keys=True)
     else:
         count = 0
-        text = """
-        Software
------------------------------  """
 
-        print (text)
         for item in module_set:
             print (item)
 
@@ -80,58 +79,41 @@ def list_software_version_relation(args):
     module_dict = module_obj.get_module_spider_json()
     lmod_version = module_obj.get_version()
     major_ver = lmod_version[0]
-
-    if args.format == "json":
-        json.dump(module_dict, sys.stdout, indent=4, sort_keys=True)
+    if args.view == "all":
+        stack = module_obj.get_unique_modules()
     else:
-        text = """
-        Full Module Name                 |      ModuleFile Path
+        stack = module_obj.get_unique_modules_by_tree()
+    module_stack = stack
+
+
+    text = """
+    Full Module Name                 |      ModuleFile Path
 -----------------------------------------|----------------------------- """
-        print (text)
+    print (text)
 
-        count = 0
-        lua_modules = non_lua_modules = 0
-        for module in module_obj.get_unique_modules():
-            for mpath in module_dict[module].keys():
-                count += 1
-                fullName = ""
-                if major_ver == 6:
-                    fullName = module_dict[module][mpath]["full"]
-                elif major_ver == 7:
-                    fullName = module_dict[module][mpath]["fullName"]
+    count = 0
+    lua_modules = non_lua_modules = 0
 
-                if os.path.splitext(mpath)[1] == ".lua":
-                    text = (fullName + "\t |").expandtabs(40) + "\t" + mpath
-                    cprint(text, 'green')
-                    lua_modules += 1
-                    lua_modules += 1
-                else:
-                    print((fullName + "\t |").expandtabs(40) + "\t" + mpath)
-                    non_lua_modules += 1
-            """                
-            for mpath in module_dict[module].keys():
-                for tree in config_opts["BUILDTEST_MODULEPATH"]:
-                    if tree in mpath:
-                        
-                        count+=1
-                        fullName = ""
-                        if major_ver == 6:
-                            fullName = module_dict[module][mpath]["full"]
-                        elif major_ver == 7:
-                            fullName = module_dict[module][mpath]["fullName"]
+    for module in module_stack:
+        for mpath in module_dict[module].keys():
+            count += 1
+            fullName = ""
+            if major_ver == 6:
+                fullName = module_dict[module][mpath]["full"]
+            elif major_ver == 7:
+                fullName = module_dict[module][mpath]["fullName"]
 
-                        if os.path.splitext(mpath)[1] == ".lua":
-                            text = (fullName + "\t |").expandtabs(40) + "\t" + mpath
-                            cprint(text,'green')
-                            lua_modules+=1
-                            lua_modules+=1
-                        else:
-                            print ((fullName + "\t |").expandtabs(40) + "\t" + mpath)
-                            non_lua_modules+=1
-            """
+            if os.path.splitext(mpath)[1] == ".lua":
+                text = (fullName + "\t |").expandtabs(40) + "\t" + mpath
+                cprint(text, 'green')
+                lua_modules += 1
+                lua_modules += 1
+            else:
+                print((fullName + "\t |").expandtabs(40) + "\t" + mpath)
+                non_lua_modules += 1
 
-        print ("\n")
-        print (f"Total Software Modules: {count}")
-        msg = f"Total LUA Modules: {lua_modules}"
-        cprint(msg,'green')
-        print(f"Total non LUA Modules: {non_lua_modules}")
+    print ("\n")
+    print (f"Total Software Modules: {count}")
+    msg = f"Total LUA Modules: {lua_modules}"
+    cprint(msg,'green')
+    print(f"Total non LUA Modules: {non_lua_modules}")

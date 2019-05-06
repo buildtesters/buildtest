@@ -58,7 +58,6 @@ def func_module_subcmd(args):
     if args.spack:
         check_spack_module()
 
-
 class BuildTestModule():
     def __init__(self):
 
@@ -72,17 +71,20 @@ class BuildTestModule():
     def get_module_spider_json(self):
         return self.module_dict
     def get_unique_modules(self):
+        """Return a list of unique keys (software name) from spider"""
+        return sorted(list(self.module_dict.keys()))
+
+    def get_unique_modules_by_tree(self):
         """Return a list of unique full name canonical modules """
         unique_modules_set = set()
-        for module in self.module_dict.keys():
-            unique_modules_set.add(module)
-            """
+        for module in self.get_unique_modules():
+            #unique_modules_set.add(module)
             for mpath in self.module_dict[module].keys():
                 for tree in config_opts["BUILDTEST_MODULEPATH"]:
                     if tree in mpath:
                         unique_modules_set.add(module)
                         break
-            """
+
         return sorted(list(unique_modules_set))
 
     def get_unique_fname_modules(self):
@@ -99,13 +101,30 @@ class BuildTestModule():
                 elif self.major_ver == 7:
                     fname = self.module_dict[module][mpath]["fullName"]
 
+                software_set.add(fname)
+
+
+        return sorted(list(software_set))
+    def get_unique_fname_modules_by_tree(self):
+        """Implement method get_unique_fname_modules but only return module
+        that abspath is in directories defined by BUILDTEST_MODULEPATH"""
+        software_set = set()
+
+        for module in self.get_unique_modules():
+            for mpath in self.module_dict[module].keys():
+                fname = ""
+                if self.major_ver == 6:
+                    fname = self.module_dict[module][mpath]["full"]
+                elif self.major_ver == 7:
+                    fname = self.module_dict[module][mpath]["fullName"]
+
                 # only add module files that belong in directories specified
                 #  by BUILDTEST_MODULEPATH.
-                software_set.add(fname)
-                #for tree in config_opts["BUILDTEST_MODULEPATH"]:
-                #    if tree in mpath:
-                #        software_set.add(fname)
-                #        break
+
+                for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                    if tree in mpath:
+                        software_set.add(fname)
+                        break
 
         return sorted(list(software_set))
     def get_modulefile_path(self):
@@ -159,6 +178,7 @@ class BuildTestModule():
                     # contain list of modules to be loaded separated by :
                     # First entry is default:<mod1>:<mod2> so skip first
                     # element
+
                     for entry in mod_parent_list[0].split(":")[1:]:
                         parent_module.append(entry)
 
@@ -175,6 +195,21 @@ def find_modules():
     """Retrieve all modules by name and how to load them"""
     unique_modules = module_obj.get_unique_fname_modules()
     module_dict = module_obj.get_module_spider_json()
+    keys = module_dict.keys()
+    json_dict = {}
+    for key in keys:
+        json_dict[key] = []
+        for mpath in module_dict[key].keys():
+            if key == "bzip2":
+                fullname = module_dict[key][mpath]["full"]
+
+                parent = module_obj.get_parent_modules(fullname)
+                parent.append(fullname)
+                print (key,mpath,fullname,parent)
+                json_dict[key].append(parent)
+
+    json.dump(json_dict,sys.stdout,indent=4)
+    """
     for module in unique_modules:
         parent = module_obj.get_parent_modules(module)
         cmd = "module load "
@@ -182,6 +217,7 @@ def find_modules():
             cmd += f" {x}"
         cmd += f" {module}"
         print(cmd)
+    """
 
 
 def get_module_list_by_tree(mod_tree):
@@ -232,10 +268,16 @@ def module_tree_rm(tree):
     print (f"Removing module tree: {tree}")
     print (f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
 
-def module_load_test():
+def module_load_test(args):
     """Perform module load test for all modules in BUILDTEST_MODULEPATH"""
 
-    module_stack = module_obj.get_unique_fname_modules()
+    if args.tree == True:
+        stack =  module_obj.get_unique_fname_modules_by_tree()
+    else:
+        stack = module_obj.get_unique_fname_modules()
+
+    module_stack = stack
+
     out_file = "/tmp/modules-load.out"
     err_file = "/tmp/modules-load.err"
 

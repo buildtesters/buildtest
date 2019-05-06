@@ -36,7 +36,8 @@ from buildtest.tools.collection import func_collection_subcmd
 from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.find import func_find_subcmd
 from buildtest.tools.list import func_list_subcmd
-from buildtest.tools.modules import func_module_subcmd, module_obj
+from buildtest.tools.modules import func_module_subcmd, \
+     module_obj, module_load_test
 from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.show import func_show_subcmd
@@ -148,6 +149,10 @@ Misc:
     parser_list.add_argument("--format",
                              help="Output format type",
                              choices=["json"])
+    parser_list.add_argument("-v","--view",
+                             choices=["all", "current"],
+                             help="List Unique Software using spider command",
+                             default="current")
     parser_list.set_defaults(func=func_list_subcmd)
 
     # -------------------------------- find menu ---------------------------
@@ -275,6 +280,19 @@ Misc:
     parser_module.add_argument("--spack",
                                help="reports modules that are built by spack",
                                action="store_true")
+    parser_module.add_argument("-f", "--find",
+                               help="Find all modules by name and print how to load modules",
+                               action="store_true")
+
+    subparsers_module = parser_module.add_subparsers()
+    parser_moduleload = subparsers_module.add_parser('loadtest',
+                                                 help="module load test")
+    parser_moduleload.add_argument("-t","--tree",
+                                   action="store_true",
+                                   help="conduct module load test for trees in "
+                                        "BUILDTEST_MODULEPATH")
+    parser_moduleload.set_defaults(func=module_load_test)
+
     parser_module.set_defaults(func=func_module_subcmd)
 
     # -------------------------------- show menu --------------------------
