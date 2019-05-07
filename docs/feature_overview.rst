@@ -1,12 +1,12 @@
 Feature Overview
 ====================
 
-Listing Unique Software and Software Versions
-----------------------------------------------
+Listing Software and Modules
+-----------------------------
 
-buildtest can report unique software and software versions found in your module
-system based on ``spider`` utility provided by Lmod. buildtest leverage this
-feature which can be useful for HPC facilities to see a count of all
+buildtest can report unique software and module versions found in your module
+system based on ``spider`` utility provided by Lmod. This
+feature can be useful for HPC facilities to see a count of all
 software packages and see what versions are installed for each package along
 with the filepath to module file.
 
@@ -14,12 +14,12 @@ buildtest collects this information via ``BUILDTEST_MODULEPATH`` which is
 equivalent to ``MODULEPATH`` but can be tweaked by buildtest to add & remove
 directory at will.
 
-Shown below is unique software list using ``buildtest list --list-software``
+Shown below is unique software list using ``buildtest list --software``
 
 .. program-output:: cat scripts/buildtest-list-software.txt
 
-Similarly we can search software version and filepath to module file using
-``buildtest list --software-version-relation`` or short option ``buildtest list -svr``
+Similarly we can retrieve full name of module file and absolute path to
+module file using ``buildtest list --module`` or short option ``buildtest list -m``
 
 .. program-output:: cat scripts/buildtest-list-software-modules.txt
 

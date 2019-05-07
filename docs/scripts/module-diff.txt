@@ -5,16 +5,16 @@ Module Tree 1:  /clust/app/easybuild/2018/commons/modules/all
 Module Tree 2:  /usr/share/lmod/lmod/modulefiles/Core
 ID       |     Module                                                   |   Module Tree 1    |   Module Tree 2
 ---------|--------------------------------------------------------------|--------------------|----------------------
-1        | CUDA/9.1.85                                                  | FOUND              | NOT FOUND
-2        | git-lfs/2.4.0                                                | FOUND              | NOT FOUND
-3        | CUDA/7.5.18                                                  | FOUND              | NOT FOUND
+1        | Java/1.8.0_152                                               | FOUND              | NOT FOUND
+2        | Anaconda2/5.1.0                                              | FOUND              | NOT FOUND
+3        | Anaconda3/5.1.0                                              | FOUND              | NOT FOUND
 4        | cuDNN/7.1-CUDA-9.1.85                                        | FOUND              | NOT FOUND
-5        | CUDA/8.0.61                                                  | FOUND              | NOT FOUND
-6        | settarg/6.5.1                                                | NOT FOUND          | FOUND
-7        | Anaconda3/5.1.0                                              | FOUND              | NOT FOUND
+5        | CUDA/7.5.18                                                  | FOUND              | NOT FOUND
+6        | git-lfs/2.4.0                                                | FOUND              | NOT FOUND
+7        | settarg/6.5.1                                                | NOT FOUND          | FOUND
 8        | IGV/2.3.98-Java-1.8.0_152                                    | FOUND              | NOT FOUND
-9        | Anaconda2/5.1.0                                              | FOUND              | NOT FOUND
-10       | lmod/6.5.1                                                   | NOT FOUND          | FOUND
-11       | EasyBuild/3.6.0                                              | FOUND              | NOT FOUND
-12       | Java/1.8.0_152                                               | FOUND              | NOT FOUND
-13       | EasyBuild/3.5.3                                              | FOUND              | NOT FOUND
+9        | CUDA/9.1.85                                                  | FOUND              | NOT FOUND
+10       | EasyBuild/3.5.3                                              | FOUND              | NOT FOUND
+11       | CUDA/8.0.61                                                  | FOUND              | NOT FOUND
+12       | lmod/6.5.1                                                   | NOT FOUND          | FOUND
+13       | EasyBuild/3.6.0                                              | FOUND              | NOT FOUND

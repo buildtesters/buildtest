@@ -44,6 +44,9 @@ def override_configuration():
     if os.environ.get('BUILDTEST_SHELL'):
         config_opts['BUILDTEST_SHELL']=os.environ['BUILDTEST_SHELL']
 
+    if os.environ.get('BUILDTEST_SPIDER_VIEW'):
+        config_opts['BUILDTEST_SPIDER_VIEW']=os.environ[
+            'BUILDTEST_SPIDER_VIEW']
 
     if os.environ.get('BUILDTEST_SUCCESS_THRESHOLD'):
         threshold = float(os.environ.get('BUILDTEST_SUCCESS_THRESHOLD'))

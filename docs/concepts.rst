@@ -128,7 +128,7 @@ dont want that.
                         break
         return sorted(list(unique_modules_set))
 
-The above method is typically used by ``buildtest list --list-software`` to return
+The above method is typically used by ``buildtest list --software`` to return
 a list of unique software.
 
 Get Unique Module Versions

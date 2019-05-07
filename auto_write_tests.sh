@@ -1,5 +1,6 @@
 #!/bin/bash
 script_dir="./docs/scripts"
+
 tee $script_dir/buildtest-help.txt <<<"buildtest --help" | bash >> $script_dir/buildtest-help.txt
 
 # Show Subcommand
@@ -33,10 +34,9 @@ tee $script_dir/build-slurm-example.txt <<<"buildtest build -c $BUILDTEST_ROOT/t
 
 # List Subcommand
 tee $script_dir/buildtest-list-help.txt <<<"buildtest list --help" | bash >> $script_dir/buildtest-list-help.txt
-tee $script_dir/buildtest-list-software.txt <<< "buildtest list -ls" | bash >> $script_dir/buildtest-list-software.txt
-tee $script_dir/buildtest-list-software-modules.txt <<< "buildtest list -svr" | bash >> $script_dir/buildtest-list-software-modules.txt
+tee $script_dir/buildtest-list-software.txt <<< "buildtest list --software" | bash >> $script_dir/buildtest-list-software.txt
+tee $script_dir/buildtest-list-software-modules.txt <<< "buildtest list --modules" | bash >> $script_dir/buildtest-list-software-modules.txt
 tee $script_dir/buildtest-list-easyconfigs.txt <<< "buildtest list --easyconfigs" | bash >> $script_dir/buildtest-list-easyconfigs.txt
-tee $script_dir/buildtest-list-software-format.txt <<< "buildtest list -ls --format=json" | bash >> $script_dir/buildtest-list-software-format.txt
 
 # Find Subcommand
 tee $script_dir/buildtest-find-help.txt <<<"buildtest find --help" | bash >> $script_dir/buildtest-find-help.txt
@@ -45,7 +45,14 @@ tee $script_dir/buildtest-find-test.txt <<<"buildtest find -ft all" | bash >> $s
 
 # module commands 
 tee $script_dir/buildtest-module-help.txt <<<"buildtest module --help" | bash >> $script_dir/buildtest-module-help.txt
-tee $script_dir/module-load.txt <<<"buildtest module --module-load-test" | bash >> $script_dir/module-load.txt
+tee $script_dir/module-load.txt <<<"buildtest module loadtest" | bash >> $script_dir/module-load.txt
 tee $script_dir/module-diff.txt <<<"buildtest module --diff-trees /clust/app/easybuild/2018/commons/modules/all,/usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module-diff.txt
 tee $script_dir/module-diff-v2.txt <<< "buildtest module --diff-trees /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all,/clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all" | bash >> $script_dir/module-diff-v2.txt
-tee $script_dir/easybuild-modules.txt <<<"ml eb/2018; buildtest module --easybuild" | bash >> $script_dir/easybuild-modules.txt
+tee $script_dir/easybuild-modules.txt <<< "buildtest module --easybuild" | bash >> $script_dir/easybuild-modules.txt
+
+
+tee $script_dir/easybuild-all-modules.txt <<< "BUILDTEST_SPIDER_VIEW=all buildtest module --easybuild" | bash >> $script_dir/easybuild-all-modules.txt
+tee $script_dir/spack-modules.txt <<< "buildtest module --spack" | bash >> $script_dir/spack-modules.txt
+
+tee $script_dir/spack-all-modules.txt <<< "BUILDTEST_SPIDER_VIEW=all buildtest module --spack" | bash >> $script_dir/spack-all-modules.txt
+

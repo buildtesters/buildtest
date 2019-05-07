@@ -1,7 +1,4 @@
-buildtest list -ls
-
-        Software
------------------------------  
+buildtest list --software
 RHEL6-apps
 cctsoft
 clinpharm

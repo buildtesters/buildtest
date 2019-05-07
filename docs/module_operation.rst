@@ -36,7 +36,7 @@ stacks are same you will see the following message
 .. program-output:: cat scripts/module-diff-v2.txt
 
 
-Module Load Testing (``buildtest module --module-load-test``)
+Module Load Testing (``buildtest module loadtest``)
 --------------------------------------------------------------
 
 buildtest provides feature to test ``module load`` functionality on all module files
@@ -44,8 +44,8 @@ in a module tree. This assumes you have the module tree in ``MODULEPATH`` in ord
 for ``module`` command to work properly.
 
 To use this feature specify the appropriate module tree for parameter ``BUILDTEST_MODULEPATH`` in
-``config.yaml`` or via environment variable. To use this feature you need to use
-``buildtest module --module-load-test``
+``settings.yml`` or via environment variable. To use this feature you need to
+use ``buildtest module loadtest``
 
 To demonstrate let's start off with an example where we test module load for a single module tree.
 
@@ -62,12 +62,17 @@ Let's start the test
 
 buildtest will attempt to run ``module load`` against each module to verify modules are working properly.
 
-You may specify multiple module trees using ``BUILDTEST_MODULEPATH`` for testing
-``buildtest module --module-load-test`` but you may run into module clashing if you have two or more occurrence of
-module file in two or more trees. In that case, you may be testing ``module load`` for module file that comes
-first in ``MODULEPATH``.
+You may specify additional module trees using ``BUILDTEST_MODULEPATH`` for
+module testing.
 
-To use this feature properly, it is best to use this with one module tree at a time.
+If you want to test all modules that were detected by ``spider`` utility,
+use the option ``buildtest module loadtest --view all``. This will test all
+modules retrieved by spider utility.
+
+By default, buildtest will only test modules that are installed in one of
+the subdirectories of ``BUILDTEST_MODULEPATH``. This can be tweaked by
+by using the option ``buildtest module loadtest --view``.
+
 
 Module Trees Operation
 -----------------------
@@ -142,6 +147,14 @@ Shown below is the ``tail`` output of the command.
 
 .. program-output:: tail scripts/easybuild-modules.txt
 
+If you want buildtest to retrieve all records from ``spider`` to seek out all
+easybuild modules consider setting ``BUILDTEST_SPIDER_VIEW=all`` in
+configuration or environment variable. Shown below is an output when running
+``BUILDTEST_SPIDER_VIEW=all buildtest module --easybuild``
+
+.. program-output:: tail scripts/easybuild-all-modules.txt
+
+
 Report Spack Modules
 --------------------
 
@@ -156,5 +169,10 @@ buildtest will search for string ``Module file created by spack`` in modulefile.
 will run this for all modules in module trees defined by ``BUILDTEST_MODULEPATH``.
 
 
+.. program-output:: tail scripts/spack-modules.txt
 
+To retrieve all records ``spider`` to find all spack modules in your system
+consider running ``BUILDTEST_SPIDER_VIEW=all buildtest module --spack``.
+
+.. program-output:: tail scripts/spack-all-modules.txt
 

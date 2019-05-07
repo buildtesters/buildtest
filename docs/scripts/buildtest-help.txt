@@ -1,5 +1,5 @@
 buildtest --help
-usage: buildtest [-h] [-V] [--logdir LOGDIR] {list,find,yaml,build,run,module,show,benchmark} ...
+usage: buildtest [-h] [-V] [--logdir LOGDIR] {list,find,yaml,build,run,module,show,collection,benchmark} ...
 
 buildtest is a software testing framework designed for HPC facilities to verify their Software Stack. buildtest abstracts test complexity into YAML files that is interpretedby buildtest into shell script
 
@@ -21,10 +21,11 @@ commands:
   
   Misc:
       yaml        Yaml commands for buildtest
+      collection  Module Collection Operation
       module      Options for module load testing and report diff between module trees
       
 
-  {list,find,yaml,build,run,module,show,benchmark}
+  {list,find,yaml,build,run,module,show,collection,benchmark}
 
 Miscellaneous Options :
   -V, --version         show program version number and exit

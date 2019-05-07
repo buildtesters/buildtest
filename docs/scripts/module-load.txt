@@ -1,4 +1,4 @@
-buildtest module --module-load-test
+buildtest module loadtest
 module load RHEL6-apps
 RUN: 1/18 STATUS: PASSED - Testing module: RHEL6-apps
 ________________________________________________________________________________

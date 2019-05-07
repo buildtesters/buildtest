@@ -45,9 +45,7 @@ the following message
 
 
 If you don't specify a module tree for BUILDTEST_MODULEPATH then buildtest
-will read the value of MODULEPATH.
-
-You may add,remove and list module tree.
+will read the value of MODULEPATH. You may add,remove or list module tree.
 
 To see the list of module tree you can run ``buildtest module -l``::
 
@@ -82,6 +80,23 @@ Similarly you can remove module tree from your configuration via
     Removing module tree: /etc/modulefiles
     Configuration File: /home/siddis14/.buildtest/settings.yml has been updated
 
+Configure Spider View
+---------------------
+
+Lmod ``spider`` retrieves module details in json format, buildtest is running
+``spider -o spider-json $BUILDTEST_MODULEPATH`` to get all the modules. The
+configuration ``BUILDTEST_SPIDER_VIEW`` can control the output. When ``BUILDTEST_SPIDER_VIEW=all``
+then buildtest will retrieve all records including records for modules that
+are not part of current ``MODULEPATH``.
+
+If you want to restrict the search of module retrieval to those defined in ``BUILDTEST_MODULEPATH``
+then set ``BUILDTEST_SPIDER_VIEW=current``. buildtest will only retrieve
+records whose modulefile absolute path is a subdirectory of ``BUILDTEST_MODULEPATH``. When
+``BUILDTEST_MODULEPATH`` is not set, it will take the value of
+``MODULEPATH`` and setting ``BUILDTEST_SPIDER_VIEW=current`` can be useful
+in testing modules that are visible to module environment.
+
+
 Configure Shell
 ----------------
 
@@ -93,7 +108,7 @@ configuration file::
 
 	BUILDTEST_SHELL: sh
 
-To change the shell to ``bash`` or ```csh`` you can do either::
+To change the shell to ``bash`` or ``csh`` you can do either::
 
 	BUILDTEST_SHELL: bash
 	BUILDTEST_SHELL: csh
@@ -108,8 +123,8 @@ If you specify an invalid value you may get the following message
 Clean Build
 -------------
 
-buildtest will write test in ``BUILDTEST_TESTDIR``. Often times, you may want
-to preserve tests across subsequent builds.
+buildtest will write test in directory specified by ``BUILDTEST_TESTDIR``.
+Often times, you may want to preserve tests across subsequent builds.
 
 For instance you may be interested in building test for different shell and
 preserve all tests during the previous builds, this can be done by setting

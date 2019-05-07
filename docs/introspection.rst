@@ -19,11 +19,11 @@ buildtest comes with a set of options for listing useful info such as
 -  List of easyconfigs
 
 
-List Software (``buildtest list -ls``)
+List Software (``buildtest list --software``)
 ---------------------------------------------------------------
 
-buildtest can report the software list by running the following ``buildtest list --list-unique-software`` or
-short option ``buildtest list -ls``
+buildtest can report the software list by running the following ``buildtest list --software`` or
+short option ``buildtest list -s``
 
 
 buildtest determines the software list based on the module trees specified in ``BUILDTEST_MODULEPATH``
@@ -32,12 +32,11 @@ and processes each module tree and returns a  unique software list
 .. program-output:: cat scripts/buildtest-list-software.txt
 
 
-Software Version Relationship (``buildtest list -svr``)
+Software Version Relationship (``buildtest list --modules``)
 ---------------------------------------------------------------
 
-If you want to view a breakdown of all software by version and full path to modulefile
-then you want to use ``buildtest list --software-version-relation`` or short option
-``buildtest list -svr``
+If you want to view a breakdown of all modules by version and full path to
+modulefile then use ``buildtest list --modules`` or short option ``buildtest list -m``
 
 The output will be sorted by software and each entry will correspond to the full path of the modulefile.
 
@@ -67,17 +66,6 @@ If an easyconfig is not found you may get the following message
 
     Could not find easyconfig in /clust/app/easybuild/2018/IvyBridge/redhat/7.3/software/NWChem/6.8.revision47-intel-2018a-2017-12-14-Python-2.7.14/easybuild
 
-
-Formatting output (``buildtest list --format``)
-------------------------------------------------------
-
-buildtest provides ``--format`` option to control output behavior of ``buildtest list``.
-Currently, buildtest only supports json format that can be passed using ``--format=json``
-
-
-To print output in json let's run ``buildtest list -ls --format=json``
-
-.. program-output:: head -n 10 scripts/buildtest-list-software-format.txt
 
 Find Subcommands
 _________________

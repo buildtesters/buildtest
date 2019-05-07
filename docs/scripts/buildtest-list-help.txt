@@ -1,11 +1,11 @@
 buildtest list --help
-usage: buildtest list [-h] [-ls] [-svr] [-ec] [--format {json}]
+usage: buildtest list [-h] [-s] [-m] [-ec] [-v {all,current}]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -ls, --list-unique-software
-                        retrieve all unique software found in your module tree specified by BUILDTEST_MODULEPATH
-  -svr, --software-version-relation
-                        retrieve software and path to module files grouped by software alphabetically
+  -s, --software        get unique software from Lmod spider command
+  -m, --modules         get full module name and path to module files
   -ec, --easyconfigs    Return a list of easyconfigs from a module tree
-  --format {json}       Output format type
+  -v {all,current}, --view {all,current}
+                        Control output of spider command. all: Retrieve all records current: Retrieve record where
+                        module path is in BUILDTEST_MODULEPATH
