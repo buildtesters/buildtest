@@ -42,6 +42,8 @@ from buildtest.tools.easybuild import find_easyconfigs
 
 def func_list_subcmd(args):
     """ This method is the entry point for buildtest list subcommand."""
+    if args.view:
+        config_opts["BUILDTEST_SPIDER_VIEW"] = args.view
 
     if args.easyconfigs:
         find_easyconfigs()
@@ -53,9 +55,9 @@ def func_list_subcmd(args):
 
 
 def list_software(args):
-    """ This method implements buildtest list -ls """
+    """ This method gets unique software from spider. """
 
-    if args.view == "all":
+    if config_opts["BUILDTEST_SPIDER_VIEW"] == "all":
         stack = module_obj.get_unique_modules()
     else:
         stack = module_obj.get_unique_modules_by_tree()
@@ -74,7 +76,7 @@ def list_modules(args):
     module_dict = module_obj.get_module_spider_json()
     lmod_version = module_obj.get_version()
     major_ver = lmod_version[0]
-    if args.view == "all":
+    if config_opts["BUILDTEST_SPIDER_VIEW"] == "all":
         stack = module_obj.get_unique_modules()
     else:
         stack = module_obj.get_unique_modules_by_tree()

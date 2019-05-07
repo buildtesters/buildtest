@@ -100,13 +100,12 @@ config_directory_types = [
   "BUILDTEST_RUN_DIR",
 ]
 config_yaml_keys = {
-    'BUILDTEST_EASYBUILD': type(True),
     'BUILDTEST_CLEAN_BUILD': type(True),
-    'BUILDTEST_OHPC': type(True),
     'BUILDTEST_BINARY': type(True),
     'BUILDTEST_SHELL': type("str"),
     'BUILDTEST_SUCCESS_THRESHOLD': type(1.0),
     'BUILDTEST_MODULEPATH': type([]),
+    'BUILDTEST_SPIDER_VIEW': type("str"),
     'BUILDTEST_LOGDIR': type("str"),
     'BUILDTEST_TESTDIR': type("str"),
     'BUILDTEST_RUN_DIR': type("str"),
@@ -169,6 +168,10 @@ def check_configuration():
                                + " specified in BUILDTEST_MODULEPATH")
                         ec = 1
 
+        if key == "BUILDTEST_SPIDER_VIEW":
+            if config_opts["BUILDTEST_SPIDER_VIEW"] not in ["all","current"]:
+                print (f"BUILDTEST_SPIDER_VIEW must be one of the following: all, current")
+                ec = 1
 
         if key in config_directory_types:
             # expand variables for directory configuration

@@ -34,9 +34,8 @@ def override_configuration():
     """Override buildtest options by environment variables """
 
     bool_config_override("BUILDTEST_BINARY")
-    bool_config_override("BUILDTEST_EASYBUILD")
     bool_config_override("BUILDTEST_CLEAN_BUILD")
-    bool_config_override("BUILDTEST_OHPC")
+
 
     dir_config_override("BUILDTEST_LOGDIR")
     dir_config_override("BUILDTEST_TESTDIR")

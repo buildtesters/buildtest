@@ -1,22 +1,25 @@
-# easybuild integration. Valid Options: [True, False]
-BUILDTEST_EASYBUILD: False
-
 # Delete Build Directory before writing tests.  Valid Options: [True, False]
 BUILDTEST_CLEAN_BUILD: False
-
-# OpenHPC integration. Valid options: [True, False]
-BUILDTEST_OHPC: False
 
 # binary test support. Valid options [True, False]
 BUILDTEST_BINARY: False
 
-# Configure shell when running test. Valid options [bash, csh, sh]. Default: [sh]
+# Configure shell when running test. 
+# Valid options:  [bash, csh, sh]. 
+# Default: [sh]
 BUILDTEST_SHELL: sh
 
 # list root of module tree where modules are installed. Specify multiple module tree as a list
 BUILDTEST_MODULEPATH: []
 
-# criteria for success threshold when running job. Valid Option: [0.0-1.0]    
+# control output of Lmod spider. 
+# Valid values are 
+# current: retrieve modules whose abspath is a subdir of directories defined in BUILDTEST_MODULEPATH
+# all: retrieve all records
+BUILDTEST_SPIDER_VIEW: current
+
+# criteria for success threshold when running job. 
+# Valid Option: [0.0-1.0]    
 BUILDTEST_SUCCESS_THRESHOLD: 1.0
 
 # directory where buildtest logs will be written.

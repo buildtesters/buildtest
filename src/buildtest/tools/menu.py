@@ -170,11 +170,7 @@ Misc:
 
     # -------------------------------- yaml  menu --------------------------
 
-    parser_yaml.add_argument("--ohpc",
-                             help="Build YAML configuration for OpenHPC "
-                                  + "package. YAML files will be written in "
-                                  + "$BUILDTEST_CONFIGS_REPO/ohpc",
-                             action="store_true")
+
     parser_yaml.add_argument("-m", "--maintainer",
                              help="Add as maintainer to test",
                              choices=["yes", "no"]),
@@ -257,10 +253,6 @@ Misc:
 
     # -------------------------------- module menu --------------------------
 
-    parser_module.add_argument("--module-load-test",
-                               help="conduct module load test for all modules "
-                                    + "defined in BUILDTEST_MODULEPATH",
-                               action="store_true")
     parser_module.add_argument("--diff-trees",
                                help="Show difference between two module trees")
     parser_module.add_argument("-a", help="add a module tree", dest="add",
@@ -285,10 +277,7 @@ Misc:
     subparsers_module = parser_module.add_subparsers()
     parser_moduleload = subparsers_module.add_parser('loadtest',
                                                  help="module load test")
-    parser_moduleload.add_argument("-v","--view",
-                                   choices=["current","all"],
-                                   default="current",
-                                   help="conduct module load test")
+
     parser_moduleload.set_defaults(func=module_load_test)
 
     parser_module.set_defaults(func=func_module_subcmd)

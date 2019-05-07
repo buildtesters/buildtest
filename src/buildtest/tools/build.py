@@ -30,14 +30,14 @@ import os
 import shutil
 import subprocess
 import yaml
-
+import sys
 from buildtest.tools.config import config_opts
 from buildtest.tools.buildsystem.singlesource import \
     BuildTestBuilderSingleSource
 from buildtest.tools.file import create_dir, is_dir, walk_tree
 from buildtest.tools.log import init_log
 from buildtest.test.binarytest import generate_binary_test
-from buildtest.tools.ohpc import check_ohpc
+
 
 
 def func_build_subcmd(args):
@@ -60,10 +60,6 @@ def func_build_subcmd(args):
     if args.binary:
         config_opts["BUILDTEST_BINARY"] = args.binary
 
-
-    if args.ohpc:
-        check_ohpc()
-        config_opts["BUILDTEST_OHPC"] = True
 
     logdir = config_opts['BUILDTEST_LOGDIR']
     testdir = config_opts['BUILDTEST_TESTDIR']

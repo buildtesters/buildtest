@@ -24,14 +24,10 @@
 buildtest yaml subcommand entry point
 """
 
-import os
+
 import subprocess
-import sys
 import yaml
 
-from buildtest.tools.config import config_opts
-from buildtest.tools.ohpc import check_ohpc
-from buildtest.tools.file import is_file
 
 
 TEMPLATE_JOB_SLURM = {
@@ -216,9 +212,6 @@ def slurm_key_parse(slurm_dict):
 def func_yaml_subcmd(args):
     """ entry point to _buildtest yaml """
 
-    if args.ohpc:
-        check_ohpc()
-        config_opts["BUILDTEST_OHPC"] = True
     if args.maintainer:
         update_maintainer(args)
 

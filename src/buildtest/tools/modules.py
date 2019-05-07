@@ -43,8 +43,6 @@ def func_module_subcmd(args):
 
     if args.diff_trees:
         diff_trees(args.diff_trees)
-    if args.module_load_test:
-        module_load_test()
     if args.list:
         [print (tree) for tree in config_opts["BUILDTEST_MODULEPATH"]]
     if args.add:
@@ -130,11 +128,20 @@ class BuildTestModule():
     def get_modulefile_path(self):
         """Return a list of absolute path for all module files"""
         module_path_list  = []
-        for k in self.get_unique_modules():
-            for tree in config_opts["BUILDTEST_MODULEPATH"]:
+
+        if config_opts["BUILDTEST_SPIDER_VIEW"] == "all":
+            module_stack = self.get_unique_modules()
+            for k in module_stack:
                 for mpath in self.module_dict[k].keys():
-                    if tree in mpath:
-                        module_path_list.append(mpath)
+                    module_path_list.append(mpath)
+        else:
+            module_stack = self.get_unique_modules_by_tree()
+
+            for k in module_stack:
+                for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                    for mpath in self.module_dict[k].keys():
+                        if tree in mpath:
+                            module_path_list.append(mpath)
 
         return module_path_list
 
@@ -271,7 +278,7 @@ def module_tree_rm(tree):
 def module_load_test(args):
     """Perform module load test for all modules in BUILDTEST_MODULEPATH"""
 
-    if args.view == "current":
+    if config_opts["BUILDTEST_SPIDER_VIEW"] == "current":
         stack =  module_obj.get_unique_fname_modules_by_tree()
     else:
         stack = module_obj.get_unique_fname_modules()
@@ -415,9 +422,7 @@ def check_easybuild_module():
     eb_string = "Built with EasyBuild version"
     count = 0
     for mpath in module_list:
-        if not string_in_file(eb_string,mpath):
-            print (f"Module: {mpath} is not built with Easybuild")
-        else:
+        if string_in_file(eb_string,mpath):
             print(f"Module: {mpath} is built with Easybuild")
             count+=1
 
@@ -432,12 +437,10 @@ def check_spack_module():
     spack_string = "Module file created by spack"
     count = 0
     for mpath in module_list:
-        if not string_in_file(spack_string, mpath):
-            print(f"Module: {mpath} is not built with Spack")
-        else:
+        if string_in_file(spack_string, mpath):
             print(f"Module: {mpath} is built with Spack")
             count+=1
 
     print("\n")
-    print(f"Total Easybuild Modules: {count}")
+    print(f"Total Spack Modules: {count}")
     print(f"Total Modules Searched: {len(module_list)}")
