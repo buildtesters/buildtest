@@ -1,0 +1,13 @@
+BUILDTEST_SPIDER_VIEW=all buildtest module --spack
+Module: /nfs/grid/software/RHEL7/medsci/modules/all/ffmpeg/3.2.4-n6ulc43.lua is built with Spack
+Module: /nfs/grid/software/RHEL7/medsci/software/spack/dev/share/spack/lmod/linux-rhel7-x86_64/openmpi/3.1.3-bs5h3cj/Core/fftw/3.3.8-67xoq34.lua is built with Spack
+Module: /nfs/grid/software/RHEL7/medsci/software/spack/dev/share/spack/lmod/linux-rhel7-x86_64/openmpi/3.1.3-bs5h3cj/Core/gromacs/2018.1-orqoszc.lua is built with Spack
+Module: /nfs/grid/software/RHEL7/medsci/modules/all/gromacs/2018.1-orqoszc.lua is built with Spack
+Module: /nfs/grid/software/RHEL7/medsci/modules/all/gromacs/2018.4-45ev4jn.lua is built with Spack
+Module: /nfs/grid/software/RHEL7/medsci/software/spack/dev/share/spack/lmod/linux-rhel7-x86_64/openmpi/3.1.3-bs5h3cj/Core/gromacs/2018.4-unxhn3r.lua is built with Spack
+Module: /nfs/grid/software/RHEL7/medsci/modules/all/openmpi/.3.1.3-bs5h3cj.lua is built with Spack
+Module: /nfs/grid/software/RHEL7/medsci/software/spack/dev/share/spack/lmod/linux-rhel7-x86_64/openmpi/3.1.3-bs5h3cj/Core/plumed/2.4.2-kgdtnfu.lua is built with Spack
+
+
+Total Spack Modules: 8
+Total Modules Searched: 823
