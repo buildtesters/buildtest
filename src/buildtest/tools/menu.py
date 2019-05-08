@@ -223,10 +223,11 @@ Misc:
                               help="verbosity level",
                               action="count",
                               default=0)
-    parser_build.add_argument("-m","--modules",
+    parser_build_mutex_modules = parser_build.add_mutually_exclusive_group()
+    parser_build_mutex_modules.add_argument("-m","--modules",
                               help="Specify list of modules to build test",
                               type=str)
-    parser_build.add_argument("-co","--collection",
+    parser_build_mutex_modules.add_argument("-co","--collection",
                               help="Use module collection when building "
                                    "test",
                               choices=module_collection)

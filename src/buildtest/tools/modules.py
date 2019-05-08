@@ -185,9 +185,6 @@ class BuildTestModule():
                     # contain list of modules to be loaded separated by :
                     # First entry is default:<mod1>:<mod2> so skip first
                     # element
-                    if key == "bzip2":
-                        print (self.module_dict[key][mod_file]["parent"])
-                        print (mod_parent_list[0].split(":")[1:])
 
                     for entry in mod_parent_list[0].split(":")[1:]:
                         parent_module.append(entry)
