@@ -185,6 +185,9 @@ class BuildTestModule():
                     # contain list of modules to be loaded separated by :
                     # First entry is default:<mod1>:<mod2> so skip first
                     # element
+                    if key == "bzip2":
+                        print (self.module_dict[key][mod_file]["parent"])
+                        print (mod_parent_list[0].split(":")[1:])
 
                     for entry in mod_parent_list[0].split(":")[1:]:
                         parent_module.append(entry)
@@ -198,34 +201,30 @@ class BuildTestModule():
         version = [int(v) for v in cmd.split(".")]
         return version
 
-def find_modules():
-    """Retrieve all modules by name and how to load them"""
-    unique_modules = module_obj.get_unique_fname_modules()
-    module_dict = module_obj.get_module_spider_json()
-    keys = module_dict.keys()
-    json_dict = {}
-    for key in keys:
-        json_dict[key] = []
-        for mpath in module_dict[key].keys():
-            if key == "bzip2":
-                fullname = module_dict[key][mpath]["full"]
+def find_modules(module_args):
+    """Return a list of module load commands """
 
-                parent = module_obj.get_parent_modules(fullname)
-                parent.append(fullname)
-                print (key,mpath,fullname,parent)
-                json_dict[key].append(parent)
+    module_list = module_args.split(",")
+    fd = open(os.path.join(os.getenv("BUILDTEST_ROOT"), "var",
+                           "modules.json"), "r")
+    json_module = json.load(fd)
 
-    json.dump(json_dict,sys.stdout,indent=4)
-    """
-    for module in unique_modules:
-        parent = module_obj.get_parent_modules(module)
-        cmd = "module load "
-        for x in parent:
-            cmd += f" {x}"
-        cmd += f" {module}"
-        print(cmd)
-    """
+    all_modules = []
+    for i in module_list:
+        if i not in json_module.keys():
+            print(f"{i} not in dictionary. Skipping to next module")
+            continue
+        for mpath in json_module[i].keys():
+            for parent in json_module[i][mpath]["parent"]:
+                parent.append(json_module[i][mpath]["fullName"])
+                all_modules.append(parent)
 
+    module_cmd_list = []
+    for i in all_modules:
+        module_cmd = ' '.join(str(name) for name in i)
+        module_cmd_list.append(f"module load {module_cmd}")
+
+    return module_cmd_list
 
 def get_module_list_by_tree(mod_tree):
     """ returns a list of module file paths given a module tree """

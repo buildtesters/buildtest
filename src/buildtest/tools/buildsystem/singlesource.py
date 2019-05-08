@@ -23,7 +23,9 @@
 """
 The file implements the singlesource build system responsible
 """
+
 import os
+import random
 import stat
 import subprocess
 import yaml
@@ -42,7 +44,7 @@ class BuildTestBuilderSingleSource():
     """ Class responsible for building a single source test."""
     yaml_dict = {}
     test_dict = {}
-    def __init__(self, yaml, args, parent_dir):
+    def __init__(self, yaml, args, parent_dir,module_cmd_list):
         """ Entry point to class. This method will set all class variables.
 
             :param yaml: The yaml file to be processed
@@ -67,7 +69,7 @@ class BuildTestBuilderSingleSource():
         self.verbose = args.verbose
 
         self.yaml_dict, self.test_dict = self._parse()
-
+        self.module_cmd_list = module_cmd_list
 
     def _check_keys(self, dict):
         """Check keys specified in YAML file with buildtest templates and
@@ -258,7 +260,7 @@ class BuildTestBuilderSingleSource():
         testscript_dict["post_run"] = f"rm ./{exec_name} \n"
 
         return test_dict, testscript_dict
-    def build(self):
+    def build(self,modules_permutation=False):
         """This method builds the test script.
 
         This method will write the test script with one of the shell
@@ -268,9 +270,32 @@ class BuildTestBuilderSingleSource():
         The test script will be set with 755 permission upon completion.
         """
 
-        #print (self.yaml_dict)
-        #if "variants" in self.yaml_dict:
+        # write test for every module permutation
 
+        if modules_permutation:
+            for cmd in self.module_cmd_list:
+
+                hash = hex(random.getrandbits(128))
+                file = '%s_%s.%s' % (os.path.basename(self.conf_file), hash,
+                                     self.shell)
+                # if this is a LSF job script then create .lsf extension for testname
+                if "lsf" in self.test_dict:
+                    file = '%s_%s.%s' % (os.path.basename(self.conf_file),
+                                         hash,
+                                         "lsf")
+                if "slurm" in self.test_dict:
+                    file ='%s_%s.%s' % (os.path.basename(self.conf_file),
+                                        hash,
+                                        "slurm")
+
+                test_dir = os.path.join(config_opts["BUILDTEST_TESTDIR"],
+                                        "suite",
+                                        self.test_suite,
+                                        self.parent_dir)
+                abs_test_path = os.path.join(test_dir, file)
+
+                self._write_test(abs_test_path,module=cmd)
+            return
         # if this is a LSF job script then create .lsf extension for testname
         if "lsf" in self.test_dict:
             self.testname = '%s.%s' % (os.path.basename(self.conf_file),"lsf")
@@ -287,7 +312,7 @@ class BuildTestBuilderSingleSource():
 
         self._write_test(abs_test_path)
 
-    def _write_test(self,abs_test_path):
+    def _write_test(self,abs_test_path,module=None):
 
         print(f'Writing Test: {abs_test_path}')
         fd = open(abs_test_path, "w")
@@ -302,16 +327,20 @@ class BuildTestBuilderSingleSource():
         if "slurm" in self.test_dict:
             fd.write(self.test_dict["slurm"])
 
-        fd.write(self.test_dict["module"])
-        cmd = "module -t list"
-        out = subprocess.getoutput(cmd)
-        # output of module -t list when no modules are loaded is "No modules
-        #  loaded"
-        if out != "No modules loaded":
-            out = out.split()
-            # module load each module
-            for i in out:
-                fd.write(f"module load {i} \n")
+        if module != None:
+            fd.write(module)
+            fd.write("\n")
+        else:
+            fd.write(self.test_dict["module"])
+            cmd = "module -t list"
+            out = subprocess.getoutput(cmd)
+            # output of module -t list when no modules are loaded is "No modules
+            #  loaded"
+            if out != "No modules loaded":
+                out = out.split()
+                # module load each module
+                for i in out:
+                    fd.write(f"module load {i} \n")
 
 
         if "vars" in self.test_dict:

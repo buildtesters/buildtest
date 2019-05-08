@@ -31,11 +31,13 @@ import shutil
 import subprocess
 import yaml
 import sys
+
 from buildtest.tools.config import config_opts
 from buildtest.tools.buildsystem.singlesource import \
     BuildTestBuilderSingleSource
 from buildtest.tools.file import create_dir, is_dir, walk_tree
 from buildtest.tools.log import init_log
+from buildtest.tools.modules import find_modules
 from buildtest.test.binarytest import generate_binary_test
 
 
@@ -66,6 +68,10 @@ def func_build_subcmd(args):
 
     create_dir(logdir)
     create_dir(testdir)
+
+    module_cmd_list = []
+    if args.modules:
+        module_cmd_list = find_modules(args.modules)
 
     if args.suite:
         test_suite_dir = os.path.join(testdir,"suite",args.suite)
@@ -103,9 +109,13 @@ def func_build_subcmd(args):
             if content["testblock"] == "singlesource":
                 builder = BuildTestBuilderSingleSource(file,
                                                        args,
-                                                       parent_dir)
+                                                       parent_dir,
+                                                       module_cmd_list)
+                if len(module_cmd_list) > 0:
+                    builder.build(modules_permutation=True)
+                else:
+                    builder.build()
 
-                builder.build()
 
     if args.config:
         file = args.config
@@ -118,8 +128,13 @@ def func_build_subcmd(args):
         if content["testblock"] == "singlesource":
             builder = BuildTestBuilderSingleSource(file,
                                                    args,
-                                                   parent_dir)
-            builder.build()
+                                                   parent_dir,
+                                                   module_cmd_list)
+            # if test needs to be built with module permutation
+            if len(module_cmd_list) > 0:
+                builder.build(modules_permutation=True)
+            else:
+                builder.build()
 
     # if binary test is True then generate binary test for all loaded modules
     if config_opts["BUILDTEST_BINARY"]:

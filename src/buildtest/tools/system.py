@@ -24,13 +24,15 @@
 Functions for system package
 """
 
-
+import json
 import os
 import platform
 import re
 import stat
 import sys
 import subprocess
+
+from buildtest.tools.modules import module_obj
 
 
 class BuildTestCommand():
@@ -94,6 +96,7 @@ class BuildTestSystem():
         if self.system["SCHEDULER"] == "SLURM":
             self.get_slurm_configuration()
 
+        self.get_modules()
     def get_system(self):
         return self.system        
     def get_lsf_configuration(self):
@@ -176,7 +179,27 @@ Requirements:
 """
             print(msg)
             sys.exit(1)
+    def get_modules(self):
+        module_dict = module_obj.get_module_spider_json()
+        keys = module_dict.keys()
+        json_dict = {}
+        for key in keys:
+            json_dict[key] = {}
+            for mpath in module_dict[key].keys():
 
+                fullname = module_dict[key][mpath]["full"]
+                parent = module_dict[key][mpath]["parent"]
+
+                json_dict[key][mpath] = {}
+                json_dict[key][mpath]["fullName"] = fullname
+                json_dict[key][mpath]["parent"] = []
+                for entry in parent:
+                    json_dict[key][mpath]["parent"].append(entry.split(":")[1:])
+
+        module_json_file = os.path.join(os.getenv("BUILDTEST_ROOT"), "var",
+                                        "modules.json")
+        with open(module_json_file,"w") as outfile:
+            json.dump(json_dict, outfile, indent=4)
 
 
 
