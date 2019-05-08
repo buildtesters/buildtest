@@ -41,7 +41,8 @@ from buildtest.tools.modules import func_module_subcmd, \
 from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.show import func_show_subcmd
-from buildtest.tools.system import systempackage_installed_list
+from buildtest.tools.system import systempackage_installed_list, \
+    get_module_collection
 from buildtest.tools.yaml import func_yaml_subcmd
 from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
 from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
@@ -72,6 +73,8 @@ def menu():
     app_choices = run_app_choices()
 
     systempkg_choices = run_system_choices()
+    module_collection = get_module_collection()
+
     epilog_str = "Documentation: " + \
                  "https://buildtest.readthedocs.io/en/latest/index.html"
     description_str = "buildtest is a software testing framework designed " + \
@@ -223,7 +226,10 @@ Misc:
     parser_build.add_argument("-m","--modules",
                               help="Specify list of modules to build test",
                               type=str)
-
+    parser_build.add_argument("-co","--collection",
+                              help="Use module collection when building "
+                                   "test",
+                              choices=module_collection)
 
     parser_build.set_defaults(func=func_build_subcmd)
 

@@ -52,6 +52,7 @@ class BuildTestBuilderSingleSource():
             :param parent_dir: parent directory where test script will be written
             :param software_module: Name of software module to write in test script.
         """
+        self.module_collection = None
         self.shell = config_opts["BUILDTEST_SHELL"]
         self.conf_file = yaml
         self.testname = '%s.%s' % (os.path.basename(self.conf_file),self.shell)
@@ -260,7 +261,7 @@ class BuildTestBuilderSingleSource():
         testscript_dict["post_run"] = f"rm ./{exec_name} \n"
 
         return test_dict, testscript_dict
-    def build(self,modules_permutation=False):
+    def build(self,modules_permutation=False,module_collection=False):
         """This method builds the test script.
 
         This method will write the test script with one of the shell
@@ -271,6 +272,8 @@ class BuildTestBuilderSingleSource():
         """
 
         # write test for every module permutation
+        if module_collection:
+            self.module_collection = module_collection
 
         if modules_permutation:
             for cmd in self.module_cmd_list:
@@ -329,6 +332,9 @@ class BuildTestBuilderSingleSource():
 
         if module != None:
             fd.write(module)
+            fd.write("\n")
+        elif self.module_collection is not None:
+            fd.write(f"module restore {self.module_collection}")
             fd.write("\n")
         else:
             fd.write(self.test_dict["module"])

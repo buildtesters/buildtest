@@ -202,6 +202,10 @@ Requirements:
             json.dump(json_dict, outfile, indent=4)
 
 
+def get_module_collection():
+    """Return user Lmod module collection"""
+    return subprocess.getoutput("module -t savelist").split("\n")
+
 
 def get_binaries_from_systempackage(pkg):
     """ get binaries from system package that typically install in standard linux path and only those that are executable """

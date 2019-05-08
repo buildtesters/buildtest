@@ -113,6 +113,8 @@ def func_build_subcmd(args):
                                                        module_cmd_list)
                 if len(module_cmd_list) > 0:
                     builder.build(modules_permutation=True)
+                elif args.collection:
+                    builder.build(module_collection=args.collection)
                 else:
                     builder.build()
 
