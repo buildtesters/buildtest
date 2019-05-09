@@ -61,6 +61,9 @@ def func_build_subcmd(args):
         config_opts['BUILDTEST_TESTDIR'] = args.testdir
     if args.binary:
         config_opts["BUILDTEST_BINARY"] = args.binary
+    if args.parent_module_search:
+        config_opts["BUILDTEST_PARENT_MODULE_SEARCH"]=args.parent_module_search
+
 
 
     logdir = config_opts['BUILDTEST_LOGDIR']
@@ -72,6 +75,15 @@ def func_build_subcmd(args):
     module_cmd_list = []
     if args.modules:
         module_cmd_list = find_modules(args.modules)
+
+        if args.verbose >= 1:
+            print("Module Permutation Detected.")
+            print(f"Each test will be built with {len(module_cmd_list)} "
+                  f"module permutations")
+        if args.verbose >= 2:
+            print("Module Permutation List")
+            print ("{:_<50}".format(""))
+            [print(x) for x in module_cmd_list]
 
     if args.suite:
         test_suite_dir = os.path.join(testdir,"suite",args.suite)

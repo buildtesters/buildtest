@@ -27,6 +27,7 @@ buildtest menu
 import os
 import argparse
 import argcomplete
+import sys
 
 from buildtest.test.run.system import run_app_choices, run_system_choices
 from buildtest.tools.build import func_build_subcmd
@@ -231,6 +232,10 @@ Misc:
                               help="Use module collection when building "
                                    "test",
                               choices=module_collection)
+    parser_build.add_argument("-pms", "--parent-module-search",
+                              help="control how many parent module "
+                                   "combination to search",
+                              choices=["first","all"])
 
     parser_build.set_defaults(func=func_build_subcmd)
 

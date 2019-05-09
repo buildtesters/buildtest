@@ -215,6 +215,8 @@ def find_modules(module_args):
             for parent in json_module[i][mpath]["parent"]:
                 parent.append(json_module[i][mpath]["fullName"])
                 all_modules.append(parent)
+                if config_opts["BUILDTEST_PARENT_MODULE_SEARCH"] == "first":
+                    break
 
     module_cmd_list = []
     for i in all_modules:

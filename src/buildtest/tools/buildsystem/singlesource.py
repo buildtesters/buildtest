@@ -276,6 +276,7 @@ class BuildTestBuilderSingleSource():
             self.module_collection = module_collection
 
         if modules_permutation:
+            count = 0
             for cmd in self.module_cmd_list:
 
                 hash = hex(random.getrandbits(128))
@@ -298,6 +299,8 @@ class BuildTestBuilderSingleSource():
                 abs_test_path = os.path.join(test_dir, file)
 
                 self._write_test(abs_test_path,module=cmd)
+                count+=1
+            print(f"Writing {count} tests for {self.conf_file}")
             return
         # if this is a LSF job script then create .lsf extension for testname
         if "lsf" in self.test_dict:
