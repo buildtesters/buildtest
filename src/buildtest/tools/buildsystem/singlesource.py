@@ -261,7 +261,8 @@ class BuildTestBuilderSingleSource():
         testscript_dict["post_run"] = f"rm ./{exec_name} \n"
 
         return test_dict, testscript_dict
-    def build(self,modules_permutation=False,module_collection=False):
+    def build(self,modules_permutation=False,module_collection=False,
+              internal_module_collection=False):
         """This method builds the test script.
 
         This method will write the test script with one of the shell
@@ -271,10 +272,12 @@ class BuildTestBuilderSingleSource():
         The test script will be set with 755 permission upon completion.
         """
 
-        # write test for every module permutation
+
         if module_collection:
             self.module_collection = module_collection
-
+        if internal_module_collection:
+            self.internal_module_collection = internal_module_collection
+        # write test for every module permutation
         if modules_permutation:
             count = 0
             for cmd in self.module_cmd_list:
@@ -338,6 +341,9 @@ class BuildTestBuilderSingleSource():
             fd.write("\n")
         elif self.module_collection is not None:
             fd.write(f"module restore {self.module_collection}")
+            fd.write("\n")
+        elif self.internal_module_collection:
+            fd.write(f"{self.internal_module_collection}")
             fd.write("\n")
         else:
             fd.write(self.test_dict["module"])

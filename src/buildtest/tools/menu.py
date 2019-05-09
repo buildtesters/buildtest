@@ -33,7 +33,8 @@ from buildtest.test.run.system import run_app_choices, run_system_choices
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
     check_configuration
-from buildtest.tools.collection import func_collection_subcmd
+from buildtest.tools.collection import func_collection_subcmd, \
+    get_collection_length
 from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.find import func_find_subcmd
 from buildtest.tools.list import func_list_subcmd
@@ -75,7 +76,8 @@ def menu():
 
     systempkg_choices = run_system_choices()
     module_collection = get_module_collection()
-
+    collection_len = get_collection_length()
+    collection_len = list(range(collection_len))
     epilog_str = "Documentation: " + \
                  "https://buildtest.readthedocs.io/en/latest/index.html"
     description_str = "buildtest is a software testing framework designed " + \
@@ -229,9 +231,19 @@ Misc:
                               help="Specify list of modules to build test",
                               type=str)
     parser_build_mutex_modules.add_argument("-co","--collection",
-                              help="Use module collection when building "
-                                   "test",
+                              help="Use user Lmod module collection when" 
+                                   "building test",
                               choices=module_collection)
+    parser_build_mutex_modules.add_argument("-mc","--module-collection",
+                                            help="Use internal buildtest "
+                                                 "module collection when "
+                                                 "building test."                                                 
+                                                 "Run buildtest collection "
+                                                 "-l to view list of "
+                                                 "collection ids",
+                                            type=int,
+                                            choices=collection_len,
+                                            metavar="COLLECTION-ID")
     parser_build.add_argument("-pms", "--parent-module-search",
                               help="control how many parent module "
                                    "combination to search",

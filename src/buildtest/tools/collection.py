@@ -52,7 +52,6 @@ def add_collection():
         # if file doesn't exist just add module directly to file
         if not os.path.exists(fname):
             fd = open(fname,"w")
-            print (module_list,type(module_list))
             module_coll_dict["collection"].append(module_list)
             json.dump(module_coll_dict,fd,indent=4)
             fd.close()
@@ -72,6 +71,20 @@ def list_collection():
     dict = json.load(fd)
     count = 0
     for x in dict["collection"]:
-        count+=1
         print (f"{count}: {x}")
+        count += 1
 
+def get_collection_length():
+    """Read collection file default.json and return length of collection"""
+    file = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","default.json")
+    with open(file,"r") as infile:
+        json_module = json.load(infile)
+
+    return (len(json_module["collection"]))
+
+def get_buildtest_module_collection(id):
+    """Retrieve collection id from default.json"""
+    file = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "default.json")
+    with open(file, "r") as infile:
+        json_module = json.load(infile)
+    return json_module["collection"][id]

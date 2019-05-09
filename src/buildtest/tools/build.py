@@ -33,6 +33,7 @@ import yaml
 import sys
 
 from buildtest.tools.config import config_opts
+from buildtest.tools.collection import get_buildtest_module_collection
 from buildtest.tools.buildsystem.singlesource import \
     BuildTestBuilderSingleSource
 from buildtest.tools.file import create_dir, is_dir, walk_tree
@@ -84,6 +85,13 @@ def func_build_subcmd(args):
             print("Module Permutation List")
             print ("{:_<50}".format(""))
             [print(x) for x in module_cmd_list]
+
+    #when -mc is specified, get module load command from internal module
+    # collection
+    if args.module_collection is not None:
+        mod_coll= get_buildtest_module_collection(args.module_collection)
+        mod_str= ' '.join(str(mod) for mod in mod_coll)
+        mod_str = f"module load {mod_str}"
 
     if args.suite:
         test_suite_dir = os.path.join(testdir,"suite",args.suite)
@@ -149,6 +157,8 @@ def func_build_subcmd(args):
                 builder.build(modules_permutation=True)
             elif args.collection:
                 builder.build(module_collection=args.collection)
+            elif args.module_collection is not None:
+                builder.build(internal_module_collection=mod_str)
             else:
                 builder.build()
 
