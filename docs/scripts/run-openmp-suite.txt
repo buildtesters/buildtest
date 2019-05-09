@@ -3,8 +3,9 @@ Running All Tests from Test Directory: /tmp/siddis14/buildtest/suite/openmp
 ==============================================================
                          Test summary                         
 Package:  openmp
-Executed 14 tests
-Passed Tests: 14 Percentage: 100.0%
-Failed Tests: 0 Percentage: 0.0%
-SUCCESS: Threshold of 100.0% was achieved
-Writing results to /tmp/siddis14/buildtest/buildtest_11_18_07_05_2019.run
+Executed 1 tests
+Passed Tests: 0 Percentage: 0.0%
+Failed Tests: 1 Percentage: 100.0%
+WARNING: Threshold of 100.0% was not satisfied
+openmp has a 0.0% passed rate with a difference of 1.0 from the threshold
+Writing results to /tmp/siddis14/buildtest/buildtest_15_36_09_05_2019.run

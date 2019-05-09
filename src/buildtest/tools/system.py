@@ -97,6 +97,15 @@ class BuildTestSystem():
             self.get_slurm_configuration()
 
         self.get_modules()
+
+        module_coll_dict = {
+            "collection": []
+        }
+        fname = os.path.join(os.getenv("BUILDTEST_ROOT"), "var","default.json")
+        if not os.path.exists(fname):
+            with open(fname, "w") as outfile:
+                json.dump(module_coll_dict, outfile, indent=4)
+
     def get_system(self):
         return self.system        
     def get_lsf_configuration(self):

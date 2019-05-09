@@ -66,12 +66,13 @@ You may specify additional module trees using ``BUILDTEST_MODULEPATH`` for
 module testing.
 
 If you want to test all modules that were detected by ``spider`` utility,
-use the option ``buildtest module loadtest --view all``. This will test all
-modules retrieved by spider utility.
+you can set ``BUILDTEST_SPIDER_VIEW=all`` in your configuration or
+environment variable or just run as follows::
 
-By default, buildtest will only test modules that are installed in one of
-the subdirectories of ``BUILDTEST_MODULEPATH``. This can be tweaked by
-by using the option ``buildtest module loadtest --view``.
+
+    BUILDTEST_SPIDER_VIEW=all buildtest module loadtest
+
+This will test all modules retrieved by spider utility.
 
 
 Module Trees Operation

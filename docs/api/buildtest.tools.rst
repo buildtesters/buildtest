@@ -14,6 +14,7 @@ Submodules
 .. toctree::
 
    buildtest.tools.build
+   buildtest.tools.collection
    buildtest.tools.config
    buildtest.tools.easybuild
    buildtest.tools.file
@@ -22,7 +23,6 @@ Submodules
    buildtest.tools.log
    buildtest.tools.menu
    buildtest.tools.modules
-   buildtest.tools.ohpc
    buildtest.tools.options
    buildtest.tools.run
    buildtest.tools.show

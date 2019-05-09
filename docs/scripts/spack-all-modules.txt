@@ -10,4 +10,4 @@ Module: /nfs/grid/software/RHEL7/medsci/software/spack/dev/share/spack/lmod/linu
 
 
 Total Spack Modules: 8
-Total Modules Searched: 823
+Total Modules Searched: 824

@@ -27,10 +27,14 @@ tee $script_dir/build-single-configuration-module.txt <<<"ml eb/2018; ml GCC; bu
 tee $script_dir/build-shell-csh.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml --shell csh" | bash >>$script_dir/build-shell-csh.txt
 tee $script_dir/build-shell-bash.txt <<<"BUILDTEST_SHELL=bash buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml" | bash >>$script_dir/build-shell-bash.txt
 
+tee $script_dir/build-lmod-collection.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml -co intelmpi -vv" | bash >>$script_dir/build-lmod-collection.txt
+tee $script_dir/build-module-permute.txt <<<" buildtest build -c  $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml --modules intel -vv" | bash >> $script_dir/build-module-permute.txt
+tee $script_dir/build-module-all-permute.txt <<<"BUILDTEST_PARENT_MODULE_SEARCH=all buildtest build -c  $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml --modules VMD -vv" | bash >> $script_dir/build-module-all-permute.txt
+
 # lsf example
 tee $script_dir/build-lsf-example.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml -vv""" | bash >>$script_dir/build-lsf-example.txt
 # slurm example
-tee $script_dir/build-slurm-example.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
+#tee $script_dir/build-slurm-example.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
 
 # List Subcommand
 tee $script_dir/buildtest-list-help.txt <<<"buildtest list --help" | bash >> $script_dir/buildtest-list-help.txt

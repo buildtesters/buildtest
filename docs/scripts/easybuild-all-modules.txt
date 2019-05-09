@@ -406,4 +406,4 @@ Module: /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all/zlib/1.2.11-G
 
 
 Total Easybuild Modules: 404
-Total Modules Searched: 823
+Total Modules Searched: 824

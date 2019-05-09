@@ -1,0 +1,96 @@
+ buildtest build -c  /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml --modules intel -vv
+Module Permutation Detected.
+Each test will be built with 7 module permutations
+Module Permutation List
+__________________________________________________
+module load RHEL6-apps intel/16.0
+module load RHEL6-apps intel/14.0
+module load eb/2017 intel/2017.01
+module load RHEL6-apps intel/16.0.3
+module load RHEL6-apps intel/15.0
+module load RHEL6-apps intel/16.0.1
+module load eb/2018 intel/2018a
+________________________________________________________________________________
+compiler: intel
+flags: -O3
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+source: hello.f90
+testblock: singlesource
+
+________________________________________________________________________________
+Key Check PASSED for file /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml
+Source File /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 exists!
+Programming Language Detected: fortran
+Compiler Check Passed
+Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x1fb4bb41fa2b4337605e909395bb886c.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x1fb4bb41fa2b4337605e909395bb886c.sh
+________________________________________________________________________________
+#!/bin/sh
+module load RHEL6-apps intel/16.0
+cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
+./hello.f90.exe 
+ rm ./hello.f90.exe 
+________________________________________________________________________________
+Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x907a23688652874f0a9e968149ef6446.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x907a23688652874f0a9e968149ef6446.sh
+________________________________________________________________________________
+#!/bin/sh
+module load RHEL6-apps intel/14.0
+cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
+./hello.f90.exe 
+ rm ./hello.f90.exe 
+________________________________________________________________________________
+Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x4f93cc6e819505bc2e53922d8ed8bf0a.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x4f93cc6e819505bc2e53922d8ed8bf0a.sh
+________________________________________________________________________________
+#!/bin/sh
+module load eb/2017 intel/2017.01
+cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
+./hello.f90.exe 
+ rm ./hello.f90.exe 
+________________________________________________________________________________
+Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0xc51bb250f0fea51363d12d73e7e47802.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0xc51bb250f0fea51363d12d73e7e47802.sh
+________________________________________________________________________________
+#!/bin/sh
+module load RHEL6-apps intel/16.0.3
+cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
+./hello.f90.exe 
+ rm ./hello.f90.exe 
+________________________________________________________________________________
+Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0xb27edcf387642be2268f2f67b4323692.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0xb27edcf387642be2268f2f67b4323692.sh
+________________________________________________________________________________
+#!/bin/sh
+module load RHEL6-apps intel/15.0
+cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
+./hello.f90.exe 
+ rm ./hello.f90.exe 
+________________________________________________________________________________
+Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x5af2c2cc9574dc08af0ba2804e65329e.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x5af2c2cc9574dc08af0ba2804e65329e.sh
+________________________________________________________________________________
+#!/bin/sh
+module load RHEL6-apps intel/16.0.1
+cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
+./hello.f90.exe 
+ rm ./hello.f90.exe 
+________________________________________________________________________________
+Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x88f7314995d0b696d0a9e892cf42e976.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x88f7314995d0b696d0a9e892cf42e976.sh
+________________________________________________________________________________
+#!/bin/sh
+module load eb/2018 intel/2018a
+cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
+./hello.f90.exe 
+ rm ./hello.f90.exe 
+________________________________________________________________________________
+Writing 7 tests for /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml

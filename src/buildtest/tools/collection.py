@@ -25,7 +25,7 @@ import subprocess
 import sys
 import json
 
-from buildtest.tools.file import create_dir
+from buildtest.tools.file import create_dir, create_file
 
 def func_collection_subcmd(args):
 
@@ -36,6 +36,9 @@ def func_collection_subcmd(args):
 
 def add_collection():
     """Save modules in a collection"""
+    fname = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "default.json")
+
+
     cmd = "module -t list"
     out = subprocess.getoutput(cmd)
     # output of module -t list when no modules are loaded is "No modules
@@ -47,21 +50,14 @@ def add_collection():
         module_list = out.split()
 
         create_dir(os.path.join(os.getenv("BUILDTEST_ROOT"),"var"))
-        fname = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","default.json")
 
-        # if file doesn't exist just add module directly to file
-        if not os.path.exists(fname):
-            fd = open(fname,"w")
-            module_coll_dict["collection"].append(module_list)
-            json.dump(module_coll_dict,fd,indent=4)
-            fd.close()
-        else:
-            fd = open(fname,'r')
-            content = json.load(fd)
-            fd = open(fname,'w')
-            content["collection"].append(module_list)
-            json.dump(content,fd,indent=4)
-
+        fd = open(fname,'r')
+        content = json.load(fd)
+        fd = open(fname,'w')
+        content["collection"].append(module_list)
+        json.dump(content, sys.stdout, indent=4)
+        json.dump(content,fd,indent=4)
+        print ("\n")
         print(f"Updating collection file: {fname}")
 def list_collection():
     """List module collections."""
