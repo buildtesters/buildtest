@@ -100,7 +100,7 @@ def menu():
     benchmark_title = "Run Benchmark"
     yaml_title = "Yaml commands for buildtest"
     collection_title = "Module Collection Operation"
-    module_title = "Options for module load testing and report diff between module trees"
+    module_title = "Module Operations"
     command_description = f"""
 Info:
     list        {list_title}
@@ -221,7 +221,8 @@ Misc:
                               default=0)
     parser_build_mutex_modules = parser_build.add_mutually_exclusive_group()
     parser_build_mutex_modules.add_argument("-m","--modules",
-                              help="Specify list of modules to build test",
+                              help="Specify comma separated list of modules "
+                                   "to build a test for every module version.",
                               type=str)
     parser_build_mutex_modules.add_argument("-co","--collection",
                               help="Use user Lmod module collection when" 
@@ -284,9 +285,6 @@ Misc:
                               action="store_true")
     parser_module.add_argument("--spack",
                                help="reports modules that are built by spack",
-                               action="store_true")
-    parser_module.add_argument("-f", "--find",
-                               help="Find all modules by name and print how to load modules",
                                action="store_true")
 
     subparsers_module = parser_module.add_subparsers()

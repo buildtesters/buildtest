@@ -49,8 +49,8 @@ def func_module_subcmd(args):
         module_tree_add(args.add)
     if args.rm:
         module_tree_rm(args.rm)
-    if args.find:
-        find_modules()
+
+
     if args.easybuild:
         check_easybuild_module()
     if args.spack:
@@ -165,7 +165,7 @@ class BuildTestModule():
         return version
 
 def find_modules(module_args):
-    """Return a list of module load commands """
+    """Return a list of module load commands from modules.json """
 
     module_list = module_args.split(",")
     fd = open(os.path.join(os.getenv("BUILDTEST_ROOT"), "var",

@@ -53,6 +53,7 @@ class BuildTestBuilderSingleSource():
             :param software_module: Name of software module to write in test script.
         """
         self.module_collection = None
+        self.internal_module_collection = None
         self.shell = config_opts["BUILDTEST_SHELL"]
         self.conf_file = yaml
         self.testname = '%s.%s' % (os.path.basename(self.conf_file),self.shell)
