@@ -150,13 +150,6 @@ Misc:
                                   + "module tree",
                              action="store_true")
 
-    parser_list.add_argument("-v","--view",
-                             choices=["all", "current"],
-                             help= """ Control output of spider command.
-
-                                  all:     Retrieve all records
-                                  current: Retrieve record where module path is in BUILDTEST_MODULEPATH""",
-                             default="current")
     parser_list.set_defaults(func=func_list_subcmd)
 
     # -------------------------------- find menu ---------------------------

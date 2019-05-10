@@ -42,8 +42,6 @@ from buildtest.tools.easybuild import find_easyconfigs
 
 def func_list_subcmd(args):
     """ This method is the entry point for buildtest list subcommand."""
-    if args.view:
-        config_opts["BUILDTEST_SPIDER_VIEW"] = args.view
 
     if args.easyconfigs:
         find_easyconfigs()
@@ -57,17 +55,12 @@ def func_list_subcmd(args):
 def list_software(args):
     """ This method gets unique software from spider. """
 
-    if config_opts["BUILDTEST_SPIDER_VIEW"] == "all":
-        stack = module_obj.get_unique_modules()
-    else:
-        stack = module_obj.get_unique_modules_by_tree()
+    module_stack = module_obj.get_unique_modules()
 
-    module_set = stack
-
-    [ print (item) for item in module_set]
+    [ print (item) for item in module_stack]
 
     print ("\n")
-    print ("Total Software Packages: ", len(module_set))
+    print ("Total Software Packages: ", len(module_stack))
 
 
 def list_modules(args):
@@ -76,15 +69,12 @@ def list_modules(args):
     module_dict = module_obj.get_module_spider_json()
     lmod_version = module_obj.get_version()
     major_ver = lmod_version[0]
-    if config_opts["BUILDTEST_SPIDER_VIEW"] == "all":
-        stack = module_obj.get_unique_modules()
-    else:
-        stack = module_obj.get_unique_modules_by_tree()
-    module_stack = stack
+
+    module_stack = module_obj.get_unique_modules()
 
 
     text = """
-    Full Module Name                 |      ModuleFile Path
+    Full Module Name                     |      ModuleFile Path
 -----------------------------------------|----------------------------- """
     print (text)
 

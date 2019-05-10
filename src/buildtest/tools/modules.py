@@ -70,20 +70,24 @@ class BuildTestModule():
         return self.module_dict
     def get_unique_modules(self):
         """Return a list of unique keys (software name) from spider"""
-        return sorted(list(self.module_dict.keys()))
 
-    def get_unique_modules_by_tree(self):
-        """Return a list of unique full name canonical modules """
-        unique_modules_set = set()
-        for module in self.get_unique_modules():
-            #unique_modules_set.add(module)
-            for mpath in self.module_dict[module].keys():
-                for tree in config_opts["BUILDTEST_MODULEPATH"]:
-                    if tree in mpath:
-                        unique_modules_set.add(module)
-                        break
+        # return all keys when BUILDTEST_SPIDER_VIEW is all
+        if config_opts["BUILDTEST_SPIDER_VIEW"] == "all":
+            return sorted(list(self.module_dict.keys()))
+        # return all keys whose module file path is part of
+        # BUILDTEST_MODULEPATH
+        else:
+            unique_modules_set = set()
+            for module in self.module_dict.keys():
+                # unique_modules_set.add(module)
+                for mpath in self.module_dict[module].keys():
+                    for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                        if tree in mpath:
+                            unique_modules_set.add(module)
+                            break
 
-        return sorted(list(unique_modules_set))
+            return sorted(list(unique_modules_set))
+
 
     def get_unique_fname_modules(self):
         """Return a list of unique canonical fullname of module
@@ -103,55 +107,17 @@ class BuildTestModule():
 
 
         return sorted(list(software_set))
-    def get_unique_fname_modules_by_tree(self):
-        """Implement method get_unique_fname_modules but only return module
-        that abspath is in directories defined by BUILDTEST_MODULEPATH"""
-        software_set = set()
 
-        for module in self.get_unique_modules():
-            for mpath in self.module_dict[module].keys():
-                fname = ""
-                if self.major_ver == 6:
-                    fname = self.module_dict[module][mpath]["full"]
-                elif self.major_ver == 7:
-                    fname = self.module_dict[module][mpath]["fullName"]
-
-                # only add module files that belong in directories specified
-                #  by BUILDTEST_MODULEPATH.
-
-                for tree in config_opts["BUILDTEST_MODULEPATH"]:
-                    if tree in mpath:
-                        software_set.add(fname)
-                        break
-
-        return sorted(list(software_set))
     def get_modulefile_path(self):
         """Return a list of absolute path for all module files"""
         module_path_list  = []
 
-        if config_opts["BUILDTEST_SPIDER_VIEW"] == "all":
-            module_stack = self.get_unique_modules()
-            for k in module_stack:
-                for mpath in self.module_dict[k].keys():
-                    module_path_list.append(mpath)
-        else:
-            module_stack = self.get_unique_modules_by_tree()
-
-            for k in module_stack:
-                for tree in config_opts["BUILDTEST_MODULEPATH"]:
-                    for mpath in self.module_dict[k].keys():
-                        if tree in mpath:
-                            module_path_list.append(mpath)
+        for k in self.get_unique_modules():
+            for mpath in self.module_dict[k].keys():
+                module_path_list.append(mpath)
 
         return module_path_list
 
-    def check_module(self,module):
-        """Check if module is in list of unique_software_modules and return
-        True or False"""
-        if module in self.get_unique_modules():
-            return True
-        else:
-            return False
     def get_parent_modules(self,modname):
         """Get Parent module for specified module file."""
         for key in self.module_dict.keys():
@@ -276,12 +242,8 @@ def module_tree_rm(tree):
 def module_load_test(args):
     """Perform module load test for all modules in BUILDTEST_MODULEPATH"""
 
-    if config_opts["BUILDTEST_SPIDER_VIEW"] == "current":
-        stack =  module_obj.get_unique_fname_modules_by_tree()
-    else:
-        stack = module_obj.get_unique_fname_modules()
+    module_stack = module_obj.get_unique_fname_modules()
 
-    module_stack = stack
 
     out_file = "/tmp/modules-load.out"
     err_file = "/tmp/modules-load.err"

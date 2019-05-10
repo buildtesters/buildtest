@@ -32,6 +32,7 @@ import stat
 import sys
 import subprocess
 
+from buildtest.tools.file import create_dir
 from buildtest.tools.modules import module_obj
 
 
@@ -207,6 +208,8 @@ Requirements:
 
         module_json_file = os.path.join(os.getenv("BUILDTEST_ROOT"), "var",
                                         "modules.json")
+
+        create_dir(os.path.dirname(module_json_file))
         with open(module_json_file,"w") as outfile:
             json.dump(json_dict, outfile, indent=4)
 
