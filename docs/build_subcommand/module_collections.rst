@@ -119,7 +119,7 @@ Let's build a test with the 2nd module collection by using
 
 
 The option ``--module-collection`` takes an integer argument that is a
-choice field prepoluated by finding the total index in the ``collection``
+choice field prepopulated by finding the total index in the ``collection``
 key in file ``default.json``
 
 If you pass an invalid index, buildtest will report an error as you can see
