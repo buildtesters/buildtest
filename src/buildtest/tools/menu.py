@@ -39,7 +39,7 @@ from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.find import func_find_subcmd
 from buildtest.tools.list import func_list_subcmd
 from buildtest.tools.modules import func_module_subcmd, \
-     module_obj, module_load_test
+     module_obj, module_load_test, func_module_tree_subcmd
 from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.show import func_show_subcmd
@@ -217,7 +217,7 @@ Misc:
                                    + "writing test scripts",
                               action="store_true")
     parser_build.add_argument("-v", "--verbose",
-                              help="verbosity level",
+                              help="verbosity level (default: %(default)s)",
                               action="count",
                               default=0)
     parser_build_mutex_modules = parser_build.add_mutually_exclusive_group()
@@ -273,14 +273,7 @@ Misc:
     parser_module.add_argument("--diff-trees",
                                help="Show difference between two module trees")
 
-    parser_module.add_argument("-a", help="add a module tree", dest="add",
-                               metavar="Module Tree")
-    parser_module.add_argument("-l", help="list module trees",
-                               action="store_true", dest="list")
-    parser_module.add_argument("-r", help="remove a module tree",
-                               choices=config_opts["BUILDTEST_MODULEPATH"],
-                               dest="rm",
-                               metavar="Module Tree")
+
     parser_module.add_argument("-eb",
                               "--easybuild",
                               help="reports modules that are built by easybuild",
@@ -289,16 +282,29 @@ Misc:
                                help="reports modules that are built by spack",
                                action="store_true")
 
+
     subparsers_module = parser_module.add_subparsers()
     parser_moduleload = subparsers_module.add_parser('loadtest',
                                                  help="module load test")
-    """
-    parser_module_tree_add = subparsers_module.add_parser('add',
-                                                          help="add a module tree")
-    parser_module_tree_add.set_defaults(func=module_tree_add)
-    """
+    
     parser_moduleload.set_defaults(func=module_load_test)
 
+    parser_module_tree = subparsers_module.add_parser('tree',
+                                                     help="module tree "
+                                                          "operation")
+    parser_module_tree.add_argument("-a", help="add a module tree", dest="add",
+                                    action="append",
+                                    metavar="Module Tree")
+
+    parser_module_tree.add_argument("-l", help="list module trees",
+                                    action="store_true", dest="list")
+
+    parser_module_tree.add_argument("-r", help="remove a module tree",
+                                    choices=config_opts["BUILDTEST_MODULEPATH"],
+                                    action="append",
+                                    dest="rm",
+                                    metavar="Module Tree")
+    parser_module_tree.set_defaults(func=func_module_tree_subcmd)
     parser_module.set_defaults(func=func_module_subcmd)
 
     # -------------------------------- show menu --------------------------

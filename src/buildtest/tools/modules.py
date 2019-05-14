@@ -39,22 +39,27 @@ from buildtest.tools.file import string_in_file, is_dir
 
 
 def func_module_subcmd(args):
-    """ entry point for module subcommand """
+    """ entry point for buildtest module subcommand """
 
     if args.diff_trees:
         diff_trees(args.diff_trees)
-    if args.list:
-        [print (tree) for tree in config_opts["BUILDTEST_MODULEPATH"]]
-    if args.add:
-        module_tree_add(args.add)
-    if args.rm:
-        module_tree_rm(args.rm)
-
 
     if args.easybuild:
         check_easybuild_module()
+
     if args.spack:
         check_spack_module()
+
+def func_module_tree_subcmd(args):
+    """ Entry point for buildtest module tree subcommand """
+    if args.list:
+        [print (tree) for tree in config_opts["BUILDTEST_MODULEPATH"]]
+
+    if args.add:
+        module_tree_add(args.add)
+
+    if args.rm:
+        module_tree_rm(args.rm)
 
 class BuildTestModule():
     def __init__(self):
@@ -206,14 +211,17 @@ def get_module_list_by_tree(mod_tree):
 
 module_obj = BuildTestModule()
 
-def module_tree_add(tree):
+def module_tree_add(tree_list):
     """adding a module tree to BUILDTEST_MODULEPATH in configuration file"""
-    is_dir(tree)
+
     fd = open(BUILDTEST_CONFIG_FILE, "r")
     content = yaml.safe_load(fd)
     fd.close()
 
-    content["BUILDTEST_MODULEPATH"].append(tree)
+    for tree in tree_list:
+        is_dir(tree)
+        content["BUILDTEST_MODULEPATH"].append(tree)
+
     # converting to set to avoid adding duplicate entries
     module_tree_set = set(content["BUILDTEST_MODULEPATH"])
     module_tree_set.add(tree)
@@ -224,19 +232,22 @@ def module_tree_add(tree):
     yaml.dump(content, fd, default_flow_style=False)
     fd.close()
 
-    print(f"Adding module tree: {tree}")
+    print(f"Adding module tree: {tree_list}")
     print(f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
-def module_tree_rm(tree):
+def module_tree_rm(tree_list):
     """ remove a module tree from BUILDTEST_MODULEPATH in configuration file"""
+
     fd = open(BUILDTEST_CONFIG_FILE,"r")
     content = yaml.safe_load(fd)
-    content["BUILDTEST_MODULEPATH"].remove(tree)
+    for tree in tree_list:
+        content["BUILDTEST_MODULEPATH"].remove(tree)
+
     fd.close()
 
     fd = open(BUILDTEST_CONFIG_FILE,"w")
     yaml.dump(content,fd,default_flow_style=False)
     fd.close()
-    print (f"Removing module tree: {tree}")
+    print (f"Removing module tree: {tree_list}")
     print (f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
 
 def module_load_test(args):
