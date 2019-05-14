@@ -18,11 +18,11 @@ cmd="buildtest -V"
 $cmd &> ${testdir}/version.txt
 message
 
-cmd="buildtest list -ls"
+cmd="buildtest list -s"
 $cmd &> ${testdir}/list_software.txt
 message
 
-cmd="buildtest list -svr"
+cmd="buildtest list -m"
 $cmd &> ${testdir}/list_modules.txt
 message
 
@@ -42,10 +42,6 @@ cmd="buildtest show -c"
 $cmd &> ${testdir}/show_config.txt
 message
 cmd="buildtest show -k singlesource" &> ${testdir}/show_keys.txt
-message
-
-cmd="buildtest --clean-logs"
-$cmd 
 message
 
 cmd="buildtest build -p gcc"
@@ -76,12 +72,54 @@ cmd="buildtest build -c /home/siddis14/buildtest-framework/toolkit/buildtest/sui
 $cmd &> ${testdir}/single_test.txt
 message
 
+
+cmd="buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml -co gcc540"
+$cmd &> ${testdir}/single_test_collection.txt
+message
+
+cmd="buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml -m gcc"
+$cmd &> ${testdir}/single_test_permute.txt
+message
+
 # testing csh test creation
 cmd="buildtest build -s GCCcore/6.4.0 --shell csh"
 $cmd &> ${testdir}/gcccore_6.4.0_csh.txt
 message
 
+cmd="buildtest module loadtest"
+$cmd &> $testdir/moduleload.txt
+message
+
+cmd="buildtest module --spack"
+$cmd &> $testdir/spack_modules.txt
+message
+
+cmd="BUILDTEST_SPIDER_VIEW=all buildtest module --spack"
+$cmd &> $testdir/all_spack_modules.txt
+message
+
+cmd="buildtest module --easybuild"
+$cmd &> $testdir/easybuild_modules.txt
+message
+
+cmd="BUILDTEST_SPIDER_VIEW=all buildtest module --easybuild"
+$cmd &> $testdir/all_easybuild_modules.txt
+message
+
+cmd="buildtest module -a /usr/share/lmod/lmod/modulefiles/Core"
+$cmd &> $testdir/add_module_tree.txt
+message
+
+
+cmd="buildtest module -r /usr/share/lmod/lmod/modulefiles/Core"
+$cmd &> $testdir/rm_module_tree.txt
+message
+
+cmd="buildtest module -l "
+$cmd &> $testdir/list_module_tree.txt
+message
+
 # running benchmark
 cmd="buildtest benchmark osu -r" 
-$cmd &> ${testdir}/osu.txt
-message
+#$cmd &> ${testdir}/osu.txt
+#message

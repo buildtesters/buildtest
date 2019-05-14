@@ -89,6 +89,7 @@ def menu():
     parser = argparse.ArgumentParser(prog='buildtest',
                                      formatter_class=argparse.RawDescriptionHelpFormatter,
                                      description=description_str,
+                                     usage='%(prog)s [options] [COMMANDS]',
                                      epilog=epilog_str)
 
 
@@ -271,6 +272,7 @@ Misc:
 
     parser_module.add_argument("--diff-trees",
                                help="Show difference between two module trees")
+
     parser_module.add_argument("-a", help="add a module tree", dest="add",
                                metavar="Module Tree")
     parser_module.add_argument("-l", help="list module trees",
@@ -290,7 +292,11 @@ Misc:
     subparsers_module = parser_module.add_subparsers()
     parser_moduleload = subparsers_module.add_parser('loadtest',
                                                  help="module load test")
-
+    """
+    parser_module_tree_add = subparsers_module.add_parser('add',
+                                                          help="add a module tree")
+    parser_module_tree_add.set_defaults(func=module_tree_add)
+    """
     parser_moduleload.set_defaults(func=module_load_test)
 
     parser_module.set_defaults(func=func_module_subcmd)
@@ -354,10 +360,16 @@ Misc:
 
     # ------------------------------ Miscellaneous Options -----------------------
     misc_group = parser.add_argument_group("Miscellaneous Options ")
+    """
     misc_group.add_argument("-V",
                             "--version",
                             help="show program version number and exit",
                             action="store_true")
+    """
+    misc_group.add_argument("-V",
+                            "--version",
+                            action="version",
+                            version='%(prog)s version 0.6.5')
     misc_group.add_argument("--logdir",
                             help="Path to write buildtest logs. Override "
                                  + "configuration BUILDTEST_LOGDIR")
