@@ -292,6 +292,12 @@ Misc:
     parser_module.add_argument("--spack",
                                help="reports modules that are built by spack",
                                action="store_true")
+    parser_module.add_argument("-d",
+                               "--module-deps",
+                               help="retrieve all modules that module is "
+                                    "depended on" ,
+                               choices=module_stack,
+                               metavar="AVAILABLE-MODULES")
 
 
     # ------------------------- module tree  options ------------

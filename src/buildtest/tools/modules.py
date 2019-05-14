@@ -50,6 +50,9 @@ def func_module_subcmd(args):
     if args.spack:
         check_spack_module()
 
+    if args.module_deps:
+        find_module_deps(args.module_deps)
+
 def func_module_tree_subcmd(args):
     """ Entry point for buildtest module tree subcommand """
     if args.list:
@@ -168,6 +171,35 @@ class BuildTestModule():
         cmd = os.getenv("LMOD_VERSION")
         version = [int(v) for v in cmd.split(".")]
         return version
+def find_module_deps(parent_module):
+    """Return a list of module files that a module is dependend on"""
+    module_stack = module_obj.get_unique_fname_modules()
+    #module_json = module_obj.get_module_spider_json()
+    parent_list_found = []
+
+    fd = open(os.path.join(os.getenv("BUILDTEST_ROOT"), "var",
+                           "modules.json"), "r")
+    module_json  = json.load(fd)
+
+    for mod in module_json.keys():
+        for mpath in module_json[mod].keys():
+
+            fname = module_json[mod][mpath]["fullName"]
+            for parent_list in module_json[mod][mpath]["parent"]:
+                if parent_module in parent_list:
+                    parent_list_found.append(mpath)
+                    break
+
+    if len(parent_list_found) == 0:
+        print (f"No modules found that depends on {parent_module}")
+        return
+
+    print (f"Modules that depend on {parent_module}")
+    for file in parent_list_found:
+        print (file)
+
+    print ("\n")
+    print (f"Total Modules Found: {len(parent_list_found)}")
 
 def find_modules(module_args):
     """Return a list of module load commands from modules.json """
