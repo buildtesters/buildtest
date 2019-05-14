@@ -1,6 +1,6 @@
 buildtest list --modules
 
-    Full Module Name                 |      ModuleFile Path
+    Full Module Name                     |      ModuleFile Path
 -----------------------------------------|----------------------------- 
 [32mRHEL6-apps                               |	/nfs/grid/software/moduledomains/RHEL6-apps.lua[0m
 cctsoft                                  |	/nfs/grid/software/moduledomains/cctsoft

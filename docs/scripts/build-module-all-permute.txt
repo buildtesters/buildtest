@@ -20,42 +20,42 @@ Key Check PASSED for file /home/siddis14/buildtest-framework/toolkit/buildtest/s
 Source File /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 exists!
 Programming Language Detected: fortran
 Compiler Check Passed
-Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x2b1255e53fbafb8f445ce2ba28b755fa.sh
-Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0x2b1255e53fbafb8f445ce2ba28b755fa.sh
+Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xc80e042db904de9a3fa899d7e58ed78e.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xc80e042db904de9a3fa899d7e58ed78e.sh
 ________________________________________________________________________________
 #!/bin/sh
 module load eb/2017 icc/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
-cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
 ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
 ./hello.f90.exe 
  rm ./hello.f90.exe 
 ________________________________________________________________________________
-Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0xd4f3b200b80d4f86b8de4e971fc1154e.sh
-Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0xd4f3b200b80d4f86b8de4e971fc1154e.sh
+Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x33ee0f531d623d52cde69680dd973ee3.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x33ee0f531d623d52cde69680dd973ee3.sh
 ________________________________________________________________________________
 #!/bin/sh
 module load eb/2017 ifort/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
-cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
 ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
 ./hello.f90.exe 
  rm ./hello.f90.exe 
 ________________________________________________________________________________
-Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0xcbf2f3106836bb320e342b1a937c0239.sh
-Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0xcbf2f3106836bb320e342b1a937c0239.sh
+Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x973a918edc31a04c62638eb390bba18d.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x973a918edc31a04c62638eb390bba18d.sh
 ________________________________________________________________________________
 #!/bin/sh
 module load medsci hpc/eb-2017-core icc/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
-cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
 ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
 ./hello.f90.exe 
  rm ./hello.f90.exe 
 ________________________________________________________________________________
-Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0xc82af439706979dbb988f7dec2b085ee.sh
-Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml_0xc82af439706979dbb988f7dec2b085ee.sh
+Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x412dfac1afd2b8092e45330602c4f9d4.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x412dfac1afd2b8092e45330602c4f9d4.sh
 ________________________________________________________________________________
 #!/bin/sh
 module load medsci hpc/eb-2017-core ifort/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
-cd /tmp/siddis14/buildtest/suite/compilers/helloworld
+cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
 ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
 ./hello.f90.exe 
  rm ./hello.f90.exe 

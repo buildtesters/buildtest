@@ -1,34 +1,33 @@
 buildtest --help
-usage: buildtest [-h] [-V] [--logdir LOGDIR] {list,find,yaml,build,run,module,show,collection,benchmark} ...
+Copying Default Configuration /home/siddis14/buildtest-framework/settings.yml to           /home/siddis14/.buildtest/settings.yml
+usage: buildtest [options] [COMMANDS]
 
 buildtest is a software testing framework designed for HPC facilities to verify their Software Stack. buildtest abstracts test complexity into YAML files that is interpretedby buildtest into shell script
 
 optional arguments:
   -h, --help            show this help message and exit
 
-commands:
+COMMANDS:
   
   Info:
-      list        Options for listing software, module files, and  easyconfigs
-      show        Options for displaying buildtest configuration
-      find        Find configuration files and test scripts
+    list        Options for listing software, module files, and  easyconfigs
+    show        Options for displaying buildtest configuration
+    find        Find configuration files and test scripts
              
       
   Build:
-      build       Options for building test scripts
-      run         Run Tests
-      benchmark   Run Benchmark
+    build       Options for building test scripts
+    run         Run Tests
+    benchmark   Run Benchmark
   
   Misc:
-      yaml        Yaml commands for buildtest
-      collection  Module Collection Operation
-      module      Options for module load testing and report diff between module trees
-      
+    yaml        Yaml commands for buildtest    
+    module      Module Operations
 
-  {list,find,yaml,build,run,module,show,collection,benchmark}
+  {list,find,yaml,build,run,module,show,benchmark}
 
 Miscellaneous Options :
-  -V, --version         show program version number and exit
+  -V, --version         show program's version number and exit
   --logdir LOGDIR       Path to write buildtest logs. Override configuration BUILDTEST_LOGDIR
 
 Documentation: https://buildtest.readthedocs.io/en/latest/index.html

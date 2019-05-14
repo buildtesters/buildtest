@@ -1,8 +1,9 @@
 buildtest build --help
-usage: buildtest build [-h] [-s INSTALLED-SOFTWARE] [-p SYSTEM-PACKAGE] [--shell {sh,bash,csh}]
-                       [-c TEST CONFIGURATION] [-b] [-S {compilers,mpi,python,openmp,cuda}] [--clean-tests]
-                       [--testdir TESTDIR] [--clean-build] [-v]
-                       [-m MODULES | -co {corrupt,corrupt2,default,intelmpi} | -mc COLLECTION-ID] [-pms {first,all}]
+usage: buildtest [options] [COMMANDS] build [-h] [-s INSTALLED-SOFTWARE] [-p SYSTEM-PACKAGE] [--shell {sh,bash,csh}]
+                                            [-c TEST CONFIGURATION] [-b] [-S {compilers,mpi,openmp,cuda}]
+                                            [--clean-tests] [--testdir TESTDIR] [--clean-build] [-v]
+                                            [-m MODULES | -co {corrupt,corrupt2,gcc540,intelmpi} | -mc COLLECTION-ID]
+                                            [-pms {first,all}]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -15,15 +16,15 @@ optional arguments:
   -c TEST CONFIGURATION, --config TEST CONFIGURATION
                         Specify test configuration
   -b, --binary          Conduct binary test for a package
-  -S {compilers,mpi,python,openmp,cuda}, --suite {compilers,mpi,python,openmp,cuda}
+  -S {compilers,mpi,openmp,cuda}, --suite {compilers,mpi,openmp,cuda}
                         specify test suite
   --clean-tests         delete test directory $BUILDTEST_TESTDIR
   --testdir TESTDIR     Specify alternate test directory to write test. This overrides configuration BUILDTEST_TESTDIR
   --clean-build         delete software test directory before writing test scripts
-  -v, --verbose         verbosity level
+  -v, --verbose         verbosity level (default: 0)
   -m MODULES, --modules MODULES
-                        Specify list of modules to build test
-  -co {corrupt,corrupt2,default,intelmpi}, --collection {corrupt,corrupt2,default,intelmpi}
+                        Specify comma separated list of modules to build a test for every module version.
+  -co {corrupt,corrupt2,gcc540,intelmpi}, --collection {corrupt,corrupt2,gcc540,intelmpi}
                         Use user Lmod module collection whenbuilding test
   -mc COLLECTION-ID, --module-collection COLLECTION-ID
                         Use internal buildtest module collection when building test.Run buildtest collection -l to

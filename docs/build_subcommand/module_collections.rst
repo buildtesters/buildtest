@@ -51,7 +51,7 @@ First you load a set of modules::
 
 Next add the modules to your collection by running::
 
-    $ buildtest collection -a
+    $ buildtest module collection -a
     {
         "collection": [
             [
@@ -66,7 +66,7 @@ Next add the modules to your collection by running::
 
 Next, view the module collection by running::
 
-    $ buildtest collection -l
+    $ buildtest module collection -l
     0: ['eb/2018', 'CUDA/9.1.85']
 
 buildtest will display module collection with index starting **0** followed by
@@ -78,7 +78,7 @@ list of modules
 
 .. code-block:: console
 
-    $ buildtest collection -l
+    $ buildtest module collection -l
     0: ['eb/2018', 'CUDA/9.1.85']
     1: ['eb/2018', 'GCCcore/6.4.0', 'binutils/2.28-GCCcore-6.4.0', 'GCC/6.4.0-2.28']
     2: ['eb/2017', 'icc/.2017.1.132-GCC-5.4.0-2.27', 'GCCcore/.5.4.0', 'binutils/.2.27', 'ifort/.2017.1.132-GCC-5.4.0-2.27', 'impi/2017.1.132', 'imkl/2017.1.132', 'intel/2017.01']

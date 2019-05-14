@@ -18,4 +18,17 @@ Source File /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers
 Programming Language Detected: c
 LSF Keys Passed
 Compiler Check Passed
-Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_lsf.yml.lsf
+Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
+Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
+________________________________________________________________________________
+#!/bin/sh
+#BSUB -M 200M
+#BSUB -R sandybridge
+#BSUB -W 01:00
+#BSUB -n 4
+module purge
+cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
+gcc -O2 -o hello.c.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c 
+./hello.c.exe 
+ rm ./hello.c.exe 
+________________________________________________________________________________

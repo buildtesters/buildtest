@@ -92,16 +92,10 @@ will read from ``MODULEPATH``.
 Listing Module Tree
 ~~~~~~~~~~~~~~~~~~~~
 
-To list the module trees in buildtest you can run ``buildtest module -l`` which
-shows one module tree per line
+To list the module trees in buildtest you can run ``buildtest module tree -l``
+which shows one module tree per line
 
-.. code-block:: console
-
-    $ buildtest module -l
-    /nfs/grid/software/moduledomains
-    /etc/modulefiles
-    /usr/share/modulefiles
-    /usr/share/lmod/lmod/modulefiles/Core
+.. program-output:: cat scripts/module_tree_list.txt
 
 For this run, ``BUILDTEST_MODULEPATH`` is not set in configuration file so it is
 reading from ``MODULEPATH``
@@ -114,23 +108,19 @@ reading from ``MODULEPATH``
 Adding Module Tree
 ~~~~~~~~~~~~~~~~~~~~
 
-You can add new module tree through command line using ``buildtest module -a /path/to/tree``
-which will update the configuration file::
+You can add new module tree through command line using ``buildtest module
+tree -a /path/to/tree`` which will update the configuration file
 
-    $ buildtest module -a /usr/share/lmod/lmod/modulefiles/Core
-    Adding module tree: /usr/share/lmod/lmod/modulefiles/Core
-    Configuration File: /home/siddis14/.buildtest/settings.yml has been updated
+.. program-output:: cat scripts/module_tree_add.txt
 
 
 Removing Module Tree
 ~~~~~~~~~~~~~~~~~~~~~
 
-Similarly you can remove module tree from your configuration via ``buildtest module -r /path/to/tree``::
+Similarly you can remove module tree from your configuration via ``buildtest
+module tree -r /path/to/tree``
 
-    (siddis14-TgVBs13r) buildtest-framework[master !?] $ buildtest module -r /etc/modulefiles
-    Removing module tree: /etc/modulefiles
-    Configuration File: /home/siddis14/.buildtest/settings.yml has been updated
-
+.. program-output:: cat scripts/module_tree_rm.txt
 
 Report Easybuild Modules
 --------------------------

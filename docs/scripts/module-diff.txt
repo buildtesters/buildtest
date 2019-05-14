@@ -6,15 +6,15 @@ Module Tree 2:  /usr/share/lmod/lmod/modulefiles/Core
 ID       |     Module                                                   |   Module Tree 1    |   Module Tree 2
 ---------|--------------------------------------------------------------|--------------------|----------------------
 1        | lmod/6.5.1                                                   | NOT FOUND          | FOUND
-2        | EasyBuild/3.5.3                                              | FOUND              | NOT FOUND
-3        | Java/1.8.0_152                                               | FOUND              | NOT FOUND
-4        | Anaconda3/5.1.0                                              | FOUND              | NOT FOUND
-5        | git-lfs/2.4.0                                                | FOUND              | NOT FOUND
-6        | CUDA/7.5.18                                                  | FOUND              | NOT FOUND
+2        | CUDA/9.1.85                                                  | FOUND              | NOT FOUND
+3        | CUDA/7.5.18                                                  | FOUND              | NOT FOUND
+4        | EasyBuild/3.6.0                                              | FOUND              | NOT FOUND
+5        | EasyBuild/3.5.3                                              | FOUND              | NOT FOUND
+6        | git-lfs/2.4.0                                                | FOUND              | NOT FOUND
 7        | Anaconda2/5.1.0                                              | FOUND              | NOT FOUND
-8        | cuDNN/7.1-CUDA-9.1.85                                        | FOUND              | NOT FOUND
-9        | CUDA/9.1.85                                                  | FOUND              | NOT FOUND
-10       | IGV/2.3.98-Java-1.8.0_152                                    | FOUND              | NOT FOUND
+8        | IGV/2.3.98-Java-1.8.0_152                                    | FOUND              | NOT FOUND
+9        | Anaconda3/5.1.0                                              | FOUND              | NOT FOUND
+10       | CUDA/8.0.61                                                  | FOUND              | NOT FOUND
 11       | settarg/6.5.1                                                | NOT FOUND          | FOUND
-12       | CUDA/8.0.61                                                  | FOUND              | NOT FOUND
-13       | EasyBuild/3.6.0                                              | FOUND              | NOT FOUND
+12       | cuDNN/7.1-CUDA-9.1.85                                        | FOUND              | NOT FOUND
+13       | Java/1.8.0_152                                               | FOUND              | NOT FOUND

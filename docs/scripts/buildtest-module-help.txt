@@ -1,18 +1,18 @@
 buildtest module --help
-usage: buildtest module [-h] [--diff-trees DIFF_TREES] [-a Module Tree] [-l] [-r Module Tree] [-eb] [--spack] [-f]
-                        {loadtest} ...
-
-positional arguments:
-  {loadtest}
-    loadtest            module load test
+usage: buildtest [options] [COMMANDS] module [-h] [--diff-trees DIFF_TREES] [-eb] [--spack]
+                                             {loadtest,tree,collection} ...
 
 optional arguments:
   -h, --help            show this help message and exit
   --diff-trees DIFF_TREES
                         Show difference between two module trees
-  -a Module Tree        add a module tree
-  -l                    list module trees
-  -r Module Tree        remove a module tree
   -eb, --easybuild      reports modules that are built by easybuild
   --spack               reports modules that are built by spack
-  -f, --find            Find all modules by name and print how to load modules
+
+subcommands:
+  valid subcommands
+
+  {loadtest,tree,collection}
+    loadtest            module load test
+    tree                module tree operation
+    collection          module collection operation

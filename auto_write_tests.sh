@@ -60,3 +60,7 @@ tee $script_dir/spack-modules.txt <<< "buildtest module --spack" | bash >> $scri
 
 tee $script_dir/spack-all-modules.txt <<< "BUILDTEST_SPIDER_VIEW=all buildtest module --spack" | bash >> $script_dir/spack-all-modules.txt
 
+tee $script_dir/module_tree_list.txt <<< "buildtest module tree -l" | bash >> $script_dir/module_tree_list.txt
+tee $script_dir/module_tree_add.txt <<< "buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_add.txt
+tee $script_dir/module_tree_rm.txt <<< "buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_rm.txt
+

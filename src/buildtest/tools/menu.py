@@ -100,26 +100,25 @@ def menu():
     run_title = "Run Tests"
     benchmark_title = "Run Benchmark"
     yaml_title = "Yaml commands for buildtest"
-    collection_title = "Module Collection Operation"
     module_title = "Module Operations"
     command_description = f"""
 Info:
-    list        {list_title}
-    show        {show_title}
-    find        {find_title}
+  list        {list_title}
+  show        {show_title}
+  find        {find_title}
            
     
 Build:
-    build       {build_title}
-    run         {run_title}
-    benchmark   {benchmark_title}
+  build       {build_title}
+  run         {run_title}
+  benchmark   {benchmark_title}
 
 Misc:
-    yaml        {yaml_title}
-    collection  {collection_title}
-    module      {module_title}
-    """
-    subparsers = parser.add_subparsers(title='commands', description=command_description,dest="subcommand")
+  yaml        {yaml_title}    
+  module      {module_title}
+"""
+    subparsers = parser.add_subparsers(title='COMMANDS',
+                                       description=command_description,dest="subcommand")
 
     # ---------------------------------- sub parsers -----------------------
     parser_list = subparsers.add_parser('list')
@@ -127,9 +126,21 @@ Misc:
     parser_yaml = subparsers.add_parser('yaml')
     parser_build = subparsers.add_parser('build')
     parser_run = subparsers.add_parser('run')
+
     parser_module = subparsers.add_parser('module')
+    subparsers_module = parser_module.add_subparsers(title='subcommands',
+                                                     description='valid '
+                                                                 'subcommands')
+    parser_moduleload = subparsers_module.add_parser('loadtest',
+                                                     help="module load test")
+    parser_module_tree = subparsers_module.add_parser('tree',
+                                                      help="module tree "
+                                                           "operation")
+    parser_collection = subparsers_module.add_parser('collection',
+                                                     help="module collection "
+                                                          "operation")
+
     parser_show = subparsers.add_parser('show')
-    parser_collection = subparsers.add_parser('collection')
     parser_benchmark = subparsers.add_parser('benchmark')
 
 
@@ -283,15 +294,7 @@ Misc:
                                action="store_true")
 
 
-    subparsers_module = parser_module.add_subparsers()
-    parser_moduleload = subparsers_module.add_parser('loadtest',
-                                                 help="module load test")
-    
-    parser_moduleload.set_defaults(func=module_load_test)
-
-    parser_module_tree = subparsers_module.add_parser('tree',
-                                                     help="module tree "
-                                                          "operation")
+    # ------------------------- module tree  options ------------
     parser_module_tree.add_argument("-a", help="add a module tree", dest="add",
                                     action="append",
                                     metavar="Module Tree")
@@ -304,7 +307,16 @@ Misc:
                                     action="append",
                                     dest="rm",
                                     metavar="Module Tree")
+
+    # ------------------------- module collection options ------------
+    parser_collection.add_argument("-l", "--list", action="store_true",
+                                   help="list the module collection")
+    parser_collection.add_argument("-a", "--add", action="store_true",
+                                   help="add a module collection")
+
+    parser_moduleload.set_defaults(func=module_load_test)
     parser_module_tree.set_defaults(func=func_module_tree_subcmd)
+    parser_collection.set_defaults(func=func_collection_subcmd)
     parser_module.set_defaults(func=func_module_subcmd)
 
     # -------------------------------- show menu --------------------------
@@ -318,13 +330,9 @@ Misc:
                              choices = ["singlesource"])
     parser_show.set_defaults(func=func_show_subcmd)
 
-    # -------------------------------- collection menu ----------------------
 
-    parser_collection.add_argument("-l", "--list", action="store_true",
-                                   help="list the module collection")
-    parser_collection.add_argument("-a", "--add", action="store_true",
-                                   help="add a module collection")
-    parser_collection.set_defaults(func=func_collection_subcmd)
+
+
 
     # -------------------------------- benchmark menu ----------------------
 

@@ -1,5 +1,5 @@
 buildtest find --help
-usage: buildtest find [-h] [-fc FINDCONFIG] [-ft FINDTEST]
+usage: buildtest [options] [COMMANDS] find [-h] [-fc FINDCONFIG] [-ft FINDTEST]
 
 optional arguments:
   -h, --help            show this help message and exit
