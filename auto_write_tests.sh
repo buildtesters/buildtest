@@ -63,4 +63,4 @@ tee $script_dir/spack-all-modules.txt <<< "BUILDTEST_SPIDER_VIEW=all buildtest m
 tee $script_dir/module_tree_list.txt <<< "buildtest module tree -l" | bash >> $script_dir/module_tree_list.txt
 tee $script_dir/module_tree_add.txt <<< "buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_add.txt
 tee $script_dir/module_tree_rm.txt <<< "buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_rm.txt
-
+tee $script_dir/parent-module.txt <<< "buildtest module -d OpenMPI/2.0.1" | bash >> $script_dir/parent-module.txt
