@@ -32,11 +32,11 @@ and processes each module tree and returns a  unique software list
 .. program-output:: cat scripts/buildtest-list-software.txt
 
 
-Software Version Relationship (``buildtest list --modules``)
----------------------------------------------------------------
+Listing Modules (``buildtest list --modules``)
+------------------------------------------------
 
-If you want to view a breakdown of all modules by version and full path to
-modulefile then use ``buildtest list --modules`` or short option ``buildtest list -m``
+If you want to view a breakdown of all modules then use ``buildtest list
+--modules`` or short option ``buildtest list -m``
 
 The output will be sorted by software and each entry will correspond to the full path of the modulefile.
 
