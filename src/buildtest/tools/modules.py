@@ -171,6 +171,19 @@ class BuildTestModule():
         cmd = os.getenv("LMOD_VERSION")
         version = [int(v) for v in cmd.split(".")]
         return version
+def get_all_parents():
+    """Retreive all parent modules to be used as argument to --parent option"""
+    fd = open(os.path.join(os.getenv("BUILDTEST_ROOT"), "var",
+                           "modules.json"), "r")
+    module_json = json.load(fd)
+    parent_set = set()
+    for module in module_json.keys():
+        for mpath in module_json[module].keys():
+            for parent_comb in module_json[module][mpath]["parent"]:
+                for parent_module in parent_comb:
+                    parent_set.add(parent_module)
+
+    return sorted(list(parent_set))
 def find_module_deps(parent_module):
     """Return a list of module files that a module is dependend on"""
     module_stack = module_obj.get_unique_fname_modules()
@@ -180,19 +193,28 @@ def find_module_deps(parent_module):
     fd = open(os.path.join(os.getenv("BUILDTEST_ROOT"), "var",
                            "modules.json"), "r")
     module_json  = json.load(fd)
+    fd.close()
+    file = ""
 
     for mod in module_json.keys():
         for mpath in module_json[mod].keys():
+            if module_json[mod][mpath]["fullName"] == parent_module:
+                filepath = mpath
+                break;
+    print (f"Module File: {filepath}")
+    print("{:_<80}".format(""))
+    fd = open(filepath,"r")
+    content = fd.read()
+    fd.close()
+    print (content)
+    print("{:_<80}".format(""))
+    for mod in module_json.keys():
+        for mpath in module_json[mod].keys():
 
-            fname = module_json[mod][mpath]["fullName"]
             for parent_list in module_json[mod][mpath]["parent"]:
                 if parent_module in parent_list:
                     parent_list_found.append(mpath)
                     break
-
-    if len(parent_list_found) == 0:
-        print (f"No modules found that depends on {parent_module}")
-        return
 
     print (f"Modules that depend on {parent_module}")
     for file in parent_list_found:

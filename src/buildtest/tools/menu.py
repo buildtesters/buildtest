@@ -39,7 +39,7 @@ from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.find import func_find_subcmd
 from buildtest.tools.list import func_list_subcmd
 from buildtest.tools.modules import func_module_subcmd, \
-     module_obj, module_load_test, func_module_tree_subcmd
+     module_obj, module_load_test, func_module_tree_subcmd,get_all_parents
 from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.show import func_show_subcmd
@@ -71,6 +71,7 @@ def menu():
     pkglist = systempackage_installed_list()
 
     module_stack = module_obj.get_unique_fname_modules()
+    parent_choices = get_all_parents()
 
     app_choices = run_app_choices()
 
@@ -296,7 +297,7 @@ Misc:
                                "--module-deps",
                                help="retrieve all modules that module is "
                                     "depended on" ,
-                               choices=module_stack,
+                               choices=parent_choices,
                                metavar="AVAILABLE-MODULES")
 
 
