@@ -102,7 +102,7 @@ class BuildTestSystem():
         module_coll_dict = {
             "collection": []
         }
-        fname = os.path.join(os.getenv("BUILDTEST_ROOT"), "var","default.json")
+        fname = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "default.json")
         if not os.path.exists(fname):
             with open(fname, "w") as outfile:
                 json.dump(module_coll_dict, outfile, indent=4)
@@ -170,13 +170,10 @@ class BuildTestSystem():
 
         if lmod_dir == None:
             req_pass=False
-
-        if self.system["OS_NAME"] != "Red Hat Enterprise Linux Server":
-            req_pass=False
-
+        """
         if self.system["SCHEDULER"] == None:
             req_pass=False
-
+        """
         if not req_pass:
             msg = """
 System Requirements not satisfied.
@@ -191,20 +188,32 @@ Requirements:
             sys.exit(1)
     def get_modules(self):
         module_dict = module_obj.get_module_spider_json()
+        module_version = module_obj.get_version()
+        module_major_version = module_version[0]
         keys = module_dict.keys()
         json_dict = {}
         for key in keys:
             json_dict[key] = {}
             for mpath in module_dict[key].keys():
+                if module_major_version == 6:
+                    fullname = module_dict[key][mpath]["full"]
+                    parent = module_dict[key][mpath]["parent"]
+                else:
+                    fullname = module_dict[key][mpath]["fullName"]
+                    if "parentAA" not in module_dict[key][mpath]:
+                        parent = []
+                    else:
+                        parent = module_dict[key][mpath]["parentAA"][0]
 
-                fullname = module_dict[key][mpath]["full"]
-                parent = module_dict[key][mpath]["parent"]
 
                 json_dict[key][mpath] = {}
                 json_dict[key][mpath]["fullName"] = fullname
                 json_dict[key][mpath]["parent"] = []
-                for entry in parent:
-                    json_dict[key][mpath]["parent"].append(entry.split(":")[1:])
+                if module_major_version == 6:
+                    for entry in parent:
+                        json_dict[key][mpath]["parent"].append(entry.split(":")[1:])
+                else:
+                    json_dict[key][mpath]["parent"] = parent
 
         module_json_file = os.path.join(os.getenv("BUILDTEST_ROOT"), "var",
                                         "modules.json")

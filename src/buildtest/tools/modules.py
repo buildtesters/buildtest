@@ -185,7 +185,7 @@ def get_all_parents():
 
     return sorted(list(parent_set))
 def find_module_deps(parent_module):
-    """Return a list of module files that a module is dependend on"""
+    """Return a list of module files that a module is depends on"""
     module_stack = module_obj.get_unique_fname_modules()
     #module_json = module_obj.get_module_spider_json()
     parent_list_found = []
