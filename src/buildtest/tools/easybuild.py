@@ -116,6 +116,6 @@ def find_easyconfigs():
         for no_ec in  no_ec_list:
             print (no_ec)
 
-    print (f"Total easyconfigs found:{len(ec_list)}")
+    print (f"Total easyconfigs found: {len(ec_list)}")
     print (f"Total module files searched: {len(modulelist)}")
 
