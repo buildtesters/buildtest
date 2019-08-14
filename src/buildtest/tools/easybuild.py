@@ -109,13 +109,19 @@ def find_easyconfigs():
         print ("No easyconfigs found!")
 
     if len(no_ec_list) > 0:
+        fname = "/tmp/easyconfigs.txt"
+        print ("\n")
+        print ("buildtest was unable to find easyconfigs for particular modules")
+        print (f"Check file: {fname} for more details")
+        fd = open(fname,"w")
         print("\n")
-        print ("Unable to find easyconfigs for the following, please "
+        fd.write("Unable to find easyconfigs for the following, please "
                + "investigate this issue! \n")
 
         for no_ec in  no_ec_list:
-            print (no_ec)
+            fd.write(no_ec+"\n")
 
+        fd.close()
     print (f"Total easyconfigs found: {len(ec_list)}")
     print (f"Total module files searched: {len(modulelist)}")
 
