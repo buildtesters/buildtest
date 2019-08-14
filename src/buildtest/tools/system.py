@@ -208,7 +208,7 @@ Requirements:
                     if "parentAA" not in module_dict[key][mpath]:
                         parent = []
                     else:
-                        parent = module_dict[key][mpath]["parentAA"][0]
+                        parent = module_dict[key][mpath]["parentAA"]
 
 
                 json_dict[key][mpath] = {}

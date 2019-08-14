@@ -233,13 +233,25 @@ def find_modules(module_args):
 
     all_modules = []
     for i in module_list:
+        print (i)
         if i not in json_module.keys():
             print(f"{i} not in dictionary. Skipping to next module")
             continue
         for mpath in json_module[i].keys():
+            # no parent combination then simply add module and go to next entry
+            if len(json_module[i][mpath]["parent"]) == 0:
+                # all_modules is a nested list using tmp to add fullName to list which
+                # can be added to a nested list
+                tmp = []
+                tmp.append(json_module[i][mpath]["fullName"])
+                all_modules.append(tmp)
+                continue
+
             for parent in json_module[i][mpath]["parent"]:
                 parent.append(json_module[i][mpath]["fullName"])
                 all_modules.append(parent)
+
+                # load the first parent combination, if BUILDTEST_PARENT_MODULE_SEARCH=first then terminate asap
                 if config_opts["BUILDTEST_PARENT_MODULE_SEARCH"] == "first":
                     break
 
@@ -247,6 +259,7 @@ def find_modules(module_args):
     for i in all_modules:
         module_cmd = ' '.join(str(name) for name in i)
         module_cmd_list.append(f"module load {module_cmd}")
+
 
     return module_cmd_list
 

@@ -36,7 +36,7 @@ def get_slurm_configuration():
     compute_nodes = out.split("\n")
     # need to delete last element
     del compute_nodes[-1]
-    print (compute_nodes)
+
 
     query = """ sinfo -h -o %R """
     cmd.execute(query)
@@ -44,4 +44,3 @@ def get_slurm_configuration():
 
     queues = out.split("\n")
     del queues[-1]
-    print (queues)

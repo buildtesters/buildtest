@@ -192,11 +192,6 @@ Misc:
 
     # -------------------------------- build menu --------------------------
 
-    parser_build.add_argument("-s",
-                              "--software",
-                              help=" Specify software package to test",
-                              choices=module_stack,
-                              metavar='INSTALLED-SOFTWARE')
     parser_build.add_argument("-p",
                               "--package",
                               help="Build test for system packages",

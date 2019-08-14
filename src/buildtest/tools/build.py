@@ -74,6 +74,7 @@ def func_build_subcmd(args):
     create_dir(testdir)
 
     module_cmd_list = []
+    # if module permutation is set
     if args.modules:
         module_cmd_list = find_modules(args.modules)
 
