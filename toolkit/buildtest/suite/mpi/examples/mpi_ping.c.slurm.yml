@@ -2,11 +2,11 @@ source: mpi_ping.c
 compiler: gnu
 slurm:
   mem: 200M
-  ntasks: '8'
-  nodes: '4'
+  ntasks: '2'
+  nodes: '1'
 mpi:
-  flavor: openmpi
-  procs: '8'
+  srun: ''
+    
 flags: -O2
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com

@@ -1,11 +1,12 @@
 source: mpi_ping.c
 compiler: gnu
-lsf:
-  M: 200M
-  n: '2'
+slurm:
+  mem: 200M
 mpi:
   mpirun: 
     n: '2'
+    npernode: '2'
+      
 flags: -O2
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com

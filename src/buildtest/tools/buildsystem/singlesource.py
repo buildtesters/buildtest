@@ -194,12 +194,9 @@ class BuildTestBuilderSingleSource():
             compiler_name = get_compiler(language,test_dict['compiler'])
 
             if "mpi" in test_dict:
-                if "wrapper" not in test_dict["mpi"].keys():
-                    mpi_wrapper = get_mpi_wrapper(language,test_dict['compiler'])
-                    cmd.append(mpi_wrapper)
-                else:
-                    self._check_mpi(test_dict["mpi"]["wrapper"])
-                    cmd.append(test_dict["mpi"]["wrapper"])
+                # detecting the mpi wrapper based on compiler
+                mpi_wrapper = get_mpi_wrapper(language,test_dict['compiler'])
+                cmd.append(mpi_wrapper)
             else:
                 cmd.append(compiler_name)
 
@@ -244,7 +241,9 @@ class BuildTestBuilderSingleSource():
         if "mpi" in test_dict.keys():
             # if launcher is specified in configuration check if it is valid
             #  and add it directly as part of run command
-            if "mpirun" in test_dict["mpi"].keys():
+            if "srun" in test_dict["mpi"].keys():
+                testscript_dict["run"].append("srun")
+            elif "mpirun" in test_dict["mpi"].keys():
 
                 testscript_dict["run"].append("mpirun")
                 mpirun_opts = test_dict["mpi"]["mpirun"].keys()
@@ -253,7 +252,7 @@ class BuildTestBuilderSingleSource():
                     testscript_dict["run"].append(flag)
                     testscript_dict["run"].append(test_dict["mpi"]["mpirun"][opts])
 
-                testscript_dict["run"].append(f"./{exec_name}")
+            testscript_dict["run"].append(f"./{exec_name}")
 
         else:
             testscript_dict["run"].append(f"./{exec_name}")
