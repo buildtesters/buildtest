@@ -122,6 +122,25 @@ class BuildTestBuilderSingleSource():
                       + f"Expecting Type: {str(type(TEMPLATE_JOB_SLURM[k]))}")
                 sys.exit(1)
 
+    def _mpirun_opt_table(self, opts):
+        """Translate mpirun YAML keys to mpirun options"""
+        opt_table = {
+            "n": "-n",
+            "npernode": "-npernode",
+            "npersocket": "-npersocket",
+            "report-bindings": "--report-bindings",
+            "display-devel-map": "--display-devel-map",
+            "display-map": "--display-map",
+        }
+
+        val_list = []
+        # check if mpirun option
+        for opt in opts:
+            if opt in opt_table:
+                val_list.append(opt_table[opt])
+
+        return val_list
+
     def _parse(self):
         """ Parse yaml file to determine if content follows the defined yaml
         schema."""
@@ -225,32 +244,17 @@ class BuildTestBuilderSingleSource():
         if "mpi" in test_dict.keys():
             # if launcher is specified in configuration check if it is valid
             #  and add it directly as part of run command
-            if "launcher" in test_dict["mpi"].keys():
-                if test_dict["mpi"]["launcher"] not in SUPPORTED_MPI_LAUNCHERS:
-                    print (f'{test_dict["mpi"]["launcher"]} is not a valid MPI '
-                           f'launcher')
-                    sys.exit(0)
+            if "mpirun" in test_dict["mpi"].keys():
 
-                testscript_dict["run"].append(test_dict["mpi"]["launcher"])
-            # if launcher is not specified, buildtest will detect system for
-            #  scheduler and determine MPI launcher based on mpi flavor and
-            # launcher
-            else:
-                system = BuildTestSystem()
-                system_dict = system.get_system()
-                scheduler = system_dict["SCHEDULER"]
-                if test_dict["mpi"]["flavor"] not in SUPPORTED_MPI_FLAVORS:
-                    print (f'{test_dict["mpi"]["launcher"]} is not a valid MPI '
-                           f'flavor')
-                    sys.exit(0)
+                testscript_dict["run"].append("mpirun")
+                mpirun_opts = test_dict["mpi"]["mpirun"].keys()
+                mpirun_flags = self._mpirun_opt_table(mpirun_opts)
+                for flag,opts in zip(mpirun_flags,mpirun_opts):
+                    testscript_dict["run"].append(flag)
+                    testscript_dict["run"].append(test_dict["mpi"]["mpirun"][opts])
 
-                mpi_flavor = test_dict["mpi"]["flavor"]
-                mpi_launcher = get_mpi_launcher(mpi_flavor,scheduler)
-                testscript_dict["run"].append(mpi_launcher)
+                testscript_dict["run"].append(f"./{exec_name}")
 
-
-            testscript_dict["run"].append("-n")
-            testscript_dict["run"].append(test_dict["mpi"]["procs"])
         else:
             testscript_dict["run"].append(f"./{exec_name}")
 
@@ -273,6 +277,13 @@ class BuildTestBuilderSingleSource():
         The test script will be set with 755 permission upon completion.
         """
 
+        test_dir = os.path.join(config_opts["BUILDTEST_TESTDIR"],
+                                "suite",
+                                self.test_suite,
+                                self.parent_dir)
+
+        print (test_dir)
+        create_dir(test_dir)
 
         if module_collection:
             self.module_collection = module_collection
@@ -313,13 +324,8 @@ class BuildTestBuilderSingleSource():
         if "slurm" in self.test_dict:
             self.testname = '%s.%s' % (os.path.basename(self.conf_file),"slurm")
 
-        test_dir  = os.path.join(config_opts["BUILDTEST_TESTDIR"],
-                                 "suite",
-                                 self.test_suite,
-                                 self.parent_dir)
-        create_dir(test_dir)
-        abs_test_path = os.path.join(test_dir, self.testname)
 
+        abs_test_path = os.path.join(test_dir, self.testname)
         self._write_test(abs_test_path)
 
     def _write_test(self,abs_test_path,module=None):
