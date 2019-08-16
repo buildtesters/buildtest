@@ -107,6 +107,7 @@ KEY_DESCRIPTION = {
     'args': "Input arguments to be passed to the executable",
     'slurm': "Specify SLURM configuration",
     'lsf': "Specify LSF configuration",
+    'mpi': "Specify MPI configuration"
 }
 LSF_KEY_DESC = {
     'M': ["#BSUB -M", "Memory Limit"],
@@ -124,6 +125,17 @@ SLURM_KEY_DESC = {
     'mem-per-cpu':["#SBATCH --mem-per-cpu", "maximum amount of real memory per allocated"],
     'time': ["#SBATCH --time", "time limit"],
     'constraint': ["#SBATCH --constraint", "specify a list of constraints"]
+}
+MPI_KEY_DESC = {
+    'srun': ['srun', "use the srun job launcher"],
+    'mpirun': ['mpirun', "use the mpirun job launcher"]
+}
+MPIRUN_KEY_DESC = {
+    'n': ["-n", "Run  this many copies of the program on the given nodes"],
+    'npernode': ["-npernode", "On each node, launch this many processes."],
+    'npersocket': ["--npersocket", "On each node, launch this many processes times the number of processor sockets on the node"],
+    'report-bindings': ["--report-bindings","Report any bindings for launched processes."],
+    'display-map': ["--display-map", "Display a table showing the mapped location of each process prior to launch."]
 }
 
 def get_environment_variable(shell,key,value):

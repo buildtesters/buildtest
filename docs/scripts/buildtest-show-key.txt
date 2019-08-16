@@ -8,6 +8,7 @@ flags                | Specify the build flags for compiling the source program
 input                | Specify input file for the executable. This file must be in "src" directory
 ldflags              | Flags that will be passed to linkder (ld)
 lsf                  | Specify LSF configuration     
+mpi                  | Specify MPI configuration     
 slurm                | Specify SLURM configuration   
 source               | Specify the name of the source file that is in the "src" directory relative to yaml configuration
 vars                 | Specify a list of environment variables that will be declared in the test script
@@ -34,3 +35,18 @@ nodes                | #SBATCH --nodes                | number of nodes on which
 ntasks               | #SBATCH --ntasks               | number of tasks to run.       
 ntasks-per-node      | #SBATCH --ntasks-per-node      | number of tasks to invoke on each node
 time                 | #SBATCH --time                 | time limit                    
+                                          MPI Keys
+
+Keys                 | MPI Launchers                  | Description                   
+----------------------------------------------------------------------------------------------------
+mpirun               | mpirun                         | use the mpirun job launcher   
+srun                 | srun                           | use the srun job launcher     
+                                       MPIRUN Keys
+
+Keys                 | MPIRUN Options                 | Description                   
+----------------------------------------------------------------------------------------------------
+display-map          | --display-map                  | Display a table showing the mapped location of each process prior to launch.
+n                    | -n                             | Run  this many copies of the program on the given nodes
+npernode             | -npernode                      | On each node, launch this many processes.
+npersocket           | --npersocket                   | On each node, launch this many processes times the number of processor sockets on the node
+report-bindings      | --report-bindings              | Report any bindings for launched processes.
