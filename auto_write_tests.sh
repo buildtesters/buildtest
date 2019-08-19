@@ -34,7 +34,7 @@ tee $script_dir/build-module-all-permute.txt <<<"BUILDTEST_PARENT_MODULE_SEARCH=
 # lsf example
 tee $script_dir/build-lsf-example.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml -vv""" | bash >>$script_dir/build-lsf-example.txt
 # slurm example
-#tee $script_dir/build-slurm-example.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
+tee $script_dir/build-slurm-example.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
 
 # MPI example
 tee $script_dir/build-mpi-example1.txt <<<"buildtest build -mc 0 -vv -c $BUILDTEST_ROOT/toolkit/buildtest/suite/mpi/examples/hello.c.yml """ | bash >>$script_dir/build-mpi-example1.txt
