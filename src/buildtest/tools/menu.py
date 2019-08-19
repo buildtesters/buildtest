@@ -235,14 +235,12 @@ Misc:
     parser_build_mutex_modules.add_argument("-co","--collection",
                               help="Use user Lmod module collection when" 
                                    "building test",
-                              choices=module_collection)
+                              choices=module_collection,
+                              metavar="Lmod Collection Name")
     parser_build_mutex_modules.add_argument("-mc","--module-collection",
                                             help="Use internal buildtest "
                                                  "module collection when "
-                                                 "building test."                                                 
-                                                 "Run buildtest collection "
-                                                 "-l to view list of "
-                                                 "collection ids",
+                                                 "building test.",
                                             type=int,
                                             choices=collection_len,
                                             metavar="COLLECTION-ID")

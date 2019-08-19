@@ -36,6 +36,9 @@ BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm"]
 
 BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
 
+# test scripts that need to be run locally
+BUILDTEST_TEST_LOCAL_EXT = ["."+ i for i in BUILDTEST_SHELLTYPES]
+
 BUILDTEST_TEST_EXT = BUILDTEST_JOB_EXTENSION + \
                      ["."+ i for i in BUILDTEST_SHELLTYPES]
 

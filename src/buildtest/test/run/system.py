@@ -28,7 +28,7 @@ buildtest run --system
 import os
 import subprocess
 from datetime import datetime
-from buildtest.tools.config import config_opts, BUILDTEST_TEST_EXT
+from buildtest.tools.config import config_opts, BUILDTEST_TEST_LOCAL_EXT
 from buildtest.tools.file import walk_tree_multi_ext
 
 def run_system_choices():
@@ -89,7 +89,7 @@ def run_system_test(systempkg):
 
     fd.write("------------------------ START OF TEST --------------------- \n")
 
-    tests = walk_tree_multi_ext(test_destdir, BUILDTEST_TEST_EXT)
+    tests = walk_tree_multi_ext(test_destdir, BUILDTEST_TEST_LOCAL_EXT)
 
     run_tests(fd,tests, systempkg, test_destdir, run_output_file)
 
@@ -109,7 +109,7 @@ def run_app_test(app_name):
     write_system_info(fd,app_name=app_name)
     fd.write("------------------START OF TEST ------------------ \n")
 
-    tests = walk_tree_multi_ext(test_destdir, BUILDTEST_TEST_EXT)
+    tests = walk_tree_multi_ext(test_destdir, BUILDTEST_TEST_LOCAL_EXT)
 
     run_tests(fd, tests, app_name, test_destdir, run_output_file)
 
@@ -131,7 +131,7 @@ def run_suite(suite):
 
 
 
-    tests = walk_tree_multi_ext(app_root_testdir,BUILDTEST_TEST_EXT)
+    tests = walk_tree_multi_ext(app_root_testdir,BUILDTEST_TEST_LOCAL_EXT)
 
     run_tests(fd, tests, suite, app_root_testdir, run_output_file)
 

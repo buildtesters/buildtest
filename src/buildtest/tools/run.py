@@ -27,6 +27,7 @@ from datetime import datetime
 from buildtest.test.run.system import run_system_test, run_app_test, run_suite
 from buildtest.test.job import submit_job_to_scheduler
 from buildtest.tools.system import BuildTestSystem
+from buildtest.tools.log import BuildTestError
 
 
 def func_run_subcmd(args):
@@ -39,6 +40,9 @@ def func_run_subcmd(args):
     if args.package:
         run_system_test(args.package)
     if args.job:
+        if not (args.suite):
+            raise BuildTestError("-j option must be used with option --suite")
+
         submit_job_to_scheduler(args.suite)
     sys.exit(0)
 
