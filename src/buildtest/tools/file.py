@@ -20,7 +20,6 @@
 #  along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-
 """
 This module provides some generic file and directory level operation that
 include the following:
@@ -37,13 +36,11 @@ import logging
 from buildtest.tools.config import logID
 from buildtest.tools.log import BuildTestError
 
-
 def is_file(file):
     """ This method will check if a directory exist and return True if found
-            otherwise throw an error."""
+        otherwise throw an error."""
     if not os.path.isfile(file):
         raise BuildTestError("Invalid File Path %s. " % file)
-
 
 def is_dir(dir):
     """ This method will check if a directory exist and return True if found
@@ -51,7 +48,6 @@ def is_dir(dir):
     if not os.path.isdir(dir):
         raise BuildTestError("Invalid Directory Path %s" % dir)
     return True
-
 
 def walk_tree(root_dir, ext):
     """ This method will traverse a directory tree and return list of files
@@ -64,7 +60,6 @@ def walk_tree(root_dir, ext):
                 list_files.append(os.path.join(root, file))
 
     return list_files
-
 
 def walk_tree_multi_ext(root_dir, ext_list):
     """ This method will traverse a directory tree and return list of files
@@ -80,7 +75,6 @@ def walk_tree_multi_ext(root_dir, ext_list):
 
     return list_files
 
-
 def create_file(filename):
     """Create an empty file if it doesn't exist."""
     logger = logging.getLogger(logID)
@@ -91,7 +85,6 @@ def create_file(filename):
             fd.close()
         except OSError as err:
             print (err)
-
 
 def create_dir(dirname):
     """Create directory if it doesn't exist."""
@@ -104,9 +97,7 @@ def create_dir(dirname):
             print (err)
             raise
 
-
 def string_in_file(string, filename):
-
     """ Returns True/False to indicate if string is in file."""
     if string in open(filename).read():
         return True

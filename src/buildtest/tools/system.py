@@ -31,11 +31,8 @@ import re
 import stat
 import sys
 import subprocess
-
-
 from buildtest.tools.file import create_dir
 from buildtest.tools.modules import module_obj
-
 
 class BuildTestCommand():
     ret = []
@@ -232,11 +229,11 @@ def get_module_collection():
     """Return user Lmod module collection"""
     return subprocess.getoutput("module -t savelist").split("\n")
 
-
 def get_binaries_from_systempackage(pkg):
     """ get binaries from system package that typically install in standard linux path and only those that are executable """
 
-    bindirs = [ "/usr/bin", "/bin", "/sbin", "/usr/sbin", "/usr/local/bin", "/usr/local/sbin" ]
+    bindirs = [ "/usr/bin", "/bin", "/sbin", "/usr/sbin", "/usr/local/bin",
+                "/usr/local/sbin" ]
     cmd = BuildTestCommand()
     query = "rpm -ql " + pkg
     cmd.execute(query)
@@ -253,11 +250,14 @@ def get_binaries_from_systempackage(pkg):
             continue
 
         # check only files that are executable
-        statmode = os.stat(file)[stat.ST_MODE] & (stat.S_IXUSR|stat.S_IXGRP|stat.S_IXOTH)
+        statmode = os.stat(file)[stat.ST_MODE] & \
+                   (stat.S_IXUSR|stat.S_IXGRP|stat.S_IXOTH)
 
         # only add executable files found in array bindirs
-        if statmode and os.path.dirname(file) in bindirs and not os.path.islink(file):
-            binaries.append(file)
+        if statmode and os.path.dirname(file) in bindirs:
+            # skip symlinks when adding binaries
+            if not os.path.islink(file):
+                binaries.append(file)
 
     if len(binaries) == 0:
         print ("There are no binaries found in package: ", pkg)
@@ -266,7 +266,7 @@ def get_binaries_from_systempackage(pkg):
     return binaries
 
 def systempackage_installed_list():
-    """return a list of installed system packages in a machine"""
+    """Return a list of installed system packages in a machine"""
 
     cmd = BuildTestCommand()
     query = """ rpm -qa --qf "%{NAME}\n" """

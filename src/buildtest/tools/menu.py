@@ -152,17 +152,17 @@ Misc:
 
     parser_list.add_argument("-s",
                              "--software",
-                             help="get unique software from Lmod spider command ",
+                             help="get unique software from Lmod spider command",
                              action="store_true")
 
     parser_list.add_argument("-m",
                              "--modules",
-                             help="get full module name and path to module files ",
+                             help="get full module name and path to module "
+                                  "files",
                              action="store_true")
     parser_list.add_argument("-ec",
                              "--easyconfigs",
-                             help="Return a list of easyconfigs from a "
-                                  + "module tree",
+                             help="Return a list of easyconfigs from a module tree",
                              action="store_true")
 
     parser_list.set_defaults(func=func_list_subcmd)
@@ -171,24 +171,24 @@ Misc:
 
     parser_find.add_argument("-fc",
                              "--findconfig",
-                             help="Find buildtest YAML "
-                                  + "config files. To find all yaml files use"
-                                    " -fc all")
-
+                             help="Find buildtest YAML config files. To find "
+                                  "all yaml files use -fc all")
     parser_find.add_argument("-ft",
                              "--findtest",
                              help="Find generated test scripts. To find all "
-                                  + "testscripts use -ft all")
+                                  "testscripts use -ft all")
     parser_find.set_defaults(func=func_find_subcmd)
 
 
     # -------------------------------- yaml  menu --------------------------
 
 
-    parser_yaml.add_argument("-m", "--maintainer",
+    parser_yaml.add_argument("-m",
+                             "--maintainer",
                              help="Add as maintainer to test",
                              choices=["yes", "no"]),
-    parser_yaml.add_argument("config", help="configuration file",
+    parser_yaml.add_argument("config",
+                             help="configuration file",
                              choices=yaml_choices)
     parser_yaml.set_defaults(func=func_yaml_subcmd)
 
@@ -207,7 +207,8 @@ Misc:
                               help="Specify test configuration",
                               choices=yaml_choices,
                               metavar="TEST CONFIGURATION")
-    parser_build.add_argument("-b", "--binary",
+    parser_build.add_argument("-b",
+                              "--binary",
                               help="Conduct binary test for a package",
                               action="store_true")
     parser_build.add_argument("-S",
@@ -225,30 +226,39 @@ Misc:
                               help="delete software test directory before "
                                    + "writing test scripts",
                               action="store_true")
-    parser_build.add_argument("-v", "--verbose",
+    parser_build.add_argument("-v",
+                              "--verbose",
                               help="verbosity level (default: %(default)s)",
                               action="count",
                               default=0)
+
     parser_build_mutex_modules = parser_build.add_mutually_exclusive_group()
-    parser_build_mutex_modules.add_argument("-m","--modules",
-                              help="Select a module name and build for every module version.",
-                              choices=module_permutation_choices,
-                              metavar="Module Permutation Options")
-    parser_build_mutex_modules.add_argument("-co","--collection",
-                              help="Use user Lmod module collection when" 
-                                   "building test",
-                              choices=module_collection,
-                              metavar="Lmod Collection Name")
-    parser_build_mutex_modules.add_argument("-mc","--module-collection",
+    parser_build_mutex_modules.add_argument("-m",
+                                            "--modules",
+                                            help="Select a module name and "
+                                                 "build for every module "
+                                                 "version",
+                                            choices=module_permutation_choices,
+                                            metavar="Module Permutation Options")
+    parser_build_mutex_modules.add_argument("-co",
+                                            "--collection",
+                                            help="Use user Lmod module "
+                                                 "collection when building "
+                                                 "test",
+                                            choices=module_collection,
+                                            metavar="Lmod Collection Name")
+    parser_build_mutex_modules.add_argument("-mc",
+                                            "--module-collection",
                                             help="Use internal buildtest "
                                                  "module collection when "
                                                  "building test.",
                                             type=int,
                                             choices=collection_len,
                                             metavar="COLLECTION-ID")
-    parser_build.add_argument("-pms", "--parent-module-search",
-                              help="control how many parent module "
-                                   "combination to search",
+    parser_build.add_argument("-pms",
+                              "--parent-module-search",
+                              help="control how parent module "
+                                   "combination is used when loading modules",
                               choices=["first","all"])
 
     parser_build.set_defaults(func=func_build_subcmd)
@@ -312,9 +322,13 @@ Misc:
                                     metavar="Module Tree")
 
     # ------------------------- module collection options ------------
-    parser_collection.add_argument("-l", "--list", action="store_true",
+    parser_collection.add_argument("-l",
+                                   "--list",
+                                   action="store_true",
                                    help="list the module collection")
-    parser_collection.add_argument("-a", "--add", action="store_true",
+    parser_collection.add_argument("-a",
+                                   "--add",
+                                   action="store_true",
                                    help="add a module collection")
 
     parser_moduleload.set_defaults(func=module_load_test)
@@ -325,10 +339,12 @@ Misc:
     # -------------------------------- show menu --------------------------
 
 
-    parser_show.add_argument("-c","--config",
+    parser_show.add_argument("-c",
+                             "--config",
                              help="show buildtest environment configuration",
                              action="store_true")
-    parser_show.add_argument("-k","--keys",
+    parser_show.add_argument("-k",
+                             "--keys",
                              help="show yaml keys",
                              choices = ["singlesource"])
     parser_show.set_defaults(func=func_show_subcmd)
@@ -344,7 +360,8 @@ Misc:
 
     # -------------------------------- osu  menu ---------------------------
     osu_parser = subparsers_benchmark.add_parser('osu',
-                                                 help = "OSU MicroBenchmark sub menu")
+                                                 help = "OSU MicroBenchmark "
+                                                        "sub menu")
     osu_parser.add_argument("-r",
                             "--run",
                             help ="Run Benchmark",
@@ -377,19 +394,11 @@ Misc:
 
     # ------------------------------ Miscellaneous Options -----------------------
     misc_group = parser.add_argument_group("Miscellaneous Options ")
-    """
-    misc_group.add_argument("-V",
-                            "--version",
-                            help="show program version number and exit",
-                            action="store_true")
-    """
+
     misc_group.add_argument("-V",
                             "--version",
                             action="version",
                             version='%(prog)s version 0.6.5')
-    misc_group.add_argument("--logdir",
-                            help="Path to write buildtest logs. Override "
-                                 + "configuration BUILDTEST_LOGDIR")
 
     return parser
 

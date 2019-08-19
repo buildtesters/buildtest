@@ -92,7 +92,6 @@ class BuildTestModule():
         else:
             unique_modules_set = set()
             for module in self.module_dict.keys():
-                # unique_modules_set.add(module)
                 for mpath in self.module_dict[module].keys():
                     for tree in config_opts["BUILDTEST_MODULEPATH"]:
                         if tree in mpath:
@@ -101,11 +100,10 @@ class BuildTestModule():
 
             return sorted(list(unique_modules_set))
 
-
     def get_unique_fname_modules(self):
-        """Return a list of unique canonical fullname of module
-        where abspath to module is in one of the
-        directories defined by BUILDTEST_MODULEPATH"""
+        """ Return a list of unique canonical fullname of module where abspath
+            to module is in one of the directories defined by
+            BUILDTEST_MODULEPATH"""
         software_set = set()
 
         for module in self.get_unique_modules():
@@ -177,7 +175,7 @@ class BuildTestModule():
         version = [int(v) for v in cmd.split(".")]
         return version
 def get_all_parents():
-    """Retreive all parent modules to be used as argument to --parent option"""
+    """Retrieve all parent modules"""
     fd = open(os.path.join(os.getenv("BUILDTEST_ROOT"), "var",
                            "modules.json"), "r")
     module_json = json.load(fd)
@@ -189,6 +187,7 @@ def get_all_parents():
                     parent_set.add(parent_module)
 
     return sorted(list(parent_set))
+
 def find_module_deps(parent_module):
     """Return a list of module files that a module is depends on"""
     module_stack = module_obj.get_unique_fname_modules()
@@ -199,7 +198,6 @@ def find_module_deps(parent_module):
                            "modules.json"), "r")
     module_json  = json.load(fd)
     fd.close()
-    file = ""
 
     for mod in module_json.keys():
         for mpath in module_json[mod].keys():
@@ -215,7 +213,6 @@ def find_module_deps(parent_module):
     print("{:_<80}".format(""))
     for mod in module_json.keys():
         for mpath in module_json[mod].keys():
-
             for parent_list in module_json[mod][mpath]["parent"]:
                 if parent_module in parent_list:
                     parent_list_found.append(mpath)
@@ -281,8 +278,6 @@ def get_module_list_by_tree(mod_tree):
 
     return modulefiles
 
-module_obj = BuildTestModule()
-
 def module_tree_add(tree_list):
     """adding a module tree to BUILDTEST_MODULEPATH in configuration file"""
 
@@ -306,13 +301,15 @@ def module_tree_add(tree_list):
 
     print(f"Adding module tree: {tree_list}")
     print(f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
+
 def module_tree_rm(tree_list):
     """ remove a module tree from BUILDTEST_MODULEPATH in configuration file"""
 
     fd = open(BUILDTEST_CONFIG_FILE,"r")
     content = yaml.safe_load(fd)
     for tree in tree_list:
-        content["BUILDTEST_MODULEPATH"].remove(tree)
+        if tree in content["BUILDTEST_MODULEPATH"]:
+            content["BUILDTEST_MODULEPATH"].remove(tree)
 
     fd.close()
 
@@ -326,7 +323,6 @@ def module_load_test(args):
     """Perform module load test for all modules in BUILDTEST_MODULEPATH"""
 
     module_stack = module_obj.get_unique_fname_modules()
-
 
     out_file = "/tmp/modules-load.out"
     err_file = "/tmp/modules-load.err"
@@ -421,6 +417,7 @@ def diff_trees(args_trees):
             modlist2.append(os.path.join(name,ver))
 
         # convert list into set and do symmetric difference between two sets
+
         diff_set =  set(modlist1).symmetric_difference(set(modlist2))
         if len(diff_set) == 0:
             print ("No difference found between module tree: ", tree1, " and module tree: ", tree2)
@@ -496,3 +493,5 @@ def get_module_permutation_choices():
     content = yaml.safe_load(fd)
     fd.close()
     return content.keys()
+
+module_obj = BuildTestModule()

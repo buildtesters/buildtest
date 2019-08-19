@@ -37,7 +37,7 @@ from buildtest.tools.yaml import TEMPLATE_SINGLESOURCE, SUPPORTED_COMPILERS, \
     SUPPORTED_MPI_WRAPPERS, SUPPORTED_MPI_LAUNCHERS, SUPPORTED_MPI_FLAVORS, \
     TEMPLATE_JOB_LSF, TEMPLATE_JOB_SLURM, \
     get_programming_language, get_compiler, lsf_key_parse, slurm_key_parse, \
-    get_environment_variable, get_mpi_wrapper, get_mpi_launcher
+    get_environment_variable, get_mpi_wrapper
 from buildtest.tools.system import BuildTestCommand, BuildTestSystem
 
 class BuildTestBuilderSingleSource():

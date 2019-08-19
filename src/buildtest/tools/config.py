@@ -20,25 +20,20 @@
 #  along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-
 import yaml
 import os
 import sys
 import subprocess
 from shutil import copy
 
-
-
 BUILDTEST_VERSION="0.6.3"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
 BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm"]
-
 BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
 
 # test scripts that need to be run locally
 BUILDTEST_TEST_LOCAL_EXT = ["."+ i for i in BUILDTEST_SHELLTYPES]
-
 BUILDTEST_TEST_EXT = BUILDTEST_JOB_EXTENSION + \
                      ["."+ i for i in BUILDTEST_SHELLTYPES]
 
@@ -84,7 +79,7 @@ if len(config_opts["BUILDTEST_MODULEPATH"]) == 0:
     else:
         # otherwise set this to MODULEPATH
         tree_list = []
-        #config_opts["BUILDTEST_MODULEPATH"] = os.getenv("MODULEPATH").split(":")
+        # check each directory in MODULEPATH and add it to BUILDTEST_MODULEPATH
         for tree in os.getenv("MODULEPATH").split(":"):
             if os.path.isdir(tree):
                 tree_list.append(tree)
@@ -115,8 +110,6 @@ config_yaml_keys = {
     'BUILDTEST_RUN_DIR': type("str"),
 }
 
-
-
 def check_configuration():
     """ Checks if each key in configuration file (settings.yml) is valid
         key and check type validation of each key and its value. For some keys
@@ -129,7 +122,6 @@ def check_configuration():
 
 
     ec = 0
-
 
     keylist = config_yaml_keys.keys()
     valuelist = config_yaml_keys.values()
@@ -220,7 +212,6 @@ def show_configuration():
     print ("\t buildtest configuration summary")
     print ("\t (C): Configuration File,  (E): Environment Variable")
     print
-
 
     for key in sorted(config_opts):
         if key in exclude_list:

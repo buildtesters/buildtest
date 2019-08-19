@@ -26,7 +26,6 @@ Overrides buildtest configuration via environment variable or command options
 
 import os
 from distutils.util import strtobool
-
 from buildtest.tools.config import config_opts
 from buildtest.tools.log import BuildTestError
 
@@ -58,11 +57,8 @@ def override_configuration():
         if threshold >= 0.0 and threshold <= 1.0:
             config_opts['BUILDTEST_SUCCESS_THRESHOLD']=threshold
 
-
-
-
 def bool_config_override(key):
-    """override boolean configuration via environment variable"""
+    """Override boolean configuration via environment variable"""
     if os.environ.get(key):
         try:
             truth_value = strtobool(os.environ[key])

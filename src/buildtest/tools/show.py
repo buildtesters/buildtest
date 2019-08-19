@@ -22,7 +22,8 @@
 
 import textwrap
 from buildtest.tools.config import show_configuration
-from buildtest.tools.yaml import KEY_DESCRIPTION,SLURM_KEY_DESC, LSF_KEY_DESC, MPI_KEY_DESC, MPIRUN_KEY_DESC
+from buildtest.tools.yaml import KEY_DESCRIPTION, SLURM_KEY_DESC, \
+    LSF_KEY_DESC, MPI_KEY_DESC, MPIRUN_KEY_DESC
 
 def func_show_subcmd(args):
     """Entry point to show sub command."""

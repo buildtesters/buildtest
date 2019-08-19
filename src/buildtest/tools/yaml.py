@@ -24,11 +24,8 @@
 buildtest yaml subcommand entry point
 """
 
-
 import subprocess
 import yaml
-
-
 
 TEMPLATE_JOB_SLURM = {
     'nodes': "10",
@@ -98,11 +95,15 @@ TEMPLATE_SINGLESOURCE = {
 }
 
 KEY_DESCRIPTION = {
-    'source': "Specify the name of the source file that is in the \"src\" directory relative to yaml configuration",
-    'input': "Specify input file for the executable. This file must be in \"src\" directory",
+    'source': "Specify the name of the source file that is in the \"src\" "
+              "directory relative to yaml configuration",
+    'input': "Specify input file for the executable. This file must be in "
+             "\"src\" directory",
     'flags': "Specify the build flags for compiling the source program",
-    'vars': "Specify a list of environment variables that will be declared in the test script",
-    'compiler': "Specify a compiler that will be used for compiling the source program",
+    'vars': "Specify a list of environment variables that will be declared in "
+            "the test script",
+    'compiler': "Specify a compiler that will be used for compiling the "
+                "source program",
     'ldflags': "Flags that will be passed to linkder (ld)",
     'args': "Input arguments to be passed to the executable",
     'slurm': "Specify SLURM configuration",
@@ -111,9 +112,12 @@ KEY_DESCRIPTION = {
 }
 LSF_KEY_DESC = {
     'M': ["#BSUB -M", "Memory Limit"],
-    'n': ["#BSUB -n", "Submits a parallel job and specifies the number of processors required to run the job"],
-    'R': ["#BSUB -R", "Runs the job on a host that meets the specified resource requirements"],
-    'T': ["#BSUB -T", "Sets the limit of the number of concurrent threads to thread_limit for the whole job"],
+    'n': ["#BSUB -n", "Submits a parallel job and specifies the number of "
+                      "processors required to run the job"],
+    'R': ["#BSUB -R", "Runs the job on a host that meets the specified "
+                      "resource requirements"],
+    'T': ["#BSUB -T", "Sets the limit of the number of concurrent threads to "
+                      "thread_limit for the whole job"],
     'W': ["#BSUB -W", "Sets the runtime limit of the job."]
 }
 SLURM_KEY_DESC = {
@@ -133,9 +137,13 @@ MPI_KEY_DESC = {
 MPIRUN_KEY_DESC = {
     'n': ["-n", "Run  this many copies of the program on the given nodes"],
     'npernode': ["-npernode", "On each node, launch this many processes."],
-    'npersocket': ["--npersocket", "On each node, launch this many processes times the number of processor sockets on the node"],
-    'report-bindings': ["--report-bindings","Report any bindings for launched processes."],
-    'display-map': ["--display-map", "Display a table showing the mapped location of each process prior to launch."]
+    'npersocket': ["--npersocket", "On each node, launch this many processes "
+                                   "times the number of processor sockets on "
+                                   "the node"],
+    'report-bindings': ["--report-bindings","Report any bindings for "
+                                            "launched processes."],
+    'display-map': ["--display-map", "Display a table showing the mapped "
+                                     "location of each process prior to launch."]
 }
 
 def get_environment_variable(shell,key,value):
@@ -180,21 +188,8 @@ def get_mpi_wrapper(language, compiler):
     if language == "fortran" and compiler == "intel":
         return "mpiifort"
 
-def get_mpi_launcher(mpi_flavor,scheduler):
-    if scheduler == "SLURM":
-        return "srun"
-    if mpi_flavor == "openmpi":
-        return "mpirun"
-    elif mpi_flavor == "intelmpi":
-        return "mpiexec"
-    elif mpi_flavor == "mpich":
-        return "mpiexec"
-    elif mpi_flavor == "mvapich2":
-        return "mpiexec"
-
-
 def get_programming_language(ext):
-    """ return Programming Language  based on extension"""
+    """ Return Programming Language  based on extension"""
     if ext in ['.c']:
         return "c"
     if ext in ['.cc', '.cxx', '.cpp', '.c++', '.C']:
@@ -208,21 +203,21 @@ def get_programming_language(ext):
         return "python"
 
 def lsf_key_parse(lsf_dict):
-    """ parse lsf keys """
+    """ Convert lsf keys to #BSUB command"""
     lsf_str = ""
     for key,val in lsf_dict.items():
         lsf_str += "#BSUB -" + key + " " + str(val) + "\n"
     return lsf_str
 
 def slurm_key_parse(slurm_dict):
-    """ parse slurm keys """
+    """ Convert slurm keys to #SBATCH command"""
     slurm_str = ""
     for key,val in slurm_dict.items():
         slurm_str += "#SBATCH --" + key + " " + str(val) + "\n"
     return slurm_str
 
 def func_yaml_subcmd(args):
-    """ entry point to _buildtest yaml """
+    """ Entry point to buildtest yaml """
 
     if args.maintainer:
         update_maintainer(args)

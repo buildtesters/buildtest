@@ -19,7 +19,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
-import yaml
+
 import os
 import subprocess
 import sys
@@ -35,7 +35,7 @@ def func_collection_subcmd(args):
         list_collection()
 
 def add_collection():
-    """Save modules in a collection"""
+    """Save modules as a module collection in a json file """
     fname = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "default.json")
 
 
@@ -46,6 +46,7 @@ def add_collection():
     module_coll_dict = {
         "collection": []
     }
+    # Update JSON file with a new module collection only if modules are loaded
     if out != "No modules loaded":
         module_list = out.split()
 
@@ -59,6 +60,7 @@ def add_collection():
         json.dump(content,fd,indent=4)
         print ("\n")
         print(f"Updating collection file: {fname}")
+
 def list_collection():
     """List module collections."""
     fname = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","default.json")

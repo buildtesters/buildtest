@@ -23,15 +23,9 @@
 """
 This module checks for easyconfig files in a module tree by searching module
 files and the installation directory for .eb files.
-
-This module determines if a software module is a easybuild module by checking
-if an easyconfig is found in the installation directory
 """
-import json
-import os
-import subprocess
-import sys
 
+import os
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import string_in_file, walk_tree

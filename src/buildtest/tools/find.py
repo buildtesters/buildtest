@@ -31,7 +31,6 @@ following
 """
 
 import os
-import sys
 from buildtest.tools.config import config_opts, BUILDTEST_TEST_EXT
 from buildtest.tools.file import walk_tree, walk_tree_multi_ext
 
@@ -55,8 +54,6 @@ def find_all_yaml_configs():
         print(f)
     print (f"Total YAML Configuration Files: {len(yml_files)}")
 
-
-
 def find_yaml_configs_by_arg(find_arg):
     """This method find yaml configuration based on argument."""
     count = 0
@@ -69,7 +66,6 @@ def find_yaml_configs_by_arg(find_arg):
             count+=1
     print (f"Total YAML configs: {count}")
 
-
 def find_all_tests():
     """This method finds all test scripts in BUILDTEST_TESTDIR. """
     test_list = walk_tree_multi_ext(config_opts["BUILDTEST_TESTDIR"],
@@ -79,7 +75,6 @@ def find_all_tests():
     print (f'{len(test_list)} Test scripts found in '
            f'{config_opts["BUILDTEST_TESTDIR"]}')
 
-
 def find_tests_by_arg(find_arg):
     """find all test scripts in $BUILDTEST_TESTDIR"""
     test_list = walk_tree_multi_ext(config_opts['BUILDTEST_TESTDIR'],
@@ -88,4 +83,3 @@ def find_tests_by_arg(find_arg):
         if find_arg in os.path.basename(test):
             print(test)
     print (f"{len(test_list)} Test found with name {find_arg} in its filename")
-

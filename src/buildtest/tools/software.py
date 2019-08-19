@@ -26,13 +26,9 @@ Application & Toolchain name & version query functions
 """
 
 import os
-import logging
 import stat
-
-from buildtest.tools.config import logID, config_opts
 from buildtest.tools.modules import module_obj
 from buildtest.tools.system import BuildTestCommand
-
 
 def get_binaries_from_application(module):
     """ return a list of binaries from $PATH variable defined in module file"""

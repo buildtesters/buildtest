@@ -25,12 +25,10 @@ This module contains all the methods related to "buildtest build" which is used
 for building test scripts from yaml configuration.
 """
 
-
 import os
 import shutil
 import subprocess
 import yaml
-import sys
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.collection import get_buildtest_module_collection
@@ -64,8 +62,6 @@ def func_build_subcmd(args):
         config_opts["BUILDTEST_BINARY"] = args.binary
     if args.parent_module_search:
         config_opts["BUILDTEST_PARENT_MODULE_SEARCH"]=args.parent_module_search
-
-
 
     logdir = config_opts['BUILDTEST_LOGDIR']
     testdir = config_opts['BUILDTEST_TESTDIR']
@@ -139,7 +135,6 @@ def func_build_subcmd(args):
                 else:
                     builder.build()
 
-
     if args.config:
         file = args.config
         parent_dir = os.path.basename(os.path.dirname(file))
@@ -183,13 +178,12 @@ def func_build_subcmd(args):
 def func_build_system(args, logger, logdir, logpath, logfile):
     """ This method implements details for "buildtest build --package" and
         invokes method "generate_binary_test" to get all the binaries and
-        write the test scripts in BUILTEST_TESTDIR.
+        write the test scripts in BUILDTEST_TESTDIR.
     """
 
     system_logdir = os.path.join(logdir,"system",args.package)
 
     generate_binary_test(args.package,args.verbose,"systempackage")
-
 
     create_dir(system_logdir)
     logger.warning("Creating directory %s , to write log file", system_logdir)

@@ -20,17 +20,13 @@
 #  along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-
 """
 Methods related to buildtest logging
 """
 import os
-import shutil
 import logging
 from datetime import datetime
-
 from buildtest.tools.config import logID, config_opts
-
 
 class BuildTestError(Exception):
     """Class responsible for error handling in buildtest."""
@@ -42,7 +38,6 @@ class BuildTestError(Exception):
     def __str__(self):
         return(repr(self.msg))
 
-
 def init_log():
     """ initialize log file attributes """
     logfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
@@ -50,7 +45,7 @@ def init_log():
 
     logpath = os.path.join(BUILDTEST_LOGDIR, logfile)
 
-	# if log directory is not present create it automatically
+    # if log directory is not present create it automatically
     if not os.path.exists(BUILDTEST_LOGDIR):
         os.makedirs(BUILDTEST_LOGDIR)
         print ("Creating Log directory: ", BUILDTEST_LOGDIR)

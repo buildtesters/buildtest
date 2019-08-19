@@ -29,16 +29,10 @@ following:
 3. List easyconfigs in module tree (buildtest list --easyconfigs)
 """
 
-import json
 import os
-import sys
 from termcolor import colored, cprint
-
-from buildtest.tools.config import config_opts
 from buildtest.tools.modules import module_obj
 from buildtest.tools.easybuild import find_easyconfigs
-
-
 
 def func_list_subcmd(args):
     """ This method is the entry point for buildtest list subcommand."""
@@ -46,25 +40,24 @@ def func_list_subcmd(args):
     if args.easyconfigs:
         find_easyconfigs()
     if args.software:
-        list_software(args)
+        list_software()
     if args.modules:
-        list_modules(args)
+        list_modules()
 
-
-
-def list_software(args):
+def list_software():
     """ This method gets unique software from spider. """
 
     module_stack = module_obj.get_unique_modules()
 
-    [ print (item) for item in module_stack]
+    for item in module_stack:
+        print (item)
 
     print ("\n")
     print ("Total Software Packages: ", len(module_stack))
 
 
-def list_modules(args):
-    """ This method implements  buildtest list -svr """
+def list_modules():
+    """ This method implements  buildtest list -m """
 
     module_dict = module_obj.get_module_spider_json()
     lmod_version = module_obj.get_version()
@@ -90,6 +83,7 @@ def list_modules(args):
             elif major_ver == 7:
                 fullName = module_dict[module][mpath]["fullName"]
 
+            # print lua modules in green
             if os.path.splitext(mpath)[1] == ".lua":
                 text = (fullName + "\t |").expandtabs(40) + "\t" + mpath
                 cprint(text, 'green')
