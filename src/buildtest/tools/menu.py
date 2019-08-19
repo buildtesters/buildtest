@@ -27,7 +27,7 @@ buildtest menu
 import os
 import argparse
 import argcomplete
-import sys
+
 
 from buildtest.test.run.system import run_app_choices, run_system_choices
 from buildtest.tools.build import func_build_subcmd
@@ -39,7 +39,8 @@ from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.find import func_find_subcmd
 from buildtest.tools.list import func_list_subcmd
 from buildtest.tools.modules import func_module_subcmd, \
-     module_obj, module_load_test, func_module_tree_subcmd,get_all_parents
+     module_obj, module_load_test, func_module_tree_subcmd,get_all_parents, \
+     get_module_permutation_choices
 from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.show import func_show_subcmd
@@ -77,6 +78,7 @@ def menu():
 
     systempkg_choices = run_system_choices()
     module_collection = get_module_collection()
+    module_permutation_choices = get_module_permutation_choices()
     collection_len = get_collection_length()
     collection_len = list(range(collection_len))
     epilog_str = "Documentation: " + \
@@ -229,9 +231,9 @@ Misc:
                               default=0)
     parser_build_mutex_modules = parser_build.add_mutually_exclusive_group()
     parser_build_mutex_modules.add_argument("-m","--modules",
-                              help="Specify comma separated list of modules "
-                                   "to build a test for every module version.",
-                              type=str)
+                              help="Select a module name and build for every module version.",
+                              choices=module_permutation_choices,
+                              metavar="Module Permutation Options")
     parser_build_mutex_modules.add_argument("-co","--collection",
                               help="Use user Lmod module collection when" 
                                    "building test",
@@ -253,17 +255,18 @@ Misc:
 
     # -------------------------------- run menu ----------------------------
 
-    parser_run.add_argument("-s",
+    parser_run_mutex = parser_run.add_mutually_exclusive_group()
+    parser_run_mutex.add_argument("-s",
                             "--software",
                             help="Run test suite for application",
                             choices=app_choices,
                             metavar='SOFTWARE-TEST-SUITE')
-    parser_run.add_argument("-p",
+    parser_run_mutex.add_argument("-p",
                             "--package",
                             help="Run test suite for system package",
                             choices=systempkg_choices,
                             metavar='PACKAGE-TEST-SUITE')
-    parser_run.add_argument("-S",
+    parser_run_mutex.add_argument("-S",
                             "--suite",
                             help="Run the test suite",
                             choices=run_test_class)

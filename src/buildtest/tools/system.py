@@ -278,3 +278,6 @@ def systempackage_installed_list():
     # delete last element which is an empty string
     del pkglist[-1]
     return pkglist
+
+
+

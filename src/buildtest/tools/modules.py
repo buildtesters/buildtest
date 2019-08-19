@@ -24,10 +24,15 @@
 This python module does the following
 	 - get module listing
 	 - get unique application
+	 - add/remove/list module trees
+	 - list easybuild/spack modules
 	 - get unique application version
- 	 - check if software exists based on argument -s
-	 - check if toolchain exists based on argument -t
+	 - Run module load test
+	 - Report difference between module trees
+	 - Return all parent modules
+	 - List modules that depend on other modules
 	 - check if easyconfig passes
+	 - Get module permutation choices
 """
 import json
 import os
@@ -469,7 +474,7 @@ def check_easybuild_module():
     print (f"Total Modules Searched: {len(module_list)}")
 
 def check_spack_module():
-    """Report modules that are built by spack"""
+    """This method reports modules that are built by Spack."""
     module_list = module_obj.get_modulefile_path()
 
     spack_string = "Module file created by spack"
@@ -482,3 +487,12 @@ def check_spack_module():
     print("\n")
     print(f"Total Spack Modules: {count}")
     print(f"Total Modules Searched: {len(module_list)}")
+
+def get_module_permutation_choices():
+    """This method reports choice field for module permutation option."""
+    fname = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","modules.json")
+
+    fd = open(fname, "r")
+    content = yaml.safe_load(fd)
+    fd.close()
+    return content.keys()
