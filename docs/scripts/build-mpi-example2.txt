@@ -1,0 +1,35 @@
+buildtest build -mc 0 -vv -c /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/examples/mpi_ping.c.slurm.yml
+________________________________________________________________________________
+compiler: gnu
+flags: -O2
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+mpi:
+  srun: ''
+slurm:
+  mem: 200M
+  nodes: '1'
+  ntasks: '2'
+source: mpi_ping.c
+testblock: singlesource
+
+________________________________________________________________________________
+Key Check PASSED for file /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/examples/mpi_ping.c.slurm.yml
+Source File /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/examples/src/mpi_ping.c exists!
+Programming Language Detected: c
+SLURM Keys Passed
+Compiler Check Passed
+/tmp/ec2-user/buildtest/tests/suite/mpi/examples
+Writing Test: /tmp/ec2-user/buildtest/tests/suite/mpi/examples/mpi_ping.c.slurm.yml.slurm
+Changing permission to 755 for test: /tmp/ec2-user/buildtest/tests/suite/mpi/examples/mpi_ping.c.slurm.yml.slurm
+________________________________________________________________________________
+#!/usr/bin/sh
+#SBATCH --mem 200M
+#SBATCH --ntasks 2
+#SBATCH --nodes 1
+module load GCCcore/8.2.0 zlib/1.2.11-GCCcore-8.2.0 binutils/2.31.1-GCCcore-8.2.0 GCC/8.2.0-2.31.1 numactl/2.0.12-GCCcore-8.2.0 XZ/5.2.4-GCCcore-8.2.0 libxml2/2.9.8-GCCcore-8.2.0 libpciaccess/0.14-GCCcore-8.2.0 hwloc/1.11.11-GCCcore-8.2.0 OpenMPI/3.1.3-GCC-8.2.0-2.31.1 OpenBLAS/0.3.5-GCC-8.2.0-2.31.1 gompi/2019a FFTW/3.3.8-gompi-2019a ScaLAPACK/2.0.2-gompi-2019a-OpenBLAS-0.3.5 foss/2019a
+cd /tmp/ec2-user/buildtest/tests/suite/mpi/examples
+mpicc -O2 -o mpi_ping.c.exe /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/examples/src/mpi_ping.c 
+srun ./mpi_ping.c.exe 
+ rm ./mpi_ping.c.exe 
+________________________________________________________________________________
