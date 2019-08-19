@@ -1,11 +1,8 @@
 source: hello.c
-compiler: intel
-lsf:
-  M: 200M
-  n: '4'
+compiler: gnu
 mpi:
   mpirun: 
-   n: '4'
+   n: '2'
 flags: -O2
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
