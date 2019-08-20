@@ -229,3 +229,15 @@ Here is an example test run where all test have passed and success threshold is 
     Failed Tests: 0    Percentage: 0.0%
     SUCCESS: Threshold of 100.0% was achieved
     Writing results to /tmp/buildtest_10_26_30_01_2019.run
+
+Force Purge Modules
+--------------------------
+
+buildtest will automatically run ``module purge`` before loading modules in test
+script. This is to avoid unexpected behaviors when user shell has active modules
+loaded that may affect the behavior of the test.
+
+If you want to force purge the modules (i.e ``module --force purge``), then
+set **BUILDTEST_MODULE_FORCE_PURGE=True**. By default, this
+is set to **False**. This option is useful if you have sticky modules that
+need to be removed prior to running test.
