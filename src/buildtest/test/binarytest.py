@@ -31,7 +31,6 @@ import logging
 import os
 import stat
 
-
 from buildtest.tools.config import config_opts, logID
 from buildtest.tools.file import string_in_file, create_dir
 from buildtest.tools.modules import module_obj

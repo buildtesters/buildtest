@@ -25,7 +25,7 @@ ________________________________________________________________________________
 #SBATCH --mem 200M
 #SBATCH --nodes 4
 #SBATCH --time 01:00
-module purge
+module purge 
 cd /tmp/ec2-user/buildtest/tests/suite/compilers/helloworld
 g++ -O2 -o hello.cpp.exe /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp 
 ./hello.cpp.exe 

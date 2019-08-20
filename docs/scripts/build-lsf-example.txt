@@ -1,4 +1,4 @@
-buildtest build -c /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml -vv
+buildtest build -c /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml -vv
 ________________________________________________________________________________
 compiler: gnu
 flags: -O2
@@ -13,22 +13,23 @@ source: hello.c
 testblock: singlesource
 
 ________________________________________________________________________________
-Key Check PASSED for file /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml
-Source File /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c exists!
+Key Check PASSED for file /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml
+Source File /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c exists!
 Programming Language Detected: c
 LSF Keys Passed
 Compiler Check Passed
-Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
-Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
+/tmp/ec2-user/buildtest/tests/suite/compilers/helloworld
+Writing Test: /tmp/ec2-user/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
+Changing permission to 755 for test: /tmp/ec2-user/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
 ________________________________________________________________________________
-#!/bin/sh
+#!/usr/bin/sh
 #BSUB -M 200M
 #BSUB -R sandybridge
 #BSUB -W 01:00
 #BSUB -n 4
-module purge
-cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-gcc -O2 -o hello.c.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c 
+module purge 
+cd /tmp/ec2-user/buildtest/tests/suite/compilers/helloworld
+gcc -O2 -o hello.c.exe /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c 
 ./hello.c.exe 
  rm ./hello.c.exe 
 ________________________________________________________________________________

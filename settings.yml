@@ -9,6 +9,11 @@ BUILDTEST_BINARY: False
 # Default: [sh]
 BUILDTEST_SHELL: sh
 
+# Configure whether to force purge modules in test creation. Defaults to "module purge".
+# When set to True, it will write "module --force purge" in test script. Useful if your 
+# site has sticky modules
+BUILDTEST_MODULE_FORCE_PURGE: False
+
 # list root of module tree where modules are installed. Specify multiple module tree as a list
 BUILDTEST_MODULEPATH: []
 

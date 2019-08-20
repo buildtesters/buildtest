@@ -144,7 +144,7 @@ class BuildTestBuilderSingleSource():
     def _parse(self):
         """ Parse yaml file to determine if content follows the defined yaml
         schema."""
-        env_vars = ""
+
         testscript_dict = {}
 
         fd=open(self.conf_file,'r')
@@ -213,7 +213,7 @@ class BuildTestBuilderSingleSource():
             cmd += ["<", os.path.join(self.srcdir,inputfile)]
 
 
-        module_str = "module purge"
+
         # env_list used for storing environment variables
         env_list = []
         # if vars key is defined then get all environment variables
@@ -233,7 +233,6 @@ class BuildTestBuilderSingleSource():
         if len(env_list) > 0:
             testscript_dict["vars"] = '\n'.join(env_list) + "\n"
 
-        testscript_dict["module"] = module_str + "\n"
         testscript_dict["workdir"] = "cd " + workdir + "\n"
         testscript_dict["command"] = cmd
         testscript_dict["run"] = []
@@ -342,6 +341,14 @@ class BuildTestBuilderSingleSource():
         if "slurm" in self.test_dict:
             fd.write(self.test_dict["slurm"])
 
+        # write purge modules before loading any modules to avoid issues with
+        # active modules in user environment
+
+        if config_opts["BUILDTEST_MODULE_FORCE_PURGE"]:
+            fd.write("module --force purge \n")
+        else:
+            fd.write("module purge \n")
+
         if module != None:
             fd.write(module)
             fd.write("\n")
@@ -352,7 +359,6 @@ class BuildTestBuilderSingleSource():
             fd.write(f"{self.internal_module_collection}")
             fd.write("\n")
         else:
-            fd.write(self.test_dict["module"])
             cmd = "module -t list"
             out = subprocess.getoutput(cmd)
             # output of module -t list when no modules are loaded is "No modules
