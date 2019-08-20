@@ -34,7 +34,7 @@ def override_configuration():
 
     bool_config_override("BUILDTEST_BINARY")
     bool_config_override("BUILDTEST_CLEAN_BUILD")
-
+    bool_config_override("BUILDTEST_MODULE_FORCE_PURGE")
 
     dir_config_override("BUILDTEST_LOGDIR")
     dir_config_override("BUILDTEST_TESTDIR")
