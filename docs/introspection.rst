@@ -129,32 +129,31 @@ Shown below is a sample configuration from buildtest by running ``buildtest show
 ``buildtest show --config`` will show the updated configuration if you set any ``BUILDTEST_*`` environment
 variables.
 
-For instance, if you want to override buildtest log using ``BUILDTEST_LOGDIR`` environment variable then
-``buildtest show --config`` will report the overridden value denoted with **(E)** to indicate configuration was set
+For instance, if you want to override configuration BUILDTEST_SHELL shell to
+``csh`` then ``buildtest show --config`` will report the overridden value denoted with **(E)** to indicate configuration was set
 by environment variable.
 
 See example below
 
 .. code-block:: console
     :linenos:
-    :emphasize-lines: 8
+    :emphasize-lines: 12
 
-            $ BUILDTEST_LOGDIR=$HOME buildtest show -c
-                 buildtest configuration summary
-                 (C): Configuration File,  (E): Environment Variable
-        BUILDTEST_BINARY                                   (C) = False
-        BUILDTEST_CLEAN_BUILD                              (C) = False
-        BUILDTEST_CONFIGS_REPO                             (C) = /home/siddis14/buildtest-framework/toolkit
-        BUILDTEST_EASYBUILD                                (C) = False
-        BUILDTEST_LOGDIR                                   (E) = /home/siddis14
-        BUILDTEST_MODULEPATH                              (C) = /clust/app/easybuild/2018/commons/modules/all:/clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all:/nfs/grid/software/moduledomains:/etc/modulefiles:/usr/share/modulefiles:/usr/share/lmod/lmod/modulefiles/Core
-        BUILDTEST_OHPC                                     (C) = False
-        BUILDTEST_PREPEND_MODULES                          (C) = []
-        BUILDTEST_RUN_DIR                                  (C) = /tmp/buildtest
-        BUILDTEST_SHELL                                    (C) = sh
-        BUILDTEST_SUCCESS_THRESHOLD                        (C) = 1.0
-        BUILDTEST_TESTDIR                                  (C) = /home/siddis14/buildtest
-
+    $ BUILDTEST_SHELL=csh buildtest show -c
+             buildtest configuration summary
+             (C): Configuration File,  (E): Environment Variable
+    BUILDTEST_BINARY                                   (C) = False
+    BUILDTEST_CLEAN_BUILD                              (C) = False
+    BUILDTEST_CONFIGS_REPO                             (C) = /home/ec2-user/PycharmProjects/buildtest-framework/toolkit
+    BUILDTEST_LOGDIR                                   (C) = /tmp/ec2-user/buildtest/logs
+    BUILDTEST_MODULEPATH                               (C) = /apps/modules/all
+    BUILDTEST_MODULE_FORCE_PURGE                       (C) = False
+    BUILDTEST_PARENT_MODULE_SEARCH                     (C) = first
+    BUILDTEST_RUN_DIR                                  (C) = /tmp/ec2-user/buildtest/run
+    BUILDTEST_SHELL                                    (E) = csh
+    BUILDTEST_SPIDER_VIEW                              (C) = current
+    BUILDTEST_SUCCESS_THRESHOLD                        (C) = 1.0
+    BUILDTEST_TESTDIR                                  (C) = /tmp/ec2-user/buildtest/tests
 
 
 
