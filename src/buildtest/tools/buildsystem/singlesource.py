@@ -33,6 +33,7 @@ import sys
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import create_dir, is_file
+from buildtest.tools.mpi import openmpi_opt_table, mpich_opt_table
 from buildtest.tools.yaml import TEMPLATE_SINGLESOURCE, SUPPORTED_COMPILERS, \
     SUPPORTED_MPI_WRAPPERS, SUPPORTED_MPI_LAUNCHERS, SUPPORTED_MPI_FLAVORS, \
     TEMPLATE_JOB_LSF, TEMPLATE_JOB_SLURM, \
@@ -121,25 +122,6 @@ class BuildTestBuilderSingleSource():
                 print(f"Type mismatch for key: {k} Got Type: {str(type(v))}"
                       + f"Expecting Type: {str(type(TEMPLATE_JOB_SLURM[k]))}")
                 sys.exit(1)
-
-    def _mpirun_opt_table(self, opts):
-        """Translate mpirun YAML keys to mpirun options"""
-        opt_table = {
-            "n": "-n",
-            "npernode": "-npernode",
-            "npersocket": "-npersocket",
-            "report-bindings": "--report-bindings",
-            "display-devel-map": "--display-devel-map",
-            "display-map": "--display-map",
-        }
-
-        val_list = []
-        # check if mpirun option
-        for opt in opts:
-            if opt in opt_table:
-                val_list.append(opt_table[opt])
-
-        return val_list
 
     def _parse(self):
         """ Parse yaml file to determine if content follows the defined yaml
@@ -242,14 +224,24 @@ class BuildTestBuilderSingleSource():
             #  and add it directly as part of run command
             if "srun" in test_dict["mpi"].keys():
                 testscript_dict["run"].append("srun")
-            elif "mpirun" in test_dict["mpi"].keys():
+            # add openmpi yaml keys to build command orterun command
+            elif "openmpi" in test_dict["mpi"].keys():
 
-                testscript_dict["run"].append("mpirun")
-                mpirun_opts = test_dict["mpi"]["mpirun"].keys()
-                mpirun_flags = self._mpirun_opt_table(mpirun_opts)
+                testscript_dict["run"].append("orterun")
+                mpirun_opts = test_dict["mpi"]["openmpi"].keys()
+                mpirun_flags = openmpi_opt_table(mpirun_opts)
                 for flag,opts in zip(mpirun_flags,mpirun_opts):
                     testscript_dict["run"].append(flag)
-                    testscript_dict["run"].append(test_dict["mpi"]["mpirun"][opts])
+                    testscript_dict["run"].append(test_dict["mpi"]["openmpi"][opts])
+            # add mpich yaml keys to build command mpiexec.hydra
+            elif "mpich" in test_dict["mpi"].keys():
+                testscript_dict["run"].append("mpiexec.hydra")
+                mpirun_keys = test_dict["mpi"]["mpich"].keys()
+                mpirun_flags = mpich_opt_table(mpirun_keys)
+                for flag, opts in zip(mpirun_flags, mpirun_keys):
+                    testscript_dict["run"].append(flag)
+                    testscript_dict["run"].append(
+                        test_dict["mpi"]["mpich"][opts])
 
             testscript_dict["run"].append(f"./{exec_name}")
 

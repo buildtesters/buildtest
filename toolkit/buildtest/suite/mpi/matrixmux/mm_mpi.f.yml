@@ -1,11 +1,11 @@
 source: mpi_mm.f
-compiler: intel
-lsf:
-  M: 200M
-  n: '4'
+compiler: gnu
 mpi:
-  flavor: intelmpi
-  procs: '4'
+  openmpi:
+    n: '2'
+    npernode: '2'
+    report-bindings: ''
+    display-map: ''
 flags: -O2
 
 

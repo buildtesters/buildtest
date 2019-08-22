@@ -23,7 +23,7 @@
 import textwrap
 from buildtest.tools.config import show_configuration
 from buildtest.tools.yaml import KEY_DESCRIPTION, SLURM_KEY_DESC, \
-    LSF_KEY_DESC, MPI_KEY_DESC, MPIRUN_KEY_DESC
+    LSF_KEY_DESC, MPI_KEY_DESC, ORTERUN_KEY_DESC, MPIEXEC_KEY_DESC
 
 def func_show_subcmd(args):
     """Entry point to show sub command."""
@@ -45,6 +45,7 @@ def show_yaml_keys():
     for k in sorted(KEY_DESCRIPTION):
         print('{:20} | {:<30}'.format(k, textwrap.fill(KEY_DESCRIPTION[k], 120)))
 
+    # ---------------------------------------------------
     print()
     print ('{:>50}'.format("LSF Keys"))
     print()
@@ -57,6 +58,7 @@ def show_yaml_keys():
                                         textwrap.fill(LSF_KEY_DESC[k][0],120),
                                         textwrap.fill(LSF_KEY_DESC[k][1],120)))
 
+    # ---------------------------------------------------
     print()
     print ('{:>50}'.format("SLURM Keys"))
     print()
@@ -69,6 +71,8 @@ def show_yaml_keys():
                                     textwrap.fill(SLURM_KEY_DESC[k][0],120),
                                     textwrap.fill(SLURM_KEY_DESC[k][1],120)))
 
+    # ---------------------------------------------------
+    print()
     print ('{:>50}'.format("MPI Keys"))
     print()
     print ('{:20} | {:<30} | {:<30}'.format("Keys",
@@ -80,14 +84,31 @@ def show_yaml_keys():
                                     textwrap.fill(MPI_KEY_DESC[k][0],120),
                                     textwrap.fill(MPI_KEY_DESC[k][1],120)))
 
-
-    print ('{:>50}'.format("MPIRUN Keys"))
+    # ---------------------------------------------------
+    print()
+    print ('{:>50}'.format("ORTERUN Keys"))
     print()
     print ('{:20} | {:<30} | {:<30}'.format("Keys",
-                                            "MPIRUN Options",
+                                            "ORTERUN Options",
                                             "Description"))
     print('{:-<100}'.format(""))
-    for k in sorted(MPIRUN_KEY_DESC):
+    for k in sorted(ORTERUN_KEY_DESC):
         print('{:20} | {:<30} | {:<30}'.format(k,
-                                    textwrap.fill(MPIRUN_KEY_DESC[k][0],120),
-                                    textwrap.fill(MPIRUN_KEY_DESC[k][1],120)))
+                                    textwrap.fill(ORTERUN_KEY_DESC[k][0],120),
+                                    textwrap.fill(ORTERUN_KEY_DESC[k][1],120)))
+
+    # ---------------------------------------------------
+    print()
+    print ('{:>50}'.format("MPIEXEC.HYDRA Keys"))
+    print()
+    print ('{:20} | {:<30} | {:<30}'.format("Keys",
+                                            "MPIEXEC.HYDRA Options",
+                                            "Description"))
+    print('{:-<100}'.format(""))
+    for k in sorted(MPIEXEC_KEY_DESC):
+        print('{:20} | {:<30} | {:<30}'.format(k,
+                                               textwrap.fill(
+                                                   MPIEXEC_KEY_DESC[k][0], 120),
+                                               textwrap.fill(
+                                                   MPIEXEC_KEY_DESC[k][1],
+                                                   120)))

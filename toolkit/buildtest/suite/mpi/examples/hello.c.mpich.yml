@@ -1,7 +1,7 @@
 source: hello.c
 compiler: gnu
 mpi:
-  openmpi:
+  mpich:
    n: '2'
 flags: -O2
 maintainer:

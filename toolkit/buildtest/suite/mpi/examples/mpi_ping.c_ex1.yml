@@ -3,7 +3,7 @@ compiler: gnu
 slurm:
   mem: 200M
 mpi:
-  mpirun: 
+  openmpi:
     n: '2'
     npernode: '2'
       

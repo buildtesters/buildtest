@@ -4,7 +4,7 @@ lsf:
   M: 200M
   n: '2'
 mpi:
-  mpirun: 
+  openmpi:
     n: '2'
 flags: -O2
 maintainer:

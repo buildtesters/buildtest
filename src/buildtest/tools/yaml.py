@@ -132,9 +132,10 @@ SLURM_KEY_DESC = {
 }
 MPI_KEY_DESC = {
     'srun': ['srun', "use the srun job launcher"],
-    'mpirun': ['mpirun', "use the mpirun job launcher"]
+    'openmpi': ['openmpi', "use the orterun job launcher"],
+    'mpich': ['mpich', "use the mpiexec.hydra job launcher"]
 }
-MPIRUN_KEY_DESC = {
+ORTERUN_KEY_DESC = {
     'n': ["-n", "Run  this many copies of the program on the given nodes"],
     'npernode': ["-npernode", "On each node, launch this many processes."],
     'npersocket': ["--npersocket", "On each node, launch this many processes "
@@ -144,6 +145,10 @@ MPIRUN_KEY_DESC = {
                                             "launched processes."],
     'display-map': ["--display-map", "Display a table showing the mapped "
                                      "location of each process prior to launch."]
+}
+
+MPIEXEC_KEY_DESC = {
+    'n': ["-n", "Run  this many copies of the program on the given nodes"],
 }
 
 def get_environment_variable(shell,key,value):
