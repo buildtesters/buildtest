@@ -1,3 +1,4 @@
+description: "Hello World MPI Example using MPICH"
 source: hello.c
 compiler: gnu
 mpi:

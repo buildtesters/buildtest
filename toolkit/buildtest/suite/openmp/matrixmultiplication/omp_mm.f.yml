@@ -1,3 +1,4 @@
+description: "OpenMP matrix multipication example in Fortran"
 compiler: gnu
 ldflags: -fopenmp
 maintainer:

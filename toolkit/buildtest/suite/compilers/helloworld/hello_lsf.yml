@@ -1,3 +1,4 @@
+description: "Hello World C example using GNU compiler for LSF"
 compiler: gnu
 flags: -O2
 lsf:

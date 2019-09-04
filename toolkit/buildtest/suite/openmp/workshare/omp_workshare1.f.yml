@@ -1,3 +1,4 @@
+description: "OpenMP Worksharing Fortran example of Loop-worksharing using GNU compiler"
 compiler: gnu
 ldflags: -fopenmp
 maintainer:

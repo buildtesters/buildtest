@@ -1,3 +1,4 @@
+description: "Blocking Send/Recv MPI example using 2 processes for LSF using OpenMPI."
 source: mpi_ping.c
 compiler: gnu
 lsf:

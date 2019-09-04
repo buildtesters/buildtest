@@ -1,3 +1,4 @@
+description: "OpenMP Hello World example in C"
 compiler: gnu
 ldflags: -fopenmp
 maintainer:

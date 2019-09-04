@@ -1,3 +1,4 @@
+description: "MPI Hello World C example using OpenMPI"
 source: hello.c
 compiler: gnu
 mpi:

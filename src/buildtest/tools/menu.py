@@ -43,7 +43,7 @@ from buildtest.tools.modules import func_module_subcmd, \
      get_module_permutation_choices
 from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
-from buildtest.tools.show import func_show_subcmd
+from buildtest.tools.show import func_show_subcmd, func_show_testconfigs
 from buildtest.tools.system import systempackage_installed_list, \
     get_module_collection
 from buildtest.tools.yaml import func_yaml_subcmd
@@ -129,7 +129,8 @@ Misc:
     parser_yaml = subparsers.add_parser('yaml')
     parser_build = subparsers.add_parser('build')
     parser_run = subparsers.add_parser('run')
-
+    parser_show = subparsers.add_parser('show')
+    parser_benchmark = subparsers.add_parser('benchmark')
     parser_module = subparsers.add_parser('module')
     subparsers_module = parser_module.add_subparsers(title='subcommands',
                                                      description='valid '
@@ -143,8 +144,7 @@ Misc:
                                                      help="module collection "
                                                           "operation")
 
-    parser_show = subparsers.add_parser('show')
-    parser_benchmark = subparsers.add_parser('benchmark')
+
 
 
     # -------------------------------- list menu --------------------------
@@ -338,7 +338,9 @@ Misc:
 
     # -------------------------------- show menu --------------------------
 
-
+    subparsers_show = parser_show.add_subparsers(title='subcommands',
+                                                     description='valid '
+                                                                 'subcommands')
     parser_show.add_argument("-c",
                              "--config",
                              help="show buildtest environment configuration",
@@ -347,6 +349,9 @@ Misc:
                              "--keys",
                              help="show yaml keys",
                              choices = ["singlesource"])
+    parser_testconfigs = subparsers_show.add_parser("testconfigs", help="list test configurations")
+    parser_testconfigs.set_defaults(func=func_show_testconfigs)
+
     parser_show.set_defaults(func=func_show_subcmd)
 
 

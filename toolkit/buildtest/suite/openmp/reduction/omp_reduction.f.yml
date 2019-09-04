@@ -1,3 +1,4 @@
+description: "OpenMP vector sum reduction example in Fortran"
 compiler: gnu
 flags: -O3
 ldflags: -fopenmp

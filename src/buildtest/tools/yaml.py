@@ -78,6 +78,7 @@ TEMPLATE_VARIANT = [
 ]
 
 TEMPLATE_SINGLESOURCE = {
+    'description': 'description of test',
     'source': "file.c",
     'input': "inputfile",
     'flags': "-O3 -fast",
@@ -95,6 +96,7 @@ TEMPLATE_SINGLESOURCE = {
 }
 
 KEY_DESCRIPTION = {
+    'description': "Specify a brief description of test",
     'source': "Specify the name of the source file that is in the \"src\" "
               "directory relative to yaml configuration",
     'input': "Specify input file for the executable. This file must be in "

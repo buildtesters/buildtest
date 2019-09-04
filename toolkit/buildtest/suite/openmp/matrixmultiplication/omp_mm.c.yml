@@ -1,3 +1,4 @@
+description: "OpenMP matrix multiplication example in C"
 compiler: gnu
 ldflags: -fopenmp
 maintainer:

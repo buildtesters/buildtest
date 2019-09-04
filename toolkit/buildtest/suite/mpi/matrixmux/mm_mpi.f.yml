@@ -1,3 +1,4 @@
+description: "MPI Matrix Multiplication Fortran example using OpenMPI"
 source: mpi_mm.f
 compiler: gnu
 mpi:

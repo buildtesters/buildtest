@@ -150,7 +150,10 @@ class BuildTestBuilderSingleSource():
         language = get_programming_language(ext)
         if self.verbose >= 1:
             print (f"Programming Language Detected: {language}")
-        exec_name = '%s.exe' % test_dict['source']
+
+        hash = hex(random.getrandbits(128))
+        #exec_name = '%s.exe' % test_dict['source']
+        exec_name = '%s.exe' % hash
         cmd = []
 
         if "lsf" in test_dict:
