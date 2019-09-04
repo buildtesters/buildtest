@@ -21,12 +21,11 @@
 #############################################################################
 
 import textwrap
-import os
-import yaml
-from buildtest.tools.config import show_configuration, config_opts
+
+from buildtest.tools.config import show_configuration
 from buildtest.tools.yaml import KEY_DESCRIPTION, SLURM_KEY_DESC, \
     LSF_KEY_DESC, MPI_KEY_DESC, ORTERUN_KEY_DESC, MPIEXEC_KEY_DESC
-from buildtest.tools.file import walk_tree
+
 
 def func_show_subcmd(args):
     """Entry point to show sub command."""
@@ -115,25 +114,3 @@ def show_yaml_keys():
                                                textwrap.fill(
                                                    MPIEXEC_KEY_DESC[k][1],
                                                    120)))
-def func_show_testconfigs(args):
-    yml_files = walk_tree(config_opts['BUILDTEST_CONFIGS_REPO'], ".yml")
-
-    print ('{:60} | {:<30}'.format("Test Configuration Name", "Description"))
-    print('{:-<100}'.format(""))
-
-    for f in yml_files:
-        fd = open(f,"r")
-        config = yaml.safe_load(fd)
-        fd.close()
-
-
-        description = ""
-
-        if "description" in config:
-            description = config["description"]
-        parent_parent = os.path.basename(os.path.dirname(os.path.dirname(f)))
-        parent = os.path.basename(os.path.dirname(f))
-        testconfig_name = f"{parent_parent}.{parent}.{os.path.basename(f)}"
-        print('{:60} | {:<30}'.format(testconfig_name, textwrap.fill(description, 120)))
-
-

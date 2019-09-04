@@ -43,9 +43,12 @@ from buildtest.tools.modules import func_module_subcmd, \
      get_module_permutation_choices
 from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
-from buildtest.tools.show import func_show_subcmd, func_show_testconfigs
+from buildtest.tools.show import func_show_subcmd
+
 from buildtest.tools.system import systempackage_installed_list, \
     get_module_collection
+from buildtest.tools.testconfigs import func_testconfigs_show, \
+    testconfig_choices, func_testconfigs_view, func_testconfigs_edit
 from buildtest.tools.yaml import func_yaml_subcmd
 from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
 from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
@@ -67,6 +70,7 @@ def menu():
                                           "buildtest",
                                           "suite"),".yml")
 
+    test_config_choice = testconfig_choices()
 
     run_test_class = os.listdir(test_suite_dir)
     pkglist = systempackage_installed_list()
@@ -99,6 +103,7 @@ def menu():
     list_title = "Options for listing software, module files, and  easyconfigs"
     show_title = "Options for displaying buildtest configuration"
     find_title = "Find configuration files and test scripts"
+    testconfig_title = "Options for list, view, and edit test configuration"
     build_title = "Options for building test scripts"
     run_title = "Run Tests"
     benchmark_title = "Run Benchmark"
@@ -109,7 +114,7 @@ Info:
   list        {list_title}
   show        {show_title}
   find        {find_title}
-           
+  testconfigs {testconfig_title}         
     
 Build:
   build       {build_title}
@@ -131,6 +136,7 @@ Misc:
     parser_run = subparsers.add_parser('run')
     parser_show = subparsers.add_parser('show')
     parser_benchmark = subparsers.add_parser('benchmark')
+    parser_testconfigs = subparsers.add_parser('testconfigs')
     parser_module = subparsers.add_parser('module')
     subparsers_module = parser_module.add_subparsers(title='subcommands',
                                                      description='valid '
@@ -338,9 +344,7 @@ Misc:
 
     # -------------------------------- show menu --------------------------
 
-    subparsers_show = parser_show.add_subparsers(title='subcommands',
-                                                     description='valid '
-                                                                 'subcommands')
+
     parser_show.add_argument("-c",
                              "--config",
                              help="show buildtest environment configuration",
@@ -349,14 +353,22 @@ Misc:
                              "--keys",
                              help="show yaml keys",
                              choices = ["singlesource"])
-    parser_testconfigs = subparsers_show.add_parser("testconfigs", help="list test configurations")
-    parser_testconfigs.set_defaults(func=func_show_testconfigs)
 
     parser_show.set_defaults(func=func_show_subcmd)
 
-
-
-
+    # -------------------------------- testconfigs menu ----------------------
+    subparsers_testconfigs = parser_testconfigs.add_subparsers(title='subcommands',
+                                                 description="Test configuration options")
+    parser_testconfigs_list = subparsers_testconfigs.add_parser("list", help="List all test configuration")
+    parser_testconfigs_view = subparsers_testconfigs.add_parser("view", help="View a test configuration")
+    parser_testconfigs_view.add_argument("name", help="Select name of test configuration",
+                                         choices=test_config_choice, metavar="Test Configuration")
+    parser_testconfigs_edit = subparsers_testconfigs.add_parser("edit", help="Edit a test configuration ")
+    parser_testconfigs_edit.add_argument("name", help="Select name of test configuration",
+                                         choices=test_config_choice, metavar="Test Configuration")
+    parser_testconfigs_list.set_defaults(func=func_testconfigs_show)
+    parser_testconfigs_view.set_defaults(func=func_testconfigs_view)
+    parser_testconfigs_edit.set_defaults(func=func_testconfigs_edit)
 
     # -------------------------------- benchmark menu ----------------------
 
