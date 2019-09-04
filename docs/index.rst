@@ -34,7 +34,7 @@ This documentation was last rebuild on |today| and is intended for version |vers
    module_operation.rst
    building_test.rst
    running_tests.rst
-   benchmark_subcommand.rst
+   additional_features.rst
    yaml_subcommand.rst
 
 

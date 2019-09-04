@@ -49,8 +49,15 @@ tee $script_dir/buildtest-list-easyconfigs.txt <<< "buildtest list --easyconfigs
 
 # Find Subcommand
 tee $script_dir/buildtest-find-help.txt <<<"buildtest find --help" | bash >> $script_dir/buildtest-find-help.txt
-tee $script_dir/buildtest-find-configs.txt <<<"buildtest find -fc all" | bash >> $script_dir/buildtest-find-configs.txt
 tee $script_dir/buildtest-find-test.txt <<<"buildtest find -ft all" | bash >> $script_dir/buildtest-find-test.txt
+
+# TestConfigs Subcommand
+tee $script_dir/buildtest-testconfigs-help.txt <<<"buildtest testconfigs --help" | bash >> $script_dir/buildtest-testconfigs-help.txt
+tee $script_dir/buildtest-testconfigs-list.txt <<<"buildtest testconfigs list" | bash >> $script_dir/buildtest-testconfigs-list.txt
+tee $script_dir/buildtest-testconfigs-view.txt <<<"buildtest testconfigs view mpi.matrixmux.mm_mpi.f.yml" | bash >> $script_dir/buildtest-testconfigs-view.txt
+
+# Benchmark Subcommand
+tee $script_dir/buildtest-benchmark-help.txt <<<"buildtest benchmark --help" | bash >> $script_dir/buildtest-benchmark-help.txt
 
 # module commands 
 tee $script_dir/buildtest-module-help.txt <<<"buildtest module --help" | bash >> $script_dir/buildtest-module-help.txt

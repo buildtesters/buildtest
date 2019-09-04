@@ -75,20 +75,6 @@ Find Operations (``buildtest find --help``)
 
 .. program-output:: cat scripts/buildtest-find-help.txt
 
-Find YAML configs (``buildtest find -fc``)
----------------------------------------------------------------
-
-To find all yaml configuration use the option ``buildtest find --find-configs all`` or
-short option ``buildtest find -fc all``
-
-
-
-This will give you an output of all **.yml** files in $BUILDTEST_CONFIGS_REPO
-that is used to configure on your test scripts.
-
-.. program-output:: head -n 10 scripts/buildtest-find-configs.txt
-
-
 Find test scripts (``buildtest find -ft``)
 --------------------------------------------
 

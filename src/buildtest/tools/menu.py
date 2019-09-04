@@ -175,10 +175,6 @@ Misc:
 
     # -------------------------------- find menu ---------------------------
 
-    parser_find.add_argument("-fc",
-                             "--findconfig",
-                             help="Find buildtest YAML config files. To find "
-                                  "all yaml files use -fc all")
     parser_find.add_argument("-ft",
                              "--findtest",
                              help="Find generated test scripts. To find all "

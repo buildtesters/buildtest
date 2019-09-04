@@ -1,0 +1,31 @@
+buildtest testconfigs list
+Test Configuration Name                                      | Description                   
+----------------------------------------------------------------------------------------------------
+cuda.saxpy.saxpy.cu.yml                                      |                               
+openmp.reduction.omp_reduction.c.yml                         | OpenMP vector sum reduction example in C
+openmp.reduction.omp_reduction.f.yml                         | OpenMP vector sum reduction example in Fortran
+openmp.hello.omp_hello.f.yml                                 | OpenMP Hello World example in Fortran
+openmp.hello.omp_hello.c.yml                                 | OpenMP Hello World example in C
+openmp.workshare.omp_workshare1.c.yml                        | OpenMP Worksharing C example of Loop-worksharing using GNU compiler
+openmp.workshare.omp_workshare2.c.yml                        |                               
+openmp.workshare.omp_workshare1.f.yml                        | OpenMP Worksharing Fortran example of Loop-worksharing using GNU compiler
+openmp.workshare.omp_workshare2.f.yml                        |                               
+openmp.dotprod.omp_dotprod_serial.f.yml                      |                               
+openmp.dotprod.omp_dotprod.c.yml                             |                               
+openmp.dotprod.omp_dotprod_serial.c.yml                      |                               
+openmp.dotprod.omp_dotprod.f.yml                             |                               
+openmp.matrixmultiplication.omp_mm.c.yml                     | OpenMP matrix multiplication example in C
+openmp.matrixmultiplication.omp_mm.f.yml                     | OpenMP matrix multipication example in Fortran
+mpi.matrixmux.mm_mpi.f.yml                                   | MPI Matrix Multiplication Fortran example using OpenMPI
+mpi.examples.mpi_ping.c.slurm.yml                            | Blocking Send/Recv MPI example using 2 processes for SLURM.
+mpi.examples.hello.c.yml                                     | MPI Hello World C example using OpenMPI
+mpi.examples.mpi_ping.c_ex1.yml                              |                               
+mpi.examples.hello.c.mpich.yml                               | Hello World MPI Example using MPICH
+mpi.examples.mpi_ping.c.lsf.yml                              | Blocking Send/Recv MPI example using 2 processes for LSF using OpenMPI.
+mpi.examples.mpi_ping.c_ex2.yml                              |                               
+compilers.helloworld.hello_gnu.yml                           | Hello C++ example using GNU compiler
+compilers.helloworld.hello_args.c.yml                        |                               
+compilers.helloworld.hello_slurm.yml                         | Hello World C++ example using GNU compiler for SLURM
+compilers.helloworld.hello_lsf.yml                           | Hello World C example using GNU compiler for LSF
+compilers.helloworld.hello_intel_fortran.yml                 |                               
+shahzebsiddiqui.helloworld.hello.yml                         |                               
