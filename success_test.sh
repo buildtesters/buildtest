@@ -30,10 +30,6 @@ cmd="buildtest list -ec"
 $cmd &> ${testdir}/easyconfigs.txt
 message
 
-cmd="buildtest find -fc all"
-$cmd &> ${testdir}/find_all_config.txt
-message
-
 cmd="buildtest find -ft all"
 $cmd &> ${testdir}/find_all_test.txt
 message
@@ -68,21 +64,21 @@ $cmd &>> ${testdir}/openmp.txt
 message
 
 # single configuration test
-cmd="buildtest build -c /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml"
+cmd="buildtest build -c compilers.helloworld.hello_gnu.yml"
 $cmd &> ${testdir}/single_test.txt
 message
 
 
-cmd="buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml -co gcc540"
+cmd="buildtest build -c compilers.helloworld.hello_gnu.yml -co gcc730"
 $cmd &> ${testdir}/single_test_collection.txt
 message
 
-cmd="buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml -m gcc"
+cmd="buildtest build -c compilers.helloworld.hello_gnu.yml -m gcc"
 $cmd &> ${testdir}/single_test_permute.txt
 message
 
 # testing csh test creation
-cmd="buildtest build -s GCCcore/6.4.0 --shell csh"
+cmd="buildtest build -s GCCcore/7.3.0-2.30 --shell csh"
 $cmd &> ${testdir}/gcccore_6.4.0_csh.txt
 message
 
@@ -106,16 +102,16 @@ cmd="BUILDTEST_SPIDER_VIEW=all buildtest module --easybuild"
 $cmd &> $testdir/all_easybuild_modules.txt
 message
 
-cmd="buildtest module -a /usr/share/lmod/lmod/modulefiles/Core"
+cmd="buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core"
 $cmd &> $testdir/add_module_tree.txt
 message
 
 
-cmd="buildtest module -r /usr/share/lmod/lmod/modulefiles/Core"
+cmd="buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core"
 $cmd &> $testdir/rm_module_tree.txt
 message
 
-cmd="buildtest module -l "
+cmd="buildtest module tree -l "
 $cmd &> $testdir/list_module_tree.txt
 message
 

@@ -47,15 +47,7 @@ To use this feature specify the appropriate module tree for parameter ``BUILDTES
 ``settings.yml`` or via environment variable. To use this feature you need to
 use ``buildtest module loadtest``
 
-To demonstrate let's start off with an example where we test module load for a single module tree.
-
-.. code::
-
-  [siddis14@amrndhl1228 buildtest-framework]$ buildtest --show | grep BUILDTEST_MODULEPATH
-  BUILDTEST_MODULEPATH                              (C) = /nfs/grid/software/RHEL7/non-easybuild/modules/all
-
-
-Let's start the test
+To demonstrate let's kick off a module load test as shown below.
 
 .. program-output:: cat scripts/module-load.txt
 
@@ -187,7 +179,7 @@ Shown below are the list of parent modules that can be used with
 
 ::
 
-    (siddis14-TgVBs13r) buildtest-framework[master ?] $ buildtest module -d
+    $ buildtest module -d
     cctsoft                           eb/2018                           GCCcore/.6.2.0                    impi/2017.1.132                   OpenMPI/2.0.1                     RHEL6-apps
     CUDA/8.0.44                       GCC/5.4.0-2.27                    hpc/eb-2017-core                  medsci                            OpenMPI/2.0.2
     deprecated                        GCC/6.2.0-2.27                    icc/.2017.1.132-GCC-5.4.0-2.27    omics                             openmpi/.3.1.3-bs5h3cj

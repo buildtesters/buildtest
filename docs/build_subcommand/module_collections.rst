@@ -42,80 +42,43 @@ at start of buildtest.
 
 buildtest module collection works as follows.
 
-First you load a set of modules::
+First you load a set of modules, in this case we are loading OpenMPI::
 
     $ ml
 
     Currently Loaded Modules:
-      1) eb/2018   2) CUDA/9.1.85
+      1) eb/2019                        7) XZ/5.2.4-GCCcore-7.3.0
+      2) GCCcore/7.3.0                  8) libxml2/2.9.8-GCCcore-7.3.0
+      3) binutils/2.30-GCCcore-7.3.0    9) libpciaccess/0.14-GCCcore-7.3.0
+      4) GCC/7.3.0-2.30                10) hwloc/1.11.10-GCCcore-7.3.0
+      5) zlib/1.2.11-GCCcore-7.3.0     11) OpenMPI/3.1.1-GCC-7.3.0-2.30
+      6) numactl/2.0.11-GCCcore-7.3.0
 
-Next add the modules to your collection by running::
+
+Next add the modules to your collection by running the following::
 
     $ buildtest module collection -a
-    {
-        "collection": [
-            [
-                "eb/2018",
-                "CUDA/9.1.85"
-            ]
-        ]
-    }
 
-    Updating collection file: /home/siddis14/buildtest-framework/var/default.json
+Shown below is the output
 
+.. program-output:: cat scripts/buildtest-module-collection-add.txt
 
 Next, view the module collection by running::
 
     $ buildtest module collection -l
-    0: ['eb/2018', 'CUDA/9.1.85']
+
+Shown below is the output
+
+.. program-output:: cat scripts/buildtest-module-collection-list.txt
 
 buildtest will display module collection with index starting **0** followed by
-name of modules. Let's add a couple more collections by repeating same step by adding
-different modules.
-
-Shown below, we have 4 module collection that shows the index followed by a
-list of modules
-
-.. code-block:: console
-
-    $ buildtest module collection -l
-    0: ['eb/2018', 'CUDA/9.1.85']
-    1: ['eb/2018', 'GCCcore/6.4.0', 'binutils/2.28-GCCcore-6.4.0', 'GCC/6.4.0-2.28']
-    2: ['eb/2017', 'icc/.2017.1.132-GCC-5.4.0-2.27', 'GCCcore/.5.4.0', 'binutils/.2.27', 'ifort/.2017.1.132-GCC-5.4.0-2.27', 'impi/2017.1.132', 'imkl/2017.1.132', 'intel/2017.01']
-    3: ['eb/2017', 'GCCcore/.6.2.0', 'binutils/.2.27', 'GCC/6.2.0-2.27']
+name of modules.
 
 
-Let's build a test with the 2nd module collection by using
+Let's build a test with the collection index *0* by using
 ``--module-collection`` option or short option ``-mc``.
 
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 19
-
-    (siddis14-TgVBs13r) buildtest-framework[master !?+] $ buildtest build -c  $(pwd)/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml -mc 2 -vv
-    ________________________________________________________________________________
-    compiler: intel
-    flags: -O3
-    maintainer:
-    - shahzeb siddiqui shahzebmsiddiqui@gmail.com
-    source: hello.f90
-    testblock: singlesource
-
-    ________________________________________________________________________________
-    Key Check PASSED for file /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml
-    Source File /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 exists!
-    Programming Language Detected: fortran
-    Compiler Check Passed
-    Writing Test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml.sh
-    Changing permission to 755 for test: /tmp/siddis14/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml.sh
-    ________________________________________________________________________________
-    #!/bin/sh
-    module load eb/2017 icc/.2017.1.132-GCC-5.4.0-2.27 GCCcore/.5.4.0 binutils/.2.27 ifort/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 imkl/2017.1.132 intel/2017.01
-    cd /tmp/siddis14/buildtest/suite/compilers/helloworld
-    ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90
-    ./hello.f90.exe
-     rm ./hello.f90.exe
-    ________________________________________________________________________________
+.. program-output:: cat scripts/build-openmpi-example1.txt
 
 
 The option ``--module-collection`` takes an integer argument that is a
@@ -136,52 +99,36 @@ buildtest can build a single test configuration with all version of a module
 your system as a json object. buildtest will formulate a modified json
 object that is written in ``$BUILDTEST_ROOT/var/modules.json``.
 
-Here is an example json object for **intel**.
-
-::
+Here is an example json object for **intel**::
 
     "intel": {
-        "/nfs/grid/software/RHEL6/general/intel/16.0.lua": {
-            "fullName": "intel/16.0",
+        "/gpfs/apps/medsci/stacks/noOS/modules/intel/2018.3": {
+            "fullName": "intel/2018.3",
             "parent": [
                 [
-                    "RHEL6-apps"
-                ]
-            ]
-        },
-        "/nfs/grid/software/RHEL6/general/intel/14.0.lua": {
-            "fullName": "intel/14.0",
-            "parent": [
-                [
-                    "RHEL6-apps"
-                ]
-            ]
-        },
-        "/nfs/grid/software/RHEL7/easybuild/modules/all/Core/intel/2017.01.lua": {
-            "fullName": "intel/2017.01",
-            "parent": [
-                [
-                    "eb/2017"
+                    "medsci/.2019.1"
                 ],
                 [
-                    "medsci",
-                    "hpc/eb-2017-core"
+                    "medsci/2019.2"
                 ]
             ]
         },
+        "/gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/intel/2018b.lua": {
+            "fullName": "intel/2018b",
+            "parent": [
+                [
+                    "eb/2019"
+                ]
+            ]
+        }
+    },
 
-Shown below is a list of intel modules available in this system
-
-::
+Shown below is a list of intel modules available in this system::
 
     $ module -t spider intel
-    intel/14.0
-    intel/15.0
-    intel/16.0
-    intel/16.0.1
-    intel/16.0.3
-    intel/2017.01
-    intel/2018a
+    intel/2018b
+    intel/2018.3
+
 
 
 To demonstrate an example, let's build a test using the module permutation
@@ -205,43 +152,18 @@ The default configuration for ``BUILDTEST_PARENT_MODULE_SEARCH`` is ``first``
 which will select the first parent combination. The other option is ``all`` which
 will select all parent combination when building test.
 
-Shown below is a snapshot of ``VMD`` record from ``modules.json``
+Shown below is a snapshot of ``vmd`` record from ``modules.json``::
 
-::
 
-    "VMD": {
-        "/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/intel/2017.1.132-GCC-5.4.0-2.27/impi/2017.1.132/VMD/1.9.3-Python-2.7.12.lua": {
-            "fullName": "VMD/1.9.3-Python-2.7.12",
+    "vmd": {
+        "/gpfs/apps/medsci/stacks/noOS/modules/vmd/1.9.4.lua": {
+            "fullName": "vmd/1.9.4",
             "parent": [
                 [
-                    "eb/2017",
-                    "icc/.2017.1.132-GCC-5.4.0-2.27",
-                    "impi/2017.1.132"
+                    "medsci/.2019.1"
                 ],
                 [
-                    "eb/2017",
-                    "ifort/.2017.1.132-GCC-5.4.0-2.27",
-                    "impi/2017.1.132"
-                ],
-                [
-                    "icc/.2017.1.132-GCC-5.4.0-2.27",
-                    "impi/2017.1.132"
-                ],
-                [
-                    "ifort/.2017.1.132-GCC-5.4.0-2.27",
-                    "impi/2017.1.132"
-                ],
-                [
-                    "medsci",
-                    "hpc/eb-2017-core",
-                    "icc/.2017.1.132-GCC-5.4.0-2.27",
-                    "impi/2017.1.132"
-                ],
-                [
-                    "medsci",
-                    "hpc/eb-2017-core",
-                    "ifort/.2017.1.132-GCC-5.4.0-2.27",
-                    "impi/2017.1.132"
+                    "medsci/2019.2"
                 ]
             ]
         }
@@ -253,11 +175,11 @@ The ``fullName`` and ``parent`` key define how to load a module with all the
 parent combinations which you are required in order to load the desired
 module.
 
-To demonstrate let's build a test with all parent combination for ``VMD``
+To demonstrate let's build a test with all parent combination for ``vmd``
 module.
 
 .. program-output:: cat scripts/build-module-all-permute.txt
 
-Note all 6 parent combination for module ``VMD/1.9.3-Python-2.7.12`` were
+Note all parent combination for ``vmd`` module were
 used when writing the test. It is worth noting, that *any parent combination
 is sufficient* when loading the desired module.

@@ -1,7 +1,8 @@
 buildtest build --help
 usage: buildtest [options] [COMMANDS] build [-h] [-p SYSTEM-PACKAGE] [--shell {sh,bash,csh}] [-c TEST CONFIGURATION]
-                                            [-b] [-S {compilers,cuda,mpi,openmp}] [--clean-tests] [--testdir TESTDIR]
-                                            [--clean-build] [-v] [-m MODULES | -co {} | -mc COLLECTION-ID]
+                                            [-b] [-S {cuda,openmp,mpi,compilers}] [--clean-tests] [--testdir TESTDIR]
+                                            [--clean-build] [-v]
+                                            [-m Module Permutation Options | -co Lmod Collection Name | -mc COLLECTION-ID]
                                             [-pms {first,all}]
 
 optional arguments:
@@ -13,18 +14,17 @@ optional arguments:
   -c TEST CONFIGURATION, --config TEST CONFIGURATION
                         Specify test configuration
   -b, --binary          Conduct binary test for a package
-  -S {compilers,cuda,mpi,openmp}, --suite {compilers,cuda,mpi,openmp}
+  -S {cuda,openmp,mpi,compilers}, --suite {cuda,openmp,mpi,compilers}
                         specify test suite
   --clean-tests         delete test directory $BUILDTEST_TESTDIR
   --testdir TESTDIR     Specify alternate test directory to write test. This overrides configuration BUILDTEST_TESTDIR
   --clean-build         delete software test directory before writing test scripts
   -v, --verbose         verbosity level (default: 0)
-  -m MODULES, --modules MODULES
-                        Specify comma separated list of modules to build a test for every module version.
-  -co {}, --collection {}
-                        Use user Lmod module collection whenbuilding test
+  -m Module Permutation Options, --modules Module Permutation Options
+                        Select a module name and build for every module version
+  -co Lmod Collection Name, --collection Lmod Collection Name
+                        Use user Lmod module collection when building test
   -mc COLLECTION-ID, --module-collection COLLECTION-ID
-                        Use internal buildtest module collection when building test.Run buildtest collection -l to
-                        view list of collection ids
+                        Use internal buildtest module collection when building test.
   -pms {first,all}, --parent-module-search {first,all}
-                        control how many parent module combination to search
+                        control how parent module combination is used when loading modules

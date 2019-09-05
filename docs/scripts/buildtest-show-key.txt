@@ -4,6 +4,7 @@ Keys                 | Description
 ----------------------------------------------------------------------------------------------------
 args                 | Input arguments to be passed to the executable
 compiler             | Specify a compiler that will be used for compiling the source program
+description          | Specify a brief description of test
 flags                | Specify the build flags for compiling the source program
 input                | Specify input file for the executable. This file must be in "src" directory
 ldflags              | Flags that will be passed to linkder (ld)

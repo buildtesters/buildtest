@@ -1,6 +1,7 @@
-buildtest build -c /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml -vv
+buildtest build -c compilers.helloworld.hello_lsf.yml -vv
 ________________________________________________________________________________
 compiler: gnu
+description: Hello World C example using GNU compiler for LSF
 flags: -O2
 lsf:
   M: 200M
@@ -13,23 +14,22 @@ source: hello.c
 testblock: singlesource
 
 ________________________________________________________________________________
-Key Check PASSED for file /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml
-Source File /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c exists!
+Key Check PASSED for file /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml
+Source File /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c exists!
 Programming Language Detected: c
 LSF Keys Passed
 Compiler Check Passed
-/tmp/ec2-user/buildtest/tests/suite/compilers/helloworld
-Writing Test: /tmp/ec2-user/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
-Changing permission to 755 for test: /tmp/ec2-user/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
+Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
+Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
 ________________________________________________________________________________
-#!/usr/bin/sh
+#!/bin/sh
 #BSUB -M 200M
 #BSUB -R sandybridge
 #BSUB -W 01:00
 #BSUB -n 4
 module purge 
-cd /tmp/ec2-user/buildtest/tests/suite/compilers/helloworld
-gcc -O2 -o hello.c.exe /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c 
-./hello.c.exe 
- rm ./hello.c.exe 
+cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
+gcc -O2 -o 0x7327ba7045fe8aeb6c36ee0650a65c56.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c 
+./0x7327ba7045fe8aeb6c36ee0650a65c56.exe 
+ rm ./0x7327ba7045fe8aeb6c36ee0650a65c56.exe 
 ________________________________________________________________________________

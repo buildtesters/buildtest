@@ -1,3 +1,5 @@
+.. _Managing_TestConfigs:
+
 Managing Test Configuration
 ===========================
 

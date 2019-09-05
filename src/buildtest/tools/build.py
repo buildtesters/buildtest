@@ -37,6 +37,7 @@ from buildtest.tools.buildsystem.singlesource import \
 from buildtest.tools.file import create_dir, is_dir, walk_tree
 from buildtest.tools.log import init_log
 from buildtest.tools.modules import find_modules
+from buildtest.tools.testconfigs import test_config_name_mapping
 from buildtest.test.binarytest import generate_binary_test
 
 
@@ -136,7 +137,9 @@ def func_build_subcmd(args):
                     builder.build()
 
     if args.config:
-        file = args.config
+        test_config_table = test_config_name_mapping()
+        file = test_config_table[args.config]
+        #file = args.config
         parent_dir = os.path.basename(os.path.dirname(file))
         args.suite = os.path.basename(os.path.dirname(os.path.dirname(file)))
         fd = open(file,'r')

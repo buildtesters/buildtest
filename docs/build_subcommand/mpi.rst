@@ -24,46 +24,24 @@ implementation.
     - shahzeb siddiqui shahzebmsiddiqui@gmail.com
     testblock: singlesource
 
-To build this program, load an MPI module before building. For this example, we have loaded
-the ``foss/2019a`` toolchain into our module environment. Next we save the modules
-into buildtest module collection and list the collection using ``buildtest module collection``
-command.
+To build this program, load an MPI module before building.
 
 ::
 
     $ ml
 
     Currently Loaded Modules:
-      1) GCCcore/8.2.0                   5) numactl/2.0.12-GCCcore-8.2.0      9) hwloc/1.11.11-GCCcore-8.2.0      13) FFTW/3.3.8-gompi-2019a
-      2) zlib/1.2.11-GCCcore-8.2.0       6) XZ/5.2.4-GCCcore-8.2.0           10) OpenMPI/3.1.3-GCC-8.2.0-2.31.1   14) ScaLAPACK/2.0.2-gompi-2019a-OpenBLAS-0.3.5
-      3) binutils/2.31.1-GCCcore-8.2.0   7) libxml2/2.9.8-GCCcore-8.2.0      11) OpenBLAS/0.3.5-GCC-8.2.0-2.31.1  15) foss/2019a
-      4) GCC/8.2.0-2.31.1                8) libpciaccess/0.14-GCCcore-8.2.0  12) gompi/2019a
+      1) eb/2019                        7) XZ/5.2.4-GCCcore-7.3.0
+      2) GCCcore/7.3.0                  8) libxml2/2.9.8-GCCcore-7.3.0
+      3) binutils/2.30-GCCcore-7.3.0    9) libpciaccess/0.14-GCCcore-7.3.0
+      4) GCC/7.3.0-2.30                10) hwloc/1.11.10-GCCcore-7.3.0
+      5) zlib/1.2.11-GCCcore-7.3.0     11) OpenMPI/3.1.1-GCC-7.3.0-2.30
+      6) numactl/2.0.11-GCCcore-7.3.0
 
-    $ buildtest module collection -a
-    {
-        "collection": [
-            [
-                "GCCcore/8.2.0",
-                "zlib/1.2.11-GCCcore-8.2.0",
-                "binutils/2.31.1-GCCcore-8.2.0",
-                "GCC/8.2.0-2.31.1",
-                "numactl/2.0.12-GCCcore-8.2.0",
-                "XZ/5.2.4-GCCcore-8.2.0",
-                "libxml2/2.9.8-GCCcore-8.2.0",
-                "libpciaccess/0.14-GCCcore-8.2.0",
-                "hwloc/1.11.11-GCCcore-8.2.0",
-                "OpenMPI/3.1.3-GCC-8.2.0-2.31.1",
-                "OpenBLAS/0.3.5-GCC-8.2.0-2.31.1",
-                "gompi/2019a",
-                "FFTW/3.3.8-gompi-2019a",
-                "ScaLAPACK/2.0.2-gompi-2019a-OpenBLAS-0.3.5",
-                "foss/2019a"
-            ]
-        ]
-    }
+Next we save the modules into buildtest module collection and list the module collection
+using ``buildtest module collection -a`` and  ``buildtest module collection -l`` commands:
 
-    $ buildtest module collection -l
-    0: ['GCCcore/8.2.0', 'zlib/1.2.11-GCCcore-8.2.0', 'binutils/2.31.1-GCCcore-8.2.0', 'GCC/8.2.0-2.31.1', 'numactl/2.0.12-GCCcore-8.2.0', 'XZ/5.2.4-GCCcore-8.2.0', 'libxml2/2.9.8-GCCcore-8.2.0', 'libpciaccess/0.14-GCCcore-8.2.0', 'hwloc/1.11.11-GCCcore-8.2.0', 'OpenMPI/3.1.3-GCC-8.2.0-2.31.1', 'OpenBLAS/0.3.5-GCC-8.2.0-2.31.1', 'gompi/2019a', 'FFTW/3.3.8-gompi-2019a', 'ScaLAPACK/2.0.2-gompi-2019a-OpenBLAS-0.3.5', 'foss/2019a']
+.. program-output:: cat scripts/buildtest-module-collection-add.txt scripts/buildtest-module-collection-list.txt
 
 Next we build the MPI test using the module collection ``0`` using the option ``-mc 0``
 
@@ -95,21 +73,16 @@ built with MPICH
     - shahzeb siddiqui shahzebmsiddiqui@gmail.com
     testblock: singlesource
 
-For this test, we are using ``gmpich/2017.08`` toolchain that consist of
-``MPICH/3.2.1-GCC-7.2.0-2.29`` and its deps built using easybuild. This module
-is added to module collection as index **1**.
+For this test, we are using the mpich module ``mpich/ge/gcc/64/3.2.1`` that is added in module
+collection at index **1**.
 
-::
-
-    $ buildtest module collection -l
-    0: ['GCCcore/8.2.0', 'zlib/1.2.11-GCCcore-8.2.0', 'binutils/2.31.1-GCCcore-8.2.0', 'GCC/8.2.0-2.31.1', 'numactl/2.0.12-GCCcore-8.2.0', 'XZ/5.2.4-GCCcore-8.2.0', 'libxml2/2.9.8-GCCcore-8.2.0', 'libpciaccess/0.14-GCCcore-8.2.0', 'hwloc/1.11.11-GCCcore-8.2.0', 'OpenMPI/3.1.3-GCC-8.2.0-2.31.1', 'OpenBLAS/0.3.5-GCC-8.2.0-2.31.1', 'gompi/2019a', 'FFTW/3.3.8-gompi-2019a', 'ScaLAPACK/2.0.2-gompi-2019a-OpenBLAS-0.3.5', 'foss/2019a']
-    1: ['GCCcore/7.2.0', 'zlib/1.2.11-GCCcore-7.2.0', 'binutils/2.29-GCCcore-7.2.0', 'GCC/7.2.0-2.29', 'MPICH/3.2.1-GCC-7.2.0-2.29', 'gmpich/2017.08']
+.. program-output:: cat scripts/buildtest-module-collection-list-v2.txt
 
 To build this test use the ``-mc 1`` to load the MPICH module into test script.
 
 .. program-output:: cat scripts/build-mpich-example1.txt
 
-Notice ``mpiexec.hydra`` is being invoked on the executable ``hello.c.exe``.
+Notice ``mpiexec.hydra`` is being invoked on the executable .
 
 Running MPI program with srun
 ------------------------------

@@ -207,7 +207,7 @@ Misc:
     parser_build.add_argument("-c",
                               "--config",
                               help="Specify test configuration",
-                              choices=yaml_choices,
+                              choices=test_config_choice,
                               metavar="TEST CONFIGURATION")
     parser_build.add_argument("-b",
                               "--binary",

@@ -20,27 +20,35 @@ tee $script_dir/build-openmp-suite.txt <<<"buildtest build -S openmp" |bash>>$sc
 tee $script_dir/run-openmp-suite.txt <<<"buildtest run -S openmp"| bash>>$script_dir/run-openmp-suite.txt
 
 
-tee $script_dir/build-single-configuration.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration.txt
+tee $script_dir/build-single-configuration.txt <<<"buildtest build -c compilers.helloworld.hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration.txt
 
-tee $script_dir/build-single-configuration-module.txt <<<"ml eb/2018; ml GCC; buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration-module.txt
+tee $script_dir/build-single-configuration-module.txt <<<"ml eb/2019; ml GCC; buildtest build -c compilers.helloworld.hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration-module.txt
 
-tee $script_dir/build-shell-csh.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml --shell csh" | bash >>$script_dir/build-shell-csh.txt
-tee $script_dir/build-shell-bash.txt <<<"BUILDTEST_SHELL=bash buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml" | bash >>$script_dir/build-shell-bash.txt
+tee $script_dir/build-shell-csh.txt <<<"buildtest build -c compilers.helloworld.hello_gnu.yml --shell csh" | bash >>$script_dir/build-shell-csh.txt
+tee $script_dir/build-shell-bash.txt <<<"BUILDTEST_SHELL=bash buildtest build -c compilers.helloworld.hello_gnu.yml" | bash >>$script_dir/build-shell-bash.txt
 
-tee $script_dir/build-lmod-collection.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml -co intelmpi -vv" | bash >>$script_dir/build-lmod-collection.txt
-tee $script_dir/build-module-permute.txt <<<" buildtest build -c  $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml --modules intel -vv" | bash >> $script_dir/build-module-permute.txt
-tee $script_dir/build-module-all-permute.txt <<<"BUILDTEST_PARENT_MODULE_SEARCH=all buildtest build -c  $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml --modules VMD -vv" | bash >> $script_dir/build-module-all-permute.txt
+tee $script_dir/build-lmod-collection.txt <<<"buildtest build -c compilers.helloworld.hello_intel_fortran.yml -co intelmpi -vv" | bash >>$script_dir/build-lmod-collection.txt
+tee $script_dir/build-module-permute.txt <<<" buildtest build -c  compilers.helloworld.hello_intel_fortran.yml --modules intel -vv" | bash >> $script_dir/build-module-permute.txt
+tee $script_dir/build-module-all-permute.txt <<<"BUILDTEST_PARENT_MODULE_SEARCH=all buildtest build -c  compilers.helloworld.hello_intel_fortran.yml --modules vmd -vv" | bash >> $script_dir/build-module-all-permute.txt
 
 # lsf example
-tee $script_dir/build-lsf-example.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml -vv""" | bash >>$script_dir/build-lsf-example.txt
+tee $script_dir/build-lsf-example.txt <<<"buildtest build -c compilers.helloworld.hello_lsf.yml -vv""" | bash >>$script_dir/build-lsf-example.txt
 # slurm example
-tee $script_dir/build-slurm-example.txt <<<"buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
+tee $script_dir/build-slurm-example.txt <<<"buildtest build -c compilers.helloworld.hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
+
+# module collection
+ml purge; ml eb/2019 OpenMPI;
+tee $script_dir/build-module-collection-add.txt <<<"buildtest module collection -a """ | bash >>$script_dir/buildtest-module-collection-add.txt
+tee $script_dir/build-module-collection-list.txt <<<"buildtest module collection -l """ | bash >>$script_dir/buildtest-module-collection-list.txt
+
+ml purge; ml shared mpich/ge/gcc/64/3.2.1; buildtest module collection -a
+tee $script_dir/build-module-collection-list-v2.txt <<<"buildtest module collection -l """ | bash >>$script_dir/buildtest-module-collection-list-v2.txt
 
 # MPI example
-tee $script_dir/build-openmpi-example1.txt <<<"buildtest build -mc 0 -vv -c $BUILDTEST_ROOT/toolkit/buildtest/suite/mpi/examples/hello.c.yml """ | bash >>$script_dir/build-openmpi-example1.txt
-tee $script_dir/build-openmpi-example2.txt <<<"buildtest build -mc 0 -vv -c $BUILDTEST_ROOT/toolkit/buildtest/suite/mpi/matrixmux/mm_mpi.f.yml """ | bash >>$script_dir/build-openmpi-example2.txt
-tee $script_dir/build-mpich-example1.txt <<<"buildtest build -mc 1 -vv -c $BUILDTEST_ROOT/toolkit/buildtest/suite/mpi/examples/hello.c.mpich.yml """ | bash >>$script_dir/build-mpich-example1.txt
-tee $script_dir/build-srun-example1.txt <<<"buildtest build -mc 0 -vv -c $BUILDTEST_ROOT/toolkit/buildtest/suite/mpi/examples/mpi_ping.c.slurm.yml """ | bash >>$script_dir/build-srun-example1.txt
+tee $script_dir/build-openmpi-example1.txt <<<"buildtest build -mc 0 -vv -c mpi.examples.hello.c.yml """ | bash >>$script_dir/build-openmpi-example1.txt
+tee $script_dir/build-openmpi-example2.txt <<<"buildtest build -mc 0 -vv -c mpi.matrixmux.mm_mpi.f.yml """ | bash >>$script_dir/build-openmpi-example2.txt
+tee $script_dir/build-mpich-example1.txt <<<"buildtest build -mc 1 -vv -c mpi.examples.hello.c.mpich.yml """ | bash >>$script_dir/build-mpich-example1.txt
+tee $script_dir/build-srun-example1.txt <<<"buildtest build -mc 0 -vv -c mpi.examples.mpi_ping.c.slurm.yml """ | bash >>$script_dir/build-srun-example1.txt
 # List Subcommand
 tee $script_dir/buildtest-list-help.txt <<<"buildtest list --help" | bash >> $script_dir/buildtest-list-help.txt
 tee $script_dir/buildtest-list-software.txt <<< "buildtest list --software" | bash >> $script_dir/buildtest-list-software.txt
@@ -62,8 +70,8 @@ tee $script_dir/buildtest-benchmark-help.txt <<<"buildtest benchmark --help" | b
 # module commands 
 tee $script_dir/buildtest-module-help.txt <<<"buildtest module --help" | bash >> $script_dir/buildtest-module-help.txt
 tee $script_dir/module-load.txt <<<"buildtest module loadtest" | bash >> $script_dir/module-load.txt
-tee $script_dir/module-diff.txt <<<"buildtest module --diff-trees /clust/app/easybuild/2018/commons/modules/all,/usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module-diff.txt
-tee $script_dir/module-diff-v2.txt <<< "buildtest module --diff-trees /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all,/clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all" | bash >> $script_dir/module-diff-v2.txt
+#tee $script_dir/module-diff.txt <<<"buildtest module --diff-trees /clust/app/easybuild/2018/commons/modules/all,/usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module-diff.txt
+#tee $script_dir/module-diff-v2.txt <<< "buildtest module --diff-trees /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all,/clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all" | bash >> $script_dir/module-diff-v2.txt
 tee $script_dir/easybuild-modules.txt <<< "buildtest module --easybuild" | bash >> $script_dir/easybuild-modules.txt
 
 
@@ -75,4 +83,4 @@ tee $script_dir/spack-all-modules.txt <<< "BUILDTEST_SPIDER_VIEW=all buildtest m
 tee $script_dir/module_tree_list.txt <<< "buildtest module tree -l" | bash >> $script_dir/module_tree_list.txt
 tee $script_dir/module_tree_add.txt <<< "buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_add.txt
 tee $script_dir/module_tree_rm.txt <<< "buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_rm.txt
-tee $script_dir/parent-module.txt <<< "buildtest module -d OpenMPI/2.0.1" | bash >> $script_dir/parent-module.txt
+#tee $script_dir/parent-module.txt <<< "buildtest module -d OpenMPI/2.0.1" | bash >> $script_dir/parent-module.txt

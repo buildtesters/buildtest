@@ -14,14 +14,12 @@ Test Configuration
 -------------------
 
 buildtest makes use of test configuration to generate the test script. This
-can be done by running ``buildtest build -c /path/to/configuration``
+can be done by running ``buildtest build -c <test-config>``.
 
-Shown below is an example.
+Shown below is an example run::
 
-::
-
-    $ buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml
-    Writing Test: /home/siddis14/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
+    $ buildtest build -c compilers.helloworld.hello_gnu.yml
+    Writing Test: /tmp/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
 
 
 buildtest has two levels of verbosity that can be set by using ``-v`` option.
@@ -32,12 +30,12 @@ buildtest will set the permission of test script to ``755``.
 
 ::
 
-    $ buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml -v
+    $ buildtest build -c compilers.helloworld.hello_gnu.yml -v
     Key Check PASSED for file /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml
     Programming Language Detected: c++
     Compiler Check Passed
-    Writing Test: /home/siddis14/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
-    Changing permission to 755 for test: /home/siddis14/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
+    Writing Test: /tmp/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
+    Changing permission to 755 for test: /tmp/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
 
 
 
@@ -45,34 +43,14 @@ You may specify additional level verbosity by ``-vv`` or specify ``-v -v``
 which will give additional output including the output of configuration file and test
 script.
 
-::
+.. program-output:: cat scripts/build-single-configuration.txt
 
-    $ buildtest build -c $BUILDTEST_ROOT/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml -v -v
-    ________________________________________________________________________________
-    compiler: gnu
-    flags: -O3
-    maintainer:
-    - shahzeb siddiqui shahzebmsiddiqui@gmail.com
-    source: hello.cpp
-    testblock: singlesource
+For a complete list of test configuration and names that can be passed to ``buildtest build -c <testconfig>`` run the
+following command::
 
-    ________________________________________________________________________________
-    Key Check PASSED for file /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml
-    Source File /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp exists!
-    Programming Language Detected: c++
-    Compiler Check Passed
-    Writing Test: /home/siddis14/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
-    Changing permission to 755 for test: /home/siddis14/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
-    ________________________________________________________________________________
-    #!/bin/sh
-    module purge
-    module load eb/2018
-    cd /home/siddis14/buildtest/suite/compilers/helloworld
-    g++ -O3 -o hello.cpp.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp
-    ./hello.cpp.exe
-    rm ./hello.cpp.exe
-    ________________________________________________________________________________
+    $ buildtest testconfigs list
 
+See :ref:`Managing_TestConfigs` for details regarding test configuration.
 
 Test Suites
 -------------

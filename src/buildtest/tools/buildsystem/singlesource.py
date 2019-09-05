@@ -275,7 +275,6 @@ class BuildTestBuilderSingleSource():
                                 self.test_suite,
                                 self.parent_dir)
 
-        print (test_dir)
         create_dir(test_dir)
 
         if module_collection:

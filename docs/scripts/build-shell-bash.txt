@@ -1,2 +1,2 @@
-BUILDTEST_SHELL=bash buildtest build -c /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml
+BUILDTEST_SHELL=bash buildtest build -c compilers.helloworld.hello_gnu.yml
 Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_gnu.yml.bash

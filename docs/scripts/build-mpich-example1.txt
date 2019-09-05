@@ -1,6 +1,7 @@
-buildtest build -mc 1 -vv -c /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/examples/hello.c.mpich.yml 
+buildtest build -mc 1 -vv -c mpi.examples.hello.c.mpich.yml 
 ________________________________________________________________________________
 compiler: gnu
+description: Hello World MPI Example using MPICH
 flags: -O2
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
@@ -11,19 +12,18 @@ source: hello.c
 testblock: singlesource
 
 ________________________________________________________________________________
-Key Check PASSED for file /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/examples/hello.c.mpich.yml
-Source File /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/examples/src/hello.c exists!
+Key Check PASSED for file /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/examples/hello.c.mpich.yml
+Source File /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/examples/src/hello.c exists!
 Programming Language Detected: c
 Compiler Check Passed
-/tmp/ec2-user/buildtest/tests/suite/mpi/examples
-Writing Test: /tmp/ec2-user/buildtest/tests/suite/mpi/examples/hello.c.mpich.yml.sh
-Changing permission to 755 for test: /tmp/ec2-user/buildtest/tests/suite/mpi/examples/hello.c.mpich.yml.sh
+Writing Test: /tmp/siddis14/buildtest/tests/suite/mpi/examples/hello.c.mpich.yml.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/mpi/examples/hello.c.mpich.yml.sh
 ________________________________________________________________________________
-#!/usr/bin/sh
+#!/bin/sh
 module purge 
-module load GCCcore/7.2.0 zlib/1.2.11-GCCcore-7.2.0 binutils/2.29-GCCcore-7.2.0 GCC/7.2.0-2.29 MPICH/3.2.1-GCC-7.2.0-2.29 gmpich/2017.08
-cd /tmp/ec2-user/buildtest/tests/suite/mpi/examples
-mpicc -O2 -o hello.c.exe /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/examples/src/hello.c 
-mpiexec.hydra -n 2 ./hello.c.exe 
- rm ./hello.c.exe 
+module load shared mpich/ge/gcc/64/3.2.1
+cd /tmp/siddis14/buildtest/tests/suite/mpi/examples
+mpicc -O2 -o 0xffef273ae5b1ba43cd15fbbd2437a8e1.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/examples/src/hello.c 
+mpiexec.hydra -n 2 ./0xffef273ae5b1ba43cd15fbbd2437a8e1.exe 
+ rm ./0xffef273ae5b1ba43cd15fbbd2437a8e1.exe 
 ________________________________________________________________________________

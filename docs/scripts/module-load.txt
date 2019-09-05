@@ -1,63 +1,84 @@
 buildtest module loadtest
-module load RHEL6-apps
-RUN: 1/18 STATUS: PASSED - Testing module: RHEL6-apps
+module load DefaultModules
+RUN: 1/25 STATUS: PASSED - Testing module: DefaultModules
 ________________________________________________________________________________
-module load cctsoft
-RUN: 2/18 STATUS: PASSED - Testing module: cctsoft
+module load cluster-tools-dell/8.1
+RUN: 2/25 STATUS: PASSED - Testing module: cluster-tools-dell/8.1
 ________________________________________________________________________________
-module load clinpharm
-RUN: 3/18 STATUS: PASSED - Testing module: clinpharm
+module load cluster-tools/8.1
+RUN: 3/25 STATUS: PASSED - Testing module: cluster-tools/8.1
 ________________________________________________________________________________
-module load deprecated
-RUN: 4/18 STATUS: PASSED - Testing module: deprecated
+module load cmd
+RUN: 4/25 STATUS: PASSED - Testing module: cmd
 ________________________________________________________________________________
-module load easybuild
-RUN: 5/18 STATUS: PASSED - Testing module: easybuild
+module load dot
+RUN: 5/25 STATUS: PASSED - Testing module: dot
 ________________________________________________________________________________
-module load eb/2017
-RUN: 6/18 STATUS: PASSED - Testing module: eb/2017
+module load eb/2019
+RUN: 6/25 STATUS: PASSED - Testing module: eb/2019
 ________________________________________________________________________________
-module load eb/2018
-RUN: 7/18 STATUS: PASSED - Testing module: eb/2018
+module load freeipmi/1.5.7
+RUN: 7/25 STATUS: PASSED - Testing module: freeipmi/1.5.7
 ________________________________________________________________________________
-module load ljmedchemsoft
-RUN: 8/18 STATUS: PASSED - Testing module: ljmedchemsoft
+module try-load medsci/2019.2;  module load gcc/5.4.0-gcc-4.8.5-edk7
+RUN: 8/25 STATUS: PASSED - Testing module: gcc/5.4.0-gcc-4.8.5-edk7
 ________________________________________________________________________________
-module load lmod/6.5.1
-RUN: 9/18 STATUS: PASSED - Testing module: lmod/6.5.1
+module try-load medsci/.2019.1;  module load gcc/6.5.0-gcc-4.8.5-awre
+RUN: 9/25 STATUS: PASSED - Testing module: gcc/6.5.0-gcc-4.8.5-awre
 ________________________________________________________________________________
-module load medsci
-RUN: 10/18 STATUS: PASSED - Testing module: medsci
+module load gcc/7.2.0
+RUN: 10/25 STATUS: PASSED - Testing module: gcc/7.2.0
 ________________________________________________________________________________
-module load omics
-RUN: 11/18 STATUS: PASSED - Testing module: omics
+module try-load medsci/.2019.1;  module load gcc/7.3.0-gcc-4.8.5-2bfp
+RUN: 11/25 STATUS: PASSED - Testing module: gcc/7.3.0-gcc-4.8.5-2bfp
 ________________________________________________________________________________
-module load pharmsci
-RUN: 12/18 STATUS: PASSED - Testing module: pharmsci
+module try-load medsci/2019.2;  module load gcc/7.4.0-gcc-4.8.5-gqja
+RUN: 12/25 STATUS: PASSED - Testing module: gcc/7.4.0-gcc-4.8.5-gqja
 ________________________________________________________________________________
-module load ru
-RUN: 13/18 STATUS: PASSED - Testing module: ru
+module try-load medsci/.2019.1;  module load gcc/8.2.0-gcc-4.8.5-53nw
+RUN: 13/25 STATUS: PASSED - Testing module: gcc/8.2.0-gcc-4.8.5-53nw
 ________________________________________________________________________________
-module load settarg/6.5.1
-RUN: 14/18 STATUS: PASSED - Testing module: settarg/6.5.1
+module load ipmitool/1.8.18
+RUN: 14/25 STATUS: PASSED - Testing module: ipmitool/1.8.18
 ________________________________________________________________________________
-module load siterestricted
-RUN: 15/18 STATUS: PASSED - Testing module: siterestricted
+module load lmod/7.7.14
+RUN: 15/25 STATUS: PASSED - Testing module: lmod/7.7.14
 ________________________________________________________________________________
-module load statistics
-RUN: 16/18 STATUS: PASSED - Testing module: statistics
+module load lua/5.3.4
+RUN: 16/25 STATUS: PASSED - Testing module: lua/5.3.4
 ________________________________________________________________________________
-module load use.own.eb/append
-RUN: 17/18 STATUS: PASSED - Testing module: use.own.eb/append
+module load medsci/.2019.1
+RUN: 17/25 STATUS: PASSED - Testing module: medsci/.2019.1
 ________________________________________________________________________________
-module load use.own.eb/prepend
-RUN: 18/18 STATUS: PASSED - Testing module: use.own.eb/prepend
+module load medsci/2019.2
+RUN: 18/25 STATUS: PASSED - Testing module: medsci/2019.2
+________________________________________________________________________________
+module load module-git
+RUN: 19/25 STATUS: PASSED - Testing module: module-git
+________________________________________________________________________________
+module load module-info
+RUN: 20/25 STATUS: FAILED - Testing module: module-info
+________________________________________________________________________________
+module load null
+RUN: 21/25 STATUS: PASSED - Testing module: null
+________________________________________________________________________________
+module load openldap
+RUN: 22/25 STATUS: PASSED - Testing module: openldap
+________________________________________________________________________________
+module load openmpi/mlnx/gcc/64/3.1.1rc1
+RUN: 23/25 STATUS: PASSED - Testing module: openmpi/mlnx/gcc/64/3.1.1rc1
+________________________________________________________________________________
+module load settarg/7.7.14
+RUN: 24/25 STATUS: PASSED - Testing module: settarg/7.7.14
+________________________________________________________________________________
+module load shared
+RUN: 25/25 STATUS: PASSED - Testing module: shared
 ________________________________________________________________________________
 Writing Results to /tmp/modules-load.out
 Writing Results to /tmp/modules-load.err
 ________________________________________________________________________________
                      Module Load Summary
-Module Trees:                            ['/nfs/grid/software/moduledomains', '/etc/modulefiles', '/usr/share/modulefiles', '/usr/share/lmod/lmod/modulefiles/Core']
-PASSED:                                  18
-FAILED:                                  0
+Module Trees:                            ['/usr/share/lmod/lmod/modulefiles/Core', '/gpfs/apps/modulestack', '/cm/local/modulefiles', '/etc/modulefiles', '/usr/share/modulefiles']
+PASSED:                                  24
+FAILED:                                  1
 ________________________________________________________________________________

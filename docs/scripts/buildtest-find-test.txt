@@ -1,36 +1,37 @@
 buildtest find -ft all
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_slurm.yml.slurm
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
 /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_gnu.yml.sh
 /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_args.c.yml.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_slurm.yml.slurm
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
 /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml.sh
 /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_gnu.yml.csh
 /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_gnu.yml.bash
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xbb23d23609a7a848b9ebe7ef002a9323.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x710d2b7cfdfb9a935b735f48330554ed.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x88ce320d3c7ed9da689eb4017b9bb8f5.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x361f018c8eee60f878f988be7aaee8cd.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xbe42206e12a730e3d397c6ee4dee83f8.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xc7eb5591c162974bb90c62b08a26f7d1.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x737e4ea256880ff1f5380bca5f2788ca.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xc80e042db904de9a3fa899d7e58ed78e.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x33ee0f531d623d52cde69680dd973ee3.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x973a918edc31a04c62638eb390bba18d.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x412dfac1afd2b8092e45330602c4f9d4.sh
-/tmp/siddis14/buildtest/tests/suite/openmp/matrixmultiplication/omp_mm.f.yml.sh
-/tmp/siddis14/buildtest/tests/suite/openmp/matrixmultiplication/omp_mm.c.yml.sh
-/tmp/siddis14/buildtest/tests/suite/openmp/workshare/omp_workshare2.c.yml.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x3f4bb390231b17763e111a7fabac988c.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x8e2ca5835055356049bef3c09b262681.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xaf4ddd7aa57627e263b1ef6118b76e5f.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xe3c499cea4a1f1187be181b164d5b4bc.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x578354eb33a303dd84dade5695b4c9e.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x4f7e22a9f26151d770c95bda43e9eed3.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x3bbc0790813b67cd6fb92af63dee0a0d.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xae8ee1664ec71eba9b9cd6708dd0d8e0.sh
+/tmp/siddis14/buildtest/tests/suite/openmp/reduction/omp_reduction.c.yml.sh
+/tmp/siddis14/buildtest/tests/suite/openmp/reduction/omp_reduction.f.yml.sh
+/tmp/siddis14/buildtest/tests/suite/openmp/hello/omp_hello.f.yml.sh
+/tmp/siddis14/buildtest/tests/suite/openmp/hello/omp_hello.c.yml.sh
 /tmp/siddis14/buildtest/tests/suite/openmp/workshare/omp_workshare1.c.yml.sh
+/tmp/siddis14/buildtest/tests/suite/openmp/workshare/omp_workshare2.c.yml.sh
 /tmp/siddis14/buildtest/tests/suite/openmp/workshare/omp_workshare1.f.yml.sh
 /tmp/siddis14/buildtest/tests/suite/openmp/workshare/omp_workshare2.f.yml.sh
-/tmp/siddis14/buildtest/tests/suite/openmp/dotprod/omp_dotprod.c.yml.sh
-/tmp/siddis14/buildtest/tests/suite/openmp/dotprod/omp_dotprod.f.yml.sh
-/tmp/siddis14/buildtest/tests/suite/openmp/dotprod/omp_dotprod_serial.c.yml.sh
 /tmp/siddis14/buildtest/tests/suite/openmp/dotprod/omp_dotprod_serial.f.yml.sh
-/tmp/siddis14/buildtest/tests/suite/openmp/hello/omp_hello.c.yml.sh
-/tmp/siddis14/buildtest/tests/suite/openmp/hello/omp_hello.f.yml.sh
-/tmp/siddis14/buildtest/tests/suite/openmp/reduction/omp_reduction.f.yml.sh
-/tmp/siddis14/buildtest/tests/suite/openmp/reduction/omp_reduction.c.yml.sh
+/tmp/siddis14/buildtest/tests/suite/openmp/dotprod/omp_dotprod.c.yml.sh
+/tmp/siddis14/buildtest/tests/suite/openmp/dotprod/omp_dotprod_serial.c.yml.sh
+/tmp/siddis14/buildtest/tests/suite/openmp/dotprod/omp_dotprod.f.yml.sh
+/tmp/siddis14/buildtest/tests/suite/openmp/matrixmultiplication/omp_mm.c.yml.sh
+/tmp/siddis14/buildtest/tests/suite/openmp/matrixmultiplication/omp_mm.f.yml.sh
+/tmp/siddis14/buildtest/tests/suite/mpi/examples/hello.c.yml.sh
+/tmp/siddis14/buildtest/tests/suite/mpi/examples/hello.c.mpich.yml.sh
+/tmp/siddis14/buildtest/tests/suite/mpi/examples/mpi_ping.c.slurm.yml.slurm
+/tmp/siddis14/buildtest/tests/suite/mpi/matrixmux/mm_mpi.f.yml.sh
 /tmp/siddis14/buildtest/tests/system/coreutils/_usr_bin_[.sh
 /tmp/siddis14/buildtest/tests/system/coreutils/_usr_bin_arch.sh
 /tmp/siddis14/buildtest/tests/system/coreutils/_usr_bin_base64.sh
@@ -133,6 +134,6 @@ buildtest find -ft all
 /tmp/siddis14/buildtest/tests/system/coreutils/_usr_bin_whoami.sh
 /tmp/siddis14/buildtest/tests/system/coreutils/_usr_bin_yes.sh
 /tmp/siddis14/buildtest/tests/system/coreutils/_usr_sbin_chroot.sh
-134 Test scripts found in /tmp/siddis14/buildtest/tests
+135 Test scripts found in /tmp/siddis14/buildtest/tests
 /tmp/siddis14/buildtest/tests/system/coreutils/_usr_bin_install.sh
-134 Test found with name all in its filename
+135 Test found with name all in its filename

@@ -1,5 +1,5 @@
 buildtest module --help
-usage: buildtest [options] [COMMANDS] module [-h] [--diff-trees DIFF_TREES] [-eb] [--spack]
+usage: buildtest [options] [COMMANDS] module [-h] [--diff-trees DIFF_TREES] [-eb] [--spack] [-d AVAILABLE-MODULES]
                                              {loadtest,tree,collection} ...
 
 optional arguments:
@@ -8,6 +8,8 @@ optional arguments:
                         Show difference between two module trees
   -eb, --easybuild      reports modules that are built by easybuild
   --spack               reports modules that are built by spack
+  -d AVAILABLE-MODULES, --module-deps AVAILABLE-MODULES
+                        retrieve all modules that module is depended on
 
 subcommands:
   valid subcommands

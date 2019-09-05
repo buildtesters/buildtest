@@ -2,26 +2,36 @@ buildtest list --modules
 
     Full Module Name                     |      ModuleFile Path
 -----------------------------------------|----------------------------- 
-[32mRHEL6-apps                               |	/nfs/grid/software/moduledomains/RHEL6-apps.lua[0m
-cctsoft                                  |	/nfs/grid/software/moduledomains/cctsoft
-clinpharm                                |	/nfs/grid/software/moduledomains/clinpharm
-deprecated                               |	/nfs/grid/software/moduledomains/deprecated
-easybuild                                |	/nfs/grid/software/moduledomains/easybuild
-[32meb/2017                                  |	/nfs/grid/software/moduledomains/eb/2017.lua[0m
-[32meb/2018                                  |	/nfs/grid/software/moduledomains/eb/2018.lua[0m
-ljmedchemsoft                            |	/nfs/grid/software/moduledomains/ljmedchemsoft
-[32mlmod/6.5.1                               |	/usr/share/lmod/lmod/modulefiles/Core/lmod/6.5.1.lua[0m
-medsci                                   |	/nfs/grid/software/moduledomains/medsci
-omics                                    |	/nfs/grid/software/moduledomains/omics
-pharmsci                                 |	/nfs/grid/software/moduledomains/pharmsci
-ru                                       |	/nfs/grid/software/moduledomains/ru
-[32msettarg/6.5.1                            |	/usr/share/lmod/lmod/modulefiles/Core/settarg/6.5.1.lua[0m
-siterestricted                           |	/nfs/grid/software/moduledomains/siterestricted
-statistics                               |	/nfs/grid/software/moduledomains/statistics
-use.own.eb/append                        |	/nfs/grid/software/moduledomains/use.own.eb/append
-use.own.eb/prepend                       |	/nfs/grid/software/moduledomains/use.own.eb/prepend
+[32mDefaultModules                           |	/usr/share/modulefiles/DefaultModules.lua[0m
+cluster-tools/8.1                        |	/cm/local/modulefiles/cluster-tools/8.1
+cluster-tools-dell/8.1                   |	/cm/local/modulefiles/cluster-tools-dell/8.1
+cmd                                      |	/cm/local/modulefiles/cmd
+dot                                      |	/cm/local/modulefiles/dot
+[32meb/2019                                  |	/gpfs/apps/modulestack/eb/2019.lua[0m
+freeipmi/1.5.7                           |	/cm/local/modulefiles/freeipmi/1.5.7
+gcc/8.2.0-gcc-4.8.5-53nw                 |	/gpfs/apps/medsci/stacks/1/modules/spack/gcc/8.2.0-gcc-4.8.5-53nw
+gcc/6.5.0-gcc-4.8.5-awre                 |	/gpfs/apps/medsci/stacks/1/modules/spack/gcc/6.5.0-gcc-4.8.5-awre
+gcc/7.3.0-gcc-4.8.5-2bfp                 |	/gpfs/apps/medsci/stacks/1/modules/spack/gcc/7.3.0-gcc-4.8.5-2bfp
+gcc/5.4.0-gcc-4.8.5-edk7                 |	/gpfs/apps/medsci/stacks/2/modules/spacktools/gcc/5.4.0-gcc-4.8.5-edk7
+gcc/8.2.0-gcc-4.8.5-53nw                 |	/gpfs/apps/medsci/stacks/2/modules/spacktools/gcc/8.2.0-gcc-4.8.5-53nw
+gcc/5.4.0-gcc-4.8.5-edk7                 |	/gpfs/apps/medsci/stacks/1/modules/spack/gcc/5.4.0-gcc-4.8.5-edk7
+gcc/6.5.0-gcc-4.8.5-awre                 |	/gpfs/apps/medsci/stacks/2/modules/spacktools/gcc/6.5.0-gcc-4.8.5-awre
+gcc/7.4.0-gcc-4.8.5-gqja                 |	/gpfs/apps/medsci/stacks/2/modules/spacktools/gcc/7.4.0-gcc-4.8.5-gqja
+gcc/7.2.0                                |	/cm/local/modulefiles/gcc/7.2.0
+ipmitool/1.8.18                          |	/cm/local/modulefiles/ipmitool/1.8.18
+[32mlmod/7.7.14                              |	/usr/share/lmod/lmod/modulefiles/Core/lmod/7.7.14.lua[0m
+lua/5.3.4                                |	/cm/local/modulefiles/lua/5.3.4
+[32mmedsci/.2019.1                           |	/gpfs/apps/modulestack/medsci/.2019.1.lua[0m
+[32mmedsci/2019.2                            |	/gpfs/apps/modulestack/medsci/2019.2.lua[0m
+module-git                               |	/cm/local/modulefiles/module-git
+module-info                              |	/cm/local/modulefiles/module-info
+null                                     |	/cm/local/modulefiles/null
+openldap                                 |	/cm/local/modulefiles/openldap
+openmpi/mlnx/gcc/64/3.1.1rc1             |	/cm/local/modulefiles/openmpi/mlnx/gcc/64/3.1.1rc1
+[32msettarg/7.7.14                           |	/usr/share/lmod/lmod/modulefiles/Core/settarg/7.7.14.lua[0m
+shared                                   |	/cm/local/modulefiles/shared
 
 
-Total Software Modules: 18
-[32mTotal LUA Modules: 5[0m
-Total non LUA Modules: 13
+Total Software Modules: 28
+[32mTotal LUA Modules: 6[0m
+Total non LUA Modules: 22

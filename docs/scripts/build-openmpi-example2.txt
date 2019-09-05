@@ -1,6 +1,7 @@
-buildtest build -mc 0 -vv -c /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/matrixmux/mm_mpi.f.yml 
+buildtest build -mc 0 -vv -c mpi.matrixmux.mm_mpi.f.yml 
 ________________________________________________________________________________
 compiler: gnu
+description: MPI Matrix Multiplication Fortran example using OpenMPI
 flags: -O2
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
@@ -14,19 +15,18 @@ source: mpi_mm.f
 testblock: singlesource
 
 ________________________________________________________________________________
-Key Check PASSED for file /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/matrixmux/mm_mpi.f.yml
-Source File /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/matrixmux/src/mpi_mm.f exists!
+Key Check PASSED for file /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/matrixmux/mm_mpi.f.yml
+Source File /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/matrixmux/src/mpi_mm.f exists!
 Programming Language Detected: fortran
 Compiler Check Passed
-/tmp/ec2-user/buildtest/tests/suite/mpi/matrixmux
-Writing Test: /tmp/ec2-user/buildtest/tests/suite/mpi/matrixmux/mm_mpi.f.yml.sh
-Changing permission to 755 for test: /tmp/ec2-user/buildtest/tests/suite/mpi/matrixmux/mm_mpi.f.yml.sh
+Writing Test: /tmp/siddis14/buildtest/tests/suite/mpi/matrixmux/mm_mpi.f.yml.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/mpi/matrixmux/mm_mpi.f.yml.sh
 ________________________________________________________________________________
-#!/usr/bin/sh
+#!/bin/sh
 module purge 
-module load GCCcore/8.2.0 zlib/1.2.11-GCCcore-8.2.0 binutils/2.31.1-GCCcore-8.2.0 GCC/8.2.0-2.31.1 numactl/2.0.12-GCCcore-8.2.0 XZ/5.2.4-GCCcore-8.2.0 libxml2/2.9.8-GCCcore-8.2.0 libpciaccess/0.14-GCCcore-8.2.0 hwloc/1.11.11-GCCcore-8.2.0 OpenMPI/3.1.3-GCC-8.2.0-2.31.1 OpenBLAS/0.3.5-GCC-8.2.0-2.31.1 gompi/2019a FFTW/3.3.8-gompi-2019a ScaLAPACK/2.0.2-gompi-2019a-OpenBLAS-0.3.5 foss/2019a
-cd /tmp/ec2-user/buildtest/tests/suite/mpi/matrixmux
-mpifort -O2 -o mpi_mm.f.exe /home/ec2-user/PycharmProjects/buildtest-framework/toolkit/buildtest/suite/mpi/matrixmux/src/mpi_mm.f 
-orterun -n 2 -npernode 2 --report-bindings  --display-map  ./mpi_mm.f.exe 
- rm ./mpi_mm.f.exe 
+module load eb/2019 GCCcore/7.3.0 binutils/2.30-GCCcore-7.3.0 GCC/7.3.0-2.30 zlib/1.2.11-GCCcore-7.3.0 numactl/2.0.11-GCCcore-7.3.0 XZ/5.2.4-GCCcore-7.3.0 libxml2/2.9.8-GCCcore-7.3.0 libpciaccess/0.14-GCCcore-7.3.0 hwloc/1.11.10-GCCcore-7.3.0 OpenMPI/3.1.1-GCC-7.3.0-2.30
+cd /tmp/siddis14/buildtest/tests/suite/mpi/matrixmux
+mpifort -O2 -o 0xdca5da025c73942d135ed3c92802e542.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/matrixmux/src/mpi_mm.f 
+orterun -n 2 -npernode 2 --report-bindings  --display-map  ./0xdca5da025c73942d135ed3c92802e542.exe 
+ rm ./0xdca5da025c73942d135ed3c92802e542.exe 
 ________________________________________________________________________________

@@ -1,4 +1,4 @@
-buildtest build -c /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml -co intelmpi -vv
+buildtest build -c compilers.helloworld.hello_intel_fortran.yml -co intelmpi -vv
 ________________________________________________________________________________
 compiler: intel
 flags: -O3
@@ -8,17 +8,18 @@ source: hello.f90
 testblock: singlesource
 
 ________________________________________________________________________________
-Key Check PASSED for file /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml
-Source File /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 exists!
+Key Check PASSED for file /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml
+Source File /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 exists!
 Programming Language Detected: fortran
 Compiler Check Passed
 Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml.sh
 Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml.sh
 ________________________________________________________________________________
 #!/bin/sh
+module purge 
 module restore intelmpi
 cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
-./hello.f90.exe 
- rm ./hello.f90.exe 
+ifort -O3 -o 0x5a34e13d7b6938431bd2ae176157d6bb.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
+./0x5a34e13d7b6938431bd2ae176157d6bb.exe 
+ rm ./0x5a34e13d7b6938431bd2ae176157d6bb.exe 
 ________________________________________________________________________________

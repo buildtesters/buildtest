@@ -1,20 +1,23 @@
 buildtest list --software
-RHEL6-apps
-cctsoft
-clinpharm
-deprecated
-easybuild
+DefaultModules
+cluster-tools
+cluster-tools-dell
+cmd
+dot
 eb
-ljmedchemsoft
+freeipmi
+gcc
+ipmitool
 lmod
+lua
 medsci
-omics
-pharmsci
-ru
+module-git
+module-info
+null
+openldap
+openmpi/mlnx/gcc/64
 settarg
-siterestricted
-statistics
-use.own.eb
+shared
 
 
-Total Software Packages:  16
+Total Software Packages:  19

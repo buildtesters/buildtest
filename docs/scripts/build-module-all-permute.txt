@@ -1,12 +1,11 @@
-BUILDTEST_PARENT_MODULE_SEARCH=all buildtest build -c  /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml --modules VMD -vv
+BUILDTEST_PARENT_MODULE_SEARCH=all buildtest build -c  compilers.helloworld.hello_intel_fortran.yml --modules vmd -vv
+vmd
 Module Permutation Detected.
-Each test will be built with 4 module permutations
+Each test will be built with 2 module permutations
 Module Permutation List
 __________________________________________________
-module load eb/2017 icc/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
-module load eb/2017 ifort/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
-module load medsci hpc/eb-2017-core icc/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
-module load medsci hpc/eb-2017-core ifort/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
+module load medsci/.2019.1 vmd/1.9.4
+module load medsci/2019.2 vmd/1.9.4
 ________________________________________________________________________________
 compiler: intel
 flags: -O3
@@ -16,48 +15,30 @@ source: hello.f90
 testblock: singlesource
 
 ________________________________________________________________________________
-Key Check PASSED for file /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml
-Source File /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 exists!
+Key Check PASSED for file /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml
+Source File /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 exists!
 Programming Language Detected: fortran
 Compiler Check Passed
-Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xc80e042db904de9a3fa899d7e58ed78e.sh
-Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xc80e042db904de9a3fa899d7e58ed78e.sh
+Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x3bbc0790813b67cd6fb92af63dee0a0d.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x3bbc0790813b67cd6fb92af63dee0a0d.sh
 ________________________________________________________________________________
 #!/bin/sh
-module load eb/2017 icc/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
+module purge 
+module load medsci/.2019.1 vmd/1.9.4
 cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
-./hello.f90.exe 
- rm ./hello.f90.exe 
+ifort -O3 -o 0x21b789491f05325be3c3e3b50050d717.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
+./0x21b789491f05325be3c3e3b50050d717.exe 
+ rm ./0x21b789491f05325be3c3e3b50050d717.exe 
 ________________________________________________________________________________
-Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x33ee0f531d623d52cde69680dd973ee3.sh
-Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x33ee0f531d623d52cde69680dd973ee3.sh
+Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xae8ee1664ec71eba9b9cd6708dd0d8e0.sh
+Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xae8ee1664ec71eba9b9cd6708dd0d8e0.sh
 ________________________________________________________________________________
 #!/bin/sh
-module load eb/2017 ifort/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
+module purge 
+module load medsci/2019.2 vmd/1.9.4
 cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
-./hello.f90.exe 
- rm ./hello.f90.exe 
+ifort -O3 -o 0x21b789491f05325be3c3e3b50050d717.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
+./0x21b789491f05325be3c3e3b50050d717.exe 
+ rm ./0x21b789491f05325be3c3e3b50050d717.exe 
 ________________________________________________________________________________
-Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x973a918edc31a04c62638eb390bba18d.sh
-Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x973a918edc31a04c62638eb390bba18d.sh
-________________________________________________________________________________
-#!/bin/sh
-module load medsci hpc/eb-2017-core icc/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
-cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
-./hello.f90.exe 
- rm ./hello.f90.exe 
-________________________________________________________________________________
-Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x412dfac1afd2b8092e45330602c4f9d4.sh
-Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x412dfac1afd2b8092e45330602c4f9d4.sh
-________________________________________________________________________________
-#!/bin/sh
-module load medsci hpc/eb-2017-core ifort/.2017.1.132-GCC-5.4.0-2.27 impi/2017.1.132 VMD/1.9.3-Python-2.7.12
-cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-ifort -O3 -o hello.f90.exe /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.f90 
-./hello.f90.exe 
- rm ./hello.f90.exe 
-________________________________________________________________________________
-Writing 4 tests for /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml
+Writing 2 tests for /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_intel_fortran.yml
