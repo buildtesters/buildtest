@@ -20,6 +20,10 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+"""
+
+This file implements methods on module collection that is invoked by "buildtest module collection"
+"""
 import os
 import subprocess
 import sys
@@ -28,11 +32,14 @@ import json
 from buildtest.tools.file import create_dir, create_file
 
 def func_collection_subcmd(args):
-
+    """Entry point for buildtest module collection"""
+    print (args)
     if args.add:
         add_collection()
     if args.list:
         list_collection()
+    if args.remove is not None:
+        remove_collection(args.remove)
 
 def add_collection():
     """Save modules as a module collection in a json file """
@@ -60,6 +67,24 @@ def add_collection():
         json.dump(content,fd,indent=4)
         print ("\n")
         print(f"Updating collection file: {fname}")
+
+def remove_collection(index):
+    """Remove a module collection"""
+    fname = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "default.json")
+    fd = open(fname,"r")
+    content = json.load(fd)
+    fd.close()
+
+    fd = open(fname, "w")
+    print (f"Removing Collection Index: {index}")
+    print (content["collection"][index])
+
+    del content["collection"][index]
+    print(f"Updating collection file: {fname}")
+    print ("\n")
+    json.dump(content,fd,indent=4)
+    json.dump(content, sys.stdout, indent=4)
+    fd.close()
 
 def list_collection():
     """List module collections."""

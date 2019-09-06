@@ -75,14 +75,14 @@ def func_build_subcmd(args):
     if args.modules:
         module_cmd_list = find_modules(args.modules)
 
-        if args.verbose >= 1:
-            print("Module Permutation Detected.")
-            print(f"Each test will be built with {len(module_cmd_list)} "
-                  f"module permutations")
-        if args.verbose >= 2:
-            print("Module Permutation List")
-            print ("{:_<50}".format(""))
-            [print(x) for x in module_cmd_list]
+
+        print("Module Permutation Detected.")
+        print(f"Each test will be built with {len(module_cmd_list)} "
+              f"module permutations")
+
+        print("Module Permutation List")
+        print ("{:_<50}".format(""))
+        [print(x) for x in module_cmd_list]
 
     #when -mc is specified, get module load command from internal module
     # collection

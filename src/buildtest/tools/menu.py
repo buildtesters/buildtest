@@ -332,6 +332,12 @@ Misc:
                                    "--add",
                                    action="store_true",
                                    help="add a module collection")
+    parser_collection.add_argument("-r",
+                                   "--remove",
+                                   type=int,
+                                   choices=collection_len,
+                                   metavar="Module Collection Index",
+                                   help="remove a module collection")
 
     parser_moduleload.set_defaults(func=module_load_test)
     parser_module_tree.set_defaults(func=func_module_tree_subcmd)
