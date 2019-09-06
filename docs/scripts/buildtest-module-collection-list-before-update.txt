@@ -1,0 +1,3 @@
+buildtest module collection -l 
+0: ['shared', 'mpich/ge/gcc/64/3.2.1']
+1: ['DefaultModules', 'shared', 'slurm/17.11.8', 'cmd']

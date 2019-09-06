@@ -38,12 +38,18 @@ tee $script_dir/build-slurm-example.txt <<<"buildtest build -c compilers.hellowo
 
 # module collection
 ml purge; ml eb/2019 OpenMPI;
-tee $script_dir/build-module-collection-add.txt <<<"buildtest module collection -a """ | bash >>$script_dir/buildtest-module-collection-add.txt
-tee $script_dir/build-module-collection-list.txt <<<"buildtest module collection -l """ | bash >>$script_dir/buildtest-module-collection-list.txt
+tee $script_dir/buildtest-module-collection-add.txt <<<"buildtest module collection -a """ | bash >>$script_dir/buildtest-module-collection-add.txt
+tee $script_dir/buildtest-module-collection-list.txt <<<"buildtest module collection -l """ | bash >>$script_dir/buildtest-module-collection-list.txt
 
 ml purge; ml shared mpich/ge/gcc/64/3.2.1; buildtest module collection -a
-tee $script_dir/build-module-collection-list-v2.txt <<<"buildtest module collection -l """ | bash >>$script_dir/buildtest-module-collection-list-v2.txt
+tee $script_dir/buildtest-module-collection-list-v2.txt <<<"buildtest module collection -l """ | bash >>$script_dir/buildtest-module-collection-list-v2.txt
 
+ml purge; ml DefaultModules shared cmd; buildtest module collection -a
+tee $script_dir/buildtest-module-collection-remove.txt <<<"buildtest module collection -r 0 """ | bash >>$script_dir/buildtest-module-collection-remove.txt
+
+ml purge; ml DefaultModules shared gcc;
+tee $script_dir/buildtest-module-collection-list-before-update.txt <<<"buildtest module collection -l """ | bash >>$script_dir/buildtest-module-collection-list-before-update.txt
+tee $script_dir/buildtest-module-collection-update.txt <<<"buildtest module collection -u 1 """ | bash >>$script_dir/buildtest-module-collection-update.txt
 # MPI example
 tee $script_dir/build-openmpi-example1.txt <<<"buildtest build -mc 0 -vv -c mpi.examples.hello.c.yml """ | bash >>$script_dir/build-openmpi-example1.txt
 tee $script_dir/build-openmpi-example2.txt <<<"buildtest build -mc 0 -vv -c mpi.matrixmux.mm_mpi.f.yml """ | bash >>$script_dir/build-openmpi-example2.txt

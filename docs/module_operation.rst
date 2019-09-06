@@ -66,9 +66,84 @@ environment variable or just run as follows::
 
 This will test all modules retrieved by spider utility.
 
+Module Collection Operation (``buildtest module collection``)
+-------------------------------------------------------------
 
-Module Trees Operation
------------------------
+buildtest keeps track of its own module collection which is stored in
+``BUILDTEST_ROOT/vars/default.json``. This file is automatically maintained
+by buildtest when using ``buildtest module collection`` commands.
+
+buildtest supports adding, removing, updating and listing module collection.
+This is synonymous to using user collection from Lmod (i.e ``module save <collection>``).
+
+Adding a module collection (``buildtest module collection -a``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To add a module collection, just load modules in your shell environment and
+run the following::
+
+    $ buildtest module collection -a
+
+Shown below is an example output
+
+.. program-output:: cat scripts/buildtest-module-collection-add.txt
+
+Once modules are added, you may build a test using a module collection using the
+option ``buildtest build --module-collection <ID>``. The <ID> is the index number to reference
+the module collection since there can be more than one module collection.
+
+
+List all module collection (``buildtest module collection -l``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+buildtest can report a list of all module collections that is easy to interpret
+as pose to reading a json file. To get a list of all module collection run the following::
+
+    $ buildtest module collection -l
+
+Shown below is an example output
+
+.. program-output:: cat scripts/buildtest-module-collection-list.txt
+
+
+Removing a module collection (``buildtest module collection -r <ID>``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To remove a module collection, you will need to specify the index number to the ``-r`` option.
+One can check the module collection index by listing module collection using **buildtest module collection -l**.
+
+In this example we will remove module collection **0** as shown below.
+
+.. program-output:: cat scripts/buildtest-module-collection-remove.txt
+
+buildtest will remove the index and update the json file. Note all existing module collection
+will update their collection index depending what index number was removed.
+
+Updating a module collection (``buildtest module collection -u <ID>``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to update an existing module collection, just load the modules of interest in
+your user environment and buildtest will override them. To update a module collection you will
+need the index number of module collection and use the ``-u <INDEX>`` to update the module collection.
+
+Shown below is a listing of module collection and we would like to update index 1 by replacing module ``cmd``
+with ``gcc`` module. Shown below is our list of module collections.
+
+.. program-output:: cat scripts/buildtest-module-collection-list-before-update.txt
+
+To perform the update we have the following active modules::
+
+    $ module list
+
+    Currently Loaded Modules:
+      1) DefaultModules   2) shared   3) slurm/17.11.8   4) gcc/7.2.0
+
+Now we are ready to update the module collection as shown below
+
+.. program-output:: cat scripts/buildtest-module-collection-update.txt
+
+Module Trees Operation (``buildtest module tree``)
+---------------------------------------------------
 
 buildtest supports adding, removing and listing module trees. Internally, buildtest
 is modifying BUILDTEST_MODULEPATH which is synonymous to MODULEPATH though,

@@ -1,0 +1,21 @@
+buildtest module collection -u 1 
+Updating Collection Index: 1
+Old Modules:  ['DefaultModules', 'shared', 'slurm/17.11.8', 'cmd']
+New Modules:  ['DefaultModules', 'shared', 'slurm/17.11.8', 'gcc/7.2.0']
+Updating collection file: /gpfs/home/siddis14/buildtest-framework/var/default.json
+
+
+{
+    "collection": [
+        [
+            "shared",
+            "mpich/ge/gcc/64/3.2.1"
+        ],
+        [
+            "DefaultModules",
+            "shared",
+            "slurm/17.11.8",
+            "gcc/7.2.0"
+        ]
+    ]
+}
