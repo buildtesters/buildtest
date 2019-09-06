@@ -33,11 +33,13 @@ from buildtest.tools.file import create_dir, create_file
 
 def func_collection_subcmd(args):
     """Entry point for buildtest module collection"""
-    print (args)
+
     if args.add:
         add_collection()
     if args.list:
         list_collection()
+    if args.update is not None:
+        update_collection(args.update)
     if args.remove is not None:
         remove_collection(args.remove)
 
@@ -77,7 +79,7 @@ def remove_collection(index):
 
     fd = open(fname, "w")
     print (f"Removing Collection Index: {index}")
-    print (content["collection"][index])
+    print ("Modules to be removed:", content["collection"][index])
 
     del content["collection"][index]
     print(f"Updating collection file: {fname}")
@@ -86,6 +88,31 @@ def remove_collection(index):
     json.dump(content, sys.stdout, indent=4)
     fd.close()
 
+def update_collection(index):
+    """Update a module collection with active modules """
+    fname = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "default.json")
+    fd = open(fname,"r")
+    content = json.load(fd)
+    fd.close()
+
+    cmd = "module -t list"
+    out = subprocess.getoutput(cmd)
+    if out == "No modules loaded":
+        modules = []
+    else:
+        modules = out.split()
+    fd = open(fname, "w")
+    print (f"Updating Collection Index: {index}")
+    print ("Old Modules: ", content["collection"][index])
+    content["collection"][index] = modules
+    print ("New Modules: ", content["collection"][index])
+
+
+    print(f"Updating collection file: {fname}")
+    print ("\n")
+    json.dump(content,fd,indent=4)
+    json.dump(content, sys.stdout, indent=4)
+    fd.close()
 def list_collection():
     """List module collections."""
     fname = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","default.json")
