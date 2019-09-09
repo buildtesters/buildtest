@@ -31,7 +31,7 @@ import subprocess
 import yaml
 
 from buildtest.tools.config import config_opts
-from buildtest.tools.collection import get_buildtest_module_collection
+from buildtest.tools.modulesystem.collection import get_buildtest_module_collection
 from buildtest.tools.buildsystem.singlesource import \
     BuildTestBuilderSingleSource
 from buildtest.tools.file import create_dir, is_dir, walk_tree

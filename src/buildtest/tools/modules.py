@@ -41,7 +41,7 @@ import subprocess
 import yaml
 from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import string_in_file, is_dir
-
+from buildtest.tools.modulesystem.tree import module_tree_add,module_tree_rm, module_tree_set
 
 def func_module_subcmd(args):
     """ entry point for buildtest module subcommand """
@@ -68,6 +68,9 @@ def func_module_tree_subcmd(args):
 
     if args.rm:
         module_tree_rm(args.rm)
+
+    if args.set:
+        module_tree_set(args.set)
 
 class BuildTestModule():
     def __init__(self):
@@ -278,46 +281,6 @@ def get_module_list_by_tree(mod_tree):
 
     return modulefiles
 
-def module_tree_add(tree_list):
-    """adding a module tree to BUILDTEST_MODULEPATH in configuration file"""
-
-    fd = open(BUILDTEST_CONFIG_FILE, "r")
-    content = yaml.safe_load(fd)
-    fd.close()
-
-    for tree in tree_list:
-        is_dir(tree)
-        content["BUILDTEST_MODULEPATH"].append(tree)
-
-    # converting to set to avoid adding duplicate entries
-    module_tree_set = set(content["BUILDTEST_MODULEPATH"])
-    module_tree_set.add(tree)
-
-    content["BUILDTEST_MODULEPATH"] = list(module_tree_set)
-
-    fd = open(BUILDTEST_CONFIG_FILE, "w")
-    yaml.dump(content, fd, default_flow_style=False)
-    fd.close()
-
-    print(f"Adding module tree: {tree_list}")
-    print(f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
-
-def module_tree_rm(tree_list):
-    """ remove a module tree from BUILDTEST_MODULEPATH in configuration file"""
-
-    fd = open(BUILDTEST_CONFIG_FILE,"r")
-    content = yaml.safe_load(fd)
-    for tree in tree_list:
-        if tree in content["BUILDTEST_MODULEPATH"]:
-            content["BUILDTEST_MODULEPATH"].remove(tree)
-
-    fd.close()
-
-    fd = open(BUILDTEST_CONFIG_FILE,"w")
-    yaml.dump(content,fd,default_flow_style=False)
-    fd.close()
-    print (f"Removing module tree: {tree_list}")
-    print (f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
 
 def module_load_test(args):
     """Perform module load test for all modules in BUILDTEST_MODULEPATH"""

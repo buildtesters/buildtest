@@ -33,7 +33,7 @@ from buildtest.test.run.system import run_app_choices, run_system_choices
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
     check_configuration
-from buildtest.tools.collection import func_collection_subcmd, \
+from buildtest.tools.modulesystem.collection import func_collection_subcmd, \
     get_collection_length
 from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.find import func_find_subcmd
@@ -102,7 +102,7 @@ def menu():
 
     list_title = "Options for listing software, module files, and  easyconfigs"
     show_title = "Options for displaying buildtest configuration"
-    find_title = "Find configuration files and test scripts"
+    find_title = "Find test scripts"
     testconfig_title = "Options for list, view, and edit test configuration"
     build_title = "Options for building test scripts"
     run_title = "Run Tests"
@@ -126,7 +126,7 @@ Misc:
   module      {module_title}
 """
     subparsers = parser.add_subparsers(title='COMMANDS',
-                                       description=command_description,dest="subcommand")
+                                       description=command_description,dest="subcommands")
 
     # ---------------------------------- sub parsers -----------------------
     parser_list = subparsers.add_parser('list')
@@ -138,9 +138,10 @@ Misc:
     parser_benchmark = subparsers.add_parser('benchmark')
     parser_testconfigs = subparsers.add_parser('testconfigs')
     parser_module = subparsers.add_parser('module')
-    subparsers_module = parser_module.add_subparsers(title='subcommands',
-                                                     description='valid '
-                                                                 'subcommands')
+    subparsers_module = parser_module.add_subparsers(description='Module utilties for managing module collections,'
+                                                                 ' module trees, module load testing, reporting eb/spack modules,'
+                                                                 'and report difference between trees.')
+
     parser_moduleload = subparsers_module.add_parser('loadtest',
                                                      help="module load test")
     parser_module_tree = subparsers_module.add_parser('tree',
@@ -322,6 +323,8 @@ Misc:
                                     action="append",
                                     dest="rm",
                                     metavar="Module Tree")
+    parser_module_tree.add_argument("-s", help = "Assign a module tree to BUILDTEST_MODULEPATH",
+                                    dest="set")
 
     # ------------------------- module collection options ------------
     parser_collection.add_argument("-l",
@@ -365,8 +368,7 @@ Misc:
     parser_show.set_defaults(func=func_show_subcmd)
 
     # -------------------------------- testconfigs menu ----------------------
-    subparsers_testconfigs = parser_testconfigs.add_subparsers(title='subcommands',
-                                                 description="Test configuration options")
+    subparsers_testconfigs = parser_testconfigs.add_subparsers(description="Test configuration options")
     parser_testconfigs_list = subparsers_testconfigs.add_parser("list", help="List all test configuration")
     parser_testconfigs_view = subparsers_testconfigs.add_parser("view", help="View a test configuration")
     parser_testconfigs_view.add_argument("name", help="Select name of test configuration",
@@ -380,13 +382,10 @@ Misc:
 
     # -------------------------------- benchmark menu ----------------------
 
-    subparsers_benchmark = parser_benchmark.add_subparsers(help='subcommand help',
-                                                           dest="benchmark_subcommand")
+    subparsers_benchmark = parser_benchmark.add_subparsers(dest="Run HPC Benchmark")
 
     # -------------------------------- osu  menu ---------------------------
-    osu_parser = subparsers_benchmark.add_parser('osu',
-                                                 help = "OSU MicroBenchmark "
-                                                        "sub menu")
+    osu_parser = subparsers_benchmark.add_parser('osu',help = "Run OSU MicroBenchmark ")
     osu_parser.add_argument("-r",
                             "--run",
                             help ="Run Benchmark",
@@ -405,16 +404,11 @@ Misc:
     osu_parser.set_defaults(func=func_benchmark_osu_subcmd)
 
     # -------------------------------- HPL  menu ---------------------------
-    hpl_parser = subparsers_benchmark.add_parser('hpl',
-                                                 help="High Performance "
-                                                      + "Linpack sub menu")
+    hpl_parser = subparsers_benchmark.add_parser('hpl',help="Run High Performance Linpack (HPL)")
     hpl_parser.set_defaults(func=func_benchmark_hpl_subcmd)
 
     # -------------------------------- HPCG  menu ---------------------------
-    hpcg_parser = subparsers_benchmark.add_parser('hpcg',
-                                                  help="High Performance "
-                                                       + "Conjugate Gradient "
-                                                       + "sub menu")
+    hpcg_parser = subparsers_benchmark.add_parser('hpcg',help="Run High Performance Conjugate Gradient (HPCG)")
     hpcg_parser.set_defaults(func=func_benchmark_hpcg_subcmd)
 
     # ------------------------------ Miscellaneous Options -----------------------
@@ -423,7 +417,7 @@ Misc:
     misc_group.add_argument("-V",
                             "--version",
                             action="version",
-                            version='%(prog)s version 0.6.5')
+                            version='%(prog)s version 0.6.3')
 
     return parser
 
@@ -433,6 +427,6 @@ def parse_options(parser):
     argcomplete.autocomplete(parser)
     args = parser.parse_args()
 
-    if args.subcommand:
+    if args.subcommands:
         args.func(args)
     return args
