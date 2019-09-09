@@ -17,8 +17,8 @@ import sys
 
 
 BUILDTEST_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.environ["BUILDTEST_ROOT"] = BUILDTEST_ROOT
 sys.path.insert(0, os.path.join(BUILDTEST_ROOT,'src'))
-print (sys.path)
 # -- Project information -----------------------------------------------------
 
 project = 'buildtest'
