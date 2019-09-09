@@ -48,7 +48,7 @@ MPI_LIST = MPI_C_LIST + MPI_F_LIST + MPI_CPP_LIST
 
 buildtest_home_conf_dir = os.path.join(os.getenv("HOME"), ".buildtest")
 BUILDTEST_CONFIG_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml")
-
+BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "collection.json")
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"),"settings.yml")
 
 if not os.path.isdir(buildtest_home_conf_dir):

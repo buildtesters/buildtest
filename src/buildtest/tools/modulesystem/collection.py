@@ -29,6 +29,7 @@ import subprocess
 import sys
 import json
 
+from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE
 from buildtest.tools.file import create_dir, create_file
 
 def func_collection_subcmd(args):
@@ -45,7 +46,7 @@ def func_collection_subcmd(args):
 
 def add_collection():
     """Save modules as a module collection in a json file """
-    fname = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "default.json")
+
 
 
     cmd = "module -t list"
@@ -61,28 +62,28 @@ def add_collection():
 
         create_dir(os.path.join(os.getenv("BUILDTEST_ROOT"),"var"))
 
-        fd = open(fname,'r')
+        fd = open(BUILDTEST_MODULE_COLLECTION_FILE,'r')
         content = json.load(fd)
-        fd = open(fname,'w')
+        fd = open(BUILDTEST_MODULE_COLLECTION_FILE,'w')
         content["collection"].append(module_list)
         json.dump(content, sys.stdout, indent=4)
         json.dump(content,fd,indent=4)
         print ("\n")
-        print(f"Updating collection file: {fname}")
+        print(f"Updating collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
 
 def remove_collection(index):
     """Remove a module collection"""
-    fname = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "default.json")
-    fd = open(fname,"r")
+
+    fd = open(BUILDTEST_MODULE_COLLECTION_FILE,"r")
     content = json.load(fd)
     fd.close()
 
-    fd = open(fname, "w")
+    fd = open(BUILDTEST_MODULE_COLLECTION_FILE, "w")
     print (f"Removing Collection Index: {index}")
     print ("Modules to be removed:", content["collection"][index])
 
     del content["collection"][index]
-    print(f"Updating collection file: {fname}")
+    print(f"Updating collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
     print ("\n")
     json.dump(content,fd,indent=4)
     json.dump(content, sys.stdout, indent=4)
@@ -90,8 +91,8 @@ def remove_collection(index):
 
 def update_collection(index):
     """Update a module collection with active modules """
-    fname = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "default.json")
-    fd = open(fname,"r")
+
+    fd = open(BUILDTEST_MODULE_COLLECTION_FILE,"r")
     content = json.load(fd)
     fd.close()
 
@@ -101,40 +102,41 @@ def update_collection(index):
         modules = []
     else:
         modules = out.split()
-    fd = open(fname, "w")
+    fd = open(BUILDTEST_MODULE_COLLECTION_FILE, "w")
     print (f"Updating Collection Index: {index}")
     print ("Old Modules: ", content["collection"][index])
     content["collection"][index] = modules
     print ("New Modules: ", content["collection"][index])
 
 
-    print(f"Updating collection file: {fname}")
+    print(f"Updating collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
     print ("\n")
     json.dump(content,fd,indent=4)
     json.dump(content, sys.stdout, indent=4)
     fd.close()
 def list_collection():
     """List module collections."""
-    fname = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","default.json")
 
-    fd = open(fname,'r')
+    fd = open(BUILDTEST_MODULE_COLLECTION_FILE,'r')
     dict = json.load(fd)
     count = 0
+    if len(dict["collection"]) == 0:
+        print ("No module collection found.")
+        return
+
     for x in dict["collection"]:
         print (f"{count}: {x}")
         count += 1
 
 def get_collection_length():
     """Read collection file default.json and return length of collection"""
-    file = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","default.json")
-    with open(file,"r") as infile:
+    with open(BUILDTEST_MODULE_COLLECTION_FILE,"r") as infile:
         json_module = json.load(infile)
 
     return (len(json_module["collection"]))
 
 def get_buildtest_module_collection(id):
     """Retrieve collection id from default.json"""
-    file = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "default.json")
-    with open(file, "r") as infile:
+    with open(BUILDTEST_MODULE_COLLECTION_FILE, "r") as infile:
         json_module = json.load(infile)
     return json_module["collection"][id]

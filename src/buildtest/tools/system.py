@@ -31,6 +31,7 @@ import re
 import stat
 import sys
 import subprocess
+from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE
 from buildtest.tools.file import create_dir
 from buildtest.tools.modules import module_obj
 
@@ -107,9 +108,9 @@ class BuildTestSystem():
         module_coll_dict = {
             "collection": []
         }
-        fname = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "default.json")
-        if not os.path.exists(fname):
-            with open(fname, "w") as outfile:
+
+        if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
+            with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as outfile:
                 json.dump(module_coll_dict, outfile, indent=4)
 
     def get_system(self):
