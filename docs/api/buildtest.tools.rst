@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
 
     buildtest.tools.buildsystem
+    buildtest.tools.modulesystem
 
 Submodules
 ----------
@@ -14,7 +15,6 @@ Submodules
 .. toctree::
 
    buildtest.tools.build
-   buildtest.tools.collection
    buildtest.tools.config
    buildtest.tools.easybuild
    buildtest.tools.file
@@ -23,12 +23,14 @@ Submodules
    buildtest.tools.log
    buildtest.tools.menu
    buildtest.tools.modules
+   buildtest.tools.mpi
    buildtest.tools.options
    buildtest.tools.run
    buildtest.tools.show
+   buildtest.tools.slurm
    buildtest.tools.software
    buildtest.tools.system
-   buildtest.tools.version
+   buildtest.tools.testconfigs
    buildtest.tools.yaml
 
 Module contents
