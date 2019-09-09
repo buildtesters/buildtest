@@ -17,4 +17,4 @@ buildtest module collection -a
     ]
 }
 
-Updating collection file: /gpfs/home/siddis14/buildtest-framework/var/default.json
+Updating collection file: /gpfs/home/siddis14/buildtest-framework/var/collection.json

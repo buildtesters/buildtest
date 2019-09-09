@@ -68,7 +68,7 @@ For more details on argcomplete please visit https://pypi.org/project/argcomplet
 .. Note:: It is highly recommended to setup auto-complete feature when using buildtest to make use of tab completion
 
 buildtest usage (``buildtest --help``)
--------------------------------------
+---------------------------------------
 
 Once you are setup, you can run ``buildtest --help`` for more details on how to use buildtest. Shown below
 is the output

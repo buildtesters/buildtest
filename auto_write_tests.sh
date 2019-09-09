@@ -37,6 +37,7 @@ tee $script_dir/build-lsf-example.txt <<<"buildtest build -c compilers.helloworl
 tee $script_dir/build-slurm-example.txt <<<"buildtest build -c compilers.helloworld.hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
 
 # module collection
+tee $script_dir/buildtest-module-collection-help.txt <<<"buildtest module collection -h """ | bash >>$script_dir/buildtest-module-collection-help.txt
 ml purge; ml eb/2019 OpenMPI;
 tee $script_dir/buildtest-module-collection-add.txt <<<"buildtest module collection -a """ | bash >>$script_dir/buildtest-module-collection-add.txt
 tee $script_dir/buildtest-module-collection-list.txt <<<"buildtest module collection -l """ | bash >>$script_dir/buildtest-module-collection-list.txt
@@ -86,7 +87,10 @@ tee $script_dir/spack-modules.txt <<< "buildtest module --spack" | bash >> $scri
 
 tee $script_dir/spack-all-modules.txt <<< "BUILDTEST_SPIDER_VIEW=all buildtest module --spack" | bash >> $script_dir/spack-all-modules.txt
 
+tee $script_dir/module_tree_help.txt <<< "buildtest module tree -h" | bash >> $script_dir/module_tree_help.txt
 tee $script_dir/module_tree_list.txt <<< "buildtest module tree -l" | bash >> $script_dir/module_tree_list.txt
 tee $script_dir/module_tree_add.txt <<< "buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_add.txt
 tee $script_dir/module_tree_rm.txt <<< "buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_rm.txt
+tee $script_dir/module_tree_set.txt <<< "buildtest module tree -s /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_set.txt
+
 #tee $script_dir/parent-module.txt <<< "buildtest module -d OpenMPI/2.0.1" | bash >> $script_dir/parent-module.txt

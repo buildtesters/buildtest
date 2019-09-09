@@ -129,14 +129,14 @@ def list_collection():
         count += 1
 
 def get_collection_length():
-    """Read collection file default.json and return length of collection"""
+    """Read collection file collection.json and return length of collection"""
     with open(BUILDTEST_MODULE_COLLECTION_FILE,"r") as infile:
         json_module = json.load(infile)
 
     return (len(json_module["collection"]))
 
 def get_buildtest_module_collection(id):
-    """Retrieve collection id from default.json"""
+    """Retrieve collection id from collection.json"""
     with open(BUILDTEST_MODULE_COLLECTION_FILE, "r") as infile:
         json_module = json.load(infile)
     return json_module["collection"][id]

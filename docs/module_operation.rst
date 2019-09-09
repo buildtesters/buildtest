@@ -70,11 +70,16 @@ Module Collection Operation (``buildtest module collection``)
 -------------------------------------------------------------
 
 buildtest keeps track of its own module collection which is stored in
-``BUILDTEST_ROOT/vars/default.json``. This file is automatically maintained
+``BUILDTEST_ROOT/vars/collection.json``. This file is  maintained
 by buildtest when using ``buildtest module collection`` commands.
 
 buildtest supports adding, removing, updating and listing module collection.
 This is synonymous to using user collection from Lmod (i.e ``module save <collection>``).
+
+Shown below is a usage of module collection options in buildtest.
+
+.. program-output:: cat scripts/buildtest-module-collection-help.txt
+
 
 Adding a module collection (``buildtest module collection -a``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,7 +112,7 @@ Shown below is an example output
 
 
 Removing a module collection (``buildtest module collection -r <ID>``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To remove a module collection, you will need to specify the index number to the ``-r`` option.
 One can check the module collection index by listing module collection using **buildtest module collection -l**.
@@ -120,7 +125,7 @@ buildtest will remove the index and update the json file. Note all existing modu
 will update their collection index depending what index number was removed.
 
 Updating a module collection (``buildtest module collection -u <ID>``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to update an existing module collection, just load the modules of interest in
 your user environment and buildtest will override them. To update a module collection you will
@@ -145,19 +150,29 @@ Now we are ready to update the module collection as shown below
 Module Trees Operation (``buildtest module tree``)
 ---------------------------------------------------
 
-buildtest supports adding, removing and listing module trees. Internally, buildtest
+buildtest supports adding, removing, listing, and setting module trees. Internally, buildtest
 is modifying BUILDTEST_MODULEPATH which is synonymous to MODULEPATH though,
-buildtest makes use of ``BUILDTEST_MODULEPATH`` when querying modules using ``spider``
+buildtest makes use of ``BUILDTEST_MODULEPATH`` when querying modules from ``spider``
 command.
 
-At your site, you may be interested in testing software by each stack.
+At your site, you will need to alter BUILDTEST_MODULEPATH to the root of your module trees where
+software stack is present.
 
-By default, ``BUILDTEST_MODULEPATH`` is set to an empty list ``[]`` in configuration
-file ``$HOME/.buildtest/settings.yml``. In this case, ``BUILDTEST_MODULEPATH``
-will read from ``MODULEPATH``.
+By default, BUILDTEST_MODULEPATH is set to an empty list ``[]`` in configuration
+file ``$HOME/.buildtest/settings.yml``. In this case, BUILDTEST_MODULEPATH will read
+from ``MODULEPATH``.
 
-Listing Module Tree (``buildtest module tree -l``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+One could edit the configuration file manually; however, it's preferable to use
+``buildtest module tree`` commands to alter BUILDTEST_MODULEPATH to avoid syntax error in
+configure file which can break buildtest functionality.
+
+Shown below is a usage of ``buildtest module tree`` command.
+
+.. program-output:: cat scripts/module_tree_help.txt
+
+
+Listing Module Trees (``buildtest module tree -l``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To list the module trees in buildtest you can run ``buildtest module tree -l``
 which shows one module tree per line
@@ -172,22 +187,42 @@ reading from ``MODULEPATH``
     $ cat ~/.buildtest/settings.yml  | grep -i BUILDTEST_MODULEPATH
     BUILDTEST_MODULEPATH: []
 
-Adding Module Tree (``buildtest module tree -a``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding a Module Tree (``buildtest module tree -a``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can add new module tree through command line using ``buildtest module
-tree -a /path/to/tree`` which will update the configuration file
+tree -a /path/to/tree`` which will update the configuration file. Use this option
+to add software stack into buildtest environment for testing purposes.
 
 .. program-output:: cat scripts/module_tree_add.txt
 
 
-Removing Module Tree (``buildtest module tree -r``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Removing a Module Tree (``buildtest module tree -r``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Similarly you can remove module tree from your configuration via ``buildtest
-module tree -r /path/to/tree``
+Similarly you can remove module tree from your configuration via ``buildtest module tree -r /path/to/tree``.
+Use this option to remove a software stack from buildtest environment.
 
 .. program-output:: cat scripts/module_tree_rm.txt
+
+Setting a Module Tree (``buildtest module tree -s``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can set BUILDTEST_MODULEPATH to a tree which will override current value. For instance
+you have the following module trees in buildtest
+
+.. program-output:: cat scripts/module_tree_list.txt
+
+Now if we want to set BUILDTEST_MODULEPATH to a tree, let's assume **/usr/share/lmod/lmod/modulefiles/Core** we
+can do that as follows
+
+.. program-output:: cat scripts/module_tree_set.txt
+
+Next we can check the list of module trees by issuing the following::
+
+    $ buildtest module tree -l
+    /usr/share/lmod/lmod/modulefiles/Core
+
 
 Report Easybuild Modules (``buildtest module --easybuild``)
 ------------------------------------------------------------
