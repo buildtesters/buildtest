@@ -7,7 +7,7 @@ sphinx:
     configuration: docs/conf.py
 
 build:
-  image: shahzebsiddiqui/readthedocs-docker-images:latest
+  image: latest
 
 formats: all
 
