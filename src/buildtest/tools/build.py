@@ -22,7 +22,7 @@
 
 """
 This module contains all the methods related to "buildtest build" which is used
-for building test scripts from yaml configuration.
+for building test scripts from test configuration.
 """
 
 import os
@@ -43,18 +43,21 @@ from buildtest.test.binarytest import generate_binary_test
 
 
 def func_build_subcmd(args):
-    """ Entry point for build sub-command. The args variable is a list of
-        options passed through command line. Each option is checked and
-        appropriate action is taken in this method or calls another method. """
+    """Entry point for buildtest build sub-command. Depending on the command
+    arguments, buildtest will set values in dictionary config_opts that is used
+    to trigger the appropriate build action.
+
+    :param args: arguments passed from command line
+    :type args: dictionary, required
+
+    :rtype: None
+    """
 
     logger,logpath,logfile = init_log()
 
 
     if args.shell:
         config_opts['BUILDTEST_SHELL']=args.shell
-    if args.clean_tests:
-        clean_tests()
-
     if args.clean_build:
         config_opts['BUILDTEST_CLEAN_BUILD']=True
     if args.testdir:
@@ -174,17 +177,28 @@ def func_build_subcmd(args):
                 generate_binary_test(package, args.verbose, "software")
 
     if args.package:
-        func_build_system(args, logger, logdir, logpath, logfile)
+        func_build_system(args, logger, logpath, logfile)
 
 
 
-def func_build_system(args, logger, logdir, logpath, logfile):
+def func_build_system(args, logger, logpath, logfile):
     """ This method implements details for "buildtest build --package" and
         invokes method "generate_binary_test" to get all the binaries and
         write the test scripts in BUILDTEST_TESTDIR.
+
+        :param args: dictionary of command line arguments
+        :type args: dictionary, required
+        :param logger:  instance of logger class for writing logs to logfile
+        :type logpath: class object, required
+        :param logpath: full path to logfile
+        :type logpath: string, required
+        :param logfile: log file name
+        :type logfile: string, required
+
+        :rtype: None
     """
 
-    system_logdir = os.path.join(logdir,"system",args.package)
+    system_logdir = os.path.join(config_opts["BUILDTEST_LOGDIR"],"system",args.package)
 
     generate_binary_test(args.package,args.verbose,"systempackage")
 
@@ -201,14 +215,3 @@ def func_build_system(args, logger, logdir, logpath, logfile):
     logger.info("Moving log file from %s to %s", logpath, destpath)
 
     print("Writing Log file to: ", destpath)
-
-
-def clean_tests():
-    """ cleans all the tests in BUILDTEST_TESTDIR.
-        This implements "buildtest build --clean-tests"
-    """
-    try:
-        shutil.rmtree(config_opts['BUILDTEST_TESTDIR'])
-        print (f"Removing test directory {config_opts['BUILDTEST_TESTDIR']}")
-    except OSError as err_msg:
-        print(err_msg)

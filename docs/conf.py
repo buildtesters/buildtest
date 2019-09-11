@@ -15,12 +15,11 @@
 import os
 import sys
 
-
 BUILDTEST_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.environ["BUILDTEST_ROOT"] = BUILDTEST_ROOT
 sys.path.insert(0, os.path.join(BUILDTEST_ROOT,'src'))
-# -- Project information -----------------------------------------------------
 
+# -- Project information -----------------------------------------------------
 project = 'buildtest'
 copyright = '2017-2019, Shahzeb Siddiqui'
 author = 'Shahzeb Siddiqui'
