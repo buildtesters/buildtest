@@ -25,9 +25,6 @@ This module is the entry point for buildtest find subcommand and implements the
 following
 1. Finds all test (buildtest find --findtest all)
 2. Find test by argument (buildtest find --findtest <arg>)
-3. Finds all configuration (buildtest find --findconfig all)
-4. Find configuration by argument (buildtest find --findconfig <arg>)
-
 """
 
 import os

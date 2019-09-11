@@ -25,6 +25,19 @@ import yaml
 from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import is_dir
 
+def func_module_tree_subcmd(args):
+    """ Entry point for buildtest module tree subcommand """
+    if args.list:
+        [print (tree) for tree in config_opts["BUILDTEST_MODULEPATH"]]
+
+    if args.add:
+        module_tree_add(args.add)
+
+    if args.rm:
+        module_tree_rm(args.rm)
+
+    if args.set:
+        module_tree_set(args.set)
 
 def module_tree_add(tree_list):
     """adding a module tree to BUILDTEST_MODULEPATH in configuration file"""

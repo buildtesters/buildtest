@@ -37,20 +37,13 @@ BUILDTEST_TEST_LOCAL_EXT = ["."+ i for i in BUILDTEST_SHELLTYPES]
 BUILDTEST_TEST_EXT = BUILDTEST_JOB_EXTENSION + \
                      ["."+ i for i in BUILDTEST_SHELLTYPES]
 
-PYTHON_APPS = ["python","anaconda2", "anaconda3"]
-MPI_APPS = ["openmpi", "mpich","mvapich2", "intel", "impi"]
-
-MPI_C_LIST = ["mpicc", "mpiicc"]
-MPI_F_LIST = ["mpifort", "mpifc", "mpif90", "mpif77"]
-MPI_CPP_LIST = ["mpic++", "mpicxx", "mpiicpc"]
-MPI_LIST = MPI_C_LIST + MPI_F_LIST + MPI_CPP_LIST
-
-
 buildtest_home_conf_dir = os.path.join(os.getenv("HOME"), ".buildtest")
 BUILDTEST_CONFIG_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml")
 BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "collection.json")
+BUILDTEST_MODULE_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "modules.json")
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"),"settings.yml")
 
+# check if $HOME/.buildtest exists, if not create directory
 if not os.path.isdir(buildtest_home_conf_dir):
     print(f"Creating buildtest configuration directory: \
             {buildtest_home_conf_dir}")
@@ -63,13 +56,11 @@ if not os.path.exists(BUILDTEST_CONFIG_FILE):
     print(f"Copying Default Configuration {DEFAULT_CONFIG_FILE} to \
           {BUILDTEST_CONFIG_FILE}")
 
-
+# load the configuration file
 fd = open(BUILDTEST_CONFIG_FILE, 'r')
 config_opts = yaml.safe_load(fd)
 
-config_opts["BUILDTEST_CONFIGS_REPO"]= os.path.join(os.environ[
-                                                        "BUILDTEST_ROOT"],\
-                                       "toolkit")
+config_opts["BUILDTEST_CONFIGS_REPO"]= os.path.join(os.environ["BUILDTEST_ROOT"],"toolkit")
 # if BUILDTEST_MODULEPATH is empty list then check if MODULEPATH is defined
 # and set result to BUILDTEST_MODULEPATH
 if len(config_opts["BUILDTEST_MODULEPATH"]) == 0:
@@ -112,14 +103,17 @@ config_yaml_keys = {
 }
 
 def check_configuration():
-    """ Checks if each key in configuration file (settings.yml) is valid
-        key and check type validation of each key and its value. For some keys
-        special logic is taken to ensure values are correct and directory path
-        exists.
+    """Checks all keys in configuration file (settings.yml) are valid
+    keys and ensure value of each key matches expected type . For some keys
+    special logic is taken to ensure values are correct and directory path
+    exists.
 
-        Also check if module command is found.
+    Also check if module command is found.
 
-        If any error is found buildtest will terminate immediately. """
+    If any error is found buildtest will terminate immediately.
+    :return: returns gracefully if all checks passes otherwise terminate immediately
+    :rtype: exit code 1 if checks failed
+    """
 
 
     ec = 0
@@ -206,8 +200,9 @@ def check_configuration():
 
 
 def show_configuration():
-    """ This method display buildtest configuration to terminal and this
-        implements command buildtest show --config """
+    """This method display buildtest configuration to terminal and this
+    implements command buildtest show --config.
+    """
     exclude_list = ["BUILDTEST_VERSION"]
     print
     print ("\t buildtest configuration summary")

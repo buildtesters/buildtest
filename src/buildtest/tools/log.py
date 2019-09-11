@@ -29,8 +29,16 @@ from datetime import datetime
 from buildtest.tools.config import logID, config_opts
 
 class BuildTestError(Exception):
-    """Class responsible for error handling in buildtest."""
+    """Class responsible for error handling in buildtest. This is a sub-class
+    of Exception class."""
     def __init__(self, msg, *args):
+        """Constructor Method.
+
+        :param msg: message to print
+        :type msg: str, required
+        :param args:
+        :type args:
+        """
         if args:
             msg = msg % args
         self.msg = msg
@@ -39,7 +47,12 @@ class BuildTestError(Exception):
         return(repr(self.msg))
 
 def init_log():
-    """ initialize log file attributes """
+    """Initialize log file and define log attributes. This method invokes
+    datetime.now() to name logfile using strftime().
+
+    :return: Returns logger object and log path and logfile name
+    :rtype: multiple return types (logger object, logpath, logfile)
+    """
     logfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
     BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
 

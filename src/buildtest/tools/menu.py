@@ -39,8 +39,10 @@ from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.find import func_find_subcmd
 from buildtest.tools.list import func_list_subcmd
 from buildtest.tools.modules import func_module_subcmd, \
-     module_obj, module_load_test, func_module_tree_subcmd,get_all_parents, \
+     module_obj, module_load_test, get_all_parents, \
      get_module_permutation_choices
+from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
+
 from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.show import func_show_subcmd
@@ -55,7 +57,8 @@ from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
 from buildtest.benchmark.hpcg import func_benchmark_hpcg_subcmd
 
 def menu():
-    """ buildtest menu"""
+    """The method implements the buildtest menu using argparse library.
+    """
 
     override_configuration()
     check_configuration()
@@ -75,7 +78,6 @@ def menu():
     run_test_class = os.listdir(test_suite_dir)
     pkglist = systempackage_installed_list()
 
-    module_stack = module_obj.get_unique_fname_modules()
     parent_choices = get_all_parents()
 
     app_choices = run_app_choices()
@@ -411,16 +413,20 @@ Misc:
     misc_group.add_argument("-V",
                             "--version",
                             action="version",
-                            version='%(prog)s version 0.6.3')
+                            version=f"""buildtest version {config_opts["BUILDTEST_VERSION"]}""")
 
     return parser
 
 def parse_options(parser):
     """Return parsed arguments and apply argument completion to make use of
-    argcomplete library."""
+    argcomplete library.
+
+    :param parser: parser object is an instance of argparse.ArgumentParser()
+    :type parser: dictionary, required
+    """
     argcomplete.autocomplete(parser)
     args = parser.parse_args()
 
     if args.subcommands:
         args.func(args)
-    return args
+
