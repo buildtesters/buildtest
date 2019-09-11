@@ -58,7 +58,16 @@ def override_configuration():
             config_opts['BUILDTEST_SUCCESS_THRESHOLD']=threshold
 
 def bool_config_override(key):
-    """Override boolean configuration via environment variable"""
+    """Override boolean configuration via environment variable. Executes a
+    "try" block to check if value of environment variable resolve to True or False
+    statement using strtobool(). Catches exception of type ValueError and raises
+    exception BuildTestError().
+
+    :param key: environment variable name
+    :type key: str,required
+    :raises BuildTestError: Prints custom exception message
+    :rtype: raise exception on failure
+    """
     if os.environ.get(key):
         try:
             truth_value = strtobool(os.environ[key])
@@ -71,7 +80,11 @@ def bool_config_override(key):
             raise BuildTestError(f"Must be one of the following {values}")
 
 def dir_config_override(key):
-    """override directory configuration via environment variable"""
+    """override directory configuration via environment variable
+
+    :param key: buildtest configuration name
+    :type key: str,required
+    """
     if os.environ.get(key):
         run_dir = os.environ.get(key)
         if os.path.exists(run_dir):

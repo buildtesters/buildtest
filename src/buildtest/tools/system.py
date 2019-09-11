@@ -31,16 +31,27 @@ import re
 import stat
 import sys
 import subprocess
-from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE
+from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE, BUILDTEST_MODULE_FILE
 from buildtest.tools.file import create_dir
 from buildtest.tools.modules import module_obj
 
 class BuildTestCommand():
+    """Class method to invoke shell commands and retrieve output and error. This class
+    makes use of subprocess.Popen() to run the shell command. This class has no __init__ method
+    """
+
     ret = []
     out = ""
     err = ""
     def execute(self,cmd):
-        """ execute a system command and return output and error"""
+        """Execute a system command and return output and error
+
+        :param cmd: shell command to execute
+        :type cmd: str, required
+        :return: Output and Error from shell command
+        :rtype: two str objects
+        """
+
         self.ret = subprocess.Popen(cmd,
                                     shell=True,
                                     stdout=subprocess.PIPE,
@@ -50,7 +61,14 @@ class BuildTestCommand():
         self.err = self.err.decode("utf-8")
         return (self.out,self.err)
     def which(self,cmd):
-        """ run which against the command """
+        """Run a "which" against the command.
+
+        :param cmd: shell command to execute
+        :type cmd: str, required
+        :return: Output and Error from shell command
+        :rtype: two str objects
+        """
+
         which_cmd = "which " + cmd
         self.ret = subprocess.Popen(which_cmd,
                                     shell=True,
@@ -60,18 +78,39 @@ class BuildTestCommand():
         self.out = self.out.decode("utf-8")
         self.err = self.err.decode("utf-8")
         return (self.out, self.err)
+
     def returnCode(self):
+        """Returns the return code from shell command
+
+        :rtype: int
+        """
+
         return self.ret.returncode
     def get_output(self):
+        """Returns the output from shell command
+
+        :rtype: str
+        """
+
         return self.out
+
     def get_error(self):
+        """Returns the error from shell command
+
+        :rtype: str
+        """
+
         return self.err
 
 class BuildTestSystem():
+    """BuildTestSystem is a class that detects system configuration and outputs the result
+    in .run file which are generated upon test execution."""
+    # class variable used for storing system configuration
     system = {}
 
     def __init__(self):
-        """ checking site configuration """
+        """Constructor method for BuildTestSystem(). Defines all system configuration using
+        class variable "system" which is a dictionary """
 
         self.system["OS_NAME"] = platform.linux_distribution()[0]
         self.system["OS_VERSION"] = platform.linux_distribution()[1]
@@ -101,7 +140,7 @@ class BuildTestSystem():
             self.get_lsf_configuration()
         if self.system["SCHEDULER"] == "SLURM":
             from buildtest.tools.slurm import get_slurm_configuration
-            get_slurm_configuration()
+            self.system["QUEUES"],self.system["COMPUTENODES"] = get_slurm_configuration()
 
         self.get_modules()
 
@@ -114,9 +153,17 @@ class BuildTestSystem():
                 json.dump(module_coll_dict, outfile, indent=4)
 
     def get_system(self):
+        """Return class variable system that contains detail for system configuration
+
+        :rtype: dict
+        """
+
         return self.system        
     def get_lsf_configuration(self):
-        """ return lsf queues and compute nodes part of the LSF cluster"""
+        """Return LSF queues and compute nodes part of the LSF cluster. It makes use
+        of bhosts and bqueues command to retrieve queue and compute nodes.
+        """
+
         cmd = BuildTestCommand()
         query = """ bqueues | cut -d " " -f 1 """
 
@@ -143,7 +190,13 @@ class BuildTestSystem():
 
 
     def check_scheduler(self):
-        """ check for batch scheduler"""
+        """Check for batch scheduler. Currently checks for LSF or SLURM by running
+        bhosts and sinfo command. It must be present in $PATH when running buildtest.
+
+        :return: return string "LSF" or "SLURM". If neither found returns None
+        :rtype: str or None
+        """
+
         lsf_cmd = BuildTestCommand()
         lsf_cmd.execute("bhosts")
         lsf_ec_code = lsf_cmd.returnCode()
@@ -160,7 +213,7 @@ class BuildTestSystem():
         return None
 
     def check_system_requirements(self):
-        """ checking system requirements"""
+        """Checking system requirements."""
         req_pass=True
         # If system is not Linux
 
@@ -190,6 +243,7 @@ Requirements:
             print(msg)
             sys.exit(1)
     def get_modules(self):
+        """"""
         module_dict = module_obj.get_module_spider_json()
         module_version = module_obj.get_version()
         module_major_version = module_version[0]
@@ -218,16 +272,19 @@ Requirements:
                 else:
                     json_dict[key][mpath]["parent"] = parent
 
-        module_json_file = os.path.join(os.getenv("BUILDTEST_ROOT"), "var",
-                                        "modules.json")
-
-        create_dir(os.path.dirname(module_json_file))
-        with open(module_json_file,"w") as outfile:
+        create_dir(os.path.dirname(BUILDTEST_MODULE_FILE))
+        with open(BUILDTEST_MODULE_FILE,"w") as outfile:
             json.dump(json_dict, outfile, indent=4)
 
 
 def get_module_collection():
-    """Return user Lmod module collection"""
+    """Return user Lmod module collection. Lmod collection can be retrieved
+    using
+    >>> module -t savelist
+
+    :return: list of Lmod module collection
+    :rtype: list
+    """
     return subprocess.getoutput("module -t savelist").split("\n")
 
 def get_binaries_from_systempackage(pkg):

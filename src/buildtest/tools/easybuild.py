@@ -39,8 +39,7 @@ def find_easyconfigs_from_modulelist(modulelist):
     :param modulelist: list of module file paths
     :type modulelist: List, required
 
-    :return: two lists containing one that contains list of easyconfigs,
-    second list that contains list of modulepath that dont have easyconfigs
+    :return: two lists containing one that contains list of easyconfigs, second list that contains list of modulepath that dont have easyconfigs
     """
 
     # list to store easyconfigs

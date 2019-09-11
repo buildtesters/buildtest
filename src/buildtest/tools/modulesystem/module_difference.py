@@ -20,11 +20,16 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-import os
+import os, sys
 from buildtest.tools.file import is_dir, string_in_file
 
 def get_module_list_by_tree(mod_tree):
-    """ returns a list of module file paths given a module tree """
+    """The method returns a list of module file paths from a module tree.
+    :param mod_tree: root of module tree
+    :type mod_tree: str, required
+    :return: list of absolute path to module files
+    :rtype: list
+    """
 
     modulefiles = []
 
@@ -37,7 +42,15 @@ def get_module_list_by_tree(mod_tree):
     return modulefiles
 
 def diff_trees(args_trees):
-    """ display difference between module trees """
+    """This method display difference between module trees by presenting
+    modules found in tree 1 and tree 2. This method invokes
+    get_module_list_by_tree() to get module files from both trees
+    The implements command
+    "buildtest module --diff-trees <tree1>,<tree2>"
+    :param args_trees: root of two module trees separated by comma
+    :type args_trees: str, required
+    :rtype: 1 if comma a is not found
+    """
 
     # no comma found between two trees
     if args_trees.find(",") == -1:

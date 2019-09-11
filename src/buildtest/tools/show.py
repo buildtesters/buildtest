@@ -28,7 +28,11 @@ from buildtest.tools.yaml import KEY_DESCRIPTION, SLURM_KEY_DESC, \
 
 
 def func_show_subcmd(args):
-    """Entry point to show sub command."""
+    """Entry point to "buildtest show" sub command.
+
+    :param args: command line arguments to buildtest
+    :type args: dictionary, required
+    """
     if args.config:
         show_configuration()
 
@@ -37,8 +41,9 @@ def func_show_subcmd(args):
 
 
 def show_yaml_keys():
-    """Implements buildtest show -k. This method display the yaml keys
-     for a particular testblock."""
+    """The method implements command "buildtest show -k singlesource".
+    This method display the yaml keys for testblock:singlesource.
+    """
 
     print ('{:>50}'.format("General Keys"))
 

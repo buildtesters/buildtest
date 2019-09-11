@@ -161,7 +161,15 @@ def get_environment_variable(shell,key,value):
         return ("setenv %s %s" %(key,value))
 
 def get_compiler(language, compiler):
-    """ return compiler based on language"""
+    """Return compiler based on language
+
+    :param language: Language type
+    :type language: str, required
+    :param compiler: Compiler Type
+    :type compiler: str, required
+    :return: return compiler wrapper
+    :rtype: str
+    """
 
     if language == "c" and compiler == "gnu":
         return "gcc"
@@ -181,6 +189,16 @@ def get_compiler(language, compiler):
         return "nvcc"
 
 def get_mpi_wrapper(language, compiler):
+    """ Get MPI wrapper based on Language and compiler.
+
+    :param language: Language type
+    :type language: str, required
+    :param compiler: Compiler Type
+    :type compiler: str, required
+
+    :return: return compiler wrapper
+    :rtype: str
+    """
     if language == "c" and compiler == "gnu":
         return "mpicc"
     if language == "c++" and compiler == "gnu":
@@ -196,7 +214,13 @@ def get_mpi_wrapper(language, compiler):
         return "mpiifort"
 
 def get_programming_language(ext):
-    """ Return Programming Language  based on extension"""
+    """ Return Programming Language  based on extension
+
+    :param ext: File extension of source file
+    :type ext: str, required
+    :return: return programming language
+    :rtype: str
+    """
     if ext in ['.c']:
         return "c"
     if ext in ['.cc', '.cxx', '.cpp', '.c++', '.C']:
@@ -210,21 +234,37 @@ def get_programming_language(ext):
         return "python"
 
 def lsf_key_parse(lsf_dict):
-    """ Convert lsf keys to #BSUB command"""
+    """Convert lsf keys to #BSUB command
+
+    :param lsf_dict: LSF YAML keys
+    :type lsf_dict: dict, required
+    :return: return #BSUB command to be injected in test script.
+    :rtype: str
+    """
     lsf_str = ""
     for key,val in lsf_dict.items():
         lsf_str += "#BSUB -" + key + " " + str(val) + "\n"
     return lsf_str
 
 def slurm_key_parse(slurm_dict):
-    """ Convert slurm keys to #SBATCH command"""
+    """Convert slurm keys to #SBATCH command.
+
+    :param slurm_dict: LSF YAML keys
+    :type slurm_dict: dict, required
+    :return: return #SBATCH command to be injected in test script.
+    :rtype: str
+    """
     slurm_str = ""
     for key,val in slurm_dict.items():
         slurm_str += "#SBATCH --" + key + " " + str(val) + "\n"
     return slurm_str
 
 def func_yaml_subcmd(args):
-    """ Entry point to buildtest yaml """
+    """Entry point to buildtest yaml command.
+
+    :param args: command line arguments to buildtest
+    :type args: dict, required
+    """
 
     if args.maintainer:
         update_maintainer(args)

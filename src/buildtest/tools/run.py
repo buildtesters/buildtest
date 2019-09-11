@@ -31,7 +31,11 @@ from buildtest.tools.log import BuildTestError
 
 
 def func_run_subcmd(args):
-    """ run subcommand entry point """
+    """Entry point for "buildtest run" subcommand
+
+    :param args: command line arguments passed to buildtest
+    :type args: Dictionary, required
+    """
 
     if args.software:
         run_app_test(args.software)
@@ -44,10 +48,17 @@ def func_run_subcmd(args):
             raise BuildTestError("-j option must be used with option --suite")
 
         submit_job_to_scheduler(args.suite)
-    sys.exit(0)
 
 def write_system_info(fd,app_name=None,pkg_name=None):
-    """ write system information into run file """
+    """This method write system information into runfile (.run)
+
+    :param fd: file descriptor object to write content in .run file
+    :type fd: file descriptor object, required
+    :param app_name: full name of module
+    :type app_name: str, optional
+    :param pkg_name: system package name
+    :type pkg_name: str, optional
+    """
     system_info = BuildTestSystem()
     system = system_info.get_system()
 

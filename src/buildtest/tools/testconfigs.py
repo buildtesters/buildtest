@@ -27,10 +27,21 @@ from buildtest.tools.system import BuildTestCommand
 
 
 def testconfig_choices():
+    """Return a list of test configuration used by options
+    "buildtest testconfigs view" and "buildtest testconfigs edit"
 
+    :rtype: List
+    """
     return test_config_name_mapping().keys()
+
 def func_testconfigs_show(args):
-    #yml_files = walk_tree(config_opts['BUILDTEST_CONFIGS_REPO'], ".yml")
+    """ Prints all test configuration and description of test.
+
+    This method implements "buildtest testconfigs list"
+
+    :param args: command line arguments to buildtest
+    :type args: Dictionary, required
+    """
     test_config_table = test_config_name_mapping()
     print ('{:60} | {:<30}'.format("Test Configuration Name", "Description"))
     print('{:-<100}'.format(""))
@@ -52,7 +63,13 @@ def func_testconfigs_show(args):
         print('{:60} | {:<30}'.format(tname, textwrap.fill(description, 120)))
 
 def test_config_name_mapping():
-    """Mapping name of test configuration to path of test configuration"""
+    """This method returns test configuration name in the format
+    >>> f"{parent_parent}.{parent}.{os.path.basename(f)}"
+    It maps the name to full path of test configuration so it can be read the
+    configuration file.
+
+    :rtype: dictionary
+    """
     yml_files = walk_tree(config_opts['BUILDTEST_CONFIGS_REPO'], ".yml")
     test_config_table = {}
     for f in yml_files:
@@ -64,7 +81,12 @@ def test_config_name_mapping():
     return test_config_table
 
 def func_testconfigs_view(args):
-    """Print content of test configuration."""
+    """Print content of test configuration. This method implements
+    "buildtest testconfigs view <config>" command.
+
+    :param args: command line arguments to buildtest
+    :type args: dict, required
+    """
     test_config_table = test_config_name_mapping()
     query = f"cat {test_config_table[args.name]}"
     cmd = BuildTestCommand()
@@ -73,7 +95,12 @@ def func_testconfigs_view(args):
     print (out)
 
 def func_testconfigs_edit(args):
-    """Open test configuration in editor."""
+    """Open test configuration in editor. This method implements
+    "buildtest testconfigs edit <config>" command
+
+    :param args: command line arguments to buildtest
+    :type args: dict, required
+    """
     test_config_table = test_config_name_mapping()
     query = f"vim {test_config_table[args.name]}"
     os.system(query)

@@ -33,7 +33,10 @@ from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE
 from buildtest.tools.file import create_dir, create_file
 
 def func_collection_subcmd(args):
-    """Entry point for buildtest module collection"""
+    """Entry point for buildtest module collection.
+    :param args: command line arguments to buildtest
+    :type args: dict, required
+    """
 
     if args.add:
         add_collection()
@@ -45,9 +48,11 @@ def func_collection_subcmd(args):
         remove_collection(args.remove)
 
 def add_collection():
-    """Save modules as a module collection in a json file """
+    """This method save modules as a module collection in a json file. It updates
+    the json file and prints content to STDOUT
 
-
+    This method implements "buildtest module collection -a" command.
+    """
 
     cmd = "module -t list"
     out = subprocess.getoutput(cmd)
@@ -72,7 +77,14 @@ def add_collection():
         print(f"Updating collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
 
 def remove_collection(index):
-    """Remove a module collection"""
+    """This method removes a module collection from json file. It updates
+    the json file and prints content to STDOUT
+
+    This method implements "buildtest module collection -r <ID>" command.
+
+    :param index: module index number in collection file to remove
+    :type index: int, required
+    """
 
     fd = open(BUILDTEST_MODULE_COLLECTION_FILE,"r")
     content = json.load(fd)
@@ -90,6 +102,13 @@ def remove_collection(index):
     fd.close()
 
 def update_collection(index):
+    """This method update a module collection with active modules in your environment.
+    It updates the json file at index number specified and prints content to STDOUT
+    :param index: module index number in collection file to update.
+
+    This method implements "buildtest module collection -u <ID>" command.
+    :type index: int, required
+    """
     """Update a module collection with active modules """
 
     fd = open(BUILDTEST_MODULE_COLLECTION_FILE,"r")
@@ -114,8 +133,13 @@ def update_collection(index):
     json.dump(content,fd,indent=4)
     json.dump(content, sys.stdout, indent=4)
     fd.close()
+
 def list_collection():
-    """List module collections."""
+    """This method list all module collections from json file. If no module
+    collection found, the method will return
+
+    This method implements "buildtest module collection --list" command.
+    """
 
     fd = open(BUILDTEST_MODULE_COLLECTION_FILE,'r')
     dict = json.load(fd)
@@ -129,14 +153,19 @@ def list_collection():
         count += 1
 
 def get_collection_length():
-    """Read collection file collection.json and return length of collection"""
+    """Read collection file collection.json and return length of collection
+    :rtype: int
+    """
     with open(BUILDTEST_MODULE_COLLECTION_FILE,"r") as infile:
         json_module = json.load(infile)
 
     return (len(json_module["collection"]))
 
 def get_buildtest_module_collection(id):
-    """Retrieve collection id from collection.json"""
+    """Retrieve collection id from collection.json
+    :return: return module collection index
+    :rtype: int
+    """
     with open(BUILDTEST_MODULE_COLLECTION_FILE, "r") as infile:
         json_module = json.load(infile)
     return json_module["collection"][id]
