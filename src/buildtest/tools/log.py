@@ -70,4 +70,4 @@ def init_log():
     logger.addHandler(fh)
     logger.setLevel(logging.DEBUG)
 
-    return logger, logpath, logfile
+    return logger, logpath

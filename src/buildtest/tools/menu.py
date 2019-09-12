@@ -211,7 +211,7 @@ Misc:
                               metavar="TEST CONFIGURATION")
     parser_build.add_argument("-b",
                               "--binary",
-                              help="Conduct binary test for a package",
+                              help="Conduct sanity check on binaries on active modules ",
                               action="store_true")
     parser_build.add_argument("-S",
                               "--suite",

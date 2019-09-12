@@ -28,6 +28,7 @@ for building test scripts from test configuration.
 import os
 import shutil
 import subprocess
+import sys
 import yaml
 
 from buildtest.tools.config import config_opts
@@ -53,7 +54,7 @@ def func_build_subcmd(args):
     :rtype: None
     """
 
-    logger,logpath,logfile = init_log()
+    logger,logfile = init_log()
 
 
     if args.shell:
@@ -67,11 +68,8 @@ def func_build_subcmd(args):
     if args.parent_module_search:
         config_opts["BUILDTEST_PARENT_MODULE_SEARCH"]=args.parent_module_search
 
-    logdir = config_opts['BUILDTEST_LOGDIR']
-    testdir = config_opts['BUILDTEST_TESTDIR']
 
-    create_dir(logdir)
-    create_dir(testdir)
+    create_dir(config_opts['BUILDTEST_TESTDIR'])
 
     module_cmd_list = []
     # if module permutation is set
@@ -95,7 +93,7 @@ def func_build_subcmd(args):
         mod_str = f"module load {mod_str}"
 
     if args.suite:
-        test_suite_dir = os.path.join(testdir,"suite",args.suite)
+        test_suite_dir = os.path.join(config_opts['BUILDTEST_TESTDIR'],"suite",args.suite)
         create_dir(test_suite_dir)
         yaml_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
                                 "buildtest","suite",args.suite)
@@ -115,7 +113,10 @@ def func_build_subcmd(args):
         # pre-creates directories for each component in test suite in
         # BUILDTEST_TESTDIR
         for component in testsuite_components:
-            component_dir = os.path.join(testdir,"suite",args.suite,component)
+            component_dir = os.path.join(config_opts['BUILDTEST_TESTDIR'],
+                                         "suite",
+                                         args.suite,
+                                         component)
             create_dir(component_dir)
             if args.verbose >= 2:
                 print (f"Creating Directory {component_dir}")
@@ -175,43 +176,11 @@ def func_build_subcmd(args):
             # for every loaded module generate binary test
             for package in out:
                 generate_binary_test(package, args.verbose, "software")
+        else:
+            print("No modules loaded, please load modules and try again.")
+            sys.exit(0)
 
     if args.package:
-        func_build_system(args, logger, logpath, logfile)
+        generate_binary_test(args.package, args.verbose, "systempackage")
 
-
-
-def func_build_system(args, logger, logpath, logfile):
-    """ This method implements details for "buildtest build --package" and
-        invokes method "generate_binary_test" to get all the binaries and
-        write the test scripts in BUILDTEST_TESTDIR.
-
-        :param args: dictionary of command line arguments
-        :type args: dictionary, required
-        :param logger:  instance of logger class for writing logs to logfile
-        :type logpath: class object, required
-        :param logpath: full path to logfile
-        :type logpath: string, required
-        :param logfile: log file name
-        :type logfile: string, required
-
-        :rtype: None
-    """
-
-    system_logdir = os.path.join(config_opts["BUILDTEST_LOGDIR"],"system",args.package)
-
-    generate_binary_test(args.package,args.verbose,"systempackage")
-
-    create_dir(system_logdir)
-    logger.warning("Creating directory %s , to write log file", system_logdir)
-
-    destpath = os.path.join(system_logdir,logfile)
-    os.rename(logpath, destpath)
-
-    if args.verbose >= 1:
-        print (f"Creating Log Directory: {system_logdir}")
-        print (f"Renaming Log file {logpath} --> {destpath}")
-
-    logger.info("Moving log file from %s to %s", logpath, destpath)
-
-    print("Writing Log file to: ", destpath)
+    print("Writing Log file to: ", logfile)
