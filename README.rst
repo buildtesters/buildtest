@@ -1,5 +1,11 @@
-| |license| |status| |versions| |downloads|
+| |license| |docs| |slack| |status| |versions| |downloads|
 
+.. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
+    :alt: Documentation Status
+    :scale: 100%
+    :target: https://buildtest.readthedocs.io/en/latest/?badge=latest
+
+.. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
 .. |license| image:: https://img.shields.io/pypi/l/buildtest-framework.svg
 .. |status| image:: https://img.shields.io/pypi/status/buildtest-framework.svg
 .. |versions| image:: https://img.shields.io/pypi/pyversions/buildtest-framework.svg
