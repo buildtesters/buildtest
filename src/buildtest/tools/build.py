@@ -173,14 +173,15 @@ def func_build_subcmd(args):
         #  loaded"
         if out != "No modules loaded":
             out = out.split()
+            logger.info(f"Active Modules: {out}")
             # for every loaded module generate binary test
-            for package in out:
-                generate_binary_test(package, args.verbose, "software")
+            for module_name in out:
+                generate_binary_test(module_name, args.verbose, module=True)
         else:
             print("No modules loaded, please load modules and try again.")
             sys.exit(0)
 
     if args.package:
-        generate_binary_test(args.package, args.verbose, "systempackage")
+        generate_binary_test(args.package, args.verbose, package=True)
 
     print("Writing Log file to: ", logfile)

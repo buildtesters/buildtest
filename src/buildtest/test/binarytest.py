@@ -38,29 +38,29 @@ from buildtest.tools.software import get_binaries_from_application
 from buildtest.tools.system import get_binaries_from_systempackage, \
     BuildTestCommand
 
-def generate_binary_test(name,verbose,test_type=None):
-    """This method generates binary test. For software the modules and any
+def generate_binary_test(name,verbose,package=None, module=None):
+    """This method conducts sanity check on binary by running "which" against the binary.
+    This method can be used for modules and system package. For module, the
     parent modules are loaded in advance. A separate test is created for each
     binary command. Every test is written in BUILDTEST_TESTDIR in the
     appropriate subdirectory to distinguish between different
-    application version. In each test the command "which" is run against every
-    binary to ensure file exists."""
+    application version.
 
-
-
-    # ------------- NEED TO IMPLEMENT THIS AGAIN. OHPC Binary Test will be broken since we wont be reading from yaml file
-    #if config_opts["BUILDTEST_OHPC"]:
-    #    commandfile = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],"buildtest/ohpc",name.lower(),"command.yaml")
-
-
+    :param name: name of module or system package
+    :type name: str, required
+    :param verbose: verbose level passed from command line
+    :type verbose: int, required
+    :param package: boolean to indicate this is a system package test
+    :type package: bool, optional
+    :param module: boolean to indicate this is a  module test.
+    :type module: bool, optional
+    """
 
     logger = logging.getLogger(logID)
 
-    logger.debug("This is a %s binary test", test_type)
-
     preload_modules = ""
 
-    if test_type == "software":
+    if module:
 
         print ("Detecting Software:" + name )
 
@@ -76,7 +76,7 @@ def generate_binary_test(name,verbose,test_type=None):
 
         test_destdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],
                                     "software",name)
-    else:
+    elif package:
         print ("Detecting System Package: " + name)
         test_destdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"system",\
                        name)
@@ -86,10 +86,13 @@ def generate_binary_test(name,verbose,test_type=None):
 
     if binary_tests is None:
         print (f"There are no binaries for package: {name}")
+        logger.info(f"There are no binaries for package: {name}")
         return
 
     create_dir(test_destdir)
-
+    logger.info(f"Test Destination Directory: {test_destdir}")
+    logger.info(f"Creating Test Directory: {test_destdir}")
+    logger.info(f"Following binaries will be tested: {binary_tests}")
     if verbose >= 1:
         print (f"The following binaries were found in application: {name}")
         print (binary_tests)
@@ -119,14 +122,13 @@ def generate_binary_test(name,verbose,test_type=None):
         shell_magic = f"#!{shell_path}"
         fd.write(shell_magic + "\n")
 
-        if test_type == "software":
+        if module:
             fd.write(f"{preload_modules} \n")
             fd.write(f"module load {name} \n")
 
         fd.write("which " + key)
         fd.close()
-        if verbose >= 1:
-            print (f"Writing Test: {testpath} and setting permission to 755")
+
         # setting perm to 755 on testscript
         os.chmod(testpath,
                  stat.S_IRWXU |
@@ -134,6 +136,12 @@ def generate_binary_test(name,verbose,test_type=None):
                  stat.S_IXGRP |
                  stat.S_IROTH |
                  stat.S_IXOTH)
+
+        if verbose >= 1:
+            print (f"Writing Test: {testpath} and setting permission to 755")
+
+        logger.info(f"Writing Test: {testpath} and setting permission to 755")
+
         # reading test script for writing content of test in logcontent
         fd=open(testpath,'r')
         content=fd.read().splitlines()
@@ -141,12 +149,12 @@ def generate_binary_test(name,verbose,test_type=None):
         if verbose >= 2:
             print ("{:_<80}".format(""))
         logger.info("Content of test file: %s ", testpath)
-        logger.info("[START TEST-BLOCK]")
+        logger.info("[START]")
         for line in content:
                 logger.info("%s", line)
                 if verbose >= 2:
                     print (line)
-        logger.info("[END TEST-BLOCK]")
+        logger.info("[END]")
 
         if verbose >= 2:
             print ("{:_<80}".format(""))
