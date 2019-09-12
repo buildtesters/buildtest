@@ -31,7 +31,7 @@ import logging
 import os
 import stat
 
-from buildtest.tools.config import config_opts, logID
+from buildtest.tools.config import config_opts, logID, BUILDTEST_BUILD_HISTORY
 from buildtest.tools.file import string_in_file, create_dir
 from buildtest.tools.modules import module_obj
 from buildtest.tools.software import get_binaries_from_application
@@ -161,3 +161,4 @@ def generate_binary_test(name,verbose,package=None, module=None):
     print
     print ("Generating ", count, " binary tests")
     print ("Binary Tests are written in ", test_destdir)
+    BUILDTEST_BUILD_HISTORY["TESTCOUNT"] = count

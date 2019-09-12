@@ -25,13 +25,15 @@ This module contains all the methods related to "buildtest build" which is used
 for building test scripts from test configuration.
 """
 
+from datetime import datetime
+import json
 import os
 import shutil
 import subprocess
 import sys
 import yaml
 
-from buildtest.tools.config import config_opts
+from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY, BUILDTEST_BUILD_LOGFILE
 from buildtest.tools.modulesystem.collection import get_buildtest_module_collection
 from buildtest.tools.buildsystem.singlesource import \
     BuildTestBuilderSingleSource
@@ -56,6 +58,8 @@ def func_build_subcmd(args):
 
     logger,logfile = init_log()
 
+    STARTTIME = datetime.now().strftime("%m/%d/%Y %X")
+
 
     if args.shell:
         config_opts['BUILDTEST_SHELL']=args.shell
@@ -67,7 +71,6 @@ def func_build_subcmd(args):
         config_opts["BUILDTEST_BINARY"] = args.binary
     if args.parent_module_search:
         config_opts["BUILDTEST_PARENT_MODULE_SEARCH"]=args.parent_module_search
-
 
     create_dir(config_opts['BUILDTEST_TESTDIR'])
 
@@ -185,3 +188,49 @@ def func_build_subcmd(args):
         generate_binary_test(args.package, args.verbose, package=True)
 
     print("Writing Log file to: ", logfile)
+
+    ENDTIME = datetime.now().strftime("%m/%d/%Y %X")
+
+    BUILDTEST_BUILD_HISTORY["CMD"] = "buildtest " + ' '.join(str(arg) for arg in sys.argv[1:])
+    BUILDTEST_BUILD_HISTORY["START"] = STARTTIME
+    BUILDTEST_BUILD_HISTORY["END"] = ENDTIME
+    BUILDTEST_BUILD_HISTORY["LOGFILE"] = logfile
+    fd = open(BUILDTEST_BUILD_LOGFILE,"r")
+    build_dict = json.load(fd)
+    fd.close()
+    build_dict["build"].append(BUILDTEST_BUILD_HISTORY)
+
+    fd = open(BUILDTEST_BUILD_LOGFILE, "w")
+    json.dump(build_dict, fd, indent=4)
+    fd.close()
+
+
+def show_build_status(args):
+    """
+    This method displays history of builds conducted by buildtest. This method
+    implements command `buildtest build status`
+
+    :param args: command line arguments passed to buildtest
+    :type args: dict, required
+    """
+    fd = open(BUILDTEST_BUILD_LOGFILE,"r")
+    content = json.load(fd)
+    fd.close()
+
+    print ('{:3} | {:<20} | {:<20} | {:<15} | {:<60} '.format("ID",
+                                                              "Start Time",
+                                                              "End Time",
+                                                              "Number of Tests",
+                                                              "Command"))
+
+    print('{:-<160}'.format(""))
+    count = 0
+    for build in content["build"]:
+        count +=1
+        print ('{:3} | {:<20} | {:<20} | {:<15} | {:<60} '.format(count,
+                                                                  build["START"],
+                                                                  build["END"],
+                                                                  build["TESTCOUNT"],
+                                                                  build["CMD"],
+                                                                  build["LOGFILE"]))
+

@@ -31,7 +31,7 @@ import re
 import stat
 import sys
 import subprocess
-from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE, BUILDTEST_MODULE_FILE
+from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE, BUILDTEST_MODULE_FILE, BUILDTEST_BUILD_LOGFILE
 from buildtest.tools.file import create_dir
 from buildtest.tools.modules import module_obj
 
@@ -151,6 +151,11 @@ class BuildTestSystem():
         if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
             with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as outfile:
                 json.dump(module_coll_dict, outfile, indent=4)
+
+        if not os.path.exists(BUILDTEST_BUILD_LOGFILE):
+            build_dict = {"build":[]}
+            with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
+                json.dump(build_dict,outfile,indent=4)
 
     def get_system(self):
         """Return class variable system that contains detail for system configuration

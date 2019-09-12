@@ -31,7 +31,7 @@ import subprocess
 import yaml
 import sys
 
-from buildtest.tools.config import config_opts
+from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY
 from buildtest.tools.file import create_dir, is_file
 from buildtest.tools.mpi import openmpi_opt_table, mpich_opt_table
 from buildtest.tools.yaml import TEMPLATE_SINGLESOURCE, SUPPORTED_COMPILERS, \
@@ -308,6 +308,8 @@ class BuildTestBuilderSingleSource():
                 self._write_test(abs_test_path,module=cmd)
                 count+=1
             print(f"Writing {count} tests for {self.conf_file}")
+            BUILDTEST_BUILD_HISTORY["TESTCOUNT"] = count
+
             return
         # if this is a LSF job script then create .lsf extension for testname
         if "lsf" in self.test_dict:
@@ -319,6 +321,7 @@ class BuildTestBuilderSingleSource():
 
         abs_test_path = os.path.join(test_dir, self.testname)
         self._write_test(abs_test_path)
+        BUILDTEST_BUILD_HISTORY["TESTCOUNT"] = 1
 
     def _write_test(self,abs_test_path,module=None):
 

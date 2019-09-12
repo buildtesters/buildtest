@@ -37,6 +37,11 @@ BUILDTEST_TEST_LOCAL_EXT = ["."+ i for i in BUILDTEST_SHELLTYPES]
 BUILDTEST_TEST_EXT = BUILDTEST_JOB_EXTENSION + \
                      ["."+ i for i in BUILDTEST_SHELLTYPES]
 
+BUILDTEST_BUILD_LOGFILE = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","build.json")
+
+# dictionary used for storing status of builds
+BUILDTEST_BUILD_HISTORY= {}
+
 buildtest_home_conf_dir = os.path.join(os.getenv("HOME"), ".buildtest")
 BUILDTEST_CONFIG_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml")
 BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "collection.json")
