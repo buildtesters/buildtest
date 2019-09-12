@@ -38,7 +38,7 @@ from buildtest.tools.software import get_binaries_from_application
 from buildtest.tools.system import get_binaries_from_systempackage, \
     BuildTestCommand
 
-def generate_binary_test(name,verbose,package=None, module=None):
+def generate_binary_test(name,verbose, build_id, package=None, module=None):
     """This method conducts sanity check on binary by running "which" against the binary.
     This method can be used for modules and system package. For module, the
     parent modules are loaded in advance. A separate test is created for each
@@ -161,4 +161,6 @@ def generate_binary_test(name,verbose,package=None, module=None):
     print
     print ("Generating ", count, " binary tests")
     print ("Binary Tests are written in ", test_destdir)
-    BUILDTEST_BUILD_HISTORY["TESTCOUNT"] = count
+
+
+    BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"] = count

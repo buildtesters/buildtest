@@ -60,6 +60,8 @@ def func_build_subcmd(args):
 
     STARTTIME = datetime.now().strftime("%m/%d/%Y %X")
 
+    build_id = get_total_build_ids()
+    BUILDTEST_BUILD_HISTORY[build_id] = {}
 
     if args.shell:
         config_opts['BUILDTEST_SHELL']=args.shell
@@ -135,7 +137,8 @@ def func_build_subcmd(args):
                 builder = BuildTestBuilderSingleSource(file,
                                                        args,
                                                        parent_dir,
-                                                       module_cmd_list)
+                                                       module_cmd_list,
+                                                       build_id)
                 if len(module_cmd_list) > 0:
                     builder.build(modules_permutation=True)
                 elif args.collection:
@@ -157,7 +160,8 @@ def func_build_subcmd(args):
             builder = BuildTestBuilderSingleSource(file,
                                                    args,
                                                    parent_dir,
-                                                   module_cmd_list)
+                                                   module_cmd_list,
+                                                   build_id)
             # if test needs to be built with module permutation
             if len(module_cmd_list) > 0:
                 builder.build(modules_permutation=True)
@@ -179,33 +183,33 @@ def func_build_subcmd(args):
             logger.info(f"Active Modules: {out}")
             # for every loaded module generate binary test
             for module_name in out:
-                generate_binary_test(module_name, args.verbose, module=True)
+                generate_binary_test(module_name, args.verbose, build_id, module=True)
         else:
             print("No modules loaded, please load modules and try again.")
             sys.exit(0)
 
     if args.package:
-        generate_binary_test(args.package, args.verbose, package=True)
+        generate_binary_test(args.package, args.verbose, build_id, package=True)
 
     print("Writing Log file to: ", logfile)
 
     ENDTIME = datetime.now().strftime("%m/%d/%Y %X")
 
-    BUILDTEST_BUILD_HISTORY["CMD"] = "buildtest " + ' '.join(str(arg) for arg in sys.argv[1:])
-    BUILDTEST_BUILD_HISTORY["START"] = STARTTIME
-    BUILDTEST_BUILD_HISTORY["END"] = ENDTIME
-    BUILDTEST_BUILD_HISTORY["LOGFILE"] = logfile
+    BUILDTEST_BUILD_HISTORY[build_id]["CMD"] = "buildtest " + ' '.join(str(arg) for arg in sys.argv[1:])
+    BUILDTEST_BUILD_HISTORY[build_id]["START"] = STARTTIME
+    BUILDTEST_BUILD_HISTORY[build_id]["END"] = ENDTIME
+    BUILDTEST_BUILD_HISTORY[build_id]["LOGFILE"] = logfile
     fd = open(BUILDTEST_BUILD_LOGFILE,"r")
     build_dict = json.load(fd)
     fd.close()
-    build_dict["build"].append(BUILDTEST_BUILD_HISTORY)
+    build_dict["build"][build_id] = BUILDTEST_BUILD_HISTORY[build_id]
 
     fd = open(BUILDTEST_BUILD_LOGFILE, "w")
     json.dump(build_dict, fd, indent=4)
     fd.close()
 
 
-def show_build_status(args):
+def show_build_status_report(args):
     """
     This method displays history of builds conducted by buildtest. This method
     implements command `buildtest build status`
@@ -225,12 +229,59 @@ def show_build_status(args):
 
     print('{:-<160}'.format(""))
     count = 0
-    for build in content["build"]:
-        count +=1
+
+    for build_id in content["build"].keys():
+
         print ('{:3} | {:<20} | {:<20} | {:<15} | {:<60} '.format(count,
-                                                                  build["START"],
-                                                                  build["END"],
-                                                                  build["TESTCOUNT"],
-                                                                  build["CMD"],
-                                                                  build["LOGFILE"]))
+                                                                  content["build"][build_id]["START"],
+                                                                  content["build"][build_id]["END"],
+                                                                  content["build"][build_id]["TESTCOUNT"],
+                                                                  content["build"][build_id]["CMD"],
+                                                                  content["build"][build_id]["LOGFILE"]))
+        count += 1
+
+def get_build_ids():
+    """Return a list of build ids. This can be retrieved by getting length
+    of "build:" key and pass it to range() method to return a list. Build IDs
+    start from 0. This method is used as choice field in add_argument() method
+
+    :return: return a list of numbers  that represent build id
+    :rtype: list
+    """
+
+    fd = open(BUILDTEST_BUILD_LOGFILE, "r")
+    content = json.load(fd)
+    fd.close()
+    total_records = len(content["build"])
+    return (range(total_records))
+
+
+def get_total_build_ids():
+    """Return a total count of build ids. This can be retrieved by getting length
+    of "build:" key. Build IDs start from 0.
+
+    :return: return a list of numbers  that represent build id
+    :rtype: list
+    """
+
+    fd = open(BUILDTEST_BUILD_LOGFILE, "r")
+    content = json.load(fd)
+    fd.close()
+    total_records = len(content["build"])
+    return (total_records)
+
+def show_build_status_log(args):
+    """This method opens log file using "less" by reading build.json
+    and fetching log file based on build id.
+
+    :param args: command arguments passed to buildtest
+    :type args: dict, required
+    """
+    fd = open(BUILDTEST_BUILD_LOGFILE, "r")
+    content = json.load(fd)
+    fd.close()
+
+    logfile = content["build"][str(args.id)]["LOGFILE"]
+    query = f"less {logfile}"
+    os.system(query)
 

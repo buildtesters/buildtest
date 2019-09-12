@@ -153,7 +153,7 @@ class BuildTestSystem():
                 json.dump(module_coll_dict, outfile, indent=4)
 
         if not os.path.exists(BUILDTEST_BUILD_LOGFILE):
-            build_dict = {"build":[]}
+            build_dict = {"build":{}}
             with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
                 json.dump(build_dict,outfile,indent=4)
 

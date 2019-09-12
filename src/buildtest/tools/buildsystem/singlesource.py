@@ -45,14 +45,16 @@ class BuildTestBuilderSingleSource():
     """ Class responsible for building a single source test."""
     yaml_dict = {}
     test_dict = {}
-    def __init__(self, yaml, args, parent_dir,module_cmd_list):
+    def __init__(self, yaml, args, parent_dir,module_cmd_list,build_id):
         """ Entry point to class. This method will set all class variables.
 
             :param yaml: The yaml file to be processed
-            :param test_suite: Name of the test suite (buildtest build -S <suite>)
+            :param args: Command line argument passed to buildtest
             :param parent_dir: parent directory where test script will be written
-            :param software_module: Name of software module to write in test script.
+            :param module_cmd_list: Name of software module to write in test script.
+            :param build_id: build id to identify build
         """
+        self.build_id = build_id
         self.module_collection = None
         self.internal_module_collection = None
         self.shell = config_opts["BUILDTEST_SHELL"]
@@ -308,7 +310,7 @@ class BuildTestBuilderSingleSource():
                 self._write_test(abs_test_path,module=cmd)
                 count+=1
             print(f"Writing {count} tests for {self.conf_file}")
-            BUILDTEST_BUILD_HISTORY["TESTCOUNT"] = count
+            BUILDTEST_BUILD_HISTORY[self.build_id]["TESTCOUNT"] = count
 
             return
         # if this is a LSF job script then create .lsf extension for testname
@@ -321,7 +323,7 @@ class BuildTestBuilderSingleSource():
 
         abs_test_path = os.path.join(test_dir, self.testname)
         self._write_test(abs_test_path)
-        BUILDTEST_BUILD_HISTORY["TESTCOUNT"] = 1
+        BUILDTEST_BUILD_HISTORY[self.build_id]["TESTCOUNT"] = 1
 
     def _write_test(self,abs_test_path,module=None):
 

@@ -30,7 +30,8 @@ import argcomplete
 
 
 from buildtest.test.run.system import run_app_choices, run_system_choices
-from buildtest.tools.build import func_build_subcmd, show_build_status
+from buildtest.tools.build import func_build_subcmd, show_build_status_report, get_build_ids, \
+    show_build_status_log
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
     check_configuration
 from buildtest.tools.modulesystem.collection import func_collection_subcmd, \
@@ -87,6 +88,7 @@ def menu():
     module_permutation_choices = get_module_permutation_choices()
     collection_len = get_collection_length()
     collection_len = list(range(collection_len))
+    build_ids = get_build_ids()
     epilog_str = "Documentation: " + \
                  "https://buildtest.readthedocs.io/en/latest/index.html"
     description_str = "buildtest is a software testing framework designed " + \
@@ -140,7 +142,7 @@ Misc:
     parser_benchmark = subparsers.add_parser('benchmark')
     parser_testconfigs = subparsers.add_parser('testconfigs')
     parser_module = subparsers.add_parser('module')
-    subparsers_build = parser_build.add_subparsers(description="building test from test configuration")
+
 
     subparsers_module = parser_module.add_subparsers(description='Module utilties for managing module collections,'
                                                                  ' module trees, module load testing, reporting eb/spack modules,'
@@ -197,10 +199,16 @@ Misc:
     parser_yaml.set_defaults(func=func_yaml_subcmd)
 
     # -------------------------------- build menu --------------------------
+    subparsers_build = parser_build.add_subparsers(description="building test from test configuration")
+    parser_build_status = subparsers_build.add_parser("status", help="report build status")
+    parser_build_status.set_defaults(func=show_build_status_report)
 
-    parser_build_status = subparsers_build.add_parser('status',
-                                                     help="show build status")
-    parser_build_status.set_defaults(func=show_build_status)
+    parser_build_log = subparsers_build.add_parser("log", help="report build log")
+    parser_build_log.add_argument("id", help="Display Log File based on build ID", type=int, choices=build_ids,
+                                         metavar="BUILD ID")
+
+    parser_build_status.set_defaults(func=show_build_status_report)
+    parser_build_log.set_defaults(func=show_build_status_log)
 
     parser_build.add_argument("-p",
                               "--package",
