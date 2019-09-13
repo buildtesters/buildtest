@@ -1,23 +1,6 @@
 buildtest list --software
-DefaultModules
-cluster-tools
-cluster-tools-dell
-cmd
-dot
-eb
-freeipmi
-gcc
-ipmitool
 lmod
-lua
-medsci
-module-git
-module-info
-null
-openldap
-openmpi/mlnx/gcc/64
 settarg
-shared
 
 
-Total Software Packages:  19
+Total Software Packages:  2

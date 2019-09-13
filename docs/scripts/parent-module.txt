@@ -1,41 +1,66 @@
-buildtest module -d OpenMPI/2.0.1
-Module File: /nfs/grid/software/RHEL7/easybuild/modules/all/Compiler/GCC/6.2.0-2.27/OpenMPI/2.0.1.lua
+buildtest module -d shared
+Copying Default Configuration /gpfs/home/siddis14/buildtest-framework/settings.yml to           /home/siddis14/.buildtest/settings.yml
+Module File: /cm/local/modulefiles/shared
 ________________________________________________________________________________
-help([[The Open MPI Project is an open source MPI-2 implementation. - Homepage: http://www.open-mpi.org/]])
+#%Module1.0#######################################################################
+## default modulefile
+##
+proc ModulesHelp { } {
 
-whatis([[Description: The Open MPI Project is an open source MPI-2 implementation. - Homepage: http://www.open-mpi.org/]])
+        puts stderr "\tAdds shared modules to module environment"
+}
 
-local root = "/nfs/grid/software/RHEL7/easybuild/software/Compiler/GCC/6.2.0-2.27/OpenMPI/2.0.1"
-
-conflict("OpenMPI")
-
-load("hwloc/1.11.3")
-prepend_path("MODULEPATH", "/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/GCC/6.2.0-2.27/OpenMPI/2.0.1")
-
-prepend_path("CPATH", pathJoin(root, "include"))
-prepend_path("LD_LIBRARY_PATH", pathJoin(root, "lib"))
-prepend_path("LIBRARY_PATH", pathJoin(root, "lib"))
-prepend_path("MANPATH", pathJoin(root, "share/man"))
-prepend_path("PATH", pathJoin(root, "bin"))
-prepend_path("PKG_CONFIG_PATH", pathJoin(root, "lib/pkgconfig"))
-setenv("EBROOTOPENMPI", root)
-setenv("EBVERSIONOPENMPI", "2.0.1")
-setenv("EBDEVELOPENMPI", pathJoin(root, "easybuild/Compiler-GCC-6.2.0-2.27-OpenMPI-2.0.1-easybuild-devel"))
+module-whatis   "adds shared modules"
+module use --append /cm/shared/modulefiles
 
 
-family("MPI") 
-local lsf_libdir = os.getenv("LSF_LIBDIR") 
-prepend_path("LD_LIBRARY_PATH",lsf_libdir)
-
--- Built with EasyBuild version 3.1.2
 
 ________________________________________________________________________________
-Modules that depend on OpenMPI/2.0.1
-/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/GCC/6.2.0-2.27/OpenMPI/2.0.1/ScaLAPACK/2.0.2-OpenBLAS-0.2.19-LAPACK-3.6.0.lua
-/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/GCC/6.2.0-2.27/OpenMPI/2.0.1/GLPK/4.60.lua
-/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/GCC/6.2.0-2.27/OpenMPI/2.0.1/OpenBLAS/0.2.19-LAPACK-3.6.0.lua
-/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/GCC/6.2.0-2.27/OpenMPI/2.0.1/FFTW/3.3.5.lua
-/nfs/grid/software/RHEL7/easybuild/modules/all/MPI/GCC/6.2.0-2.27/OpenMPI/2.0.1/Boost/1.60.0.lua
+Modules that depend on shared
+/cm/shared/modulefiles/acml/gcc/64/5.3.1
+/cm/shared/modulefiles/acml/gcc-int64/64/5.3.1
+/cm/shared/modulefiles/default-environment
+/cm/shared/modulefiles/torque/6.1.1
+/cm/shared/modulefiles/mpiexec/0.84_432
+/cm/shared/modulefiles/intel-cluster-runtime/ia32/2017.0
+/cm/shared/modulefiles/intel-cluster-runtime/mic/2017.0
+/cm/shared/modulefiles/intel-cluster-runtime/intel64/2017.0
+/cm/shared/modulefiles/scalapack/openmpi/gcc/64/2.0.2
+/cm/shared/modulefiles/cuda92/toolkit/9.2.88
+/cm/shared/modulefiles/mpich/ge/gcc/64/3.2.1
+/cm/shared/modulefiles/hpl/2.2
+/cm/shared/modulefiles/intel-tbb-oss/ia32/2018_20180312oss
+/cm/shared/modulefiles/acml/gcc-int64/mp/64/5.3.1
+/cm/shared/modulefiles/cuda92/fft/9.2.88
+/cm/shared/modulefiles/openblas/dynamic/0.2.20
+/cm/shared/modulefiles/gdb/8.0.1
+/cm/shared/modulefiles/hdf5/1.10.1
+/cm/shared/modulefiles/blas/gcc/64/3.8.0
+/cm/shared/modulefiles/globalarrays/openmpi/gcc/64/5.6.1
+/cm/shared/modulefiles/cuda92/blas/9.2.88
+/cm/shared/modulefiles/lapack/gcc/64/3.8.0
+/cm/shared/modulefiles/acml/gcc/fma4/5.3.1
+/cm/shared/modulefiles/netcdf/gcc/64/4.5.0
+/cm/shared/modulefiles/hdf5_18/1.8.20
+/cm/shared/modulefiles/cuda92/profiler/9.2.88
+/cm/shared/modulefiles/acml/gcc/mp/64/5.3.1
+/cm/shared/modulefiles/fftw3/openmpi/gcc/64/3.3.7
+/cm/shared/modulefiles/hwloc/1.11.8
+/cm/shared/modulefiles/cuda92/nsight/9.2.88
+/cm/shared/modulefiles/slurm/17.11.8
+/cm/shared/modulefiles/blacs/openmpi/gcc/64/1.1patch03
+/cm/shared/modulefiles/acml/gcc-int64/fma4/5.3.1
+/cm/shared/modulefiles/sge/2011.11p1
+/cm/shared/modulefiles/acml/gcc/mp/fma4/5.3.1
+/cm/shared/modulefiles/acml/gcc-int64/mp/fma4/5.3.1
+/cm/shared/modulefiles/intel-tbb-oss/intel64/2018_20180312oss
+/cm/shared/modulefiles/netperf/2.7.0
+/cm/shared/modulefiles/iozone/3_471
+/cm/shared/modulefiles/fftw2/openmpi/gcc/64/double/2.1.5
+/cm/shared/modulefiles/fftw2/openmpi/gcc/64/float/2.1.5
+/cm/shared/modulefiles/bonnie++/1.97.3
+/cm/shared/modulefiles/openmpi/gcc/64/1.10.7
+/cm/shared/modulefiles/mvapich2/gcc/64/2.3b
 
 
-Total Modules Found: 5
+Total Modules Found: 44

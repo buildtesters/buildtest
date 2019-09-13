@@ -1,0 +1,9 @@
+buildtest status test 0 
+/home/siddis14/tmp/system/gcc/_usr_bin_c89.sh
+/home/siddis14/tmp/system/gcc/_usr_bin_c99.sh
+/home/siddis14/tmp/system/gcc/_usr_bin_gcc.sh
+/home/siddis14/tmp/system/gcc/_usr_bin_gcc-ar.sh
+/home/siddis14/tmp/system/gcc/_usr_bin_gcc-nm.sh
+/home/siddis14/tmp/system/gcc/_usr_bin_gcc-ranlib.sh
+/home/siddis14/tmp/system/gcc/_usr_bin_gcov.sh
+/home/siddis14/tmp/system/gcc/_usr_bin_x86_64-redhat-linux-gcc.sh

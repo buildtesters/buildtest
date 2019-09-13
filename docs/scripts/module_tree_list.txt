@@ -1,6 +1,2 @@
 buildtest module tree -l
 /usr/share/lmod/lmod/modulefiles/Core
-/gpfs/apps/modulestack
-/cm/local/modulefiles
-/etc/modulefiles
-/usr/share/modulefiles

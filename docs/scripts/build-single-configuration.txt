@@ -18,8 +18,12 @@ Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compile
 ________________________________________________________________________________
 #!/bin/sh
 module purge 
+module load DefaultModules 
+module load shared 
+module load slurm/17.11.8 
 cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-g++ -O3 -o 0xacac910540d87bc85ddf160183d2f8a6.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp 
-./0xacac910540d87bc85ddf160183d2f8a6.exe 
- rm ./0xacac910540d87bc85ddf160183d2f8a6.exe 
+g++ -O3 -o 0x619fd1541cf2c1b7f3ca14f24d58bc71.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp 
+./0x619fd1541cf2c1b7f3ca14f24d58bc71.exe 
+ rm ./0x619fd1541cf2c1b7f3ca14f24d58bc71.exe 
 ________________________________________________________________________________
+Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_34_13_09_2019.log

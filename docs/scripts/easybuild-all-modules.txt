@@ -1,54 +1,5 @@
 BUILDTEST_SPIDER_VIEW=all buildtest module --easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/Autoconf/2.69-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/Automake/1.16.1-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/Autotools/20180311-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/Bison/3.0.4.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/Bison/3.0.4-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/EasyBuild/3.8.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/EasyBuild/3.9.2.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/EasyBuild/3.7.1.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/FFTW/3.3.8-gompi-2018b.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/GCC/7.3.0-2.30.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/GCCcore/7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/HPCG/3.0-foss-2018b.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/HPL/2.2-foss-2018b.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/M4/1.4.18-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/M4/1.4.18.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/M4/1.4.17.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/OSU-Micro-Benchmarks/5.3.2-foss-2018b.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/OpenBLAS/0.3.1-GCC-7.3.0-2.30.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/OpenMPI/3.1.1-GCC-7.3.0-2.30.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/PyCharm/2017.2.3.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/ScaLAPACK/2.0.2-gompi-2018b-OpenBLAS-0.3.1.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/XZ/5.2.4-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/binutils/2.30.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/binutils/2.30-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/flex/2.6.4.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/flex/2.6.4-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/foss/2018b.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/gettext/0.19.8.1.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/gompi/2018b.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/help2man/1.47.4.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/help2man/1.47.4-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/hwloc/1.11.10-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/icc/2018.3.222-GCC-7.3.0-2.30.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/iccifort/2018.3.222-GCC-7.3.0-2.30.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/ifort/2018.3.222-GCC-7.3.0-2.30.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/iimpi/2018b.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/imkl/2018.3.222-iimpi-2018b.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/impi/2018.3.222-iccifort-2018.3.222-GCC-7.3.0-2.30.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/intel/2018b.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/libpciaccess/0.14-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/libtool/2.4.6-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/libxml2/2.9.8-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/ncurses/6.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/numactl/2.0.11-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/stress/1.0.4-foss-2018b.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/supermagic/20170824-foss-2018b.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/xorg-macros/1.19.2-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/zlib/1.2.11-GCCcore-7.3.0.lua is built with Easybuild
-Module: /gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/zlib/1.2.11.lua is built with Easybuild
 
 
-Total Easybuild Modules: 49
-Total Modules Searched: 230
+Total Easybuild Modules: 0
+Total Modules Searched: 2

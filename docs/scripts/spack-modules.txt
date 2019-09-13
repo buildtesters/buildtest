@@ -1,13 +1,5 @@
 buildtest module --spack
-Module: /gpfs/apps/medsci/stacks/1/modules/spack/gcc/8.2.0-gcc-4.8.5-53nw is built with Spack
-Module: /gpfs/apps/medsci/stacks/1/modules/spack/gcc/6.5.0-gcc-4.8.5-awre is built with Spack
-Module: /gpfs/apps/medsci/stacks/1/modules/spack/gcc/7.3.0-gcc-4.8.5-2bfp is built with Spack
-Module: /gpfs/apps/medsci/stacks/2/modules/spacktools/gcc/5.4.0-gcc-4.8.5-edk7 is built with Spack
-Module: /gpfs/apps/medsci/stacks/2/modules/spacktools/gcc/8.2.0-gcc-4.8.5-53nw is built with Spack
-Module: /gpfs/apps/medsci/stacks/1/modules/spack/gcc/5.4.0-gcc-4.8.5-edk7 is built with Spack
-Module: /gpfs/apps/medsci/stacks/2/modules/spacktools/gcc/6.5.0-gcc-4.8.5-awre is built with Spack
-Module: /gpfs/apps/medsci/stacks/2/modules/spacktools/gcc/7.4.0-gcc-4.8.5-gqja is built with Spack
 
 
-Total Spack Modules: 8
-Total Modules Searched: 28
+Total Spack Modules: 0
+Total Modules Searched: 2

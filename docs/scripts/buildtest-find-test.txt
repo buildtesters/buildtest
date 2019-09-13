@@ -6,14 +6,10 @@ buildtest find -ft all
 /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml.sh
 /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_gnu.yml.csh
 /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_gnu.yml.bash
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x3f4bb390231b17763e111a7fabac988c.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x8e2ca5835055356049bef3c09b262681.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xaf4ddd7aa57627e263b1ef6118b76e5f.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xe3c499cea4a1f1187be181b164d5b4bc.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x578354eb33a303dd84dade5695b4c9e.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x4f7e22a9f26151d770c95bda43e9eed3.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x3bbc0790813b67cd6fb92af63dee0a0d.sh
-/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xae8ee1664ec71eba9b9cd6708dd0d8e0.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xbb300b8d52a34626c0d28ced290c050c.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0xb5c90305b07bd7838e7626f77dfdb251.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x5f6cf0bf2b1a79f3341455e0e3b03f9f.sh
+/tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml_0x4cbf7bbc3d352da073d90a5dd02c9d08.sh
 /tmp/siddis14/buildtest/tests/suite/openmp/reduction/omp_reduction.c.yml.sh
 /tmp/siddis14/buildtest/tests/suite/openmp/reduction/omp_reduction.f.yml.sh
 /tmp/siddis14/buildtest/tests/suite/openmp/hello/omp_hello.f.yml.sh
@@ -134,6 +130,6 @@ buildtest find -ft all
 /tmp/siddis14/buildtest/tests/system/coreutils/_usr_bin_whoami.sh
 /tmp/siddis14/buildtest/tests/system/coreutils/_usr_bin_yes.sh
 /tmp/siddis14/buildtest/tests/system/coreutils/_usr_sbin_chroot.sh
-135 Test scripts found in /tmp/siddis14/buildtest/tests
+131 Test scripts found in /tmp/siddis14/buildtest/tests
 /tmp/siddis14/buildtest/tests/system/coreutils/_usr_bin_install.sh
-135 Test found with name all in its filename
+131 Test found with name all in its filename

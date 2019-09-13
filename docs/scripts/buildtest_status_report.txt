@@ -1,0 +1,35 @@
+buildtest status report 
+ID  | Start Time           | End Time             | Number of Tests | Command                                                      
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+  0 | 09/13/2019 16:27:34  | 09/13/2019 16:27:34  | 8               | buildtest build --package gcc --testdir /home/siddis14/tmp   
+  1 | 09/13/2019 16:27:37  | 09/13/2019 16:27:37  | 102             | buildtest build --package coreutils                          
+  2 | 09/13/2019 16:27:41  | 09/13/2019 16:27:41  | 1               | buildtest build -S compilers                                 
+  3 | 09/13/2019 16:27:50  | 09/13/2019 16:27:51  | 1               | buildtest build -S openmp                                    
+  4 | 09/13/2019 16:28:04  | 09/13/2019 16:28:04  | 1               | buildtest build -c compilers.helloworld.hello_gnu.yml -vv    
+  5 | 09/13/2019 16:28:08  | 09/13/2019 16:28:08  | 1               | buildtest build -c compilers.helloworld.hello_gnu.yml -vv    
+  6 | 09/13/2019 16:28:12  | 09/13/2019 16:28:12  | 1               | buildtest build -c compilers.helloworld.hello_gnu.yml --shell csh 
+  7 | 09/13/2019 16:28:16  | 09/13/2019 16:28:16  | 1               | buildtest build -c compilers.helloworld.hello_gnu.yml        
+  8 | 09/13/2019 16:28:19  | 09/13/2019 16:28:19  | 1               | buildtest build -c compilers.helloworld.hello_intel_fortran.yml -co intelmpi -vv 
+  9 | 09/13/2019 16:28:23  | 09/13/2019 16:28:23  | 2               | buildtest build -c compilers.helloworld.hello_intel_fortran.yml --modules intel -vv 
+ 10 | 09/13/2019 16:28:27  | 09/13/2019 16:28:27  | 2               | buildtest build -c compilers.helloworld.hello_intel_fortran.yml --modules vmd -vv 
+ 11 | 09/13/2019 16:28:30  | 09/13/2019 16:28:30  | 1               | buildtest build -c compilers.helloworld.hello_lsf.yml -vv    
+ 12 | 09/13/2019 16:28:34  | 09/13/2019 16:28:34  | 1               | buildtest build -c compilers.helloworld.hello_slurm.yml -vv  
+ 13 | 09/13/2019 16:29:12  | 09/13/2019 16:29:12  | 1               | buildtest build -mc 0 -vv -c mpi.examples.hello.c.yml        
+ 14 | 09/13/2019 16:29:15  | 09/13/2019 16:29:15  | 1               | buildtest build -mc 0 -vv -c mpi.matrixmux.mm_mpi.f.yml      
+ 15 | 09/13/2019 16:29:19  | 09/13/2019 16:29:19  | 1               | buildtest build -mc 1 -vv -c mpi.examples.hello.c.mpich.yml  
+ 16 | 09/13/2019 16:29:23  | 09/13/2019 16:29:23  | 1               | buildtest build -mc 0 -vv -c mpi.examples.mpi_ping.c.slurm.yml 
+ 17 | 09/13/2019 16:33:58  | 09/13/2019 16:33:58  | 8               | buildtest build --package gcc --testdir /home/siddis14/tmp   
+ 18 | 09/13/2019 16:33:59  | 09/13/2019 16:33:59  | 102             | buildtest build --package coreutils                          
+ 19 | 09/13/2019 16:34:00  | 09/13/2019 16:34:01  | 1               | buildtest build -S compilers                                 
+ 20 | 09/13/2019 16:34:08  | 09/13/2019 16:34:08  | 1               | buildtest build -S openmp                                    
+ 21 | 09/13/2019 16:34:18  | 09/13/2019 16:34:18  | 1               | buildtest build -c compilers.helloworld.hello_gnu.yml -vv    
+ 22 | 09/13/2019 16:34:19  | 09/13/2019 16:34:19  | 1               | buildtest build -c compilers.helloworld.hello_gnu.yml -vv    
+ 23 | 09/13/2019 16:34:20  | 09/13/2019 16:34:21  | 1               | buildtest build -c compilers.helloworld.hello_gnu.yml --shell csh 
+ 24 | 09/13/2019 16:34:22  | 09/13/2019 16:34:22  | 1               | buildtest build -c compilers.helloworld.hello_gnu.yml        
+ 25 | 09/13/2019 16:34:23  | 09/13/2019 16:34:23  | 1               | buildtest build -c compilers.helloworld.hello_intel_fortran.yml -co intelmpi -vv 
+ 26 | 09/13/2019 16:34:27  | 09/13/2019 16:34:27  | 1               | buildtest build -c compilers.helloworld.hello_lsf.yml -vv    
+ 27 | 09/13/2019 16:34:28  | 09/13/2019 16:34:28  | 1               | buildtest build -c compilers.helloworld.hello_slurm.yml -vv  
+ 28 | 09/13/2019 16:34:42  | 09/13/2019 16:34:42  | 1               | buildtest build -mc 0 -vv -c mpi.examples.hello.c.yml        
+ 29 | 09/13/2019 16:34:44  | 09/13/2019 16:34:44  | 1               | buildtest build -mc 0 -vv -c mpi.matrixmux.mm_mpi.f.yml      
+ 30 | 09/13/2019 16:34:45  | 09/13/2019 16:34:45  | 1               | buildtest build -mc 1 -vv -c mpi.examples.hello.c.mpich.yml  
+ 31 | 09/13/2019 16:34:46  | 09/13/2019 16:34:46  | 1               | buildtest build -mc 0 -vv -c mpi.examples.mpi_ping.c.slurm.yml 

@@ -4,3 +4,4 @@ Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_arg
 Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_slurm.yml.slurm
 Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
 Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_intel_fortran.yml.sh
+Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_34_13_09_2019.log

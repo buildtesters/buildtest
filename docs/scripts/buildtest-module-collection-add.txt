@@ -2,6 +2,16 @@ buildtest module collection -a
 {
     "collection": [
         [
+            "shared",
+            "mpich/ge/gcc/64/3.2.1"
+        ],
+        [
+            "DefaultModules",
+            "shared",
+            "slurm/17.11.8",
+            "gcc/7.2.0"
+        ],
+        [
             "eb/2019",
             "GCCcore/7.3.0",
             "binutils/2.30-GCCcore-7.3.0",

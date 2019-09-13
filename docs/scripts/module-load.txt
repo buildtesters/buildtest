@@ -1,84 +1,15 @@
 buildtest module loadtest
-module load DefaultModules
-RUN: 1/25 STATUS: PASSED - Testing module: DefaultModules
-________________________________________________________________________________
-module load cluster-tools-dell/8.1
-RUN: 2/25 STATUS: PASSED - Testing module: cluster-tools-dell/8.1
-________________________________________________________________________________
-module load cluster-tools/8.1
-RUN: 3/25 STATUS: PASSED - Testing module: cluster-tools/8.1
-________________________________________________________________________________
-module load cmd
-RUN: 4/25 STATUS: PASSED - Testing module: cmd
-________________________________________________________________________________
-module load dot
-RUN: 5/25 STATUS: PASSED - Testing module: dot
-________________________________________________________________________________
-module load eb/2019
-RUN: 6/25 STATUS: PASSED - Testing module: eb/2019
-________________________________________________________________________________
-module load freeipmi/1.5.7
-RUN: 7/25 STATUS: PASSED - Testing module: freeipmi/1.5.7
-________________________________________________________________________________
-module try-load medsci/2019.2;  module load gcc/5.4.0-gcc-4.8.5-edk7
-RUN: 8/25 STATUS: PASSED - Testing module: gcc/5.4.0-gcc-4.8.5-edk7
-________________________________________________________________________________
-module try-load medsci/.2019.1;  module load gcc/6.5.0-gcc-4.8.5-awre
-RUN: 9/25 STATUS: PASSED - Testing module: gcc/6.5.0-gcc-4.8.5-awre
-________________________________________________________________________________
-module load gcc/7.2.0
-RUN: 10/25 STATUS: PASSED - Testing module: gcc/7.2.0
-________________________________________________________________________________
-module try-load medsci/.2019.1;  module load gcc/7.3.0-gcc-4.8.5-2bfp
-RUN: 11/25 STATUS: PASSED - Testing module: gcc/7.3.0-gcc-4.8.5-2bfp
-________________________________________________________________________________
-module try-load medsci/2019.2;  module load gcc/7.4.0-gcc-4.8.5-gqja
-RUN: 12/25 STATUS: PASSED - Testing module: gcc/7.4.0-gcc-4.8.5-gqja
-________________________________________________________________________________
-module try-load medsci/.2019.1;  module load gcc/8.2.0-gcc-4.8.5-53nw
-RUN: 13/25 STATUS: PASSED - Testing module: gcc/8.2.0-gcc-4.8.5-53nw
-________________________________________________________________________________
-module load ipmitool/1.8.18
-RUN: 14/25 STATUS: PASSED - Testing module: ipmitool/1.8.18
-________________________________________________________________________________
 module load lmod/7.7.14
-RUN: 15/25 STATUS: PASSED - Testing module: lmod/7.7.14
-________________________________________________________________________________
-module load lua/5.3.4
-RUN: 16/25 STATUS: PASSED - Testing module: lua/5.3.4
-________________________________________________________________________________
-module load medsci/.2019.1
-RUN: 17/25 STATUS: PASSED - Testing module: medsci/.2019.1
-________________________________________________________________________________
-module load medsci/2019.2
-RUN: 18/25 STATUS: PASSED - Testing module: medsci/2019.2
-________________________________________________________________________________
-module load module-git
-RUN: 19/25 STATUS: PASSED - Testing module: module-git
-________________________________________________________________________________
-module load module-info
-RUN: 20/25 STATUS: FAILED - Testing module: module-info
-________________________________________________________________________________
-module load null
-RUN: 21/25 STATUS: PASSED - Testing module: null
-________________________________________________________________________________
-module load openldap
-RUN: 22/25 STATUS: PASSED - Testing module: openldap
-________________________________________________________________________________
-module load openmpi/mlnx/gcc/64/3.1.1rc1
-RUN: 23/25 STATUS: PASSED - Testing module: openmpi/mlnx/gcc/64/3.1.1rc1
+RUN: 1/2 STATUS: PASSED - Testing module: lmod/7.7.14
 ________________________________________________________________________________
 module load settarg/7.7.14
-RUN: 24/25 STATUS: PASSED - Testing module: settarg/7.7.14
-________________________________________________________________________________
-module load shared
-RUN: 25/25 STATUS: PASSED - Testing module: shared
+RUN: 2/2 STATUS: PASSED - Testing module: settarg/7.7.14
 ________________________________________________________________________________
 Writing Results to /tmp/modules-load.out
 Writing Results to /tmp/modules-load.err
 ________________________________________________________________________________
                      Module Load Summary
-Module Trees:                            ['/usr/share/lmod/lmod/modulefiles/Core', '/gpfs/apps/modulestack', '/cm/local/modulefiles', '/etc/modulefiles', '/usr/share/modulefiles']
-PASSED:                                  24
-FAILED:                                  1
+Module Trees:                            ['/usr/share/lmod/lmod/modulefiles/Core']
+PASSED:                                  2
+FAILED:                                  0
 ________________________________________________________________________________

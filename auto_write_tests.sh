@@ -87,10 +87,16 @@ tee $script_dir/spack-modules.txt <<< "buildtest module --spack" | bash >> $scri
 
 tee $script_dir/spack-all-modules.txt <<< "BUILDTEST_SPIDER_VIEW=all buildtest module --spack" | bash >> $script_dir/spack-all-modules.txt
 
+tee $script_dir/parent-module.txt <<< "buildtest module -d shared" | bash >> $script_dir/parent-module.txt
+
+# status command
+tee $script_dir/buildtest_status_help.txt <<< "buildtest status --help" | bash >> $script_dir/buildtest_status_help.txt
+tee $script_dir/buildtest_status_report.txt <<< "buildtest status report " | bash >> $script_dir/buildtest_status_report.txt
+tee $script_dir/buildtest_status_test.txt <<< "buildtest status test 0 " | bash >> $script_dir/buildtest_status_test.txt
+
 tee $script_dir/module_tree_help.txt <<< "buildtest module tree -h" | bash >> $script_dir/module_tree_help.txt
 tee $script_dir/module_tree_list.txt <<< "buildtest module tree -l" | bash >> $script_dir/module_tree_list.txt
 tee $script_dir/module_tree_add.txt <<< "buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_add.txt
 tee $script_dir/module_tree_rm.txt <<< "buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_rm.txt
 tee $script_dir/module_tree_set.txt <<< "buildtest module tree -s /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_set.txt
 
-#tee $script_dir/parent-module.txt <<< "buildtest module -d OpenMPI/2.0.1" | bash >> $script_dir/parent-module.txt

@@ -12,7 +12,8 @@ optional arguments:
                         retrieve all modules that module is depended on
 
 subcommands:
-  valid subcommands
+  Module utilties for managing module collections, module trees, module load testing, reporting eb/spack modules,and
+  report difference between trees.
 
   {loadtest,tree,collection}
     loadtest            module load test

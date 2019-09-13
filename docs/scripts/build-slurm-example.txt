@@ -26,8 +26,12 @@ ________________________________________________________________________________
 #SBATCH --nodes 4
 #SBATCH --time 01:00
 module purge 
+module load DefaultModules 
+module load shared 
+module load slurm/17.11.8 
 cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-g++ -O2 -o 0xacd75c626247d342e93245d5b0baa8ea.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp 
-./0xacd75c626247d342e93245d5b0baa8ea.exe 
- rm ./0xacd75c626247d342e93245d5b0baa8ea.exe 
+g++ -O2 -o 0x1b1e0cbb1f688daf176cc1e05e87d005.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp 
+./0x1b1e0cbb1f688daf176cc1e05e87d005.exe 
+ rm ./0x1b1e0cbb1f688daf176cc1e05e87d005.exe 
 ________________________________________________________________________________
+Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_34_13_09_2019.log

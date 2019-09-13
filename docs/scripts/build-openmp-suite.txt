@@ -13,3 +13,4 @@ Writing Test: /tmp/siddis14/buildtest/tests/suite/openmp/dotprod/omp_dotprod_ser
 Writing Test: /tmp/siddis14/buildtest/tests/suite/openmp/dotprod/omp_dotprod.f.yml.sh
 Writing Test: /tmp/siddis14/buildtest/tests/suite/openmp/matrixmultiplication/omp_mm.c.yml.sh
 Writing Test: /tmp/siddis14/buildtest/tests/suite/openmp/matrixmultiplication/omp_mm.f.yml.sh
+Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_34_13_09_2019.log

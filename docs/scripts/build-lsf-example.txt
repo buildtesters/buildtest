@@ -28,8 +28,12 @@ ________________________________________________________________________________
 #BSUB -W 01:00
 #BSUB -n 4
 module purge 
+module load DefaultModules 
+module load shared 
+module load slurm/17.11.8 
 cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-gcc -O2 -o 0x7327ba7045fe8aeb6c36ee0650a65c56.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c 
-./0x7327ba7045fe8aeb6c36ee0650a65c56.exe 
- rm ./0x7327ba7045fe8aeb6c36ee0650a65c56.exe 
+gcc -O2 -o 0xe4c46319299d211122d94785aa0316c2.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c 
+./0xe4c46319299d211122d94785aa0316c2.exe 
+ rm ./0xe4c46319299d211122d94785aa0316c2.exe 
 ________________________________________________________________________________
+Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_34_13_09_2019.log

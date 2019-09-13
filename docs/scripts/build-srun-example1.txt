@@ -28,9 +28,10 @@ ________________________________________________________________________________
 #SBATCH --ntasks 2
 #SBATCH --nodes 1
 module purge 
-module load eb/2019 GCCcore/7.3.0 binutils/2.30-GCCcore-7.3.0 GCC/7.3.0-2.30 zlib/1.2.11-GCCcore-7.3.0 numactl/2.0.11-GCCcore-7.3.0 XZ/5.2.4-GCCcore-7.3.0 libxml2/2.9.8-GCCcore-7.3.0 libpciaccess/0.14-GCCcore-7.3.0 hwloc/1.11.10-GCCcore-7.3.0 OpenMPI/3.1.1-GCC-7.3.0-2.30
+module load DefaultModules shared slurm/17.11.8 gcc/7.2.0
 cd /tmp/siddis14/buildtest/tests/suite/mpi/examples
-mpicc -O2 -o 0xd4c69b51ac211026d24e99c7aaf69b2e.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/examples/src/mpi_ping.c 
-srun ./0xd4c69b51ac211026d24e99c7aaf69b2e.exe 
- rm ./0xd4c69b51ac211026d24e99c7aaf69b2e.exe 
+mpicc -O2 -o 0x2b9969037adc7730ea18581d77498538.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/examples/src/mpi_ping.c 
+srun ./0x2b9969037adc7730ea18581d77498538.exe 
+ rm ./0x2b9969037adc7730ea18581d77498538.exe 
 ________________________________________________________________________________
+Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_34_13_09_2019.log
