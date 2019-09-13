@@ -26,7 +26,8 @@ from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import is_dir
 
 def func_module_tree_subcmd(args):
-    """ Entry point for buildtest module tree subcommand """
+    """ Entry point for ``buildtest module tree`` subcommand """
+
     if args.list:
         [print (tree) for tree in config_opts["BUILDTEST_MODULEPATH"]]
 
@@ -40,7 +41,13 @@ def func_module_tree_subcmd(args):
         module_tree_set(args.set)
 
 def module_tree_add(tree_list):
-    """adding a module tree to BUILDTEST_MODULEPATH in configuration file"""
+    """This method adds a module tree to BUILDTEST_MODULEPATH in configuration file.
+    This implemenents command ``buildtest module tree -a <tree>``
+
+    :param tree_list: colon separated list of the root of module trees
+    :type tree_list: str, required
+    :return: Update configuration file with updated value for BUILDTEST_MODULEPATH
+    """
 
     fd = open(BUILDTEST_CONFIG_FILE, "r")
     content = yaml.safe_load(fd)
@@ -64,7 +71,13 @@ def module_tree_add(tree_list):
     print(f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
 
 def module_tree_rm(tree_list):
-    """ remove a module tree from BUILDTEST_MODULEPATH in configuration file"""
+    """ This method removes a module tree from BUILDTEST_MODULEPATH in configuration file.
+    This implements command ``buildtest module tree -r <tree>``
+
+    :param tree_list: root of a module tree
+    :type tree_list: str, required
+    :return: Update configuration file with updated value for BUILDTEST_MODULEPATH
+    """
 
     fd = open(BUILDTEST_CONFIG_FILE,"r")
     content = yaml.safe_load(fd)
@@ -81,7 +94,13 @@ def module_tree_rm(tree_list):
     print (f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
 
 def module_tree_set(tree):
-    """set a module tree to BUILDTEST_MODULEPATH in configuration file"""
+    """This method override BUILDTEST_MODULEPATH to the user specified tree. This will
+    update the configuration file and implements command ``buildtest module tree -s <path>``
+
+    :param tree: root of module tree to set for variable BUILDTEST_MODULEPATH
+    :type tree: str, required
+    :return: Update configuration file with updated value for BUILDTEST_MODULEPATH
+    """
 
     fd = open(BUILDTEST_CONFIG_FILE, "r")
     content = yaml.safe_load(fd)

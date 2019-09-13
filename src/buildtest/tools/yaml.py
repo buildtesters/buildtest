@@ -155,6 +155,7 @@ MPIEXEC_KEY_DESC = {
 
 def get_environment_variable(shell,key,value):
     """ get environment variable based on shell type"""
+
     if shell == "sh" or shell == "bash":
         return "export %s=%s" %(key,value)
     elif shell == "csh":
@@ -234,7 +235,7 @@ def get_programming_language(ext):
         return "python"
 
 def lsf_key_parse(lsf_dict):
-    """Convert lsf keys to #BSUB command
+    """Convert lsf keys to ``#BSUB`` command
 
     :param lsf_dict: LSF YAML keys
     :type lsf_dict: dict, required
@@ -247,7 +248,7 @@ def lsf_key_parse(lsf_dict):
     return lsf_str
 
 def slurm_key_parse(slurm_dict):
-    """Convert slurm keys to #SBATCH command.
+    """Convert slurm keys to ``#SBATCH`` command.
 
     :param slurm_dict: LSF YAML keys
     :type slurm_dict: dict, required
@@ -260,7 +261,7 @@ def slurm_key_parse(slurm_dict):
     return slurm_str
 
 def func_yaml_subcmd(args):
-    """Entry point to buildtest yaml command.
+    """Entry point to ``buildtest yaml`` command.
 
     :param args: command line arguments to buildtest
     :type args: dict, required

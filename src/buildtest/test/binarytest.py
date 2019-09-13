@@ -137,6 +137,8 @@ def generate_binary_test(name,verbose, build_id, package=None, module=None):
                  stat.S_IROTH |
                  stat.S_IXOTH)
 
+        BUILDTEST_BUILD_HISTORY[build_id]["TESTS"].append(testpath)
+
         if verbose >= 1:
             print (f"Writing Test: {testpath} and setting permission to 755")
 

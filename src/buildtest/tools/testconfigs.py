@@ -28,19 +28,19 @@ from buildtest.tools.system import BuildTestCommand
 
 def testconfig_choices():
     """Return a list of test configuration used by options
-    "buildtest testconfigs view" and "buildtest testconfigs edit"
+    ``buildtest testconfigs view`` and ``buildtest testconfigs edit``
 
-    :rtype: List
+    :rtype: list
     """
     return test_config_name_mapping().keys()
 
 def func_testconfigs_show(args):
     """ Prints all test configuration and description of test.
 
-    This method implements "buildtest testconfigs list"
+    This method implements ``buildtest testconfigs list``
 
     :param args: command line arguments to buildtest
-    :type args: Dictionary, required
+    :type args: dict, required
     """
     test_config_table = test_config_name_mapping()
     print ('{:60} | {:<30}'.format("Test Configuration Name", "Description"))
@@ -64,11 +64,11 @@ def func_testconfigs_show(args):
 
 def test_config_name_mapping():
     """This method returns test configuration name in the format
-    >>> f"{parent_parent}.{parent}.{os.path.basename(f)}"
+    ``{parent_parent}.{parent}.{os.path.basename(f)``
     It maps the name to full path of test configuration so it can be read the
     configuration file.
 
-    :rtype: dictionary
+    :rtype: dict
     """
     yml_files = walk_tree(config_opts['BUILDTEST_CONFIGS_REPO'], ".yml")
     test_config_table = {}
@@ -82,7 +82,7 @@ def test_config_name_mapping():
 
 def func_testconfigs_view(args):
     """Print content of test configuration. This method implements
-    "buildtest testconfigs view <config>" command.
+    ``buildtest testconfigs view <config>`` command.
 
     :param args: command line arguments to buildtest
     :type args: dict, required
@@ -96,7 +96,7 @@ def func_testconfigs_view(args):
 
 def func_testconfigs_edit(args):
     """Open test configuration in editor. This method implements
-    "buildtest testconfigs edit <config>" command
+    ``buildtest testconfigs edit <config>`` command
 
     :param args: command line arguments to buildtest
     :type args: dict, required

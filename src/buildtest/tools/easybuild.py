@@ -33,7 +33,7 @@ from buildtest.tools.modules import module_obj
 
 def find_easyconfigs_from_modulelist(modulelist):
     """This method returns a list of easyconfig from a list of module files. The
-    method invokes walk_tree() to traverse a directory with file extension .eb. If
+    method invokes **walk_tree()** to traverse a directory with file extension .eb. If
     file is found it will add to easyconfig list, otherwise adds to non-easyconfig list
 
     :param modulelist: list of module file paths
@@ -87,13 +87,13 @@ def find_easyconfigs_from_modulelist(modulelist):
 
 def find_easyconfigs():
     """This method prints the easyconfig lists in a table format and
-    this implements "buildtest list --easyconfigs".
+    this implements ``buildtest list --easyconfigs``.
 
-    This method invokes find_easyconfigs_from_modulelist() that retrieves
+    This method invokes **find_easyconfigs_from_modulelist()** that retrieves
     easyconfig and non-easyconfig list.
 
     This method retrieves list of module path by invoking class object
-    module_obj.get_modulefile_path where module_obj is an object of
+    **module_obj.get_modulefile_path()** where module_obj is an object of
     type BuildTestModule.
 
     Writes non-easyconfig paths to /tmp/easyconfigs.txt

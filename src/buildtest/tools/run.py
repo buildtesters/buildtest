@@ -31,10 +31,10 @@ from buildtest.tools.log import BuildTestError
 
 
 def func_run_subcmd(args):
-    """Entry point for "buildtest run" subcommand
+    """Entry point for ``buildtest run`` subcommand
 
     :param args: command line arguments passed to buildtest
-    :type args: Dictionary, required
+    :type args: dict, required
     """
 
     if args.software:

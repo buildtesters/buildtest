@@ -37,7 +37,8 @@ from buildtest.tools.modules import module_obj
 
 class BuildTestCommand():
     """Class method to invoke shell commands and retrieve output and error. This class
-    makes use of subprocess.Popen() to run the shell command. This class has no __init__ method
+    makes use of **subprocess.Popen()** to run the shell command. This class has no
+    **__init__()** method
     """
 
     ret = []
@@ -61,7 +62,7 @@ class BuildTestCommand():
         self.err = self.err.decode("utf-8")
         return (self.out,self.err)
     def which(self,cmd):
-        """Run a "which" against the command.
+        """Run a ``which`` against the command.
 
         :param cmd: shell command to execute
         :type cmd: str, required
@@ -105,12 +106,13 @@ class BuildTestCommand():
 class BuildTestSystem():
     """BuildTestSystem is a class that detects system configuration and outputs the result
     in .run file which are generated upon test execution."""
+
     # class variable used for storing system configuration
     system = {}
 
     def __init__(self):
         """Constructor method for BuildTestSystem(). Defines all system configuration using
-        class variable "system" which is a dictionary """
+        class variable **system** which is a dictionary """
 
         self.system["OS_NAME"] = platform.linux_distribution()[0]
         self.system["OS_VERSION"] = platform.linux_distribution()[1]
@@ -160,13 +162,14 @@ class BuildTestSystem():
     def get_system(self):
         """Return class variable system that contains detail for system configuration
 
+        :return: return ``self.system``
         :rtype: dict
         """
 
         return self.system        
     def get_lsf_configuration(self):
         """Return LSF queues and compute nodes part of the LSF cluster. It makes use
-        of bhosts and bqueues command to retrieve queue and compute nodes.
+        of ``bhosts`` and ``bqueues`` command to retrieve queue and compute nodes.
         """
 
         cmd = BuildTestCommand()
@@ -196,9 +199,9 @@ class BuildTestSystem():
 
     def check_scheduler(self):
         """Check for batch scheduler. Currently checks for LSF or SLURM by running
-        bhosts and sinfo command. It must be present in $PATH when running buildtest.
+        ``bhosts`` and ``sinfo`` command. It must be present in $PATH when running buildtest.
 
-        :return: return string "LSF" or "SLURM". If neither found returns None
+        :return: return string **LSF** or **SLURM**. If neither found returns **None**
         :rtype: str or None
         """
 
@@ -284,8 +287,7 @@ Requirements:
 
 def get_module_collection():
     """Return user Lmod module collection. Lmod collection can be retrieved
-    using
-    >>> module -t savelist
+    using command: ``module -t savelist``
 
     :return: list of Lmod module collection
     :rtype: list

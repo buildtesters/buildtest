@@ -25,7 +25,7 @@ def openmpi_opt_table(opts):
     """Translate openmpi YAML keys to mpirun options.
 
     :param opts: dictionary from "openmpi" key that translates to options for orterun
-    :type opts: Dictionary, required
+    :type opts: dict, required
 
     :return: a list of options from orterun
     :rtype: list
@@ -51,7 +51,7 @@ def mpich_opt_table(opts):
     """Translate mpich YAML keys to mpiexec.hydra options
 
     :param opts: dictionary from "mpich" key that translates to options for mpicexec.hydra
-    :type opts: Dictionary, required
+    :type opts: dict, required
 
     :return: a list of options from mpiexec.hydra
     :rtype: list

@@ -47,7 +47,7 @@ def func_module_subcmd(args):
     """Entry point for "buildtest module" subcommand.
 
     :param args: command line arguments passed to buildtest
-    :type args: Dictionary, required
+    :type args: dict, required
     """
 
     if args.diff_trees:
@@ -85,7 +85,7 @@ class BuildTestModule():
     def get_module_spider_json(self):
         """Returns self.module_dict which is the json output of spider.
 
-        :rtype: dictionary
+        :rtype: dict
         """
         return self.module_dict
     def get_unique_modules(self):
@@ -321,9 +321,10 @@ def find_modules(module_args):
 def module_load_test(args):
     """Perform module load test for all modules in BUILDTEST_MODULEPATH.
     Writes output of module load to file and redirects error to .err file.
-    :param args: commmand line arguments to buildtest
-    :type args: dictionary, required
+    This method implements command: ``buildtest module loadtest``.
 
+    :param args: commmand line arguments to buildtest
+    :type args: dict, required
     :rtype: exit 0
     """
 
@@ -389,11 +390,11 @@ def module_load_test(args):
 
 def get_module_permutation_choices():
     """This method returns a choice field for module permutation option
-    (buildtest build --modules). It will read json file BUILDTEST_MODULE_FILE and return
+    (``buildtest build --modules``). It will read json file BUILDTEST_MODULE_FILE and return
     list of keys found in the file.
 
     :return: List of unique software name
-    :rtype: List
+    :rtype: list
     """
 
     fd = open(BUILDTEST_MODULE_FILE, "r")
@@ -403,7 +404,7 @@ def get_module_permutation_choices():
 
 def check_easybuild_module():
     """This method reports modules that are built by easybuild. This implements
-    command "buildtest module --easybuild"
+    command ``buildtest module --easybuild``
     """
     module_list = module_obj.get_modulefile_path()
 
@@ -420,7 +421,7 @@ def check_easybuild_module():
 
 def check_spack_module():
     """This method reports modules that are built by Spack. This implements
-    command "buildtest module --spack"
+    command ``buildtest module --spack``
     """
     module_list = module_obj.get_modulefile_path()
 

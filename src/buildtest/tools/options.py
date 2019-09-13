@@ -30,7 +30,7 @@ from buildtest.tools.config import config_opts
 from buildtest.tools.log import BuildTestError
 
 def override_configuration():
-    """Override buildtest options by environment variables """
+    """This method override buildtest options by environment variables """
 
     bool_config_override("BUILDTEST_BINARY")
     bool_config_override("BUILDTEST_CLEAN_BUILD")
@@ -59,9 +59,9 @@ def override_configuration():
 
 def bool_config_override(key):
     """Override boolean configuration via environment variable. Executes a
-    "try" block to check if value of environment variable resolve to True or False
-    statement using strtobool(). Catches exception of type ValueError and raises
-    exception BuildTestError().
+    "try" block to check if value of environment variable resolve to ``True`` or ``False``
+    statement using **strtobool()**. Catches exception of type ``ValueError`` and raises
+    exception **BuildTestError()**.
 
     :param key: environment variable name
     :type key: str,required

@@ -29,6 +29,7 @@ Submodules
    buildtest.tools.show
    buildtest.tools.slurm
    buildtest.tools.software
+   buildtest.tools.status
    buildtest.tools.system
    buildtest.tools.testconfigs
    buildtest.tools.yaml

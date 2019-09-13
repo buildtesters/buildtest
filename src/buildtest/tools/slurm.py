@@ -28,7 +28,7 @@ from buildtest.tools.system import BuildTestCommand
 
 def get_slurm_configuration():
     """This method retrieves slurm queues and compute nodes part of the SLURM cluster.
-    Runs sinfo command to get nodes and slurm partition (queues).
+    Runs ``sinfo`` command to get nodes and slurm partition (queues).
 
     :return: two list objects that contains list of queues and compute nodes
     :rtype: two lists (queues, compute_nodes)

@@ -40,18 +40,19 @@ from buildtest.tools.buildsystem.singlesource import \
 from buildtest.tools.file import create_dir, is_dir, walk_tree
 from buildtest.tools.log import init_log
 from buildtest.tools.modules import find_modules
+from buildtest.tools.status import get_total_build_ids
 from buildtest.tools.testconfigs import test_config_name_mapping
 from buildtest.test.binarytest import generate_binary_test
 
 
 
 def func_build_subcmd(args):
-    """Entry point for buildtest build sub-command. Depending on the command
+    """Entry point for ``buildtest build`` sub-command. Depending on the command
     arguments, buildtest will set values in dictionary config_opts that is used
     to trigger the appropriate build action.
 
     :param args: arguments passed from command line
-    :type args: dictionary, required
+    :type args: dict, required
 
     :rtype: None
     """
@@ -62,7 +63,7 @@ def func_build_subcmd(args):
 
     build_id = get_total_build_ids()
     BUILDTEST_BUILD_HISTORY[build_id] = {}
-
+    BUILDTEST_BUILD_HISTORY[build_id]["TESTS"] = []
     if args.shell:
         config_opts['BUILDTEST_SHELL']=args.shell
     if args.clean_build:
@@ -207,81 +208,3 @@ def func_build_subcmd(args):
     fd = open(BUILDTEST_BUILD_LOGFILE, "w")
     json.dump(build_dict, fd, indent=4)
     fd.close()
-
-
-def show_build_status_report(args):
-    """
-    This method displays history of builds conducted by buildtest. This method
-    implements command `buildtest build status`
-
-    :param args: command line arguments passed to buildtest
-    :type args: dict, required
-    """
-    fd = open(BUILDTEST_BUILD_LOGFILE,"r")
-    content = json.load(fd)
-    fd.close()
-
-    print ('{:3} | {:<20} | {:<20} | {:<15} | {:<60} '.format("ID",
-                                                              "Start Time",
-                                                              "End Time",
-                                                              "Number of Tests",
-                                                              "Command"))
-
-    print('{:-<160}'.format(""))
-    count = 0
-
-    for build_id in content["build"].keys():
-
-        print ('{:3} | {:<20} | {:<20} | {:<15} | {:<60} '.format(count,
-                                                                  content["build"][build_id]["START"],
-                                                                  content["build"][build_id]["END"],
-                                                                  content["build"][build_id]["TESTCOUNT"],
-                                                                  content["build"][build_id]["CMD"],
-                                                                  content["build"][build_id]["LOGFILE"]))
-        count += 1
-
-def get_build_ids():
-    """Return a list of build ids. This can be retrieved by getting length
-    of "build:" key and pass it to range() method to return a list. Build IDs
-    start from 0. This method is used as choice field in add_argument() method
-
-    :return: return a list of numbers  that represent build id
-    :rtype: list
-    """
-
-    fd = open(BUILDTEST_BUILD_LOGFILE, "r")
-    content = json.load(fd)
-    fd.close()
-    total_records = len(content["build"])
-    return (range(total_records))
-
-
-def get_total_build_ids():
-    """Return a total count of build ids. This can be retrieved by getting length
-    of "build:" key. Build IDs start from 0.
-
-    :return: return a list of numbers  that represent build id
-    :rtype: list
-    """
-
-    fd = open(BUILDTEST_BUILD_LOGFILE, "r")
-    content = json.load(fd)
-    fd.close()
-    total_records = len(content["build"])
-    return (total_records)
-
-def show_build_status_log(args):
-    """This method opens log file using "less" by reading build.json
-    and fetching log file based on build id.
-
-    :param args: command arguments passed to buildtest
-    :type args: dict, required
-    """
-    fd = open(BUILDTEST_BUILD_LOGFILE, "r")
-    content = json.load(fd)
-    fd.close()
-
-    logfile = content["build"][str(args.id)]["LOGFILE"]
-    query = f"less {logfile}"
-    os.system(query)
-
