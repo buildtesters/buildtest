@@ -36,7 +36,6 @@ from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
 from buildtest.tools.modulesystem.collection import func_collection_subcmd, \
     get_collection_length
 from buildtest.tools.file import create_dir, walk_tree
-from buildtest.tools.find import func_find_subcmd
 from buildtest.tools.list import func_list_subcmd
 from buildtest.tools.modules import func_module_subcmd, \
      module_obj, module_load_test, get_all_parents, \
@@ -118,8 +117,7 @@ def menu():
     command_description = f"""
 Info:
   list        {list_title}
-  show        {show_title}
-  find        {find_title}
+  show        {show_title}  
   testconfigs {testconfig_title}         
   status      {status_title}
       
@@ -137,7 +135,6 @@ Misc:
 
     # ---------------------------------- sub parsers -----------------------
     parser_list = subparsers.add_parser('list')
-    parser_find = subparsers.add_parser('find')
     parser_yaml = subparsers.add_parser('yaml')
     parser_build = subparsers.add_parser('build')
     parser_run = subparsers.add_parser('run')
@@ -179,15 +176,6 @@ Misc:
                              action="store_true")
 
     parser_list.set_defaults(func=func_list_subcmd)
-
-    # -------------------------------- find menu ---------------------------
-
-    parser_find.add_argument("-ft",
-                             "--findtest",
-                             help="Find generated test scripts. To find all "
-                                  "testscripts use -ft all")
-    parser_find.set_defaults(func=func_find_subcmd)
-
 
     # -------------------------------- yaml  menu --------------------------
 

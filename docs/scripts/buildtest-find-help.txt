@@ -1,7 +1,0 @@
-buildtest find --help
-usage: buildtest [options] [COMMANDS] find [-h] [-ft FINDTEST]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -ft FINDTEST, --findtest FINDTEST
-                        Find generated test scripts. To find all testscripts use -ft all

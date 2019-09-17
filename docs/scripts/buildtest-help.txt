@@ -10,8 +10,7 @@ COMMANDS:
   
   Info:
     list        Options for listing software, module files, and  easyconfigs
-    show        Options for displaying buildtest configuration
-    find        Find test scripts
+    show        Options for displaying buildtest configuration  
     testconfigs Options for list, view, and edit test configuration         
     status      Report status on builds performed by buildtest.
         
@@ -24,7 +23,7 @@ COMMANDS:
     yaml        Yaml commands for buildtest    
     module      Module Operations
 
-  {list,find,yaml,build,run,show,benchmark,testconfigs,module,status}
+  {list,yaml,build,run,show,benchmark,testconfigs,module,status}
 
 Miscellaneous Options :
   -V, --version         show program's version number and exit

@@ -18,7 +18,6 @@ Submodules
    buildtest.tools.config
    buildtest.tools.easybuild
    buildtest.tools.file
-   buildtest.tools.find
    buildtest.tools.list
    buildtest.tools.log
    buildtest.tools.menu
