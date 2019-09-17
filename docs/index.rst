@@ -35,7 +35,6 @@ This documentation was last rebuild on |today| and is intended for version |vers
    building_test.rst
    running_tests.rst
    additional_features.rst
-   yaml_subcommand.rst
 
 
 .. toctree::

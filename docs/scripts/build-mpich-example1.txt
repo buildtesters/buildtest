@@ -21,10 +21,10 @@ Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/mpi/exa
 ________________________________________________________________________________
 #!/bin/sh
 module purge 
-module load DefaultModules shared slurm/17.11.8 gcc/7.2.0
+module load shared mpich/ge/gcc/64/3.2.1
 cd /tmp/siddis14/buildtest/tests/suite/mpi/examples
-mpicc -O2 -o 0xec3f2b7fb3a64098cd998167ce051dba.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/examples/src/hello.c 
-mpiexec.hydra -n 2 ./0xec3f2b7fb3a64098cd998167ce051dba.exe 
- rm ./0xec3f2b7fb3a64098cd998167ce051dba.exe 
+mpicc -O2 -o 0x1d69321ce045a9e78f290ba8d9e39649.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/examples/src/hello.c 
+mpiexec.hydra -n 2 ./0x1d69321ce045a9e78f290ba8d9e39649.exe 
+ rm ./0x1d69321ce045a9e78f290ba8d9e39649.exe 
 ________________________________________________________________________________
-Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_34_13_09_2019.log
+Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_09_17_09_2019.log

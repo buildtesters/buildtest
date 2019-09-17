@@ -1,17 +1,11 @@
-buildtest module collection -r 0 
-Removing Collection Index: 0
-Modules to be removed: ['shared', 'mpich/ge/gcc/64/3.2.1']
+buildtest module collection -r 2 
+Removing Collection Index: 2
+Modules to be removed: ['DefaultModules', 'shared', 'slurm/17.11.8', 'cmd']
 Updating collection file: /gpfs/home/siddis14/buildtest-framework/var/collection.json
 
 
 {
     "collection": [
-        [
-            "DefaultModules",
-            "shared",
-            "slurm/17.11.8",
-            "gcc/7.2.0"
-        ],
         [
             "eb/2019",
             "GCCcore/7.3.0",
@@ -28,12 +22,6 @@ Updating collection file: /gpfs/home/siddis14/buildtest-framework/var/collection
         [
             "shared",
             "mpich/ge/gcc/64/3.2.1"
-        ],
-        [
-            "DefaultModules",
-            "shared",
-            "slurm/17.11.8",
-            "cmd"
         ]
     ]
 }

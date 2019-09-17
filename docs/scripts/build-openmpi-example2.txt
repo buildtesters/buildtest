@@ -24,10 +24,10 @@ Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/mpi/mat
 ________________________________________________________________________________
 #!/bin/sh
 module purge 
-module load DefaultModules shared slurm/17.11.8 gcc/7.2.0
+module load eb/2019 GCCcore/7.3.0 binutils/2.30-GCCcore-7.3.0 GCC/7.3.0-2.30 zlib/1.2.11-GCCcore-7.3.0 numactl/2.0.11-GCCcore-7.3.0 XZ/5.2.4-GCCcore-7.3.0 libxml2/2.9.8-GCCcore-7.3.0 libpciaccess/0.14-GCCcore-7.3.0 hwloc/1.11.10-GCCcore-7.3.0 OpenMPI/3.1.1-GCC-7.3.0-2.30
 cd /tmp/siddis14/buildtest/tests/suite/mpi/matrixmux
-mpifort -O2 -o 0xd4ed1fc678265dd04b549b5919011412.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/matrixmux/src/mpi_mm.f 
-orterun -n 2 -npernode 2 --report-bindings  --display-map  ./0xd4ed1fc678265dd04b549b5919011412.exe 
- rm ./0xd4ed1fc678265dd04b549b5919011412.exe 
+mpifort -O2 -o 0xe6807fe6d044fe8119f62f65e21b9b09.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/mpi/matrixmux/src/mpi_mm.f 
+orterun -n 2 -npernode 2 --report-bindings  --display-map  ./0xe6807fe6d044fe8119f62f65e21b9b09.exe 
+ rm ./0xe6807fe6d044fe8119f62f65e21b9b09.exe 
 ________________________________________________________________________________
-Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_34_13_09_2019.log
+Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_09_17_09_2019.log

@@ -46,11 +46,12 @@ ml purge; ml shared mpich/ge/gcc/64/3.2.1; buildtest module collection -a
 tee $script_dir/buildtest-module-collection-list-v2.txt <<<"buildtest module collection -l """ | bash >>$script_dir/buildtest-module-collection-list-v2.txt
 
 ml purge; ml DefaultModules shared cmd; buildtest module collection -a
-tee $script_dir/buildtest-module-collection-remove.txt <<<"buildtest module collection -r 0 """ | bash >>$script_dir/buildtest-module-collection-remove.txt
+tee $script_dir/buildtest-module-collection-remove.txt <<<"buildtest module collection -r 2 """ | bash >>$script_dir/buildtest-module-collection-remove.txt
 
+ml purge; ml DefaultModules shared cmd; buildtest module collection -a
 ml purge; ml DefaultModules shared gcc;
 tee $script_dir/buildtest-module-collection-list-before-update.txt <<<"buildtest module collection -l """ | bash >>$script_dir/buildtest-module-collection-list-before-update.txt
-tee $script_dir/buildtest-module-collection-update.txt <<<"buildtest module collection -u 1 """ | bash >>$script_dir/buildtest-module-collection-update.txt
+tee $script_dir/buildtest-module-collection-update.txt <<<"buildtest module collection -u 2 """ | bash >>$script_dir/buildtest-module-collection-update.txt
 # MPI example
 tee $script_dir/build-openmpi-example1.txt <<<"buildtest build -mc 0 -vv -c mpi.examples.hello.c.yml """ | bash >>$script_dir/build-openmpi-example1.txt
 tee $script_dir/build-openmpi-example2.txt <<<"buildtest build -mc 0 -vv -c mpi.matrixmux.mm_mpi.f.yml """ | bash >>$script_dir/build-openmpi-example2.txt

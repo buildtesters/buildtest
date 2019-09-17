@@ -117,7 +117,7 @@ Removing a module collection (``buildtest module collection -r <ID>``)
 To remove a module collection, you will need to specify the index number to the ``-r`` option.
 One can check the module collection index by listing module collection using **buildtest module collection -l**.
 
-In this example we will remove module collection **0** as shown below.
+In this example we will remove module collection **2** as shown below.
 
 .. program-output:: cat scripts/buildtest-module-collection-remove.txt
 
@@ -131,7 +131,7 @@ If you want to update an existing module collection, just load the modules of in
 your user environment and buildtest will override them. To update a module collection you will
 need the index number of module collection and use the ``-u <INDEX>`` to update the module collection.
 
-Shown below is a listing of module collection and we would like to update index 1 by replacing module ``cmd``
+Shown below is a listing of module collection and we would like to update index 2 by replacing module ``cmd``
 with ``gcc`` module. Shown below is our list of module collections.
 
 .. program-output:: cat scripts/buildtest-module-collection-list-before-update.txt
