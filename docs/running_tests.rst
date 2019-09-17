@@ -11,18 +11,12 @@ Run an Application Test Suite (``buildtest run --software``)
 buildtest can run test written in ``$BUILDTEST_TESTDIR`` for a particular application
 specified by option ``--software``. The choice field for this option is populated based
 on directories found in ``$BUILDTEST_TESTDIR`` which were created by subsequent runs
-of ``buildtest build -s <application>``.
+of ``buildtest build``.
 
-::
+Shown below is an output of ``buildtest run --software gcc/7.2.0`` which attempts
+to run sanity check for module ``gcc/7.2.0``
 
-    (buildtest) [siddis14@adwnode11 buildtest-framework]$ buildtest run --software
-    GCC/6.4.0-2.28             GCCcore/6.4.0              Perl/5.26.0-GCCcore-6.4.0
-
-
-Shown below is an output of ``buildtest run --software GCCcore/6.4.0`` which attempts
-to run all tests for application ``GCCcore/6.4.0``
-
-.. program-output:: tail -n 15 scripts/run_subcommand/app_GCCcore.txt
+.. program-output:: cat scripts/run_subcommand/gcc-7.2.0.txt
 
 
 Run a System Package Test Suite (``buildtest run --package``)
@@ -33,7 +27,7 @@ that were built by option ``buildtest build --package <package>``
 
 Shown below is an output of ``buildtest run --package gcc``
 
-.. program-output:: cat scripts/run_subcommand/systempkg_gcc.txt
+.. program-output:: cat scripts/run_subcommand/gcc.txt
 
 Submitting Jobs to Scheduler (``buildtest run -j``)
 ----------------------------------------------------

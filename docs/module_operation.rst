@@ -284,20 +284,14 @@ buildtest will seek out all parent module from file
 To seek out modules that depend on parent modules use the option
 ``buildtest module --module-deps`` or short option ``buildtest module -d``.
 
-Shown below are the list of parent modules that can be used with
-``buildtest module -d`` upon tab completion.
-
-::
-
-    $ buildtest module -d
-    cctsoft                           eb/2018                           GCCcore/.6.2.0                    impi/2017.1.132                   OpenMPI/2.0.1                     RHEL6-apps
-    CUDA/8.0.44                       GCC/5.4.0-2.27                    hpc/eb-2017-core                  medsci                            OpenMPI/2.0.2
-    deprecated                        GCC/6.2.0-2.27                    icc/.2017.1.132-GCC-5.4.0-2.27    omics                             openmpi/.3.1.3-bs5h3cj
-    eb/2017                           GCCcore/.5.4.0                    ifort/.2017.1.132-GCC-5.4.0-2.27  OpenMPI/2.0.0                     pharmsci
-
-Shown below is a sample run for parent module ``OpenMPI/2.0.1``. buildtest
+Shown below is a sample run for parent module ``shared``. buildtest
 will report the content of the module file and list of modules that are
 depended upon the module.
 
 .. program-output:: cat scripts/parent-module.txt
+
+buildtest will auto-populate the choice field for option ``-d`` that is a list of parent modules. If you
+are unsure which parent module to choose, just press TAB to get a list of parent modules.
+
+
 

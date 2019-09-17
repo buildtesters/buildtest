@@ -1,0 +1,10 @@
+buildtest run -s gcc/7.2.0
+Running All Tests from Test Directory: /tmp/siddis14/buildtest/tests/software/gcc/7.2.0
+==============================================================
+                         Test summary                         
+Package:  gcc/7.2.0
+Executed 19 tests
+Passed Tests: 19 Percentage: 100.0%
+Failed Tests: 0 Percentage: 0.0%
+SUCCESS: Threshold of 100.0% was achieved
+Writing results to /tmp/siddis14/buildtest/run/buildtest_16_46_17_09_2019.run

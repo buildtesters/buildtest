@@ -36,6 +36,12 @@ tee $script_dir/build-lsf-example.txt <<<"buildtest build -c compilers.helloworl
 # slurm example
 tee $script_dir/build-slurm-example.txt <<<"buildtest build -c compilers.helloworld.hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
 
+# Run example
+ml purge; ml DefaultModules shared slurm gcc; buildtest build -b
+tee $script_dir/run_subcommand/gcc-7.2.0.txt <<<"buildtest run -s gcc/7.2.0""" | bash >>$script_dir/run_subcommand/gcc-7.2.0.txt
+ml purge; buildtest build -p gcc
+tee $script_dir/run_subcommand/gcc.txt <<<"buildtest run -p gcc""" | bash >>$script_dir/run_subcommand/gcc.txt
+
 # module collection
 tee $script_dir/buildtest-module-collection-help.txt <<<"buildtest module collection -h """ | bash >>$script_dir/buildtest-module-collection-help.txt
 ml purge; ml eb/2019 OpenMPI;
