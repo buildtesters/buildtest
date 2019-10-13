@@ -20,11 +20,13 @@
 #  along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
+import json
 import yaml
 import os
 import sys
 import subprocess
 from shutil import copy
+
 
 BUILDTEST_VERSION="0.6.3"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
@@ -38,7 +40,7 @@ BUILDTEST_TEST_EXT = BUILDTEST_JOB_EXTENSION + \
                      ["."+ i for i in BUILDTEST_SHELLTYPES]
 
 BUILDTEST_BUILD_LOGFILE = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","build.json")
-
+BUILDTEST_SYSTEM = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","system.json")
 # dictionary used for storing status of builds
 BUILDTEST_BUILD_HISTORY= {}
 
@@ -126,6 +128,15 @@ def check_configuration():
     keylist = config_yaml_keys.keys()
     valuelist = config_yaml_keys.values()
 
+    system = json.load(open(BUILDTEST_SYSTEM, "r"))
+    test_subdir = os.path.join(system["VENDOR"],
+                               system["ARCH"],
+                               system["PROCESSOR_FAMILY"],
+                               system["OS_NAME"],
+                               system["OS_VERSION"])
+
+    config_opts["BUILDTEST_TESTDIR"] = os.path.join(config_opts["BUILDTEST_TESTDIR"], test_subdir)
+
     # check if any key is not found in settings.yml
     for key in keylist:
         if key not in config_opts:
@@ -177,9 +188,15 @@ def check_configuration():
                     f"following: first, all")
                 ec = 1
 
+
         if key in config_directory_types:
             # expand variables for directory configuration
-            config_opts[key] = os.path.expandvars(config_opts[key])
+
+            # check for directory expansion for BUILDTEST_TESTDIR. Add the test_subdir at end of expansion
+            if "key" == "BUILDTEST_TESTDIR":
+                config_opts[key] = os.path.join(os.path.expandvars(config_opts[key]),test_subdir)
+            else:
+                config_opts[key] = os.path.expandvars(config_opts[key])
 
             # create the directory if it doesn't exist
             if not os.path.isdir(config_opts[key]):

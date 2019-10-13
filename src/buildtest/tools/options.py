@@ -37,7 +37,6 @@ def override_configuration():
     bool_config_override("BUILDTEST_MODULE_FORCE_PURGE")
 
     dir_config_override("BUILDTEST_LOGDIR")
-    dir_config_override("BUILDTEST_TESTDIR")
     dir_config_override("BUILDTEST_RUN_DIR")
 
     if os.environ.get('BUILDTEST_SHELL'):

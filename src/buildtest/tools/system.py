@@ -31,7 +31,8 @@ import re
 import stat
 import sys
 import subprocess
-from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE, BUILDTEST_MODULE_FILE, BUILDTEST_BUILD_LOGFILE
+from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE,\
+    BUILDTEST_MODULE_FILE, BUILDTEST_BUILD_LOGFILE, BUILDTEST_SYSTEM
 from buildtest.tools.file import create_dir
 from buildtest.tools.modules import module_obj
 
@@ -114,7 +115,9 @@ class BuildTestSystem():
         """Constructor method for BuildTestSystem(). Defines all system configuration using
         class variable **system** which is a dictionary """
 
-        self.system["OS_NAME"] = platform.linux_distribution()[0]
+        distro_fname = platform.linux_distribution()[0]
+        self.system["OS_NAME"]= distro_short(distro_fname)
+
         self.system["OS_VERSION"] = platform.linux_distribution()[1]
         self.system["SYSTEM"] = platform.system()
         self.system["KERNEL_RELEASE"] = platform.release()
@@ -127,13 +130,14 @@ class BuildTestSystem():
         if self.system["SYSTEM"] == 'Linux':
             #logger.debug("Trying to determine total memory size on Linux via /proc/meminfo")
             meminfo = open('/proc/meminfo').read()
+
             mem_mo = re.match(r'^MemTotal:\s*(\d+)\s*kB', meminfo, re.M)
             if mem_mo:
                 self.system["MEMORY_TOTAL"] = int(mem_mo.group(1)) / 1024
 
+
+
         cmd = BuildTestCommand()
-        cmd.execute("env")
-        self.system["ENV"] = cmd.get_output()
 
         cmd.which("python")
         self.system["PYTHON"]= cmd.get_output()
@@ -144,11 +148,26 @@ class BuildTestSystem():
             from buildtest.tools.slurm import get_slurm_configuration
             self.system["QUEUES"],self.system["COMPUTENODES"] = get_slurm_configuration()
 
+        cmd.execute("""lscpu | grep "Vendor" """)
+        vendor_name = cmd.get_output()
+
+        cmd.execute("""lscpu | grep "Model:" | cut -b 10-""")
+        model_hex = hex(int(cmd.get_output()))
+
+        if "GenuineIntel" in vendor_name:
+            self.system["VENDOR"] = "Intel"
+            arch = intel_cpuid_lookup(model_hex)
+        self.system["ARCH"] = arch
+
         self.get_modules()
 
         module_coll_dict = {
             "collection": []
         }
+
+        if not os.path.exists(BUILDTEST_SYSTEM):
+            with open(BUILDTEST_SYSTEM,"w") as outfile:
+                json.dump(self.system,outfile,indent=4)
 
         if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
             with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as outfile:
@@ -343,6 +362,45 @@ def systempackage_installed_list():
     # delete last element which is an empty string
     del pkglist[-1]
     return pkglist
+
+def distro_short(distro_fname):
+    """Map Long Linux Distribution Name to short name."""
+
+    if "Red Hat Enterprise Linux Server" == distro_fname:
+        return "rhel"
+    elif "CentOS" == distro_fname:
+        return "centos"
+    elif "SUSE Linux Enterprise Server" == distro_fname:
+        return "suse"
+
+def intel_cpuid_lookup(model):
+    """Lookup table to map Module Number to Architecture."""
+
+    # Intel based : https://software.intel.com/en-us/articles/intel-architecture-and-processor-identification-with-cpuid-model-and-family-numbers
+    model_numbers = {
+        "0x55":     "SkyLake",
+        "0x4f":     "Broadwell",
+        "0x57":     "KnightsLanding",
+        "0x3f":     "Haswell",
+        "0x46":     "Haswell",
+        "0x3e":     "IvyBridge",
+        "0x3a":     "IvyBridge",
+        "0x2a":     "SandyBridge",
+        "0x2d":     "SandyBridge",
+        "0x25":     "Westmere",
+        "0x2c":     "Westmere",
+        "0x2f":     "Westmere",
+        "0x1e":     "Nehalem",
+        "0x1a":     "Nehalem",
+        "0x2e":     "Nehalem",
+        "0x17":     "Penryn",
+        "0x1D":     "Penryn",
+        "0x0f":     "Merom"
+    }
+    if model in model_numbers:
+        return model_numbers[model]
+    else:
+        print (f"Unable to find model {model}")
 
 
 
