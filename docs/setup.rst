@@ -43,9 +43,13 @@ be installed via pip in your python environment (`virtualenv <https://virtualenv
 `conda <https://conda.io/>`_ or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_
 .
 
-To configure buildtest source the file ``sourceme.sh``::
-
+Depending on your shell (``$SHELL``) source the appropriate file::
+    # BASH or SH
     $ source sourceme.sh
+
+    # TCSH or CSH
+    $ source sourceme.csh
+
 
 Setting up auto-complete on buildtest arguments
 -----------------------------------------------
