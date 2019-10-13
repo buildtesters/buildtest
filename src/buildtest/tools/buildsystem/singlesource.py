@@ -213,14 +213,12 @@ class BuildTestBuilderSingleSource():
                 # add each environment key=value into list
                 env_list.append(env_vars)
 
-        workdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],
-                               "suite",
-                               self.test_suite,
-                               self.parent_dir)
+
+
         if len(env_list) > 0:
             testscript_dict["vars"] = '\n'.join(env_list) + "\n"
 
-        testscript_dict["workdir"] = "cd " + workdir + "\n"
+        testscript_dict["workdir"] = "cd " + config_opts["BUILDTEST_TESTDIR"]  + "\n"
         testscript_dict["command"] = cmd
         testscript_dict["run"] = []
         # build the run command for mpi jobs
@@ -272,12 +270,6 @@ class BuildTestBuilderSingleSource():
         The test script will be set with 755 permission upon completion.
         """
 
-        test_dir = os.path.join(config_opts["BUILDTEST_TESTDIR"],
-                                "suite",
-                                self.test_suite,
-                                self.parent_dir)
-
-        create_dir(test_dir)
 
         if module_collection:
             self.module_collection = module_collection
@@ -301,11 +293,8 @@ class BuildTestBuilderSingleSource():
                                         hash,
                                         "slurm")
 
-                test_dir = os.path.join(config_opts["BUILDTEST_TESTDIR"],
-                                        "suite",
-                                        self.test_suite,
-                                        self.parent_dir)
-                abs_test_path = os.path.join(test_dir, file)
+
+                abs_test_path = os.path.join(config_opts["BUILDTEST_TESTDIR"], file)
 
                 self._write_test(abs_test_path,module=cmd)
                 count+=1
@@ -322,7 +311,7 @@ class BuildTestBuilderSingleSource():
             self.testname = '%s.%s' % (os.path.basename(self.conf_file),"slurm")
 
 
-        abs_test_path = os.path.join(test_dir, self.testname)
+        abs_test_path = os.path.join(config_opts["BUILDTEST_TESTDIR"], self.testname)
         self._write_test(abs_test_path)
         BUILDTEST_BUILD_HISTORY[self.build_id]["TESTCOUNT"] = 1
         BUILDTEST_BUILD_HISTORY[self.build_id]["TESTS"].append(abs_test_path)

@@ -226,10 +226,6 @@ Misc:
                               "--suite",
                               help="specify test suite",
                               choices=test_class)
-    parser_build.add_argument("--testdir",
-                              help="Specify alternate test directory to write "
-                                   + "test. This overrides configuration "
-                                   + "BUILDTEST_TESTDIR")
     parser_build.add_argument("--clean-build",
                               help="delete software test directory before "
                                    + "writing test scripts",

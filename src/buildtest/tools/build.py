@@ -33,7 +33,7 @@ import subprocess
 import sys
 import yaml
 
-from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY, BUILDTEST_BUILD_LOGFILE
+from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY, BUILDTEST_BUILD_LOGFILE,BUILDTEST_SYSTEM
 from buildtest.tools.modulesystem.collection import get_buildtest_module_collection
 from buildtest.tools.buildsystem.singlesource import \
     BuildTestBuilderSingleSource
@@ -68,13 +68,20 @@ def func_build_subcmd(args):
         config_opts['BUILDTEST_SHELL']=args.shell
     if args.clean_build:
         config_opts['BUILDTEST_CLEAN_BUILD']=True
-    if args.testdir:
-        config_opts['BUILDTEST_TESTDIR'] = args.testdir
     if args.binary:
         config_opts["BUILDTEST_BINARY"] = args.binary
     if args.parent_module_search:
         config_opts["BUILDTEST_PARENT_MODULE_SEARCH"]=args.parent_module_search
 
+    system = json.load(open(BUILDTEST_SYSTEM, "r"))
+    test_subdir = os.path.join(system["VENDOR"],
+                               system["ARCH"],
+                               system["PROCESSOR_FAMILY"],
+                               system["OS_NAME"],
+                               system["OS_VERSION"],
+                               f"build_{str(build_id)}")
+
+    config_opts['BUILDTEST_TESTDIR'] = os.path.join(config_opts['BUILDTEST_TESTDIR'],test_subdir)
     create_dir(config_opts['BUILDTEST_TESTDIR'])
 
     module_cmd_list = []

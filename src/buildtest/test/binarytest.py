@@ -74,12 +74,10 @@ def generate_binary_test(name,verbose, build_id, package=None, module=None):
             preload_modules += f"module try-load {item};"
 
 
-        test_destdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],
-                                    "software",name)
+
     elif package:
         print ("Detecting System Package: " + name)
-        test_destdir = os.path.join(config_opts["BUILDTEST_TESTDIR"],"system",\
-                       name)
+
 
         tmp_bin_list = get_binaries_from_systempackage(name)
     binary_tests = tmp_bin_list
@@ -89,16 +87,14 @@ def generate_binary_test(name,verbose, build_id, package=None, module=None):
         logger.info(f"There are no binaries for package: {name}")
         return
 
-    create_dir(test_destdir)
-    logger.info(f"Test Destination Directory: {test_destdir}")
-    logger.info(f"Creating Test Directory: {test_destdir}")
+
+    logger.info(f"Test Destination Directory: {config_opts['BUILDTEST_TESTDIR']}")
+
     logger.info(f"Following binaries will be tested: {binary_tests}")
     if verbose >= 1:
         print (f"The following binaries were found in application: {name}")
         print (binary_tests)
-        print (f"Test Destination Directory: {test_destdir}")
-        print (f"Creating Test Destination Directory")
-
+        print (f"Test Destination Directory: {config_opts['BUILDTEST_TESTDIR']}")
 
 
     count = 0
@@ -113,7 +109,7 @@ def generate_binary_test(name,verbose, build_id, package=None, module=None):
         name_str = name_str.replace("/","_")
 
         testname=name_str+"."+config_opts["BUILDTEST_SHELL"]
-        testpath=os.path.join(test_destdir,testname)
+        testpath=os.path.join(config_opts['BUILDTEST_TESTDIR'],testname)
 
         logger.debug("Creating and Opening  test file: %s for writing ",
                      testpath)
@@ -162,7 +158,7 @@ def generate_binary_test(name,verbose, build_id, package=None, module=None):
             print ("{:_<80}".format(""))
     print
     print ("Generating ", count, " binary tests")
-    print ("Binary Tests are written in ", test_destdir)
+    print ("Binary Tests are written in ", config_opts['BUILDTEST_TESTDIR'])
 
 
     BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"] = count
