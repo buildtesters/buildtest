@@ -29,7 +29,7 @@ import argparse
 import argcomplete
 
 
-from buildtest.test.run.system import run_app_choices, run_system_choices
+
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
     check_configuration
@@ -81,9 +81,6 @@ def menu():
 
     parent_choices = get_all_parents()
 
-    app_choices = run_app_choices()
-
-    systempkg_choices = run_system_choices()
     module_collection = get_module_collection()
     module_permutation_choices = get_module_permutation_choices()
     collection_len = get_collection_length()
@@ -297,21 +294,6 @@ Misc:
     # -------------------------------- run menu ----------------------------
 
 
-    parser_run_mutex = parser_run.add_mutually_exclusive_group()
-    parser_run_mutex.add_argument("-s",
-                            "--software",
-                            help="Run test suite for application",
-                            choices=app_choices,
-                            metavar='SOFTWARE-TEST-SUITE')
-    parser_run_mutex.add_argument("-p",
-                            "--package",
-                            help="Run test suite for system package",
-                            choices=systempkg_choices,
-                            metavar='PACKAGE-TEST-SUITE')
-    parser_run_mutex.add_argument("-S",
-                            "--suite",
-                            help="Run the test suite",
-                            choices=run_test_class)
     parser_run.add_argument("-j",
                             "--job",
                             help = "Submit jobs to resource scheduler",

@@ -35,14 +35,14 @@ import yaml
 
 from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY, BUILDTEST_BUILD_LOGFILE,BUILDTEST_SYSTEM
 from buildtest.tools.modulesystem.collection import get_buildtest_module_collection
-from buildtest.tools.buildsystem.singlesource import \
-    BuildTestBuilderSingleSource
+from buildtest.tools.buildsystem.singlesource import BuildTestBuilderSingleSource
+from buildtest.tools.buildsystem.binarytest import generate_binary_test
 from buildtest.tools.file import create_dir, is_dir, walk_tree, is_file
 from buildtest.tools.log import init_log
 from buildtest.tools.modules import find_modules
 from buildtest.tools.status import get_total_build_ids
 from buildtest.tools.testconfigs import test_config_name_mapping
-from buildtest.test.binarytest import generate_binary_test
+
 
 
 

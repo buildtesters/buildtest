@@ -24,7 +24,6 @@ buildtest run subcommand entry point
 
 import sys
 from datetime import datetime
-from buildtest.test.run.system import run_system_test, run_app_test, run_suite
 from buildtest.test.job import submit_job_to_scheduler
 from buildtest.tools.system import BuildTestSystem
 from buildtest.tools.log import BuildTestError
@@ -37,12 +36,6 @@ def func_run_subcmd(args):
     :type args: dict, required
     """
 
-    if args.software:
-        run_app_test(args.software)
-    if args.suite:
-        run_suite(args.suite)
-    if args.package:
-        run_system_test(args.package)
     if args.job:
         if not (args.suite):
             raise BuildTestError("-j option must be used with option --suite")
