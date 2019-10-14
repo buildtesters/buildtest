@@ -45,7 +45,7 @@ from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
 from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.show import func_show_subcmd
-from buildtest.tools.status import show_status_report, get_build_ids, \
+from buildtest.tools.buildsystem.status import show_status_report, get_build_ids, \
     show_status_log, show_status_test, run_tests
 
 from buildtest.tools.system import systempackage_installed_list, \
@@ -64,9 +64,6 @@ def menu():
     override_configuration()
     check_configuration()
 
-    test_suite_dir = os.path.join(config_opts["BUILDTEST_TESTDIR"], "suite")
-    create_dir(test_suite_dir)
-
     test_class = os.listdir(os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
                                          "buildtest",
                                          "suite"))
@@ -76,7 +73,7 @@ def menu():
 
     test_config_choice = testconfig_choices()
 
-    run_test_class = os.listdir(test_suite_dir)
+
     pkglist = systempackage_installed_list()
 
     parent_choices = get_all_parents()
@@ -103,9 +100,7 @@ def menu():
 
     list_title = "Options for listing software, module files, and  easyconfigs"
     show_title = "Options for displaying buildtest configuration"
-    find_title = "Find test scripts"
     testconfig_title = "Options for list, view, and edit test configuration"
-    status_title = "Report status on builds performed by buildtest."
     build_title = "Options for building test scripts"
     run_title = "Run Tests"
     benchmark_title = "Run Benchmark"
@@ -116,14 +111,14 @@ Info:
   list        {list_title}
   show        {show_title}  
   testconfigs {testconfig_title}         
-  status      {status_title}
+
       
 Build:
   build       {build_title}
   run         {run_title}
   benchmark   {benchmark_title}
 
-Misc:
+Miscellaneous:
   yaml        {yaml_title}    
   module      {module_title}
 """
@@ -139,7 +134,6 @@ Misc:
     parser_benchmark = subparsers.add_parser('benchmark')
     parser_testconfigs = subparsers.add_parser('testconfigs')
     parser_module = subparsers.add_parser('module')
-    parser_status = subparsers.add_parser('status')
 
     subparsers_module = parser_module.add_subparsers(description='Module utilties for managing module collections,'
                                                                  ' module trees, module load testing, reporting eb/spack modules,'
@@ -186,25 +180,6 @@ Misc:
                              choices=yaml_choices)
     parser_yaml.set_defaults(func=func_yaml_subcmd)
 
-    # -------------------------------- status menu --------------------------
-    subparsers_status = parser_status.add_subparsers(description="Report status on builds performed by buildtest.")
-    parser_status_report = subparsers_status.add_parser("report", help="Report status details of all builds ")
-
-
-    parser_status_log = subparsers_status.add_parser("log", help="Report build log for a particular build")
-    parser_status_log.add_argument("id", help="Display Log File for a build ID", type=int, choices=build_ids,
-                                         metavar="BUILD ID")
-
-    parser_status_test = subparsers_status.add_parser("test", help="Report test scripts based on build ID")
-    parser_status_test.add_argument("id",
-                                    help="Display test scripts based on build ID",
-                                    type=int,
-                                    choices=build_ids,
-                                    metavar="BUILD ID")
-    parser_status_test.add_argument("-r","--run", help="Run the Tests.")
-    parser_status_test.set_defaults(func=show_status_test)
-    parser_status_report.set_defaults(func=show_status_report)
-    parser_status_log.set_defaults(func=show_status_log)
     # -------------------------------- build menu --------------------------
     parser_build.add_argument("--clear",help="Clear build history and remove all tests",action="store_true")
     parser_build.add_argument("-p",

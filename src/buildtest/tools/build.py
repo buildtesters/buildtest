@@ -40,7 +40,7 @@ from buildtest.tools.buildsystem.binarytest import generate_binary_test
 from buildtest.tools.file import create_dir, is_dir, walk_tree, is_file
 from buildtest.tools.log import init_log
 from buildtest.tools.modules import find_modules
-from buildtest.tools.status import get_total_build_ids
+from buildtest.tools.buildsystem.status import get_total_build_ids
 from buildtest.tools.testconfigs import test_config_name_mapping
 
 
