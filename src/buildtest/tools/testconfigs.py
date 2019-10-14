@@ -20,7 +20,7 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-import os, yaml, textwrap
+import os, yaml, textwrap, subprocess
 from buildtest.tools.config import config_opts
 from buildtest.tools.file import walk_tree
 from buildtest.tools.system import BuildTestCommand
@@ -104,5 +104,66 @@ def func_testconfigs_edit(args):
     test_config_table = test_config_name_mapping()
     query = f"vim {test_config_table[args.name]}"
     os.system(query)
+
+def func_testconfigs_maintainer(args):
+    """Update maintainer key in test configuration."""
+
+    git_user_name = subprocess.getoutput(
+        "git config --get user.name").rstrip().lower()
+    git_user_email = subprocess.getoutput(
+        "git config --get user.email").rstrip().lower()
+
+    entry = (f"{git_user_name} {git_user_email}")
+
+    testconfig_mapping = test_config_name_mapping()
+    testconfig_file = testconfig_mapping[args.name]
+
+    fd = open(testconfig_file, "r")
+    content = yaml.safe_load(fd)
+    fd.close()
+
+    # if user wants to be maintainer of file
+    if args.maintainer == "yes":
+        # if user the first maintainer to file
+        if "maintainer" not in content:
+            content["maintainer"] = []
+            content["maintainer"].append(entry)
+        else:
+            if entry not in content["maintainer"]:
+                content["maintainer"].append(entry)
+                print (f"Adding Maintainer: {entry} to file {testconfig_file}")
+            else:
+                print (f"{entry} is already a maintainer")
+                return
+
+
+        write_fd = open(testconfig_file, "w")
+        yaml.dump(content, write_fd, default_flow_style=False)
+        write_fd.close()
+
+    # if user wants to be removed from maintainer
+    else:
+        # if maintainer key found then only check if user exist in list,
+        # otherwise no action is needed
+        if "maintainer" in content:
+            if entry in content["maintainer"]:
+                write_fd = open(testconfig_file, "w")
+                content["maintainer"].remove(entry)
+                # if no maintainers are left after removal, then delete the
+                # key. It may be worth changing this behavior to ensure one
+                # maintainer is always present
+                if len(content["maintainer"]) == 0:
+                    del(content["maintainer"])
+
+                yaml.dump(content, write_fd, default_flow_style=False)
+                write_fd.close()
+
+                print (f"Removing Maintainer: {entry} from file {testconfig_file}")
+            else:
+                print (f"{entry} is not a maintainer of file {testconfig_file}")
+                return
+
+    print (f"----------------- FILE:{testconfig_file} ----------------------")
+    print (yaml.dump(content, default_flow_style=False))
 
 

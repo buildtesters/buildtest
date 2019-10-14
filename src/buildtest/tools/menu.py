@@ -51,8 +51,7 @@ from buildtest.tools.buildsystem.status import show_status_report, get_build_ids
 from buildtest.tools.system import systempackage_installed_list, \
     get_module_collection
 from buildtest.tools.testconfigs import func_testconfigs_show, \
-    testconfig_choices, func_testconfigs_view, func_testconfigs_edit
-from buildtest.tools.yaml import func_yaml_subcmd
+    testconfig_choices, func_testconfigs_view, func_testconfigs_edit, func_testconfigs_maintainer
 from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
 from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
 from buildtest.benchmark.hpcg import func_benchmark_hpcg_subcmd
@@ -104,7 +103,6 @@ def menu():
     build_title = "Options for building test scripts"
     run_title = "Run Tests"
     benchmark_title = "Run Benchmark"
-    yaml_title = "Yaml commands for buildtest"
     module_title = "Module Operations"
     command_description = f"""
 Info:
@@ -118,8 +116,7 @@ Build:
   run         {run_title}
   benchmark   {benchmark_title}
 
-Miscellaneous:
-  yaml        {yaml_title}    
+Miscellaneous:   
   module      {module_title}
 """
     subparsers = parser.add_subparsers(title='COMMANDS',
@@ -127,7 +124,6 @@ Miscellaneous:
 
     # ---------------------------------- sub parsers -----------------------
     parser_list = subparsers.add_parser('list')
-    parser_yaml = subparsers.add_parser('yaml')
     parser_build = subparsers.add_parser('build')
     parser_run = subparsers.add_parser('run')
     parser_show = subparsers.add_parser('show')
@@ -168,17 +164,6 @@ Miscellaneous:
 
     parser_list.set_defaults(func=func_list_subcmd)
 
-    # -------------------------------- yaml  menu --------------------------
-
-
-    parser_yaml.add_argument("-m",
-                             "--maintainer",
-                             help="Add as maintainer to test",
-                             choices=["yes", "no"]),
-    parser_yaml.add_argument("config",
-                             help="configuration file",
-                             choices=yaml_choices)
-    parser_yaml.set_defaults(func=func_yaml_subcmd)
 
     # -------------------------------- build menu --------------------------
     parser_build.add_argument("--clear",help="Clear build history and remove all tests",action="store_true")
@@ -364,10 +349,15 @@ Miscellaneous:
     parser_testconfigs_edit = subparsers_testconfigs.add_parser("edit", help="Edit a test configuration ")
     parser_testconfigs_edit.add_argument("name", help="Select name of test configuration",
                                          choices=test_config_choice, metavar="Test Configuration")
+    parser_testconfigs_maintainer = subparsers_testconfigs.add_parser("maintainer", help="Add/Remove maintainer from test configuration")
+    parser_testconfigs_maintainer.add_argument("name", help="Select name of test configuration",
+                                         choices=test_config_choice, metavar="Test Configuration")
+    parser_testconfigs_maintainer.add_argument("-m", "--maintainer", help="Add/Remove yourself as maintainer from test configuration", choices=["yes", "no"])
+
     parser_testconfigs_list.set_defaults(func=func_testconfigs_show)
     parser_testconfigs_view.set_defaults(func=func_testconfigs_view)
     parser_testconfigs_edit.set_defaults(func=func_testconfigs_edit)
-
+    parser_testconfigs_maintainer.set_defaults(func=func_testconfigs_maintainer)
     # -------------------------------- benchmark menu ----------------------
 
     subparsers_benchmark = parser_benchmark.add_subparsers(dest="Run HPC Benchmark")
