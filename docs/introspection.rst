@@ -110,7 +110,6 @@ See example below
              buildtest configuration summary
              (C): Configuration File,  (E): Environment Variable
     BUILDTEST_BINARY                                   (C) = False
-    BUILDTEST_CLEAN_BUILD                              (C) = False
     BUILDTEST_CONFIGS_REPO                             (C) = /home/ec2-user/PycharmProjects/buildtest-framework/toolkit
     BUILDTEST_LOGDIR                                   (C) = /tmp/ec2-user/buildtest/logs
     BUILDTEST_MODULEPATH                               (C) = /apps/modules/all

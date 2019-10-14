@@ -231,10 +231,6 @@ Misc:
                               "--suite",
                               help="specify test suite",
                               choices=test_class)
-    parser_build.add_argument("--clean-build",
-                              help="delete software test directory before "
-                                   + "writing test scripts",
-                              action="store_true")
     parser_build.add_argument("-v",
                               "--verbose",
                               help="verbosity level (default: %(default)s)",

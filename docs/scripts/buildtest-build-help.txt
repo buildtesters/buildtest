@@ -1,12 +1,13 @@
 buildtest build --help
-usage: buildtest [options] [COMMANDS] build [-h] [-p SYSTEM-PACKAGE] [--shell {sh,bash,csh}] [-c TEST CONFIGURATION]
-                                            [-b] [-S {cuda,openmp,mpi,compilers}] [--testdir TESTDIR] [--clean-build]
-                                            [-v]
+usage: buildtest [options] [COMMANDS] build [-h] [--clear] [-p SYSTEM-PACKAGE] [--shell {sh,bash,csh}]
+                                            [-c TEST CONFIGURATION] [-b] [-S {cuda,openmp,mpi,compilers}] [-v]
                                             [-m Module Permutation Options | -co Lmod Collection Name | -mc COLLECTION-ID]
                                             [-pms {first,all}]
+                                            {report,log,test} ...
 
 optional arguments:
   -h, --help            show this help message and exit
+  --clear               Clear build history and remove all tests
   -p SYSTEM-PACKAGE, --package SYSTEM-PACKAGE
                         Build test for system packages
   --shell {sh,bash,csh}
@@ -16,8 +17,6 @@ optional arguments:
   -b, --binary          Conduct sanity check on binaries on active modules
   -S {cuda,openmp,mpi,compilers}, --suite {cuda,openmp,mpi,compilers}
                         specify test suite
-  --testdir TESTDIR     Specify alternate test directory to write test. This overrides configuration BUILDTEST_TESTDIR
-  --clean-build         delete software test directory before writing test scripts
   -v, --verbose         verbosity level (default: 0)
   -m Module Permutation Options, --modules Module Permutation Options
                         Select a module name and build for every module version
@@ -27,3 +26,11 @@ optional arguments:
                         Use internal buildtest module collection when building test.
   -pms {first,all}, --parent-module-search {first,all}
                         control how parent module combination is used when loading modules
+
+subcommands:
+  Report status on builds performed by buildtest.
+
+  {report,log,test}
+    report              Report status details of all builds
+    log                 Report build log for a particular build
+    test                Report test scripts based on build ID

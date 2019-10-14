@@ -96,7 +96,6 @@ config_directory_types = [
   "BUILDTEST_RUN_DIR",
 ]
 config_yaml_keys = {
-    'BUILDTEST_CLEAN_BUILD': type(True),
     'BUILDTEST_BINARY': type(True),
     'BUILDTEST_MODULE_FORCE_PURGE': type(True),
     'BUILDTEST_SHELL': type("str"),

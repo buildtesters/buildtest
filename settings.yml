@@ -1,5 +1,3 @@
-# Delete Build Directory before writing tests.  Valid Options: [True, False]
-BUILDTEST_CLEAN_BUILD: False
 #
 # # binary test support. Valid options [True, False]
 BUILDTEST_BINARY: False

@@ -70,8 +70,7 @@ def func_build_subcmd(args):
         sys.exit(0)
     if args.shell:
         config_opts['BUILDTEST_SHELL']=args.shell
-    if args.clean_build:
-        config_opts['BUILDTEST_CLEAN_BUILD']=True
+
     if args.binary:
         config_opts["BUILDTEST_BINARY"] = args.binary
     if args.parent_module_search:
@@ -119,12 +118,6 @@ def func_build_subcmd(args):
 
         if args.verbose >= 1:
             print (f"Found {len(yaml_files)} yml files from directory {yaml_dir}")
-
-        if config_opts["BUILDTEST_CLEAN_BUILD"]:
-            if is_dir(test_suite_dir):
-                shutil.rmtree(test_suite_dir)
-                if args.verbose >= 1:
-                    print (f"Removing test directory: {test_suite_dir}")
 
         testsuite_components = os.listdir(yaml_dir)
         # pre-creates directories for each component in test suite in

@@ -120,59 +120,6 @@ If you specify an invalid value you may get the following message
 	BUILDTEST_SHELL expects value [``sh``, ``bash``, ``csh``] current value	is tcsh
 
 
-Clean Build
--------------
-
-buildtest will write test in directory specified by ``BUILDTEST_TESTDIR``.
-Often times, you may want to preserve tests across subsequent builds.
-
-For instance you may be interested in building test for different shell and
-preserve all tests during the previous builds, this can be done by setting
-``export BUILDTEST_CLEAN_BUILD=False`` or set in configuration as follows::
-
-    BUILDTEST_CLEAN_BUILD: False
-
-Setting ``BUILDTEST_CLEAN_BUILD`` to ``False`` instructs buildtest to preserve
-build directory where test are written. This will allow user to keep test if
-they ran the following::
-
-        $ buildtest build -p gcc  --shell sh
-        $ buildtest build -p gcc --shell csh
-        $ buildtest build -p gcc --shell bash
-
-If you want buildtest to delete the build directory before writing any tests
-you can set ``export BUILDTEST_CLEAN_BUILD=True`` or set the following in
-configuration file::
-
-    BUILDTEST_CLEAN_BUILD: True
-
-Configure Test Directory
--------------------------
-
-buildtest will write test scripts in ``BUILDTEST_TESTDIR``. This can be specified
-in configuration file or environment variable.
-
-For instance you may want to set the testing directory to ``$HOME/tmp`` which
-can be done in configuration::
-
-    BUILDTEST_TESTDIR: "${HOME}/tmp/"
-
-This can be done via environment variable as::
-
-    export BUILDTEST_TESTDIR=$HOME/tmp
-
-
-
-If the directory does not exist, buildtest will create it assuming you have the
-appropriate permissions.
-
-You may specify this at the command line via ``buildtest build --testdir``
-
-See example below where we customize testdir at runtime using the command line option
-
-.. program-output:: cat scripts/custom-testdir.txt
-
-
 Log Directory
 ----------------
 

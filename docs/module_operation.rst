@@ -147,6 +147,16 @@ Now we are ready to update the module collection as shown below
 
 .. program-output:: cat scripts/buildtest-module-collection-update.txt
 
+Delete all module collections (``buildtest module collection --clear``)
+-----------------------------------------------------------------------
+
+If you want to delete all module collections you can run::
+
+    $ buildtest module collection --clear
+    Removing all module collections!
+
+This will remove all module collection index from the internal database.
+
 Module Trees Operation (``buildtest module tree``)
 ---------------------------------------------------
 
