@@ -59,8 +59,6 @@ def func_build_subcmd(args):
 
     logger,logfile = init_log()
 
-    STARTTIME = datetime.now().strftime("%m/%d/%Y %X")
-
     build_id = get_total_build_ids()
     BUILDTEST_BUILD_HISTORY[build_id] = {}
     BUILDTEST_BUILD_HISTORY[build_id]["TESTS"] = []
@@ -201,11 +199,11 @@ def func_build_subcmd(args):
 
     print("Writing Log file to: ", logfile)
 
-    ENDTIME = datetime.now().strftime("%m/%d/%Y %X")
-
+    BUILD_TIME = datetime.now().strftime("%m/%d/%Y %X")
+    BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"] = len(os.listdir(config_opts["BUILDTEST_TESTDIR"]))
     BUILDTEST_BUILD_HISTORY[build_id]["CMD"] = "buildtest " + ' '.join(str(arg) for arg in sys.argv[1:])
-    BUILDTEST_BUILD_HISTORY[build_id]["START"] = STARTTIME
-    BUILDTEST_BUILD_HISTORY[build_id]["END"] = ENDTIME
+
+    BUILDTEST_BUILD_HISTORY[build_id]["BUILD_TIME"] = BUILD_TIME
     BUILDTEST_BUILD_HISTORY[build_id]["LOGFILE"] = logfile
     fd = open(BUILDTEST_BUILD_LOGFILE,"r")
     build_dict = json.load(fd)

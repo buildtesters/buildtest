@@ -43,23 +43,18 @@ def show_status_report(args):
     content = json.load(fd)
     fd.close()
 
-    print ('{:3} | {:<20} | {:<20} | {:<15} | {:<60} '.format("ID",
-                                                              "Start Time",
-                                                              "End Time",
-                                                              "Number of Tests",
-                                                              "Command"))
+    print ('{:3} | {:<20} | {:<15} | {:<60} '.format("ID","Build Time","Number of Tests","Command"))
 
     print('{:-<160}'.format(""))
     count = 0
 
     for build_id in content["build"].keys():
 
-        print ('{:3} | {:<20} | {:<20} | {:<15} | {:<60} '.format(count,
-                                                                  content["build"][build_id]["START"],
-                                                                  content["build"][build_id]["END"],
-                                                                  content["build"][build_id]["TESTCOUNT"],
-                                                                  content["build"][build_id]["CMD"],
-                                                                  content["build"][build_id]["LOGFILE"]))
+        print ('{:3} | {:<20} | {:<15} | {:<60} '.format(count,
+                                                         content["build"][build_id]["BUILD_TIME"],
+                                                         content["build"][build_id]["TESTCOUNT"],
+                                                         content["build"][build_id]["CMD"],
+                                                         content["build"][build_id]["LOGFILE"]))
         count += 1
 
 def get_build_ids():

@@ -44,6 +44,7 @@ be installed via pip in your python environment (`virtualenv <https://virtualenv
 .
 
 Depending on your shell (``$SHELL``) source the appropriate file::
+
     # BASH or SH
     $ source sourceme.sh
 

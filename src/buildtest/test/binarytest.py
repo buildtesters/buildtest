@@ -159,6 +159,3 @@ def generate_binary_test(name,verbose, build_id, package=None, module=None):
     print
     print ("Generating ", count, " binary tests")
     print ("Binary Tests are written in ", config_opts['BUILDTEST_TESTDIR'])
-
-
-    BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"] = count
