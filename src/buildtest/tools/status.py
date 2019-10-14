@@ -29,7 +29,10 @@ and test scripts that were generated.
 
 import json
 import os
-from buildtest.tools.config import BUILDTEST_BUILD_LOGFILE
+import subprocess
+from datetime import datetime
+from buildtest.tools.config import config_opts,BUILDTEST_BUILD_LOGFILE
+from buildtest.tools.file import create_dir
 
 def func_status():
     pass
@@ -93,13 +96,22 @@ def show_status_test(args):
     tests = content["build"][str(args.id)]["TESTS"]
     [print (test) for test in tests]
 
-def run_tests(tests):
+def run_tests(args):
     """This method actually runs the test and display test summary with number
         of pass/fail test and whether it passed test threshold."""
+
+    fd1 = open(BUILDTEST_BUILD_LOGFILE, "r")
+    content = json.load(fd1)
+    fd1.close()
+
+    tests = content["build"][str(args.id)]["TESTS"]
+    # all tests are in same directory, retrieving parent directory of test
+    test_dir = os.path.dirname(tests[0])
+
     runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
-    run_output_file = os.path.join(config_opts["BUILDTEST_TESTDIR"],"run",runfile)
-    create_dir(os.path.join(config_opts["BUILDTEST_TESTDIR"],"run"))
-    fd = open(runfile,"w")
+    run_output_file = os.path.join(test_dir,"run",runfile)
+    create_dir(os.path.join(test_dir,"run"))
+    fd = open(run_output_file,"w")
     count_test = len(tests)
     passed_test = 0
     failed_test = 0
@@ -122,12 +134,11 @@ def run_tests(tests):
         else:
             failed_test += 1
 
-    print (f"Running All Tests from Test Directory: {test_destdir}")
+    print (f"Running All Tests from Test Directory: {test_dir}")
     print
     print
     print("==============================================================")
     print("                         Test summary                         ")
-    print("Package: ", name)
     print(f"Executed {count_test} tests")
     print(f"Passed Tests: {passed_test} Percentage: {passed_test*100/count_test}%")
     print(f"Failed Tests: {failed_test} Percentage: {failed_test*100/count_test}%")
@@ -140,7 +151,7 @@ def run_tests(tests):
     diff_ratio = abs(actual_ratio - success_threshold)
     if actual_ratio < success_threshold:
         print (f"WARNING: Threshold of {success_threshold*100}% was not satisfied")
-        print (f"{name} has a {actual_ratio*100}% passed rate with a "
+        print (f"{actual_ratio*100}% passed rate with a "
                + f"difference of {diff_ratio:.4} from the threshold")
     else:
         print (f"SUCCESS: Threshold of {success_threshold*100}% was achieved")

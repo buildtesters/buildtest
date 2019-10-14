@@ -46,7 +46,7 @@ from buildtest.tools.options import override_configuration
 from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.show import func_show_subcmd
 from buildtest.tools.status import show_status_report, get_build_ids, \
-    show_status_log, show_status_test
+    show_status_log, show_status_test, run_tests
 
 from buildtest.tools.system import systempackage_installed_list, \
     get_module_collection
@@ -280,7 +280,14 @@ Misc:
                                     choices=build_ids,
                                     metavar="BUILD ID")
 
+    parser_build_run = subparsers_build.add_parser("run", help="Run test scripts based on build ID")
+    parser_build_run.add_argument("id",
+                                   help="Display test scripts based on build ID",
+                                   type=int,
+                                   choices=build_ids,
+                                   metavar="BUILD ID")
 
+    parser_build_run.set_defaults(func=run_tests)
     parser_build_test.set_defaults(func=show_status_test)
     parser_build_report.set_defaults(func=show_status_report)
     parser_build_log.set_defaults(func=show_status_log)

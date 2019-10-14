@@ -96,9 +96,8 @@ tee $script_dir/spack-all-modules.txt <<< "BUILDTEST_SPIDER_VIEW=all buildtest m
 tee $script_dir/parent-module.txt <<< "buildtest module -d shared" | bash >> $script_dir/parent-module.txt
 
 # status command
-tee $script_dir/buildtest_status_help.txt <<< "buildtest status --help" | bash >> $script_dir/buildtest_status_help.txt
-tee $script_dir/buildtest_status_report.txt <<< "buildtest status report " | bash >> $script_dir/buildtest_status_report.txt
-tee $script_dir/buildtest_status_test.txt <<< "buildtest status test 0 " | bash >> $script_dir/buildtest_status_test.txt
+tee $script_dir/buildtest_status_report.txt <<< "buildtest build report " | bash >> $script_dir/buildtest_status_report.txt
+tee $script_dir/buildtest_status_test.txt <<< "buildtest build test 0 " | bash >> $script_dir/buildtest_status_test.txt
 
 tee $script_dir/module_tree_help.txt <<< "buildtest module tree -h" | bash >> $script_dir/module_tree_help.txt
 tee $script_dir/module_tree_list.txt <<< "buildtest module tree -l" | bash >> $script_dir/module_tree_list.txt

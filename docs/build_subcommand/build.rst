@@ -172,33 +172,6 @@ Shown below is an example test script for gcc binary
     which gcc
 
 
-Clean build (``buildtest build --clean-build``)
--------------------------------------------------------
-
-buildtest will preserve the testing directory when tests are generated. For example, if you
-run the following
-
-::
-
-    buildtest build --package gcc --shell sh
-    buildtest build --package gcc --shell csh
-    buildtest build --package gcc --shell bash
-
-This will write the test for shell ("sh", "bash", "csh") in the same directory. If you
-want to remove the directory prior to running test you can do the following
-
-::
-
-    buildtest build --package gcc --clean-build
-
-Customize Test Directory (``buildtest build --testdir``)
--------------------------------------------------------------
-
-If you want to customize the path to BUILDTEST_TESTDIR you may use the option ``--testdir``
-or update the environment variable ``BUILDTEST_TESTDIR``. The command line option will override
-environment variable and environment variable will override configuration value.
-
-.. program-output:: cat scripts/custom-testdir.txt
 
 Shell Types
 --------------

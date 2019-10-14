@@ -1,19 +1,9 @@
-Retrieve Build Status (``buildtest status``)
-=============================================
+Retrieve Build Status (``buildtest build report``)
+==================================================
 
-buildtest is keeping track of all builds including start/end time of build process, build log file, command
+buildtest is keeping track of all builds such as build time, build log file, command
 executed and test scripts generated as result of build. This information is stored in a file ``BUILDTEST_ROOT/var/build.json``
 that is updated by buildtest whenever you issue ``buildtest build`` command.
-
-To retrieve status detail of builds, use the following command::
-
-    $ buildtest status
-
-
-Currently, buildtest can report all builds and access logfile and list tests generated from a given build.
-To get a sense of the command usage you can run ``buildtest status -h``.
-
-.. program-output:: cat scripts/buildtest_status_help.txt
 
 To see a status report of all builds you can run::
 
@@ -27,14 +17,14 @@ Each row corresponds to a unique build identified by build **ID** that can be us
 and report tests. To get the log file for a build you can run the following::
 
 
-    $ buildtest status log <ID>
+    $ buildtest build log <ID>
 
 buildtest will open the log file using ``less`` command so you can interactively search the logfile.
 
 For instance let's check the build log for ``ID=0``. You can get this by running either of the two commands::
 
-    $ buildtest status log 0
-    $ buildtest status log id=0
+    $ buildtest build log 0
+    $ buildtest build log id=0
 
 Here is a snapshot of the build log::
 
@@ -52,12 +42,36 @@ Here is a snapshot of the build log::
 
 To view the test generated from the build you will need the build ID and run the following::
 
-    $ buildtest status test id=<ID>
+    $ buildtest build test id=<ID>
 
 You may omit the ``id=<ID>`` and specify the number as argument to ``test`` as follows::
 
-    $ buildtest status test <ID>
+    $ buildtest build test <ID>
 
 Shown below is the generated test from build ``ID=0``.
 
 .. program-output:: cat scripts/buildtest_status_test.txt
+
+Running a Test
+--------------
+
+To run a test, you may invoke ``buildtest build run <ID>`` which will run all tests for the particular build ID. If
+you are not sure what tests will be run, you can use a combination of ``buildtest build report`` and ``buildtest build test <ID>``
+to retrieve the build command and tests associated to the build ID.
+
+Shown below is an example run for on build ``ID=1``::
+
+    $ buildtest build run 1
+    Running All Tests from Test Directory: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1
+    ==============================================================
+                             Test summary
+    Executed 1 tests
+    Passed Tests: 1 Percentage: 100.0%
+    Failed Tests: 0 Percentage: 0.0%
+    SUCCESS: Threshold of 100.0% was achieved
+    Writing results to /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1/run/buildtest_12_25_14_10_2019.run
+
+
+
+
+
