@@ -31,6 +31,9 @@ import json
 import os
 from buildtest.tools.config import BUILDTEST_BUILD_LOGFILE
 
+def func_status():
+    pass
+
 def show_status_report(args):
     """
     This method displays history of builds conducted by buildtest. This method
@@ -39,6 +42,7 @@ def show_status_report(args):
     :param args: command line arguments passed to buildtest
     :type args: dict, required
     """
+
     fd = open(BUILDTEST_BUILD_LOGFILE,"r")
     content = json.load(fd)
     fd.close()
@@ -56,36 +60,6 @@ def show_status_report(args):
                                                          content["build"][build_id]["CMD"],
                                                          content["build"][build_id]["LOGFILE"]))
         count += 1
-
-def get_build_ids():
-    """Return a list of build ids. This can be retrieved by getting length
-    of "build:" key and pass it to range() method to return a list. Build IDs
-    start from 0. This method is used as choice field in add_argument() method
-
-    :return: return a list of numbers  that represent build id
-    :rtype: list
-    """
-
-    fd = open(BUILDTEST_BUILD_LOGFILE, "r")
-    content = json.load(fd)
-    fd.close()
-    total_records = len(content["build"])
-    return (range(total_records))
-
-
-def get_total_build_ids():
-    """Return a total count of build ids. This can be retrieved by getting length
-    of "build:" key. Build IDs start from 0.
-
-    :return: return a list of numbers  that represent build id
-    :rtype: list
-    """
-
-    fd = open(BUILDTEST_BUILD_LOGFILE, "r")
-    content = json.load(fd)
-    fd.close()
-    total_records = len(content["build"])
-    return (total_records)
 
 def show_status_log(args):
     """This method opens log file using "less" by reading build.json
@@ -118,3 +92,88 @@ def show_status_test(args):
 
     tests = content["build"][str(args.id)]["TESTS"]
     [print (test) for test in tests]
+
+def run_tests(tests):
+    """This method actually runs the test and display test summary with number
+        of pass/fail test and whether it passed test threshold."""
+    runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
+    run_output_file = os.path.join(config_opts["BUILDTEST_TESTDIR"],"run",runfile)
+    create_dir(os.path.join(config_opts["BUILDTEST_TESTDIR"],"run"))
+    fd = open(runfile,"w")
+    count_test = len(tests)
+    passed_test = 0
+    failed_test = 0
+    for test in tests:
+        ret = subprocess.Popen(test,
+                               shell=True,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
+        output = ret.communicate()[0].decode("utf-8")
+
+        ret_code = ret.returncode
+        fd.write("Test Name:" + test + "\n")
+        fd.write("Return Code: " + str(ret_code) + "\n")
+        fd.write("---------- START OF TEST OUTPUT ---------------- \n")
+        fd.write(output)
+        fd.write("------------ END OF TEST OUTPUT ---------------- \n")
+
+        if ret_code == 0:
+            passed_test += 1
+        else:
+            failed_test += 1
+
+    print (f"Running All Tests from Test Directory: {test_destdir}")
+    print
+    print
+    print("==============================================================")
+    print("                         Test summary                         ")
+    print("Package: ", name)
+    print(f"Executed {count_test} tests")
+    print(f"Passed Tests: {passed_test} Percentage: {passed_test*100/count_test}%")
+    print(f"Failed Tests: {failed_test} Percentage: {failed_test*100/count_test}%")
+
+    actual_ratio = passed_test / count_test
+    success_threshold = float(config_opts['BUILDTEST_SUCCESS_THRESHOLD'])
+
+    print
+    print
+    diff_ratio = abs(actual_ratio - success_threshold)
+    if actual_ratio < success_threshold:
+        print (f"WARNING: Threshold of {success_threshold*100}% was not satisfied")
+        print (f"{name} has a {actual_ratio*100}% passed rate with a "
+               + f"difference of {diff_ratio:.4} from the threshold")
+    else:
+        print (f"SUCCESS: Threshold of {success_threshold*100}% was achieved")
+
+    print ("Writing results to " + run_output_file)
+    fd.close()
+
+def get_build_ids():
+    """Return a list of build ids. This can be retrieved by getting length
+    of "build:" key and pass it to range() method to return a list. Build IDs
+    start from 0. This method is used as choice field in add_argument() method
+
+    :return: return a list of numbers  that represent build id
+    :rtype: list
+    """
+
+    fd = open(BUILDTEST_BUILD_LOGFILE, "r")
+    content = json.load(fd)
+    fd.close()
+    total_records = len(content["build"])
+    return (range(total_records))
+
+
+def get_total_build_ids():
+    """Return a total count of build ids. This can be retrieved by getting length
+    of "build:" key. Build IDs start from 0.
+
+    :return: return a list of numbers  that represent build id
+    :rtype: list
+    """
+
+    fd = open(BUILDTEST_BUILD_LOGFILE, "r")
+    content = json.load(fd)
+    fd.close()
+    total_records = len(content["build"])
+    return (total_records)

@@ -199,12 +199,17 @@ Misc:
                                          metavar="BUILD ID")
 
     parser_status_test = subparsers_status.add_parser("test", help="Report test scripts based on build ID")
-    parser_status_test.add_argument("id", help="Display test scripts based on build ID", type=int, choices=build_ids,
-                                  metavar="BUILD ID")
+    parser_status_test.add_argument("id",
+                                    help="Display test scripts based on build ID",
+                                    type=int,
+                                    choices=build_ids,
+                                    metavar="BUILD ID")
+    parser_status_test.add_argument("-r","--run", help="Run the Tests.")
     parser_status_test.set_defaults(func=show_status_test)
     parser_status_report.set_defaults(func=show_status_report)
     parser_status_log.set_defaults(func=show_status_log)
     # -------------------------------- build menu --------------------------
+    parser_build.add_argument("--clear",help="Clear build history and remove all tests",action="store_true")
     parser_build.add_argument("-p",
                               "--package",
                               help="Build test for system packages",
@@ -265,9 +270,29 @@ Misc:
                                    "combination is used when loading modules",
                               choices=["first","all"])
 
+    subparsers_build = parser_build.add_subparsers(description="Report status on builds performed by buildtest.")
+    parser_build_report = subparsers_build.add_parser("report", help="Report status details of all builds ")
+
+    parser_build_log = subparsers_build.add_parser("log", help="Report build log for a particular build")
+    parser_build_log.add_argument("id", help="Display Log File for a build ID", type=int, choices=build_ids,
+                                   metavar="BUILD ID")
+
+    parser_build_test = subparsers_build.add_parser("test", help="Report test scripts based on build ID")
+    parser_build_test.add_argument("id",
+                                    help="Display test scripts based on build ID",
+                                    type=int,
+                                    choices=build_ids,
+                                    metavar="BUILD ID")
+
+
+    parser_build_test.set_defaults(func=show_status_test)
+    parser_build_report.set_defaults(func=show_status_report)
+    parser_build_log.set_defaults(func=show_status_log)
+
     parser_build.set_defaults(func=func_build_subcmd)
 
     # -------------------------------- run menu ----------------------------
+
 
     parser_run_mutex = parser_run.add_mutually_exclusive_group()
     parser_run_mutex.add_argument("-s",
@@ -288,6 +313,7 @@ Misc:
                             "--job",
                             help = "Submit jobs to resource scheduler",
                             action="store_true")
+
     parser_run.set_defaults(func=func_run_subcmd)
 
     # -------------------------------- module menu --------------------------

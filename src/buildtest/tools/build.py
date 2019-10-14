@@ -37,7 +37,7 @@ from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY, BUILDTE
 from buildtest.tools.modulesystem.collection import get_buildtest_module_collection
 from buildtest.tools.buildsystem.singlesource import \
     BuildTestBuilderSingleSource
-from buildtest.tools.file import create_dir, is_dir, walk_tree
+from buildtest.tools.file import create_dir, is_dir, walk_tree, is_file
 from buildtest.tools.log import init_log
 from buildtest.tools.modules import find_modules
 from buildtest.tools.status import get_total_build_ids
@@ -62,6 +62,12 @@ def func_build_subcmd(args):
     build_id = get_total_build_ids()
     BUILDTEST_BUILD_HISTORY[build_id] = {}
     BUILDTEST_BUILD_HISTORY[build_id]["TESTS"] = []
+    if args.clear:
+        if is_file(BUILDTEST_BUILD_LOGFILE):
+            os.remove(BUILDTEST_BUILD_LOGFILE)
+            shutil.rmtree(config_opts["BUILDTEST_TESTDIR"])
+        print ("Clearing Build History")
+        sys.exit(0)
     if args.shell:
         config_opts['BUILDTEST_SHELL']=args.shell
     if args.clean_build:
