@@ -157,6 +157,41 @@ If you want to delete all module collections you can run::
 
 This will remove all module collection index from the internal database.
 
+Check Module Collection (``buildtest module collection --check``)
+------------------------------------------------------------------
+
+buildtest provides a mechanism to test if your module collection can be loaded properly before you use them with
+building your test. Modules loaded at one given time may break in future if certain environment change or name change
+of module occurs. buildtest will conduct a ``module load`` test against all collections and report for any bugs.
+
+To use this option use the ``--check`` option.
+
+If everything is all well you should get the following message::
+
+    $ buildtest module collection --check
+    All module collection passed check!
+
+If you encounter an error you will get a message as follows::
+
+    $ buildtest module collection --check
+    The following module collection failed to load:
+    Collection: 0 - module load GCCcore/9.3.0
+    Collection[0] = ['GCCcore/9.3.0', 'bzip2/1.0.8-GCCcore-8.3.0', 'zlib/1.2.11-GCCcore-8.3.0', 'ncurses/6.1-GCCcore-8.3.0', 'libreadline/8.0-GCCcore-8.3.0', 'Tcl/8.6.9-GCCcore-8.3.0', 'SQLite/3.29.0-GCCcore-8.3.0', 'XZ/5.2.4-GCCcore-8.3.0', 'GMP/6.1.2-GCCcore-8.3.0', 'libffi/3.2.1-GCCcore-8.3.0', 'Python/3.7.4-GCCcore-8.3.0']
+
+buildtest will attempt to load each module individually as pose to loading all of them in a single command. This means the above collection
+will run the following::
+
+    module load GCCcore/9.3.0
+    module load bzip2/1.0.8-GCCcore-8.3.0
+    ...
+
+To fix a module collection issue, try removing the module collection or update the collection with a new set of modules.
+
+If you don't have any module collection and you run ``--check`` option you will get the following message::
+
+    $  buildtest module collection --check
+    No modules collection found. Please add a module collection before running check.
+
 Module Trees Operation (``buildtest module tree``)
 ---------------------------------------------------
 

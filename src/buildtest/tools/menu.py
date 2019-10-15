@@ -317,7 +317,7 @@ Miscellaneous:
                                    metavar="Module Collection Index",
                                    help="Remove a Module Collection")
     parser_collection.add_argument("-c","--clear",help="remove all module collections",action="store_true")
-
+    parser_collection.add_argument("--check", help="Check all module collection by performing module load test.", action="store_true")
     parser_moduleload.set_defaults(func=module_load_test)
     parser_module_tree.set_defaults(func=func_module_tree_subcmd)
     parser_collection.set_defaults(func=func_collection_subcmd)

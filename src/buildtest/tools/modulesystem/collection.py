@@ -42,6 +42,8 @@ def func_collection_subcmd(args):
         if is_file(BUILDTEST_MODULE_COLLECTION_FILE):
             os.remove(BUILDTEST_MODULE_COLLECTION_FILE)
         print("Removing all module collections!")
+    if args.check:
+        check_module_collection()
     if args.add:
         add_collection()
     if args.list:
@@ -156,6 +158,35 @@ def list_collection():
     for x in dict["collection"]:
         print (f"{count}: {x}")
         count += 1
+
+def check_module_collection():
+    """Run module load for all module collection to confirm they can be loaded properly."""
+
+    with open(BUILDTEST_MODULE_COLLECTION_FILE,"r") as infile:
+        json_module = json.load(infile)
+
+    # boolean to check if any error exists
+    error = False
+    if get_collection_length() == 0:
+        print ("No modules collection found. Please add a module collection before running check.")
+        return
+    index = 0
+
+    for mc in json_module["collection"]:
+        for module in mc:
+            cmd =  f"module load {module}"
+
+            ret = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+            ret.communicate()
+            if ret.returncode != 0:
+                error = True
+                print ("The following module collection failed to load:")
+                print (f"Collection: {index} - {cmd}")
+                print (f"Collection[{index}] = {mc}")
+        index+=1
+
+    if error == False:
+        print ("All module collection passed check!")
 
 def get_collection_length():
     """Read collection file collection.json and return length of collection

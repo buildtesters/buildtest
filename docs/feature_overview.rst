@@ -66,19 +66,8 @@ TAB Completion
 -----------------------
 
 buildtest use the ``argcomplete`` python module to autocomplete buildtest
-argument.
-Just press TAB key on the keyboard to fill in the arguments.
+argument. Just press TAB key on the keyboard to fill in the arguments.
 
-For instance if you just type ``buildtest`` followed by TAB you should see the
-following.
-
-::
-
-    $ buildtest
-    benchmark     --clean-logs  -h            list          module        --scantest    --show-keys   -V            yaml
-    build         find          --help        --logdir      run           --show        --submitjob   --version
-
-
-.. Note:: You will need to press the TAB key few times before it shows all the
+.. Note:: Please be patient! You may need to press the TAB key few times before it shows all the
    arguments
 
