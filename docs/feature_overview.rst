@@ -62,19 +62,6 @@ following
 
 .. program-output:: cat scripts/coreutils-binary-test.txt
 
-Running The Test
------------------
-
-You can run the in several ways. The easiest way to run the test is via buildtest
-using ``buildtest run -S <suite>``
-
-Here is the output of the following test
-
-.. program-output:: cat scripts/run-openmp-suite.txt
-
-
-
-
 TAB Completion
 -----------------------
 
@@ -95,23 +82,3 @@ following.
 .. Note:: You will need to press the TAB key few times before it shows all the
    arguments
 
-
-Log files
----------
-
-All buildtest logs will be written in ``BUILDTEST_LOGDIR``.
-
-buildtest will store log files for ``buildtest build -s <app_name>/<app_ver>`` in
-``BUILDTEST_LOGDIR/<app_name>/<app_ver>``. If toolchain option is specified for
-instance ``buildtest build -s <app_name>/<app_ver> -t <tc_name>/<tc_ver>`` then
-buildtest will store the logs in ``BUILDTEST_LOGDIR/<app_name>/<app_ver>/<tc_name>/<tc_ver>``.
-
-Similarly logs for system tests like ``buildtest --package <package>`` will be stored in ``BUILDTEST_LOGDIR/system/<package>``
-
-You may override BUILDTEST_LOGDIR option at command line via ``buildtest --logdir``
-and you may even store individual buildtest runs in separate directories such as
-the following
-
-.. code::
-
-   buildtest build -s OpenMPI/3.0.0-GCC-6.4.0-2.28 --logdir=/tmp

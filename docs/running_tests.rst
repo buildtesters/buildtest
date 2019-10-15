@@ -4,31 +4,6 @@ Running Test
 
 .. program-output:: cat scripts/run_subcommand/help.txt
 
-
-Run an Application Test Suite (``buildtest run --software``)
----------------------------------------------------------------
-
-buildtest can run test written in ``$BUILDTEST_TESTDIR`` for a particular application
-specified by option ``--software``. The choice field for this option is populated based
-on directories found in ``$BUILDTEST_TESTDIR`` which were created by subsequent runs
-of ``buildtest build``.
-
-Shown below is an output of ``buildtest run --software gcc/7.2.0`` which attempts
-to run sanity check for module ``gcc/7.2.0``
-
-.. program-output:: cat scripts/run_subcommand/gcc-7.2.0.txt
-
-
-Run a System Package Test Suite (``buildtest run --package``)
-------------------------------------------------------------------
-
-Similarly, ``buildtest run --package`` is used to run test suite for system packages
-that were built by option ``buildtest build --package <package>``
-
-Shown below is an output of ``buildtest run --package gcc``
-
-.. program-output:: cat scripts/run_subcommand/gcc.txt
-
 Submitting Jobs to Scheduler (``buildtest run -j``)
 ----------------------------------------------------
 

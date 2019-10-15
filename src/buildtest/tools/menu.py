@@ -66,9 +66,6 @@ def menu():
     test_class = os.listdir(os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
                                          "buildtest",
                                          "suite"))
-    yaml_choices = walk_tree(os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
-                                          "buildtest",
-                                          "suite"),".yml")
 
     test_config_choice = testconfig_choices()
 

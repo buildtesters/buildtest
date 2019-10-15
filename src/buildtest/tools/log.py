@@ -53,21 +53,19 @@ def init_log():
     :return: Returns logger object and log path and logfile name
     :rtype: multiple return types (logger object, logpath, logfile)
     """
-    logfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
-    BUILDTEST_LOGDIR = config_opts['BUILDTEST_LOGDIR']
+    fname = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
+    BUILDTEST_LOGDIR = os.path.join(config_opts['BUILDTEST_TESTDIR'],"log")
 
-    logpath = os.path.join(BUILDTEST_LOGDIR, logfile)
-
+    logfile = os.path.join(BUILDTEST_LOGDIR, fname)
     # if log directory is not present create it automatically
     if not os.path.exists(BUILDTEST_LOGDIR):
         os.makedirs(BUILDTEST_LOGDIR)
-        print ("Creating Log directory: ", BUILDTEST_LOGDIR)
 
     logger = logging.getLogger(logID)
-    fh = logging.FileHandler(logpath)
+    fh = logging.FileHandler(logfile)
     formatter = logging.Formatter('%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
     logger.setLevel(logging.DEBUG)
 
-    return logger, logpath
+    return logger, logfile

@@ -35,8 +35,6 @@ def override_configuration():
     bool_config_override("BUILDTEST_BINARY")
     bool_config_override("BUILDTEST_MODULE_FORCE_PURGE")
 
-    dir_config_override("BUILDTEST_LOGDIR")
-    dir_config_override("BUILDTEST_RUN_DIR")
 
     if os.environ.get('BUILDTEST_SHELL'):
         config_opts['BUILDTEST_SHELL']=os.environ['BUILDTEST_SHELL']
@@ -76,14 +74,3 @@ def bool_config_override(key):
         except ValueError:
             values = ["y","yes","t","true","on",1,"n","f","false","off",0]
             raise BuildTestError(f"Must be one of the following {values}")
-
-def dir_config_override(key):
-    """override directory configuration via environment variable
-
-    :param key: buildtest configuration name
-    :type key: str,required
-    """
-    if os.environ.get(key):
-        run_dir = os.environ.get(key)
-        if os.path.exists(run_dir):
-            config_opts[key]=run_dir

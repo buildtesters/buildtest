@@ -179,7 +179,7 @@ def run_osu_microbenchmark(config):
     print ("Tests Generation complete. All tests are written under /tmp/osu* \n")
 
     runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
-    run_output_file = os.path.join(config_opts["BUILDTEST_RUN_DIR"],runfile)
+    run_output_file = os.path.join("/tmp",runfile)
 
     fd = open(run_output_file,"w")
     write_system_info(fd)

@@ -57,7 +57,6 @@ def func_build_subcmd(args):
     :rtype: None
     """
 
-    logger,logfile = init_log()
 
     build_id = get_total_build_ids()
     BUILDTEST_BUILD_HISTORY[build_id] = {}
@@ -86,6 +85,9 @@ def func_build_subcmd(args):
 
     config_opts['BUILDTEST_TESTDIR'] = os.path.join(config_opts['BUILDTEST_TESTDIR'],test_subdir)
     create_dir(config_opts['BUILDTEST_TESTDIR'])
+
+
+    logger,LOGFILE = init_log()
 
     module_cmd_list = []
     # if module permutation is set
@@ -196,14 +198,15 @@ def func_build_subcmd(args):
     if args.package:
         generate_binary_test(args.package, args.verbose, build_id, package=True)
 
-    print("Writing Log file to: ", logfile)
+    print("Writing Log file to: ", LOGFILE)
 
     BUILD_TIME = datetime.now().strftime("%m/%d/%Y %X")
-    BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"] = len(os.listdir(config_opts["BUILDTEST_TESTDIR"]))
+
+    BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"] = len(BUILDTEST_BUILD_HISTORY[build_id]["TESTS"])
     BUILDTEST_BUILD_HISTORY[build_id]["CMD"] = "buildtest " + ' '.join(str(arg) for arg in sys.argv[1:])
 
     BUILDTEST_BUILD_HISTORY[build_id]["BUILD_TIME"] = BUILD_TIME
-    BUILDTEST_BUILD_HISTORY[build_id]["LOGFILE"] = logfile
+    BUILDTEST_BUILD_HISTORY[build_id]["LOGFILE"] = LOGFILE
     fd = open(BUILDTEST_BUILD_LOGFILE,"r")
     build_dict = json.load(fd)
     fd.close()

@@ -120,32 +120,6 @@ If you specify an invalid value you may get the following message
 	BUILDTEST_SHELL expects value [``sh``, ``bash``, ``csh``] current value	is tcsh
 
 
-Log Directory
-----------------
-
-buildtest will write the logs specified by ``BUILDTEST_LOGDIR`` this can be set at the
-configuration file or environment variable.
-
-Setting this at the configuration file can be done as follows::
-
-    BUILDTEST_LOGDIR: /tmp/buildtest/logs
-
-
-Once this is set you will find a log file per execution. For instance, if you build
-tests for ``GCCcore/6.4.0``, you will find the logs in the following path
-
-::
-
-    /tmp/buildtest/logs/GCCcore/6.4.0/
-
-All log files are named as follows ``buildtest_HH_MM_DD_MM_YYYY.log`` to preserve the
-date and time stamp.
-
-Here is an example for a buildtest log file from Jan 20th 2019::
-
-    $ ls -l /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_21_20_20_01_2019.log
-    -rw-r--r-- 1 siddis14 amer 81358 Jan 20 21:20 /tmp/buildtest/logs/GCCcore/6.4.0/buildtest_21_20_20_01_2019.log
-
 Test Threshold
 ----------------
 

@@ -91,9 +91,8 @@ logID = "buildtest"
 
 
 config_directory_types = [
-  "BUILDTEST_LOGDIR",
   "BUILDTEST_TESTDIR",
-  "BUILDTEST_RUN_DIR",
+
 ]
 config_yaml_keys = {
     'BUILDTEST_BINARY': type(True),
@@ -103,9 +102,7 @@ config_yaml_keys = {
     'BUILDTEST_MODULEPATH': type([]),
     'BUILDTEST_SPIDER_VIEW': type("str"),
     'BUILDTEST_PARENT_MODULE_SEARCH': type("str"),
-    'BUILDTEST_LOGDIR': type("str"),
     'BUILDTEST_TESTDIR': type("str"),
-    'BUILDTEST_RUN_DIR': type("str"),
 }
 
 def check_configuration():

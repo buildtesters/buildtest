@@ -29,11 +29,6 @@ BUILDTEST_PARENT_MODULE_SEARCH: first
 # # Valid Option: [0.0-1.0]    
 BUILDTEST_SUCCESS_THRESHOLD: 1.0
 #
-# # directory where buildtest logs will be written.
-BUILDTEST_LOGDIR: /tmp/$USER/buildtest/logs
-#
 # # directory where test scripts will be generated
 BUILDTEST_TESTDIR: /tmp/$USER/buildtest/tests
-#
-# # directory where buildtest will write .run files
-BUILDTEST_RUN_DIR: /tmp/$USER/buildtest/run
+
