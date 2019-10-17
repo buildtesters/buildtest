@@ -46,6 +46,7 @@ BUILDTEST_BUILD_HISTORY= {}
 
 buildtest_home_conf_dir = os.path.join(os.getenv("HOME"), ".buildtest")
 BUILDTEST_CONFIG_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml")
+BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml.bak")
 BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "collection.json")
 BUILDTEST_MODULE_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "modules.json")
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"),"settings.yml")
@@ -60,8 +61,8 @@ if not os.path.isdir(buildtest_home_conf_dir):
 # into the appropriate location
 if not os.path.exists(BUILDTEST_CONFIG_FILE):
     copy(DEFAULT_CONFIG_FILE,BUILDTEST_CONFIG_FILE)
-    print(f"Copying Default Configuration {DEFAULT_CONFIG_FILE} to \
-          {BUILDTEST_CONFIG_FILE}")
+    copy(DEFAULT_CONFIG_FILE,BUILDTEST_CONFIG_BACKUP_FILE)
+
 
 # load the configuration file
 fd = open(BUILDTEST_CONFIG_FILE, 'r')
@@ -233,3 +234,24 @@ def show_configuration():
         else:
             print ((key + "\t " + type + " =").expandtabs(50), config_opts[key])
 
+
+def func_config_edit(args):
+    """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
+
+    os.system(f"vim {BUILDTEST_CONFIG_FILE}")
+
+def func_config_view(args):
+    """View buildtest configuration file. This implements ``buildtest config view``"""
+
+    os.system(f"cat {BUILDTEST_CONFIG_FILE}")
+
+def func_config_restore(args):
+    """Restore buildtest configuration from backup file. This implements ``buildtest config restore``"""
+    if os.path.isfile(BUILDTEST_CONFIG_BACKUP_FILE):
+        copy(BUILDTEST_CONFIG_BACKUP_FILE, BUILDTEST_CONFIG_FILE)
+        print (f"Restore configuration from backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
+    else:
+        print (f"Can't find backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
+        print (f"Resorting from default configuration: {DEFAULT_CONFIG_FILE}")
+        copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
+        copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)

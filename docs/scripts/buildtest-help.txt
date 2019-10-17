@@ -12,18 +12,19 @@ COMMANDS:
     list        Options for listing software, module files, and  easyconfigs
     show        Options for displaying buildtest configuration  
     testconfigs Options for list, view, and edit test configuration         
-    status      Report status on builds performed by buildtest.
+  
         
   Build:
     build       Options for building test scripts
     run         Run Tests
     benchmark   Run Benchmark
   
-  Misc:
-    yaml        Yaml commands for buildtest    
-    module      Module Operations
+  Miscellaneous:   
+    module      Module Operations including module load testing, module collections, module tree, easybuild/spack modules, parent-modules. 
+    system      System Configuration
+    config      Buildtest Configuration
 
-  {list,yaml,build,run,show,benchmark,testconfigs,module,status}
+  {list,build,run,show,benchmark,testconfigs,module,system,config}
 
 Miscellaneous Options :
   -V, --version         show program's version number and exit

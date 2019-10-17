@@ -62,6 +62,25 @@ following
 
 .. program-output:: cat scripts/coreutils-binary-test.txt
 
+Build Report
+-------------
+
+Every build from buildtest is tracked internally, this can be retrieved using ``buildtest status report`` which shows
+a history of all builds.
+
+.. program-output:: cat scripts/buildtest_status_report.txt
+
+Each build ID can be used to retrieve log and  test-scripts and run the test independently. This can be done
+via::
+
+   buildtest build log <ID>
+   buildtest build test <ID>
+   buildtest build run <ID>
+
+For example you can retrieve tests scripts generated from a build via ``buildtest build test`` as follows::
+
+.. program-output:: cat scripts/buildtest_status_test.txt
+
 TAB Completion
 -----------------------
 

@@ -148,7 +148,7 @@ Now we are ready to update the module collection as shown below
 .. program-output:: cat scripts/buildtest-module-collection-update.txt
 
 Delete all module collections (``buildtest module collection --clear``)
------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to delete all module collections you can run::
 
@@ -158,7 +158,7 @@ If you want to delete all module collections you can run::
 This will remove all module collection index from the internal database.
 
 Check Module Collection (``buildtest module collection --check``)
-------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 buildtest provides a mechanism to test if your module collection can be loaded properly before you use them with
 building your test. Modules loaded at one given time may break in future if certain environment change or name change

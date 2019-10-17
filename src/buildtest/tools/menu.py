@@ -32,7 +32,7 @@ import argcomplete
 
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
-    check_configuration
+    check_configuration, func_config_edit, func_config_view, func_config_restore
 from buildtest.tools.modulesystem.collection import func_collection_subcmd, \
     get_collection_length
 from buildtest.tools.file import create_dir, walk_tree
@@ -55,6 +55,7 @@ from buildtest.tools.testconfigs import func_testconfigs_show, \
 from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
 from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
 from buildtest.benchmark.hpcg import func_benchmark_hpcg_subcmd
+from buildtest.tools.sysconfig.configuration import func_system_view
 
 def menu():
     """The method implements the buildtest menu using argparse library.
@@ -100,7 +101,9 @@ def menu():
     build_title = "Options for building test scripts"
     run_title = "Run Tests"
     benchmark_title = "Run Benchmark"
-    module_title = "Module Operations"
+    module_title = "Module Operations including module load testing, module collections, module tree, easybuild/spack modules, parent-modules. "
+    system_title = "System Configuration"
+    config_title = "Buildtest Configuration"
     command_description = f"""
 Info:
   list        {list_title}
@@ -115,6 +118,8 @@ Build:
 
 Miscellaneous:   
   module      {module_title}
+  system      {system_title}
+  config      {config_title}
 """
     subparsers = parser.add_subparsers(title='COMMANDS',
                                        description=command_description,dest="subcommands")
@@ -127,6 +132,8 @@ Miscellaneous:
     parser_benchmark = subparsers.add_parser('benchmark')
     parser_testconfigs = subparsers.add_parser('testconfigs')
     parser_module = subparsers.add_parser('module')
+    parser_system = subparsers.add_parser('system')
+    parser_config = subparsers.add_parser('config')
 
     subparsers_module = parser_module.add_subparsers(description='Module utilties for managing module collections,'
                                                                  ' module trees, module load testing, reporting eb/spack modules,'
@@ -258,6 +265,20 @@ Miscellaneous:
 
     parser_run.set_defaults(func=func_run_subcmd)
 
+    # -------------------------------- system menu --------------------------
+    subparsers_system = parser_system.add_subparsers(description='system configuration')
+    parser_system_view = subparsers_system.add_parser("view", help="View System Configuration")
+    parser_system_view.set_defaults(func=func_system_view)
+
+    # -------------------------------- config  menu --------------------------
+    subparsers_config = parser_config.add_subparsers(description='buildtest configuration')
+    parser_config_view = subparsers_config.add_parser("view", help="View Buildtest Configuration File")
+    parser_config_edit = subparsers_config.add_parser("edit", help="Edit Buildtest Configuration File")
+    parser_config_restore = subparsers_config.add_parser("restore", help="Restore Buildtest Configuration File from backup")
+
+    parser_config_view.set_defaults(func=func_config_view)
+    parser_config_edit.set_defaults(func=func_config_edit)
+    parser_config_restore.set_defaults(func=func_config_restore)
     # -------------------------------- module menu --------------------------
 
     parser_module.add_argument("--diff-trees",
