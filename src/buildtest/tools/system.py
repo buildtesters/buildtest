@@ -24,6 +24,7 @@
 Functions for system package
 """
 
+
 import json
 import os
 import platform
@@ -35,6 +36,7 @@ from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE,\
     BUILDTEST_MODULE_FILE, BUILDTEST_BUILD_LOGFILE, BUILDTEST_SYSTEM
 from buildtest.tools.file import create_dir
 from buildtest.tools.modules import module_obj
+
 
 class BuildTestCommand():
     """Class method to invoke shell commands and retrieve output and error. This class
@@ -116,6 +118,7 @@ class BuildTestSystem():
         class variable **system** which is a dictionary """
 
         distro_fname = platform.linux_distribution()[0]
+
         self.system["OS_NAME"]= distro_short(distro_fname)
 
         self.system["OS_VERSION"] = platform.linux_distribution()[1]
@@ -140,13 +143,14 @@ class BuildTestSystem():
         cmd = BuildTestCommand()
 
         cmd.which("python")
-        self.system["PYTHON"]= cmd.get_output()
+        self.system["PYTHON"]= cmd.get_output().rstrip()
 
         if self.system["SCHEDULER"] == "LSF":
-            self.get_lsf_configuration()
+            from buildtest.tools.lsf import get_lsf_configuration
+            self.system["LSF"] = get_lsf_configuration()
         if self.system["SCHEDULER"] == "SLURM":
             from buildtest.tools.slurm import get_slurm_configuration
-            self.system["QUEUES"],self.system["COMPUTENODES"] = get_slurm_configuration()
+            self.system["SLURM"] = get_slurm_configuration()
 
         cmd.execute("""lscpu | grep "Vendor" """)
         vendor_name = cmd.get_output()
@@ -167,16 +171,16 @@ class BuildTestSystem():
 
         if not os.path.exists(BUILDTEST_SYSTEM):
             with open(BUILDTEST_SYSTEM,"w") as outfile:
-                json.dump(self.system,outfile,indent=4)
+                json.dumps(self.system, outfile, indent=2, sort_keys=True)
 
         if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
             with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as outfile:
-                json.dump(module_coll_dict, outfile, indent=4)
+                json.dump(module_coll_dict, outfile, indent=2)
 
         if not os.path.exists(BUILDTEST_BUILD_LOGFILE):
             build_dict = {"build":{}}
             with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
-                json.dump(build_dict,outfile,indent=4)
+                json.dump(build_dict,outfile,indent=2)
 
     def get_system(self):
         """Return class variable system that contains detail for system configuration
@@ -186,34 +190,6 @@ class BuildTestSystem():
         """
 
         return self.system        
-    def get_lsf_configuration(self):
-        """Return LSF queues and compute nodes part of the LSF cluster. It makes use
-        of ``bhosts`` and ``bqueues`` command to retrieve queue and compute nodes.
-        """
-
-        cmd = BuildTestCommand()
-        query = """ bqueues | cut -d " " -f 1 """
-
-        cmd.execute(query)
-        out = cmd.get_output()
-
-        queue_names = out.split("\n")
-        # remove the first and last entry. First entry is just header and last entry is empty string
-        del queue_names[0]
-        del queue_names[-1]
-
-
-        self.system["QUEUES"] = queue_names
-
-        query = """ bhosts -w | cut -d " " -f 1 """
-        cmd.execute(query)
-        out = cmd.get_output()
-
-        compute_nodes = out.split("\n")
-        del compute_nodes[0]
-        del compute_nodes[-1]
-
-        self.system["COMPUTENODES"] = compute_nodes
 
 
     def check_scheduler(self):

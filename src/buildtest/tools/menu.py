@@ -36,6 +36,7 @@ from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
 from buildtest.tools.modulesystem.collection import func_collection_subcmd, \
     get_collection_length
 from buildtest.tools.file import create_dir, walk_tree
+from buildtest.tools.lsf import func_bsub
 from buildtest.tools.list import func_list_subcmd
 from buildtest.tools.modules import func_module_subcmd, \
      module_obj, module_load_test, get_all_parents, \
@@ -55,7 +56,8 @@ from buildtest.tools.testconfigs import func_testconfigs_show, \
 from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
 from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
 from buildtest.benchmark.hpcg import func_benchmark_hpcg_subcmd
-from buildtest.tools.sysconfig.configuration import func_system_view
+from buildtest.tools.sysconfig.configuration import func_system_view, \
+    func_system_fetch
 
 def menu():
     """The method implements the buildtest menu using argparse library.
@@ -243,11 +245,20 @@ Miscellaneous:
 
     parser_build_run = subparsers_build.add_parser("run", help="Run test scripts based on build ID")
     parser_build_run.add_argument("id",
-                                   help="Display test scripts based on build ID",
+                                   help="Run test scripts based on build ID",
                                    type=int,
                                    choices=build_ids,
                                    metavar="BUILD ID")
-
+    parser_build_bsub = subparsers_build.add_parser("bsub", help="LSF Batch Job Launcher (bsub)")
+    parser_build_bsub.add_argument("id",
+                                   help="Dispatch test based on build ID",
+                                   type=int,
+                                   choices=build_ids,
+                                   metavar="BUILD ID")
+    parser_build_bsub.add_argument("-q","--queue", help="select queue (bsub -q)", type=str)
+    parser_build_bsub.add_argument("-R", "--resource", help="Resource Selection (bsub -R)", type=str)
+    parser_build_bsub.add_argument("-m", "--machine", help="Host Selection (bsub -m)", type=str)
+    parser_build_bsub.set_defaults(func=func_bsub)
     parser_build_run.set_defaults(func=run_tests)
     parser_build_test.set_defaults(func=show_status_test)
     parser_build_report.set_defaults(func=show_status_report)
@@ -268,7 +279,11 @@ Miscellaneous:
     # -------------------------------- system menu --------------------------
     subparsers_system = parser_system.add_subparsers(description='system configuration')
     parser_system_view = subparsers_system.add_parser("view", help="View System Configuration")
+    parser_system_fetch = subparsers_system.add_parser("fetch",help="Fetch System Information")
+
     parser_system_view.set_defaults(func=func_system_view)
+    parser_system_fetch.set_defaults(func=func_system_fetch)
+
 
     # -------------------------------- config  menu --------------------------
     subparsers_config = parser_config.add_subparsers(description='buildtest configuration')

@@ -34,9 +34,6 @@ from datetime import datetime
 from buildtest.tools.config import config_opts,BUILDTEST_BUILD_LOGFILE
 from buildtest.tools.file import create_dir
 
-def func_status():
-    pass
-
 def show_status_report(args):
     """
     This method displays history of builds conducted by buildtest. This method
@@ -104,7 +101,9 @@ def run_tests(args):
     content = json.load(fd1)
     fd1.close()
 
+
     tests = content["build"][str(args.id)]["TESTS"]
+
     # all tests are in same directory, retrieving parent directory of test
     test_dir = os.path.dirname(tests[0])
 

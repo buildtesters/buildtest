@@ -33,6 +33,7 @@ def get_slurm_configuration():
     :return: two list objects that contains list of queues and compute nodes
     :rtype: two lists (queues, compute_nodes)
     """
+    slurm = {}
     cmd = BuildTestCommand()
     query = """ sinfo -h -o %n | sort """
     cmd.execute(query)
@@ -49,4 +50,6 @@ def get_slurm_configuration():
 
     queues = out.split("\n")
     del queues[-1]
-    return queues,compute_nodes
+    slurm["queues"] = queues
+    slurm["nodes"] = compute_nodes
+    return slurm
