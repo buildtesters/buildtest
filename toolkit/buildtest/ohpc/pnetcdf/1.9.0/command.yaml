@@ -1,9 +1,0 @@
-description: Binary test for pnetcdf/1.9.0
-binaries:
-- which ncmpidiff
-- which ncmpidump
-- which ncmpigen
-- which ncoffsets
-- which ncvalidator
-- which pnetcdf-config
-- which pnetcdf_version

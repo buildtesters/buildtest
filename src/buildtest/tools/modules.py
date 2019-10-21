@@ -288,7 +288,6 @@ def find_modules(module_args):
 
     all_modules = []
     for i in module_list:
-        print (i)
         if i not in json_module.keys():
             print(f"{i} not in dictionary. Skipping to next module")
             continue

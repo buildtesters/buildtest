@@ -28,7 +28,7 @@ import time
 import yaml
 
 from datetime import datetime
-from buildtest.tools.config import config_opts
+from buildtest.tools.config import config_opts, BENCHMARK_DIR
 from buildtest.tools.run import write_system_info
 
 dict_keys1 = ["proc", "min_message_size", "max_message_size", "iter_msg_size",
@@ -132,10 +132,7 @@ def run_osu_microbenchmark(config):
     """run the OSU benchmark"""
 
     if config == None:
-        config = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
-                              "buildtest",
-                              "benchmark",
-                              "osu.yaml")
+        config = os.path.join(BENCHMARK_DIR,"osu.yaml")
 
     ext = os.path.splitext(config)[1]
     ext = ext[1:]

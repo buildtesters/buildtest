@@ -1,8 +1,0 @@
-description: Binary test for netcdf/4.6.1
-binaries:
-- which nc-config
-- which nccopy
-- which ncdump
-- which ncgen
-- which ncgen3
-- which ocprint

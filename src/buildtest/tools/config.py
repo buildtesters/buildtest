@@ -50,7 +50,7 @@ BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(buildtest_home_conf_dir, "settings.y
 BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "collection.json")
 BUILDTEST_MODULE_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "modules.json")
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"),"settings.yml")
-
+BENCHMARK_DIR = os.path.join(os.getenv("BUILDTEST_ROOT"),"toolkit","benchmark")
 # check if $HOME/.buildtest exists, if not create directory
 if not os.path.isdir(buildtest_home_conf_dir):
     print(f"Creating buildtest configuration directory: \
@@ -68,7 +68,7 @@ if not os.path.exists(BUILDTEST_CONFIG_FILE):
 fd = open(BUILDTEST_CONFIG_FILE, 'r')
 config_opts = yaml.safe_load(fd)
 
-config_opts["BUILDTEST_CONFIGS_REPO"]= os.path.join(os.environ["BUILDTEST_ROOT"],"toolkit")
+config_opts["BUILDTEST_CONFIGS_REPO"]= os.path.join(os.environ["BUILDTEST_ROOT"],"toolkit","suite")
 # if BUILDTEST_MODULEPATH is empty list then check if MODULEPATH is defined
 # and set result to BUILDTEST_MODULEPATH
 if len(config_opts["BUILDTEST_MODULEPATH"]) == 0:

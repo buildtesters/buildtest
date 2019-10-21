@@ -298,9 +298,10 @@ class BuildTestBuilderSingleSource():
 
                 self._write_test(abs_test_path,module=cmd)
                 count+=1
+                BUILDTEST_BUILD_HISTORY[self.build_id]["TESTS"].append(abs_test_path)
             print(f"Writing {count} tests for {self.conf_file}")
 
-            BUILDTEST_BUILD_HISTORY[self.build_id]["TESTS"].append(abs_test_path)
+
 
             return
         # if this is a LSF job script then create .lsf extension for testname

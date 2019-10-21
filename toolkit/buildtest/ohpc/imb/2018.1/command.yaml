@@ -1,7 +1,0 @@
-description: Binary test for imb/2018.1
-binaries:
-- which IMB-EXT
-- which IMB-IO
-- which IMB-MPI1
-- which IMB-NBC
-- which IMB-RMA

@@ -1,4 +1,0 @@
-description: Binary test for R/3.5.0
-binaries:
-- which R
-- which Rscript

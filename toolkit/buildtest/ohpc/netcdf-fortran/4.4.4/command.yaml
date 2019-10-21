@@ -1,3 +1,0 @@
-description: Binary test for netcdf-fortran/4.4.4
-binaries:
-- which nf-config

@@ -1,3 +1,0 @@
-description: Binary test for netcdf-cxx/4.3.0
-binaries:
-- which ncxx4-config

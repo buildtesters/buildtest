@@ -49,7 +49,7 @@ def show_status_report(args):
 
     print ('{:3} | {:<20} | {:<15} | {:<60} '.format("ID","Build Time","Number of Tests","Command"))
 
-    print('{:-<160}'.format(""))
+    print('{:-<120}'.format(""))
     count = 0
 
     for build_id in content["build"].keys():

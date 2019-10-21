@@ -66,9 +66,8 @@ def menu():
     override_configuration()
     check_configuration()
 
-    test_class = os.listdir(os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
-                                         "buildtest",
-                                         "suite"))
+    test_class = os.listdir(config_opts["BUILDTEST_CONFIGS_REPO"])
+
 
     test_config_choice = testconfig_choices()
 
