@@ -8,6 +8,7 @@ Subpackages
 
     buildtest.tools.buildsystem
     buildtest.tools.modulesystem
+    buildtest.tools.sysconfig
 
 Submodules
 ----------
@@ -20,11 +21,11 @@ Submodules
    buildtest.tools.file
    buildtest.tools.list
    buildtest.tools.log
+   buildtest.tools.lsf
    buildtest.tools.menu
    buildtest.tools.modules
    buildtest.tools.mpi
    buildtest.tools.options
-   buildtest.tools.run
    buildtest.tools.show
    buildtest.tools.slurm
    buildtest.tools.software

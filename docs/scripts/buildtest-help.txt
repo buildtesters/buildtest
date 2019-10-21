@@ -8,23 +8,17 @@ optional arguments:
 
 COMMANDS:
   
-  Info:
+  
     list        Options for listing software, module files, and  easyconfigs
     show        Options for displaying buildtest configuration  
     testconfigs Options for list, view, and edit test configuration         
-  
-        
-  Build:
-    build       Options for building test scripts
-    run         Run Tests
+    build       Options for building test scripts  
     benchmark   Run Benchmark
-  
-  Miscellaneous:   
     module      Module Operations including module load testing, module collections, module tree, easybuild/spack modules, parent-modules. 
     system      System Configuration
     config      Buildtest Configuration
 
-  {list,build,run,show,benchmark,testconfigs,module,system,config}
+  {list,build,show,benchmark,testconfigs,module,system,config}
 
 Miscellaneous Options :
   -V, --version         show program's version number and exit

@@ -63,10 +63,7 @@ class BuildTestBuilderSingleSource():
         self.test_suite = args.suite
         self.parent_dir = parent_dir
 
-        self.test_suite_dir = os.path.join(
-            config_opts["BUILDTEST_CONFIGS_REPO"],
-            "buildtest",
-            "suite")
+        self.test_suite_dir = config_opts["BUILDTEST_CONFIGS_REPO"]
         self.srcdir = os.path.join(self.test_suite_dir,
                                    self.test_suite,
                                    self.parent_dir,

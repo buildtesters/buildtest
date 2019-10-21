@@ -84,115 +84,146 @@ following command::
 
 See :ref:`Managing_TestConfigs` for details regarding test configuration.
 
-Test Suites
--------------
 
-Test Suite is a collection of test configuration that is meant for organizing
-tests. Test suite can be found at
-https://github.com/HPC-buildtest/buildtest-framework/tree/master/toolkit/buildtest/suite.
-and each sub-directory is a separate test suite.
+Hello World C++
+----------------
 
-A test suite is capable of building all test configuration (``.yml`` files)
-found in its subdirectories. To build a test suite you can execute
-``buildtest build -S <suite>``
+Let's take a look at a hello world C++ example that will be compiled with gcc
 
-To know more about test suite see :ref:`Suite`
+.. program-output:: cat scripts/configuration/hello_gnu.yml
 
+The first line ``compiler: gnu`` is to indicate we will use the gnu compiler
+during compilation.
 
-Sanity Check for System Packages
----------------------------------
+The ``flags: -O3`` will insert the build flag **-O3** during compilation
 
-buildtest can perform sanity check for all binaries defined by a system
-package. This may be useful when running test periodically to monitor system
-changes.
+The key ``maintainer`` is a list of maintainers that are primary
+contact for the test & configuration file
 
-To build test for system package you will want to use
-``buildtest build --package <package>`` and specify the name of the
-installed system package.
+The key ``source: hello.cpp`` is the source file, this file will need to
+reside in **src** directory wherever you have your yml file
 
-For instance, lets build the tests for ``coreutils`` package by running
-``buildtest build --package coreutils``
-
-The output will be the following
-
-.. program-output:: cat scripts/coreutils-binary-test.txt
+Finally, ``testblock: singlesource`` inform buildtest that this
+is a single source compilation and buildtest will use the appropriate Class to
+build this test. Currently, ``testblock`` only supports singlesource at this moment.
 
 
-Sanity Check for Modules
-------------------------
 
-buildtest can conduct sanity check for all active modules by running ``-b``,
-``--binary`` option or setting ``BUILDTEST_BINARY=True`` in your
-configuration file.
+Next let's see the generated test script
 
-For instance let's assume the following modules are active modules in your
-shell
+.. program-output:: cat scripts/tests/hello_gnu.yml.sh
+
+Couple things to note.
+
+- buildtest will purge and load the module that is active in your shell
+- The test script will be named with the yml file and the appropriate shell extension ``.sh``, ``.bash``, ``.csh``.
+- buildtest will ``cd`` into the test directory where test script is found
+- buildtest will detect the compiler based on extension type specified in ``source`` tag. In this case it will be ``g++`` since we specified  ``compiler: gnu``
+- buildtest will compile the source file that was defined in ``source`` tag. buildtest will figure out the full path to file.
+- The name of the executable will be the name of the source code with ``.exe`` extension.
+- Finally buildtest will run executable and remove it upon completion.
+
+OpenMP Example
+---------------
+
+Let's take a look at a OpenMP yml example for computing vector dot product
+
+.. program-output:: cat scripts/configuration/omp_dotprod.c.yml
+
+To run a OpenMP example you typically set the environment variable ``OMP_NUM_THREADS``
+to declare number of threads during execution.
+
+This can be configured used ``vars:`` keyword that takes a list of of key-value to set
+environment variable in the test script. In this example we set ``OMP_NUM_THREADS=2``
+
+To specify flags to linker ``(ld)`` then use key ``ldflags``. In this case, to compile
+openmp with gnu compiler you need to specify ``-fopenmp``.
+
+.. _Testing_With_Modules:
+
+Testing with modules
+--------------------
+
+Now that we have built a couple test, we want to leverage modules to test
+a particular test with different modules. This may be particularly useful if
+you have some test that you want to compare with different compilers, MPI,
+etc...
+
+Let's take the same hello world example and build it with different gcc
+compilers.
+
+Recall the first test was the following
+
+.. program-output:: cat scripts/tests/hello_gnu.yml.sh
+
+In buildtest, just load the modules of interest before you build the test and
+it will insert all the modules in  the test script.
+
+For this example we have the following modules loaded
 
 ::
 
     $ ml
 
     Currently Loaded Modules:
-      1) eb/2018   2) GCCcore/6.4.0   3) binutils/2.28-GCCcore-6.4.0   4) GCC/6.4.0-2.28
+      1) GCCcore/8.3.0               3) zlib/1.2.11-GCCcore-8.3.0   5) libreadline/8.0-GCCcore-8.3.0   7) SQLite/3.29.0-GCCcore-8.3.0   9) GMP/6.1.2-GCCcore-8.3.0     11) Python/3.7.4-GCCcore-8.3.0
+      2) bzip2/1.0.8-GCCcore-8.3.0   4) ncurses/6.1-GCCcore-8.3.0   6) Tcl/8.6.9-GCCcore-8.3.0         8) XZ/5.2.4-GCCcore-8.3.0       10) libffi/3.2.1-GCCcore-8.3.0  12) PyCharm/2017.2.3
 
 
-buildtest will seek out all binary executables in each module file and run
-``which`` command against the binary and load the appropriate modules
-
-Shown below is an example.
-
-::
-
-    $ buildtest build -b
-    Detecting Software:eb/2018
-    No $PATH set in your module  eb/2018   so no possible binaries can be found
-    There are no binaries for package: eb/2018
-    Detecting Software:GCCcore/6.4.0
-    Generating  19  binary tests
-    Binary Tests are written in  /home/siddis14/buildtest/software/GCCcore/6.4.0
-    Detecting Software:binutils/2.28-GCCcore-6.4.0
-    Generating  18  binary tests
-    Binary Tests are written in  /home/siddis14/buildtest/software/binutils/2.28-GCCcore-6.4.0
-    Detecting Software:GCC/6.4.0-2.28
-    No $PATH set in your module  GCC/6.4.0-2.28   so no possible binaries can be found
-    There are no binaries for package: GCC/6.4.0-2.28
+Let's rebuild the test and notice how the modules are loaded in the test
 
 
-modules that dont have ``PATH`` set or no binary executables are found in
-the directory, then buildtest will not generate any test.
+.. code-block:: console
+    :linenos:
+    :emphasize-lines: 21-32
 
-Shown below is an example test script for gcc binary
+    $ buildtest build -c compilers.helloworld.hello_gnu.yml -vv
+    ________________________________________________________________________________
+    compiler: gnu
+    description: Hello C++ example using GNU compiler
+    flags: -O3
+    maintainer:
+    - shahzeb siddiqui shahzebmsiddiqui@gmail.com
+    source: hello.cpp
+    testblock: singlesource
 
-::
+    ________________________________________________________________________________
+    Key Check PASSED for file /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/hello_gnu.yml
+    Source File /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp exists!
+    Programming Language Detected: c++
+    Compiler Check Passed
+    Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_17/hello_gnu.yml.sh
+    Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_17/hello_gnu.yml.sh
+    ________________________________________________________________________________
+    #!/usr/bin/sh
+    module purge
+    module load GCCcore/8.3.0
+    module load bzip2/1.0.8-GCCcore-8.3.0
+    module load zlib/1.2.11-GCCcore-8.3.0
+    module load ncurses/6.1-GCCcore-8.3.0
+    module load libreadline/8.0-GCCcore-8.3.0
+    module load Tcl/8.6.9-GCCcore-8.3.0
+    module load SQLite/3.29.0-GCCcore-8.3.0
+    module load XZ/5.2.4-GCCcore-8.3.0
+    module load GMP/6.1.2-GCCcore-8.3.0
+    module load libffi/3.2.1-GCCcore-8.3.0
+    module load Python/3.7.4-GCCcore-8.3.0
+    module load PyCharm/2017.2.3
+    cd /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_17
+    g++ -O3 -o 0x3301055bf7978d6a40058294d0af4152.exe /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp
+    ./0x3301055bf7978d6a40058294d0af4152.exe
+     rm ./0x3301055bf7978d6a40058294d0af4152.exe
+    ________________________________________________________________________________
+    Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_17/log/buildtest_15_26_21_10_2019.log
 
-    #!/bin/sh
 
 
-    module load GCCcore/6.4.0
-    which gcc
+buildtest will run ``module purge`` and load all the active modules by
+running ``module -t list`` and insert each module in a separate line. This
+gives user freedom to load whatever module they want when creating test, though
+this puts responsibility on user to understand the testscript.
 
 
 
-Shell Types
---------------
-
-Currently buildtest supports ``sh``, ``bash``, ``csh`` shell for creating
-test scripts. buildtest defaults to ``sh`` but this can be tweaked
-
-To create tests for different shell types try ``buildtest build --shell <shell>``
-or set the variable ``BUILDTEST_SHELL`` in your configuration file or via
-environment variable
-
-Let's build test with ``csh``
-
-.. program-output:: cat scripts/build-shell-csh.txt
-
-buildtest will add the appropriate shell extension for the test script to
-avoid name conflicts.
-
-Another way to build for different shell is to set ``BUILDTEST_SHELL`` as we
-see in example below
-
-.. program-output:: cat scripts/build-shell-bash.txt
 
 

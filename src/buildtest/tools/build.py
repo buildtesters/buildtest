@@ -110,49 +110,6 @@ def func_build_subcmd(args):
         mod_str= ' '.join(str(mod) for mod in mod_coll)
         mod_str = f"module load {mod_str}"
 
-    if args.suite:
-        test_suite_dir = os.path.join(config_opts['BUILDTEST_TESTDIR'],"suite",args.suite)
-        create_dir(test_suite_dir)
-        yaml_dir = os.path.join(config_opts["BUILDTEST_CONFIGS_REPO"],
-                                "buildtest","suite",args.suite)
-
-        yaml_files = walk_tree(yaml_dir,".yml")
-
-        if args.verbose >= 1:
-            print (f"Found {len(yaml_files)} yml files from directory {yaml_dir}")
-
-        testsuite_components = os.listdir(yaml_dir)
-        # pre-creates directories for each component in test suite in
-        # BUILDTEST_TESTDIR
-        for component in testsuite_components:
-            component_dir = os.path.join(config_opts['BUILDTEST_TESTDIR'],
-                                         "suite",
-                                         args.suite,
-                                         component)
-            create_dir(component_dir)
-            if args.verbose >= 2:
-                print (f"Creating Directory {component_dir}")
-
-        for file in yaml_files:
-            parent_dir = os.path.basename(os.path.dirname(file))
-            fd=open(file,'r')
-            content = yaml.safe_load(fd)
-            fd.close()
-            if args.verbose >= 2:
-                print (f"Loading Yaml Content from file: {file}")
-            if content["testblock"] == "singlesource":
-                builder = BuildTestBuilderSingleSource(file,
-                                                       args,
-                                                       parent_dir,
-                                                       module_cmd_list,
-                                                       build_id)
-                if len(module_cmd_list) > 0:
-                    builder.build(modules_permutation=True)
-                elif args.collection:
-                    builder.build(module_collection=args.collection)
-                else:
-                    builder.build()
-
     if args.config:
         test_config_table = test_config_name_mapping()
         file = test_config_table[args.config]

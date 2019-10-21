@@ -28,4 +28,3 @@ compilers.helloworld.hello_args.c.yml                        |
 compilers.helloworld.hello_slurm.yml                         | Hello World C++ example using GNU compiler for SLURM
 compilers.helloworld.hello_lsf.yml                           | Hello World C example using GNU compiler for LSF
 compilers.helloworld.hello_intel_fortran.yml                 |                               
-shahzebsiddiqui.helloworld.hello.yml                         |                               

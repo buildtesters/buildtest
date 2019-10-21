@@ -29,7 +29,6 @@ import yaml
 
 from datetime import datetime
 from buildtest.tools.config import config_opts, BENCHMARK_DIR
-from buildtest.tools.run import write_system_info
 
 dict_keys1 = ["proc", "min_message_size", "max_message_size", "iter_msg_size",
               "max_mem_per_proc", "warmup_iter", "calls", "full_format"]
@@ -179,7 +178,6 @@ def run_osu_microbenchmark(config):
     run_output_file = os.path.join("/tmp",runfile)
 
     fd = open(run_output_file,"w")
-    write_system_info(fd)
     header = "{:-<45} START OF TEST {:-<45} \n".format("", "")
     fd.write(header)
 

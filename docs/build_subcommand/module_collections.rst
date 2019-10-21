@@ -1,5 +1,5 @@
-Module Collections
-===================
+Building Test with Module Collections
+======================================
 
 Lmod Module Collection
 --------------------------

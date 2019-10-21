@@ -68,7 +68,7 @@ Build Report
 Every build from buildtest is tracked internally, this can be retrieved using ``buildtest status report`` which shows
 a history of all builds.
 
-.. program-output:: cat scripts/buildtest_status_report.txt
+.. program-output:: cat scripts/buildtest_build_report.txt
 
 Each build ID can be used to retrieve log and  test-scripts and run the test independently. This can be done
 via::
@@ -79,7 +79,7 @@ via::
 
 For example you can retrieve tests scripts generated from a build via ``buildtest build test`` as follows::
 
-.. program-output:: cat scripts/buildtest_status_test.txt
+.. program-output:: cat scripts/buildtest_build_test.txt
 
 TAB Completion
 -----------------------

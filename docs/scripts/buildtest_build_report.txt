@@ -1,0 +1,21 @@
+buildtest build report 
+ID  | Build Time           | Number of Tests | Command                                                      
+------------------------------------------------------------------------------------------------------------------------
+  0 | 10/20/2019 10:31:30  | 1               | buildtest build -c compilers.helloworld.hello_args.c.yml     
+  1 | 10/20/2019 10:31:39  | 8               | buildtest build -p gcc                                       
+  2 | 10/20/2019 10:31:54  | 1               | buildtest build -c openmp.reduction.omp_reduction.c.yml      
+  3 | 10/20/2019 10:32:04  | 5               | buildtest build -c openmp.hello.omp_hello.c.yml -m GCC       
+  4 | 10/20/2019 10:43:49  | 5               | buildtest build -c openmp.hello.omp_hello.c.yml -m GCC       
+  5 | 10/20/2019 10:46:07  | 5               | buildtest build -c openmp.hello.omp_hello.c.yml -m GCC -v    
+  6 | 10/20/2019 10:49:09  | 102             | buildtest build -p coreutils                                 
+  7 | 10/20/2019 10:49:29  | 7               | buildtest build -c openmp.hello.omp_hello.c.yml -m M4        
+  8 | 10/20/2019 10:51:01  | 7               | buildtest build -c openmp.hello.omp_hello.c.yml -m M4        
+  9 | 10/20/2019 10:51:09  | 5               | buildtest build -c openmp.hello.omp_hello.c.yml -m GCC       
+ 10 | 10/20/2019 11:08:55  | 1               | buildtest build -c openmp.hello.omp_hello.c.yml -co GCC      
+ 11 | 10/20/2019 11:09:02  | 1               | buildtest build -c openmp.hello.omp_hello.c.yml -co GCC -vv  
+ 12 | 10/20/2019 11:12:44  | 1               | buildtest build -c openmp.hello.omp_hello.c.yml -co GCC      
+ 13 | 10/20/2019 16:16:51  | 1               | buildtest build -c openmp.hello.omp_hello.c.yml --module-collection 0 
+ 14 | 10/21/2019 10:48:21  | 1               | buildtest build -c openmp.hello.omp_hello.c.yml              
+ 15 | 10/21/2019 11:40:36  | 1               | buildtest build -c mpi.examples.hello.c.yml                  
+ 16 | 10/21/2019 15:25:31  | 1               | buildtest build -c compilers.helloworld.hello_gnu.yml -vv    
+ 17 | 10/21/2019 15:26:02  | 1               | buildtest build -c compilers.helloworld.hello_gnu.yml -vv    

@@ -1,7 +1,7 @@
 buildtest
 ==========
 
-.. Note:: This project is under development, the official release will be in 2020.
+.. Note:: Coming to SC'19 check out this talk: **Buildtest: A Software Testing Framework with Module Operations for HPC systems** https://sc19.supercomputing.org/presentation/?id=ws_hust103&sess=sess116
 
 Welcome to `buildtest <https://github.com/HPC-buildtest/buildtest-framework>`_  is
 a framework for automating tests creation  to conduct software stack testing for
@@ -33,7 +33,6 @@ This documentation was last rebuild on |today| and is intended for version |vers
    introspection.rst
    module_operation.rst
    building_test.rst
-   running_tests.rst
    additional_features.rst
 
 

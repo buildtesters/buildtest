@@ -7,11 +7,11 @@ that is updated by buildtest whenever you issue ``buildtest build`` command.
 
 To see a status report of all builds you can run::
 
-    $ buildtest status report
+    $ buildtest build report
 
 This will show the build report of all builds executed in a tabular output.
 
-.. program-output:: cat scripts/buildtest_status_report.txt
+.. program-output:: cat scripts/buildtest_build_report.txt
 
 Each row corresponds to a unique build identified by build **ID** that can be used to dig up the log file
 and report tests. To get the log file for a build you can run the following::
@@ -50,7 +50,7 @@ You may omit the ``id=<ID>`` and specify the number as argument to ``test`` as f
 
 Shown below is the generated test from build ``ID=0``.
 
-.. program-output:: cat scripts/buildtest_status_test.txt
+.. program-output:: cat scripts/buildtest_build_test.txt
 
 Running a Test
 --------------

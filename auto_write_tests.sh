@@ -12,13 +12,6 @@ tee $script_dir/buildtest-show-key.txt <<<"buildtest show -k singlesource" | bas
 tee $script_dir/buildtest-build-help.txt <<<"buildtest build --help" | bash >> $script_dir/buildtest-build-help.txt
 tee $script_dir/coreutils-binary-test.txt <<<"buildtest build --package coreutils" | bash >> $script_dir/coreutils-binary-test.txt
 
-tee $script_dir/build-compilers-suite.txt <<<"buildtest build -S compilers" |bash>> $script_dir/build-compilers-suite.txt
-tee $script_dir/run-compilers-suite.txt <<<"buildtest run -S compilers"|bash>> $script_dir/run-compilers-suite.txt
-
-tee $script_dir/build-openmp-suite.txt <<<"buildtest build -S openmp" |bash>>$script_dir/build-openmp-suite.txt
-tee $script_dir/run-openmp-suite.txt <<<"buildtest run -S openmp"| bash>>$script_dir/run-openmp-suite.txt
-
-
 tee $script_dir/build-single-configuration.txt <<<"buildtest build -c compilers.helloworld.hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration.txt
 
 tee $script_dir/build-single-configuration-module.txt <<<"ml eb/2019; ml GCC; buildtest build -c compilers.helloworld.hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration-module.txt
@@ -34,12 +27,6 @@ tee $script_dir/build-module-all-permute.txt <<<"BUILDTEST_PARENT_MODULE_SEARCH=
 tee $script_dir/build-lsf-example.txt <<<"buildtest build -c compilers.helloworld.hello_lsf.yml -vv""" | bash >>$script_dir/build-lsf-example.txt
 # slurm example
 tee $script_dir/build-slurm-example.txt <<<"buildtest build -c compilers.helloworld.hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
-
-# Run example
-ml purge; ml DefaultModules shared slurm gcc; buildtest build -b
-tee $script_dir/run_subcommand/gcc-7.2.0.txt <<<"buildtest run -s gcc/7.2.0""" | bash >>$script_dir/run_subcommand/gcc-7.2.0.txt
-ml purge; buildtest build -p gcc
-tee $script_dir/run_subcommand/gcc.txt <<<"buildtest run -p gcc""" | bash >>$script_dir/run_subcommand/gcc.txt
 
 # module collection
 tee $script_dir/buildtest-module-collection-help.txt <<<"buildtest module collection -h """ | bash >>$script_dir/buildtest-module-collection-help.txt
@@ -68,10 +55,6 @@ tee $script_dir/buildtest-list-software.txt <<< "buildtest list --software" | ba
 tee $script_dir/buildtest-list-software-modules.txt <<< "buildtest list --modules" | bash >> $script_dir/buildtest-list-software-modules.txt
 tee $script_dir/buildtest-list-easyconfigs.txt <<< "buildtest list --easyconfigs" | bash >> $script_dir/buildtest-list-easyconfigs.txt
 
-# Find Subcommand
-tee $script_dir/buildtest-find-help.txt <<<"buildtest find --help" | bash >> $script_dir/buildtest-find-help.txt
-tee $script_dir/buildtest-find-test.txt <<<"buildtest find -ft all" | bash >> $script_dir/buildtest-find-test.txt
-
 # TestConfigs Subcommand
 tee $script_dir/buildtest-testconfigs-help.txt <<<"buildtest testconfigs --help" | bash >> $script_dir/buildtest-testconfigs-help.txt
 tee $script_dir/buildtest-testconfigs-list.txt <<<"buildtest testconfigs list" | bash >> $script_dir/buildtest-testconfigs-list.txt
@@ -96,8 +79,8 @@ tee $script_dir/spack-all-modules.txt <<< "BUILDTEST_SPIDER_VIEW=all buildtest m
 tee $script_dir/parent-module.txt <<< "buildtest module -d shared" | bash >> $script_dir/parent-module.txt
 
 # status command
-tee $script_dir/buildtest_status_report.txt <<< "buildtest build report " | bash >> $script_dir/buildtest_status_report.txt
-tee $script_dir/buildtest_status_test.txt <<< "buildtest build test 0 " | bash >> $script_dir/buildtest_status_test.txt
+tee $script_dir/buildtest_build_report.txt <<< "buildtest build report " | bash >> $script_dir/buildtest_build_report.txt
+tee $script_dir/buildtest_build_test.txt <<< "buildtest build test 0 " | bash >> $script_dir/buildtest_build_test.txt
 
 tee $script_dir/module_tree_help.txt <<< "buildtest module tree -h" | bash >> $script_dir/module_tree_help.txt
 tee $script_dir/module_tree_list.txt <<< "buildtest module tree -l" | bash >> $script_dir/module_tree_list.txt

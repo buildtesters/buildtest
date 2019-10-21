@@ -44,7 +44,6 @@ from buildtest.tools.modules import func_module_subcmd, \
 from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
 
 from buildtest.tools.options import override_configuration
-from buildtest.tools.run import func_run_subcmd
 from buildtest.tools.show import func_show_subcmd
 from buildtest.tools.buildsystem.status import show_status_report, get_build_ids, \
     show_status_log, show_status_test, run_tests
@@ -65,9 +64,6 @@ def menu():
 
     override_configuration()
     check_configuration()
-
-    test_class = os.listdir(config_opts["BUILDTEST_CONFIGS_REPO"])
-
 
     test_config_choice = testconfig_choices()
 
@@ -100,24 +96,17 @@ def menu():
     show_title = "Options for displaying buildtest configuration"
     testconfig_title = "Options for list, view, and edit test configuration"
     build_title = "Options for building test scripts"
-    run_title = "Run Tests"
     benchmark_title = "Run Benchmark"
     module_title = "Module Operations including module load testing, module collections, module tree, easybuild/spack modules, parent-modules. "
     system_title = "System Configuration"
     config_title = "Buildtest Configuration"
     command_description = f"""
-Info:
+
   list        {list_title}
   show        {show_title}  
   testconfigs {testconfig_title}         
-
-      
-Build:
-  build       {build_title}
-  run         {run_title}
+  build       {build_title}  
   benchmark   {benchmark_title}
-
-Miscellaneous:   
   module      {module_title}
   system      {system_title}
   config      {config_title}
@@ -128,7 +117,6 @@ Miscellaneous:
     # ---------------------------------- sub parsers -----------------------
     parser_list = subparsers.add_parser('list')
     parser_build = subparsers.add_parser('build')
-    parser_run = subparsers.add_parser('run')
     parser_show = subparsers.add_parser('show')
     parser_benchmark = subparsers.add_parser('benchmark')
     parser_testconfigs = subparsers.add_parser('testconfigs')
@@ -189,10 +177,6 @@ Miscellaneous:
                               "--binary",
                               help="Conduct sanity check on binaries on active modules ",
                               action="store_true")
-    parser_build.add_argument("-S",
-                              "--suite",
-                              help="specify test suite",
-                              choices=test_class)
     parser_build.add_argument("-v",
                               "--verbose",
                               help="verbosity level (default: %(default)s)",
@@ -264,16 +248,6 @@ Miscellaneous:
     parser_build_log.set_defaults(func=show_status_log)
 
     parser_build.set_defaults(func=func_build_subcmd)
-
-    # -------------------------------- run menu ----------------------------
-
-
-    parser_run.add_argument("-j",
-                            "--job",
-                            help = "Submit jobs to resource scheduler",
-                            action="store_true")
-
-    parser_run.set_defaults(func=func_run_subcmd)
 
     # -------------------------------- system menu --------------------------
     subparsers_system = parser_system.add_subparsers(description='system configuration')
