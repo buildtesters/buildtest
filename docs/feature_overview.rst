@@ -77,7 +77,7 @@ via::
    buildtest build test <ID>
    buildtest build run <ID>
 
-For example you can retrieve tests scripts generated from a build via ``buildtest build test`` as follows::
+For example you can retrieve tests scripts generated from a build via ``buildtest build test``
 
 .. program-output:: cat scripts/buildtest_build_test.txt
 
@@ -85,7 +85,8 @@ TAB Completion
 -----------------------
 
 buildtest use the ``argcomplete`` python module to autocomplete buildtest
-argument. Just press TAB key on the keyboard to fill in the arguments.
+argument. Just press TAB key on the keyboard to fill in the arguments. It is highly
+recommended to use the :ref:`autocomplete` feature when using buildtest.
 
 .. Note:: Please be patient! You may need to press the TAB key few times before it shows all the
    arguments

@@ -88,3 +88,5 @@ tee $script_dir/module_tree_add.txt <<< "buildtest module tree -a /usr/share/lmo
 tee $script_dir/module_tree_rm.txt <<< "buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_rm.txt
 tee $script_dir/module_tree_set.txt <<< "buildtest module tree -s /usr/share/lmod/lmod/modulefiles/Core" | bash >> $script_dir/module_tree_set.txt
 
+# view configuration
+tee $script_dir/buildtest_config_view.txt <<< "buildtest config view" | bash >> $script_dir/buildtest_config_view.txt

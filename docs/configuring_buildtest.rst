@@ -1,26 +1,37 @@
 .. _configuring_buildtest:
 
 Configuring buildtest
-_______________________
+======================
 
-.. contents::
-   :backlinks: none
 
 Configuration File
 --------------------
 
-To configure buildtest you will need to create a YAML file at
-``$HOME/.buildtest/settings.yml``. This file is responsible for configuring
-buildtest to work for your test system. Shown below is the configuration file
-that can be found in the git repo.
+buildtest will store the user's buildtest configuration at ``$HOME/.buildtest/settings.yml``. This file is responsible for
+configuring buildtest which can be customized to fit your site requirements. buildtest will automatically
+generate this file if it is not present. To view the buildtest configuration you can run the following::
 
-.. program-output:: cat scripts/configuring_buildtest/settings.yml
+    $ buildtest config view
+
+Shown below is the user's buildtest configuration.
+
+.. program-output:: cat scripts/buildtest_config_view.txt
+
+buildtest keeps a backup configuration (``~/.buildtest/settings.yml.bak``) in case you want to restore to
+the original settings. This can be done by running::
+
+    $ buildtest config restore
+    Restore configuration from backup file: /u/users/ssi29/.buildtest/settings.yml.bak
+
+Similarly, if you want to edit the configuration you may run::
+
+    $ buildtest config edit
+
+This will open the configuration in ``vim`` editor. For list of options on buildtest configuration, run
+``buildtest config --help`` for more details.
 
 
-Variable Description
----------------------
-
-.. include:: configuring_buildtest/buildtest-environment.txt
+Next section will discuss the variables defined in the configuration file.
 
 
 Configuring Module Trees

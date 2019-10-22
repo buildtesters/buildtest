@@ -51,21 +51,16 @@ Depending on your shell (``$SHELL``) source the appropriate file::
     # TCSH or CSH
     $ source sourceme.csh
 
+.. _autocomplete:
 
 Setting up auto-complete on buildtest arguments
 -----------------------------------------------
 
-Before you start using buildtest you may want to setup autocomplete feature in your shell by running
+Before you start using buildtest you may want to setup autocomplete feature in your shell by running::
 
-::
-
+    # for bash or csh
     eval "$(register-python-argcomplete buildtest)"
-
-This command works for ``bash`` or  ``sh`` shell, if you are using ``tcsh`` you
-can run
-
-::
-
+    # for tcsh or csh
     eval `register-python-argcomplete --shell tcsh buildtest`
 
 For more details on argcomplete please visit https://pypi.org/project/argcomplete/

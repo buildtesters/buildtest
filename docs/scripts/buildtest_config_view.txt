@@ -1,0 +1,35 @@
+buildtest config view
+#
+# # binary test support. Valid options [True, False]
+BUILDTEST_BINARY: False
+#
+# # Configure shell when running test. 
+# # Valid options:  [bash, csh, sh]. 
+# # Default: [sh]
+BUILDTEST_SHELL: sh
+#
+# # Configure whether to force purge modules in test creation. Defaults to "module purge".
+# # When set to True, it will write "module --force purge" in test script. Useful if your 
+# # site has sticky modules
+BUILDTEST_MODULE_FORCE_PURGE: False
+#
+# # list root of module tree where modules are installed. Specify multiple module tree as a list
+BUILDTEST_MODULEPATH: []
+#
+# # control output of Lmod spider. 
+# # Valid values are 
+# # current: retrieve modules whose abspath is a subdir of directories defined in BUILDTEST_MODULEPATH
+# # all: retrieve all records
+BUILDTEST_SPIDER_VIEW: current
+#
+# # control how parent modules are retrieved.
+# # Valid option: first, all
+BUILDTEST_PARENT_MODULE_SEARCH: first
+#
+# # criteria for success threshold when running job. 
+# # Valid Option: [0.0-1.0]    
+BUILDTEST_SUCCESS_THRESHOLD: 1.0
+#
+# # directory where test scripts will be generated
+BUILDTEST_TESTDIR: /tmp/$USER/buildtest/tests
+
