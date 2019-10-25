@@ -20,10 +20,6 @@
 #    along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
 #############################################################################
 
-"""
-buildtest yaml subcommand entry point
-"""
-
 import subprocess
 import yaml
 
