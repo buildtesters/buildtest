@@ -141,7 +141,7 @@ class BuildTestBuilder():
                 self.cc = "gcc"
 
             if self.language == "c++":
-                self.cxx = "gxx"
+                self.cxx = "g++"
 
             if self.language == "fortran":
                 self.ftn = "gfortran"
@@ -194,11 +194,21 @@ class SingleSource(BuildTestBuilder):
         bsub_schema = {
             'type': dict,
             'required': False,
-            'n': {'type': str, 'required': False},
-            'M': {'type': str, 'required': False},
-            'R': {'type': str, 'required': False},
-            'q': {'type': str, 'required': False},
-            'W': {'type': str, 'required': False}
+            'n': {'type': str, 'required': False, 'opt_mapping': "-n"},
+            'M': {'type': str, 'required': False, 'opt_mapping': "-M"},
+            'R': {'type': str, 'required': False, 'opt_mapping': "-R"},
+            'q': {'type': str, 'required': False, 'opt_mapping': "-q"},
+            'W': {'type': str, 'required': False, 'opt_mapping': "-W"}
+        }
+        sbatch_schema = {
+            'type': dict,
+            'required': False,
+            'n': {'type': str, 'required': False, 'opt_mapping': "-n"},
+            'N': {'type': str, 'required': False, 'opt_mapping': "-N"},
+            'mem': {'type': str,'required': False, 'opt_mapping': "--mem" },
+            'C': {'type': str, 'required': False, 'opt_mapping': "-C"},
+            'p': {'type': str, 'required': False, 'opt_mapping': "-p"},
+            't': {'type': str, 'required': False, 'opt_mapping': "-t"}
         }
         mpi_schema = {
             'type': dict,
@@ -226,8 +236,11 @@ class SingleSource(BuildTestBuilder):
                 'post_build': {'type': str, 'required': False},
                 'pre_run': {'type': str, 'required': False},
                 'post_run': {'type': str, 'required': False},
+                'pre_exec': {'type': str, 'required': False},
                 'exec_opts': {'type': str, 'required': False},
+                'post_exec': {'type': str, 'required': False},
                 'bsub': bsub_schema,
+                'sbatch': sbatch_schema,
                 'mpi': mpi_schema
             }
         }
@@ -343,6 +356,9 @@ class SingleSource(BuildTestBuilder):
             if k == "bsub":
                 self.check_bsub_keys()
 
+            if k == "sbatch":
+                self.check_sbatch_keys()
+
             if k == 'mpi':
                 self.check_mpi_keys()
 
@@ -357,9 +373,26 @@ class SingleSource(BuildTestBuilder):
             if self.schema['program']['bsub'][k]['required'] and (k not in self.test_yaml['program']["bsub"].keys()):
                 raise BuildTestError(f"Key: {k} is required in test configuration!")
 
-            # check instance type of key in test configuration and match with one defined in self.schema.
-            if not isinstance(self.test_yaml['program']['bsub'][k], self.schema['program']['bsub'][k]['type']):
-                raise BuildTestError(f"Error in Key: bsub:{k} --> Expecting of type: {self.schema['program']['bsub'][k]['type']} and received of type: {type(self.test_yaml['program']['bsub'][k])}")
+            if (k in self.test_yaml['program']["bsub"].keys()):
+                # check instance type of key in test configuration and match with one defined in self.schema.
+                if not isinstance(self.test_yaml['program']['bsub'][k], self.schema['program']['bsub'][k]['type']):
+                    raise BuildTestError(f"Error in Key: bsub:{k} --> Expecting of type: {self.schema['program']['bsub'][k]['type']} and received of type: {type(self.test_yaml['program']['bsub'][k])}")
+
+    def check_sbatch_keys(self):
+        """Checking bsub keys."""
+
+        for k in self.schema['program']['sbatch'].keys():
+            if k == "type" or k == "required":
+                continue
+
+            # if required key not found in test configuration then report error.
+            if self.schema['program']['sbatch'][k]['required'] and (k not in self.test_yaml['program']["sbatch"].keys()):
+                raise BuildTestError(f"Key: {k} is required in test configuration!")
+
+            if (k in self.test_yaml['program']["sbatch"].keys()):
+                # check instance type of key in test configuration and match with one defined in self.schema.
+                if not isinstance(self.test_yaml['program']['sbatch'][k], self.schema['program']['sbatch'][k]['type']):
+                    raise BuildTestError(f"Error in Key: sbatch:{k} --> Expecting of type: {self.schema['program']['sbatch'][k]['type']} and received of type: {type(self.test_yaml['program']['sbatch'][k])}")
 
     def check_mpi_keys(self):
         """Check program:mpi keys."""
@@ -430,7 +463,13 @@ class SingleSource(BuildTestBuilder):
         """Convert bsub keys into #BSUB directives."""
         cmd = []
         for k,v in self.test_yaml['program']["bsub"].items():
-            cmd.append(f"#BSUB -{k} {v}")
+            cmd.append(f"#BSUB {self.schema['program']['bsub'][k]['opt_mapping']} {v}")
+        return cmd
+    def sbatch_commands(self):
+        """Convert sbatch keys into #SBATCH directives."""
+        cmd = []
+        for k,v in self.test_yaml['program']["sbatch"].items():
+            cmd.append(f"#SBATCH {self.schema['program']['sbatch'][k]['opt_mapping']} {v}")
         return cmd
     def build_test_content(self):
         """This method brings all the components together to form the test structure."""
@@ -438,6 +477,8 @@ class SingleSource(BuildTestBuilder):
 
         if self.scheduler == "LSF":
             self.testscript_content["scheduler"] = self.bsub_commands()
+        elif self.scheduler == "SLURM":
+            self.testscript_content["scheduler"] = self.sbatch_commands()
 
         self.testscript_content["metavars"].append(f"TESTDIR={config_opts['BUILDTEST_TESTDIR']}")
         self.testscript_content["metavars"].append(f"SRCDIR={self.srcdir}")
@@ -469,8 +510,19 @@ class SingleSource(BuildTestBuilder):
         if "pre_run" in self.test_yaml['program'].keys():
             self.testscript_content['run'].append(self.test_yaml['program']["pre_run"])
 
+        exec_cmd = []
+        if "pre_exec" in self.test_yaml['program'].keys():
+            exec_cmd.append(self.test_yaml['program']['pre_exec'])
+        exec_cmd.append(self.execname)
+
         if "exec_opts" in self.test_yaml['program'].keys():
-            self.testscript_content['run'].append(self.execname + " " + self.test_yaml['program']["exec_opts"])
+            exec_cmd.append(self.test_yaml['program']['exec_opts'])
+
+        if "post_exec" in self.test_yaml['program'].keys():
+            exec_cmd.append(self.test_yaml['program']['post_exec'])
+
+
+        self.testscript_content['run'].append(" ".join(exec_cmd))
 
         if "pre_run" in self.test_yaml['program'].keys():
             self.testscript_content['run'].append(self.test_yaml['program']["post_run"])

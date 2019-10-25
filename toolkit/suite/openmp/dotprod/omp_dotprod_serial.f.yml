@@ -1,5 +1,0 @@
-compiler: gnu
-maintainer:
-- shahzeb siddiqui shahzebmsiddiqui@gmail.com
-source: omp_dotprod_serial.f
-testblock: singlesource

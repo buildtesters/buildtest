@@ -1,6 +1,0 @@
-compiler: intel
-flags: -O3
-maintainer:
-- shahzeb siddiqui shahzebmsiddiqui@gmail.com
-source: hello.f90
-testblock: singlesource

@@ -1,12 +1,16 @@
-description: "Hello World C example using GNU compiler for LSF"
-compiler: gnu
-flags: -O2
-lsf:
-  M: 200M
-  R: sandybridge
-  W: 01:00
-  n: '4'
+testtype: singlesource
+description: Hello World C example using GNU compiler for LSF
+scheduler: LSF
+
+program:
+  source: hello.c
+  compiler: gnu
+  cflags: -O2
+  bsub:
+    M: 200M
+    R: sandybridge
+    W: 01:00
+    n: '4'
+
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
-source: hello.c
-testblock: singlesource

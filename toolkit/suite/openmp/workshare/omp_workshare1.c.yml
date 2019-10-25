@@ -1,9 +1,0 @@
-description: "OpenMP Worksharing C example of Loop-worksharing using GNU compiler"
-compiler: gnu
-ldflags: -fopenmp
-maintainer:
-- shahzeb siddiqui shahzebmsiddiqui@gmail.com
-source: omp_workshare1.c
-testblock: singlesource
-vars:
-  OMP_NUM_THREADS: 4

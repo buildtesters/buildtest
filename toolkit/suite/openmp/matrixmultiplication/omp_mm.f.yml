@@ -1,9 +1,0 @@
-description: "OpenMP matrix multipication example in Fortran"
-compiler: gnu
-ldflags: -fopenmp
-maintainer:
-- shahzeb siddiqui shahzebmsiddiqui@gmail.com
-source: omp_mm.f
-testblock: singlesource
-vars:
-  OMP_NUM_THREADS: 4

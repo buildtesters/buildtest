@@ -1,6 +1,0 @@
-args: hello world
-compiler: gnu
-maintainer:
-- shahzeb siddiqui shahzebmsiddiqui@gmail.com
-source: hello_args.c
-testblock: singlesource

@@ -1,8 +1,12 @@
-compiler: gnu
-ldflags: -fopenmp
+testtype: singlesource
+description: "OpenMP dot product calculation in Fortran."
+scheduler: local
+
+program:
+  compiler: gnu
+  source: omp_dotprod.f
+  pre_build: gfortran --version
+  fflags: -Wall -O3 -fopenmp
+
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
-source: omp_dotprod.f
-testblock: singlesource
-vars:
-  OMP_NUM_THREADS: 4

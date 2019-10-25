@@ -1,11 +1,18 @@
-description: "Hello World C++ example using GNU compiler for SLURM"
-compiler: gnu
-flags: -O2
+testtype: singlesource
+description: Hello World C++ example using GNU compiler for SLURM
+scheduler: SLURM
+
+program:
+  source: hello.cpp
+  compiler: gnu
+  cxxflags: -O2
+  sbatch:
+    mem: 200M
+    C: sandybridge
+    t: 01:00
+    n: '4'
+    N: '2'
+    p: general
+
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
-slurm:
-  mem: 200M
-  nodes: '4'
-  time: 01:00
-source: hello.cpp
-testblock: singlesource

@@ -1,9 +1,0 @@
-description: "OpenMP Hello World example in Fortran"
-maintainer:
-- shahzeb siddiqui shahzebmsiddiqui@gmail.com
-compiler: gnu
-ldflags: -fopenmp
-source: omp_hello.f
-vars:
-  OMP_NUM_THREADS: 6
-testblock: singlesource

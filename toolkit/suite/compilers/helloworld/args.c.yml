@@ -1,11 +1,11 @@
 testtype: singlesource
 description: "C program that prints arguments passed to executable."
 scheduler: local
-scheduler: local
+
 
 program:
   compiler: gnu
-  source: hello_args.c
+  source: args.c
   env:
     FOO: BAR
     X: 1

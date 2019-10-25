@@ -1,9 +1,0 @@
-description: "OpenMP matrix multiplication example in C"
-compiler: gnu
-ldflags: -fopenmp
-maintainer:
-- shahzeb siddiqui shahzebmsiddiqui@gmail.com
-source: omp_mm.c
-testblock: singlesource
-vars:
-  OMP_NUM_THREADS: 4
