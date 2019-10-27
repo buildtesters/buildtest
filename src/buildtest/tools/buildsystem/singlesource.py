@@ -187,7 +187,8 @@ class SingleSource(BuildTestBuilder):
             'type': dict,
             'required': False,
             "flavor": {'type': str, 'required': False, 'values': ["openmpi", "mpich"]},
-            "launcher": {'type': str, 'required': False, 'values': ["mpirun", "mpiexec", "mpiexec.hydra"]}
+            "launcher": {'type': str, 'required': False, 'values': ["auto", "mpirun", "mpiexec", "mpiexec.hydra"]},
+            "launcher_opts": {'type': str, 'required': False}
         }
         self.schema = {
             "testtype": {'type': str, 'required': True, 'values': "singlesource"},
@@ -252,6 +253,8 @@ class SingleSource(BuildTestBuilder):
 
         self.check_program_keys()
 
+        if "mpi" in self.test_yaml.keys():
+            self.mpi= self.test_yaml['mpi']
         self.srcfile = os.path.join(self.srcdir, self.test_yaml["program"]["source"])
         self.execname = "%s.%s.exe" % (os.path.basename(file), hex(random.getrandbits(32)))
         # invoke setup method from base class to detect language, compiler, and mpi wrapper
@@ -262,7 +265,8 @@ class SingleSource(BuildTestBuilder):
         logger.debug(f"Source Directory: {self.srcdir}")
         logger.debug(f"Source File: {self.srcfile}")
 
-        super().__init__(self.srcfile,self.test_yaml["program"]["compiler"])
+
+        super().__init__(self.srcfile,self.test_yaml["program"]["compiler"],self.mpi)
         
         
         self.buildcmd = self.build_command()
@@ -272,13 +276,14 @@ class SingleSource(BuildTestBuilder):
 
     def __repr__(self):
         return self.schema
-        _
+
     def get_schema(self):
         """Return the yaml schema for singlesource class."""
         return self.schema
 
     def check_top_keys(self):
         """Check Top Level Keys in self.schema dictionary"""
+
         for k in self.schema.keys():
             #print (self.schema[k]['required'],k,test_keys.keys(),k not in test_keys.keys())
             #print (self.schema[k]['required'], k not in test_keys.keys())
@@ -311,12 +316,13 @@ class SingleSource(BuildTestBuilder):
                 if self.test_yaml['mpi'] not in self.schema['mpi']['values']:
                     raise BuildTestError(f"{self.test_yaml['mpi']} is not valid value. Must be one of the following: {self.schema['mpi']['values']}")
 
-                self.mpi = self.test_yaml['mpi']
+
+
 
     def check_program_keys(self):
         """Check keys in dictionary program:"""
         # enable mpi key in program dictionary if self.mpi == yes
-        if self.mpi == "yes":
+        if self.mpi:
             self.schema['program']['mpi']["required"] = True
             self.schema['program']['mpi']["flavor"]["required"] = True
             self.schema['program']['mpi']["launcher"]["required"] = True
@@ -390,7 +396,11 @@ class SingleSource(BuildTestBuilder):
 
     def check_mpi_keys(self):
         """Check program:mpi keys."""
+
         for k in self.schema['program']['mpi'].keys():
+
+            if k == "type" or k == "required":
+                continue
             # if required key not found in test configuration then report error.
             if self.schema['program']['mpi'][k]['required'] and k not in self.test_yaml['program']['mpi'].keys():
                 raise BuildTestError(f"Key: {k} is required in test configuration!")
@@ -400,7 +410,7 @@ class SingleSource(BuildTestBuilder):
                 raise BuildTestError(f"Expecting of type: {self.schema['program']['mpi'][k]['type']} and received of type: {type(self.test_yaml['program']['mpi'][k])}")
 
             # checking value of mpi flavor confirm with valid value in self.schema
-            if k == "flavor" and self.test_yaml['program']['mpi']['flavor'] not in self.schema['program']['mpi']["flavor"]['values']:
+            if k == "flavor" and self.test_yaml['program']['mpi']['flavor'] not in self.schema['program']['mpi']['flavor']['values']:
                 raise BuildTestError(f"{self.test_yaml['program']['mpi']['flavor']} is not valid value. Must be one of the following: {self.schema['program']['mpi']['flavor']['values']}")
 
             # checking value of mpi flavor confirm with valid value in self.schema
@@ -508,6 +518,12 @@ class SingleSource(BuildTestBuilder):
         exec_cmd = []
         if "pre_exec" in self.test_yaml['program'].keys():
             exec_cmd.append(self.test_yaml['program']['pre_exec'])
+
+
+        if self.mpi:
+            exec_cmd.append(self.test_yaml['program']['mpi']['launcher'])
+            exec_cmd.append(self.test_yaml['program']['mpi']['launcher_opts'])
+
         exec_cmd.append(self.execname)
 
         if "exec_opts" in self.test_yaml['program'].keys():
@@ -519,8 +535,11 @@ class SingleSource(BuildTestBuilder):
 
         self.testscript_content['run'].append(" ".join(exec_cmd))
 
-        if "pre_run" in self.test_yaml['program'].keys():
+        if "post_run" in self.test_yaml['program'].keys():
             self.testscript_content['run'].append(self.test_yaml['program']["post_run"])
+
+        self.testscript_content['run'].append(f"rm ./{self.execname}")
         for k,v in self.testscript_content.items():
             logger.debug(f"{k}:{v}")
+
         return self.testscript_content
