@@ -71,5 +71,5 @@ that helped contribute to buildtest
 LICENSE
 --------
 
-buildtest is licensed with GPLv3. See
+buildtest is released under the MIT License. See
 `LICENSE <https://github.com/HPC-buildtest/buildtest-framework/blob/master/LICENSE>`_ for more details

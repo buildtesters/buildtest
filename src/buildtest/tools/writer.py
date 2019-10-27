@@ -1,40 +1,25 @@
-############################################################################
-#
-#  Copyright 2017-2019
-#
-#  https://github.com/HPC-buildtest/buildtest-framework
-#
-#  This file is part of buildtest.
-#
-#  buildtest is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
-#  (at your option) any later version.
-#
-#  buildtest is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
-#############################################################################
-
+import logging
+import json
 import os
 import subprocess
 import sys
 import stat
 
-from buildtest.tools.config import BUILDTEST_BUILD_HISTORY
+from buildtest.tools.config import logID, BUILDTEST_BUILD_HISTORY
 from buildtest.tools.buildsystem.status import get_total_build_ids
 
 def write_test(dict,verbose):
     """Method responsible for writing test script."""
 
+    logger = logging.getLogger(logID)
+
     build_id = get_total_build_ids()
 
     fd = open(dict["testpath"],"w")
+    logger.info(f"Opening Test File for Writing: {dict['testpath']}")
 
+    if verbose >= 2:
+        print (f"{json.dump(dict,sys.stdout,indent=4)}")
 
     for key,val in dict.items():
         # skip key testpath, this key is responsible for opening the file for writing purpose.

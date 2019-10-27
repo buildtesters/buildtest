@@ -3,8 +3,7 @@ Test Contribution
 
 buildtest will accept community contribution on test scripts. If you are new to buildtest
 and just want to contribute your test scripts, then please add the test in
-`toolkit/contrib <https://github
-.com/HPC-buildtest/buildtest-configs/tree/master/contrib>`_ directory.
+`toolkit/contrib <https://github.com/HPC-buildtest/buildtest-framework/tree/master/contrib>`_ directory.
 
 Each contributor will put their test in ``contrib/<GITUSER>`` directory which
 helps organize test by individuals and keep track of contribution in case we

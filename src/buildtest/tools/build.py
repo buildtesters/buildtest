@@ -1,25 +1,3 @@
-############################################################################
-#
-#  Copyright 2017-2019
-#
-#  https://github.com/HPC-buildtest/buildtest-framework
-#
-#  This file is part of buildtest.
-#
-#  buildtest is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
-#  (at your option) any later version.
-#
-#  buildtest is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with buildtest.  If not, see <http://www.gnu.org/licenses/>.
-#############################################################################
-
 """
 This module contains all the methods related to "buildtest build" which is used
 for building test scripts from test configuration.
@@ -35,7 +13,7 @@ import yaml
 
 from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY, BUILDTEST_BUILD_LOGFILE,BUILDTEST_SYSTEM
 from buildtest.tools.modulesystem.collection import get_buildtest_module_collection
-from buildtest.tools.buildsystem.singlesource import BuildTestBuilderSingleSource, SingleSource
+from buildtest.tools.buildsystem.singlesource import SingleSource
 from buildtest.tools.buildsystem.binarytest import generate_binary_test
 from buildtest.tools.file import create_dir, is_dir, walk_tree, is_file
 from buildtest.tools.log import init_log
@@ -58,9 +36,11 @@ def func_build_subcmd(args):
     """
 
 
+
     build_id = get_total_build_ids()
     BUILDTEST_BUILD_HISTORY[build_id] = {}
     BUILDTEST_BUILD_HISTORY[build_id]["TESTS"] = []
+
     if args.clear:
         if is_file(BUILDTEST_BUILD_LOGFILE):
             os.remove(BUILDTEST_BUILD_LOGFILE)
@@ -89,7 +69,10 @@ def func_build_subcmd(args):
     create_dir(config_opts['BUILDTEST_TESTDIR'])
 
 
-    logger,LOGFILE = init_log()
+    logger, LOGFILE = init_log()
+    logger.info(f"Opening File: {BUILDTEST_SYSTEM} and loading as JSON object")
+    logger.info(f"Creating Directory: {config_opts['BUILDTEST_TESTDIR']}")
+    logger.debug(f"Current build ID: {build_id}")
 
     module_cmd_list = []
     # if module permutation is set
@@ -103,7 +86,7 @@ def func_build_subcmd(args):
 
         print("Module Permutation List")
         print ("{:_<50}".format(""))
-        [print(x) for x in module_cmd_list]
+        [print(x) for x in module_cmd_list ]
 
 
     if args.config:
@@ -112,28 +95,11 @@ def func_build_subcmd(args):
 
         singlesource_test = SingleSource(file)
         content = singlesource_test.build_test_content()
+        logger.info("Injecting method to inject modules into test script")
         content["module"] = module_selector(args.collection,args.module_collection)
 
         write_test(content,args.verbose)
 
-
-        """
-        if content["testblock"] == "singlesource":
-
-            builder = BuildTestBuilderSingleSource(file,
-                                                   args,
-                                                   module_cmd_list,
-                                                   build_id)
-            # if test needs to be built with module permutation
-            if len(module_cmd_list) > 0:
-                builder.build(modules_permutation=True)
-            elif args.collection:
-                builder.build(module_collection=args.collection)
-            elif args.module_collection is not None:
-                builder.build(internal_module_collection=mod_str)
-            else:
-                builder.build()
-        """
 
     # if binary test is True then generate binary test for all loaded modules
     if config_opts["BUILDTEST_BINARY"]:
@@ -163,11 +129,16 @@ def func_build_subcmd(args):
 
     BUILDTEST_BUILD_HISTORY[build_id]["BUILD_TIME"] = BUILD_TIME
     BUILDTEST_BUILD_HISTORY[build_id]["LOGFILE"] = LOGFILE
+
+    logger.info(f"Reading Build Log File: {BUILDTEST_BUILD_LOGFILE}")
+
     fd = open(BUILDTEST_BUILD_LOGFILE,"r")
     build_dict = json.load(fd)
     fd.close()
     build_dict["build"][build_id] = BUILDTEST_BUILD_HISTORY[build_id]
-
+    logger.debug("Adding latest build to dictionary")
+    logger.debug(f"{BUILDTEST_BUILD_HISTORY[build_id]}")
+    logger.info(f"Updating Build Log File: {BUILDTEST_BUILD_LOGFILE}")
     fd = open(BUILDTEST_BUILD_LOGFILE, "w")
     json.dump(build_dict, fd, indent=4)
     fd.close()
