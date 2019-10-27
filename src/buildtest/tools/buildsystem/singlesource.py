@@ -2,6 +2,7 @@
 The file implements the singlesource build system responsible
 """
 
+import logging
 import os
 import random
 import stat
@@ -9,13 +10,8 @@ import subprocess
 import yaml
 import sys
 
-from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY
+from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY, logID
 from buildtest.tools.file import create_dir, is_file
-from buildtest.tools.yaml import TEMPLATE_SINGLESOURCE, SUPPORTED_COMPILERS, \
-    SUPPORTED_MPI_WRAPPERS, SUPPORTED_MPI_LAUNCHERS, SUPPORTED_MPI_FLAVORS, \
-    TEMPLATE_JOB_LSF, TEMPLATE_JOB_SLURM, \
-    get_programming_language, get_compiler, lsf_key_parse, slurm_key_parse, \
-    get_environment_variable, get_mpi_wrapper
 from buildtest.tools.system import BuildTestCommand, BuildTestSystem
 from buildtest.tools.log import BuildTestError
 
@@ -165,7 +161,7 @@ class BuildTestBuilder():
 class SingleSource(BuildTestBuilder):
 
 
-    def __init__(self,file):
+    def __init__(self,file=None):
         """Class constructor for SingleSource"""
 
         bsub_schema = {
@@ -191,7 +187,7 @@ class SingleSource(BuildTestBuilder):
             'type': dict,
             'required': False,
             "flavor": {'type': str, 'required': False, 'values': ["openmpi", "mpich"]},
-            "launcher": {'type': str, 'required': False, 'values': ["mpirun", "mpiexec", "mpiexec.hydra"]},
+            "launcher": {'type': str, 'required': False, 'values': ["mpirun", "mpiexec", "mpiexec.hydra"]}
         }
         self.schema = {
             "testtype": {'type': str, 'required': True, 'values': "singlesource"},
@@ -221,10 +217,16 @@ class SingleSource(BuildTestBuilder):
                 'mpi': mpi_schema
             }
         }
+        if file is None:
+            return
+
+        logger = logging.getLogger(logID)
+
         fd = open(file,'r')
         self.test_yaml = yaml.safe_load(fd)
         fd.close()
-
+        logger.info(f"Loading Test Configuration (YAML) file: {file}")
+        logger.info("Checking schema of YAML file")
         self.check_top_keys()
 
         # self.scheduler is used to determine if scheduler check needs to be performed.
@@ -233,6 +235,7 @@ class SingleSource(BuildTestBuilder):
         self.mpi = False
         self.parent_dir = os.path.dirname(file)
         self.srcdir = os.path.join(self.parent_dir,"src")
+
 
         # content to store the test script
         self.testscript_content = {
@@ -254,11 +257,25 @@ class SingleSource(BuildTestBuilder):
         # invoke setup method from base class to detect language, compiler, and mpi wrapper
         self.testscript_content["testpath"] = "%s.%s.sh" % (os.path.join(config_opts["BUILDTEST_TESTDIR"],os.path.basename(file)), hex(random.getrandbits(32)))
 
+        logger.debug(f"Scheduler: {self.scheduler}")
+        logger.debug(f"Parent Directory: {self.parent_dir}")
+        logger.debug(f"Source Directory: {self.srcdir}")
+        logger.debug(f"Source File: {self.srcfile}")
+
         super().__init__(self.srcfile,self.test_yaml["program"]["compiler"])
         
         
         self.buildcmd = self.build_command()
 
+    def __str__(self):
+        return repr(self)
+
+    def __repr__(self):
+        return self.schema
+        _
+    def get_schema(self):
+        """Return the yaml schema for singlesource class."""
+        return self.schema
 
     def check_top_keys(self):
         """Check Top Level Keys in self.schema dictionary"""
@@ -451,6 +468,7 @@ class SingleSource(BuildTestBuilder):
     def build_test_content(self):
         """This method brings all the components together to form the test structure."""
 
+        logger = logging.getLogger(logID)
 
         if self.scheduler == "LSF":
             self.testscript_content["scheduler"] = self.bsub_commands()
@@ -503,6 +521,6 @@ class SingleSource(BuildTestBuilder):
 
         if "pre_run" in self.test_yaml['program'].keys():
             self.testscript_content['run'].append(self.test_yaml['program']["post_run"])
-
-
+        for k,v in self.testscript_content.items():
+            logger.debug(f"{k}:{v}")
         return self.testscript_content
