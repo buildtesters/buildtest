@@ -12,7 +12,15 @@ tee $script_dir/buildtest-show-key.txt <<<"buildtest show -k singlesource" | bas
 tee $script_dir/buildtest-build-help.txt <<<"buildtest build --help" | bash >> $script_dir/buildtest-build-help.txt
 tee $script_dir/coreutils-binary-test.txt <<<"buildtest build --package coreutils" | bash >> $script_dir/coreutils-binary-test.txt
 
-tee $script_dir/build-single-configuration.txt <<<"buildtest build -c compilers.helloworld.hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration.txt
+
+tee $script_dir/build-verbose-1.txt <<<"buildtest build -c compilers.helloworld.args.c.yml -v" | bash >>$script_dir/build-verbose-1.txt
+tee $script_dir/build-verbose-2.txt <<<"buildtest build -c compilers.helloworld.args.c.yml -vv" | bash >>$script_dir/build-verbose-2.txt
+tee $script_dir/build-single-configuration.txt <<<"buildtest build -c compilers.helloworld.args.c.yml -vv" | bash >>$script_dir/build-single-configuration.txt
+
+# lsf example
+tee $script_dir/build-lsf-example.txt <<<"buildtest build -c compilers.helloworld.hello_lsf.yml -vv""" | bash >>$script_dir/build-lsf-example.txt
+# slurm example
+tee $script_dir/build-slurm-example.txt <<<"buildtest build -c compilers.helloworld.hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
 
 tee $script_dir/build-single-configuration-module.txt <<<"ml eb/2019; ml GCC; buildtest build -c compilers.helloworld.hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration-module.txt
 
@@ -23,10 +31,7 @@ tee $script_dir/build-lmod-collection.txt <<<"buildtest build -c compilers.hello
 tee $script_dir/build-module-permute.txt <<<" buildtest build -c  compilers.helloworld.hello_intel_fortran.yml --modules intel -vv" | bash >> $script_dir/build-module-permute.txt
 tee $script_dir/build-module-all-permute.txt <<<"BUILDTEST_PARENT_MODULE_SEARCH=all buildtest build -c  compilers.helloworld.hello_intel_fortran.yml --modules vmd -vv" | bash >> $script_dir/build-module-all-permute.txt
 
-# lsf example
-tee $script_dir/build-lsf-example.txt <<<"buildtest build -c compilers.helloworld.hello_lsf.yml -vv""" | bash >>$script_dir/build-lsf-example.txt
-# slurm example
-tee $script_dir/build-slurm-example.txt <<<"buildtest build -c compilers.helloworld.hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
+
 
 # module collection
 tee $script_dir/buildtest-module-collection-help.txt <<<"buildtest module collection -h """ | bash >>$script_dir/buildtest-module-collection-help.txt

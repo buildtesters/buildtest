@@ -1,37 +1,81 @@
 buildtest build -c compilers.helloworld.hello_slurm.yml -vv
 ________________________________________________________________________________
-compiler: gnu
 description: Hello World C++ example using GNU compiler for SLURM
-flags: -O2
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
-slurm:
-  mem: 200M
-  nodes: '4'
-  time: 01:00
-source: hello.cpp
-testblock: singlesource
-
+program:
+  compiler: gnu
+  cxxflags: -O2
+  sbatch:
+    C: sandybridge
+    N: '2'
+    mem: 200M
+    n: '4'
+    p: general
+    t: 01:00
+  source: hello.cpp
+scheduler: SLURM
+testtype: singlesource
 ________________________________________________________________________________
-Key Check PASSED for file /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_slurm.yml
-Source File /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp exists!
-Programming Language Detected: c++
-SLURM Keys Passed
-Compiler Check Passed
-Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_slurm.yml.slurm
-Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_slurm.yml.slurm
+Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/hello_slurm.yml
+Checking schema of YAML file
+Schema Check Passed
+Scheduler: SLURM
+Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld
+Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
+Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp
+Detecting Programming Language, Compiler and MPI wrapper
+Programming Language: c++
+CXX: g++
+CXXFLAGS: -O2
+{
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_10/hello_slurm.yml.0x2243464b.sh",
+    "scheduler": [
+        "#SBATCH --mem 200M",
+        "#SBATCH -C sandybridge",
+        "#SBATCH -t 01:00",
+        "#SBATCH -n 4",
+        "#SBATCH -N 2",
+        "#SBATCH -p general"
+    ],
+    "module": [
+        "module load GCCcore/8.3.0",
+        "module load Python/3.7.4-GCCcore-8.3.0"
+    ],
+    "metavars": [
+        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_10",
+        "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src",
+        "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp",
+        "CXXFLAGS=\"-O2\""
+    ],
+    "envs": [],
+    "build": [
+        "cd $TESTDIR",
+        "g++ $CXXFLAGS -o hello_slurm.yml.0x80ca4dba.exe $SRCFILE"
+    ],
+    "run": [
+        "hello_slurm.yml.0x80ca4dba.exe",
+        "rm ./hello_slurm.yml.0x80ca4dba.exe"
+    ]
+}None
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_10/hello_slurm.yml.0x2243464b.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_10/hello_slurm.yml.0x2243464b.sh
 ________________________________________________________________________________
-#!/bin/sh
 #SBATCH --mem 200M
-#SBATCH --nodes 4
-#SBATCH --time 01:00
-module purge 
-module load DefaultModules 
-module load shared 
-module load slurm/17.11.8 
-cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-g++ -O2 -o 0x1b1e0cbb1f688daf176cc1e05e87d005.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp 
-./0x1b1e0cbb1f688daf176cc1e05e87d005.exe 
- rm ./0x1b1e0cbb1f688daf176cc1e05e87d005.exe 
+#SBATCH -C sandybridge
+#SBATCH -t 01:00
+#SBATCH -n 4
+#SBATCH -N 2
+#SBATCH -p general
+module load GCCcore/8.3.0
+module load Python/3.7.4-GCCcore-8.3.0
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_10
+SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
+SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp
+CXXFLAGS="-O2"
+cd $TESTDIR
+g++ $CXXFLAGS -o hello_slurm.yml.0x80ca4dba.exe $SRCFILE
+hello_slurm.yml.0x80ca4dba.exe
+rm ./hello_slurm.yml.0x80ca4dba.exe
 ________________________________________________________________________________
-Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_34_13_09_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_10/log/buildtest_14_10_28_10_2019.log

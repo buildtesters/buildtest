@@ -50,32 +50,40 @@ can be done by running ``buildtest build -c <test-config>``.
 
 Shown below is an example run::
 
-    $ buildtest build -c compilers.helloworld.hello_gnu.yml
-    Writing Test: /tmp/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
+    $ buildtest build -c compilers.helloworld.args.c.yml
+    Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/args.c.yml
+    Checking schema of YAML file
+    Schema Check Passed
+    Scheduler: local
+    Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld
+    Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
+    Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/args.c
+    Detecting Programming Language, Compiler and MPI wrapper
+    Programming Language: c
+    CC: gcc
+    CFLAGS: -Wall -g
+    Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/args.c.yml.0x827e7e93.sh
+    Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/log/buildtest_10_44_28_10_2019.log
 
 
-buildtest has two levels of verbosity that can be set by using ``-v`` option.
-buildtest will check the programming language, compiler and verify all the
-keys in configuration file before building the test.
 
-buildtest will set the permission of test script to ``755``.
+Buildtest starts off by loading the test configuration (YAML) and check its schema with one defined in buildtest.
+Once the schema check is passed, it will proceed by checking the programming language, compiler and mpi wrapper (if necessary).
+Finally, buildtest will write the test with permission: ``755``.
 
-::
-
-    $ buildtest build -c compilers.helloworld.hello_gnu.yml -v
-    Key Check PASSED for file /home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml
-    Programming Language Detected: c++
-    Compiler Check Passed
-    Writing Test: /tmp/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
-    Changing permission to 755 for test: /tmp/buildtest/suite/compilers/helloworld/hello_gnu.yml.sh
+buildtest has two levels of verbosity that can be set by using ``-v`` option to control the output.
 
 
+.. program-output:: cat scripts/build-verbose-1.txt
 
 You may specify additional level verbosity by ``-vv`` or specify ``-v -v``
 which will give additional output including the output of configuration file and test
 script.
 
-.. program-output:: cat scripts/build-single-configuration.txt
+The primary difference between ``verbose=1`` and ``verbose=2`` is in ``verbose=1`` the output of test configuration is
+displayed, in ``verbose=2`` the output of test script in addition to test dictionary is displayed.
+
+.. program-output:: cat scripts/build-verbose-2.txt
 
 For a complete list of test configuration and names that can be passed to ``buildtest build -c <testconfig>`` run the
 following command::
@@ -84,146 +92,85 @@ following command::
 
 See :ref:`Managing_TestConfigs` for details regarding test configuration.
 
-
-Hello World C++
-----------------
-
-Let's take a look at a hello world C++ example that will be compiled with gcc
-
-.. program-output:: cat scripts/configuration/hello_gnu.yml
-
-The first line ``compiler: gnu`` is to indicate we will use the gnu compiler
-during compilation.
-
-The ``flags: -O3`` will insert the build flag **-O3** during compilation
-
-The key ``maintainer`` is a list of maintainers that are primary
-contact for the test & configuration file
-
-The key ``source: hello.cpp`` is the source file, this file will need to
-reside in **src** directory wherever you have your yml file
-
-Finally, ``testblock: singlesource`` inform buildtest that this
-is a single source compilation and buildtest will use the appropriate Class to
-build this test. Currently, ``testblock`` only supports singlesource at this moment.
-
-
-
-Next let's see the generated test script
-
-.. program-output:: cat scripts/tests/hello_gnu.yml.sh
-
-Couple things to note.
-
-- buildtest will purge and load the module that is active in your shell
-- The test script will be named with the yml file and the appropriate shell extension ``.sh``, ``.bash``, ``.csh``.
-- buildtest will ``cd`` into the test directory where test script is found
-- buildtest will detect the compiler based on extension type specified in ``source`` tag. In this case it will be ``g++`` since we specified  ``compiler: gnu``
-- buildtest will compile the source file that was defined in ``source`` tag. buildtest will figure out the full path to file.
-- The name of the executable will be the name of the source code with ``.exe`` extension.
-- Finally buildtest will run executable and remove it upon completion.
-
-OpenMP Example
+Test Structure
 ---------------
 
-Let's take a look at a OpenMP yml example for computing vector dot product
+Shown below is a brief layout of the test structure::
 
-.. program-output:: cat scripts/configuration/omp_dotprod.c.yml
+    {scheduler}
+    {modules}
+    {config vars}
+    {environment vars}
 
-To run a OpenMP example you typically set the environment variable ``OMP_NUM_THREADS``
-to declare number of threads during execution.
+    {pre_build}
+    {build}
+    {post_build}
 
-This can be configured used ``vars:`` keyword that takes a list of of key-value to set
-environment variable in the test script. In this example we set ``OMP_NUM_THREADS=2``
-
-To specify flags to linker ``(ld)`` then use key ``ldflags``. In this case, to compile
-openmp with gnu compiler you need to specify ``-fopenmp``.
-
-.. _Testing_With_Modules:
-
-Testing with modules
---------------------
-
-Now that we have built a couple test, we want to leverage modules to test
-a particular test with different modules. This may be particularly useful if
-you have some test that you want to compare with different compilers, MPI,
-etc...
-
-Let's take the same hello world example and build it with different gcc
-compilers.
-
-Recall the first test was the following
-
-.. program-output:: cat scripts/tests/hello_gnu.yml.sh
-
-In buildtest, just load the modules of interest before you build the test and
-it will insert all the modules in  the test script.
-
-For this example we have the following modules loaded
-
-::
-
-    $ ml
-
-    Currently Loaded Modules:
-      1) GCCcore/8.3.0               3) zlib/1.2.11-GCCcore-8.3.0   5) libreadline/8.0-GCCcore-8.3.0   7) SQLite/3.29.0-GCCcore-8.3.0   9) GMP/6.1.2-GCCcore-8.3.0     11) Python/3.7.4-GCCcore-8.3.0
-      2) bzip2/1.0.8-GCCcore-8.3.0   4) ncurses/6.1-GCCcore-8.3.0   6) Tcl/8.6.9-GCCcore-8.3.0         8) XZ/5.2.4-GCCcore-8.3.0       10) libffi/3.2.1-GCCcore-8.3.0  12) PyCharm/2017.2.3
+    {pre_run}
+    {run}
+    {post_run}
 
 
-Let's rebuild the test and notice how the modules are loaded in the test
+When it comes to building C, C++, and Fortran program example the ``{build}`` section will differ slightly. To summarize the
+``{build}`` section will be as follows::
+
+    C Program
+    $CC $CFLAGS -o $EXE $SRCFILE $LDFLAGS
+
+    C++ Program
+    $CXX $CXXFLAGS -o $EXE $SRCFILE $LDFLAGS
+
+    Fortran Program
+    $FC $FFLAGS -o $EXE $SRCFILE $LDFLAGS
 
 
-.. code-block:: console
-    :linenos:
-    :emphasize-lines: 21-32
+Hello World C
+----------------
 
-    $ buildtest build -c compilers.helloworld.hello_gnu.yml -vv
-    ________________________________________________________________________________
-    compiler: gnu
-    description: Hello C++ example using GNU compiler
-    flags: -O3
-    maintainer:
-    - shahzeb siddiqui shahzebmsiddiqui@gmail.com
-    source: hello.cpp
-    testblock: singlesource
+Let's take a look at C example that will be compiled with gcc
 
-    ________________________________________________________________________________
-    Key Check PASSED for file /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/hello_gnu.yml
-    Source File /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp exists!
-    Programming Language Detected: c++
-    Compiler Check Passed
-    Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_17/hello_gnu.yml.sh
-    Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_17/hello_gnu.yml.sh
-    ________________________________________________________________________________
-    #!/usr/bin/sh
-    module purge
-    module load GCCcore/8.3.0
-    module load bzip2/1.0.8-GCCcore-8.3.0
-    module load zlib/1.2.11-GCCcore-8.3.0
-    module load ncurses/6.1-GCCcore-8.3.0
-    module load libreadline/8.0-GCCcore-8.3.0
-    module load Tcl/8.6.9-GCCcore-8.3.0
-    module load SQLite/3.29.0-GCCcore-8.3.0
-    module load XZ/5.2.4-GCCcore-8.3.0
-    module load GMP/6.1.2-GCCcore-8.3.0
-    module load libffi/3.2.1-GCCcore-8.3.0
-    module load Python/3.7.4-GCCcore-8.3.0
-    module load PyCharm/2017.2.3
-    cd /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_17
-    g++ -O3 -o 0x3301055bf7978d6a40058294d0af4152.exe /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp
-    ./0x3301055bf7978d6a40058294d0af4152.exe
-     rm ./0x3301055bf7978d6a40058294d0af4152.exe
-    ________________________________________________________________________________
-    Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_17/log/buildtest_15_26_21_10_2019.log
+.. program-output:: cat scripts/configuration/args.c.yml
+
+The first line ``testtype: singlesource`` is to instruct buildtest this is a singlesource compilation. Currently, buildtest
+only supports this single source compilation, but in future this can be expanded to different types.
+
+The ``description:`` tag is brief summary of the test, limited to 80 characters. The ``scheduler: local`` instruct buildtest
+this test will not use any scheduler. Other values for scheduler can include ``scheduler: LSF`` or ``scheduler: SLURM``.
+
+The start of test specification starts with ``program:`` section that is a dictionary of ``key``:``value`` pair. The program
+section comes with several keys. The ``compiler:gnu`` instructs buildtest to select gnu as the compiler, this will affect the
+``{build}`` line that include $CC, $CXX, $FC variable which differ based on compilers. Currently ``compiler`` takes ``gnu`` for the
+moment, and there is plans to introduce other compilers.
+
+Every build requires a source file, this is specified by ``source:`` key which is the path to source file found in ``src``
+directory relative to test configuration. To declare environment variables such as ``export FOO=BAR`` and ``export X=1``
+in the test use the ``env:`` key which is a list as follows::
+
+    env:
+      FOO: BAR
+      X: 1
+
+The ``pre_build:`` and ``post_build:`` key will insert shell commands before and after the compilation. The ``cflags:``
+key is used to define $CFLAGS variable during compilation, by default CFLAGS is set to ``None`` which means no flags are
+passed in.
+
+Similarly, ``pre_run:`` and ``post_run:`` will add shell commands before and after the execution of the program. The ``exec_opts:``
+key is used to pass options to the executable.
+
+The ``maintainer`` key which is outside the ``program`` block is required for all test configuration, it indicates the author of the
+test which is a list of authors in the form of ``<first> <last> <email>``. This section of code can be auto-generated if
+you have set ``git config user.name`` and ``git config user.email`` and buildtest will add the maintainer using the command::
+
+    $ buildtest testconfigs maintainer -m YES <config>
 
 
+To help visualize see how the test dictionary maps to the specific commands in the test script.
 
-buildtest will run ``module purge`` and load all the active modules by
-running ``module -t list`` and insert each module in a separate line. This
-gives user freedom to load whatever module they want when creating test, though
-this puts responsibility on user to understand the testscript.
+.. image:: test_dictionary.png
+   :width: 600
+   :height:  400
 
-
-
-
+.. image:: test.png
+   :width: 500
+   :height:  250
 

@@ -1,39 +1,78 @@
 buildtest build -c compilers.helloworld.hello_lsf.yml -vv
 ________________________________________________________________________________
-compiler: gnu
 description: Hello World C example using GNU compiler for LSF
-flags: -O2
-lsf:
-  M: 200M
-  R: sandybridge
-  W: 01:00
-  n: '4'
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
-source: hello.c
-testblock: singlesource
-
+program:
+  bsub:
+    M: 200M
+    R: sandybridge
+    W: 01:00
+    n: '4'
+    q: admin
+  cflags: -O2
+  compiler: gnu
+  source: hello.c
+scheduler: LSF
+testtype: singlesource
 ________________________________________________________________________________
-Key Check PASSED for file /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_lsf.yml
-Source File /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c exists!
-Programming Language Detected: c
-LSF Keys Passed
-Compiler Check Passed
-Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
-Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_lsf.yml.lsf
+Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/hello_lsf.yml
+Checking schema of YAML file
+Schema Check Passed
+Scheduler: LSF
+Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld
+Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
+Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.c
+Detecting Programming Language, Compiler and MPI wrapper
+Programming Language: c
+CC: gcc
+CFLAGS: -O2
+{
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/hello_lsf.yml.0xa3fbf5ba.sh",
+    "scheduler": [
+        "#BSUB -M 200M",
+        "#BSUB -R sandybridge",
+        "#BSUB -W 01:00",
+        "#BSUB -n 4",
+        "#BSUB -q admin"
+    ],
+    "module": [
+        "module load GCCcore/8.3.0",
+        "module load Python/3.7.4-GCCcore-8.3.0"
+    ],
+    "metavars": [
+        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9",
+        "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src",
+        "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.c",
+        "CFLAGS=\"-O2\""
+    ],
+    "envs": [],
+    "build": [
+        "cd $TESTDIR",
+        "gcc $CFLAGS -o hello_lsf.yml.0xee8973d1.exe $SRCFILE"
+    ],
+    "run": [
+        "hello_lsf.yml.0xee8973d1.exe",
+        "rm ./hello_lsf.yml.0xee8973d1.exe"
+    ]
+}None
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/hello_lsf.yml.0xa3fbf5ba.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/hello_lsf.yml.0xa3fbf5ba.sh
 ________________________________________________________________________________
-#!/bin/sh
 #BSUB -M 200M
 #BSUB -R sandybridge
 #BSUB -W 01:00
 #BSUB -n 4
-module purge 
-module load DefaultModules 
-module load shared 
-module load slurm/17.11.8 
-cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-gcc -O2 -o 0xe4c46319299d211122d94785aa0316c2.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.c 
-./0xe4c46319299d211122d94785aa0316c2.exe 
- rm ./0xe4c46319299d211122d94785aa0316c2.exe 
+#BSUB -q admin
+module load GCCcore/8.3.0
+module load Python/3.7.4-GCCcore-8.3.0
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9
+SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
+SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.c
+CFLAGS="-O2"
+cd $TESTDIR
+gcc $CFLAGS -o hello_lsf.yml.0xee8973d1.exe $SRCFILE
+hello_lsf.yml.0xee8973d1.exe
+rm ./hello_lsf.yml.0xee8973d1.exe
 ________________________________________________________________________________
-Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_34_13_09_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/log/buildtest_14_09_28_10_2019.log

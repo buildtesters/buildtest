@@ -11,6 +11,7 @@ program:
     R: sandybridge
     W: 01:00
     n: '4'
+    q: admin
 
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com

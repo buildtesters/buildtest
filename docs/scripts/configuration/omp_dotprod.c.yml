@@ -1,8 +1,0 @@
-compiler: gnu
-ldflags: -fopenmp
-maintainer:
-- shahzeb siddiqui shahzebmsiddiqui@gmail.com
-source: omp_dotprod.c
-testblock: singlesource
-vars:
-  OMP_NUM_THREADS: 2

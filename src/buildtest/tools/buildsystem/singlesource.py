@@ -226,7 +226,9 @@ class SingleSource(BuildTestBuilder):
         fd = open(file,'r')
         self.test_yaml = yaml.safe_load(fd)
         fd.close()
+        print(f"Loading Test Configuration (YAML) file: {file}")
         logger.info(f"Loading Test Configuration (YAML) file: {file}")
+        print("Checking schema of YAML file")
         logger.info("Checking schema of YAML file")
         self.check_top_keys()
 
@@ -253,6 +255,8 @@ class SingleSource(BuildTestBuilder):
 
         self.check_program_keys()
 
+        print ("Schema Check Passed")
+
         if "mpi" in self.test_yaml.keys():
             self.mpi= self.test_yaml['mpi']
         self.srcfile = os.path.join(self.srcdir, self.test_yaml["program"]["source"])
@@ -266,10 +270,27 @@ class SingleSource(BuildTestBuilder):
         logger.debug(f"Source File: {self.srcfile}")
 
 
+
+        print(f"Scheduler: {self.scheduler}")
+        print(f"Parent Directory: {self.parent_dir}")
+        print(f"Source Directory: {self.srcdir}")
+        print(f"Source File: {self.srcfile}")
+
+        print ("Detecting Programming Language, Compiler and MPI wrapper")
         super().__init__(self.srcfile,self.test_yaml["program"]["compiler"],self.mpi)
-        
-        
+        print (f"Programming Language: {self.language}")
+
         self.buildcmd = self.build_command()
+
+        if self.language == "c":
+            print(f"CC: {self.cc}")
+            print(f"CFLAGS: {self.cflags}")
+        if self.language == "c++":
+            print(f"CXX: {self.cxx}")
+            print(f"CXXFLAGS: {self.cxxflags}")
+        if self.language == "fortran":
+            print(f"FC: {self.ftn}")
+            print(f"FFLAGS: {self.fflags}")
 
     def __str__(self):
         return repr(self)
@@ -315,9 +336,6 @@ class SingleSource(BuildTestBuilder):
                 # if found, then check value type. By default, if it is not found, mpi will be disabled
                 if self.test_yaml['mpi'] not in self.schema['mpi']['values']:
                     raise BuildTestError(f"{self.test_yaml['mpi']} is not valid value. Must be one of the following: {self.schema['mpi']['values']}")
-
-
-
 
     def check_program_keys(self):
         """Check keys in dictionary program:"""

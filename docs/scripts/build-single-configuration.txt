@@ -1,29 +1,71 @@
-buildtest build -c compilers.helloworld.hello_gnu.yml -vv
+buildtest build -c compilers.helloworld.args.c.yml -vv
 ________________________________________________________________________________
-compiler: gnu
-description: Hello C++ example using GNU compiler
-flags: -O3
+description: C program that prints arguments passed to executable.
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
-source: hello.cpp
-testblock: singlesource
-
+program:
+  cflags: -Wall -g
+  compiler: gnu
+  env:
+    FOO: BAR
+    X: 1
+  exec_opts: hello world!
+  post_build: gcc -v
+  post_run: echo post_run
+  pre_build: gcc --version
+  pre_run: echo $SRCDIR $TESTDIR
+  source: args.c
+scheduler: local
+testtype: singlesource
 ________________________________________________________________________________
-Key Check PASSED for file /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/hello_gnu.yml
-Source File /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp exists!
-Programming Language Detected: c++
-Compiler Check Passed
-Writing Test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_gnu.yml.sh
-Changing permission to 755 for test: /tmp/siddis14/buildtest/tests/suite/compilers/helloworld/hello_gnu.yml.sh
+{
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_51/args.c.yml.0xe2ec3ab1.sh",
+    "scheduler": [],
+    "module": [
+        "module load GCCcore/8.3.0",
+        "module load Python/3.7.4-GCCcore-8.3.0"
+    ],
+    "metavars": [
+        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_51",
+        "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src",
+        "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/args.c",
+        "CFLAGS=\"-Wall -g\""
+    ],
+    "envs": [
+        "export FOO=BAR",
+        "export X=1"
+    ],
+    "build": [
+        "cd $TESTDIR",
+        "gcc --version",
+        "gcc $CFLAGS -o args.c.yml.0x33744352.exe $SRCFILE",
+        "gcc -v"
+    ],
+    "run": [
+        "echo $SRCDIR $TESTDIR",
+        "args.c.yml.0x33744352.exe hello world!",
+        "echo post_run",
+        "rm ./args.c.yml.0x33744352.exe"
+    ]
+}None
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_51/args.c.yml.0xe2ec3ab1.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_51/args.c.yml.0xe2ec3ab1.sh
 ________________________________________________________________________________
-#!/bin/sh
-module purge 
-module load DefaultModules 
-module load shared 
-module load slurm/17.11.8 
-cd /tmp/siddis14/buildtest/tests/suite/compilers/helloworld
-g++ -O3 -o 0x619fd1541cf2c1b7f3ca14f24d58bc71.exe /gpfs/home/siddis14/buildtest-framework/toolkit/buildtest/suite/compilers/helloworld/src/hello.cpp 
-./0x619fd1541cf2c1b7f3ca14f24d58bc71.exe 
- rm ./0x619fd1541cf2c1b7f3ca14f24d58bc71.exe 
+module load GCCcore/8.3.0
+module load Python/3.7.4-GCCcore-8.3.0
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_51
+SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
+SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/args.c
+CFLAGS="-Wall -g"
+export FOO=BAR
+export X=1
+cd $TESTDIR
+gcc --version
+gcc $CFLAGS -o args.c.yml.0x33744352.exe $SRCFILE
+gcc -v
+echo $SRCDIR $TESTDIR
+args.c.yml.0x33744352.exe hello world!
+echo post_run
+rm ./args.c.yml.0x33744352.exe
 ________________________________________________________________________________
-Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_34_13_09_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_51/log/buildtest_09_48_28_10_2019.log

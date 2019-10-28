@@ -1,5 +1,5 @@
 buildtest build --package coreutils
 Detecting System Package: coreutils
 Generating  102  binary tests
-Binary Tests are written in  /tmp/siddis14/buildtest/tests/system/coreutils
-Writing Log file to:  /tmp/siddis14/buildtest/logs/buildtest_16_33_13_09_2019.log
+Binary Tests are written in  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_22
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_22/log/buildtest_16_47_27_10_2019.log

@@ -10,81 +10,91 @@ message()
 
 }
 
-cmd="buildtest --help"
+cmd="buildtest --help "
 $cmd &> ${testdir}/help.txt
 message
 
-cmd="buildtest -V"
+cmd="buildtest -V "
 $cmd &> ${testdir}/version.txt
 message
 
-cmd="buildtest list -s"
+cmd="buildtest list -s "
 $cmd &> ${testdir}/list_software.txt
 message
 
-cmd="buildtest list -m"
+cmd="buildtest list -m "
 $cmd &> ${testdir}/list_modules.txt
 message
 
-cmd="buildtest list -ec"
+cmd="buildtest list -ec "
 $cmd &> ${testdir}/easyconfigs.txt
 message
 
-cmd="buildtest show -c"
+cmd="buildtest show -c "
 $cmd &> ${testdir}/show_config.txt
 message
-cmd="buildtest show -k singlesource" &> ${testdir}/show_keys.txt
+
+cmd="buildtest show -k singlesource "
+$cmd  &> ${testdir}/show_keys.txt
 message
 
-cmd="buildtest build -p gcc"
+cmd="buildtest build -p gcc "
 $cmd &> ${testdir}/build_gcc.txt
 message 
 
 # single configuration test
-cmd="buildtest build -c compilers.helloworld.hello_gnu.yml"
-$cmd &> ${testdir}/single_test.txt
+cmd="buildtest build -c compilers.helloworld.args.c.yml -vv"
+$cmd  &> ${testdir}/single_test.txt
+message
+
+cmd="buildtest build -c compilers.helloworld.hello_lsf.yml -vv"
+$cmd  &> ${testdir}/lsf_test.txt
 message
 
 
-cmd="buildtest build -c compilers.helloworld.hello_gnu.yml -co gcc730"
-$cmd &> ${testdir}/single_test_collection.txt
+cmd="buildtest build -c compilers.helloworld.hello_slurm.yml -vv"
+$cmd  &> ${testdir}/slurm_test.txt
 message
 
-cmd="buildtest build -c compilers.helloworld.hello_gnu.yml -m gcc"
-$cmd &> ${testdir}/single_test_permute.txt
+cmd ="buildtest build -c openmp.hello.omp_hello.c.yml -vv"
+$cmd &> ${testdir}/openmp_test1.txt
 message
 
-cmd="buildtest module loadtest"
+cmd ="buildtest build -c openmp.dotprod.omp_dotprod.f.yml -vv "
+$cmd &> ${testdir}/openmp_test2.txt
+message
+
+cmd="buildtest module loadtest "
 $cmd &> $testdir/moduleload.txt
 message
 
-cmd="buildtest module --spack"
+cmd="buildtest module --spack "
 $cmd &> $testdir/spack_modules.txt
 message
 
-cmd="BUILDTEST_SPIDER_VIEW=all buildtest module --spack"
-$cmd &> $testdir/all_spack_modules.txt
+cmd="BUILDTEST_SPIDER_VIEW=all buildtest module --spack "
+$cmd  &> $testdir/all_spack_modules.txt
 message
 
-cmd="buildtest module --easybuild"
-$cmd &> $testdir/easybuild_modules.txt
+cmd="buildtest module --easybuild &> $testdir/easybuild_modules.txt"
+$cmd
 message
 
 cmd="BUILDTEST_SPIDER_VIEW=all buildtest module --easybuild"
 $cmd &> $testdir/all_easybuild_modules.txt
 message
 
-cmd="buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core"
-$cmd &> $testdir/add_module_tree.txt
+cmd="buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core &> $testdir/add_module_tree.txt"
+$cmd
 message
 
 
-cmd="buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core"
-$cmd &> $testdir/rm_module_tree.txt
+cmd="buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core &> $testdir/rm_module_tree.txt"
+$cmd
 message
 
-cmd="buildtest module tree -l "
-$cmd &> $testdir/list_module_tree.txt
+cmd="buildtest module tree -l &> $testdir/list_module_tree.txt"
+$cmd
 message
 
 # running benchmark
