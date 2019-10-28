@@ -93,6 +93,14 @@ def func_build_subcmd(args):
         test_config_table = test_config_name_mapping()
         file = test_config_table[args.config]
 
+        if args.verbose >= 1:
+            fd = open(file,'r')
+            yaml_test = yaml.safe_load(fd)
+            print ("{:_<80}".format(""))
+            yaml.dump(yaml_test,sys.stdout,default_flow_style=False)
+            print ("{:_<80}".format(""))
+            fd.close()
+
         singlesource_test = SingleSource(file)
         content = singlesource_test.build_test_content()
         logger.info("Injecting method to inject modules into test script")
