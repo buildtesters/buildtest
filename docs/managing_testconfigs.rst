@@ -36,9 +36,9 @@ If you want to view or edit a configuration you can use the following commands::
 
 In above command **<config>** represents the name of the test configuration as shown from ``builtest testconfigs list``.
 
-For example, if let's view the content of test *mpi.matrixmux.mm_mpi.f.yml* by running::
+For example, if let's view the content of test *compilers.helloworld.args.c.yml* by running::
 
-    $ buildtest testconfigs view mpi.matrixmux.mm_mpi.f.yml
+    $ buildtest testconfigs view compilers.helloworld.args.c.yml
 
 Shown below is the output of this file.
 
@@ -49,7 +49,7 @@ Currently, buildtest will use the **vim** editor for editing files.
 
 To  edit the same test you will need to run::
 
-      $ buildtest testconfigs edit mpi.matrixmux.mm_mpi.f.yml
+      $ buildtest testconfigs edit compilers.helloworld.args.c.yml
 
 Adding or Removing Maintainer from Test Configuration
 -----------------------------------------------------
@@ -61,7 +61,8 @@ field which follows the git format ``user.name user.email``. Shown below is an e
     maintainer:
     - shahzeb siddiqui shahzebmsiddiqui@gmail.com
 
-buildtest will check your git configuration when modifying maintainer field. You can check your git configuration as follows:
+buildtest will check your git configuration when modifying maintainer field. You can check your git configuration
+as follows::
 
     $ git config user.name
     Shahzeb Siddiqui

@@ -136,7 +136,7 @@ buildtest can show YAML keys based on testblock. Currently, there is one testblo
 defined **singlesource**.
 
 To show yaml keys you can run ``buildtest show -k singlesource`` to view all the YAML
-keys that pertain to ``testblock: singlesource`` found in YAML files
+keys that pertain to ``testtype: singlesource`` found in YAML files
 
 .. program-output:: cat scripts/buildtest-show-key.txt
 

@@ -56,6 +56,7 @@ def test_config_name_mapping():
         testconfig_name = f"{parent_parent}.{parent}.{os.path.basename(f)}"
 
         test_config_table[testconfig_name] = f
+
     return test_config_table
 
 def func_testconfigs_view(args):
@@ -132,6 +133,7 @@ def func_testconfigs_maintainer(args):
                 # maintainer is always present
                 if len(content["maintainer"]) == 0:
                     del(content["maintainer"])
+
 
                 yaml.dump(content, write_fd, default_flow_style=False)
                 write_fd.close()

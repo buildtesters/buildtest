@@ -448,8 +448,7 @@ How does buildtest leverage modules
 ------------------------------------
 
 buildtest will inject modules when writing test script. When you build a test
-from a configuration file you can load modules into
-your test script. See :ref:`Testing_With_Modules` for more details.
+from a configuration file you can load modules into your test script.
 
 
 For instance, running a binary test such as the utility ``ompi_info`` from
