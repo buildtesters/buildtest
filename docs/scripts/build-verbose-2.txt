@@ -33,14 +33,14 @@ Programming Language: c
 CC: gcc
 CFLAGS: -Wall -g
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/args.c.yml.0x722fa01.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1/args.c.yml.0x2f83e661.sh",
     "scheduler": [],
     "module": [
         "module load GCCcore/8.3.0",
         "module load Python/3.7.4-GCCcore-8.3.0"
     ],
     "metavars": [
-        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2",
+        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1",
         "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src",
         "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/args.c",
         "CFLAGS=\"-Wall -g\""
@@ -52,22 +52,22 @@ CFLAGS: -Wall -g
     "build": [
         "cd $TESTDIR",
         "gcc --version",
-        "gcc $CFLAGS -o args.c.yml.0x5e88b125.exe $SRCFILE",
+        "gcc $CFLAGS -o args.c.yml.0x4b886aca.exe $SRCFILE",
         "gcc -v"
     ],
     "run": [
         "echo $SRCDIR $TESTDIR",
-        "args.c.yml.0x5e88b125.exe hello world!",
+        "args.c.yml.0x4b886aca.exe hello world!",
         "echo post_run",
-        "rm ./args.c.yml.0x5e88b125.exe"
+        "rm ./args.c.yml.0x4b886aca.exe"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/args.c.yml.0x722fa01.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/args.c.yml.0x722fa01.sh
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1/args.c.yml.0x2f83e661.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1/args.c.yml.0x2f83e661.sh
 ________________________________________________________________________________
 module load GCCcore/8.3.0
 module load Python/3.7.4-GCCcore-8.3.0
-TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1
 SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
 SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/args.c
 CFLAGS="-Wall -g"
@@ -75,11 +75,11 @@ export FOO=BAR
 export X=1
 cd $TESTDIR
 gcc --version
-gcc $CFLAGS -o args.c.yml.0x5e88b125.exe $SRCFILE
+gcc $CFLAGS -o args.c.yml.0x4b886aca.exe $SRCFILE
 gcc -v
 echo $SRCDIR $TESTDIR
-args.c.yml.0x5e88b125.exe hello world!
+args.c.yml.0x4b886aca.exe hello world!
 echo post_run
-rm ./args.c.yml.0x5e88b125.exe
+rm ./args.c.yml.0x4b886aca.exe
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/log/buildtest_14_40_28_10_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1/log/buildtest_14_40_28_10_2019.log

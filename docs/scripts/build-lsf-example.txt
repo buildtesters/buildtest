@@ -1,20 +1,23 @@
 buildtest build -c compilers.helloworld.hello_lsf.yml -vv
 ________________________________________________________________________________
+testtype: singlesource
 description: Hello World C example using GNU compiler for LSF
-maintainer:
-- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+scheduler: LSF
+
 program:
+  source: hello.c
+  compiler: gnu
+  cflags: -O2
   bsub:
     M: 200M
     R: sandybridge
     W: 01:00
     n: '4'
     q: admin
-  cflags: -O2
-  compiler: gnu
-  source: hello.c
-scheduler: LSF
-testtype: singlesource
+
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+
 ________________________________________________________________________________
 Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/hello_lsf.yml
 Checking schema of YAML file
@@ -28,7 +31,7 @@ Programming Language: c
 CC: gcc
 CFLAGS: -O2
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/hello_lsf.yml.0xa3fbf5ba.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_lsf.yml.0x5afd4bd1.sh",
     "scheduler": [
         "#BSUB -M 200M",
         "#BSUB -R sandybridge",
@@ -41,7 +44,7 @@ CFLAGS: -O2
         "module load Python/3.7.4-GCCcore-8.3.0"
     ],
     "metavars": [
-        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9",
+        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3",
         "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src",
         "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.c",
         "CFLAGS=\"-O2\""
@@ -49,15 +52,15 @@ CFLAGS: -O2
     "envs": [],
     "build": [
         "cd $TESTDIR",
-        "gcc $CFLAGS -o hello_lsf.yml.0xee8973d1.exe $SRCFILE"
+        "gcc $CFLAGS -o hello_lsf.yml.0xf1be912.exe $SRCFILE"
     ],
     "run": [
-        "hello_lsf.yml.0xee8973d1.exe",
-        "rm ./hello_lsf.yml.0xee8973d1.exe"
+        "hello_lsf.yml.0xf1be912.exe",
+        "rm ./hello_lsf.yml.0xf1be912.exe"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/hello_lsf.yml.0xa3fbf5ba.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/hello_lsf.yml.0xa3fbf5ba.sh
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_lsf.yml.0x5afd4bd1.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_lsf.yml.0x5afd4bd1.sh
 ________________________________________________________________________________
 #BSUB -M 200M
 #BSUB -R sandybridge
@@ -66,13 +69,13 @@ ________________________________________________________________________________
 #BSUB -q admin
 module load GCCcore/8.3.0
 module load Python/3.7.4-GCCcore-8.3.0
-TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3
 SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
 SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.c
 CFLAGS="-O2"
 cd $TESTDIR
-gcc $CFLAGS -o hello_lsf.yml.0xee8973d1.exe $SRCFILE
-hello_lsf.yml.0xee8973d1.exe
-rm ./hello_lsf.yml.0xee8973d1.exe
+gcc $CFLAGS -o hello_lsf.yml.0xf1be912.exe $SRCFILE
+hello_lsf.yml.0xf1be912.exe
+rm ./hello_lsf.yml.0xf1be912.exe
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/log/buildtest_14_09_28_10_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/log/buildtest_14_40_28_10_2019.log

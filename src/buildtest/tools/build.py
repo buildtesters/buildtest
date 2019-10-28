@@ -93,11 +93,12 @@ def func_build_subcmd(args):
         test_config_table = test_config_name_mapping()
         file = test_config_table[args.config]
 
+        # print content of test configuration in verbose>=1
         if args.verbose >= 1:
             fd = open(file,'r')
-            yaml_test = yaml.safe_load(fd)
+            content = fd.read()
             print ("{:_<80}".format(""))
-            yaml.dump(yaml_test,sys.stdout,default_flow_style=False)
+            print(content)
             print ("{:_<80}".format(""))
             fd.close()
 

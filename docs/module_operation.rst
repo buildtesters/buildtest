@@ -66,6 +66,8 @@ environment variable or just run as follows::
 
 This will test all modules retrieved by spider utility.
 
+.. _module_collection:
+
 Module Collection Operation (``buildtest module collection``)
 -------------------------------------------------------------
 

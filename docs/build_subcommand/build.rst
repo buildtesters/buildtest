@@ -174,3 +174,59 @@ To help visualize see how the test dictionary maps to the specific commands in t
    :width: 500
    :height:  250
 
+Test Directory Layout
+----------------------
+
+buildtest will store the test defined by configuration ``BUILDTEST_TESTDIR`` defined in **settings.yml**. Buildtest will
+detect system details such as vendor id, architecture, platform, operating system that get inserted into the directory
+structure. Every build (``buildtest build``) will increment the build ID to distinguish between previous builds.
+Shown below is a basic structure of the directory layout::
+
+   $ tree /tmp/ssi29/buildtest/tests/
+   /tmp/ssi29/buildtest/tests/
+   └── Intel
+       └── Haswell
+           └── x86_64
+               └── rhel
+                   └── 7.6
+                       ├── build_0
+                       │   ├── args.c.yml.0xe93836d1.sh
+                       │   └── log
+                       │       └── buildtest_14_40_28_10_2019.log
+                       ├── build_1
+                       │   ├── args.c.yml.0x2f83e661.sh
+                       │   └── log
+                       │       └── buildtest_14_40_28_10_2019.log
+                       ├── build_2
+                       │   ├── args.c.yml.0x722fa01.sh
+                       │   └── log
+                       │       └── buildtest_14_40_28_10_2019.log
+                       ├── build_3
+                       │   ├── hello_lsf.yml.0x5afd4bd1.sh
+                       │   └── log
+                       │       └── buildtest_14_40_28_10_2019.log
+                       └── build_4
+                           ├── hello_slurm.yml.0x915e39fb.sh
+                           └── log
+                               └── buildtest_14_40_28_10_2019.log
+
+   15 directories, 10 files
+
+Every build will have a directory such as ``build_0``, ``build_1``, ``build_2``, ... starting from 0 index. The test script
+and log file will be stored in this directory.
+
+Buildtest internal files
+--------------------------
+
+buildtest maintains a set of json files in the **var** directory that are self managed by buildtest. Every build will
+be appended to ``build.json`` and this file is read by buildtest for commands such as
+``buildtest build report | test | run | bsub |  log`` commands. For more information see :ref:`build_status`
+
+**modules.json** is a subset of spider output to account for differences between Lmod 6/7 json structure for reading
+module and parent keys.
+
+**collection.json** is a self-managed file used to store module collections that is managed by command ``buildtest module collection``.
+For more information on module collection see :ref:`module_collection`
+
+**system.json** stores the buildtest system details that can be used by command ``buildtest system``.
+

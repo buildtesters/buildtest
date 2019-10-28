@@ -140,3 +140,30 @@ keys that pertain to ``testblock: singlesource`` found in YAML files
 
 .. program-output:: cat scripts/buildtest-show-key.txt
 
+
+System Options (``buildtest system --help``)
+_____________________________________________
+
+.. program-output:: cat scripts/buildtest_system_help.txt
+
+buildtest will detect system configuration and store the content in ``var/system.json``. This file contains
+useful information about the scheduler details that can be used for submitting jobs.
+
+To fetch the latest system configuration run the following::
+
+    $ buildtest system fetch
+
+This will update the system.json with the latest configuration. Typically you may only need to run this command to get the
+latest scheduler changes but don't worry if you forget to run this as it is not critical to buildtest.
+
+.. program-output:: cat scripts/buildtest_system_fetch.txt
+
+To view the system configuration you can run the following::
+
+    $ buildtest system view
+
+This will display the content of ``system.json``.
+
+.. program-output:: head -n 50 scripts/buildtest_system_view.txt
+
+

@@ -1,3 +1,5 @@
+.. _build_status:
+
 Retrieve Build Status (``buildtest build report``)
 ==================================================
 
