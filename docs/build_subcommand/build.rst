@@ -129,7 +129,7 @@ Hello World C
 
 Let's take a look at C example that will be compiled with gcc
 
-.. program-output:: cat scripts/configuration/args.c.yml
+.. program-output:: cat scripts/build_subcommand/compilers.helloworld.args.c.yml
 
 The first line ``testtype: singlesource`` is to instruct buildtest this is a singlesource compilation. Currently, buildtest
 only supports this single source compilation, but in future this can be expanded to different types.

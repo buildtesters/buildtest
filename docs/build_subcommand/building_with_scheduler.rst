@@ -31,8 +31,8 @@ See example below:
 
 .. program-output:: cat ../toolkit/suite/compilers/helloworld/hello_slurm.yml
 
-The ``scheduler: SLURM`` will enable ``sbatch`` key that is used for adding **#SBATCH** directive in test script. See example
-below for a slurm test.
+The ``scheduler: SLURM`` will enable ``sbatch`` key that is used for adding **#SBATCH** directive in test script.
+Also note that ``CXXFLAGS:`` will be used for passing options to C++ compiler (g++)
 
 .. program-output:: cat scripts/build-slurm-example.txt
 
