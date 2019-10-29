@@ -7,5 +7,5 @@ __________________
    :glob:
 
    build_subcommand/build.rst
-   build_subcommand/build_status.rst
+   build_subcommand/build_examples.rst
    build_subcommand/*

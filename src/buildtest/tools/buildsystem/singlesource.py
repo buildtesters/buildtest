@@ -478,7 +478,7 @@ class SingleSource(BuildTestBuilder):
 
         if "ldflags" in self.test_yaml['program']:
             self.ldflags = self.test_yaml['program']["ldflags"]
-            buildcmd.append(self.ldflags)
+            buildcmd.append("$LDFLAGS")
 
         return buildcmd
     def bsub_commands(self):
@@ -515,6 +515,8 @@ class SingleSource(BuildTestBuilder):
 
         if self.fflags:
             self.testscript_content["metavars"].append(f'FFLAGS="{self.fflags}"')
+        if self.ldflags:
+            self.testscript_content["metavars"].append(f'LDFLAGS="{self.ldflags}"')
 
         # adding environment variables
         for k in self.envs:
