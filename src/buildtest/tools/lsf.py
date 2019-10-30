@@ -76,15 +76,28 @@ def func_bsub(args):
     if args.queue:
         job_launcher += ["-q", args.queue]
 
+    if args.ntasks:
+        job_launcher += ["-n", args.ntasks]
+
     if args.resource:
         job_launcher += ["-R", args.resource]
 
     if args.machine:
         job_launcher += ["-m", args.machine]
 
+    if args.memory:
+        job_launcher += ["-M", args.memory]
+
+    if args.jobname:
+        job_launcher += ["-J", args.jobname]
+
+    if args.walltime:
+        job_launcher += ["-W", args.walltime]
+
     for file in tests:
         job_launcher += ["<",file]
         job_cmd = " ".join(job_launcher)
         print (job_cmd)
-        os.system(job_cmd)
-        print (f"Submitting Job: {file} to scheduler")
+        if not args.dry_run:
+            os.system(job_cmd)
+            print (f"Submitting Job: {file} to scheduler")
