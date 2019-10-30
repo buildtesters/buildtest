@@ -1,4 +1,4 @@
-| |license| |docs| |slack| |status| |versions| |downloads|
+| |license| |docs| |slack| |tags| |forks| |issues| |contributors| |stars| |watchers|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -6,10 +6,13 @@
     :target: https://buildtest.readthedocs.io/en/latest/?badge=latest
 
 .. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
-.. |license| image:: https://img.shields.io/pypi/l/buildtest-framework.svg
-.. |status| image:: https://img.shields.io/pypi/status/buildtest-framework.svg
-.. |versions| image:: https://img.shields.io/pypi/pyversions/buildtest-framework.svg
-.. |downloads| image:: https://img.shields.io/pypi/dw/buildtest-framework.svg
+.. |license| image:: https://img.shields.io/github/license/HPC-buildtest/buildtest-framework.svg
+.. |tags| image:: https://img.shields.io/github/v/tag/HPC-buildtest/buildtest-framework.svg
+.. |forks| image:: https://img.shields.io/github/forks/HPC-buildtest/buildtest-framework.svg
+.. |issues| image:: https://img.shields.io/github/issues/HPC-buildtest/buildtest-framework.svg
+.. |contributors| image:: https://img.shields.io/github/contributors/HPC-buildtest/buildtest-framework.svg
+.. |stars| image:: https://img.shields.io/github/stars/HPC-buildtest/buildtest-framework.svg
+.. |watchers| image:: https://img.shields.io/github/watchers/HPC-buildtest/buildtest-framework.svg
 
 
 buildtest
