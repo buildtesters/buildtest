@@ -10,6 +10,8 @@ message()
 
 }
 
+mkdir -p ${testdir}
+
 cmd="buildtest --help "
 $cmd &> ${testdir}/help.txt
 message
@@ -56,12 +58,16 @@ cmd="buildtest build -c compilers.helloworld.hello_slurm.yml -vv"
 $cmd  &> ${testdir}/slurm_test.txt
 message
 
-cmd ="buildtest build -c openmp.hello.omp_hello.c.yml -vv"
+cmd="buildtest build -c openmp.hello.omp_hello.c.yml -vv"
 $cmd &> ${testdir}/openmp_test1.txt
 message
 
-cmd ="buildtest build -c openmp.dotprod.omp_dotprod.f.yml -vv "
-$cmd &> ${testdir}/openmp_test2.txt
+cmd="buildtest build -c tutorial.openacc.vecAdd.c.yml -vv -co GCC "
+$cmd &> ${testdir}/openacc_test1.txt
+message
+
+cmd="buildtest build -c tutorial.openacc.vecAdd.c.yml -vv -m GCC "
+$cmd &> ${testdir}/openacc_test2.txt
 message
 
 cmd="buildtest module loadtest "
@@ -76,25 +82,25 @@ cmd="BUILDTEST_SPIDER_VIEW=all buildtest module --spack "
 $cmd  &> $testdir/all_spack_modules.txt
 message
 
-cmd="buildtest module --easybuild &> $testdir/easybuild_modules.txt"
-$cmd
+cmd="buildtest module --easybuild"
+$cmd &> $testdir/easybuild_modules.txt
 message
 
 cmd="BUILDTEST_SPIDER_VIEW=all buildtest module --easybuild"
 $cmd &> $testdir/all_easybuild_modules.txt
 message
 
-cmd="buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core &> $testdir/add_module_tree.txt"
-$cmd
+cmd="buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core"
+$cmd  &> $testdir/add_module_tree.txt
 message
 
 
-cmd="buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core &> $testdir/rm_module_tree.txt"
-$cmd
+cmd="buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core "
+$cmd &> $testdir/rm_module_tree.txt
 message
 
-cmd="buildtest module tree -l &> $testdir/list_module_tree.txt"
-$cmd
+cmd="buildtest module tree -l"
+$cmd &> $testdir/list_module_tree.txt
 message
 
 # running benchmark

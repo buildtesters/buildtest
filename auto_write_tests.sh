@@ -22,6 +22,11 @@ tee $script_dir/build-lsf-example.txt <<<"buildtest build -c compilers.helloworl
 # slurm example
 tee $script_dir/build-slurm-example.txt <<<"buildtest build -c compilers.helloworld.hello_slurm.yml -vv""" | bash >>$script_dir/build-slurm-example.txt
 
+# mpi example
+ml GCC OpenMPI; tee $script_dir/build-mpi-example.txt <<<"buildtest build -c mpi.hello.hello.c.yml -vv""" | bash >>$script_dir/build-mpi-example.txt
+# openacc example
+tee $script_dir/build-openacc-example.txt <<<"buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv""" | bash >>$script_dir/build-openacc-example.txt
+
 tee $script_dir/build-single-configuration-module.txt <<<"ml eb/2019; ml GCC; buildtest build -c compilers.helloworld.hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration-module.txt
 
 tee $script_dir/build-shell-csh.txt <<<"buildtest build -c compilers.helloworld.hello_gnu.yml --shell csh" | bash >>$script_dir/build-shell-csh.txt
@@ -30,6 +35,9 @@ tee $script_dir/build-shell-bash.txt <<<"BUILDTEST_SHELL=bash buildtest build -c
 tee $script_dir/build-lmod-collection.txt <<<"buildtest build -c compilers.helloworld.hello_intel_fortran.yml -co intelmpi -vv" | bash >>$script_dir/build-lmod-collection.txt
 tee $script_dir/build-module-permute.txt <<<" buildtest build -c  compilers.helloworld.hello_intel_fortran.yml --modules intel -vv" | bash >> $script_dir/build-module-permute.txt
 tee $script_dir/build-module-all-permute.txt <<<"BUILDTEST_PARENT_MODULE_SEARCH=all buildtest build -c  compilers.helloworld.hello_intel_fortran.yml --modules vmd -vv" | bash >> $script_dir/build-module-all-permute.txt
+
+# bsub example
+tee $script_dir/buildtest-build-bsub-help.txt <<<"buildtest build bsub -h """ | bash >>$script_dir/buildtest-build-bsub-help.txt
 
 
 
@@ -63,7 +71,7 @@ tee $script_dir/buildtest-list-easyconfigs.txt <<< "buildtest list --easyconfigs
 # TestConfigs Subcommand
 tee $script_dir/buildtest-testconfigs-help.txt <<<"buildtest testconfigs --help" | bash >> $script_dir/buildtest-testconfigs-help.txt
 tee $script_dir/buildtest-testconfigs-list.txt <<<"buildtest testconfigs list" | bash >> $script_dir/buildtest-testconfigs-list.txt
-tee $script_dir/buildtest-testconfigs-view.txt <<<"buildtest testconfigs view mpi.matrixmux.mm_mpi.f.yml" | bash >> $script_dir/buildtest-testconfigs-view.txt
+tee $script_dir/buildtest-testconfigs-view.txt <<<"buildtest testconfigs view compilers.helloworld.args.c.yml" | bash >> $script_dir/buildtest-testconfigs-view.txt
 
 # Benchmark Subcommand
 tee $script_dir/buildtest-benchmark-help.txt <<<"buildtest benchmark --help" | bash >> $script_dir/buildtest-benchmark-help.txt
@@ -95,3 +103,8 @@ tee $script_dir/module_tree_set.txt <<< "buildtest module tree -s /usr/share/lmo
 
 # view configuration
 tee $script_dir/buildtest_config_view.txt <<< "buildtest config view" | bash >> $script_dir/buildtest_config_view.txt
+
+# system command
+tee $script_dir/buildtest_system_help.txt <<< "buildtest system --help" | bash >> $script_dir/buildtest_system_help.txt
+tee $script_dir/buildtest_system_view.txt <<< "buildtest system view" | bash >> $script_dir/buildtest_system_view.txt
+tee $script_dir/buildtest_system_fetch.txt <<< "buildtest system fetch" | bash >> $script_dir/buildtest_system_fetch.txt

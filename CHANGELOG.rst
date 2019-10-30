@@ -2,8 +2,31 @@
 CHANGELOG
 =================
 
-Latest Release (TBD)
+v0.7.1 (Aug 30, 2019)
+---------------------
+- Re-implement core mechanics of the build framework by using new YAML schema.
+- Release buildtest under MIT license
+- Yaml schema can be printed via ``buildtest show -k singlesource``. The schema provides building
+  C, C++, Fortran code along with MPI test. Provides keys such as ``cflags``, ``cxxflags``, ``fflags``
+  ``cppflags``, ``ldflags`` for passing compiler options. The schema provides a dictionary to
+ insert **#BSBU** and **#SBATCH** directives into job scripts via ``bsub:`` and ``sbatch:`` keys.
+- Add documentation example on C, C++, Fortran, MPI, and OpenACC code.
+- Add options **buildtest build bsub** (bsub wrapper) such as ``-n``, ``-W``, ``-M``,``-J``,``--dry-run``.
+- Add key TESTDIR in **build.json** to identify test directory, this makes it easier when running test
+
+
+v0.7.0 (Aug 22, 2019)
 ----------------------
+- autodetect slurm configuration from system and write to json file
+- add option ``buildtest module --module-deps`` that prints modules dependent on parent modules
+- add subparser ``buildtest module tree`` that provides operation for managing module trees (**BUILDTEST_MODULEPATH**)
+- remove subparser ``buildtest find``
+- add option ``buildtest build --collection`` for building test with Lmod user collection
+- remove option ``buildtest build --software``
+- add option ``buildtest build --modules`` which allows test to be build with multiple module versions
+- add option ``buildtest module collection`` for managing module collection using buildtest. Alternative to Lmod user collection
+- remove option ``buildtest --clean-logs``
+- Color output of Lua and non-lua modules in ``buildtest list --modules``.
 -  Remove option ``--python-package``, ``--perl-package``, ``--ruby-package``, ``--r-package`` from **build** menu. Also delete all reference in documentation and delete repository
 - ``--buildtest-software`` option is removed
 - ``--format`` option in list submenu only supports **json**. Previously it also supported **csv**
