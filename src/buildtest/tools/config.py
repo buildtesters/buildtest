@@ -6,7 +6,7 @@ import subprocess
 from shutil import copy
 
 
-BUILDTEST_VERSION="0.6.4"
+BUILDTEST_VERSION="0.7.1"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
 BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm"]
