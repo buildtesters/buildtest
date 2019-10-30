@@ -48,4 +48,4 @@ def write_test(dict,verbose):
             print (line)
         print ("{:_<80}".format(""))
 
-    BUILDTEST_BUILD_HISTORY[build_id]["TESTS"] = [dict["testpath"]]
+    BUILDTEST_BUILD_HISTORY[build_id]["TESTS"].append(dict["testpath"])

@@ -6,6 +6,7 @@ for building test scripts from test configuration.
 from datetime import datetime
 import json
 import os
+import random
 import shutil
 import subprocess
 import sys
@@ -65,9 +66,11 @@ def func_build_subcmd(args):
                                system["OS_VERSION"],
                                f"build_{str(build_id)}")
 
+
+
     config_opts['BUILDTEST_TESTDIR'] = os.path.join(config_opts['BUILDTEST_TESTDIR'],test_subdir)
     create_dir(config_opts['BUILDTEST_TESTDIR'])
-
+    BUILDTEST_BUILD_HISTORY[build_id]["TESTDIR"] = config_opts['BUILDTEST_TESTDIR']
 
     logger, LOGFILE = init_log()
     logger.info(f"Opening File: {BUILDTEST_SYSTEM} and loading as JSON object")
@@ -105,9 +108,16 @@ def func_build_subcmd(args):
         singlesource_test = SingleSource(file)
         content = singlesource_test.build_test_content()
         logger.info("Injecting method to inject modules into test script")
-        content["module"] = module_selector(args.collection,args.module_collection)
-
-        write_test(content,args.verbose)
+        if args.modules:
+            for x in module_cmd_list:
+                content["module"] = []
+                content["module"].append(x)
+                dirname = os.path.dirname(content['testpath'])
+                content["testpath"] = '%s.exe' % os.path.join(dirname,hex(random.getrandbits(32)))
+                write_test(content, args.verbose)
+        else:
+            content["module"] = module_selector(args.collection,args.module_collection)
+            write_test(content,args.verbose)
 
 
     # if binary test is True then generate binary test for all loaded modules

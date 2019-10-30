@@ -83,7 +83,7 @@ def run_tests(args):
     tests = content["build"][str(args.id)]["TESTS"]
 
     # all tests are in same directory, retrieving parent directory of test
-    test_dir = os.path.dirname(tests[0])
+    test_dir = content["build"][str(args.id)]["TESTDIR"]
 
     runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
     run_output_file = os.path.join(test_dir,"run",runfile)
@@ -92,6 +92,7 @@ def run_tests(args):
     count_test = len(tests)
     passed_test = 0
     failed_test = 0
+
     for test in tests:
         ret = subprocess.Popen(test,
                                shell=True,
