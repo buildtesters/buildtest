@@ -16,6 +16,7 @@ def main():
     parser = menu()
     parse_options(parser)
 
+
 if __name__ == "__main__":
     """Entry Point, invoking main() method"""
     main()

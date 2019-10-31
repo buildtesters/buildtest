@@ -25,9 +25,11 @@ def is_file(file):
     :return: returns True if file exists otherwise terminates with an exception
     :rtype: True if successful, otherwise throws an exception
     """
-    if not os.path.isfile(file):
+    if os.path.exists(os.path.expanduser(file)) or os.path.exists(os.path.expandvars(file)):
+        return True
+    else:
         raise BuildTestError("Invalid File Path %s. " % file)
-    return True
+
 
 def is_dir(dir):
     """This method will check if a directory exist and if not found throws an exception.
@@ -40,9 +42,12 @@ def is_dir(dir):
     :rtype: True if successful, otherwise throws an exception
     """
 
-    if not os.path.isdir(dir):
+
+    if os.path.isdir(os.path.expanduser(dir)) or os.path.isdir(os.path.expandvars(dir)):
+        return True
+    else:
         raise BuildTestError("Invalid Directory Path %s" % dir)
-    return True
+
 
 
 def walk_tree(root_dir, ext):
