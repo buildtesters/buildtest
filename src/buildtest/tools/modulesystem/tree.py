@@ -1,3 +1,4 @@
+import os
 import yaml
 from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import is_dir
@@ -6,7 +7,7 @@ def func_module_tree_subcmd(args):
     """ Entry point for ``buildtest module tree`` subcommand """
 
     if args.list:
-        [print (tree) for tree in config_opts["BUILDTEST_MODULEPATH"]]
+        module_tree_list()
 
     if args.add:
         module_tree_add(args.add)
@@ -16,6 +17,10 @@ def func_module_tree_subcmd(args):
 
     if args.set:
         module_tree_set(args.set)
+
+def module_tree_list():
+    """This method list module trees assigned to BUILDTEST_MODULEPATH"""
+    [print(tree) for tree in config_opts["BUILDTEST_MODULEPATH"]]
 
 def module_tree_add(tree_list):
     """This method adds a module tree to BUILDTEST_MODULEPATH in configuration file.
@@ -32,6 +37,8 @@ def module_tree_add(tree_list):
 
     for tree in tree_list:
         is_dir(tree)
+        tree = os.path.expandvars(tree)
+        tree = os.path.expanduser(tree)
         content["BUILDTEST_MODULEPATH"].append(tree)
 
     # converting to set to avoid adding duplicate entries
@@ -59,6 +66,8 @@ def module_tree_rm(tree_list):
     fd = open(BUILDTEST_CONFIG_FILE,"r")
     content = yaml.safe_load(fd)
     for tree in tree_list:
+        tree = os.path.expandvars(tree)
+        tree = os.path.expanduser(tree)
         if tree in content["BUILDTEST_MODULEPATH"]:
             content["BUILDTEST_MODULEPATH"].remove(tree)
 

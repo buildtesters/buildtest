@@ -230,12 +230,7 @@ def find_module_deps(parent_module):
                 filepath = mpath
                 break;
     print (f"Module File: {filepath}")
-    print("{:_<80}".format(""))
-    fd = open(filepath,"r")
-    content = fd.read()
-    fd.close()
-    print (content)
-    print("{:_<80}".format(""))
+
     # add module file path where parent module is found in "parent" key
     for mod in module_json.keys():
         for mpath in module_json[mod].keys():

@@ -20,3 +20,4 @@ def test_find_easyconfigs():
 
 def test_show_config():
   show_configuration()
+
