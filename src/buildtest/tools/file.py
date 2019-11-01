@@ -110,6 +110,8 @@ def create_file(filename):
     :rtype: Catches exception of type OSError
     """
     logger = logging.getLogger(logID)
+    filename = os.path.expandvars(filename)
+    filename = os.path.expanduser(filename)
     if not os.path.isfile(filename):
         try:
             fd = open(filename, 'w')
@@ -130,6 +132,8 @@ def create_dir(dirname):
     :return: creates the directory or print an exception message upon failure
     :rtype: Catches exception of type OSError
     """
+    dirname = os.path.expandvars(dirname)
+    dirname = os.path.expanduser(dirname)
     logger = logging.getLogger(logID)
     if not os.path.isdir(dirname):
         try:

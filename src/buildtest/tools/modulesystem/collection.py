@@ -7,7 +7,7 @@ import sys
 import json
 
 from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE
-from buildtest.tools.file import create_dir, create_file, is_file
+from buildtest.tools.file import create_dir, is_file
 
 def func_collection_subcmd(args):
     """Entry point for ``buildtest module collection``.
