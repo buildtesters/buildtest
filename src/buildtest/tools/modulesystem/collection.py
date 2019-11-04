@@ -16,9 +16,7 @@ def func_collection_subcmd(args):
     :type args: dict, required
     """
     if args.clear:
-        if is_file(BUILDTEST_MODULE_COLLECTION_FILE):
-            os.remove(BUILDTEST_MODULE_COLLECTION_FILE)
-        print("Removing all module collections!")
+        clear_module_collection()
     if args.check:
         check_module_collection()
     if args.add:
@@ -164,6 +162,19 @@ def check_module_collection():
 
     if error == False:
         print ("All module collection passed check!")
+
+def clear_module_collection():
+    """Clear all module collection from collection file. This implements ``buildtest module collection --clear``"""
+    if is_file(BUILDTEST_MODULE_COLLECTION_FILE):
+        fd = open(BUILDTEST_MODULE_COLLECTION_FILE,'r')
+        content = json.load(fd)
+        content["collection"] = []
+        fd.close()
+
+        fd = open(BUILDTEST_MODULE_COLLECTION_FILE,'w')
+        json.dump(content,fd,indent=2)
+        fd.close()
+        print ("Removing all module collections!")
 
 def get_collection_length():
     """Read collection file collection.json and return length of collection

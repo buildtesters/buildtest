@@ -1,6 +1,10 @@
 import os
 
-def test_answer():
-  home_dir = os.getenv("HOME")
-  config_file = os.path.join(home_dir,".buildtest/settings.yml")
-  assert os.path.isfile(config_file)
+from buildtest.tools.config import BUILDTEST_CONFIG_FILE, func_config_view
+
+def test_config_file_exists():
+  assert os.path.exists(BUILDTEST_CONFIG_FILE)
+
+def test_view_configuration():
+  func_config_view()
+

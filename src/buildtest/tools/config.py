@@ -218,7 +218,7 @@ def func_config_edit(args):
 
     os.system(f"vim {BUILDTEST_CONFIG_FILE}")
 
-def func_config_view(args):
+def func_config_view(args=None):
     """View buildtest configuration file. This implements ``buildtest config view``"""
 
     os.system(f"cat {BUILDTEST_CONFIG_FILE}")
