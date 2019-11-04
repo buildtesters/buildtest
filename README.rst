@@ -1,4 +1,4 @@
-| |license| |docs| |slack| |tags| |forks| |issues| |contributors| |stars| |watchers|
+| |license| |docs| |codecov| |slack| |tags| |forks| |issues| |contributors| |stars| |watchers|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -13,7 +13,8 @@
 .. |contributors| image:: https://img.shields.io/github/contributors/HPC-buildtest/buildtest-framework.svg
 .. |stars| image:: https://img.shields.io/github/stars/HPC-buildtest/buildtest-framework.svg
 .. |watchers| image:: https://img.shields.io/github/watchers/HPC-buildtest/buildtest-framework.svg
-
+.. |codecov| image:: https://codecov.io/gh/HPC-buildtest/buildtest-framework/branch/devel/graph/badge.svg
+    :target: https://codecov.io/gh/HPC-buildtest/buildtest-framework
 
 buildtest
 ---------
