@@ -124,6 +124,34 @@ When it comes to building C, C++, and Fortran program example the ``{build}`` se
     $FC $FFLAGS -o $EXE $SRCFILE $LDFLAGS
 
 
+The ``{run}`` section is the execution of binary from the compiled code. The general format is the following::
+
+   {pre_exec} <executable> {exec_opts} {post_exec}
+
+The ``{pre_exec}`` and ``{post_exec}`` are shell commands that can be passed before and after executable which are specified
+in the test configuration. To pass arguments to executable use the ``{exec_opts}`` which can be specified in the test
+configuration.
+
+An example of a run command with the executable ``a.out`` with the following parameters for **{pre_exec}**, **{post_exec}**
+and **{exec_opts}**
+
+- ``pre_exec: OMP_NUM_THREADS=2``
+- ``exec_opts: hello world``
+- ``post_exec: > $HOME/output``
+
+::
+
+   OMP_NUM_THREADS=2 ./a.out hello world > $HOME/output
+
+The run command will slightly differ when running MPI code but in a nutshell it will be as follows::
+
+   {pre_exec} {launcher} {launcher_opts} <executable> {exec_opts} {post_exec}
+
+The only difference between running serial code and MPI code is the need for ``{launcher}`` and ``{launcher_opts}`` where
+**launcher** is MPI launcher (mpirun, mpiexec.hydra, mpiexec, etc...) and **launcher_opts** is the options to MPI launcher.
+The MPI launcher and launcher options can be specified in the test configuration. For more information on MPI build see
+:ref:`mpi_example`
+
 Hello World C
 ----------------
 

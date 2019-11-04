@@ -1,6 +1,7 @@
 Build Examples
 ===============
 
+.. _mpi_example:
 
 MPI Example
 ------------
