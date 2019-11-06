@@ -7,6 +7,7 @@ Submodules
 .. toctree::
 
    buildtest.tools.buildsystem.binarytest
+   buildtest.tools.buildsystem.dry
    buildtest.tools.buildsystem.singlesource
    buildtest.tools.buildsystem.status
 

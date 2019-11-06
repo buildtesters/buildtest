@@ -7,7 +7,6 @@ Subpackages
 .. toctree::
 
     buildtest.benchmark
-    buildtest.test
     buildtest.tools
 
 Module contents

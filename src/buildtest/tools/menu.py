@@ -150,6 +150,8 @@ def menu():
                               "--binary",
                               help="Conduct sanity check on binaries on active modules ",
                               action="store_true")
+    parser_build.add_argument("-d","--dry", help="dry-run mode, buildtest will not write the test scripts but print "
+                                                     "content of test that would be written", action="store_true")
     parser_build.add_argument("-v",
                               "--verbose",
                               help="verbosity level (default: %(default)s)",

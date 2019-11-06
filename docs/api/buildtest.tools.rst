@@ -24,14 +24,13 @@ Submodules
    buildtest.tools.lsf
    buildtest.tools.menu
    buildtest.tools.modules
-   buildtest.tools.mpi
    buildtest.tools.options
    buildtest.tools.show
    buildtest.tools.slurm
    buildtest.tools.software
    buildtest.tools.system
    buildtest.tools.testconfigs
-   buildtest.tools.yaml
+   buildtest.tools.writer
 
 Module contents
 ---------------

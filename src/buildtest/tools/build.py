@@ -10,12 +10,13 @@ import random
 import shutil
 import subprocess
 import sys
-import yaml
+
 
 from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY, BUILDTEST_BUILD_LOGFILE,BUILDTEST_SYSTEM
-from buildtest.tools.modulesystem.collection import get_buildtest_module_collection
+
 from buildtest.tools.buildsystem.singlesource import SingleSource
 from buildtest.tools.buildsystem.binarytest import generate_binary_test
+from buildtest.tools.buildsystem.dry import dry_view
 from buildtest.tools.file import create_dir, is_dir, walk_tree, is_file
 from buildtest.tools.log import init_log
 from buildtest.tools.modules import find_modules, module_selector
@@ -66,8 +67,9 @@ def func_build_subcmd(args):
 
 
     config_opts['BUILDTEST_TESTDIR'] = os.path.join(config_opts['BUILDTEST_TESTDIR'],test_subdir)
-    create_dir(config_opts['BUILDTEST_TESTDIR'])
-    BUILDTEST_BUILD_HISTORY[build_id]["TESTDIR"] = config_opts['BUILDTEST_TESTDIR']
+    if not args.dry:
+        create_dir(config_opts['BUILDTEST_TESTDIR'])
+        BUILDTEST_BUILD_HISTORY[build_id]["TESTDIR"] = config_opts['BUILDTEST_TESTDIR']
 
     logger, LOGFILE = init_log()
     logger.info(f"Opening File: {BUILDTEST_SYSTEM} and loading as JSON object")
@@ -110,11 +112,17 @@ def func_build_subcmd(args):
                 content["module"] = []
                 content["module"].append(x)
                 dirname = os.path.dirname(content['testpath'])
-                content["testpath"] = '%s.exe' % os.path.join(dirname,hex(random.getrandbits(32)))
-                write_test(content, args.verbose)
+                content["testpath"] = '%s.sh' % os.path.join(dirname,hex(random.getrandbits(32)))
+                if args.dry:
+                    dry_view(content)
+                else:
+                    write_test(content, args.verbose)
         else:
             content["module"] = module_selector(args.collection,args.module_collection)
-            write_test(content,args.verbose)
+            if args.dry:
+                dry_view(content)
+            else:
+                write_test(content,args.verbose)
 
 
     # if binary test is True then generate binary test for all loaded modules
@@ -136,25 +144,27 @@ def func_build_subcmd(args):
     if args.package:
         generate_binary_test(args.package, args.verbose, build_id, package=True)
 
-    print("Writing Log file to: ", LOGFILE)
 
-    BUILD_TIME = datetime.now().strftime("%m/%d/%Y %X")
+    if not args.dry:
+        print("Writing Log file to: ", LOGFILE)
 
-    BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"] = len(BUILDTEST_BUILD_HISTORY[build_id]["TESTS"])
-    BUILDTEST_BUILD_HISTORY[build_id]["CMD"] = "buildtest " + ' '.join(str(arg) for arg in sys.argv[1:])
+        BUILD_TIME = datetime.now().strftime("%m/%d/%Y %X")
 
-    BUILDTEST_BUILD_HISTORY[build_id]["BUILD_TIME"] = BUILD_TIME
-    BUILDTEST_BUILD_HISTORY[build_id]["LOGFILE"] = LOGFILE
+        BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"] = len(BUILDTEST_BUILD_HISTORY[build_id]["TESTS"])
+        BUILDTEST_BUILD_HISTORY[build_id]["CMD"] = "buildtest " + ' '.join(str(arg) for arg in sys.argv[1:])
 
-    logger.info(f"Reading Build Log File: {BUILDTEST_BUILD_LOGFILE}")
+        BUILDTEST_BUILD_HISTORY[build_id]["BUILD_TIME"] = BUILD_TIME
+        BUILDTEST_BUILD_HISTORY[build_id]["LOGFILE"] = LOGFILE
 
-    fd = open(BUILDTEST_BUILD_LOGFILE,"r")
-    build_dict = json.load(fd)
-    fd.close()
-    build_dict["build"][build_id] = BUILDTEST_BUILD_HISTORY[build_id]
-    logger.debug("Adding latest build to dictionary")
-    logger.debug(f"{BUILDTEST_BUILD_HISTORY[build_id]}")
-    logger.info(f"Updating Build Log File: {BUILDTEST_BUILD_LOGFILE}")
-    fd = open(BUILDTEST_BUILD_LOGFILE, "w")
-    json.dump(build_dict, fd, indent=4)
-    fd.close()
+        logger.info(f"Reading Build Log File: {BUILDTEST_BUILD_LOGFILE}")
+
+        fd = open(BUILDTEST_BUILD_LOGFILE,"r")
+        build_dict = json.load(fd)
+        fd.close()
+        build_dict["build"][build_id] = BUILDTEST_BUILD_HISTORY[build_id]
+        logger.debug("Adding latest build to dictionary")
+        logger.debug(f"{BUILDTEST_BUILD_HISTORY[build_id]}")
+        logger.info(f"Updating Build Log File: {BUILDTEST_BUILD_LOGFILE}")
+        fd = open(BUILDTEST_BUILD_LOGFILE, "w")
+        json.dump(build_dict, fd, indent=4)
+        fd.close()
