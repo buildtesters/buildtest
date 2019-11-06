@@ -29,9 +29,6 @@ tee $script_dir/build-openacc-example.txt <<<"buildtest build -c tutorial.openac
 
 tee $script_dir/build-single-configuration-module.txt <<<"ml eb/2019; ml GCC; buildtest build -c compilers.helloworld.hello_gnu.yml -vv" | bash >>$script_dir/build-single-configuration-module.txt
 
-tee $script_dir/build-shell-csh.txt <<<"buildtest build -c compilers.helloworld.hello_gnu.yml --shell csh" | bash >>$script_dir/build-shell-csh.txt
-tee $script_dir/build-shell-bash.txt <<<"BUILDTEST_SHELL=bash buildtest build -c compilers.helloworld.hello_gnu.yml" | bash >>$script_dir/build-shell-bash.txt
-
 tee $script_dir/build-lmod-collection.txt <<<"buildtest build -c compilers.helloworld.hello_intel_fortran.yml -co intelmpi -vv" | bash >>$script_dir/build-lmod-collection.txt
 tee $script_dir/build-module-permute.txt <<<" buildtest build -c  compilers.helloworld.hello_intel_fortran.yml --modules intel -vv" | bash >> $script_dir/build-module-permute.txt
 tee $script_dir/build-module-all-permute.txt <<<"BUILDTEST_PARENT_MODULE_SEARCH=all buildtest build -c  compilers.helloworld.hello_intel_fortran.yml --modules vmd -vv" | bash >> $script_dir/build-module-all-permute.txt

@@ -69,27 +69,3 @@ Shown below is an example test script for gcc binary
 
     module load GCCcore/6.4.0
     which gcc
-
-
-
-Shell Types
---------------
-
-Currently buildtest supports ``sh``, ``bash``, ``csh`` shell for creating
-test scripts. buildtest defaults to ``sh`` but this can be tweaked
-
-To create tests for different shell types try ``buildtest build --shell <shell>``
-or set the variable ``BUILDTEST_SHELL`` in your configuration file or via
-environment variable
-
-Let's build test with ``csh``
-
-.. program-output:: cat scripts/build-shell-csh.txt
-
-buildtest will add the appropriate shell extension for the test script to
-avoid name conflicts.
-
-Another way to build for different shell is to set ``BUILDTEST_SHELL`` as we
-see in example below
-
-.. program-output:: cat scripts/build-shell-bash.txt

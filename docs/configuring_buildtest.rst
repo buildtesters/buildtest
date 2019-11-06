@@ -107,30 +107,6 @@ records whose modulefile absolute path is a subdirectory of ``BUILDTEST_MODULEPA
 ``MODULEPATH`` and setting ``BUILDTEST_SPIDER_VIEW=current`` can be useful
 in testing modules that are visible to module environment.
 
-
-Configure Shell
-----------------
-
-buildtest supports test creation for ``sh``, ``bash``, and ``csh``. The test
-are created with the appropriate extension. The default shell is ``sh``.
-
-To configure the shell use the variable ``BUILDTEST_SHELL`` in your
-configuration file::
-
-	BUILDTEST_SHELL: sh
-
-To change the shell to ``bash`` or ``csh`` you can do either::
-
-	BUILDTEST_SHELL: bash
-	BUILDTEST_SHELL: csh
-
-
-If you specify an invalid value you may get the following message
-
-.. Error::
-	BUILDTEST_SHELL expects value [``sh``, ``bash``, ``csh``] current value	is tcsh
-
-
 Test Threshold
 ----------------
 

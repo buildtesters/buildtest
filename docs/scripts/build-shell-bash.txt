@@ -1,1 +1,0 @@
-BUILDTEST_SHELL=bash buildtest build -c compilers.helloworld.hello_gnu.yml

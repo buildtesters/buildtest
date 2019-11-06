@@ -13,10 +13,6 @@ def override_configuration():
     bool_config_override("BUILDTEST_BINARY")
     bool_config_override("BUILDTEST_MODULE_FORCE_PURGE")
 
-
-    if os.environ.get('BUILDTEST_SHELL'):
-        config_opts['BUILDTEST_SHELL']=os.environ['BUILDTEST_SHELL']
-
     if os.environ.get('BUILDTEST_SPIDER_VIEW'):
         config_opts['BUILDTEST_SPIDER_VIEW']=os.environ[
             'BUILDTEST_SPIDER_VIEW']

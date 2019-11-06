@@ -10,7 +10,6 @@ import os
 import stat
 
 from buildtest.tools.config import config_opts, logID, BUILDTEST_BUILD_HISTORY
-from buildtest.tools.file import string_in_file, create_dir
 from buildtest.tools.modules import module_obj
 from buildtest.tools.software import get_binaries_from_application
 from buildtest.tools.system import get_binaries_from_systempackage, \
@@ -76,8 +75,7 @@ def generate_binary_test(name,verbose, build_id, package=None, module=None):
 
 
     count = 0
-    shell_path =  BuildTestCommand().which(config_opts["BUILDTEST_SHELL"])[
-        0]
+
     for key in binary_tests:
         count = count + 1
         name_str=key.replace(" ","_")
@@ -86,14 +84,14 @@ def generate_binary_test(name,verbose, build_id, package=None, module=None):
         # have path name
         name_str = name_str.replace("/","_")
 
-        testname=name_str+"."+config_opts["BUILDTEST_SHELL"]
+        testname=name_str+".sh"
         testpath=os.path.join(config_opts['BUILDTEST_TESTDIR'],testname)
 
         logger.debug("Creating and Opening  test file: %s for writing ",
                      testpath)
         fd=open(testpath,'w')
 
-        shell_magic = f"#!{shell_path}"
+        shell_magic = f"#!/bin/bash"
         fd.write(shell_magic + "\n")
 
         if module:

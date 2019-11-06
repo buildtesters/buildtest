@@ -49,9 +49,6 @@ def func_build_subcmd(args):
         print ("Clearing Build History")
         sys.exit(0)
 
-    if args.shell:
-        config_opts['BUILDTEST_SHELL']=args.shell
-
     if args.binary:
         config_opts["BUILDTEST_BINARY"] = args.binary
 

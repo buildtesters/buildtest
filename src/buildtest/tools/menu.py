@@ -2,18 +2,15 @@
 buildtest menu
 """
 
-import os
+
 import argparse
 import argcomplete
 
-
-
 from buildtest.tools.build import func_build_subcmd
-from buildtest.tools.config import BUILDTEST_SHELLTYPES, config_opts, \
+from buildtest.tools.config import config_opts, \
     check_configuration, func_config_edit, func_config_view, func_config_restore
 from buildtest.tools.modulesystem.collection import func_collection_subcmd, \
     get_collection_length
-from buildtest.tools.file import create_dir, walk_tree
 from buildtest.tools.lsf import func_bsub
 from buildtest.tools.list import func_list_subcmd
 from buildtest.tools.modules import func_module_subcmd, \
@@ -143,9 +140,7 @@ def menu():
                               help="Build test for system packages",
                               choices=pkglist,
                               metavar='SYSTEM-PACKAGE')
-    parser_build.add_argument("--shell",
-                              help=" Select the type of shell for testscript",
-                              choices=BUILDTEST_SHELLTYPES)
+
     parser_build.add_argument("-c",
                               "--config",
                               help="Specify test configuration",

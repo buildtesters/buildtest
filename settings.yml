@@ -2,10 +2,6 @@
 # # binary test support. Valid options [True, False]
 BUILDTEST_BINARY: False
 #
-# # Configure shell when running test. 
-# # Valid options:  [bash, csh, sh]. 
-# # Default: [sh]
-BUILDTEST_SHELL: sh
 #
 # # Configure whether to force purge modules in test creation. Defaults to "module purge".
 # # When set to True, it will write "module --force purge" in test script. Useful if your 

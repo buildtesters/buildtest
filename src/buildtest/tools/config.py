@@ -10,12 +10,8 @@ BUILDTEST_VERSION="0.7.1"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
 BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm"]
-BUILDTEST_SHELLTYPES = ["sh", "bash", "csh"]
 
 # test scripts that need to be run locally
-BUILDTEST_TEST_LOCAL_EXT = ["."+ i for i in BUILDTEST_SHELLTYPES]
-BUILDTEST_TEST_EXT = BUILDTEST_JOB_EXTENSION + \
-                     ["."+ i for i in BUILDTEST_SHELLTYPES]
 
 BUILDTEST_BUILD_LOGFILE = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","build.json")
 BUILDTEST_SYSTEM = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","system.json")
@@ -76,7 +72,6 @@ config_directory_types = [
 config_yaml_keys = {
     'BUILDTEST_BINARY': type(True),
     'BUILDTEST_MODULE_FORCE_PURGE': type(True),
-    'BUILDTEST_SHELL': type("str"),
     'BUILDTEST_SUCCESS_THRESHOLD': type(1.0),
     'BUILDTEST_MODULEPATH': type([]),
     'BUILDTEST_SPIDER_VIEW': type("str"),
@@ -115,12 +110,6 @@ def check_configuration():
             print(f"Invalid Type for key: {key}")
             print(f"Expecting type: {str(value)}")
             print(f"Current type: {str(type(config_opts[key]))}")
-            ec = 1
-
-        if (key == "BUILDTEST_SHELL" and
-            config_opts[key] not in BUILDTEST_SHELLTYPES):
-            print (f"{key} expects value {str(BUILDTEST_SHELLTYPES)} current "
-                   + f"value is {str(config_opts[key])}")
             ec = 1
 
         # check if BUILDTEST_SUCCESS_THRESHOLD is between 0.0 and 1.0

@@ -96,32 +96,27 @@ Shown below is a sample configuration from buildtest by running ``buildtest show
 ``buildtest show --config`` will show the updated configuration if you set any ``BUILDTEST_*`` environment
 variables.
 
-For instance, if you want to override configuration BUILDTEST_SHELL shell to
-``csh`` then ``buildtest show --config`` will report the overridden value denoted with **(E)** to indicate configuration was set
+For instance, if you want to override configuration BUILDTEST_SPIDER_VIEW to
+``all`` then ``buildtest show --config`` will report the overridden value denoted with **(E)** to indicate configuration was set
 by environment variable.
 
 See example below
 
 .. code-block:: console
     :linenos:
-    :emphasize-lines: 12
+    :emphasize-lines: 9
 
-    $ BUILDTEST_SHELL=csh buildtest show -c
-             buildtest configuration summary
-             (C): Configuration File,  (E): Environment Variable
+    $ BUILDTEST_SPIDER_VIEW=all buildtest show -c
+         buildtest configuration summary
+         (C): Configuration File,  (E): Environment Variable
     BUILDTEST_BINARY                                   (C) = False
-    BUILDTEST_CONFIGS_REPO                             (C) = /home/ec2-user/PycharmProjects/buildtest-framework/toolkit
-    BUILDTEST_LOGDIR                                   (C) = /tmp/ec2-user/buildtest/logs
-    BUILDTEST_MODULEPATH                               (C) = /apps/modules/all
+    BUILDTEST_CONFIGS_REPO                             (C) = /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite
+    BUILDTEST_MODULEPATH                               (C) = /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core:/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core:/mxg-hpc/users/ssi29/easybuild/modules/all:/etc/modulefiles:/usr/share/modulefiles:/usr/share/lmod/lmod/modulefiles/Core
     BUILDTEST_MODULE_FORCE_PURGE                       (C) = False
     BUILDTEST_PARENT_MODULE_SEARCH                     (C) = first
-    BUILDTEST_RUN_DIR                                  (C) = /tmp/ec2-user/buildtest/run
-    BUILDTEST_SHELL                                    (E) = csh
-    BUILDTEST_SPIDER_VIEW                              (C) = current
+    BUILDTEST_SPIDER_VIEW                              (E) = all
     BUILDTEST_SUCCESS_THRESHOLD                        (C) = 1.0
-    BUILDTEST_TESTDIR                                  (C) = /tmp/ec2-user/buildtest/tests
-
-
+    BUILDTEST_TESTDIR                                  (C) = /tmp/ssi29/buildtest/tests
 
 .. Note:: if you plan to customize your buildtest configuration with configuration file
     and environment variable, always check your shell environment first to avoid having
