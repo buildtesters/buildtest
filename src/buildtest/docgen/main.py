@@ -80,6 +80,16 @@ def module_cmds():
         fname = os.path.join(docgen,k)
         writer(fname, out, v)
 
+    run("buildtest module tree -s /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core")
+    out = run("buildtest module --spack")
+    writer(os.path.join(docgen,"spack_modules.txt"),out,"buildtest module --spack")
+
+    run("buildtest module tree -s /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core")
+    out = run("buildtest module --easybuild")
+    writer(os.path.join(docgen, "easybuild_modules.txt"), out, "buildtest module --easybuild")
+
+    out = run ("buildtest module -d GCCcore/8.1.0")
+    writer(os.path.join(docgen, "parent_modules.txt"), out, "buildtest module -d GCCcore/8.1.0")
 def writer(fname,out,query):
     fd = open(fname,"w")
     fd.write(f"$ {query}\n")

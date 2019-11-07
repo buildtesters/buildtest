@@ -1,0 +1,22 @@
+$ buildtest module --spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/bzip2/1.0.8-etzfbao.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/diffutils/3.7-jthvt3v.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/gdbm/1.18.1-r4vohzu.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/gettext/0.20.1-c4ovdd2.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libiconv/1.16-xcmzb6a.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libpciaccess/0.13.5-cavw42z.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libsigsegv/2.12-oywfhvk.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libtool/2.4.6-swiq7rt.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libxml2/2.9.9-azmlgc5.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/m4/1.4.18-dipchcn.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/ncurses/6.1-3jjw2re.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/pkgconf/1.6.3-oqak6dh.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/readline/8.0-bp7xnfp.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/tar/1.32-gem5z6s.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/util-macros/1.19.1-s4xjvop.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/xz/5.2.4-lvajsnj.lua is built with Spack
+Module: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/zlib/1.2.11-zolwez4.lua is built with Spack
+
+
+Total Spack Modules: 17
+Total Modules Searched: 17

@@ -284,15 +284,7 @@ for string without the version number. To enable this feature use
 
 Shown below is the output of easybuild retrieval.
 
-.. program-output:: cat scripts/easybuild-modules.txt
-
-If you want buildtest to retrieve all records from ``spider`` to seek out all
-easybuild modules consider setting ``BUILDTEST_SPIDER_VIEW=all`` in
-configuration or environment variable. Shown below is an output when running
-``BUILDTEST_SPIDER_VIEW=all buildtest module --easybuild``
-
-.. program-output:: tail scripts/easybuild-all-modules.txt
-
+.. program-output:: cat docgen/easybuild_modules.txt
 
 Report Spack Modules (``buildtest module --spack``)
 ----------------------------------------------------
@@ -308,12 +300,8 @@ buildtest will search for string ``Module file created by spack`` in modulefile.
 will run this for all modules in module trees defined by ``BUILDTEST_MODULEPATH``.
 
 
-.. program-output:: cat scripts/spack-modules.txt
+.. program-output:: cat docgen/spack_modules.txt
 
-To retrieve all records ``spider`` to find all spack modules in your system
-consider running ``BUILDTEST_SPIDER_VIEW=all buildtest module --spack``.
-
-.. program-output:: cat scripts/spack-all-modules.txt
 
 Parent Modules (``buildtest module --module-deps``)
 -----------------------------------------------------
@@ -330,11 +318,11 @@ buildtest will seek out all parent module from file
 To seek out modules that depend on parent modules use the option
 ``buildtest module --module-deps`` or short option ``buildtest module -d``.
 
-Shown below is a sample run for parent module ``shared``. buildtest
+Shown below is a sample run for parent module ``GCCcore/8.1.0``. buildtest
 will report the content of the module file and list of modules that are
 depended upon the module.
 
-.. program-output:: cat scripts/parent-module.txt
+.. program-output:: cat docgen/parent_modules.txt
 
 buildtest will auto-populate the choice field for option ``-d`` that is a list of parent modules. If you
 are unsure which parent module to choose, just press TAB to get a list of parent modules.

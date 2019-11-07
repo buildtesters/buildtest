@@ -16,12 +16,12 @@ directory at will.
 
 Shown below is unique software list using ``buildtest list --software``
 
-.. program-output:: cat scripts/buildtest-list-software.txt
+.. program-output:: cat docgen/buildtest_list_--software.txt
 
 Similarly we can retrieve full name of module file and absolute path to
 module file using ``buildtest list --module`` or short option ``buildtest list -m``
 
-.. program-output:: cat scripts/buildtest-list-software-modules.txt
+.. program-output:: cat docgen/buildtest_list_--modules.txt
 
 Module Testing
 ---------------
