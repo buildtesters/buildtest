@@ -1,0 +1,91 @@
+$ buildtest benchmark osu --list
+
+    -------------------- TEST BREAKDOWN ---------------------------------
+    osu_bibw - Bidirectional Bandwidth Test
+    osu_bw - Bandwidth Test
+    osu_latency - Latency Test
+    osu_put_latency - Latency Test for Put
+    osu_get_latency - Latency Test for Get
+    osu_put_bw - Bandwidth Test for Put
+    osu_get_bw - Bandwidth Test for Get
+    osu_put_bibw - Bidirectional Bandwidth Test for Put
+    osu_acc_latency - Latency Test for Accumulate
+    osu_cas_latency - Latency Test for Compare and Swap
+    osu_fop_latency - Latency Test for Fetch and Op
+    osu_allgather - MPI_Allgather Latency Test
+    osu_allgatherv - MPI_Allgatherv Latency Test
+    osu_allreduce - MPI_Allreduce Latency Test
+    osu_alltoall - MPI_Alltoall Latency Test
+    osu_alltoallv - MPI_Alltoallv Latency Test
+    osu_bcast - MPI_Bcast Latency Test
+    osu_gather - MPI_Gather Latency Test
+    osu_gatherv - MPI_Gatherv Latency Test
+    osu_reduce - MPI_Reduce Latency Test
+    osu_reduce_scatter - MPI_Reduce_scatter Latency Test
+    osu_scatter - MPI_Scatter Latency Test
+    osu_scatterv - MPI_Scatterv Latency Test
+    osu_iallgather - MPI_Iallgather Latency Test
+    osu_iallreduce - MPI_Iallreduce Latency Test
+    osu_ialltoall - MPI_Ialltoall Latency Test
+    osu_ibcast - MPI_Ibcast Latency Test
+    osu_igather - MPI_Igather Latency Test
+    osu_ireduce - MPI_Iallreduce Latency Test
+    osu_iscatter - MPI_Iscatter Latency Test
+    -----------------------------------------------------------------
+
+    ----------------- POINT-TO-POINT MPI BENCHMARKS -----------------
+    osu_latency - Latency Test
+    osu_latency_mt - Multi-threaded Latency Test
+    osu_bw - Bandwidth Test
+    osu_bibw - Bidirectional Bandwidth Test
+    osu_mbw_mr - Multiple Bandwidth / Message Rate Test
+    osu_multi_lat - Multi-pair Latency Test
+    -----------------------------------------------------------------
+
+    ---------------- COLLECTIVE MPI BENCHMARKS ----------------------
+    osu_allgather - MPI_Allgather Latency Test
+    osu_allgatherv - MPI_Allgatherv Latency Test
+    osu_allreduce - MPI_Allreduce Latency Test
+    osu_alltoall - MPI_Alltoall Latency Test
+    osu_alltoallv - MPI_Alltoallv Latency Test
+    osu_barrier - MPI_Barrier Latency Test
+    osu_bcast - MPI_Bcast Latency Test
+    osu_gather - MPI_Gather Latency Test
+    osu_gatherv - MPI_Gatherv Latency Test
+    osu_reduce - MPI_Reduce Latency Test
+    osu_reduce_scatter - MPI_Reduce_scatter Latency Test
+    osu_scatter - MPI_Scatter Latency Test
+    osu_scatterv - MPI_Scatterv Latency Test
+    -----------------------------------------------------------------
+
+    ------------ NON-BLOCKING COLLECTIVE MPI BENCHMARKS -------------
+    osu_iallgather - MPI_Iallgather Latency Test
+    osu_iallgatherv - MPI_Iallgatherv Latency Test
+    osu_iallreduce - MPI_Iallreduce Latency Test
+    osu_ialltoall - MPI_Ialltoall Latency Test
+    osu_ialltoallv - MPI_Ialltoallv Latency Test
+    osu_ialltoallw - MPI_Ialltoallw Latency Test
+    osu_ibarrier - MPI_Ibarrier Latency Test
+    osu_ibcast - MPI_Ibcast Latency Test
+    osu_igather - MPI_Igather Latency Test
+    osu_igatherv - MPI_Igatherv Latency Test
+    osu_ireduce - MPI_Ireduce Latency Test
+    osu_iscatter - MPI_Iscatter Latency Test
+    osu_iscatterv - MPI_Iscatterv Latency Test
+    -----------------------------------------------------------------
+
+    ------------------- ONE-SIDED MPI BENCHMARKS --------------------
+    osu_put_latency - Latency Test for Put with Active/Passive Synchronization
+    osu_get_latency - Latency Test for Get with Active/Passive Synchronization
+    osu_put_bw - Bandwidth Test for Put with Active/Passive Synchronization
+    osu_get_bw - Bandwidth Test for Get with Active/Passive Synchronization
+    osu_put_bibw - Bi-directional Bandwidth Test for Put with Active Synchronization
+    osu_acc_latency - Latency Test for Accumulate with Active/Passive Synchronization
+    osu_cas_latency - Latency Test for Compare and Swap with Active/Passive Synchronization
+    osu_fop_latency - Latency Test for Fetch and Op with Active/Passive Synchronization
+    osu_get_acc_latency - Latency Test for Get_accumulate with Active/Passive Synchronization
+   -----------------------------------------------------------------
+
+    For more information please refer to http://mvapich.cse.ohio-state.edu/benchmarks/
+
+    

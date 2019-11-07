@@ -1,0 +1,38 @@
+$ buildtest benchmark osu --info
+
+      Keys              |    Description
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      proc              |    Number of MPI Processes
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      min_message_size  |    set the minimum and/or the maximum message size to MIN and/or MAX bytes respectively
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      max_message_size  |    set the minimum and/or the maximum message size to MIN and/or MAX bytes respectively
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      max_mem_per_proc  |    set per process maximum memory consumption to SIZE bytes (default 536870912)
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      iter_msg_size     |    set iterations per message size to ITER (default 1000 for small messages, 100 for large messages)
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      warmup_iter       |    set number of warmup iterations to skip before timing (default 200)
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      full_format       |    print full format listing (MIN/MAX latency and ITERATIONS displayed in addition to AVERAGE latency)
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      calls             |    set the number of MPI_Test() calls during the dummy computation, set CALLS to 100, 1000, or any number > 0.
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      iter              |    number of iterations for timing (default 100)
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      win_option        |    <win_option> can be any of the follows:
+                        |    create            use MPI_Win_create to create an MPI Window object
+                        |    allocate          use MPI_Win_allocate to create an MPI Window object
+                        |    dynamic           use MPI_Win_create_dynamic to create an MPI Window object
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      sync_option       |    <sync_option> can be any of the follows:
+                        |    pscw              use Post/Start/Complete/Wait synchronization calls
+                        |    fence             use MPI_Win_fence synchronization call
+                        |    lock              use MPI_Win_lock/unlock synchronizations calls
+                        |    flush             use MPI_Win_flush synchronization call
+                        |    flush_local       use MPI_Win_flush_local synchronization call
+                        |    lock_all          use MPI_Win_lock_all/unlock_all synchronization calls
+    --------------------+---------------------------------------------------------------------------------------------------------------
+      threads           |    number of recv threads to test with (min: 1, default: 2, max: 128)
+    --------------------+---------------------------------------------------------------------------------------------------------------
+    

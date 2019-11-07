@@ -99,7 +99,7 @@ buildtest provides a wrapper to **bsub** command that allows buildtest to submit
 This can be achieved by using ``buildtest build bsub`` command. Shown below are the list of options available
 with bsub.
 
-.. program-output:: cat scripts/buildtest-build-bsub-help.txt
+.. program-output:: cat docgen/buildtest_build_bsub_-h.txt
 
 To see the bsub command without submitting to scheduler use the ``--dry-run`` option. buildtest will
 require a **build ID** in order to submit job. buildtest will use the build ID to fetch the test script

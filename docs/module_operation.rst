@@ -152,10 +152,10 @@ Now we are ready to update the module collection as shown below
 Delete all module collections (``buildtest module collection --clear``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you want to delete all module collections you can run::
+If you want to delete all module collections you can run
 
-    $ buildtest module collection --clear
-    Removing all module collections!
+.. program-output:: cat docgen/buildtest_module_collection_--clear
+
 
 This will remove all module collection index from the internal database.
 
@@ -224,7 +224,7 @@ Listing Module Trees (``buildtest module tree -l``)
 To list the module trees in buildtest you can run ``buildtest module tree -l``
 which shows one module tree per line
 
-.. program-output:: cat scripts/module_tree_list.txt
+.. program-output:: cat docgen/buildtest_module_tree_-l.txt
 
 For this run, ``BUILDTEST_MODULEPATH`` is not set in configuration file so it is
 reading from ``MODULEPATH``

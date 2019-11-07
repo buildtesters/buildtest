@@ -51,7 +51,13 @@ def introspection_cmds():
         "buildtest config view",
         "buildtest config restore",
         "buildtest system view",
-        "buildtest system fetch"
+        "buildtest system fetch",
+        "buildtest testconfigs list",
+        "buildtest testconfigs view compilers.helloworld.args.c.yml",
+        "buildtest benchmark osu --list",
+        "buildtest benchmark osu --info",
+        "buildtest module collection --clear",
+        "buildtest module tree -l",
     ]
     for cmd in queries:
         out = run(cmd)
