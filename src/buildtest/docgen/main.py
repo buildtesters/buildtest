@@ -57,7 +57,7 @@ def introspection_cmds():
         "buildtest benchmark osu --list",
         "buildtest benchmark osu --info",
         "buildtest module collection --clear",
-        "buildtest module tree -l",
+        "buildtest module tree -l"
     ]
     for cmd in queries:
         out = run(cmd)
@@ -67,6 +67,18 @@ def introspection_cmds():
         writer(fname, out, cmd)
 
 
+def module_cmds():
+    module_dict = {
+        "add_module_tree.txt" : "buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core",
+        "remove_module_tree.txt": "buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core",
+        "default_module_tree.txt": "buildtest module tree -l",
+        "set_module_tree.txt": "buildtest module tree -s /usr/share/lmod/lmod/modulefiles/Core",
+        "set_module_tree_view.txt": "buildtest module tree -l"
+    }
+    for k,v in module_dict.items():
+        out = run(v)
+        fname = os.path.join(docgen,k)
+        writer(fname, out, v)
 
 def writer(fname,out,query):
     fd = open(fname,"w")
@@ -79,7 +91,7 @@ def main():
     create_dir(docgen)
     build_helper()
     introspection_cmds()
-
+    module_cmds()
 
 if __name__ == "__main__":
     """Entry Point, invoking main() method"""

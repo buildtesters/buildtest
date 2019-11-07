@@ -154,7 +154,7 @@ Delete all module collections (``buildtest module collection --clear``)
 
 If you want to delete all module collections you can run
 
-.. program-output:: cat docgen/buildtest_module_collection_--clear
+.. program-output:: cat docgen/buildtest_module_collection_--clear.txt
 
 
 This will remove all module collection index from the internal database.
@@ -241,7 +241,7 @@ You can add new module tree through command line using ``buildtest module
 tree -a /path/to/tree`` which will update the configuration file. Use this option
 to add software stack into buildtest environment for testing purposes.
 
-.. program-output:: cat scripts/module_tree_add.txt
+.. program-output:: cat docgen/add_module_tree.txt
 
 
 Removing a Module Tree (``buildtest module tree -r``)
@@ -250,7 +250,7 @@ Removing a Module Tree (``buildtest module tree -r``)
 Similarly you can remove module tree from your configuration via ``buildtest module tree -r /path/to/tree``.
 Use this option to remove a software stack from buildtest environment.
 
-.. program-output:: cat scripts/module_tree_rm.txt
+.. program-output:: cat docgen/remove_module_tree.txt
 
 Setting a Module Tree (``buildtest module tree -s``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -258,17 +258,16 @@ Setting a Module Tree (``buildtest module tree -s``)
 You can set BUILDTEST_MODULEPATH to a tree which will override current value. For instance
 you have the following module trees in buildtest
 
-.. program-output:: cat scripts/module_tree_list.txt
+.. program-output:: cat docgen/default_module_tree.txt
 
 Now if we want to set BUILDTEST_MODULEPATH to a tree, let's assume **/usr/share/lmod/lmod/modulefiles/Core** we
 can do that as follows
 
-.. program-output:: cat scripts/module_tree_set.txt
+.. program-output:: cat docgen/set_module_tree.txt
 
-Next we can check the list of module trees by issuing the following::
+Next we can check the list of module trees by issuing the following
 
-    $ buildtest module tree -l
-    /usr/share/lmod/lmod/modulefiles/Core
+.. program-output:: cat docgen/set_module_tree_view.txt
 
 
 Report Easybuild Modules (``buildtest module --easybuild``)
