@@ -40,7 +40,7 @@ If you want to view a breakdown of all modules then use ``buildtest list
 
 The output will be sorted by software and each entry will correspond to the full path of the modulefile.
 
-.. program-output:: head -n 10 scripts/buildtest_list_--modules.txt
+.. program-output:: head -n 10 docgen/buildtest_list_--modules.txt
 
 .. _list_easyconfigs:
 
@@ -151,7 +151,7 @@ To fetch the latest system configuration run the following::
 This will update the system.json with the latest configuration. Typically you may only need to run this command to get the
 latest scheduler changes but don't worry if you forget to run this as it is not critical to buildtest.
 
-.. program-output:: cat scripts/buildtest_system_fetch.txt
+.. program-output:: cat docgen/buildtest_system_fetch.txt
 
 To view the system configuration you can run the following::
 
@@ -159,6 +159,6 @@ To view the system configuration you can run the following::
 
 This will display the content of ``system.json``.
 
-.. program-output:: head -n 50 scripts/buildtest_system_view.txt
+.. program-output:: head -n 50 docgen/buildtest_system_view.txt
 
 

@@ -49,7 +49,9 @@ def introspection_cmds():
         "buildtest show -k singlesource",
         "buildtest show --config",
         "buildtest config view",
-        "buildtest config restore"
+        "buildtest config restore",
+        "buildtest system view",
+        "buildtest system fetch"
     ]
     for cmd in queries:
         out = run(cmd)

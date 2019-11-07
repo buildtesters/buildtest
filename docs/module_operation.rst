@@ -215,7 +215,7 @@ configure file which can break buildtest functionality.
 
 Shown below is a usage of ``buildtest module tree`` command.
 
-.. program-output:: cat docgen/module_tree_-h.txt
+.. program-output:: cat docgen/buildtest_module_tree_-h.txt
 
 
 Listing Module Trees (``buildtest module tree -l``)
