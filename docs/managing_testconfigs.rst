@@ -11,7 +11,7 @@ buildtest has option to list, view and edit test configuration that can be acces
 Shown below is the usage
 
 
-.. program-output:: cat scripts/buildtest-testconfigs-help.txt
+.. program-output:: cat scripts/buildtest_testconfigs_-h.txt
 
 Listing Test Configuration
 -----------------------------

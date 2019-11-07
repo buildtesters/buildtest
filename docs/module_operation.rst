@@ -7,7 +7,7 @@ Module Operation
 Module Options (``buildtest module --help``)
 ----------------------------------------------
 
-.. program-output:: cat scripts/buildtest-module-help.txt
+.. program-output:: cat docgen/buildtest_module_-h.txt
 
 
 
@@ -80,7 +80,7 @@ This is synonymous to using user collection from Lmod (i.e ``module save <collec
 
 Shown below is a usage of module collection options in buildtest.
 
-.. program-output:: cat scripts/buildtest-module-collection-help.txt
+.. program-output:: cat docgen/buildtest_module_collection_-h.txt
 
 
 Adding a module collection (``buildtest module collection -a``)
@@ -215,7 +215,7 @@ configure file which can break buildtest functionality.
 
 Shown below is a usage of ``buildtest module tree`` command.
 
-.. program-output:: cat scripts/module_tree_help.txt
+.. program-output:: cat docgen/module_tree_-h.txt
 
 
 Listing Module Trees (``buildtest module tree -l``)

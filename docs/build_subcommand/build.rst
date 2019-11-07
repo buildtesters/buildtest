@@ -40,7 +40,7 @@ Build Options (``buildtest build --help``)
 ---------------------------------------------
 
 
-.. program-output:: cat scripts/buildtest-build-help.txt
+.. program-output:: cat docgen/buildtest_build_-h.txt
 
 Test Configuration
 -------------------

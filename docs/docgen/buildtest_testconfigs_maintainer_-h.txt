@@ -1,0 +1,10 @@
+$ buildtest testconfigs maintainer -h
+usage: buildtest [options] [COMMANDS] testconfigs maintainer [-h] [-m {yes,no}] Test Configuration
+
+positional arguments:
+  Test Configuration    Select name of test configuration
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -m {yes,no}, --maintainer {yes,no}
+                        Add/Remove yourself as maintainer from test configuration

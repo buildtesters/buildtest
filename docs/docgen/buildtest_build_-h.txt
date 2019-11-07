@@ -1,0 +1,35 @@
+$ buildtest build -h
+usage: buildtest [options] [COMMANDS] build [-h] [--clear] [-p SYSTEM-PACKAGE] [-c TEST CONFIGURATION] [-b] [-d] [-v]
+                                            [-m Module Permutation Options | -co Lmod Collection Name | -mc COLLECTION-ID]
+                                            [-pms {first,all}]
+                                            {report,log,test,run,bsub} ...
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --clear               Clear build history and remove all tests
+  -p SYSTEM-PACKAGE, --package SYSTEM-PACKAGE
+                        Build test for system packages
+  -c TEST CONFIGURATION, --config TEST CONFIGURATION
+                        Specify test configuration
+  -b, --binary          Conduct sanity check on binaries on active modules
+  -d, --dry             dry-run mode, buildtest will not write the test scripts but print content of test that would
+                        be written
+  -v, --verbose         verbosity level (default: 0)
+  -m Module Permutation Options, --modules Module Permutation Options
+                        Select a module name and build for every module version
+  -co Lmod Collection Name, --collection Lmod Collection Name
+                        Use user Lmod module collection when building test
+  -mc COLLECTION-ID, --module-collection COLLECTION-ID
+                        Use internal buildtest module collection when building test.
+  -pms {first,all}, --parent-module-search {first,all}
+                        control how parent module combination is used when loading modules
+
+subcommands:
+  Report status on builds performed by buildtest.
+
+  {report,log,test,run,bsub}
+    report              Report status details of all builds
+    log                 Report build log for a particular build
+    test                Report test scripts based on build ID
+    run                 Run test scripts based on build ID
+    bsub                LSF Batch Job Launcher (bsub)

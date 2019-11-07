@@ -1,0 +1,11 @@
+$ buildtest benchmark -h
+usage: buildtest [options] [COMMANDS] benchmark [-h] {osu,hpl,hpcg} ...
+
+positional arguments:
+  {osu,hpl,hpcg}
+    osu           Run OSU MicroBenchmark
+    hpl           Run High Performance Linpack (HPL)
+    hpcg          Run High Performance Conjugate Gradient (HPCG)
+
+optional arguments:
+  -h, --help      show this help message and exit

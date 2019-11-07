@@ -1,0 +1,14 @@
+$ buildtest testconfigs -h
+usage: buildtest [options] [COMMANDS] testconfigs [-h] {list,view,edit,maintainer} ...
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+subcommands:
+  Test configuration options
+
+  {list,view,edit,maintainer}
+    list                List all test configuration
+    view                View a test configuration
+    edit                Edit a test configuration
+    maintainer          Add/Remove maintainer from test configuration

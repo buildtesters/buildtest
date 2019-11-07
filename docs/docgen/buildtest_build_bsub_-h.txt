@@ -1,0 +1,25 @@
+$ buildtest build bsub -h
+usage: buildtest [options] [COMMANDS] build bsub [-h] [-q QUEUE] [-R RESOURCE] [-n NTASKS] [-m MACHINE] [-W WALLTIME]
+                                                 [-M MEMORY] [-J JOBNAME] [--dry-run]
+                                                 BUILD ID
+
+positional arguments:
+  BUILD ID              Dispatch test based on build ID
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -q QUEUE, --queue QUEUE
+                        select queue (bsub -q)
+  -R RESOURCE, --resource RESOURCE
+                        Resource Selection (bsub -R)
+  -n NTASKS, --ntasks NTASKS
+                        Submits a parallel job and specifies number of tasks in job (bsub -n)
+  -m MACHINE, --machine MACHINE
+                        Submit job to specific hosts (bsub -m)
+  -W WALLTIME, --walltime WALLTIME
+                        Wall Time of Job (bsub -W)
+  -M MEMORY, --memory MEMORY
+                        Sets per-process (soft) memory for all process in job (bsub -M)
+  -J JOBNAME, --jobname JOBNAME
+                        Assign a Job Name (bsub -J)
+  --dry-run             Preview bsub command and not submit job to scheduler

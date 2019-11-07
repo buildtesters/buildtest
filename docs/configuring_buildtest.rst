@@ -15,13 +15,12 @@ generate this file if it is not present. To view the buildtest configuration you
 
 Shown below is the user's buildtest configuration.
 
-.. program-output:: cat scripts/buildtest_config_view.txt
+.. program-output:: cat docgen/buildtest_config_view.txt
 
 buildtest keeps a backup configuration (``~/.buildtest/settings.yml.bak``) in case you want to restore to
 the original settings. This can be done by running::
 
-    $ buildtest config restore
-    Restore configuration from backup file: /u/users/ssi29/.buildtest/settings.yml.bak
+.. program-output:: cat docgen/buildtest_config_restore.txt
 
 Similarly, if you want to edit the configuration you may run::
 

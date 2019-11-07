@@ -19,6 +19,7 @@ def build_helper():
      "buildtest build -h",
      "buildtest build bsub -h",
      "buildtest benchmark -h",
+     "buildtest benchmark osu -h",
      "buildtest module -h",
      "buildtest module tree -h",
      "buildtest module collection -h",

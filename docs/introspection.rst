@@ -7,7 +7,7 @@ Introspection Operation
 List Options (``buildtest list --help``)
 ____________________________________________
 
-.. program-output:: cat scripts/buildtest-list-help.txt
+.. program-output:: cat docgen/buildtest_list_-h.txt
 
 
 buildtest comes with a set of options for listing useful info such as
@@ -29,7 +29,7 @@ short option ``buildtest list -s``
 buildtest determines the software list based on the module trees specified in ``BUILDTEST_MODULEPATH``
 and processes each module tree and returns a  unique software list
 
-.. program-output:: cat scripts/buildtest-list-software.txt
+.. program-output:: head -n 10 docgen/buildtest_list_--software.txt
 
 
 Listing Modules (``buildtest list --modules``)
@@ -40,7 +40,7 @@ If you want to view a breakdown of all modules then use ``buildtest list
 
 The output will be sorted by software and each entry will correspond to the full path of the modulefile.
 
-.. program-output:: cat scripts/buildtest-list-software-modules.txt
+.. program-output:: head -n 10 scripts/buildtest_list_--modules.txt
 
 .. _list_easyconfigs:
 
@@ -57,7 +57,7 @@ some **warning** or **error** messages which is intended.
 buildtest will attempt to search for any file with ``.eb`` extension  in ``easybuild`` directory
 that is part of install directory of each software for every easybuild app.
 
-.. program-output:: head -n 15 scripts/buildtest-list-easyconfigs.txt
+.. program-output:: head -n 10 docgen/buildtest_list_--easyconfigs.txt
 
 
 If an easyconfig is not found you may get the following message
@@ -70,7 +70,7 @@ If an easyconfig is not found you may get the following message
 Show Options (``buildtest show --help``)
 _________________________________________
 
-.. program-output:: cat scripts/buildtest-show-help.txt
+.. program-output:: cat docgen/buildtest_show_-h.txt
 
 Show Configuration (``buildtest show --config``)
 -------------------------------------------------
@@ -89,7 +89,7 @@ override environment variables and configuration variables runtime.
 Shown below is a sample configuration from buildtest by running ``buildtest show --config``.
 
 
-.. program-output:: cat scripts/buildtest-show-configuration.txt
+.. program-output:: cat docgen/buildtest_show_--config.txt
 
 
 
@@ -133,13 +133,13 @@ defined **singlesource**.
 To show yaml keys you can run ``buildtest show -k singlesource`` to view all the YAML
 keys that pertain to ``testtype: singlesource`` found in YAML files
 
-.. program-output:: cat scripts/buildtest-show-key.txt
+.. program-output:: cat docgen/buildtest_show_-k_singlesource.txt
 
 
 System Options (``buildtest system --help``)
 _____________________________________________
 
-.. program-output:: cat scripts/buildtest_system_help.txt
+.. program-output:: cat docgen/buildtest_system_-h.txt
 
 buildtest will detect system configuration and store the content in ``var/system.json``. This file contains
 useful information about the scheduler details that can be used for submitting jobs.

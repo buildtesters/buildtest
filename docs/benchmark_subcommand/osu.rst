@@ -6,19 +6,7 @@ as part of mvapich2 software tool. The OSU MicroBenchmark is designed to test MP
 communication between process. For more information about this benchmark check out
 http://mvapich.cse.ohio-state.edu/benchmarks/
 
-::
-
-    (siddis14-TgVBs13r) buildtest-framework[master !?] $ buildtest benchmark osu --help
-    usage: buildtest [options] benchmark osu [-h] [-r] [-i] [-l] [-c CONFIG]
-
-    optional arguments:
-    -h, --help            show this help message and exit
-    -r, --run             Run Benchmark
-    -i, --info            show yaml key description
-    -l, --list            List of tests available for OSU Benchmark
-    -c CONFIG, --config CONFIG
-                        OSU Yaml Configuration File
-
+.. program-output:: cat docgen/buildtest_benchmark_osu-h.txt
 
 
 To get a sense of all the test available from this benchmark supported by buildtest you
