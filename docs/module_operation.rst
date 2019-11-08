@@ -93,11 +93,11 @@ run the following::
 
 Shown below is an example output
 
-.. program-output:: cat scripts/buildtest-module-collection-add.txt
+.. program-output:: cat docgen/module_collection_add.txt
 
 Once modules are added, you may build a test using a module collection using the
 option ``buildtest build --module-collection <ID>``. The <ID> is the index number to reference
-the module collection since there can be more than one module collection.
+the module collection. For more information on buildtest with module collection see :ref:`build_with_module_collection`
 
 
 List all module collection (``buildtest module collection -l``)
@@ -110,7 +110,11 @@ as pose to reading a json file. To get a list of all module collection run the f
 
 Shown below is an example output
 
-.. program-output:: cat scripts/buildtest-module-collection-list.txt
+.. program-output:: cat docgen/module_collection_list_add.txt
+
+If the collection is empty the output will be the following
+
+.. program-output:: cat docgen/module_collection_list_empty.txt
 
 
 Removing a module collection (``buildtest module collection -r <ID>``)
@@ -119,9 +123,9 @@ Removing a module collection (``buildtest module collection -r <ID>``)
 To remove a module collection, you will need to specify the index number to the ``-r`` option.
 One can check the module collection index by listing module collection using **buildtest module collection -l**.
 
-In this example we will remove module collection **2** as shown below.
+In this example we will remove module collection **0** as shown below.
 
-.. program-output:: cat scripts/buildtest-module-collection-remove.txt
+.. program-output:: cat docgen/module_collection_remove.txt
 
 buildtest will remove the index and update the json file. Note all existing module collection
 will update their collection index depending what index number was removed.
@@ -168,10 +172,9 @@ of module occurs. buildtest will conduct a ``module load`` test against all coll
 
 To use this option use the ``--check`` option.
 
-If everything is all well you should get the following message::
+If everything is all well you should get the following message
 
-    $ buildtest module collection --check
-    All module collection passed check!
+.. program-output:: cat docgen/module_collection_check.txt
 
 If you encounter an error you will get a message as follows::
 

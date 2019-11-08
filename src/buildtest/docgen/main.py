@@ -90,6 +90,25 @@ def module_cmds():
 
     out = run ("buildtest module -d GCCcore/8.1.0")
     writer(os.path.join(docgen, "parent_modules.txt"), out, "buildtest module -d GCCcore/8.1.0")
+
+    # undo operation to get back to default module trees
+    run("buildtest module tree -r /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core")
+
+def module_collection_cmds():
+    collection_dict = {
+        "module_collection_clear.txt": "buildtest module collection --clear",
+        "module_collection_list_empty.txt": "buildtest module collection -l",
+        "module_collection_add.txt": "buildtest module collection -a",
+        "module_collection_list_add.txt": "buildtest module collection -l",
+        "module_collection_check.txt": "buildtest module collection --check",
+        "module_collection_remove.txt": "buildtest module collection -r 0"
+
+    }
+    for k,v in collection_dict.items():
+        out = run(v)
+        fname = os.path.join(docgen,k)
+        writer(fname, out, v)
+
 def writer(fname,out,query):
     fd = open(fname,"w")
     fd.write(f"$ {query}\n")
@@ -102,6 +121,7 @@ def main():
     build_helper()
     introspection_cmds()
     module_cmds()
+    module_collection_cmds()
 
 if __name__ == "__main__":
     """Entry Point, invoking main() method"""

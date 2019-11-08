@@ -52,9 +52,11 @@ def add_collection():
         content = json.load(fd)
         fd = open(BUILDTEST_MODULE_COLLECTION_FILE,'w')
         content["collection"].append(module_list)
-        json.dump(content, sys.stdout, indent=4)
+
         json.dump(content,fd,indent=4)
-        print ("\n")
+
+        print (f"Modules to be added: {module_list}")
+        print("\n")
         print(f"Updating collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
 
 def remove_collection(index):
@@ -72,14 +74,14 @@ def remove_collection(index):
     fd.close()
 
     fd = open(BUILDTEST_MODULE_COLLECTION_FILE, "w")
+
     print (f"Removing Collection Index: {index}")
     print ("Modules to be removed:", content["collection"][index])
-
-    del content["collection"][index]
+    print("\n")
     print(f"Updating collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
-    print ("\n")
+    del content["collection"][index]
+
     json.dump(content,fd,indent=4)
-    json.dump(content, sys.stdout, indent=4)
     fd.close()
 
 def update_collection(index):
@@ -108,12 +110,10 @@ def update_collection(index):
     print ("Old Modules: ", content["collection"][index])
     content["collection"][index] = modules
     print ("New Modules: ", content["collection"][index])
-
-
+    print("\n")
     print(f"Updating collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
-    print ("\n")
+
     json.dump(content,fd,indent=4)
-    json.dump(content, sys.stdout, indent=4)
     fd.close()
 
 def list_collection():
