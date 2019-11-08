@@ -2,6 +2,15 @@
 CHANGELOG
 =================
 
+v0.7.2 (Nov 8th, 2019)
+----------------------
+- automate documentation test generation using python script
+- add support for coverage see https://codecov.io/gh/HPC-buildtest/buildtest-framework
+- adding dry option when building tests (short: ``-d`` or long option:``--dry``)
+- automate buildtest testing process via pytest. Add initial support with 25+ regression tests
+- adding directory expansion support when files or directory are references such as $HOME or tilde (~) operation
+- adding several badges to README.rst
+
 v0.7.1 (Aug 30, 2019)
 ---------------------
 - Re-implement core mechanics of the build framework by using new YAML schema.
@@ -9,7 +18,7 @@ v0.7.1 (Aug 30, 2019)
 - Yaml schema can be printed via ``buildtest show -k singlesource``. The schema provides building
   C, C++, Fortran code along with MPI test. Provides keys such as ``cflags``, ``cxxflags``, ``fflags``
   ``cppflags``, ``ldflags`` for passing compiler options. The schema provides a dictionary to
- insert **#BSBU** and **#SBATCH** directives into job scripts via ``bsub:`` and ``sbatch:`` keys.
+  insert **#BSUB** and **#SBATCH** directives into job scripts via ``bsub:`` and ``sbatch:`` keys.
 - Add documentation example on C, C++, Fortran, MPI, and OpenACC code.
 - Add options **buildtest build bsub** (bsub wrapper) such as ``-n``, ``-W``, ``-M``,``-J``,``--dry-run``.
 - Add key TESTDIR in **build.json** to identify test directory, this makes it easier when running test
@@ -84,27 +93,27 @@ v0.5.0 (Oct 8, 2018)
 
 - **New Feature:** Add new sub-commands ``build`` ``list`` ``run`` to buildtest
 - Move the following options to ``build`` sub command
-    - ``-s``
-    -  ``-t``
-    -  ``--enable-job``
-    -  ``--job-template``
-    -  ``--system``
-    -  ``--r-package-test``
-    - ``--python-package-test``
-    - ``--perl-package-test``
-    - ``--ruby-package-test``
+   - ``-s``
+   - ``-t``
+   - ``--enable-job``
+   - ``--job-template``
+   - ``--system``
+   - ``--r-package-test``
+   - ``--python-package-test``
+   - ``--perl-package-test``
+   - ``--ruby-package-test``
    - ``--shell``
    - ``--ignore-easybuild``
    - ``--clean-tests``
    - ``--testdir``
    - ``--clean-build``
 - Move the following option to ``list`` sub command
-    - ``-ls``
-   - ``-lt``
+  - ``-ls``
+  - ``-lt``
   - ``-svr``
 - Add option ``--format`` in ``list`` sub command to view output in ``csv``, ``json``. Default is ``stdout``
 - Add the following option to ``run`` sub command
-    - ``--app``
+   - ``--app``
    - ``--systempkg``
    - ``--interactive`` (originally ``--runtest``)
    - ``--testname``
@@ -134,11 +143,11 @@ v0.3.0 () (Aug 7, 2018)
 
 New options
 ~~~~~~~~~~~~~
-    - `--r-package`: build test for r packages
-    - `--python-package`: build test for python packages
-    - `--perl-package:` build test for perl packages
-    - `--ruby-package`: build test for ruby packages
-    - `--show-keys` : Display description of yaml keys
+- `--r-package`: build test for r packages
+- `--python-package`: build test for python packages
+- `--perl-package:` build test for perl packages
+- `--ruby-package`: build test for ruby packages
+- `--show-keys` : Display description of yaml keys
 
 - The option `--testset` is removed and will be replaced by individual option for r, perl, python, ruby package options
 
@@ -251,9 +260,9 @@ v0.1.4 (Feb 27, 2018)
 ---------------------------
 
 - Major code restructure around processing binary test and support for logging environment variable
-    - **BUILDTEST_LOGCONTENT**
-    - **BUILDTEST_LOGDIR**
-    - **BUILDTEST_LOGFILE**
+    - BUILDTEST_LOGCONTENT
+    - BUILDTEST_LOGDIR
+    - BUILDTEST_LOGFILE
 
 - Provide get functions to retrieve value from arg.parser https://github.com/shahzebsiddiqui/buildtest/commit/6006027d653401a848628b0dd9d81a98d631f22f
 - Add support for Perl with --testset https://github.com/shahzebsiddiqui/buildtest/commit/cc96eb9f825bed997a13d8dd13e43e4074ad1b03
@@ -326,17 +335,17 @@ Tests for the following EB apps have been added:
     4. dateutil
     5. deap
     6. funcsigs
-   7. mpi4py
-   8. netaddr
-   9. netifaces
-   10. nose
-   11. numpy
-   12. os
-   13. paramiko
-   14. paycheck
-   15. pytz
-   16. scipy
-   17. setuptools
+    7. mpi4py
+    8. netaddr
+    9. netifaces
+    10. nose
+    11. numpy
+    12. os
+    13. paramiko
+    14. paycheck
+    15. pytz
+    16. scipy
+    17. setuptools
 
 
 Added python documentation header for each function and GPL license section in all the files

@@ -18,7 +18,7 @@ Shown below is the user's buildtest configuration.
 .. program-output:: cat docgen/buildtest_config_view.txt
 
 buildtest keeps a backup configuration (``~/.buildtest/settings.yml.bak``) in case you want to restore to
-the original settings. This can be done by running::
+the original settings. This can be done by running
 
 .. program-output:: cat docgen/buildtest_config_restore.txt
 

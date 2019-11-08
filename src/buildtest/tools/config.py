@@ -6,10 +6,8 @@ import subprocess
 from shutil import copy
 
 
-BUILDTEST_VERSION="0.7.1"
+BUILDTEST_VERSION="0.7.2"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
-
-BUILDTEST_JOB_EXTENSION = [".lsf", ".slurm"]
 
 # test scripts that need to be run locally
 

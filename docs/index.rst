@@ -3,7 +3,7 @@ buildtest
 
 .. Note:: Coming to SC'19 check out this talk: **Buildtest: A Software Testing Framework with Module Operations for HPC systems** https://sc19.supercomputing.org/presentation/?id=ws_hust103&sess=sess116
 
-Welcome to `buildtest <https://github.com/HPC-buildtest/buildtest-framework>`_  is
+`buildtest <https://github.com/HPC-buildtest/buildtest-framework>`_  is
 a framework for automating tests creation  to conduct software stack testing for
 HPC facilities. buildtest aims to abstract test complexity such that a user can
 focus on writing test with minimal knowledge of the system. Test configuration
@@ -60,6 +60,7 @@ Related Projects
 
 - `Spack: <https://spack.readthedocs.io/en/latest/>`_  is ``S`` upercomputing ``PACK`` age Manager that supports 1000+ software packages and extremely efficient in combinatorial builds
 
+- `Pavilion: <https://github.com/hpc/pavilion2>`_ is a framework for running and analyzing tests targeting HPC systems
 
 Indices and tables
 ==================

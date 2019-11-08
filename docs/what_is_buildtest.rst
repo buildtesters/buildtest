@@ -80,22 +80,6 @@ buildtest supports job submission to batch scheduler currently
 facility has module environment Lmod_ so you can
 load the software environment.
 
-
 .. _Lmod: https://github.com/TACC/Lmod
-
-buildtest features
--------------------------------
-0
- - Provide a rich YAML API to write test configuration that is **reusable** and **site agnostic**
- - Verify modulefiles can be loaded and conduct ``module load`` testing.
- - Sanity check for binaries for application and system packages
- - List software packages provided by ``MODULEPATH``
- - Support for logging
- - Search for YAML and test scripts
- - Summary of run output
- - Support for multiple shells (csh, bash, sh)
- - Generate job scripts (SLURM, LSF) for each test and automate job submission
- - Support for benchmark
-
 
 buildtest is available on Github at https://github.com/HPC-buildtest/buildtest-framework

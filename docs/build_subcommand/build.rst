@@ -202,6 +202,13 @@ To help visualize see how the test dictionary maps to the specific commands in t
    :width: 500
    :height:  250
 
+Dry Run
+--------
+
+buildtest provides a dry run mode that shows the content of test script without actually creating the test script. This
+can be useful when writing your test configuration. To utilize the dry run option use the ``-d`` or long option ``--dry``
+when building test.
+
 Test Directory Layout
 ----------------------
 
