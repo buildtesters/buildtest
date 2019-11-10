@@ -1,7 +1,7 @@
 buildtest
 ==========
 
-.. Note:: Coming to SC'19 check out this talk: **Buildtest: A Software Testing Framework with Module Operations for HPC systems** https://sc19.supercomputing.org/presentation/?id=ws_hust103&sess=sess116
+.. Note:: Coming to SC'19 check out this talk: `Buildtest: A Software Testing Framework with Module Operations for HPC systems <https://sc19.supercomputing.org/presentation/?id=ws_hust103&sess=sess116>`_
 
 `buildtest <https://github.com/HPC-buildtest/buildtest-framework>`_  is
 a framework for automating tests creation  to conduct software stack testing for

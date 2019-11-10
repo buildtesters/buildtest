@@ -1,17 +1,17 @@
-buildtest.test package
-======================
+buildtest.docgen package
+========================
 
 Submodules
 ----------
 
 .. toctree::
 
-   buildtest.test.job
+   buildtest.docgen.main
 
 Module contents
 ---------------
 
-.. automodule:: buildtest.test
+.. automodule:: buildtest.docgen
     :members:
     :undoc-members:
     :show-inheritance:

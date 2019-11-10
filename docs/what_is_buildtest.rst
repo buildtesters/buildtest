@@ -83,3 +83,10 @@ load the software environment.
 .. _Lmod: https://github.com/TACC/Lmod
 
 buildtest is available on Github at https://github.com/HPC-buildtest/buildtest-framework
+
+Architecture Layout
+---------------------
+
+.. image:: _static/buildtest-architecture.png
+   :width: 800
+   :height: 400
