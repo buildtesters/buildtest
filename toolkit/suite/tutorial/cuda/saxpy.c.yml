@@ -1,0 +1,8 @@
+testtype: singlesource
+description: "SAXPY example in CUDA"
+scheduler: local
+program:
+  compiler: cuda
+  source: saxpy.cu
+maintainer:
+- shahzeb siddiqui <shahzebmsiddiqui@gmail.com>  
