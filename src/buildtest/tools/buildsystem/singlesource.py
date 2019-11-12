@@ -200,7 +200,7 @@ class SingleSource(BuildTestBuilder):
                 'type': dict,
                 'required': True,
                 'source': {'type': str, 'required': True},
-                'compiler': {'type': str, 'required': True, 'values': ["gnu"]},
+                'compiler': {'type': str, 'required': True, 'values': ["gnu","intel","cuda"]},
                 'env': {'type': dict, 'required': False},
                 'cflags': {'type': str, 'required': False},
                 'cxxflags': {'type': str, 'required': False},
@@ -291,6 +291,8 @@ class SingleSource(BuildTestBuilder):
         if self.language == "fortran":
             print(f"FC: {self.ftn}")
             print(f"FFLAGS: {self.fflags}")
+        if self.language == "cuda":
+            print(f"NVCC: {self.nvcc}")
 
     def __str__(self):
         return repr(self)
@@ -448,33 +450,33 @@ class SingleSource(BuildTestBuilder):
             # check if cflags is defined
             if "cflags" in self.test_yaml['program']:
                 self.cflags = self.test_yaml['program']["cflags"]
-                buildcmd = [self.cc, "$CFLAGS", "-o", self.execname, "$SRCFILE" ]
+                buildcmd = ["$CC", "$CFLAGS", "-o", "$EXECUTABLE", "$SRCFILE" ]
             else:
-                buildcmd = [self.cc, "-o", self.execname, "$SRCFILE"]
+                buildcmd = ["$CC", "-o", "$EXECUTABLE", "$SRCFILE"]
 
         elif self.language == "c++":
             # check if cflags is defined
             if "cxxflags" in self.test_yaml['program']:
                 self.cxxflags = self.test_yaml['program']["cxxflags"]
-                buildcmd = [self.cxx, "$CXXFLAGS", "-o", self.execname, "$SRCFILE"]
+                buildcmd = ["$CXX", "$CXXFLAGS", "-o", "$EXECUTABLE", "$SRCFILE"]
             else:
-                buildcmd = [self.cxx, "-o", self.execname, "$SRCFILE"]
+                buildcmd = ["$CXX", "-o", "$EXECUTABLE", "$SRCFILE"]
 
         elif self.language == "fortran":
             # check if cflags is defined
             if "fflags" in self.test_yaml['program']:
                 self.fflags = self.test_yaml['program']["fflags"]
-                buildcmd = [self.ftn, "$FFLAGS", "-o", self.execname, "$SRCFILE"]
+                buildcmd = ["$FTN", "$FFLAGS", "-o", "$EXECUTABLE", "$SRCFILE"]
             else:
-                buildcmd = [self.ftn, "-o", self.execname, "$SRCFILE"]
+                buildcmd = ["$FTN", "-o", "$EXECUTABLE", "$SRCFILE"]
 
         elif self.language == "cuda":
             # check if cflags is defined
             if "cflags" in self.test_yaml['program']:
                 self.cflags = self.test_yaml['program']["cflags"]
-                buildcmd = [self.nvcc, "$CFLAGS", "-o", self.execname, "$SRCFILE"]
+                buildcmd = ["$CC", "$CFLAGS", "-o", "$EXECUTABLE", "$SRCFILE"]
             else:
-                buildcmd = [self.nvcc, "-o", self.execname, "$SRCFILE"]
+                buildcmd = ["$CC", "-o", "$EXECUTABLE", "$SRCFILE"]
 
         if "ldflags" in self.test_yaml['program']:
             self.ldflags = self.test_yaml['program']["ldflags"]
@@ -507,6 +509,18 @@ class SingleSource(BuildTestBuilder):
         self.testscript_content["metavars"].append(f"SRCDIR={self.srcdir}")
         self.testscript_content["metavars"].append(f"SRCFILE={self.srcfile}")
 
+        if self.cc:
+            self.testscript_content["metavars"].append(f"CC={self.cc}")
+
+        if self.nvcc:
+            self.testscript_content["metavars"].append(f"CC={self.nvcc}")
+
+        if self.ftn:
+            self.testscript_content["metavars"].append(f"FTN={self.ftn}")
+
+        if self.cxx:
+            self.testscript_content["metavars"].append(f"CXX={self.cxx}")
+
         if self.cflags:
             self.testscript_content["metavars"].append(f'CFLAGS="{self.cflags}"')
 
@@ -517,6 +531,9 @@ class SingleSource(BuildTestBuilder):
             self.testscript_content["metavars"].append(f'FFLAGS="{self.fflags}"')
         if self.ldflags:
             self.testscript_content["metavars"].append(f'LDFLAGS="{self.ldflags}"')
+
+        if self.execname:
+            self.testscript_content["metavars"].append(f"EXECUTABLE={self.execname}")
 
         # adding environment variables
         for k in self.envs:
@@ -544,7 +561,7 @@ class SingleSource(BuildTestBuilder):
             exec_cmd.append(self.test_yaml['program']['mpi']['launcher'])
             exec_cmd.append(self.test_yaml['program']['mpi']['launcher_opts'])
 
-        exec_cmd.append(self.execname)
+        exec_cmd.append("$EXECUTABLE")
 
         if "exec_opts" in self.test_yaml['program'].keys():
             exec_cmd.append(self.test_yaml['program']['exec_opts'])
@@ -558,7 +575,7 @@ class SingleSource(BuildTestBuilder):
         if "post_run" in self.test_yaml['program'].keys():
             self.testscript_content['run'].append(self.test_yaml['program']["post_run"])
 
-        self.testscript_content['run'].append(f"rm ./{self.execname}")
+        self.testscript_content['run'].append(f"rm ./$EXECUTABLE")
         for k,v in self.testscript_content.items():
             logger.debug(f"{k}:{v}")
 
