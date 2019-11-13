@@ -27,9 +27,8 @@ def is_file(file):
     """
     if os.path.exists(os.path.expanduser(file)) or os.path.exists(os.path.expandvars(file)):
         return True
-    else:
-        raise BuildTestError("Invalid File Path %s. " % file)
 
+    raise BuildTestError("Invalid File Path %s. " % file)
 
 def is_dir(dir):
     """This method will check if a directory exist and if not found throws an exception.
@@ -45,10 +44,8 @@ def is_dir(dir):
 
     if os.path.isdir(os.path.expanduser(dir)) or os.path.isdir(os.path.expandvars(dir)):
         return True
-    else:
-        raise BuildTestError("Invalid Directory Path %s" % dir)
 
-
+    raise BuildTestError("Invalid Directory Path %s" % dir)
 
 def walk_tree(root_dir, ext):
     """This method will traverse a directory tree and return list of files
@@ -66,9 +63,9 @@ def walk_tree(root_dir, ext):
     list_files = []
     is_dir(root_dir)
     for root, subdir, files in os.walk(root_dir):
-        for file in files:
-            if file.endswith(ext):
-                list_files.append(os.path.join(root, file))
+        for fname in files:
+            if fname.endswith(ext):
+                list_files.append(os.path.join(root, fname))
 
     return list_files
 
@@ -158,5 +155,5 @@ def string_in_file(string, filename):
 
     if string in open(filename).read():
         return True
-    else:
-        return False
+
+    return False

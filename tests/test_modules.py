@@ -36,7 +36,7 @@ def test_module_tree_add_and_remove():
     content = yaml.safe_load(fd)
     fd.close()
 
-    assert True == ("/usr/share/lmod/lmod/modulefiles/Core/" in content["BUILDTEST_MODULEPATH"])
+    assert True is ("/usr/share/lmod/lmod/modulefiles/Core/" in content["BUILDTEST_MODULEPATH"])
 
     module_tree_rm(["/usr/share/lmod/lmod/modulefiles/Core/"])
 
@@ -44,7 +44,7 @@ def test_module_tree_add_and_remove():
     content = yaml.safe_load(fd)
     fd.close()
 
-    assert True == ("/usr/share/lmod/lmod/modulefiles/Core/" not in content["BUILDTEST_MODULEPATH"])
+    assert True is ("/usr/share/lmod/lmod/modulefiles/Core/" not in content["BUILDTEST_MODULEPATH"])
 
 def test_module_tree_set():
     module_tree_set("/usr/share/lmod/lmod/modulefiles/Core/")
@@ -53,7 +53,7 @@ def test_module_tree_set():
     content = yaml.safe_load(fd)
     fd.close()
 
-    assert True == ("/usr/share/lmod/lmod/modulefiles/Core/" in content["BUILDTEST_MODULEPATH"])
+    assert True is ("/usr/share/lmod/lmod/modulefiles/Core/" in content["BUILDTEST_MODULEPATH"])
 
     module_tree_rm(["/usr/share/lmod/lmod/modulefiles/Core/"])
 
@@ -70,7 +70,7 @@ def test_module_tree_with_directory_expansion():
     content = yaml.safe_load(fd)
     fd.close()
 
-    assert True == (os.path.expandvars(dir1) in content["BUILDTEST_MODULEPATH"])
+    assert True is (os.path.expandvars(dir1) in content["BUILDTEST_MODULEPATH"])
     module_tree_rm([dir1])
 
     module_tree_add([dir2])
@@ -79,7 +79,7 @@ def test_module_tree_with_directory_expansion():
     content = yaml.safe_load(fd)
     fd.close()
 
-    assert True == (os.path.expanduser(dir2) in content["BUILDTEST_MODULEPATH"])
+    assert True is (os.path.expanduser(dir2) in content["BUILDTEST_MODULEPATH"])
     module_tree_rm([dir2])
 
     shutil.rmtree(os.path.expandvars(dir1))

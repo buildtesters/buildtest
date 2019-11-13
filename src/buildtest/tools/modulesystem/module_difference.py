@@ -14,9 +14,9 @@ def get_module_list_by_tree(mod_tree):
 
     is_dir(mod_tree)
     for root, dirs, files in os.walk(mod_tree):
-        for file in files:
-            if file.endswith(".lua") or string_in_file("#%Module",os.path.join(root,file)):
-                modulefiles.append(os.path.join(root,file))
+        for fname in files:
+            if fname.endswith(".lua") or string_in_file("#%Module",os.path.join(root,fname)):
+                modulefiles.append(os.path.join(root,fname))
 
     return modulefiles
 
@@ -36,9 +36,9 @@ def diff_trees(args_trees):
         print ("Usage: --diff-trees /path/to/tree1,/path/to/tree2")
         sys.exit(1)
     else:
-        id = args_trees.find(",")
-        tree1 = args_trees[0:id]
-        tree2 = args_trees[id+1:len(args_trees)]
+        id_x = args_trees.find(",")
+        tree1 = args_trees[0:id_x]
+        tree2 = args_trees[id_x+1:len(args_trees)]
 
         is_dir(tree1)
         is_dir(tree2)
@@ -50,22 +50,22 @@ def diff_trees(args_trees):
         list2 = get_module_list_by_tree(tree2)
 
         # strip full path, just get a list module file in format app/version
-        for file in list1:
-            name = os.path.basename(os.path.dirname(file))
+        for fname in list1:
+            name = os.path.basename(os.path.dirname(fname))
             # strip out any file extension (.lua)
-            ver = os.path.basename(os.path.splitext(file)[0])
+            ver = os.path.basename(os.path.splitext(fname)[0])
             modlist1.append(os.path.join(name,ver))
 
-        for file in list2:
-            name = os.path.basename(os.path.dirname(file))
+        for fname in list2:
+            name = os.path.basename(os.path.dirname(fname))
             # strip out any file extension (.lua)
-            ver = os.path.basename(os.path.splitext(file)[0])
+            ver = os.path.basename(os.path.splitext(fname)[0])
             modlist2.append(os.path.join(name,ver))
 
         # convert list into set and do symmetric difference between two sets
 
         diff_set =  set(modlist1).symmetric_difference(set(modlist2))
-        if len(diff_set) == 0:
+        if not diff_set:
             print ("No difference found between module tree: ", tree1, " and module tree: ", tree2)
         # print difference between two sets by printing module file and stating  FOUND or NOTFOUND in the appropriate columns for Module Tree 1 or 2
         else:
