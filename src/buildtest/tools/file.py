@@ -15,7 +15,7 @@ from buildtest.tools.config import logID
 from buildtest.tools.log import BuildTestError
 
 
-def is_file(file):
+def is_file(fname):
     """This method will check if file exist and if not found throws an exception.
 
     :param file: file path
@@ -25,12 +25,12 @@ def is_file(file):
     :return: returns True if file exists otherwise terminates with an exception
     :rtype: True if successful, otherwise throws an exception
     """
-    if os.path.exists(os.path.expanduser(file)) or os.path.exists(os.path.expandvars(file)):
+    if os.path.exists(os.path.expanduser(fname)) or os.path.exists(os.path.expandvars(fname)):
         return True
 
-    raise BuildTestError("Invalid File Path %s. " % file)
+    raise BuildTestError("Invalid File Path %s. " % fname)
 
-def is_dir(dir):
+def is_dir(dirname):
     """This method will check if a directory exist and if not found throws an exception.
 
     :param dir: directory path
@@ -42,10 +42,10 @@ def is_dir(dir):
     """
 
 
-    if os.path.isdir(os.path.expanduser(dir)) or os.path.isdir(os.path.expandvars(dir)):
+    if os.path.isdir(os.path.expanduser(dirname)) or os.path.isdir(os.path.dirname(dirname)):
         return True
 
-    raise BuildTestError("Invalid Directory Path %s" % dir)
+    raise BuildTestError("Invalid Directory Path %s" % dirname)
 
 def walk_tree(root_dir, ext):
     """This method will traverse a directory tree and return list of files
@@ -86,11 +86,11 @@ def walk_tree_multi_ext(root_dir, ext_list):
     list_files = []
     is_dir(root_dir)
     for root, subdir, files in os.walk(root_dir):
-        for file in files:
+        for fname in files:
             # return a list of True, False based on file extension
-            ext_bool_list = [file.endswith(ext) for ext in ext_list]
+            ext_bool_list = [fname.endswith(ext) for ext in ext_list]
             if any(ext_bool_list):
-                list_files.append(os.path.join(root, file))
+                list_files.append(os.path.join(root, fname))
 
     return list_files
 
@@ -116,7 +116,6 @@ def create_file(filename):
             fd.close()
         except OSError as err:
             print (err)
-
 
 def create_dir(dirname):
     """Create directory if it doesn't exist. Runs a "try" block
