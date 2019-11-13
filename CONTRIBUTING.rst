@@ -77,8 +77,7 @@ Once you are ready to push to your fork repo do the following::
 
 
 Once the branch is created in your fork, you can create a PR for the ``devel``
-branch for ``upstream`` repo (https://github
-.com/HPC-buildtest/buildtest-framework)
+branch for ``upstream`` repo (https://github.com/HPC-buildtest/buildtest-framework)
 
 Review
 -------
