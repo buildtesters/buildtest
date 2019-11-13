@@ -114,7 +114,7 @@ benchmark:
     sync_option: flush
     iter: 10000
     warmup_iter: 100
-   
+
   - name: osu_get_bw
     win_option: allocate
     sync_option: flush
