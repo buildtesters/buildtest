@@ -5,7 +5,7 @@ Conference
 ------------
 
 
-- Slides [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hust19.pdf>`_], [`pptx <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hust19.pptx>`_> at HUST_ workshop in SC19_
+- Slides [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hust19.pdf>`_], [`pptx <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hust19.pptx>`_] at HUST_ workshop in SC19_
 - Slides [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hpckp18.pdf>`_] at HPCKP18_
 - Slides [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hpckp17.pdf>`_] at HPCKP17_
 
