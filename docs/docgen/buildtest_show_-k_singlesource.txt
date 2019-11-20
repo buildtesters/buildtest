@@ -45,6 +45,8 @@ schema:
       type: *id001
       values:
       - gnu
+      - intel
+      - cuda
     cxxflags:
       required: false
       type: *id001

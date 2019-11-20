@@ -25,7 +25,9 @@ def is_file(fname):
     :return: returns True if file exists otherwise terminates with an exception
     :rtype: True if successful, otherwise throws an exception
     """
-    if os.path.exists(os.path.expanduser(fname)) or os.path.exists(os.path.expandvars(fname)):
+    fname = os.path.expandvars(fname)
+    fname = os.path.expanduser(fname)
+    if os.path.exists(fname):
         return True
 
     raise BuildTestError("Invalid File Path %s. " % fname)
@@ -41,8 +43,10 @@ def is_dir(dirname):
     :rtype: True if successful, otherwise throws an exception
     """
 
+    dirname = os.path.expandvars(dirname)
+    dirname = os.path.expanduser(dirname)
 
-    if os.path.isdir(os.path.expanduser(dirname)) or os.path.isdir(os.path.dirname(dirname)):
+    if os.path.isdir(dirname):
         return True
 
     raise BuildTestError("Invalid Directory Path %s" % dirname)

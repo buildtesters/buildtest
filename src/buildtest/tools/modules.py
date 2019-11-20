@@ -383,9 +383,11 @@ def check_easybuild_module():
 
     eb_string = "Built with EasyBuild version"
     count = 0
+    print ("Modules built with Easybuild")
+    print ("{:-<80}".format(""))
     for mpath in module_list:
         if string_in_file(eb_string,mpath):
-            print(f"Module: {mpath} is built with Easybuild")
+            print(mpath)
             count+=1
 
     print ("\n")
@@ -400,9 +402,11 @@ def check_spack_module():
 
     spack_string = "Module file created by spack"
     count = 0
+    print("Modules built with Spack")
+    print("{:-<80}".format(""))
     for mpath in module_list:
         if string_in_file(spack_string, mpath):
-            print(f"Module: {mpath} is built with Spack")
+            print(mpath)
             count+=1
 
     print("\n")
