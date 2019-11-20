@@ -415,21 +415,33 @@ def check_spack_module():
 
 def module_selector(user_collection, buildtest_module_collection):
     """Return a module load or module restore string from active module, user collection, or buildtest module collection """
+    modules = []
+    if config_opts["BUILDTEST_MODULE_FORCE_PURGE"]:
+        modules.append("module --force purge")
+    else:
+        modules.append("module purge")
+
     if buildtest_module_collection is not None:
         module_collection = get_buildtest_module_collection(buildtest_module_collection)
-        return [ f"module load {x}" for x in module_collection ]
+        modules += [ f"module load {x}" for x in module_collection ]
+        return modules
 
     if user_collection is not None:
-        return [ f"module restore {user_collection}" ]
+        modules += [ f"module restore {user_collection}" ]
+        return modules
 
 
     cmd = "module -t list"
     out = subprocess.getoutput(cmd)
+
     # output of module -t list when no modules are loaded is "No modules
     #  loaded"
+
+
     if out != "No modules loaded":
 
-        modules = [ f'module load {x}' for x in out.split() ]
+        modules_load_list = [ f'module load {x}' for x in out.split() ]
+        modules += modules_load_list
         return modules
 
 

@@ -110,6 +110,12 @@ def func_build_subcmd(args):
         if args.modules:
             for x in module_cmd_list:
                 content["module"] = []
+                if config_opts["BUILDTEST_MODULE_FORCE_PURGE"]:
+                    content["module"].append("module --force purge")
+                else:
+                    content["module"].append("module purge")
+
+
                 content["module"].append(x)
                 dirname = os.path.dirname(content['testpath'])
                 content["testpath"] = '%s.sh' % os.path.join(dirname,hex(random.getrandbits(32)))
