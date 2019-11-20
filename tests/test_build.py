@@ -1,22 +1,22 @@
-
 import os
 import sys
 
 sys.path.insert(0, os.path.join(os.getenv("BUILDTEST_ROOT"), 'src'))
-#sys.path.insert(0,"/u/users/ssi29/.local/share/virtualenvs/buildtest-framework-LDt8wyRf/lib/python3.7/site-packages")
 
-from buildtest.tools.list import list_software, list_modules, find_easyconfigs
-from buildtest.tools.config import show_configuration
+from buildtest.tools.buildsystem.status import show_status_report, get_build_ids, get_total_build_ids
+from buildtest.tools.build import clear_builds
 
+def test_build_report():
+    show_status_report()
 
-def test_list_software():
-  list_software()
+def test_get_build_ids():
+    build_ids = get_build_ids()
+    assert isinstance(build_ids,range)
 
-def test_list_modules():
-  list_modules()
-
-def test_find_easyconfigs():
-  find_easyconfigs()
-
-def test_show_config():
-  show_configuration()
+    total_build_ids = get_total_build_ids()
+    # total build ids must be an integer
+    assert isinstance(total_build_ids,int)
+    # total build ids must be number greater than 0
+    assert total_build_ids >= 0
+def test_clear_build():
+    clear_builds()

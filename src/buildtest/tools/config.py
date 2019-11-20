@@ -210,7 +210,7 @@ def func_config_view(args=None):
 
     os.system(f"cat {BUILDTEST_CONFIG_FILE}")
 
-def func_config_restore(args):
+def func_config_restore(args=None):
     """Restore buildtest configuration from backup file. This implements ``buildtest config restore``"""
     if os.path.isfile(BUILDTEST_CONFIG_BACKUP_FILE):
         copy(BUILDTEST_CONFIG_BACKUP_FILE, BUILDTEST_CONFIG_FILE)
