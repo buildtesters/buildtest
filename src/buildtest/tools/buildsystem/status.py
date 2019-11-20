@@ -12,7 +12,7 @@ from datetime import datetime
 from buildtest.tools.config import config_opts,BUILDTEST_BUILD_LOGFILE
 from buildtest.tools.file import create_dir
 
-def show_status_report(args):
+def show_status_report(args=None):
     """
     This method displays history of builds conducted by buildtest. This method
     implements command ``buildtest status report``.
