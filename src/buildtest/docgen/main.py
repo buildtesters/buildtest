@@ -108,6 +108,20 @@ def module_collection_cmds():
         out = run(v)
         fname = os.path.join(docgen,k)
         writer(fname, out, v)
+def build_cmds():
+    build_dict = {
+        "compilers.helloworld.args.c.yml.txt": "buildtest build -c compilers.helloworld.args.c.yml",
+        "compilers.helloworld.args.c.yml_v.txt": "buildtest build -c compilers.helloworld.args.c.yml -v",
+        "compilers.helloworld.args.c.yml_vv.txt": "buildtest build -c compilers.helloworld.args.c.yml -vv",
+        "compilers.helloworld.args.c.yml_dry.txt": "buildtest build -c compilers.helloworld.args.c.yml --dry",
+        "compilers.helloworld.hello_lsf.yml.txt": "buildtest build -c compilers.helloworld.hello_lsf.yml -vv",
+        "compilers.helloworld.hello_slurm.yml.txt": "buildtest build -c compilers.helloworld.hello_slurm.yml -vv",
+        "tutorial.openacc.vecAdd.c.yml.txt": "buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv",
+    }
+    for k,v in build_dict.items():
+        out = run(v)
+        fname = os.path.join(docgen,k)
+        writer(fname, out, v)
 
 def writer(fname,out,query):
     fd = open(fname,"w")
@@ -122,6 +136,7 @@ def main():
     introspection_cmds()
     module_cmds()
     module_collection_cmds()
+    build_cmds()
 
 if __name__ == "__main__":
     """Entry Point, invoking main() method"""
