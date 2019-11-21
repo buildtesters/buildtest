@@ -1,0 +1,107 @@
+$ buildtest build -c compilers.helloworld.hello_lsf.yml -vv
+________________________________________________________________________________
+testtype: singlesource
+description: Hello World C example using GNU compiler for LSF
+scheduler: LSF
+
+program:
+  source: hello.c
+  compiler: gnu
+  cflags: -O2
+  bsub:
+    M: 200M
+    R: sandybridge
+    W: 01:00
+    n: '4'
+    q: admin
+
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+
+________________________________________________________________________________
+Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/hello_lsf.yml
+Checking schema of YAML file
+Schema Check Passed
+Scheduler: LSF
+Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld
+Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
+Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.c
+Detecting Programming Language, Compiler and MPI wrapper
+Programming Language: c
+CC: gcc
+CFLAGS: -O2
+{
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_lsf.yml.0x269f4f21.sh",
+    "scheduler": [
+        "#BSUB -M 200M",
+        "#BSUB -R sandybridge",
+        "#BSUB -W 01:00",
+        "#BSUB -n 4",
+        "#BSUB -q admin"
+    ],
+    "module": [
+        "module purge",
+        "module load GCCcore/8.3.0",
+        "module load bzip2/1.0.8-GCCcore-8.3.0",
+        "module load zlib/1.2.11-GCCcore-8.3.0",
+        "module load ncurses/6.1-GCCcore-8.3.0",
+        "module load libreadline/8.0-GCCcore-8.3.0",
+        "module load Tcl/8.6.9-GCCcore-8.3.0",
+        "module load SQLite/3.29.0-GCCcore-8.3.0",
+        "module load XZ/5.2.4-GCCcore-8.3.0",
+        "module load GMP/6.1.2-GCCcore-8.3.0",
+        "module load libffi/3.2.1-GCCcore-8.3.0",
+        "module load Python/3.7.4-GCCcore-8.3.0",
+        "module load PyCharm/2017.2.3"
+    ],
+    "metavars": [
+        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3",
+        "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src",
+        "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.c",
+        "CC=gcc",
+        "CFLAGS=\"-O2\"",
+        "EXECUTABLE=hello_lsf.yml.0xceb40f01.exe"
+    ],
+    "envs": [],
+    "build": [
+        "cd $TESTDIR",
+        "$CC $CFLAGS -o $EXECUTABLE $SRCFILE"
+    ],
+    "run": [
+        "$EXECUTABLE",
+        "rm ./$EXECUTABLE"
+    ]
+}None
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_lsf.yml.0x269f4f21.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_lsf.yml.0x269f4f21.sh
+________________________________________________________________________________
+#BSUB -M 200M
+#BSUB -R sandybridge
+#BSUB -W 01:00
+#BSUB -n 4
+#BSUB -q admin
+module purge
+module load GCCcore/8.3.0
+module load bzip2/1.0.8-GCCcore-8.3.0
+module load zlib/1.2.11-GCCcore-8.3.0
+module load ncurses/6.1-GCCcore-8.3.0
+module load libreadline/8.0-GCCcore-8.3.0
+module load Tcl/8.6.9-GCCcore-8.3.0
+module load SQLite/3.29.0-GCCcore-8.3.0
+module load XZ/5.2.4-GCCcore-8.3.0
+module load GMP/6.1.2-GCCcore-8.3.0
+module load libffi/3.2.1-GCCcore-8.3.0
+module load Python/3.7.4-GCCcore-8.3.0
+module load PyCharm/2017.2.3
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3
+SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
+SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.c
+CC=gcc
+CFLAGS="-O2"
+EXECUTABLE=hello_lsf.yml.0xceb40f01.exe
+cd $TESTDIR
+$CC $CFLAGS -o $EXECUTABLE $SRCFILE
+$EXECUTABLE
+rm ./$EXECUTABLE
+________________________________________________________________________________
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/log/buildtest_14_39_21_11_2019.log

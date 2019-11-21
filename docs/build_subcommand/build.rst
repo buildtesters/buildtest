@@ -54,23 +54,9 @@ Test Configuration
 buildtest makes use of test configuration to generate the test script. This
 can be done by running ``buildtest build -c <test-config>``.
 
-Shown below is an example run::
+Shown below is an example build
 
-    $ buildtest build -c compilers.helloworld.args.c.yml
-    Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/args.c.yml
-    Checking schema of YAML file
-    Schema Check Passed
-    Scheduler: local
-    Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld
-    Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
-    Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/args.c
-    Detecting Programming Language, Compiler and MPI wrapper
-    Programming Language: c
-    CC: gcc
-    CFLAGS: -Wall -g
-    Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/args.c.yml.0x827e7e93.sh
-    Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/log/buildtest_10_44_28_10_2019.log
-
+.. program-output:: cat docgen/compilers.helloworld.args.c.yml.txt
 
 
 Buildtest starts off by loading the test configuration (YAML) and check its schema with one defined in buildtest.
@@ -80,7 +66,7 @@ Finally, buildtest will write the test with permission: ``755``.
 buildtest has two levels of verbosity that can be set by using ``-v`` option to control the output.
 
 
-.. program-output:: cat scripts/build-verbose-1.txt
+.. program-output:: cat docgen/compilers.helloworld.args.c.yml_v.txt
 
 You may specify additional level verbosity by ``-vv`` or specify ``-v -v``
 which will give additional output including the output of configuration file and test
@@ -89,7 +75,7 @@ script.
 The primary difference between ``verbose=1`` and ``verbose=2`` is in ``verbose=1`` the output of test configuration is
 displayed, in ``verbose=2`` the output of test script in addition to test dictionary is displayed.
 
-.. program-output:: cat scripts/build-verbose-2.txt
+.. program-output:: cat docgen/compilers.helloworld.args.c.yml_vv.txt
 
 For a complete list of test configuration and names that can be passed to ``buildtest build -c <testconfig>`` run the
 following command::
@@ -215,6 +201,10 @@ Dry Run
 buildtest provides a dry run mode that shows the content of test script without actually creating the test script. This
 can be useful when writing your test configuration. To utilize the dry run option use the ``-d`` or long option ``--dry``
 when building test.
+
+Shown below is an example dry run build.
+
+.. program-output:: cat docgen/compilers.helloworld.args.c.yml_dry.txt
 
 Test Directory Layout
 ----------------------

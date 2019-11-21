@@ -1,0 +1,71 @@
+$ buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv
+________________________________________________________________________________
+testtype: singlesource
+scheduler: local
+description: OpenACC Vector Addition example using GNU compiler
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+
+program:
+  cflags: -fopenacc
+  compiler: gnu
+  ldflags: -lm
+  source: vecAdd.c
+
+
+________________________________________________________________________________
+Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/vecAdd.c.yml
+Checking schema of YAML file
+Schema Check Passed
+Scheduler: local
+Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc
+Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
+Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src/vecAdd.c
+Detecting Programming Language, Compiler and MPI wrapper
+Programming Language: c
+CC: gcc
+CFLAGS: -fopenacc
+{
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_5/vecAdd.c.yml.0xcce2d4c8.sh",
+    "scheduler": [],
+    "module": [
+        "module purge",
+        "module restore GCC"
+    ],
+    "metavars": [
+        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_5",
+        "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src",
+        "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src/vecAdd.c",
+        "CC=gcc",
+        "CFLAGS=\"-fopenacc\"",
+        "LDFLAGS=\"-lm\"",
+        "EXECUTABLE=vecAdd.c.yml.0x41b5c434.exe"
+    ],
+    "envs": [],
+    "build": [
+        "cd $TESTDIR",
+        "$CC $CFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS"
+    ],
+    "run": [
+        "$EXECUTABLE",
+        "rm ./$EXECUTABLE"
+    ]
+}None
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_5/vecAdd.c.yml.0xcce2d4c8.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_5/vecAdd.c.yml.0xcce2d4c8.sh
+________________________________________________________________________________
+module purge
+module restore GCC
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_5
+SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
+SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src/vecAdd.c
+CC=gcc
+CFLAGS="-fopenacc"
+LDFLAGS="-lm"
+EXECUTABLE=vecAdd.c.yml.0x41b5c434.exe
+cd $TESTDIR
+$CC $CFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS
+$EXECUTABLE
+rm ./$EXECUTABLE
+________________________________________________________________________________
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_5/log/buildtest_14_39_21_11_2019.log

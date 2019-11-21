@@ -42,7 +42,7 @@ specified by option ``-c`` or long option ``--config``. This option is part of
 
 Shown below is an example build
 
-.. program-output:: cat scripts/build-single-configuration.txt
+.. program-output:: cat docgen/compilers.helloworld.args.c.yml.txt
 
 buildtest can insert modules into test, just load the modules before you build
 the test and it will insert them into your test script.

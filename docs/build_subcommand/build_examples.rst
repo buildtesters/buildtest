@@ -57,7 +57,7 @@ For this test we use GCC version 8.3.0 that is shown in the GCC user collection:
 
 Notice below, $LDFLAGS is set in the testscript and referenced in the compilation. The ``-fopenacc`` is set for $CFLAGS.
 
-.. program-output:: cat scripts/build-openacc-example.txt
+.. program-output:: cat docgen/tutorial.openacc.vecAdd.c.yml.txt
 
 The executable can be run on the GPU or CPU. Shown below, we run the test script locally::
 
@@ -83,7 +83,7 @@ Let's see an example configuration for LSF job
 By setting ``scheduler: LSF`` this enables the ``bsub`` key that is responsible for adding the **#BSUB** directive in
 the test script. Shown below is an example build for LSF job.
 
-.. program-output:: cat scripts/build-lsf-example.txt
+.. program-output:: cat docgen/compilers.helloworld.hello_lsf.yml.txt
 
 The ``bsub`` keys are mapped to the #BSUB options which makes it easy to associate #BSUB options to the ``bsub`` dictionary.
 
@@ -138,4 +138,4 @@ See example below:
 The ``scheduler: SLURM`` will enable ``sbatch`` key that is used for adding **#SBATCH** directive in test script.
 Also note that ``CXXFLAGS:`` will be used for passing options to C++ compiler (g++)
 
-.. program-output:: cat scripts/build-slurm-example.txt
+.. program-output:: cat docgen/compilers.helloworld.hello_slurm.yml.txt
