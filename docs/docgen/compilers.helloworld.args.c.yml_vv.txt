@@ -33,7 +33,7 @@ Programming Language: c
 CC: gcc
 CFLAGS: -Wall -g
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/args.c.yml.0xc9af0872.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/args.c.yml.0x29034b86.sh",
     "scheduler": [],
     "module": [
         "module purge",
@@ -56,7 +56,7 @@ CFLAGS: -Wall -g
         "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/args.c",
         "CC=gcc",
         "CFLAGS=\"-Wall -g\"",
-        "EXECUTABLE=args.c.yml.0xf68b16fc.exe"
+        "EXECUTABLE=args.c.yml.0x185b2109.exe"
     ],
     "envs": [
         "export FOO=BAR",
@@ -75,8 +75,8 @@ CFLAGS: -Wall -g
         "rm ./$EXECUTABLE"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/args.c.yml.0xc9af0872.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/args.c.yml.0xc9af0872.sh
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/args.c.yml.0x29034b86.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/args.c.yml.0x29034b86.sh
 ________________________________________________________________________________
 module purge
 module load GCCcore/8.3.0
@@ -96,7 +96,7 @@ SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworl
 SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/args.c
 CC=gcc
 CFLAGS="-Wall -g"
-EXECUTABLE=args.c.yml.0xf68b16fc.exe
+EXECUTABLE=args.c.yml.0x185b2109.exe
 export FOO=BAR
 export X=1
 cd $TESTDIR
@@ -108,4 +108,4 @@ $EXECUTABLE hello world!
 echo post_run
 rm ./$EXECUTABLE
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/log/buildtest_14_39_21_11_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/log/buildtest_10_01_22_11_2019.log

@@ -117,6 +117,8 @@ def build_cmds():
         "compilers.helloworld.hello_lsf.yml.txt": "buildtest build -c compilers.helloworld.hello_lsf.yml -vv",
         "compilers.helloworld.hello_slurm.yml.txt": "buildtest build -c compilers.helloworld.hello_slurm.yml -vv",
         "tutorial.openacc.vecAdd.c.yml.txt": "buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv",
+        "coreutils.txt": "buildtest  build --package coreutils",
+        "module-binary.txt": "buildtest build --binary"
     }
     for k,v in build_dict.items():
         out = run(v)

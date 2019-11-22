@@ -14,7 +14,7 @@ installed system package.
 
 For instance, lets build the tests for ``coreutils`` package by running ``buildtest build --package coreutils``:
 
-.. program-output:: cat scripts/coreutils-binary-test.txt
+.. program-output:: cat docgen/coreutils.txt
 
 
 Sanity Check for Modules
@@ -32,7 +32,11 @@ shell
     $ ml
 
     Currently Loaded Modules:
-      1) eb/2018   2) GCCcore/6.4.0   3) binutils/2.28-GCCcore-6.4.0   4) GCC/6.4.0-2.28
+      1) GCCcore/8.3.0               5) libreadline/8.0-GCCcore-8.3.0   9) GMP/6.1.2-GCCcore-8.3.0
+      2) bzip2/1.0.8-GCCcore-8.3.0   6) Tcl/8.6.9-GCCcore-8.3.0        10) libffi/3.2.1-GCCcore-8.3.0
+      3) zlib/1.2.11-GCCcore-8.3.0   7) SQLite/3.29.0-GCCcore-8.3.0    11) Python/3.7.4-GCCcore-8.3.0
+      4) ncurses/6.1-GCCcore-8.3.0   8) XZ/5.2.4-GCCcore-8.3.0         12) PyCharm/2017.2.3
+
 
 
 buildtest will seek out all binary executables in each module file and run
@@ -40,21 +44,7 @@ buildtest will seek out all binary executables in each module file and run
 
 Shown below is an example.
 
-::
-
-    $ buildtest build -b
-    Detecting Software:eb/2018
-    No $PATH set in your module  eb/2018   so no possible binaries can be found
-    There are no binaries for package: eb/2018
-    Detecting Software:GCCcore/6.4.0
-    Generating  19  binary tests
-    Binary Tests are written in  /home/siddis14/buildtest/software/GCCcore/6.4.0
-    Detecting Software:binutils/2.28-GCCcore-6.4.0
-    Generating  18  binary tests
-    Binary Tests are written in  /home/siddis14/buildtest/software/binutils/2.28-GCCcore-6.4.0
-    Detecting Software:GCC/6.4.0-2.28
-    No $PATH set in your module  GCC/6.4.0-2.28   so no possible binaries can be found
-    There are no binaries for package: GCC/6.4.0-2.28
+.. program-output:: cat docgen/module-binary.txt
 
 
 modules that dont have ``PATH`` set or no binary executables are found in
@@ -67,5 +57,5 @@ Shown below is an example test script for gcc binary
     #!/bin/sh
 
 
-    module load GCCcore/6.4.0
+    module load GCCcore/8.3.0
     which gcc
