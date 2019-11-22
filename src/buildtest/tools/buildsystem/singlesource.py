@@ -167,52 +167,207 @@ class SingleSource(BuildTestBuilder):
         bsub_schema = {
             'type': dict,
             'required': False,
-            'n': {'type': str, 'required': False, 'opt_mapping': "-n"},
-            'M': {'type': str, 'required': False, 'opt_mapping': "-M"},
-            'R': {'type': str, 'required': False, 'opt_mapping': "-R"},
-            'q': {'type': str, 'required': False, 'opt_mapping': "-q"},
-            'W': {'type': str, 'required': False, 'opt_mapping': "-W"}
+            'description': "bsub block for specifying #BSUB directives in test.",
+
+            'n': {
+                'type': str,
+                'required': False,
+                'opt_mapping': "-n",
+                'description': "Equivalent to #BSUB -n"
+            },
+            'M': {
+                'type': str,
+                'required': False,
+                'opt_mapping': "-M",
+                'description': "Equivalent to #BSUB -M"
+            },
+            'R': {
+                'type': str,
+                'required': False,
+                'opt_mapping': "-R",
+                'description': "Equivalent to #BSUB -R"
+            },
+            'q': {
+                'type': str,
+                'required': False,
+                'opt_mapping': "-q",
+                'description': "Equivalent to #BSUB -q"
+            },
+            'W': {
+                'type': str,
+                'required': False,
+                'opt_mapping': "-W",
+                'description': "Equivalent to #BSUB -W"
+            }
         }
         sbatch_schema = {
             'type': dict,
             'required': False,
-            'n': {'type': str, 'required': False, 'opt_mapping': "-n"},
-            'N': {'type': str, 'required': False, 'opt_mapping': "-N"},
-            'mem': {'type': str,'required': False, 'opt_mapping': "--mem" },
-            'C': {'type': str, 'required': False, 'opt_mapping': "-C"},
-            'p': {'type': str, 'required': False, 'opt_mapping': "-p"},
-            't': {'type': str, 'required': False, 'opt_mapping': "-t"}
+            'description': "sbatch block for specifying #SBATCH directives in test.",
+
+            'n': {
+                'type': str,
+                'required': False,
+                'opt_mapping': "-n",
+                'description': "Equivalent to #SBATCH -n"
+            },
+            'N': {
+                'type': str,
+                'required': False,
+                'opt_mapping': "-N",
+                'description': "Equivalent to #SBATCH -N"
+            },
+            'mem': {
+                'type': str,
+                'required': False,
+                'opt_mapping': "--mem",
+                'description': "Equivalent to #SBATCH --mem"
+            },
+            'C': {
+                'type': str,
+                'required': False,
+                'opt_mapping': "-C",
+                'description': "Equivalent to #SBATCH -C"
+            },
+            'p': {
+                'type': str,
+                'required': False,
+                'opt_mapping': "-p",
+                'description': "Equivalent to #SBATCH -p"
+            },
+            't': {
+                'type': str,
+                'required': False,
+                'opt_mapping': "-t",
+                'description': "Equivalent to #SBATCH -t"
+            }
         }
         mpi_schema = {
             'type': dict,
             'required': False,
-            "flavor": {'type': str, 'required': False, 'values': ["openmpi", "mpich"]},
-            "launcher": {'type': str, 'required': False, 'values': ["auto", "mpirun", "mpiexec", "mpiexec.hydra"]},
-            "launcher_opts": {'type': str, 'required': False}
+            'description': "MPI block for specifying mpi configuration.",
+            "flavor": {
+                'type': str,
+                'required': False,
+                'values': ["openmpi", "mpich"],
+                'description': "Specify MPI Flavor. This is used to detect MPI wrapper."
+            },
+            "launcher": {
+                'type': str,
+                'required': False,
+                'values': ["mpirun", "mpiexec", "mpiexec.hydra"],
+                'description': "Specify the MPI Launcher to run MPI jobs"
+            },
+            "launcher_opts": {
+                'type': str,
+                'required': False,
+                'description': "Pass options to MPI Launcher"
+            }
         }
         self.schema = {
-            "testtype": {'type': str, 'required': True, 'values': "singlesource"},
-            "description": {'type': str, 'required': True},
-            "maintainer": {'type': list, 'required': True},
-            "scheduler": {'type': str, 'required': True, 'values': ["local", "LSF", "SLURM"]},
-            "mpi": {'type': bool, 'required': False, 'values': [False, True]},
+            "testtype": {
+                'type': str,
+                'required': True,
+                'values': "singlesource",
+                'description': "Buildtest Class for Single Source Compilation"
+            },
+            "description": {
+                'type': str,
+                'required': True,
+                'description': "Description Text for test configuration limited to 80 characters"
+            },
+            "maintainer": {
+                'type': list,
+                'required': True,
+                'description': "List of Maintainers for the test"
+            },
+            "scheduler": {
+                'type': str,
+                'required': True,
+                'values': ["local", "LSF", "SLURM"],
+                'description': "Pick Scheduler Type."
+            },
+            "mpi": {
+                'type': bool,
+                'required': False,
+                'values': [False, True],
+                'description': "Instruct buildtest if this test is a MPI test"
+            },
             "program": {
                 'type': dict,
                 'required': True,
-                'source': {'type': str, 'required': True},
-                'compiler': {'type': str, 'required': True, 'values': ["gnu","intel","cuda"]},
-                'env': {'type': dict, 'required': False},
-                'cflags': {'type': str, 'required': False},
-                'cxxflags': {'type': str, 'required': False},
-                'fflags': {'type': str, 'required': False},
-                'ldflags': {'type': str, 'required': False},
-                'pre_build': {'type': str, 'required': False},
-                'post_build': {'type': str, 'required': False},
-                'pre_run': {'type': str, 'required': False},
-                'post_run': {'type': str, 'required': False},
-                'pre_exec': {'type': str, 'required': False},
-                'exec_opts': {'type': str, 'required': False},
-                'post_exec': {'type': str, 'required': False},
+                'description': "Start of Program. This section where you specify test parameters.",
+                'source': {
+                    'type': str,
+                    'required': True,
+                    'description': "Source File to compile. This file must be in 'src' directory"
+                },
+                'compiler': {
+                    'type': str,
+                    'required': True,
+                    'values': ["gnu","intel","cuda"],
+                    'description': "Specify Compiler Name to detect compiler wrapper."
+                },
+                'env': {
+                    'type': dict,
+                    'required': False,
+                    'description': "Specify List of Environment Varaibles in Test"
+                },
+                'cflags': {
+                    'type': str,
+                    'required': False,
+                    'description': "Specify compiler flags to C compiler (i.e $CC)"
+                },
+                'cxxflags': {
+                    'type': str,
+                    'required': False,
+                    'description': "Specify compiler flags to C++ compiler (i.e $CXX)"
+                },
+                'fflags': {
+                    'type': str,
+                    'required': False,
+                    'description': "Specify compiler flags to Fortran compiler (i.e $FC)"
+                },
+                'ldflags': {
+                    'type': str,
+                    'required': False,
+                    'description': "Specify linker flags"
+                },
+                'pre_build': {
+                    'type': str,
+                    'required': False,
+                    'description': "Shell commands to run before building."
+                },
+                'post_build': {
+                    'type': str,
+                    'required': False,
+                    'description': "Shell commands to run after building."
+                },
+                'pre_run': {
+                    'type': str,
+                    'required': False,
+                    'description': "Shell commands to run before running executable."
+                },
+                'post_run': {
+                    'type': str,
+                    'required': False,
+                    'description': "Shell commands to run after running executable."
+                },
+                'pre_exec': {
+                    'type': str,
+                    'required': False,
+                    'description': "Command in front of executable."
+                },
+                'exec_opts': {
+                    'type': str,
+                    'required': False,
+                    'description': "Passing options to executable."
+                },
+                'post_exec': {
+                    'type': str,
+                    'required': False,
+                    'description': "Commands after executable."
+                },
                 'bsub': bsub_schema,
                 'sbatch': sbatch_schema,
                 'mpi': mpi_schema
@@ -355,8 +510,8 @@ class SingleSource(BuildTestBuilder):
             raise BuildTestError(f"Expecting of type: {self.schema['program']['type']} for program key. Received of type: {self.test_yaml['program']}")
 
         for k in self.schema['program'].keys():
-            # skip keys of they are "type" or "required" these are metadata for program key
-            if k == "type" or k == "required":
+            # skip keys of they are "type" or "required" or "description" these are metadata for program key
+            if k in ["type","required","description"]:
                 continue
             # if required key not found in test configuration then report error.
             if self.schema['program'][k]['required'] and (k not in self.test_yaml['program'].keys()):
@@ -386,7 +541,7 @@ class SingleSource(BuildTestBuilder):
         """Checking bsub keys."""
 
         for k in self.schema['program']['bsub'].keys():
-            if k == "type" or k == "required":
+            if k in ["type", "required", "description"]:
                 continue
 
             # if required key not found in test configuration then report error.
@@ -402,7 +557,7 @@ class SingleSource(BuildTestBuilder):
         """Checking bsub keys."""
 
         for k in self.schema['program']['sbatch'].keys():
-            if k == "type" or k == "required":
+            if k in ["type", "required", "description"]:
                 continue
 
             # if required key not found in test configuration then report error.
@@ -419,7 +574,7 @@ class SingleSource(BuildTestBuilder):
 
         for k in self.schema['program']['mpi'].keys():
 
-            if k == "type" or k == "required":
+            if k in ["type", "required", "description"]:
                 continue
             # if required key not found in test configuration then report error.
             if self.schema['program']['mpi'][k]['required'] and k not in self.test_yaml['program']['mpi'].keys():
