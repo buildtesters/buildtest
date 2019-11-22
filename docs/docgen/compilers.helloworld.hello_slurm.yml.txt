@@ -31,7 +31,7 @@ Programming Language: c++
 CXX: g++
 CXXFLAGS: -O2
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/hello_slurm.yml.0x331aa29d.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/hello_slurm.yml.0xe3a3d9aa.sh",
     "scheduler": [
         "#SBATCH --mem 200M",
         "#SBATCH -C sandybridge",
@@ -61,7 +61,7 @@ CXXFLAGS: -O2
         "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp",
         "CXX=g++",
         "CXXFLAGS=\"-O2\"",
-        "EXECUTABLE=hello_slurm.yml.0x7f940d4a.exe"
+        "EXECUTABLE=hello_slurm.yml.0xe40e3279.exe"
     ],
     "envs": [],
     "build": [
@@ -73,8 +73,8 @@ CXXFLAGS: -O2
         "rm ./$EXECUTABLE"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/hello_slurm.yml.0x331aa29d.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/hello_slurm.yml.0x331aa29d.sh
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/hello_slurm.yml.0xe3a3d9aa.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/hello_slurm.yml.0xe3a3d9aa.sh
 ________________________________________________________________________________
 #SBATCH --mem 200M
 #SBATCH -C sandybridge
@@ -100,10 +100,10 @@ SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworl
 SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp
 CXX=g++
 CXXFLAGS="-O2"
-EXECUTABLE=hello_slurm.yml.0x7f940d4a.exe
+EXECUTABLE=hello_slurm.yml.0xe40e3279.exe
 cd $TESTDIR
 $CXX $CXXFLAGS -o $EXECUTABLE $SRCFILE
 $EXECUTABLE
 rm ./$EXECUTABLE
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/log/buildtest_14_39_21_11_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/log/buildtest_10_01_22_11_2019.log
