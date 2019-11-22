@@ -109,18 +109,18 @@ When it comes to building C, C++, and Fortran program example the ``{build}`` se
 ``{build}`` section will be as follows::
 
     C Program
-    $CC $CFLAGS -o $EXE $SRCFILE $LDFLAGS
+    $CC $CFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS
 
     C++ Program
-    $CXX $CXXFLAGS -o $EXE $SRCFILE $LDFLAGS
+    $CXX $CXXFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS
 
     Fortran Program
-    $FC $FFLAGS -o $EXE $SRCFILE $LDFLAGS
+    $FC $FFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS
 
 
 The ``{run}`` section is the execution of binary from the compiled code. The general format is the following::
 
-   {pre_exec} <executable> {exec_opts} {post_exec}
+   {pre_exec} $EXECUTABLE {exec_opts} {post_exec}
 
 The ``{pre_exec}`` and ``{post_exec}`` are shell commands that can be passed before and after executable which are specified
 in the test configuration. To pass arguments to executable use the ``{exec_opts}`` which can be specified in the test

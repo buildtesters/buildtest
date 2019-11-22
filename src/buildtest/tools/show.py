@@ -18,5 +18,5 @@ def func_show_subcmd(args):
         show_configuration()
 
     if args.keys:
-        schema = SingleSource()
-        print(yaml.dump(schema, default_flow_style=False, sort_keys=True))
+        schema = SingleSource().get_schema()
+        yaml.dump(schema,sys.stdout, default_flow_style=False)
