@@ -12,7 +12,7 @@ import stat
 from buildtest.tools.config import config_opts, logID, BUILDTEST_BUILD_HISTORY
 from buildtest.tools.modules import module_obj
 from buildtest.tools.software import get_binaries_from_application
-from buildtest.tools.system import get_binaries_from_systempackage, \
+from buildtest.tools.system import get_binaries_from_rpm, \
     BuildTestCommand
 
 def generate_binary_test(name,verbose, build_id, package=None, module=None):
@@ -53,10 +53,11 @@ def generate_binary_test(name,verbose, build_id, package=None, module=None):
 
 
     elif package:
+
         print ("Detecting System Package: " + name)
 
 
-        tmp_bin_list = get_binaries_from_systempackage(name)
+        tmp_bin_list = get_binaries_from_rpm(name)
     binary_tests = tmp_bin_list
 
     if binary_tests is None:

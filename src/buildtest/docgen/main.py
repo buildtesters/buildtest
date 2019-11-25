@@ -53,12 +53,13 @@ def introspection_cmds():
         "buildtest system view",
         "buildtest system fetch",
         "buildtest testconfigs list",
-        "buildtest testconfigs view compilers.helloworld.args.c.yml",
+        "buildtest testconfigs view tutorial.compilers.args.c.yml",
         "buildtest benchmark osu --list",
         "buildtest benchmark osu --info",
         "buildtest module collection --clear",
         "buildtest module tree -l"
     ]
+
     for cmd in queries:
         out = run(cmd)
         tmp_fname = cmd.replace(" ", "_") + ".txt"
@@ -135,10 +136,10 @@ def writer(fname,out,query):
 
 def main():
     create_dir(docgen)
-    #build_helper()
-    #introspection_cmds()
-    #module_cmds()
-    #module_collection_cmds()
+    build_helper()
+    introspection_cmds()
+    module_cmds()
+    module_collection_cmds()
     build_cmds()
 
 if __name__ == "__main__":

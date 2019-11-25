@@ -23,7 +23,7 @@ from buildtest.tools.show import func_show_subcmd
 from buildtest.tools.buildsystem.status import show_status_report, get_build_ids, \
     show_status_log, show_status_test, run_tests
 
-from buildtest.tools.system import systempackage_installed_list, \
+from buildtest.tools.system import rpm_install_list, \
     get_module_collection
 from buildtest.tools.testconfigs import func_testconfigs_show, \
     testconfig_choices, func_testconfigs_view, func_testconfigs_edit, func_testconfigs_maintainer
@@ -43,7 +43,7 @@ def menu():
     test_config_choice = testconfig_choices()
 
 
-    pkglist = systempackage_installed_list()
+    pkglist = rpm_install_list()
 
     parent_choices = get_all_parents()
 
