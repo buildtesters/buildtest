@@ -2,6 +2,21 @@
 CHANGELOG
 =================
 
+v0.7.3 (Nov 25th, 2019)
+-----------------------
+
+- enable ``cuda``, ``intel``, ``pgi`` compilation, this can be set via ``compilers`` key
+- Define shell variables ``CC``, ``FC``, ``CXX`` to be used to reference builds
+- Define shell variable ``EXECUTABLE`` to reference generated executable
+- Fix Code Style issues reported by CodeFactor (https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework)
+- Add , hust-19 slides, buildtest architecture and workflow diagram in documentation
+- Simplify output of ``buildtest module --easybuild`` and ``buildtest module --spack``
+- Add ``module purge`` or ``module --force purge`` in test (#122)
+- automate documentation examples for building test examples
+- move all documentation examples to ``toolkit/suite/tutorial``
+- update CONTRIBUTING.rst guide to include section on building buildtest API docs, automating documentation examples and running regression test via pytest
+
+
 v0.7.2 (Nov 8th, 2019)
 ----------------------
 - automate documentation test generation using python script

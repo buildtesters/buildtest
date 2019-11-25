@@ -40,7 +40,6 @@ This documentation was last rebuild on |today| and is intended for version |vers
    :maxdepth: 2
    :caption: Development Guide
 
-   command_reference.rst
    contributing.rst
    references.rst
 
