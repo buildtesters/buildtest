@@ -1,11 +1,12 @@
 $ buildtest testconfigs list
 Test Configuration Name                                      | Description                   
 ----------------------------------------------------------------------------------------------------
-openmp.hello.omp_hello.c.yml                                 | OpenMP Hello World example in C
-mpi.hello.hello.c.yml                                        | MPI Hello World program.      
-compilers.helloworld.hello_slurm.yml                         | Hello World C++ example using GNU compiler for SLURM
-compilers.helloworld.hello.f.yml                             | Hello World Fortran example using GNU compiler
-compilers.helloworld.hello_lsf.yml                           | Hello World C example using GNU compiler for LSF
-compilers.helloworld.args.c.yml                              | C program that prints arguments passed to executable.
 tutorial.cuda.saxpy.c.yml                                    | SAXPY example in CUDA         
+tutorial.openmp.omp_hello.c.yml                              | OpenMP Hello World example in C
+tutorial.mpi.hello.c.yml                                     | MPI Hello World program.      
+tutorial.compilers.hello_slurm.yml                           | Hello World C++ example using GNU compiler for SLURM
+tutorial.compilers.hello.f.yml                               | Hello World Fortran example using GNU compiler
+tutorial.compilers.hello_lsf.yml                             | Hello World C example using GNU compiler for LSF
+tutorial.compilers.args.c.yml                                | C program that prints arguments passed to executable.
 tutorial.openacc.vecAdd.c.yml                                | OpenACC Vector Addition example using GNU compiler
+tutorial.openacc.vecAdd.c_pgi.yml                            | OpenACC Vector Addition example using GNU compiler

@@ -56,26 +56,24 @@ can be done by running ``buildtest build -c <test-config>``.
 
 Shown below is an example build
 
-.. program-output:: cat docgen/compilers.helloworld.args.c.yml.txt
+.. program-output:: cat docgen/tutorial.compilers.args.c.yml.txt
 
 
 Buildtest starts off by loading the test configuration (YAML) and check its schema with one defined in buildtest.
 Once the schema check is passed, it will proceed by checking the programming language, compiler and mpi wrapper (if necessary).
 Finally, buildtest will write the test with permission: ``755``.
 
+Verbose Levels
+---------------
+
 buildtest has two levels of verbosity that can be set by using ``-v`` option to control the output.
-
-
-.. program-output:: cat docgen/compilers.helloworld.args.c.yml_v.txt
 
 You may specify additional level verbosity by ``-vv`` or specify ``-v -v``
 which will give additional output including the output of configuration file and test
 script.
 
-The primary difference between ``verbose=1`` and ``verbose=2`` is in ``verbose=1`` the output of test configuration is
-displayed, in ``verbose=2`` the output of test script in addition to test dictionary is displayed.
-
-.. program-output:: cat docgen/compilers.helloworld.args.c.yml_vv.txt
+Shown below is an example build with verbose level 1
+.. program-output:: cat docgen/tutorial.compilers.args.c.yml_v.txt
 
 For a complete list of test configuration and names that can be passed to ``buildtest build -c <testconfig>`` run the
 following command::
@@ -151,7 +149,7 @@ Hello World C
 
 Let's take a look at C example that will be compiled with gcc
 
-.. program-output:: cat scripts/build_subcommand/compilers.helloworld.args.c.yml
+.. program-output:: cat ../toolkit/suite/tutorial/compilers/args.c.yml
 
 The first line ``testtype: singlesource`` is to instruct buildtest this is a singlesource compilation. Currently, buildtest
 only supports this single source compilation, but in future this can be expanded to different types.
@@ -195,6 +193,8 @@ To help visualize see how the test dictionary maps to the specific commands in t
    :width: 500
    :height:  250
 
+For a list of keys see :ref:`singlesource_schema`
+
 Dry Run
 --------
 
@@ -204,7 +204,7 @@ when building test.
 
 Shown below is an example dry run build.
 
-.. program-output:: cat docgen/compilers.helloworld.args.c.yml_dry.txt
+.. program-output:: cat docgen/tutorial.compilers.args.c.yml_dry.txt
 
 Test Directory Layout
 ----------------------

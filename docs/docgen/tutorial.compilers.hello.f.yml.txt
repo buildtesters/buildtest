@@ -1,0 +1,29 @@
+$ buildtest build -c tutorial.compilers.hello.f.yml -co intel --dry
+Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/hello.f.yml
+Checking schema of YAML file
+Schema Check Passed
+Scheduler: local
+Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers
+Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src/hello.f90
+Detecting Programming Language, Compiler and MPI wrapper
+Programming Language: fortran
+FC: ifort
+FFLAGS: -O2
+Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_22/hello.f.yml.0x771ffbb9.sh
+--------------------------------------------------------------------------------
+
+module purge
+module restore intel
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_22
+SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src/hello.f90
+FTN=ifort
+FFLAGS="-O2"
+EXECUTABLE=hello.f.yml.0x1f09a75a.exe
+
+cd $TESTDIR
+$FTN $FFLAGS -o $EXECUTABLE $SRCFILE
+$EXECUTABLE
+rm ./$EXECUTABLE
+--------------------------------------------------------------------------------

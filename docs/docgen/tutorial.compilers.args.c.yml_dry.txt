@@ -1,16 +1,16 @@
-$ buildtest build -c compilers.helloworld.args.c.yml --dry
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/args.c.yml
+$ buildtest build -c tutorial.compilers.args.c.yml --dry
+Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/args.c.yml
 Checking schema of YAML file
 Schema Check Passed
 Scheduler: local
-Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
-Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/args.c
+Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers
+Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src/args.c
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: gcc
 CFLAGS: -Wall -g
-Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/args.c.yml.0xeaeb32f4.sh
+Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_20/args.c.yml.0x9dcb8d4e.sh
 --------------------------------------------------------------------------------
 
 module purge
@@ -25,13 +25,12 @@ module load XZ/5.2.4-GCCcore-8.3.0
 module load GMP/6.1.2-GCCcore-8.3.0
 module load libffi/3.2.1-GCCcore-8.3.0
 module load Python/3.7.4-GCCcore-8.3.0
-module load PyCharm/2017.2.3
-TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3
-SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
-SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/args.c
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_20
+SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src/args.c
 CC=gcc
 CFLAGS="-Wall -g"
-EXECUTABLE=args.c.yml.0x7b9d482c.exe
+EXECUTABLE=args.c.yml.0x4538c48.exe
 export FOO=BAR
 export X=1
 cd $TESTDIR

@@ -1,3 +1,5 @@
+.. _singlesource_schema:
+
 Single Source YAML Schema
 ==========================
 
@@ -17,7 +19,7 @@ Single Source YAML Schema
     :widths:    20,20,20,20,80
 
     **source**,``True``,``str``,**N/A**,"Source File to compile. This file must be in ``src`` directory"
-    **compiler**,``True``,``str``, "``gnu`` ``intel`` ``cuda``","Specify Compiler Name to detect compiler wrapper."
+    **compiler**,``True``,``str``, "``gnu`` ``intel`` ``pgi`` ``cuda``","Specify Compiler Name to detect compiler wrapper."
     **env**,``False``,``dict``,**N/A**,"Specify List of Environment Varaibles in Test"
     **cflags**,``False``,``str``,**N/A**,"Specify compiler flags to C compiler (i.e $CC)"
     **cxxflags**,``False``,``str``,**N/A**,"Specify compiler flags to C++ compiler (i.e $CXX)"

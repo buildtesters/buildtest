@@ -1,4 +1,4 @@
-$ buildtest build -c compilers.helloworld.hello_slurm.yml -vv
+$ buildtest build -c tutorial.compilers.hello_slurm.yml -vv
 ________________________________________________________________________________
 testtype: singlesource
 description: Hello World C++ example using GNU compiler for SLURM
@@ -19,19 +19,19 @@ program:
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
 ________________________________________________________________________________
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/hello_slurm.yml
+Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/hello_slurm.yml
 Checking schema of YAML file
 Schema Check Passed
 Scheduler: SLURM
-Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
-Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp
+Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers
+Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src/hello.cpp
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c++
 CXX: g++
 CXXFLAGS: -O2
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/hello_slurm.yml.0xe3a3d9aa.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_21/hello_slurm.yml.0xa6883e69.sh",
     "scheduler": [
         "#SBATCH --mem 200M",
         "#SBATCH -C sandybridge",
@@ -52,16 +52,15 @@ CXXFLAGS: -O2
         "module load XZ/5.2.4-GCCcore-8.3.0",
         "module load GMP/6.1.2-GCCcore-8.3.0",
         "module load libffi/3.2.1-GCCcore-8.3.0",
-        "module load Python/3.7.4-GCCcore-8.3.0",
-        "module load PyCharm/2017.2.3"
+        "module load Python/3.7.4-GCCcore-8.3.0"
     ],
     "metavars": [
-        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4",
-        "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src",
-        "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp",
+        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_21",
+        "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src",
+        "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src/hello.cpp",
         "CXX=g++",
         "CXXFLAGS=\"-O2\"",
-        "EXECUTABLE=hello_slurm.yml.0xe40e3279.exe"
+        "EXECUTABLE=hello_slurm.yml.0x24fe718c.exe"
     ],
     "envs": [],
     "build": [
@@ -73,8 +72,8 @@ CXXFLAGS: -O2
         "rm ./$EXECUTABLE"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/hello_slurm.yml.0xe3a3d9aa.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/hello_slurm.yml.0xe3a3d9aa.sh
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_21/hello_slurm.yml.0xa6883e69.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_21/hello_slurm.yml.0xa6883e69.sh
 ________________________________________________________________________________
 #SBATCH --mem 200M
 #SBATCH -C sandybridge
@@ -94,16 +93,15 @@ module load XZ/5.2.4-GCCcore-8.3.0
 module load GMP/6.1.2-GCCcore-8.3.0
 module load libffi/3.2.1-GCCcore-8.3.0
 module load Python/3.7.4-GCCcore-8.3.0
-module load PyCharm/2017.2.3
-TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4
-SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src
-SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/compilers/helloworld/src/hello.cpp
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_21
+SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src/hello.cpp
 CXX=g++
 CXXFLAGS="-O2"
-EXECUTABLE=hello_slurm.yml.0xe40e3279.exe
+EXECUTABLE=hello_slurm.yml.0x24fe718c.exe
 cd $TESTDIR
 $CXX $CXXFLAGS -o $EXECUTABLE $SRCFILE
 $EXECUTABLE
 rm ./$EXECUTABLE
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/log/buildtest_10_01_22_11_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_21/log/buildtest_15_41_24_11_2019.log
