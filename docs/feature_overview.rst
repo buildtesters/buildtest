@@ -16,12 +16,12 @@ directory at will.
 
 Shown below is unique software list using ``buildtest list --software``
 
-.. program-output:: cat docgen/buildtest_list_--software.txt
+.. program-output:: head -n 10 docgen/buildtest_list_--software.txt
 
 Similarly we can retrieve full name of module file and absolute path to
 module file using ``buildtest list --module`` or short option ``buildtest list -m``
 
-.. program-output:: cat docgen/buildtest_list_--modules.txt
+.. program-output:: head -n 10 docgen/buildtest_list_--modules.txt
 
 Module Testing
 ---------------
@@ -42,12 +42,8 @@ specified by option ``-c`` or long option ``--config``. This option is part of
 
 Shown below is an example build
 
-.. program-output:: cat docgen/compilers.helloworld.args.c.yml.txt
+.. program-output:: cat docgen/tutorial.compilers.args.c.yml.txt
 
-buildtest can insert modules into test, just load the modules before you build
-the test and it will insert them into your test script.
-
-.. program-output:: cat scripts/build-single-configuration-module.txt
 
 System Package Test
 -------------------
@@ -60,7 +56,7 @@ binary test by checking the system default paths i.e ``/usr/bin``, ``/usr/local/
 For instance to build test for the system package ``coreutils`` you can do the
 following
 
-.. program-output:: cat scripts/coreutils-binary-test.txt
+.. program-output:: cat docgen/coreutils.txt
 
 Build Report
 -------------

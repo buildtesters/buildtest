@@ -129,6 +129,16 @@ class BuildTestBuilder():
             if self.language == "fortran":
                 self.ftn = "ifort"
 
+        elif self.compiler == "pgi":
+            if self.language == "c":
+                self.cc = "pgcc"
+
+            if self.language == "c++":
+                self.cxx = "pgc++"
+
+            if self.language == "fortran":
+                self.ftn = "pgfortran"
+
         elif self.compiler == "cuda":
             self.nvcc = "nvcc"
 
@@ -305,7 +315,7 @@ class SingleSource(BuildTestBuilder):
                 'compiler': {
                     'type': str,
                     'required': True,
-                    'values': ["gnu","intel","cuda"],
+                    'values': ["gnu","intel","pgi","cuda"],
                     'description': "Specify Compiler Name to detect compiler wrapper."
                 },
                 'env': {
@@ -621,9 +631,9 @@ class SingleSource(BuildTestBuilder):
             # check if cflags is defined
             if "fflags" in self.test_yaml['program']:
                 self.fflags = self.test_yaml['program']["fflags"]
-                buildcmd = ["$FTN", "$FFLAGS", "-o", "$EXECUTABLE", "$SRCFILE"]
+                buildcmd = ["$FC", "$FFLAGS", "-o", "$EXECUTABLE", "$SRCFILE"]
             else:
-                buildcmd = ["$FTN", "-o", "$EXECUTABLE", "$SRCFILE"]
+                buildcmd = ["$FC", "-o", "$EXECUTABLE", "$SRCFILE"]
 
         elif self.language == "cuda":
             # check if cflags is defined
@@ -671,7 +681,7 @@ class SingleSource(BuildTestBuilder):
             self.testscript_content["metavars"].append(f"CC={self.nvcc}")
 
         if self.ftn:
-            self.testscript_content["metavars"].append(f"FTN={self.ftn}")
+            self.testscript_content["metavars"].append(f"FC={self.ftn}")
 
         if self.cxx:
             self.testscript_content["metavars"].append(f"CXX={self.cxx}")

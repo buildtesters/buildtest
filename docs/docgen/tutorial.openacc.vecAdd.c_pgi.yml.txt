@@ -1,0 +1,30 @@
+$ buildtest build -c tutorial.openacc.vecAdd.c_pgi.yml -co pgi --dry
+Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/vecAdd.c_pgi.yml
+Checking schema of YAML file
+Schema Check Passed
+Scheduler: local
+Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc
+Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
+Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src/vecAdd.c
+Detecting Programming Language, Compiler and MPI wrapper
+Programming Language: c
+CC: pgcc
+CFLAGS: -acc
+Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_23/vecAdd.c_pgi.yml.0x3a7d2a72.sh
+--------------------------------------------------------------------------------
+
+module purge
+module restore pgi
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_23
+SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
+SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src/vecAdd.c
+CC=pgcc
+CFLAGS="-acc"
+LDFLAGS="-lm"
+EXECUTABLE=vecAdd.c_pgi.yml.0x9e45755.exe
+
+cd $TESTDIR
+$CC $CFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS
+$EXECUTABLE
+rm ./$EXECUTABLE
+--------------------------------------------------------------------------------

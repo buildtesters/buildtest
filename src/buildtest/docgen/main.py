@@ -110,13 +110,14 @@ def module_collection_cmds():
         writer(fname, out, v)
 def build_cmds():
     build_dict = {
-        "compilers.helloworld.args.c.yml.txt": "buildtest build -c compilers.helloworld.args.c.yml",
-        "compilers.helloworld.args.c.yml_v.txt": "buildtest build -c compilers.helloworld.args.c.yml -v",
-        "compilers.helloworld.args.c.yml_vv.txt": "buildtest build -c compilers.helloworld.args.c.yml -vv",
-        "compilers.helloworld.args.c.yml_dry.txt": "buildtest build -c compilers.helloworld.args.c.yml --dry",
-        "compilers.helloworld.hello_lsf.yml.txt": "buildtest build -c compilers.helloworld.hello_lsf.yml -vv",
-        "compilers.helloworld.hello_slurm.yml.txt": "buildtest build -c compilers.helloworld.hello_slurm.yml -vv",
+        "tutorial.compilers.args.c.yml.txt": "buildtest build -c tutorial.compilers.args.c.yml",
+        "tutorial.compilers.args.c.yml_v.txt": "buildtest build -c tutorial.compilers.args.c.yml -v",
+        "tutorial.compilers.args.c.yml_dry.txt": "buildtest build -c tutorial.compilers.args.c.yml --dry",
+        "tutorial.compilers.hello_lsf.yml.txt": "buildtest build -c tutorial.compilers.hello_lsf.yml -vv",
+        "tutorial.compilers.hello_slurm.yml.txt": "buildtest build -c tutorial.compilers.hello_slurm.yml -vv",
+        "tutorial.compilers.hello.f.yml.txt": "buildtest build -c tutorial.compilers.hello.f.yml -co intel --dry",
         "tutorial.openacc.vecAdd.c.yml.txt": "buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv",
+        "tutorial.openacc.vecAdd.c_pgi.yml.txt": "buildtest build -c tutorial.openacc.vecAdd.c_pgi.yml -co pgi --dry",
         "coreutils.txt": "buildtest  build --package coreutils",
         "module-binary.txt": "buildtest build --binary"
     }
@@ -134,10 +135,10 @@ def writer(fname,out,query):
 
 def main():
     create_dir(docgen)
-    build_helper()
-    introspection_cmds()
-    module_cmds()
-    module_collection_cmds()
+    #build_helper()
+    #introspection_cmds()
+    #module_cmds()
+    #module_collection_cmds()
     build_cmds()
 
 if __name__ == "__main__":

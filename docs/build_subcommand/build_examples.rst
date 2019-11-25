@@ -10,7 +10,7 @@ MPI Example
 
 buildtest supports building MPI test. To demonstrate see the following test configuration
 
-.. program-output:: cat scripts/build_subcommand/mpi.hello.hello.c.yml
+.. program-output:: cat ../toolkit/suite/tutorial/mpi/hello.c.yml
 
 To enable mpi test, you must specify ``mpi: True`` in the test configuration. The ``mpi`` key is not
 a required key, if it is omitted from the test configuration then buildtest will assume mpi is disabled.
@@ -78,12 +78,12 @@ To enable the LSF mode ``scheduler: LSF`` must be set in the test configuration.
 
 Let's see an example configuration for LSF job
 
-.. program-output:: cat ../toolkit/suite/compilers/helloworld/hello_lsf.yml
+.. program-output:: cat ../toolkit/suite/tutorial/compilers/hello_lsf.yml
 
 By setting ``scheduler: LSF`` this enables the ``bsub`` key that is responsible for adding the **#BSUB** directive in
 the test script. Shown below is an example build for LSF job.
 
-.. program-output:: cat docgen/compilers.helloworld.hello_lsf.yml.txt
+.. program-output:: cat docgen/tutorial.compilers.hello_lsf.yml.txt
 
 The ``bsub`` keys are mapped to the #BSUB options which makes it easy to associate #BSUB options to the ``bsub`` dictionary.
 
@@ -133,9 +133,35 @@ To enable SLURM mode set ``scheduler: SLURM`` in the test configuration.
 
 See example below:
 
-.. program-output:: cat ../toolkit/suite/compilers/helloworld/hello_slurm.yml
+.. program-output:: cat ../toolkit/suite/tutorial/compilers/hello_slurm.yml
 
 The ``scheduler: SLURM`` will enable ``sbatch`` key that is used for adding **#SBATCH** directive in test script.
 Also note that ``CXXFLAGS:`` will be used for passing options to C++ compiler (g++)
 
-.. program-output:: cat docgen/compilers.helloworld.hello_slurm.yml.txt
+.. program-output:: cat docgen/tutorial.compilers.hello_slurm.yml.txt
+
+Intel Example
+--------------
+
+In order to build via intel compiler we can set ``compiler:intel`` in the test configuration. Shown below is an
+example hello world in Fortran using Intel compiler.
+
+.. program-output:: cat ../toolkit/suite/tutorial/compilers/hello.f.yml
+
+Notice ``$FC=ifort`` and ``FFLAGS`` is set as shell variable that is passed for fortran compiler.
+
+.. program-output:: cat docgen/tutorial.compilers.hello.f.yml.txt
+
+PGI Example
+--------------
+
+buildtest supports PGI compiler, which can be done by setting ``compiler:pgi`` in test configuration.
+Shown below is a vecAdd OpenACC example compiled with PGI compiler.
+
+
+.. program-output:: cat ../toolkit/suite/tutorial/openacc/vecAdd.c_pgi.yml
+
+For this build we specify ``-acc`` in order to build the code for the accelerator device. The example
+below shows a dry run (``--dry``) for the build.
+
+.. program-output:: cat docgen/tutorial.openacc.vecAdd.c_pgi.yml.txt

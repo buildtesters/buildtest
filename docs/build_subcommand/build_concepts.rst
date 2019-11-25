@@ -1,5 +1,5 @@
-Concepts
-==========
+Build Reference Table
+========================
 
 Program Language Detection
 ----------------------------
@@ -19,6 +19,9 @@ extensions
     "fortran", ".f90 .f95 .f03 .f .F .F90 .FPP .FOR .FTN .for .ftn"
     "cuda", ".cu"
 
+Compiler Detection
+--------------------
+
 Once the Programming Language is detected, buildtest can detect the compiler wrapper
 by checking the value of ``compiler:`` key. Here is a breakdown of the compiler breakdown
 by programming language
@@ -30,6 +33,9 @@ by programming language
     "gnu", "gcc", "g++", "gfortran"
     "intel", "icc", "icpc", "ifort"
     "pgi", "pgcc", "pgc++", "pgfortran"
+
+MPI Detection
+--------------------
 
 Similarly, the MPI wrapper detection is calculated based on Programming Language. In the
 test configuration, the key ``mpi:flavor:`` is to tell buildtest which MPI flavor to use
