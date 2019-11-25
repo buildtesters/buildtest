@@ -73,6 +73,7 @@ which will give additional output including the output of configuration file and
 script.
 
 Shown below is an example build with verbose level 1
+
 .. program-output:: cat docgen/tutorial.compilers.args.c.yml_v.txt
 
 For a complete list of test configuration and names that can be passed to ``buildtest build -c <testconfig>`` run the

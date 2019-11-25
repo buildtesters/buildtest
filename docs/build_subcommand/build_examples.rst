@@ -131,12 +131,12 @@ SLURM Job Example
 
 To enable SLURM mode set ``scheduler: SLURM`` in the test configuration.
 
-See example below:
+The following test highlights how SLURM configuration can be specified in the test configuration
 
 .. program-output:: cat ../toolkit/suite/tutorial/compilers/hello_slurm.yml
 
 The ``scheduler: SLURM`` will enable ``sbatch`` key that is used for adding **#SBATCH** directive in test script.
-Also note that ``CXXFLAGS:`` will be used for passing options to C++ compiler (g++)
+Also note that ``cxxflags:`` will be used for passing options to C++ compiler (g++)
 
 .. program-output:: cat docgen/tutorial.compilers.hello_slurm.yml.txt
 

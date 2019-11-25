@@ -1,1 +1,0 @@
-$ buildtest testconfigs view compilers.helloworld.args.c.yml

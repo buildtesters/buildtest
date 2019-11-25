@@ -3,6 +3,7 @@ Functions for system package
 """
 
 
+import distro
 import json
 import os
 import platform
@@ -95,11 +96,9 @@ class BuildTestSystem():
         """Constructor method for BuildTestSystem(). Defines all system configuration using
         class variable **system** which is a dictionary """
 
-        distro_fname = platform.linux_distribution()[0]
+        self.system["OS_NAME"]= distro.linux_distribution(full_distribution_name=False)[0]
 
-        self.system["OS_NAME"]= distro_short(distro_fname)
-
-        self.system["OS_VERSION"] = platform.linux_distribution()[1]
+        self.system["OS_VERSION"] = distro.linux_distribution(full_distribution_name=False)[1]
         self.system["SYSTEM"] = platform.system()
         self.system["KERNEL_RELEASE"] = platform.release()
         self.system["PROCESSOR_FAMILY"] = platform.processor()
@@ -267,8 +266,8 @@ def get_module_collection():
     """
     return subprocess.getoutput("module -t savelist").split("\n")
 
-def get_binaries_from_systempackage(pkg):
-    """ get binaries from system package that typically install in standard linux path and only those that are executable """
+def get_binaries_from_rpm(pkg):
+    """ get binaries from rpm package that typically install in standard linux path and only those that are executable """
 
     bindirs = [ "/usr/bin", "/bin", "/sbin", "/usr/sbin", "/usr/local/bin",
                 "/usr/local/sbin" ]
@@ -303,8 +302,8 @@ def get_binaries_from_systempackage(pkg):
 
     return binaries
 
-def systempackage_installed_list():
-    """Return a list of installed system packages in a machine"""
+def rpm_install_list():
+    """Return a list of installed rpm packages in a machine"""
 
     cmd = BuildTestCommand()
     query = """ rpm -qa --qf "%{NAME}\n" """
