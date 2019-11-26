@@ -1,0 +1,25 @@
+language: python
+dist: xenial
+git:
+  quiet: true
+branches:
+  only:
+    - devel
+addons:
+  apt:
+    packages:
+      # install Lmod Deps
+      - liblua5-1.0
+      - liblua5.1-0-dev
+      - liblua5.1-filesystem-dev
+      - liblua5.1-filesystem0
+      - liblua5.1-posix-dev
+      - liblua5.1-posix0
+      - lua5.1
+      - lmod
+install:
+  - pip install -r docs/requirements.txt
+script:
+  - pwd
+  - source sourceme.sh
+  - buildtest --version
