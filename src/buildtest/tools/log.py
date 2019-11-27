@@ -6,9 +6,11 @@ import logging
 from datetime import datetime
 from buildtest.tools.config import logID, config_opts
 
+
 class BuildTestError(Exception):
     """Class responsible for error handling in buildtest. This is a sub-class
     of Exception class."""
+
     def __init__(self, msg, *args):
         """Constructor Method.
 
@@ -22,7 +24,8 @@ class BuildTestError(Exception):
         self.msg = msg
 
     def __str__(self):
-        return(repr(self.msg))
+        return repr(self.msg)
+
 
 def init_log():
     """Initialize log file and define log attributes. This method invokes
@@ -32,7 +35,7 @@ def init_log():
     :rtype: multiple return types (logger object, logpath, logfile)
     """
     fname = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
-    BUILDTEST_LOGDIR = os.path.join(config_opts['BUILDTEST_TESTDIR'],"log")
+    BUILDTEST_LOGDIR = os.path.join(config_opts["BUILDTEST_TESTDIR"], "log")
 
     logfile = os.path.join(BUILDTEST_LOGDIR, fname)
     # if log directory is not present create it automatically
@@ -41,7 +44,9 @@ def init_log():
 
     logger = logging.getLogger(logID)
     fh = logging.FileHandler(logfile)
-    formatter = logging.Formatter('%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s')
+    formatter = logging.Formatter(
+        "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
+    )
     fh.setFormatter(formatter)
     logger.addHandler(fh)
     logger.setLevel(logging.DEBUG)

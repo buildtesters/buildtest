@@ -6,41 +6,47 @@ import subprocess
 from shutil import copy
 
 
-BUILDTEST_VERSION="0.7.3"
+BUILDTEST_VERSION = "0.7.3"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
 # test scripts that need to be run locally
 
-BUILDTEST_BUILD_LOGFILE = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","build.json")
-BUILDTEST_SYSTEM = os.path.join(os.getenv("BUILDTEST_ROOT"),"var","system.json")
+BUILDTEST_BUILD_LOGFILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "build.json")
+BUILDTEST_SYSTEM = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "system.json")
 # dictionary used for storing status of builds
-BUILDTEST_BUILD_HISTORY= {}
+BUILDTEST_BUILD_HISTORY = {}
 
 buildtest_home_conf_dir = os.path.join(os.getenv("HOME"), ".buildtest")
 BUILDTEST_CONFIG_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml")
 BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml.bak")
-BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "collection.json")
+BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(
+    os.getenv("BUILDTEST_ROOT"), "var", "collection.json"
+)
 BUILDTEST_MODULE_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "modules.json")
-DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"),"settings.yml")
-BENCHMARK_DIR = os.path.join(os.getenv("BUILDTEST_ROOT"),"toolkit","benchmark")
+DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "settings.yml")
+BENCHMARK_DIR = os.path.join(os.getenv("BUILDTEST_ROOT"), "toolkit", "benchmark")
 # check if $HOME/.buildtest exists, if not create directory
 if not os.path.isdir(buildtest_home_conf_dir):
-    print(f"Creating buildtest configuration directory: \
-            {buildtest_home_conf_dir}")
+    print(
+        f"Creating buildtest configuration directory: \
+            {buildtest_home_conf_dir}"
+    )
     os.makedirs(buildtest_home_conf_dir)
 
 # if the file $HOME/.buildtest/settings.yml does not exist copy the default file
 # into the appropriate location
 if not os.path.exists(BUILDTEST_CONFIG_FILE):
-    copy(DEFAULT_CONFIG_FILE,BUILDTEST_CONFIG_FILE)
-    copy(DEFAULT_CONFIG_FILE,BUILDTEST_CONFIG_BACKUP_FILE)
+    copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
+    copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)
 
 
 # load the configuration file
-fd = open(BUILDTEST_CONFIG_FILE, 'r')
+fd = open(BUILDTEST_CONFIG_FILE, "r")
 config_opts = yaml.safe_load(fd)
 
-config_opts["BUILDTEST_CONFIGS_REPO"]= os.path.join(os.environ["BUILDTEST_ROOT"],"toolkit","suite")
+config_opts["BUILDTEST_CONFIGS_REPO"] = os.path.join(
+    os.environ["BUILDTEST_ROOT"], "toolkit", "suite"
+)
 # if BUILDTEST_MODULEPATH is empty list then check if MODULEPATH is defined
 # and set result to BUILDTEST_MODULEPATH
 if len(config_opts["BUILDTEST_MODULEPATH"]) == 0:
@@ -54,28 +60,28 @@ if len(config_opts["BUILDTEST_MODULEPATH"]) == 0:
         for tree in os.getenv("MODULEPATH").split(":"):
             if os.path.isdir(tree):
                 tree_list.append(tree)
-            #else:
-                #print (f"Skipping module tree {tree} because path does not exist")
+            # else:
+            # print (f"Skipping module tree {tree} because path does not exist")
         config_opts["BUILDTEST_MODULEPATH"] = tree_list
 
-config_opts['BUILDTEST_VERSION'] = BUILDTEST_VERSION
+config_opts["BUILDTEST_VERSION"] = BUILDTEST_VERSION
 
 logID = "buildtest"
 
 
 config_directory_types = [
-  "BUILDTEST_TESTDIR",
-
+    "BUILDTEST_TESTDIR",
 ]
 config_yaml_keys = {
-    'BUILDTEST_BINARY': type(True),
-    'BUILDTEST_MODULE_FORCE_PURGE': type(True),
-    'BUILDTEST_SUCCESS_THRESHOLD': type(1.0),
-    'BUILDTEST_MODULEPATH': type([]),
-    'BUILDTEST_SPIDER_VIEW': type("str"),
-    'BUILDTEST_PARENT_MODULE_SEARCH': type("str"),
-    'BUILDTEST_TESTDIR': type("str"),
+    "BUILDTEST_BINARY": type(True),
+    "BUILDTEST_MODULE_FORCE_PURGE": type(True),
+    "BUILDTEST_SUCCESS_THRESHOLD": type(1.0),
+    "BUILDTEST_MODULEPATH": type([]),
+    "BUILDTEST_SPIDER_VIEW": type("str"),
+    "BUILDTEST_PARENT_MODULE_SEARCH": type("str"),
+    "BUILDTEST_TESTDIR": type("str"),
 }
+
 
 def check_configuration():
     """Checks all keys in configuration file (settings.yml) are valid
@@ -90,7 +96,6 @@ def check_configuration():
     :rtype: exit code 1 if checks failed
     """
 
-
     ec = 0
 
     keylist = config_yaml_keys.keys()
@@ -99,11 +104,10 @@ def check_configuration():
     # check if any key is not found in settings.yml
     for key in keylist:
         if key not in config_opts:
-            print (f"Unable to find key: {key} in {BUILDTEST_CONFIG_FILE}")
+            print(f"Unable to find key: {key} in {BUILDTEST_CONFIG_FILE}")
             ec = 1
 
-
-    for key,value in zip(keylist,valuelist):
+    for key, value in zip(keylist, valuelist):
         if value is not type(config_opts[key]):
             print(f"Invalid Type for key: {key}")
             print(f"Expecting type: {str(value)}")
@@ -111,36 +115,42 @@ def check_configuration():
             ec = 1
 
         # check if BUILDTEST_SUCCESS_THRESHOLD is between 0.0 and 1.0
-        if (key == "BUILDTEST_SUCCESS_THRESHOLD" and
-            (config_opts[key] < 0.0 or  config_opts[key] > 1.0)):
-            print (f"{key} must be between [0.0-1.0]")
+        if key == "BUILDTEST_SUCCESS_THRESHOLD" and (
+            config_opts[key] < 0.0 or config_opts[key] > 1.0
+        ):
+            print(f"{key} must be between [0.0-1.0]")
             print(f"Current value is {str(config_opts[key])}")
             ec = 1
 
         if key == "BUILDTEST_MODULEPATH":
             if config_opts["BUILDTEST_MODULEPATH"] == None:
-                print("Please specify a module tree to BUILDTEST_MODULEPATH"
-                     + f"in configuration {BUILDTEST_CONFIG_FILE}")
+                print(
+                    "Please specify a module tree to BUILDTEST_MODULEPATH"
+                    + f"in configuration {BUILDTEST_CONFIG_FILE}"
+                )
             else:
                 for module_root in config_opts[key]:
                     if not os.path.isdir(module_root):
-                        print (f"{module_root} directory does not exist"
-                               + " specified in BUILDTEST_MODULEPATH")
+                        print(
+                            f"{module_root} directory does not exist"
+                            + " specified in BUILDTEST_MODULEPATH"
+                        )
                         ec = 1
 
         if key == "BUILDTEST_SPIDER_VIEW":
-            if config_opts["BUILDTEST_SPIDER_VIEW"] not in ["all","current"]:
-                print (f"BUILDTEST_SPIDER_VIEW must be one of the following: all, current")
+            if config_opts["BUILDTEST_SPIDER_VIEW"] not in ["all", "current"]:
+                print(
+                    f"BUILDTEST_SPIDER_VIEW must be one of the following: all, current"
+                )
                 ec = 1
-
 
         if key == "BUILDTEST_PARENT_MODULE_SEARCH":
-            if config_opts["BUILDTEST_PARENT_MODULE_SEARCH"] not in ["first","all"]:
+            if config_opts["BUILDTEST_PARENT_MODULE_SEARCH"] not in ["first", "all"]:
                 print(
                     f"BUILDTEST_PARENT_MODULE_SEARCH must be one of the "
-                    f"following: first, all")
+                    f"following: first, all"
+                )
                 ec = 1
-
 
         if key in config_directory_types:
 
@@ -151,23 +161,25 @@ def check_configuration():
             if not os.path.isdir(config_opts[key]):
                 os.makedirs(config_opts[key])
 
-    if (ec):
+    if ec:
         sys.exit(0)
 
     cmd = "module --version"
-    ret = subprocess.Popen(cmd,shell=True,
-                           stdin=subprocess.PIPE,
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.PIPE)
-    (outputmsg,errormsg) = ret.communicate()
+    ret = subprocess.Popen(
+        cmd,
+        shell=True,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    (outputmsg, errormsg) = ret.communicate()
     ec = ret.returncode
 
     if ec != 0:
-        print ("module commmand not found in system")
-        print (outputmsg)
-        print (errormsg)
+        print("module commmand not found in system")
+        print(outputmsg)
+        print(errormsg)
         sys.exit(1)
-
 
 
 def show_configuration():
@@ -176,8 +188,8 @@ def show_configuration():
     """
     exclude_list = ["BUILDTEST_VERSION"]
     print
-    print ("\t buildtest configuration summary")
-    print ("\t (C): Configuration File,  (E): Environment Variable")
+    print("\t buildtest configuration summary")
+    print("\t (C): Configuration File,  (E): Environment Variable")
     print
 
     for key in sorted(config_opts):
@@ -195,9 +207,9 @@ def show_configuration():
 
             # remove last colon
             tree = tree[:-1]
-            print ((key + "\t " + type + " =").expandtabs(50), tree)
+            print((key + "\t " + type + " =").expandtabs(50), tree)
         else:
-            print ((key + "\t " + type + " =").expandtabs(50), config_opts[key])
+            print((key + "\t " + type + " =").expandtabs(50), config_opts[key])
 
 
 def func_config_edit(args):
@@ -205,18 +217,20 @@ def func_config_edit(args):
 
     os.system(f"vim {BUILDTEST_CONFIG_FILE}")
 
+
 def func_config_view(args=None):
     """View buildtest configuration file. This implements ``buildtest config view``"""
 
     os.system(f"cat {BUILDTEST_CONFIG_FILE}")
 
+
 def func_config_restore(args=None):
     """Restore buildtest configuration from backup file. This implements ``buildtest config restore``"""
     if os.path.isfile(BUILDTEST_CONFIG_BACKUP_FILE):
         copy(BUILDTEST_CONFIG_BACKUP_FILE, BUILDTEST_CONFIG_FILE)
-        print (f"Restore configuration from backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
+        print(f"Restore configuration from backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
     else:
-        print (f"Can't find backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
-        print (f"Resorting from default configuration: {DEFAULT_CONFIG_FILE}")
+        print(f"Can't find backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
+        print(f"Resorting from default configuration: {DEFAULT_CONFIG_FILE}")
         copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
         copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)

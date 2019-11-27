@@ -36,7 +36,6 @@ def get_lsf_configuration():
     del resources[0]
     del resources[-1]
 
-
     query = """lsinfo -m | cut -d " " -f 1 """
     cmd.execute(query)
     out = cmd.get_output()
@@ -44,7 +43,6 @@ def get_lsf_configuration():
     running_models = out.split("\n")
     del running_models[0]
     del running_models[-1]
-
 
     query = """lsinfo -t | cut -d " " -f 1 """
     cmd.execute(query)
@@ -61,6 +59,7 @@ def get_lsf_configuration():
     lsf["host_type"] = host_type
 
     return lsf
+
 
 def func_bsub(args):
     """Entry point to ``buildtest build bsub``. This method is responsible for dispatching
@@ -94,10 +93,9 @@ def func_bsub(args):
         if args.walltime:
             job_launcher += ["-W", args.walltime]
 
-
-        job_launcher += ["<",file]
+        job_launcher += ["<", file]
         job_cmd = " ".join(job_launcher)
-        print (job_cmd)
+        print(job_cmd)
         if not args.dry_run:
             os.system(job_cmd)
-            print (f"Submitting Job: {file} to scheduler")
+            print(f"Submitting Job: {file} to scheduler")

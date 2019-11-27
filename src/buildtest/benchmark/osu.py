@@ -7,8 +7,16 @@ import yaml
 from datetime import datetime
 from buildtest.tools.config import config_opts, BENCHMARK_DIR
 
-dict_keys1 = ["proc", "min_message_size", "max_message_size", "iter_msg_size",
-              "max_mem_per_proc", "warmup_iter", "calls", "full_format"]
+dict_keys1 = [
+    "proc",
+    "min_message_size",
+    "max_message_size",
+    "iter_msg_size",
+    "max_mem_per_proc",
+    "warmup_iter",
+    "calls",
+    "full_format",
+]
 dict_keys2 = ["proc", "iter_msg_size", "warmup_iter", "calls", "full_format"]
 dict_keys3 = ["iter", "warmup_iter"]
 dict_keys4 = ["win_option", "sync_option", "warmup_iter", "iter"]
@@ -55,51 +63,96 @@ lookup_table = {
     "osu_scatterv": dict_keys1,
 }
 
+
 def osu_parser(content):
     """parse and validate the yaml content and return the command"""
     name = content["name"]
-    #print (name,dict_keys1, lookup_table[name])
+    # print (name,dict_keys1, lookup_table[name])
     for key in lookup_table[name]:
         if key not in content:
-            #print ("Key:" + key + " not in " + name)
+            # print ("Key:" + key + " not in " + name)
             return None
 
-
     if dict_keys1 == lookup_table[name]:
-        mpi_cmd = "mpirun -np " + str(content["proc"])  + " " + name \
-              + " -m " + str(content["min_message_size"]) + ":" + str(content["max_message_size"]) \
-              + " -i " + str(content["iter_msg_size"]) \
-              + " -M " + str(content["max_mem_per_proc"]) \
-              + " -x " + str(content["warmup_iter"]) \
-              + " -t " + str(content["calls"])
+        mpi_cmd = (
+            "mpirun -np "
+            + str(content["proc"])
+            + " "
+            + name
+            + " -m "
+            + str(content["min_message_size"])
+            + ":"
+            + str(content["max_message_size"])
+            + " -i "
+            + str(content["iter_msg_size"])
+            + " -M "
+            + str(content["max_mem_per_proc"])
+            + " -x "
+            + str(content["warmup_iter"])
+            + " -t "
+            + str(content["calls"])
+        )
         if content["full_format"] == True:
             mpi_cmd += " -f"
     elif dict_keys2 == lookup_table[name]:
-        mpi_cmd = "mpirun -np " + str(content["proc"]) + " " + name \
-                    +  " -i " + str(content["iter_msg_size"]) \
-                    + " -x " + str(content["warmup_iter"]) \
-                    + " -t " + str(content["calls"])
+        mpi_cmd = (
+            "mpirun -np "
+            + str(content["proc"])
+            + " "
+            + name
+            + " -i "
+            + str(content["iter_msg_size"])
+            + " -x "
+            + str(content["warmup_iter"])
+            + " -t "
+            + str(content["calls"])
+        )
         if content["full_format"] == True:
             mpi_cmd += " -f"
     elif dict_keys3 == lookup_table[name]:
-        mpi_cmd = "mpirun -np 2 " + name \
-                + " -i " + str(content["iter"])  \
-                + " -x " + str(content["warmup_iter"])
+        mpi_cmd = (
+            "mpirun -np 2 "
+            + name
+            + " -i "
+            + str(content["iter"])
+            + " -x "
+            + str(content["warmup_iter"])
+        )
     elif dict_keys4 == lookup_table[name]:
-        mpi_cmd = "mpirun -np 2 " + name \
-                    + " -w " + str(content["win_option"]) \
-                    + " -s " + str(content["sync_option"]) \
-                    + " -i " + str(content["iter"]) \
-                    + " -x " + str(content["warmup_iter"])
+        mpi_cmd = (
+            "mpirun -np 2 "
+            + name
+            + " -w "
+            + str(content["win_option"])
+            + " -s "
+            + str(content["sync_option"])
+            + " -i "
+            + str(content["iter"])
+            + " -x "
+            + str(content["warmup_iter"])
+        )
     elif dict_keys5 == lookup_table[name]:
-        mpi_cmd = "mpirun -np 2 " + name \
-                    + " -i " + str(content["iter"]) \
-                    + " -x " + str(content["warmup_iter"]) \
-                    + " -t " + str(content["threads"])
+        mpi_cmd = (
+            "mpirun -np 2 "
+            + name
+            + " -i "
+            + str(content["iter"])
+            + " -x "
+            + str(content["warmup_iter"])
+            + " -t "
+            + str(content["threads"])
+        )
     elif dict_keys6 == lookup_table[name]:
-        mpi_cmd = "mpirun -np " + str(content["proc"]) + " " + name \
-                + " -i " + str(content["iter"]) \
-                + " -x " + str(content["warmup_iter"])
+        mpi_cmd = (
+            "mpirun -np "
+            + str(content["proc"])
+            + " "
+            + name
+            + " -i "
+            + str(content["iter"])
+            + " -x "
+            + str(content["warmup_iter"])
+        )
 
     return mpi_cmd
 
@@ -108,7 +161,7 @@ def run_osu_microbenchmark(config):
     """run the OSU benchmark"""
 
     if config == None:
-        config = os.path.join(BENCHMARK_DIR,"osu.yaml")
+        config = os.path.join(BENCHMARK_DIR, "osu.yaml")
 
     ext = os.path.splitext(config)[1]
     ext = ext[1:]
@@ -117,22 +170,21 @@ def run_osu_microbenchmark(config):
         print("Invalid Extension: " + ext + " expecting extension .yaml")
         return
 
-    print ("Reading Yaml file: " + config + "\n")
-    fd=open(config,'r')
-    content=yaml.safe_load(fd)
-    print ("Loading YAML content \n")
-
+    print("Reading Yaml file: " + config + "\n")
+    fd = open(config, "r")
+    content = yaml.safe_load(fd)
+    print("Loading YAML content \n")
 
     testlist = []
 
-    print ("Parsing YAML content ...")
+    print("Parsing YAML content ...")
     for i in content["benchmark"]["test"]:
         mpi_cmd = osu_parser(i)
         if mpi_cmd == None:
             continue
 
         testname = "/tmp/" + i["name"] + ".sh"
-        fd = open(testname,"w")
+        fd = open(testname, "w")
         fd.write("#!/bin/sh" + "\n")
         cmd = "module -t list"
 
@@ -147,32 +199,35 @@ def run_osu_microbenchmark(config):
 
         fd.write(mpi_cmd)
         fd.close()
-        os.chmod(testname, stat.S_IRWXU|stat.S_IRGRP|stat.S_IXGRP|stat.S_IROTH|stat.S_IXOTH)
+        os.chmod(
+            testname,
+            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
+        )
         testlist.append(testname)
-    print ("Tests Generation complete. All tests are written under /tmp/osu* \n")
+    print("Tests Generation complete. All tests are written under /tmp/osu* \n")
 
     runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
-    run_output_file = os.path.join("/tmp",runfile)
+    run_output_file = os.path.join("/tmp", runfile)
 
-    fd = open(run_output_file,"w")
+    fd = open(run_output_file, "w")
     header = "{:-<45} START OF TEST {:-<45} \n".format("", "")
     fd.write(header)
 
     for test in testlist:
         name = os.path.splitext(os.path.basename(test))[0]
-        print (name + "[ " + test + " ]         [RUNNING]" )
-        ret = subprocess.Popen(test,shell=True,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT)
+        print(name + "[ " + test + " ]         [RUNNING]")
+        ret = subprocess.Popen(
+            test, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
         output = ret.communicate()[0]
-        output=output.decode("utf-8")
+        output = output.decode("utf-8")
 
         time.sleep(0.25)
         ret_code = ret.returncode
         if ret_code == 0:
-            print (name + "[ " + test + " ]         [PASSED]" )
+            print(name + "[ " + test + " ]         [PASSED]")
         else:
-            print (name + "[ " + test + " ]         [FAILED]" )
+            print(name + "[ " + test + " ]         [FAILED]")
 
         fd.write("Test Name:" + test + "\n")
         fd.write("Return Code: " + str(ret_code) + "\n")
@@ -182,12 +237,14 @@ def run_osu_microbenchmark(config):
         fd.write(output)
         fd.write(footer)
 
-    print ("Writing Test Results to " + run_output_file)
+    print("Writing Test Results to " + run_output_file)
+
 
 def list_osu_tests():
     """List of tests in OSU MicroBenchmark."""
 
-    print ("""
+    print(
+        """
     -------------------- TEST BREAKDOWN ---------------------------------
     osu_bibw - Bidirectional Bandwidth Test
     osu_bw - Bandwidth Test
@@ -276,12 +333,15 @@ def list_osu_tests():
 
     For more information please refer to http://mvapich.cse.ohio-state.edu/benchmarks/
 
-    """)
+    """
+    )
+
 
 def osu_info():
     """display yaml key description for OSU Benchmark"""
 
-    print ("""
+    print(
+        """
       Keys              |    Description
     --------------------+---------------------------------------------------------------------------------------------------------------
       proc              |    Number of MPI Processes
@@ -317,4 +377,5 @@ def osu_info():
     --------------------+---------------------------------------------------------------------------------------------------------------
       threads           |    number of recv threads to test with (min: 1, default: 2, max: 128)
     --------------------+---------------------------------------------------------------------------------------------------------------
-    """)
+    """
+    )

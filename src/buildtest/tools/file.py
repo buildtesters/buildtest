@@ -32,6 +32,7 @@ def is_file(fname):
 
     raise BuildTestError("Invalid File Path %s. " % fname)
 
+
 def is_dir(dirname):
     """This method will check if a directory exist and if not found throws an exception.
 
@@ -50,6 +51,7 @@ def is_dir(dirname):
         return True
 
     raise BuildTestError("Invalid Directory Path %s" % dirname)
+
 
 def walk_tree(root_dir, ext):
     """This method will traverse a directory tree and return list of files
@@ -115,11 +117,12 @@ def create_file(filename):
     filename = os.path.expanduser(filename)
     if not os.path.isfile(filename):
         try:
-            fd = open(filename, 'w')
+            fd = open(filename, "w")
             logger.debug("Creating File: %s", filename)
             fd.close()
         except OSError as err:
-            print (err)
+            print(err)
+
 
 def create_dir(dirname):
     """Create directory if it doesn't exist. Runs a "try" block
@@ -140,7 +143,7 @@ def create_dir(dirname):
             os.makedirs(dirname)
             logger.debug("Creating Directory: %s", dirname)
         except OSError as err:
-            print (err)
+            print(err)
             raise
 
 

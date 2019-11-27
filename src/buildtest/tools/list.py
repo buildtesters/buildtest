@@ -11,6 +11,7 @@ from termcolor import colored, cprint
 from buildtest.tools.modules import module_obj
 from buildtest.tools.easybuild import find_easyconfigs
 
+
 def func_list_subcmd(args):
     """This method is the entry point for ``buildtest list`` subcommand.
 
@@ -25,6 +26,7 @@ def func_list_subcmd(args):
     if args.modules:
         list_modules()
 
+
 def list_software():
     """This method gets unique software from spider and prints the software
     with total count. This method invokes **get_unique_modules()** which is part
@@ -36,10 +38,10 @@ def list_software():
     module_stack = module_obj.get_unique_modules()
 
     for item in module_stack:
-        print (item)
+        print(item)
 
-    print ("\n")
-    print ("Total Software Packages: ", len(module_stack))
+    print("\n")
+    print("Total Software Packages: ", len(module_stack))
 
 
 def list_modules():
@@ -60,11 +62,10 @@ def list_modules():
 
     module_stack = module_obj.get_unique_modules()
 
-
     text = """
     Full Module Name                     |      ModuleFile Path
 -----------------------------------------|----------------------------- """
-    print (text)
+    print(text)
 
     count = 0
     lua_modules = non_lua_modules = 0
@@ -81,14 +82,14 @@ def list_modules():
             # print lua modules in green
             if os.path.splitext(mpath)[1] == ".lua":
                 text = (fullName + "\t |").expandtabs(40) + "\t" + mpath
-                cprint(text, 'green')
+                cprint(text, "green")
                 lua_modules += 1
             else:
                 print((fullName + "\t |").expandtabs(40) + "\t" + mpath)
                 non_lua_modules += 1
 
-    print ("\n")
-    print (f"Total Software Modules: {count}")
+    print("\n")
+    print(f"Total Software Modules: {count}")
     msg = f"Total LUA Modules: {lua_modules}"
-    cprint(msg,'green')
+    cprint(msg, "green")
     print(f"Total non LUA Modules: {non_lua_modules}")

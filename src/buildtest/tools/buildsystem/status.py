@@ -9,8 +9,9 @@ import json
 import os
 import subprocess
 from datetime import datetime
-from buildtest.tools.config import config_opts,BUILDTEST_BUILD_LOGFILE
+from buildtest.tools.config import config_opts, BUILDTEST_BUILD_LOGFILE
 from buildtest.tools.file import create_dir
+
 
 def show_status_report(args=None):
     """
@@ -21,23 +22,32 @@ def show_status_report(args=None):
     :type args: dict, required
     """
 
-    fd = open(BUILDTEST_BUILD_LOGFILE,"r")
+    fd = open(BUILDTEST_BUILD_LOGFILE, "r")
     content = json.load(fd)
     fd.close()
 
-    print ('{:3} | {:<20} | {:<15} | {:<60} '.format("ID","Build Time","Number of Tests","Command"))
+    print(
+        "{:3} | {:<20} | {:<15} | {:<60} ".format(
+            "ID", "Build Time", "Number of Tests", "Command"
+        )
+    )
 
-    print('{:-<120}'.format(""))
+    print("{:-<120}".format(""))
     count = 0
 
     for build_id in content["build"].keys():
 
-        print ('{:3} | {:<20} | {:<15} | {:<60} '.format(count,
-                                                         content["build"][build_id]["BUILD_TIME"],
-                                                         content["build"][build_id]["TESTCOUNT"],
-                                                         content["build"][build_id]["CMD"],
-                                                         content["build"][build_id]["LOGFILE"]))
+        print(
+            "{:3} | {:<20} | {:<15} | {:<60} ".format(
+                count,
+                content["build"][build_id]["BUILD_TIME"],
+                content["build"][build_id]["TESTCOUNT"],
+                content["build"][build_id]["CMD"],
+                content["build"][build_id]["LOGFILE"],
+            )
+        )
         count += 1
+
 
 def show_status_log(args):
     """This method opens log file using "less" by reading build.json
@@ -69,7 +79,8 @@ def show_status_test(args):
     fd.close()
 
     tests = content["build"][str(args.id)]["TESTS"]
-    [print (test) for test in tests]
+    [print(test) for test in tests]
+
 
 def run_tests(args):
     """This method actually runs the test and display test summary with number
@@ -79,25 +90,23 @@ def run_tests(args):
     content = json.load(fd1)
     fd1.close()
 
-
     tests = content["build"][str(args.id)]["TESTS"]
 
     # all tests are in same directory, retrieving parent directory of test
     test_dir = content["build"][str(args.id)]["TESTDIR"]
 
     runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
-    run_output_file = os.path.join(test_dir,"run",runfile)
-    create_dir(os.path.join(test_dir,"run"))
-    fd = open(run_output_file,"w")
+    run_output_file = os.path.join(test_dir, "run", runfile)
+    create_dir(os.path.join(test_dir, "run"))
+    fd = open(run_output_file, "w")
     count_test = len(tests)
     passed_test = 0
     failed_test = 0
 
     for test in tests:
-        ret = subprocess.Popen(test,
-                               shell=True,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT)
+        ret = subprocess.Popen(
+            test, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
         output = ret.communicate()[0].decode("utf-8")
 
         ret_code = ret.returncode
@@ -112,7 +121,7 @@ def run_tests(args):
         else:
             failed_test += 1
 
-    print (f"Running All Tests from Test Directory: {test_dir}")
+    print(f"Running All Tests from Test Directory: {test_dir}")
     print
     print
     print("==============================================================")
@@ -122,20 +131,23 @@ def run_tests(args):
     print(f"Failed Tests: {failed_test} Percentage: {failed_test*100/count_test}%")
 
     actual_ratio = passed_test / count_test
-    success_threshold = float(config_opts['BUILDTEST_SUCCESS_THRESHOLD'])
+    success_threshold = float(config_opts["BUILDTEST_SUCCESS_THRESHOLD"])
 
     print
     print
     diff_ratio = abs(actual_ratio - success_threshold)
     if actual_ratio < success_threshold:
-        print (f"WARNING: Threshold of {success_threshold*100}% was not satisfied")
-        print (f"{actual_ratio*100}% passed rate with a "
-               + f"difference of {diff_ratio:.4} from the threshold")
+        print(f"WARNING: Threshold of {success_threshold*100}% was not satisfied")
+        print(
+            f"{actual_ratio*100}% passed rate with a "
+            + f"difference of {diff_ratio:.4} from the threshold"
+        )
     else:
-        print (f"SUCCESS: Threshold of {success_threshold*100}% was achieved")
+        print(f"SUCCESS: Threshold of {success_threshold*100}% was achieved")
 
-    print ("Writing results to " + run_output_file)
+    print("Writing results to " + run_output_file)
     fd.close()
+
 
 def get_build_ids():
     """Return a list of build ids. This can be retrieved by getting length
@@ -150,7 +162,7 @@ def get_build_ids():
     content = json.load(fd)
     fd.close()
     total_records = len(content["build"])
-    return (range(total_records))
+    return range(total_records)
 
 
 def get_total_build_ids():
@@ -165,4 +177,4 @@ def get_total_build_ids():
     content = json.load(fd)
     fd.close()
     total_records = len(content["build"])
-    return (total_records)
+    return total_records

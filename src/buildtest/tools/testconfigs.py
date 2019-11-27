@@ -12,6 +12,7 @@ def testconfig_choices():
     """
     return test_config_name_mapping().keys()
 
+
 def func_testconfigs_show(args):
     """ Prints all test configuration and description of test.
 
@@ -21,15 +22,14 @@ def func_testconfigs_show(args):
     :type args: dict, required
     """
     test_config_table = test_config_name_mapping()
-    print ('{:60} | {:<30}'.format("Test Configuration Name", "Description"))
-    print('{:-<100}'.format(""))
-
+    print("{:60} | {:<30}".format("Test Configuration Name", "Description"))
+    print("{:-<100}".format(""))
 
     for config in test_config_table.items():
         tname = config[0]
         fname = config[1]
 
-        fd = open(fname,"r")
+        fd = open(fname, "r")
         config = yaml.safe_load(fd)
         fd.close()
 
@@ -38,7 +38,8 @@ def func_testconfigs_show(args):
         if "description" in config:
             description = config["description"]
 
-        print('{:60} | {:<30}'.format(tname, textwrap.fill(description, 120)))
+        print("{:60} | {:<30}".format(tname, textwrap.fill(description, 120)))
+
 
 def test_config_name_mapping():
     """This method returns test configuration name in the format
@@ -48,7 +49,7 @@ def test_config_name_mapping():
 
     :rtype: dict
     """
-    yml_files = walk_tree(config_opts['BUILDTEST_CONFIGS_REPO'], ".yml")
+    yml_files = walk_tree(config_opts["BUILDTEST_CONFIGS_REPO"], ".yml")
     test_config_table = {}
     for f in yml_files:
         parent_parent = os.path.basename(os.path.dirname(os.path.dirname(f)))
@@ -58,6 +59,7 @@ def test_config_name_mapping():
         test_config_table[testconfig_name] = f
 
     return test_config_table
+
 
 def func_testconfigs_view(args):
     """Print content of test configuration. This method implements
@@ -71,7 +73,8 @@ def func_testconfigs_view(args):
     cmd = BuildTestCommand()
     cmd.execute(query)
     out = cmd.get_output()
-    print (out)
+    print(out)
+
 
 def func_testconfigs_edit(args):
     """Open test configuration in editor. This method implements
@@ -84,15 +87,16 @@ def func_testconfigs_edit(args):
     query = f"vim {test_config_table[args.name]}"
     os.system(query)
 
+
 def func_testconfigs_maintainer(args):
     """Update maintainer key in test configuration."""
 
-    git_user_name = subprocess.getoutput(
-        "git config --get user.name").rstrip().lower()
-    git_user_email = subprocess.getoutput(
-        "git config --get user.email").rstrip().lower()
+    git_user_name = subprocess.getoutput("git config --get user.name").rstrip().lower()
+    git_user_email = (
+        subprocess.getoutput("git config --get user.email").rstrip().lower()
+    )
 
-    entry = (f"{git_user_name} {git_user_email}")
+    entry = f"{git_user_name} {git_user_email}"
 
     testconfig_mapping = test_config_name_mapping()
     testconfig_file = testconfig_mapping[args.name]
@@ -110,11 +114,10 @@ def func_testconfigs_maintainer(args):
         else:
             if entry not in content["maintainer"]:
                 content["maintainer"].append(entry)
-                print (f"Adding Maintainer: {entry} to file {testconfig_file}")
+                print(f"Adding Maintainer: {entry} to file {testconfig_file}")
             else:
-                print (f"{entry} is already a maintainer")
+                print(f"{entry} is already a maintainer")
                 return
-
 
         write_fd = open(testconfig_file, "w")
         yaml.dump(content, write_fd, default_flow_style=False)
@@ -132,18 +135,15 @@ def func_testconfigs_maintainer(args):
                 # key. It may be worth changing this behavior to ensure one
                 # maintainer is always present
                 if len(content["maintainer"]) == 0:
-                    del(content["maintainer"])
-
+                    del content["maintainer"]
 
                 yaml.dump(content, write_fd, default_flow_style=False)
                 write_fd.close()
 
-                print (f"Removing Maintainer: {entry} from file {testconfig_file}")
+                print(f"Removing Maintainer: {entry} from file {testconfig_file}")
             else:
-                print (f"{entry} is not a maintainer of file {testconfig_file}")
+                print(f"{entry} is not a maintainer of file {testconfig_file}")
                 return
 
-    print (f"----------------- FILE:{testconfig_file} ----------------------")
-    print (yaml.dump(content, default_flow_style=False))
-
-
+    print(f"----------------- FILE:{testconfig_file} ----------------------")
+    print(yaml.dump(content, default_flow_style=False))

@@ -16,7 +16,11 @@ import sys
 import subprocess
 import yaml
 
-from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE, BUILDTEST_MODULE_FILE
+from buildtest.tools.config import (
+    config_opts,
+    BUILDTEST_CONFIG_FILE,
+    BUILDTEST_MODULE_FILE,
+)
 from buildtest.tools.file import string_in_file, is_dir
 from buildtest.tools.modulesystem.module_difference import diff_trees
 from buildtest.tools.modulesystem.collection import get_buildtest_module_collection
@@ -41,7 +45,8 @@ def func_module_subcmd(args):
     if args.module_deps:
         find_module_deps(args.module_deps)
 
-class BuildTestModule():
+
+class BuildTestModule:
     """This class BuildTestModule provides methods to retrieve
     unique modules (get_unique_modules()), unique modules by full name
     (get_unique_fname_modules()), list of module file paths (get_module_file_path()),
@@ -50,23 +55,26 @@ class BuildTestModule():
     In addition this method can retrieve spider dictionary using get_module_spider_json()
     and Lmod version using get_version()
     """
+
     def __init__(self):
         """Constructor method. The constructor will run spider command and store the output
         in self.module_dict
         """
-        self.moduletree = ':'.join(map(str,config_opts["BUILDTEST_MODULEPATH"] ))
+        self.moduletree = ":".join(map(str, config_opts["BUILDTEST_MODULEPATH"]))
 
         cmd = f"$LMOD_DIR/spider -o spider-json {self.moduletree}"
         out = subprocess.check_output(cmd, shell=True).decode("utf-8")
         self.module_dict = json.loads(out)
         version = self.get_version()
         self.major_ver = version[0]
+
     def get_module_spider_json(self):
         """Returns self.module_dict which is the json output of spider.
 
         :rtype: dict
         """
         return self.module_dict
+
     def get_unique_modules(self):
         """Return a sorted list of unique keys (software name). If
         BUILDTEST_SPIDER_VIEW == all then it will return all keys
@@ -111,7 +119,6 @@ class BuildTestModule():
 
                 software_set.add(fname)
 
-
         return sorted(list(software_set))
 
     def get_modulefile_path(self):
@@ -119,7 +126,7 @@ class BuildTestModule():
 
         :rtype: list
         """
-        module_path_list  = []
+        module_path_list = []
 
         for k in self.get_unique_modules():
             for mpath in self.module_dict[k].keys():
@@ -127,7 +134,7 @@ class BuildTestModule():
 
         return module_path_list
 
-    def get_parent_modules(self,modname):
+    def get_parent_modules(self, modname):
         """Get Parent module for a module name. This can be retrieved by
         key "parent" in Lmod 6 or "parentAA" in Lmod 7.
 
@@ -158,7 +165,9 @@ class BuildTestModule():
                         # otherwise retrieve first index from parentAA.
                         # ParentAA is a list of list
                         else:
-                            parent_mod_name = self.module_dict[key][mod_file]["parentAA"][0]
+                            parent_mod_name = self.module_dict[key][mod_file][
+                                "parentAA"
+                            ][0]
 
                         return parent_mod_name
 
@@ -175,6 +184,7 @@ class BuildTestModule():
                     return parent_module
 
         return []
+
     def get_version(self):
         """Return Lmod major version.
 
@@ -183,6 +193,8 @@ class BuildTestModule():
         cmd = os.getenv("LMOD_VERSION")
         version = [int(v) for v in cmd.split(".")]
         return version
+
+
 def get_all_parents():
     """Retrieve all parent modules. This is used as choice field to
     buildtest module -d <parent-module>. This retrieves parent
@@ -203,7 +215,9 @@ def get_all_parents():
 
     return sorted(list(parent_set))
 
+
 module_obj = BuildTestModule()
+
 
 def find_module_deps(parent_module):
     """Return a list of absolute path to module file that depends on a parent module.
@@ -217,7 +231,6 @@ def find_module_deps(parent_module):
     :type parent_module: str, required
     """
 
-
     parent_list_found = []
 
     fd = open(BUILDTEST_MODULE_FILE, "r")
@@ -228,8 +241,8 @@ def find_module_deps(parent_module):
         for mpath in module_json[mod].keys():
             if module_json[mod][mpath]["fullName"] == parent_module:
                 filepath = mpath
-                break;
-    print (f"Module File: {filepath}")
+                break
+    print(f"Module File: {filepath}")
 
     # add module file path where parent module is found in "parent" key
     for mod in module_json.keys():
@@ -239,12 +252,13 @@ def find_module_deps(parent_module):
                     parent_list_found.append(mpath)
                     break
 
-    print (f"Modules that depend on {parent_module}")
+    print(f"Modules that depend on {parent_module}")
     for file in parent_list_found:
-        print (file)
+        print(file)
 
-    print ("\n")
-    print (f"Total Modules Found: {len(parent_list_found)}")
+    print("\n")
+    print(f"Total Modules Found: {len(parent_list_found)}")
+
 
 def find_modules(module_args):
     """Return a list of module load commands from modules.json
@@ -285,11 +299,11 @@ def find_modules(module_args):
 
     module_cmd_list = []
     for i in all_modules:
-        module_cmd = ' '.join(str(name) for name in i)
+        module_cmd = " ".join(str(name) for name in i)
         module_cmd_list.append(f"module load {module_cmd}")
 
-
     return module_cmd_list
+
 
 def module_load_test(args):
     """Perform module load test for all modules in BUILDTEST_MODULEPATH.
@@ -306,38 +320,41 @@ def module_load_test(args):
     out_file = "/tmp/modules-load.out"
     err_file = "/tmp/modules-load.err"
 
-    fd_out = open(out_file,"w")
+    fd_out = open(out_file, "w")
     fd_err = open(err_file, "w")
     failed_modules = []
     passed_modules = []
     count = 0
     for mod_file in module_stack:
-        count+=1
+        count += 1
         cmd = ""
         parent_modules = module_obj.get_parent_modules(mod_file)
         for item in parent_modules:
             cmd += "module try-load {};  ".format(item)
-        cmd +=  "module load " + mod_file
-        print (cmd)
+        cmd += "module load " + mod_file
+        print(cmd)
 
-        ret = subprocess.Popen(cmd,
-                               shell=True,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
-        out,err = ret.communicate()
+        ret = subprocess.Popen(
+            cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        out, err = ret.communicate()
 
         if ret.returncode == 0:
-            msg = f"RUN: {count}/{len(module_stack)} STATUS: PASSED - " \
-                  f"Testing module: {mod_file}"
-            print (msg)
+            msg = (
+                f"RUN: {count}/{len(module_stack)} STATUS: PASSED - "
+                f"Testing module: {mod_file}"
+            )
+            print(msg)
             passed_modules.append(mod_file)
 
             fd_out.write(msg + "\n")
             fd_out.write(cmd + "\n")
         else:
-            msg = f"RUN: {count}/{len(module_stack)} STATUS: FAILED - " \
-                  f"Testing module: {mod_file}"
-            print (msg)
+            msg = (
+                f"RUN: {count}/{len(module_stack)} STATUS: FAILED - "
+                f"Testing module: {mod_file}"
+            )
+            print(msg)
             failed_modules.append(mod_file)
 
             fd_err.write(msg + "\n")
@@ -345,21 +362,20 @@ def module_load_test(args):
 
             for line in err.decode("utf-8").splitlines():
                 fd_err.write(line)
-        print ("{:_<80}".format(""))
+        print("{:_<80}".format(""))
     fd_out.close()
     fd_err.close()
-    print (f"Writing Results to {out_file}")
-    print (f"Writing Results to {err_file}")
+    print(f"Writing Results to {out_file}")
+    print(f"Writing Results to {err_file}")
 
-
-    print ("{:_<80}".format(""))
-    print ("{:>40}".format("Module Load Summary"))
-    print ("{:<40} {}".format("Module Trees:",
-                              config_opts["BUILDTEST_MODULEPATH"]))
-    print ("{:<40} {}".format("PASSED: ", len(passed_modules)))
-    print ("{:<40} {}".format("FAILED: ", len(failed_modules)))
-    print ("{:_<80}".format(""))
+    print("{:_<80}".format(""))
+    print("{:>40}".format("Module Load Summary"))
+    print("{:<40} {}".format("Module Trees:", config_opts["BUILDTEST_MODULEPATH"]))
+    print("{:<40} {}".format("PASSED: ", len(passed_modules)))
+    print("{:<40} {}".format("FAILED: ", len(failed_modules)))
+    print("{:_<80}".format(""))
     sys.exit(0)
+
 
 def get_module_permutation_choices():
     """This method returns a choice field for module permutation option
@@ -375,6 +391,7 @@ def get_module_permutation_choices():
     fd.close()
     return content.keys()
 
+
 def check_easybuild_module():
     """This method reports modules that are built by easybuild. This implements
     command ``buildtest module --easybuild``
@@ -383,16 +400,17 @@ def check_easybuild_module():
 
     eb_string = "Built with EasyBuild version"
     count = 0
-    print ("Modules built with Easybuild")
-    print ("{:-<80}".format(""))
+    print("Modules built with Easybuild")
+    print("{:-<80}".format(""))
     for mpath in module_list:
-        if string_in_file(eb_string,mpath):
+        if string_in_file(eb_string, mpath):
             print(mpath)
-            count+=1
+            count += 1
 
-    print ("\n")
-    print (f"Total Easybuild Modules: {count}")
-    print (f"Total Modules Searched: {len(module_list)}")
+    print("\n")
+    print(f"Total Easybuild Modules: {count}")
+    print(f"Total Modules Searched: {len(module_list)}")
+
 
 def check_spack_module():
     """This method reports modules that are built by Spack. This implements
@@ -407,11 +425,12 @@ def check_spack_module():
     for mpath in module_list:
         if string_in_file(spack_string, mpath):
             print(mpath)
-            count+=1
+            count += 1
 
     print("\n")
     print(f"Total Spack Modules: {count}")
     print(f"Total Modules Searched: {len(module_list)}")
+
 
 def module_selector(user_collection, buildtest_module_collection):
     """Return a module load or module restore string from active module, user collection, or buildtest module collection """
@@ -423,13 +442,12 @@ def module_selector(user_collection, buildtest_module_collection):
 
     if buildtest_module_collection is not None:
         module_collection = get_buildtest_module_collection(buildtest_module_collection)
-        modules += [ f"module load {x}" for x in module_collection ]
+        modules += [f"module load {x}" for x in module_collection]
         return modules
 
     if user_collection is not None:
-        modules += [ f"module restore {user_collection}" ]
+        modules += [f"module restore {user_collection}"]
         return modules
-
 
     cmd = "module -t list"
     out = subprocess.getoutput(cmd)
@@ -437,10 +455,9 @@ def module_selector(user_collection, buildtest_module_collection):
     # output of module -t list when no modules are loaded is "No modules
     #  loaded"
 
-
     if out != "No modules loaded":
 
-        modules_load_list = [ f'module load {x}' for x in out.split() ]
+        modules_load_list = [f"module load {x}" for x in out.split()]
         modules += modules_load_list
         return modules
 

@@ -19,4 +19,4 @@ def func_show_subcmd(args):
 
     if args.keys:
         schema = SingleSource().get_schema()
-        yaml.dump(schema,sys.stdout, default_flow_style=False)
+        yaml.dump(schema, sys.stdout, default_flow_style=False)

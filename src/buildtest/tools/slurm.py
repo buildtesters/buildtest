@@ -4,6 +4,7 @@ Methods for Slurm configuration
 
 from buildtest.tools.system import BuildTestCommand
 
+
 def get_slurm_configuration():
     """This method retrieves slurm queues and compute nodes part of the SLURM cluster.
     Runs ``sinfo`` command to get nodes and slurm partition (queues).
@@ -20,7 +21,6 @@ def get_slurm_configuration():
     compute_nodes = out.split("\n")
     # need to delete last element
     del compute_nodes[-1]
-
 
     query = """ sinfo -h -o %R """
     cmd.execute(query)

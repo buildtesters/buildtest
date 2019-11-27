@@ -3,6 +3,7 @@ import yaml
 from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import is_dir
 
+
 def func_module_tree_subcmd(args):
     """ Entry point for ``buildtest module tree`` subcommand """
 
@@ -18,9 +19,11 @@ def func_module_tree_subcmd(args):
     if args.set:
         module_tree_set(args.set)
 
+
 def module_tree_list():
     """This method list module trees assigned to BUILDTEST_MODULEPATH"""
     [print(tree) for tree in config_opts["BUILDTEST_MODULEPATH"]]
+
 
 def module_tree_add(tree_list):
     """This method adds a module tree to BUILDTEST_MODULEPATH in configuration file.
@@ -54,6 +57,7 @@ def module_tree_add(tree_list):
     print(f"Adding module tree: {tree_list}")
     print(f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
 
+
 def module_tree_rm(tree_list):
     """ This method removes a module tree from BUILDTEST_MODULEPATH in configuration file.
     This implements command ``buildtest module tree -r <tree>``
@@ -63,7 +67,7 @@ def module_tree_rm(tree_list):
     :return: Update configuration file with updated value for BUILDTEST_MODULEPATH
     """
 
-    fd = open(BUILDTEST_CONFIG_FILE,"r")
+    fd = open(BUILDTEST_CONFIG_FILE, "r")
     content = yaml.safe_load(fd)
     for tree in tree_list:
         tree = os.path.expandvars(tree)
@@ -73,11 +77,12 @@ def module_tree_rm(tree_list):
 
     fd.close()
 
-    fd = open(BUILDTEST_CONFIG_FILE,"w")
-    yaml.dump(content,fd,default_flow_style=False)
+    fd = open(BUILDTEST_CONFIG_FILE, "w")
+    yaml.dump(content, fd, default_flow_style=False)
     fd.close()
-    print (f"Removing module tree: {tree_list}")
-    print (f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
+    print(f"Removing module tree: {tree_list}")
+    print(f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
+
 
 def module_tree_set(tree):
     """This method override BUILDTEST_MODULEPATH to the user specified tree. This will
@@ -91,7 +96,6 @@ def module_tree_set(tree):
     fd = open(BUILDTEST_CONFIG_FILE, "r")
     content = yaml.safe_load(fd)
     fd.close()
-
 
     is_dir(tree)
     content["BUILDTEST_MODULEPATH"] = []
