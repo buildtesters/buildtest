@@ -1,0 +1,10 @@
+testtype: singlesource
+description: Running STREAM synthetic benchmark to measure sustainable memory bandwidth
+scheduler: local
+
+program:
+  source: stream.c
+  compiler: gnu
+
+maintainer:
+- shahzeb siddiqui <shahzebmsiddiqui@gmail.com>
