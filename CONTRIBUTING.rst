@@ -4,7 +4,7 @@ so you can contribute back and make everyone's life easier.
 Preparation
 =============
 
-If you don't have a GitHub account please register your account at https://github.com/join
+If you don't have a GitHub account please `register <http://github.com/join>`_ your account 
 
 Fork the repo
 --------------
@@ -15,9 +15,7 @@ You might need to setup your SSH keys in your git profile if you are using ssh o
 setting up SSH keys in your profile, follow instruction found in
 https://help.github.com/articles/connecting-to-github-with-ssh/
 
-SSH key will help you pull and push to repository without requesting for password for every commit.
-
-After creating your fork copy, clone your fork buildtest-framework repo::
+SSH key will help you pull and push to repository without requesting for password for every commit. Once you have forked the repo, clone your local repo::
 
   git clone git@github.com:YOUR\_GITHUB\_LOGIN/buildtest-framework.git
 
@@ -33,11 +31,18 @@ following::
 The ``upstream`` tag is used to sync changes from upstream repo to keep your
 repo in sync before you contribute back.
 
+Make sure you have set your user name and email set properly in git configuration. We don't want commits from
+unknown users. This can be done by setting the following::
+
+   git config user.name "First Last"
+   git config user.email "abc@example.com"
+
+For more details see `First Time Git Setup <https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup>`_
 
 Sync your branch from upstream
 -------------------------------
 
-The ``devel`` from upstream will get Pull Requests from other contributors, inorder
+The ``devel`` from upstream will get Pull Requests from other contributors, in-order
 to sync your forked repo with upstream, run the commands below::
 
  cd buildtest-framework
@@ -128,10 +133,10 @@ This will open a ``firefox`` session to the root of your documentation that was 
 make sure you have X11 forwarding in order for firefox to work properly. Refer to the ``Makefile`` to see all of the
 make tags and you may run ``make`` or ``make help`` for additional help
 
-Building buildtest API Docs
-----------------------------
+Building API Docs
+------------------
 
-In order to build the API library for buildtest you can run the following::
+In order to build the API library for buildtest use the following command::
 
   make apidocs
 
@@ -184,4 +189,54 @@ If you are interested in failed tests run with option::
 
   pytest -rf tests/
 
-Refer to pytest documentation (https://docs.pytest.org/en/latest/contents.html) for list of all options.
+Refer to pytest `documentation <https://docs.pytest.org/en/latest/contents.html>`_  for complete list of options.
+
+GitHub Apps
+------------
+
+The following apps are configured with buildtest.
+
+- **CodeCov** - Codecov provides highly integrated tools to group, merge, archive and compare coverage reports
+  
+  - Link: https://codecov.io/gh/HPC-buildtest/buildtest-framework
+- **GuardRails** - GuardRails provides continuous security feedback for modern development teams
+ 
+  - Link: https://dashboard.guardrails.io/default/gh/HPC-buildtest
+
+- **Travis CI** - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted continuous integration system.
+
+  - Link: https://travis-ci.com/HPC-buildtest/buildtest-framework
+
+- **Snyk** - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
+
+  - Link: https://app.snyk.io/org/hpc-buildtest/
+
+When contributing back to buildtest, please consider checking the following GitHub apps, most important being **Travis-CI** as it will test your pull request before merging to ``devel`` branch.
+
+Release Process
+---------------
+
+Every buildtest release will be tagged with a version number using format **X.Y.Z**. Every release will have a git tags such as ``v1.2.3`` to correspond to release **1.2.3**. Git tags should be pushed to upstream by **release manager** only. The process 
+for pushing git tags can be described in the following article:  `Git Basics - Tagging <https://git-scm.com/book/en/v2/Git-Basics-Tagging>`_
+
+We will create annotated tags as follows::
+
+  git tag -a v1.2.3 -m "buildtest version 1.2.3"
+
+Once tag is created you can view the tag details by running either::
+
+  git tag 
+  git show v1.2.3
+
+We have created the tag locally, next we must push the tag to the upstream repo by doing the following::
+
+  git push origin v.1.2.3
+
+Every release must have a release note that is maintained in file `CHANGELOG.rst <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/CHANGELOG.rst>`_
+
+Under buildtest `releases <https://github.com/HPC-buildtest/buildtest-framework/releases>`_ a new release can be created that
+corresponds to the git tag. In the release summary, just direct with a message stating **refer to CHANGELOG.rst for more details** 
+
+ 
+
+
