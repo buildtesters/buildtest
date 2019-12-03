@@ -1,4 +1,4 @@
-| |license| |docs| |codecov| |slack| |tags| |forks| |issues| |contributors| |stars| |watchers|
+| |license| |docs| |codecov| |slack| |core_infrastructure| |tags| |forks| |issues| |contributors| |stars| |watchers|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -7,6 +7,7 @@
 
 .. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
 .. |license| image:: https://img.shields.io/github/license/HPC-buildtest/buildtest-framework.svg
+.. |core_infrastructure| image:: https://bestpractices.coreinfrastructure.org/projects/3469/badge
 .. |tags| image:: https://img.shields.io/github/v/tag/HPC-buildtest/buildtest-framework.svg
 .. |forks| image:: https://img.shields.io/github/forks/HPC-buildtest/buildtest-framework.svg
 .. |issues| image:: https://img.shields.io/github/issues/HPC-buildtest/buildtest-framework.svg
