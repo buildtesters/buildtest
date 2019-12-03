@@ -162,23 +162,8 @@ def check_configuration():
                 os.makedirs(config_opts[key])
 
     if ec:
-        sys.exit(0)
-
-    cmd = "module --version"
-    ret = subprocess.Popen(
-        cmd,
-        shell=True,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    (outputmsg, errormsg) = ret.communicate()
-    ec = ret.returncode
-
-    if ec != 0:
-        print("module commmand not found in system")
-        print(outputmsg)
-        print(errormsg)
+        print("CONFIGURATION CHECK FAILED")
+        print(f"Check your configuration: {BUILDTEST_CONFIG_FILE}")
         sys.exit(1)
 
 

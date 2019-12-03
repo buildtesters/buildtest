@@ -17,7 +17,7 @@ from buildtest.tools.config import (
     BUILDTEST_BUILD_LOGFILE,
     BUILDTEST_SYSTEM,
 )
-from buildtest.tools.file import create_dir
+from buildtest.tools.file import create_dir, is_file
 from buildtest.tools.modules import module_obj
 
 
@@ -204,28 +204,13 @@ class BuildTestSystem:
         req_pass = True
         # If system is not Linux
 
-        if self.system["SYSTEM"] != "Linux":
-            req_pass = False
-
-        # Check if LMOD_CMD is defined which is an environment variable set typically if LMOD is installed
-        # There are many ways to check if Lmod is installed
-        lmod_dir = os.getenv("LMOD_CMD")
-
-        if lmod_dir == None:
-            req_pass = False
-        """
-        if self.system["SCHEDULER"] == None:
-            req_pass=False
-        """
-        if not req_pass:
+        if self.system["SYSTEM"] != "Linux" or not is_file(os.getenv("LMOD_CMD")):
             msg = """
 System Requirements not satisfied.
 
 Requirements:
 1. System must be Linux
 2. Lmod must be installed
-3. Operating System: RHEL
-4. Scheduler must be LSF or SLURM
 """
             print(msg)
             sys.exit(1)
