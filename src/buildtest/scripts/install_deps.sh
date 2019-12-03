@@ -16,7 +16,7 @@ mkdir -p ${PREFIX}
 set +e
 wget ${PKG_URL} && tar xfz *${VERSION}.tar.gz
 set -e
-cd Lmod
+cd $LMOD_PACKAGE
 ./configure --prefix=$PREFIX && make && make install
 
 if [ ! -z $MOD_INIT ]; then
