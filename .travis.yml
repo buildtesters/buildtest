@@ -14,9 +14,11 @@ addons:
   apt:
     packages:
       # install Lmod Deps
-      - liblua5.1-0
-      - liblua5.1-0-dev
-      - lua5.1
+      - lua-filesystem
+      - lua-json
+      - lua-posix
+      - lua-term
+      - lua5.2
 install:
   - pip --version
   - pip install --upgrade pip
