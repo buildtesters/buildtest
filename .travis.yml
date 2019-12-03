@@ -5,21 +5,32 @@ git:
 branches:
   only:
     - devel
+env:
+  matrix:
+    - LMOD_VERSION=6.6.2
+    - LMOD_VERSION=6.6.3
+
 addons:
   apt:
     packages:
       # install Lmod Deps
-      - liblua5-1.0
+      - liblua5.1-0
       - liblua5.1-0-dev
       - liblua5.1-filesystem-dev
       - liblua5.1-filesystem0
       - liblua5.1-posix-dev
       - liblua5.1-posix0
       - lua5.1
-      - lmod
+
 install:
+  - pip --version
+  - pip install --upgrade pip
+  - pip --version
   - pip install -r docs/requirements.txt
+  - source $TRAVIS_BUILD_DIR/src/buildtest/scripts/install_deps.sh $LMOD_VERSION
 script:
-  - pwd
+  - type module
+  - module --version
+  - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh
   - buildtest --version
