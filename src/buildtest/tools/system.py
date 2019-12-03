@@ -156,7 +156,7 @@ class BuildTestSystem:
 
         if not os.path.exists(BUILDTEST_SYSTEM):
             with open(BUILDTEST_SYSTEM, "w") as outfile:
-                json.dumps(self.system, outfile, indent=2, sort_keys=True)
+                json.dump(self.system, outfile, indent=2, sort_keys=True)
 
         if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
             with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as outfile:
