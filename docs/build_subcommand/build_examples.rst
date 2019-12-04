@@ -10,17 +10,19 @@ MPI Example
 
 buildtest supports building MPI test. To demonstrate see the following test configuration
 
-.. program-output:: cat ../toolkit/suite/tutorial/mpi/hello.c.yml
+.. command-output:: cat ${BUILDTEST_ROOT}/toolkit/suite/tutorial/mpi/hello.c.yml
+   :shell:
 
 To enable mpi test, you must specify ``mpi: True`` in the test configuration. The ``mpi`` key is not
 a required key, if it is omitted from the test configuration then buildtest will assume mpi is disabled.
 By setting ``mpi: True`` enables the **mpi** key in program section.
 
-The mpi key comes with three keys **flavor**, **launcher** and **launcher_opts**. The ``flavor*`` key is used to specify the
-MPI implementation (``openmpi``, ``mpich``, ``intelmpi``, ``mvapich2``, etc...) Currently, not implemented, buildtest
-can use the flavor key to detect the mpi launcher based on MPI flavor. At the moment, user must specify the *launcher*
-and *launcher_opts* in order to build the proper run command. The ``launcher: mpirun`` with ``launcher_opts: -n 2``
-will create a run command such as::
+The mpi key comes with three keys **flavor**, **launcher** and **launcher_opts**. The ``flavor`` key is used to specify the
+MPI implementation (``openmpi``, ``mpich``, ``intelmpi``, etc...) which is used to detect the mpi wrapper for compiling
+MPI programs. The user must specify the launcher configuration via **launcher** and **launcher_opts** in order to build
+the proper run command.
+
+When ``launcher: mpirun`` and ``launcher_opts: -n 2`` is set in configuration this will translate to::
 
     mpirun -n 2 <executable>
 
@@ -38,7 +40,8 @@ Building an OpenACC code is pretty simple. If you have a GNU compiler that suppo
 the ``-fopenacc`` flag. Shown below we have a test configuration to build the program **vecAdd.c** which is a
 vector Addition calcuation using OpenACC.
 
-.. program-output:: cat scripts/build_subcommand/tutorial.openacc.vecAdd.c.yml
+.. command-output:: cat ${BUILDTEST_ROOT}/toolkit/suite/tutorial/openacc/vecAdd.c.yml
+   :shell:
 
 The source file **vecAdd.c** calls the math library (**#include <math.h>**) which needs to be linked at compile time
 which can be passed using ``ldflags: -lm``. The ``ldflags`` key will set the variable **$LDFLAGS** in the test script
@@ -78,7 +81,8 @@ To enable the LSF mode ``scheduler: LSF`` must be set in the test configuration.
 
 Let's see an example configuration for LSF job
 
-.. program-output:: cat ../toolkit/suite/tutorial/compilers/hello_lsf.yml
+.. command-output:: cat ${BUILDTEST_ROOT}/toolkit/suite/tutorial/compilers/hello_lsf.yml
+   :shell:
 
 By setting ``scheduler: LSF`` this enables the ``bsub`` key that is responsible for adding the **#BSUB** directive in
 the test script. Shown below is an example build for LSF job.

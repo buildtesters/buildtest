@@ -16,12 +16,14 @@ directory at will.
 
 Shown below is unique software list using ``buildtest list --software``
 
-.. program-output:: head -n 10 docgen/buildtest_list_--software.txt
+.. command-output:: head -10 docgen/buildtest_list_--software.txt && echo -e "...\n..." && tail -10 docgen/buildtest_list_--software.txt
+   :shell:
 
 Similarly we can retrieve full name of module file and absolute path to
 module file using ``buildtest list --module`` or short option ``buildtest list -m``
 
-.. program-output:: head -n 10 docgen/buildtest_list_--modules.txt
+.. command-output:: head -10 docgen/buildtest_list_--modules.txt && echo -e "...\n..." && tail -10 docgen/buildtest_list_--modules.txt
+   :shell:
 
 Module Testing
 ---------------
@@ -30,8 +32,8 @@ HPC sites may have hundreds if not thousand module files, it would be great to
 test all of them. buildtest can conduct ``module load`` testing on module files
 and report ``SUCCESS`` or ``FAIL`` upon module load by checking exit status.
 
-.. program-output:: cat docgen/moduleload-test.txt
-
+.. command-output:: head -15 docgen/moduleload-test.txt && echo -e "...\n..." && tail -15 docgen/moduleload-test.txt
+   :shell:
 
 Building Test
 -----------------

@@ -49,8 +49,8 @@ use ``buildtest module loadtest``
 
 To demonstrate let's kick off a module load test as shown below.
 
-.. program-output:: cat scripts/module-load.txt
-
+.. command-output:: head -15 docgen/moduleload-test.txt && echo -e "...\n..." && tail -15 docgen/moduleload-test.txt
+   :shell:
 
 buildtest will attempt to run ``module load`` against each module to verify modules are working properly.
 

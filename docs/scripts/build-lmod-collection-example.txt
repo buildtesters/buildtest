@@ -1,0 +1,27 @@
+$ buildtest build -c tutorial.cuda.saxpy.c.yml -co CUDA --dry
+Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/cuda/saxpy.c.yml
+Checking schema of YAML file
+Schema Check Passed
+Scheduler: local
+Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/cuda
+Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/cuda/src
+Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/cuda/src/saxpy.cu
+Detecting Programming Language, Compiler and MPI wrapper
+Programming Language: cuda
+NVCC: nvcc
+Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_14/saxpy.c.yml.0xe1c995be.sh
+--------------------------------------------------------------------------------
+
+module purge
+module restore CUDA
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_14
+SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/cuda/src
+SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/cuda/src/saxpy.cu
+CC=nvcc
+EXECUTABLE=saxpy.c.yml.0x64ba9b98.exe
+
+cd $TESTDIR
+$CC -o $EXECUTABLE $SRCFILE
+$EXECUTABLE
+rm ./$EXECUTABLE
+--------------------------------------------------------------------------------

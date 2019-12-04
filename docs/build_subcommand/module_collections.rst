@@ -12,10 +12,11 @@ You can run ``module -t savelist`` to see a list of collection. Shown below
 is an example::
 
     $ module -t savelist
-    corrupt
-    corrupt2
-    default
-    intelmpi
+    CUDA
+    GCC
+    GCCPy
+    intel
+    pgi
 
 To restore a module collection you can run::
 
@@ -24,9 +25,9 @@ To restore a module collection you can run::
 
 To build a test with a user collection use the ``--collection`` option which
 is a choice field that is the name of the user collection.
-To demonstrate, lets build a test with a user collection ``intelmpi``.
+To demonstrate, lets build a test with a user collection ``CUDA``.
 
-.. program-output:: cat scripts/build-lmod-collection.txt
+.. program-output:: cat scripts/build-lmod-collection-example.txt
 
 Note the ``module restore`` command will load the modules from the
 collection. To use this feature, you will need to have a module collection
@@ -41,22 +42,23 @@ buildtest module collection allows users to save modules into a collection
 and reference them when building test. If you don't have a module collection first,
 see :ref:`module_collection` before proceeding further.
 
-Let's assume we have the following module collections available
+Let's assume we have the following module collections available::
 
-.. program-output:: cat docgen/module_collection_list_add.txt
+    $ buildtest module collection -l
+    0: ['GCCcore/8.3.0', 'Python/3.7.4-GCCcore-8.3.0']
+    1: ['bzip2/1.0.8-GCCcore-8.3.0', 'ncurses/6.1-GCCcore-8.3.0', 'libreadline/8.0-GCCcore-8.3.0', 'Tcl/8.6.9-GCCcore-8.3.0', 'SQLite/3.29.0-GCCcore-8.3.0', 'GMP/6.1.2-GCCcore-8.3.0', 'libffi/3.2.1-GCCcore-8.3.0', 'Python/3.7.4-GCCcore-8.3.0', 'zlib/1.2.11-GCCcore-6.4.0', 'binutils/2.28-GCCcore-6.4.0', 'GCC/6.4.0-2.28', 'numactl/2.0.11-GCCcore-6.4.0', 'GCCcore/6.4.0', 'XZ/5.2.3-GCCcore-6.4.0', 'libxml2/2.9.7-GCCcore-6.4.0', 'libpciaccess/0.14-GCCcore-6.4.0', 'hwloc/1.11.8-GCCcore-6.4.0', 'OpenMPI/2.1.2-GCC-6.4.0-2.28']
 
 Each collection will have an index number that can be used to reference the modules
 when building them. This can be done by using the option ``--module-collection <ID>`` or
-short option ``-mc``.
+short option ``-mc``. Let's build a test using collection **0**
 
-.. program-output:: cat scripts/build-openmpi-example1.txt
+.. program-output:: cat scripts/build-module-collection-example.txt
 
 
 The option ``--module-collection`` takes an integer argument that is a
-choice field prepopulated by finding the total index in the ``collection``
-key in file ``collection.json``
+choice field prepopulated by calculating the total index from ``collection.json``
 
-If you pass an invalid index, buildtest will report an error as you can see
+If you pass an invalid index, buildtest will report an error as follows
 
 .. Error::
 
@@ -65,92 +67,25 @@ If you pass an invalid index, buildtest will report an error as you can see
 Module Permutation
 ------------------
 
-buildtest can build a single test configuration with all version of a module
-. The ``spider`` utility by Lmod keeps track of metadata for all modules in
-your system as a json object. buildtest will formulate a modified json
-object that is written in ``$BUILDTEST_ROOT/var/modules.json``.
+buildtest can build a test with all version of a module. What this means is if you are interested
+in testing same test for all versions of a particular software you can do this in buildtest. For instance
+you have the following versions of GCCcore module::
 
-Here is an example json object for **intel**::
+    $ module -t spider GCCcore
+    GCCcore/6.4.0
+    GCCcore/7.1.0
+    GCCcore/7.4.0
+    GCCcore/8.1.0
+    GCCcore/8.3.0
+    GCCcore/9.2.0
 
-    "intel": {
-        "/gpfs/apps/medsci/stacks/noOS/modules/intel/2018.3": {
-            "fullName": "intel/2018.3",
-            "parent": [
-                [
-                    "medsci/.2019.1"
-                ],
-                [
-                    "medsci/2019.2"
-                ]
-            ]
-        },
-        "/gpfs/apps/easybuild/2019/SkyLake/redhat/7.5/modules/all/intel/2018b.lua": {
-            "fullName": "intel/2018b",
-            "parent": [
-                [
-                    "eb/2019"
-                ]
-            ]
-        }
-    },
+Now instead of loading each module or creating a module collection, you can do this by using option ``--modules <NAME>``
+or short option ``-m <NAME>``. The **<NAME>** refers to the name of software similar to ``module -t spider <NAME>``
+which is ``GCCcore``.
 
-Shown below is a list of intel modules available in this system::
+buildtest will formulate a modified json object stored ``$BUILDTEST_ROOT/var/modules.json`` that is used when finding
+all versions of a module.
 
-    $ module -t spider intel
-    intel/2018b
-    intel/2018.3
+Let's build a module permutation test for ``GCCcore`` for the following build.
 
-
-
-To demonstrate an example, let's build a test using the module permutation
-option ``--modules`` on all ``intel`` modules.
-
-.. program-output:: cat scripts/build-module-permute.txt
-
-Each test will be uniquely identified with a 128 random number in the test
-script to avoid name conflicts.
-
-In this example, buildtest is building the test for every ``intel`` modules
-found in the system.
-
-
-
-buildtest will select the ``first`` parent combination should there be
-multiple parent combination to load the module. This is controlled by variable
-``BUILDTEST_PARENT_MODULE_SEARCH`` that is defined in configuration file.
-
-The default configuration for ``BUILDTEST_PARENT_MODULE_SEARCH`` is ``first``
-which will select the first parent combination. The other option is ``all`` which
-will select all parent combination when building test.
-
-Shown below is a snapshot of ``vmd`` record from ``modules.json``::
-
-
-    "vmd": {
-        "/gpfs/apps/medsci/stacks/noOS/modules/vmd/1.9.4.lua": {
-            "fullName": "vmd/1.9.4",
-            "parent": [
-                [
-                    "medsci/.2019.1"
-                ],
-                [
-                    "medsci/2019.2"
-                ]
-            ]
-        }
-    },
-
-
-
-The ``fullName`` and ``parent`` key define how to load a module with all the
-parent combinations which you are required in order to load the desired
-module.
-
-To demonstrate let's build a test with all parent combination for ``vmd``
-module.
-
-.. program-output:: cat scripts/build-module-all-permute.txt
-
-Note all parent combination for ``vmd`` module were
-used when writing the test. It is worth noting, that *any parent combination
-is sufficient* when loading the desired module.
+.. program-output:: cat scripts/build-module-permutation-example.txt
