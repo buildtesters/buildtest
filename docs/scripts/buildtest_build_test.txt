@@ -1,2 +1,0 @@
-buildtest build test 0 
-/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/hello_args.c.yml.sh

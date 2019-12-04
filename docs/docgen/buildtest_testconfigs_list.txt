@@ -10,3 +10,4 @@ tutorial.compilers.hello_lsf.yml                             | Hello World C exa
 tutorial.compilers.args.c.yml                                | C program that prints arguments passed to executable.
 tutorial.openacc.vecAdd.c.yml                                | OpenACC Vector Addition example using GNU compiler
 tutorial.openacc.vecAdd.c_pgi.yml                            | OpenACC Vector Addition example using GNU compiler
+benchmark.stream.stream.c.yml                                | Running STREAM synthetic benchmark to measure sustainable memory bandwidth

@@ -1,1 +1,0 @@
-buildtest build -c compilers.helloworld.hello_intel_fortran.yml -co intelmpi -vv

@@ -31,7 +31,7 @@ Programming Language: c
 CC: gcc
 CFLAGS: -O2
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_20/hello_lsf.yml.0xca4af84a.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/hello_lsf.yml.0xdcc014.sh",
     "scheduler": [
         "#BSUB -M 200M",
         "#BSUB -R sandybridge",
@@ -54,12 +54,12 @@ CFLAGS: -O2
         "module load Python/3.7.4-GCCcore-8.3.0"
     ],
     "metavars": [
-        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_20",
+        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9",
         "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src",
         "SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src/hello.c",
         "CC=gcc",
         "CFLAGS=\"-O2\"",
-        "EXECUTABLE=hello_lsf.yml.0x80763441.exe"
+        "EXECUTABLE=hello_lsf.yml.0x5c7838d5.exe"
     ],
     "envs": [],
     "build": [
@@ -71,8 +71,8 @@ CFLAGS: -O2
         "rm ./$EXECUTABLE"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_20/hello_lsf.yml.0xca4af84a.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_20/hello_lsf.yml.0xca4af84a.sh
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/hello_lsf.yml.0xdcc014.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/hello_lsf.yml.0xdcc014.sh
 ________________________________________________________________________________
 #BSUB -M 200M
 #BSUB -R sandybridge
@@ -91,15 +91,15 @@ module load XZ/5.2.4-GCCcore-8.3.0
 module load GMP/6.1.2-GCCcore-8.3.0
 module load libffi/3.2.1-GCCcore-8.3.0
 module load Python/3.7.4-GCCcore-8.3.0
-TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_20
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9
 SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
 SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src/hello.c
 CC=gcc
 CFLAGS="-O2"
-EXECUTABLE=hello_lsf.yml.0x80763441.exe
+EXECUTABLE=hello_lsf.yml.0x5c7838d5.exe
 cd $TESTDIR
 $CC $CFLAGS -o $EXECUTABLE $SRCFILE
 $EXECUTABLE
 rm ./$EXECUTABLE
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_20/log/buildtest_15_41_24_11_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_9/log/buildtest_13_56_04_12_2019.log

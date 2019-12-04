@@ -1,5 +1,0 @@
-BUILDTEST_SPIDER_VIEW=all buildtest module --spack
-
-
-Total Spack Modules: 0
-Total Modules Searched: 2

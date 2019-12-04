@@ -1,0 +1,2 @@
+$ buildtest build test 0
+/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/args.c.yml.0x585a9a55.sh

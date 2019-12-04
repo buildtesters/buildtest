@@ -24,8 +24,10 @@ $ buildtest list --modules
 [32mBison/3.0.5-GCCcore-6.4.0                |	/mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.5-GCCcore-6.4.0.lua[0m
 [32mBison/3.3.2                              |	/mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.3.2.lua[0m
 [32mBison/3.0.5-GCCcore-8.1.0                |	/mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.5-GCCcore-8.1.0.lua[0m
+[32mCMake/3.10.2-GCCcore-6.4.0               |	/mxg-hpc/users/ssi29/easybuild/modules/all/CMake/3.10.2-GCCcore-6.4.0.lua[0m
 [32mCUDA/10.0.130                            |	/mxg-hpc/users/ssi29/easybuild/modules/all/CUDA/10.0.130.lua[0m
 [32mCUDA/9.2.148.1                           |	/mxg-hpc/users/ssi29/easybuild/modules/all/CUDA/9.2.148.1.lua[0m
+[32mClang/7.0.0-GCC-6.4.0-2.28               |	/mxg-hpc/users/ssi29/easybuild/modules/all/Clang/7.0.0-GCC-6.4.0-2.28.lua[0m
 [32mFFTW/3.3.7-gompi-2018a                   |	/mxg-hpc/users/ssi29/easybuild/modules/all/FFTW/3.3.7-gompi-2018a.lua[0m
 [32mGCC/6.4.0-2.28                           |	/mxg-hpc/users/ssi29/easybuild/modules/all/GCC/6.4.0-2.28.lua[0m
 [32mGCC/7.1.0-2.28                           |	/mxg-hpc/users/ssi29/easybuild/modules/all/GCC/7.1.0-2.28.lua[0m
@@ -42,6 +44,7 @@ $ buildtest list --modules
 [32mGCCcore/8.1.0                            |	/mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/8.1.0.lua[0m
 [32mGCCcore/7.1.0                            |	/mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/7.1.0.lua[0m
 [32mGMP/6.1.2-GCCcore-8.3.0                  |	/mxg-hpc/users/ssi29/easybuild/modules/all/GMP/6.1.2-GCCcore-8.3.0.lua[0m
+[32mGMP/6.1.2-GCCcore-6.4.0                  |	/mxg-hpc/users/ssi29/easybuild/modules/all/GMP/6.1.2-GCCcore-6.4.0.lua[0m
 [32mM4/1.4.18                                |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Compiler/GCCcore/9.2.0/M4/1.4.18.lua[0m
 [32mM4/1.4.17                                |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/M4/1.4.17.lua[0m
 [32mM4/1.4.18-GCCcore-8.3.0                  |	/mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18-GCCcore-8.3.0.lua[0m
@@ -57,8 +60,11 @@ $ buildtest list --modules
 [32mOpenMPI/2.1.2-GCC-6.4.0-2.28             |	/mxg-hpc/users/ssi29/easybuild/modules/all/OpenMPI/2.1.2-GCC-6.4.0-2.28.lua[0m
 [32mPyCharm/2017.2.3                         |	/mxg-hpc/users/ssi29/easybuild/modules/all/PyCharm/2017.2.3.lua[0m
 [32mPython/3.7.4-GCCcore-8.3.0               |	/mxg-hpc/users/ssi29/easybuild/modules/all/Python/3.7.4-GCCcore-8.3.0.lua[0m
+[32mPython/2.7.14-GCCcore-6.4.0-bare         |	/mxg-hpc/users/ssi29/easybuild/modules/all/Python/2.7.14-GCCcore-6.4.0-bare.lua[0m
 [32mSQLite/3.29.0-GCCcore-8.3.0              |	/mxg-hpc/users/ssi29/easybuild/modules/all/SQLite/3.29.0-GCCcore-8.3.0.lua[0m
+[32mSQLite/3.20.1-GCCcore-6.4.0              |	/mxg-hpc/users/ssi29/easybuild/modules/all/SQLite/3.20.1-GCCcore-6.4.0.lua[0m
 [32mScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20                                      |	/mxg-hpc/users/ssi29/easybuild/modules/all/ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20.lua[0m
+[32mTcl/8.6.7-GCCcore-6.4.0                  |	/mxg-hpc/users/ssi29/easybuild/modules/all/Tcl/8.6.7-GCCcore-6.4.0.lua[0m
 [32mTcl/8.6.9-GCCcore-8.3.0                  |	/mxg-hpc/users/ssi29/easybuild/modules/all/Tcl/8.6.9-GCCcore-8.3.0.lua[0m
 [32mXZ/5.2.4-GCCcore-8.3.0                   |	/mxg-hpc/users/ssi29/easybuild/modules/all/XZ/5.2.4-GCCcore-8.3.0.lua[0m
 [32mXZ/5.2.3-GCCcore-6.4.0                   |	/mxg-hpc/users/ssi29/easybuild/modules/all/XZ/5.2.3-GCCcore-6.4.0.lua[0m
@@ -75,6 +81,7 @@ $ buildtest list --modules
 [32mbinutils/2.31.1                          |	/mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.31.1.lua[0m
 [32mbinutils/2.30                            |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Compiler/GCCcore/8.1.0/binutils/2.30.lua[0m
 [32mbinutils/2.32                            |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Compiler/GCCcore/9.2.0/binutils/2.32.lua[0m
+[32mbzip2/1.0.6-GCCcore-6.4.0                |	/mxg-hpc/users/ssi29/easybuild/modules/all/bzip2/1.0.6-GCCcore-6.4.0.lua[0m
 [32mbzip2/1.0.8-GCCcore-8.3.0                |	/mxg-hpc/users/ssi29/easybuild/modules/all/bzip2/1.0.8-GCCcore-8.3.0.lua[0m
 [32mbzip2/1.0.8-etzfbao                      |	/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/bzip2/1.0.8-etzfbao.lua[0m
 [32mdiffutils/3.7-jthvt3v                    |	/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/diffutils/3.7-jthvt3v.lua[0m
@@ -107,6 +114,7 @@ $ buildtest list --modules
 [32mlibiconv/1.16-xcmzb6a                    |	/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libiconv/1.16-xcmzb6a.lua[0m
 [32mlibpciaccess/0.13.5-cavw42z              |	/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libpciaccess/0.13.5-cavw42z.lua[0m
 [32mlibpciaccess/0.14-GCCcore-6.4.0          |	/mxg-hpc/users/ssi29/easybuild/modules/all/libpciaccess/0.14-GCCcore-6.4.0.lua[0m
+[32mlibreadline/7.0-GCCcore-6.4.0            |	/mxg-hpc/users/ssi29/easybuild/modules/all/libreadline/7.0-GCCcore-6.4.0.lua[0m
 [32mlibreadline/8.0-GCCcore-8.3.0            |	/mxg-hpc/users/ssi29/easybuild/modules/all/libreadline/8.0-GCCcore-8.3.0.lua[0m
 [32mlibsigsegv/2.12-oywfhvk                  |	/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libsigsegv/2.12-oywfhvk.lua[0m
 [32mlibtool/2.4.6-GCCcore-6.4.0              |	/mxg-hpc/users/ssi29/easybuild/modules/all/libtool/2.4.6-GCCcore-6.4.0.lua[0m
@@ -118,6 +126,7 @@ $ buildtest list --modules
 [32mm4/1.4.18-dipchcn                        |	/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/m4/1.4.18-dipchcn.lua[0m
 [32mncurses/6.0                              |	/mxg-hpc/users/ssi29/easybuild/modules/all/ncurses/6.0.lua[0m
 [32mncurses/6.1-GCCcore-8.3.0                |	/mxg-hpc/users/ssi29/easybuild/modules/all/ncurses/6.1-GCCcore-8.3.0.lua[0m
+[32mncurses/6.0-GCCcore-6.4.0                |	/mxg-hpc/users/ssi29/easybuild/modules/all/ncurses/6.0-GCCcore-6.4.0.lua[0m
 [32mncurses/6.1-3jjw2re                      |	/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/ncurses/6.1-3jjw2re.lua[0m
 [32mnumactl/2.0.11-GCCcore-6.4.0             |	/mxg-hpc/users/ssi29/easybuild/modules/all/numactl/2.0.11-GCCcore-6.4.0.lua[0m
 [32mpkgconf/1.6.3-oqak6dh                    |	/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/pkgconf/1.6.3-oqak6dh.lua[0m
@@ -139,6 +148,6 @@ $ buildtest list --modules
 [32mzlib/1.2.11-GCCcore-8.1.0                |	/mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-8.1.0.lua[0m
 
 
-Total Software Modules: 135
-[32mTotal LUA Modules: 135[0m
+Total Software Modules: 144
+[32mTotal LUA Modules: 144[0m
 Total non LUA Modules: 0

@@ -74,6 +74,7 @@ def introspection_cmds():
 
 def module_cmds():
     module_dict = {
+        "moduleload-test.txt": "buildtest module loadtest",
         "add_module_tree.txt": "buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core",
         "remove_module_tree.txt": "buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core",
         "default_module_tree.txt": "buildtest module tree -l",
@@ -137,6 +138,9 @@ def build_cmds():
         "tutorial.openacc.vecAdd.c_pgi.yml.txt": "buildtest build -c tutorial.openacc.vecAdd.c_pgi.yml -co pgi --dry",
         "coreutils.txt": "buildtest  build --package coreutils",
         "module-binary.txt": "buildtest build --binary",
+        "build-report.txt": "buildtest build report",
+        "build-test-example.txt": "buildtest build test 0",
+        "build-run-example.txt": "buildtest build run 1"
     }
     for k, v in build_dict.items():
         out = run(v)

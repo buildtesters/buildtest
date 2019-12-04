@@ -1,6 +1,0 @@
-buildtest list --software
-lmod
-settarg
-
-
-Total Software Packages:  2

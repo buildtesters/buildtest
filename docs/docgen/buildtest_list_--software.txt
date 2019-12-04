@@ -4,7 +4,9 @@ Autoconf
 Automake
 Autotools
 Bison
+CMake
 CUDA
+Clang
 FFTW
 GCC
 GCCcore
@@ -49,4 +51,4 @@ xz
 zlib
 
 
-Total Software Packages:  48
+Total Software Packages:  50

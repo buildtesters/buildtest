@@ -55,6 +55,7 @@ program:
     values:
     - gnu
     - intel
+    - pgi
     - cuda
   cxxflags:
     description: Specify compiler flags to C++ compiler (i.e $CXX)

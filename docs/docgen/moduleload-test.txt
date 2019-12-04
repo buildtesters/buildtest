@@ -1,0 +1,253 @@
+$ buildtest module loadtest
+RUN: 1/122 STATUS: FAILED - Testing module command: module load Anaconda3/5.3.0;
+________________________________________________________________________________
+RUN: 2/122 STATUS: PASSED - Testing module command: module load Autoconf/2.69-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 3/122 STATUS: PASSED - Testing module command: module load Autoconf/2.69-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 4/122 STATUS: PASSED - Testing module command: module load Automake/1.15.1-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 5/122 STATUS: PASSED - Testing module command: module load Automake/1.16.1-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 6/122 STATUS: PASSED - Testing module command: module load Autotools/20170619-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 7/122 STATUS: PASSED - Testing module command: module load Autotools/20180311-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 8/122 STATUS: PASSED - Testing module command: module load Bison/3.0.4;
+________________________________________________________________________________
+RUN: 9/122 STATUS: PASSED - Testing module command: module load Bison/3.0.4-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 10/122 STATUS: PASSED - Testing module command: module load Bison/3.0.4-GCCcore-7.1.0;
+________________________________________________________________________________
+RUN: 11/122 STATUS: PASSED - Testing module command: module load Bison/3.0.4-GCCcore-8.1.0;
+________________________________________________________________________________
+RUN: 12/122 STATUS: PASSED - Testing module command: module load Bison/3.0.5;
+________________________________________________________________________________
+RUN: 13/122 STATUS: PASSED - Testing module command: module load Bison/3.0.5-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 14/122 STATUS: PASSED - Testing module command: module load Bison/3.0.5-GCCcore-8.1.0;
+________________________________________________________________________________
+RUN: 15/122 STATUS: PASSED - Testing module command: module load Bison/3.2.2-GCCcore-7.4.0;
+________________________________________________________________________________
+RUN: 16/122 STATUS: PASSED - Testing module command: module try-load GCCcore/9.2.0;  module load Bison/3.3.2;
+________________________________________________________________________________
+RUN: 17/122 STATUS: PASSED - Testing module command: module load Bison/3.3.2-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 18/122 STATUS: PASSED - Testing module command: module load CMake/3.10.2-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 19/122 STATUS: PASSED - Testing module command: module load CUDA/10.0.130;
+________________________________________________________________________________
+RUN: 20/122 STATUS: PASSED - Testing module command: module load CUDA/9.2.148.1;
+________________________________________________________________________________
+RUN: 21/122 STATUS: PASSED - Testing module command: module load Clang/7.0.0-GCC-6.4.0-2.28;
+________________________________________________________________________________
+RUN: 22/122 STATUS: PASSED - Testing module command: module load FFTW/3.3.7-gompi-2018a;
+________________________________________________________________________________
+RUN: 23/122 STATUS: PASSED - Testing module command: module load GCC/6.4.0-2.28;
+________________________________________________________________________________
+RUN: 24/122 STATUS: PASSED - Testing module command: module load GCC/7.1.0-2.28;
+________________________________________________________________________________
+RUN: 25/122 STATUS: PASSED - Testing module command: module load GCC/7.4.0-2.31.1;
+________________________________________________________________________________
+RUN: 26/122 STATUS: FAILED - Testing module command: module load GCC/8.1.0-2.30;
+________________________________________________________________________________
+RUN: 27/122 STATUS: PASSED - Testing module command: module load GCC/8.3.0;
+________________________________________________________________________________
+RUN: 28/122 STATUS: FAILED - Testing module command: module load GCC/9.2.0-2.32;
+________________________________________________________________________________
+RUN: 29/122 STATUS: PASSED - Testing module command: module load GCCcore/6.4.0;
+________________________________________________________________________________
+RUN: 30/122 STATUS: PASSED - Testing module command: module load GCCcore/7.1.0;
+________________________________________________________________________________
+RUN: 31/122 STATUS: PASSED - Testing module command: module load GCCcore/7.4.0;
+________________________________________________________________________________
+RUN: 32/122 STATUS: PASSED - Testing module command: module load GCCcore/8.1.0;
+________________________________________________________________________________
+RUN: 33/122 STATUS: PASSED - Testing module command: module load GCCcore/8.3.0;
+________________________________________________________________________________
+RUN: 34/122 STATUS: PASSED - Testing module command: module load GCCcore/9.2.0;
+________________________________________________________________________________
+RUN: 35/122 STATUS: PASSED - Testing module command: module load GMP/6.1.2-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 36/122 STATUS: PASSED - Testing module command: module load GMP/6.1.2-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 37/122 STATUS: PASSED - Testing module command: module load M4/1.4.17;
+________________________________________________________________________________
+RUN: 38/122 STATUS: PASSED - Testing module command: module try-load GCCcore/9.2.0;  module load M4/1.4.18;
+________________________________________________________________________________
+RUN: 39/122 STATUS: PASSED - Testing module command: module load M4/1.4.18-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 40/122 STATUS: PASSED - Testing module command: module load M4/1.4.18-GCCcore-7.1.0;
+________________________________________________________________________________
+RUN: 41/122 STATUS: PASSED - Testing module command: module load M4/1.4.18-GCCcore-7.4.0;
+________________________________________________________________________________
+RUN: 42/122 STATUS: PASSED - Testing module command: module load M4/1.4.18-GCCcore-8.1.0;
+________________________________________________________________________________
+RUN: 43/122 STATUS: PASSED - Testing module command: module load M4/1.4.18-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 44/122 STATUS: PASSED - Testing module command: module load OpenBLAS/0.2.20-GCC-6.4.0-2.28;
+________________________________________________________________________________
+RUN: 45/122 STATUS: PASSED - Testing module command: module load OpenMPI/2.1.2-GCC-6.4.0-2.28;
+________________________________________________________________________________
+RUN: 46/122 STATUS: PASSED - Testing module command: module load PyCharm/2017.2.3;
+________________________________________________________________________________
+RUN: 47/122 STATUS: PASSED - Testing module command: module load Python/2.7.14-GCCcore-6.4.0-bare;
+________________________________________________________________________________
+RUN: 48/122 STATUS: PASSED - Testing module command: module load Python/3.7.4-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 49/122 STATUS: PASSED - Testing module command: module load SQLite/3.20.1-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 50/122 STATUS: PASSED - Testing module command: module load SQLite/3.29.0-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 51/122 STATUS: PASSED - Testing module command: module load ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20;
+________________________________________________________________________________
+RUN: 52/122 STATUS: PASSED - Testing module command: module load Tcl/8.6.7-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 53/122 STATUS: PASSED - Testing module command: module load Tcl/8.6.9-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 54/122 STATUS: PASSED - Testing module command: module load XZ/5.2.3-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 55/122 STATUS: PASSED - Testing module command: module load XZ/5.2.4-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 56/122 STATUS: PASSED - Testing module command: module load binutils/2.28;
+________________________________________________________________________________
+RUN: 57/122 STATUS: PASSED - Testing module command: module load binutils/2.28-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 58/122 STATUS: PASSED - Testing module command: module load binutils/2.28-GCCcore-7.1.0;
+________________________________________________________________________________
+RUN: 59/122 STATUS: PASSED - Testing module command: module load binutils/2.30;
+________________________________________________________________________________
+RUN: 60/122 STATUS: PASSED - Testing module command: module load binutils/2.30-GCCcore-8.1.0;
+________________________________________________________________________________
+RUN: 61/122 STATUS: PASSED - Testing module command: module load binutils/2.31.1;
+________________________________________________________________________________
+RUN: 62/122 STATUS: PASSED - Testing module command: module load binutils/2.31.1-GCCcore-7.4.0;
+________________________________________________________________________________
+RUN: 63/122 STATUS: PASSED - Testing module command: module load binutils/2.32;
+________________________________________________________________________________
+RUN: 64/122 STATUS: PASSED - Testing module command: module load binutils/2.32-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 65/122 STATUS: PASSED - Testing module command: module load bzip2/1.0.6-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 66/122 STATUS: PASSED - Testing module command: module load bzip2/1.0.8-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 67/122 STATUS: PASSED - Testing module command: module load bzip2/1.0.8-etzfbao;
+________________________________________________________________________________
+RUN: 68/122 STATUS: PASSED - Testing module command: module load diffutils/3.7-jthvt3v;
+________________________________________________________________________________
+RUN: 69/122 STATUS: PASSED - Testing module command: module load flex/2.6.3;
+________________________________________________________________________________
+RUN: 70/122 STATUS: PASSED - Testing module command: module load flex/2.6.3-GCCcore-7.1.0;
+________________________________________________________________________________
+RUN: 71/122 STATUS: PASSED - Testing module command: module try-load GCCcore/8.1.0;  module load flex/2.6.4;
+________________________________________________________________________________
+RUN: 72/122 STATUS: PASSED - Testing module command: module load flex/2.6.4-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 73/122 STATUS: PASSED - Testing module command: module load flex/2.6.4-GCCcore-7.4.0;
+________________________________________________________________________________
+RUN: 74/122 STATUS: PASSED - Testing module command: module load flex/2.6.4-GCCcore-8.1.0;
+________________________________________________________________________________
+RUN: 75/122 STATUS: PASSED - Testing module command: module load flex/2.6.4-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 76/122 STATUS: PASSED - Testing module command: module load foss/2018a;
+________________________________________________________________________________
+RUN: 77/122 STATUS: PASSED - Testing module command: module load gdbm/1.18.1-r4vohzu;
+________________________________________________________________________________
+RUN: 78/122 STATUS: PASSED - Testing module command: module load gettext/0.19.8.1;
+________________________________________________________________________________
+RUN: 79/122 STATUS: PASSED - Testing module command: module load gettext/0.20.1-c4ovdd2;
+________________________________________________________________________________
+RUN: 80/122 STATUS: PASSED - Testing module command: module load gompi/2018a;
+________________________________________________________________________________
+RUN: 81/122 STATUS: PASSED - Testing module command: module try-load GCCcore/9.2.0;  module load help2man/1.47.10;
+________________________________________________________________________________
+RUN: 82/122 STATUS: PASSED - Testing module command: module load help2man/1.47.4;
+________________________________________________________________________________
+RUN: 83/122 STATUS: PASSED - Testing module command: module load help2man/1.47.4-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 84/122 STATUS: PASSED - Testing module command: module load help2man/1.47.4-GCCcore-7.1.0;
+________________________________________________________________________________
+RUN: 85/122 STATUS: PASSED - Testing module command: module try-load GCCcore/8.1.0;  module load help2man/1.47.6;
+________________________________________________________________________________
+RUN: 86/122 STATUS: PASSED - Testing module command: module load help2man/1.47.6-GCCcore-8.1.0;
+________________________________________________________________________________
+RUN: 87/122 STATUS: PASSED - Testing module command: module load help2man/1.47.8-GCCcore-7.4.0;
+________________________________________________________________________________
+RUN: 88/122 STATUS: PASSED - Testing module command: module load help2man/1.47.8-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 89/122 STATUS: PASSED - Testing module command: module load hwloc/1.11.8-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 90/122 STATUS: PASSED - Testing module command: module load libffi/3.2.1-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 91/122 STATUS: PASSED - Testing module command: module load libiconv/1.16-xcmzb6a;
+________________________________________________________________________________
+RUN: 92/122 STATUS: PASSED - Testing module command: module load libpciaccess/0.13.5-cavw42z;
+________________________________________________________________________________
+RUN: 93/122 STATUS: PASSED - Testing module command: module load libpciaccess/0.14-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 94/122 STATUS: PASSED - Testing module command: module load libreadline/7.0-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 95/122 STATUS: PASSED - Testing module command: module load libreadline/8.0-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 96/122 STATUS: PASSED - Testing module command: module load libsigsegv/2.12-oywfhvk;
+________________________________________________________________________________
+RUN: 97/122 STATUS: PASSED - Testing module command: module load libtool/2.4.6-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 98/122 STATUS: PASSED - Testing module command: module load libtool/2.4.6-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 99/122 STATUS: PASSED - Testing module command: module load libtool/2.4.6-swiq7rt;
+________________________________________________________________________________
+RUN: 100/122 STATUS: PASSED - Testing module command: module load libxml2/2.9.7-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 101/122 STATUS: PASSED - Testing module command: module load libxml2/2.9.9-azmlgc5;
+________________________________________________________________________________
+RUN: 102/122 STATUS: PASSED - Testing module command: module load lmod;
+________________________________________________________________________________
+RUN: 103/122 STATUS: PASSED - Testing module command: module load m4/1.4.18-dipchcn;
+________________________________________________________________________________
+RUN: 104/122 STATUS: PASSED - Testing module command: module load ncurses/6.0;
+________________________________________________________________________________
+RUN: 105/122 STATUS: PASSED - Testing module command: module load ncurses/6.0-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 106/122 STATUS: PASSED - Testing module command: module load ncurses/6.1-3jjw2re;
+________________________________________________________________________________
+RUN: 107/122 STATUS: PASSED - Testing module command: module load ncurses/6.1-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 108/122 STATUS: PASSED - Testing module command: module load numactl/2.0.11-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 109/122 STATUS: PASSED - Testing module command: module load pkgconf/1.6.3-oqak6dh;
+________________________________________________________________________________
+RUN: 110/122 STATUS: PASSED - Testing module command: module load readline/8.0-bp7xnfp;
+________________________________________________________________________________
+RUN: 111/122 STATUS: PASSED - Testing module command: module load settarg;
+________________________________________________________________________________
+RUN: 112/122 STATUS: PASSED - Testing module command: module load tar/1.32-gem5z6s;
+________________________________________________________________________________
+RUN: 113/122 STATUS: PASSED - Testing module command: module load util-macros/1.19.1-s4xjvop;
+________________________________________________________________________________
+RUN: 114/122 STATUS: PASSED - Testing module command: module load xorg-macros/1.19.1-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 115/122 STATUS: PASSED - Testing module command: module load xz/5.2.4-lvajsnj;
+________________________________________________________________________________
+RUN: 116/122 STATUS: PASSED - Testing module command: module load zlib/1.2.11;
+________________________________________________________________________________
+RUN: 117/122 STATUS: PASSED - Testing module command: module load zlib/1.2.11-GCCcore-6.4.0;
+________________________________________________________________________________
+RUN: 118/122 STATUS: PASSED - Testing module command: module load zlib/1.2.11-GCCcore-7.1.0;
+________________________________________________________________________________
+RUN: 119/122 STATUS: PASSED - Testing module command: module load zlib/1.2.11-GCCcore-7.4.0;
+________________________________________________________________________________
+RUN: 120/122 STATUS: PASSED - Testing module command: module load zlib/1.2.11-GCCcore-8.1.0;
+________________________________________________________________________________
+RUN: 121/122 STATUS: PASSED - Testing module command: module load zlib/1.2.11-GCCcore-8.3.0;
+________________________________________________________________________________
+RUN: 122/122 STATUS: PASSED - Testing module command: module load zlib/1.2.11-zolwez4;
+________________________________________________________________________________
+Writing Results to /tmp/ssi29/buildtest/tests/modules-load.out
+Writing Results to /tmp/ssi29/buildtest/tests/modules-load.err
+________________________________________________________________________________
+                     Module Load Summary
+Module Trees:                            ['/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core', '/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core', '/mxg-hpc/users/ssi29/easybuild/modules/all', '/etc/modulefiles', '/usr/share/modulefiles', '/usr/share/lmod/lmod/modulefiles/Core']
+PASSED:                                  119
+FAILED:                                  3
+________________________________________________________________________________

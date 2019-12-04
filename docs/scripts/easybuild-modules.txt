@@ -1,5 +1,0 @@
-buildtest module --easybuild
-
-
-Total Easybuild Modules: 0
-Total Modules Searched: 2

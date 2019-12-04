@@ -13,7 +13,7 @@ To see a status report of all builds you can run::
 
 This will show the build report of all builds executed in a tabular output.
 
-.. program-output:: cat scripts/buildtest_build_report.txt
+.. program-output:: cat docgen/build-report.txt
 
 Each row corresponds to a unique build identified by build **ID** that can be used to dig up the log file
 and report tests. To get the log file for a build you can run the following::
@@ -52,7 +52,7 @@ You may omit the ``id=<ID>`` and specify the number as argument to ``test`` as f
 
 Shown below is the generated test from build ``ID=0``.
 
-.. program-output:: cat scripts/buildtest_build_test.txt
+.. program-output:: cat docgen/build-test-example.txt
 
 Running a Test
 --------------
@@ -61,19 +61,7 @@ To run a test, you may invoke ``buildtest build run <ID>`` which will run all te
 you are not sure what tests will be run, you can use a combination of ``buildtest build report`` and ``buildtest build test <ID>``
 to retrieve the build command and tests associated to the build ID.
 
-Shown below is an example run for on build ``ID=1``::
+Shown below is an example run for on build ``ID=1``
 
-    $ buildtest build run 1
-    Running All Tests from Test Directory: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1
-    ==============================================================
-                             Test summary
-    Executed 1 tests
-    Passed Tests: 1 Percentage: 100.0%
-    Failed Tests: 0 Percentage: 0.0%
-    SUCCESS: Threshold of 100.0% was achieved
-    Writing results to /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1/run/buildtest_12_25_14_10_2019.run
-
-
-
-
+.. program-output:: cat docgen/build-run-example.txt
 

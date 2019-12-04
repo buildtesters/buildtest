@@ -1,4 +1,0 @@
-buildtest module collection -l 
-0: ['eb/2019', 'GCCcore/7.3.0', 'binutils/2.30-GCCcore-7.3.0', 'GCC/7.3.0-2.30', 'zlib/1.2.11-GCCcore-7.3.0', 'numactl/2.0.11-GCCcore-7.3.0', 'XZ/5.2.4-GCCcore-7.3.0', 'libxml2/2.9.8-GCCcore-7.3.0', 'libpciaccess/0.14-GCCcore-7.3.0', 'hwloc/1.11.10-GCCcore-7.3.0', 'OpenMPI/3.1.1-GCC-7.3.0-2.30']
-1: ['shared', 'mpich/ge/gcc/64/3.2.1']
-2: ['DefaultModules', 'shared', 'slurm/17.11.8', 'cmd']

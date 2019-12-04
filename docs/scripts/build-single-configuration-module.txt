@@ -1,1 +1,0 @@
-ml eb/2019; ml GCC; buildtest build -c compilers.helloworld.hello_gnu.yml -vv

@@ -1,3 +1,0 @@
-buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core
-Adding module tree: ['/usr/share/lmod/lmod/modulefiles/Core']
-Configuration File: /home/siddis14/.buildtest/settings.yml has been updated

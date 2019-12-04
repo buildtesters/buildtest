@@ -1,0 +1,17 @@
+$ buildtest build report
+ID  | Build Time           | Number of Tests | Command                                                      
+------------------------------------------------------------------------------------------------------------------------
+  0 | 12/04/2019 12:53:29  | 1               | buildtest build -c tutorial.compilers.args.c.yml             
+  1 | 12/04/2019 12:53:33  | 1               | buildtest build -c tutorial.compilers.args.c.yml -v          
+  2 | 12/04/2019 12:53:40  | 1               | buildtest build -c tutorial.compilers.hello_lsf.yml -vv      
+  3 | 12/04/2019 12:53:44  | 1               | buildtest build -c tutorial.compilers.hello_slurm.yml -vv    
+  4 | 12/04/2019 12:53:50  | 1               | buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv 
+  5 | 12/04/2019 12:53:57  | 102             | buildtest build --package coreutils                          
+  6 | 12/04/2019 12:54:02  | 92              | buildtest build --binary                                     
+  7 | 12/04/2019 13:56:25  | 1               | buildtest build -c tutorial.compilers.args.c.yml             
+  8 | 12/04/2019 13:56:28  | 1               | buildtest build -c tutorial.compilers.args.c.yml -v          
+  9 | 12/04/2019 13:56:35  | 1               | buildtest build -c tutorial.compilers.hello_lsf.yml -vv      
+ 10 | 12/04/2019 13:56:39  | 1               | buildtest build -c tutorial.compilers.hello_slurm.yml -vv    
+ 11 | 12/04/2019 13:56:44  | 1               | buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv 
+ 12 | 12/04/2019 13:56:50  | 102             | buildtest build --package coreutils                          
+ 13 | 12/04/2019 13:56:56  | 92              | buildtest build --binary                                     

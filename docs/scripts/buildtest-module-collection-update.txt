@@ -1,34 +1,10 @@
-buildtest module collection -u 2 
-Updating Collection Index: 2
-Old Modules:  ['DefaultModules', 'shared', 'slurm/17.11.8', 'cmd']
-New Modules:  ['DefaultModules', 'shared', 'slurm/17.11.8', 'gcc/7.2.0']
-Updating collection file: /gpfs/home/siddis14/buildtest-framework/var/collection.json
+$ buildtest module collection -l
+0: ['GCCcore/8.3.0', 'bzip2/1.0.8-GCCcore-8.3.0', 'zlib/1.2.11-GCCcore-8.3.0', 'ncurses/6.1-GCCcore-8.3.0', 'libreadline/8.0-GCCcore-8.3.0', 'Tcl/8.6.9-GCCcore-8.3.0', 'SQLite/3.29.0-GCCcore-8.3.0', 'XZ/5.2.4-GCCcore-8.3.0', 'GMP/6.1.2-GCCcore-8.3.0', 'libffi/3.2.1-GCCcore-8.3.0', 'Python/3.7.4-GCCcore-8.3.0']
+$ buildtest module collection --update 0
+Updating Collection Index: 0
+Old Modules:  ['GCCcore/8.3.0', 'bzip2/1.0.8-GCCcore-8.3.0', 'zlib/1.2.11-GCCcore-8.3.0', 'ncurses/6.1-GCCcore-8.3.0', 'libreadline/8.0-GCCcore-8.3.0', 'Tcl/8.6.9-GCCcore-8.3.0', 'SQLite/3.29.0-GCCcore-8.3.0', 'XZ/5.2.4-GCCcore-8.3.0', 'GMP/6.1.2-GCCcore-8.3.0', 'libffi/3.2.1-GCCcore-8.3.0', 'Python/3.7.4-GCCcore-8.3.0']
+New Modules:  ['GCCcore/8.3.0', 'Python/3.7.4-GCCcore-8.3.0']
 
 
-{
-    "collection": [
-        [
-            "eb/2019",
-            "GCCcore/7.3.0",
-            "binutils/2.30-GCCcore-7.3.0",
-            "GCC/7.3.0-2.30",
-            "zlib/1.2.11-GCCcore-7.3.0",
-            "numactl/2.0.11-GCCcore-7.3.0",
-            "XZ/5.2.4-GCCcore-7.3.0",
-            "libxml2/2.9.8-GCCcore-7.3.0",
-            "libpciaccess/0.14-GCCcore-7.3.0",
-            "hwloc/1.11.10-GCCcore-7.3.0",
-            "OpenMPI/3.1.1-GCC-7.3.0-2.30"
-        ],
-        [
-            "shared",
-            "mpich/ge/gcc/64/3.2.1"
-        ],
-        [
-            "DefaultModules",
-            "shared",
-            "slurm/17.11.8",
-            "gcc/7.2.0"
-        ]
-    ]
-}
+Updating collection file: /u/users/ssi29/gpfs/buildtest-framework/var/collection.json
+

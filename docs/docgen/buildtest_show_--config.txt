@@ -9,3 +9,4 @@ BUILDTEST_PARENT_MODULE_SEARCH                     (C) = first
 BUILDTEST_SPIDER_VIEW                              (C) = current
 BUILDTEST_SUCCESS_THRESHOLD                        (C) = 1.0
 BUILDTEST_TESTDIR                                  (C) = /tmp/ssi29/buildtest/tests
+EDITOR                                             (E) = vim

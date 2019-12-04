@@ -1,6 +1,0 @@
-buildtest build report 
-ID  | Build Time           | Number of Tests | Command                                                      
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-  0 | 10/14/2019 12:11:33  | 8               | buildtest build -p gcc                                       
-  1 | 10/14/2019 12:21:57  | 1               | buildtest build -c compilers.helloworld.hello_gnu.yml        
-  2 | 10/14/2019 12:32:56  | 92              | buildtest build -b                                           

@@ -133,23 +133,10 @@ will update their collection index depending what index number was removed.
 Updating a module collection (``buildtest module collection -u <ID>``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you want to update an existing module collection, just load the modules of interest in
-your user environment and buildtest will override them. To update a module collection you will
-need the index number of module collection and use the ``-u <INDEX>`` to update the module collection.
+To update a module collection you will need the index number of module
+collection and use the ``--update <INDEX>`` to update the module collection.
 
-Shown below is a listing of module collection and we would like to update index 2 by replacing module ``cmd``
-with ``gcc`` module. Shown below is our list of module collections.
-
-.. program-output:: cat scripts/buildtest-module-collection-list-before-update.txt
-
-To perform the update we have the following active modules::
-
-    $ module list
-
-    Currently Loaded Modules:
-      1) DefaultModules   2) shared   3) slurm/17.11.8   4) gcc/7.2.0
-
-Now we are ready to update the module collection as shown below
+Shown below is an example where we update collection index **0**
 
 .. program-output:: cat scripts/buildtest-module-collection-update.txt
 

@@ -148,3 +148,23 @@ If you want to force purge the modules (i.e ``module --force purge``), then
 set **BUILDTEST_MODULE_FORCE_PURGE=True**. By default, this
 is set to **False**. This option is useful if you have sticky modules that
 need to be removed prior to running test.
+
+Configuring Editor
+-------------------
+
+The EDITOR key will control which editor to use when editing files, this is used
+in buildtest for instance when you want to edit files such as test configuration or
+buildtest configuration::
+
+    buildtest edit config
+    buildtest testconfigs edit <test-configuration>
+
+This will open the configuration in editor. The default value for **EDITOR** is
+``vim`` but it can be changed to your editor of choice.
+
+Currently, the following editors are available
+
+- vim
+- emacs
+- nano
+

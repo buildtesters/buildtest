@@ -1,9 +1,0 @@
-buildtest build test 0 
-/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/_usr_bin_c89.sh
-/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/_usr_bin_c99.sh
-/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/_usr_bin_gcc.sh
-/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/_usr_bin_gcc-ar.sh
-/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/_usr_bin_gcc-nm.sh
-/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/_usr_bin_gcc-ranlib.sh
-/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/_usr_bin_gcov.sh
-/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/_usr_bin_x86_64-redhat-linux-gcc.sh

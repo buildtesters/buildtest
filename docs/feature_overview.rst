@@ -30,7 +30,7 @@ HPC sites may have hundreds if not thousand module files, it would be great to
 test all of them. buildtest can conduct ``module load`` testing on module files
 and report ``SUCCESS`` or ``FAIL`` upon module load by checking exit status.
 
-.. program-output:: cat scripts/module-load.txt
+.. program-output:: cat docgen/moduleload-test.txt
 
 
 Building Test
@@ -64,7 +64,7 @@ Build Report
 Every build from buildtest is tracked internally, this can be retrieved using ``buildtest status report`` which shows
 a history of all builds.
 
-.. program-output:: cat scripts/buildtest_build_report.txt
+.. program-output:: cat docgen/build-report.txt
 
 Each build ID can be used to retrieve log and  test-scripts and run the test independently. This can be done
 via::
@@ -75,7 +75,7 @@ via::
 
 For example you can retrieve tests scripts generated from a build via ``buildtest build test``
 
-.. program-output:: cat scripts/buildtest_build_test.txt
+.. program-output:: cat docgen/build-test-example.txt
 
 TAB Completion
 -----------------------

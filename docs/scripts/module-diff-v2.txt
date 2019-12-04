@@ -1,2 +1,0 @@
-buildtest module --diff-trees /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all,/clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all
-No difference found between module tree:  /clust/app/easybuild/2018/Broadwell/redhat/7.3/modules/all  and module tree:  /clust/app/easybuild/2018/IvyBridge/redhat/7.3/modules/all

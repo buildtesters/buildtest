@@ -1,8 +1,0 @@
-buildtest show --help
-usage: buildtest [options] [COMMANDS] show [-h] [-c] [-k {singlesource}]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -c, --config          show buildtest environment configuration
-  -k {singlesource}, --keys {singlesource}
-                        show yaml keys
