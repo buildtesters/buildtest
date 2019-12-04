@@ -24,6 +24,7 @@ BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(
 )
 BUILDTEST_MODULE_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "modules.json")
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "settings.yml")
+EDITOR_LIST = ["vim","emacs","nano"]
 BENCHMARK_DIR = os.path.join(os.getenv("BUILDTEST_ROOT"), "toolkit", "benchmark")
 # check if $HOME/.buildtest exists, if not create directory
 if not os.path.isdir(buildtest_home_conf_dir):
@@ -80,6 +81,7 @@ config_yaml_keys = {
     "BUILDTEST_SPIDER_VIEW": type("str"),
     "BUILDTEST_PARENT_MODULE_SEARCH": type("str"),
     "BUILDTEST_TESTDIR": type("str"),
+    "EDITOR": type("str")
 }
 
 
@@ -152,6 +154,11 @@ def check_configuration():
                 )
                 ec = 1
 
+        if key == "EDITOR":
+            if config_opts["EDITOR"] not in EDITOR_LIST:
+                print (f"Invalid EDITOR key: {config_opts['EDITOR']}")
+                print(f"Please pick a valid editor option from the following: {EDITOR_LIST}")
+                ec = 1
         if key in config_directory_types:
 
             # expand variables for directory configuration
@@ -200,7 +207,7 @@ def show_configuration():
 def func_config_edit(args):
     """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
 
-    os.system(f"vim {BUILDTEST_CONFIG_FILE}")
+    os.system(f"{config_opts['EDITOR']} {BUILDTEST_CONFIG_FILE}")
 
 
 def func_config_view(args=None):

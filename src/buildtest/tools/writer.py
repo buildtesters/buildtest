@@ -1,13 +1,12 @@
 import logging
 import json
 import os
-import subprocess
 import sys
 import stat
 
 from buildtest.tools.config import logID, BUILDTEST_BUILD_HISTORY
 from buildtest.tools.buildsystem.status import get_total_build_ids
-
+from buildtest.tools.system import BuildTestCommand
 
 def write_test(dict, verbose):
     """Method responsible for writing test script."""
@@ -42,7 +41,10 @@ def write_test(dict, verbose):
         print(f"Changing permission to 755 for test: {dict['testpath']}")
 
     if verbose >= 2:
-        test_output = subprocess.getoutput(f"cat {dict['testpath']}").splitlines()
+        query = BuildTestCommand()
+        cmd = f"cat {dict['testpath']}"
+        query.execute(cmd)
+        test_output = query.get_output().splitlines()
         print("{:_<80}".format(""))
         for line in test_output:
             print(line)

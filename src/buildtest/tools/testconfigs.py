@@ -84,7 +84,7 @@ def func_testconfigs_edit(args):
     :type args: dict, required
     """
     test_config_table = test_config_name_mapping()
-    query = f"vim {test_config_table[args.name]}"
+    query = f"{config_opts['EDITOR']} {test_config_table[args.name]}"
     os.system(query)
 
 

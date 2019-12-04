@@ -28,3 +28,6 @@ BUILDTEST_SUCCESS_THRESHOLD: 1.0
 # # directory where test scripts will be generated
 BUILDTEST_TESTDIR: /tmp/$USER/buildtest/tests
 
+# editor of choice when viewing files
+# valid options: vim, emacs, nano
+EDITOR: vim

@@ -12,7 +12,6 @@ This python module does the following
 """
 import json
 import os
-import sys
 import subprocess
 
 from buildtest.tools.config import (
@@ -463,6 +462,3 @@ def module_selector(user_collection, buildtest_module_collection):
         modules_load_list = [f"module load {x}" for x in out.split()]
         modules += modules_load_list
         return modules
-
-
-module_obj = BuildTestModule()
