@@ -14,7 +14,6 @@ import json
 import os
 import sys
 import subprocess
-import yaml
 
 from buildtest.tools.config import (
     config_opts,
@@ -65,8 +64,8 @@ class BuildTestModule:
         cmd = f"$LMOD_DIR/spider -o spider-json {self.moduletree}"
         out = subprocess.check_output(cmd, shell=True).decode("utf-8")
         self.module_dict = json.loads(out)
-        version = self.get_version()
-        self.major_ver = version[0]
+        self.major_ver = self.get_version()[0]
+
 
     def get_module_spider_json(self):
         """Returns self.module_dict which is the json output of spider.
@@ -203,9 +202,11 @@ def get_all_parents():
     :return: list of unique parent combination.
     :rtype: List
     """
-    fd = open(BUILDTEST_MODULE_FILE, "r")
 
+    fd = open(BUILDTEST_MODULE_FILE, "r")
     module_json = json.load(fd)
+    fd.close()
+
     parent_set = set()
     for module in module_json.keys():
         for mpath in module_json[module].keys():
@@ -317,8 +318,8 @@ def module_load_test(args):
 
     module_stack = module_obj.get_unique_fname_modules()
 
-    out_file = "/tmp/modules-load.out"
-    err_file = "/tmp/modules-load.err"
+    out_file = f"{config_opts['BUILDTEST_TESTDIR']}/modules-load.out"
+    err_file = f"{config_opts['BUILDTEST_TESTDIR']}/modules-load.err"
 
     fd_out = open(out_file, "w")
     fd_err = open(err_file, "w")
@@ -327,38 +328,40 @@ def module_load_test(args):
     count = 0
     for mod_file in module_stack:
         count += 1
-        cmd = ""
+        cmd = []
         parent_modules = module_obj.get_parent_modules(mod_file)
         for item in parent_modules:
-            cmd += "module try-load {};  ".format(item)
-        cmd += "module load " + mod_file
-        print(cmd)
+            cmd.append(f"module try-load {item}; ")
+        cmd.append(f"module load {mod_file};")
+
+        module_load_cmd = " ".join(cmd)
 
         ret = subprocess.Popen(
-            cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            module_load_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
+
         out, err = ret.communicate()
 
         if ret.returncode == 0:
             msg = (
                 f"RUN: {count}/{len(module_stack)} STATUS: PASSED - "
-                f"Testing module: {mod_file}"
+                f"Testing module command: {module_load_cmd}"
             )
             print(msg)
             passed_modules.append(mod_file)
 
             fd_out.write(msg + "\n")
-            fd_out.write(cmd + "\n")
+            fd_out.write(module_load_cmd + "\n")
         else:
             msg = (
                 f"RUN: {count}/{len(module_stack)} STATUS: FAILED - "
-                f"Testing module: {mod_file}"
+                f"Testing module command: {module_load_cmd}"
             )
             print(msg)
             failed_modules.append(mod_file)
 
             fd_err.write(msg + "\n")
-            fd_err.write(cmd + "\n")
+            fd_err.write(module_load_cmd + "\n")
 
             for line in err.decode("utf-8").splitlines():
                 fd_err.write(line)
@@ -374,7 +377,7 @@ def module_load_test(args):
     print("{:<40} {}".format("PASSED: ", len(passed_modules)))
     print("{:<40} {}".format("FAILED: ", len(failed_modules)))
     print("{:_<80}".format(""))
-    sys.exit(0)
+
 
 
 def get_module_permutation_choices():
