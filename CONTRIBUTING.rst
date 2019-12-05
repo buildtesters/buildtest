@@ -4,7 +4,7 @@ so you can contribute back and make everyone's life easier.
 Preparation
 =============
 
-If you don't have a GitHub account please `register <http://github.com/join>`_ your account 
+If you don't have a GitHub account please `register <http://github.com/join>`_ your account
 
 Fork the repo
 --------------
@@ -97,9 +97,9 @@ Documentation
 buildtest documentation (https://buildtest.readthedocs.io/en/latest) is hosted by ReadTheDocs (https://readthedocs.org)
 which is a documentation platform for building and hosting your docs. buildtest project can be found at
 https://readthedocs.org/projects/buildtest/ which will show the recent builds and project setting. If you are interested
-in being a documentation maintainer, please contact **Shahzeb Siddiqui** (``shahzebmsiddiqui@gmail.com``) to enable access to
-this project. buildtest documentation is using sphinx (http://www.sphinx-doc.org/en/master/) to build the underlying
-documentation.
+in being a documentation maintainer, please contact **Shahzeb Siddiqui** (``shahzebmsiddiqui@gmail.com``) to enable
+access to this project. buildtest documentation is using sphinx (http://www.sphinx-doc.org/en/master/) to build the
+underlying documentation.
 
 buildtest documentation is hosted in ``docs`` found at the root of this repository. If you want to
 build the documentation you will need to make sure your python environment has all the packages defined by
@@ -140,9 +140,9 @@ In order to build the API library for buildtest use the following command::
 
   make apidocs
 
-This will run the target ``apidocs`` which is running a ``sphinx-apidocs`` command. The target location for api docs is in ``docs/api`` so
-you may want to remove all the apidocs before regenerate them to ensure you have the right contents uploaded for the push. This can be
-done by running the following::
+This will run the target ``apidocs`` which is running a ``sphinx-apidocs`` command. The target location for api docs
+is in ``docs/api`` so you may want to remove all the apidocs before regenerate them to ensure you have the right
+contents uploaded for the push. This can be done by running the following::
 
   git rm -rf api/*
 
@@ -159,13 +159,15 @@ Then add, commit and push content::
 Automate Documentation Examples
 --------------------------------
 
-buildtest has a script in ``$BUILDTEST_ROOT/src/buildtest/docgen/main.py`` to automate documentation examples. This script can be run as follows::
+buildtest has a script in ``$BUILDTEST_ROOT/src/buildtest/docgen/main.py`` to automate documentation examples. This
+script can be run as follows::
 
   cd $BUILDTEST_ROOT
   python $BUILDTEST_ROOT/src/buildtest/docgen/main.py
 
-This assumes your buildtest environment is setup, the script will write documentation test examples in ``docs/docgen``. Consider running this script when **adding**, **modifying**, or **removing** documentation examples. Once the test are complete, you will want to add the
-tests, commit and push as follows::
+This assumes your buildtest environment is setup, the script will write documentation test examples in ``docs/docgen``.
+Consider running this script when **adding**, **modifying**, or **removing** documentation examples. Once the test are
+complete, you will want to add the tests, commit and push as follows::
 
   git add docs/docgen
   git commit -m <MESSAGE>
@@ -174,8 +176,8 @@ tests, commit and push as follows::
 Buildtest Regression Test
 --------------------------
 
-buildtest has a suite of regression tests to verify the state of buildtest. These tests are located in ``$BUILDTEST_ROOT/tests`` and
-the tests can be executed using ``pytest``.
+buildtest has a suite of regression tests to verify the state of buildtest. These tests are located in
+``$BUILDTEST_ROOT/tests`` and the tests can be executed using ``pytest``.
 
 To run all the tests you can run the following::
 
@@ -197,13 +199,14 @@ GitHub Apps
 The following apps are configured with buildtest.
 
 - **CodeCov** - Codecov provides highly integrated tools to group, merge, archive and compare coverage reports
-  
+
   - Link: https://codecov.io/gh/HPC-buildtest/buildtest-framework
 - **GuardRails** - GuardRails provides continuous security feedback for modern development teams
- 
+
   - Link: https://dashboard.guardrails.io/default/gh/HPC-buildtest
 
-- **Travis CI** - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted continuous integration system.
+- **Travis CI** - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted
+continuous integration system.
 
   - Link: https://travis-ci.com/HPC-buildtest/buildtest-framework
 
@@ -211,13 +214,24 @@ The following apps are configured with buildtest.
 
   - Link: https://app.snyk.io/org/hpc-buildtest/
 
-When contributing back to buildtest, please consider checking the following GitHub apps, most important being **Travis-CI** as it will test your pull request before merging to ``devel`` branch.
+When contributing back to buildtest, please consider checking the following GitHub apps, most important being **Travis-CI**
+as it will test your pull request before merging to ``devel`` branch.
+
+- **Stale**  - buildtest is using this app to close outdated issues. This is configured in ``.github/stale.yml``. If
+there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers
+can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
+
+- **Issue-Label-Bot** - buildtest is using this app to mark issues using Machine Learning. This app can be found in
+marketplace at https://github.com/marketplace/issue-label-bot. The configuration ``.github/issue_label_bot.yaml``
+defines the settings for **issue-label bot** when marking new issues with the corresponding labels. For a list of
+predictions on all issues check the following link: https://mlbot.net/data/HPC-buildtest/buildtest-framework
 
 Release Process
 ---------------
 
-Every buildtest release will be tagged with a version number using format **X.Y.Z**. Every release will have a git tags such as ``v1.2.3`` to correspond to release **1.2.3**. Git tags should be pushed to upstream by **release manager** only. The process 
-for pushing git tags can be described in the following article:  `Git Basics - Tagging <https://git-scm.com/book/en/v2/Git-Basics-Tagging>`_
+Every buildtest release will be tagged with a version number using format **X.Y.Z**. Every release will have a git tags
+such as ``v1.2.3`` to correspond to release **1.2.3**. Git tags should be pushed to upstream by **release manager** only.
+The process for pushing git tags can be described in the following article:  `Git Basics - Tagging <https://git-scm.com/book/en/v2/Git-Basics-Tagging>`_
 
 We will create annotated tags as follows::
 
@@ -225,7 +239,7 @@ We will create annotated tags as follows::
 
 Once tag is created you can view the tag details by running either::
 
-  git tag 
+  git tag
   git show v1.2.3
 
 We have created the tag locally, next we must push the tag to the upstream repo by doing the following::
@@ -235,8 +249,17 @@ We have created the tag locally, next we must push the tag to the upstream repo 
 Every release must have a release note that is maintained in file `CHANGELOG.rst <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/CHANGELOG.rst>`_
 
 Under buildtest `releases <https://github.com/HPC-buildtest/buildtest-framework/releases>`_ a new release can be created that
-corresponds to the git tag. In the release summary, just direct with a message stating **refer to CHANGELOG.rst for more details** 
+corresponds to the git tag. In the release summary, just direct with a message stating **refer to CHANGELOG.rst for more details**
 
- 
+Formatting Code
+----------------
+
+buildtest is using `black  <https://github.com/psf/black>`_ to format Python code. We let **black** take care of
+formatting the entire project so you can focus more time in development. buildtest has a GitHub action trigger in
+``.github/workflows/black.yml`` that formats code upon **push** and **pull request**.
+
+You can see the status of all GitHub actions at https://github.com/HPC-buildtest/buildtest-framework/actions
+
+
 
 
