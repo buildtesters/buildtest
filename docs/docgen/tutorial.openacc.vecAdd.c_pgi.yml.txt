@@ -10,18 +10,18 @@ Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: pgcc
 CFLAGS: -acc
-Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_12/vecAdd.c_pgi.yml.0x52bad2f9.sh
+Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_5/vecAdd.c_pgi.yml.0x28e37ab1.sh
 --------------------------------------------------------------------------------
 
 module purge
 module restore pgi
-TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_12
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_5
 SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
 SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src/vecAdd.c
 CC=pgcc
 CFLAGS="-acc"
 LDFLAGS="-lm"
-EXECUTABLE=vecAdd.c_pgi.yml.0x1d9eaa35.exe
+EXECUTABLE=vecAdd.c_pgi.yml.0x77e2dec8.exe
 
 cd $TESTDIR
 $CC $CFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS

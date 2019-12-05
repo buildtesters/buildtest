@@ -32,6 +32,6 @@ Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: gcc
 CFLAGS: -Wall -g
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_8/args.c.yml.0x972dc450.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_8/args.c.yml.0x972dc450.sh
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_8/log/buildtest_13_56_04_12_2019.log
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1/args.c.yml.0x43a21495.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1/args.c.yml.0x43a21495.sh
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1/log/buildtest_16_48_05_12_2019.log

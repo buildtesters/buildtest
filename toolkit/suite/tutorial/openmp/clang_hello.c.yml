@@ -1,0 +1,10 @@
+testtype: singlesource
+description: "OpenMP Hello World example in C with clang compiler"
+scheduler: local
+program:
+  compiler: clang
+  source: omp_hello.c
+  cflags: -fopenmp
+  pre_exec: OMP_NUM_THREADS=2
+maintainer:
+- shahzeb siddiqui shahzebmsiddiqui@gmail.com

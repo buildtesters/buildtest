@@ -107,13 +107,9 @@ build the documentation you will need to make sure your python environment has a
 
 To install your python packages, you can run the following::
 
-
   pip install -r requirements.txt
 
-The file ``requirements.txt`` can be found at https://github.com/HPC-buildtest/buildtest-framework/blob/master/docs/requirements.txt
-
 To build your documentation simply run the following::
-
 
   cd docs
   make clean
@@ -205,8 +201,7 @@ The following apps are configured with buildtest.
 
   - Link: https://dashboard.guardrails.io/default/gh/HPC-buildtest
 
-- **Travis CI** - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted
-continuous integration system.
+- **Travis CI** - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted continuous integration system.
 
   - Link: https://travis-ci.com/HPC-buildtest/buildtest-framework
 
@@ -217,14 +212,9 @@ continuous integration system.
 When contributing back to buildtest, please consider checking the following GitHub apps, most important being **Travis-CI**
 as it will test your pull request before merging to ``devel`` branch.
 
-- **Stale**  - buildtest is using this app to close outdated issues. This is configured in ``.github/stale.yml``. If
-there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers
-can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
+- **Stale**  - buildtest is using this app to close outdated issues. This is configured in ``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
 
-- **Issue-Label-Bot** - buildtest is using this app to mark issues using Machine Learning. This app can be found in
-marketplace at https://github.com/marketplace/issue-label-bot. The configuration ``.github/issue_label_bot.yaml``
-defines the settings for **issue-label bot** when marking new issues with the corresponding labels. For a list of
-predictions on all issues check the following link: https://mlbot.net/data/HPC-buildtest/buildtest-framework
+- **Issue-Label-Bot** - buildtest is using this app to mark issues using Machine Learning. This app can be found in marketplace at https://github.com/marketplace/issue-label-bot. The configuration ``.github/issue_label_bot.yaml`` defines the settings for **issue-label bot** when marking new issues with the corresponding labels. For a list of predictions on all issues check the following link: https://mlbot.net/data/HPC-buildtest/buildtest-framework
 
 Release Process
 ---------------

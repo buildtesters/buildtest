@@ -136,6 +136,7 @@ def build_cmds():
         "tutorial.compilers.hello.f.yml.txt": "buildtest build -c tutorial.compilers.hello.f.yml -co intel --dry",
         "tutorial.openacc.vecAdd.c.yml.txt": "buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv",
         "tutorial.openacc.vecAdd.c_pgi.yml.txt": "buildtest build -c tutorial.openacc.vecAdd.c_pgi.yml -co pgi --dry",
+        "tutorial.openmp.clang_hello.c.yml.txt": "buildtest build -c tutorial.openmp.clang_hello.c.yml -co Clang --dry",
         "coreutils.txt": "buildtest  build --package coreutils",
         "module-binary.txt": "buildtest build --binary",
         "build-report.txt": "buildtest build report",

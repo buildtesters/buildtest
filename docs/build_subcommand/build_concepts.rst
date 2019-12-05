@@ -33,6 +33,8 @@ by programming language
     "gnu", "gcc", "g++", "gfortran"
     "intel", "icc", "icpc", "ifort"
     "pgi", "pgcc", "pgc++", "pgfortran"
+    "clang", "clang", "clang++", "N/A"
+    "cuda", "nvcc", "nvcc", "N/A"
 
 MPI Detection
 --------------------

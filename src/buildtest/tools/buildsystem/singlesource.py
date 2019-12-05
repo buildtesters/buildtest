@@ -83,13 +83,16 @@ class BuildTestBuilder:
         :rtype: str
         """
 
+        # checking C extensions
         if self.ext in [".c"]:
             self.language = "c"
 
-        if self.ext in [".cc", ".cxx", ".cpp", ".c++", ".C"]:
+        # checking C++ extensions
+        elif self.ext in [".cc", ".cxx", ".cpp", ".c++", ".C"]:
             self.language = "c++"
 
-        if self.ext in [
+        # checking Fortran extensions
+        elif self.ext in [
             ".f90",
             ".f95",
             ".f03",
@@ -104,8 +107,13 @@ class BuildTestBuilder:
         ]:
             self.language = "fortran"
 
-        if self.ext in [".cu"]:
+        # checking cuda extensions
+        elif self.ext in [".cu"]:
             self.language = "cuda"
+
+        # if all checks failed then raise error
+        else:
+            raise BuildTestError(f"Unable to detect Program Language based on extension: {self.ext}")
 
     def _detect_compiler(self):
         """Detect compiler based on language
@@ -117,35 +125,51 @@ class BuildTestBuilder:
         :return: return compiler wrapper
         :rtype: str
         """
+        """
+        compiler_lookup = {
+            "gnu": ["gcc","gfortran","g++"],
+            "intel": ["icc","ifort","icpc"],
+            "pgi": ["pgcc", "pgfortran", "pgc++"],
+            "clang": ["clang","clang++"],
+            "cuda": ["nvcc"]
+        }
+        """
+
         if self.compiler == "gnu":
             if self.language == "c":
                 self.cc = "gcc"
 
-            if self.language == "c++":
+            elif self.language == "c++":
                 self.cxx = "g++"
 
-            if self.language == "fortran":
+            elif self.language == "fortran":
                 self.ftn = "gfortran"
 
         elif self.compiler == "intel":
             if self.language == "c":
                 self.cc = "icc"
 
-            if self.language == "c++":
+            elif self.language == "c++":
                 self.cxx = "icpc"
 
-            if self.language == "fortran":
+            elif self.language == "fortran":
                 self.ftn = "ifort"
 
         elif self.compiler == "pgi":
             if self.language == "c":
                 self.cc = "pgcc"
 
-            if self.language == "c++":
+            elif self.language == "c++":
                 self.cxx = "pgc++"
 
-            if self.language == "fortran":
+            elif self.language == "fortran":
                 self.ftn = "pgfortran"
+
+        elif self.compiler == "clang":
+            if self.language == "c":
+                self.cc = "clang"
+            elif self.language == "c++":
+                self.cxx = "clang++"
 
         elif self.compiler == "cuda":
             self.nvcc = "nvcc"
@@ -320,7 +344,7 @@ class SingleSource(BuildTestBuilder):
                 "compiler": {
                     "type": str,
                     "required": True,
-                    "values": ["gnu", "intel", "pgi", "cuda"],
+                    "values": ["gnu", "intel", "pgi", "cuda", "clang"],
                     "description": "Specify Compiler Name to detect compiler wrapper.",
                 },
                 "env": {

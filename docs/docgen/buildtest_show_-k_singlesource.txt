@@ -57,6 +57,7 @@ program:
     - intel
     - pgi
     - cuda
+    - clang
   cxxflags:
     description: Specify compiler flags to C++ compiler (i.e $CXX)
     required: false

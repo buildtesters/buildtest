@@ -2,6 +2,7 @@ $ buildtest testconfigs list
 Test Configuration Name                                      | Description                   
 ----------------------------------------------------------------------------------------------------
 tutorial.cuda.saxpy.c.yml                                    | SAXPY example in CUDA         
+tutorial.openmp.clang_hello.c.yml                            | OpenMP Hello World example in C with clang compiler
 tutorial.openmp.omp_hello.c.yml                              | OpenMP Hello World example in C
 tutorial.mpi.hello.c.yml                                     | MPI Hello World program.      
 tutorial.compilers.hello_slurm.yml                           | Hello World C++ example using GNU compiler for SLURM
