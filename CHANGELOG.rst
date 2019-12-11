@@ -2,6 +2,23 @@
 CHANGELOG
 =================
 
+v0.7.4 (Dec 11th, 2019)
+-------------------------
+
+- update documentation section **Background**, **Motivation**, **Inception**, and **Description**
+- make use of ``$SRCDIR`` when setting variable ``SRCFILE`` in test script.
+- add documentation issue template page
+- add clang compiler support via ``compiler:clang``
+- add contributing pages to buildtest documentation and add further clarification on release process, buildtest regression testing, and GitHub app integration
+- add ``EDITOR`` key in buildtest configuration (**settings.yml**) to tweak editor when editing files
+- change path to output/error files in ``buildtest module loadtest`` and print actual ``module load`` command
+- adding github stalebot configuration see ``.github/stale.yml``
+- adding github sponsor page ``.github/FUNDING.yml``
+- add stream benchmark test see https://github.com/HPC-buildtest/buildtest-framework/commit/d2a2a4dc2e71c5921b211d4df4d68b7f52cbbf52
+- adding github workflow ``black`` to format all python code base see ``.github/workflow/black.yml``
+- install lmod and its dependency in travis build
+
+
 v0.7.3 (Nov 25th, 2019)
 -----------------------
 

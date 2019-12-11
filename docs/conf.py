@@ -25,9 +25,9 @@ copyright = '2017-2019, Shahzeb Siddiqui'
 author = 'Shahzeb Siddiqui'
 
 # The short X.Y version
-version = '0.7.3'
+version = '0.7.4'
 # The full version, including alpha/beta/rc tags
-release = '2019.25.11'
+release = '2019.11.12'
 
 
 # -- General configuration ---------------------------------------------------
