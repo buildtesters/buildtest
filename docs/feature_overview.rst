@@ -1,3 +1,5 @@
+.. _feature_overview:
+
 Feature Overview
 ====================
 

@@ -93,9 +93,8 @@ def find_easyconfigs():
             "List of easyconfigs found in MODULETREES: %s"
             % (config_opts["BUILDTEST_MODULEPATH"])
         )
-        print
-        print("ID   |  easyconfig path")
-        print("{:_<4} | {:_<80}".format("", ""))
+        print("\n")
+
         count = 1
         for ec in ec_list:
             print(ec)
