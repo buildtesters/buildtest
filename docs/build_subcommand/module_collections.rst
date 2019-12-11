@@ -1,8 +1,8 @@
 Building Test with Module Collections
 ======================================
 
-building test with Lmod User Collection
--------------------------------------------
+building test with Lmod User Collection (``buildtest build --collection``)
+----------------------------------------------------------------------------------
 
 buildtest supports building test with Lmod `user collections <https://lmod
 .readthedocs.io/en/latest/010_user.html#user-collections>`_. User collection comes in
@@ -35,8 +35,8 @@ which are typically stored in ``$HOME/.lmod.d/``
 
 .. _build_with_module_collection:
 
-building test with buildtest module collection
-------------------------------------------------
+building test with buildtest module collection (``buildtest build --module-collection``)
+-----------------------------------------------------------------------------------------
 
 buildtest module collection allows users to save modules into a collection
 and reference them when building test. If you don't have a module collection first,
@@ -62,10 +62,10 @@ If you pass an invalid index, buildtest will report an error as follows
 
 .. Error::
 
-    buildtest build: error: argument -mc/--module-collection: invalid choice: -1 (choose from 0, 1, 2, 3)
+    buildtest build: error: argument mc/--module-collection: invalid choice: -1 (choose from 0, 1, 2, 3)
 
-Module Permutation
-------------------
+Module Permutation (``buildtest build --modules``)
+-------------------------------------------------------
 
 buildtest can build a test with all version of a module. What this means is if you are interested
 in testing same test for all versions of a particular software you can do this in buildtest. For instance

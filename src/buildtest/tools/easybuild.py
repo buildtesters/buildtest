@@ -98,7 +98,7 @@ def find_easyconfigs():
         print("{:_<4} | {:_<80}".format("", ""))
         count = 1
         for ec in ec_list:
-            print("{:4} | {:15}".format(count, ec))
+            print(ec)
             count = count + 1
     else:
         print("No easyconfigs found!")
@@ -106,7 +106,7 @@ def find_easyconfigs():
     if len(no_ec_list) > 0:
         fname = "/tmp/easyconfigs.txt"
         print("\n")
-        print("buildtest was unable to find easyconfigs for particular modules")
+        print(f"buildtest was unable to find easyconfigs for {len(no_ec_list)} modules")
         print(f"Check file: {fname} for more details")
         fd = open(fname, "w")
         print("\n")

@@ -452,7 +452,9 @@ class SingleSource(BuildTestBuilder):
 
         if "mpi" in self.test_yaml.keys():
             self.mpi = self.test_yaml["mpi"]
-        self.srcfile = os.path.join(self.srcdir, self.test_yaml["program"]["source"])
+
+        #self.srcfile = os.path.join(self.srcdir, self.test_yaml["program"]["source"])
+        self.srcfile = self.test_yaml["program"]["source"]
         self.execname = "%s.%s.exe" % (
             os.path.basename(file),
             hex(random.getrandbits(32)),
@@ -464,12 +466,10 @@ class SingleSource(BuildTestBuilder):
         )
 
         logger.debug(f"Scheduler: {self.scheduler}")
-        logger.debug(f"Parent Directory: {self.parent_dir}")
         logger.debug(f"Source Directory: {self.srcdir}")
         logger.debug(f"Source File: {self.srcfile}")
 
         print(f"Scheduler: {self.scheduler}")
-        print(f"Parent Directory: {self.parent_dir}")
         print(f"Source Directory: {self.srcdir}")
         print(f"Source File: {self.srcfile}")
 
@@ -777,7 +777,7 @@ class SingleSource(BuildTestBuilder):
             f"TESTDIR={config_opts['BUILDTEST_TESTDIR']}"
         )
         self.testscript_content["metavars"].append(f"SRCDIR={self.srcdir}")
-        self.testscript_content["metavars"].append(f"SRCFILE={self.srcfile}")
+        self.testscript_content["metavars"].append(f"SRCFILE=$SRCDIR/{self.srcfile}")
 
         if self.cc:
             self.testscript_content["metavars"].append(f"CC={self.cc}")

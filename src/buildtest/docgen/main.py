@@ -128,6 +128,7 @@ def module_collection_cmds():
 
 def build_cmds():
     build_dict = {
+        "buildtest-build-clear.txt": "buildtest build --clear",
         "tutorial.compilers.args.c.yml.txt": "buildtest build -c tutorial.compilers.args.c.yml",
         "tutorial.compilers.args.c.yml_v.txt": "buildtest build -c tutorial.compilers.args.c.yml -v",
         "tutorial.compilers.args.c.yml_dry.txt": "buildtest build -c tutorial.compilers.args.c.yml --dry",

@@ -63,8 +63,8 @@ Buildtest starts off by loading the test configuration (YAML) and check its sche
 Once the schema check is passed, it will proceed by checking the programming language, compiler and mpi wrapper (if necessary).
 Finally, buildtest will write the test with permission: ``755``.
 
-Verbose Levels
----------------
+Verbose Levels (``buildtest build -v``)
+----------------------------------------
 
 buildtest has two levels of verbosity that can be set by using ``-v`` option to control the output.
 
@@ -196,8 +196,8 @@ To help visualize see how the test dictionary maps to the specific commands in t
 
 For a list of keys see :ref:`singlesource_schema`
 
-Dry Run
---------
+Dry Run (``buildtest build --dry``)
+-----------------------------------
 
 buildtest provides a dry run mode that shows the content of test script without actually creating the test script. This
 can be useful when writing your test configuration. To utilize the dry run option use the ``-d`` or long option ``--dry``
@@ -206,6 +206,19 @@ when building test.
 Shown below is an example dry run build.
 
 .. program-output:: cat docgen/tutorial.compilers.args.c.yml_dry.txt
+
+Delete All builds (``buildtest build --clear``)
+-----------------------------------------------------
+
+If you want to delete all builds, this can be done via ``buildtest build --clear``. This will remove all tests found
+in **$BUILDTEST_TESTDIR** and remove all entries from ``build.json``. Removing entries from ``build.json`` will affect
+commands like ``buildtest build [ report | test | run | log | bsub ]`` since they rely on build IDs. Deleting the builds also
+remove the build IDs where build IDs correspond to a unique build entry in ``build.json``. For more details see :ref:`build_status`
+
+Shown below is an output after clearing the builds.
+
+.. program-output:: cat docgen/buildtest-build-clear.txt
+
 
 Test Directory Layout
 ----------------------

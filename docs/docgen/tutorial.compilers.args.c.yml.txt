@@ -3,12 +3,11 @@ Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/
 Checking schema of YAML file
 Schema Check Passed
 Scheduler: local
-Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers
 Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
-Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src/args.c
+Source File: args.c
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: gcc
 CFLAGS: -Wall -g
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/args.c.yml.0x2e9e36e3.sh
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/log/buildtest_16_48_05_12_2019.log
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/args.c.yml.0xa0af4c5b.sh
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/log/buildtest_10_18_11_12_2019.log
