@@ -32,4 +32,4 @@ There are no binaries for package: libffi/3.2.1-GCCcore-8.3.0
 Detecting Software:Python/3.7.4-GCCcore-8.3.0
 Generating  46  binary tests
 Binary Tests are written in  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_6
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_6/log/buildtest_10_19_11_12_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_6/log/buildtest_15_02_12_12_2019.log

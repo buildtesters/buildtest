@@ -7,8 +7,6 @@ Submodules
 .. toctree::
 
    buildtest.benchmark.benchmark
-   buildtest.benchmark.hpcg
-   buildtest.benchmark.hpl
    buildtest.benchmark.osu
 
 Module contents

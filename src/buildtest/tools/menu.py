@@ -48,8 +48,6 @@ from buildtest.tools.testconfigs import (
     func_testconfigs_maintainer,
 )
 from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
-from buildtest.benchmark.hpl import func_benchmark_hpl_subcmd
-from buildtest.benchmark.hpcg import func_benchmark_hpcg_subcmd
 from buildtest.tools.sysconfig.configuration import func_system_view, func_system_fetch
 
 
@@ -512,18 +510,6 @@ def menu():
     )
     osu_parser.add_argument("-c", "--config", help="OSU Yaml Configuration File")
     osu_parser.set_defaults(func=func_benchmark_osu_subcmd)
-
-    # -------------------------------- HPL  menu ---------------------------
-    hpl_parser = subparsers_benchmark.add_parser(
-        "hpl", help="Run High Performance Linpack (HPL)"
-    )
-    hpl_parser.set_defaults(func=func_benchmark_hpl_subcmd)
-
-    # -------------------------------- HPCG  menu ---------------------------
-    hpcg_parser = subparsers_benchmark.add_parser(
-        "hpcg", help="Run High Performance Conjugate Gradient (HPCG)"
-    )
-    hpcg_parser.set_defaults(func=func_benchmark_hpcg_subcmd)
 
     # ------------------------------ Miscellaneous Options -----------------------
     misc_group = parser.add_argument_group("Miscellaneous Options ")
