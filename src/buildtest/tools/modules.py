@@ -112,7 +112,7 @@ class BuildTestModule:
                 fname = ""
                 if self.major_ver == 6:
                     fname = self.module_dict[module][mpath]["full"]
-                elif self.major_ver == 7:
+                elif self.major_ver >= 7:
                     fname = self.module_dict[module][mpath]["fullName"]
 
                 software_set.add(fname)
@@ -148,13 +148,13 @@ class BuildTestModule:
 
                 if self.major_ver == 6:
                     mod_full_name = self.module_dict[key][mod_file]["full"]
-                elif self.major_ver == 7:
+                elif self.major_ver >= 7:
                     mod_full_name = self.module_dict[key][mod_file]["fullName"]
 
                 if modname == mod_full_name:
                     if self.major_ver == 6:
                         parent_mod_name = self.module_dict[key][mod_file]["parent"]
-                    elif self.major_ver == 7:
+                    elif self.major_ver >= 7:
                         # for modules that dont have any parent the dictionary
                         # does not declare parentAA key in Lmod 7. in that
                         # case return empty list

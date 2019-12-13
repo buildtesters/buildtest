@@ -76,7 +76,7 @@ def list_modules():
             fullName = ""
             if major_ver == 6:
                 fullName = module_dict[module][mpath]["full"]
-            elif major_ver == 7:
+            elif major_ver >= 7:
                 fullName = module_dict[module][mpath]["fullName"]
 
             # print lua modules in green
