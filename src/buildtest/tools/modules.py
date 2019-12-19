@@ -13,6 +13,7 @@ This python module does the following
 import json
 import os
 import subprocess
+from termcolor import cprint
 
 from buildtest.tools.config import (
     config_opts,
@@ -97,6 +98,45 @@ class BuildTestModule:
                             break
 
             return sorted(list(unique_modules_set))
+
+    def list_modules(self):
+        """This method gets unique software from spider and prints the software
+           with total count. This method invokes **get_unique_modules()** which is part
+           of **BuildTestModule** and module_obj is an instance object.
+
+           This method implements ``buildtest list --software``.
+           """
+        text = """
+            Full Module Name                     |      ModuleFile Path
+        -----------------------------------------|----------------------------- """
+        print(text)
+
+        count = 0
+        lua_modules = non_lua_modules = 0
+
+        for module in self.get_unique_modules():
+            for mpath in self.module_dict[module].keys():
+                count += 1
+                fullName = ""
+                if self.major_ver == 6:
+                    fullName = self.module_dict[module][mpath]["full"]
+                elif self.major_ver >= 7:
+                    fullName = self.module_dict[module][mpath]["fullName"]
+
+                # print lua modules in green
+                if os.path.splitext(mpath)[1] == ".lua":
+                    text = (fullName + "\t |").expandtabs(40) + "\t" + mpath
+                    cprint(text, "green")
+                    lua_modules += 1
+                else:
+                    print((fullName + "\t |").expandtabs(40) + "\t" + mpath)
+                    non_lua_modules += 1
+
+        print("\n")
+        print(f"Total Software Modules: {count}")
+        msg = f"Total LUA Modules: {lua_modules}"
+        cprint(msg, "green")
+        print(f"Total non LUA Modules: {non_lua_modules}")
 
     def get_unique_fname_modules(self):
         """Return a sorted list of unique canonical fullname of module where abspath
