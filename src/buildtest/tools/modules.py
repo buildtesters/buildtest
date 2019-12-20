@@ -47,8 +47,7 @@ def func_module_subcmd(args):
 
 class BuildTestModule:
     """This class BuildTestModule provides methods to retrieve
-    unique modules (get_unique_modules()), unique modules by full name
-    (get_unique_fname_modules()), list of module file paths (get_module_file_path()),
+    unique modules (get_unique_modules()), list of module file paths (get_module_file_path()),
     get parent modules (get_parent_modules()).
 
     In addition this method can retrieve spider dictionary using get_module_spider_json()
@@ -138,27 +137,6 @@ class BuildTestModule:
         cprint(msg, "green")
         print(f"Total non LUA Modules: {non_lua_modules}")
 
-    def get_unique_fname_modules(self):
-        """Return a sorted list of unique canonical fullname of module where abspath
-        to module is in one of the directories defined by BUILDTEST_MODULEPATH. Full
-        module name can be retrieved using key "full" in Lmod 6 and "fullName" in Lmod 7
-
-        :rtype: list
-        """
-        software_set = set()
-
-        for module in self.get_unique_modules():
-            for mpath in self.module_dict[module].keys():
-                fname = ""
-                if self.major_ver == 6:
-                    fname = self.module_dict[module][mpath]["full"]
-                elif self.major_ver >= 7:
-                    fname = self.module_dict[module][mpath]["fullName"]
-
-                software_set.add(fname)
-
-        return sorted(list(software_set))
-
     def get_modulefile_path(self):
         """Return a list of absolute path for all module files.
 
@@ -168,7 +146,14 @@ class BuildTestModule:
 
         for k in self.get_unique_modules():
             for mpath in self.module_dict[k].keys():
-                module_path_list.append(mpath)
+                if config_opts["BUILDTEST_SPIDER_VIEW"] == "current":
+                    # only add full canonical module name if module file location is in one of the trees defined by BUILDTEST_MODULEPATH
+                    for tree in config_opts["BUILDTEST_MODULEPATH"]:
+                        if tree in mpath:
+                            module_path_list.append(mpath)
+                            break
+                else:
+                    module_path_list.append(mpath)
 
         return module_path_list
 
@@ -355,8 +340,9 @@ def module_load_test(args):
     :rtype: exit 0
     """
 
-    module_stack = module_obj.get_unique_fname_modules()
-
+    module_stack = module_obj.get_modulefile_path()
+    module_dict = module_obj.get_module_spider_json()
+    lmod_major_ver = module_obj.get_version()[0]
     out_file = f"{config_opts['BUILDTEST_TESTDIR']}/modules-load.out"
     err_file = f"{config_opts['BUILDTEST_TESTDIR']}/modules-load.err"
 
@@ -365,46 +351,61 @@ def module_load_test(args):
     failed_modules = []
     passed_modules = []
     count = 0
-    for mod_file in module_stack:
-        count += 1
-        cmd = []
-        parent_modules = module_obj.get_parent_modules(mod_file)
-        for item in parent_modules:
-            cmd.append(f"module try-load {item}; ")
-        cmd.append(f"module load {mod_file};")
+    for key in module_dict.keys():
+        for mpath in module_dict[key].keys():
+            if mpath not in module_stack:
+                continue
 
-        module_load_cmd = " ".join(cmd)
+            count +=1
+            fname = ""
+            parent_modules = []
+            if lmod_major_ver == 6:
+                fname = module_dict[key][mpath]["full"]
+                parent_modules = module_dict[key][mpath]["parent"][0].split(":")[1:]
+            elif lmod_major_ver >= 7:
+                fname = module_dict[key][mpath]["fullName"]
+                if "parentAA" not in module_dict[key][mpath]:
+                    parent_modules = []
+                else:
+                    parent_modules = module_dict[key][mpath]["parentAA"][0]
 
-        ret = subprocess.Popen(
-            module_load_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
+            cmd = []
+            for item in parent_modules:
+                cmd.append(f"module try-load {item}; ")
+            cmd.append(f"module load {fname};")
+            module_load_cmd = " ".join(cmd)
 
-        out, err = ret.communicate()
-
-        if ret.returncode == 0:
-            msg = (
-                f"RUN: {count}/{len(module_stack)} STATUS: PASSED - "
-                f"Testing module command: {module_load_cmd}"
+            ret = subprocess.Popen(
+                module_load_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
-            print(msg)
-            passed_modules.append(mod_file)
 
-            fd_out.write(msg + "\n")
-            fd_out.write(module_load_cmd + "\n")
-        else:
-            msg = (
-                f"RUN: {count}/{len(module_stack)} STATUS: FAILED - "
-                f"Testing module command: {module_load_cmd}"
-            )
-            print(msg)
-            failed_modules.append(mod_file)
+            out, err = ret.communicate()
 
-            fd_err.write(msg + "\n")
-            fd_err.write(module_load_cmd + "\n")
+            if ret.returncode == 0:
+                msg = (
+                    f"RUN: {count}/{len(module_stack)} STATUS: PASSED - "
+                    f"Testing module command: {module_load_cmd} ( File: {mpath} )"
+                )
+                print(msg)
+                passed_modules.append(mpath)
 
-            for line in err.decode("utf-8").splitlines():
-                fd_err.write(line)
-        print("{:_<80}".format(""))
+                fd_out.write(msg + "\n")
+                fd_out.write(module_load_cmd + "\n")
+            else:
+                msg = (
+                    f"RUN: {count}/{len(module_stack)} STATUS: FAILED - "
+                    f"Testing module command: {module_load_cmd} ( File: {mpath} )"
+                )
+                print(msg)
+                failed_modules.append(mpath)
+
+                fd_err.write(msg + "\n")
+                fd_err.write(module_load_cmd + "\n")
+
+                for line in err.decode("utf-8").splitlines():
+                    fd_err.write(line)
+            print("{:_<80}".format(""))
+
     fd_out.close()
     fd_err.close()
     print(f"Writing Results to {out_file}")
@@ -417,7 +418,7 @@ def module_load_test(args):
     print("{:<40} {}".format("FAILED: ", len(failed_modules)))
     print("{:_<80}".format(""))
 
-
+    return
 
 def get_module_permutation_choices():
     """This method returns a choice field for module permutation option
