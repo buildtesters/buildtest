@@ -386,6 +386,10 @@ def module_load_test(args):
                 else:
                     parent_modules = module_dict[key][mpath]["parentAA"][0]
 
+            # need to skip module loadtest for any modules that have .version or .modulerc in name
+            if os.path.basename(fname).startswith(".version") or os.path.basename(fname).startswith(".modulerc"):
+                continue
+
             cmd = []
             for item in parent_modules:
                 cmd.append(f"module try-load {item}; ")
