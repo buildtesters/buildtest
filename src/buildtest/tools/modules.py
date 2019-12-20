@@ -98,45 +98,6 @@ class BuildTestModule:
 
             return sorted(list(unique_modules_set))
 
-    def list_modules(self):
-        """This method gets unique software from spider and prints the software
-           with total count. This method invokes **get_unique_modules()** which is part
-           of **BuildTestModule** and module_obj is an instance object.
-
-           This method implements ``buildtest list --software``.
-           """
-        text = """
-            Full Module Name                     |      ModuleFile Path
-        -----------------------------------------|----------------------------- """
-        print(text)
-
-        count = 0
-        lua_modules = non_lua_modules = 0
-
-        for module in self.get_unique_modules():
-            for mpath in self.module_dict[module].keys():
-                count += 1
-                fullName = ""
-                if self.major_ver == 6:
-                    fullName = self.module_dict[module][mpath]["full"]
-                elif self.major_ver >= 7:
-                    fullName = self.module_dict[module][mpath]["fullName"]
-
-                # print lua modules in green
-                if os.path.splitext(mpath)[1] == ".lua":
-                    text = (fullName + "\t |").expandtabs(40) + "\t" + mpath
-                    cprint(text, "green")
-                    lua_modules += 1
-                else:
-                    print((fullName + "\t |").expandtabs(40) + "\t" + mpath)
-                    non_lua_modules += 1
-
-        print("\n")
-        print(f"Total Software Modules: {count}")
-        msg = f"Total LUA Modules: {lua_modules}"
-        cprint(msg, "green")
-        print(f"Total non LUA Modules: {non_lua_modules}")
-
     def get_modulefile_path(self):
         """Return a list of absolute path for all module files.
 
@@ -155,7 +116,63 @@ class BuildTestModule:
                 else:
                     module_path_list.append(mpath)
 
-        return module_path_list
+        return sorted(module_path_list)
+
+    def list_modules(self):
+        """This method gets unique software from spider and prints the software
+           with total count. This method invokes **get_unique_modules()** which is part
+           of **BuildTestModule** and module_obj is an instance object.
+
+           This method implements ``buildtest list --software``.
+           """
+        text = """
+    Full Module Name                     |      ModuleFile Path
+-----------------------------------------|----------------------------- """
+        print(text)
+
+        count = 0
+        lua_modules = non_lua_modules = 0
+
+        modfile_abspaths = self.get_modulefile_path()
+
+        #for module in self.get_unique_modules():
+        dict = {}
+        for module in self.module_dict.keys():
+            for mpath in self.module_dict[module].keys():
+                # skip to next entry if modulefile not found in list of modulefile paths
+                if mpath not in modfile_abspaths:
+                    continue
+
+
+                fullName = ""
+                if self.major_ver == 6:
+                    fullName = self.module_dict[module][mpath]["full"]
+                elif self.major_ver >= 7:
+                    fullName = self.module_dict[module][mpath]["fullName"]
+
+                if os.path.basename(fullName).startswith(".version") or os.path.basename(fullName).startswith(".modulerc"):
+                    continue
+
+                dict[mpath]=fullName
+
+        for mpath,fname in dict.items():
+            count += 1
+            # print lua modules in green
+            if os.path.splitext(mpath)[1] == ".lua":
+                text = (fname + "\t |").expandtabs(40) + "\t" + mpath
+                cprint(text, "green")
+                lua_modules += 1
+            else:
+                print((fname + "\t |").expandtabs(40) + "\t" + mpath)
+                non_lua_modules += 1
+
+        print("\n")
+        print(f"Total Software Modules: {count}")
+        msg = f"Total LUA Modules: {lua_modules}"
+        cprint(msg, "green")
+        print(f"Total non LUA Modules: {non_lua_modules}")
+
+
 
     def get_parent_modules(self, modname):
         """Get Parent module for a module name. This can be retrieved by
