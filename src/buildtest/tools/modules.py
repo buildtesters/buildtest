@@ -373,7 +373,7 @@ def module_load_test(args):
             if mpath not in module_stack:
                 continue
 
-            count +=1
+
             fname = ""
             parent_modules = []
             if lmod_major_ver == 6:
@@ -401,10 +401,10 @@ def module_load_test(args):
             )
 
             out, err = ret.communicate()
-
+            count+=1
             if ret.returncode == 0:
                 msg = (
-                    f"RUN: {count}/{len(module_stack)} STATUS: PASSED - "
+                    f"RUN: {count}  STATUS: PASSED - "
                     f"Testing module command: {module_load_cmd} ( File: {mpath} )"
                 )
                 print(msg)
@@ -414,7 +414,7 @@ def module_load_test(args):
                 fd_out.write(module_load_cmd + "\n")
             else:
                 msg = (
-                    f"RUN: {count}/{len(module_stack)} STATUS: FAILED - "
+                    f"RUN: {count} STATUS: FAILED - "
                     f"Testing module command: {module_load_cmd} ( File: {mpath} )"
                 )
                 print(msg)
