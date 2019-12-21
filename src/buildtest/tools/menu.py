@@ -39,7 +39,7 @@ from buildtest.tools.buildsystem.status import (
     run_tests,
 )
 
-from buildtest.tools.system import rpm_install_list, get_module_collection
+from buildtest.tools.system import get_module_collection
 from buildtest.tools.testconfigs import (
     func_testconfigs_show,
     testconfig_choices,
@@ -59,8 +59,6 @@ def menu():
     check_configuration()
 
     test_config_choice = testconfig_choices()
-
-    pkglist = rpm_install_list()
 
     parent_choices = get_all_parents()
 
@@ -164,13 +162,6 @@ def menu():
     parser_build.add_argument(
         "--clear", help="Clear build history and remove all tests", action="store_true"
     )
-    parser_build.add_argument(
-        "-p",
-        "--package",
-        help="Build test for system packages",
-        choices=pkglist,
-        metavar="SYSTEM-PACKAGE",
-    )
 
     parser_build.add_argument(
         "-c",
@@ -179,12 +170,7 @@ def menu():
         choices=test_config_choice,
         metavar="TEST CONFIGURATION",
     )
-    parser_build.add_argument(
-        "-b",
-        "--binary",
-        help="Conduct sanity check on binaries on active modules ",
-        action="store_true",
-    )
+
     parser_build.add_argument(
         "-d",
         "--dry",

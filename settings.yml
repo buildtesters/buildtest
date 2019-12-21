@@ -1,8 +1,4 @@
 #
-# # binary test support. Valid options [True, False]
-BUILDTEST_BINARY: False
-#
-#
 # # Configure whether to force purge modules in test creation. Defaults to "module purge".
 # # When set to True, it will write "module --force purge" in test script. Useful if your
 # # site has sticky modules

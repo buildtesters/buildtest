@@ -20,7 +20,6 @@ from buildtest.tools.config import (
 )
 
 from buildtest.tools.buildsystem.singlesource import SingleSource
-from buildtest.tools.buildsystem.binarytest import generate_binary_test
 from buildtest.tools.buildsystem.dry import dry_view
 from buildtest.tools.file import create_dir, is_dir, walk_tree, is_file
 from buildtest.tools.log import init_log
@@ -48,9 +47,6 @@ def func_build_subcmd(args):
     if args.clear:
         clear_builds()
         sys.exit(0)
-
-    if args.binary:
-        config_opts["BUILDTEST_BINARY"] = args.binary
 
     if args.parent_module_search:
         config_opts["BUILDTEST_PARENT_MODULE_SEARCH"] = args.parent_module_search
@@ -131,25 +127,6 @@ def func_build_subcmd(args):
                 dry_view(content)
             else:
                 write_test(content, args.verbose)
-
-    # if binary test is True then generate binary test for all loaded modules
-    if config_opts["BUILDTEST_BINARY"]:
-        cmd = "module -t list"
-        out = subprocess.getoutput(cmd)
-        # output of module -t list when no modules are loaded is "No modules
-        #  loaded"
-        if out != "No modules loaded":
-            out = out.split()
-            logger.info(f"Active Modules: {out}")
-            # for every loaded module generate binary test
-            for module_name in out:
-                generate_binary_test(module_name, args.verbose, build_id, module=True)
-        else:
-            print("No modules loaded, please load modules and try again.")
-            sys.exit(0)
-
-    if args.package:
-        generate_binary_test(args.package, args.verbose, build_id, package=True)
 
     if not args.dry:
         print("Writing Log file to: ", LOGFILE)

@@ -74,7 +74,6 @@ config_directory_types = [
     "BUILDTEST_TESTDIR",
 ]
 config_yaml_keys = {
-    "BUILDTEST_BINARY": type(True),
     "BUILDTEST_MODULE_FORCE_PURGE": type(True),
     "BUILDTEST_SUCCESS_THRESHOLD": type(1.0),
     "BUILDTEST_MODULEPATH": type([]),

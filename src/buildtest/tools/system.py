@@ -258,66 +258,6 @@ def get_module_collection():
     """
     return subprocess.getoutput("module -t savelist").split("\n")
 
-
-def get_binaries_from_rpm(pkg):
-    """ get binaries from rpm package that typically install in standard linux path and only those that are executable """
-
-    bindirs = [
-        "/usr/bin",
-        "/bin",
-        "/sbin",
-        "/usr/sbin",
-        "/usr/local/bin",
-        "/usr/local/sbin",
-    ]
-    cmd = BuildTestCommand()
-    query = "rpm -ql " + pkg
-    cmd.execute(query)
-    output = cmd.get_output()
-
-    temp = output.splitlines()
-    output = temp
-
-    binaries = []
-
-    for file in output:
-        # if file doesn't exist but found during rpm -ql then skip file.
-        if not os.path.isfile(file):
-            continue
-
-        # check only files that are executable
-        statmode = os.stat(file)[stat.ST_MODE] & (
-            stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
-        )
-
-        # only add executable files found in array bindirs
-        if statmode and os.path.dirname(file) in bindirs:
-            # skip symlinks when adding binaries
-            if not os.path.islink(file):
-                binaries.append(file)
-
-    if len(binaries) == 0:
-        print("There are no binaries found in package: ", pkg)
-        return []
-
-    return binaries
-
-
-def rpm_install_list():
-    """Return a list of installed rpm packages in a machine"""
-
-    cmd = BuildTestCommand()
-    query = """ rpm -qa --qf "%{NAME}\n" """
-    cmd.execute(query)
-    pkglist = cmd.get_output()
-
-    pkglist = pkglist.split("\n")
-
-    # delete last element which is an empty string
-    del pkglist[-1]
-    return pkglist
-
-
 def distro_short(distro_fname):
     """Map Long Linux Distribution Name to short name."""
 
