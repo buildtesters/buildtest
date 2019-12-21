@@ -138,8 +138,6 @@ def build_cmds():
         "tutorial.openacc.vecAdd.c.yml.txt": "buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv",
         "tutorial.openacc.vecAdd.c_pgi.yml.txt": "buildtest build -c tutorial.openacc.vecAdd.c_pgi.yml -co pgi --dry",
         "tutorial.openmp.clang_hello.c.yml.txt": "buildtest build -c tutorial.openmp.clang_hello.c.yml -co Clang --dry",
-        "coreutils.txt": "buildtest  build --package coreutils",
-        "module-binary.txt": "buildtest build --binary",
         "build-report.txt": "buildtest build report",
         "build-test-example.txt": "buildtest build test 0",
         "build-run-example.txt": "buildtest build run 1"

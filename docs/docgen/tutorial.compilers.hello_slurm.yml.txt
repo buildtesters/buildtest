@@ -30,7 +30,7 @@ Programming Language: c++
 CXX: g++
 CXXFLAGS: -O2
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_slurm.yml.0x485f99b0.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_slurm.yml.0xb04ed0a9.sh",
     "scheduler": [
         "#SBATCH --mem 200M",
         "#SBATCH -C sandybridge",
@@ -59,7 +59,7 @@ CXXFLAGS: -O2
         "SRCFILE=$SRCDIR/hello.cpp",
         "CXX=g++",
         "CXXFLAGS=\"-O2\"",
-        "EXECUTABLE=hello_slurm.yml.0x277c5cb3.exe"
+        "EXECUTABLE=hello_slurm.yml.0xf9ca3c75.exe"
     ],
     "envs": [],
     "build": [
@@ -71,8 +71,8 @@ CXXFLAGS: -O2
         "rm ./$EXECUTABLE"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_slurm.yml.0x485f99b0.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_slurm.yml.0x485f99b0.sh
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_slurm.yml.0xb04ed0a9.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/hello_slurm.yml.0xb04ed0a9.sh
 ________________________________________________________________________________
 #SBATCH --mem 200M
 #SBATCH -C sandybridge
@@ -97,10 +97,10 @@ SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/
 SRCFILE=$SRCDIR/hello.cpp
 CXX=g++
 CXXFLAGS="-O2"
-EXECUTABLE=hello_slurm.yml.0x277c5cb3.exe
+EXECUTABLE=hello_slurm.yml.0xf9ca3c75.exe
 cd $TESTDIR
 $CXX $CXXFLAGS -o $EXECUTABLE $SRCFILE
 $EXECUTABLE
 rm ./$EXECUTABLE
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/log/buildtest_15_01_12_12_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_3/log/buildtest_10_46_21_12_2019.log

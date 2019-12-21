@@ -25,7 +25,7 @@ Programming Language: c
 CC: gcc
 CFLAGS: -fopenacc
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0xe5cc1875.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0x4a826727.sh",
     "scheduler": [],
     "module": [
         "module purge",
@@ -38,7 +38,7 @@ CFLAGS: -fopenacc
         "CC=gcc",
         "CFLAGS=\"-fopenacc\"",
         "LDFLAGS=\"-lm\"",
-        "EXECUTABLE=vecAdd.c.yml.0x7ef90a6c.exe"
+        "EXECUTABLE=vecAdd.c.yml.0x55f3c1e1.exe"
     ],
     "envs": [],
     "build": [
@@ -50,8 +50,8 @@ CFLAGS: -fopenacc
         "rm ./$EXECUTABLE"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0xe5cc1875.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0xe5cc1875.sh
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0x4a826727.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0x4a826727.sh
 ________________________________________________________________________________
 module purge
 module restore GCC
@@ -61,10 +61,10 @@ SRCFILE=$SRCDIR/vecAdd.c
 CC=gcc
 CFLAGS="-fopenacc"
 LDFLAGS="-lm"
-EXECUTABLE=vecAdd.c.yml.0x7ef90a6c.exe
+EXECUTABLE=vecAdd.c.yml.0x55f3c1e1.exe
 cd $TESTDIR
 $CC $CFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS
 $EXECUTABLE
 rm ./$EXECUTABLE
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/log/buildtest_15_02_12_12_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_4/log/buildtest_10_46_21_12_2019.log

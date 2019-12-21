@@ -18,13 +18,13 @@ directory at will.
 
 Shown below is unique software list using ``buildtest list --software``
 
-.. command-output:: head -10 docgen/buildtest_list_--software.txt && echo -e "...\n..." && tail -10 docgen/buildtest_list_--software.txt
+.. program-output:: head -10 docgen/buildtest_list_--software.txt && echo -e "...\n..." && tail -10 docgen/buildtest_list_--software.txt
    :shell:
 
 Similarly we can retrieve full name of module file and absolute path to
 module file using ``buildtest list --module`` or short option ``buildtest list -m``
 
-.. command-output:: head -10 docgen/buildtest_list_--modules.txt && echo -e "...\n..." && tail -10 docgen/buildtest_list_--modules.txt
+.. program-output:: head -10 docgen/buildtest_list_--modules.txt && echo -e "...\n..." && tail -10 docgen/buildtest_list_--modules.txt
    :shell:
 
 Module Testing
@@ -34,7 +34,7 @@ HPC sites may have hundreds if not thousand module files, it would be great to
 test all of them. buildtest can conduct ``module load`` testing on module files
 and report ``SUCCESS`` or ``FAIL`` upon module load by checking exit status.
 
-.. command-output:: head -15 docgen/moduleload-test.txt && echo -e "...\n..." && tail -15 docgen/moduleload-test.txt
+.. program-output:: head -15 docgen/moduleload-test.txt && echo -e "...\n..." && tail -15 docgen/moduleload-test.txt
    :shell:
 
 Building Test
@@ -48,19 +48,6 @@ Shown below is an example build
 
 .. program-output:: cat docgen/tutorial.compilers.args.c.yml.txt
 
-
-System Package Test
--------------------
-
-buildtest can generate tests for system packages using the option
-``buildtest build --package <package>``. Currently, system package test only
-perform sanity check against binaries found in the system. The framework will automatically generate
-binary test by checking the system default paths i.e ``/usr/bin``, ``/usr/local/bin``, ``/usr/sbin``.
-
-For instance to build test for the system package ``coreutils`` you can do the
-following
-
-.. program-output:: cat docgen/coreutils.txt
 
 Build Report
 -------------
