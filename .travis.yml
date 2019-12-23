@@ -8,7 +8,8 @@ branches:
 env:
   matrix:
     - LMOD_VERSION=6.6.2
-    - LMOD_VERSION=6.6.3
+    - LMOD_VERSION=7.8.2
+    - LMOD_VERSION=8.2.10
 
 addons:
   apt:
@@ -30,4 +31,4 @@ script:
   - module --version
   - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh
-  - buildtest --version
+  - pytest --cov=coverage_report -rv tests/

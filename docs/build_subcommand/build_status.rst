@@ -1,11 +1,14 @@
 .. _build_status:
 
-Retrieve Build Status (``buildtest build report``)
-==================================================
+Retrieve Build Status
+======================
 
 buildtest is keeping track of all builds such as build time, build log file, command
 executed and test scripts generated as result of build. This information is stored in a file ``BUILDTEST_ROOT/var/build.json``
 that is updated by buildtest whenever you issue ``buildtest build`` command.
+
+Build Report (``buildtest build report``)
+------------------------------------------
 
 To see a status report of all builds you can run::
 
@@ -16,7 +19,11 @@ This will show the build report of all builds executed in a tabular output.
 .. program-output:: cat docgen/build-report.txt
 
 Each row corresponds to a unique build identified by build **ID** that can be used to dig up the log file
-and report tests. To get the log file for a build you can run the following::
+and report tests.
+
+Fetch Log files (``buildtest build log``)
+-----------------------------------------
+To get the log file for a particular build you can run the following::
 
 
     $ buildtest build log <ID>
@@ -42,6 +49,9 @@ Here is a snapshot of the build log::
     2019-09-13 16:27:34,183 [binarytest.py:156 - generate_binary_test() ] - [INFO] which /usr/bin/c89
     2019-09-13 16:27:34,183 [binarytest.py:159 - generate_binary_test() ] - [INFO] [END]
 
+Fetching Tests associated to a build (``buildtest build test``)
+-----------------------------------------------------------------
+
 To view the test generated from the build you will need the build ID and run the following::
 
     $ buildtest build test id=<ID>
@@ -54,8 +64,8 @@ Shown below is the generated test from build ``ID=0``.
 
 .. program-output:: cat docgen/build-test-example.txt
 
-Running a Test
---------------
+Running Test Locally (``buildtest build run``)
+----------------------------------------------------
 
 To run a test, you may invoke ``buildtest build run <ID>`` which will run all tests for the particular build ID. If
 you are not sure what tests will be run, you can use a combination of ``buildtest build report`` and ``buildtest build test <ID>``

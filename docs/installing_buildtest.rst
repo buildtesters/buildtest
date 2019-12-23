@@ -48,7 +48,7 @@ Next, we need to install buildtest dependencies from ``requirements.txt`` by run
 
     $ pip install -r docs/requirements.txt
 
-You may want to create an isolated python environment of choice depending on your preference you can use any of the following::
+You may want to create an isolated python environment of choice depending on your preference you can use any of the following
 
 - `virtualenv <https://virtualenv.pypa.io/en/latest/>`_
 
