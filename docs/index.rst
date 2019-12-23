@@ -28,7 +28,7 @@ This documentation was last rebuild on |today| and is intended for version |vers
    :maxdepth: 2
    :caption: Reference
 
-   setup.rst
+   installing_buildtest.rst
    configuring_buildtest.rst
    building_test.rst
    introspection.rst
