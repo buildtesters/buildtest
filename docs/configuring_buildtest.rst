@@ -36,12 +36,12 @@ Next section will discuss the variables defined in the configuration file.
 Configuring Module Trees
 --------------------------
 
-**BUILDTEST_MODULEPATH** takes colon separated list of root of a module tree
-in your system that serves as module files. buildtest will read all module
-files and use this to figure out what modules can be tested.
+**BUILDTEST_MODULEPATH** is a list of module tree in where your module files are found.
 
-Let's assume ``/opt/apps`` and ``/workspace/apps`` are root of the module tree,
-so we can specify this in your configuration as follows::
+buildtest will read BUILDTEST_MODULEPATH to retrieve all the module files.
+
+Let's assume we want to add ``/opt/apps`` and ``/workspace/apps`` as module trees to BUILDTEST_MODULEPATH. This can
+be done in your configuration as follows::
 
 	BUILDTEST_MODULEPATH:
         - /opt/apps
@@ -55,56 +55,24 @@ the following message
 
 
 If you don't specify a module tree for BUILDTEST_MODULEPATH then buildtest
-will read the value of MODULEPATH. You may add,remove or list module tree.
+will read the value of MODULEPATH.
 
-To see the list of module tree you can run ``buildtest module -l``::
-
-    $ buildtest module -l
-    /nfs/grid/software/moduledomains
-    /etc/modulefiles
-    /usr/share/modulefiles
-    /usr/share/lmod/lmod/modulefiles/Core
-
-At this time you will notice BUILDTEST_MODULEPATH is not set and it takes
-value of MODULEPATH::
-
-    $ cat ~/.buildtest/settings.yml  | grep -i BUILDTEST_MODULEPATH
-    BUILDTEST_MODULEPATH: []
-
-    $ echo $MODULEPATH
-    /nfs/grid/software/moduledomains:/etc/modulefiles:/usr/share/modulefiles:/usr/share/modulefiles/Linux:/usr/share/modulefiles/Core:/usr/share/lmod/lmod/modulefiles/Core
-
-
-You can add new module tree through command line using ``buildtest module
--a`` which will update the configuration file::
-
-    $ buildtest module -a /usr/share/lmod/lmod/modulefiles/Core
-    Adding module tree: /usr/share/lmod/lmod/modulefiles/Core
-    Configuration File: /home/siddis14/.buildtest/settings.yml has been updated
-
-
-Similarly you can remove module tree from your configuration via
-``buildtest module -r``::
-
-    (siddis14-TgVBs13r) buildtest-framework[master !?] $ buildtest module -r /etc/modulefiles
-    Removing module tree: /etc/modulefiles
-    Configuration File: /home/siddis14/.buildtest/settings.yml has been updated
+Alternately, you can configure BUILDTEST_MODULEPATH from command line. For more details see :ref:`module_tree_operation`
 
 Configure Spider View
 ---------------------
 
-Lmod ``spider`` retrieves module details in json format, buildtest is running
-``spider -o spider-json $BUILDTEST_MODULEPATH`` to get all the modules. The
-configuration ``BUILDTEST_SPIDER_VIEW`` can control the output. When ``BUILDTEST_SPIDER_VIEW=all``
-then buildtest will retrieve all records including records for modules that
-are not part of current ``MODULEPATH``.
+Lmod ``spider`` is used to retrieve module details in json format, this is done in buildtest during startup as follows::
 
-If you want to restrict the search of module retrieval to those defined in ``BUILDTEST_MODULEPATH``
-then set ``BUILDTEST_SPIDER_VIEW=current``. buildtest will only retrieve
-records whose modulefile absolute path is a subdirectory of ``BUILDTEST_MODULEPATH``. When
-``BUILDTEST_MODULEPATH`` is not set, it will take the value of
-``MODULEPATH`` and setting ``BUILDTEST_SPIDER_VIEW=current`` can be useful
-in testing modules that are visible to module environment.
+    $ $LMOD_DIR/spider -o spider-json $BUILDTEST_MODULEPATH
+
+The configuration ``BUILDTEST_SPIDER_VIEW`` can control how buildtest processes the spider records. When
+BUILDTEST_SPIDER_VIEW is set to ``all``, then buildtest will retrieve **all records from all trees in $BUILDTEST_MODULEPATH and any subtrees** as a result.
+This is the default behavior for ``spider``.
+
+If you want to restrict the search of module retrieval to only trees defined in ``BUILDTEST_MODULEPATH`` and none of the
+sub-trees then set BUILDTEST_SPIDER_VIEW to **current**. This will instruct buildtest to only retrieve spider
+records whose modulefile absolute path is a subdirectory of ``BUILDTEST_MODULEPATH``.
 
 Test Threshold
 ----------------
@@ -112,30 +80,13 @@ Test Threshold
 buildtest provides a mechanism to set a success threshold during test execution that
 can be used to determine if your software passes or fails.
 
-This can be set by using ``BUILDTEST_SUCCESS_THRESHOLD`` which is a value between ``[0.0-1.0]``
-which will be used when running test.
+This can be set by using ``BUILDTEST_SUCCESS_THRESHOLD`` which is a value between ``[0.0-1.0]`` that is used to
+determine if test meets the threshold. A value of 1.0 means 100% of test must pass. A value of 0.75 means 75% of tests must
+pass.
 
-::
+Here is an example test run where all test have passed when threshold was set to **1.0**.
 
-    if success_threshold >= <passed tests>/< total tests>
-        SUCCESS
-    else
-        FAIL
-
-Here is an example test run where all test have passed and success threshold is 1.0
-
-::
-
-    $ buildtest run -s GCCcore/6.4.0
-    Check Configuration
-    ==============================================================
-                             Test summary
-    Application:  GCCcore/6.4.0
-    Executed 32 tests
-    Passed Tests: 32    Percentage: 100.0%
-    Failed Tests: 0    Percentage: 0.0%
-    SUCCESS: Threshold of 100.0% was achieved
-    Writing results to /tmp/buildtest_10_26_30_01_2019.run
+.. program-output:: cat docgen/build-run-example.txt
 
 Force Purge Modules
 --------------------------

@@ -184,6 +184,8 @@ If you don't have any module collection and you run ``--check`` option you will 
     $  buildtest module collection --check
     No modules collection found. Please add a module collection before running check.
 
+.. _module_tree_operation:
+
 Module Trees Operation (``buildtest module tree``)
 ---------------------------------------------------
 
