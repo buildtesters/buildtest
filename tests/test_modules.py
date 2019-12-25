@@ -29,33 +29,33 @@ def test_diff_trees():
 
 def test_module_tree_add_and_remove():
 
-    module_tree_add(["/usr/share/lmod/lmod/modulefiles/Core/"])
+    module_tree_add([os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core")])
 
 
     fd = open(BUILDTEST_CONFIG_FILE,"r")
     content = yaml.safe_load(fd)
     fd.close()
 
-    assert True is ("/usr/share/lmod/lmod/modulefiles/Core/" in content["BUILDTEST_MODULEPATH"])
+    assert os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core") in content["BUILDTEST_MODULEPATH"]
 
-    module_tree_rm(["/usr/share/lmod/lmod/modulefiles/Core/"])
+    module_tree_rm([os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core")])
 
     fd = open(BUILDTEST_CONFIG_FILE, "r")
     content = yaml.safe_load(fd)
     fd.close()
 
-    assert True is ("/usr/share/lmod/lmod/modulefiles/Core/" not in content["BUILDTEST_MODULEPATH"])
+    assert os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core") not in content["BUILDTEST_MODULEPATH"]
 
 def test_module_tree_set():
-    module_tree_set("/usr/share/lmod/lmod/modulefiles/Core/")
+    module_tree_set(os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core"))
 
     fd = open(BUILDTEST_CONFIG_FILE,"r")
     content = yaml.safe_load(fd)
     fd.close()
 
-    assert True is ("/usr/share/lmod/lmod/modulefiles/Core/" in content["BUILDTEST_MODULEPATH"])
+    assert os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core") in content["BUILDTEST_MODULEPATH"]
 
-    module_tree_rm(["/usr/share/lmod/lmod/modulefiles/Core/"])
+    module_tree_rm([os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core")])
 
 def test_module_tree_with_directory_expansion():
 

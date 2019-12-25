@@ -274,10 +274,11 @@ def find_module_deps(parent_module):
     """
 
     parent_list_found = []
-
+    filepath = ""
     fd = open(BUILDTEST_MODULE_FILE, "r")
     module_json = json.load(fd)
     fd.close()
+
     # find the parent module file path in order to read and print module file
     for mod in module_json.keys():
         for mpath in module_json[mod].keys():

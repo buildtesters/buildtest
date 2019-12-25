@@ -31,4 +31,7 @@ script:
   - module --version
   - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh
-  - pytest --cov=coverage_report -rv tests/
+  - coverage run -m pytest tests/
+  - coverage html
+  - export CODECOV_TOKEN="6469f129-1533-464e-a0a9-131466651231"
+  - bash <(curl -s https://codecov.io/bash)
