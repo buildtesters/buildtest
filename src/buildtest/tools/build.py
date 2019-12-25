@@ -48,9 +48,6 @@ def func_build_subcmd(args):
         clear_builds()
         sys.exit(0)
 
-    if args.parent_module_search:
-        config_opts["BUILDTEST_PARENT_MODULE_SEARCH"] = args.parent_module_search
-
     system = json.load(open(BUILDTEST_SYSTEM, "r"))
     test_subdir = os.path.join(
         system["VENDOR"],

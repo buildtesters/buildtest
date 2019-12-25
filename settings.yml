@@ -13,10 +13,6 @@ BUILDTEST_MODULEPATH: []
 # # all: retrieve all records
 BUILDTEST_SPIDER_VIEW: current
 #
-# # control how parent modules are retrieved.
-# # Valid option: first, all
-BUILDTEST_PARENT_MODULE_SEARCH: first
-#
 # # criteria for success threshold when running job.
 # # Valid Option: [0.0-1.0]
 BUILDTEST_SUCCESS_THRESHOLD: 1.0

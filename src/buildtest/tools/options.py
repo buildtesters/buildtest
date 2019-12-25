@@ -17,11 +17,6 @@ def override_configuration():
     if os.environ.get("BUILDTEST_SPIDER_VIEW"):
         config_opts["BUILDTEST_SPIDER_VIEW"] = os.environ["BUILDTEST_SPIDER_VIEW"]
 
-    if os.environ.get("BUILDTEST_PARENT_MODULE_SEARCH"):
-        config_opts["BUILDTEST_PARENT_MODULE_SEARCH"] = os.environ[
-            "BUILDTEST_PARENT_MODULE_SEARCH"
-        ]
-
     if os.environ.get("BUILDTEST_SUCCESS_THRESHOLD"):
         threshold = float(os.environ.get("BUILDTEST_SUCCESS_THRESHOLD"))
 

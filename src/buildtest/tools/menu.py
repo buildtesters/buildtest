@@ -209,12 +209,6 @@ def menu():
         choices=collection_len,
         metavar="COLLECTION-ID",
     )
-    parser_build.add_argument(
-        "-pms",
-        "--parent-module-search",
-        help="control how parent module " "combination is used when loading modules",
-        choices=["first", "all"],
-    )
 
     subparsers_build = parser_build.add_subparsers(
         description="Report status on builds performed by buildtest."

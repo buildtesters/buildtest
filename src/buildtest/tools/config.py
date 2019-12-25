@@ -78,7 +78,6 @@ config_yaml_keys = {
     "BUILDTEST_SUCCESS_THRESHOLD": type(1.0),
     "BUILDTEST_MODULEPATH": type([]),
     "BUILDTEST_SPIDER_VIEW": type("str"),
-    "BUILDTEST_PARENT_MODULE_SEARCH": type("str"),
     "BUILDTEST_TESTDIR": type("str"),
     "EDITOR": type("str")
 }
@@ -142,14 +141,6 @@ def check_configuration():
             if config_opts["BUILDTEST_SPIDER_VIEW"] not in ["all", "current"]:
                 print(
                     f"BUILDTEST_SPIDER_VIEW must be one of the following: all, current"
-                )
-                ec = 1
-
-        if key == "BUILDTEST_PARENT_MODULE_SEARCH":
-            if config_opts["BUILDTEST_PARENT_MODULE_SEARCH"] not in ["first", "all"]:
-                print(
-                    f"BUILDTEST_PARENT_MODULE_SEARCH must be one of the "
-                    f"following: first, all"
                 )
                 ec = 1
 

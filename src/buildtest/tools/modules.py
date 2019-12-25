@@ -331,13 +331,12 @@ def find_modules(module_args):
                 all_modules.append(tmp)
                 continue
 
+
             for parent in json_module[i][mpath]["parent"]:
                 parent.append(json_module[i][mpath]["fullName"])
                 all_modules.append(parent)
-
-                # load the first parent combination, if BUILDTEST_PARENT_MODULE_SEARCH=first then terminate asap
-                if config_opts["BUILDTEST_PARENT_MODULE_SEARCH"] == "first":
-                    break
+                # only add the first parent module combination and then break loop.
+                break
 
     module_cmd_list = []
     for i in all_modules:
