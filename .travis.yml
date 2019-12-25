@@ -9,7 +9,7 @@ env:
   matrix:
     - LMOD_VERSION=6.6.2
     - LMOD_VERSION=7.8.2
-    - LMOD_VERSION=8.2.10
+    - LMOD_VERSION=8.2.4
 
 addons:
   apt:
