@@ -1,8 +1,16 @@
 coverage:
   precision: 2
   round: nearest
-  range: 50...90
+  range: 10...100
   status:
     project:
       default: yes
+  notify:
+    slack:
+      url: "https://hooks.slack.com/services/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"
+      threshold: 1%
+      only_pulls: false
+      branches: null
+      flags: null
+      paths: null
 

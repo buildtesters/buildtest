@@ -1,5 +1,7 @@
 language: python
 dist: xenial
+arch:
+  - amd64
 git:
   quiet: true
 branches:
@@ -9,13 +11,11 @@ env:
   matrix:
     - LMOD_VERSION=6.6.2
     - LMOD_VERSION=7.8.2
-    - LMOD_VERSION=8.2.4
-
 addons:
   apt:
     packages:
       # install Lmod Deps
-      # - lua-devel
+      - lua-devel
       - lua-filesystem
       - lua-json
       - lua-posix
@@ -32,7 +32,7 @@ script:
   - module --version
   - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh
-  - coverage run -m pytest -rvP tests/
-  - coverage html
-  - export CODECOV_TOKEN="6469f129-1533-464e-a0a9-131466651231"
-  - bash <(curl -s https://codecov.io/bash)
+  - pytest -rvP tests/
+#  - coverage html
+#  - export CODECOV_TOKEN="6469f129-1533-464e-a0a9-131466651231"
+#  - bash <(curl -s https://codecov.io/bash)
