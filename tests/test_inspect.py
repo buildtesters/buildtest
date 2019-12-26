@@ -2,6 +2,7 @@ from buildtest.tools.list import list_software, list_modules, find_easyconfigs
 from buildtest.tools.config import show_configuration
 from buildtest.tools.system import distro_short
 from buildtest.tools.sysconfig.configuration import func_system_view, func_system_fetch
+from buildtest.tools.show import show_schema_layout
 
 def test_list_software():
   list_software()
@@ -25,3 +26,6 @@ def test_system_fetch():
 
 def test_system_view():
   func_system_view()
+
+def test_show_schema():
+  show_schema_layout()

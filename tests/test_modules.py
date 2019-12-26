@@ -87,3 +87,9 @@ def test_module_tree_with_directory_expansion():
 
     shutil.rmtree(os.path.expandvars(dir1))
     shutil.rmtree(os.path.expanduser(dir2))
+
+def test_module_diff():
+    tree1 = os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
+    tree2 = os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
+    tree_list = f"{tree1},{tree2}"
+    diff_trees(tree_list)

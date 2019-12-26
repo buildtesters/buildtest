@@ -18,5 +18,9 @@ def func_show_subcmd(args):
         show_configuration()
 
     if args.keys:
-        schema = SingleSource().get_schema()
-        yaml.dump(schema, sys.stdout, default_flow_style=False)
+        show_schema_layout()
+
+def show_schema_layout():
+    """Implements method ``buildtest show -k singlesource``"""
+    schema = SingleSource().get_schema()
+    yaml.dump(schema, sys.stdout, default_flow_style=False)

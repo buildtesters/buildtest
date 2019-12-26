@@ -27,3 +27,5 @@ coverage:
       flags: null
       paths: null
 
+ignore:
+  - src/buildtest/docgen
