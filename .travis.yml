@@ -15,6 +15,7 @@ addons:
   apt:
     packages:
       # install Lmod Deps
+      # - lua-devel
       - lua-filesystem
       - lua-json
       - lua-posix

@@ -9,7 +9,7 @@ Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: gcc
 CFLAGS: -Wall -g
-Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/args.c.yml.0x7aa403b8.sh
+Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/args.c.yml.0xea82a80e.sh
 --------------------------------------------------------------------------------
 
 module purge
@@ -29,7 +29,7 @@ SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/
 SRCFILE=$SRCDIR/args.c
 CC=gcc
 CFLAGS="-Wall -g"
-EXECUTABLE=args.c.yml.0x940852.exe
+EXECUTABLE=args.c.yml.0xd5423b0d.exe
 export FOO=BAR
 export X=1
 cd $TESTDIR

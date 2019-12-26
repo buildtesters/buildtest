@@ -1,7 +1,6 @@
 $ buildtest build -h
 usage: buildtest [options] [COMMANDS] build [-h] [--clear] [-c TEST CONFIGURATION] [-d] [-v]
                                             [-m Module Permutation Options | -co Lmod Collection Name | -mc COLLECTION-ID]
-                                            [-pms {first,all}]
                                             {report,log,test,run,bsub} ...
 
 optional arguments:
@@ -18,8 +17,6 @@ optional arguments:
                         Use user Lmod module collection when building test
   -mc COLLECTION-ID, --module-collection COLLECTION-ID
                         Use internal buildtest module collection when building test.
-  -pms {first,all}, --parent-module-search {first,all}
-                        control how parent module combination is used when loading modules
 
 subcommands:
   Report status on builds performed by buildtest.

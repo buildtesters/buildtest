@@ -30,7 +30,7 @@ Programming Language: c
 CC: gcc
 CFLAGS: -O2
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/hello_lsf.yml.0xad583006.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/hello_lsf.yml.0x7094c892.sh",
     "scheduler": [
         "#BSUB -M 200M",
         "#BSUB -R sandybridge",
@@ -58,7 +58,7 @@ CFLAGS: -O2
         "SRCFILE=$SRCDIR/hello.c",
         "CC=gcc",
         "CFLAGS=\"-O2\"",
-        "EXECUTABLE=hello_lsf.yml.0x8434bd9.exe"
+        "EXECUTABLE=hello_lsf.yml.0x8f176d36.exe"
     ],
     "envs": [],
     "build": [
@@ -70,8 +70,8 @@ CFLAGS: -O2
         "rm ./$EXECUTABLE"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/hello_lsf.yml.0xad583006.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/hello_lsf.yml.0xad583006.sh
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/hello_lsf.yml.0x7094c892.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/hello_lsf.yml.0x7094c892.sh
 ________________________________________________________________________________
 #BSUB -M 200M
 #BSUB -R sandybridge
@@ -95,10 +95,10 @@ SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/
 SRCFILE=$SRCDIR/hello.c
 CC=gcc
 CFLAGS="-O2"
-EXECUTABLE=hello_lsf.yml.0x8434bd9.exe
+EXECUTABLE=hello_lsf.yml.0x8f176d36.exe
 cd $TESTDIR
 $CC $CFLAGS -o $EXECUTABLE $SRCFILE
 $EXECUTABLE
 rm ./$EXECUTABLE
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/log/buildtest_10_46_21_12_2019.log
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_2/log/buildtest_17_20_25_12_2019.log

@@ -1,8 +1,26 @@
 $ buildtest config view
+#
+# # Configure whether to force purge modules in test creation. Defaults to "module purge".
+# # When set to True, it will write "module --force purge" in test script. Useful if your
+# # site has sticky modules
+BUILDTEST_MODULE_FORCE_PURGE: False
+#
+# # list root of module tree where modules are installed. Specify multiple module tree as a list
 BUILDTEST_MODULEPATH: []
-BUILDTEST_MODULE_FORCE_PURGE: false
-BUILDTEST_PARENT_MODULE_SEARCH: first
+#
+# # control output of Lmod spider.
+# # Valid values are
+# # current: retrieve modules whose abspath is a subdir of directories defined in BUILDTEST_MODULEPATH
+# # all: retrieve all records
 BUILDTEST_SPIDER_VIEW: current
+#
+# # criteria for success threshold when running job.
+# # Valid Option: [0.0-1.0]
 BUILDTEST_SUCCESS_THRESHOLD: 1.0
+#
+# # directory where test scripts will be generated
 BUILDTEST_TESTDIR: /tmp/$USER/buildtest/tests
+
+# editor of choice when viewing files
+# valid options: vim, emacs, nano
 EDITOR: vim
