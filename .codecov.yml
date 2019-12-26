@@ -1,5 +1,4 @@
 codecov:
-  token: "4ca597c927ce4af59a1e10ee713c2032"
   bot: "shahzebsiddiqui"
   ci:
     - "travis.org"
