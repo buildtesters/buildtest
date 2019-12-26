@@ -15,7 +15,6 @@ addons:
   apt:
     packages:
       # install Lmod Deps
-      - lua-devel
       - lua-filesystem
       - lua-json
       - lua-posix
@@ -32,7 +31,8 @@ script:
   - module --version
   - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh
-  - pytest -rvP tests/
+  - coverage run -m pytest -rvP tests/
+  - coverage report -m
 #  - coverage html
 #  - export CODECOV_TOKEN="6469f129-1533-464e-a0a9-131466651231"
 #  - bash <(curl -s https://codecov.io/bash)

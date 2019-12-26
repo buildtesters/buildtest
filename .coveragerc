@@ -23,5 +23,5 @@ exclude_lines =
 ignore_errors = True
 
 [html]
-directory = htmlcov
+directory = html_coverage_report
 
