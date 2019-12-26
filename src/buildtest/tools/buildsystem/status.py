@@ -16,7 +16,7 @@ from buildtest.tools.file import create_dir
 def show_status_report(args=None):
     """
     This method displays history of builds conducted by buildtest. This method
-    implements command ``buildtest status report``.
+    implements command ``buildtest build report``.
 
     :param args: command line arguments passed to buildtest
     :type args: dict, required

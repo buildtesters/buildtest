@@ -9,6 +9,7 @@ from buildtest.tools.modulesystem.tree import module_tree_add, module_tree_list,
 from buildtest.tools.config import BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import create_dir
 
+"""
 def test_spack_modules():
     module_tree_add(["/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core"])
     check_spack_module()
@@ -26,6 +27,8 @@ def test_module_deps():
 
 def test_diff_trees():
     diff_trees("/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core,/usr/share/lmod/lmod/modulefiles/Core/")
+
+"""
 
 def test_module_tree_add_and_remove():
 
