@@ -32,6 +32,6 @@ script:
   - source sourceme.sh
   - coverage run -m pytest tests/
   - coverage report -m
-#  - coverage html
-#  - export CODECOV_TOKEN="6469f129-1533-464e-a0a9-131466651231"
-#  - bash <(curl -s https://codecov.io/bash)
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
