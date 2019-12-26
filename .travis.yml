@@ -10,7 +10,6 @@ branches:
 env:
   matrix:
     - LMOD_VERSION=6.6.2
-    - LMOD_VERSION=7.8.2
 addons:
   apt:
     packages:
@@ -31,7 +30,7 @@ script:
   - module --version
   - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh
-  - coverage run -m pytest -rvP tests/
+  - coverage run -m pytest tests/
   - coverage report -m
 #  - coverage html
 #  - export CODECOV_TOKEN="6469f129-1533-464e-a0a9-131466651231"
