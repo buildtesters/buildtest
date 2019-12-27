@@ -25,10 +25,10 @@ install:
   - pip --version
   - pip install -r docs/requirements.txt
   - source $TRAVIS_BUILD_DIR/src/buildtest/scripts/install_deps.sh
-  # install a mini software stack with easybuild
   - pip install easybuild
   - mkdir -p /opt/easybuild
   - export EASYBUILD_PREFIX=/opt/easybuild
+  - eb --version
   - eb flex-2.6.3.eb --robot
   - module use $EASYBUILD_PREFIX
 script:
