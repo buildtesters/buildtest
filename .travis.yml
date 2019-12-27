@@ -25,16 +25,17 @@ install:
   - pip --version
   - pip install easybuild
   - pip install -r docs/requirements.txt
-  - source $TRAVIS_BUILD_DIR/src/buildtest/scripts/install_deps.sh
+  - source $TRAVIS_BUILD_DIR/src/buildtest/scripts/install_deps.sh $LMOD_VERSION
 
-
-script:
+before_script:
   - type module
   - module --version
   - export EASYBUILD_PREFIX=/opt/easybuild
   - mkdir -p $EASYBUILD_PREFIX
   - eb --version
+  - whoami
   - eb flex-2.6.3.eb --robot
+script:
   - module use $EASYBUILD_PREFIX
   - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh
