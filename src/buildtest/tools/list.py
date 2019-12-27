@@ -27,8 +27,8 @@ def func_list_subcmd(args):
 
 def list_software():
     """This method gets unique software from spider and prints the software
-    with total count. This method invokes **get_unique_modules()** which is part
-    of **BuildTestModule** and module_obj is an instance object.
+    with total count. This method invokes ``get_unique_modules()`` which is part
+    of ``BuildTestModule`` and module_obj is an instance object.
 
     This method implements ``buildtest list --software``.
     """

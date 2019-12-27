@@ -23,3 +23,18 @@ BUILDTEST_TESTDIR: /tmp/$USER/buildtest/tests
 # editor of choice when viewing files
 # valid options: vim, emacs, nano
 EDITOR: vim
+
+module:
+  list:
+    # exclude_version_files: yes - will not add .version, .modulerc, or .modulerc.lua files in output. Setting this to "no" will
+    # let buildtest add these files and will be present in output
+    exclude_version_files: yes
+    filter:
+      # list of modules to include in output. For instance if you want to restrict search for modules "GCC", "intel" then
+      # specify the following
+      # include:
+        # - GCC
+        # - intel
+      include: []
+    # querylimit controls number of entries displayed with output. A non-negative value means all entries will be displayed
+    querylimit: -1

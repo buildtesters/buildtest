@@ -125,6 +125,10 @@ class BuildTestModule:
 
            This method implements ``buildtest list --software``.
            """
+
+        querylimit = config_opts["module"]["list"]["querylimit"]
+        module_filter_include = config_opts["module"]["list"]["filter"]["include"]
+
         text = """
     Full Module Name                     |      ModuleFile Path
 -----------------------------------------|----------------------------- """
@@ -135,6 +139,8 @@ class BuildTestModule:
 
         modfile_abspaths = self.get_modulefile_path()
 
+
+        #print (module_filter_include)
         #for module in self.get_unique_modules():
         dict = {}
         for module in self.module_dict.keys():
@@ -143,17 +149,30 @@ class BuildTestModule:
                 if mpath not in modfile_abspaths:
                     continue
 
-
                 fullName = ""
                 if self.major_ver == 6:
                     fullName = self.module_dict[module][mpath]["full"]
                 elif self.major_ver >= 7:
                     fullName = self.module_dict[module][mpath]["fullName"]
 
-                if os.path.basename(fullName).startswith(".version") or os.path.basename(fullName).startswith(".modulerc"):
-                    continue
+                if config_opts["module"]["list"]["exclude_version_files"]:
+                    if os.path.basename(fullName).startswith(".version") or os.path.basename(fullName).startswith(".modulerc"):
+                        continue
 
-                dict[mpath]=fullName
+                # if filter include list is not empty, then only add module full name that correspond to list.
+                if len(module_filter_include) > 0:
+                    strip_fname_by_slash = ""
+                    #print (fullName,fullName.index("/"))
+                    if fullName.find("/") > 0:
+                        strip_fname_by_slash = fullName.split("/")[0]
+                    else:
+                        strip_fname_by_slash = fullName
+
+                    if strip_fname_by_slash in module_filter_include:
+                        dict[mpath]=fullName
+                # otherwise add all modules
+                else:
+                    dict[mpath] = fullName
 
         for mpath,fname in dict.items():
             count += 1
@@ -165,6 +184,12 @@ class BuildTestModule:
             else:
                 print((fname + "\t |").expandtabs(40) + "\t" + mpath)
                 non_lua_modules += 1
+
+            # only print modules up to the query limit and query limit is a non-negative number
+            if count >= querylimit and querylimit > 0:
+                break
+
+
 
         print("\n")
         print(f"Total Software Modules: {count}")
