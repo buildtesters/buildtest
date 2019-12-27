@@ -1,4 +1,4 @@
-$ buildtest list --modules
+$ buildtest module --list
 
     Full Module Name                     |      ModuleFile Path
 -----------------------------------------|----------------------------- 

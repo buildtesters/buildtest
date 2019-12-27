@@ -17,9 +17,7 @@ Submodules
 
    buildtest.tools.build
    buildtest.tools.config
-   buildtest.tools.easybuild
    buildtest.tools.file
-   buildtest.tools.list
    buildtest.tools.log
    buildtest.tools.lsf
    buildtest.tools.menu
@@ -27,7 +25,6 @@ Submodules
    buildtest.tools.options
    buildtest.tools.show
    buildtest.tools.slurm
-   buildtest.tools.software
    buildtest.tools.system
    buildtest.tools.testconfigs
    buildtest.tools.writer

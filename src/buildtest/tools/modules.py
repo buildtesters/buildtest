@@ -18,31 +18,13 @@ from termcolor import cprint
 from buildtest.tools.config import (
     config_opts,
     BUILDTEST_CONFIG_FILE,
-    BUILDTEST_MODULE_FILE,
+    BUILDTEST_MODULE_FILE
 )
-from buildtest.tools.file import string_in_file, is_dir
+
+
+from buildtest.tools.file import string_in_file, walk_tree
 from buildtest.tools.modulesystem.module_difference import diff_trees
 from buildtest.tools.modulesystem.collection import get_buildtest_module_collection
-
-
-def func_module_subcmd(args):
-    """Entry point for "buildtest module" subcommand.
-
-    :param args: command line arguments passed to buildtest
-    :type args: dict, required
-    """
-
-    if args.diff_trees:
-        diff_trees(args.diff_trees)
-
-    if args.easybuild:
-        check_easybuild_module()
-
-    if args.spack:
-        check_spack_module()
-
-    if args.module_deps:
-        find_module_deps(args.module_deps)
 
 
 class BuildTestModule:
@@ -120,10 +102,9 @@ class BuildTestModule:
 
     def list_modules(self):
         """This method gets unique software from spider and prints the software
-           with total count. This method invokes **get_unique_modules()** which is part
-           of **BuildTestModule** and module_obj is an instance object.
+           with total count.
 
-           This method implements ``buildtest list --software``.
+           This method implements ``buildtest module --list``.
            """
 
         querylimit = config_opts["module"]["list"]["querylimit"]
@@ -543,7 +524,12 @@ def check_spack_module():
 
 
 def module_selector(user_collection, buildtest_module_collection):
-    """Return a module load or module restore string from active module, user collection, or buildtest module collection """
+    """Return a module load or module restore string from active module, user collection, or buildtest module collection
+    :rtype: list
+    :param user_collection: Lmod user collection name passed as argument (``--collection``) to buildtest
+    :param buildtest_module_collection:  module collection index passed as argument (``--module-collection``) to buildtest
+    :return: Return a list of modules based on the type of modules passed to this method
+    """
     modules = []
     if config_opts["BUILDTEST_MODULE_FORCE_PURGE"]:
         modules.append("module --force purge")
@@ -569,4 +555,159 @@ def module_selector(user_collection, buildtest_module_collection):
 
         modules_load_list = [f"module load {x}" for x in out.split()]
         modules += modules_load_list
-        return modules
+        return
+
+def list_software():
+    """This method gets unique software from spider and prints the software
+    with total count. This method invokes ``get_unique_modules()`` which is part
+    of ``BuildTestModule`` and module_obj is an instance object.
+
+    This method implements ``buildtest module --software``.
+    """
+
+    module_stack = module_obj.get_unique_modules()
+
+    for item in module_stack:
+        print(item)
+
+    print("\n")
+    print("Total Software Packages: ", len(module_stack))
+
+def find_easyconfigs_from_modulelist(modulelist):
+    """This method returns a list of easyconfig from a list of module files. The
+    method invokes **walk_tree()** to traverse a directory with file extension .eb. If
+    file is found it will add to easyconfig list, otherwise adds to non-easyconfig list
+
+    :param modulelist: list of module file paths
+    :type modulelist: List, required
+
+    :return: two lists containing one that contains list of easyconfigs, second list that contains list of modulepath that dont have easyconfigs
+    """
+
+    # list to store easyconfigs
+    ec_list = []
+    # list to store if no easyconfigs found
+    no_ec_list = []
+
+    # look for variable root in modulefile
+    search_str = "local root ="
+
+    for module in modulelist:
+        # if variable root found in module file then read file and find value
+        # assigned to root to get root of software
+        if string_in_file(search_str, module):
+            content = open(module).readlines()
+            for line in content:
+                # if line starts with string "local root = <path>" then get PATH
+                if line.startswith(search_str):
+                    root_path = line.split()[-1]
+                    root_path = root_path.replace('"', "")
+
+                    # trying to find directory easybuild inside the root of the
+                    # installation directory of an application
+                    easybuild_path = os.path.join(root_path, "easybuild")
+                    # if directory exist then run the find command
+                    if os.path.isdir(easybuild_path):
+                        eb_file = walk_tree(easybuild_path, ".eb")
+
+                        # only add to list ec_list if there is an easyconfig file
+                        if len(eb_file) > 0:
+                            ec_list += eb_file
+                        else:
+                            no_ec_list.append(
+                                f"Reading File: {module}. "
+                                f"Unable to find any .eb file "
+                                f"in {easybuild_path} "
+                            )
+                    break
+                else:
+                    continue
+        else:
+            no_ec_list.append(
+                f"Reading File: {module}. "
+                f"Unable to find variable root in module file. "
+                f"This module is not generated by easybuild"
+            )
+
+    return ec_list, no_ec_list
+
+def find_easyconfigs():
+    """This method prints the easyconfig lists in a table format and
+    this implements ``buildtest module --easyconfigs``.
+
+    This method invokes ``find_easyconfigs_from_modulelist()`` that retrieves
+    easyconfig and non-easyconfig list.
+
+    This method prints a list of easyconfigs that were retrieved and output
+    content of all non-easyconfig paths to **/tmp/easyconfigs.txt**
+    """
+
+    modulelist = module_obj.get_modulefile_path()
+
+    ec_list, no_ec_list = find_easyconfigs_from_modulelist(modulelist)
+
+    # if one or more easyconfigs found then display the path to easyconfigs
+    if len(ec_list) > 0:
+        print(
+            "List of easyconfigs found in MODULETREES: %s"
+            % (config_opts["BUILDTEST_MODULEPATH"])
+        )
+        print("\n")
+
+        count = 1
+        for ec in ec_list:
+            print(ec)
+            count = count + 1
+    else:
+        print("No easyconfigs found!")
+
+    if len(no_ec_list) > 0:
+        fname = "/tmp/easyconfigs.txt"
+        print("\n")
+        print(f"buildtest was unable to find easyconfigs for {len(no_ec_list)} modules")
+        print(f"Check file: {fname} for more details")
+        fd = open(fname, "w")
+        print("\n")
+        fd.write(
+            "Unable to find easyconfigs for the following, please "
+            + "investigate this issue! \n"
+        )
+
+        for no_ec in no_ec_list:
+            fd.write(no_ec + "\n")
+
+        fd.close()
+    print(f"Total easyconfigs found: {len(ec_list)}")
+    print(f"Total module files searched: {len(modulelist)}")
+
+def list_modules():
+    module = BuildTestModule()
+    module.list_modules()
+
+def func_module_subcmd(args):
+    """Entry point for "buildtest module" subcommand.
+
+    :param args: command line arguments passed to buildtest
+    :type args: dict, required
+    """
+
+    if args.diff_trees:
+        diff_trees(args.diff_trees)
+
+    if args.easybuild:
+        check_easybuild_module()
+
+    if args.spack:
+        check_spack_module()
+
+    if args.module_deps:
+        find_module_deps(args.module_deps)
+
+    if args.easyconfigs:
+        find_easyconfigs()
+
+    if args.software:
+        list_software()
+
+    if args.list:
+        list_modules()

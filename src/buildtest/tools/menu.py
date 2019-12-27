@@ -19,7 +19,6 @@ from buildtest.tools.modulesystem.collection import (
     get_collection_length,
 )
 from buildtest.tools.lsf import func_bsub
-from buildtest.tools.list import func_list_subcmd
 from buildtest.tools.modules import (
     func_module_subcmd,
     module_obj,
@@ -85,7 +84,6 @@ def menu():
         epilog=epilog_str,
     )
 
-    list_title = "Options for listing software, module files, and  easyconfigs"
     show_title = "Options for displaying buildtest configuration"
     testconfig_title = "Options for list, view, and edit test configuration"
     build_title = "Options for building test scripts"
@@ -94,8 +92,7 @@ def menu():
     system_title = "System Configuration"
     config_title = "Buildtest Configuration"
     command_description = f"""
-
-  list        {list_title}
+  
   show        {show_title}  
   testconfigs {testconfig_title}         
   build       {build_title}  
@@ -133,30 +130,6 @@ def menu():
     parser_collection = subparsers_module.add_parser(
         "collection", help="module collection " "operation"
     )
-
-    # -------------------------------- list menu --------------------------
-
-    parser_list.add_argument(
-        "-s",
-        "--software",
-        help="get unique software from Lmod spider command",
-        action="store_true",
-    )
-
-    parser_list.add_argument(
-        "-m",
-        "--modules",
-        help="get full module name and path to module " "files",
-        action="store_true",
-    )
-    parser_list.add_argument(
-        "-ec",
-        "--easyconfigs",
-        help="Return a list of easyconfigs from a module tree",
-        action="store_true",
-    )
-
-    parser_list.set_defaults(func=func_list_subcmd)
 
     # -------------------------------- build menu --------------------------
     parser_build.add_argument(
@@ -351,6 +324,27 @@ def menu():
         choices=parent_choices,
         metavar="AVAILABLE-MODULES",
     )
+
+    parser_module.add_argument(
+        "-s",
+        "--software",
+        help="get unique software from Lmod spider command",
+        action="store_true",
+    )
+
+    parser_module.add_argument(
+        "-l",
+        "--list",
+        help="get full module name and path to module files",
+        action="store_true",
+    )
+    parser_module.add_argument(
+        "-ec",
+        "--easyconfigs",
+        help="Return a list of easyconfigs from a module tree",
+        action="store_true",
+    )
+
 
     # ------------------------- module tree  options ------------
     parser_module_tree.add_argument(

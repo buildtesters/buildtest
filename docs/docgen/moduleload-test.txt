@@ -1,271 +1,271 @@
 $ buildtest module loadtest
-RUN: 1  STATUS: PASSED - Testing module command: module load gompi/2018a; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/gompi/2018a.lua )
+RUN: 1  STATUS: PASSED - Testing module command: module purge; module load gompi/2018a; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/gompi/2018a.lua )
 ________________________________________________________________________________
-RUN: 2  STATUS: PASSED - Testing module command: module load numactl/2.0.11-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/numactl/2.0.11-GCCcore-6.4.0.lua )
+RUN: 2  STATUS: PASSED - Testing module command: module purge; module load numactl/2.0.11-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/numactl/2.0.11-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 3  STATUS: PASSED - Testing module command: module load GCCcore/6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/6.4.0.lua )
+RUN: 3  STATUS: PASSED - Testing module command: module purge; module load GCCcore/6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/6.4.0.lua )
 ________________________________________________________________________________
-RUN: 4  STATUS: PASSED - Testing module command: module load GCCcore/7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/7.4.0.lua )
+RUN: 4  STATUS: PASSED - Testing module command: module purge; module load GCCcore/7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/7.4.0.lua )
 ________________________________________________________________________________
-RUN: 5  STATUS: PASSED - Testing module command: module load GCCcore/9.2.0; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCCcore/9.2.0.lua )
+RUN: 5  STATUS: PASSED - Testing module command: module purge; module load GCCcore/9.2.0; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCCcore/9.2.0.lua )
 ________________________________________________________________________________
-RUN: 6  STATUS: PASSED - Testing module command: module load GCCcore/8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCCcore/8.1.0.lua )
+RUN: 6  STATUS: PASSED - Testing module command: module purge; module load GCCcore/8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCCcore/8.1.0.lua )
 ________________________________________________________________________________
-RUN: 7  STATUS: PASSED - Testing module command: module load GCCcore/8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/8.3.0.lua )
+RUN: 7  STATUS: PASSED - Testing module command: module purge; module load GCCcore/8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/8.3.0.lua )
 ________________________________________________________________________________
-RUN: 8  STATUS: PASSED - Testing module command: module load GCCcore/8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/8.1.0.lua )
+RUN: 8  STATUS: PASSED - Testing module command: module purge; module load GCCcore/8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/8.1.0.lua )
 ________________________________________________________________________________
-RUN: 9  STATUS: PASSED - Testing module command: module load GCCcore/7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/7.1.0.lua )
+RUN: 9  STATUS: PASSED - Testing module command: module purge; module load GCCcore/7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/7.1.0.lua )
 ________________________________________________________________________________
-RUN: 10  STATUS: PASSED - Testing module command: module load flex/2.6.4-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.4-GCCcore-8.3.0.lua )
+RUN: 10  STATUS: PASSED - Testing module command: module purge; module load flex/2.6.4-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.4-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 11  STATUS: PASSED - Testing module command: module load flex/2.6.4; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/flex/2.6.4.lua )
+RUN: 11  STATUS: PASSED - Testing module command: module purge; module load flex/2.6.4; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/flex/2.6.4.lua )
 ________________________________________________________________________________
-RUN: 12  STATUS: PASSED - Testing module command: module load flex/2.6.4-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.4-GCCcore-7.4.0.lua )
+RUN: 12  STATUS: PASSED - Testing module command: module purge; module load flex/2.6.4-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.4-GCCcore-7.4.0.lua )
 ________________________________________________________________________________
-RUN: 13  STATUS: PASSED - Testing module command: module load flex/2.6.3-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.3-GCCcore-7.1.0.lua )
+RUN: 13  STATUS: PASSED - Testing module command: module purge; module load flex/2.6.3-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.3-GCCcore-7.1.0.lua )
 ________________________________________________________________________________
-RUN: 14  STATUS: PASSED - Testing module command: module load flex/2.6.4-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.4-GCCcore-8.1.0.lua )
+RUN: 14  STATUS: PASSED - Testing module command: module purge; module load flex/2.6.4-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.4-GCCcore-8.1.0.lua )
 ________________________________________________________________________________
-RUN: 15  STATUS: PASSED - Testing module command: module load flex/2.6.3; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.3.lua )
+RUN: 15  STATUS: PASSED - Testing module command: module purge; module load flex/2.6.3; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.3.lua )
 ________________________________________________________________________________
-RUN: 16  STATUS: PASSED - Testing module command: module load flex/2.6.4; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.4.lua )
+RUN: 16  STATUS: PASSED - Testing module command: module purge; module load flex/2.6.4; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.4.lua )
 ________________________________________________________________________________
-RUN: 17  STATUS: PASSED - Testing module command: module load flex/2.6.4-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.4-GCCcore-6.4.0.lua )
+RUN: 17  STATUS: PASSED - Testing module command: module purge; module load flex/2.6.4-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.4-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 18  STATUS: PASSED - Testing module command: module load ncurses/6.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/ncurses/6.0.lua )
+RUN: 18  STATUS: PASSED - Testing module command: module purge; module load ncurses/6.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/ncurses/6.0.lua )
 ________________________________________________________________________________
-RUN: 19  STATUS: PASSED - Testing module command: module load ncurses/6.1-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/ncurses/6.1-GCCcore-8.3.0.lua )
+RUN: 19  STATUS: PASSED - Testing module command: module purge; module load ncurses/6.1-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/ncurses/6.1-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 20  STATUS: PASSED - Testing module command: module load ncurses/6.0-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/ncurses/6.0-GCCcore-6.4.0.lua )
+RUN: 20  STATUS: PASSED - Testing module command: module purge; module load ncurses/6.0-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/ncurses/6.0-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 21  STATUS: PASSED - Testing module command: module load ncurses/6.1-3jjw2re; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/ncurses/6.1-3jjw2re.lua )
+RUN: 21  STATUS: PASSED - Testing module command: module purge; module load ncurses/6.1-3jjw2re; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/ncurses/6.1-3jjw2re.lua )
 ________________________________________________________________________________
-RUN: 22  STATUS: PASSED - Testing module command: module load OpenMPI/2.1.2-GCC-6.4.0-2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/OpenMPI/2.1.2-GCC-6.4.0-2.28.lua )
+RUN: 22  STATUS: PASSED - Testing module command: module purge; module load OpenMPI/2.1.2-GCC-6.4.0-2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/OpenMPI/2.1.2-GCC-6.4.0-2.28.lua )
 ________________________________________________________________________________
-RUN: 23 STATUS: FAILED - Testing module command: module load Anaconda3/5.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Anaconda3/5.3.0.lua )
+RUN: 23  STATUS: PASSED - Testing module command: module purge; module load Anaconda3/5.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Anaconda3/5.3.0.lua )
 ________________________________________________________________________________
-RUN: 24  STATUS: PASSED - Testing module command: module load bzip2/1.0.6-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/bzip2/1.0.6-GCCcore-6.4.0.lua )
+RUN: 24  STATUS: PASSED - Testing module command: module purge; module load bzip2/1.0.6-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/bzip2/1.0.6-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 25  STATUS: PASSED - Testing module command: module load bzip2/1.0.8-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/bzip2/1.0.8-GCCcore-8.3.0.lua )
+RUN: 25  STATUS: PASSED - Testing module command: module purge; module load bzip2/1.0.8-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/bzip2/1.0.8-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 26  STATUS: PASSED - Testing module command: module load bzip2/1.0.8-etzfbao; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/bzip2/1.0.8-etzfbao.lua )
+RUN: 26  STATUS: PASSED - Testing module command: module purge; module load bzip2/1.0.8-etzfbao; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/bzip2/1.0.8-etzfbao.lua )
 ________________________________________________________________________________
-RUN: 27  STATUS: PASSED - Testing module command: module load foss/2018a; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/foss/2018a.lua )
+RUN: 27  STATUS: PASSED - Testing module command: module purge; module load foss/2018a; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/foss/2018a.lua )
 ________________________________________________________________________________
-RUN: 28  STATUS: PASSED - Testing module command: module load gettext/0.20.1-c4ovdd2; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/gettext/0.20.1-c4ovdd2.lua )
+RUN: 28  STATUS: PASSED - Testing module command: module purge; module load gettext/0.20.1-c4ovdd2; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/gettext/0.20.1-c4ovdd2.lua )
 ________________________________________________________________________________
-RUN: 29  STATUS: PASSED - Testing module command: module load gettext/0.19.8.1; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/gettext/0.19.8.1.lua )
+RUN: 29  STATUS: PASSED - Testing module command: module purge; module load gettext/0.19.8.1; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/gettext/0.19.8.1.lua )
 ________________________________________________________________________________
-RUN: 30  STATUS: PASSED - Testing module command: module load GCC/6.4.0-2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/6.4.0-2.28.lua )
+RUN: 30  STATUS: PASSED - Testing module command: module purge; module load GCC/6.4.0-2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/6.4.0-2.28.lua )
 ________________________________________________________________________________
-RUN: 31  STATUS: PASSED - Testing module command: module load GCC/7.1.0-2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/7.1.0-2.28.lua )
+RUN: 31  STATUS: PASSED - Testing module command: module purge; module load GCC/7.1.0-2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/7.1.0-2.28.lua )
 ________________________________________________________________________________
-RUN: 32 STATUS: FAILED - Testing module command: module load GCC/9.2.0-2.32; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCC/9.2.0-2.32.lua )
+RUN: 32  STATUS: PASSED - Testing module command: module purge; module load GCC/9.2.0-2.32; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCC/9.2.0-2.32.lua )
 ________________________________________________________________________________
-RUN: 33 STATUS: FAILED - Testing module command: module load GCC/8.1.0-2.30; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/8.1.0-2.30.lua )
+RUN: 33  STATUS: PASSED - Testing module command: module purge; module load GCC/8.1.0-2.30; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/8.1.0-2.30.lua )
 ________________________________________________________________________________
-RUN: 34 STATUS: FAILED - Testing module command: module load GCC/8.1.0-2.30; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCC/8.1.0-2.30.lua )
+RUN: 34  STATUS: PASSED - Testing module command: module purge; module load GCC/8.1.0-2.30; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCC/8.1.0-2.30.lua )
 ________________________________________________________________________________
-RUN: 35  STATUS: PASSED - Testing module command: module load GCC/8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/8.3.0.lua )
+RUN: 35  STATUS: PASSED - Testing module command: module purge; module load GCC/8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/8.3.0.lua )
 ________________________________________________________________________________
-RUN: 36  STATUS: PASSED - Testing module command: module load GCC/7.4.0-2.31.1; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/7.4.0-2.31.1.lua )
+RUN: 36  STATUS: PASSED - Testing module command: module purge; module load GCC/7.4.0-2.31.1; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/7.4.0-2.31.1.lua )
 ________________________________________________________________________________
-RUN: 37  STATUS: PASSED - Testing module command: module load libiconv/1.16-xcmzb6a; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libiconv/1.16-xcmzb6a.lua )
+RUN: 37  STATUS: PASSED - Testing module command: module purge; module load libiconv/1.16-xcmzb6a; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libiconv/1.16-xcmzb6a.lua )
 ________________________________________________________________________________
-RUN: 38  STATUS: PASSED - Testing module command: module load libtool/2.4.6-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libtool/2.4.6-GCCcore-6.4.0.lua )
+RUN: 38  STATUS: PASSED - Testing module command: module purge; module load libtool/2.4.6-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libtool/2.4.6-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 39  STATUS: PASSED - Testing module command: module load libtool/2.4.6-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libtool/2.4.6-GCCcore-8.3.0.lua )
+RUN: 39  STATUS: PASSED - Testing module command: module purge; module load libtool/2.4.6-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libtool/2.4.6-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 40  STATUS: PASSED - Testing module command: module load libtool/2.4.6-swiq7rt; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libtool/2.4.6-swiq7rt.lua )
+RUN: 40  STATUS: PASSED - Testing module command: module purge; module load libtool/2.4.6-swiq7rt; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libtool/2.4.6-swiq7rt.lua )
 ________________________________________________________________________________
-RUN: 41  STATUS: PASSED - Testing module command: module load Tcl/8.6.7-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Tcl/8.6.7-GCCcore-6.4.0.lua )
+RUN: 41  STATUS: PASSED - Testing module command: module purge; module load Tcl/8.6.7-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Tcl/8.6.7-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 42  STATUS: PASSED - Testing module command: module load Tcl/8.6.9-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Tcl/8.6.9-GCCcore-8.3.0.lua )
+RUN: 42  STATUS: PASSED - Testing module command: module purge; module load Tcl/8.6.9-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Tcl/8.6.9-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 43  STATUS: PASSED - Testing module command: module load libpciaccess/0.13.5-cavw42z; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libpciaccess/0.13.5-cavw42z.lua )
+RUN: 43  STATUS: PASSED - Testing module command: module purge; module load libpciaccess/0.13.5-cavw42z; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libpciaccess/0.13.5-cavw42z.lua )
 ________________________________________________________________________________
-RUN: 44  STATUS: PASSED - Testing module command: module load libpciaccess/0.14-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libpciaccess/0.14-GCCcore-6.4.0.lua )
+RUN: 44  STATUS: PASSED - Testing module command: module purge; module load libpciaccess/0.14-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libpciaccess/0.14-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 45  STATUS: PASSED - Testing module command: module load libffi/3.2.1-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libffi/3.2.1-GCCcore-8.3.0.lua )
+RUN: 45  STATUS: PASSED - Testing module command: module purge; module load libffi/3.2.1-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libffi/3.2.1-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 46  STATUS: PASSED - Testing module command: module load xz/5.2.4-lvajsnj; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/xz/5.2.4-lvajsnj.lua )
+RUN: 46  STATUS: PASSED - Testing module command: module purge; module load xz/5.2.4-lvajsnj; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/xz/5.2.4-lvajsnj.lua )
 ________________________________________________________________________________
-RUN: 47  STATUS: PASSED - Testing module command: module load gdbm/1.18.1-r4vohzu; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/gdbm/1.18.1-r4vohzu.lua )
+RUN: 47  STATUS: PASSED - Testing module command: module purge; module load gdbm/1.18.1-r4vohzu; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/gdbm/1.18.1-r4vohzu.lua )
 ________________________________________________________________________________
-RUN: 48  STATUS: PASSED - Testing module command: module load lmod; ( File: /usr/share/lmod/lmod/modulefiles/Core/lmod.lua )
+RUN: 48  STATUS: PASSED - Testing module command: module purge; module load lmod; ( File: /usr/share/lmod/lmod/modulefiles/Core/lmod.lua )
 ________________________________________________________________________________
-RUN: 49  STATUS: PASSED - Testing module command: module load GMP/6.1.2-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GMP/6.1.2-GCCcore-8.3.0.lua )
+RUN: 49  STATUS: PASSED - Testing module command: module purge; module load GMP/6.1.2-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GMP/6.1.2-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 50  STATUS: PASSED - Testing module command: module load GMP/6.1.2-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GMP/6.1.2-GCCcore-6.4.0.lua )
+RUN: 50  STATUS: PASSED - Testing module command: module purge; module load GMP/6.1.2-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/GMP/6.1.2-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 51  STATUS: PASSED - Testing module command: module load util-macros/1.19.1-s4xjvop; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/util-macros/1.19.1-s4xjvop.lua )
+RUN: 51  STATUS: PASSED - Testing module command: module purge; module load util-macros/1.19.1-s4xjvop; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/util-macros/1.19.1-s4xjvop.lua )
 ________________________________________________________________________________
-RUN: 52  STATUS: PASSED - Testing module command: module load Autotools/20170619-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Autotools/20170619-GCCcore-6.4.0.lua )
+RUN: 52  STATUS: PASSED - Testing module command: module purge; module load Autotools/20170619-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Autotools/20170619-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 53  STATUS: PASSED - Testing module command: module load Autotools/20180311-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Autotools/20180311-GCCcore-8.3.0.lua )
+RUN: 53  STATUS: PASSED - Testing module command: module purge; module load Autotools/20180311-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Autotools/20180311-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 54  STATUS: PASSED - Testing module command: module load Python/3.7.4-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Python/3.7.4-GCCcore-8.3.0.lua )
+RUN: 54  STATUS: PASSED - Testing module command: module purge; module load Python/3.7.4-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Python/3.7.4-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 55  STATUS: PASSED - Testing module command: module load Python/2.7.14-GCCcore-6.4.0-bare; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Python/2.7.14-GCCcore-6.4.0-bare.lua )
+RUN: 55  STATUS: PASSED - Testing module command: module purge; module load Python/2.7.14-GCCcore-6.4.0-bare; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Python/2.7.14-GCCcore-6.4.0-bare.lua )
 ________________________________________________________________________________
-RUN: 56  STATUS: PASSED - Testing module command: module load libxml2/2.9.9-azmlgc5; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libxml2/2.9.9-azmlgc5.lua )
+RUN: 56  STATUS: PASSED - Testing module command: module purge; module load libxml2/2.9.9-azmlgc5; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libxml2/2.9.9-azmlgc5.lua )
 ________________________________________________________________________________
-RUN: 57  STATUS: PASSED - Testing module command: module load libxml2/2.9.7-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libxml2/2.9.7-GCCcore-6.4.0.lua )
+RUN: 57  STATUS: PASSED - Testing module command: module purge; module load libxml2/2.9.7-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libxml2/2.9.7-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 58  STATUS: PASSED - Testing module command: module load XZ/5.2.4-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/XZ/5.2.4-GCCcore-8.3.0.lua )
+RUN: 58  STATUS: PASSED - Testing module command: module purge; module load XZ/5.2.4-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/XZ/5.2.4-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 59  STATUS: PASSED - Testing module command: module load XZ/5.2.3-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/XZ/5.2.3-GCCcore-6.4.0.lua )
+RUN: 59  STATUS: PASSED - Testing module command: module purge; module load XZ/5.2.3-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/XZ/5.2.3-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 60  STATUS: PASSED - Testing module command: module load binutils/2.32; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/binutils/2.32.lua )
+RUN: 60  STATUS: PASSED - Testing module command: module purge; module load binutils/2.32; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/binutils/2.32.lua )
 ________________________________________________________________________________
-RUN: 61  STATUS: PASSED - Testing module command: module load binutils/2.30-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.30-GCCcore-8.1.0.lua )
+RUN: 61  STATUS: PASSED - Testing module command: module purge; module load binutils/2.30-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.30-GCCcore-8.1.0.lua )
 ________________________________________________________________________________
-RUN: 62  STATUS: PASSED - Testing module command: module load binutils/2.30; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.30.lua )
+RUN: 62  STATUS: PASSED - Testing module command: module purge; module load binutils/2.30; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.30.lua )
 ________________________________________________________________________________
-RUN: 63  STATUS: PASSED - Testing module command: module load binutils/2.32-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.32-GCCcore-8.3.0.lua )
+RUN: 63  STATUS: PASSED - Testing module command: module purge; module load binutils/2.32-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.32-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 64  STATUS: PASSED - Testing module command: module load binutils/2.32; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.32.lua )
+RUN: 64  STATUS: PASSED - Testing module command: module purge; module load binutils/2.32; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.32.lua )
 ________________________________________________________________________________
-RUN: 65  STATUS: PASSED - Testing module command: module load binutils/2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.28.lua )
+RUN: 65  STATUS: PASSED - Testing module command: module purge; module load binutils/2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.28.lua )
 ________________________________________________________________________________
-RUN: 66  STATUS: PASSED - Testing module command: module load binutils/2.28-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.28-GCCcore-7.1.0.lua )
+RUN: 66  STATUS: PASSED - Testing module command: module purge; module load binutils/2.28-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.28-GCCcore-7.1.0.lua )
 ________________________________________________________________________________
-RUN: 67  STATUS: PASSED - Testing module command: module load binutils/2.31.1-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.31.1-GCCcore-7.4.0.lua )
+RUN: 67  STATUS: PASSED - Testing module command: module purge; module load binutils/2.31.1-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.31.1-GCCcore-7.4.0.lua )
 ________________________________________________________________________________
-RUN: 68  STATUS: PASSED - Testing module command: module load binutils/2.28-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.28-GCCcore-6.4.0.lua )
+RUN: 68  STATUS: PASSED - Testing module command: module purge; module load binutils/2.28-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.28-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 69  STATUS: PASSED - Testing module command: module load binutils/2.30; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/binutils/2.30.lua )
+RUN: 69  STATUS: PASSED - Testing module command: module purge; module load binutils/2.30; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/binutils/2.30.lua )
 ________________________________________________________________________________
-RUN: 70  STATUS: PASSED - Testing module command: module load binutils/2.31.1; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.31.1.lua )
+RUN: 70  STATUS: PASSED - Testing module command: module purge; module load binutils/2.31.1; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/binutils/2.31.1.lua )
 ________________________________________________________________________________
-RUN: 71  STATUS: PASSED - Testing module command: module load SQLite/3.29.0-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/SQLite/3.29.0-GCCcore-8.3.0.lua )
+RUN: 71  STATUS: PASSED - Testing module command: module purge; module load SQLite/3.29.0-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/SQLite/3.29.0-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 72  STATUS: PASSED - Testing module command: module load SQLite/3.20.1-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/SQLite/3.20.1-GCCcore-6.4.0.lua )
+RUN: 72  STATUS: PASSED - Testing module command: module purge; module load SQLite/3.20.1-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/SQLite/3.20.1-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 73  STATUS: PASSED - Testing module command: module load tar/1.32-gem5z6s; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/tar/1.32-gem5z6s.lua )
+RUN: 73  STATUS: PASSED - Testing module command: module purge; module load tar/1.32-gem5z6s; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/tar/1.32-gem5z6s.lua )
 ________________________________________________________________________________
-RUN: 74  STATUS: PASSED - Testing module command: module load xorg-macros/1.19.1-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/xorg-macros/1.19.1-GCCcore-6.4.0.lua )
+RUN: 74  STATUS: PASSED - Testing module command: module purge; module load xorg-macros/1.19.1-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/xorg-macros/1.19.1-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 75  STATUS: PASSED - Testing module command: module load Automake/1.16.1-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Automake/1.16.1-GCCcore-8.3.0.lua )
+RUN: 75  STATUS: PASSED - Testing module command: module purge; module load Automake/1.16.1-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Automake/1.16.1-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 76  STATUS: PASSED - Testing module command: module load Automake/1.15.1-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Automake/1.15.1-GCCcore-6.4.0.lua )
+RUN: 76  STATUS: PASSED - Testing module command: module purge; module load Automake/1.15.1-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Automake/1.15.1-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 77  STATUS: PASSED - Testing module command: module load Autoconf/2.69-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Autoconf/2.69-GCCcore-8.3.0.lua )
+RUN: 77  STATUS: PASSED - Testing module command: module purge; module load Autoconf/2.69-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Autoconf/2.69-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 78  STATUS: PASSED - Testing module command: module load Autoconf/2.69-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Autoconf/2.69-GCCcore-6.4.0.lua )
+RUN: 78  STATUS: PASSED - Testing module command: module purge; module load Autoconf/2.69-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Autoconf/2.69-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 79  STATUS: PASSED - Testing module command: module load settarg; ( File: /usr/share/lmod/lmod/modulefiles/Core/settarg.lua )
+RUN: 79  STATUS: PASSED - Testing module command: module purge; module load settarg; ( File: /usr/share/lmod/lmod/modulefiles/Core/settarg.lua )
 ________________________________________________________________________________
-RUN: 80  STATUS: PASSED - Testing module command: module load OpenBLAS/0.2.20-GCC-6.4.0-2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/OpenBLAS/0.2.20-GCC-6.4.0-2.28.lua )
+RUN: 80  STATUS: PASSED - Testing module command: module purge; module load OpenBLAS/0.2.20-GCC-6.4.0-2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/OpenBLAS/0.2.20-GCC-6.4.0-2.28.lua )
 ________________________________________________________________________________
-RUN: 81  STATUS: PASSED - Testing module command: module load libreadline/7.0-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libreadline/7.0-GCCcore-6.4.0.lua )
+RUN: 81  STATUS: PASSED - Testing module command: module purge; module load libreadline/7.0-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libreadline/7.0-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 82  STATUS: PASSED - Testing module command: module load libreadline/8.0-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libreadline/8.0-GCCcore-8.3.0.lua )
+RUN: 82  STATUS: PASSED - Testing module command: module purge; module load libreadline/8.0-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/libreadline/8.0-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 83  STATUS: PASSED - Testing module command: module load ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20.lua )
+RUN: 83  STATUS: PASSED - Testing module command: module purge; module load ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20.lua )
 ________________________________________________________________________________
-RUN: 84  STATUS: PASSED - Testing module command: module load CUDA/10.0.130; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/CUDA/10.0.130.lua )
+RUN: 84  STATUS: PASSED - Testing module command: module purge; module load CUDA/10.0.130; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/CUDA/10.0.130.lua )
 ________________________________________________________________________________
-RUN: 85  STATUS: PASSED - Testing module command: module load CUDA/9.2.148.1; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/CUDA/9.2.148.1.lua )
+RUN: 85  STATUS: PASSED - Testing module command: module purge; module load CUDA/9.2.148.1; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/CUDA/9.2.148.1.lua )
 ________________________________________________________________________________
-RUN: 86  STATUS: PASSED - Testing module command: module load CMake/3.10.2-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/CMake/3.10.2-GCCcore-6.4.0.lua )
+RUN: 86  STATUS: PASSED - Testing module command: module purge; module load CMake/3.10.2-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/CMake/3.10.2-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 87  STATUS: PASSED - Testing module command: module load FFTW/3.3.7-gompi-2018a; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/FFTW/3.3.7-gompi-2018a.lua )
+RUN: 87  STATUS: PASSED - Testing module command: module purge; module load FFTW/3.3.7-gompi-2018a; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/FFTW/3.3.7-gompi-2018a.lua )
 ________________________________________________________________________________
-RUN: 88  STATUS: PASSED - Testing module command: module load Clang/7.0.0-GCC-6.4.0-2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Clang/7.0.0-GCC-6.4.0-2.28.lua )
+RUN: 88  STATUS: PASSED - Testing module command: module purge; module load Clang/7.0.0-GCC-6.4.0-2.28; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Clang/7.0.0-GCC-6.4.0-2.28.lua )
 ________________________________________________________________________________
-RUN: 89  STATUS: PASSED - Testing module command: module load PyCharm/2017.2.3; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/PyCharm/2017.2.3.lua )
+RUN: 89  STATUS: PASSED - Testing module command: module purge; module load PyCharm/2017.2.3; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/PyCharm/2017.2.3.lua )
 ________________________________________________________________________________
-RUN: 90  STATUS: PASSED - Testing module command: module load hwloc/1.11.8-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/hwloc/1.11.8-GCCcore-6.4.0.lua )
+RUN: 90  STATUS: PASSED - Testing module command: module purge; module load hwloc/1.11.8-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/hwloc/1.11.8-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 91  STATUS: PASSED - Testing module command: module load Bison/3.0.4-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.4-GCCcore-8.1.0.lua )
+RUN: 91  STATUS: PASSED - Testing module command: module purge; module load Bison/3.0.4-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.4-GCCcore-8.1.0.lua )
 ________________________________________________________________________________
-RUN: 92  STATUS: PASSED - Testing module command: module load Bison/3.0.4; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/Bison/3.0.4.lua )
+RUN: 92  STATUS: PASSED - Testing module command: module purge; module load Bison/3.0.4; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/Bison/3.0.4.lua )
 ________________________________________________________________________________
-RUN: 93  STATUS: PASSED - Testing module command: module load Bison/3.0.4-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.4-GCCcore-7.1.0.lua )
+RUN: 93  STATUS: PASSED - Testing module command: module purge; module load Bison/3.0.4-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.4-GCCcore-7.1.0.lua )
 ________________________________________________________________________________
-RUN: 94  STATUS: PASSED - Testing module command: module load Bison/3.0.4; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.4.lua )
+RUN: 94  STATUS: PASSED - Testing module command: module purge; module load Bison/3.0.4; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.4.lua )
 ________________________________________________________________________________
-RUN: 95  STATUS: PASSED - Testing module command: module load Bison/3.0.5; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.5.lua )
+RUN: 95  STATUS: PASSED - Testing module command: module purge; module load Bison/3.0.5; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.5.lua )
 ________________________________________________________________________________
-RUN: 96  STATUS: PASSED - Testing module command: module load Bison/3.3.2-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.3.2-GCCcore-8.3.0.lua )
+RUN: 96  STATUS: PASSED - Testing module command: module purge; module load Bison/3.3.2-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.3.2-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 97  STATUS: PASSED - Testing module command: module load Bison/3.2.2-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.2.2-GCCcore-7.4.0.lua )
+RUN: 97  STATUS: PASSED - Testing module command: module purge; module load Bison/3.2.2-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.2.2-GCCcore-7.4.0.lua )
 ________________________________________________________________________________
-RUN: 98  STATUS: PASSED - Testing module command: module load Bison/3.0.4-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.4-GCCcore-6.4.0.lua )
+RUN: 98  STATUS: PASSED - Testing module command: module purge; module load Bison/3.0.4-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.4-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 99  STATUS: PASSED - Testing module command: module load Bison/3.3.2; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/Bison/3.3.2.lua )
+RUN: 99  STATUS: PASSED - Testing module command: module purge; module load Bison/3.3.2; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/Bison/3.3.2.lua )
 ________________________________________________________________________________
-RUN: 100  STATUS: PASSED - Testing module command: module load Bison/3.0.5-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.5-GCCcore-6.4.0.lua )
+RUN: 100  STATUS: PASSED - Testing module command: module purge; module load Bison/3.0.5-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.5-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 101  STATUS: PASSED - Testing module command: module load Bison/3.3.2; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.3.2.lua )
+RUN: 101  STATUS: PASSED - Testing module command: module purge; module load Bison/3.3.2; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.3.2.lua )
 ________________________________________________________________________________
-RUN: 102  STATUS: PASSED - Testing module command: module load Bison/3.0.5-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.5-GCCcore-8.1.0.lua )
+RUN: 102  STATUS: PASSED - Testing module command: module purge; module load Bison/3.0.5-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/Bison/3.0.5-GCCcore-8.1.0.lua )
 ________________________________________________________________________________
-RUN: 103  STATUS: PASSED - Testing module command: module load m4/1.4.18-dipchcn; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/m4/1.4.18-dipchcn.lua )
+RUN: 103  STATUS: PASSED - Testing module command: module purge; module load m4/1.4.18-dipchcn; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/m4/1.4.18-dipchcn.lua )
 ________________________________________________________________________________
-RUN: 104  STATUS: PASSED - Testing module command: module load pkgconf/1.6.3-oqak6dh; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/pkgconf/1.6.3-oqak6dh.lua )
+RUN: 104  STATUS: PASSED - Testing module command: module purge; module load pkgconf/1.6.3-oqak6dh; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/pkgconf/1.6.3-oqak6dh.lua )
 ________________________________________________________________________________
-RUN: 105  STATUS: PASSED - Testing module command: module load zlib/1.2.11; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11.lua )
+RUN: 105  STATUS: PASSED - Testing module command: module purge; module load zlib/1.2.11; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11.lua )
 ________________________________________________________________________________
-RUN: 106  STATUS: PASSED - Testing module command: module load zlib/1.2.11-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-7.1.0.lua )
+RUN: 106  STATUS: PASSED - Testing module command: module purge; module load zlib/1.2.11-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-7.1.0.lua )
 ________________________________________________________________________________
-RUN: 107  STATUS: PASSED - Testing module command: module load zlib/1.2.11-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-8.3.0.lua )
+RUN: 107  STATUS: PASSED - Testing module command: module purge; module load zlib/1.2.11-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 108  STATUS: PASSED - Testing module command: module load zlib/1.2.11; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/zlib/1.2.11.lua )
+RUN: 108  STATUS: PASSED - Testing module command: module purge; module load zlib/1.2.11; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/zlib/1.2.11.lua )
 ________________________________________________________________________________
-RUN: 109  STATUS: PASSED - Testing module command: module load zlib/1.2.11-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-7.4.0.lua )
+RUN: 109  STATUS: PASSED - Testing module command: module purge; module load zlib/1.2.11-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-7.4.0.lua )
 ________________________________________________________________________________
-RUN: 110  STATUS: PASSED - Testing module command: module load zlib/1.2.11-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-6.4.0.lua )
+RUN: 110  STATUS: PASSED - Testing module command: module purge; module load zlib/1.2.11-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 111  STATUS: PASSED - Testing module command: module load zlib/1.2.11-zolwez4; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/zlib/1.2.11-zolwez4.lua )
+RUN: 111  STATUS: PASSED - Testing module command: module purge; module load zlib/1.2.11-zolwez4; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/zlib/1.2.11-zolwez4.lua )
 ________________________________________________________________________________
-RUN: 112  STATUS: PASSED - Testing module command: module load zlib/1.2.11-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-8.1.0.lua )
+RUN: 112  STATUS: PASSED - Testing module command: module purge; module load zlib/1.2.11-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-8.1.0.lua )
 ________________________________________________________________________________
-RUN: 113  STATUS: PASSED - Testing module command: module load M4/1.4.17; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/M4/1.4.17.lua )
+RUN: 113  STATUS: PASSED - Testing module command: module purge; module load M4/1.4.17; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/M4/1.4.17.lua )
 ________________________________________________________________________________
-RUN: 114  STATUS: PASSED - Testing module command: module load M4/1.4.18-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18-GCCcore-8.3.0.lua )
+RUN: 114  STATUS: PASSED - Testing module command: module purge; module load M4/1.4.18-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 115  STATUS: PASSED - Testing module command: module load M4/1.4.17; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.17.lua )
+RUN: 115  STATUS: PASSED - Testing module command: module purge; module load M4/1.4.17; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.17.lua )
 ________________________________________________________________________________
-RUN: 116  STATUS: PASSED - Testing module command: module load M4/1.4.18-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18-GCCcore-6.4.0.lua )
+RUN: 116  STATUS: PASSED - Testing module command: module purge; module load M4/1.4.18-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 117  STATUS: PASSED - Testing module command: module load M4/1.4.18; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18.lua )
+RUN: 117  STATUS: PASSED - Testing module command: module purge; module load M4/1.4.18; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18.lua )
 ________________________________________________________________________________
-RUN: 118  STATUS: PASSED - Testing module command: module load M4/1.4.18-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18-GCCcore-7.1.0.lua )
+RUN: 118  STATUS: PASSED - Testing module command: module purge; module load M4/1.4.18-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18-GCCcore-7.1.0.lua )
 ________________________________________________________________________________
-RUN: 119  STATUS: PASSED - Testing module command: module load M4/1.4.18-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18-GCCcore-8.1.0.lua )
+RUN: 119  STATUS: PASSED - Testing module command: module purge; module load M4/1.4.18-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18-GCCcore-8.1.0.lua )
 ________________________________________________________________________________
-RUN: 120  STATUS: PASSED - Testing module command: module load M4/1.4.18-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18-GCCcore-7.4.0.lua )
+RUN: 120  STATUS: PASSED - Testing module command: module purge; module load M4/1.4.18-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/M4/1.4.18-GCCcore-7.4.0.lua )
 ________________________________________________________________________________
-RUN: 121  STATUS: PASSED - Testing module command: module load M4/1.4.18; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/M4/1.4.18.lua )
+RUN: 121  STATUS: PASSED - Testing module command: module purge; module load M4/1.4.18; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/M4/1.4.18.lua )
 ________________________________________________________________________________
-RUN: 122  STATUS: PASSED - Testing module command: module load libsigsegv/2.12-oywfhvk; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libsigsegv/2.12-oywfhvk.lua )
+RUN: 122  STATUS: PASSED - Testing module command: module purge; module load libsigsegv/2.12-oywfhvk; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/libsigsegv/2.12-oywfhvk.lua )
 ________________________________________________________________________________
-RUN: 123  STATUS: PASSED - Testing module command: module load readline/8.0-bp7xnfp; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/readline/8.0-bp7xnfp.lua )
+RUN: 123  STATUS: PASSED - Testing module command: module purge; module load readline/8.0-bp7xnfp; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/readline/8.0-bp7xnfp.lua )
 ________________________________________________________________________________
-RUN: 124  STATUS: PASSED - Testing module command: module load help2man/1.47.4-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.4-GCCcore-6.4.0.lua )
+RUN: 124  STATUS: PASSED - Testing module command: module purge; module load help2man/1.47.4-GCCcore-6.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.4-GCCcore-6.4.0.lua )
 ________________________________________________________________________________
-RUN: 125  STATUS: PASSED - Testing module command: module load help2man/1.47.4; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.4.lua )
+RUN: 125  STATUS: PASSED - Testing module command: module purge; module load help2man/1.47.4; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.4.lua )
 ________________________________________________________________________________
-RUN: 126  STATUS: PASSED - Testing module command: module load help2man/1.47.6-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.6-GCCcore-8.1.0.lua )
+RUN: 126  STATUS: PASSED - Testing module command: module purge; module load help2man/1.47.6-GCCcore-8.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.6-GCCcore-8.1.0.lua )
 ________________________________________________________________________________
-RUN: 127  STATUS: PASSED - Testing module command: module load help2man/1.47.8-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.8-GCCcore-8.3.0.lua )
+RUN: 127  STATUS: PASSED - Testing module command: module purge; module load help2man/1.47.8-GCCcore-8.3.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.8-GCCcore-8.3.0.lua )
 ________________________________________________________________________________
-RUN: 128  STATUS: PASSED - Testing module command: module load help2man/1.47.8-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.8-GCCcore-7.4.0.lua )
+RUN: 128  STATUS: PASSED - Testing module command: module purge; module load help2man/1.47.8-GCCcore-7.4.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.8-GCCcore-7.4.0.lua )
 ________________________________________________________________________________
-RUN: 129  STATUS: PASSED - Testing module command: module load help2man/1.47.4-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.4-GCCcore-7.1.0.lua )
+RUN: 129  STATUS: PASSED - Testing module command: module purge; module load help2man/1.47.4-GCCcore-7.1.0; ( File: /mxg-hpc/users/ssi29/easybuild/modules/all/help2man/1.47.4-GCCcore-7.1.0.lua )
 ________________________________________________________________________________
-RUN: 130  STATUS: PASSED - Testing module command: module load help2man/1.47.4; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/help2man/1.47.4.lua )
+RUN: 130  STATUS: PASSED - Testing module command: module purge; module load help2man/1.47.4; ( File: /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/help2man/1.47.4.lua )
 ________________________________________________________________________________
-RUN: 131  STATUS: PASSED - Testing module command: module load diffutils/3.7-jthvt3v; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/diffutils/3.7-jthvt3v.lua )
+RUN: 131  STATUS: PASSED - Testing module command: module purge; module load diffutils/3.7-jthvt3v; ( File: /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/diffutils/3.7-jthvt3v.lua )
 ________________________________________________________________________________
 Writing Results to /tmp/ssi29/buildtest/tests/modules-load.out
 Writing Results to /tmp/ssi29/buildtest/tests/modules-load.err
 ________________________________________________________________________________
                      Module Load Summary
 Module Trees:                            ['/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core', '/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core', '/mxg-hpc/users/ssi29/easybuild/modules/all', '/etc/modulefiles', '/usr/share/modulefiles', '/usr/share/lmod/lmod/modulefiles/Core']
-PASSED:                                  127
-FAILED:                                  4
+PASSED:                                  131
+FAILED:                                  0
 ________________________________________________________________________________

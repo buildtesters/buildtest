@@ -1,4 +1,4 @@
-from buildtest.tools.list import list_software, list_modules, find_easyconfigs
+from buildtest.tools.modules import list_software, list_modules, find_easyconfigs
 from buildtest.tools.config import show_configuration
 from buildtest.tools.system import distro_short
 from buildtest.tools.sysconfig.configuration import func_system_view, func_system_fetch

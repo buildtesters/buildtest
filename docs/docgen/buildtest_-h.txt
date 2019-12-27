@@ -8,8 +8,7 @@ optional arguments:
 
 COMMANDS:
   
-  
-    list        Options for listing software, module files, and  easyconfigs
+    
     show        Options for displaying buildtest configuration  
     testconfigs Options for list, view, and edit test configuration         
     build       Options for building test scripts  

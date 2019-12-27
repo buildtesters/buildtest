@@ -16,15 +16,15 @@ buildtest collects this information via ``BUILDTEST_MODULEPATH`` which is
 equivalent to ``MODULEPATH`` but can be tweaked by buildtest to add & remove
 directory at will.
 
-Shown below is unique software list using ``buildtest list --software``
+Shown below is unique software list using ``buildtest module --software``
 
-.. program-output:: head -10 docgen/buildtest_list_--software.txt && echo -e "...\n..." && tail -10 docgen/buildtest_list_--software.txt
+.. program-output:: head -10 docgen/buildtest_module_--software.txt && echo -e "...\n..." && tail -10 docgen/buildtest_module_--software.txt
    :shell:
 
 Similarly we can retrieve full name of module file and absolute path to
-module file using ``buildtest list --module`` or short option ``buildtest list -m``
+module file using ``buildtest module --list`` or short option ``buildtest module -l``
 
-.. program-output:: head -10 docgen/buildtest_list_--modules.txt && echo -e "...\n..." && tail -10 docgen/buildtest_list_--modules.txt
+.. program-output:: head -10 docgen/buildtest_module_--list.txt && echo -e "...\n..." && tail -10 docgen/buildtest_module_--list.txt
    :shell:
 
 Module Testing

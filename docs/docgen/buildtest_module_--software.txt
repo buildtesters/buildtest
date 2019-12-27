@@ -1,4 +1,4 @@
-$ buildtest list --software
+$ buildtest module --software
 Anaconda3
 Autoconf
 Automake

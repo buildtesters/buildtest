@@ -1,54 +1,36 @@
 Introspection Operation
 =========================
 
-.. contents::
-   :backlinks: none
 
-List Options (``buildtest list --help``)
-____________________________________________
-
-.. program-output:: cat docgen/buildtest_list_-h.txt
-
-
-buildtest comes with a set of options for listing useful info such as
-
--  List Unique software
-
--  List software-modulefile relationship
-
--  List of easyconfigs
-
-
-List Software (``buildtest list --software``)
+List Software (``buildtest module --software``)
 ---------------------------------------------------------------
 
-buildtest can report the software list by running the following ``buildtest list --software`` or
-short option ``buildtest list -s``
+buildtest can report the software list by running the following ``buildtest module --software`` or
+short option ``buildtest module -s``
 
 
 buildtest determines the software list based on the module trees specified in ``BUILDTEST_MODULEPATH``
 and processes each module tree and returns a  unique software list
 
-.. program-output:: head -n 10 docgen/buildtest_list_--software.txt
+.. program-output:: head -n 10 docgen/buildtest_module_--software.txt
 
 
-Listing Modules (``buildtest list --modules``)
+Listing Modules (``buildtest module --list``)
 ------------------------------------------------
 
-If you want to view a breakdown of all modules then use ``buildtest list
---modules`` or short option ``buildtest list -m``
+If you want to view a breakdown of all modules then use ``buildtest module --list`` or short option ``buildtest module -l``
 
 The output will be sorted by software and each entry will correspond to the full path of the modulefile.
 
-.. program-output:: head -n 10 docgen/buildtest_list_--modules.txt
+.. program-output:: head -n 10 docgen/buildtest_module_--list.txt
 
 .. _list_easyconfigs:
 
-List easyconfigs from module trees (``buildtest list --easyconfigs``)
+List easyconfigs from module trees (``buildtest module --easyconfigs``)
 -------------------------------------------------------------------------
 
 buildtest can return a list of easyconfigs from module trees defined in ``BUILDTEST_MODULEPATH``.
-You can run ``buildtest list --easyconfigs`` or short option ``buildtest list -ec``.
+You can run ``buildtest module --easyconfigs`` or short option ``buildtest module -ec``.
 
 buildtest will report full path to easyconfigs and also report any errors if it can't find
 any easyconfig. If you specify a module tree that is not built by easybuild you can expect
@@ -57,7 +39,7 @@ some **warning** or **error** messages which is intended.
 buildtest will attempt to search for any file with ``.eb`` extension  in ``easybuild`` directory
 that is part of install directory of each software for every easybuild app.
 
-.. program-output:: head -n 10 docgen/buildtest_list_--easyconfigs.txt
+.. program-output:: head -n 10 docgen/buildtest_module_--easyconfigs.txt
 
 
 If an easyconfig is not found you may get the following message

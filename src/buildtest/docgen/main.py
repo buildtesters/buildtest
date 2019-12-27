@@ -14,7 +14,6 @@ docgen = os.path.join(os.getenv("BUILDTEST_ROOT"), "docs", "docgen")
 def build_helper():
     help_cmds = [
         "buildtest -h",
-        "buildtest list -h",
         "buildtest show -h",
         "buildtest testconfigs -h",
         "buildtest testconfigs maintainer -h",
@@ -47,9 +46,9 @@ def run(query):
 def introspection_cmds():
 
     queries = [
-        "buildtest list --software",
-        "buildtest list --modules",
-        "buildtest list --easyconfigs",
+        "buildtest module --software",
+        "buildtest module --list",
+        "buildtest module --easyconfigs",
         "buildtest show -k singlesource",
         "buildtest show --config",
         "buildtest config view",

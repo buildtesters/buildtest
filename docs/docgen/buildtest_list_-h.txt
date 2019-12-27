@@ -1,8 +1,0 @@
-$ buildtest list -h
-usage: buildtest [options] [COMMANDS] list [-h] [-s] [-m] [-ec]
-
-optional arguments:
-  -h, --help          show this help message and exit
-  -s, --software      get unique software from Lmod spider command
-  -m, --modules       get full module name and path to module files
-  -ec, --easyconfigs  Return a list of easyconfigs from a module tree
