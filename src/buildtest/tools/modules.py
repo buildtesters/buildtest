@@ -393,6 +393,10 @@ def module_load_test(args):
     failed_modules = []
     passed_modules = []
     count = 0
+
+    login_shell = config_opts["module"]["loadtest"]["login"]
+    purge_modules = config_opts["module"]["loadtest"]["purge_modules"]
+    numtest_limit = False
     for key in module_dict.keys():
         for mpath in module_dict[key].keys():
             if mpath not in module_stack:
@@ -414,8 +418,17 @@ def module_load_test(args):
             # need to skip module loadtest for any modules that have .version or .modulerc in name
             if os.path.basename(fname).startswith(".version") or os.path.basename(fname).startswith(".modulerc"):
                 continue
-
             cmd = []
+
+            # invoke login shell (bash --login -c)
+            if login_shell:
+                cmd.append("bash")
+                cmd.append("--login")
+                cmd.append("-c")
+
+            # if purge_modules set then run "module purge" before loading modules
+            if purge_modules:
+                cmd.append("module purge;")
             for item in parent_modules:
                 cmd.append(f"module try-load {item}; ")
             cmd.append(f"module load {fname};")
@@ -451,6 +464,14 @@ def module_load_test(args):
                 for line in err.decode("utf-8").splitlines():
                     fd_err.write(line)
             print("{:_<80}".format(""))
+
+            # exit module loadtest if numtest is reached
+            if count >= config_opts["module"]["loadtest"]["numtest"] and config_opts["module"]["loadtest"]["numtest"] > 0:
+                numtest_limit = True
+                break
+        # exit module loadtest when numtest limit is reached
+        if numtest_limit:
+            break
 
     fd_out.close()
     fd_err.close()

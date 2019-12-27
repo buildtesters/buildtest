@@ -25,6 +25,7 @@ BUILDTEST_TESTDIR: /tmp/$USER/buildtest/tests
 EDITOR: vim
 
 module:
+  # control behavior for listing modules (buildtest list --modules)
   list:
     # exclude_version_files: yes - will not add .version, .modulerc, or .modulerc.lua files in output. Setting this to "no" will
     # let buildtest add these files and will be present in output
@@ -38,3 +39,13 @@ module:
       include: []
     # querylimit controls number of entries displayed with output. A non-negative value means all entries will be displayed
     querylimit: -1
+
+  # control behavior for module load testing (buildtest module loadtest)
+  loadtest:
+    # run each module load in a login shell. Otherwise will use run command in sub-shell.
+    # invoking command in a login shell can take a considerable time when testing module loadtest
+    login: no
+    # if purge_modules: yes - Then "module purge" will be executed before loading modules
+    purge_modules: yes
+    # number of module load test to run before exiting. Setting to non-negative value will result in all modules to be tested
+    numtest: -1
