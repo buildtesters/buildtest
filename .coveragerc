@@ -12,6 +12,7 @@ exclude_lines =
     def func_list_subcmd
     def func_module_subcmd
     def func_module_tree_subcmd
+    def func_collection_subcmd
 
     # Don't complain about missing debug-only code:
     def __repr__

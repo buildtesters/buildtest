@@ -1,6 +1,7 @@
-import yaml
 import os
+import pytest
 import shutil
+import yaml
 from buildtest.tools.modules import check_spack_module, check_easybuild_module, \
     find_module_deps
 from buildtest.tools.modulesystem.module_difference import diff_trees
@@ -8,6 +9,7 @@ from buildtest.tools.modulesystem.tree import module_tree_add, module_tree_list,
     module_tree_rm, module_tree_set
 from buildtest.tools.config import BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import create_dir
+from buildtest.tools.log import BuildTestError
 
 """
 def test_spack_modules():
@@ -93,3 +95,9 @@ def test_module_diff():
     tree2 = os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
     tree_list = f"{tree1},{tree2}"
     diff_trees(tree_list)
+
+@pytest.mark.xfail(raises=BuildTestError)
+def test_module_diff_invalid_args():
+    """Test Example when only passing one tree"""
+    tree = os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
+    diff_trees(tree)

@@ -106,7 +106,6 @@ def menu():
     )
 
     # ---------------------------------- sub parsers -----------------------
-    parser_list = subparsers.add_parser("list")
     parser_build = subparsers.add_parser("build")
     parser_show = subparsers.add_parser("show")
     parser_benchmark = subparsers.add_parser("benchmark")

@@ -75,32 +75,6 @@ def walk_tree(root_dir, ext):
 
     return list_files
 
-
-def walk_tree_multi_ext(root_dir, ext_list):
-    """This method will traverse a directory tree and return list of files
-    based on extension type where extension is a list of extension types.
-    This method invokes is_dir() to check if directory exists before traversal
-
-    :param root_dir: directory path to traverse
-    :type root_dir: string, required
-    :param ext_list: list of file extensions to search in traversal
-    :type ext: List, required
-
-    :return: returns a list of file paths
-    :rtype: List
-    """
-    list_files = []
-    is_dir(root_dir)
-    for root, subdir, files in os.walk(root_dir):
-        for fname in files:
-            # return a list of True, False based on file extension
-            ext_bool_list = [fname.endswith(ext) for ext in ext_list]
-            if any(ext_bool_list):
-                list_files.append(os.path.join(root, fname))
-
-    return list_files
-
-
 def create_file(filename):
     """Create an empty file if file doesn't exist. Logs details
     in log file. Runs a "try" block to write an empty file, if an

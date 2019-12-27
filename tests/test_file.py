@@ -1,7 +1,7 @@
 import pytest
 import os
 import shutil
-from buildtest.tools.file  import is_dir, is_file, create_file, create_dir
+from buildtest.tools.file  import is_dir, is_file, create_file, create_dir, walk_tree
 from buildtest.tools.log import BuildTestError
 
 @pytest.mark.xfail(raises=BuildTestError)
@@ -32,7 +32,9 @@ def test_create_file():
     create_file("~/b.txt")
 
     assert True is os.path.isfile("/tmp/a.txt")
+    # checking variable expansion
     assert True is os.path.isfile(os.path.expandvars("$HOME/a.txt"))
+    # checking ~ expansion
     assert True is os.path.isfile(os.path.expanduser("~/b.txt"))
 
     os.remove("/tmp/a.txt")
@@ -51,3 +53,11 @@ def test_create_dir():
     assert True is os.path.isdir(os.path.expanduser("~/x/y/z"))
     shutil.rmtree(os.path.expandvars("$HOME/a/"))
     shutil.rmtree(os.path.expanduser("~/x/"))
+
+def test_walk_tree():
+    list_of_files = walk_tree(os.path.join(os.getenv("BUILDTEST_ROOT"),"src"),".py")
+    assert len(list_of_files) > 0
+
+@pytest.mark.xfail(raises=BuildTestError)
+def test_walk_tree_invalid_dir():
+    walk_tree("/xyz",".py")

@@ -1,5 +1,6 @@
 import os, sys
 from buildtest.tools.file import is_dir, string_in_file
+from buildtest.tools.log import BuildTestError
 
 
 def get_module_list_by_tree(mod_tree):
@@ -37,8 +38,7 @@ def diff_trees(args_trees):
 
     # no comma found between two trees
     if args_trees.find(",") == -1:
-        print("Usage: --diff-trees /path/to/tree1,/path/to/tree2")
-        sys.exit(1)
+        raise BuildTestError("Usage: --diff-trees /path/to/tree1,/path/to/tree2")
     else:
         id_x = args_trees.find(",")
         tree1 = args_trees[0:id_x]

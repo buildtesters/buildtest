@@ -28,12 +28,13 @@ from buildtest.tools.modulesystem.collection import get_buildtest_module_collect
 
 
 class BuildTestModule:
-    """This class BuildTestModule provides methods to retrieve
-    unique modules (get_unique_modules()), list of module file paths (get_module_file_path()),
-    get parent modules (get_parent_modules()).
-
-    In addition this method can retrieve spider dictionary using get_module_spider_json()
-    and Lmod version using get_version()
+    """This class ``BuildTestModule`` parses content of Lmod spider and implements several methods used by buildtest.
+    The following methods are implemented:
+      ``get_module_spider_json()`` - get full content of spider as json object
+      ``get_unique_modules()`` - get unique module names (i.e top level key of spider)
+      ``get_modulefile_path()`` - get list of all absolute path to modulefiles
+      ``get_parent_modules()`` - get parent module entry
+      ``get_version()`` - retrieves Lmod version
     """
 
     def __init__(self):
@@ -46,7 +47,6 @@ class BuildTestModule:
         out = subprocess.check_output(cmd, shell=True).decode("utf-8")
         self.module_dict = json.loads(out)
         self.major_ver = self.get_version()[0]
-
 
     def get_module_spider_json(self):
         """Returns self.module_dict which is the json output of spider.
@@ -99,86 +99,6 @@ class BuildTestModule:
                     module_path_list.append(mpath)
 
         return sorted(module_path_list)
-
-    def list_modules(self):
-        """This method gets unique software from spider and prints the software
-           with total count.
-
-           This method implements ``buildtest module --list``.
-           """
-
-        querylimit = config_opts["module"]["list"]["querylimit"]
-        module_filter_include = config_opts["module"]["list"]["filter"]["include"]
-
-        text = """
-    Full Module Name                     |      ModuleFile Path
------------------------------------------|----------------------------- """
-        print(text)
-
-        count = 0
-        lua_modules = non_lua_modules = 0
-
-        modfile_abspaths = self.get_modulefile_path()
-
-
-        #print (module_filter_include)
-        #for module in self.get_unique_modules():
-        dict = {}
-        for module in self.module_dict.keys():
-            for mpath in self.module_dict[module].keys():
-                # skip to next entry if modulefile not found in list of modulefile paths
-                if mpath not in modfile_abspaths:
-                    continue
-
-                fullName = ""
-                if self.major_ver == 6:
-                    fullName = self.module_dict[module][mpath]["full"]
-                elif self.major_ver >= 7:
-                    fullName = self.module_dict[module][mpath]["fullName"]
-
-                if config_opts["module"]["list"]["exclude_version_files"]:
-                    if os.path.basename(fullName).startswith(".version") or os.path.basename(fullName).startswith(".modulerc"):
-                        continue
-
-                # if filter include list is not empty, then only add module full name that correspond to list.
-                if len(module_filter_include) > 0:
-                    strip_fname_by_slash = ""
-                    #print (fullName,fullName.index("/"))
-                    if fullName.find("/") > 0:
-                        strip_fname_by_slash = fullName.split("/")[0]
-                    else:
-                        strip_fname_by_slash = fullName
-
-                    if strip_fname_by_slash in module_filter_include:
-                        dict[mpath]=fullName
-                # otherwise add all modules
-                else:
-                    dict[mpath] = fullName
-
-        for mpath,fname in dict.items():
-            count += 1
-            # print lua modules in green
-            if os.path.splitext(mpath)[1] == ".lua":
-                text = (fname + "\t |").expandtabs(40) + "\t" + mpath
-                cprint(text, "green")
-                lua_modules += 1
-            else:
-                print((fname + "\t |").expandtabs(40) + "\t" + mpath)
-                non_lua_modules += 1
-
-            # only print modules up to the query limit and query limit is a non-negative number
-            if count >= querylimit and querylimit > 0:
-                break
-
-
-
-        print("\n")
-        print(f"Total Software Modules: {count}")
-        msg = f"Total LUA Modules: {lua_modules}"
-        cprint(msg, "green")
-        print(f"Total non LUA Modules: {non_lua_modules}")
-
-
 
     def get_parent_modules(self, modname):
         """Get Parent module for a module name. This can be retrieved by
@@ -233,8 +153,8 @@ class BuildTestModule:
 
     def get_version(self):
         """Return Lmod major version.
-
-        :rtype: int
+        :return: a list of integers containing Lmod version
+        :rtype: list
         """
         cmd = os.getenv("LMOD_VERSION")
         version = [int(v) for v in cmd.split(".")]
@@ -681,8 +601,81 @@ def find_easyconfigs():
     print(f"Total module files searched: {len(modulelist)}")
 
 def list_modules():
-    module = BuildTestModule()
-    module.list_modules()
+    """This method gets unique software from spider and prints the software
+       with total count.
+
+       This method implements ``buildtest module --list``.
+       """
+
+    querylimit = config_opts["module"]["list"]["querylimit"]
+    module_filter_include = config_opts["module"]["list"]["filter"]["include"]
+
+    text = """
+    Full Module Name                     |      ModuleFile Path
+-----------------------------------------|----------------------------- """
+    print(text)
+
+    count = 0
+    lua_modules = non_lua_modules = 0
+
+    modfile_abspaths = module_obj.get_modulefile_path()
+    module_dict = module_obj.get_module_spider_json()
+    lmod_major_version = module_obj.get_version()[0]
+    # print (module_filter_include)
+    # for module in self.get_unique_modules():
+    dict = {}
+    for module in module_dict.keys():
+        for mpath in module_dict[module].keys():
+            # skip to next entry if modulefile not found in list of modulefile paths
+            if mpath not in modfile_abspaths:
+                continue
+
+            fullName = ""
+            if lmod_major_version == 6:
+                fullName = module_dict[module][mpath]["full"]
+            elif lmod_major_version >= 7:
+                fullName = module_dict[module][mpath]["fullName"]
+
+            if config_opts["module"]["list"]["exclude_version_files"]:
+                if os.path.basename(fullName).startswith(".version") or os.path.basename(fullName).startswith(
+                        ".modulerc"):
+                    continue
+
+            # if filter include list is not empty, then only add module full name that correspond to list.
+            if len(module_filter_include) > 0:
+                strip_fname_by_slash = ""
+                # print (fullName,fullName.index("/"))
+                if fullName.find("/") > 0:
+                    strip_fname_by_slash = fullName.split("/")[0]
+                else:
+                    strip_fname_by_slash = fullName
+
+                if strip_fname_by_slash in module_filter_include:
+                    dict[mpath] = fullName
+            # otherwise add all modules
+            else:
+                dict[mpath] = fullName
+
+    for mpath, fname in dict.items():
+        count += 1
+        # print lua modules in green
+        if os.path.splitext(mpath)[1] == ".lua":
+            text = (fname + "\t |").expandtabs(40) + "\t" + mpath
+            cprint(text, "green")
+            lua_modules += 1
+        else:
+            print((fname + "\t |").expandtabs(40) + "\t" + mpath)
+            non_lua_modules += 1
+
+        # only print modules up to the query limit and query limit is a non-negative number
+        if count >= querylimit and querylimit > 0:
+            break
+
+    print("\n")
+    print(f"Total Software Modules: {count}")
+    msg = f"Total LUA Modules: {lua_modules}"
+    cprint(msg, "green")
+    print(f"Total non LUA Modules: {non_lua_modules}")
 
 def func_module_subcmd(args):
     """Entry point for "buildtest module" subcommand.
