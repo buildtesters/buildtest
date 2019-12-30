@@ -73,6 +73,8 @@ def introspection_cmds():
 def module_cmds():
     module_dict = {
         "moduleload-test.txt": "buildtest module loadtest",
+        "module-diff-trees.txt": "buildtest module --diff-trees /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core,/usr/share/lmod/lmod/modulefiles/Core",
+        "module-diff-trees-same.txt": "buildtest module --diff-trees /usr/share/lmod/lmod/modulefiles/Core,/usr/share/lmod/lmod/modulefiles/Core",
         "add_module_tree.txt": "buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core",
         "remove_module_tree.txt": "buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core",
         "default_module_tree.txt": "buildtest module tree -l",

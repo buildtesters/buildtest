@@ -27,13 +27,13 @@ system and buildtest will walk through the entire tree. We expect this operation
 given that the module tree is on the order of few thousand module files which is a reasonable
 count of module files in a large HPC facility.
 
-.. program-output:: cat scripts/module-diff.txt
+.. program-output:: cat docgen/module-diff-trees.txt
 
 If your site supports multiple architecture and you want to find difference
 between the stacks then you will find ``--diff-trees`` to be handy. If the
 stacks are same you will see the following message
 
-.. program-output:: cat scripts/module-diff-v2.txt
+.. program-output:: cat docgen/module-diff-trees-same.txt
 
 
 Module Load Testing (``buildtest module loadtest``)
