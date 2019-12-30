@@ -30,7 +30,7 @@ Programming Language: c
 CC: gcc
 CFLAGS: -O2
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/hello_lsf.yml.0xdc5091eb.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/hello_lsf.yml.0x5aa7aeb3.sh",
     "scheduler": [
         "#BSUB -M 200M",
         "#BSUB -R sandybridge",
@@ -45,7 +45,7 @@ CFLAGS: -O2
         "SRCFILE=$SRCDIR/hello.c",
         "CC=gcc",
         "CFLAGS=\"-O2\"",
-        "EXECUTABLE=hello_lsf.yml.0xa7ad8bd9.exe"
+        "EXECUTABLE=hello_lsf.yml.0x77d4a72d.exe"
     ],
     "envs": [],
     "build": [
