@@ -16,14 +16,14 @@ def test_spack_modules():
     module_tree_add(["/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core"])
     check_spack_module()
     module_tree_rm(["/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core"])
-"""
+
 
 def test_easybuild_modules():
     module_tree_add(["/opt/easybuild/modules/all"])
     check_easybuild_module()
     module_tree_rm(["/opt/easybuild/modules/all"])
 
-"""
+
 def test_module_deps():
     module_tree_add(["/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core"])
     find_module_deps("GCCcore/8.1.0")
