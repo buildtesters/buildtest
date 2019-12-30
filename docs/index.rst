@@ -37,7 +37,6 @@ This documentation was last rebuild on |today| and is intended for version |vers
    :caption: Background
 
    what_is_buildtest.rst
-   concepts.rst
    feature_overview.rst
 
 
