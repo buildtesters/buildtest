@@ -8,4 +8,4 @@ BUILDTEST_SPIDER_VIEW                              (C) = current
 BUILDTEST_SUCCESS_THRESHOLD                        (C) = 1.0
 BUILDTEST_TESTDIR                                  (C) = /tmp/ssi29/buildtest/tests
 EDITOR                                             (E) = vim
-module                                             (C) = {'list': {'exclude_version_files': True, 'filter': {'include': []}, 'querylimit': -1}, 'loadtest': {'login': False, 'purge_modules': True, 'numtest': -1}}
+module                                             (C) = {'list': {'exclude_version_files': True, 'filter': {'include': []}, 'querylimit': -1}, 'loadtest': {'login': False, 'numtest': -1, 'purge_modules': True}}

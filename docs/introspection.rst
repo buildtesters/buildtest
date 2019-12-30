@@ -24,30 +24,6 @@ The output will be sorted by software and each entry will correspond to the full
 
 .. program-output:: head -n 10 docgen/buildtest_module_--list.txt
 
-.. _list_easyconfigs:
-
-List easyconfigs from module trees (``buildtest module --easyconfigs``)
--------------------------------------------------------------------------
-
-buildtest can return a list of easyconfigs from module trees defined in ``BUILDTEST_MODULEPATH``.
-You can run ``buildtest module --easyconfigs`` or short option ``buildtest module -ec``.
-
-buildtest will report full path to easyconfigs and also report any errors if it can't find
-any easyconfig. If you specify a module tree that is not built by easybuild you can expect
-some **warning** or **error** messages which is intended.
-
-buildtest will attempt to search for any file with ``.eb`` extension  in ``easybuild`` directory
-that is part of install directory of each software for every easybuild app.
-
-.. program-output:: head -n 10 docgen/buildtest_module_--easyconfigs.txt
-
-
-If an easyconfig is not found you may get the following message
-
-.. Error::
-
-    Could not find easyconfig in /clust/app/easybuild/2018/IvyBridge/redhat/7.3/software/NWChem/6.8.revision47-intel-2018a-2017-12-14-Python-2.7.14/easybuild
-
 
 Show Options (``buildtest show --help``)
 _________________________________________

@@ -17,7 +17,7 @@ COMMANDS:
     system      System Configuration
     config      Buildtest Configuration
 
-  {list,build,show,benchmark,testconfigs,module,system,config}
+  {build,show,benchmark,testconfigs,module,system,config}
 
 Miscellaneous Options :
   -V, --version         show program's version number and exit

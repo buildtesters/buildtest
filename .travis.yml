@@ -33,13 +33,12 @@ before_script:
   - export EASYBUILD_PREFIX=/opt/easybuild
   - mkdir -p $EASYBUILD_PREFIX
   - eb --version
-  - whoami
   - eb flex-2.6.3.eb --robot
 script:
   - module use $EASYBUILD_PREFIX
   - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh
-  - coverage run -m pytest tests/
+  - coverage run -m pytest -v tests/
   - coverage report -m
 
 after_success:

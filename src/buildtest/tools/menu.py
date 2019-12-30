@@ -337,12 +337,6 @@ def menu():
         help="get full module name and path to module files",
         action="store_true",
     )
-    parser_module.add_argument(
-        "-ec",
-        "--easyconfigs",
-        help="Return a list of easyconfigs from a module tree",
-        action="store_true",
-    )
 
 
     # ------------------------- module tree  options ------------
