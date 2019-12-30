@@ -29,7 +29,7 @@ from buildtest.tools.modulesystem.collection import get_buildtest_module_collect
 
 class BuildTestModule:
     """This class ``BuildTestModule`` parses content of Lmod spider and implements several methods used by buildtest.
-    The following methods are implemented:
+        The following methods are implemented:
       ``get_module_spider_json()`` - get full content of spider as json object
       ``get_unique_modules()`` - get unique module names (i.e top level key of spider)
       ``get_modulefile_path()`` - get list of all absolute path to modulefiles
@@ -505,15 +505,26 @@ def list_software():
     print("\n")
     print("Total Software Packages: ", len(module_stack))
 
-def list_modules():
+def list_modules(args):
     """This method gets unique software from spider and prints the software
        with total count.
 
-       This method implements ``buildtest module --list``.
+       This method implements ``buildtest module list``.
        """
 
     querylimit = config_opts["module"]["list"]["querylimit"]
     module_filter_include = config_opts["module"]["list"]["filter"]["include"]
+    exclude_version_files = config_opts["module"]["list"]["exclude_version_files"]
+
+    # override option if command line option --querylimit is passed
+    if args.querylimit:
+        querylimit = args.querylimit
+    # override option if command line option --filter-include is passed
+    if args.filter_include:
+        module_filter_include = args.filter_include
+    # override option if command line option --exclude-version-files is passed
+    if args.exclude_version_files:
+        exclude_version_files = args.exclude_version_files
 
     text = """
     Full Module Name                     |      ModuleFile Path
@@ -541,7 +552,7 @@ def list_modules():
             elif lmod_major_version >= 7:
                 fullName = module_dict[module][mpath]["fullName"]
 
-            if config_opts["module"]["list"]["exclude_version_files"]:
+            if exclude_version_files:
                 if os.path.basename(fullName).startswith(".version") or os.path.basename(fullName).startswith(
                         ".modulerc"):
                     continue

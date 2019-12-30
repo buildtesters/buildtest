@@ -1,7 +1,7 @@
 $ buildtest module -h
 usage: buildtest [options] [COMMANDS] module [-h] [--diff-trees DIFF_TREES] [-eb] [--spack] [-d AVAILABLE-MODULES]
-                                             [-s] [-l]
-                                             {loadtest,tree,collection} ...
+                                             [-s]
+                                             {list,loadtest,tree,collection} ...
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -12,13 +12,13 @@ optional arguments:
   -d AVAILABLE-MODULES, --module-deps AVAILABLE-MODULES
                         retrieve all modules that module is depended on
   -s, --software        get unique software from Lmod spider command
-  -l, --list            get full module name and path to module files
 
 subcommands:
   Module utilties for managing module collections, module trees, module load testing, reporting eb/spack modules,and
   report difference between trees.
 
-  {loadtest,tree,collection}
+  {list,loadtest,tree,collection}
+    list                module list operation
     loadtest            module load test
     tree                module tree operation
     collection          module collection operation

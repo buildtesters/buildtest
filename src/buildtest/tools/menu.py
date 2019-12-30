@@ -25,6 +25,7 @@ from buildtest.tools.modules import (
     module_load_test,
     get_all_parents,
     get_module_permutation_choices,
+    list_modules
 )
 from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
 
@@ -119,7 +120,9 @@ def menu():
         " module trees, module load testing, reporting eb/spack modules,"
         "and report difference between trees."
     )
-
+    parser_module_list = subparsers_module.add_parser(
+        "list", help="module list operation"
+    )
     parser_moduleload = subparsers_module.add_parser(
         "loadtest", help="module load test"
     )
@@ -331,14 +334,6 @@ def menu():
         action="store_true",
     )
 
-    parser_module.add_argument(
-        "-l",
-        "--list",
-        help="get full module name and path to module files",
-        action="store_true",
-    )
-
-
     # ------------------------- module tree  options ------------
     parser_module_tree.add_argument(
         "-a",
@@ -396,12 +391,22 @@ def menu():
         action="store_true",
     )
 
-
+    # ------------------------- module loadtest options ------------
     parser_moduleload.add_argument("--login",help="Run test in a login shell", action="store_true")
     parser_moduleload.add_argument("--numtest", help="Number of tests to run before exiting",type=int)
     parser_moduleload.add_argument("--purge-modules",help="purge modules before loading modules.", action="store_true")
 
+    # ------------------------- module list options ------------
+    parser_module_list.add_argument("--exclude-version-files",
+                                    help="Exclude version files from search when reporting module list",
+                                    action="store_true")
+    parser_module_list.add_argument("--filter-include",
+                                    help="Filter output by including only modules of interest.", type=str, nargs='+', default=None)
+    parser_module_list.add_argument("--querylimit",
+                                    help="Limit query of modules during module list", type=int)
+
     parser_moduleload.set_defaults(func=module_load_test)
+    parser_module_list.set_defaults(func=list_modules)
     parser_module_tree.set_defaults(func=func_module_tree_subcmd)
     parser_collection.set_defaults(func=func_collection_subcmd)
     parser_module.set_defaults(func=func_module_subcmd)

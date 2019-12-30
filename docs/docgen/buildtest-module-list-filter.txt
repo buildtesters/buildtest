@@ -1,0 +1,27 @@
+$ buildtest module list --filter-include "GCC" "Python" "zlib"
+
+    Full Module Name                     |      ModuleFile Path
+-----------------------------------------|-----------------------------
+GCC/6.4.0-2.28                           |      /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/6.4.0-2.28.lua
+GCC/7.1.0-2.28                           |      /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/7.1.0-2.28.lua
+GCC/9.2.0-2.32                           |      /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCC/9.2.0-2.32.lua
+GCC/8.1.0-2.30                           |      /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/8.1.0-2.30.lua
+GCC/8.1.0-2.30                           |      /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCC/8.1.0-2.30.lua
+GCC/8.3.0                                |      /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/8.3.0.lua
+GCC/7.4.0-2.31.1                         |      /mxg-hpc/users/ssi29/easybuild/modules/all/GCC/7.4.0-2.31.1.lua
+Python/3.7.4-GCCcore-8.3.0               |      /mxg-hpc/users/ssi29/easybuild/modules/all/Python/3.7.4-GCCcore-8.3.0.lua
+Python/2.7.14-GCCcore-6.4.0-bare         |      /mxg-hpc/users/ssi29/easybuild/modules/all/Python/2.7.14-GCCcore-6.4.0-bare.lua
+zlib/1.2.11                              |      /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11.lua
+zlib/1.2.11-GCCcore-7.1.0                |      /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-7.1.0.lua
+zlib/1.2.11-GCCcore-8.3.0                |      /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-8.3.0.lua
+zlib/1.2.11                              |      /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/zlib/1.2.11.lua
+zlib/1.2.11-GCCcore-7.4.0                |      /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-7.4.0.lua
+zlib/1.2.11-GCCcore-6.4.0                |      /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-6.4.0.lua
+zlib/1.2.11-zolwez4                      |      /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core/zlib/1.2.11-zolwez4.lua
+zlib/1.2.11-GCCcore-8.1.0                |      /mxg-hpc/users/ssi29/easybuild/modules/all/zlib/1.2.11-GCCcore-8.1.0.lua
+
+
+Total Software Modules: 17
+Total LUA Modules: 17
+Total non LUA Modules: 0
+

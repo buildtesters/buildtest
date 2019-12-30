@@ -9,6 +9,50 @@ Module Options (``buildtest module --help``)
 
 .. program-output:: cat docgen/buildtest_module_-h.txt
 
+.. _buildtest_module_list:
+
+Module List (``buildtest module list``)
+-------------------------------------------
+
+.. program-output:: cat docgen/buildtest_module_list_-h.txt
+
+buildtest can report list of all modules (full Canonical Name) and absolute path to module file by searching all
+module trees defined by **BUILDTEST_MODULEPATH**. buildtest comes with a default configuration defined in settings.yml
+as follows::
+
+    module:
+      list:
+        exclude_version_files: true
+        filter:
+          include: []
+        querylimit: -1
+
+
+Each of these configuration can be overridden by passing them via command line. By default, buildtest will exclude version
+files from the output. The version files are **.version**, **.modulerc** or **.modulerc.lua** files found in same directory
+where module files reside. This is controlled by setting ``exclude_version_files: true``. If you set ``exclude_version_files: false``
+then buildtest will report version files in output if found at your site. You can override this setting by passing
+option ``--exclude-version-files``.
+
+To limit output of query you can set ``querylimit`` to a positive value. A negative value or 0 will result in all modules
+to be printed. You can override this option by passing ``--querylimit`` via command line.
+
+If you are interested in filter output by module full name you can use the option ``--filter-include`` or use the configuration
+file. For example, you are interested in reporting all ``GCC``, ``Python`` and ``zlib`` modules you can set this in your
+configuration as follows::
+
+    module:
+      list:
+        filter:
+          include: [GCC, Python, zlib]
+
+Shown below is an example of filtered output by modules
+
+.. program-output:: cat docgen/buildtest-module-list-filter.txt
+
+Shown below is an example of restricting output by using ``--querylimit``
+
+.. program-output:: cat docgen/buildtest-module-list-limit.txt
 
 
 Difference Between Module Trees (``buildtest module --diff-trees``)
@@ -51,7 +95,7 @@ use ``buildtest module loadtest``
 
 To demonstrate let's kick off a module load test as shown below.
 
-.. program-output:: head -10 docgen/moduleload-test.txt
+.. program-output:: head -14 docgen/moduleload-test.txt
 
 buildtest will attempt to run ``module load`` against each module to verify modules are working properly.
 

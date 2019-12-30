@@ -1,0 +1,19 @@
+$ buildtest module list --querylimit 10
+
+    Full Module Name                     |      ModuleFile Path
+-----------------------------------------|----------------------------- 
+[32mgompi/2018a                              |	/mxg-hpc/users/ssi29/easybuild/modules/all/gompi/2018a.lua[0m
+[32mnumactl/2.0.11-GCCcore-6.4.0             |	/mxg-hpc/users/ssi29/easybuild/modules/all/numactl/2.0.11-GCCcore-6.4.0.lua[0m
+[32mGCCcore/6.4.0                            |	/mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/6.4.0.lua[0m
+[32mGCCcore/7.4.0                            |	/mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/7.4.0.lua[0m
+[32mGCCcore/9.2.0                            |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCCcore/9.2.0.lua[0m
+[32mGCCcore/8.1.0                            |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCCcore/8.1.0.lua[0m
+[32mGCCcore/8.3.0                            |	/mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/8.3.0.lua[0m
+[32mGCCcore/8.1.0                            |	/mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/8.1.0.lua[0m
+[32mGCCcore/7.1.0                            |	/mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/7.1.0.lua[0m
+[32mflex/2.6.4-GCCcore-8.3.0                 |	/mxg-hpc/users/ssi29/easybuild/modules/all/flex/2.6.4-GCCcore-8.3.0.lua[0m
+
+
+Total Software Modules: 10
+[32mTotal LUA Modules: 10[0m
+Total non LUA Modules: 0

@@ -22,6 +22,7 @@ def build_helper():
         "buildtest benchmark -h",
         "buildtest benchmark osu -h",
         "buildtest module -h",
+        "buildtest module list -h",
         "buildtest module loadtest -h",
         "buildtest module tree -h",
         "buildtest module collection -h",
@@ -48,7 +49,7 @@ def introspection_cmds():
 
     queries = [
         "buildtest module --software",
-        "buildtest module --list",
+        "buildtest module list",
         "buildtest show -k singlesource",
         "buildtest show --config",
         "buildtest config view",
@@ -73,6 +74,8 @@ def introspection_cmds():
 
 def module_cmds():
     module_dict = {
+        "buildtest-module-list-filter.txt": """build module list --filter-include "GCC" "Anaconda3" """,
+        "buildtest-module-list-limit.txt": "buildtest module list --querylimit 10",
         "moduleload-test.txt": "buildtest module loadtest",
         "moduleload-test-login.txt": "buildtest module loadtest --login --numtest 5",
         "module-diff-trees.txt": "buildtest module --diff-trees /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core,/usr/share/lmod/lmod/modulefiles/Core",

@@ -22,10 +22,10 @@ Shown below is unique software list using ``buildtest module --software``
    :shell:
 
 Similarly we can retrieve full name of module file and absolute path to
-module file using ``buildtest module --list`` or short option ``buildtest module -l``
+module file using ``buildtest module list``
 
-.. program-output:: head -10 docgen/buildtest_module_--list.txt && echo -e "...\n..." && tail -10 docgen/buildtest_module_--list.txt
-   :shell:
+.. program-output:: head -10 docgen/buildtest_module_list.txt
+
 
 Module Testing
 ---------------
