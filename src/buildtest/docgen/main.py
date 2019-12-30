@@ -22,6 +22,7 @@ def build_helper():
         "buildtest benchmark -h",
         "buildtest benchmark osu -h",
         "buildtest module -h",
+        "buildtest module loadtest -h",
         "buildtest module tree -h",
         "buildtest module collection -h",
         "buildtest config -h",
@@ -73,6 +74,7 @@ def introspection_cmds():
 def module_cmds():
     module_dict = {
         "moduleload-test.txt": "buildtest module loadtest",
+        "moduleload-test-login.txt": "buildtest module loadtest --login --numtest 5",
         "module-diff-trees.txt": "buildtest module --diff-trees /mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core,/usr/share/lmod/lmod/modulefiles/Core",
         "module-diff-trees-same.txt": "buildtest module --diff-trees /usr/share/lmod/lmod/modulefiles/Core,/usr/share/lmod/lmod/modulefiles/Core",
         "add_module_tree.txt": "buildtest module tree -a /usr/share/lmod/lmod/modulefiles/Core",

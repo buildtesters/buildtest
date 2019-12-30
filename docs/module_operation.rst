@@ -39,6 +39,8 @@ stacks are same you will see the following message
 Module Load Testing (``buildtest module loadtest``)
 --------------------------------------------------------------
 
+.. program-output:: cat docgen/buildtest_module_loadtest_-h.txt
+
 buildtest provides feature to test ``module load`` functionality on all module files
 in a module tree. This assumes you have the module tree in ``MODULEPATH`` in order
 for ``module`` command to work properly.
@@ -49,16 +51,35 @@ use ``buildtest module loadtest``
 
 To demonstrate let's kick off a module load test as shown below.
 
-.. command-output:: head -15 docgen/moduleload-test.txt && echo -e "...\n..." && tail -15 docgen/moduleload-test.txt
-   :shell:
+.. program-output:: head -10 docgen/moduleload-test.txt
 
 buildtest will attempt to run ``module load`` against each module to verify modules are working properly.
 
-You may specify additional module trees using ``BUILDTEST_MODULEPATH`` for
-module testing.
+Tweaking module loadtest behavior
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you want to test all modules that were detected by ``spider`` utility,
-you can set ``BUILDTEST_SPIDER_VIEW=all`` in your configuration or
+The buildtest configuration (**settings.yml**) related to module loadtest, comes with a default set of options as shown below::
+
+    module:
+      loadtest:
+        login: false
+        numtest: -1
+        purge_modules: true
+
+
+If you want to run each test in a login shell consider setting ``login: true`` in configuration or via ``--login`` on
+the command line. buildtest will insert ``module purge`` before loading the modules, this can be changed by using flag ``--purge-modules`` on
+command line to enable purging modules. Alternatively you can configure this in your buildtest configuration ``purge_modules``.
+Setting ``purge_modules: false`` will cause buildtest to **NOT** purge the modules before loading modules. Options passed
+by command line will override configuration setting.
+
+
+Shown below we test modules in a login shell ``--login`` and restrict test to 5 entries by setting ``--numtest 5``.
+
+.. program-output:: cat docgen/moduleload-test-login.txt
+
+You may specify additional module trees using ``BUILDTEST_MODULEPATH`` for module testing. If you want to test all
+modules that were detected by ``spider`` utility, you can set ``BUILDTEST_SPIDER_VIEW=all`` in your configuration or
 environment variable or just run as follows::
 
 

@@ -9,6 +9,6 @@ Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: gcc
 CFLAGS: -Wall -g
-Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/args.c.yml.0x77aa0053.sh
+Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/args.c.yml.0xa952ef37.sh
 --------------------------------------------------------------------------------
 

@@ -294,10 +294,22 @@ def module_load_test(args):
     failed_modules = []
     passed_modules = []
     count = 0
-
+    # variable used to break out of nested loop during module loadtest
+    break_loop = False
     login_shell = config_opts["module"]["loadtest"]["login"]
     purge_modules = config_opts["module"]["loadtest"]["purge_modules"]
-    numtest_limit = False
+    numtest = config_opts["module"]["loadtest"]["numtest"]
+    # override login value if specified from command line
+    if args.login:
+        login_shell = args.login
+    # override purge_modules if specified from command line
+    if args.purge_modules:
+        purge_modules = args.purge_modules
+
+    if args.numtest:
+        numtest = args.numtest
+
+
     for key in module_dict.keys():
         for mpath in module_dict[key].keys():
             if mpath not in module_stack:
@@ -367,11 +379,11 @@ def module_load_test(args):
             print("{:_<80}".format(""))
 
             # exit module loadtest if numtest is reached
-            if count >= config_opts["module"]["loadtest"]["numtest"] and config_opts["module"]["loadtest"]["numtest"] > 0:
-                numtest_limit = True
+            if count >= numtest and numtest > 0:
+                break_loop = True
                 break
         # exit module loadtest when numtest limit is reached
-        if numtest_limit:
+        if break_loop:
             break
 
     fd_out.close()

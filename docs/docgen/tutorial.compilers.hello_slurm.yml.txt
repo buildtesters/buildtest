@@ -30,7 +30,7 @@ Programming Language: c++
 CXX: g++
 CXXFLAGS: -O2
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/hello_slurm.yml.0xdb807023.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/hello_slurm.yml.0x818f98ad.sh",
     "scheduler": [
         "#SBATCH --mem 200M",
         "#SBATCH -C sandybridge",
@@ -46,7 +46,7 @@ CXXFLAGS: -O2
         "SRCFILE=$SRCDIR/hello.cpp",
         "CXX=g++",
         "CXXFLAGS=\"-O2\"",
-        "EXECUTABLE=hello_slurm.yml.0xb47dc74a.exe"
+        "EXECUTABLE=hello_slurm.yml.0x80fc490f.exe"
     ],
     "envs": [],
     "build": [

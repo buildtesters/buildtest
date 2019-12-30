@@ -395,6 +395,12 @@ def menu():
         help="Check all module collection by performing module load test.",
         action="store_true",
     )
+
+
+    parser_moduleload.add_argument("--login",help="Run test in a login shell", action="store_true")
+    parser_moduleload.add_argument("--numtest", help="Number of tests to run before exiting",type=int)
+    parser_moduleload.add_argument("--purge-modules",help="purge modules before loading modules.", action="store_true")
+
     parser_moduleload.set_defaults(func=module_load_test)
     parser_module_tree.set_defaults(func=func_module_tree_subcmd)
     parser_collection.set_defaults(func=func_collection_subcmd)
