@@ -21,13 +21,13 @@ sys.path.insert(0, os.path.join(BUILDTEST_ROOT,'src'))
 
 # -- Project information -----------------------------------------------------
 project = 'buildtest'
-copyright = '2017-2019, Shahzeb Siddiqui'
+copyright = '2017-2020, Shahzeb Siddiqui'
 author = 'Shahzeb Siddiqui'
 
 # The short X.Y version
-version = '0.7.4'
+version = '0.7.5'
 # The full version, including alpha/beta/rc tags
-release = '2019.11.12'
+release = '2019.31.12'
 
 
 # -- General configuration ---------------------------------------------------

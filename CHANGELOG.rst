@@ -2,6 +2,30 @@
 CHANGELOG
 =================
 
+v0.7.5 (Dec 31st, 2019)
+-----------------------
+
+- Major improvement to Travis build. buildtest will now test for python ``3.6``, ``3.7``, ``3.8`` for Lmod version ``6.6.2`` and ``7.8.2``
+- Travis will install easybuild and setup a mini software stack that is used for by regression test
+- Port the regression test to comply with Travis build environment and ``coverage`` report automatically get pushed to CodeCov
+- Removing subcommand ``buildtest benchmark [hpl | hpcg]``
+- Add options to ``buildtest module loadtest`` to control behavior on module loadtest.
+- buildtest can run module loadtest in a **login shell** via ``buildtest module loadtest --login`` and restrict number of
+  test using ``--numtest`` flag. buildtest will automatically purge modules before loading test but this can be tweaked
+  using ``--purge-modules`` flag
+- Remove command ``buildtest list`` and remove implementation for retrieving easyconfigs ``buildtest list --easyconfigs``
+- Option ``buildtest list --software`` is now ``buildtest module --software`` and ``buildtest list --modules`` is now ``buildtest module list``
+- Add the following flags: ``--exclude-version-files``, ``--filter-include``, ``--querylimit`` to ``buildtest module list``
+  to tweak behavior on module list
+- Update buildtest configuration (``settings.yml``) with equivalent **key/value** to control behavior of ``buildtest module [list | loadtest]``.
+  The configuration values are overridden by command line flags
+- buildtest will ignore ``.version``, ``.modulerc`` and ``.modulerc.lua`` files when reporting modules in ``buildtest module list``. This
+  is controlled by ``exclude-version-files`` in configuration or flag ``--exclude-version-files``
+- Remove sanity check feature ``buildtest build --package`` and ``buildtest build --binary`` and remove configuration ``BUILDTEST_BINARY`` from configuration file
+- Remove option ``buildtest build --parent-module-search`` and remove ``BUILDTEST_PARENT_MODULE_SEARCH`` from configuration file
+- Update documentation procedure regarding **installation of buildtest** and remove **Concepts** page
+
+
 v0.7.4 (Dec 11th, 2019)
 -------------------------
 

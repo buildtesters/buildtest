@@ -38,7 +38,7 @@ before_script:
   - export EASYBUILD_PREFIX=/opt/easybuild
   - mkdir -p $EASYBUILD_PREFIX
   - eb --version
-  - eb flex-2.6.3.eb --robot
+  - eb M4-1.4.17.eb bzip2-1.0.6.eb --robot
 
 script:
   - module use $EASYBUILD_PREFIX/modules/all/

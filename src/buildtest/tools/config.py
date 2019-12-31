@@ -6,7 +6,7 @@ import subprocess
 from shutil import copy
 
 
-BUILDTEST_VERSION = "0.7.4"
+BUILDTEST_VERSION = "0.7.5"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 
 # test scripts that need to be run locally
