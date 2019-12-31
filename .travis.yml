@@ -14,6 +14,7 @@ branches:
 env:
   matrix:
     - LMOD_VERSION=6.6.2
+    - LMOD_VERSION=7.8.2
 addons:
   apt:
     packages:
@@ -41,6 +42,7 @@ before_script:
 
 script:
   - module use $EASYBUILD_PREFIX/modules/all/
+  - module use $LMOD_PKG/modulefiles/Core
   - echo $MODULEPATH
   - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh

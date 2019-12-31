@@ -28,4 +28,4 @@ coverage:
       paths: null
 
 ignore:
-  - src/buildtest/docgen
+  - "src/buildtest/docgen"
