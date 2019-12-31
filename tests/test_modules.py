@@ -34,6 +34,9 @@ def test_diff_trees():
 
 """
 
+def test_module_tree_list():
+    module_tree_list()
+
 def test_module_tree_add_and_remove():
 
     module_tree_add([os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core")])
@@ -54,6 +57,8 @@ def test_module_tree_add_and_remove():
     assert os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core") not in content["BUILDTEST_MODULEPATH"]
 
 def test_module_tree_set():
+    """Testing if module tree can be set via command line ``buildtest module tree -s <tree>``. This will
+        update the configuration."""
     module_tree_set(os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core"))
 
     fd = open(BUILDTEST_CONFIG_FILE,"r")
@@ -62,6 +67,7 @@ def test_module_tree_set():
 
     assert os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core") in content["BUILDTEST_MODULEPATH"]
 
+    # undo set operation by removing tree
     module_tree_rm([os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core")])
 
 def test_module_tree_with_directory_expansion():
@@ -93,6 +99,8 @@ def test_module_tree_with_directory_expansion():
     shutil.rmtree(os.path.expanduser(dir2))
 
 def test_module_diff():
+    """Testing module difference between two trees. First test is testing against same module tree, and the second
+        test is against a different tree. """
     tree1 = os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
     tree2 = os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
     tree_list = f"{tree1},{tree2}"
@@ -103,6 +111,6 @@ def test_module_diff():
 
 @pytest.mark.xfail(raises=BuildTestError)
 def test_module_diff_invalid_args():
-    """Test Example when only passing one tree"""
+    """Testing when one moduletree is passed to ``buildtest module --diff-trees``"""
     tree = os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
     diff_trees(tree)

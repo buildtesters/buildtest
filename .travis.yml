@@ -38,8 +38,8 @@ before_script:
   - mkdir -p $EASYBUILD_PREFIX
   - eb --version
   - eb flex-2.6.3.eb --robot
+
 script:
-  - module av
   - module use $EASYBUILD_PREFIX/modules/all/
   - echo $MODULEPATH
   - cd $TRAVIS_BUILD_DIR
