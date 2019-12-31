@@ -39,7 +39,9 @@ before_script:
   - eb --version
   - eb flex-2.6.3.eb --robot
 script:
-  - module use $EASYBUILD_PREFIX
+  - module av
+  - module use $EASYBUILD_PREFIX/modules/all/
+  - echo $MODULEPATH
   - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh
   - coverage run -m pytest -v -rP tests/

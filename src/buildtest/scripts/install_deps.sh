@@ -1,3 +1,4 @@
+# Original Script is found in easybuilders/easybuild-framework:  https://github.com/easybuilders/easybuild-framework/blob/develop/easybuild/scripts/install_eb_dep.sh
 #!/bin/bash
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <version>"
