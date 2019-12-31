@@ -2,6 +2,10 @@ language: python
 dist: xenial
 arch:
   - amd64
+python:
+  - 3.6
+  - 3.7
+  - 3.8
 git:
   quiet: true
 branches:
@@ -38,7 +42,7 @@ script:
   - module use $EASYBUILD_PREFIX
   - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh
-  - coverage run -m pytest -v tests/
+  - coverage run -m pytest -v -rP tests/
   - coverage report -m
 
 after_success:

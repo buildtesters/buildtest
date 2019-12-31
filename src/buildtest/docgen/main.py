@@ -74,7 +74,7 @@ def introspection_cmds():
 
 def module_cmds():
     module_dict = {
-        "buildtest-module-list-filter.txt": """build module list --filter-include "GCC" "Anaconda3" """,
+        "buildtest-module-list-filter.txt": """buildtest module list --filter-include "GCC" "Anaconda3" """,
         "buildtest-module-list-limit.txt": "buildtest module list --querylimit 10",
         "moduleload-test.txt": "buildtest module loadtest",
         "moduleload-test-login.txt": "buildtest module loadtest --login --numtest 5",
