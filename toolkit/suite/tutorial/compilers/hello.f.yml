@@ -1,5 +1,5 @@
 testtype: singlesource
-description: Hello World Fortran example using GNU compiler
+description: Hello World Fortran example using Intel compiler
 scheduler: local
 
 program:

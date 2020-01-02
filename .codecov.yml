@@ -26,6 +26,4 @@ coverage:
       branches: null
       flags: null
       paths: null
-
-ignore:
-  - "src/buildtest/docgen"
+      paths: null

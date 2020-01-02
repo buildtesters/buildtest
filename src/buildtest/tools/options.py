@@ -11,7 +11,6 @@ from buildtest.tools.log import BuildTestError
 def override_configuration():
     """This method override buildtest options by environment variables """
 
-    bool_config_override("BUILDTEST_BINARY")
     bool_config_override("BUILDTEST_MODULE_FORCE_PURGE")
 
     if os.environ.get("BUILDTEST_SPIDER_VIEW"):
