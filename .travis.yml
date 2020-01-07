@@ -30,7 +30,7 @@ install:
   - pip --version
   - pip install easybuild
   - pip install -r docs/requirements.txt
-  - source $TRAVIS_BUILD_DIR/src/buildtest/scripts/install_deps.sh $LMOD_VERSION
+  - source $TRAVIS_BUILD_DIR/buildtest/scripts/install_deps.sh $LMOD_VERSION
 
 before_script:
   - type module
