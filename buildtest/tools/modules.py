@@ -593,6 +593,21 @@ def list_modules(args):
     cprint(msg, "green")
     print(f"Total non LUA Modules: {non_lua_modules}")
 
+def list_all_parent_modules():
+    """Implements method ``buildtest module --list-all-parents``"""
+    parent_modules = get_all_parents()
+
+    fd = open(BUILDTEST_MODULE_FILE, "r")
+    module_json = json.load(fd)
+    fd.close()
+
+    # find abspath of parent module file and print the parent module and modulefile path
+    for x in parent_modules:
+        for module in module_json.keys():
+            for mpath in module_json[module].keys():
+                if module_json[module][mpath]["fullName"] in x:
+                    print (x, mpath)
+
 def func_module_subcmd(args):
     """Entry point for "buildtest module" subcommand.
 
@@ -612,8 +627,8 @@ def func_module_subcmd(args):
     if args.module_deps:
         find_module_deps(args.module_deps)
 
+    if args.list_all_parents:
+        list_all_parent_modules()
+
     if args.software:
         list_software()
-
-    if args.list:
-        list_modules()

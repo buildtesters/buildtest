@@ -390,7 +390,11 @@ class BuildTestParser():
             choices=parent_choices,
             metavar="AVAILABLE-MODULES",
         )
-
+        parser_module.add_argument(
+            "--list-all-parents",
+            help="List all parent modules (modules that set MODULEPATH)",
+            action="store_true"
+        )
         parser_module.add_argument(
             "-s",
             "--software",
