@@ -59,7 +59,7 @@ def test_fail_create_dir():
     create_dir("/xyz")
 
 def test_walk_tree():
-    list_of_files = walk_tree(os.path.join(os.getenv("BUILDTEST_ROOT"),"src"),".py")
+    list_of_files = walk_tree(os.path.join(os.getenv("BUILDTEST_ROOT"),"buildtest"),".py")
     assert len(list_of_files) > 0
 
 @pytest.mark.xfail(raises=BuildTestError)

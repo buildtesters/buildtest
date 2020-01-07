@@ -13,7 +13,7 @@ def testconfig_choices():
     return test_config_name_mapping().keys()
 
 
-def func_testconfigs_show(args):
+def func_testconfigs_show(args=None):
     """ Prints all test configuration and description of test.
 
     This method implements ``buildtest testconfigs list``
@@ -61,13 +61,14 @@ def test_config_name_mapping():
     return test_config_table
 
 
-def func_testconfigs_view(args):
+def func_testconfigs_view(args=None):
     """Print content of test configuration. This method implements
     ``buildtest testconfigs view <config>`` command.
 
     :param args: command line arguments to buildtest
     :type args: dict, required
     """
+
     test_config_table = test_config_name_mapping()
     query = f"cat {test_config_table[args.name]}"
     cmd = BuildTestCommand()
@@ -76,7 +77,7 @@ def func_testconfigs_view(args):
     print(out)
 
 
-def func_testconfigs_edit(args):
+def func_testconfigs_edit(args=None):
     """Open test configuration in editor. This method implements
     ``buildtest testconfigs edit <config>`` command
 

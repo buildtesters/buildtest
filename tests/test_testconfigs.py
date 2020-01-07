@@ -6,8 +6,9 @@ def test_testconfigs_show():
 
 """
 def test_testconfigs_view():
-    dict = {
-        "name": "tutorial.compilers.args.c.yml"
-    }
-    func_testconfigs_view(dict)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("name",type=str)
+    args = parser.parse_args(['name'="tutorial.compilers.args.c.yml"])
+    print(args,args.name)
+    func_testconfigs_view(args)
 """

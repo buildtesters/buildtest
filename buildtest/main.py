@@ -1,23 +1,29 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.getenv("BUILDTEST_ROOT"), "src"))
+sys.path.insert(0, os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest"))
 # column width for linewrap for argparse library
 os.environ["COLUMNS"] = "120"
 
-from buildtest.tools.menu import menu, parse_options, BuildTestParser
+from buildtest.tools.menu import BuildTestParser
 from buildtest.tools.system import BuildTestSystem
-
+from buildtest.tools.options import override_configuration
+from buildtest.tools.config import check_configuration
 
 def main():
     """Entry point to buildtest."""
 
     buildtest_system = BuildTestSystem()
     buildtest_system.check_system_requirements()
+
+    override_configuration()
+    check_configuration()
+
     parser = BuildTestParser()
     args = parser.parse_options()
 
-    #parser.parse_options(("subcommands": "show","config": True) )
+    #print (args)
+
 
 
 if __name__ == "__main__":

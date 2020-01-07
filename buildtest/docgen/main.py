@@ -3,7 +3,7 @@ This file is used for generating documentation tests.
 """
 import os, sys
 
-sys.path.insert(0, os.path.join(os.getenv("BUILDTEST_ROOT"), "src"))
+sys.path.insert(0, os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest"))
 
 from buildtest.tools.system import BuildTestCommand
 from buildtest.tools.file import create_dir

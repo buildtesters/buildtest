@@ -36,4 +36,4 @@ fi
 
 cd $BUILDTEST_ROOT
 
-$PYTHON -m src.main "$@"
+$PYTHON -m buildtest.main "$@"

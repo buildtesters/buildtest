@@ -29,7 +29,6 @@ from buildtest.tools.modules import (
 )
 from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
 
-from buildtest.tools.options import override_configuration
 from buildtest.tools.show import func_show_subcmd
 from buildtest.tools.buildsystem.status import (
     show_status_report,
@@ -443,6 +442,7 @@ class BuildTestParser():
         test_config_choice = testconfig_choices()
 
         parser_testconfigs = self.subparsers.add_parser("testconfigs")
+
 
         # -------------------------------- buildtest testconfigs options ----------------------
         subparsers_testconfigs = parser_testconfigs.add_subparsers(

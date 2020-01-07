@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.getenv("BUILDTEST_ROOT"), "src"))
+sys.path.insert(0, os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest"))
 
 from buildtest.tools.buildsystem.status import (
     show_status_report,

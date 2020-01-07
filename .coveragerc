@@ -2,8 +2,8 @@
 branch = True
 source = src
 omit =
-    src/buildtest/docgen/*
-    src/buildtest/benchmark/*
+    buildtest/docgen/*
+    buildtest/benchmark/*
 [report]
 # Regexes for lines to exclude from consideration
 exclude_lines =
