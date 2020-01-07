@@ -1,6 +1,6 @@
 [run]
 branch = True
-source = src
+source = buildtest
 omit =
     buildtest/docgen/*
     buildtest/benchmark/*
