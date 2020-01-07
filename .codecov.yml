@@ -1,5 +1,4 @@
 codecov:
-  bot: "shahzebsiddiqui"
   ci:
     - "travis.org"
   require_ci_to_pass: yes
@@ -20,7 +19,7 @@ coverage:
       if_ci_failed: error
   notify:
     slack:
-      url: "https://hooks.slack.com/services/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"
+      url: "https://hpcbuildtest.slack.com/services/BS2GZJYMB"
       only_pulls: false
       branches: null
       flags: null
