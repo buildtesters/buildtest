@@ -216,6 +216,10 @@ def find_module_deps(parent_module):
     # add module file path where parent module is found in "parent" key
     for mod in module_json.keys():
         for mpath in module_json[mod].keys():
+            if os.path.basename(module_json[mod][mpath]["fullName"]).startswith(".version") or os.path.basename(module_json[mod][mpath]["fullName"]).startswith(
+                ".modulerc"):
+                continue
+
             for parent_list in module_json[mod][mpath]["parent"]:
                 if parent_module in parent_list:
                     parent_list_found.append(mpath)
