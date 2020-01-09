@@ -18,7 +18,7 @@ from termcolor import cprint
 from buildtest.tools.config import (
     config_opts,
     BUILDTEST_CONFIG_FILE,
-    BUILDTEST_MODULE_FILE
+    BUILDTEST_MODULE_FILE,
 )
 
 
@@ -216,8 +216,11 @@ def find_module_deps(parent_module):
     # add module file path where parent module is found in "parent" key
     for mod in module_json.keys():
         for mpath in module_json[mod].keys():
-            if os.path.basename(module_json[mod][mpath]["fullName"]).startswith(".version") or os.path.basename(module_json[mod][mpath]["fullName"]).startswith(
-                ".modulerc"):
+            if os.path.basename(module_json[mod][mpath]["fullName"]).startswith(
+                ".version"
+            ) or os.path.basename(module_json[mod][mpath]["fullName"]).startswith(
+                ".modulerc"
+            ):
                 continue
 
             for parent_list in module_json[mod][mpath]["parent"]:
@@ -261,7 +264,6 @@ def find_modules(module_args):
                 tmp.append(json_module[i][mpath]["fullName"])
                 all_modules.append(tmp)
                 continue
-
 
             for parent in json_module[i][mpath]["parent"]:
                 parent.append(json_module[i][mpath]["fullName"])
@@ -313,12 +315,10 @@ def module_load_test(args):
     if args.numtest:
         numtest = args.numtest
 
-
     for key in module_dict.keys():
         for mpath in module_dict[key].keys():
             if mpath not in module_stack:
                 continue
-
 
             fname = ""
             parent_modules = []
@@ -333,7 +333,9 @@ def module_load_test(args):
                     parent_modules = module_dict[key][mpath]["parentAA"][0]
 
             # need to skip module loadtest for any modules that have .version or .modulerc in name
-            if os.path.basename(fname).startswith(".version") or os.path.basename(fname).startswith(".modulerc"):
+            if os.path.basename(fname).startswith(".version") or os.path.basename(
+                fname
+            ).startswith(".modulerc"):
                 continue
             cmd = []
 
@@ -352,11 +354,14 @@ def module_load_test(args):
             module_load_cmd = " ".join(cmd)
 
             ret = subprocess.Popen(
-                module_load_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                module_load_cmd,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
             )
 
             out, err = ret.communicate()
-            count+=1
+            count += 1
             if ret.returncode == 0:
                 msg = (
                     f"RUN: {count}  STATUS: PASSED - "
@@ -403,6 +408,7 @@ def module_load_test(args):
     print("{:_<80}".format(""))
 
     return
+
 
 def get_module_permutation_choices():
     """This method returns a choice field for module permutation option
@@ -493,6 +499,7 @@ def module_selector(user_collection, buildtest_module_collection):
         modules += modules_load_list
         return
 
+
 def list_software():
     """This method gets unique software from spider and prints the software
     with total count. This method invokes ``get_unique_modules()`` which is part
@@ -508,6 +515,7 @@ def list_software():
 
     print("\n")
     print("Total Software Packages: ", len(module_stack))
+
 
 def list_modules(args):
     """This method gets unique software from spider and prints the software
@@ -557,8 +565,9 @@ def list_modules(args):
                 fullName = module_dict[module][mpath]["fullName"]
 
             if exclude_version_files:
-                if os.path.basename(fullName).startswith(".version") or os.path.basename(fullName).startswith(
-                        ".modulerc"):
+                if os.path.basename(fullName).startswith(
+                    ".version"
+                ) or os.path.basename(fullName).startswith(".modulerc"):
                     continue
 
             # if filter include list is not empty, then only add module full name that correspond to list.
@@ -597,6 +606,7 @@ def list_modules(args):
     cprint(msg, "green")
     print(f"Total non LUA Modules: {non_lua_modules}")
 
+
 def list_all_parent_modules():
     """Implements method ``buildtest module --list-all-parents``"""
     parent_modules = get_all_parents()
@@ -610,7 +620,8 @@ def list_all_parent_modules():
         for module in module_json.keys():
             for mpath in module_json[module].keys():
                 if module_json[module][mpath]["fullName"] in x:
-                    print (x, mpath)
+                    print(x, mpath)
+
 
 def func_module_subcmd(args):
     """Entry point for "buildtest module" subcommand.

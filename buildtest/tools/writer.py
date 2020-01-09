@@ -8,6 +8,7 @@ from buildtest.tools.config import logID, BUILDTEST_BUILD_HISTORY
 from buildtest.tools.buildsystem.status import get_total_build_ids
 from buildtest.tools.system import BuildTestCommand
 
+
 def write_test(dict, verbose):
     """Method responsible for writing test script."""
 

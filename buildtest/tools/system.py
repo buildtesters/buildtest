@@ -258,6 +258,7 @@ def get_module_collection():
     """
     return subprocess.getoutput("module -t savelist").split("\n")
 
+
 def distro_short(distro_fname):
     """Map Long Linux Distribution Name to short name."""
 

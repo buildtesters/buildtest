@@ -10,6 +10,7 @@ from buildtest.tools.system import BuildTestSystem
 from buildtest.tools.options import override_configuration
 from buildtest.tools.config import check_configuration
 
+
 def main():
     """Entry point to buildtest."""
 
@@ -22,8 +23,7 @@ def main():
     parser = BuildTestParser()
     args = parser.parse_options()
 
-    #print (args)
-
+    # print (args)
 
 
 if __name__ == "__main__":

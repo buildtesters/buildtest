@@ -24,7 +24,7 @@ BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(
 )
 BUILDTEST_MODULE_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "modules.json")
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "settings.yml")
-EDITOR_LIST = ["vim","emacs","nano"]
+EDITOR_LIST = ["vim", "emacs", "nano"]
 BENCHMARK_DIR = os.path.join(os.getenv("BUILDTEST_ROOT"), "toolkit", "benchmark")
 # check if $HOME/.buildtest exists, if not create directory
 if not os.path.isdir(buildtest_home_conf_dir):
@@ -79,7 +79,7 @@ config_yaml_keys = {
     "BUILDTEST_MODULEPATH": type([]),
     "BUILDTEST_SPIDER_VIEW": type("str"),
     "BUILDTEST_TESTDIR": type("str"),
-    "EDITOR": type("str")
+    "EDITOR": type("str"),
 }
 
 
@@ -146,8 +146,10 @@ def check_configuration():
 
         if key == "EDITOR":
             if config_opts["EDITOR"] not in EDITOR_LIST:
-                print (f"Invalid EDITOR key: {config_opts['EDITOR']}")
-                print(f"Please pick a valid editor option from the following: {EDITOR_LIST}")
+                print(f"Invalid EDITOR key: {config_opts['EDITOR']}")
+                print(
+                    f"Please pick a valid editor option from the following: {EDITOR_LIST}"
+                )
                 ec = 1
         if key in config_directory_types:
 

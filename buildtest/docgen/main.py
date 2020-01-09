@@ -145,7 +145,7 @@ def build_cmds():
         "tutorial.openmp.clang_hello.c.yml.txt": "buildtest build -c tutorial.openmp.clang_hello.c.yml -co Clang --dry",
         "build-report.txt": "buildtest build report",
         "build-test-example.txt": "buildtest build test 0",
-        "build-run-example.txt": "buildtest build run 1"
+        "build-run-example.txt": "buildtest build run 1",
     }
     for k, v in build_dict.items():
         out = run(v)

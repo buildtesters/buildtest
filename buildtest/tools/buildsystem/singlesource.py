@@ -113,7 +113,9 @@ class BuildTestBuilder:
 
         # if all checks failed then raise error
         else:
-            raise BuildTestError(f"Unable to detect Program Language based on extension: {self.ext}")
+            raise BuildTestError(
+                f"Unable to detect Program Language based on extension: {self.ext}"
+            )
 
     def _detect_compiler(self):
         """Detect compiler based on language
@@ -453,7 +455,7 @@ class SingleSource(BuildTestBuilder):
         if "mpi" in self.test_yaml.keys():
             self.mpi = self.test_yaml["mpi"]
 
-        #self.srcfile = os.path.join(self.srcdir, self.test_yaml["program"]["source"])
+        # self.srcfile = os.path.join(self.srcdir, self.test_yaml["program"]["source"])
         self.srcfile = self.test_yaml["program"]["source"]
         self.execname = "%s.%s.exe" % (
             os.path.basename(file),

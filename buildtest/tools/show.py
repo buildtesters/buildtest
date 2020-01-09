@@ -20,6 +20,7 @@ def func_show_subcmd(args):
     if args.keys:
         show_schema_layout()
 
+
 def show_schema_layout():
     """Implements method ``buildtest show -k singlesource``"""
     schema = SingleSource().get_schema()

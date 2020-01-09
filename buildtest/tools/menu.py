@@ -25,7 +25,7 @@ from buildtest.tools.modules import (
     module_load_test,
     get_all_parents,
     get_module_permutation_choices,
-    list_modules
+    list_modules,
 )
 from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
 
@@ -49,7 +49,8 @@ from buildtest.tools.testconfigs import (
 from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
 from buildtest.tools.sysconfig.configuration import func_system_view, func_system_fetch
 
-class BuildTestParser():
+
+class BuildTestParser:
     def __init__(self):
         epilog_str = (
             "Documentation: " + "https://buildtest.readthedocs.io/en/latest/index.html"
@@ -75,7 +76,7 @@ class BuildTestParser():
             "testconfigs": "Options for list, view, and edit test configuration",
             "config": "Buildtest Configuration Menu",
             "benchmark": "Run Benchmark",
-            "system": "System Configuration"
+            "system": "System Configuration",
         }
 
         self.main_menu()
@@ -89,11 +90,12 @@ class BuildTestParser():
 
     def main_menu(self):
         command_description = ""
-        for k,v in self.subparser_dict.items():
+        for k, v in self.subparser_dict.items():
             command_description += f"""\n      {k}           {v}"""
 
-
-        self.subparsers = self.parser.add_subparsers(title="COMMANDS",description=command_description, dest="subcommands")
+        self.subparsers = self.parser.add_subparsers(
+            title="COMMANDS", description=command_description, dest="subcommands"
+        )
 
         self.parser.add_argument(
             "-V",
@@ -104,6 +106,7 @@ class BuildTestParser():
 
     def get_parser(self):
         return self.parser
+
     def parse_options(self):
         argcomplete.autocomplete(self.parser)
         args = self.parser.parse_args()
@@ -112,6 +115,7 @@ class BuildTestParser():
             args.func(args)
 
         return args
+
     def build_menu(self):
         """
 
@@ -213,7 +217,9 @@ class BuildTestParser():
 
         ##################### buildtest build     ###########################
         parser_build.add_argument(
-            "--clear", help="Clear build history and remove all tests", action="store_true"
+            "--clear",
+            help="Clear build history and remove all tests",
+            action="store_true",
         )
 
         parser_build.add_argument(
@@ -228,7 +234,7 @@ class BuildTestParser():
             "-d",
             "--dry",
             help="dry-run mode, buildtest will not write the test scripts but print "
-                 "content of test that would be written",
+            "content of test that would be written",
             action="store_true",
         )
         parser_build.add_argument(
@@ -263,13 +269,13 @@ class BuildTestParser():
             metavar="COLLECTION-ID",
         )
 
-
         parser_build_bsub.set_defaults(func=func_bsub)
         parser_build_run.set_defaults(func=run_tests)
         parser_build_test.set_defaults(func=show_status_test)
         parser_build_report.set_defaults(func=show_status_report)
         parser_build_log.set_defaults(func=show_status_log)
         parser_build.set_defaults(func=func_build_subcmd)
+
     def module_menu(self):
 
         parent_choices = get_all_parents()
@@ -279,8 +285,8 @@ class BuildTestParser():
         parser_module = self.subparsers.add_parser("module")
         subparsers_module = parser_module.add_subparsers(
             description="Module utilties for managing module collections,"
-                        " module trees, module load testing, reporting eb/spack modules,"
-                        "and report difference between trees."
+            " module trees, module load testing, reporting eb/spack modules,"
+            "and report difference between trees."
         )
         parser_module_list = subparsers_module.add_parser(
             "list", help="module list operation"
@@ -296,20 +302,34 @@ class BuildTestParser():
         )
 
         # ------------------------- buildtest module loadtest options -------------------------------
-        parser_moduleload.add_argument("--login", help="Run test in a login shell", action="store_true")
-        parser_moduleload.add_argument("--numtest", help="Number of tests to run before exiting", type=int)
-        parser_moduleload.add_argument("--purge-modules", help="purge modules before loading modules.",
-                                       action="store_true")
+        parser_moduleload.add_argument(
+            "--login", help="Run test in a login shell", action="store_true"
+        )
+        parser_moduleload.add_argument(
+            "--numtest", help="Number of tests to run before exiting", type=int
+        )
+        parser_moduleload.add_argument(
+            "--purge-modules",
+            help="purge modules before loading modules.",
+            action="store_true",
+        )
 
         # ------------------------- buildtest module list options ----------------------------------
-        parser_module_list.add_argument("--exclude-version-files",
-                                        help="Exclude version files from search when reporting module list",
-                                        action="store_true")
-        parser_module_list.add_argument("--filter-include",
-                                        help="Filter output by including only modules of interest.", type=str,
-                                        nargs='+', default=None)
-        parser_module_list.add_argument("--querylimit",
-                                        help="Limit query of modules during module list", type=int)
+        parser_module_list.add_argument(
+            "--exclude-version-files",
+            help="Exclude version files from search when reporting module list",
+            action="store_true",
+        )
+        parser_module_list.add_argument(
+            "--filter-include",
+            help="Filter output by including only modules of interest.",
+            type=str,
+            nargs="+",
+            default=None,
+        )
+        parser_module_list.add_argument(
+            "--querylimit", help="Limit query of modules during module list", type=int
+        )
 
         # ------------------------- buildtest module collection options -----------------------------
         parser_collection.add_argument(
@@ -381,7 +401,9 @@ class BuildTestParser():
             action="store_true",
         )
         parser_module.add_argument(
-            "--spack", help="reports modules that are built by spack", action="store_true"
+            "--spack",
+            help="reports modules that are built by spack",
+            action="store_true",
         )
         parser_module.add_argument(
             "-d",
@@ -393,7 +415,7 @@ class BuildTestParser():
         parser_module.add_argument(
             "--list-all-parents",
             help="List all parent modules (modules that set MODULEPATH)",
-            action="store_true"
+            action="store_true",
         )
         parser_module.add_argument(
             "-s",
@@ -407,6 +429,7 @@ class BuildTestParser():
         parser_module_tree.set_defaults(func=func_module_tree_subcmd)
         parser_collection.set_defaults(func=func_collection_subcmd)
         parser_module.set_defaults(func=func_module_subcmd)
+
     def config_menu(self):
 
         parser_config = self.subparsers.add_parser("config")
@@ -427,6 +450,7 @@ class BuildTestParser():
         parser_config_view.set_defaults(func=func_config_view)
         parser_config_edit.set_defaults(func=func_config_edit)
         parser_config_restore.set_defaults(func=func_config_restore)
+
     def show_menu(self):
         parser_show = self.subparsers.add_parser("show")
         # -------------------------- buildtest show options ------------------------------
@@ -441,12 +465,12 @@ class BuildTestParser():
         )
 
         parser_show.set_defaults(func=func_show_subcmd)
+
     def testconfigs_menu(self):
 
         test_config_choice = testconfig_choices()
 
         parser_testconfigs = self.subparsers.add_parser("testconfigs")
-
 
         # -------------------------------- buildtest testconfigs options ----------------------
         subparsers_testconfigs = parser_testconfigs.add_subparsers(
@@ -493,11 +517,14 @@ class BuildTestParser():
         parser_testconfigs_view.set_defaults(func=func_testconfigs_view)
         parser_testconfigs_edit.set_defaults(func=func_testconfigs_edit)
         parser_testconfigs_maintainer.set_defaults(func=func_testconfigs_maintainer)
+
     def system_menu(self):
 
         parser_system = self.subparsers.add_parser("system")
         # -------------------------------- buildtest system options --------------------------
-        subparsers_system = parser_system.add_subparsers(description="system configuration")
+        subparsers_system = parser_system.add_subparsers(
+            description="system configuration"
+        )
         parser_system_view = subparsers_system.add_parser(
             "view", help="View System Configuration"
         )
@@ -507,14 +534,19 @@ class BuildTestParser():
 
         parser_system_view.set_defaults(func=func_system_view)
         parser_system_fetch.set_defaults(func=func_system_fetch)
+
     def benchmark_menu(self):
 
         parser_benchmark = self.subparsers.add_parser("benchmark")
         subparsers_benchmark = parser_benchmark.add_subparsers(dest="Run HPC Benchmark")
 
         # -------------------------------- buildtest benchmark osu options --------------------------
-        osu_parser = subparsers_benchmark.add_parser("osu", help="Run OSU MicroBenchmark ")
-        osu_parser.add_argument("-r", "--run", help="Run Benchmark", action="store_true")
+        osu_parser = subparsers_benchmark.add_parser(
+            "osu", help="Run OSU MicroBenchmark "
+        )
+        osu_parser.add_argument(
+            "-r", "--run", help="Run Benchmark", action="store_true"
+        )
         osu_parser.add_argument(
             "-i", "--info", help="show yaml key description", action="store_true"
         )

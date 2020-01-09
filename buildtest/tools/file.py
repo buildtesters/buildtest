@@ -75,6 +75,7 @@ def walk_tree(root_dir, ext):
 
     return list_files
 
+
 def create_file(filename):
     """Create an empty file if file doesn't exist. Logs details
     in log file. Runs a "try" block to write an empty file, if an
