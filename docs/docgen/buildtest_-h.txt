@@ -5,21 +5,18 @@ buildtest is a software testing framework designed for HPC facilities to verify 
 
 optional arguments:
   -h, --help            show this help message and exit
+  -V, --version         show program's version number and exit
 
 COMMANDS:
   
-    
-    show        Options for displaying buildtest configuration  
-    testconfigs Options for list, view, and edit test configuration         
-    build       Options for building test scripts  
-    benchmark   Run Benchmark
-    module      Module Operations including module load testing, module collections, module tree, easybuild/spack modules, parent-modules. 
-    system      System Configuration
-    config      Buildtest Configuration
+        build           Options for building test scripts
+        module           Buildtest Module Utilities
+        show           Options for displaying buildtest configuration
+        testconfigs           Options for list, view, and edit test configuration
+        config           Buildtest Configuration Menu
+        benchmark           Run Benchmark
+        system           System Configuration
 
-  {build,show,benchmark,testconfigs,module,system,config}
-
-Miscellaneous Options :
-  -V, --version         show program's version number and exit
+  {build,module,config,show,testconfigs,system,benchmark}
 
 Documentation: https://buildtest.readthedocs.io/en/latest/index.html

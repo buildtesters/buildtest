@@ -29,12 +29,12 @@ from buildtest.tools.modulesystem.collection import get_buildtest_module_collect
 
 class BuildTestModule:
     """This class ``BuildTestModule`` parses content of Lmod spider and implements several methods used by buildtest.
-        The following methods are implemented:
-      ``get_module_spider_json()`` - get full content of spider as json object
-      ``get_unique_modules()`` - get unique module names (i.e top level key of spider)
-      ``get_modulefile_path()`` - get list of all absolute path to modulefiles
-      ``get_parent_modules()`` - get parent module entry
-      ``get_version()`` - retrieves Lmod version
+    The following methods are implemented:
+    ``get_module_spider_json()`` - get full content of spider as json object
+    ``get_unique_modules()`` - get unique module names (i.e top level key of spider)
+    ``get_modulefile_path()`` - get list of all absolute path to modulefiles
+    ``get_parent_modules()`` - get parent module entry
+    ``get_version()`` - retrieves Lmod version
     """
 
     def __init__(self):

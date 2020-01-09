@@ -12,6 +12,7 @@ GCC
 GCCcore
 GMP
 M4
+OSU-Micro-Benchmarks
 OpenBLAS
 OpenMPI
 PyCharm
@@ -51,4 +52,4 @@ xz
 zlib
 
 
-Total Software Packages:  50
+Total Software Packages:  51

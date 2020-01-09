@@ -39,39 +39,21 @@ complete you may want to view the documentation. If you have ``firefox`` in your
 
 This will open a ``firefox`` session to the root of your documentation that was recently generated. You will want to
 make sure you have X11 forwarding in order for firefox to work properly. Refer to the ``Makefile`` to see all of the
-make tags and you may run ``make`` or ``make help`` for additional help
+make tags and you may run ``make`` or ``make help`` for additional help.
 
-Building API Docs
-------------------
+When you run ``make html``, it will build API docs  which are located under ``docs/api``. Make sure the api docs
+are committed if git reports any changes. Changes to api docs will happen only if new methods or classes
+are added or any modification to docstrings.
 
-In order to build the API library for buildtest use the following command::
-
-  make apidocs
-
-This will run the target ``apidocs`` which is running a ``sphinx-apidocs`` command. The target location for api docs
-is in ``docs/api`` so you may want to remove all the apidocs before regenerate them to ensure you have the right
-contents uploaded for the push. This can be done by running the following::
-
-  git rm -rf api/*
-
-Next, build the api docs::
-
-  make apidocs
-
-Then add, commit and push content::
-
-  git add api/*
-  git commit -m <MESSAGE>
-  git push
 
 Automate Documentation Examples
 --------------------------------
 
-buildtest has a script in ``$BUILDTEST_ROOT/src/buildtest/docgen/main.py`` to automate documentation examples. This
+buildtest has a script in ``$BUILDTEST_ROOT/buildtest/docgen/main.py`` to automate documentation examples. This
 script can be run as follows::
 
   cd $BUILDTEST_ROOT
-  python $BUILDTEST_ROOT/src/buildtest/docgen/main.py
+  python $BUILDTEST_ROOT/buildtest/docgen/main.py
 
 This assumes your buildtest environment is setup, the script will write documentation test examples in ``docs/docgen``.
 Consider running this script when **adding**, **modifying**, or **removing** documentation examples. Once the test are

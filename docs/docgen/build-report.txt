@@ -1,4 +1,4 @@
 $ buildtest build report
 ID  | Build Time           | Number of Tests | Command                                                      
 ------------------------------------------------------------------------------------------------------------------------
-  0 | 12/30/2019 15:01:09  | 1               | buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv 
+  0 | 01/09/2020 11:23:46  | 1               | buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv 

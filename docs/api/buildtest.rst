@@ -10,6 +10,13 @@ Subpackages
     buildtest.docgen
     buildtest.tools
 
+Submodules
+----------
+
+.. toctree::
+
+   buildtest.main
+
 Module contents
 ---------------
 

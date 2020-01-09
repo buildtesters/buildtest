@@ -3,7 +3,7 @@ This file is used for generating documentation tests.
 """
 import os, sys
 
-sys.path.insert(0, os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest"))
+sys.path.insert(0, os.getenv("BUILDTEST_ROOT"))
 
 from buildtest.tools.system import BuildTestCommand
 from buildtest.tools.file import create_dir
@@ -74,6 +74,7 @@ def introspection_cmds():
 
 def module_cmds():
     module_dict = {
+        "buildtest-list-all-parents.txt": """buildtest module --list-all-parents""",
         "buildtest-module-list-filter.txt": """buildtest module list --filter-include "GCC" "Anaconda3" """,
         "buildtest-module-list-limit.txt": "buildtest module list --querylimit 10",
         "moduleload-test.txt": "buildtest module loadtest",

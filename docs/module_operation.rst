@@ -359,6 +359,24 @@ will run this for all modules in module trees defined by ``BUILDTEST_MODULEPATH`
 
 .. program-output:: cat docgen/spack_modules.txt
 
+List All Parent Modules (``buildtest module --list-all-parents``)
+-----------------------------------------------------------------------
+
+buildtest will read ``BUILDTEST_ROOT/vars/modules.json`` when searching all parent modules.
+
+buildtest can retieve all parent modules from all module trees defined in BUILDTEST_MODULEPATH.
+This can be useful for users and administrators to find all sub-trees (**MODULEPATH**) that are
+defined in module files.
+
+To retrieve all parent modules run ``buildtest module --list-all-parents`` as shown below
+
+.. program-output:: cat docgen/buildtest-list-all-parents.txt
+
+buildtest will return the module full name and path to module file.
+
+.. Note:: buildtest is unable to differentiate two modules with same full canonical name (**N/V**) when traversing
+          spider record. The spider key ``parent`` only contains full name and it doesn't contain abspath to
+          modulefile.
 
 Parent Modules (``buildtest module --module-deps``)
 -----------------------------------------------------

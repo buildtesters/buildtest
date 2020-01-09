@@ -1,0 +1,4 @@
+$ buildtest module --list-all-parents
+GCCcore/8.1.0 /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCCcore/8.1.0.lua
+GCCcore/8.1.0 /mxg-hpc/users/ssi29/easybuild/modules/all/GCCcore/8.1.0.lua
+GCCcore/9.2.0 /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCCcore/9.2.0.lua

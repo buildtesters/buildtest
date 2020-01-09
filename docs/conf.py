@@ -14,10 +14,12 @@
 #
 import os
 import sys
+from sphinx.ext.apidoc import main as sphinx_apidoc
 
 BUILDTEST_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.environ["BUILDTEST_ROOT"] = BUILDTEST_ROOT
-sys.path.insert(0, os.path.join(BUILDTEST_ROOT,'src'))
+sys.path.insert(0,BUILDTEST_ROOT)
+
 
 # -- Project information -----------------------------------------------------
 project = 'buildtest'
@@ -46,6 +48,11 @@ extensions = [
     'sphinxcontrib.programoutput',
     'sphinxarg.ext',
 ]
+
+
+
+apidoc = ['--force', '--no-toc', '-e', '--output-dir=api']
+sphinx_apidoc(apidoc + ['../buildtest'])
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
