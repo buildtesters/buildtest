@@ -171,18 +171,10 @@ def show_configuration():
     implements command buildtest show --config.
     """
     exclude_list = ["BUILDTEST_VERSION"]
-    print
-    print("\t buildtest configuration summary")
-    print("\t (C): Configuration File,  (E): Environment Variable")
-    print
 
     for key in sorted(config_opts):
         if key in exclude_list:
             continue
-        if os.getenv(key):
-            type = "(E)"
-        else:
-            type = "(C)"
 
         if key == "BUILDTEST_MODULEPATH":
             tree = ""
@@ -191,9 +183,17 @@ def show_configuration():
 
             # remove last colon
             tree = tree[:-1]
-            print((key + "\t " + type + " =").expandtabs(50), tree)
+            print((f"{key} \t =").expandtabs(50), tree)
+        # print all keys in module dictionary
+        elif key == "module":
+            module_keys = config_opts[key].keys()
+            for m in module_keys:
+                for k,v in config_opts[key][m].items():
+                    print((f"{key}-{m}-{k} \t =").expandtabs(50), v)
+
         else:
-            print((key + "\t " + type + " =").expandtabs(50), config_opts[key])
+            print((f"{key} \t =").expandtabs(50), f"{config_opts[key]}")
+
 
 
 def func_config_edit(args):

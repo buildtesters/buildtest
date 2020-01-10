@@ -1,11 +1,15 @@
 $ buildtest show --config
-	 buildtest configuration summary
-	 (C): Configuration File,  (E): Environment Variable
-BUILDTEST_CONFIGS_REPO                             (C) = /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite
-BUILDTEST_MODULEPATH                               (C) = /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core:/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core:/mxg-hpc/users/ssi29/easybuild/modules/all:/etc/modulefiles:/usr/share/modulefiles:/usr/share/lmod/lmod/modulefiles/Core
-BUILDTEST_MODULE_FORCE_PURGE                       (C) = False
-BUILDTEST_SPIDER_VIEW                              (C) = current
-BUILDTEST_SUCCESS_THRESHOLD                        (C) = 1.0
-BUILDTEST_TESTDIR                                  (C) = /tmp/ssi29/buildtest/tests
-EDITOR                                             (E) = vim
-module                                             (C) = {'list': {'exclude_version_files': True, 'filter': {'include': []}, 'querylimit': -1}, 'loadtest': {'login': False, 'numtest': -1, 'purge_modules': True}}
+BUILDTEST_CONFIGS_REPO                             = /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite
+BUILDTEST_MODULEPATH                               = /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core:/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core:/mxg-hpc/users/ssi29/easybuild/modules/all:/etc/modulefiles:/usr/share/modulefiles:/usr/share/lmod/lmod/modulefiles/Core
+BUILDTEST_MODULE_FORCE_PURGE                       = False
+BUILDTEST_SPIDER_VIEW                              = current
+BUILDTEST_SUCCESS_THRESHOLD                        = 1.0
+BUILDTEST_TESTDIR                                  = /tmp/ssi29/buildtest/tests
+EDITOR                                             = vim
+module-list-exclude_version_files                  = True
+module-list-filter                                 = {'include': []}
+module-list-querylimit                             = -1
+module-loadtest-login                              = False
+module-loadtest-numtest                            = -1
+module-loadtest-purge_modules                      = True
+

@@ -101,7 +101,9 @@ def func_build_subcmd(args):
         singlesource_test = SingleSource(file)
         content = singlesource_test.build_test_content()
         logger.info("Injecting method to inject modules into test script")
+        # building with module permutation
         if args.modules:
+            # build each test with module in module permutation
             for x in module_cmd_list:
                 content["module"] = []
                 if config_opts["BUILDTEST_MODULE_FORCE_PURGE"]:

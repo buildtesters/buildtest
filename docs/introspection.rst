@@ -49,13 +49,6 @@ Shown below is a sample configuration from buildtest by running ``buildtest show
 
 .. program-output:: cat docgen/buildtest_show_--config.txt
 
-Variables denoted with **(C)** are coming from configuration file (``settings.yml``) likewise,
-variables set from environment variable (i.e **BUILDTEST_**) will be denoted with a **(E)**.
-
-.. Note:: if you plan to customize your buildtest configuration with configuration file
-    and environment variable, always check your shell environment first to avoid having
-    values overridden accidentally
-
 .. _show_keys:
 
 Show Keys
