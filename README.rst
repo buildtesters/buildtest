@@ -83,22 +83,17 @@ Slack
 Click the `Join Slack Channel <https://hpcbuildtest.herokuapp.com/>`_ to get in touch with the buildtest community.
 If you already have an account then access the Slack Channel `here  <https://hpcbuildtest.slack.com>`_
 
-
 Contributing Back
 -------------------
 
 We would love to get your contribution, if you are not sure check out the
 `Contribution Guide <https://buildtest.readthedocs.io/en/latest/contributing.html>`_ to get started.
 
-
 Author
 -------
 
 buildtest was founded by `Shahzeb Siddiqui <https://github.com/shahzebsiddiqui>`_ on Feb 24th 2017 see
 `first commit <https://github.com/HPC-buildtest/buildtest-framework/commit/902237c1a3707e00b32da5830d3f8abc92ecf296>`_
-
-Special thanks to all the  `contributors <https://github.com/HPC-buildtest/buildtest-framework/graphs/contributors>`_
-that helped contribute to buildtest
 
 LICENSE
 --------

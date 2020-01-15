@@ -37,18 +37,19 @@ The following apps are configured with buildtest.
 
 - **Snyk** - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
 
+Links to the following apps
 
-- Travis: https://travis-ci.com/HPC-buildtest/buildtest-framework
+- **Travis**: https://travis-ci.com/HPC-buildtest/buildtest-framework
 
-- CodeCov: https://codecov.io/gh/HPC-buildtest/buildtest-framework
+- **CodeCov**: https://codecov.io/gh/HPC-buildtest/buildtest-framework
 
-- Coverall: https://coveralls.io/github/HPC-buildtest/buildtest-framework
+- **Coverall**: https://coveralls.io/github/HPC-buildtest/buildtest-framework
 
-- CodeFactor: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework
+- **CodeFactor**: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework
 
-- Snyk: https://app.snyk.io/org/hpc-buildtest/
+- **Snyk**: https://app.snyk.io/org/hpc-buildtest/
 
-- GuardRails: https://dashboard.guardrails.io/default/gh/HPC-buildtest
+- **GuardRails**: https://dashboard.guardrails.io/default/gh/HPC-buildtest
 
 
 When contributing back to buildtest, please consider checking the following GitHub apps, most important being **Travis-CI**
@@ -59,22 +60,18 @@ GitHub Actions
 
 buildtest runs a few automated checks via GitHub Actions that can be found in ``.github/workflows``
 
-- **Black** - buildtest is using `black  <https://github.com/psf/black>`_ to format Python code. We let **black**
-take care of formatting the entire project so you can focus more time in development. The workflow is defined in `black.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/black.yml>`
+- **Black** - buildtest is using `black  <https://github.com/psf/black>`_ to format Python code. We let **black** take care of formatting the entire project so you can focus more time in development. The workflow is defined in `black.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/black.yml>`_
 
-- **URLs-checker** - buildtest is a GitHub action called **URLs-checker** found at https://github.com/marketplace/actions/urls-checker .
-The workflow is defined in `urlchecker.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/urlchecker.yml>`
+- **URLs-checker** - buildtest is a GitHub action called **URLs-checker** found at https://github.com/marketplace/actions/urls-checker. The workflow is defined in `urlchecker.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/urlchecker.yml>`_
 
 GitHub Bots
 -------------
 
 Buildtest has a few bots to do various operations that are described below.
 
-- **Stale**  - buildtest is using `Stale <https://github.com/marketplace/stale>` to close outdated issues. This is configured in
-``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
+- **Stale**  - buildtest is using `Stale <https://github.com/marketplace/stale>`_ to close outdated issues. This is configured in ``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
 
-- **Issue-Label-Bot** - buildtest is using `Issue-Label-Bot <https://github.com/marketplace/issue-label-bot>` to mark issues using Machine Learning.
-The configuration can be found at `issue_label_bot.yaml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/issue_label_bot.yaml>`
+- **Issue-Label-Bot** - buildtest is using `Issue-Label-Bot <https://github.com/marketplace/issue-label-bot>`_ to mark issues using Machine Learning. The configuration can be found at `issue_label_bot.yaml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/issue_label_bot.yaml>`_
 The **issue-label bot** will marking incoming issues with the corresponding labels. For a list of predictions on all issues check the following link: https://mlbot.net/data/HPC-buildtest/buildtest-framework
 
 Contributing Topics
