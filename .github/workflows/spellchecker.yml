@@ -1,2 +1,10 @@
-- name: Spellcheck Action
-  uses: rojopolis/spellcheck-github-actions@0.2.0
+name: Spell Checker
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Spellcheck Action
+      uses: rojopolis/spellcheck-github-actions@0.2.0
