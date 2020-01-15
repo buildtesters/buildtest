@@ -25,27 +25,57 @@ GitHub Apps
 
 The following apps are configured with buildtest.
 
-- **CodeCov** - Codecov provides highly integrated tools to group, merge, archive and compare coverage reports
-
-  - Link: https://codecov.io/gh/HPC-buildtest/buildtest-framework
-- **GuardRails** - GuardRails provides continuous security feedback for modern development teams
-
-  - Link: https://dashboard.guardrails.io/default/gh/HPC-buildtest
-
 - **Travis CI** - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted continuous integration system.
 
-  - Link: https://travis-ci.com/HPC-buildtest/buildtest-framework
+- **CodeCov** - Codecov provides highly integrated tools to group, merge, archive and compare coverage reports
+
+- **Coverall** - Coveralls is a web service to help you track your code coverage over time, and ensure that all your new code is fully covered.
+
+- **CodeFactor** - CodeFactor instantly performs Code Review with every GitHub Commit or PR. Zero setup time. Get actionable feedback within seconds. Customize rules, get refactoring tips and ignore irrelevant issues.
+
+- **GuardRails** - GuardRails provides continuous security feedback for modern development teams
 
 - **Snyk** - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
 
-  - Link: https://app.snyk.io/org/hpc-buildtest/
+
+- Travis: https://travis-ci.com/HPC-buildtest/buildtest-framework
+
+- CodeCov: https://codecov.io/gh/HPC-buildtest/buildtest-framework
+
+- Coverall: https://coveralls.io/github/HPC-buildtest/buildtest-framework
+
+- CodeFactor: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework
+
+- Snyk: https://app.snyk.io/org/hpc-buildtest/
+
+- GuardRails: https://dashboard.guardrails.io/default/gh/HPC-buildtest
+
 
 When contributing back to buildtest, please consider checking the following GitHub apps, most important being **Travis-CI**
 as it will test your pull request before merging to ``devel`` branch.
 
-- **Stale**  - buildtest is using this app to close outdated issues. This is configured in ``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
+GitHub Actions
+-----------------
 
-- **Issue-Label-Bot** - buildtest is using this app to mark issues using Machine Learning. This app can be found in marketplace at https://github.com/marketplace/issue-label-bot. The configuration ``.github/issue_label_bot.yaml`` defines the settings for **issue-label bot** when marking new issues with the corresponding labels. For a list of predictions on all issues check the following link: https://mlbot.net/data/HPC-buildtest/buildtest-framework
+buildtest runs a few automated checks via GitHub Actions that can be found in ``.github/workflows``
+
+- **Black** - buildtest is using `black  <https://github.com/psf/black>`_ to format Python code. We let **black**
+take care of formatting the entire project so you can focus more time in development. The workflow is defined in `black.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/black.yml>`
+
+- **URLs-checker** - buildtest is a GitHub action called **URLs-checker** found at https://github.com/marketplace/actions/urls-checker .
+The workflow is defined in `urlchecker.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/urlchecker.yml>`
+
+GitHub Bots
+-------------
+
+Buildtest has a few bots to do various operations that are described below.
+
+- **Stale**  - buildtest is using `Stale <https://github.com/marketplace/stale>` to close outdated issues. This is configured in
+``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
+
+- **Issue-Label-Bot** - buildtest is using `Issue-Label-Bot <https://github.com/marketplace/issue-label-bot>` to mark issues using Machine Learning.
+The configuration can be found at `issue_label_bot.yaml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/issue_label_bot.yaml>`
+The **issue-label bot** will marking incoming issues with the corresponding labels. For a list of predictions on all issues check the following link: https://mlbot.net/data/HPC-buildtest/buildtest-framework
 
 Contributing Topics
 --------------------

@@ -1,4 +1,4 @@
-| |license| |docs| |travis| |codecov| |coverall| |slack| |core_infrastructure| |tags| |forks| |issues| |contributors| |stars| |watchers|
+| |license| |docs| |travis| |codecov| |coverall| |slack| |codefactor| |core_infrastructure| |tags| |forks| |issues| |contributors| |stars| |watchers|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -18,7 +18,9 @@
     :target: https://codecov.io/gh/HPC-buildtest/buildtest-framework
 .. |coverall| image:: https://coveralls.io/repos/github/HPC-buildtest/buildtest-framework/badge.svg?branch=devel
     :target: https://coveralls.io/github/HPC-buildtest/buildtest-framework?branch=devel
-
+.. |codefactor| image:: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework/badge
+   :target: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework
+   :alt: CodeFactor
 .. |travis| image:: https://travis-ci.com/HPC-buildtest/buildtest-framework.svg?branch=devel
     :target: https://travis-ci.com/HPC-buildtest/buildtest-framework
 
@@ -30,7 +32,27 @@ better support and validate their software stack. buildtest is a central reposit
 scientific software that is installed in HPC. buildtest makes use of `YAML <https://yaml.org/>`_ configuration to write
 test configuration that is reusable and adaptable to other HPC sites.
 
-To get started with buildtest see `Setup Section <https://buildtest.readthedocs.io/en/latest/setup.html>`_
+To get started with buildtest see `Installing buildtest <https://buildtest.readthedocs.io/en/latest/setup.html>`_
+
+References
+------------
+
+- Documentation: http://buildtest.rtfd.io/
+
+- ReadTheDocs: https://readthedocs.org/projects/buildtest/
+
+- Travis: https://travis-ci.com/HPC-buildtest/buildtest-framework
+
+- CodeCov: https://codecov.io/gh/HPC-buildtest/buildtest-framework
+
+- Coverall: https://coveralls.io/github/HPC-buildtest/buildtest-framework
+
+- CodeFactor: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework
+
+- Snyk: https://app.snyk.io/org/hpc-buildtest/
+
+- GuardRails: https://dashboard.guardrails.io/default/gh/HPC-buildtest
+
 
 Why buildtest?
 ---------------
