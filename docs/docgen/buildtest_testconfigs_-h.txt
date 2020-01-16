@@ -7,8 +7,7 @@ optional arguments:
 subcommands:
   Test configuration options
 
-  {list,view,edit,maintainer}
+  {list,view,edit}
     list                List all test configuration
     view                View a test configuration
     edit                Edit a test configuration
-    maintainer          Add/Remove maintainer from test configuration

@@ -44,7 +44,6 @@ from buildtest.tools.testconfigs import (
     testconfig_choices,
     func_testconfigs_view,
     func_testconfigs_edit,
-    func_testconfigs_maintainer,
 )
 
 from buildtest.tools.sysconfig.configuration import func_system_view, func_system_fetch
@@ -495,26 +494,11 @@ class BuildTestParser:
             choices=test_config_choice,
             metavar="Test Configuration",
         )
-        parser_testconfigs_maintainer = subparsers_testconfigs.add_parser(
-            "maintainer", help="Add/Remove maintainer from test configuration"
-        )
-        parser_testconfigs_maintainer.add_argument(
-            "name",
-            help="Select name of test configuration",
-            choices=test_config_choice,
-            metavar="Test Configuration",
-        )
-        parser_testconfigs_maintainer.add_argument(
-            "-m",
-            "--maintainer",
-            help="Add/Remove yourself as maintainer from test configuration",
-            choices=["yes", "no"],
-        )
+
 
         parser_testconfigs_list.set_defaults(func=func_testconfigs_show)
         parser_testconfigs_view.set_defaults(func=func_testconfigs_view)
         parser_testconfigs_edit.set_defaults(func=func_testconfigs_edit)
-        parser_testconfigs_maintainer.set_defaults(func=func_testconfigs_maintainer)
 
     def system_menu(self):
 
