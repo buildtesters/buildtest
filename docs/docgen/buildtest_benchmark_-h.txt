@@ -1,9 +1,0 @@
-$ buildtest benchmark -h
-usage: buildtest [options] [COMMANDS] benchmark [-h] {osu} ...
-
-positional arguments:
-  {osu}
-    osu       Run OSU MicroBenchmark
-
-optional arguments:
-  -h, --help  show this help message and exit
