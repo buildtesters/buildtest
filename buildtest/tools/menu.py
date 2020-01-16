@@ -46,7 +46,7 @@ from buildtest.tools.testconfigs import (
     func_testconfigs_edit,
     func_testconfigs_maintainer,
 )
-from buildtest.benchmark.benchmark import func_benchmark_osu_subcmd
+
 from buildtest.tools.sysconfig.configuration import func_system_view, func_system_fetch
 
 
@@ -75,7 +75,6 @@ class BuildTestParser:
             "show": "Options for displaying buildtest configuration",
             "testconfigs": "Options for list, view, and edit test configuration",
             "config": "Buildtest Configuration Menu",
-            "benchmark": "Run Benchmark",
             "system": "System Configuration",
         }
 
@@ -86,7 +85,6 @@ class BuildTestParser:
         self.show_menu()
         self.testconfigs_menu()
         self.system_menu()
-        self.benchmark_menu()
 
     def main_menu(self):
         command_description = ""
@@ -535,26 +533,3 @@ class BuildTestParser:
         parser_system_view.set_defaults(func=func_system_view)
         parser_system_fetch.set_defaults(func=func_system_fetch)
 
-    def benchmark_menu(self):
-
-        parser_benchmark = self.subparsers.add_parser("benchmark")
-        subparsers_benchmark = parser_benchmark.add_subparsers(dest="Run HPC Benchmark")
-
-        # -------------------------------- buildtest benchmark osu options --------------------------
-        osu_parser = subparsers_benchmark.add_parser(
-            "osu", help="Run OSU MicroBenchmark "
-        )
-        osu_parser.add_argument(
-            "-r", "--run", help="Run Benchmark", action="store_true"
-        )
-        osu_parser.add_argument(
-            "-i", "--info", help="show yaml key description", action="store_true"
-        )
-        osu_parser.add_argument(
-            "-l",
-            "--list",
-            help="List of tests available for OSU Benchmark",
-            action="store_true",
-        )
-        osu_parser.add_argument("-c", "--config", help="OSU Yaml Configuration File")
-        osu_parser.set_defaults(func=func_benchmark_osu_subcmd)

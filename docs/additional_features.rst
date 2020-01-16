@@ -7,6 +7,5 @@ ___________________
    :glob:
 
    managing_testconfigs.rst
-   benchmark_subcommand.rst
 
 

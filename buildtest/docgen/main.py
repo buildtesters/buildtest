@@ -19,8 +19,6 @@ def build_helper():
         "buildtest testconfigs maintainer -h",
         "buildtest build -h",
         "buildtest build bsub -h",
-        "buildtest benchmark -h",
-        "buildtest benchmark osu -h",
         "buildtest module -h",
         "buildtest module list -h",
         "buildtest module loadtest -h",
@@ -58,8 +56,6 @@ def introspection_cmds():
         "buildtest system fetch",
         "buildtest testconfigs list",
         "buildtest testconfigs view tutorial.compilers.args.c.yml",
-        "buildtest benchmark osu --list",
-        "buildtest benchmark osu --info",
         "buildtest module collection --clear",
         "buildtest module tree -l",
     ]
