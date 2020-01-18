@@ -94,9 +94,3 @@ For a brief summary of buildtest features see :ref:`feature_overview`
 
 buildtest is available on Github at https://github.com/HPC-buildtest/buildtest-framework
 
-Architecture Layout
----------------------
-
-.. image:: _static/buildtest-architecture.png
-   :width: 800
-   :height: 400
