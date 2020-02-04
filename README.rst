@@ -1,4 +1,4 @@
-| |license| |docs| |travis| |codecov| |coverall| |slack| |codefactor| |core_infrastructure| |tags| |forks| |issues| |contributors| |stars| |watchers|
+| |license| |docs| |travis| |codecov| |coverall| |slack| |codefactor| |core_infrastructure| |black| |tags| 
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -9,11 +9,6 @@
 .. |license| image:: https://img.shields.io/github/license/HPC-buildtest/buildtest-framework.svg
 .. |core_infrastructure| image:: https://bestpractices.coreinfrastructure.org/projects/3469/badge
 .. |tags| image:: https://img.shields.io/github/v/tag/HPC-buildtest/buildtest-framework.svg
-.. |forks| image:: https://img.shields.io/github/forks/HPC-buildtest/buildtest-framework.svg
-.. |issues| image:: https://img.shields.io/github/issues/HPC-buildtest/buildtest-framework.svg
-.. |contributors| image:: https://img.shields.io/github/contributors/HPC-buildtest/buildtest-framework.svg
-.. |stars| image:: https://img.shields.io/github/stars/HPC-buildtest/buildtest-framework.svg
-.. |watchers| image:: https://img.shields.io/github/watchers/HPC-buildtest/buildtest-framework.svg
 .. |codecov| image:: https://codecov.io/gh/HPC-buildtest/buildtest-framework/branch/devel/graph/badge.svg
     :target: https://codecov.io/gh/HPC-buildtest/buildtest-framework
 .. |coverall| image:: https://coveralls.io/repos/github/HPC-buildtest/buildtest-framework/badge.svg?branch=devel
@@ -23,6 +18,8 @@
    :alt: CodeFactor
 .. |travis| image:: https://travis-ci.com/HPC-buildtest/buildtest-framework.svg?branch=devel
     :target: https://travis-ci.com/HPC-buildtest/buildtest-framework
+.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
 
 buildtest
 ---------
