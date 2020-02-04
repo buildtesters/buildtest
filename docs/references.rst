@@ -4,11 +4,39 @@ References
 Conference
 ------------
 
-- Slides [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fosdem20.pdf>`_], [`pptx <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fosdem20.pptx>`_] at FOSDEM20_
-- Slides [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fifth-easybuild-user-meeting.pdf>`_], [`pptx <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fifth-easybuild-user-meeting.pptx>`_] at 5thEasybuildUserMeeting_
-- Slides [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hust19.pdf>`_], [`pptx <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hust19.pptx>`_] at HUST_ workshop in SC19_
-- Slides [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hpckp18.pdf>`_] at HPCKP18_
-- Slides [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hpckp17.pdf>`_] at HPCKP17_
+- **Buildtest: HPC Software Stack Testing Framework** at FOSDEM20_
+  
+  - Date: Feb 2nd 2020
+  
+  - Slides: [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fosdem20.pdf>`_], [`pptx <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fosdem20.pptx>`_]
+
+
+- **Buildtest: HPC Software Stack Testing Framework** at 5thEasybuildUserMeeting_
+
+  - Date: Jan 30th 2020
+  
+  - Slides: [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fifth-easybuild-user-meeting.pdf>`_], [`pptx <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fifth-easybuild-user-meeting.pptx>`_]
+
+-  **Buildtest: A Software Testing Framework with Module Operations for HPC systems** at HUST_ workshop in SC19_
+  
+  - Date: Nov 18th 2019
+  
+  - Slides: [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hust19.pdf>`_], [`pptx <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hust19.pptx>`_]
+
+- **Software Stack Testing with buildtest** at HPCKP18_
+
+  - Date: June 22th 2018
+  
+  - Slides: [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hpckp18.pdf>`_]
+
+  
+- **HPC Application Testing Framework - buildtest** at HPCKP17_
+  
+  - Date: June 15th 2017
+  
+  - Slides: [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hpckp17.pdf>`_]
+  
+ 
 
 .. _FOSDEM20: https://fosdem.org/2020/schedule/track/hpc_big_data_and_data_science/
 .. _5thEasybuildUserMeeting: https://github.com/easybuilders/easybuild/wiki/5th-EasyBuild-User-Meeting
@@ -21,3 +49,4 @@ Article
 -------
 
 - https://www.hpcwire.com/2019/01/17/pfizer-hpc-engineer-aims-to-automate-software-stack-testing/
+

@@ -1,6 +1,18 @@
-
 CHANGELOG
 =================
+
+v0.7.6 (Feb 4th, 2020)
+-----------------------
+
+- Add GitHub actions: ``greetings``, `trafico <https://github.com/marketplace/trafico-pull-request-labeler>`_, `URLs-checker <https://github.com/marketplace/actions/urls-checker>`_, `pull-request-size <https://github.com/marketplace/pull-request-size>`_ 
+- Add `coveralls <https://github.com/marketplace/coveralls>`_ for coverage report 
+- Use `Imgbot <https://github.com/marketplace/imgbot>`_ bot to convert all images via lossless compression to reduce image size
+- Update ``.gitignore`` file to reflect file extension relevant to buildtest 
+- Remove command option ``buildtest testconfigs maintainer`` and benchmark feature ``buildtest benchmark``
+- Rename output style when showing buildtest configuration (``buildtest show --config``)
+- Add option to list all parent modules ``buildtest module --list-all-parents``
+- Move code base  from ``src/buildtest`` --> ``buildtest`` and move ``buildtest`` script --> ``bin/buildtest``
+- Update contributing docs, and upload slides from 5th Easybuild User Meeting and FOSDEM20 
 
 v0.7.5 (Dec 31st, 2019)
 -----------------------
