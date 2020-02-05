@@ -71,19 +71,6 @@ def func_build_subcmd(args):
     logger.debug(f"Current build ID: {build_id}")
 
     module_cmd_list = []
-    # if module permutation is set
-    if args.modules:
-        module_cmd_list = find_modules(args.modules)
-
-        print("Module Permutation Detected.")
-        print(
-            f"Each test will be built with {len(module_cmd_list)} "
-            f"module permutations"
-        )
-
-        print("Module Permutation List")
-        print("{:_<50}".format(""))
-        [print(x) for x in module_cmd_list]
 
     if args.config:
 
@@ -101,31 +88,12 @@ def func_build_subcmd(args):
         singlesource_test = SingleSource(file)
         content = singlesource_test.build_test_content()
         logger.info("Injecting method to inject modules into test script")
-        # building with module permutation
-        if args.modules:
-            # build each test with module in module permutation
-            for x in module_cmd_list:
-                content["module"] = []
-                if config_opts["BUILDTEST_MODULE_FORCE_PURGE"]:
-                    content["module"].append("module --force purge")
-                else:
-                    content["module"].append("module purge")
 
-                content["module"].append(x)
-                dirname = os.path.dirname(content["testpath"])
-                content["testpath"] = "%s.sh" % os.path.join(
-                    dirname, hex(random.getrandbits(32))
-                )
-                if args.dry:
-                    dry_view(content)
-                else:
-                    write_test(content, args.verbose)
+        content["module"] = module_selector(args.collection, args.module_collection)
+        if args.dry:
+            dry_view(content)
         else:
-            content["module"] = module_selector(args.collection, args.module_collection)
-            if args.dry:
-                dry_view(content)
-            else:
-                write_test(content, args.verbose)
+            write_test(content, args.verbose)
 
     if not args.dry:
         print("Writing Log file to: ", LOGFILE)
