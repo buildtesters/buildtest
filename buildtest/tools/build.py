@@ -8,7 +8,6 @@ import json
 import os
 import random
 import shutil
-import subprocess
 import sys
 
 
@@ -17,21 +16,21 @@ from buildtest.tools.config import (
     BUILDTEST_BUILD_HISTORY,
     BUILDTEST_BUILD_LOGFILE,
     BUILDTEST_SYSTEM,
+    TESTCONFIG_ROOT,
 )
 
 from buildtest.tools.buildsystem.singlesource import SingleSource
 from buildtest.tools.buildsystem.dry import dry_view
-from buildtest.tools.file import create_dir, is_dir, walk_tree, is_file
+from buildtest.tools.file import create_dir
 from buildtest.tools.log import init_log
 from buildtest.tools.modules import find_modules, module_selector
 from buildtest.tools.buildsystem.status import get_total_build_ids
-from buildtest.tools.testconfigs import test_config_name_mapping
 from buildtest.tools.writer import write_test
 
 
 def func_build_subcmd(args):
     """Entry point for ``buildtest build`` sub-command. Depending on the command
-    arguments, buildtest will set values in dictionary config_opts that is used
+    arguments, buildtest will set values in dictionary ``config_opts`` that is used
     to trigger the appropriate build action.
 
     :param args: arguments passed from command line
@@ -47,8 +46,9 @@ def func_build_subcmd(args):
     if args.clear:
         clear_builds()
         sys.exit(0)
-
-    system = json.load(open(BUILDTEST_SYSTEM, "r"))
+    fd = open(BUILDTEST_SYSTEM,"r")
+    system = json.load(fd)
+    fd.close()
     test_subdir = os.path.join(
         system["VENDOR"],
         system["ARCH"],
@@ -86,8 +86,8 @@ def func_build_subcmd(args):
         [print(x) for x in module_cmd_list]
 
     if args.config:
-        test_config_table = test_config_name_mapping()
-        file = test_config_table[args.config]
+
+        file = os.path.join(TESTCONFIG_ROOT, args.config)
 
         # print content of test configuration in verbose>=1
         if args.verbose >= 1:

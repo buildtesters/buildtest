@@ -1,2 +1,2 @@
 $ buildtest build test 0
-/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/vecAdd.c.yml.0xa2de03b5.sh
+/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_0/args.c.yml.0xc3148dd0.sh

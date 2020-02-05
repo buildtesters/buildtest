@@ -36,9 +36,9 @@ If you want to view or edit a configuration you can use the following commands::
 
 In above command **<config>** represents the name of the test configuration as shown from ``builtest testconfigs list``.
 
-For example, if let's view the content of test *tutorial.compilers.args.c.yml* by running::
+For example, if let's view the content of test *tutorial/compilers/args.c.yml* by running::
 
-    $ buildtest testconfigs view tutorial.compilers.args.c.yml
+    $ buildtest testconfigs view tutorial/compilers/args.c.yml
 
 Shown below is the output of this file.
 
@@ -49,4 +49,4 @@ Currently, buildtest will use the **vim** editor for editing files.
 
 To  edit the same test you will need to run::
 
-      $ buildtest testconfigs edit tutorial.compilers.args.c.yml
+      $ buildtest testconfigs edit tutorial/compilers/args.c.yml

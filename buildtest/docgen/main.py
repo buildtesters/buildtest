@@ -12,11 +12,11 @@ docgen = os.path.join(os.getenv("BUILDTEST_ROOT"), "docs", "docgen")
 
 
 def build_helper():
+    """This method will write output of several helper options for all sub-commands in buildtest"""
     help_cmds = [
         "buildtest -h",
         "buildtest show -h",
         "buildtest testconfigs -h",
-        "buildtest testconfigs maintainer -h",
         "buildtest build -h",
         "buildtest build bsub -h",
         "buildtest module -h",
@@ -36,6 +36,7 @@ def build_helper():
 
 
 def run(query):
+    """The ``run()`` method will execute the command and retrieve the output as part of documentation examples """
     print(f"Executing Command: {query}")
     cmd = BuildTestCommand()
     cmd.execute(query)
@@ -55,7 +56,6 @@ def introspection_cmds():
         "buildtest system view",
         "buildtest system fetch",
         "buildtest testconfigs list",
-        "buildtest testconfigs view tutorial.compilers.args.c.yml",
         "buildtest module collection --clear",
         "buildtest module tree -l",
     ]
@@ -67,6 +67,8 @@ def introspection_cmds():
 
         writer(fname, out, cmd)
 
+    out = run("buildtest testconfigs view tutorial/compilers/args.c.yml")
+    writer(os.path.join(docgen,"buildtest_testconfigs_view_tutorial_compilers_args.c.yml"),out,"buildtest testconfigs view tutorial/compilers/args.c.yml")
 
 def module_cmds():
     module_dict = {
@@ -131,15 +133,15 @@ def module_collection_cmds():
 def build_cmds():
     build_dict = {
         "buildtest-build-clear.txt": "buildtest build --clear",
-        "tutorial.compilers.args.c.yml.txt": "buildtest build -c tutorial.compilers.args.c.yml",
-        "tutorial.compilers.args.c.yml_v.txt": "buildtest build -c tutorial.compilers.args.c.yml -v",
-        "tutorial.compilers.args.c.yml_dry.txt": "buildtest build -c tutorial.compilers.args.c.yml --dry",
-        "tutorial.compilers.hello_lsf.yml.txt": "buildtest build -c tutorial.compilers.hello_lsf.yml -vv",
-        "tutorial.compilers.hello_slurm.yml.txt": "buildtest build -c tutorial.compilers.hello_slurm.yml -vv",
-        "tutorial.compilers.hello.f.yml.txt": "buildtest build -c tutorial.compilers.hello.f.yml -co intel --dry",
-        "tutorial.openacc.vecAdd.c.yml.txt": "buildtest build -c tutorial.openacc.vecAdd.c.yml -co GCC -vv",
-        "tutorial.openacc.vecAdd.c_pgi.yml.txt": "buildtest build -c tutorial.openacc.vecAdd.c_pgi.yml -co pgi --dry",
-        "tutorial.openmp.clang_hello.c.yml.txt": "buildtest build -c tutorial.openmp.clang_hello.c.yml -co Clang --dry",
+        "tutorial.compilers.args.c.yml.txt": "buildtest build -c tutorial/compilers/args.c.yml",
+        "tutorial.compilers.args.c.yml_v.txt": "buildtest build -c tutorial/compilers/args.c.yml -v",
+        "tutorial.compilers.args.c.yml_dry.txt": "buildtest build -c tutorial/compilers/args.c.yml --dry",
+        "tutorial.compilers.hello_lsf.yml.txt": "buildtest build -c tutorial/compilers/hello_lsf.yml -vv",
+        "tutorial.compilers.hello_slurm.yml.txt": "buildtest build -c tutorial/compilers/hello_slurm.yml -vv",
+        "tutorial.compilers.hello.f.yml.txt": "buildtest build -c tutorial/compilers/hello.f.yml -co intel --dry",
+        "tutorial.openacc.vecAdd.c.yml.txt": "buildtest build -c tutorial/openacc/vecAdd.c.yml -co GCC -vv",
+        "tutorial.openacc.vecAdd.c_pgi.yml.txt": "buildtest build -c tutorial/openacc/vecAdd.c_pgi.yml -co pgi --dry",
+        "tutorial.openmp.clang_hello.c.yml.txt": "buildtest build -c tutorial/openmp/clang_hello.c.yml -co Clang --dry",
         "build-report.txt": "buildtest build report",
         "build-test-example.txt": "buildtest build test 0",
         "build-run-example.txt": "buildtest build run 1",
