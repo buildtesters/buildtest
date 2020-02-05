@@ -24,7 +24,6 @@ from buildtest.tools.modules import (
     module_obj,
     module_load_test,
     get_all_parents,
-    get_module_permutation_choices,
     list_modules,
 )
 from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
@@ -121,7 +120,6 @@ class BuildTestParser:
 
         test_config_choice = testconfig_choices()
         module_collection = get_module_collection()
-        module_permutation_choices = get_module_permutation_choices()
         collection_len = get_collection_length()
         collection_len = list(range(collection_len))
         build_ids = get_build_ids()
@@ -243,13 +241,6 @@ class BuildTestParser:
         )
 
         parser_build_mutex_modules = parser_build.add_mutually_exclusive_group()
-        parser_build_mutex_modules.add_argument(
-            "-m",
-            "--modules",
-            help="Select a module name and " "build for every module " "version",
-            choices=module_permutation_choices,
-            metavar="Module Permutation Options",
-        )
         parser_build_mutex_modules.add_argument(
             "-co",
             "--collection",
