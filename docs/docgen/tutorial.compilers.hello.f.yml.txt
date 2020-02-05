@@ -1,25 +1,25 @@
-$ buildtest build -c tutorial.compilers.hello.f.yml -co intel --dry
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/hello.f.yml
+$ buildtest build -c tutorial/compilers/hello.f.yml -co intel --dry
+Loading Test Configuration (YAML) file: /mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/hello.f.yml
 Checking schema of YAML file
 Schema Check Passed
 Scheduler: local
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+Source Directory: /mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/src
 Source File: hello.f90
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: fortran
 FC: ifort
 FFLAGS: -O2
-Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/hello.f.yml.0x316fe6a7.sh
+Test:/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_4/hello.f.yml.0x6349f130.sh
 --------------------------------------------------------------------------------
 
 module purge
 module restore intel
-TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0
-SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_4
+SRCDIR=/mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/src
 SRCFILE=$SRCDIR/hello.f90
 FC=ifort
 FFLAGS="-O2"
-EXECUTABLE=hello.f.yml.0x4c940694.exe
+EXECUTABLE=hello.f.yml.0x350857a5.exe
 
 cd $TESTDIR
 $FC $FFLAGS -o $EXECUTABLE $SRCFILE

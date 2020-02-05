@@ -1,4 +1,4 @@
-$ buildtest build -c tutorial.compilers.args.c.yml -v
+$ buildtest build -c tutorial/compilers/args.c.yml -v
 ________________________________________________________________________________
 testtype: singlesource
 description: "C program that prints arguments passed to executable."
@@ -21,13 +21,16 @@ program:
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
 ________________________________________________________________________________
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/args.c.yml
+Loading Test Configuration (YAML) file: /mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/args.c.yml
 Checking schema of YAML file
 Schema Check Passed
 Scheduler: local
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+Source Directory: /mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/src
 Source File: args.c
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: gcc
 CFLAGS: -Wall -g
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_1/args.c.yml.0x6a6f11e9.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_1/args.c.yml.0x6a6f11e9.sh
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_1/log/buildtest_13_56_05_02_2020.log

@@ -1,4 +1,4 @@
-$ buildtest build -c tutorial.compilers.hello_lsf.yml -vv
+$ buildtest build -c tutorial/compilers/hello_lsf.yml -vv
 ________________________________________________________________________________
 testtype: singlesource
 description: Hello World C example using GNU compiler for LSF
@@ -19,18 +19,18 @@ maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
 
 ________________________________________________________________________________
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/hello_lsf.yml
+Loading Test Configuration (YAML) file: /mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/hello_lsf.yml
 Checking schema of YAML file
 Schema Check Passed
 Scheduler: LSF
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+Source Directory: /mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/src
 Source File: hello.c
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: gcc
 CFLAGS: -O2
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/hello_lsf.yml.0x8d1d2064.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_2/hello_lsf.yml.0xf10e2f9d.sh",
     "scheduler": [
         "#BSUB -M 200M",
         "#BSUB -R sandybridge",
@@ -40,12 +40,12 @@ CFLAGS: -O2
     ],
     "module": null,
     "metavars": [
-        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0",
-        "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src",
+        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_2",
+        "SRCDIR=/mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/src",
         "SRCFILE=$SRCDIR/hello.c",
         "CC=gcc",
         "CFLAGS=\"-O2\"",
-        "EXECUTABLE=hello_lsf.yml.0xc75bc0b0.exe"
+        "EXECUTABLE=hello_lsf.yml.0x17118425.exe"
     ],
     "envs": [],
     "build": [
@@ -57,3 +57,24 @@ CFLAGS: -O2
         "rm ./$EXECUTABLE"
     ]
 }None
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_2/hello_lsf.yml.0xf10e2f9d.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_2/hello_lsf.yml.0xf10e2f9d.sh
+________________________________________________________________________________
+#BSUB -M 200M
+#BSUB -R sandybridge
+#BSUB -W 01:00
+#BSUB -n 4
+#BSUB -q admin
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_2
+SRCDIR=/mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/src
+SRCFILE=$SRCDIR/hello.c
+CC=gcc
+CFLAGS="-O2"
+EXECUTABLE=hello_lsf.yml.0x17118425.exe
+
+cd $TESTDIR
+$CC $CFLAGS -o $EXECUTABLE $SRCFILE
+$EXECUTABLE
+rm ./$EXECUTABLE
+________________________________________________________________________________
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_2/log/buildtest_13_56_05_02_2020.log

@@ -179,10 +179,7 @@ Similarly, ``pre_run:`` and ``post_run:`` will add shell commands before and aft
 key is used to pass options to the executable.
 
 The ``maintainer`` key which is outside the ``program`` block is required for all test configuration, it indicates the author of the
-test which is a list of authors in the form of ``<first> <last> <email>``. This section of code can be auto-generated if
-you have set ``git config user.name`` and ``git config user.email`` and buildtest will add the maintainer using the command::
-
-    $ buildtest testconfigs maintainer -m YES <config>
+test which is a list of authors in the form of ``<first> <last> <email>``.
 
 To help visualize see how the test dictionary maps to the specific commands in the test script.
 

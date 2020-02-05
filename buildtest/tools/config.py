@@ -25,7 +25,8 @@ BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(
 BUILDTEST_MODULE_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "modules.json")
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "settings.yml")
 EDITOR_LIST = ["vim", "emacs", "nano"]
-BENCHMARK_DIR = os.path.join(os.getenv("BUILDTEST_ROOT"), "toolkit", "benchmark")
+
+TESTCONFIG_ROOT = os.path.join(os.getenv("BUILDTEST_ROOT"), "toolkit", "suite")
 # check if $HOME/.buildtest exists, if not create directory
 if not os.path.isdir(buildtest_home_conf_dir):
     print(

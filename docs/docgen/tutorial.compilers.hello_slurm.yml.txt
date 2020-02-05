@@ -1,4 +1,4 @@
-$ buildtest build -c tutorial.compilers.hello_slurm.yml -vv
+$ buildtest build -c tutorial/compilers/hello_slurm.yml -vv
 ________________________________________________________________________________
 testtype: singlesource
 description: Hello World C++ example using GNU compiler for SLURM
@@ -19,18 +19,18 @@ program:
 maintainer:
 - shahzeb siddiqui shahzebmsiddiqui@gmail.com
 ________________________________________________________________________________
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/hello_slurm.yml
+Loading Test Configuration (YAML) file: /mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/hello_slurm.yml
 Checking schema of YAML file
 Schema Check Passed
 Scheduler: SLURM
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+Source Directory: /mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/src
 Source File: hello.cpp
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c++
 CXX: g++
 CXXFLAGS: -O2
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0/hello_slurm.yml.0x3ea7723c.sh",
+    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_3/hello_slurm.yml.0x97cfea85.sh",
     "scheduler": [
         "#SBATCH --mem 200M",
         "#SBATCH -C sandybridge",
@@ -41,12 +41,12 @@ CXXFLAGS: -O2
     ],
     "module": null,
     "metavars": [
-        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_0",
-        "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src",
+        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_3",
+        "SRCDIR=/mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/src",
         "SRCFILE=$SRCDIR/hello.cpp",
         "CXX=g++",
         "CXXFLAGS=\"-O2\"",
-        "EXECUTABLE=hello_slurm.yml.0x4fb9094c.exe"
+        "EXECUTABLE=hello_slurm.yml.0xb5f68147.exe"
     ],
     "envs": [],
     "build": [
@@ -58,3 +58,25 @@ CXXFLAGS: -O2
         "rm ./$EXECUTABLE"
     ]
 }None
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_3/hello_slurm.yml.0x97cfea85.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_3/hello_slurm.yml.0x97cfea85.sh
+________________________________________________________________________________
+#SBATCH --mem 200M
+#SBATCH -C sandybridge
+#SBATCH -t 01:00
+#SBATCH -n 4
+#SBATCH -N 2
+#SBATCH -p general
+TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_3
+SRCDIR=/mxg-hpc/users/ssi29/buildtest-framework/toolkit/suite/tutorial/compilers/src
+SRCFILE=$SRCDIR/hello.cpp
+CXX=g++
+CXXFLAGS="-O2"
+EXECUTABLE=hello_slurm.yml.0xb5f68147.exe
+
+cd $TESTDIR
+$CXX $CXXFLAGS -o $EXECUTABLE $SRCFILE
+$EXECUTABLE
+rm ./$EXECUTABLE
+________________________________________________________________________________
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_3/log/buildtest_13_56_05_02_2020.log

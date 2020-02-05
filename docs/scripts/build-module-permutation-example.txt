@@ -1,4 +1,4 @@
-$ buildtest build -c tutorial.compilers.args.c.yml --dry -m GCCcore 
+$ buildtest build -c tutorial/compilers/args.c.yml --dry -m GCCcore 
 Module Permutation Detected.
 Each test will be built with 7 module permutations
 Module Permutation List

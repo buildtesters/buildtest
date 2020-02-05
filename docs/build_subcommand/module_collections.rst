@@ -25,9 +25,9 @@ To restore a module collection you can run::
 
 To build a test with a user collection use the ``--collection`` option which
 is a choice field that is the name of the user collection.
-To demonstrate, lets build a test with a user collection ``CUDA``.
+To demonstrate, lets build a test with a user collection ``Clang``.
 
-.. program-output:: cat scripts/build-lmod-collection-example.txt
+.. program-output:: cat docgen/tutorial.openmp.clang_hello.c.yml.txt
 
 Note the ``module restore`` command will load the modules from the
 collection. To use this feature, you will need to have a module collection

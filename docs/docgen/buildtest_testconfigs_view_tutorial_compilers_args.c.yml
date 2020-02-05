@@ -1,4 +1,4 @@
-$ buildtest testconfigs view tutorial.compilers.args.c.yml
+$ buildtest testconfigs view tutorial/compilers/args.c.yml
 testtype: singlesource
 description: "C program that prints arguments passed to executable."
 scheduler: local
