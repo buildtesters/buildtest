@@ -4,8 +4,7 @@ Building Test with Module Collections
 building test with Lmod User Collection (``buildtest build --collection``)
 ----------------------------------------------------------------------------------
 
-buildtest supports building test with Lmod `user collections <https://lmod
-.readthedocs.io/en/latest/010_user.html#user-collections>`_. User collection comes in
+buildtest supports building test with Lmod `user collections <https://lmod.readthedocs.io/en/latest/010_user.html#user-collections>`_. User collection comes in
 handy when testing software with different module sets.
 
 You can run ``module -t savelist`` to see a list of collection. Shown below

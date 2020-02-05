@@ -29,7 +29,7 @@ better support and validate their software stack. buildtest is a central reposit
 scientific software that is installed in HPC. buildtest makes use of `YAML <https://yaml.org/>`_ configuration to write
 test configuration that is reusable and adaptable to other HPC sites.
 
-To get started with buildtest see `Installing buildtest <https://buildtest.readthedocs.io/en/latest/setup.html>`_
+To get started with buildtest see `Installing buildtest <https://buildtest.readthedocs.io/en/latest/installing_buildtest.html.html>`_
 
 References
 ------------
