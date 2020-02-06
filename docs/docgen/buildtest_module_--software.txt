@@ -1,1 +1,12 @@
 $ buildtest module --software
+Bison
+GCC
+GCCcore
+M4
+binutils
+flex
+help2man
+zlib
+
+
+Total Software Packages:  8

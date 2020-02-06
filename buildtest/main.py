@@ -7,7 +7,6 @@ os.environ["COLUMNS"] = "120"
 
 from buildtest.tools.menu import BuildTestParser
 from buildtest.tools.system import BuildTestSystem
-from buildtest.tools.options import override_configuration
 from buildtest.tools.config import check_configuration
 
 
@@ -17,7 +16,6 @@ def main():
     buildtest_system = BuildTestSystem()
     buildtest_system.check_system_requirements()
 
-    override_configuration()
     check_configuration()
 
     parser = BuildTestParser()

@@ -1,1 +1,18 @@
 $ buildtest config view
+BUILDTEST_MODULEPATH:
+- /mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core
+BUILDTEST_MODULE_FORCE_PURGE: false
+BUILDTEST_SUCCESS_THRESHOLD: 1.0
+BUILDTEST_TESTDIR: /tmp/$USER/buildtest/tests
+EDITOR: vim
+module:
+  list:
+    exclude_version_files: true
+    filter:
+      include: []
+    querylimit: -1
+  loadtest:
+    login: false
+    numtest: -1
+    purge_modules: true
+  spider_view: current

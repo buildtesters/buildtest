@@ -1,1 +1,7 @@
 $ buildtest module tree -l
+/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core
+/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core
+/mxg-hpc/users/ssi29/easybuild/modules/all
+/etc/modulefiles
+/usr/share/modulefiles
+/usr/share/lmod/lmod/modulefiles/Core

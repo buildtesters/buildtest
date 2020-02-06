@@ -1,1 +1,21 @@
 $ buildtest -h
+usage: buildtest [options] [COMMANDS]
+
+buildtest is a software testing framework designed for HPC facilities to verify their Software Stack. buildtest abstracts test complexity into YAML files that is interpretedby buildtest into shell script
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -V, --version         show program's version number and exit
+
+COMMANDS:
+  
+        build           Options for building test scripts
+        module           Buildtest Module Utilities
+        show           Options for displaying buildtest configuration
+        testconfigs           Options for list, view, and edit test configuration
+        config           Buildtest Configuration Menu
+        system           System Configuration
+
+  {build,module,config,show,testconfigs,system}
+
+Documentation: https://buildtest.readthedocs.io/en/latest/index.html

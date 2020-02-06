@@ -30,7 +30,6 @@ def build_helper():
         out = run(cmd)
         tmp_fname = cmd.replace(" ", "_") + ".txt"
         fname = os.path.join(docgen, tmp_fname)
-
         writer(fname, out, cmd)
 
 

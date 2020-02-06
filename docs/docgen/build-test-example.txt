@@ -1,1 +1,2 @@
 $ buildtest build test 0
+/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_0/args.c.yml.0x8e6411bc.sh

@@ -1,1 +1,22 @@
 $ buildtest module list
+
+    Full Module Name                     |      ModuleFile Path
+-----------------------------------------|----------------------------- 
+[32mGCC/8.1.0-2.30                           |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCC/8.1.0-2.30.lua[0m
+[32mGCC/9.2.0-2.32                           |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCC/9.2.0-2.32.lua[0m
+[32mGCCcore/9.2.0                            |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCCcore/9.2.0.lua[0m
+[32mGCCcore/8.1.0                            |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/GCCcore/8.1.0.lua[0m
+[32mzlib/1.2.11                              |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/zlib/1.2.11.lua[0m
+[32mflex/2.6.4                               |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/flex/2.6.4.lua[0m
+[32mM4/1.4.17                                |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/M4/1.4.17.lua[0m
+[32mM4/1.4.18                                |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/M4/1.4.18.lua[0m
+[32mBison/3.0.4                              |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/Bison/3.0.4.lua[0m
+[32mBison/3.3.2                              |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/Bison/3.3.2.lua[0m
+[32mhelp2man/1.47.4                          |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/help2man/1.47.4.lua[0m
+[32mbinutils/2.32                            |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/binutils/2.32.lua[0m
+[32mbinutils/2.30                            |	/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core/binutils/2.30.lua[0m
+
+
+Total Software Modules: 13
+[32mTotal LUA Modules: 13[0m
+Total non LUA Modules: 0

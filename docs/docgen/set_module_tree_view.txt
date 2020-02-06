@@ -1,1 +1,2 @@
 $ buildtest module tree -l
+/usr/share/lmod/lmod/modulefiles/Core

@@ -1,1 +1,2 @@
 $ buildtest module collection --clear
+Removing all module collections!

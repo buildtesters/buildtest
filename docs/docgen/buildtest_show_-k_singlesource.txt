@@ -1,1 +1,181 @@
 $ buildtest show -k singlesource
+description:
+  description: Description Text for test configuration limited to 80 characters
+  required: true
+  type: &id001 !!python/name:builtins.str ''
+maintainer:
+  description: List of Maintainers for the test
+  required: true
+  type: !!python/name:builtins.list ''
+mpi:
+  description: Instruct buildtest if this test is a MPI test
+  required: false
+  type: !!python/name:builtins.bool ''
+  values:
+  - false
+  - true
+program:
+  bsub:
+    M:
+      description: 'Equivalent to #BSUB -M'
+      opt_mapping: -M
+      required: false
+      type: *id001
+    R:
+      description: 'Equivalent to #BSUB -R'
+      opt_mapping: -R
+      required: false
+      type: *id001
+    W:
+      description: 'Equivalent to #BSUB -W'
+      opt_mapping: -W
+      required: false
+      type: *id001
+    description: 'bsub block for specifying #BSUB directives in test.'
+    n:
+      description: 'Equivalent to #BSUB -n'
+      opt_mapping: -n
+      required: false
+      type: *id001
+    q:
+      description: 'Equivalent to #BSUB -q'
+      opt_mapping: -q
+      required: false
+      type: *id001
+    required: false
+    type: &id002 !!python/name:builtins.dict ''
+  cflags:
+    description: Specify compiler flags to C compiler (i.e $CC)
+    required: false
+    type: *id001
+  compiler:
+    description: Specify Compiler Name to detect compiler wrapper.
+    required: true
+    type: *id001
+    values:
+    - gnu
+    - intel
+    - pgi
+    - cuda
+    - clang
+  cxxflags:
+    description: Specify compiler flags to C++ compiler (i.e $CXX)
+    required: false
+    type: *id001
+  description: Start of Program. This section where you specify test parameters.
+  env:
+    description: Specify List of Environment Varaibles in Test
+    required: false
+    type: *id002
+  exec_opts:
+    description: Passing options to executable.
+    required: false
+    type: *id001
+  fflags:
+    description: Specify compiler flags to Fortran compiler (i.e $FC)
+    required: false
+    type: *id001
+  ldflags:
+    description: Specify linker flags
+    required: false
+    type: *id001
+  mpi:
+    description: MPI block for specifying mpi configuration.
+    flavor:
+      description: Specify MPI Flavor. This is used to detect MPI wrapper.
+      required: false
+      type: *id001
+      values:
+      - openmpi
+      - mpich
+    launcher:
+      description: Specify the MPI Launcher to run MPI jobs
+      required: false
+      type: *id001
+      values:
+      - mpirun
+      - mpiexec
+      - mpiexec.hydra
+    launcher_opts:
+      description: Pass options to MPI Launcher
+      required: false
+      type: *id001
+    required: false
+    type: *id002
+  post_build:
+    description: Shell commands to run after building.
+    required: false
+    type: *id001
+  post_exec:
+    description: Commands after executable.
+    required: false
+    type: *id001
+  post_run:
+    description: Shell commands to run after running executable.
+    required: false
+    type: *id001
+  pre_build:
+    description: Shell commands to run before building.
+    required: false
+    type: *id001
+  pre_exec:
+    description: Command in front of executable.
+    required: false
+    type: *id001
+  pre_run:
+    description: Shell commands to run before running executable.
+    required: false
+    type: *id001
+  required: true
+  sbatch:
+    C:
+      description: 'Equivalent to #SBATCH -C'
+      opt_mapping: -C
+      required: false
+      type: *id001
+    N:
+      description: 'Equivalent to #SBATCH -N'
+      opt_mapping: -N
+      required: false
+      type: *id001
+    description: 'sbatch block for specifying #SBATCH directives in test.'
+    mem:
+      description: 'Equivalent to #SBATCH --mem'
+      opt_mapping: --mem
+      required: false
+      type: *id001
+    n:
+      description: 'Equivalent to #SBATCH -n'
+      opt_mapping: -n
+      required: false
+      type: *id001
+    p:
+      description: 'Equivalent to #SBATCH -p'
+      opt_mapping: -p
+      required: false
+      type: *id001
+    required: false
+    t:
+      description: 'Equivalent to #SBATCH -t'
+      opt_mapping: -t
+      required: false
+      type: *id001
+    type: *id002
+  source:
+    description: Source File to compile. This file must be in 'src' directory
+    required: true
+    type: *id001
+  type: *id002
+scheduler:
+  description: Pick Scheduler Type.
+  required: true
+  type: *id001
+  values:
+  - local
+  - LSF
+  - SLURM
+testtype:
+  description: Buildtest Class for Single Source Compilation
+  required: true
+  type: *id001
+  values: singlesource

@@ -57,15 +57,15 @@ class BuildTestModule:
 
     def get_unique_modules(self):
         """Return a sorted list of unique keys (software name). If
-        BUILDTEST_SPIDER_VIEW == all then it will return all keys
+        spider_view == all then it will return all keys
         from spider otherwise it will return keys whose module file path
         is in BUILDTEST_MODULEPATH
 
         :rtype: list
         """
 
-        # return all keys when BUILDTEST_SPIDER_VIEW is all
-        if config_opts["BUILDTEST_SPIDER_VIEW"] == "all":
+        # return all keys when spider_view=all
+        if config_opts["module"]["spider_view"] == "all":
             return sorted(list(self.module_dict.keys()))
         # return all keys whose module file path is part of
         # BUILDTEST_MODULEPATH
@@ -89,8 +89,8 @@ class BuildTestModule:
 
         for k in self.get_unique_modules():
             for mpath in self.module_dict[k].keys():
-                if config_opts["BUILDTEST_SPIDER_VIEW"] == "current":
-                    # only add full canonical module name if module file location is in one of the trees defined by BUILDTEST_MODULEPATH
+                # if spider_view=current then return spider records whose module file location is in one of the trees defined by BUILDTEST_MODULEPATH
+                if config_opts["module"]["spider_view"] == "current":
                     for tree in config_opts["BUILDTEST_MODULEPATH"]:
                         if tree in mpath:
                             module_path_list.append(mpath)

@@ -1,1 +1,2 @@
 $ buildtest config restore
+Restore configuration from backup file: /u/users/ssi29/.buildtest/settings.yml.bak

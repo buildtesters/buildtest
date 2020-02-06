@@ -1,1 +1,9 @@
 $ buildtest module tree -h
+usage: buildtest [options] [COMMANDS] module tree [-h] [-a Module Tree] [-l] [-r Module Tree] [-s SET]
+
+optional arguments:
+  -h, --help      show this help message and exit
+  -a Module Tree  add a module tree
+  -l              list module trees
+  -r Module Tree  remove a module tree
+  -s SET          Assign a module tree to BUILDTEST_MODULEPATH

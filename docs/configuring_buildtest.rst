@@ -59,20 +59,43 @@ will read the value of MODULEPATH.
 
 Alternately, you can configure BUILDTEST_MODULEPATH from command line. For more details see :ref:`module_tree_operation`
 
+.. _configuring_spider:
+
 Configure Spider View
 ---------------------
 
 Lmod ``spider`` is used to retrieve module details in json format, this is done in buildtest during startup as follows::
 
-    $ $LMOD_DIR/spider -o spider-json $BUILDTEST_MODULEPATH
+    $ spider -o spider-json $BUILDTEST_MODULEPATH
 
-The configuration ``BUILDTEST_SPIDER_VIEW`` can control how buildtest processes the spider records. When
-BUILDTEST_SPIDER_VIEW is set to ``all``, then buildtest will retrieve **all records from all trees in $BUILDTEST_MODULEPATH and any subtrees** as a result.
-This is the default behavior for ``spider``.
+The default configuration for ``spider_view`` is set to **current**  as shown below::
 
-If you want to restrict the search of module retrieval to only trees defined in ``BUILDTEST_MODULEPATH`` and none of the
-sub-trees then set BUILDTEST_SPIDER_VIEW to **current**. This will instruct buildtest to only retrieve spider
-records whose modulefile absolute path is a subdirectory of ``BUILDTEST_MODULEPATH``.
+    module:
+        spider_view: current
+
+Valid values for spider_view are [``all``, ``current``].
+
+If ``spider_view: all``, then buildtest will retrieve **all spider records** that includes all trees defined in
+$BUILDTEST_MODULEPATH and any subtrees as a result. This is the default behavior of spider. For instance, if you have
+two module trees ``/apps/modules/Compilers``, ``/apps/modules/MPI`` where ``/apps/modules/MPI`` is a sub-tree of
+``/apps/modules/Compilers`` and you run the spider command as follows::
+
+    spider -o spider-json /apps/modules/Compilers
+
+The resulting output will retrieve modules from ``/apps/modules/MPI`` as well.
+
+If you want to restrict the search of module retrieval to only trees defined in ``/apps/modules/Compilers`` and none of the
+sub-trees then you must set ``spider_view: current``. This will instruct buildtest to only retrieve spider
+records whose modulefile absolute path is a sub-directory of ``/apps/modules/Compilers``.
+
+In the previous example, if ``spider_view: current`` and you run::
+
+    spider -o spider-json /apps/modules/Compilers
+
+Spider will retrieve records from both trees (``/apps/modules/Compilers``, ``/apps/modules/MPI``), but buildtest will
+check if absolute path to modulefile is part of sub-directory (``/apps/modules/Compilers``). Any record from ``/apps/modules/MPI``
+will be ignored.
+
 
 Test Threshold
 ----------------
@@ -107,7 +130,7 @@ The EDITOR key will control which editor to use when editing files, this is used
 in buildtest for instance when you want to edit files such as test configuration or
 buildtest configuration::
 
-    buildtest edit config
+    buildtest config edit
     buildtest testconfigs edit <test-configuration>
 
 This will open the configuration in editor. The default value for **EDITOR** is

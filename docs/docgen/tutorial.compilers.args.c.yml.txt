@@ -1,1 +1,13 @@
 $ buildtest build -c tutorial/compilers/args.c.yml
+Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/args.c.yml
+Checking schema of YAML file
+Schema Check Passed
+Scheduler: local
+Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+Source File: args.c
+Detecting Programming Language, Compiler and MPI wrapper
+Programming Language: c
+CC: gcc
+CFLAGS: -Wall -g
+Writing Test: /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_0/args.c.yml.0x8e6411bc.sh
+Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_0/log/buildtest_12_53_06_02_2020.log

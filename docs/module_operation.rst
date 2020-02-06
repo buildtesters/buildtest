@@ -54,6 +54,9 @@ Shown below is an example of restricting output by using ``--querylimit``
 
 .. program-output:: cat docgen/buildtest-module-list-limit.txt
 
+The behavior of ``buildtest module list`` will be altered based on how buildtest retrieves spider record. See :ref:``configuring_spider`
+for more details. If ``spider_view: all`` then ``buidtest module list`` will return modules from all sub-trees that are
+a result which may not have been defined in ``BUILDTEST_MODULEPATH``.
 
 Difference Between Module Trees (``buildtest module --diff-trees``)
 --------------------------------------------------------------------
@@ -123,12 +126,7 @@ Shown below we test modules in a login shell ``--login`` and restrict test to 5 
 .. program-output:: cat docgen/moduleload-test-login.txt
 
 You may specify additional module trees using ``BUILDTEST_MODULEPATH`` for module testing. If you want to test all
-modules that were detected by ``spider`` utility, you can set ``BUILDTEST_SPIDER_VIEW=all`` in your configuration or
-environment variable or just run as follows::
-
-
-    BUILDTEST_SPIDER_VIEW=all buildtest module loadtest
-
+modules that were detected by spider utility, you can set ``spider_view=all`` in your configuration. See :ref:`configuring_spider`
 This will test all modules retrieved by spider utility.
 
 .. _module_collection:

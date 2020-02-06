@@ -78,7 +78,6 @@ config_yaml_keys = {
     "BUILDTEST_MODULE_FORCE_PURGE": type(True),
     "BUILDTEST_SUCCESS_THRESHOLD": type(1.0),
     "BUILDTEST_MODULEPATH": type([]),
-    "BUILDTEST_SPIDER_VIEW": type("str"),
     "BUILDTEST_TESTDIR": type("str"),
     "EDITOR": type("str"),
 }
@@ -138,13 +137,6 @@ def check_configuration():
                         )
                         ec = 1
 
-        if key == "BUILDTEST_SPIDER_VIEW":
-            if config_opts["BUILDTEST_SPIDER_VIEW"] not in ["all", "current"]:
-                print(
-                    f"BUILDTEST_SPIDER_VIEW must be one of the following: all, current"
-                )
-                ec = 1
-
         if key == "EDITOR":
             if config_opts["EDITOR"] not in EDITOR_LIST:
                 print(f"Invalid EDITOR key: {config_opts['EDITOR']}")
@@ -188,9 +180,13 @@ def show_configuration():
         # print all keys in module dictionary
         elif key == "module":
             module_keys = config_opts[key].keys()
+
             for m in module_keys:
-                for k,v in config_opts[key][m].items():
-                    print((f"{key}-{m}-{k} \t =").expandtabs(50), v)
+                if isinstance(config_opts[key][m],dict):
+                    for k,v in config_opts[key][m].items():
+                        print((f"{key}[{m}][{k}] \t =").expandtabs(50), v)
+                else:
+                    print((f"{key}[{m}] \t =").expandtabs(50), config_opts[key][m])
 
         else:
             print((f"{key} \t =").expandtabs(50), f"{config_opts[key]}")
