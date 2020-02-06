@@ -1,13 +1,12 @@
-import os, yaml, textwrap, subprocess
-from pathlib import Path
+import os, yaml, textwrap, subprocess, sys
 from buildtest.tools.config import config_opts, TESTCONFIG_ROOT
 from buildtest.tools.file import walk_tree
 from buildtest.tools.system import BuildTestCommand
 
 
 def testconfig_choices():
-    """Return a list of test configuration used by options
-    ``buildtest testconfigs view`` and ``buildtest testconfigs edit``
+    """Return a list of test configuration used by options ``buildtest testconfigs [view | edit]`` and used for
+    specifying configuration file ``buildtest build -c <config>``
 
     :rtype: list
     """
@@ -16,12 +15,8 @@ def testconfig_choices():
     for f in all_testconfigs:
         name, parent, gparent = os.path.basename(f), os.path.basename(os.path.dirname(f)), os.path.basename(os.path.dirname(os.path.dirname(f)))
         tname = os.path.join(gparent,parent,name)
-
         test.append(tname)
-    #[print(t) for t in test]
     return test
-    #return walk_tree(TESTCONFIG_ROOT,".yml")
-
 
 def func_testconfigs_show(args=None):
     """ Prints all test configuration and description of test.

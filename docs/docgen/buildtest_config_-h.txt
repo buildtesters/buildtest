@@ -1,13 +1,1 @@
 $ buildtest config -h
-usage: buildtest [options] [COMMANDS] config [-h] {view,edit,restore} ...
-
-optional arguments:
-  -h, --help           show this help message and exit
-
-subcommands:
-  buildtest configuration
-
-  {view,edit,restore}
-    view               View Buildtest Configuration File
-    edit               Edit Buildtest Configuration File
-    restore            Restore Buildtest Configuration File from backup

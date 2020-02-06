@@ -18,7 +18,7 @@ from buildtest.tools.modulesystem.collection import (
     func_collection_subcmd,
     get_collection_length,
 )
-from buildtest.tools.lsf import func_bsub
+
 from buildtest.tools.modules import (
     func_module_subcmd,
     module_obj,
@@ -46,6 +46,13 @@ from buildtest.tools.testconfigs import (
 )
 
 from buildtest.tools.sysconfig.configuration import func_system_view, func_system_fetch
+
+test_config_choice = testconfig_choices()
+module_collection = get_module_collection()
+collection_len = get_collection_length()
+collection_len = list(range(collection_len))
+build_ids = get_build_ids()
+parent_choices = get_all_parents()
 
 
 class BuildTestParser:
@@ -85,6 +92,7 @@ class BuildTestParser:
         self.system_menu()
 
     def main_menu(self):
+        """This method adds argument to ArgumentParser to main menu of buildtest"""
         command_description = ""
         for k, v in self.subparser_dict.items():
             command_description += f"""\n      {k}           {v}"""
@@ -103,26 +111,25 @@ class BuildTestParser:
     def get_parser(self):
         return self.parser
 
+
     def parse_options(self):
+        """This method parses the argument from ArgumentParser class and returns as a dictionary. Also it
+        redirects sub-commands to appropriate methods.
+
+        :return: return a parsed dictionary returned by ArgumentParser
+        :rtype: dict
+        """
+
         argcomplete.autocomplete(self.parser)
         args = self.parser.parse_args()
-
+        
         if args.subcommands:
             args.func(args)
 
         return args
 
     def build_menu(self):
-        """
-
-        :return:
-        """
-
-        test_config_choice = testconfig_choices()
-        module_collection = get_module_collection()
-        collection_len = get_collection_length()
-        collection_len = list(range(collection_len))
-        build_ids = get_build_ids()
+        """This method implements argparse argument for ``buildtest build``"""
 
         parser_build = self.subparsers.add_parser("build")
         subparsers_build = parser_build.add_subparsers(
@@ -165,51 +172,6 @@ class BuildTestParser:
             choices=build_ids,
             metavar="BUILD ID",
         )
-        ##################### buildtest build bsub ###########################
-        parser_build_bsub = subparsers_build.add_parser(
-            "bsub", help="LSF Batch Job Launcher (bsub)"
-        )
-        parser_build_bsub.add_argument(
-            "id",
-            help="Dispatch test based on build ID",
-            type=int,
-            choices=build_ids,
-            metavar="BUILD ID",
-        )
-        parser_build_bsub.add_argument(
-            "-q", "--queue", help="select queue (bsub -q)", type=str
-        )
-        parser_build_bsub.add_argument(
-            "-R", "--resource", help="Resource Selection (bsub -R)", type=str
-        )
-        parser_build_bsub.add_argument(
-            "-n",
-            "--ntasks",
-            help="Submits a parallel job and specifies number of tasks in job (bsub -n)",
-            type=str,
-        )
-        parser_build_bsub.add_argument(
-            "-m", "--machine", help="Submit job to specific hosts (bsub -m)", type=str
-        )
-        parser_build_bsub.add_argument(
-            "-W", "--walltime", help="Wall Time of Job (bsub -W)", type=str
-        )
-        parser_build_bsub.add_argument(
-            "-M",
-            "--memory",
-            help="Sets per-process (soft) memory for all process in job (bsub -M)",
-            type=str,
-        )
-        parser_build_bsub.add_argument(
-            "-J", "--jobname", help="Assign a Job Name (bsub -J)", type=str
-        )
-
-        parser_build_bsub.add_argument(
-            "--dry-run",
-            help="Preview bsub command and not submit job to scheduler",
-            action="store_true",
-        )
-
         ##################### buildtest build     ###########################
         parser_build.add_argument(
             "--clear",
@@ -257,7 +219,6 @@ class BuildTestParser:
             metavar="COLLECTION-ID",
         )
 
-        parser_build_bsub.set_defaults(func=func_bsub)
         parser_build_run.set_defaults(func=run_tests)
         parser_build_test.set_defaults(func=show_status_test)
         parser_build_report.set_defaults(func=show_status_report)
@@ -265,10 +226,7 @@ class BuildTestParser:
         parser_build.set_defaults(func=func_build_subcmd)
 
     def module_menu(self):
-
-        parent_choices = get_all_parents()
-        collection_len = get_collection_length()
-        collection_len = list(range(collection_len))
+        """This method implements argparse arguments for ``buildtest module``. """
 
         parser_module = self.subparsers.add_parser("module")
         subparsers_module = parser_module.add_subparsers(
@@ -419,7 +377,7 @@ class BuildTestParser:
         parser_module.set_defaults(func=func_module_subcmd)
 
     def config_menu(self):
-
+        """This method adds argparse argument for ``buildtest config``"""
         parser_config = self.subparsers.add_parser("config")
         # -------------------------------- config  menu --------------------------
         subparsers_config = parser_config.add_subparsers(
@@ -440,6 +398,8 @@ class BuildTestParser:
         parser_config_restore.set_defaults(func=func_config_restore)
 
     def show_menu(self):
+        """This method adds argparse argument for ``buildtest show``"""
+
         parser_show = self.subparsers.add_parser("show")
         # -------------------------- buildtest show options ------------------------------
         parser_show.add_argument(
@@ -455,6 +415,7 @@ class BuildTestParser:
         parser_show.set_defaults(func=func_show_subcmd)
 
     def testconfigs_menu(self):
+        """This method adds argparse argument for ``buildtest testconfigs``"""
 
         test_config_choice = testconfig_choices()
 
@@ -492,6 +453,7 @@ class BuildTestParser:
         parser_testconfigs_edit.set_defaults(func=func_testconfigs_edit)
 
     def system_menu(self):
+        """This method adds argparse argument for ``buildtest system``"""
 
         parser_system = self.subparsers.add_parser("system")
         # -------------------------------- buildtest system options --------------------------
@@ -507,4 +469,3 @@ class BuildTestParser:
 
         parser_system_view.set_defaults(func=func_system_view)
         parser_system_fetch.set_defaults(func=func_system_fetch)
-

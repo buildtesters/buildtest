@@ -1,9 +1,1 @@
 $ buildtest build run 1
-Running All Tests from Test Directory: /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_1
-==============================================================
-                         Test summary                         
-Executed 1 tests
-Passed Tests: 1 Percentage: 100.0%
-Failed Tests: 0 Percentage: 0.0%
-SUCCESS: Threshold of 100.0% was achieved
-Writing results to /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_1/run/buildtest_14_35_05_02_2020.run

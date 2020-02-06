@@ -23,9 +23,6 @@ def main():
     parser = BuildTestParser()
     args = parser.parse_options()
 
-    # print (args)
-
-
 if __name__ == "__main__":
     """Entry Point, invoking main() method"""
     main()

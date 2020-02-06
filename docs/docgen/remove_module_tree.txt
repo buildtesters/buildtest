@@ -1,3 +1,1 @@
 $ buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core
-Removing module tree: ['/usr/share/lmod/lmod/modulefiles/Core']
-Configuration File: /u/users/ssi29/.buildtest/settings.yml has been updated

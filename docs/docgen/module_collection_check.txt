@@ -1,2 +1,1 @@
 $ buildtest module collection --check
-All module collection passed check!

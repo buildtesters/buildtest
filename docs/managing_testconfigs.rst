@@ -42,7 +42,7 @@ For example, if let's view the content of test *tutorial/compilers/args.c.yml* b
 
 Shown below is the output of this file.
 
-.. program-output:: cat docs/docgen/buildtest_testconfigs_view_tutorial_compilers_args.c.yml
+.. program-output:: cat docgen/buildtest_testconfigs_view_tutorial_compilers_args.c.yml
 
 Likewise, if you want to edit a test, use the **edit** subcommand and buildtest will launch an editor and open the file.
 Currently, buildtest will use the **vim** editor for editing files.

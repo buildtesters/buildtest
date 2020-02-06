@@ -18,7 +18,6 @@ def build_helper():
         "buildtest show -h",
         "buildtest testconfigs -h",
         "buildtest build -h",
-        "buildtest build bsub -h",
         "buildtest module -h",
         "buildtest module list -h",
         "buildtest module loadtest -h",

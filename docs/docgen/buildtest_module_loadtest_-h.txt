@@ -1,8 +1,1 @@
 $ buildtest module loadtest -h
-usage: buildtest [options] [COMMANDS] module loadtest [-h] [--login] [--numtest NUMTEST] [--purge-modules]
-
-optional arguments:
-  -h, --help         show this help message and exit
-  --login            Run test in a login shell
-  --numtest NUMTEST  Number of tests to run before exiting
-  --purge-modules    purge modules before loading modules.
