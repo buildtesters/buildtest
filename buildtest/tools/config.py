@@ -1,31 +1,30 @@
-import json
 import yaml
 import os
 import sys
-import subprocess
-from shutil import copy
-
 
 BUILDTEST_VERSION = "0.7.6"
+# root of buildtest-framework repository
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
-
-# test scripts that need to be run locally
-
+# json file used by buildtest to write build meta-data
 BUILDTEST_BUILD_LOGFILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "build.json")
+# json file used by buildtest to store system details
 BUILDTEST_SYSTEM = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "system.json")
 # dictionary used for storing status of builds
 BUILDTEST_BUILD_HISTORY = {}
 
 buildtest_home_conf_dir = os.path.join(os.getenv("HOME"), ".buildtest")
+# variable used to store buildtest configuration file in $HOME/.buildtest/settings.yml
 BUILDTEST_CONFIG_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml")
 BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml.bak")
+# json file used for storing buildtest module collections
 BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(
     os.getenv("BUILDTEST_ROOT"), "var", "collection.json"
 )
 BUILDTEST_MODULE_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "modules.json")
+# DEFAULT_CONFIG_FILE is the default buildtest configuration found in root of buildtest-framework repo
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "settings.yml")
 EDITOR_LIST = ["vim", "emacs", "nano"]
-
+# TESTCONFIG_ROOT is the root directory where test configurations are found
 TESTCONFIG_ROOT = os.path.join(os.getenv("BUILDTEST_ROOT"), "toolkit", "suite")
 # check if $HOME/.buildtest exists, if not create directory
 if not os.path.isdir(buildtest_home_conf_dir):
@@ -46,9 +45,6 @@ if not os.path.exists(BUILDTEST_CONFIG_FILE):
 fd = open(BUILDTEST_CONFIG_FILE, "r")
 config_opts = yaml.safe_load(fd)
 
-config_opts["BUILDTEST_CONFIGS_REPO"] = os.path.join(
-    os.environ["BUILDTEST_ROOT"], "toolkit", "suite"
-)
 # if BUILDTEST_MODULEPATH is empty list then check if MODULEPATH is defined
 # and set result to BUILDTEST_MODULEPATH
 if len(config_opts["BUILDTEST_MODULEPATH"]) == 0:
@@ -70,7 +66,6 @@ config_opts["BUILDTEST_VERSION"] = BUILDTEST_VERSION
 
 logID = "buildtest"
 
-
 config_directory_types = [
     "BUILDTEST_TESTDIR",
 ]
@@ -80,7 +75,6 @@ config_yaml_keys = {
     "BUILDTEST_TESTDIR": type("str"),
     "EDITOR": type("str"),
 }
-
 
 def check_configuration():
     """Checks all keys in configuration file (settings.yml) are valid
@@ -181,28 +175,3 @@ def show_configuration():
 
         else:
             print((f"{key} \t =").expandtabs(50), f"{config_opts[key]}")
-
-
-
-def func_config_edit(args):
-    """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
-
-    os.system(f"{config_opts['EDITOR']} {BUILDTEST_CONFIG_FILE}")
-
-
-def func_config_view(args=None):
-    """View buildtest configuration file. This implements ``buildtest config view``"""
-
-    os.system(f"cat {BUILDTEST_CONFIG_FILE}")
-
-
-def func_config_restore(args=None):
-    """Restore buildtest configuration from backup file. This implements ``buildtest config restore``"""
-    if os.path.isfile(BUILDTEST_CONFIG_BACKUP_FILE):
-        copy(BUILDTEST_CONFIG_BACKUP_FILE, BUILDTEST_CONFIG_FILE)
-        print(f"Restore configuration from backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
-    else:
-        print(f"Can't find backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
-        print(f"Resorting from default configuration: {DEFAULT_CONFIG_FILE}")
-        copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
-        copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)

@@ -9,7 +9,9 @@ import argcomplete
 from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import (
     config_opts,
-    check_configuration,
+
+)
+from buildtest.tools.configuration.config import (
     func_config_edit,
     func_config_view,
     func_config_restore,
