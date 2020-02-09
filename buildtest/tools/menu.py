@@ -45,8 +45,6 @@ from buildtest.tools.testconfigs import (
     func_testconfigs_edit,
 )
 
-from buildtest.tools.sysconfig.configuration import func_system_view, func_system_fetch
-
 test_config_choice = testconfig_choices()
 module_collection = get_module_collection()
 collection_len = get_collection_length()
@@ -79,8 +77,7 @@ class BuildTestParser:
             "module": "Buildtest Module Utilities",
             "show": "Options for displaying buildtest configuration",
             "testconfigs": "Options for list, view, and edit test configuration",
-            "config": "Buildtest Configuration Menu",
-            "system": "System Configuration",
+            "config": "Buildtest Configuration Menu"
         }
 
         self.main_menu()
@@ -89,7 +86,6 @@ class BuildTestParser:
         self.config_menu()
         self.show_menu()
         self.testconfigs_menu()
-        self.system_menu()
 
     def main_menu(self):
         """This method adds argument to ArgumentParser to main menu of buildtest"""
@@ -451,21 +447,3 @@ class BuildTestParser:
         parser_testconfigs_list.set_defaults(func=func_testconfigs_show)
         parser_testconfigs_view.set_defaults(func=func_testconfigs_view)
         parser_testconfigs_edit.set_defaults(func=func_testconfigs_edit)
-
-    def system_menu(self):
-        """This method adds argparse argument for ``buildtest system``"""
-
-        parser_system = self.subparsers.add_parser("system")
-        # -------------------------------- buildtest system options --------------------------
-        subparsers_system = parser_system.add_subparsers(
-            description="system configuration"
-        )
-        parser_system_view = subparsers_system.add_parser(
-            "view", help="View System Configuration"
-        )
-        parser_system_fetch = subparsers_system.add_parser(
-            "fetch", help="Fetch System Information"
-        )
-
-        parser_system_view.set_defaults(func=func_system_view)
-        parser_system_fetch.set_defaults(func=func_system_fetch)

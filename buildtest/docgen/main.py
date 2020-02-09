@@ -24,7 +24,6 @@ def build_helper():
         "buildtest module tree -h",
         "buildtest module collection -h",
         "buildtest config -h",
-        "buildtest system -h",
     ]
     for cmd in help_cmds:
         out = run(cmd)

@@ -8,7 +8,6 @@ Subpackages
 
     buildtest.tools.buildsystem
     buildtest.tools.modulesystem
-    buildtest.tools.sysconfig
 
 Submodules
 ----------

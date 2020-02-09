@@ -4,13 +4,13 @@ import shutil
 from buildtest.tools.file  import is_dir, is_file, create_file, create_dir, walk_tree, string_in_file
 from buildtest.tools.log import BuildTestError
 
-@pytest.mark.xfail(raises=BuildTestError)
+@pytest.mark.xfail(reason="Test expected to fail when checking an obscure directory path", raises=BuildTestError)
 def test_checking_directory():
-    is_dir("/xyz123")
+    is_dir("/xxXXxxyyYYyyYYyyzzZZzzZZzZZZz")
 
-@pytest.mark.xfail(raises=BuildTestError)
+@pytest.mark.xfail(reason="Test expected to fail when checking an obscure file",raises=BuildTestError)
 def test_checking_file():
-    is_file("$HOME/foo+boo.txt")
+    is_file("/xXXXxxXXYyyyYYYyyYzZZZzZZZ")
 
 def test_directory_expansion():
     is_dir("$HOME")
@@ -41,7 +41,7 @@ def test_create_file():
     os.remove(os.path.expandvars("$HOME/a.txt"))
     os.remove(os.path.expanduser("~/b.txt"))
 
-@pytest.mark.xfail(raises=OSError)
+@pytest.mark.xfail(reason="Expected Failure in creating file because lack of permission", raises=OSError)
 def test_fail_create_file():
     create_file("/etc/a.txt")
 
@@ -54,7 +54,7 @@ def test_create_dir():
     shutil.rmtree(os.path.expandvars("$HOME/a/"))
     shutil.rmtree(os.path.expanduser("~/x/"))
 
-@pytest.mark.xfail(raises=OSError)
+@pytest.mark.xfail(reason="This test is expected to fail due to insufficient priviledges", raises=OSError)
 def test_fail_create_dir():
     create_dir("/xyz")
 
@@ -62,7 +62,7 @@ def test_walk_tree():
     list_of_files = walk_tree(os.path.join(os.getenv("BUILDTEST_ROOT"),"buildtest"),".py")
     assert len(list_of_files) > 0
 
-@pytest.mark.xfail(raises=BuildTestError)
+@pytest.mark.xfail(reason="This test is expected to fail since we passed invalid path for directory traversal", raises=BuildTestError)
 def test_walk_tree_invalid_dir():
     walk_tree("/xyz",".py")
 
@@ -75,4 +75,6 @@ def test_string_in_file():
 
     assert string_in_file("Hello",fname)
     assert not string_in_file("Hello!",fname)
+    os.remove(fname)
+    
 

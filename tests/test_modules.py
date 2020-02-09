@@ -42,7 +42,7 @@ def test_module_diff():
     tree_list=f"{tree1},/opt/easybuild/modules/all"
     diff_trees(tree_list)
 
-@pytest.mark.xfail(raises=BuildTestError)
+@pytest.mark.xfail(reason="Test expected to fail because only one tree is passed", raises=BuildTestError)
 def test_module_diff_invalid_args():
     """Testing when one moduletree is passed to ``buildtest module --diff-trees``"""
     tree = os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
