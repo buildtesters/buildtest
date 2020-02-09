@@ -76,7 +76,6 @@ config_directory_types = [
 ]
 config_yaml_keys = {
     "BUILDTEST_MODULE_FORCE_PURGE": type(True),
-    "BUILDTEST_SUCCESS_THRESHOLD": type(1.0),
     "BUILDTEST_MODULEPATH": type([]),
     "BUILDTEST_TESTDIR": type("str"),
     "EDITOR": type("str"),
@@ -112,14 +111,6 @@ def check_configuration():
             print(f"Invalid Type for key: {key}")
             print(f"Expecting type: {str(value)}")
             print(f"Current type: {str(type(config_opts[key]))}")
-            ec = 1
-
-        # check if BUILDTEST_SUCCESS_THRESHOLD is between 0.0 and 1.0
-        if key == "BUILDTEST_SUCCESS_THRESHOLD" and (
-            config_opts[key] < 0.0 or config_opts[key] > 1.0
-        ):
-            print(f"{key} must be between [0.0-1.0]")
-            print(f"Current value is {str(config_opts[key])}")
             ec = 1
 
         if key == "BUILDTEST_MODULEPATH":

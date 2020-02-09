@@ -9,7 +9,7 @@ Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: fortran
 FC: ifort
 FFLAGS: -O2
-Test:/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_4/hello.f.yml.0xfaebd833.sh
+Test:/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_4/hello.f.yml.0x95e76c81.sh
 --------------------------------------------------------------------------------
 
 module purge
@@ -19,7 +19,7 @@ SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/
 SRCFILE=$SRCDIR/hello.f90
 FC=ifort
 FFLAGS="-O2"
-EXECUTABLE=hello.f.yml.0x3d674910.exe
+EXECUTABLE=hello.f.yml.0x3e9a810c.exe
 
 cd $TESTDIR
 $FC $FFLAGS -o $EXECUTABLE $SRCFILE

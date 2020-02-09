@@ -96,21 +96,6 @@ Spider will retrieve records from both trees (``/apps/modules/Compilers``, ``/ap
 check if absolute path to modulefile is part of sub-directory (``/apps/modules/Compilers``). Any record from ``/apps/modules/MPI``
 will be ignored.
 
-
-Test Threshold
-----------------
-
-buildtest provides a mechanism to set a success threshold during test execution that
-can be used to determine if your software passes or fails.
-
-This can be set by using ``BUILDTEST_SUCCESS_THRESHOLD`` which is a value between ``[0.0-1.0]`` that is used to
-determine if test meets the threshold. A value of 1.0 means 100% of test must pass. A value of 0.75 means 75% of tests must
-pass.
-
-Here is an example test run where all test have passed when threshold was set to **1.0**.
-
-.. program-output:: cat docgen/build-run-example.txt
-
 Force Purge Modules
 --------------------------
 

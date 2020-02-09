@@ -1,3 +1,2 @@
 $ buildtest config restore
-Can't find backup file: /u/users/ssi29/.buildtest/settings.yml.bak
-Resorting from default configuration: /u/users/ssi29/gpfs/buildtest-framework/settings.yml
+Restore configuration from backup file: /u/users/ssi29/.buildtest/settings.yml.bak

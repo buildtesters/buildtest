@@ -49,7 +49,7 @@ This documentation was last rebuild on |today| and is intended for version |vers
    building_test.rst
    introspection.rst
    module_operation.rst
-   additional_features.rst
+   managing_testconfigs.rst
 
 
 .. toctree::
