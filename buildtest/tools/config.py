@@ -1,7 +1,7 @@
 import yaml
 import os
 import sys
-
+from shutil import copy
 BUILDTEST_VERSION = "0.7.6"
 # root of buildtest-framework repository
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
@@ -66,14 +66,48 @@ config_opts["BUILDTEST_VERSION"] = BUILDTEST_VERSION
 
 logID = "buildtest"
 
-config_directory_types = [
-    "BUILDTEST_TESTDIR",
-]
 config_yaml_keys = {
-    "BUILDTEST_MODULE_FORCE_PURGE": type(True),
     "BUILDTEST_MODULEPATH": type([]),
-    "BUILDTEST_TESTDIR": type("str"),
     "EDITOR": type("str"),
+    "build": {
+        "testdir": type("str"),
+        "module": {
+            "type": type(dict),
+            "purge": {
+                "type": type(bool)
+            },
+        },
+    },
+    "module": {
+        "list": {
+            "type": type(dict),
+
+            "exclude_version_files": {
+                "type": type("str")
+            },
+            "filter": {
+                "type": type(dict),
+                "include": {
+                    "type": type([])
+                },
+            },
+            "querylimit": {
+                "type": type(int)
+            },
+        },
+        "loadtest": {
+            "type": type(dict),
+            "login": {
+                "type": type(bool)
+            },
+            "purge_modules": {
+                "type": type(bool)
+            },
+            "numtest": {
+                "type": type(int)
+            },
+        }
+    },
 }
 
 def check_configuration():
@@ -91,52 +125,34 @@ def check_configuration():
 
     ec = 0
 
-    keylist = config_yaml_keys.keys()
-    valuelist = config_yaml_keys.values()
-
-    # check if any key is not found in settings.yml
-    for key in keylist:
-        if key not in config_opts:
-            print(f"Unable to find key: {key} in {BUILDTEST_CONFIG_FILE}")
-            ec = 1
-
-    for key, value in zip(keylist, valuelist):
-        if value is not type(config_opts[key]):
-            print(f"Invalid Type for key: {key}")
-            print(f"Expecting type: {str(value)}")
-            print(f"Current type: {str(type(config_opts[key]))}")
-            ec = 1
-
-        if key == "BUILDTEST_MODULEPATH":
-            if config_opts["BUILDTEST_MODULEPATH"] == None:
+    if config_opts["BUILDTEST_MODULEPATH"] == None:
+        print(
+            "Please specify a module tree to BUILDTEST_MODULEPATH"
+            + f"in configuration {BUILDTEST_CONFIG_FILE}"
+        )
+    else:
+        for module_root in config_opts["BUILDTEST_MODULEPATH"]:
+            if not os.path.isdir(module_root):
                 print(
-                    "Please specify a module tree to BUILDTEST_MODULEPATH"
-                    + f"in configuration {BUILDTEST_CONFIG_FILE}"
-                )
-            else:
-                for module_root in config_opts[key]:
-                    if not os.path.isdir(module_root):
-                        print(
-                            f"{module_root} directory does not exist"
-                            + " specified in BUILDTEST_MODULEPATH"
-                        )
-                        ec = 1
-
-        if key == "EDITOR":
-            if config_opts["EDITOR"] not in EDITOR_LIST:
-                print(f"Invalid EDITOR key: {config_opts['EDITOR']}")
-                print(
-                    f"Please pick a valid editor option from the following: {EDITOR_LIST}"
+                    f"{module_root} directory does not exist"
+                    + " specified in BUILDTEST_MODULEPATH"
                 )
                 ec = 1
-        if key in config_directory_types:
 
-            # expand variables for directory configuration
-            config_opts[key] = os.path.expandvars(config_opts[key])
+    if config_opts["EDITOR"] not in EDITOR_LIST:
+        print(f"Invalid EDITOR key: {config_opts['EDITOR']}")
+        print(
+            f"Please pick a valid editor option from the following: {EDITOR_LIST}"
+        )
+        ec = 1
 
-            # create the directory if it doesn't exist
-            if not os.path.isdir(config_opts[key]):
-                os.makedirs(config_opts[key])
+    if config_opts["build"]["testdir"]:
+        config_opts["build"]["testdir"] = os.path.expandvars(config_opts["build"]["testdir"])
+        # create the directory if it doesn't exist
+        if not os.path.isdir(config_opts["build"]["testdir"]):
+            dir = config_opts["build"]["testdir"]
+            print (f"creating directory: {dir}")
+            os.makedirs(config_opts["build"]["testdir"])
 
     if ec:
         print("CONFIGURATION CHECK FAILED")

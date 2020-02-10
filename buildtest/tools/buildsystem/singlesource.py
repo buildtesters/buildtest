@@ -14,6 +14,7 @@ from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY, logID
 from buildtest.tools.file import create_dir, is_file
 from buildtest.tools.system import BuildTestCommand, BuildTestSystem
 from buildtest.tools.log import BuildTestError
+from buildtest.tools.modules import module_selector
 
 
 class BuildTestBuilder:
@@ -204,9 +205,10 @@ class BuildTestBuilder:
 
 
 class SingleSource(BuildTestBuilder):
-    def __init__(self, file=None):
+    def __init__(self, file,lmod_collection, buildtest_collection):
         """Class constructor for SingleSource"""
-
+        self.lmod_collection = lmod_collection
+        self.buildtest_collection = buildtest_collection
         bsub_schema = {
             "type": dict,
             "required": False,
@@ -414,8 +416,6 @@ class SingleSource(BuildTestBuilder):
                 "mpi": mpi_schema,
             },
         }
-        if file is None:
-            return
 
         logger = logging.getLogger(logID)
 
@@ -438,6 +438,7 @@ class SingleSource(BuildTestBuilder):
         # content to store the test script
         self.testscript_content = {
             "testpath": "",
+            "shell": ["#!/bin/bash"],
             "scheduler": [],
             "module": [],
             "metavars": [],
@@ -463,7 +464,7 @@ class SingleSource(BuildTestBuilder):
         )
         # invoke setup method from base class to detect language, compiler, and mpi wrapper
         self.testscript_content["testpath"] = "%s.%s.sh" % (
-            os.path.join(config_opts["BUILDTEST_TESTDIR"], os.path.basename(file)),
+            os.path.join(config_opts["build"]["testdir"], os.path.basename(file)),
             hex(random.getrandbits(32)),
         )
 
@@ -769,14 +770,21 @@ class SingleSource(BuildTestBuilder):
         """This method brings all the components together to form the test structure."""
 
         logger = logging.getLogger(logID)
-
         if self.scheduler == "LSF":
             self.testscript_content["scheduler"] = self.bsub_commands()
         elif self.scheduler == "SLURM":
             self.testscript_content["scheduler"] = self.sbatch_commands()
 
+        self.testscript_content["module"] = module_selector(self.lmod_collection,self.buildtest_collection)
+        """
+        # check whether to force purge or purge modules in test script.
+        if config_opts["build"]["module"]["purge"]["force"]:
+            self.testscript_content["module"].append("module --force purge")
+        else:
+            self.testscript_content["module"].append("module purge")
+        """
         self.testscript_content["metavars"].append(
-            f"TESTDIR={config_opts['BUILDTEST_TESTDIR']}"
+            f"TESTDIR={config_opts['build']['testdir']}"
         )
         self.testscript_content["metavars"].append(f"SRCDIR={self.srcdir}")
         self.testscript_content["metavars"].append(f"SRCFILE=$SRCDIR/{self.srcfile}")
@@ -854,3 +862,4 @@ class SingleSource(BuildTestBuilder):
             logger.debug(f"{k}:{v}")
 
         return self.testscript_content
+

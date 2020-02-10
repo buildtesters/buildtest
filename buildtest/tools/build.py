@@ -58,16 +58,16 @@ def func_build_subcmd(args):
         f"build_{str(build_id)}",
     )
 
-    config_opts["BUILDTEST_TESTDIR"] = os.path.join(
-        config_opts["BUILDTEST_TESTDIR"], test_subdir
+    config_opts["build"]["testdir"] = os.path.join(
+        config_opts["build"]["testdir"], test_subdir
     )
     if not args.dry:
-        create_dir(config_opts["BUILDTEST_TESTDIR"])
-        BUILDTEST_BUILD_HISTORY[build_id]["TESTDIR"] = config_opts["BUILDTEST_TESTDIR"]
+        create_dir(config_opts["build"]["testdir"])
+        BUILDTEST_BUILD_HISTORY[build_id]["TESTDIR"] = config_opts["build"]["testdir"]
 
     logger, LOGFILE = init_log()
     logger.info(f"Opening File: {BUILDTEST_SYSTEM} and loading as JSON object")
-    logger.info(f"Creating Directory: {config_opts['BUILDTEST_TESTDIR']}")
+    logger.info(f"Creating Directory: {config_opts['build']['testdir']}")
     logger.debug(f"Current build ID: {build_id}")
 
     module_cmd_list = []
@@ -85,11 +85,11 @@ def func_build_subcmd(args):
             print("{:_<80}".format(""))
             fd.close()
 
-        singlesource_test = SingleSource(file)
+        singlesource_test = SingleSource(file,args.collection,args.module_collection)
         content = singlesource_test.build_test_content()
         logger.info("Injecting method to inject modules into test script")
 
-        content["module"] = module_selector(args.collection, args.module_collection)
+        #content["module"] = module_selector(args.collection, args.module_collection)
         if args.dry:
             dry_view(content)
         else:
@@ -128,8 +128,8 @@ def clear_builds():
     """This method clears the build history and removes all tests. This implements command ``buildtest build --clear``"""
     if os.path.isfile(BUILDTEST_BUILD_LOGFILE):
         os.remove(BUILDTEST_BUILD_LOGFILE)
-    if os.path.isdir(config_opts["BUILDTEST_TESTDIR"]):
-        shutil.rmtree(config_opts["BUILDTEST_TESTDIR"])
+    if os.path.isdir(config_opts["build"]["testdir"]):
+        shutil.rmtree(config_opts["build"]["testdir"])
 
     print("Clearing Build History")
     build_dict = {"build": {}}

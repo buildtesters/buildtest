@@ -1,7 +1,6 @@
 import os
+from buildtest.tools.config import BUILDTEST_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE
 from buildtest.tools.configuration.config import (
-    BUILDTEST_CONFIG_FILE,
-    BUILDTEST_CONFIG_BACKUP_FILE,
     func_config_view,
     func_config_restore,
 )

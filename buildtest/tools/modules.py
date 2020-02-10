@@ -292,8 +292,8 @@ def module_load_test(args):
     module_stack = module_obj.get_modulefile_path()
     module_dict = module_obj.get_module_spider_json()
     lmod_major_ver = module_obj.get_version()[0]
-    out_file = f"{config_opts['BUILDTEST_TESTDIR']}/modules-load.out"
-    err_file = f"{config_opts['BUILDTEST_TESTDIR']}/modules-load.err"
+    out_file = f"{config_opts['build']['testdir']}/modules-load.out"
+    err_file = f"{config_opts['build']['testdir']}/modules-load.err"
 
     fd_out = open(out_file, "w")
     fd_err = open(err_file, "w")
@@ -473,7 +473,9 @@ def module_selector(user_collection, buildtest_module_collection):
     :return: Return a list of modules based on the type of modules passed to this method
     """
     modules = []
-    if config_opts["BUILDTEST_MODULE_FORCE_PURGE"]:
+
+
+    if config_opts["build"]["module"]["purge"]["force"]:
         modules.append("module --force purge")
     else:
         modules.append("module purge")
@@ -497,6 +499,7 @@ def module_selector(user_collection, buildtest_module_collection):
 
         modules_load_list = [f"module load {x}" for x in out.split()]
         modules += modules_load_list
+        print (modules)
         return
 
 
