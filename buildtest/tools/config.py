@@ -179,7 +179,7 @@ def show_configuration():
             tree = tree[:-1]
             print((f"{key} \t =").expandtabs(50), tree)
         # print all keys in module dictionary
-        elif key == "module":
+        elif key in ["module","build"]:
             module_keys = config_opts[key].keys()
 
             for m in module_keys:

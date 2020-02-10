@@ -5,14 +5,10 @@ The file implements the singlesource build system responsible
 import logging
 import os
 import random
-import stat
-import subprocess
 import yaml
 import sys
 
-from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY, logID
-from buildtest.tools.file import create_dir, is_file
-from buildtest.tools.system import BuildTestCommand, BuildTestSystem
+from buildtest.tools.config import config_opts, logID
 from buildtest.tools.log import BuildTestError
 from buildtest.tools.modules import module_selector
 
@@ -205,7 +201,7 @@ class BuildTestBuilder:
 
 
 class SingleSource(BuildTestBuilder):
-    def __init__(self, file,lmod_collection, buildtest_collection):
+    def __init__(self, file=None,lmod_collection=None, buildtest_collection=None):
         """Class constructor for SingleSource"""
         self.lmod_collection = lmod_collection
         self.buildtest_collection = buildtest_collection

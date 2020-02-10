@@ -207,8 +207,8 @@ Shown below is an example dry run build.
 Delete All builds (``buildtest build --clear``)
 -----------------------------------------------------
 
-If you want to delete all builds, this can be done via ``buildtest build --clear``. This will remove all tests found
-in **$BUILDTEST_TESTDIR** and remove all entries from ``build.json``. Removing entries from ``build.json`` will affect
+If you want to delete all builds, this can be done via ``buildtest build --clear``. This will remove all tests and
+remove all entries from ``build.json``. Removing entries from ``build.json`` will affect
 commands like ``buildtest build [ report | test | run | log | bsub ]`` since they rely on build IDs. Deleting the builds also
 remove the build IDs where build IDs correspond to a unique build entry in ``build.json``. For more details see :ref:`build_status`
 
@@ -220,7 +220,7 @@ Shown below is an output after clearing the builds.
 Test Directory Layout
 ----------------------
 
-buildtest will store the test defined by configuration ``BUILDTEST_TESTDIR`` defined in **settings.yml**. Buildtest will
+buildtest will store the test defined by configuration ``build[testdir]`` defined in **settings.yml**. Buildtest will
 detect system details such as vendor id, architecture, platform, operating system that get inserted into the directory
 structure. Every build (``buildtest build``) will increment the build ID to distinguish between previous builds.
 Shown below is a basic structure of the directory layout::

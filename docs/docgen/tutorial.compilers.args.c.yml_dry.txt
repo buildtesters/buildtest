@@ -9,15 +9,17 @@ Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: gcc
 CFLAGS: -Wall -g
-Test:/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_2/args.c.yml.0x802317b1.sh
+['module purge', 'module load GCCcore/8.3.0', 'module load bzip2/1.0.8-GCCcore-8.3.0', 'module load zlib/1.2.11-GCCcore-8.3.0', 'module load ncurses/6.1-GCCcore-8.3.0', 'module load libreadline/8.0-GCCcore-8.3.0', 'module load Tcl/8.6.9-GCCcore-8.3.0', 'module load SQLite/3.29.0-GCCcore-8.3.0', 'module load XZ/5.2.4-GCCcore-8.3.0', 'module load GMP/6.1.2-GCCcore-8.3.0', 'module load libffi/3.2.1-GCCcore-8.3.0', 'module load Python/3.7.4-GCCcore-8.3.0']
+Test:/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2/args.c.yml.0xd35042cc.sh
 --------------------------------------------------------------------------------
+#!/bin/bash
 
-TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_2
+TESTDIR=/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2
 SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
 SRCFILE=$SRCDIR/args.c
 CC=gcc
 CFLAGS="-Wall -g"
-EXECUTABLE=args.c.yml.0x8ed9a088.exe
+EXECUTABLE=args.c.yml.0x5f4a2f27.exe
 export FOO=BAR
 export X=1
 cd $TESTDIR

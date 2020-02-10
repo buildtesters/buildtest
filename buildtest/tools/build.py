@@ -6,7 +6,6 @@ for building test scripts from test configuration.
 from datetime import datetime
 import json
 import os
-import random
 import shutil
 import sys
 
@@ -23,7 +22,6 @@ from buildtest.tools.buildsystem.singlesource import SingleSource
 from buildtest.tools.buildsystem.dry import dry_view
 from buildtest.tools.file import create_dir
 from buildtest.tools.log import init_log
-from buildtest.tools.modules import find_modules, module_selector
 from buildtest.tools.buildsystem.status import get_total_build_ids
 from buildtest.tools.writer import write_test
 
@@ -70,8 +68,6 @@ def func_build_subcmd(args):
     logger.info(f"Creating Directory: {config_opts['build']['testdir']}")
     logger.debug(f"Current build ID: {build_id}")
 
-    module_cmd_list = []
-
     if args.config:
 
         file = os.path.join(TESTCONFIG_ROOT, args.config)
@@ -87,9 +83,7 @@ def func_build_subcmd(args):
 
         singlesource_test = SingleSource(file,args.collection,args.module_collection)
         content = singlesource_test.build_test_content()
-        logger.info("Injecting method to inject modules into test script")
 
-        #content["module"] = module_selector(args.collection, args.module_collection)
         if args.dry:
             dry_view(content)
         else:

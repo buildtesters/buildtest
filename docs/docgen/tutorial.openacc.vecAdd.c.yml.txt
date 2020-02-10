@@ -25,20 +25,23 @@ Programming Language: c
 CC: gcc
 CFLAGS: -fopenacc
 {
-    "testpath": "/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0xb4f818da.sh",
+    "testpath": "/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0x77a27207.sh",
+    "shell": [
+        "#!/bin/bash"
+    ],
     "scheduler": [],
     "module": [
         "module purge",
         "module restore GCC"
     ],
     "metavars": [
-        "TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_4",
+        "TESTDIR=/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4",
         "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src",
         "SRCFILE=$SRCDIR/vecAdd.c",
         "CC=gcc",
         "CFLAGS=\"-fopenacc\"",
         "LDFLAGS=\"-lm\"",
-        "EXECUTABLE=vecAdd.c.yml.0x6eb6db18.exe"
+        "EXECUTABLE=vecAdd.c.yml.0x75cfbf0e.exe"
     ],
     "envs": [],
     "build": [
@@ -50,23 +53,24 @@ CFLAGS: -fopenacc
         "rm ./$EXECUTABLE"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0xb4f818da.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0xb4f818da.sh
+Writing Test: /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0x77a27207.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0x77a27207.sh
 ________________________________________________________________________________
+#!/bin/bash
 
 module purge
 module restore GCC
-TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_4
+TESTDIR=/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4
 SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
 SRCFILE=$SRCDIR/vecAdd.c
 CC=gcc
 CFLAGS="-fopenacc"
 LDFLAGS="-lm"
-EXECUTABLE=vecAdd.c.yml.0x6eb6db18.exe
+EXECUTABLE=vecAdd.c.yml.0x75cfbf0e.exe
 
 cd $TESTDIR
 $CC $CFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS
 $EXECUTABLE
 rm ./$EXECUTABLE
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/tests/Intel/Broadwell/x86_64/rhel/7.6/build_4/log/buildtest_16_36_09_02_2020.log
+Writing Log file to:  /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4/log/buildtest_16_28_10_02_2020.log

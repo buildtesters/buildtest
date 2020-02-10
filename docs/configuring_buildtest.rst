@@ -96,17 +96,35 @@ Spider will retrieve records from both trees (``/apps/modules/Compilers``, ``/ap
 check if absolute path to modulefile is part of sub-directory (``/apps/modules/Compilers``). Any record from ``/apps/modules/MPI``
 will be ignored.
 
-Force Purge Modules
+Purging Modules In Tests
 --------------------------
 
 buildtest will automatically run ``module purge`` before loading modules in test
-script. This is to avoid unexpected behaviors when user shell has active modules
-loaded that may affect the behavior of the test.
+script. This is to avoid unexpected behaviors when user shell has modules
+loaded in their shell session.
 
-If you want to force purge the modules (i.e ``module --force purge``), then
-set **BUILDTEST_MODULE_FORCE_PURGE=True**. By default, this
-is set to **False**. This option is useful if you have sticky modules that
-need to be removed prior to running test.
+The configuration section in buildtest that defines module purge is shown below::
+
+    build:
+      module:
+        purge:
+          force: False
+
+If you want to purge sticky modules, then consider setting ``force: True`` which will
+invoke ``module --force purge`` at start of each test script. By default, this
+is set to **False**.
+
+Configure Test Directory
+--------------------------
+
+buildtest must write tests somewhere, in order to define a directory path, use the ``testdir`` key defined in ``build``
+section. If you want to redirect tests to ``/tmp/$USERS/buildtest`` you can set that as follows::
+
+    build:
+        testdir: /tmp/$USERS/buildtest/
+
+
+.. Note:: Shell expansion should work when specifying directories
 
 Configuring Editor
 -------------------
