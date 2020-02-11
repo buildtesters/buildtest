@@ -326,6 +326,16 @@ class SingleSource(BuildTestBuilder):
                 "values": ["local", "LSF", "SLURM"],
                 "description": "Pick Scheduler Type.",
             },
+            "moduleload": {
+                "type": dict,
+                "required": False,
+                "description": "Specify type of method to load modules into test.",
+                "lmod_collection": {
+                    "type": str,
+                    "required": False,
+                    "description": "Specify a Lmod Collection name to load in test",
+                }
+            },
             "mpi": {
                 "type": bool,
                 "required": False,
@@ -412,7 +422,8 @@ class SingleSource(BuildTestBuilder):
                 "mpi": mpi_schema,
             },
         }
-
+        if file is None:
+            return
         logger = logging.getLogger(logID)
 
         fd = open(file, "r")
@@ -444,13 +455,20 @@ class SingleSource(BuildTestBuilder):
         }
 
         self.envs = []
-
+        # moduleload_check is enabled if "moduleload" key is defined, then buildtest will attempt to resolve module based
+        # on configuration file
+        self.moduleload_check = False
         self.check_program_keys()
 
         print("Schema Check Passed")
 
         if "mpi" in self.test_yaml.keys():
             self.mpi = self.test_yaml["mpi"]
+        if "moduleload" in self.test_yaml.keys():
+            self.moduleload_check = True
+            if "lmod_collection" in self.test_yaml["moduleload"].keys():
+                self.lmod_collection = self.test_yaml["moduleload"]["lmod_collection"]
+
 
         # self.srcfile = os.path.join(self.srcdir, self.test_yaml["program"]["source"])
         self.srcfile = self.test_yaml["program"]["source"]
