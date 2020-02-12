@@ -2,25 +2,23 @@ $ buildtest build -c tutorial/compilers/hello.f.yml -co intel --dry
 Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/hello.f.yml
 Checking schema of YAML file
 Schema Check Passed
-Scheduler: local
 Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
 Source File: hello.f90
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: fortran
 FC: ifort
 FFLAGS: -O2
-Test:/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4/hello.f.yml.0x4ce06ec9.sh
+Test:/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2/hello.f.yml.0x3dd2a655.sh
 --------------------------------------------------------------------------------
 #!/bin/bash
-
 module purge
 module restore intel
-TESTDIR=/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4
+TESTDIR=/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2
 SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
 SRCFILE=$SRCDIR/hello.f90
 FC=ifort
 FFLAGS="-O2"
-EXECUTABLE=hello.f.yml.0x2f2bb285.exe
+EXECUTABLE=hello.f.yml.0xa7b5e4e6.exe
 
 cd $TESTDIR
 $FC $FFLAGS -o $EXECUTABLE $SRCFILE

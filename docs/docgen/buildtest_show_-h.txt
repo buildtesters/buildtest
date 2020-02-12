@@ -1,8 +1,12 @@
 $ buildtest show -h
-usage: buildtest [options] [COMMANDS] show [-h] [-c] [-k {singlesource}]
+usage: buildtest [options] [COMMANDS] show [-h] [-c] {schema} ...
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -c, --config          show buildtest environment configuration
-  -k {singlesource}, --keys {singlesource}
-                        show yaml keys
+  -h, --help    show this help message and exit
+  -c, --config  show buildtest environment configuration
+
+subcommands:
+  buildtest configuration
+
+  {schema}
+    schema      Display YAML schema

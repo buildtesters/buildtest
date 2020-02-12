@@ -30,7 +30,7 @@ from buildtest.tools.modules import (
 )
 from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
 
-from buildtest.tools.show import func_show_subcmd
+from buildtest.tools.show import func_show_subcmd, show_schema_layout
 from buildtest.tools.buildsystem.status import (
     show_status_report,
     get_build_ids,
@@ -406,10 +406,11 @@ class BuildTestParser:
             help="show buildtest environment configuration",
             action="store_true",
         )
-        parser_show.add_argument(
-            "-k", "--keys", help="show yaml keys", choices=["singlesource"]
+        subparsers_show = parser_show.add_subparsers(
+            description="buildtest configuration"
         )
-
+        parser_schema = subparsers_show.add_parser("schema", help="Display YAML schema")
+        parser_schema.set_defaults(func=show_schema_layout)
         parser_show.set_defaults(func=func_show_subcmd)
 
     def testconfigs_menu(self):

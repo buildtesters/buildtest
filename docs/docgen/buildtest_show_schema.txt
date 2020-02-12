@@ -1,4 +1,4 @@
-$ buildtest show -k singlesource
+$ buildtest show schema
 description:
   description: Description Text for test configuration limited to 80 characters
   required: true
@@ -7,6 +7,14 @@ maintainer:
   description: List of Maintainers for the test
   required: true
   type: !!python/name:builtins.list ''
+moduleload:
+  description: Specify type of method to load modules into test.
+  lmod_collection:
+    description: Specify a Lmod Collection name to load in test
+    required: false
+    type: *id001
+  required: false
+  type: &id002 !!python/name:builtins.dict ''
 mpi:
   description: Instruct buildtest if this test is a MPI test
   required: false
@@ -15,35 +23,6 @@ mpi:
   - false
   - true
 program:
-  bsub:
-    M:
-      description: 'Equivalent to #BSUB -M'
-      opt_mapping: -M
-      required: false
-      type: *id001
-    R:
-      description: 'Equivalent to #BSUB -R'
-      opt_mapping: -R
-      required: false
-      type: *id001
-    W:
-      description: 'Equivalent to #BSUB -W'
-      opt_mapping: -W
-      required: false
-      type: *id001
-    description: 'bsub block for specifying #BSUB directives in test.'
-    n:
-      description: 'Equivalent to #BSUB -n'
-      opt_mapping: -n
-      required: false
-      type: *id001
-    q:
-      description: 'Equivalent to #BSUB -q'
-      opt_mapping: -q
-      required: false
-      type: *id001
-    required: false
-    type: &id002 !!python/name:builtins.dict ''
   cflags:
     description: Specify compiler flags to C compiler (i.e $CC)
     required: false
@@ -127,56 +106,13 @@ program:
     required: false
     type: *id001
   required: true
-  sbatch:
-    C:
-      description: 'Equivalent to #SBATCH -C'
-      opt_mapping: -C
-      required: false
-      type: *id001
-    N:
-      description: 'Equivalent to #SBATCH -N'
-      opt_mapping: -N
-      required: false
-      type: *id001
-    description: 'sbatch block for specifying #SBATCH directives in test.'
-    mem:
-      description: 'Equivalent to #SBATCH --mem'
-      opt_mapping: --mem
-      required: false
-      type: *id001
-    n:
-      description: 'Equivalent to #SBATCH -n'
-      opt_mapping: -n
-      required: false
-      type: *id001
-    p:
-      description: 'Equivalent to #SBATCH -p'
-      opt_mapping: -p
-      required: false
-      type: *id001
-    required: false
-    t:
-      description: 'Equivalent to #SBATCH -t'
-      opt_mapping: -t
-      required: false
-      type: *id001
-    type: *id002
   source:
     description: Source File to compile. This file must be in 'src' directory
     required: true
     type: *id001
   type: *id002
-scheduler:
-  description: Pick Scheduler Type.
-  required: true
-  type: *id001
-  values:
-  - local
-  - LSF
-  - SLURM
 testtype:
   description: Buildtest Class for Single Source Compilation
   required: true
   type: *id001
   values: singlesource
-

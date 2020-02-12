@@ -12,6 +12,142 @@ from buildtest.tools.config import config_opts, logID
 from buildtest.tools.log import BuildTestError
 from buildtest.tools.modules import module_selector
 
+def get_yaml_schema():
+    mpi_schema = {
+        "type": dict,
+        "required": False,
+        "description": "MPI block for specifying mpi configuration.",
+        "flavor": {
+            "type": str,
+            "required": False,
+            "values": ["openmpi", "mpich"],
+            "description": "Specify MPI Flavor. This is used to detect MPI wrapper.",
+        },
+        "launcher": {
+            "type": str,
+            "required": False,
+            "values": ["mpirun", "mpiexec", "mpiexec.hydra"],
+            "description": "Specify the MPI Launcher to run MPI jobs",
+        },
+        "launcher_opts": {
+            "type": str,
+            "required": False,
+            "description": "Pass options to MPI Launcher",
+        },
+    }
+    schema = {
+        "testtype": {
+            "type": str,
+            "required": True,
+            "values": "singlesource",
+            "description": "Buildtest Class for Single Source Compilation",
+        },
+        "description": {
+            "type": str,
+            "required": True,
+            "description": "Description Text for test configuration limited to 80 characters",
+        },
+        "maintainer": {
+            "type": list,
+            "required": True,
+            "description": "List of Maintainers for the test",
+        },
+        "moduleload": {
+            "type": dict,
+            "required": False,
+            "description": "Specify type of method to load modules into test.",
+            "lmod_collection": {
+                "type": str,
+                "required": False,
+                "description": "Specify a Lmod Collection name to load in test",
+            }
+        },
+        "mpi": {
+            "type": bool,
+            "required": False,
+            "values": [False, True],
+            "description": "Instruct buildtest if this test is a MPI test",
+        },
+        "program": {
+            "type": dict,
+            "required": True,
+            "description": "Start of Program. This section where you specify test parameters.",
+            "source": {
+                "type": str,
+                "required": True,
+                "description": "Source File to compile. This file must be in 'src' directory",
+            },
+            "compiler": {
+                "type": str,
+                "required": True,
+                "values": ["gnu", "intel", "pgi", "cuda", "clang"],
+                "description": "Specify Compiler Name to detect compiler wrapper.",
+            },
+            "env": {
+                "type": dict,
+                "required": False,
+                "description": "Specify List of Environment Varaibles in Test",
+            },
+            "cflags": {
+                "type": str,
+                "required": False,
+                "description": "Specify compiler flags to C compiler (i.e $CC)",
+            },
+            "cxxflags": {
+                "type": str,
+                "required": False,
+                "description": "Specify compiler flags to C++ compiler (i.e $CXX)",
+            },
+            "fflags": {
+                "type": str,
+                "required": False,
+                "description": "Specify compiler flags to Fortran compiler (i.e $FC)",
+            },
+            "ldflags": {
+                "type": str,
+                "required": False,
+                "description": "Specify linker flags",
+            },
+            "pre_build": {
+                "type": str,
+                "required": False,
+                "description": "Shell commands to run before building.",
+            },
+            "post_build": {
+                "type": str,
+                "required": False,
+                "description": "Shell commands to run after building.",
+            },
+            "pre_run": {
+                "type": str,
+                "required": False,
+                "description": "Shell commands to run before running executable.",
+            },
+            "post_run": {
+                "type": str,
+                "required": False,
+                "description": "Shell commands to run after running executable.",
+            },
+            "pre_exec": {
+                "type": str,
+                "required": False,
+                "description": "Command in front of executable.",
+            },
+            "exec_opts": {
+                "type": str,
+                "required": False,
+                "description": "Passing options to executable.",
+            },
+            "post_exec": {
+                "type": str,
+                "required": False,
+                "description": "Commands after executable.",
+            },
+
+            "mpi": mpi_schema,
+        },
+    }
+    return schema
 
 class BuildTestBuilder:
     """Class responsible for parsing the test configuration."""
@@ -201,145 +337,12 @@ class BuildTestBuilder:
 
 
 class SingleSource(BuildTestBuilder):
-    def __init__(self, file=None,lmod_collection=None, buildtest_collection=None):
+    def __init__(self, file,lmod_collection, buildtest_collection):
         """Class constructor for SingleSource"""
         self.lmod_collection = lmod_collection
         self.buildtest_collection = buildtest_collection
 
-        mpi_schema = {
-            "type": dict,
-            "required": False,
-            "description": "MPI block for specifying mpi configuration.",
-            "flavor": {
-                "type": str,
-                "required": False,
-                "values": ["openmpi", "mpich"],
-                "description": "Specify MPI Flavor. This is used to detect MPI wrapper.",
-            },
-            "launcher": {
-                "type": str,
-                "required": False,
-                "values": ["mpirun", "mpiexec", "mpiexec.hydra"],
-                "description": "Specify the MPI Launcher to run MPI jobs",
-            },
-            "launcher_opts": {
-                "type": str,
-                "required": False,
-                "description": "Pass options to MPI Launcher",
-            },
-        }
-        self.schema = {
-            "testtype": {
-                "type": str,
-                "required": True,
-                "values": "singlesource",
-                "description": "Buildtest Class for Single Source Compilation",
-            },
-            "description": {
-                "type": str,
-                "required": True,
-                "description": "Description Text for test configuration limited to 80 characters",
-            },
-            "maintainer": {
-                "type": list,
-                "required": True,
-                "description": "List of Maintainers for the test",
-            },
-            "moduleload": {
-                "type": dict,
-                "required": False,
-                "description": "Specify type of method to load modules into test.",
-                "lmod_collection": {
-                    "type": str,
-                    "required": False,
-                    "description": "Specify a Lmod Collection name to load in test",
-                }
-            },
-            "mpi": {
-                "type": bool,
-                "required": False,
-                "values": [False, True],
-                "description": "Instruct buildtest if this test is a MPI test",
-            },
-            "program": {
-                "type": dict,
-                "required": True,
-                "description": "Start of Program. This section where you specify test parameters.",
-                "source": {
-                    "type": str,
-                    "required": True,
-                    "description": "Source File to compile. This file must be in 'src' directory",
-                },
-                "compiler": {
-                    "type": str,
-                    "required": True,
-                    "values": ["gnu", "intel", "pgi", "cuda", "clang"],
-                    "description": "Specify Compiler Name to detect compiler wrapper.",
-                },
-                "env": {
-                    "type": dict,
-                    "required": False,
-                    "description": "Specify List of Environment Varaibles in Test",
-                },
-                "cflags": {
-                    "type": str,
-                    "required": False,
-                    "description": "Specify compiler flags to C compiler (i.e $CC)",
-                },
-                "cxxflags": {
-                    "type": str,
-                    "required": False,
-                    "description": "Specify compiler flags to C++ compiler (i.e $CXX)",
-                },
-                "fflags": {
-                    "type": str,
-                    "required": False,
-                    "description": "Specify compiler flags to Fortran compiler (i.e $FC)",
-                },
-                "ldflags": {
-                    "type": str,
-                    "required": False,
-                    "description": "Specify linker flags",
-                },
-                "pre_build": {
-                    "type": str,
-                    "required": False,
-                    "description": "Shell commands to run before building.",
-                },
-                "post_build": {
-                    "type": str,
-                    "required": False,
-                    "description": "Shell commands to run after building.",
-                },
-                "pre_run": {
-                    "type": str,
-                    "required": False,
-                    "description": "Shell commands to run before running executable.",
-                },
-                "post_run": {
-                    "type": str,
-                    "required": False,
-                    "description": "Shell commands to run after running executable.",
-                },
-                "pre_exec": {
-                    "type": str,
-                    "required": False,
-                    "description": "Command in front of executable.",
-                },
-                "exec_opts": {
-                    "type": str,
-                    "required": False,
-                    "description": "Passing options to executable.",
-                },
-                "post_exec": {
-                    "type": str,
-                    "required": False,
-                    "description": "Commands after executable.",
-                },
-
-                "mpi": mpi_schema,
-            },
-        }
+        self.schema = get_yaml_schema()
         if file is None:
             return
         logger = logging.getLogger(logID)

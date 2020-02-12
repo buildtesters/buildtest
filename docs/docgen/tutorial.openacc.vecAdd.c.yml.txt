@@ -17,7 +17,6 @@ ________________________________________________________________________________
 Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/vecAdd.c.yml
 Checking schema of YAML file
 Schema Check Passed
-Scheduler: local
 Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
 Source File: vecAdd.c
 Detecting Programming Language, Compiler and MPI wrapper
@@ -25,23 +24,22 @@ Programming Language: c
 CC: gcc
 CFLAGS: -fopenacc
 {
-    "testpath": "/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0x77a27207.sh",
+    "testpath": "/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2/vecAdd.c.yml.0x53746574.sh",
     "shell": [
         "#!/bin/bash"
     ],
-    "scheduler": [],
     "module": [
         "module purge",
         "module restore GCC"
     ],
     "metavars": [
-        "TESTDIR=/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4",
+        "TESTDIR=/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2",
         "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src",
         "SRCFILE=$SRCDIR/vecAdd.c",
         "CC=gcc",
         "CFLAGS=\"-fopenacc\"",
         "LDFLAGS=\"-lm\"",
-        "EXECUTABLE=vecAdd.c.yml.0x75cfbf0e.exe"
+        "EXECUTABLE=vecAdd.c.yml.0x7939eea5.exe"
     ],
     "envs": [],
     "build": [
@@ -53,24 +51,23 @@ CFLAGS: -fopenacc
         "rm ./$EXECUTABLE"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0x77a27207.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4/vecAdd.c.yml.0x77a27207.sh
+Writing Test: /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2/vecAdd.c.yml.0x53746574.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2/vecAdd.c.yml.0x53746574.sh
 ________________________________________________________________________________
 #!/bin/bash
-
 module purge
 module restore GCC
-TESTDIR=/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4
+TESTDIR=/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2
 SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
 SRCFILE=$SRCDIR/vecAdd.c
 CC=gcc
 CFLAGS="-fopenacc"
 LDFLAGS="-lm"
-EXECUTABLE=vecAdd.c.yml.0x75cfbf0e.exe
+EXECUTABLE=vecAdd.c.yml.0x7939eea5.exe
 
 cd $TESTDIR
 $CC $CFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS
 $EXECUTABLE
 rm ./$EXECUTABLE
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_4/log/buildtest_16_28_10_02_2020.log
+Writing Log file to:  /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2/log/buildtest_11_54_12_02_2020.log

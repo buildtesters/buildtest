@@ -6,7 +6,6 @@ from buildtest.tools.show import show_schema_layout
 def test_list_software():
   list_software()
 
-
 #def test_list_modules():
 #  list_modules()
 

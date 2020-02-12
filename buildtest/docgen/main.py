@@ -46,7 +46,7 @@ def introspection_cmds():
     queries = [
         "buildtest module --software",
         "buildtest module list",
-        "buildtest show -k singlesource",
+        "buildtest show schema",
         "buildtest show --config",
         "buildtest config view",
         "buildtest config restore",

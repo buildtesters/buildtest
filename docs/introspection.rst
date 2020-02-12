@@ -51,13 +51,10 @@ Shown below is a sample configuration from buildtest by running ``buildtest show
 
 .. _show_keys:
 
-Show Keys
------------
+Show YAML Schema (``buildtest show schema``)
+----------------------------------------------
 
-buildtest can show YAML keys based on testblock. Currently, there is one testblock
-defined **singlesource**.
+buildtest can show YAML schema that is used for writing tests. This can be retrieved by running
+``buildtest show schema``
 
-To show yaml keys you can run ``buildtest show -k singlesource`` to view all the YAML
-keys that pertain to ``testtype: singlesource`` found in YAML files
-
-.. program-output:: cat docgen/buildtest_show_-k_singlesource.txt
+.. program-output:: cat docgen/buildtest_show_schema.txt

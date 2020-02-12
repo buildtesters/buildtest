@@ -5,4 +5,4 @@ Running All Tests from Test Directory: /tmp/ssi29/buildtest/Intel/Broadwell/x86_
 Executed 1 tests
 Passed Tests: 1 Percentage: 100.0%
 Failed Tests: 0 Percentage: 0.0%
-Writing results to /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_1/run/buildtest_16_28_10_02_2020.run
+Writing results to /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_1/run/buildtest_11_54_12_02_2020.run

@@ -5,7 +5,7 @@ import yaml
 
 
 from buildtest.tools.config import show_configuration
-from buildtest.tools.buildsystem.singlesource import SingleSource
+from buildtest.tools.buildsystem.singlesource import get_yaml_schema
 
 
 def func_show_subcmd(args):
@@ -17,11 +17,7 @@ def func_show_subcmd(args):
     if args.config:
         show_configuration()
 
-    if args.keys:
-        show_schema_layout()
-
-
-def show_schema_layout():
-    """Implements method ``buildtest show -k singlesource``"""
-    schema = SingleSource().get_schema()
+def show_schema_layout(args=None):
+    """Implements method ``buildtest show schema``"""
+    schema = get_yaml_schema()
     yaml.dump(schema, sys.stdout, default_flow_style=False)
