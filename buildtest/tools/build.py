@@ -14,7 +14,6 @@ from buildtest.tools.config import (
     config_opts,
     BUILDTEST_BUILD_HISTORY,
     BUILDTEST_BUILD_LOGFILE,
-    BUILDTEST_SYSTEM,
     TESTCONFIG_ROOT,
 )
 
@@ -44,27 +43,16 @@ def func_build_subcmd(args):
     if args.clear:
         clear_builds()
         sys.exit(0)
-    fd = open(BUILDTEST_SYSTEM,"r")
-    system = json.load(fd)
-    fd.close()
-    test_subdir = os.path.join(
-        system["VENDOR"],
-        system["ARCH"],
-        system["PROCESSOR_FAMILY"],
-        system["OS_NAME"],
-        system["OS_VERSION"],
-        f"build_{str(build_id)}",
-    )
+
 
     config_opts["build"]["testdir"] = os.path.join(
-        config_opts["build"]["testdir"], test_subdir
+        config_opts["build"]["testdir"], f"build_{str(build_id)}",
     )
     if not args.dry:
         create_dir(config_opts["build"]["testdir"])
         BUILDTEST_BUILD_HISTORY[build_id]["TESTDIR"] = config_opts["build"]["testdir"]
 
     logger, LOGFILE = init_log()
-    logger.info(f"Opening File: {BUILDTEST_SYSTEM} and loading as JSON object")
     logger.info(f"Creating Directory: {config_opts['build']['testdir']}")
     logger.debug(f"Current build ID: {build_id}")
 

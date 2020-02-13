@@ -7,8 +7,6 @@ BUILDTEST_VERSION = "0.7.6"
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
 # json file used by buildtest to write build meta-data
 BUILDTEST_BUILD_LOGFILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "build.json")
-# json file used by buildtest to store system details
-BUILDTEST_SYSTEM = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "system.json")
 # dictionary used for storing status of builds
 BUILDTEST_BUILD_HISTORY = {}
 

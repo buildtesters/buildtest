@@ -47,7 +47,8 @@ def test_module_diff_invalid_args():
     """Testing when one moduletree is passed to ``buildtest module --diff-trees``"""
     tree = os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
     diff_trees(tree)
-
+"""
 def test_module_permutation_choices():
     keys = get_module_permutation_choices()
     print (keys)
+"""
