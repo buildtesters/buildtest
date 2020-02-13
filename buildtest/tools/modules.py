@@ -169,6 +169,8 @@ def get_all_parents():
     :return: list of unique parent combination.
     :rtype: List
     """
+    if not os.path.exists(BUILDTEST_MODULE_FILE):
+        return []
 
     fd = open(BUILDTEST_MODULE_FILE, "r")
     module_json = json.load(fd)

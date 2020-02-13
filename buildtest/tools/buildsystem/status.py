@@ -142,6 +142,8 @@ def get_build_ids():
     :return: return a list of numbers  that represent build id
     :rtype: list
     """
+    if not os.path.exists(BUILDTEST_BUILD_LOGFILE):
+        return []
 
     fd = open(BUILDTEST_BUILD_LOGFILE, "r")
     content = json.load(fd)

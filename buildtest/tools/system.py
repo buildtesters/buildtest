@@ -152,20 +152,11 @@ class BuildTestSystem:
 
         self.get_modules()
 
-        module_coll_dict = {"collection": []}
+
 
         if not os.path.exists(BUILDTEST_SYSTEM):
             with open(BUILDTEST_SYSTEM, "w") as outfile:
                 json.dump(self.system, outfile, indent=2, sort_keys=True)
-
-        if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
-            with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as outfile:
-                json.dump(module_coll_dict, outfile, indent=2)
-
-        if not os.path.exists(BUILDTEST_BUILD_LOGFILE):
-            build_dict = {"build": {}}
-            with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
-                json.dump(build_dict, outfile, indent=2)
 
     def get_system(self):
         """Return class variable system that contains detail for system configuration

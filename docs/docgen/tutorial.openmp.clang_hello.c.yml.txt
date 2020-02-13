@@ -8,7 +8,7 @@ Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: clang
 CFLAGS: -fopenmp
-Test:/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_3/clang_hello.c.yml.0x385a1b25.sh
+Test:/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_3/clang_hello.c.yml.0x63a45dc0.sh
 --------------------------------------------------------------------------------
 #!/bin/bash
 module purge
@@ -18,7 +18,7 @@ SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openmp/src
 SRCFILE=$SRCDIR/omp_hello.c
 CC=clang
 CFLAGS="-fopenmp"
-EXECUTABLE=clang_hello.c.yml.0x6781801b.exe
+EXECUTABLE=clang_hello.c.yml.0x373246e0.exe
 
 cd $TESTDIR
 $CC $CFLAGS -o $EXECUTABLE $SRCFILE
