@@ -15,10 +15,12 @@ buildtest_home_conf_dir = os.path.join(os.getenv("HOME"), ".buildtest")
 BUILDTEST_CONFIG_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml")
 BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml.bak")
 # json file used for storing buildtest module collections
-BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(
-    os.getenv("BUILDTEST_ROOT"), "var", "collection.json"
-)
-BUILDTEST_MODULE_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "modules.json")
+
+BUILDTEST_VAR_DIR = os.path.join(os.getenv("BUILDTEST_ROOT"), "var")
+BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(BUILDTEST_VAR_DIR, "collection.json")
+
+BUILDTEST_SPIDER_FILE = os.path.join(BUILDTEST_VAR_DIR, "spider.json")
+BUILDTEST_MODULE_FILE = os.path.join(BUILDTEST_VAR_DIR, "modules.json")
 # DEFAULT_CONFIG_FILE is the default buildtest configuration found in root of buildtest-framework repo
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "settings.yml")
 EDITOR_LIST = ["vim", "emacs", "nano"]

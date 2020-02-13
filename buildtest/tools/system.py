@@ -15,6 +15,8 @@ from buildtest.tools.config import (
     BUILDTEST_MODULE_COLLECTION_FILE,
     BUILDTEST_MODULE_FILE,
     BUILDTEST_BUILD_LOGFILE,
+    BUILDTEST_SPIDER_FILE,
+    config_opts
 )
 from buildtest.tools.file import create_dir, is_file
 from buildtest.tools.modules import module_obj
@@ -112,6 +114,21 @@ class BuildTestSystem:
 
         scheduler = self.check_scheduler()
 
+        self.moduletree = ":".join(map(str, config_opts["BUILDTEST_MODULEPATH"]))
+        self.get_modules()
+        if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
+            with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as outfile:
+                json.dump(module_coll_dict, outfile, indent=2)
+
+        # if file BUILDTEST_SPIDER_FILE does not exist, capture content of spider into file
+        if not os.path.exists (BUILDTEST_SPIDER_FILE):
+            cmd = f"$LMOD_DIR/spider -o spider-json {self.moduletree}"
+            out = subprocess.check_output(cmd, shell=True).decode("utf-8")
+            spider_json = json.loads(out)
+            with open(BUILDTEST_SPIDER_FILE,"w") as outfile:
+                json.dump(spider_json,outfile,indent=4)
+
+
     def check_scheduler(self):
         """Check for batch scheduler. Currently checks for LSF or SLURM by running
         ``bhosts`` and ``sinfo`` command. It must be present in $PATH when running buildtest.
@@ -150,6 +167,40 @@ Requirements:
 """
             print(msg)
             sys.exit(1)
+
+    def get_modules(self):
+        """Retain method for writing file BUILDTEST_MODULE_FILE for some backward compatibility of features. This
+        method will be replaced soon."""
+        module_dict = module_obj.get_module_spider_json()
+        module_version = module_obj.get_version()
+        module_major_version = module_version[0]
+        keys = module_dict.keys()
+        json_dict = {}
+        for key in keys:
+            json_dict[key] = {}
+            for mpath in module_dict[key].keys():
+                if module_major_version == 6:
+                    fullname = module_dict[key][mpath]["full"]
+                    parent = module_dict[key][mpath]["parent"]
+                else:
+                    fullname = module_dict[key][mpath]["fullName"]
+                    if "parentAA" not in module_dict[key][mpath]:
+                        parent = []
+                    else:
+                        parent = module_dict[key][mpath]["parentAA"]
+
+                json_dict[key][mpath] = {}
+                json_dict[key][mpath]["fullName"] = fullname
+                json_dict[key][mpath]["parent"] = []
+                if module_major_version == 6:
+                    for entry in parent:
+                        json_dict[key][mpath]["parent"].append(entry.split(":")[1:])
+                else:
+                    json_dict[key][mpath]["parent"] = parent
+
+        create_dir(os.path.dirname(BUILDTEST_MODULE_FILE))
+        with open(BUILDTEST_MODULE_FILE, "w") as outfile:
+            json.dump(json_dict, outfile, indent=4)
 
 
 def get_module_collection():
