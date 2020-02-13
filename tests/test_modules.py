@@ -4,6 +4,7 @@ import pytest
 from buildtest.tools.modules import check_spack_module, check_easybuild_module, \
     find_module_deps, get_module_permutation_choices, list_all_parent_modules
 from buildtest.tools.modulesystem.module_difference import diff_trees
+from buildtest.tools.modulesystem.tree import module_tree_add, module_tree_rm
 from buildtest.tools.log import BuildTestError
 
 """
@@ -28,7 +29,6 @@ def test_easybuild_modules():
     module_tree_add(["/opt/easybuild/modules/all"])
     check_easybuild_module()
     module_tree_rm(["/opt/easybuild/modules/all"])
-
 
 def test_module_diff():
     """Testing module difference between two trees. First test is testing against same module tree, and the second

@@ -59,11 +59,11 @@ def test_collection_update_when_file_not_found():
     update_collection(0)
 
 @pytest.mark.xfail(reason="When collection file is not found, we can't list a module collection ",raises=BuildTestError)
-def test_collection_list_when_file_not_found()
+def test_collection_list_when_file_not_found():
     os.remove(BUILDTEST_MODULE_COLLECTION_FILE)
     list_collection()
 
 
-def test_collection_list_when_file_not_found()
+def test_collection_list_when_file_not_found():
     os.remove(BUILDTEST_MODULE_COLLECTION_FILE)
     assert 0 == get_collection_length()
