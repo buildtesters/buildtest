@@ -360,7 +360,7 @@ will run this for all modules in module trees defined by ``BUILDTEST_MODULEPATH`
 List All Parent Modules (``buildtest module --list-all-parents``)
 -----------------------------------------------------------------------
 
-buildtest will read ``BUILDTEST_ROOT/vars/modules.json`` when searching all parent modules.
+buildtest will read ``BUILDTEST_ROOT/vars/spider.json`` when searching all parent modules.
 
 buildtest can retieve all parent modules from all module trees defined in BUILDTEST_MODULEPATH.
 This can be useful for users and administrators to find all sub-trees (**MODULEPATH**) that are
@@ -386,7 +386,7 @@ parent modules.
 
 buildtest can report list of modules depended on a parent module. First,
 buildtest will seek out all parent module from file
-``BUILDTEST_ROOT/vars/modules.json``.
+``BUILDTEST_ROOT/vars/spider.json``.
 
 To seek out modules that depend on parent modules use the option
 ``buildtest module --module-deps`` or short option ``buildtest module -d``.

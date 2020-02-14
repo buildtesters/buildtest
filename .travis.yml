@@ -47,7 +47,7 @@ script:
   - echo $MODULEPATH
   - cd $TRAVIS_BUILD_DIR
   - source sourceme.sh
-  - coverage run buildtest_regtest
+  - coverage run buildtest_regtest.py
   - coverage report -m
 
 after_success:

@@ -269,21 +269,18 @@ The following files are generally found in var directory::
    var/
    ├── build.json
    ├── collection.json
-   ├── modules.json
-   └── system.json
+   └── spider.json
 
-   0 directories, 4 files
+   0 directories, 3 files
 
 **build.json** keeps track of every build performed by buildtest. Every build will be denoted by a
 build **ID** that is used for distinguishing different builds. **build.json** is read by buildtest
-for commands such as *buildtest build* [ ``report`` | ``test`` | ``run`` | ``bsub`` | ``log`` ] commands.
+for commands such as *buildtest build* [ ``report`` | ``test`` | ``run`` | ``log`` ] commands.
 For more information see :ref:`build_status`
-
-**modules.json** is a subset of spider output to account for differences between Lmod 6/7 json structure for reading
-module and parent keys.
 
 **collection.json** is a self-managed file used to store module collections that is managed by command ``buildtest module collection``.
 For more information on module collection see :ref:`module_collection`
 
-**system.json** stores the buildtest system details that can be used by command ``buildtest system``.
+**spider.json** caches the content of Lmod spider in file to avoid rerunning spider every time. This file is updated
+whenever buildtest detects change in ``BUILDTEST_MODULEPATH``. This file is used by buildtest for all the module operations.
 

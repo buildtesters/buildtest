@@ -24,7 +24,7 @@ Programming Language: c
 CC: gcc
 CFLAGS: -fopenacc
 {
-    "testpath": "/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2/vecAdd.c.yml.0xc4ea8e66.sh",
+    "testpath": "/tmp/ssi29/buildtest/build_2/vecAdd.c.yml.0xe5c499e.sh",
     "shell": [
         "#!/bin/bash"
     ],
@@ -33,13 +33,13 @@ CFLAGS: -fopenacc
         "module restore GCC"
     ],
     "metavars": [
-        "TESTDIR=/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2",
+        "TESTDIR=/tmp/ssi29/buildtest/build_2",
         "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src",
         "SRCFILE=$SRCDIR/vecAdd.c",
         "CC=gcc",
         "CFLAGS=\"-fopenacc\"",
         "LDFLAGS=\"-lm\"",
-        "EXECUTABLE=vecAdd.c.yml.0xd945ecdc.exe"
+        "EXECUTABLE=vecAdd.c.yml.0xacf15868.exe"
     ],
     "envs": [],
     "build": [
@@ -51,23 +51,23 @@ CFLAGS: -fopenacc
         "rm ./$EXECUTABLE"
     ]
 }None
-Writing Test: /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2/vecAdd.c.yml.0xc4ea8e66.sh
-Changing permission to 755 for test: /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2/vecAdd.c.yml.0xc4ea8e66.sh
+Writing Test: /tmp/ssi29/buildtest/build_2/vecAdd.c.yml.0xe5c499e.sh
+Changing permission to 755 for test: /tmp/ssi29/buildtest/build_2/vecAdd.c.yml.0xe5c499e.sh
 ________________________________________________________________________________
 #!/bin/bash
 module purge
 module restore GCC
-TESTDIR=/tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2
+TESTDIR=/tmp/ssi29/buildtest/build_2
 SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
 SRCFILE=$SRCDIR/vecAdd.c
 CC=gcc
 CFLAGS="-fopenacc"
 LDFLAGS="-lm"
-EXECUTABLE=vecAdd.c.yml.0xd945ecdc.exe
+EXECUTABLE=vecAdd.c.yml.0xacf15868.exe
 
 cd $TESTDIR
 $CC $CFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS
 $EXECUTABLE
 rm ./$EXECUTABLE
 ________________________________________________________________________________
-Writing Log file to:  /tmp/ssi29/buildtest/Intel/Broadwell/x86_64/rhel/7.6/build_2/log/buildtest_22_49_12_02_2020.log
+Writing Log file to:  /tmp/ssi29/buildtest/build_2/log/buildtest_11_34_14_02_2020.log
