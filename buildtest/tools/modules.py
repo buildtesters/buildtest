@@ -10,6 +10,7 @@ This python module does the following
 	 - check if easyconfig passes
 	 - Get module permutation choices
 """
+import yaml
 import json
 import os
 import subprocess
@@ -18,13 +19,43 @@ from termcolor import cprint
 from buildtest.tools.config import (
     config_opts,
     BUILDTEST_CONFIG_FILE,
-    BUILDTEST_MODULE_FILE,
+    BUILDTEST_SPIDER_FILE
 )
 
 
-from buildtest.tools.file import string_in_file, walk_tree
+from buildtest.tools.file import string_in_file, walk_tree, create_dir
 from buildtest.tools.modulesystem.module_difference import diff_trees
 from buildtest.tools.modulesystem.collection import get_buildtest_module_collection
+
+
+def update_spider_file():
+    """Update BUILDTEST_SPIDER_FILE with latest output from Lmod spider"""
+
+    # loading buildtest configuration file to read value "BUILDTEST_MODULEPATH"
+    fd = open(BUILDTEST_CONFIG_FILE, "r")
+    content = yaml.safe_load(fd)
+    fd.close()
+
+    print (f"buildtest detected change in BUILDTEST_MODULEPATH")
+    print (f"buildtest will now update spider file: {BUILDTEST_SPIDER_FILE}")
+
+    # in case BUILDTEST_MODULEPATH is empty list, force BUILDTEST_MODULEPATH=MODULEPATH so that spider file is correct
+    if len(content["BUILDTEST_MODULEPATH"]) == 0:
+        for tree in os.getenv("MODULEPATH").split(":"):
+            if os.path.isdir(tree):
+                content["BUILDTEST_MODULEPATH"].append(tree)
+
+
+    # join list separated by ":" so looks like <dir1>:<dir2>:<dir3>
+    moduletree = ":".join(map(str, content["BUILDTEST_MODULEPATH"]))
+    # run spider command
+    cmd = f"$LMOD_DIR/spider -o spider-json {moduletree}"
+    out = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    spider_json = json.loads(out)
+
+    create_dir(os.path.dirname(BUILDTEST_SPIDER_FILE))
+    with open(BUILDTEST_SPIDER_FILE, "w") as outfile:
+        json.dump(spider_json, outfile, indent=4)
 
 
 class BuildTestModule:
@@ -41,11 +72,18 @@ class BuildTestModule:
         """Constructor method. The constructor will run spider command and store the output
         in self.module_dict
         """
+        """
         self.moduletree = ":".join(map(str, config_opts["BUILDTEST_MODULEPATH"]))
 
         cmd = f"$LMOD_DIR/spider -o spider-json {self.moduletree}"
         out = subprocess.check_output(cmd, shell=True).decode("utf-8")
-        self.module_dict = json.loads(out)
+        """
+        if not os.path.exists(BUILDTEST_SPIDER_FILE):
+            update_spider_file()
+
+        fd= open(BUILDTEST_SPIDER_FILE,"r")
+        self.module_dict = json.load(fd)
+        fd.close()
         self.major_ver = self.get_version()[0]
 
     def get_module_spider_json(self):
@@ -169,22 +207,23 @@ def get_all_parents():
     :return: list of unique parent combination.
     :rtype: List
     """
-    if not os.path.exists(BUILDTEST_MODULE_FILE):
+
+    if not os.path.exists(BUILDTEST_SPIDER_FILE):
         return []
 
-    fd = open(BUILDTEST_MODULE_FILE, "r")
+    fd = open(BUILDTEST_SPIDER_FILE, "r")
     module_json = json.load(fd)
     fd.close()
 
     parent_set = set()
     for module in module_json.keys():
         for mpath in module_json[module].keys():
-            for parent_comb in module_json[module][mpath]["parent"]:
-                for parent_module in parent_comb:
-                    parent_set.add(parent_module)
+            if "parentAA" in module_json[module][mpath].keys():
+                for parent_comb in module_json[module][mpath]["parentAA"]:
+                    for parent_module in parent_comb:
+                        parent_set.add(parent_module)
 
     return sorted(list(parent_set))
-
 
 module_obj = BuildTestModule()
 
@@ -203,7 +242,7 @@ def find_module_deps(parent_module):
 
     parent_list_found = []
     filepath = ""
-    fd = open(BUILDTEST_MODULE_FILE, "r")
+    fd = open(BUILDTEST_SPIDER_FILE, "r")
     module_json = json.load(fd)
     fd.close()
 
@@ -224,11 +263,11 @@ def find_module_deps(parent_module):
                 ".modulerc"
             ):
                 continue
-
-            for parent_list in module_json[mod][mpath]["parent"]:
-                if parent_module in parent_list:
-                    parent_list_found.append(mpath)
-                    break
+            if "parentAA" in module_json[mod][mpath].keys():
+                for parent_list in module_json[mod][mpath]["parentAA"]:
+                    if parent_module in parent_list:
+                        parent_list_found.append(mpath)
+                        break
 
     print(f"Modules that depend on {parent_module}")
     for file in parent_list_found:
@@ -236,50 +275,6 @@ def find_module_deps(parent_module):
 
     print("\n")
     print(f"Total Modules Found: {len(parent_list_found)}")
-
-
-def find_modules(module_args):
-    """Return a list of module load commands from modules.json
-
-    :param module_args: comma separated list of modules
-    :type module_args: str, required
-
-    :return: a list of full canonical module names to be used for module load
-    :rtype: List
-    """
-
-    module_list = module_args.split(",")
-    fd = open(BUILDTEST_MODULE_FILE, "r")
-    json_module = json.load(fd)
-
-    all_modules = []
-    for i in module_list:
-        if i not in json_module.keys():
-            print(f"{i} not in dictionary. Skipping to next module")
-            continue
-        for mpath in json_module[i].keys():
-            # no parent combination then simply add module and go to next entry
-            if len(json_module[i][mpath]["parent"]) == 0:
-                # all_modules is a nested list using tmp to add fullName to list which
-                # can be added to a nested list
-                tmp = []
-                tmp.append(json_module[i][mpath]["fullName"])
-                all_modules.append(tmp)
-                continue
-
-            for parent in json_module[i][mpath]["parent"]:
-                parent.append(json_module[i][mpath]["fullName"])
-                all_modules.append(parent)
-                # only add the first parent module combination and then break loop.
-                break
-
-    module_cmd_list = []
-    for i in all_modules:
-        module_cmd = " ".join(str(name) for name in i)
-        module_cmd_list.append(f"module load {module_cmd}")
-
-    return module_cmd_list
-
 
 def module_load_test(args):
     """Perform module load test for all modules in BUILDTEST_MODULEPATH.
@@ -410,22 +405,6 @@ def module_load_test(args):
     print("{:_<80}".format(""))
 
     return
-
-
-def get_module_permutation_choices():
-    """This method returns a choice field for module permutation option
-    (``buildtest build --modules``). It will read json file BUILDTEST_MODULE_FILE and return
-    list of keys found in the file.
-
-    :return: List of unique software name
-    :rtype: list
-    """
-
-    fd = open(BUILDTEST_MODULE_FILE, "r")
-    content = json.load(fd)
-    fd.close()
-    return content.keys()
-
 
 def check_easybuild_module():
     """This method reports modules that are built by easybuild. This implements
@@ -616,7 +595,7 @@ def list_all_parent_modules():
     """Implements method ``buildtest module --list-all-parents``"""
     parent_modules = get_all_parents()
 
-    fd = open(BUILDTEST_MODULE_FILE, "r")
+    fd = open(BUILDTEST_SPIDER_FILE, "r")
     module_json = json.load(fd)
     fd.close()
 
@@ -626,7 +605,6 @@ def list_all_parent_modules():
             for mpath in module_json[module].keys():
                 if module_json[module][mpath]["fullName"] in x:
                     print(x, mpath)
-
 
 def func_module_subcmd(args):
     """Entry point for "buildtest module" subcommand.

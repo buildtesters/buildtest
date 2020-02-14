@@ -2,7 +2,7 @@ import os
 import pytest
 
 from buildtest.tools.modules import check_spack_module, check_easybuild_module, \
-    find_module_deps, get_module_permutation_choices, list_all_parent_modules
+    find_module_deps, list_all_parent_modules
 from buildtest.tools.modulesystem.module_difference import diff_trees
 from buildtest.tools.modulesystem.tree import module_tree_add, module_tree_rm
 from buildtest.tools.log import BuildTestError
@@ -49,8 +49,3 @@ def test_module_diff_invalid_args():
 
 def test_list_all_parents():
     list_all_parent_modules()
-"""
-def test_module_permutation_choices():
-    keys = get_module_permutation_choices()
-    print (keys)
-"""

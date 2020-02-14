@@ -18,9 +18,8 @@ BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(buildtest_home_conf_dir, "settings.y
 
 BUILDTEST_VAR_DIR = os.path.join(os.getenv("BUILDTEST_ROOT"), "var")
 BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(BUILDTEST_VAR_DIR, "collection.json")
-
+# BUILDTEST_SPIDER_FILE is used to keep a cache of Lmod spider locally to avoid rerunning spider every time
 BUILDTEST_SPIDER_FILE = os.path.join(BUILDTEST_VAR_DIR, "spider.json")
-BUILDTEST_MODULE_FILE = os.path.join(BUILDTEST_VAR_DIR, "modules.json")
 # DEFAULT_CONFIG_FILE is the default buildtest configuration found in root of buildtest-framework repo
 DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "settings.yml")
 EDITOR_LIST = ["vim", "emacs", "nano"]
