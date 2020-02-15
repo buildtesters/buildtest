@@ -138,57 +138,6 @@ class BuildTestModule:
 
         return sorted(module_path_list)
 
-    def get_parent_modules(self, modname):
-        """Get Parent module for a module name. This can be retrieved by
-        key "parent" in Lmod 6 or "parentAA" in Lmod 7.
-
-        :param modname: full canonical module name
-        :type modname: str, required
-
-        :return: list of parent module combination
-        :rtype: list
-        """
-        for key in self.module_dict.keys():
-            for mod_file in self.module_dict[key].keys():
-                mod_full_name = parent_mod_name = ""
-
-                if self.major_ver == 6:
-                    mod_full_name = self.module_dict[key][mod_file]["full"]
-                elif self.major_ver >= 7:
-                    mod_full_name = self.module_dict[key][mod_file]["fullName"]
-
-                if modname == mod_full_name:
-                    if self.major_ver == 6:
-                        parent_mod_name = self.module_dict[key][mod_file]["parent"]
-                    elif self.major_ver >= 7:
-                        # for modules that dont have any parent the dictionary
-                        # does not declare parentAA key in Lmod 7. in that
-                        # case return empty list
-                        if "parentAA" not in self.module_dict[key][mod_file]:
-                            parent_mod_name = []
-                        # otherwise retrieve first index from parentAA.
-                        # ParentAA is a list of list
-                        else:
-                            parent_mod_name = self.module_dict[key][mod_file][
-                                "parentAA"
-                            ][0]
-
-                        return parent_mod_name
-
-                    mod_parent_list = parent_mod_name
-                    parent_module = []
-                    # parent: is a list, only care about one entry which
-                    # contain list of modules to be loaded separated by :
-                    # First entry is default:<mod1>:<mod2> so skip first
-                    # element
-
-                    for entry in mod_parent_list[0].split(":")[1:]:
-                        parent_module.append(entry)
-
-                    return parent_module
-
-        return []
-
     def get_version(self):
         """Return Lmod major version.
         :return: a list of integers containing Lmod version
