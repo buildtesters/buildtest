@@ -2,15 +2,11 @@
 buildtest menu
 """
 
-
 import argparse
 import argcomplete
 
 from buildtest.tools.build import func_build_subcmd
-from buildtest.tools.config import (
-    config_opts,
-
-)
+from buildtest.tools.config import config_opts
 from buildtest.tools.configuration.config import (
     func_config_edit,
     func_config_view,
@@ -23,7 +19,6 @@ from buildtest.tools.modulesystem.collection import (
 
 from buildtest.tools.modules import (
     func_module_subcmd,
-    module_obj,
     module_load_test,
     get_all_parents,
     list_modules,
@@ -49,8 +44,7 @@ from buildtest.tools.testconfigs import (
 
 test_config_choice = testconfig_choices()
 module_collection = get_module_collection()
-collection_len = get_collection_length()
-collection_len = list(range(collection_len))
+collection_len = list(range(get_collection_length()))
 build_ids = get_build_ids()
 parent_choices = get_all_parents()
 

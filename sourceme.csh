@@ -7,4 +7,5 @@ if ("$sourced" != "") then
     setenv BUILDTEST_ROOT $ROOT
     set path = ( $path $ROOT/bin)
     cd $BUILDTEST_ROOT
+    eval `register-python-argcomplete --shell tcsh buildtest`
 endif

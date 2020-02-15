@@ -65,22 +65,16 @@ Depending on your shell (``$SHELL``) source the appropriate file::
     # for tcsh,csh users
     $ source sourceme.csh
 
-.. _autocomplete:
+buildtest will setup auto-completion using ``argcomplete`` on buildtest options when
+you run the ``source.[sh|csh]`` script. Just press **TAB** key on the keyboard to
+fill in the arguments options::
 
-Setting up auto-complete on buildtest arguments
------------------------------------------------
+    $ buildtest
+    build        -h           module       testconfigs  --version
+    config       --help       show         -V
 
-Before you start using buildtest you may want to setup autocomplete feature in your shell by running::
-
-    # for bash,csh users
-    eval "$(register-python-argcomplete buildtest)"
-
-    # for tcsh,csh users
-    eval `register-python-argcomplete --shell tcsh buildtest`
 
 For more details on argcomplete please see https://pypi.org/project/argcomplete/
-
-.. Note:: It is highly recommended to setup auto-complete feature when using buildtest to make use of tab completion
 
 Usage (``buildtest --help``)
 ------------------------------

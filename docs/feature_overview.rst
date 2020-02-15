@@ -68,13 +68,7 @@ For example you can retrieve tests scripts generated from a build via ``buildtes
 
 .. program-output:: cat docgen/build-test-example.txt
 
-TAB Completion
------------------------
 
-buildtest use the ``argcomplete`` python module to autocomplete buildtest
-argument. Just press TAB key on the keyboard to fill in the arguments. It is highly
-recommended to use the :ref:`autocomplete` feature when using buildtest.
 
-.. Note:: Please be patient! You may need to press the TAB key few times before it shows all the
-   arguments
+
 

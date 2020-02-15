@@ -6,7 +6,7 @@ import logging
 import os
 import random
 import yaml
-import sys
+
 
 from buildtest.tools.config import config_opts, logID
 from buildtest.tools.log import BuildTestError
@@ -337,8 +337,9 @@ class BuildTestBuilder:
 
 
 class SingleSource(BuildTestBuilder):
-    def __init__(self, file,lmod_collection, buildtest_collection):
+    def __init__(self, file,lmod_collection, buildtest_collection,verbose):
         """Class constructor for SingleSource"""
+        self.verbose = verbose
         self.lmod_collection = lmod_collection
         self.buildtest_collection = buildtest_collection
 
@@ -350,10 +351,8 @@ class SingleSource(BuildTestBuilder):
         fd = open(file, "r")
         self.test_yaml = yaml.safe_load(fd)
         fd.close()
-        print(f"Loading Test Configuration (YAML) file: {file}")
-        logger.info(f"Loading Test Configuration (YAML) file: {file}")
-        print("Checking schema of YAML file")
-        logger.info("Checking schema of YAML file")
+        print("{:<40} {}".format("[LOAD CONFIG]","PASSED"))
+
         self.check_top_keys()
 
         # self.mpi used to enable/disable mpi check
@@ -377,8 +376,8 @@ class SingleSource(BuildTestBuilder):
         # on configuration file
         self.moduleload_check = False
         self.check_program_keys()
+        print("{:<40} {}".format("[SCHEMA CHECK]", "PASSED"))
 
-        print("Schema Check Passed")
 
         if "mpi" in self.test_yaml.keys():
             self.mpi = self.test_yaml["mpi"]
@@ -404,26 +403,25 @@ class SingleSource(BuildTestBuilder):
         logger.debug(f"Source Directory: {self.srcdir}")
         logger.debug(f"Source File: {self.srcfile}")
 
-        print(f"Source Directory: {self.srcdir}")
-        print(f"Source File: {self.srcfile}")
 
-        print("Detecting Programming Language, Compiler and MPI wrapper")
         super().__init__(self.srcfile, self.test_yaml["program"]["compiler"], self.mpi)
-        print(f"Programming Language: {self.language}")
+        print("{:<40} {}".format("[PROGRAM LANGUAGE]",self.language))
+        print("{:<40} {}".format("[COMPILER NAME]", self.compiler))
 
         self.buildcmd = self.build_command()
 
-        if self.language == "c":
-            print(f"CC: {self.cc}")
-            print(f"CFLAGS: {self.cflags}")
-        if self.language == "c++":
-            print(f"CXX: {self.cxx}")
-            print(f"CXXFLAGS: {self.cxxflags}")
-        if self.language == "fortran":
-            print(f"FC: {self.ftn}")
-            print(f"FFLAGS: {self.fflags}")
-        if self.language == "cuda":
-            print(f"NVCC: {self.nvcc}")
+        if self.verbose >= 1:
+            if self.language == "c":
+                print(f"CC: {self.cc}")
+                print(f"CFLAGS: {self.cflags}")
+            if self.language == "c++":
+                print(f"CXX: {self.cxx}")
+                print(f"CXXFLAGS: {self.cxxflags}")
+            if self.language == "fortran":
+                print(f"FC: {self.ftn}")
+                print(f"FFLAGS: {self.fflags}")
+            if self.language == "cuda":
+                print(f"NVCC: {self.nvcc}")
 
     def __str__(self):
         return repr(self)

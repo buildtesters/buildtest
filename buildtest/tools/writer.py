@@ -33,7 +33,6 @@ def write_test(dict, verbose):
         fd.write("\n")
 
     fd.close()
-    print(f"Writing Test: {dict['testpath']}")
 
     os.chmod(
         dict["testpath"],
