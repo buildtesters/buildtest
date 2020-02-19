@@ -1,0 +1,2 @@
+BUILDTEST_VERSION = "0.7.6"
+__version__ = BUILDTEST_VERSION

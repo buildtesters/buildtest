@@ -1,38 +1,40 @@
 import json
+import pwd
 import yaml
 import os
 import sys
 import subprocess
 from shutil import copy
 
+from buildtest import BUILDTEST_VERSION
 
-BUILDTEST_VERSION = "0.7.6"
-BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
+# Get user home based on effective uid, root of install to copy files
+userhome = pwd.getpwuid(os.getuid())[5]
+root = os.path.dirname(os.path.abspath(__file__))
+
+BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT", os.path.join(userhome, '.buildtest'))
+
+# check if $HOME/.buildtest exists, if not create directory
+if not os.path.exists(BUILDTEST_ROOT):
+    print(
+        f"Creating buildtest configuration directory: \
+            {BUILDTEST_ROOT}"
+    )
+    os.mkdir(BUILDTEST_ROOT)
 
 # test scripts that need to be run locally
 
-BUILDTEST_BUILD_LOGFILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "build.json")
-BUILDTEST_SYSTEM = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "system.json")
+BUILDTEST_BUILD_LOGFILE = os.path.join(BUILDTEST_ROOT, "var", "build.json")
+BUILDTEST_SYSTEM = os.path.join(BUILDTEST_ROOT, "var", "system.json")
+
 # dictionary used for storing status of builds
 BUILDTEST_BUILD_HISTORY = {}
-
-buildtest_home_conf_dir = os.path.join(os.getenv("HOME"), ".buildtest")
-BUILDTEST_CONFIG_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml")
-BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml.bak")
-BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(
-    os.getenv("BUILDTEST_ROOT"), "var", "collection.json"
-)
-BUILDTEST_MODULE_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "modules.json")
-DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "settings.yml")
+BUILDTEST_CONFIG_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml")
+BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml.bak")
+BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(BUILDTEST_ROOT, "var", "collection.json")
+BUILDTEST_MODULE_FILE = os.path.join(BUILDTEST_ROOT, "var", "modules.json")
+DEFAULT_CONFIG_FILE = os.path.join(root, "settings.yml")
 EDITOR_LIST = ["vim", "emacs", "nano"]
-BENCHMARK_DIR = os.path.join(os.getenv("BUILDTEST_ROOT"), "toolkit", "benchmark")
-# check if $HOME/.buildtest exists, if not create directory
-if not os.path.isdir(buildtest_home_conf_dir):
-    print(
-        f"Creating buildtest configuration directory: \
-            {buildtest_home_conf_dir}"
-    )
-    os.makedirs(buildtest_home_conf_dir)
 
 # if the file $HOME/.buildtest/settings.yml does not exist copy the default file
 # into the appropriate location
@@ -40,14 +42,14 @@ if not os.path.exists(BUILDTEST_CONFIG_FILE):
     copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
     copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)
 
-
 # load the configuration file
-fd = open(BUILDTEST_CONFIG_FILE, "r")
-config_opts = yaml.safe_load(fd)
+with open(BUILDTEST_CONFIG_FILE, "r") as fd:
+    config_opts = yaml.safe_load(fd)
 
 config_opts["BUILDTEST_CONFIGS_REPO"] = os.path.join(
-    os.environ["BUILDTEST_ROOT"], "toolkit", "suite"
+    BUILDTEST_ROOT, "toolkit", "suite"
 )
+
 # if BUILDTEST_MODULEPATH is empty list then check if MODULEPATH is defined
 # and set result to BUILDTEST_MODULEPATH
 if len(config_opts["BUILDTEST_MODULEPATH"]) == 0:
@@ -81,7 +83,6 @@ config_yaml_keys = {
     "BUILDTEST_TESTDIR": type("str"),
     "EDITOR": type("str"),
 }
-
 
 def check_configuration():
     """Checks all keys in configuration file (settings.yml) are valid

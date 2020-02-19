@@ -2,9 +2,8 @@ from setuptools import setup, find_packages
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('src'))
 
-from buildtest.tools.config import BUILDTEST_VERSION
+from buildtest import BUILDTEST_VERSION
 
 setup(name='buildtest-framework',
       version=BUILDTEST_VERSION,
@@ -18,7 +17,7 @@ setup(name='buildtest-framework',
             "Development Status :: 4 - Beta",
             "Environment :: Console",
             "Intended Audience :: System Administrators",
-            "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+            "License :: OSI Approved :: MIT License",
             "Operating System :: POSIX :: Linux",
             "Programming Language :: Python :: 3.6",
             "Topic :: Software Development :: Build Tools",
@@ -27,17 +26,11 @@ setup(name='buildtest-framework',
        packages=find_packages(),
        include_package_data=True,
        scripts = [
-        'buildtest',
+        'bin/buildtest',
        ],
        install_requires = [
-            "argcomplete==1.95",
-            "PyYAML==5.1",
+            "PyYAML>=5.1",
             "distro==1.4.0",
             "termcolor==1.1.0",
-        "buildtest-configs=="+BUILDTEST_VERSION,
-	    "Python-buildtest-config=="+BUILDTEST_VERSION,
-	    "Perl-buildtest-config=="+BUILDTEST_VERSION,
-	    "Ruby-buildtest-config=="+BUILDTEST_VERSION,
-	    "R-buildtest-config=="+BUILDTEST_VERSION,
        ]
 )
