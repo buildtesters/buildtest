@@ -32,31 +32,7 @@ Single Source YAML Schema
     **pre_exec**,``False``,``str``,**N/A**,"Command in front of executable."
     **post_exec**,``False``,``str``,**N/A**,"Commands after executable."
     **exec_opts**,``False``,``str``,**N/A**,"Passing options to executable."
-    **bsub**,``False``,``dict``,**N/A**,"bsub block for specifying #BSUB directives in test."
-    **sbatch**,``False``,``dict``,**N/A**,"sbatch block for specifying #SBATCH directives in test."
     **mpi**,``False``,``dict``,**N/A**,"MPI block for specifying mpi configuration."
-
-
-.. csv-table:: Keys for ``program:bsub`` dictionary
-    :header:   "Key", "Required", "Type", "Mapping","Description"
-    :widths:    20,20,20,20,80
-
-    **n**,``False``,``str``,``bsub -n``, "Equivalent to #BSUB -n"
-    **M**,``False``,``str``,``bsub -M``, "Equivalent to #BSUB -M"
-    **R**,``False``,``str``,``bsub -R``, "Equivalent to #BSUB -R"
-    **q**,``False``,``str``,``bsub -q``, "Equivalent to #BSUB -q"
-    **W**,``False``,``str``,``bsub -W``, "Equivalent to #BSUB -W"
-
-.. csv-table:: Keys for ``program:sbatch`` dictionary
-    :header:   "Key", "Required", "Type", "Mapping","Description"
-    :widths:    20,20,20,20,80
-
-    **n**,``False``,``str``,``sbatch -n``, "Equivalent to #SBATCH -n"
-    **N**,``False``,``str``,``sbatch -N``, "Equivalent to #SBATCH -N"
-    **mem**,``False``,``str``,``sbatch --mem``, "Equivalent to #SBATCH --mem"
-    **C**,``False``,``str``,``sbatch -C``, "Equivalent to #SBATCH -C"
-    **p**,``False``,``str``,``sbatch -p``, "Equivalent to #SBATCH -p"
-    **t**,``False``,``str``,``sbatch -t``, "Equivalent to #SBATCH -t"
 
 .. csv-table:: Keys for ``program:mpi`` dictionary
     :header:   "Key", "Required", "Type", "Values","Description"

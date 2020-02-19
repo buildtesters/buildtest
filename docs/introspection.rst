@@ -51,41 +51,10 @@ Shown below is a sample configuration from buildtest by running ``buildtest show
 
 .. _show_keys:
 
-Show Keys
------------
+Show YAML Schema (``buildtest show schema``)
+----------------------------------------------
 
-buildtest can show YAML keys based on testblock. Currently, there is one testblock
-defined **singlesource**.
+buildtest can show YAML schema that is used for writing tests. This can be retrieved by running
+``buildtest show schema``
 
-To show yaml keys you can run ``buildtest show -k singlesource`` to view all the YAML
-keys that pertain to ``testtype: singlesource`` found in YAML files
-
-.. program-output:: cat docgen/buildtest_show_-k_singlesource.txt
-
-
-System Options (``buildtest system --help``)
-_____________________________________________
-
-.. program-output:: cat docgen/buildtest_system_-h.txt
-
-buildtest will detect system configuration and store the content in ``var/system.json``. This file contains
-useful information about the scheduler details that can be used for submitting jobs.
-
-To fetch the latest system configuration run the following::
-
-    $ buildtest system fetch
-
-This will update the system.json with the latest configuration. Typically you may only need to run this command to get the
-latest scheduler changes but don't worry if you forget to run this as it is not critical to buildtest.
-
-.. program-output:: cat docgen/buildtest_system_fetch.txt
-
-To view the system configuration you can run the following::
-
-    $ buildtest system view
-
-This will display the content of ``system.json``.
-
-.. program-output:: head -n 50 docgen/buildtest_system_view.txt
-
-
+.. program-output:: cat docgen/buildtest_show_schema.txt

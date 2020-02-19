@@ -1,4 +1,4 @@
-$ buildtest build -c tutorial.compilers.args.c.yml --dry -mc 0
+$ buildtest build -c tutorial/compilers/args.c.yml --dry -mc 0
 Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/args.c.yml
 Checking schema of YAML file
 Schema Check Passed

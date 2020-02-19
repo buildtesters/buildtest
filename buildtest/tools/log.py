@@ -35,7 +35,7 @@ def init_log():
     :rtype: multiple return types (logger object, logpath, logfile)
     """
     fname = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
-    BUILDTEST_LOGDIR = os.path.join(config_opts["BUILDTEST_TESTDIR"], "log")
+    BUILDTEST_LOGDIR = os.path.join(config_opts["build"]["testdir"], "log")
 
     logfile = os.path.join(BUILDTEST_LOGDIR, fname)
     # if log directory is not present create it automatically

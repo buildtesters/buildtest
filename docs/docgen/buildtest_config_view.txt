@@ -1,10 +1,11 @@
 $ buildtest config view
 BUILDTEST_MODULEPATH: []
-BUILDTEST_MODULE_FORCE_PURGE: false
-BUILDTEST_SPIDER_VIEW: current
-BUILDTEST_SUCCESS_THRESHOLD: 1.0
-BUILDTEST_TESTDIR: /tmp/$USER/buildtest/tests
 EDITOR: vim
+build:
+  module:
+    purge:
+      force: false
+  testdir: /tmp/$USER/buildtest
 module:
   list:
     exclude_version_files: true
@@ -15,3 +16,4 @@ module:
     login: false
     numtest: -1
     purge_modules: true
+  spider_view: current

@@ -1,25 +1,6 @@
 buildtest
 ==========
 
-
-.. Note:: Upcoming talks on buildtest
-
-          1. Conference: 5th Easybuild User Meeting
-
-             - Location: Barceleno, Spain
-
-             - Date: Jan 30th, 2020
-
-             - Link: https://github.com/easybuilders/easybuild/wiki/5th-EasyBuild-User-Meeting
-
-          2. Conference: FOSDEM'20
-
-             - Location: Brussels, Belgium
-
-             - Date: Feb 2nd, 2020
-
-             - Link: https://fosdem.org/2020/schedule/track/hpc_big_data_and_data_science/
-
 `buildtest <https://github.com/HPC-buildtest/buildtest-framework>`_  is
 a testing framework designed for HPC Software Stack Testing that is compatible with Lmod module system.
 buildtest provides a set of YAML keys to write test configuration (YAML) that buildtest translates into complex test
@@ -49,7 +30,7 @@ This documentation was last rebuild on |today| and is intended for version |vers
    building_test.rst
    introspection.rst
    module_operation.rst
-   additional_features.rst
+   managing_testconfigs.rst
 
 
 .. toctree::

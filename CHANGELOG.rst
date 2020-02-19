@@ -332,8 +332,8 @@ v0.1.4 (Feb 27, 2018)
     - BUILDTEST_LOGDIR
     - BUILDTEST_LOGFILE
 
-- Provide get functions to retrieve value from arg.parser https://github.com/shahzebsiddiqui/buildtest/commit/6006027d653401a848628b0dd9d81a98d631f22f
-- Add support for Perl with --testset https://github.com/shahzebsiddiqui/buildtest/commit/cc96eb9f825bed997a13d8dd13e43e4074ad1b03
+- Provide get functions to retrieve value from arg.parser
+- Add support for Perl with ``--testset``
 - Add for more logging support in module and eb verification
 
 v0.1.3 (Feb 27, 2018)
@@ -342,14 +342,14 @@ v0.1.3 (Feb 27, 2018)
 There have been several changes in the buildtest framework to allow for more capabilities.
 
 The following changes have been done in this release
-- buildtest can generate binary test for same executable with multiple parameters. See https://github.com/shahzebsiddiqui/buildtest/commit/2203a8db080e6b566a1f8d98a64da5575b79cc37
+- buildtest can generate binary test for same executable with multiple parameters. See
 - Adding support for R, Perl and Python with more tests.
-- R, Python, Perl (soon to come), and MPI tests are organized in testset using **--testset** flag see https://github.com/shahzebsiddiqui/buildtest/commit/dac986b18d32e98e9b101e611d5a99dcfc41b6d5
+- R, Python, Perl (soon to come), and MPI tests are organized in testset using **--testset** flag
 this allows for multiple packages to reuse tests across different apps. For instance OpenMPI, MPICH, MVAPICH and intel can now reference the mpi testset.
-- Add support for **inputfile** YAML key to allow input redirection into program. See https://github.com/shahzebsiddiqui/buildtest/commit/6ef1dc5b072c792c998b6b4757acffd0196a96bc
-- Add support for **outputfile** YAML key to allow output redirection. See https://github.com/shahzebsiddiqui/buildtest/commit/a54cb590f9f6c6bf95c4a81c29c53838a2330546
-- Add support for argument passing using **arg** key word see https://github.com/shahzebsiddiqui/buildtest/commit/eca0ec6d153cd97abb942bdbb4bd070803b28bc8
-- Add support for **iter** YAML key to allow N tests to be created. https://github.com/shahzebsiddiqui/buildtest/commit/859d197daa2127fb255582ad50d9eb73bd8a26dd
+- Add support for **inputfile** YAML key to allow input redirection into program.
+- Add support for **outputfile** YAML key to allow output redirection.
+- Add support for argument passing using **arg** key word
+- Add support for **iter** YAML key to allow N tests to be created.
 - Switching BUILDTEST_MODULEROOT to BUILDTEST_MODULE_EBROOT to emphasize module tree should be coming from what easybuild generates.
 - Fixed some bugs pertaining to CMakeLists.txt
 
@@ -368,7 +368,7 @@ buildtest will now report useful operations for each function call that can be u
     - Output log from ancillary features like (**--list-toolchain**, **--list-unique-software**, **--software-version-relation**)
 
 - buildtest can now search YAML configs and buildtest generated test scripts using the command **-fc** and **-ft**
-- Now all buildtest-config files are removed and migrated to https://github.com/shahzebsiddiqui/buildtest-configs
+- Now all buildtest-config files are removed and migrated to
 
 v0.1.1 (Feb 27, 2018)
 ------------------------

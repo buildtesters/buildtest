@@ -1,26 +1,25 @@
-$ buildtest build -c tutorial.openacc.vecAdd.c_pgi.yml -co pgi --dry
+$ buildtest build -c tutorial/openacc/vecAdd.c_pgi.yml -co pgi --dry
 Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/vecAdd.c_pgi.yml
 Checking schema of YAML file
 Schema Check Passed
-Scheduler: local
 Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
 Source File: vecAdd.c
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: pgcc
 CFLAGS: -acc
-Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1/vecAdd.c_pgi.yml.0xb91a6f8b.sh
+Test:/tmp/ssi29/buildtest/build_3/vecAdd.c_pgi.yml.0x894741da.sh
 --------------------------------------------------------------------------------
-
+#!/bin/bash
 module purge
 module restore pgi
-TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1
+TESTDIR=/tmp/ssi29/buildtest/build_3
 SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
 SRCFILE=$SRCDIR/vecAdd.c
 CC=pgcc
 CFLAGS="-acc"
 LDFLAGS="-lm"
-EXECUTABLE=vecAdd.c_pgi.yml.0x87084923.exe
+EXECUTABLE=vecAdd.c_pgi.yml.0xeeb454ff.exe
 
 cd $TESTDIR
 $CC $CFLAGS -o $EXECUTABLE $SRCFILE $LDFLAGS

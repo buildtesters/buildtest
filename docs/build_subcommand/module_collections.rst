@@ -4,8 +4,7 @@ Building Test with Module Collections
 building test with Lmod User Collection (``buildtest build --collection``)
 ----------------------------------------------------------------------------------
 
-buildtest supports building test with Lmod `user collections <https://lmod
-.readthedocs.io/en/latest/010_user.html#user-collections>`_. User collection comes in
+buildtest supports building test with Lmod `user collections <https://lmod.readthedocs.io/en/latest/010_user.html#user-collections>`_. User collection comes in
 handy when testing software with different module sets.
 
 You can run ``module -t savelist`` to see a list of collection. Shown below
@@ -25,9 +24,9 @@ To restore a module collection you can run::
 
 To build a test with a user collection use the ``--collection`` option which
 is a choice field that is the name of the user collection.
-To demonstrate, lets build a test with a user collection ``CUDA``.
+To demonstrate, lets build a test with a user collection ``Clang``.
 
-.. program-output:: cat scripts/build-lmod-collection-example.txt
+.. program-output:: cat docgen/tutorial.openmp.clang_hello.c.yml.txt
 
 Note the ``module restore`` command will load the modules from the
 collection. To use this feature, you will need to have a module collection
@@ -63,29 +62,3 @@ If you pass an invalid index, buildtest will report an error as follows
 .. Error::
 
     buildtest build: error: argument mc/--module-collection: invalid choice: -1 (choose from 0, 1, 2, 3)
-
-Module Permutation (``buildtest build --modules``)
--------------------------------------------------------
-
-buildtest can build a test with all version of a module. What this means is if you are interested
-in testing same test for all versions of a particular software you can do this in buildtest. For instance
-you have the following versions of GCCcore module::
-
-    $ module -t spider GCCcore
-    GCCcore/6.4.0
-    GCCcore/7.1.0
-    GCCcore/7.4.0
-    GCCcore/8.1.0
-    GCCcore/8.3.0
-    GCCcore/9.2.0
-
-Now instead of loading each module or creating a module collection, you can do this by using option ``--modules <NAME>``
-or short option ``-m <NAME>``. The **<NAME>** refers to the name of software similar to ``module -t spider <NAME>``
-which is ``GCCcore``.
-
-buildtest will formulate a modified json object stored ``$BUILDTEST_ROOT/var/modules.json`` that is used when finding
-all versions of a module.
-
-Let's build a module permutation test for ``GCCcore`` for the following build.
-
-.. program-output:: cat scripts/build-module-permutation-example.txt

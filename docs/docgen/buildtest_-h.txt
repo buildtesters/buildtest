@@ -14,8 +14,7 @@ COMMANDS:
         show           Options for displaying buildtest configuration
         testconfigs           Options for list, view, and edit test configuration
         config           Buildtest Configuration Menu
-        system           System Configuration
 
-  {build,module,config,show,testconfigs,system}
+  {build,module,config,show,testconfigs}
 
 Documentation: https://buildtest.readthedocs.io/en/latest/index.html

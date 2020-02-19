@@ -3,7 +3,6 @@ import pwd
 import yaml
 import os
 import sys
-import subprocess
 from shutil import copy
 
 from buildtest import BUILDTEST_VERSION
@@ -12,6 +11,7 @@ from buildtest import BUILDTEST_VERSION
 userhome = pwd.getpwuid(os.getuid())[5]
 root = os.path.dirname(os.path.abspath(__file__))
 
+# root of buildtest-framework user home
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT", os.path.join(userhome, '.buildtest'))
 
 # check if $HOME/.buildtest exists, if not create directory
@@ -22,8 +22,7 @@ if not os.path.exists(BUILDTEST_ROOT):
     )
     os.mkdir(BUILDTEST_ROOT)
 
-# test scripts that need to be run locally
-
+# json file used by buildtest to write build meta-data
 BUILDTEST_BUILD_LOGFILE = os.path.join(BUILDTEST_ROOT, "var", "build.json")
 BUILDTEST_SYSTEM = os.path.join(BUILDTEST_ROOT, "var", "system.json")
 
@@ -33,6 +32,12 @@ BUILDTEST_CONFIG_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml")
 BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml.bak")
 BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(BUILDTEST_ROOT, "var", "collection.json")
 BUILDTEST_MODULE_FILE = os.path.join(BUILDTEST_ROOT, "var", "modules.json")
+
+# BUILDTEST_SPIDER_FILE is used to keep a cache of Lmod spider locally to avoid rerunning spider every time
+BUILDTEST_SPIDER_FILE = os.path.join(BUILDTEST_ROOT, "root", "spider.json")
+
+# TESTCONFIG_ROOT is the root directory where test configurations are found
+TESTCONFIG_ROOT = os.path.join(root, "toolkit", "suite")
 DEFAULT_CONFIG_FILE = os.path.join(root, "settings.yml")
 EDITOR_LIST = ["vim", "emacs", "nano"]
 
@@ -45,10 +50,6 @@ if not os.path.exists(BUILDTEST_CONFIG_FILE):
 # load the configuration file
 with open(BUILDTEST_CONFIG_FILE, "r") as fd:
     config_opts = yaml.safe_load(fd)
-
-config_opts["BUILDTEST_CONFIGS_REPO"] = os.path.join(
-    BUILDTEST_ROOT, "toolkit", "suite"
-)
 
 # if BUILDTEST_MODULEPATH is empty list then check if MODULEPATH is defined
 # and set result to BUILDTEST_MODULEPATH
@@ -71,17 +72,48 @@ config_opts["BUILDTEST_VERSION"] = BUILDTEST_VERSION
 
 logID = "buildtest"
 
-
-config_directory_types = [
-    "BUILDTEST_TESTDIR",
-]
 config_yaml_keys = {
-    "BUILDTEST_MODULE_FORCE_PURGE": type(True),
-    "BUILDTEST_SUCCESS_THRESHOLD": type(1.0),
     "BUILDTEST_MODULEPATH": type([]),
-    "BUILDTEST_SPIDER_VIEW": type("str"),
-    "BUILDTEST_TESTDIR": type("str"),
     "EDITOR": type("str"),
+    "build": {
+        "testdir": type("str"),
+        "module": {
+            "type": type(dict),
+            "purge": {
+                "type": type(bool)
+            },
+        },
+    },
+    "module": {
+        "list": {
+            "type": type(dict),
+
+            "exclude_version_files": {
+                "type": type("str")
+            },
+            "filter": {
+                "type": type(dict),
+                "include": {
+                    "type": type([])
+                },
+            },
+            "querylimit": {
+                "type": type(int)
+            },
+        },
+        "loadtest": {
+            "type": type(dict),
+            "login": {
+                "type": type(bool)
+            },
+            "purge_modules": {
+                "type": type(bool)
+            },
+            "numtest": {
+                "type": type(int)
+            },
+        }
+    },
 }
 
 def check_configuration():
@@ -99,67 +131,34 @@ def check_configuration():
 
     ec = 0
 
-    keylist = config_yaml_keys.keys()
-    valuelist = config_yaml_keys.values()
-
-    # check if any key is not found in settings.yml
-    for key in keylist:
-        if key not in config_opts:
-            print(f"Unable to find key: {key} in {BUILDTEST_CONFIG_FILE}")
-            ec = 1
-
-    for key, value in zip(keylist, valuelist):
-        if value is not type(config_opts[key]):
-            print(f"Invalid Type for key: {key}")
-            print(f"Expecting type: {str(value)}")
-            print(f"Current type: {str(type(config_opts[key]))}")
-            ec = 1
-
-        # check if BUILDTEST_SUCCESS_THRESHOLD is between 0.0 and 1.0
-        if key == "BUILDTEST_SUCCESS_THRESHOLD" and (
-            config_opts[key] < 0.0 or config_opts[key] > 1.0
-        ):
-            print(f"{key} must be between [0.0-1.0]")
-            print(f"Current value is {str(config_opts[key])}")
-            ec = 1
-
-        if key == "BUILDTEST_MODULEPATH":
-            if config_opts["BUILDTEST_MODULEPATH"] == None:
+    if config_opts["BUILDTEST_MODULEPATH"] == None:
+        print(
+            "Please specify a module tree to BUILDTEST_MODULEPATH"
+            + f"in configuration {BUILDTEST_CONFIG_FILE}"
+        )
+    else:
+        for module_root in config_opts["BUILDTEST_MODULEPATH"]:
+            if not os.path.isdir(module_root):
                 print(
-                    "Please specify a module tree to BUILDTEST_MODULEPATH"
-                    + f"in configuration {BUILDTEST_CONFIG_FILE}"
-                )
-            else:
-                for module_root in config_opts[key]:
-                    if not os.path.isdir(module_root):
-                        print(
-                            f"{module_root} directory does not exist"
-                            + " specified in BUILDTEST_MODULEPATH"
-                        )
-                        ec = 1
-
-        if key == "BUILDTEST_SPIDER_VIEW":
-            if config_opts["BUILDTEST_SPIDER_VIEW"] not in ["all", "current"]:
-                print(
-                    f"BUILDTEST_SPIDER_VIEW must be one of the following: all, current"
+                    f"{module_root} directory does not exist"
+                    + " specified in BUILDTEST_MODULEPATH"
                 )
                 ec = 1
 
-        if key == "EDITOR":
-            if config_opts["EDITOR"] not in EDITOR_LIST:
-                print(f"Invalid EDITOR key: {config_opts['EDITOR']}")
-                print(
-                    f"Please pick a valid editor option from the following: {EDITOR_LIST}"
-                )
-                ec = 1
-        if key in config_directory_types:
+    if config_opts["EDITOR"] not in EDITOR_LIST:
+        print(f"Invalid EDITOR key: {config_opts['EDITOR']}")
+        print(
+            f"Please pick a valid editor option from the following: {EDITOR_LIST}"
+        )
+        ec = 1
 
-            # expand variables for directory configuration
-            config_opts[key] = os.path.expandvars(config_opts[key])
-
-            # create the directory if it doesn't exist
-            if not os.path.isdir(config_opts[key]):
-                os.makedirs(config_opts[key])
+    if config_opts["build"]["testdir"]:
+        config_opts["build"]["testdir"] = os.path.expandvars(config_opts["build"]["testdir"])
+        # create the directory if it doesn't exist
+        if not os.path.isdir(config_opts["build"]["testdir"]):
+            dir = config_opts["build"]["testdir"]
+            print (f"creating directory: {dir}")
+            os.makedirs(config_opts["build"]["testdir"])
 
     if ec:
         print("CONFIGURATION CHECK FAILED")
@@ -186,36 +185,15 @@ def show_configuration():
             tree = tree[:-1]
             print((f"{key} \t =").expandtabs(50), tree)
         # print all keys in module dictionary
-        elif key == "module":
+        elif key in ["module","build"]:
             module_keys = config_opts[key].keys()
+
             for m in module_keys:
-                for k,v in config_opts[key][m].items():
-                    print((f"{key}-{m}-{k} \t =").expandtabs(50), v)
+                if isinstance(config_opts[key][m],dict):
+                    for k,v in config_opts[key][m].items():
+                        print((f"{key}[{m}][{k}] \t =").expandtabs(50), v)
+                else:
+                    print((f"{key}[{m}] \t =").expandtabs(50), config_opts[key][m])
 
         else:
             print((f"{key} \t =").expandtabs(50), f"{config_opts[key]}")
-
-
-
-def func_config_edit(args):
-    """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
-
-    os.system(f"{config_opts['EDITOR']} {BUILDTEST_CONFIG_FILE}")
-
-
-def func_config_view(args=None):
-    """View buildtest configuration file. This implements ``buildtest config view``"""
-
-    os.system(f"cat {BUILDTEST_CONFIG_FILE}")
-
-
-def func_config_restore(args=None):
-    """Restore buildtest configuration from backup file. This implements ``buildtest config restore``"""
-    if os.path.isfile(BUILDTEST_CONFIG_BACKUP_FILE):
-        copy(BUILDTEST_CONFIG_BACKUP_FILE, BUILDTEST_CONFIG_FILE)
-        print(f"Restore configuration from backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
-    else:
-        print(f"Can't find backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
-        print(f"Resorting from default configuration: {DEFAULT_CONFIG_FILE}")
-        copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
-        copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)

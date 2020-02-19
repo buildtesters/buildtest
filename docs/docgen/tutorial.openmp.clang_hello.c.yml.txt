@@ -1,25 +1,24 @@
-$ buildtest build -c tutorial.openmp.clang_hello.c.yml -co Clang --dry
+$ buildtest build -c tutorial/openmp/clang_hello.c.yml -co Clang --dry
 Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openmp/clang_hello.c.yml
 Checking schema of YAML file
 Schema Check Passed
-Scheduler: local
 Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openmp/src
 Source File: omp_hello.c
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: clang
 CFLAGS: -fopenmp
-Test:/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1/clang_hello.c.yml.0x13111ad5.sh
+Test:/tmp/ssi29/buildtest/build_3/clang_hello.c.yml.0xf629c8e4.sh
 --------------------------------------------------------------------------------
-
+#!/bin/bash
 module purge
 module restore Clang
-TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_1
+TESTDIR=/tmp/ssi29/buildtest/build_3
 SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openmp/src
 SRCFILE=$SRCDIR/omp_hello.c
 CC=clang
 CFLAGS="-fopenmp"
-EXECUTABLE=clang_hello.c.yml.0x5cde8dde.exe
+EXECUTABLE=clang_hello.c.yml.0x886d2dd8.exe
 
 cd $TESTDIR
 $CC $CFLAGS -o $EXECUTABLE $SRCFILE

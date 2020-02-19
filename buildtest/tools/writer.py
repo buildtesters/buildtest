@@ -24,14 +24,15 @@ def write_test(dict, verbose):
 
     for key, val in dict.items():
         # skip key testpath, this key is responsible for opening the file for writing purpose.
-        # any value that is emptry skip to next key.
-        if key == "testpath" or len(val) == 0:
+        # any value that is empty skip to next key.
+        if key == "testpath":
+            continue
+        if val is None:
             continue
         fd.write("\n".join(val))
         fd.write("\n")
 
     fd.close()
-    print(f"Writing Test: {dict['testpath']}")
 
     os.chmod(
         dict["testpath"],

@@ -13,12 +13,12 @@ import sys
 import subprocess
 from buildtest.tools.config import (
     BUILDTEST_MODULE_COLLECTION_FILE,
-    BUILDTEST_MODULE_FILE,
     BUILDTEST_BUILD_LOGFILE,
-    BUILDTEST_SYSTEM,
+    BUILDTEST_SPIDER_FILE,
+    config_opts
 )
 from buildtest.tools.file import create_dir, is_file
-from buildtest.tools.modules import module_obj
+from buildtest.tools.modules import module_obj, update_spider_file
 
 
 class BuildTestCommand:
@@ -91,6 +91,7 @@ class BuildTestCommand:
         return self.err
 
 
+
 class BuildTestSystem:
     """BuildTestSystem is a class that detects system configuration and outputs the result
     in .run file which are generated upon test execution."""
@@ -110,71 +111,11 @@ class BuildTestSystem:
             full_distribution_name=False
         )[1]
         self.system["SYSTEM"] = platform.system()
-        self.system["KERNEL_RELEASE"] = platform.release()
-        self.system["PROCESSOR_FAMILY"] = platform.processor()
-        self.system["HOSTNAME"] = platform.node()
-        self.system["PYTHON_VERSION"] = platform.python_version()
-        self.system["PLATFORM"] = platform.platform()
-        self.system["LIBC_VERSION"] = platform.libc_ver()[1]
-        self.system["SCHEDULER"] = self.check_scheduler()
-        if self.system["SYSTEM"] == "Linux":
-            # logger.debug("Trying to determine total memory size on Linux via /proc/meminfo")
-            meminfo = open("/proc/meminfo").read()
+        scheduler = self.check_scheduler()
 
-            mem_mo = re.match(r"^MemTotal:\s*(\d+)\s*kB", meminfo, re.M)
-            if mem_mo:
-                self.system["MEMORY_TOTAL"] = int(mem_mo.group(1)) / 1024
-
-        cmd = BuildTestCommand()
-
-        cmd.which("python")
-        self.system["PYTHON"] = cmd.get_output().rstrip()
-
-        if self.system["SCHEDULER"] == "LSF":
-            from buildtest.tools.lsf import get_lsf_configuration
-
-            self.system["LSF"] = get_lsf_configuration()
-        if self.system["SCHEDULER"] == "SLURM":
-            from buildtest.tools.slurm import get_slurm_configuration
-
-            self.system["SLURM"] = get_slurm_configuration()
-
-        cmd.execute("""lscpu | grep "Vendor" """)
-        vendor_name = cmd.get_output()
-
-        cmd.execute("""lscpu | grep "Model:" | cut -b 10-""")
-        model_hex = hex(int(cmd.get_output()))
-
-        if "GenuineIntel" in vendor_name:
-            self.system["VENDOR"] = "Intel"
-            arch = intel_cpuid_lookup(model_hex)
-        self.system["ARCH"] = arch
-
-        self.get_modules()
-
-        module_coll_dict = {"collection": []}
-
-        if not os.path.exists(BUILDTEST_SYSTEM):
-            with open(BUILDTEST_SYSTEM, "w") as outfile:
-                json.dump(self.system, outfile, indent=2, sort_keys=True)
-
-        if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
-            with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as outfile:
-                json.dump(module_coll_dict, outfile, indent=2)
-
-        if not os.path.exists(BUILDTEST_BUILD_LOGFILE):
-            build_dict = {"build": {}}
-            with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
-                json.dump(build_dict, outfile, indent=2)
-
-    def get_system(self):
-        """Return class variable system that contains detail for system configuration
-
-        :return: return ``self.system``
-        :rtype: dict
-        """
-
-        return self.system
+        # if file BUILDTEST_SPIDER_FILE does not exist, capture content of Lmod spider into file
+        if not os.path.exists (BUILDTEST_SPIDER_FILE):
+           update_spider_file()
 
     def check_scheduler(self):
         """Check for batch scheduler. Currently checks for LSF or SLURM by running
@@ -215,40 +156,6 @@ Requirements:
             print(msg)
             sys.exit(1)
 
-    def get_modules(self):
-        """"""
-        module_dict = module_obj.get_module_spider_json()
-        module_version = module_obj.get_version()
-        module_major_version = module_version[0]
-        keys = module_dict.keys()
-        json_dict = {}
-        for key in keys:
-            json_dict[key] = {}
-            for mpath in module_dict[key].keys():
-                if module_major_version == 6:
-                    fullname = module_dict[key][mpath]["full"]
-                    parent = module_dict[key][mpath]["parent"]
-                else:
-                    fullname = module_dict[key][mpath]["fullName"]
-                    if "parentAA" not in module_dict[key][mpath]:
-                        parent = []
-                    else:
-                        parent = module_dict[key][mpath]["parentAA"]
-
-                json_dict[key][mpath] = {}
-                json_dict[key][mpath]["fullName"] = fullname
-                json_dict[key][mpath]["parent"] = []
-                if module_major_version == 6:
-                    for entry in parent:
-                        json_dict[key][mpath]["parent"].append(entry.split(":")[1:])
-                else:
-                    json_dict[key][mpath]["parent"] = parent
-
-        create_dir(os.path.dirname(BUILDTEST_MODULE_FILE))
-        with open(BUILDTEST_MODULE_FILE, "w") as outfile:
-            json.dump(json_dict, outfile, indent=4)
-
-
 def get_module_collection():
     """Return user Lmod module collection. Lmod collection can be retrieved
     using command: ``module -t savelist``
@@ -268,33 +175,3 @@ def distro_short(distro_fname):
         return "centos"
     elif "SUSE Linux Enterprise Server" == distro_fname:
         return "suse"
-
-
-def intel_cpuid_lookup(model):
-    """Lookup table to map Module Number to Architecture."""
-
-    # Intel based : https://software.intel.com/en-us/articles/intel-architecture-and-processor-identification-with-cpuid-model-and-family-numbers
-    model_numbers = {
-        "0x55": "SkyLake",
-        "0x4f": "Broadwell",
-        "0x57": "KnightsLanding",
-        "0x3f": "Haswell",
-        "0x46": "Haswell",
-        "0x3e": "IvyBridge",
-        "0x3a": "IvyBridge",
-        "0x2a": "SandyBridge",
-        "0x2d": "SandyBridge",
-        "0x25": "Westmere",
-        "0x2c": "Westmere",
-        "0x2f": "Westmere",
-        "0x1e": "Nehalem",
-        "0x1a": "Nehalem",
-        "0x2e": "Nehalem",
-        "0x17": "Penryn",
-        "0x1D": "Penryn",
-        "0x0f": "Merom",
-    }
-    if model in model_numbers:
-        return model_numbers[model]
-    else:
-        print(f"Unable to find model {model}")

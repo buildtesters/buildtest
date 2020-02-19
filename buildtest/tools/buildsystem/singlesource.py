@@ -5,16 +5,149 @@ The file implements the singlesource build system responsible
 import logging
 import os
 import random
-import stat
-import subprocess
 import yaml
-import sys
 
-from buildtest.tools.config import config_opts, BUILDTEST_BUILD_HISTORY, logID
-from buildtest.tools.file import create_dir, is_file
-from buildtest.tools.system import BuildTestCommand, BuildTestSystem
+
+from buildtest.tools.config import config_opts, logID
 from buildtest.tools.log import BuildTestError
+from buildtest.tools.modules import module_selector
 
+def get_yaml_schema():
+    mpi_schema = {
+        "type": dict,
+        "required": False,
+        "description": "MPI block for specifying mpi configuration.",
+        "flavor": {
+            "type": str,
+            "required": False,
+            "values": ["openmpi", "mpich"],
+            "description": "Specify MPI Flavor. This is used to detect MPI wrapper.",
+        },
+        "launcher": {
+            "type": str,
+            "required": False,
+            "values": ["mpirun", "mpiexec", "mpiexec.hydra"],
+            "description": "Specify the MPI Launcher to run MPI jobs",
+        },
+        "launcher_opts": {
+            "type": str,
+            "required": False,
+            "description": "Pass options to MPI Launcher",
+        },
+    }
+    schema = {
+        "testtype": {
+            "type": str,
+            "required": True,
+            "values": "singlesource",
+            "description": "Buildtest Class for Single Source Compilation",
+        },
+        "description": {
+            "type": str,
+            "required": True,
+            "description": "Description Text for test configuration limited to 80 characters",
+        },
+        "maintainer": {
+            "type": list,
+            "required": True,
+            "description": "List of Maintainers for the test",
+        },
+        "moduleload": {
+            "type": dict,
+            "required": False,
+            "description": "Specify type of method to load modules into test.",
+            "lmod_collection": {
+                "type": str,
+                "required": False,
+                "description": "Specify a Lmod Collection name to load in test",
+            }
+        },
+        "mpi": {
+            "type": bool,
+            "required": False,
+            "values": [False, True],
+            "description": "Instruct buildtest if this test is a MPI test",
+        },
+        "program": {
+            "type": dict,
+            "required": True,
+            "description": "Start of Program. This section where you specify test parameters.",
+            "source": {
+                "type": str,
+                "required": True,
+                "description": "Source File to compile. This file must be in 'src' directory",
+            },
+            "compiler": {
+                "type": str,
+                "required": True,
+                "values": ["gnu", "intel", "pgi", "cuda", "clang"],
+                "description": "Specify Compiler Name to detect compiler wrapper.",
+            },
+            "env": {
+                "type": dict,
+                "required": False,
+                "description": "Specify List of Environment Varaibles in Test",
+            },
+            "cflags": {
+                "type": str,
+                "required": False,
+                "description": "Specify compiler flags to C compiler (i.e $CC)",
+            },
+            "cxxflags": {
+                "type": str,
+                "required": False,
+                "description": "Specify compiler flags to C++ compiler (i.e $CXX)",
+            },
+            "fflags": {
+                "type": str,
+                "required": False,
+                "description": "Specify compiler flags to Fortran compiler (i.e $FC)",
+            },
+            "ldflags": {
+                "type": str,
+                "required": False,
+                "description": "Specify linker flags",
+            },
+            "pre_build": {
+                "type": str,
+                "required": False,
+                "description": "Shell commands to run before building.",
+            },
+            "post_build": {
+                "type": str,
+                "required": False,
+                "description": "Shell commands to run after building.",
+            },
+            "pre_run": {
+                "type": str,
+                "required": False,
+                "description": "Shell commands to run before running executable.",
+            },
+            "post_run": {
+                "type": str,
+                "required": False,
+                "description": "Shell commands to run after running executable.",
+            },
+            "pre_exec": {
+                "type": str,
+                "required": False,
+                "description": "Command in front of executable.",
+            },
+            "exec_opts": {
+                "type": str,
+                "required": False,
+                "description": "Passing options to executable.",
+            },
+            "post_exec": {
+                "type": str,
+                "required": False,
+                "description": "Commands after executable.",
+            },
+
+            "mpi": mpi_schema,
+        },
+    }
+    return schema
 
 class BuildTestBuilder:
     """Class responsible for parsing the test configuration."""
@@ -204,232 +337,24 @@ class BuildTestBuilder:
 
 
 class SingleSource(BuildTestBuilder):
-    def __init__(self, file=None):
+    def __init__(self, file,lmod_collection, buildtest_collection,verbose):
         """Class constructor for SingleSource"""
+        self.verbose = verbose
+        self.lmod_collection = lmod_collection
+        self.buildtest_collection = buildtest_collection
 
-        bsub_schema = {
-            "type": dict,
-            "required": False,
-            "description": "bsub block for specifying #BSUB directives in test.",
-            "n": {
-                "type": str,
-                "required": False,
-                "opt_mapping": "-n",
-                "description": "Equivalent to #BSUB -n",
-            },
-            "M": {
-                "type": str,
-                "required": False,
-                "opt_mapping": "-M",
-                "description": "Equivalent to #BSUB -M",
-            },
-            "R": {
-                "type": str,
-                "required": False,
-                "opt_mapping": "-R",
-                "description": "Equivalent to #BSUB -R",
-            },
-            "q": {
-                "type": str,
-                "required": False,
-                "opt_mapping": "-q",
-                "description": "Equivalent to #BSUB -q",
-            },
-            "W": {
-                "type": str,
-                "required": False,
-                "opt_mapping": "-W",
-                "description": "Equivalent to #BSUB -W",
-            },
-        }
-        sbatch_schema = {
-            "type": dict,
-            "required": False,
-            "description": "sbatch block for specifying #SBATCH directives in test.",
-            "n": {
-                "type": str,
-                "required": False,
-                "opt_mapping": "-n",
-                "description": "Equivalent to #SBATCH -n",
-            },
-            "N": {
-                "type": str,
-                "required": False,
-                "opt_mapping": "-N",
-                "description": "Equivalent to #SBATCH -N",
-            },
-            "mem": {
-                "type": str,
-                "required": False,
-                "opt_mapping": "--mem",
-                "description": "Equivalent to #SBATCH --mem",
-            },
-            "C": {
-                "type": str,
-                "required": False,
-                "opt_mapping": "-C",
-                "description": "Equivalent to #SBATCH -C",
-            },
-            "p": {
-                "type": str,
-                "required": False,
-                "opt_mapping": "-p",
-                "description": "Equivalent to #SBATCH -p",
-            },
-            "t": {
-                "type": str,
-                "required": False,
-                "opt_mapping": "-t",
-                "description": "Equivalent to #SBATCH -t",
-            },
-        }
-        mpi_schema = {
-            "type": dict,
-            "required": False,
-            "description": "MPI block for specifying mpi configuration.",
-            "flavor": {
-                "type": str,
-                "required": False,
-                "values": ["openmpi", "mpich"],
-                "description": "Specify MPI Flavor. This is used to detect MPI wrapper.",
-            },
-            "launcher": {
-                "type": str,
-                "required": False,
-                "values": ["mpirun", "mpiexec", "mpiexec.hydra"],
-                "description": "Specify the MPI Launcher to run MPI jobs",
-            },
-            "launcher_opts": {
-                "type": str,
-                "required": False,
-                "description": "Pass options to MPI Launcher",
-            },
-        }
-        self.schema = {
-            "testtype": {
-                "type": str,
-                "required": True,
-                "values": "singlesource",
-                "description": "Buildtest Class for Single Source Compilation",
-            },
-            "description": {
-                "type": str,
-                "required": True,
-                "description": "Description Text for test configuration limited to 80 characters",
-            },
-            "maintainer": {
-                "type": list,
-                "required": True,
-                "description": "List of Maintainers for the test",
-            },
-            "scheduler": {
-                "type": str,
-                "required": True,
-                "values": ["local", "LSF", "SLURM"],
-                "description": "Pick Scheduler Type.",
-            },
-            "mpi": {
-                "type": bool,
-                "required": False,
-                "values": [False, True],
-                "description": "Instruct buildtest if this test is a MPI test",
-            },
-            "program": {
-                "type": dict,
-                "required": True,
-                "description": "Start of Program. This section where you specify test parameters.",
-                "source": {
-                    "type": str,
-                    "required": True,
-                    "description": "Source File to compile. This file must be in 'src' directory",
-                },
-                "compiler": {
-                    "type": str,
-                    "required": True,
-                    "values": ["gnu", "intel", "pgi", "cuda", "clang"],
-                    "description": "Specify Compiler Name to detect compiler wrapper.",
-                },
-                "env": {
-                    "type": dict,
-                    "required": False,
-                    "description": "Specify List of Environment Varaibles in Test",
-                },
-                "cflags": {
-                    "type": str,
-                    "required": False,
-                    "description": "Specify compiler flags to C compiler (i.e $CC)",
-                },
-                "cxxflags": {
-                    "type": str,
-                    "required": False,
-                    "description": "Specify compiler flags to C++ compiler (i.e $CXX)",
-                },
-                "fflags": {
-                    "type": str,
-                    "required": False,
-                    "description": "Specify compiler flags to Fortran compiler (i.e $FC)",
-                },
-                "ldflags": {
-                    "type": str,
-                    "required": False,
-                    "description": "Specify linker flags",
-                },
-                "pre_build": {
-                    "type": str,
-                    "required": False,
-                    "description": "Shell commands to run before building.",
-                },
-                "post_build": {
-                    "type": str,
-                    "required": False,
-                    "description": "Shell commands to run after building.",
-                },
-                "pre_run": {
-                    "type": str,
-                    "required": False,
-                    "description": "Shell commands to run before running executable.",
-                },
-                "post_run": {
-                    "type": str,
-                    "required": False,
-                    "description": "Shell commands to run after running executable.",
-                },
-                "pre_exec": {
-                    "type": str,
-                    "required": False,
-                    "description": "Command in front of executable.",
-                },
-                "exec_opts": {
-                    "type": str,
-                    "required": False,
-                    "description": "Passing options to executable.",
-                },
-                "post_exec": {
-                    "type": str,
-                    "required": False,
-                    "description": "Commands after executable.",
-                },
-                "bsub": bsub_schema,
-                "sbatch": sbatch_schema,
-                "mpi": mpi_schema,
-            },
-        }
+        self.schema = get_yaml_schema()
         if file is None:
             return
-
         logger = logging.getLogger(logID)
 
         fd = open(file, "r")
         self.test_yaml = yaml.safe_load(fd)
         fd.close()
-        print(f"Loading Test Configuration (YAML) file: {file}")
-        logger.info(f"Loading Test Configuration (YAML) file: {file}")
-        print("Checking schema of YAML file")
-        logger.info("Checking schema of YAML file")
+        print("{:<40} {}".format("[LOAD CONFIG]","PASSED"))
+
         self.check_top_keys()
 
-        # self.scheduler is used to determine if scheduler check needs to be performed.
-        self.scheduler = self.test_yaml["scheduler"]
         # self.mpi used to enable/disable mpi check
         self.mpi = False
         self.parent_dir = os.path.dirname(file)
@@ -438,7 +363,7 @@ class SingleSource(BuildTestBuilder):
         # content to store the test script
         self.testscript_content = {
             "testpath": "",
-            "scheduler": [],
+            "shell": ["#!/bin/bash"],
             "module": [],
             "metavars": [],
             "envs": [],
@@ -447,13 +372,20 @@ class SingleSource(BuildTestBuilder):
         }
 
         self.envs = []
-
+        # moduleload_check is enabled if "moduleload" key is defined, then buildtest will attempt to resolve module based
+        # on configuration file
+        self.moduleload_check = False
         self.check_program_keys()
+        print("{:<40} {}".format("[SCHEMA CHECK]", "PASSED"))
 
-        print("Schema Check Passed")
 
         if "mpi" in self.test_yaml.keys():
             self.mpi = self.test_yaml["mpi"]
+        if "moduleload" in self.test_yaml.keys():
+            self.moduleload_check = True
+            if "lmod_collection" in self.test_yaml["moduleload"].keys():
+                self.lmod_collection = self.test_yaml["moduleload"]["lmod_collection"]
+
 
         # self.srcfile = os.path.join(self.srcdir, self.test_yaml["program"]["source"])
         self.srcfile = self.test_yaml["program"]["source"]
@@ -463,35 +395,33 @@ class SingleSource(BuildTestBuilder):
         )
         # invoke setup method from base class to detect language, compiler, and mpi wrapper
         self.testscript_content["testpath"] = "%s.%s.sh" % (
-            os.path.join(config_opts["BUILDTEST_TESTDIR"], os.path.basename(file)),
+            os.path.join(config_opts["build"]["testdir"], os.path.basename(file)),
             hex(random.getrandbits(32)),
         )
 
-        logger.debug(f"Scheduler: {self.scheduler}")
+
         logger.debug(f"Source Directory: {self.srcdir}")
         logger.debug(f"Source File: {self.srcfile}")
 
-        print(f"Scheduler: {self.scheduler}")
-        print(f"Source Directory: {self.srcdir}")
-        print(f"Source File: {self.srcfile}")
 
-        print("Detecting Programming Language, Compiler and MPI wrapper")
         super().__init__(self.srcfile, self.test_yaml["program"]["compiler"], self.mpi)
-        print(f"Programming Language: {self.language}")
+        print("{:<40} {}".format("[PROGRAM LANGUAGE]",self.language))
+        print("{:<40} {}".format("[COMPILER NAME]", self.compiler))
 
         self.buildcmd = self.build_command()
 
-        if self.language == "c":
-            print(f"CC: {self.cc}")
-            print(f"CFLAGS: {self.cflags}")
-        if self.language == "c++":
-            print(f"CXX: {self.cxx}")
-            print(f"CXXFLAGS: {self.cxxflags}")
-        if self.language == "fortran":
-            print(f"FC: {self.ftn}")
-            print(f"FFLAGS: {self.fflags}")
-        if self.language == "cuda":
-            print(f"NVCC: {self.nvcc}")
+        if self.verbose >= 1:
+            if self.language == "c":
+                print(f"CC: {self.cc}")
+                print(f"CFLAGS: {self.cflags}")
+            if self.language == "c++":
+                print(f"CXX: {self.cxx}")
+                print(f"CXXFLAGS: {self.cxxflags}")
+            if self.language == "fortran":
+                print(f"FC: {self.ftn}")
+                print(f"FFLAGS: {self.fflags}")
+            if self.language == "cuda":
+                print(f"NVCC: {self.nvcc}")
 
     def __str__(self):
         return repr(self)
@@ -564,9 +494,6 @@ class SingleSource(BuildTestBuilder):
             self.schema["program"]["mpi"]["required"] = True
             self.schema["program"]["mpi"]["flavor"]["required"] = True
             self.schema["program"]["mpi"]["launcher"]["required"] = True
-        # enable bsub key if scheduler is set to LSF
-        if self.scheduler == "LSF":
-            self.schema["program"]["bsub"]["required"] = True
 
         # type check for top level program key
         if not isinstance(self.test_yaml["program"], self.schema["program"]["type"]):
@@ -604,60 +531,8 @@ class SingleSource(BuildTestBuilder):
                         f"Expecting value for {k}: {self.schema['program'][k]['values']} and received value: {self.test_yaml['program'][k]}"
                     )
 
-            if k == "bsub":
-                self.check_bsub_keys()
-
-            if k == "sbatch":
-                self.check_sbatch_keys()
-
             if k == "mpi":
                 self.check_mpi_keys()
-
-    def check_bsub_keys(self):
-        """Checking bsub keys."""
-
-        for k in self.schema["program"]["bsub"].keys():
-            if k in ["type", "required", "description"]:
-                continue
-
-            # if required key not found in test configuration then report error.
-            if self.schema["program"]["bsub"][k]["required"] and (
-                k not in self.test_yaml["program"]["bsub"].keys()
-            ):
-                raise BuildTestError(f"Key: {k} is required in test configuration!")
-
-            if k in self.test_yaml["program"]["bsub"].keys():
-                # check instance type of key in test configuration and match with one defined in self.schema.
-                if not isinstance(
-                    self.test_yaml["program"]["bsub"][k],
-                    self.schema["program"]["bsub"][k]["type"],
-                ):
-                    raise BuildTestError(
-                        f"Error in Key: bsub:{k} --> Expecting of type: {self.schema['program']['bsub'][k]['type']} and received of type: {type(self.test_yaml['program']['bsub'][k])}"
-                    )
-
-    def check_sbatch_keys(self):
-        """Checking bsub keys."""
-
-        for k in self.schema["program"]["sbatch"].keys():
-            if k in ["type", "required", "description"]:
-                continue
-
-            # if required key not found in test configuration then report error.
-            if self.schema["program"]["sbatch"][k]["required"] and (
-                k not in self.test_yaml["program"]["sbatch"].keys()
-            ):
-                raise BuildTestError(f"Key: {k} is required in test configuration!")
-
-            if k in self.test_yaml["program"]["sbatch"].keys():
-                # check instance type of key in test configuration and match with one defined in self.schema.
-                if not isinstance(
-                    self.test_yaml["program"]["sbatch"][k],
-                    self.schema["program"]["sbatch"][k]["type"],
-                ):
-                    raise BuildTestError(
-                        f"Error in Key: sbatch:{k} --> Expecting of type: {self.schema['program']['sbatch'][k]['type']} and received of type: {type(self.test_yaml['program']['sbatch'][k])}"
-                    )
 
     def check_mpi_keys(self):
         """Check program:mpi keys."""
@@ -749,34 +624,15 @@ class SingleSource(BuildTestBuilder):
 
         return buildcmd
 
-    def bsub_commands(self):
-        """Convert bsub keys into #BSUB directives."""
-        cmd = []
-        for k, v in self.test_yaml["program"]["bsub"].items():
-            cmd.append(f"#BSUB {self.schema['program']['bsub'][k]['opt_mapping']} {v}")
-        return cmd
-
-    def sbatch_commands(self):
-        """Convert sbatch keys into #SBATCH directives."""
-        cmd = []
-        for k, v in self.test_yaml["program"]["sbatch"].items():
-            cmd.append(
-                f"#SBATCH {self.schema['program']['sbatch'][k]['opt_mapping']} {v}"
-            )
-        return cmd
-
     def build_test_content(self):
         """This method brings all the components together to form the test structure."""
 
         logger = logging.getLogger(logID)
 
-        if self.scheduler == "LSF":
-            self.testscript_content["scheduler"] = self.bsub_commands()
-        elif self.scheduler == "SLURM":
-            self.testscript_content["scheduler"] = self.sbatch_commands()
+        self.testscript_content["module"] = module_selector(self.lmod_collection,self.buildtest_collection)
 
         self.testscript_content["metavars"].append(
-            f"TESTDIR={config_opts['BUILDTEST_TESTDIR']}"
+            f"TESTDIR={config_opts['build']['testdir']}"
         )
         self.testscript_content["metavars"].append(f"SRCDIR={self.srcdir}")
         self.testscript_content["metavars"].append(f"SRCFILE=$SRCDIR/{self.srcfile}")
@@ -854,3 +710,4 @@ class SingleSource(BuildTestBuilder):
             logger.debug(f"{k}:{v}")
 
         return self.testscript_content
+

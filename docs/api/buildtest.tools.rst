@@ -7,8 +7,8 @@ Subpackages
 .. toctree::
 
     buildtest.tools.buildsystem
+    buildtest.tools.configuration
     buildtest.tools.modulesystem
-    buildtest.tools.sysconfig
 
 Submodules
 ----------
@@ -22,7 +22,6 @@ Submodules
    buildtest.tools.lsf
    buildtest.tools.menu
    buildtest.tools.modules
-   buildtest.tools.options
    buildtest.tools.show
    buildtest.tools.slurm
    buildtest.tools.system

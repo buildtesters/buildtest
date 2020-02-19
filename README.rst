@@ -42,7 +42,7 @@ References
 
 - CodeCov: https://codecov.io/gh/HPC-buildtest/buildtest-framework
 
-- Coverall: https://coveralls.io/github/HPC-buildtest/buildtest-framework
+- Coveralls: https://coveralls.io/github/HPC-buildtest/buildtest-framework
 
 - CodeFactor: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework
 

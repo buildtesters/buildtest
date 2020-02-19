@@ -179,10 +179,7 @@ Similarly, ``pre_run:`` and ``post_run:`` will add shell commands before and aft
 key is used to pass options to the executable.
 
 The ``maintainer`` key which is outside the ``program`` block is required for all test configuration, it indicates the author of the
-test which is a list of authors in the form of ``<first> <last> <email>``. This section of code can be auto-generated if
-you have set ``git config user.name`` and ``git config user.email`` and buildtest will add the maintainer using the command::
-
-    $ buildtest testconfigs maintainer -m YES <config>
+test which is a list of authors in the form of ``<first> <last> <email>``.
 
 To help visualize see how the test dictionary maps to the specific commands in the test script.
 
@@ -210,8 +207,8 @@ Shown below is an example dry run build.
 Delete All builds (``buildtest build --clear``)
 -----------------------------------------------------
 
-If you want to delete all builds, this can be done via ``buildtest build --clear``. This will remove all tests found
-in **$BUILDTEST_TESTDIR** and remove all entries from ``build.json``. Removing entries from ``build.json`` will affect
+If you want to delete all builds, this can be done via ``buildtest build --clear``. This will remove all tests and
+remove all entries from ``build.json``. Removing entries from ``build.json`` will affect
 commands like ``buildtest build [ report | test | run | log | bsub ]`` since they rely on build IDs. Deleting the builds also
 remove the build IDs where build IDs correspond to a unique build entry in ``build.json``. For more details see :ref:`build_status`
 
@@ -223,7 +220,7 @@ Shown below is an output after clearing the builds.
 Test Directory Layout
 ----------------------
 
-buildtest will store the test defined by configuration ``BUILDTEST_TESTDIR`` defined in **settings.yml**. Buildtest will
+buildtest will store the test defined by configuration ``build[testdir]`` defined in **settings.yml**. Buildtest will
 detect system details such as vendor id, architecture, platform, operating system that get inserted into the directory
 structure. Every build (``buildtest build``) will increment the build ID to distinguish between previous builds.
 Shown below is a basic structure of the directory layout::
@@ -272,21 +269,18 @@ The following files are generally found in var directory::
    var/
    ├── build.json
    ├── collection.json
-   ├── modules.json
-   └── system.json
+   └── spider.json
 
-   0 directories, 4 files
+   0 directories, 3 files
 
 **build.json** keeps track of every build performed by buildtest. Every build will be denoted by a
 build **ID** that is used for distinguishing different builds. **build.json** is read by buildtest
-for commands such as *buildtest build* [ ``report`` | ``test`` | ``run`` | ``bsub`` | ``log`` ] commands.
+for commands such as *buildtest build* [ ``report`` | ``test`` | ``run`` | ``log`` ] commands.
 For more information see :ref:`build_status`
-
-**modules.json** is a subset of spider output to account for differences between Lmod 6/7 json structure for reading
-module and parent keys.
 
 **collection.json** is a self-managed file used to store module collections that is managed by command ``buildtest module collection``.
 For more information on module collection see :ref:`module_collection`
 
-**system.json** stores the buildtest system details that can be used by command ``buildtest system``.
+**spider.json** caches the content of Lmod spider in file to avoid rerunning spider every time. This file is updated
+whenever buildtest detects change in ``BUILDTEST_MODULEPATH``. This file is used by buildtest for all the module operations.
 

@@ -7,6 +7,7 @@ Bison
 CMake
 CUDA
 Clang
+EasyBuild
 FFTW
 GCC
 GCCcore
@@ -52,4 +53,4 @@ xz
 zlib
 
 
-Total Software Packages:  51
+Total Software Packages:  52

@@ -83,8 +83,7 @@ def show_status_test(args):
 
 
 def run_tests(args):
-    """This method actually runs the test and display test summary with number
-        of pass/fail test and whether it passed test threshold."""
+    """This method actually runs the test and display test summary"""
 
     fd1 = open(BUILDTEST_BUILD_LOGFILE, "r")
     content = json.load(fd1)
@@ -129,22 +128,8 @@ def run_tests(args):
     print(f"Executed {count_test} tests")
     print(f"Passed Tests: {passed_test} Percentage: {passed_test*100/count_test}%")
     print(f"Failed Tests: {failed_test} Percentage: {failed_test*100/count_test}%")
-
-    actual_ratio = passed_test / count_test
-    success_threshold = float(config_opts["BUILDTEST_SUCCESS_THRESHOLD"])
-
     print
     print
-    diff_ratio = abs(actual_ratio - success_threshold)
-    if actual_ratio < success_threshold:
-        print(f"WARNING: Threshold of {success_threshold*100}% was not satisfied")
-        print(
-            f"{actual_ratio*100}% passed rate with a "
-            + f"difference of {diff_ratio:.4} from the threshold"
-        )
-    else:
-        print(f"SUCCESS: Threshold of {success_threshold*100}% was achieved")
-
     print("Writing results to " + run_output_file)
     fd.close()
 
@@ -157,6 +142,8 @@ def get_build_ids():
     :return: return a list of numbers  that represent build id
     :rtype: list
     """
+    if not os.path.exists(BUILDTEST_BUILD_LOGFILE):
+        return []
 
     fd = open(BUILDTEST_BUILD_LOGFILE, "r")
     content = json.load(fd)

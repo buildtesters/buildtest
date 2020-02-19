@@ -25,12 +25,10 @@ setup(name='buildtest-framework',
        ],
        packages=find_packages(),
        include_package_data=True,
-       scripts = [
-        'bin/buildtest',
-       ],
        install_requires = [
             "PyYAML>=5.1",
             "distro==1.4.0",
             "termcolor==1.1.0",
-       ]
+       ],
+       entry_points = {'console_scripts': ['buildtest=buildtest.main:main']})
 )

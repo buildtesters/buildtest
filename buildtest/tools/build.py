@@ -6,9 +6,7 @@ for building test scripts from test configuration.
 from datetime import datetime
 import json
 import os
-import random
 import shutil
-import subprocess
 import sys
 
 
@@ -16,22 +14,20 @@ from buildtest.tools.config import (
     config_opts,
     BUILDTEST_BUILD_HISTORY,
     BUILDTEST_BUILD_LOGFILE,
-    BUILDTEST_SYSTEM,
+    TESTCONFIG_ROOT,
 )
 
 from buildtest.tools.buildsystem.singlesource import SingleSource
 from buildtest.tools.buildsystem.dry import dry_view
-from buildtest.tools.file import create_dir, is_dir, walk_tree, is_file
+from buildtest.tools.file import create_dir
 from buildtest.tools.log import init_log
-from buildtest.tools.modules import find_modules, module_selector
 from buildtest.tools.buildsystem.status import get_total_build_ids
-from buildtest.tools.testconfigs import test_config_name_mapping
 from buildtest.tools.writer import write_test
 
 
 def func_build_subcmd(args):
     """Entry point for ``buildtest build`` sub-command. Depending on the command
-    arguments, buildtest will set values in dictionary config_opts that is used
+    arguments, buildtest will set values in dictionary ``config_opts`` that is used
     to trigger the appropriate build action.
 
     :param args: arguments passed from command line
@@ -43,101 +39,57 @@ def func_build_subcmd(args):
     build_id = get_total_build_ids()
     BUILDTEST_BUILD_HISTORY[build_id] = {}
     BUILDTEST_BUILD_HISTORY[build_id]["TESTS"] = []
+    cmd_executed = "buildtest " + " ".join(str(arg) for arg in sys.argv[1:])
 
     if args.clear:
         clear_builds()
         sys.exit(0)
 
-    system = json.load(open(BUILDTEST_SYSTEM, "r"))
-    test_subdir = os.path.join(
-        system["VENDOR"],
-        system["ARCH"],
-        system["PROCESSOR_FAMILY"],
-        system["OS_NAME"],
-        system["OS_VERSION"],
-        f"build_{str(build_id)}",
-    )
+    BUILD_TIME = datetime.now().strftime("%m/%d/%Y %X")
 
-    config_opts["BUILDTEST_TESTDIR"] = os.path.join(
-        config_opts["BUILDTEST_TESTDIR"], test_subdir
+    config_opts["build"]["testdir"] = os.path.join(
+        config_opts["build"]["testdir"], f"build_{str(build_id)}",
     )
     if not args.dry:
-        create_dir(config_opts["BUILDTEST_TESTDIR"])
-        BUILDTEST_BUILD_HISTORY[build_id]["TESTDIR"] = config_opts["BUILDTEST_TESTDIR"]
+        create_dir(config_opts["build"]["testdir"])
+        BUILDTEST_BUILD_HISTORY[build_id]["TESTDIR"] = config_opts["build"]["testdir"]
 
     logger, LOGFILE = init_log()
-    logger.info(f"Opening File: {BUILDTEST_SYSTEM} and loading as JSON object")
-    logger.info(f"Creating Directory: {config_opts['BUILDTEST_TESTDIR']}")
+    logger.info(f"Creating Directory: {config_opts['build']['testdir']}")
     logger.debug(f"Current build ID: {build_id}")
 
-    module_cmd_list = []
-    # if module permutation is set
-    if args.modules:
-        module_cmd_list = find_modules(args.modules)
+    print ("{:_<80}".format(""))
+    print ("{:>40} {}".format("build time:",BUILD_TIME))
+    print ("{:>40} {}".format("command:", cmd_executed))
+    print ("{:>40} {}".format("test configuration root:",TESTCONFIG_ROOT))
+    print ("{:>40} {}".format("configuration file:",args.config))
+    print ("{:>40} {}".format("buildpath:",config_opts["build"]["testdir"]))
+    print ("{:>40} {}".format("logpath:",LOGFILE))
+    print ("{:_<80}".format(""))
 
-        print("Module Permutation Detected.")
-        print(
-            f"Each test will be built with {len(module_cmd_list)} "
-            f"module permutations"
-        )
-
-        print("Module Permutation List")
-        print("{:_<50}".format(""))
-        [print(x) for x in module_cmd_list]
-
+    print ("\n\n")
+    print ("{:<40} {}".format("STAGE", "VALUE"))
+    print ("{:_<80}".format(""))
     if args.config:
-        test_config_table = test_config_name_mapping()
-        file = test_config_table[args.config]
 
-        # print content of test configuration in verbose>=1
-        if args.verbose >= 1:
-            fd = open(file, "r")
-            content = fd.read()
-            print("{:_<80}".format(""))
-            print(content)
-            print("{:_<80}".format(""))
-            fd.close()
+        file = os.path.join(TESTCONFIG_ROOT, args.config)
 
-        singlesource_test = SingleSource(file)
+        singlesource_test = SingleSource(file,args.collection,args.module_collection,args.verbose)
         content = singlesource_test.build_test_content()
-        logger.info("Injecting method to inject modules into test script")
-        # building with module permutation
-        if args.modules:
-            # build each test with module in module permutation
-            for x in module_cmd_list:
-                content["module"] = []
-                if config_opts["BUILDTEST_MODULE_FORCE_PURGE"]:
-                    content["module"].append("module --force purge")
-                else:
-                    content["module"].append("module purge")
 
-                content["module"].append(x)
-                dirname = os.path.dirname(content["testpath"])
-                content["testpath"] = "%s.sh" % os.path.join(
-                    dirname, hex(random.getrandbits(32))
-                )
-                if args.dry:
-                    dry_view(content)
-                else:
-                    write_test(content, args.verbose)
+        if args.dry:
+            dry_view(content)
         else:
-            content["module"] = module_selector(args.collection, args.module_collection)
-            if args.dry:
-                dry_view(content)
-            else:
-                write_test(content, args.verbose)
+            write_test(content, args.verbose)
 
+    print ("{:<40} {}".format("[WRITING TEST]", "PASSED"))
     if not args.dry:
-        print("Writing Log file to: ", LOGFILE)
-
-        BUILD_TIME = datetime.now().strftime("%m/%d/%Y %X")
 
         BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"] = len(
             BUILDTEST_BUILD_HISTORY[build_id]["TESTS"]
         )
-        BUILDTEST_BUILD_HISTORY[build_id]["CMD"] = "buildtest " + " ".join(
-            str(arg) for arg in sys.argv[1:]
-        )
+        print ("{:<40} {}".format("[NUMBER OF TEST]", BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"]))
+        BUILDTEST_BUILD_HISTORY[build_id]["CMD"] = cmd_executed
 
         BUILDTEST_BUILD_HISTORY[build_id]["BUILD_TIME"] = BUILD_TIME
         BUILDTEST_BUILD_HISTORY[build_id]["LOGFILE"] = LOGFILE
@@ -160,8 +112,8 @@ def clear_builds():
     """This method clears the build history and removes all tests. This implements command ``buildtest build --clear``"""
     if os.path.isfile(BUILDTEST_BUILD_LOGFILE):
         os.remove(BUILDTEST_BUILD_LOGFILE)
-    if os.path.isdir(config_opts["BUILDTEST_TESTDIR"]):
-        shutil.rmtree(config_opts["BUILDTEST_TESTDIR"])
+    if os.path.isdir(config_opts["build"]["testdir"]):
+        shutil.rmtree(config_opts["build"]["testdir"])
 
     print("Clearing Build History")
     build_dict = {"build": {}}
