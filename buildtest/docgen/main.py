@@ -3,12 +3,11 @@ This file is used for generating documentation tests.
 """
 import os, sys
 
-sys.path.insert(0, os.getenv("BUILDTEST_ROOT"))
-
+from buildtest.tools.defaults import BUILDTEST_ROOT
 from buildtest.tools.system import BuildTestCommand
 from buildtest.tools.file import create_dir
 
-docgen = os.path.join(os.getenv("BUILDTEST_ROOT"), "docs", "docgen")
+docgen = os.path.join(BUILDTEST_ROOT, "docs", "docgen")
 
 
 def build_helper():
