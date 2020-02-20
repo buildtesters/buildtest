@@ -137,17 +137,13 @@ def build_cmds():
     build_dict = {
         "buildtest-build-clear.txt": "buildtest build --clear",
         "tutorial.compilers.args.c.yml.txt": "buildtest build -c tutorial/compilers/args.c.yml",
-        "tutorial.compilers.args.c.yml_v.txt": "buildtest build -c tutorial/compilers/args.c.yml -v",
+        "tutorial.compilers.args.c.yml_v.txt": "buildtest build -c tutorial/compilers/args.c.yml",
         "tutorial.compilers.args.c.yml_dry.txt": "buildtest build -c tutorial/compilers/args.c.yml --dry",
-        "tutorial.compilers.hello_lsf.yml.txt": "buildtest build -c tutorial/compilers/hello_lsf.yml -vv",
-        "tutorial.compilers.hello_slurm.yml.txt": "buildtest build -c tutorial/compilers/hello_slurm.yml -vv",
         "tutorial.compilers.hello.f.yml.txt": "buildtest build -c tutorial/compilers/hello.f.yml -co intel --dry",
-        "tutorial.openacc.vecAdd.c.yml.txt": "buildtest build -c tutorial/openacc/vecAdd.c.yml -co GCC -vv",
+        "tutorial.openacc.vecAdd.c.yml.txt": "buildtest build -c tutorial/openacc/vecAdd.c.yml -co GCC",
         "tutorial.openacc.vecAdd.c_pgi.yml.txt": "buildtest build -c tutorial/openacc/vecAdd.c_pgi.yml -co pgi --dry",
         "tutorial.openmp.clang_hello.c.yml.txt": "buildtest build -c tutorial/openmp/clang_hello.c.yml -co Clang --dry",
         "build-report.txt": "buildtest build report",
-        "build-test-example.txt": "buildtest build test 0",
-        "build-run-example.txt": "buildtest build run 1",
     }
     for k, v in build_dict.items():
         out = run(v)

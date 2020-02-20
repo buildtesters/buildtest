@@ -26,13 +26,7 @@ from buildtest.tools.modules import (
 from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
 
 from buildtest.tools.show import func_show_subcmd, show_schema_layout
-from buildtest.tools.buildsystem.status import (
-    show_status_report,
-    get_build_ids,
-    show_status_log,
-    show_status_test,
-    run_tests,
-)
+from buildtest.tools.buildsystem.status import show_status_report
 
 from buildtest.tools.system import get_module_collection
 from buildtest.tools.testconfigs import (
@@ -45,7 +39,6 @@ from buildtest.tools.testconfigs import (
 test_config_choice = testconfig_choices()
 module_collection = get_module_collection()
 collection_len = list(range(get_collection_length()))
-build_ids = get_build_ids()
 parent_choices = get_all_parents()
 
 
@@ -130,39 +123,7 @@ class BuildTestParser:
         parser_build_report = subparsers_build.add_parser(
             "report", help="Report status details of all builds "
         )
-        ##################### buildtest build log ###########################
-        parser_build_log = subparsers_build.add_parser(
-            "log", help="Report build log for a particular build"
-        )
-        parser_build_log.add_argument(
-            "id",
-            help="Display Log File for a build ID",
-            type=int,
-            choices=build_ids,
-            metavar="BUILD ID",
-        )
-        ##################### buildtest build test ###########################
-        parser_build_test = subparsers_build.add_parser(
-            "test", help="Report test scripts based on build ID"
-        )
-        parser_build_test.add_argument(
-            "id",
-            help="Display test scripts based on build ID",
-            type=int,
-            choices=build_ids,
-            metavar="BUILD ID",
-        )
-        ##################### buildtest build run ###########################
-        parser_build_run = subparsers_build.add_parser(
-            "run", help="Run test scripts based on build ID"
-        )
-        parser_build_run.add_argument(
-            "id",
-            help="Run test scripts based on build ID",
-            type=int,
-            choices=build_ids,
-            metavar="BUILD ID",
-        )
+
         ##################### buildtest build     ###########################
         parser_build.add_argument(
             "--clear",
@@ -185,13 +146,6 @@ class BuildTestParser:
             "content of test that would be written",
             action="store_true",
         )
-        parser_build.add_argument(
-            "-v",
-            "--verbose",
-            help="verbosity level (default: %(default)s)",
-            action="count",
-            default=0,
-        )
 
         parser_build_mutex_modules = parser_build.add_mutually_exclusive_group()
         parser_build_mutex_modules.add_argument(
@@ -210,10 +164,7 @@ class BuildTestParser:
             metavar="COLLECTION-ID",
         )
 
-        parser_build_run.set_defaults(func=run_tests)
-        parser_build_test.set_defaults(func=show_status_test)
         parser_build_report.set_defaults(func=show_status_report)
-        parser_build_log.set_defaults(func=show_status_log)
         parser_build.set_defaults(func=func_build_subcmd)
 
     def module_menu(self):

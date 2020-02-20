@@ -339,9 +339,8 @@ class BuildTestBuilder:
 
 
 class SingleSource(BuildTestBuilder):
-    def __init__(self, file, lmod_collection, buildtest_collection, verbose):
+    def __init__(self, file, lmod_collection, buildtest_collection):
         """Class constructor for SingleSource"""
-        self.verbose = verbose
         self.lmod_collection = lmod_collection
         self.buildtest_collection = buildtest_collection
 
@@ -407,19 +406,6 @@ class SingleSource(BuildTestBuilder):
         print("{:<40} {}".format("[COMPILER NAME]", self.compiler))
 
         self.buildcmd = self.build_command()
-
-        if self.verbose >= 1:
-            if self.language == "c":
-                print(f"CC: {self.cc}")
-                print(f"CFLAGS: {self.cflags}")
-            if self.language == "c++":
-                print(f"CXX: {self.cxx}")
-                print(f"CXXFLAGS: {self.cxxflags}")
-            if self.language == "fortran":
-                print(f"FC: {self.ftn}")
-                print(f"FFLAGS: {self.fflags}")
-            if self.language == "cuda":
-                print(f"NVCC: {self.nvcc}")
 
     def __str__(self):
         return repr(self)

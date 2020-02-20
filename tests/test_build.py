@@ -3,7 +3,6 @@ import sys
 
 from buildtest.tools.buildsystem.status import (
     show_status_report,
-    get_build_ids,
     get_total_build_ids,
 )
 from buildtest.tools.build import clear_builds
