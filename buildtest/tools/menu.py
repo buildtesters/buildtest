@@ -28,7 +28,6 @@ from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
 from buildtest.tools.show import func_show_subcmd, show_schema_layout
 from buildtest.tools.buildsystem.status import (
     show_status_report,
-    get_build_ids,
 )
 
 from buildtest.tools.system import get_module_collection
@@ -42,7 +41,6 @@ from buildtest.tools.testconfigs import (
 test_config_choice = testconfig_choices()
 module_collection = get_module_collection()
 collection_len = list(range(get_collection_length()))
-build_ids = get_build_ids()
 parent_choices = get_all_parents()
 
 
