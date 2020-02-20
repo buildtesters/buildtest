@@ -1,1 +1,0 @@
-$ buildtest build -c tutorial/compilers/hello_slurm.yml -vv

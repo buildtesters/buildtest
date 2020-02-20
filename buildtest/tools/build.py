@@ -75,13 +75,13 @@ def func_build_subcmd(args):
 
         file = os.path.join(TESTCONFIG_ROOT, args.config)
 
-        singlesource_test = SingleSource(file,args.collection,args.module_collection,args.verbose)
+        singlesource_test = SingleSource(file,args.collection,args.module_collection)
         content = singlesource_test.build_test_content()
 
         if args.dry:
             dry_view(content)
         else:
-            write_test(content, args.verbose)
+            write_test(content)
 
     print ("{:<40} {}".format("[WRITING TEST]", "PASSED"))
     if not args.dry:

@@ -149,13 +149,6 @@ class BuildTestParser:
             "content of test that would be written",
             action="store_true",
         )
-        parser_build.add_argument(
-            "-v",
-            "--verbose",
-            help="verbosity level (default: %(default)s)",
-            action="count",
-            default=0,
-        )
 
         parser_build_mutex_modules = parser_build.add_mutually_exclusive_group()
         parser_build_mutex_modules.add_argument(
