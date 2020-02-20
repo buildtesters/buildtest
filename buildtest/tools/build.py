@@ -3,12 +3,13 @@ This module contains all the methods related to "buildtest build" which is used
 for building test scripts from test configuration.
 """
 
-from datetime import datetime
+
 import json
 import os
 import shutil
 import sys
-
+import subprocess
+from datetime import datetime
 
 from buildtest.tools.config import (
     config_opts,
@@ -107,6 +108,8 @@ def func_build_subcmd(args):
         json.dump(build_dict, fd, indent=4)
         fd.close()
 
+        run_tests(build_id)
+
 
 def clear_builds():
     """This method clears the build history and removes all tests. This implements command ``buildtest build --clear``"""
@@ -119,3 +122,55 @@ def clear_builds():
     build_dict = {"build": {}}
     with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
         json.dump(build_dict, outfile, indent=2)
+
+
+def run_tests(build_id):
+    """This method actually runs the test and display test summary"""
+
+    fd1 = open(BUILDTEST_BUILD_LOGFILE, "r")
+    content = json.load(fd1)
+    fd1.close()
+
+    tests = content["build"][str(build_id)]["TESTS"]
+
+    # all tests are in same directory, retrieving parent directory of test
+    test_dir = content["build"][str(build_id)]["TESTDIR"]
+
+    runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
+    run_output_file = os.path.join(test_dir, "run", runfile)
+    create_dir(os.path.join(test_dir, "run"))
+    fd = open(run_output_file, "w")
+    count_test = len(tests)
+    passed_test = 0
+    failed_test = 0
+
+    for test in tests:
+        ret = subprocess.Popen(
+            test, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
+        output = ret.communicate()[0].decode("utf-8")
+
+        ret_code = ret.returncode
+        fd.write("Test Name:" + test + "\n")
+        fd.write("Return Code: " + str(ret_code) + "\n")
+        fd.write("---------- START OF TEST OUTPUT ---------------- \n")
+        fd.write(output)
+        fd.write("------------ END OF TEST OUTPUT ---------------- \n")
+
+        if ret_code == 0:
+            passed_test += 1
+        else:
+            failed_test += 1
+
+    print(f"Running All Tests from Test Directory: {test_dir}")
+    print
+    print
+    print("==============================================================")
+    print("                         Test summary                         ")
+    print(f"Executed {count_test} tests")
+    print(f"Passed Tests: {passed_test} Percentage: {passed_test*100/count_test}%")
+    print(f"Failed Tests: {failed_test} Percentage: {failed_test*100/count_test}%")
+    print
+    print
+    print("Writing results to " + run_output_file)
+    fd.close()
