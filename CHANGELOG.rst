@@ -1,6 +1,12 @@
 CHANGELOG
 =================
 
+v0.7.7 (Feb xxx, 2020)
+-----------------------
+
+ - removing bash script and sourcing in favor of Python module install
+
+
 v0.7.6 (Feb 4th, 2020)
 -----------------------
 

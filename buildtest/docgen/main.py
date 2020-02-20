@@ -65,7 +65,14 @@ def introspection_cmds():
         writer(fname, out, cmd)
 
     out = run("buildtest testconfigs view tutorial/compilers/args.c.yml")
-    writer(os.path.join(docgen,"buildtest_testconfigs_view_tutorial_compilers_args.c.yml"),out,"buildtest testconfigs view tutorial/compilers/args.c.yml")
+    writer(
+        os.path.join(
+            docgen, "buildtest_testconfigs_view_tutorial_compilers_args.c.yml"
+        ),
+        out,
+        "buildtest testconfigs view tutorial/compilers/args.c.yml",
+    )
+
 
 def module_cmds():
     module_dict = {

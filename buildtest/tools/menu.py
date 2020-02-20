@@ -5,8 +5,8 @@ buildtest menu
 import argparse
 import argcomplete
 
-from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.config import config_opts
+from buildtest.tools.build import func_build_subcmd
 from buildtest.tools.configuration.config import (
     func_config_edit,
     func_config_view,
@@ -73,7 +73,7 @@ class BuildTestParser:
             "module": "Buildtest Module Utilities",
             "show": "Options for displaying buildtest configuration",
             "testconfigs": "Options for list, view, and edit test configuration",
-            "config": "Buildtest Configuration Menu"
+            "config": "Buildtest Configuration Menu",
         }
 
         self.main_menu()
@@ -103,7 +103,6 @@ class BuildTestParser:
     def get_parser(self):
         return self.parser
 
-
     def parse_options(self):
         """This method parses the argument from ArgumentParser class and returns as a dictionary. Also it
         redirects sub-commands to appropriate methods.
@@ -114,7 +113,7 @@ class BuildTestParser:
 
         argcomplete.autocomplete(self.parser)
         args = self.parser.parse_args()
-        
+
         if args.subcommands:
             args.func(args)
 
@@ -439,7 +438,6 @@ class BuildTestParser:
             choices=test_config_choice,
             metavar="Test Configuration",
         )
-
 
         parser_testconfigs_list.set_defaults(func=func_testconfigs_show)
         parser_testconfigs_view.set_defaults(func=func_testconfigs_view)

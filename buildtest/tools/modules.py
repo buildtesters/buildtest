@@ -16,11 +16,9 @@ import os
 import subprocess
 from termcolor import cprint
 
-from buildtest.tools.config import (
-    config_opts,
-    BUILDTEST_CONFIG_FILE,
-    BUILDTEST_SPIDER_FILE
-)
+
+from buildtest.tools.config import config_opts
+from buildtest.tools.defaults import BUILDTEST_CONFIG_FILE, BUILDTEST_SPIDER_FILE
 
 
 from buildtest.tools.file import string_in_file, walk_tree, create_dir
@@ -36,15 +34,14 @@ def update_spider_file():
     content = yaml.safe_load(fd)
     fd.close()
 
-    print (f"buildtest detected change in BUILDTEST_MODULEPATH")
-    print (f"buildtest will now update spider file: {BUILDTEST_SPIDER_FILE}")
+    print(f"buildtest detected change in BUILDTEST_MODULEPATH")
+    print(f"buildtest will now update spider file: {BUILDTEST_SPIDER_FILE}")
 
     # in case BUILDTEST_MODULEPATH is empty list, force BUILDTEST_MODULEPATH=MODULEPATH so that spider file is correct
     if len(content["BUILDTEST_MODULEPATH"]) == 0:
-        for tree in os.getenv("MODULEPATH").split(":"):
+        for tree in os.getenv("MODULEPATH", "").split(":"):
             if os.path.isdir(tree):
                 content["BUILDTEST_MODULEPATH"].append(tree)
-
 
     # join list separated by ":" so looks like <dir1>:<dir2>:<dir3>
     moduletree = ":".join(map(str, content["BUILDTEST_MODULEPATH"]))
@@ -68,7 +65,7 @@ class BuildTestModule:
     ``get_version()`` - retrieves Lmod version
     """
 
-    def __init__(self):
+    def __init__(self, config_opts=None):
         """Constructor method. The constructor will run spider command and store the output
         in self.module_dict
         """
@@ -81,9 +78,8 @@ class BuildTestModule:
         if not os.path.exists(BUILDTEST_SPIDER_FILE):
             update_spider_file()
 
-        fd= open(BUILDTEST_SPIDER_FILE,"r")
-        self.module_dict = json.load(fd)
-        fd.close()
+        with open(BUILDTEST_SPIDER_FILE, "r") as fd:
+            self.module_dict = json.load(fd)
         self.major_ver = self.get_version()[0]
 
     def get_module_spider_json(self):
@@ -174,6 +170,7 @@ def get_all_parents():
 
     return sorted(list(parent_set))
 
+
 module_obj = BuildTestModule()
 
 
@@ -224,6 +221,7 @@ def find_module_deps(parent_module):
 
     print("\n")
     print(f"Total Modules Found: {len(parent_list_found)}")
+
 
 def module_load_test(args):
     """Perform module load test for all modules in BUILDTEST_MODULEPATH.
@@ -355,6 +353,7 @@ def module_load_test(args):
 
     return
 
+
 def check_easybuild_module():
     """This method reports modules that are built by easybuild. This implements
     command ``buildtest module --easybuild``
@@ -403,7 +402,6 @@ def module_selector(user_collection, buildtest_module_collection):
     :return: Return a list of modules based on the type of modules passed to this method
     """
     modules = []
-
 
     if config_opts["build"]["module"]["purge"]["force"]:
         modules.append("module --force purge")
@@ -553,6 +551,7 @@ def list_all_parent_modules():
             for mpath in module_json[module].keys():
                 if module_json[module][mpath]["fullName"] in x:
                     print(x, mpath)
+
 
 def func_module_subcmd(args):
     """Entry point for "buildtest module" subcommand.

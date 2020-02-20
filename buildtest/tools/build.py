@@ -10,8 +10,8 @@ import shutil
 import sys
 
 
-from buildtest.tools.config import (
-    config_opts,
+from buildtest.tools.config import config_opts
+from buildtest.tools.defaults import (
     BUILDTEST_BUILD_HISTORY,
     BUILDTEST_BUILD_LOGFILE,
     TESTCONFIG_ROOT,
@@ -35,7 +35,6 @@ def func_build_subcmd(args):
 
     :rtype: None
     """
-
     build_id = get_total_build_ids()
     BUILDTEST_BUILD_HISTORY[build_id] = {}
     BUILDTEST_BUILD_HISTORY[build_id]["TESTS"] = []
@@ -48,33 +47,35 @@ def func_build_subcmd(args):
     BUILD_TIME = datetime.now().strftime("%m/%d/%Y %X")
 
     config_opts["build"]["testdir"] = os.path.join(
-        config_opts["build"]["testdir"], f"build_{str(build_id)}",
+        config_opts["build"]["testdir"], f"build_{str(build_id)}"
     )
     if not args.dry:
         create_dir(config_opts["build"]["testdir"])
         BUILDTEST_BUILD_HISTORY[build_id]["TESTDIR"] = config_opts["build"]["testdir"]
 
-    logger, LOGFILE = init_log()
+    logger, LOGFILE = init_log(config_opts)
     logger.info(f"Creating Directory: {config_opts['build']['testdir']}")
     logger.debug(f"Current build ID: {build_id}")
 
-    print ("{:_<80}".format(""))
-    print ("{:>40} {}".format("build time:",BUILD_TIME))
-    print ("{:>40} {}".format("command:", cmd_executed))
-    print ("{:>40} {}".format("test configuration root:",TESTCONFIG_ROOT))
-    print ("{:>40} {}".format("configuration file:",args.config))
-    print ("{:>40} {}".format("buildpath:",config_opts["build"]["testdir"]))
-    print ("{:>40} {}".format("logpath:",LOGFILE))
-    print ("{:_<80}".format(""))
+    print("{:_<80}".format(""))
+    print("{:>40} {}".format("build time:", BUILD_TIME))
+    print("{:>40} {}".format("command:", cmd_executed))
+    print("{:>40} {}".format("test configuration root:", TESTCONFIG_ROOT))
+    print("{:>40} {}".format("configuration file:", args.config))
+    print("{:>40} {}".format("buildpath:", config_opts["build"]["testdir"]))
+    print("{:>40} {}".format("logpath:", LOGFILE))
+    print("{:_<80}".format(""))
 
-    print ("\n\n")
-    print ("{:<40} {}".format("STAGE", "VALUE"))
-    print ("{:_<80}".format(""))
+    print("\n\n")
+    print("{:<40} {}".format("STAGE", "VALUE"))
+    print("{:_<80}".format(""))
     if args.config:
 
         file = os.path.join(TESTCONFIG_ROOT, args.config)
 
-        singlesource_test = SingleSource(file,args.collection,args.module_collection,args.verbose)
+        singlesource_test = SingleSource(
+            file, args.collection, args.module_collection, args.verbose
+        )
         content = singlesource_test.build_test_content()
 
         if args.dry:
@@ -82,13 +83,17 @@ def func_build_subcmd(args):
         else:
             write_test(content, args.verbose)
 
-    print ("{:<40} {}".format("[WRITING TEST]", "PASSED"))
+    print("{:<40} {}".format("[WRITING TEST]", "PASSED"))
     if not args.dry:
 
         BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"] = len(
             BUILDTEST_BUILD_HISTORY[build_id]["TESTS"]
         )
-        print ("{:<40} {}".format("[NUMBER OF TEST]", BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"]))
+        print(
+            "{:<40} {}".format(
+                "[NUMBER OF TEST]", BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"]
+            )
+        )
         BUILDTEST_BUILD_HISTORY[build_id]["CMD"] = cmd_executed
 
         BUILDTEST_BUILD_HISTORY[build_id]["BUILD_TIME"] = BUILD_TIME

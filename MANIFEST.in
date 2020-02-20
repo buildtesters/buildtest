@@ -1,7 +1,8 @@
+include README.md LICENSE settings.yml
 recursive-include buildtest *
+recursive-include buildtest *.yml
 graft template
 include buildtest
 include CONTRIBUTING.rst
 include README.rst
 include setup.py
-include settings.yml

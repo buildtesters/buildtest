@@ -2,7 +2,6 @@
 Functions for system package
 """
 
-
 import distro
 import json
 import os
@@ -11,11 +10,10 @@ import re
 import stat
 import sys
 import subprocess
-from buildtest.tools.config import (
+from buildtest.tools.defaults import (
     BUILDTEST_MODULE_COLLECTION_FILE,
     BUILDTEST_BUILD_LOGFILE,
     BUILDTEST_SPIDER_FILE,
-    config_opts
 )
 from buildtest.tools.file import create_dir, is_file
 from buildtest.tools.modules import module_obj, update_spider_file
@@ -91,7 +89,6 @@ class BuildTestCommand:
         return self.err
 
 
-
 class BuildTestSystem:
     """BuildTestSystem is a class that detects system configuration and outputs the result
     in .run file which are generated upon test execution."""
@@ -114,8 +111,8 @@ class BuildTestSystem:
         scheduler = self.check_scheduler()
 
         # if file BUILDTEST_SPIDER_FILE does not exist, capture content of Lmod spider into file
-        if not os.path.exists (BUILDTEST_SPIDER_FILE):
-           update_spider_file()
+        if not os.path.exists(BUILDTEST_SPIDER_FILE):
+            update_spider_file()
 
     def check_scheduler(self):
         """Check for batch scheduler. Currently checks for LSF or SLURM by running
@@ -155,6 +152,7 @@ Requirements:
 """
             print(msg)
             sys.exit(1)
+
 
 def get_module_collection():
     """Return user Lmod module collection. Lmod collection can be retrieved

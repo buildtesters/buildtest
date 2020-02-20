@@ -4,7 +4,7 @@ import os
 import sys
 import stat
 
-from buildtest.tools.config import logID, BUILDTEST_BUILD_HISTORY
+from buildtest.tools.defaults import logID, BUILDTEST_BUILD_HISTORY
 from buildtest.tools.buildsystem.status import get_total_build_ids
 from buildtest.tools.system import BuildTestCommand
 

@@ -2,7 +2,7 @@ import os
 import yaml
 from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import is_dir
-from buildtest.tools.modules import  update_spider_file
+from buildtest.tools.modules import update_spider_file
 
 
 def func_module_tree_subcmd(args):
@@ -22,6 +22,7 @@ def func_module_tree_subcmd(args):
     if args.set:
         module_tree_set(args.set)
         update_spider_file()
+
 
 def module_tree_list():
     """This method list module trees assigned to BUILDTEST_MODULEPATH"""

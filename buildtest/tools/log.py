@@ -4,7 +4,7 @@ Methods related to buildtest logging
 import os
 import logging
 from datetime import datetime
-from buildtest.tools.config import logID, config_opts
+from buildtest.tools.defaults import logID
 
 
 class BuildTestError(Exception):
@@ -27,9 +27,9 @@ class BuildTestError(Exception):
         return repr(self.msg)
 
 
-def init_log():
+def init_log(config_opts):
     """Initialize log file and define log attributes. This method invokes
-    datetime.now() to name logfile using strftime().
+       datetime.now() to name logfile using strftime().
 
     :return: Returns logger object and log path and logfile name
     :rtype: multiple return types (logger object, logpath, logfile)
