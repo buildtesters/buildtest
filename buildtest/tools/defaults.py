@@ -36,6 +36,6 @@ BUILDTEST_MODULE_FILE = os.path.join(BUILDTEST_ROOT, "var", "modules.json")
 BUILDTEST_SPIDER_FILE = os.path.join(BUILDTEST_ROOT, "root", "spider.json")
 
 # TESTCONFIG_ROOT is the root directory where test configurations are found
-TESTCONFIG_ROOT = os.path.join(root, "toolkit", "suite")
+TESTCONFIG_ROOT = os.path.join(BUILDTEST_ROOT, "toolkit", "suite")
 DEFAULT_CONFIG_FILE = os.path.join(root, "settings.yml")
 EDITOR_LIST = ["vim", "emacs", "nano"]
