@@ -1,6 +1,6 @@
 import os, yaml, textwrap, subprocess, sys
 from buildtest.tools.config import config_opts
-from buildtest.toools.defaults import TESTCONFIG_ROOT
+from buildtest.tools.defaults import TESTCONFIG_ROOT
 from buildtest.tools.file import walk_tree
 from buildtest.tools.system import BuildTestCommand
 
