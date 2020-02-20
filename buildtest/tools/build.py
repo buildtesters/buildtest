@@ -127,9 +127,8 @@ def clear_builds():
 def run_tests(build_id):
     """This method actually runs the test and display test summary"""
 
-    fd1 = open(BUILDTEST_BUILD_LOGFILE, "r")
-    content = json.load(fd1)
-    fd1.close()
+    with open(BUILDTEST_BUILD_LOGFILE, "r") as fd:
+        content = json.load(fd)
 
     tests = content["build"][str(build_id)]["TESTS"]
 

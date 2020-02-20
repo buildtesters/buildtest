@@ -50,13 +50,12 @@ def add_collection():
     if out != "No modules loaded":
         module_list = out.split()
 
-        fd = open(BUILDTEST_MODULE_COLLECTION_FILE, "r")
-        content = json.load(fd)
-        fd.close()
-        fd = open(BUILDTEST_MODULE_COLLECTION_FILE, "w")
-        content["collection"].append(module_list)
+        with open(BUILDTEST_MODULE_COLLECTION_FILE,'r') as fd:
+            content = json.load(fd)
+            content["collection"].append(module_list)
 
-        json.dump(content, fd, indent=4)
+        with open(BUILDTEST_MODULE_COLLECTION_FILE, 'w') as fd:
+            json.dump(content, fd, indent=4)
 
         print(f"Modules to be added: {module_list}")
         print("\n")
@@ -78,11 +77,8 @@ def remove_collection(index):
         clear_module_collection()
         raise BuildTestError("Please add a module collection before removing a collection")
 
-    fd = open(BUILDTEST_MODULE_COLLECTION_FILE, "r")
-    content = json.load(fd)
-    fd.close()
-
-    fd = open(BUILDTEST_MODULE_COLLECTION_FILE, "w")
+    with open(BUILDTEST_MODULE_COLLECTION_FILE, 'r') as fd:
+        content = json.load(fd)
 
     print(f"Removing Collection Index: {index}")
     print("Modules to be removed:", content["collection"][index])
@@ -90,9 +86,8 @@ def remove_collection(index):
     print(f"Updating collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
     del content["collection"][index]
 
-    json.dump(content, fd, indent=4)
-    fd.close()
-
+    with open(BUILDTEST_MODULE_COLLECTION_FILE, 'w') as fd:
+        json.dump(content, fd, indent=4)
 
 def update_collection(index):
     """This method update a module collection with active modules in your environment.
@@ -103,7 +98,6 @@ def update_collection(index):
     :param index: module collection index number to update with active modules
     :type index: int, required
     """
-    """Update a module collection with active modules """
 
     if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
         print ("Module Collection  file not found.")
@@ -111,9 +105,8 @@ def update_collection(index):
         clear_module_collection()
         raise BuildTestError("Please add a module collection before updating a collection")
 
-    fd = open(BUILDTEST_MODULE_COLLECTION_FILE, "r")
-    content = json.load(fd)
-    fd.close()
+    with open(BUILDTEST_MODULE_COLLECTION_FILE, "r") as fd:
+        content = json.load(fd)
 
     cmd = "module -t list"
     out = subprocess.getoutput(cmd)
@@ -121,7 +114,7 @@ def update_collection(index):
         modules = []
     else:
         modules = out.split()
-    fd = open(BUILDTEST_MODULE_COLLECTION_FILE, "w")
+
     print(f"Updating Collection Index: {index}")
     print("Old Modules: ", content["collection"][index])
     content["collection"][index] = modules
@@ -129,9 +122,8 @@ def update_collection(index):
     print("\n")
     print(f"Updating collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
 
-    json.dump(content, fd, indent=4)
-    fd.close()
-
+    with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as fd:
+        json.dump(content, fd, indent=4)
 
 def list_collection():
     """This method list all module collections from json file. If no module
@@ -144,15 +136,17 @@ def list_collection():
         print (f"Creating Module Collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
         clear_module_collection()
 
-    fd = open(BUILDTEST_MODULE_COLLECTION_FILE, "r")
-    dict = json.load(fd)
+    with open(BUILDTEST_MODULE_COLLECTION_FILE, "r") as fd:
+        dict = json.load(fd)
     count = 0
     if len(dict["collection"]) == 0:
         print("No module collection found.")
         return
-
+    print("{:>10}      {:70}".format("ID", "Modules"))
+    print("{:_<80}".format(""))
     for x in dict["collection"]:
-        print(f"{count}: {x}")
+        print("{:>10}  ==> {}".format(count,x))
+        print("\n")
         count += 1
 
 def check_module_collection():

@@ -37,9 +37,8 @@ def module_tree_add(tree_list):
     :return: Update configuration file with updated value for BUILDTEST_MODULEPATH
     """
 
-    fd = open(BUILDTEST_CONFIG_FILE, "r")
-    content = yaml.safe_load(fd)
-    fd.close()
+    with open (BUILDTEST_CONFIG_FILE, 'r') as fd:
+        content = yaml.safe_load(fd)
 
     for tree in tree_list:
         is_dir(tree)
@@ -53,9 +52,9 @@ def module_tree_add(tree_list):
 
     content["BUILDTEST_MODULEPATH"] = list(module_tree_set)
 
-    fd = open(BUILDTEST_CONFIG_FILE, "w")
-    yaml.dump(content, fd, default_flow_style=False)
-    fd.close()
+    with open(BUILDTEST_CONFIG_FILE, "w") as fd:
+        yaml.dump(content, fd, default_flow_style=False)
+
 
     print(f"Adding module tree: {tree_list}")
     print(f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
@@ -70,19 +69,18 @@ def module_tree_rm(tree_list):
     :return: Update configuration file with updated value for BUILDTEST_MODULEPATH
     """
 
-    fd = open(BUILDTEST_CONFIG_FILE, "r")
-    content = yaml.safe_load(fd)
+    with open(BUILDTEST_CONFIG_FILE, 'r') as fd:
+        content = yaml.safe_load(fd)
+
     for tree in tree_list:
         tree = os.path.expandvars(tree)
         tree = os.path.expanduser(tree)
         if tree in content["BUILDTEST_MODULEPATH"]:
             content["BUILDTEST_MODULEPATH"].remove(tree)
 
-    fd.close()
+    with open(BUILDTEST_CONFIG_FILE, 'w') as fd:
+        yaml.dump(content, fd, default_flow_style=False)
 
-    fd = open(BUILDTEST_CONFIG_FILE, "w")
-    yaml.dump(content, fd, default_flow_style=False)
-    fd.close()
     print(f"Removing module tree: {tree_list}")
     print(f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
 
@@ -96,17 +94,15 @@ def module_tree_set(tree):
     :return: Update configuration file with updated value for BUILDTEST_MODULEPATH
     """
 
-    fd = open(BUILDTEST_CONFIG_FILE, "r")
-    content = yaml.safe_load(fd)
-    fd.close()
+    with open(BUILDTEST_CONFIG_FILE, 'r') as fd:
+        content = yaml.safe_load(fd)
 
     is_dir(tree)
-    content["BUILDTEST_MODULEPATH"] = []
+    content["BUILDTEST_MODULEPATH"].clear()
     content["BUILDTEST_MODULEPATH"].append(tree)
 
-    fd = open(BUILDTEST_CONFIG_FILE, "w")
-    yaml.dump(content, fd, default_flow_style=False)
-    fd.close()
+    with open(BUILDTEST_CONFIG_FILE, "w") as fd:
+        yaml.dump(content, fd, default_flow_style=False)
 
     print(f"Setting module tree: {tree}")
     print(f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
