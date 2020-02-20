@@ -1,8 +1,9 @@
+.. _module_operation:
+
 Module Operation
 ==================
 
-.. contents::
-   :backlinks: none
+Before you start reading this section, please see the :ref:`spider` section for more details
 
 Module Options (``buildtest module --help``)
 ----------------------------------------------

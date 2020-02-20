@@ -29,6 +29,7 @@ This documentation was last rebuild on |today| and is intended for version |vers
    configuring_buildtest.rst
    building_test.rst
    introspection.rst
+   spider.rst
    module_operation.rst
    managing_testconfigs.rst
 
