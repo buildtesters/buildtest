@@ -105,7 +105,6 @@ def check_configuration():
     """
     ec = 0
 
-    print(config_opts)
     if config_opts["BUILDTEST_MODULEPATH"] == None:
         print(
             "Please specify a module tree to BUILDTEST_MODULEPATH"
@@ -175,10 +174,6 @@ def load_configuration(config_path=None):
     return config_opts
 
 
-# Run on init, so we only load once
-config_opts = load_configuration()
-
-
 def show_configuration():
     """This method display buildtest configuration to terminal and this
        implements command buildtest show --config.
@@ -210,3 +205,7 @@ def show_configuration():
 
         else:
             print((f"{key} \t =").expandtabs(50), f"{config_opts[key]}")
+
+
+# Run on init, so we only load once
+config_opts = load_configuration()
