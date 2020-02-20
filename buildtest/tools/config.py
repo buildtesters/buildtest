@@ -6,7 +6,7 @@ import yaml
 
 from buildtest import BUILDTEST_VERSION
 from buildtest.tools.file import create_dir
-from .defaults import (
+from buildtest.tools.defaults import (
     BUILDTEST_BUILD_LOGFILE,
     BUILDTEST_CONFIG_FILE,
     BUILDTEST_CONFIG_BACKUP_FILE,
