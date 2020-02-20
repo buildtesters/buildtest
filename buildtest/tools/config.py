@@ -90,7 +90,7 @@ config_yaml_keys = {
 }
 
 
-def check_configuration(config_opts=None):
+def check_configuration():
     """Checks all keys in configuration file (settings.yml) are valid
        keys and ensure value of each key matches expected type . For some keys
        special logic is taken to ensure values are correct and directory path
@@ -102,12 +102,9 @@ def check_configuration(config_opts=None):
        :return: returns gracefully if all checks passes otherwise terminate immediately
        :rtype: exit code 1 if checks failed
     """
-    # If config not provided, load default
-    if not config_opts:
-        config_opts = load_configuration()
-
     ec = 0
 
+    print(config_opts)
     if config_opts["BUILDTEST_MODULEPATH"] == None:
         print(
             "Please specify a module tree to BUILDTEST_MODULEPATH"
@@ -143,11 +140,8 @@ def check_configuration(config_opts=None):
         sys.exit(1)
 
 
-def load_configuration(config_path=None, validate=True):
-    """load the default configuration file, optionally validating it.
-       By deafult, we assume that it is being loaded by a runtime function
-       and we want validation. The validate=False is likely only useful
-       for loading and debugging an invalid config.
+def load_configuration(config_path=None):
+    """load the default configuration file.
     """
     init()
 
@@ -170,15 +164,12 @@ def load_configuration(config_path=None, validate=True):
             tree_list = []
 
             # check each directory in MODULEPATH and add it to BUILDTEST_MODULEPATH
-            for tree in os.getenv("MODULEPATH").split(":"):
+            for tree in os.getenv("MODULEPATH", "").split(":"):
                 if os.path.isdir(tree):
                     tree_list.append(tree)
                 else:
                     print(f"Skipping module tree {tree} because path does not exist")
             config_opts["BUILDTEST_MODULEPATH"] = tree_list
-
-    if validate:
-        check_configuration(config_opts)
 
     return config_opts
 
