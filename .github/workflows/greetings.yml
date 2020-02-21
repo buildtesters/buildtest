@@ -1,27 +1,13 @@
-name: Greetings
+name: First Issue Greeting
 
-on: [pull_request, issues]
+on: [issues]
 
 jobs:
   greeting:
     runs-on: ubuntu-latest
     steps:
-
-      - name: Derive if this is a forked pull request
-        if: github.event_name == 'pull_request'
-        run: echo ::set-env name=IS_FORKED::$(if [ -z "$GITHUB_HEAD_REF" ]; then echo "no"; else echo "yes"; fi)
-        shell: bash
-
-      - name: Pull Request Greeting
-        if: github.event_name == 'pull_request' && env.IS_FORKED == 'no'
-        uses: actions/first-interaction@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          pr-message: 'This looks like your first pull request contribution. Great Work! '
-
       - name: Issue Greeting
-        if: github.event_name == 'issues'
         uses: actions/first-interaction@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          issue-message: 'This looks like your first issue. Welcome to the community! '
+          issue-message: 'This looks like your first contribution. Thank you, and welcome to the community!'
