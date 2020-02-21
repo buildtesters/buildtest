@@ -16,7 +16,6 @@ import os
 import subprocess
 from termcolor import cprint
 
-
 from buildtest.tools.config import config_opts
 from buildtest.tools.defaults import BUILDTEST_CONFIG_FILE, BUILDTEST_SPIDER_FILE
 
@@ -80,6 +79,7 @@ class BuildTestModule:
 
         with open(BUILDTEST_SPIDER_FILE, "r") as fd:
             self.module_dict = json.load(fd)
+
         self.major_ver = self.get_version()[0]
 
     def get_module_spider_json(self):
