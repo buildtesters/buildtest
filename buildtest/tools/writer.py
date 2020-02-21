@@ -6,7 +6,6 @@ from buildtest.tools.config import logID, BUILDTEST_BUILD_HISTORY
 from buildtest.tools.buildsystem.status import get_total_build_ids
 
 
-
 def write_test(dict):
     """Method responsible for writing test script."""
 
@@ -16,7 +15,6 @@ def write_test(dict):
 
     fd = open(dict["testpath"], "w")
     logger.info(f"Opening Test File for Writing: {dict['testpath']}")
-
 
     for key, val in dict.items():
         # skip key testpath, this key is responsible for opening the file for writing purpose.

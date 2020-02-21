@@ -30,6 +30,7 @@ def func_collection_subcmd(args):
     if args.remove is not None:
         remove_collection(args.remove)
 
+
 def add_collection():
     """This method save modules as a module collection in a json file. It updates
     the json file and prints content to STDOUT
@@ -50,11 +51,11 @@ def add_collection():
     if out != "No modules loaded":
         module_list = out.split()
 
-        with open(BUILDTEST_MODULE_COLLECTION_FILE,'r') as fd:
+        with open(BUILDTEST_MODULE_COLLECTION_FILE, "r") as fd:
             content = json.load(fd)
             content["collection"].append(module_list)
 
-        with open(BUILDTEST_MODULE_COLLECTION_FILE, 'w') as fd:
+        with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as fd:
             json.dump(content, fd, indent=4)
 
         print(f"Modules to be added: {module_list}")
@@ -72,12 +73,14 @@ def remove_collection(index):
     :type index: int, required
     """
     if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
-        print ("Module Collection  file not found.")
-        print (f"Creating Module Collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
+        print("Module Collection  file not found.")
+        print(f"Creating Module Collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
         clear_module_collection()
-        raise BuildTestError("Please add a module collection before removing a collection")
+        raise BuildTestError(
+            "Please add a module collection before removing a collection"
+        )
 
-    with open(BUILDTEST_MODULE_COLLECTION_FILE, 'r') as fd:
+    with open(BUILDTEST_MODULE_COLLECTION_FILE, "r") as fd:
         content = json.load(fd)
 
     print(f"Removing Collection Index: {index}")
@@ -86,8 +89,9 @@ def remove_collection(index):
     print(f"Updating collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
     del content["collection"][index]
 
-    with open(BUILDTEST_MODULE_COLLECTION_FILE, 'w') as fd:
+    with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as fd:
         json.dump(content, fd, indent=4)
+
 
 def update_collection(index):
     """This method update a module collection with active modules in your environment.
@@ -100,10 +104,12 @@ def update_collection(index):
     """
 
     if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
-        print ("Module Collection  file not found.")
-        print (f"Creating Module Collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
+        print("Module Collection  file not found.")
+        print(f"Creating Module Collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
         clear_module_collection()
-        raise BuildTestError("Please add a module collection before updating a collection")
+        raise BuildTestError(
+            "Please add a module collection before updating a collection"
+        )
 
     with open(BUILDTEST_MODULE_COLLECTION_FILE, "r") as fd:
         content = json.load(fd)
@@ -125,6 +131,7 @@ def update_collection(index):
     with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as fd:
         json.dump(content, fd, indent=4)
 
+
 def list_collection():
     """This method list all module collections from json file. If no module
     collection found, the method will return
@@ -132,8 +139,8 @@ def list_collection():
     This method implements ``buildtest module collection --list`` command.
     """
     if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
-        print ("Module Collection  file not found.")
-        print (f"Creating Module Collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
+        print("Module Collection  file not found.")
+        print(f"Creating Module Collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
         clear_module_collection()
 
     with open(BUILDTEST_MODULE_COLLECTION_FILE, "r") as fd:
@@ -145,16 +152,17 @@ def list_collection():
     print("{:>10}      {:70}".format("ID", "Modules"))
     print("{:_<80}".format(""))
     for x in dict["collection"]:
-        print("{:>10}  ==> {}".format(count,x))
+        print("{:>10}  ==> {}".format(count, x))
         print("\n")
         count += 1
+
 
 def check_module_collection():
     """Run module load for all module collection to confirm they can be loaded properly. This method
     implements the command ``buildtest module collection --check`` """
     if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
-        print ("Module Collection  file not found.")
-        print (f"Creating Module Collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
+        print("Module Collection  file not found.")
+        print(f"Creating Module Collection file: {BUILDTEST_MODULE_COLLECTION_FILE}")
         clear_module_collection()
 
     with open(BUILDTEST_MODULE_COLLECTION_FILE, "r") as infile:

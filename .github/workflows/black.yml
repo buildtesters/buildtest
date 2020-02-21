@@ -1,11 +1,36 @@
 name: Black Formatter
-on: [push, pull_request]
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches_ignore: []
+
 jobs:
-  black:
+  formatting:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Black Code Formatter
-        uses: lgeiger/black-action@master
+      - uses: actions/checkout@v2
+
+      - name: Setup black linter
+        run: conda create --quiet --name black black
+
+      - name: Lint python code
+        run: |
+          export PATH="/usr/share/miniconda/bin:$PATH"
+          source activate black
+          black --check buildtest tests/*.py
+
+      - name: Derive organization name
+        if: github.event_name == 'pull_request' && failure()
+        run: echo ::set-env name=IS_FORKED::$(if [ -z "$GITHUB_HEAD_REF" ]; then echo "no"; else echo "yes"; fi)
+        shell: bash
+
+      - name: Comment Pull Request
+        if: github.event_name == 'pull_request' && failure() && env.IS_FORKED == 'no'
+        uses: marocchino/sticky-pull-request-comment@v1.1.0
         with:
-          args: "."
+          message: 'Please format your code with [black](https://black.readthedocs.io) version 19.3b0: `black buildtest tests/*.py`.'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

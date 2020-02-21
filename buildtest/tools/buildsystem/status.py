@@ -8,6 +8,7 @@ and test scripts that were generated.
 import json
 from buildtest.tools.config import BUILDTEST_BUILD_LOGFILE
 
+
 def show_status_report(args=None):
     """
     This method displays history of builds conducted by buildtest. This method
@@ -41,6 +42,7 @@ def show_status_report(args=None):
             )
         )
         count += 1
+
 
 def get_total_build_ids():
     """Return a total count of build ids. This can be retrieved by getting length

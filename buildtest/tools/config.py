@@ -2,6 +2,7 @@ import yaml
 import os
 import sys
 from shutil import copy
+
 BUILDTEST_VERSION = "0.7.6"
 # root of buildtest-framework repository
 BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
@@ -70,44 +71,24 @@ config_yaml_keys = {
     "EDITOR": type("str"),
     "build": {
         "testdir": type("str"),
-        "module": {
-            "type": type(dict),
-            "purge": {
-                "type": type(bool)
-            },
-        },
+        "module": {"type": type(dict), "purge": {"type": type(bool)}},
     },
     "module": {
         "list": {
             "type": type(dict),
-
-            "exclude_version_files": {
-                "type": type("str")
-            },
-            "filter": {
-                "type": type(dict),
-                "include": {
-                    "type": type([])
-                },
-            },
-            "querylimit": {
-                "type": type(int)
-            },
+            "exclude_version_files": {"type": type("str")},
+            "filter": {"type": type(dict), "include": {"type": type([])}},
+            "querylimit": {"type": type(int)},
         },
         "loadtest": {
             "type": type(dict),
-            "login": {
-                "type": type(bool)
-            },
-            "purge_modules": {
-                "type": type(bool)
-            },
-            "numtest": {
-                "type": type(int)
-            },
-        }
+            "login": {"type": type(bool)},
+            "purge_modules": {"type": type(bool)},
+            "numtest": {"type": type(int)},
+        },
     },
 }
+
 
 def check_configuration():
     """Checks all keys in configuration file (settings.yml) are valid
@@ -140,17 +121,17 @@ def check_configuration():
 
     if config_opts["EDITOR"] not in EDITOR_LIST:
         print(f"Invalid EDITOR key: {config_opts['EDITOR']}")
-        print(
-            f"Please pick a valid editor option from the following: {EDITOR_LIST}"
-        )
+        print(f"Please pick a valid editor option from the following: {EDITOR_LIST}")
         ec = 1
 
     if config_opts["build"]["testdir"]:
-        config_opts["build"]["testdir"] = os.path.expandvars(config_opts["build"]["testdir"])
+        config_opts["build"]["testdir"] = os.path.expandvars(
+            config_opts["build"]["testdir"]
+        )
         # create the directory if it doesn't exist
         if not os.path.isdir(config_opts["build"]["testdir"]):
             dir = config_opts["build"]["testdir"]
-            print (f"creating directory: {dir}")
+            print(f"creating directory: {dir}")
             os.makedirs(config_opts["build"]["testdir"])
 
     if ec:
@@ -178,12 +159,12 @@ def show_configuration():
             tree = tree[:-1]
             print((f"{key} \t =").expandtabs(50), tree)
         # print all keys in module dictionary
-        elif key in ["module","build"]:
+        elif key in ["module", "build"]:
             module_keys = config_opts[key].keys()
 
             for m in module_keys:
-                if isinstance(config_opts[key][m],dict):
-                    for k,v in config_opts[key][m].items():
+                if isinstance(config_opts[key][m], dict):
+                    for k, v in config_opts[key][m].items():
                         print((f"{key}[{m}][{k}] \t =").expandtabs(50), v)
                 else:
                     print((f"{key}[{m}] \t =").expandtabs(50), config_opts[key][m])

@@ -17,6 +17,7 @@ def func_show_subcmd(args):
     if args.config:
         show_configuration()
 
+
 def show_schema_layout(args=None):
     """Implements method ``buildtest show schema``"""
     schema = get_yaml_schema()
