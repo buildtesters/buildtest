@@ -10,13 +10,18 @@ def testconfig_choices():
 
     :rtype: list
     """
-    all_testconfigs = walk_tree(TESTCONFIG_ROOT,".yml")
+    all_testconfigs = walk_tree(TESTCONFIG_ROOT, ".yml")
     test = []
     for f in all_testconfigs:
-        name, parent, gparent = os.path.basename(f), os.path.basename(os.path.dirname(f)), os.path.basename(os.path.dirname(os.path.dirname(f)))
-        tname = os.path.join(gparent,parent,name)
+        name, parent, gparent = (
+            os.path.basename(f),
+            os.path.basename(os.path.dirname(f)),
+            os.path.basename(os.path.dirname(os.path.dirname(f))),
+        )
+        tname = os.path.join(gparent, parent, name)
         test.append(tname)
     return test
+
 
 def func_testconfigs_show(args=None):
     """ Prints all test configuration and description of test.
@@ -32,7 +37,7 @@ def func_testconfigs_show(args=None):
 
     for testname in test_config_table:
 
-        fd = open(os.path.join(TESTCONFIG_ROOT,testname), "r")
+        fd = open(os.path.join(TESTCONFIG_ROOT, testname), "r")
         config = yaml.safe_load(fd)
         fd.close()
 
@@ -43,6 +48,7 @@ def func_testconfigs_show(args=None):
 
         print("{:100} | {:<30}".format(testname, textwrap.fill(description, 120)))
 
+
 def func_testconfigs_view(args=None):
     """Print content of test configuration. This method implements
     ``buildtest testconfigs view <config>`` command.
@@ -50,7 +56,7 @@ def func_testconfigs_view(args=None):
     :param args: command line arguments to buildtest
     :type args: dict, required
     """
-    testconfig = os.path.join(TESTCONFIG_ROOT,args.name)
+    testconfig = os.path.join(TESTCONFIG_ROOT, args.name)
     query = f"cat {testconfig}"
     cmd = BuildTestCommand()
     cmd.execute(query)

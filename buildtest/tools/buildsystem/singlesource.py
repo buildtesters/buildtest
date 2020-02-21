@@ -12,6 +12,7 @@ from buildtest.tools.config import config_opts, logID
 from buildtest.tools.log import BuildTestError
 from buildtest.tools.modules import module_selector
 
+
 def get_yaml_schema():
     mpi_schema = {
         "type": dict,
@@ -60,7 +61,7 @@ def get_yaml_schema():
                 "type": str,
                 "required": False,
                 "description": "Specify a Lmod Collection name to load in test",
-            }
+            },
         },
         "mpi": {
             "type": bool,
@@ -143,11 +144,11 @@ def get_yaml_schema():
                 "required": False,
                 "description": "Commands after executable.",
             },
-
             "mpi": mpi_schema,
         },
     }
     return schema
+
 
 class BuildTestBuilder:
     """Class responsible for parsing the test configuration."""
@@ -337,7 +338,7 @@ class BuildTestBuilder:
 
 
 class SingleSource(BuildTestBuilder):
-    def __init__(self, file,lmod_collection, buildtest_collection):
+    def __init__(self, file, lmod_collection, buildtest_collection):
         """Class constructor for SingleSource"""
         self.lmod_collection = lmod_collection
         self.buildtest_collection = buildtest_collection
@@ -350,7 +351,7 @@ class SingleSource(BuildTestBuilder):
         fd = open(file, "r")
         self.test_yaml = yaml.safe_load(fd)
         fd.close()
-        print("{:<40} {}".format("[LOAD CONFIG]","PASSED"))
+        print("{:<40} {}".format("[LOAD CONFIG]", "PASSED"))
 
         self.check_top_keys()
 
@@ -377,14 +378,12 @@ class SingleSource(BuildTestBuilder):
         self.check_program_keys()
         print("{:<40} {}".format("[SCHEMA CHECK]", "PASSED"))
 
-
         if "mpi" in self.test_yaml.keys():
             self.mpi = self.test_yaml["mpi"]
         if "moduleload" in self.test_yaml.keys():
             self.moduleload_check = True
             if "lmod_collection" in self.test_yaml["moduleload"].keys():
                 self.lmod_collection = self.test_yaml["moduleload"]["lmod_collection"]
-
 
         # self.srcfile = os.path.join(self.srcdir, self.test_yaml["program"]["source"])
         self.srcfile = self.test_yaml["program"]["source"]
@@ -398,13 +397,11 @@ class SingleSource(BuildTestBuilder):
             hex(random.getrandbits(32)),
         )
 
-
         logger.debug(f"Source Directory: {self.srcdir}")
         logger.debug(f"Source File: {self.srcfile}")
 
-
         super().__init__(self.srcfile, self.test_yaml["program"]["compiler"], self.mpi)
-        print("{:<40} {}".format("[PROGRAM LANGUAGE]",self.language))
+        print("{:<40} {}".format("[PROGRAM LANGUAGE]", self.language))
         print("{:<40} {}".format("[COMPILER NAME]", self.compiler))
 
         self.buildcmd = self.build_command()
@@ -615,7 +612,9 @@ class SingleSource(BuildTestBuilder):
 
         logger = logging.getLogger(logID)
 
-        self.testscript_content["module"] = module_selector(self.lmod_collection,self.buildtest_collection)
+        self.testscript_content["module"] = module_selector(
+            self.lmod_collection, self.buildtest_collection
+        )
 
         self.testscript_content["metavars"].append(
             f"TESTDIR={config_opts['build']['testdir']}"
@@ -696,4 +695,3 @@ class SingleSource(BuildTestBuilder):
             logger.debug(f"{k}:{v}")
 
         return self.testscript_content
-

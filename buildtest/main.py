@@ -9,7 +9,11 @@ os.environ["COLUMNS"] = "120"
 
 from buildtest.tools.menu import BuildTestParser
 from buildtest.tools.system import BuildTestSystem
-from buildtest.tools.config import check_configuration, BUILDTEST_MODULE_COLLECTION_FILE, BUILDTEST_BUILD_LOGFILE
+from buildtest.tools.config import (
+    check_configuration,
+    BUILDTEST_MODULE_COLLECTION_FILE,
+    BUILDTEST_BUILD_LOGFILE,
+)
 from buildtest.tools.file import create_dir
 
 
@@ -34,6 +38,7 @@ def main():
 
     parser = BuildTestParser()
     parser.parse_options()
+
 
 if __name__ == "__main__":
     """Entry Point, invoking main() method"""

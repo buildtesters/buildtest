@@ -1,6 +1,13 @@
 import os
 from shutil import copy
-from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE, DEFAULT_CONFIG_FILE
+from buildtest.tools.config import (
+    config_opts,
+    BUILDTEST_CONFIG_FILE,
+    BUILDTEST_CONFIG_BACKUP_FILE,
+    DEFAULT_CONFIG_FILE,
+)
+
+
 def func_config_edit(args=None):
     """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
 

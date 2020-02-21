@@ -26,9 +26,7 @@ from buildtest.tools.modules import (
 from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
 
 from buildtest.tools.show import func_show_subcmd, show_schema_layout
-from buildtest.tools.buildsystem.status import (
-    show_status_report,
-)
+from buildtest.tools.buildsystem.status import show_status_report
 
 from buildtest.tools.system import get_module_collection
 from buildtest.tools.testconfigs import (
@@ -68,7 +66,7 @@ class BuildTestParser:
             "module": "Buildtest Module Utilities",
             "show": "Options for displaying buildtest configuration",
             "testconfigs": "Options for list, view, and edit test configuration",
-            "config": "Buildtest Configuration Menu"
+            "config": "Buildtest Configuration Menu",
         }
 
         self.main_menu()
@@ -98,7 +96,6 @@ class BuildTestParser:
     def get_parser(self):
         return self.parser
 
-
     def parse_options(self):
         """This method parses the argument from ArgumentParser class and returns as a dictionary. Also it
         redirects sub-commands to appropriate methods.
@@ -109,7 +106,7 @@ class BuildTestParser:
 
         argcomplete.autocomplete(self.parser)
         args = self.parser.parse_args()
-        
+
         if args.subcommands:
             args.func(args)
 
@@ -392,7 +389,6 @@ class BuildTestParser:
             choices=test_config_choice,
             metavar="Test Configuration",
         )
-
 
         parser_testconfigs_list.set_defaults(func=func_testconfigs_show)
         parser_testconfigs_view.set_defaults(func=func_testconfigs_view)
