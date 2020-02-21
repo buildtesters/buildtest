@@ -188,12 +188,11 @@ def show_configuration():
         elif key == "module":
             module_keys = config_opts[key].keys()
             for m in module_keys:
-                for k,v in config_opts[key][m].items():
+                for k, v in config_opts[key][m].items():
                     print((f"{key}-{m}-{k} \t =").expandtabs(50), v)
 
         else:
             print((f"{key} \t =").expandtabs(50), f"{config_opts[key]}")
-
 
 
 def func_config_edit(args):

@@ -495,7 +495,6 @@ class BuildTestParser:
             metavar="Test Configuration",
         )
 
-
         parser_testconfigs_list.set_defaults(func=func_testconfigs_show)
         parser_testconfigs_view.set_defaults(func=func_testconfigs_view)
         parser_testconfigs_edit.set_defaults(func=func_testconfigs_edit)
@@ -516,4 +515,3 @@ class BuildTestParser:
 
         parser_system_view.set_defaults(func=func_system_view)
         parser_system_fetch.set_defaults(func=func_system_fetch)
-

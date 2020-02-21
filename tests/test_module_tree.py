@@ -2,46 +2,62 @@ import os
 import shutil
 import yaml
 
-from buildtest.tools.modulesystem.tree import module_tree_add, module_tree_list,\
-    module_tree_rm, module_tree_set
+from buildtest.tools.modulesystem.tree import (
+    module_tree_add,
+    module_tree_list,
+    module_tree_rm,
+    module_tree_set,
+)
 from buildtest.tools.file import create_dir
 from buildtest.tools.config import BUILDTEST_CONFIG_FILE
+
 
 def test_module_tree_list():
     module_tree_list()
 
+
 def test_module_tree_add_and_remove():
 
-    module_tree_add([os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core")])
-
-
-    fd = open(BUILDTEST_CONFIG_FILE,"r")
-    content = yaml.safe_load(fd)
-    fd.close()
-
-    assert os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core") in content["BUILDTEST_MODULEPATH"]
-
-    module_tree_rm([os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core")])
+    module_tree_add([os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")])
 
     fd = open(BUILDTEST_CONFIG_FILE, "r")
     content = yaml.safe_load(fd)
     fd.close()
 
-    assert os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core") not in content["BUILDTEST_MODULEPATH"]
+    assert (
+        os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
+        in content["BUILDTEST_MODULEPATH"]
+    )
+
+    module_tree_rm([os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")])
+
+    fd = open(BUILDTEST_CONFIG_FILE, "r")
+    content = yaml.safe_load(fd)
+    fd.close()
+
+    assert (
+        os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
+        not in content["BUILDTEST_MODULEPATH"]
+    )
+
 
 def test_module_tree_set():
     """Testing if module tree can be set via command line ``buildtest module tree -s <tree>``. This will
         update the configuration."""
-    module_tree_set(os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core"))
+    module_tree_set(os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core"))
 
-    fd = open(BUILDTEST_CONFIG_FILE,"r")
+    fd = open(BUILDTEST_CONFIG_FILE, "r")
     content = yaml.safe_load(fd)
     fd.close()
 
-    assert os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core") in content["BUILDTEST_MODULEPATH"]
+    assert (
+        os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
+        in content["BUILDTEST_MODULEPATH"]
+    )
 
     # undo set operation by removing tree
-    module_tree_rm([os.path.join(os.environ.get("LMOD_PKG"),"modulefiles/Core")])
+    module_tree_rm([os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")])
+
 
 def test_module_tree_with_directory_expansion():
 
