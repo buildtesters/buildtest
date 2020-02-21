@@ -5,6 +5,7 @@ from buildtest.tools.configuration.config import (
     func_config_restore,
 )
 
+
 def test_config_file_exists():
     assert os.path.exists(BUILDTEST_CONFIG_FILE)
 

@@ -2,7 +2,7 @@ import os
 import yaml
 from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import is_dir
-from buildtest.tools.modules import  update_spider_file
+from buildtest.tools.modules import update_spider_file
 
 
 def func_module_tree_subcmd(args):
@@ -23,6 +23,7 @@ def func_module_tree_subcmd(args):
         module_tree_set(args.set)
         update_spider_file()
 
+
 def module_tree_list():
     """This method list module trees assigned to BUILDTEST_MODULEPATH"""
     [print(tree) for tree in config_opts["BUILDTEST_MODULEPATH"]]
@@ -37,7 +38,7 @@ def module_tree_add(tree_list):
     :return: Update configuration file with updated value for BUILDTEST_MODULEPATH
     """
 
-    with open (BUILDTEST_CONFIG_FILE, 'r') as fd:
+    with open(BUILDTEST_CONFIG_FILE, "r") as fd:
         content = yaml.safe_load(fd)
 
     for tree in tree_list:
@@ -55,7 +56,6 @@ def module_tree_add(tree_list):
     with open(BUILDTEST_CONFIG_FILE, "w") as fd:
         yaml.dump(content, fd, default_flow_style=False)
 
-
     print(f"Adding module tree: {tree_list}")
     print(f"Configuration File: {BUILDTEST_CONFIG_FILE} has been updated")
 
@@ -69,7 +69,7 @@ def module_tree_rm(tree_list):
     :return: Update configuration file with updated value for BUILDTEST_MODULEPATH
     """
 
-    with open(BUILDTEST_CONFIG_FILE, 'r') as fd:
+    with open(BUILDTEST_CONFIG_FILE, "r") as fd:
         content = yaml.safe_load(fd)
 
     for tree in tree_list:
@@ -78,7 +78,7 @@ def module_tree_rm(tree_list):
         if tree in content["BUILDTEST_MODULEPATH"]:
             content["BUILDTEST_MODULEPATH"].remove(tree)
 
-    with open(BUILDTEST_CONFIG_FILE, 'w') as fd:
+    with open(BUILDTEST_CONFIG_FILE, "w") as fd:
         yaml.dump(content, fd, default_flow_style=False)
 
     print(f"Removing module tree: {tree_list}")
@@ -94,7 +94,7 @@ def module_tree_set(tree):
     :return: Update configuration file with updated value for BUILDTEST_MODULEPATH
     """
 
-    with open(BUILDTEST_CONFIG_FILE, 'r') as fd:
+    with open(BUILDTEST_CONFIG_FILE, "r") as fd:
         content = yaml.safe_load(fd)
 
     is_dir(tree)
