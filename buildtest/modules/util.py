@@ -21,3 +21,13 @@ class ModuleCollection:
         return self.module_cmd
 
 
+class Module:
+    def __init__(self,modules):
+        self.modules = modules
+        self.module_load_cmd = [f"module load {x}; " for x in self.modules]
+    def get_command(self):
+        return " ".join(self.module_load_cmd)
+    def test_modules(self):
+        ret = subprocess.Popen(self.module_load_cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        ret.communicate()
+        return ret.returncode
