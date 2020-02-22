@@ -4,7 +4,6 @@ for building test scripts from test configuration.
 """
 
 
-import json
 import os
 import re
 import sys
@@ -28,8 +27,6 @@ def func_get_subcmd(args):
     if not args.repo:
         sys.exit("A repository address is required.")
 
-    print(args.repo)
-    print(config_opts)
     url = args.repo[0]
 
     # Currently just support for GitHub
@@ -48,13 +45,19 @@ def func_get_subcmd(args):
     create_dir(username_path)
 
     # Clone to install
-    clone(url, clone_path)
+    dest = clone(url, clone_path)
+    logger.info("%s cloned to %s" % (url, dest))
 
 
 def clone(url, dest):
     """clone a repository from Github"""
     name = os.path.basename(url).replace(".git", "")
     dest = os.path.join(dest, name)
+
+    # Ensure https prefix is provided
+    if not re.search("^(http|git@)", url):
+        url = "https://%s" % url
+
     return_code = os.system("git clone %s %s" % (url, dest))
     if return_code == 0:
         return dest

@@ -173,9 +173,6 @@ class BuildTestParser:
         """This method implements argparse argument for ``buildtest get``"""
 
         parser_get = self.subparsers.add_parser("get")
-        subparsers_get = parser_get.add_subparsers(
-            description="Get (clone) a buildtest test repository."
-        )
 
         ##################### buildtest get       ###########################
         parser_get.add_argument(
