@@ -176,7 +176,7 @@ class BuildTestParser:
 
         ##################### buildtest get       ###########################
         parser_get.add_argument(
-            "repo", nargs=1, help="specify github.com or other repository to clone."
+            "repo", help="specify github.com or other repository to clone."
         )
 
         parser_get.set_defaults(func=func_get_subcmd)

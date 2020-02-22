@@ -27,10 +27,8 @@ def func_get_subcmd(args):
     if not args.repo:
         sys.exit("A repository address is required.")
 
-    url = args.repo[0]
-
     # Currently just support for GitHub
-    if not re.search("github.com", url):
+    if not re.search("github.com", args.repo):
         sys.exit("Currently only GitHub is supported for buildtest get.")
 
     logger, LOGFILE = init_log(config_opts)
@@ -38,14 +36,14 @@ def func_get_subcmd(args):
     create_dir(root)
 
     # Parse the repository name
-    username = url.split("/")[-2]
-    repo = url.split("/")[-1]
+    username = args.repo.split("/")[-2]
+    repo = args.repo.split("/")[-1]
     clone_path = os.path.join(root, username)
     create_dir(clone_path)
 
     # Clone to install
-    dest = clone(url, clone_path)
-    logger.info("%s cloned to %s" % (url, dest))
+    dest = clone(args.repo, clone_path)
+    logger.info("%s cloned to %s" % (args.repo, dest))
 
 
 def clone(url, dest):
