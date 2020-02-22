@@ -7,7 +7,7 @@ EDITOR: vim
 
 build:
   # directory where test scripts will be generated
-  testdir: $BUILDTEST_ROOT/testdir
+  testdir: $HOME/.buildtest/testdir
 
   module:
     # purge modules at start of each script
