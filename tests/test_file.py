@@ -10,7 +10,8 @@ from buildtest.tools.file import (
     string_in_file,
 )
 from buildtest.tools.log import BuildTestError
-from buildtest.tools.defaults import BUILDTEST_ROOT
+
+here = os.path.dirname(os.path.abspath(__file__))
 
 
 @pytest.mark.xfail(
@@ -86,7 +87,7 @@ def test_fail_create_dir():
 
 
 def test_walk_tree():
-    list_of_files = walk_tree(os.path.join(BUILDTEST_ROOT, "buildtest"), ".py")
+    list_of_files = walk_tree(here, ".py")
     assert len(list_of_files) > 0
 
 
