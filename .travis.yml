@@ -31,6 +31,7 @@ install:
   - pip install python-coveralls
   - pip install easybuild
   - pip install -r docs/requirements.txt
+  - pip install -r requirements.txt
   - source $TRAVIS_BUILD_DIR/buildtest/scripts/install_deps.sh $LMOD_VERSION
 
 before_script:
@@ -46,7 +47,6 @@ script:
   - module use $LMOD_PKG/modulefiles/Core
   - echo $MODULEPATH
   - cd $TRAVIS_BUILD_DIR
-  - source sourceme.sh
   - coverage run buildtest_regtest.py
   - coverage report -m
 
