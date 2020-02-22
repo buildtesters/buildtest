@@ -142,7 +142,7 @@ class BuildTestSystem:
         req_pass = True
         # If system is not Linux
 
-        if self.system["SYSTEM"] != "Linux" or not is_file(os.getenv("LMOD_CMD")):
+        if self.system["SYSTEM"] != "Linux" or not os.getenv("LMOD_CMD"):
             msg = """
 System Requirements not satisfied.
 

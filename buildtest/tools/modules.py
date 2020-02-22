@@ -28,10 +28,14 @@ from buildtest.tools.modulesystem.collection import get_buildtest_module_collect
 def update_spider_file():
     """Update BUILDTEST_SPIDER_FILE with latest output from Lmod spider"""
 
+    # Cut out early if we don't have a spider file
+    if not os.path.exists(os.path.expandvars("$LMOD_DIR/spider")):
+        print(f"Cannot find Lmod spider, skipping updating file.")
+        return
+
     # loading buildtest configuration file to read value "BUILDTEST_MODULEPATH"
-    fd = open(BUILDTEST_CONFIG_FILE, "r")
-    content = yaml.safe_load(fd)
-    fd.close()
+    with open(BUILDTEST_CONFIG_FILE, "r") as fd:
+        content = yaml.safe_load(fd)
 
     print(f"buildtest detected change in BUILDTEST_MODULEPATH")
     print(f"buildtest will now update spider file: {BUILDTEST_SPIDER_FILE}")
@@ -77,10 +81,11 @@ class BuildTestModule:
         if not os.path.exists(BUILDTEST_SPIDER_FILE):
             update_spider_file()
 
-        with open(BUILDTEST_SPIDER_FILE, "r") as fd:
-            self.module_dict = json.load(fd)
+        if os.path.exists(BUILDTEST_SPIDER_FILE):
+            with open(BUILDTEST_SPIDER_FILE, "r") as fd:
+                self.module_dict = json.load(fd)
 
-        self.major_ver = self.get_version()[0]
+            self.major_ver = self.get_version()[0]
 
     def get_module_spider_json(self):
         """Returns self.module_dict which is the json output of spider.

@@ -7,6 +7,7 @@ import argcomplete
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.build import func_build_subcmd
+from buildtest.tools.get import func_get_subcmd
 from buildtest.tools.configuration.config import (
     func_config_edit,
     func_config_view,
@@ -71,6 +72,7 @@ class BuildTestParser:
 
         self.main_menu()
         self.build_menu()
+        self.get_menu()
         self.module_menu()
         self.config_menu()
         self.show_menu()
@@ -166,6 +168,21 @@ class BuildTestParser:
 
         parser_build_report.set_defaults(func=show_status_report)
         parser_build.set_defaults(func=func_build_subcmd)
+
+    def get_menu(self):
+        """This method implements argparse argument for ``buildtest get``"""
+
+        parser_get = self.subparsers.add_parser("get")
+        subparsers_get = parser_get.add_subparsers(
+            description="Get (clone) a buildtest test repository."
+        )
+
+        ##################### buildtest get       ###########################
+        parser_get.add_argument(
+            "repo", nargs=1, help="specify github.com or other repository to clone."
+        )
+
+        parser_get.set_defaults(func=func_get_subcmd)
 
     def module_menu(self):
         """This method implements argparse arguments for ``buildtest module``. """
