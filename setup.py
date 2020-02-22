@@ -27,7 +27,7 @@ setup(name='buildtest-framework',
        include_package_data=True,
        install_requires = [
             "argcomplete==1.9.5", 
-            "PyYAML>=5.1",
+            "PyYAML>=5.2",
             "distro==1.4.0",
             "termcolor==1.1.0",
        ],
