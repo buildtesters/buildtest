@@ -40,9 +40,8 @@ def func_get_subcmd(args):
     # Parse the repository name
     username = url.split("/")[-2]
     repo = url.split("/")[-1]
-    username_path = os.path.join(root, username)
-    clone_path = os.path.join(username_path, repo)
-    create_dir(username_path)
+    clone_path = os.path.join(root, username)
+    create_dir(clone_path)
 
     # Clone to install
     dest = clone(url, clone_path)
