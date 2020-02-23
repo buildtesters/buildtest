@@ -16,11 +16,8 @@ import os
 import subprocess
 from termcolor import cprint
 
-from buildtest.tools.config import (
-    config_opts,
-    BUILDTEST_CONFIG_FILE,
-    BUILDTEST_SPIDER_FILE,
-)
+from buildtest.tools.config import config_opts
+from buildtest.tools.defaults import BUILDTEST_CONFIG_FILE, BUILDTEST_SPIDER_FILE
 
 
 from buildtest.tools.file import string_in_file, walk_tree, create_dir
@@ -31,17 +28,21 @@ from buildtest.tools.modulesystem.collection import get_buildtest_module_collect
 def update_spider_file():
     """Update BUILDTEST_SPIDER_FILE with latest output from Lmod spider"""
 
+    # Cut out early if we don't have a spider file
+    if not os.path.exists(os.path.expandvars("$LMOD_DIR/spider")):
+        print(f"Cannot find Lmod spider, skipping updating file.")
+        return
+
     # loading buildtest configuration file to read value "BUILDTEST_MODULEPATH"
-    fd = open(BUILDTEST_CONFIG_FILE, "r")
-    content = yaml.safe_load(fd)
-    fd.close()
+    with open(BUILDTEST_CONFIG_FILE, "r") as fd:
+        content = yaml.safe_load(fd)
 
     print(f"buildtest detected change in BUILDTEST_MODULEPATH")
     print(f"buildtest will now update spider file: {BUILDTEST_SPIDER_FILE}")
 
     # in case BUILDTEST_MODULEPATH is empty list, force BUILDTEST_MODULEPATH=MODULEPATH so that spider file is correct
     if len(content["BUILDTEST_MODULEPATH"]) == 0:
-        for tree in os.getenv("MODULEPATH").split(":"):
+        for tree in os.getenv("MODULEPATH", "").split(":"):
             if os.path.isdir(tree):
                 content["BUILDTEST_MODULEPATH"].append(tree)
 
@@ -67,7 +68,7 @@ class BuildTestModule:
     ``get_version()`` - retrieves Lmod version
     """
 
-    def __init__(self):
+    def __init__(self, config_opts=None):
         """Constructor method. The constructor will run spider command and store the output
         in self.module_dict
         """
@@ -80,10 +81,11 @@ class BuildTestModule:
         if not os.path.exists(BUILDTEST_SPIDER_FILE):
             update_spider_file()
 
-        fd = open(BUILDTEST_SPIDER_FILE, "r")
-        self.module_dict = json.load(fd)
-        fd.close()
-        self.major_ver = self.get_version()[0]
+        if os.path.exists(BUILDTEST_SPIDER_FILE):
+            with open(BUILDTEST_SPIDER_FILE, "r") as fd:
+                self.module_dict = json.load(fd)
+
+            self.major_ver = self.get_version()[0]
 
     def get_module_spider_json(self):
         """Returns self.module_dict which is the json output of spider.

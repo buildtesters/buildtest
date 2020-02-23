@@ -11,7 +11,7 @@ include the following:
 import os
 import logging
 
-from buildtest.tools.config import logID
+from buildtest.tools.defaults import logID
 from buildtest.tools.log import BuildTestError
 
 

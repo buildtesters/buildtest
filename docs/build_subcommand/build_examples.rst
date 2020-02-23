@@ -8,7 +8,9 @@ MPI Example
 
 .. Note:: This is an experimental feature
 
-buildtest supports building MPI test. To demonstrate see the following test configuration
+buildtest supports building MPI test. To demonstrate see the following test configuration.
+For the example below, ``${BUILDTEST_ROOT}`` refers to where you cloned the build test
+repository. There is a folder of examples provided here under ``toolkit/suite/tutorial``.
 
 .. command-output:: cat ${BUILDTEST_ROOT}/toolkit/suite/tutorial/mpi/hello.c.yml
    :shell:

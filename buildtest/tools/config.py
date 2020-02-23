@@ -1,70 +1,71 @@
-import yaml
+import json
 import os
+import shutil
 import sys
-from shutil import copy
+import yaml
 
-BUILDTEST_VERSION = "0.7.6"
-# root of buildtest-framework repository
-BUILDTEST_ROOT = os.getenv("BUILDTEST_ROOT")
-# json file used by buildtest to write build meta-data
-BUILDTEST_BUILD_LOGFILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "build.json")
-# dictionary used for storing status of builds
-BUILDTEST_BUILD_HISTORY = {}
-
-buildtest_home_conf_dir = os.path.join(os.getenv("HOME"), ".buildtest")
-# variable used to store buildtest configuration file in $HOME/.buildtest/settings.yml
-BUILDTEST_CONFIG_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml")
-BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(buildtest_home_conf_dir, "settings.yml.bak")
-# json file used for storing buildtest module collections
-
-BUILDTEST_VAR_DIR = os.path.join(os.getenv("BUILDTEST_ROOT"), "var")
-BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(BUILDTEST_VAR_DIR, "collection.json")
-# BUILDTEST_SPIDER_FILE is used to keep a cache of Lmod spider locally to avoid rerunning spider every time
-BUILDTEST_SPIDER_FILE = os.path.join(BUILDTEST_VAR_DIR, "spider.json")
-# DEFAULT_CONFIG_FILE is the default buildtest configuration found in root of buildtest-framework repo
-DEFAULT_CONFIG_FILE = os.path.join(os.getenv("BUILDTEST_ROOT"), "settings.yml")
-EDITOR_LIST = ["vim", "emacs", "nano"]
-# TESTCONFIG_ROOT is the root directory where test configurations are found
-TESTCONFIG_ROOT = os.path.join(os.getenv("BUILDTEST_ROOT"), "toolkit", "suite")
-# check if $HOME/.buildtest exists, if not create directory
-if not os.path.isdir(buildtest_home_conf_dir):
-    print(
-        f"Creating buildtest configuration directory: \
-            {buildtest_home_conf_dir}"
-    )
-    os.makedirs(buildtest_home_conf_dir)
-
-# if the file $HOME/.buildtest/settings.yml does not exist copy the default file
-# into the appropriate location
-if not os.path.exists(BUILDTEST_CONFIG_FILE):
-    copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
-    copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)
+from buildtest import BUILDTEST_VERSION
+from buildtest.tools.file import create_dir
+from buildtest.tools.defaults import (
+    BUILDTEST_BUILD_LOGFILE,
+    BUILDTEST_CONFIG_FILE,
+    BUILDTEST_CONFIG_BACKUP_FILE,
+    BUILDTEST_MODULE_COLLECTION_FILE,
+    BUILDTEST_ROOT,
+    DEFAULT_CONFIG_FILE,
+    EDITOR_LIST,
+)
 
 
-# load the configuration file
-fd = open(BUILDTEST_CONFIG_FILE, "r")
-config_opts = yaml.safe_load(fd)
+def create_config_files():
+    """if default config files don't exist, create them
+    """
+    if not os.path.exists(BUILDTEST_CONFIG_FILE):
+        shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
+        shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)
 
-# if BUILDTEST_MODULEPATH is empty list then check if MODULEPATH is defined
-# and set result to BUILDTEST_MODULEPATH
-if len(config_opts["BUILDTEST_MODULEPATH"]) == 0:
 
-    if os.getenv("MODULEPATH") == None:
-        config_opts["BUILDTEST_MODULEPATH"] = []
-    else:
-        # otherwise set this to MODULEPATH
-        tree_list = []
-        # check each directory in MODULEPATH and add it to BUILDTEST_MODULEPATH
-        for tree in os.getenv("MODULEPATH").split(":"):
-            if os.path.isdir(tree):
-                tree_list.append(tree)
-            # else:
-            # print (f"Skipping module tree {tree} because path does not exist")
-        config_opts["BUILDTEST_MODULEPATH"] = tree_list
+def create_module_file():
+    """Create an empty json file with collections, if it doesn't exist
+    """
+    if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
+        module_coll_dict = {"collection": []}
+        with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as outfile:
+            json.dump(module_coll_dict, outfile, indent=2)
 
-config_opts["BUILDTEST_VERSION"] = BUILDTEST_VERSION
 
-logID = "buildtest"
+def create_logfile():
+    """Create a logfile to keep track of messages for the user, if doesn't exist
+    """
+    if not os.path.exists(BUILDTEST_BUILD_LOGFILE):
+        build_dict = {"build": {}}
+        with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
+            json.dump(build_dict, outfile, indent=2)
+
+
+def init():
+    """Buildtest init should check that the buildtest user root exists,
+       and that dependency files are created. This is called by 
+       load_configuration.
+    """
+    # check if $HOME/.buildtest exists, if not create directory
+    if not os.path.exists(BUILDTEST_ROOT):
+        print(
+            f"Creating buildtest configuration directory: \
+                 {BUILDTEST_ROOT}"
+        )
+        os.mkdir(BUILDTEST_ROOT)
+
+    # Create subfolders for var and root
+    create_dir(os.path.join(BUILDTEST_ROOT, "var"))
+    create_dir(os.path.join(BUILDTEST_ROOT, "root"))
+    create_dir(os.path.join(BUILDTEST_ROOT, "toolkit", "suite"))
+
+    # Create config files, module files, and log file
+    create_config_files()
+    create_module_file()
+    create_logfile()
+
 
 config_yaml_keys = {
     "BUILDTEST_MODULEPATH": type([]),
@@ -92,17 +93,16 @@ config_yaml_keys = {
 
 def check_configuration():
     """Checks all keys in configuration file (settings.yml) are valid
-    keys and ensure value of each key matches expected type . For some keys
-    special logic is taken to ensure values are correct and directory path
-    exists.
+       keys and ensure value of each key matches expected type . For some keys
+       special logic is taken to ensure values are correct and directory path
+       exists.
 
-    Also check if module command is found.
+       Also check if module command is found.
 
-    If any error is found buildtest will terminate immediately.
-    :return: returns gracefully if all checks passes otherwise terminate immediately
-    :rtype: exit code 1 if checks failed
+       If any error is found buildtest will terminate immediately.
+       :return: returns gracefully if all checks passes otherwise terminate immediately
+       :rtype: exit code 1 if checks failed
     """
-
     ec = 0
 
     if config_opts["BUILDTEST_MODULEPATH"] == None:
@@ -140,9 +140,43 @@ def check_configuration():
         sys.exit(1)
 
 
+def load_configuration(config_path=None):
+    """load the default configuration file.
+    """
+    init()
+
+    config_path = config_path or BUILDTEST_CONFIG_FILE
+
+    # load the configuration file
+    with open(BUILDTEST_CONFIG_FILE, "r") as fd:
+        config_opts = yaml.safe_load(fd)
+
+    config_opts["BUILDTEST_VERSION"] = BUILDTEST_VERSION
+
+    # if BUILDTEST_MODULEPATH is empty list then check if MODULEPATH is defined
+    # and set result to BUILDTEST_MODULEPATH
+    if not config_opts["BUILDTEST_MODULEPATH"]:
+        if not os.getenv("MODULEPATH"):
+            config_opts["BUILDTEST_MODULEPATH"] = []
+        else:
+
+            # otherwise set this to MODULEPATH
+            tree_list = []
+
+            # check each directory in MODULEPATH and add it to BUILDTEST_MODULEPATH
+            for tree in os.getenv("MODULEPATH", "").split(":"):
+                if os.path.isdir(tree):
+                    tree_list.append(tree)
+                else:
+                    print(f"Skipping module tree {tree} because path does not exist")
+            config_opts["BUILDTEST_MODULEPATH"] = tree_list
+
+    return config_opts
+
+
 def show_configuration():
     """This method display buildtest configuration to terminal and this
-    implements command buildtest show --config.
+       implements command buildtest show --config.
     """
     exclude_list = ["BUILDTEST_VERSION"]
 
@@ -171,3 +205,7 @@ def show_configuration():
 
         else:
             print((f"{key} \t =").expandtabs(50), f"{config_opts[key]}")
+
+
+# Run on init, so we only load once
+config_opts = load_configuration()

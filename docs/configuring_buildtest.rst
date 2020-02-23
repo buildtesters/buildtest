@@ -124,6 +124,8 @@ section. If you want to redirect tests to ``/tmp/$USERS/buildtest`` you can set 
         testdir: /tmp/$USERS/buildtest/
 
 
+The default will go to the testdir in your build test home at ``$HOME/.buildtest/testdir``
+
 .. Note:: Shell expansion should work when specifying directories
 
 Configuring Editor

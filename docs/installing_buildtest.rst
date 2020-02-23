@@ -44,9 +44,10 @@ Or you may switch to the **devel** branch if you already cloned it::
 Buildtest Dependencies
 -----------------------
 
-Next, we need to install buildtest dependencies from ``requirements.txt`` by running ::
+Next, we need to install buildtest dependencies from ``docs/requirements.txt`` by running ::
 
     $ pip install -r docs/requirements.txt
+
 
 You may want to create an isolated python environment of choice depending on your preference you can use any of the following
 
@@ -57,16 +58,27 @@ You may want to create an isolated python environment of choice depending on you
 - `pipenv <https://pipenv.readthedocs.io/en/latest/>`_
 
 
-Depending on your shell (``$SHELL``) source the appropriate file::
+Depending on your python version, install buildtest::
 
-    # for bash,sh users
-    $ source sourceme.sh
+    # for site installed python
+    $ python3 setup.py install --user
 
-    # for tcsh,csh users
-    $ source sourceme.csh
+    # for virtual environment, local install
+    $ python3 setup.py install
 
-buildtest will setup auto-completion using ``argcomplete`` on buildtest options when
-you run the ``source.[sh|csh]`` script. Just press **TAB** key on the keyboard to
+
+If you want auto-completion using ``argcomplete`` on buildtest options, you can
+run this command::
+
+    # for bash, shell
+    eval "$(register-python-argcomplete buildtest)"
+
+    # for csh, tsch
+    eval `register-python-argcomplete --shell tcsh buildtest
+
+
+You can add this to your bash ``.profile`` at ``$HOME/.profile`` to have it sourced
+each time. After you do this, you can press **TAB** key on the keyboard to
 fill in the arguments options::
 
     $ buildtest

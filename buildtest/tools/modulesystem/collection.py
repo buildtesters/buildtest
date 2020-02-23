@@ -6,7 +6,7 @@ import subprocess
 import sys
 import json
 
-from buildtest.tools.config import BUILDTEST_MODULE_COLLECTION_FILE
+from buildtest.tools.defaults import BUILDTEST_MODULE_COLLECTION_FILE, BUILDTEST_ROOT
 from buildtest.tools.file import create_dir, is_file, is_dir
 from buildtest.tools.log import BuildTestError
 
@@ -38,7 +38,7 @@ def add_collection():
     This method implements ``buildtest module collection -a`` command.
     """
 
-    create_dir(os.path.join(os.getenv("BUILDTEST_ROOT"), "var"))
+    create_dir(os.path.join(BUILDTEST_ROOT, "var"))
     if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
         clear_module_collection()
 

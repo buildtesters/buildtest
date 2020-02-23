@@ -1,0 +1,6 @@
+include README.md LICENSE settings.yml
+recursive-include buildtest *
+graft buildtest
+include CONTRIBUTING.rst
+include README.rst
+include setup.py

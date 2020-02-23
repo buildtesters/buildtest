@@ -8,7 +8,8 @@ import random
 import yaml
 
 
-from buildtest.tools.config import config_opts, logID
+from buildtest.tools.config import config_opts
+from buildtest.tools.defaults import logID
 from buildtest.tools.log import BuildTestError
 from buildtest.tools.modules import module_selector
 

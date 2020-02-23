@@ -11,6 +11,8 @@ from buildtest.tools.file import (
 )
 from buildtest.tools.log import BuildTestError
 
+here = os.path.dirname(os.path.abspath(__file__))
+
 
 @pytest.mark.xfail(
     reason="Test expected to fail when checking an obscure directory path",
@@ -85,9 +87,7 @@ def test_fail_create_dir():
 
 
 def test_walk_tree():
-    list_of_files = walk_tree(
-        os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest"), ".py"
-    )
+    list_of_files = walk_tree(here, ".py")
     assert len(list_of_files) > 0
 
 

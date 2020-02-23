@@ -2,7 +2,6 @@
 Functions for system package
 """
 
-
 import distro
 import json
 import os
@@ -11,11 +10,10 @@ import re
 import stat
 import sys
 import subprocess
-from buildtest.tools.config import (
+from buildtest.tools.defaults import (
     BUILDTEST_MODULE_COLLECTION_FILE,
     BUILDTEST_BUILD_LOGFILE,
     BUILDTEST_SPIDER_FILE,
-    config_opts,
 )
 from buildtest.tools.file import create_dir, is_file
 from buildtest.tools.modules import module_obj, update_spider_file
@@ -144,7 +142,7 @@ class BuildTestSystem:
         req_pass = True
         # If system is not Linux
 
-        if self.system["SYSTEM"] != "Linux" or not is_file(os.getenv("LMOD_CMD")):
+        if self.system["SYSTEM"] != "Linux" or not os.getenv("LMOD_CMD"):
             msg = """
 System Requirements not satisfied.
 

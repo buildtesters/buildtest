@@ -11,8 +11,8 @@ import sys
 import subprocess
 from datetime import datetime
 
-from buildtest.tools.config import (
-    config_opts,
+from buildtest.tools.config import config_opts
+from buildtest.tools.defaults import (
     BUILDTEST_BUILD_HISTORY,
     BUILDTEST_BUILD_LOGFILE,
     TESTCONFIG_ROOT,
@@ -36,7 +36,6 @@ def func_build_subcmd(args):
 
     :rtype: None
     """
-
     build_id = get_total_build_ids()
     BUILDTEST_BUILD_HISTORY[build_id] = {}
     BUILDTEST_BUILD_HISTORY[build_id]["TESTS"] = []
@@ -55,7 +54,7 @@ def func_build_subcmd(args):
         create_dir(config_opts["build"]["testdir"])
         BUILDTEST_BUILD_HISTORY[build_id]["TESTDIR"] = config_opts["build"]["testdir"]
 
-    logger, LOGFILE = init_log()
+    logger, LOGFILE = init_log(config_opts)
     logger.info(f"Creating Directory: {config_opts['build']['testdir']}")
     logger.debug(f"Current build ID: {build_id}")
 
