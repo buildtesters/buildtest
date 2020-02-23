@@ -55,8 +55,10 @@ Links to the following apps
 When contributing back to buildtest, please consider checking the following GitHub apps, most important being **Travis-CI**
 as it will test your pull request before merging to ``devel`` branch.
 
+
+
 GitHub Actions
------------------
+--------------
 
 buildtest runs a few automated checks via GitHub Actions that can be found in ``.github/workflows``
 
@@ -64,8 +66,28 @@ buildtest runs a few automated checks via GitHub Actions that can be found in ``
 
 - **URLs-checker** - buildtest is a GitHub action called **URLs-checker** found at https://github.com/marketplace/actions/urls-checker. The workflow is defined in `urlchecker.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/urlchecker.yml>`_
 
+GitHub Hooks
+------------
+
+The above actions check formatting, but are conservative and do not do commits to fix issues on behalf of the user.
+To support an easier workflow, we have provided a git hook that you can install locally to run black directly before each
+commit. To install the hook, simply copy the file to the ``.git/hooks`` folder as follows::
+
+    cp .github/hooks/pre-commit .git.hooks
+
+
+This hook will exit on error either if you don't have black installed::
+
+    pip install black==19.3b0
+
+
+or if you have black installed, but running it on the repository code results in an error due
+to a functional issue with the code. Code that simply needs to be formatted will be formatted,
+and then the commit will follow.
+
+
 GitHub Bots
--------------
+-----------
 
 Buildtest has a few bots to do various operations that are described below.
 
