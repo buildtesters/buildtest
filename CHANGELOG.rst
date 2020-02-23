@@ -1,11 +1,12 @@
 CHANGELOG
 =================
 
-v0.7.7 (Feb xxx, 2020)
+v0.8.0 (Feb xxx, 2020)
 -----------------------
 
  - removing bash script and sourcing in favor of Python module install
-
+ - build test "root" replaced with user home ``$HOME/.buildtest``
+ - addition of buildtest get command to clone repository into toolkit/suite
 
 v0.7.6 (Feb 4th, 2020)
 -----------------------

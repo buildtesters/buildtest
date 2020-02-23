@@ -44,14 +44,10 @@ Or you may switch to the **devel** branch if you already cloned it::
 Buildtest Dependencies
 -----------------------
 
-Next, we need to install buildtest dependencies from ``requirements.txt`` by running ::
-
-    $ pip install -r requirements.txt
-
-
-If you plan to build documentation or do development, you can do ::
+Next, we need to install buildtest dependencies from ``docs/requirements.txt`` by running ::
 
     $ pip install -r docs/requirements.txt
+
 
 You may want to create an isolated python environment of choice depending on your preference you can use any of the following
 

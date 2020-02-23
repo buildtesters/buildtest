@@ -21,7 +21,6 @@ BUILDTEST_ROOT = os.path.join(userhome, ".buildtest")
 
 # json file used by buildtest to write build meta-data
 BUILDTEST_BUILD_LOGFILE = os.path.join(BUILDTEST_ROOT, "var", "build.json")
-BUILDTEST_SYSTEM = os.path.join(BUILDTEST_ROOT, "var", "system.json")
 
 # dictionary used for storing status of builds
 BUILDTEST_BUILD_HISTORY = {}
