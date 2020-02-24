@@ -14,10 +14,10 @@ program:
 
 
 ________________________________________________________________________________
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/vecAdd.c.yml
+Loading Test Configuration (YAML) file: /u/users/ssi29/.buildtest/site/tutorials/openacc/vecAdd.c.yml
 Checking schema of YAML file
 Schema Check Passed
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
+Source Directory: /u/users/ssi29/.buildtest/site/tutorials/openacc/src
 Source File: vecAdd.c
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
@@ -34,7 +34,7 @@ CFLAGS: -fopenacc
     ],
     "metavars": [
         "TESTDIR=/tmp/ssi29/buildtest/build_2",
-        "SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src",
+        "SRCDIR=/u/users/ssi29/.buildtest/site/tutorials/openacc/src",
         "SRCFILE=$SRCDIR/vecAdd.c",
         "CC=gcc",
         "CFLAGS=\"-fopenacc\"",
@@ -58,7 +58,7 @@ ________________________________________________________________________________
 module purge
 module restore GCC
 TESTDIR=/tmp/ssi29/buildtest/build_2
-SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openacc/src
+SRCDIR=/u/users/ssi29/.buildtest/site/tutorials/openacc/src
 SRCFILE=$SRCDIR/vecAdd.c
 CC=gcc
 CFLAGS="-fopenacc"

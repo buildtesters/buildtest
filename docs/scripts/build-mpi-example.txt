@@ -1,10 +1,10 @@
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/mpi/hello.c.yml
+Loading Test Configuration (YAML) file: /u/users/ssi29/.buildtest/tutorials/mpi/hello.c.yml
 Checking schema of YAML file
 Schema Check Passed
 Scheduler: local
-Parent Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/mpi
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/mpi/src
-Source File: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/mpi/src/hello.c
+Parent Directory: /u/users/ssi29/.buildtest/tutorials/mpi
+Source Directory: /u/users/ssi29/.buildtest/tutorials/mpi/src
+Source File: /u/users/ssi29/.buildtest/tutorials/mpi/src/hello.c
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
 CC: mpicc
@@ -32,8 +32,8 @@ module load libpciaccess/0.14-GCCcore-6.4.0
 module load hwloc/1.11.8-GCCcore-6.4.0
 module load OpenMPI/2.1.2-GCC-6.4.0-2.28
 TESTDIR=/tmp/ssi29/buildtest/tests/Intel/Haswell/x86_64/rhel/7.6/build_14
-SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/mpi/src
-SRCFILE=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/mpi/src/hello.c
+SRCDIR=/u/users/ssi29/.buildtest/tutorials/mpi/src
+SRCFILE=/u/users/ssi29/.buildtest/tutorials/mpi/src/hello.c
 CC=mpicc
 CFLAGS="-Wall -g"
 EXECUTABLE=hello.c.yml.0x9d8a2ea8.exe

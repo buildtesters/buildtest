@@ -9,13 +9,15 @@ MPI Example
 .. Note:: This is an experimental feature
 
 buildtest supports building MPI test. To demonstrate see the following test configuration.
-For the example below, ``${BUILDTEST_ROOT}`` refers to where you cloned the build test
-repository. There is a folder of examples provided here under ``toolkit/suite/tutorial``.
+For the example below, you should clone the tutorials repository::
 
-.. command-output:: cat ${BUILDTEST_ROOT}/toolkit/suite/tutorial/mpi/hello.c.yml
-   :shell:
+    git clone https://github.com/HPC-buildtest/tutorials
+    
 
-To enable mpi test, you must specify ``mpi: True`` in the test configuration. The ``mpi`` key is not
+And then we'll be interacting with the files under "mpi." Take a look at the file
+``mpi/hello.c.yml`` in the `tutorials <https://github.com/HPC-buildtest/tutorials/blob/master/mpi/hello.c.yml>`_ repository.
+
+To enable an mpi test, you must specify ``mpi: True`` in the test configuration. The ``mpi`` key is not
 a required key, if it is omitted from the test configuration then buildtest will assume mpi is disabled.
 By setting ``mpi: True`` enables the **mpi** key in program section.
 
@@ -40,10 +42,8 @@ OpenACC Example
 
 Building an OpenACC code is pretty simple. If you have a GNU compiler that supports OpenACC, you will need to use
 the ``-fopenacc`` flag. Shown below we have a test configuration to build the program **vecAdd.c** which is a
-vector Addition calcuation using OpenACC.
-
-.. command-output:: cat ${BUILDTEST_ROOT}/toolkit/suite/tutorial/openacc/vecAdd.c.yml
-   :shell:
+vector Addition calcuation using OpenACC. Using the same tutorials repository, take a look at
+`openacc/vecAdd.c.yml <https://github.com/HPC-buildtest/tutorials/blob/master/openacc/vecAdd.c.yml>`_.
 
 The source file **vecAdd.c** calls the math library (**#include <math.h>**) which needs to be linked at compile time
 which can be passed using ``ldflags: -lm``. The ``ldflags`` key will set the variable **$LDFLAGS** in the test script
@@ -76,10 +76,8 @@ Intel Example
 
 In order to build via intel compiler we can set ``compiler:intel`` in the test configuration. Also you must
 load the intel module or have it set in your $PATH somehow before you run the build. In this build we perform
-a hello world example in Fortran using Intel compiler.
-
-.. command-output:: cat ${BUILDTEST_ROOT}/toolkit/suite/tutorial/compilers/hello.f.yml
-   :shell:
+a hello world example in Fortran using Intel compiler. Take a look at 
+`compilers/hello.f.yml <https://github.com/HPC-buildtest/tutorials/blob/master/compilers/hello.f.yml>`_.
 
 In order to compiler Fortran code we must use ``ifort`` which is set as ``$FC=ifort``. Flags to fortran compiler are
 passed via ``FFLAGS`` which is set as a shell variable and referenced in the build step.
@@ -90,11 +88,8 @@ PGI Example
 --------------
 
 buildtest supports PGI compiler, which can be done by setting ``compiler:pgi`` in test configuration.
-Shown below is a **vecAdd** OpenACC example compiled with PGI compiler.
-
-
-.. command-output:: cat ${BUILDTEST_ROOT}/toolkit/suite/tutorial/openacc/vecAdd.c_pgi.yml
-   :shell:
+Take a look at the `openacc/vecAdd.c_pgi.yml <https://github.com/HPC-buildtest/tutorials/blob/master/openmp/openacc/vecAdd.c_pgi.yml>`_ 
+file in the tutorials repository for a **vecAdd** OpenACC example compiled with PGI compiler.
 
 For this build we specify ``-acc`` in order to build the code for the accelerator device. In addition this code
 requires linking with math library so ``ldflags: -lm`` will set ``LDFLAGS="-lm"`` in the script and $LDFLAGS will be
@@ -109,11 +104,9 @@ Clang Example
 --------------
 
 buildtest support Clang compiler, this can be set when ``compiler:clang`` is set in test configuration.
-
 In this test example, we are building a OpenMP hello world example with Clang compiler using 2 threads.
-
-.. command-output:: cat ${BUILDTEST_ROOT}/toolkit/suite/tutorial/openmp/clang_hello.c.yml
-   :shell:
+Take a look at `openmp/clang_hello.c.yml <https://github.com/HPC-buildtest/tutorials/blob/master/openmp/clang_hello.c.yml>`_. 
+in the tutorials repository.
 
 When we build this test, buildtest will detect Clang language detection phase and set ``$CC=clang`` in
 the test script. The ``OMP_NUM_THREADS`` defines how many OpenMP threads to use when running the code. Also

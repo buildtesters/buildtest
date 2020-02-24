@@ -4,7 +4,9 @@ Managing Test Configuration
 ===========================
 
 buildtest comes with many test configuration in markup language called YAML. These files have a **.yml** extension which
-can be found in the repository in the top-level directory named **toolkit**.
+can be found in the repository in the top-level directory named **site**, or as separate repositories
+to clone on from the HPC-buildtest organization on GitHub (or your own site). For example,
+a set of tutorial recipes can be found at `HPC-buildtest/tutorials <https://github.com/HPC-buildtest/tutorials/>`_
 
 buildtest has option to list, view and edit test configuration that can be accessed using ``buildtest testconfigs`` command.
 

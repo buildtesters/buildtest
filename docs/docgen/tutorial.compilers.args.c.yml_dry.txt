@@ -1,8 +1,8 @@
 $ buildtest build -c tutorial/compilers/args.c.yml --dry
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/args.c.yml
+Loading Test Configuration (YAML) file: /u/users/ssi29/.buildtest/site/tutorials/compilers/args.c.yml
 Checking schema of YAML file
 Schema Check Passed
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+Source Directory: /u/users/ssi29/.buildtest/site/tutorials/compilers/src
 Source File: args.c
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
@@ -13,7 +13,7 @@ Test:/tmp/ssi29/buildtest/build_2/args.c.yml.0x7db46543.sh
 --------------------------------------------------------------------------------
 #!/bin/bash
 TESTDIR=/tmp/ssi29/buildtest/build_2
-SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+SRCDIR=/u/users/ssi29/.buildtest/site/tutorials/compilers/src
 SRCFILE=$SRCDIR/args.c
 CC=gcc
 CFLAGS="-Wall -g"
