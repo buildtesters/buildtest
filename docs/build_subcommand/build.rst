@@ -148,9 +148,7 @@ The MPI launcher and launcher options can be specified in the test configuration
 Hello World C
 ----------------
 
-Let's take a look at C example that will be compiled with gcc
-
-.. program-output:: cat ../toolkit/suite/tutorial/compilers/args.c.yml
+Let's take a look at C example that will be compiled with gcc in the `tutorials <https://github.com/HPC-buildtest/tutorials/blob/master/compilers/args.c.yml>`_ repository.
 
 The first line ``testtype: singlesource`` is to instruct buildtest this is a singlesource compilation. Currently, buildtest
 only supports this single source compilation, but in future this can be expanded to different types.

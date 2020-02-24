@@ -1,9 +1,9 @@
 $ buildtest build -c tutorial/compilers/args.c.yml
 creating directory: /tmp/ssi29/buildtest
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/args.c.yml
+Loading Test Configuration (YAML) file: /u/users/ssi29/.buildtest/site/tutorials/compilers/args.c.yml
 Checking schema of YAML file
 Schema Check Passed
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+Source Directory: /u/users/ssi29/.buildtest/site/tutorials/compilers/src
 Source File: args.c
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c

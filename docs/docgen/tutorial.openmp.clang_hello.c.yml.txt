@@ -1,8 +1,8 @@
 $ buildtest build -c tutorial/openmp/clang_hello.c.yml -co Clang --dry
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openmp/clang_hello.c.yml
+Loading Test Configuration (YAML) file: /u/users/ssi29/.buildtest/site/tutorials/openmp/clang_hello.c.yml
 Checking schema of YAML file
 Schema Check Passed
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openmp/src
+Source Directory: /u/users/ssi29/.buildtest/site/tutorials/openmp/src
 Source File: omp_hello.c
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: c
@@ -14,7 +14,7 @@ Test:/tmp/ssi29/buildtest/build_3/clang_hello.c.yml.0xf629c8e4.sh
 module purge
 module restore Clang
 TESTDIR=/tmp/ssi29/buildtest/build_3
-SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/openmp/src
+SRCDIR=/u/users/ssi29/.buildtest/site/tutorials/openmp/src
 SRCFILE=$SRCDIR/omp_hello.c
 CC=clang
 CFLAGS="-fopenmp"

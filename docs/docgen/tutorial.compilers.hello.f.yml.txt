@@ -1,8 +1,8 @@
 $ buildtest build -c tutorial/compilers/hello.f.yml -co intel --dry
-Loading Test Configuration (YAML) file: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/hello.f.yml
+Loading Test Configuration (YAML) file: /u/users/ssi29/.buildtest/site/tutorials/compilers/hello.f.yml
 Checking schema of YAML file
 Schema Check Passed
-Source Directory: /u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+Source Directory: /u/users/ssi29/.buildtest/site/tutorials/compilers/src
 Source File: hello.f90
 Detecting Programming Language, Compiler and MPI wrapper
 Programming Language: fortran
@@ -14,7 +14,7 @@ Test:/tmp/ssi29/buildtest/build_2/hello.f.yml.0x3f8eafb5.sh
 module purge
 module restore intel
 TESTDIR=/tmp/ssi29/buildtest/build_2
-SRCDIR=/u/users/ssi29/gpfs/buildtest-framework/toolkit/suite/tutorial/compilers/src
+SRCDIR=/u/users/ssi29/.buildtest/site/tutorials/compilers/src
 SRCFILE=$SRCDIR/hello.f90
 FC=ifort
 FFLAGS="-O2"

@@ -4,6 +4,7 @@ CHANGELOG
 v0.8.0 (Feb xxx, 2020)
 -----------------------
 
+ - replace toolkit/suite with site in code and documentation examples
  - removing bash script and sourcing in favor of Python module install
  - build test "root" replaced with user home ``$HOME/.buildtest``
  - addition of buildtest get command to clone repository into toolkit/suite

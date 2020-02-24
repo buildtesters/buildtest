@@ -59,7 +59,7 @@ def init():
     # Create subfolders for var and root
     create_dir(os.path.join(BUILDTEST_ROOT, "var"))
     create_dir(os.path.join(BUILDTEST_ROOT, "root"))
-    create_dir(os.path.join(BUILDTEST_ROOT, "toolkit", "suite"))
+    create_dir(os.path.join(BUILDTEST_ROOT, "site"))
 
     # Create config files, module files, and log file
     create_config_files()
