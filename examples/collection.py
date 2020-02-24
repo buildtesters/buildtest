@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.getenv("BUILDTEST_ROOT"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from buildtest.modules.util import get_all_collections, ModuleCollection
 
@@ -17,6 +17,10 @@ for i in collections:
         print(f"Failed to load collection: {i} with exit status: {ec}")
     else:
         print(f"Successfully loaded collection: {i}")
+
+# test Python collection with debug enabled
+a = ModuleCollection("Python", debug=True)
+a.test_collection()
 
 # Type Error when passing a collection name not of string type
 ModuleCollection(1)

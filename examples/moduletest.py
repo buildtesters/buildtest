@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.getenv("BUILDTEST_ROOT"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from buildtest.modules.util import Module
 
@@ -31,3 +31,9 @@ print(c.get_command())
 # force purge modules
 d = Module(mod_names, purge=True, force=True)
 print(d.get_command())
+
+e = Module(["Anaconda3/5.3.0", "M4/1.4.17"], debug=True)
+e.test_modules()
+
+f = Module("Anaconda3/5.3.0 M4/1.4.17", debug=True)
+f.test_modules()

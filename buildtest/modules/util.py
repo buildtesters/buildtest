@@ -20,12 +20,16 @@ def get_all_collections():
 class ModuleCollection:
     """Class declaration of ModuleCollection."""
 
-    def __init__(self, collection):
+    def __init__(self, collection, debug=True):
         """Initializer method of ModuleCollection class.
 
         :param collection: name of module collection
+        :param debug: debug mode for troubleshooting
+
         :type collection: str
+        :type debug: bool
         """
+        self.debug = debug
 
         # raise TypeError exception if collection is not a string type since that is required
         # when working with module collection
@@ -44,7 +48,14 @@ class ModuleCollection:
 
         cmd = BuildTestCommand()
         cmd.execute(self.module_cmd)
-        return cmd.returnCode()
+        ret = cmd.returnCode()
+
+        # print executed command for debugging
+        if self.debug:
+            print(f"[DEBUG] Executing module command: {self.module_cmd}")
+            print(f"[DEBUG] Return Code: {ret}")
+
+        return ret
 
     def get_command(self):
         """ Get the module command used to restore a collection
@@ -59,24 +70,26 @@ class ModuleCollection:
 class Module:
     """Class declaration for Module class"""
 
-    def __init__(self, modules, purge=True, force=False):
+    def __init__(self, modules, purge=True, force=False, debug=False):
         """Initialize method for Module class.
 
         :param modules: list of modules
         :param purge: boolean to control whether to purge modules before loading
         :param force: boolean to control whether to force purge modules before loading
+        :param debug: debug mode for troubleshooting
 
         :type modules: list
         :type purge: bool
         :type force: bool
+        :type debug: bool
         """
-
-        # raise TypeError exception if collection is not a string type since that is required
-        # when working with module collection
-        if not isinstance(modules, list):
-            raise TypeError(f"Type Error: {collection} is not of type list")
-
+        self.debug = debug
         self.modules = modules
+
+        # convert input to list if not specified already.
+        if not isinstance(modules, list):
+            self.modules = [modules]
+
         # building actual command. Note that we are doing command chaining when loading modules
         self.module_load_cmd = [f"module load {x} && " for x in self.modules]
 
@@ -108,9 +121,18 @@ class Module:
         :return: return code of ``module load`` command
         :rtype: int
         """
+        cmd_executed = self.get_command()
+
         cmd = BuildTestCommand()
-        cmd.execute(self.module_load_cmd)
-        return cmd.returnCode()
+        cmd.execute(cmd_executed)
+        ret = cmd.returnCode()
+
+        # print executed command for debugging
+        if self.debug:
+            print(f"[DEBUG] Executing module command: {cmd_executed}")
+            print(f"[DEBUG] Return Code: {ret}")
+
+        return ret
 
     def save(self, collection="default"):
         """Save active modules into a module collection.
@@ -130,6 +152,12 @@ class Module:
 
         # For some odd reason, the output of module save gets passed to STDERR stream instead of STDOUT.
         out = cmd.get_error()
+        ret = cmd.returnCode()
+
+        # print executed command for debugging
+        if self.debug:
+            print(f"[DEBUG] Executing module command: {module_save_cmd}")
+            print(f"[DEBUG] Return Code: {ret}")
 
         print(f"Saving modules {self.modules} to module collection name: {collection}")
         print(out)
@@ -149,8 +177,14 @@ class Module:
         module_describe_cmd = f"module describe {collection}"
         cmd = BuildTestCommand()
         cmd.execute(module_describe_cmd)
+        ret = cmd.returnCode()
 
         # For some odd reason, the output of module save gets passed to STDERR stream instead of STDOUT.
         out = cmd.get_error()
+
+        # print executed command for debugging
+        if self.debug:
+            print(f"[DEBUG] Executing module command: {module_describe_cmd}")
+            print(f"[DEBUG] Return Code: {ret}")
 
         print(out)
