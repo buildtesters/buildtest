@@ -1,10 +1,5 @@
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from buildtest.modules.spider import Spider
-from buildtest.modules.util import Module
+from buildtest.spider import Spider
+from buildtest.module import Module
 
 a = Spider()
 names = a.get_unique_software()

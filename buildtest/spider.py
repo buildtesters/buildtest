@@ -5,7 +5,6 @@ import subprocess
 from buildtest.tools.defaults import BUILDTEST_SPIDER_FILE, BUILDTEST_CONFIG_FILE
 from buildtest.tools.config import load_configuration
 
-
 class Spider:
     """Class declaration of Spider class"""
 
@@ -19,6 +18,10 @@ class Spider:
         #  if user specifies a tree, then run spider command otherwise read from configuration file.
         if tree:
             self.tree = tree
+
+            if not os.getenv('LMOD_DIR'):
+                raise SystemError("Cannot find environment variable LMOD_DIR. Please fix your Lmod configuration!")
+
             spider_cmd = f"{os.getenv('LMOD_DIR')}/spider -o spider-json {self.tree}"
 
             out = subprocess.check_output(spider_cmd, shell=True).decode("utf-8")
@@ -29,7 +32,7 @@ class Spider:
                 self.spider_content = json.load(fd)
 
             content = load_configuration(BUILDTEST_CONFIG_FILE)
-            self.tree = content["BUILDTEST_MODULEPATH"]
+            self.tree = content.get("BUILDTEST_MODULEPATH",[])
 
     def get_trees(self):
         """" Return module trees used in spider command

@@ -1,9 +1,4 @@
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from buildtest.modules.util import get_all_collections, ModuleCollection
+from buildtest.module import get_all_collections, ModuleCollection
 
 collections = get_all_collections()
 
