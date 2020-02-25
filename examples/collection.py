@@ -1,12 +1,9 @@
-import os
-import sys
-
-sys.path.insert(0, os.getenv("BUILDTEST_ROOT"))
-
-from buildtest.modules.util import get_all_collections, ModuleCollection
+from buildtest.module import get_all_collections, ModuleCollection
 
 collections = get_all_collections()
-collections += ["invalid_collection"]
+
+# adding a collection name "invalid_collection" that is bound to fail
+collections = collections + ["invalid_collection"]
 for i in collections:
     collection_object = ModuleCollection(i)
     print(collection_object.get_command())
@@ -15,3 +12,10 @@ for i in collections:
         print(f"Failed to load collection: {i} with exit status: {ec}")
     else:
         print(f"Successfully loaded collection: {i}")
+
+# test Python collection with debug enabled
+a = ModuleCollection("Python", debug=True)
+a.test_collection()
+
+# Type Error when passing a collection name not of string type
+ModuleCollection(1)
