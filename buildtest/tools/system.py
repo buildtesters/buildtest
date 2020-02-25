@@ -46,24 +46,6 @@ class BuildTestCommand:
         self.err = self.err.decode("utf-8")
         return (self.out, self.err)
 
-    def which(self, cmd):
-        """Run a ``which`` against the command.
-
-        :param cmd: shell command to execute
-        :type cmd: str, required
-        :return: Output and Error from shell command
-        :rtype: two str objects
-        """
-
-        which_cmd = "which " + cmd
-        self.ret = subprocess.Popen(
-            which_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-        (self.out, self.err) = self.ret.communicate()
-        self.out = self.out.decode("utf-8")
-        self.err = self.err.decode("utf-8")
-        return (self.out, self.err)
-
     def returnCode(self):
         """Returns the return code from shell command
 

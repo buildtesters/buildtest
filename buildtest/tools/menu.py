@@ -95,9 +95,6 @@ class BuildTestParser:
             version=f"""buildtest version {config_opts["BUILDTEST_VERSION"]}""",
         )
 
-    def get_parser(self):
-        return self.parser
-
     def parse_options(self):
         """This method parses the argument from ArgumentParser class and returns as a dictionary. Also it
         redirects sub-commands to appropriate methods.
