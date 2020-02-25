@@ -73,7 +73,7 @@ The above actions check formatting, but are conservative and do not do commits t
 To support an easier workflow, we have provided a git hook that you can install locally to run black directly before each
 commit. To install the hook, simply copy the file to the ``.git/hooks`` folder as follows::
 
-    cp .github/hooks/pre-commit .git.hooks
+    cp .github/hooks/pre-commit .git/hooks/
 
 
 This hook will exit on error either if you don't have black installed::
