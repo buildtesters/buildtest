@@ -167,8 +167,7 @@ def load_configuration(config_path=None):
             for tree in os.getenv("MODULEPATH", "").split(":"):
                 if os.path.isdir(tree):
                     tree_list.append(tree)
-                else:
-                    print(f"Skipping module tree {tree} because path does not exist")
+
             config_opts["BUILDTEST_MODULEPATH"] = tree_list
 
     return config_opts
