@@ -117,4 +117,4 @@ For example, either of the two would work in the case of this test::
     $ buildtest build -c hello.sh.yml
 
 
-STOPPED HERE: compiler is required and we need a recipe type that doesn't require it.
+TODO: compiler is required for singlesource and we need a recipe type that doesn't require it.
