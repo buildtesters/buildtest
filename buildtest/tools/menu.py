@@ -28,16 +28,8 @@ from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
 
 from buildtest.tools.show import func_show_subcmd, show_schema_layout
 from buildtest.tools.buildsystem.status import show_status_report
-
 from buildtest.tools.system import get_module_collection
-from buildtest.tools.testconfigs import (
-    func_testconfigs_show,
-    testconfig_choices,
-    func_testconfigs_view,
-    func_testconfigs_edit,
-)
 
-test_config_choice = testconfig_choices()
 module_collection = get_module_collection()
 collection_len = list(range(get_collection_length()))
 parent_choices = get_all_parents()
@@ -66,7 +58,6 @@ class BuildTestParser:
             "build": "Options for building test scripts",
             "module": "Buildtest Module Utilities",
             "show": "Options for displaying buildtest configuration",
-            "testconfigs": "Options for list, view, and edit test configuration",
             "config": "Buildtest Configuration Menu",
         }
 
@@ -76,7 +67,6 @@ class BuildTestParser:
         self.module_menu()
         self.config_menu()
         self.show_menu()
-        self.testconfigs_menu()
 
     def main_menu(self):
         """This method adds argument to ArgumentParser to main menu of buildtest"""
@@ -134,7 +124,6 @@ class BuildTestParser:
             "-c",
             "--config",
             help="Specify test configuration",
-            choices=test_config_choice,
             metavar="TEST CONFIGURATION",
         )
 
@@ -367,40 +356,3 @@ class BuildTestParser:
         parser_schema = subparsers_show.add_parser("schema", help="Display YAML schema")
         parser_schema.set_defaults(func=show_schema_layout)
         parser_show.set_defaults(func=func_show_subcmd)
-
-    def testconfigs_menu(self):
-        """This method adds argparse argument for ``buildtest testconfigs``"""
-
-        test_config_choice = testconfig_choices()
-
-        parser_testconfigs = self.subparsers.add_parser("testconfigs")
-
-        # -------------------------------- buildtest testconfigs options ----------------------
-        subparsers_testconfigs = parser_testconfigs.add_subparsers(
-            description="Test configuration options"
-        )
-        parser_testconfigs_list = subparsers_testconfigs.add_parser(
-            "list", help="List all test configuration"
-        )
-        parser_testconfigs_view = subparsers_testconfigs.add_parser(
-            "view", help="View a test configuration"
-        )
-        parser_testconfigs_view.add_argument(
-            "name",
-            help="Select name of test configuration",
-            choices=test_config_choice,
-            metavar="Test Configuration",
-        )
-        parser_testconfigs_edit = subparsers_testconfigs.add_parser(
-            "edit", help="Edit a test configuration "
-        )
-        parser_testconfigs_edit.add_argument(
-            "name",
-            help="Select name of test configuration",
-            choices=test_config_choice,
-            metavar="Test Configuration",
-        )
-
-        parser_testconfigs_list.set_defaults(func=func_testconfigs_show)
-        parser_testconfigs_view.set_defaults(func=func_testconfigs_view)
-        parser_testconfigs_edit.set_defaults(func=func_testconfigs_edit)

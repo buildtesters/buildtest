@@ -31,8 +31,6 @@ This documentation was last rebuild on |today| and is intended for version |vers
    introspection.rst
    spider.rst
    module_operation.rst
-   managing_testconfigs.rst
-
 
 .. toctree::
    :maxdepth: 2

@@ -25,7 +25,6 @@ Submodules
    buildtest.tools.show
    buildtest.tools.slurm
    buildtest.tools.system
-   buildtest.tools.testconfigs
    buildtest.tools.writer
 
 Module contents

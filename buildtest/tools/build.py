@@ -72,9 +72,17 @@ def func_build_subcmd(args):
     print("{:_<80}".format(""))
     if args.config:
 
-        file = os.path.join(TESTCONFIG_ROOT, args.config)
+        # First try, the user can provide a full path
+        config_file = args.config
 
-        singlesource_test = SingleSource(file, args.collection, args.module_collection)
+        # Second try, the path can be relative to the TESTCONFIG_ROOT
+        if not os.path.exists(config_file):
+            config_file = os.path.join(TESTCONFIG_ROOT, config)
+
+        if not os.path.exists(config_file):
+            sys.exit("Please provide an absolute path, or path relative to %s" % TESTCONFIG_ROOT)
+
+        singlesource_test = SingleSource(config_file, args.collection, args.module_collection)
         content = singlesource_test.build_test_content()
 
         if args.dry:

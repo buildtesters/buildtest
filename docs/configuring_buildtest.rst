@@ -136,9 +136,8 @@ in buildtest for instance when you want to edit files such as test configuration
 buildtest configuration::
 
     buildtest config edit
-    buildtest testconfigs edit <test-configuration>
 
-This will open the configuration in editor. The default value for **EDITOR** is
+This will open the configuration file in an editor. The default value for **EDITOR** is
 ``vim`` but it can be changed to your editor of choice.
 
 Currently, the following editors are available

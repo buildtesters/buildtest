@@ -76,13 +76,6 @@ Shown below is an example build with verbose level 1
 
 .. program-output:: cat docgen/tutorial.compilers.args.c.yml_v.txt
 
-For a complete list of test configuration and names that can be passed to ``buildtest build -c <testconfig>`` run the
-following command::
-
-    $ buildtest testconfigs list
-
-See :ref:`Managing_TestConfigs` for details regarding test configuration.
-
 .. _test_structure:
 
 Test Structure
