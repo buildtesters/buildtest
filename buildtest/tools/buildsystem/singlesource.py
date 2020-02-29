@@ -154,11 +154,11 @@ def get_yaml_schema():
 class BuildTestBuilder:
     """Class responsible for parsing the test configuration."""
 
-    def __init__(self, file, compiler, mpi=False):
+    def __init__(self, file, compiler=None, mpi=False):
         """Class constructor for BuildTestBuilder"""
 
         self.ext = os.path.splitext(file)[1]
-        self.compiler = compiler
+        self.compiler = compiler or None
         self.mpi = mpi
         self.cc = None
         self.cxx = None
@@ -317,7 +317,7 @@ class BuildTestBuilder:
         :param language: Language type
         :type language: str, required
         :param compiler: Compiler Type
-        :type compiler: str, required
+        :type compiler: str
 
         :return: return compiler wrapper
         :rtype: str
@@ -339,7 +339,6 @@ class BuildTestBuilder:
 
 
 class SingleSource(BuildTestBuilder):
-
     def __init__(self, config_file, lmod_collection=None, buildtest_collection=None):
         """Class constructor for SingleSource"""
         self.lmod_collection = lmod_collection
@@ -396,14 +395,13 @@ class SingleSource(BuildTestBuilder):
         # Generate a common hex to identify and link exec and script file
         randhex = hex(random.getrandbits(32))
 
-        self.execname = "%s.%s.exec" % (
-            os.path.basename(config_file),
-            randhex,
-        )
+        self.execname = "%s.%s.exec" % (os.path.basename(config_file), randhex,)
 
         # invoke setup method from base class to detect language, compiler, and mpi wrapper
         self.testscript_content["testpath"] = "%s.%s.sh" % (
-            os.path.join(config_opts["build"]["testdir"], os.path.basename(config_file)),
+            os.path.join(
+                config_opts["build"]["testdir"], os.path.basename(config_file)
+            ),
             randhex,
         )
 

@@ -16,7 +16,7 @@ def write_test(content):
     logger.info(f"Opening Test File for Writing: {content['testpath']}")
 
     # This test path doesn't have a build_x folder, is this correct?
-    testpath = os.path.expandvars(content['testpath'])
+    testpath = os.path.expandvars(content["testpath"])
     testdir = os.path.dirname(testpath)
 
     # Create test directory if doesn't exist
