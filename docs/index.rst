@@ -19,7 +19,7 @@ This documentation was last rebuild on |today| and is intended for version |vers
 
    what_is_buildtest.rst
    feature_overview.rst
-
+   getting_started.rst
 
 .. toctree::
    :maxdepth: 2

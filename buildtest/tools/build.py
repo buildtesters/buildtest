@@ -80,9 +80,15 @@ def func_build_subcmd(args):
             config_file = os.path.join(TESTCONFIG_ROOT, config)
 
         if not os.path.exists(config_file):
-            sys.exit("Please provide an absolute path, or path relative to %s" % TESTCONFIG_ROOT)
+            sys.exit(
+                "Please provide an absolute path, or path relative to %s"
+                % TESTCONFIG_ROOT
+            )
 
-        singlesource_test = SingleSource(config_file, args.collection, args.module_collection)
+        config_file = os.path.abspath(config_file)
+        singlesource_test = SingleSource(
+            config_file, args.collection, args.module_collection
+        )
         content = singlesource_test.build_test_content()
 
         if args.dry:
@@ -101,23 +107,23 @@ def func_build_subcmd(args):
                 "[NUMBER OF TEST]", BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"]
             )
         )
-        BUILDTEST_BUILD_HISTORY[build_id]["CMD"] = cmd_executed
 
+        BUILDTEST_BUILD_HISTORY[build_id]["CMD"] = cmd_executed
         BUILDTEST_BUILD_HISTORY[build_id]["BUILD_TIME"] = BUILD_TIME
         BUILDTEST_BUILD_HISTORY[build_id]["LOGFILE"] = LOGFILE
 
         logger.info(f"Reading Build Log File: {BUILDTEST_BUILD_LOGFILE}")
 
-        fd = open(BUILDTEST_BUILD_LOGFILE, "r")
-        build_dict = json.load(fd)
-        fd.close()
+        with open(BUILDTEST_BUILD_LOGFILE, "r") as fd:
+            build_dict = json.load(fd)
+
         build_dict["build"][build_id] = BUILDTEST_BUILD_HISTORY[build_id]
         logger.debug("Adding latest build to dictionary")
         logger.debug(f"{BUILDTEST_BUILD_HISTORY[build_id]}")
         logger.info(f"Updating Build Log File: {BUILDTEST_BUILD_LOGFILE}")
-        fd = open(BUILDTEST_BUILD_LOGFILE, "w")
-        json.dump(build_dict, fd, indent=4)
-        fd.close()
+
+        with open(BUILDTEST_BUILD_LOGFILE, "w") as fd:
+            json.dump(build_dict, fd, indent=4)
 
         run_tests(build_id)
 
@@ -149,28 +155,29 @@ def run_tests(build_id):
     runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
     run_output_file = os.path.join(test_dir, "run", runfile)
     create_dir(os.path.join(test_dir, "run"))
-    fd = open(run_output_file, "w")
+
     count_test = len(tests)
     passed_test = 0
     failed_test = 0
 
-    for test in tests:
-        ret = subprocess.Popen(
-            test, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-        )
-        output = ret.communicate()[0].decode("utf-8")
+    with open(run_output_file, "w") as fd:
+        for test in tests:
+            ret = subprocess.Popen(
+                test, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+            )
+            output = ret.communicate()[0].decode("utf-8")
 
-        ret_code = ret.returncode
-        fd.write("Test Name:" + test + "\n")
-        fd.write("Return Code: " + str(ret_code) + "\n")
-        fd.write("---------- START OF TEST OUTPUT ---------------- \n")
-        fd.write(output)
-        fd.write("------------ END OF TEST OUTPUT ---------------- \n")
+            ret_code = ret.returncode
+            fd.write("Test Name:" + test + "\n")
+            fd.write("Return Code: " + str(ret_code) + "\n")
+            fd.write("---------- START OF TEST OUTPUT ---------------- \n")
+            fd.write(output)
+            fd.write("------------ END OF TEST OUTPUT ---------------- \n")
 
-        if ret_code == 0:
-            passed_test += 1
-        else:
-            failed_test += 1
+            if ret_code == 0:
+                passed_test += 1
+            else:
+                failed_test += 1
 
     print(f"Running All Tests from Test Directory: {test_dir}")
     print
@@ -183,4 +190,3 @@ def run_tests(build_id):
     print
     print
     print("Writing results to " + run_output_file)
-    fd.close()

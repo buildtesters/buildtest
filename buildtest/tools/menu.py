@@ -165,6 +165,13 @@ class BuildTestParser:
             "repo", help="specify github.com or other repository to clone."
         )
 
+        parser_get.add_argument(
+            "-b",
+            "--branch",
+            help="Clone a particular branch (defaults to master)",
+            default="master",
+        )
+
         parser_get.set_defaults(func=func_get_subcmd)
 
     def module_menu(self):
