@@ -395,7 +395,7 @@ class SingleSource(BuildTestBuilder):
         # Generate a common hex to identify and link exec and script file
         randhex = hex(random.getrandbits(32))
 
-        self.execname = "%s.%s.exec" % (os.path.basename(config_file), randhex,)
+        self.execname = "%s.%s.exec" % (os.path.basename(config_file), randhex)
 
         # invoke setup method from base class to detect language, compiler, and mpi wrapper
         self.testscript_content["testpath"] = "%s.%s.sh" % (

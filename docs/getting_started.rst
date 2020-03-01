@@ -117,4 +117,136 @@ For example, either of the two would work in the case of this test::
     $ buildtest build -c hello.sh.yml
 
 
-TODO: compiler is required for singlesource and we need a recipe type that doesn't require it.
+**Note** This test is currently expected to work when the recipe types are updated.
+
+Run a Compiler Configuration
+----------------------------
+
+The example above is relatively simple because we don't actually build anything.
+However, buildtest is strongest in it's ability to model compilers and settings.
+For this next example, let's run a configuration intended to test a fortran compiler.
+Since we don't have it on the path, let's load "ifort" with a module::
+
+    $ module load ifort
+
+
+Now let's take at the recipe in the tutorials folder under ``compilers/hello.f.yml ``::
+
+
+	testtype: singlesource
+	description: Hello World Fortran example using Intel compiler
+	scheduler: local
+
+	program:
+	  source: hello.f90
+	  compiler: intel
+	  fflags: -O2
+
+	maintainer:
+	- shahzeb siddiqui shahzebmsiddiqui@gmail.com
+
+
+And here is how to run the build, and see the output on the screen::
+
+        $ buildtest build -c compilers/hello.f.yml 
+	$ buildtest build -c hello.f.yml 
+	________________________________________________________________________________
+		                     build time: 03/01/2020 10:24:04
+		                        command: buildtest build -c compilers/hello.f.yml
+		        test configuration root: /home/users/vsochat/.buildtest/site
+		             configuration file: hello.f.yml
+		                      buildpath: /home/users/vsochat/.buildtest/testdir/build_7
+		                        logpath: /home/users/vsochat/.buildtest/testdir/build_7/log/buildtest_10_24_01_03_2020.log
+	________________________________________________________________________________
+
+
+
+	STAGE                                    VALUE
+	________________________________________________________________________________
+	[LOAD CONFIG]                            PASSED
+	[SCHEMA CHECK]                           PASSED
+	[PROGRAM LANGUAGE]                       fortran
+	[COMPILER NAME]                          intel
+	[WRITING TEST]                           PASSED
+	[NUMBER OF TEST]                         1
+	Running All Tests from Test Directory: /home/users/vsochat/.buildtest/testdir/build_7
+	==============================================================
+		                 Test summary                         
+	Executed 1 tests
+
+We can see the input paths and metadata for the build, along with the various steps (and if they
+were successful) at the bottom. Note that the outputs for our build are in a "build_7" folder
+under our buildest home testdir, we'll be looking at that next.
+
+
+Inspect Results
+---------------
+
+Aside from the terminal print above, we might want to look at results, especially if the
+build is not successful. Buildtest by default creates a new build_x directory under
+the buildtest home testdir (defaults to ``$HOME/.buildtest/testdir``) that contains
+a script generated to run the build, a folder for logs, and a folder for run output.::
+
+
+    $ tree /home/users/vsochat/.buildtest/testdir/build_7/
+    ├── hello.f.yml.0x741db6a9.sh
+    ├── log
+    │   ├── buildtest_10_23_01_03_2020.log
+    │   └── buildtest_13_49_29_02_2020.log
+    └── run
+        └── buildtest_10_23_01_03_2020.run
+
+    2 directories, 4 files
+
+
+If we look in the shell script at the top level, we see exactly what was run.::
+
+
+	#!/bin/bash
+	TESTDIR=/home/users/vsochat/.buildtest/testdir/build_6
+	SRCDIR=/home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials/compilers/src
+	SRCFILE=$SRCDIR/hello.f90
+	FC=ifort
+	FFLAGS="-O2"
+	EXECUTABLE=hello.f.yml.0x741db6a9.exec
+
+	cd $TESTDIR
+	$FC $FFLAGS -o $EXECUTABLE $SRCFILE
+	$EXECUTABLE
+	rm ./$EXECUTABLE
+
+
+And then if we look in the logs directory, we see verbose output for the entire build:: 
+
+	2020-03-01 10:23:39,580 [build.py:58 - func_build_subcmd() ] - [INFO] Creating Directory: /home/users/vsochat/.buildtest/testdir/build_6
+	2020-03-01 10:23:39,581 [build.py:59 - func_build_subcmd() ] - [DEBUG] Current build ID: 6
+	2020-03-01 10:23:39,586 [singlesource.py:410 - __init__() ] - [DEBUG] Source Directory: /home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials/compilers/src
+	2020-03-01 10:23:39,586 [singlesource.py:411 - __init__() ] - [DEBUG] Source File: hello.f90
+	2020-03-01 10:23:39,725 [singlesource.py:705 - build_test_content() ] - [DEBUG] testpath:/home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh
+	2020-03-01 10:23:39,725 [singlesource.py:705 - build_test_content() ] - [DEBUG] shell:['#!/bin/bash']
+	2020-03-01 10:23:39,725 [singlesource.py:705 - build_test_content() ] - [DEBUG] module:None
+	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] metavars:['TESTDIR=/home/users/vsochat/.buildtest/testdir/build_6', 'SRCDIR=/home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials/compilers/src', 'SRCFILE=$SRCDIR/hello.f90', 'FC=ifort', 'FFLAGS="-O2"', 'EXECUTABLE=hello.f.yml.0x741db6a9.exec']
+	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] envs:[]
+	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] build:['cd $TESTDIR', '$FC $FFLAGS -o $EXECUTABLE $SRCFILE']
+	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] run:['$EXECUTABLE', 'rm ./$EXECUTABLE']
+	2020-03-01 10:23:39,727 [writer.py:16 - write_test() ] - [INFO] Opening Test File for Writing: /home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh
+	2020-03-01 10:23:39,733 [build.py:115 - func_build_subcmd() ] - [INFO] Reading Build Log File: /home/users/vsochat/.buildtest/var/build.json
+	2020-03-01 10:23:39,734 [build.py:121 - func_build_subcmd() ] - [DEBUG] Adding latest build to dictionary
+	2020-03-01 10:23:39,734 [build.py:122 - func_build_subcmd() ] - [DEBUG] {'TESTS': ['/home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh'], 'TESTDIR': '/home/users/vsochat/.buildtest/testdir/build_6', 'TESTCOUNT': 1, 'CMD': 'buildtest build -c hello.f.yml', 'BUILD_TIME': '03/01/2020 10:23:39', 'LOGFILE': '/home/users/vsochat/.buildtest/testdir/build_6/log/buildtest_10_23_01_03_2020.log'}
+	2020-03-01 10:23:39,734 [build.py:123 - func_build_subcmd() ] - [INFO] Updating Build Log File: /home/users/vsochat/.buildtest/var/build.json
+	2020-03-01 10:23:39,742 [file.py:119 - create_dir() ] - [DEBUG] Creating Directory: /home/users/vsochat/.buildtest/testdir/build_6/run
+
+
+And finally,  the output file for the run is located in ``run``. 
+This file can be very important, especially in the case of failed builds. 
+For example, let's say that forgot to load the module "ifort." We would
+have seen this output file instead, along with a failed build message::
+
+	Test Name:/home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh
+	Return Code: 1
+	---------- START OF TEST OUTPUT ---------------- 
+	/home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh: line 10: ifort: command not found
+	/home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh: line 11: hello.f.yml.0x741db6a9.exec: command not found
+	rm: cannot remove ‘./hello.f.yml.0x741db6a9.exec’: No such file or directory
+	------------ END OF TEST OUTPUT ---------------- 
+
