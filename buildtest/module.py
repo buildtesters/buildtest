@@ -1,5 +1,6 @@
 from buildtest.tools.system import BuildTestCommand
 
+
 def get_all_collections():
     """Get all Lmod user collections that is retrieved by running ``module -t savelist``.
 
@@ -14,6 +15,7 @@ def get_all_collections():
     out = cmd.get_error().split()
 
     return out
+
 
 class Module:
     """Class declaration for Module class"""
@@ -34,12 +36,15 @@ class Module:
         self.debug = debug
         self.modules = modules
 
+        # when no modules are passed into initializer, just return immediately
         if self.modules is None:
             return
 
         # catch all exceptions to argument modules. Must be of type list or string.
         if (not isinstance(modules, list)) and (not isinstance(modules, str)):
-            raise TypeError(f"Expecting of type 'list' or 'string' for argument modules. Got of type {type(modules)}")
+            raise TypeError(
+                f"Expecting of type 'list' or 'string' for argument modules. Got of type {type(modules)}"
+            )
 
         # if argument is a string, than use space as delimeter to get list of all modules.
         if isinstance(modules, str):
@@ -144,7 +149,7 @@ class Module:
 
         print(out)
 
-    def get_collection(self,collection="default"):
+    def get_collection(self, collection="default"):
         """Return the command to restore a collection.
 
         :param collection: collection name to restore
@@ -158,7 +163,6 @@ class Module:
             raise TypeError(f"Type Error: {collection} is not of type string")
 
         return f"module restore {collection}"
-
 
     def test_collection(self, collection="default"):
         """Test the module collection by running ``module restore <collection>``.

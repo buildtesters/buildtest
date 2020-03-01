@@ -48,7 +48,7 @@ script:
   - cd $TRAVIS_BUILD_DIR
   - echo $MODULEPATH
   - module av
-  - coverage run buildtest_regtest.py
+  - coverage run -m pytest -vra tests/
   - coverage report -m
 
 after_success:
