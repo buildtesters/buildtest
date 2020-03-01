@@ -12,6 +12,7 @@ from buildtest.tools.modulesystem.tree import module_tree_add, module_tree_rm
 from buildtest.tools.log import BuildTestError
 from buildtest.module import Module, ModuleCollection, get_all_collections
 
+
 @pytest.mark.skip("not working")
 def test_spack_modules():
     module_tree_add(["/mxg-hpc/users/ssi29/spack/modules/linux-rhel7-x86_64/Core"])
@@ -25,9 +26,13 @@ def test_module_deps():
     find_module_deps("GCCcore/8.1.0")
     module_tree_rm(["/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core"])
 
+
 @pytest.mark.skip("not working")
 def test_diff_trees():
-    diff_trees("/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core,/usr/share/lmod/lmod/modulefiles/Core/")
+    diff_trees(
+        "/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core,/usr/share/lmod/lmod/modulefiles/Core/"
+    )
+
 
 @pytest.mark.skip("not working")
 def test_easybuild_modules():
@@ -60,6 +65,7 @@ def test_module_diff_invalid_args():
 
 def test_list_all_parents():
     list_all_parent_modules()
+
 
 class TestModule:
     def test_module(self):
@@ -115,4 +121,3 @@ class TestModuleCollection:
     )
     def test_type_error(self):
         a = ModuleCollection(1)
-
