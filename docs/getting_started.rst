@@ -265,7 +265,7 @@ in your testing root at ``$HOME/.buildtest/site``::
 The following will target a specific file path under your test config root::
 
 
-	buildtest build -c buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/hello.sh.ym
+	buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/hello.sh.ym
 
 
 If you provide a directory name as a relative path, buildtest will discover all test configurations under it::
