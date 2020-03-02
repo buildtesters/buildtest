@@ -1,21 +1,20 @@
-from buildtest.module import get_all_collections, ModuleCollection
+from buildtest.module import get_all_collections, Module
 
 collections = get_all_collections()
 
-# adding a collection name "invalid_collection" that is bound to fail
-collections = collections + ["invalid_collection"]
 for i in collections:
-    collection_object = ModuleCollection(i)
-    print(collection_object.get_command())
-    ec = collection_object.test_collection()
-    if ec != 0:
-        print(f"Failed to load collection: {i} with exit status: {ec}")
-    else:
-        print(f"Successfully loaded collection: {i}")
+    a = Module()
+    restore_cmd, ret_code = a.get_collection(i), a.test_collection(i)
+
+    print(f"Collection Command: {restore_cmd}    Return Code: {ret_code}")
 
 # test Python collection with debug enabled
-a = ModuleCollection("Python", debug=True)
+a = Module(debug=True)
+a.test_collection("Python")
+
+# test default collection with debug enabled
+a = Module(debug=True)
 a.test_collection()
 
-# Type Error when passing a collection name not of string type
-ModuleCollection(1)
+# This will raise an exception
+a.test_collection(1)
