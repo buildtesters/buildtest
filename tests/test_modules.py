@@ -10,9 +10,11 @@ from buildtest.tools.log import BuildTestError
 from buildtest.tools.modulesystem.module_difference import diff_trees
 from buildtest.module import Module, get_all_collections
 
+
 def test_module_configs_exists():
     assert os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE)
     assert os.path.exists(BUILDTEST_SPIDER_FILE)
+
 
 def test_module_diff():
     """Testing module difference between two trees. First test is testing against same module tree, and the second

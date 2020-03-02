@@ -21,7 +21,7 @@ class Spider:
             self.tree = tree
 
             # Lmod can be optionally installed for using modules
-            self.spider_content = {}
+            self.spider_content = []
             if os.getenv("LMOD_DIR"):
                 spider_cmd = (
                     f"{os.getenv('LMOD_DIR')}/spider -o spider-json {self.tree}"
