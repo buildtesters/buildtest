@@ -27,7 +27,7 @@ copyright = "2017-2020, Shahzeb Siddiqui"
 author = "Shahzeb Siddiqui"
 
 # The short X.Y version
-version = "0.7.6"
+version = "0.8.0"
 # The full version, including alpha/beta/rc tags
 release = "2019.04.02"
 
@@ -46,7 +46,6 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.imgmath",
     "sphinxcontrib.programoutput",
-    "sphinxarg.ext",
 ]
 
 

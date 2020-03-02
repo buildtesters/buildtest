@@ -1,7 +1,7 @@
-buildtest.tools.log module
+buildtest.tools.get module
 ==========================
 
-.. automodule:: buildtest.tools.log
+.. automodule:: buildtest.tools.get
    :members:
    :undoc-members:
    :show-inheritance:
