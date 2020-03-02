@@ -10,6 +10,7 @@ from buildtest.tools.defaults import BUILDTEST_MODULE_COLLECTION_FILE, BUILDTEST
 from buildtest.tools.file import create_dir, is_file, is_dir
 from buildtest.tools.log import BuildTestError
 
+
 def add_collection():
     """This method save modules as a module collection in a json file. It updates
     the json file and prints content to STDOUT

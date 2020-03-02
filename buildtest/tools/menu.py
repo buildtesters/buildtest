@@ -28,6 +28,7 @@ from buildtest.tools.testconfigs import (
 test_config_choice = testconfig_choices()
 module_collection = get_module_collection()
 
+
 class BuildTestParser:
     def __init__(self):
         epilog_str = (

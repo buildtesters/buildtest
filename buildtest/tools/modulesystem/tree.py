@@ -4,6 +4,7 @@ from buildtest.tools.config import config_opts, BUILDTEST_CONFIG_FILE
 from buildtest.tools.file import is_dir
 from buildtest.tools.modules import update_spider_file
 
+
 def module_tree_list():
     """This method list module trees assigned to BUILDTEST_MODULEPATH"""
     [print(tree) for tree in config_opts["BUILDTEST_MODULEPATH"]]
