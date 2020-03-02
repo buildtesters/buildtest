@@ -77,7 +77,7 @@ def func_build_subcmd(args):
 
         # Second try, the path can be relative to the TESTCONFIG_ROOT
         if not os.path.exists(config_file):
-            config_file = os.path.join(TESTCONFIG_ROOT, config)
+            config_file = os.path.join(TESTCONFIG_ROOT, config_file)
 
         if not os.path.exists(config_file):
             sys.exit(
