@@ -5,6 +5,7 @@ from buildtest.tools.modulesystem.module_difference import diff_trees
 from buildtest.tools.log import BuildTestError
 from buildtest.module import Module, get_all_collections
 
+
 def test_module_diff():
     """Testing module difference between two trees. First test is testing against same module tree, and the second
         test is against a different tree. """
@@ -12,6 +13,7 @@ def test_module_diff():
     tree2 = os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
     tree_list = f"{tree1},{tree2}"
     diff_trees(tree_list)
+
 
 @pytest.mark.xfail(
     reason="Test expected to fail because only one tree is passed",
@@ -21,6 +23,7 @@ def test_module_diff_invalid_args():
     """Testing when one moduletree is passed to ``buildtest module --diff-trees``"""
     tree = os.path.join(os.environ.get("LMOD_PKG"), "modulefiles/Core")
     diff_trees(tree)
+
 
 class TestModule:
     @pytest.mark.skip("not working")

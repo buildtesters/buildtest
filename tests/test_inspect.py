@@ -6,6 +6,7 @@ from buildtest.tools.show import show_schema_layout
 def test_show_config():
     show_configuration()
 
+
 def test_distro_short():
     assert "rhel" == distro_short("Red Hat Enterprise Linux Server")
     assert "centos" == distro_short("CentOS")
