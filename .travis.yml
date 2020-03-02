@@ -46,7 +46,9 @@ script:
   - module use $LMOD_PKG/modulefiles/Core
   - echo $MODULEPATH
   - cd $TRAVIS_BUILD_DIR
-  - coverage run buildtest_regtest.py
+  - echo $MODULEPATH
+  - module av
+  - coverage run -m pytest -vra tests/
   - coverage report -m
 
 after_success:

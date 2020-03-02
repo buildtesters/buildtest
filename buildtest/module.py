@@ -17,60 +17,10 @@ def get_all_collections():
     return out
 
 
-class ModuleCollection:
-    """Class declaration of ModuleCollection."""
-
-    def __init__(self, collection, debug=True):
-        """Initializer method of ModuleCollection class.
-
-        :param collection: name of module collection
-        :param debug: debug mode for troubleshooting
-
-        :type collection: str
-        :type debug: bool
-        """
-        self.debug = debug
-
-        # raise TypeError exception if collection is not a string type since that is required
-        # when working with module collection
-        if not isinstance(collection, str):
-            raise TypeError(f"Type Error: {collection} is not of type string")
-
-        self.collection = collection
-        self.module_cmd = f"module restore {self.collection}"
-
-    def test_collection(self):
-        """Test the module collection by running ``module restore <collection>``.
-
-        :return: return code of ``module restore`` command
-        :rtype: int
-        """
-
-        cmd = BuildTestCommand()
-        cmd.execute(self.module_cmd)
-        ret = cmd.returnCode()
-
-        # print executed command for debugging
-        if self.debug:
-            print(f"[DEBUG] Executing module command: {self.module_cmd}")
-            print(f"[DEBUG] Return Code: {ret}")
-
-        return ret
-
-    def get_command(self):
-        """ Get the module command used to restore a collection
-
-        :return: Return the actual command to restore a collection.
-        :rtype: str
-        """
-
-        return self.module_cmd
-
-
 class Module:
     """Class declaration for Module class"""
 
-    def __init__(self, modules, purge=True, force=False, debug=False):
+    def __init__(self, modules=None, purge=True, force=False, debug=False):
         """Initialize method for Module class.
 
         :param modules: list of modules
@@ -86,9 +36,19 @@ class Module:
         self.debug = debug
         self.modules = modules
 
-        # convert input to list if not specified already.
-        if not isinstance(modules, list):
-            self.modules = [modules]
+        # when no modules are passed into initializer, just return immediately
+        if self.modules is None:
+            return
+
+        # catch all exceptions to argument modules. Must be of type list or string.
+        if (not isinstance(modules, list)) and (not isinstance(modules, str)):
+            raise TypeError(
+                f"Expecting of type 'list' or 'string' for argument modules. Got of type {type(modules)}"
+            )
+
+        # if argument is a string, than use space as delimeter to get list of all modules.
+        if isinstance(modules, str):
+            self.modules = modules.split(" ")
 
         # building actual command. Note that we are doing command chaining when loading modules
         self.module_load_cmd = [f"module load {x} && " for x in self.modules]
@@ -188,3 +148,42 @@ class Module:
             print(f"[DEBUG] Return Code: {ret}")
 
         print(out)
+
+    def get_collection(self, collection="default"):
+        """Return the command to restore a collection.
+
+        :param collection: collection name to restore
+        :type collection: str
+
+        :return: return the ``module restore`` command with the collection name
+        :rtype: str
+        """
+        # raise error if collection is not a string
+        if not isinstance(collection, str):
+            raise TypeError(f"Type Error: {collection} is not of type string")
+
+        return f"module restore {collection}"
+
+    def test_collection(self, collection="default"):
+        """Test the module collection by running ``module restore <collection>``.
+        :param collection: collection name to test
+        :type collection: str
+
+        :return: return code of ``module restore`` against the collection name
+        :rtype: int
+        """
+        # raise error if collection is not a string
+        if not isinstance(collection, str):
+            raise TypeError(f"Type Error: {collection} is not of type string")
+
+        module_restore_cmd = f"module restore {collection}"
+        cmd = BuildTestCommand()
+        cmd.execute(module_restore_cmd)
+        ret = cmd.returnCode()
+
+        # print executed command for debugging
+        if self.debug:
+            print(f"[DEBUG] Executing command: {module_restore_cmd}")
+            print(f"[DEBUG] Return Code: {ret}")
+
+        return ret
