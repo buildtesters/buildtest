@@ -73,35 +73,55 @@ class BuildTestCommand:
 
 class BuildTestSystem:
     """BuildTestSystem is a class that detects system configuration and outputs the result
-    in .run file which are generated upon test execution."""
+       in .run file which are generated upon test execution. This module also keeps
+       track of what is supported (or not supported) for a system.
+    """
 
-    # class variable used for storing system configuration
     system = {}
 
     def __init__(self):
         """Constructor method for BuildTestSystem(). Defines all system configuration using
-        class variable **system** which is a dictionary """
+           class variable **system** which is a dictionary
+        """
+        self.init_system()
+        self.system["SYSTEM"] = platform.system()
+        self.scheduler = self.check_scheduler()
+        self.check_lmod()
 
+    def init_system(self):
+        """Based on the module "distro" set the linux distrubution name and version
+        """
         self.system["OS_NAME"] = distro.linux_distribution(
             full_distribution_name=False
         )[0]
-
         self.system["OS_VERSION"] = distro.linux_distribution(
             full_distribution_name=False
         )[1]
-        self.system["SYSTEM"] = platform.system()
-        scheduler = self.check_scheduler()
 
-        # if file BUILDTEST_SPIDER_FILE does not exist, capture content of Lmod spider into file
-        if not os.path.exists(BUILDTEST_SPIDER_FILE):
-            update_spider_file()
+    def check_lmod(self):
+        """Check if the system has Lmod installed, determine by setting
+           of LMOD_DIR variable
+        """
+        # Boolean to indicate there is lmod support
+        self.lmod = "LMOD_DIR" in os.environ and os.path.exists(
+            os.environ.get("LMOD_DIR", "")
+        )
+
+        # If there is support, check if the spider file is already represented
+        if self.lmod:
+
+            # if file BUILDTEST_SPIDER_FILE does not exist load spider file
+            if not os.path.exists(BUILDTEST_SPIDER_FILE):
+                update_spider_file()
 
     def check_scheduler(self):
         """Check for batch scheduler. Currently checks for LSF or SLURM by running
-        ``bhosts`` and ``sinfo`` command. It must be present in $PATH when running buildtest.
+          ``bhosts`` and ``sinfo`` command. It must be present in $PATH when running buildtest.
+            Since it's unlikely for a single host to have more than one scheduler,
+            we check for multiple and return the first found.
 
-        :return: return string **LSF** or **SLURM**. If neither found returns **None**
-        :rtype: str or None
+           :return: return string **LSF** or **SLURM**. If neither found returns **None**
+           :rtype: str or None
         """
 
         lsf_cmd = BuildTestCommand()
@@ -112,27 +132,18 @@ class BuildTestSystem:
         slurm_cmd.execute("sinfo")
         slurm_ec_code = slurm_cmd.returnCode()
 
-        if lsf_ec_code == 0:
-            return "LSF"
         if slurm_ec_code == 0:
             return "SLURM"
+        if lsf_ec_code == 0:
+            return "LSF"
 
         return None
 
     def check_system_requirements(self):
         """Checking system requirements."""
-        req_pass = True
-        # If system is not Linux
 
-        if self.system["SYSTEM"] != "Linux" or not os.getenv("LMOD_CMD"):
-            msg = """
-System Requirements not satisfied.
-
-Requirements:
-1. System must be Linux
-2. Lmod must be installed
-"""
-            print(msg)
+        if self.system["SYSTEM"] != "Linux":
+            print("System must be Linux")
             sys.exit(1)
 
 

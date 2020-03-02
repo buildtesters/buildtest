@@ -10,6 +10,9 @@ You need the following packages to get started.
 
 - Python >= 3.6
 
+
+The following packages are required for using environment modules:
+
 - Lmod
 
 
@@ -82,7 +85,7 @@ each time. After you do this, you can press **TAB** key on the keyboard to
 fill in the arguments options::
 
     $ buildtest
-    build        -h           module       testconfigs  --version
+    build        -h           module       --version
     config       --help       show         -V
 
 

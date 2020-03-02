@@ -1,15 +1,6 @@
-from buildtest.tools.modules import list_software, list_modules
 from buildtest.tools.config import show_configuration
 from buildtest.tools.system import distro_short
 from buildtest.tools.show import show_schema_layout
-
-
-def test_list_software():
-    list_software()
-
-
-# def test_list_modules():
-#  list_modules()
 
 
 def test_show_config():

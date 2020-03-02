@@ -15,7 +15,6 @@ def build_helper():
     help_cmds = [
         "buildtest -h",
         "buildtest show -h",
-        "buildtest testconfigs -h",
         "buildtest build -h",
         "buildtest module -h",
         "buildtest module list -h",
@@ -51,7 +50,6 @@ def introspection_cmds():
         "buildtest config restore",
         "buildtest system view",
         "buildtest system fetch",
-        "buildtest testconfigs list",
         "buildtest module collection --clear",
         "buildtest module tree -l",
     ]
@@ -62,15 +60,6 @@ def introspection_cmds():
         fname = os.path.join(docgen, tmp_fname)
 
         writer(fname, out, cmd)
-
-    out = run("buildtest testconfigs view tutorial/compilers/args.c.yml")
-    writer(
-        os.path.join(
-            docgen, "buildtest_testconfigs_view_tutorial_compilers_args.c.yml"
-        ),
-        out,
-        "buildtest testconfigs view tutorial/compilers/args.c.yml",
-    )
 
 
 def module_cmds():

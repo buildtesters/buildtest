@@ -42,11 +42,11 @@ def func_get_subcmd(args):
     create_dir(clone_path)
 
     # Clone to install
-    dest = clone(args.repo, clone_path)
+    dest = clone(args.repo, clone_path, args.branch)
     logger.info("%s cloned to %s" % (args.repo, dest))
 
 
-def clone(url, dest):
+def clone(url, dest, branch="master"):
     """clone a repository from Github"""
     name = os.path.basename(url).replace(".git", "")
     dest = os.path.join(dest, name)
@@ -55,7 +55,11 @@ def clone(url, dest):
     if not re.search("^(http|git@)", url):
         url = "https://%s" % url
 
-    return_code = os.system("git clone %s %s" % (url, dest))
+    # Fail early if path exists
+    if os.path.exists(dest):
+        sys.exit("%s already exists. Remove and try again." % dest)
+
+    return_code = os.system("git clone -b %s %s %s" % (branch, url, dest))
     if return_code == 0:
         return dest
     sys.exit("Error cloning repo %s" % url)

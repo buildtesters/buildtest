@@ -20,15 +20,14 @@ class Spider:
         if tree:
             self.tree = tree
 
-            if not os.getenv("LMOD_DIR"):
-                raise SystemError(
-                    "Cannot find environment variable LMOD_DIR. Please fix your Lmod configuration!"
+            # Lmod can be optionally installed for using modules
+            self.spider_content = {}
+            if os.getenv("LMOD_DIR"):
+                spider_cmd = (
+                    f"{os.getenv('LMOD_DIR')}/spider -o spider-json {self.tree}"
                 )
-
-            spider_cmd = f"{os.getenv('LMOD_DIR')}/spider -o spider-json {self.tree}"
-
-            out = subprocess.check_output(spider_cmd, shell=True).decode("utf-8")
-            self.spider_content = json.loads(out)
+                out = subprocess.check_output(spider_cmd, shell=True).decode("utf-8")
+                self.spider_content = json.loads(out)
 
         else:
             with open(BUILDTEST_SPIDER_FILE, "r") as fd:

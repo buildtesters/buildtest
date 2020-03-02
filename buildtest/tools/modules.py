@@ -30,7 +30,6 @@ def update_spider_file():
 
     # Cut out early if we don't have a spider file
     if not os.path.exists(os.path.expandvars("$LMOD_DIR/spider")):
-        print(f"Cannot find Lmod spider, skipping updating file.")
         return
 
     # loading buildtest configuration file to read value "BUILDTEST_MODULEPATH"
@@ -161,9 +160,8 @@ def get_all_parents():
     if not os.path.exists(BUILDTEST_SPIDER_FILE):
         return []
 
-    fd = open(BUILDTEST_SPIDER_FILE, "r")
-    module_json = json.load(fd)
-    fd.close()
+    with open(BUILDTEST_SPIDER_FILE, "r"):
+        module_json = json.load(fd)
 
     parent_set = set()
     for module in module_json.keys():

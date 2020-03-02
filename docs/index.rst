@@ -45,7 +45,7 @@ its clear to the reader.
 
    what_is_buildtest.rst
    feature_overview.rst
-
+   getting_started.rst
 
 .. toctree::
    :maxdepth: 2
@@ -57,8 +57,6 @@ its clear to the reader.
    introspection.rst
    spider.rst
    module_operation.rst
-   managing_testconfigs.rst
-
 
 .. toctree::
    :maxdepth: 2
