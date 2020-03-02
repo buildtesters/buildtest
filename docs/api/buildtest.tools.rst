@@ -6,9 +6,9 @@ Subpackages
 
 .. toctree::
 
-    buildtest.tools.buildsystem
-    buildtest.tools.configuration
-    buildtest.tools.modulesystem
+   buildtest.tools.buildsystem
+   buildtest.tools.configuration
+   buildtest.tools.modulesystem
 
 Submodules
 ----------
@@ -17,13 +17,13 @@ Submodules
 
    buildtest.tools.build
    buildtest.tools.config
+   buildtest.tools.defaults
    buildtest.tools.file
+   buildtest.tools.get
    buildtest.tools.log
-   buildtest.tools.lsf
    buildtest.tools.menu
    buildtest.tools.modules
    buildtest.tools.show
-   buildtest.tools.slurm
    buildtest.tools.system
    buildtest.tools.testconfigs
    buildtest.tools.writer
@@ -32,6 +32,6 @@ Module contents
 ---------------
 
 .. automodule:: buildtest.tools
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
