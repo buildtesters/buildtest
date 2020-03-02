@@ -250,3 +250,34 @@ have seen this output file instead, along with a failed build message::
 	rm: cannot remove ‘./hello.f.yml.0x741db6a9.exec’: No such file or directory
 	------------ END OF TEST OUTPUT ---------------- 
 
+Next Steps
+----------
+
+We've just shown you how to target a specific configuration file. In fact, you
+can use ``buildtest build`` to discover more than one configuration file,
+either under a specific directory outside of your buildtest test config directory
+or within it. For example, the following command will find either a ``hello.sh.yml``
+that is located in your present working directory, or the first file named ``hello.sh.yml``
+in your testing root at ``$HOME/.buildtest/site``::
+
+	buildtest build -c hello.sh.yml
+
+The following will target a specific file path under your test config root::
+
+
+	buildtest build -c buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/hello.sh.ym
+
+
+If you provide a directory name as a relative path, buildtest will discover all test configurations under it::
+
+
+	buildtest build -c hello-world
+
+
+And if you provide a relative path under the test config root, that directory will be targeted instead::
+
+
+	buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/
+
+
+And of course you can provide a direct path to a single file, as we showed in the examples above.

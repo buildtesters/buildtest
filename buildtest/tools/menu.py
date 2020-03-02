@@ -123,7 +123,10 @@ class BuildTestParser:
         parser_build.add_argument(
             "-c",
             "--config",
-            help="Specify test configuration",
+            help=(
+                "Specify test configuration path (file or directory) relative to ",
+                "present working directory or to build test configuration directory.",
+            ),
             metavar="TEST CONFIGURATION",
         )
 
@@ -133,23 +136,6 @@ class BuildTestParser:
             help="dry-run mode, buildtest will not write the test scripts but print "
             "content of test that would be written",
             action="store_true",
-        )
-
-        parser_build_mutex_modules = parser_build.add_mutually_exclusive_group()
-        parser_build_mutex_modules.add_argument(
-            "-co",
-            "--collection",
-            help="Use user Lmod module " "collection when building " "test",
-            choices=module_collection,
-            metavar="Lmod Collection Name",
-        )
-        parser_build_mutex_modules.add_argument(
-            "-mc",
-            "--module-collection",
-            help="Use internal buildtest " "module collection when " "building test.",
-            type=int,
-            choices=collection_len,
-            metavar="COLLECTION-ID",
         )
 
         parser_build_report.set_defaults(func=show_status_report)
