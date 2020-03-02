@@ -43,7 +43,7 @@ Links to the following apps
 
 - **CodeCov**: https://codecov.io/gh/HPC-buildtest/buildtest-framework
 
-- **Coverall**: https://coveralls.io/github/HPC-buildtest/buildtest-framework
+- **Coveralls**: https://coveralls.io/github/HPC-buildtest/buildtest-framework
 
 - **CodeFactor**: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework
 
@@ -85,6 +85,37 @@ or if you have black installed, but running it on the repository code results in
 to a functional issue with the code. Code that simply needs to be formatted will be formatted,
 and then the commit will follow.
 
+Once you have installed the ``pre-commit`` hook and black, then you can expect
+black will auto-format your code during the commit phase. Here is a snapshot of
+what the pre-commit hook will do ::
+
+    $ git commit -m "test black on one of the regtest"
+    Black is installed
+    reformatted /mxg-hpc/users/ssi29/buildtest-framework/tests/test_inspect.py
+    All done! ✨ 🍰 ✨
+    1 file reformatted, 39 files left unchanged.
+    [test_black_hook 008fc62] test black on one of the regtest
+     1 file changed, 1 insertion(+)
+
+The pre-commit hook will auto-format specific directories where python files are found. Refer to the
+pre-commit hook (``.github/hooks/pre-commit``) for more details.
+
+If you are interested in running black locally to see diff result from black without auto-formatting code,
+you can do the following::
+
+    $ black --check --diff .
+    --- tests/test_inspect.py       2020-02-25 18:58:58.360360 +0000
+    +++ tests/test_inspect.py       2020-02-25 18:59:07.336414 +0000
+    @@ -18,11 +18,11 @@
+     def test_distro_short():
+         assert "rhel" == distro_short("Red Hat Enterprise Linux Server")
+         assert "centos" == distro_short("CentOS")
+         assert "suse" == distro_short("SUSE Linux Enterprise Server")
+    -    x=0+1*3
+    +    x = 0 + 1 * 3
+
+The changes will be shown with lines removed or added via ``-`` and ``+``. For more details refer to black
+`documentation <https://github.com/psf/black>`_.
 
 GitHub Bots
 -----------

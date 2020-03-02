@@ -14,6 +14,6 @@ Module contents
 ---------------
 
 .. automodule:: buildtest.tools.buildsystem
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

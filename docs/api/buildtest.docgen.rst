@@ -12,6 +12,6 @@ Module contents
 ---------------
 
 .. automodule:: buildtest.docgen
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
