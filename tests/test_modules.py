@@ -26,14 +26,6 @@ def test_module_deps():
     find_module_deps("GCCcore/8.1.0")
     module_tree_rm(["/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core"])
 
-
-@pytest.mark.skip("not working")
-def test_diff_trees():
-    diff_trees(
-        "/mxg-hpc/users/ssi29/easybuild-HMNS/modules/all/Core,/usr/share/lmod/lmod/modulefiles/Core/"
-    )
-
-
 @pytest.mark.skip("not working")
 def test_easybuild_modules():
     module_tree_add(["/opt/easybuild/modules/all"])
