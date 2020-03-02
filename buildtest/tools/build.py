@@ -46,9 +46,13 @@ def discover_configs(config_file):
     """
     config_files = []
 
+    # If no config file provided, assume discovering across buildtest/site
+    if not config_file:
+        config_file = TESTCONFIG_ROOT
+
     # First try, the path is an absolute path to file or folder
     # Second try, the path can be relative to the TESTCONFIG_ROOT
-    if not os.path.exists(config_file):
+    elif not os.path.exists(config_file):
         config_file = os.path.join(TESTCONFIG_ROOT, config_file)
 
     # Now handle path based on being a directory or file path
@@ -83,10 +87,8 @@ def func_build_subcmd(args):
         clear_builds()
         sys.exit(0)
 
-    if args.config:
-
-        # Discover list of one or more config files based on path provided
-        config_files = discover_configs(args.config)
+    # Discover list of one or more config files based on path provided
+    config_files = discover_configs(args.config)
 
     # TODO: read in all config files here, validate
     # There could be a yaml file that isn't a recipe, so they should be removed
