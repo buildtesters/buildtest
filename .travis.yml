@@ -29,20 +29,14 @@ install:
   - pip install --upgrade pip
   - pip --version
   - pip install python-coveralls
-  - pip install easybuild
   - pip install -r docs/requirements.txt
   - source $TRAVIS_BUILD_DIR/buildtest/scripts/install_deps.sh $LMOD_VERSION
 
 before_script:
   - type module
   - module --version
-  - export EASYBUILD_PREFIX=/opt/easybuild
-  - mkdir -p $EASYBUILD_PREFIX
-  - eb --version
-  - eb M4-1.4.17.eb bzip2-1.0.6.eb --robot
 
 script:
-  - module use $EASYBUILD_PREFIX/modules/all/
   - module use $LMOD_PKG/modulefiles/Core
   - echo $MODULEPATH
   - cd $TRAVIS_BUILD_DIR

@@ -1,11 +1,13 @@
 import os
-from buildtest.tools.config import BUILDTEST_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE
+from buildtest.tools.defaults import BUILDTEST_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE, \
+    BUILDTEST_MODULE_COLLECTION_FILE, BUILDTEST_SPIDER_FILE
 from buildtest.tools.configuration.config import func_config_view, func_config_restore
 
 
 def test_config_file_exists():
     assert os.path.exists(BUILDTEST_CONFIG_FILE)
-
+    assert os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE)
+    assert os.path.exists(BUILDTEST_SPIDER_FILE)
 
 def test_view_configuration():
     func_config_view()
