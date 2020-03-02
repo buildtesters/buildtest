@@ -154,11 +154,11 @@ def get_yaml_schema():
 class BuildTestBuilder:
     """Class responsible for parsing the test configuration."""
 
-    def __init__(self, file, compiler, mpi=False):
+    def __init__(self, file, compiler=None, mpi=False):
         """Class constructor for BuildTestBuilder"""
 
         self.ext = os.path.splitext(file)[1]
-        self.compiler = compiler
+        self.compiler = compiler or None
         self.mpi = mpi
         self.cc = None
         self.cxx = None
@@ -317,7 +317,7 @@ class BuildTestBuilder:
         :param language: Language type
         :type language: str, required
         :param compiler: Compiler Type
-        :type compiler: str, required
+        :type compiler: str
 
         :return: return compiler wrapper
         :rtype: str
@@ -339,26 +339,28 @@ class BuildTestBuilder:
 
 
 class SingleSource(BuildTestBuilder):
-    def __init__(self, file, lmod_collection, buildtest_collection):
+    def __init__(self, config_file, lmod_collection=None, buildtest_collection=None):
         """Class constructor for SingleSource"""
         self.lmod_collection = lmod_collection
         self.buildtest_collection = buildtest_collection
+        self.config_file = config_file
 
         self.schema = get_yaml_schema()
-        if file is None:
+        if not config_file:
             return
+
         logger = logging.getLogger(logID)
 
-        fd = open(file, "r")
-        self.test_yaml = yaml.safe_load(fd)
-        fd.close()
+        with open(config_file, "r") as fd:
+            self.test_yaml = yaml.safe_load(fd)
+
         print("{:<40} {}".format("[LOAD CONFIG]", "PASSED"))
 
         self.check_top_keys()
 
         # self.mpi used to enable/disable mpi check
         self.mpi = False
-        self.parent_dir = os.path.dirname(file)
+        self.parent_dir = os.path.dirname(config_file)
         self.srcdir = os.path.join(self.parent_dir, "src")
 
         # content to store the test script
@@ -381,6 +383,7 @@ class SingleSource(BuildTestBuilder):
 
         if "mpi" in self.test_yaml.keys():
             self.mpi = self.test_yaml["mpi"]
+
         if "moduleload" in self.test_yaml.keys():
             self.moduleload_check = True
             if "lmod_collection" in self.test_yaml["moduleload"].keys():
@@ -388,14 +391,18 @@ class SingleSource(BuildTestBuilder):
 
         # self.srcfile = os.path.join(self.srcdir, self.test_yaml["program"]["source"])
         self.srcfile = self.test_yaml["program"]["source"]
-        self.execname = "%s.%s.exe" % (
-            os.path.basename(file),
-            hex(random.getrandbits(32)),
-        )
+
+        # Generate a common hex to identify and link exec and script file
+        randhex = hex(random.getrandbits(32))
+
+        self.execname = "%s.%s.exec" % (os.path.basename(config_file), randhex)
+
         # invoke setup method from base class to detect language, compiler, and mpi wrapper
         self.testscript_content["testpath"] = "%s.%s.sh" % (
-            os.path.join(config_opts["build"]["testdir"], os.path.basename(file)),
-            hex(random.getrandbits(32)),
+            os.path.join(
+                config_opts["build"]["testdir"], os.path.basename(config_file)
+            ),
+            randhex,
         )
 
         logger.debug(f"Source Directory: {self.srcdir}")
@@ -408,10 +415,10 @@ class SingleSource(BuildTestBuilder):
         self.buildcmd = self.build_command()
 
     def __str__(self):
-        return repr(self)
+        return "SingleSource: %s" % os.path.basename(self.config_file)
 
     def __repr__(self):
-        return self.schema
+        return self.__str__()
 
     def get_schema(self):
         """Return the yaml schema for singlesource class."""

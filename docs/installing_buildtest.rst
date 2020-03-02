@@ -82,7 +82,7 @@ each time. After you do this, you can press **TAB** key on the keyboard to
 fill in the arguments options::
 
     $ buildtest
-    build        -h           module       testconfigs  --version
+    build        -h           module       --version
     config       --help       show         -V
 
 
