@@ -179,16 +179,6 @@ key is used to pass options to the executable.
 The ``maintainer`` key which is outside the ``program`` block is required for all test configuration, it indicates the author of the
 test which is a list of authors in the form of ``<first> <last> <email>``.
 
-To help visualize see how the test dictionary maps to the specific commands in the test script.
-
-.. image:: test_dictionary.png
-   :width: 600
-   :height:  400
-
-.. image:: test.png
-   :width: 500
-   :height:  250
-
 For a list of keys see :ref:`singlesource_schema`
 
 Dry Run (``buildtest build --dry``)
