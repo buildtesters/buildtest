@@ -13,18 +13,6 @@ from buildtest.tools.configuration.config import (
     func_config_view,
     func_config_restore,
 )
-from buildtest.tools.modulesystem.collection import (
-    func_collection_subcmd,
-    get_collection_length,
-)
-
-from buildtest.tools.modules import (
-    func_module_subcmd,
-    module_load_test,
-    get_all_parents,
-    list_modules,
-)
-from buildtest.tools.modulesystem.tree import func_module_tree_subcmd
 
 from buildtest.tools.show import func_show_subcmd, show_schema_layout
 from buildtest.tools.buildsystem.status import show_status_report
@@ -39,9 +27,6 @@ from buildtest.tools.testconfigs import (
 
 test_config_choice = testconfig_choices()
 module_collection = get_module_collection()
-collection_len = list(range(get_collection_length()))
-parent_choices = get_all_parents()
-
 
 class BuildTestParser:
     def __init__(self):
@@ -73,7 +58,6 @@ class BuildTestParser:
         self.main_menu()
         self.build_menu()
         self.get_menu()
-        self.module_menu()
         self.config_menu()
         self.show_menu()
         self.testconfigs_menu()
@@ -159,7 +143,6 @@ class BuildTestParser:
             "--module-collection",
             help="Use internal buildtest " "module collection when " "building test.",
             type=int,
-            choices=collection_len,
             metavar="COLLECTION-ID",
         )
 
@@ -177,157 +160,6 @@ class BuildTestParser:
         )
 
         parser_get.set_defaults(func=func_get_subcmd)
-
-    def module_menu(self):
-        """This method implements argparse arguments for ``buildtest module``. """
-
-        parser_module = self.subparsers.add_parser("module")
-        subparsers_module = parser_module.add_subparsers(
-            description="Module utilties for managing module collections,"
-            " module trees, module load testing, reporting eb/spack modules,"
-            "and report difference between trees."
-        )
-        parser_module_list = subparsers_module.add_parser(
-            "list", help="module list operation"
-        )
-        parser_moduleload = subparsers_module.add_parser(
-            "loadtest", help="module load test"
-        )
-        parser_module_tree = subparsers_module.add_parser(
-            "tree", help="module tree " "operation"
-        )
-        parser_collection = subparsers_module.add_parser(
-            "collection", help="module collection " "operation"
-        )
-
-        # ------------------------- buildtest module loadtest options -------------------------------
-        parser_moduleload.add_argument(
-            "--login", help="Run test in a login shell", action="store_true"
-        )
-        parser_moduleload.add_argument(
-            "--numtest", help="Number of tests to run before exiting", type=int
-        )
-        parser_moduleload.add_argument(
-            "--purge-modules",
-            help="purge modules before loading modules.",
-            action="store_true",
-        )
-
-        # ------------------------- buildtest module list options ----------------------------------
-        parser_module_list.add_argument(
-            "--exclude-version-files",
-            help="Exclude version files from search when reporting module list",
-            action="store_true",
-        )
-        parser_module_list.add_argument(
-            "--filter-include",
-            help="Filter output by including only modules of interest.",
-            type=str,
-            nargs="+",
-            default=None,
-        )
-        parser_module_list.add_argument(
-            "--querylimit", help="Limit query of modules during module list", type=int
-        )
-
-        # ------------------------- buildtest module collection options -----------------------------
-        parser_collection.add_argument(
-            "-l", "--list", action="store_true", help="List all Module Collection"
-        )
-        parser_collection.add_argument(
-            "-a", "--add", action="store_true", help="Add a Module Collection"
-        )
-        parser_collection.add_argument(
-            "-u",
-            "--update",
-            type=int,
-            choices=collection_len,
-            metavar="Update a Module Collection Index",
-            help="Update a Module Collection Index",
-        )
-        parser_collection.add_argument(
-            "-r",
-            "--remove",
-            type=int,
-            choices=collection_len,
-            metavar="Module Collection Index",
-            help="Remove a Module Collection",
-        )
-        parser_collection.add_argument(
-            "-c", "--clear", help="remove all module collections", action="store_true"
-        )
-        parser_collection.add_argument(
-            "--check",
-            help="Check all module collection by performing module load test.",
-            action="store_true",
-        )
-
-        # ------------------------- buildtest module tree  options --------------------------------
-        parser_module_tree.add_argument(
-            "-a",
-            help="add a module tree",
-            dest="add",
-            action="append",
-            metavar="Module Tree",
-        )
-
-        parser_module_tree.add_argument(
-            "-l", help="list module trees", action="store_true", dest="list"
-        )
-
-        parser_module_tree.add_argument(
-            "-r",
-            help="remove a module tree",
-            choices=config_opts["BUILDTEST_MODULEPATH"],
-            action="append",
-            dest="rm",
-            metavar="Module Tree",
-        )
-        parser_module_tree.add_argument(
-            "-s", help="Assign a module tree to BUILDTEST_MODULEPATH", dest="set"
-        )
-
-        # -------------------------------- buildtest module  options --------------------------------
-
-        parser_module.add_argument(
-            "--diff-trees", help="Show difference between two module trees"
-        )
-
-        parser_module.add_argument(
-            "-eb",
-            "--easybuild",
-            help="reports modules that are built by easybuild",
-            action="store_true",
-        )
-        parser_module.add_argument(
-            "--spack",
-            help="reports modules that are built by spack",
-            action="store_true",
-        )
-        parser_module.add_argument(
-            "-d",
-            "--module-deps",
-            help="retrieve all modules that module is " "depended on",
-            choices=parent_choices,
-            metavar="AVAILABLE-MODULES",
-        )
-        parser_module.add_argument(
-            "--list-all-parents",
-            help="List all parent modules (modules that set MODULEPATH)",
-            action="store_true",
-        )
-        parser_module.add_argument(
-            "-s",
-            "--software",
-            help="get unique software from Lmod spider command",
-            action="store_true",
-        )
-
-        parser_moduleload.set_defaults(func=module_load_test)
-        parser_module_list.set_defaults(func=list_modules)
-        parser_module_tree.set_defaults(func=func_module_tree_subcmd)
-        parser_collection.set_defaults(func=func_collection_subcmd)
-        parser_module.set_defaults(func=func_module_subcmd)
 
     def config_menu(self):
         """This method adds argparse argument for ``buildtest config``"""

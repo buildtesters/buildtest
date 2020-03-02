@@ -556,29 +556,3 @@ def list_all_parent_modules():
             for mpath in module_json[module].keys():
                 if module_json[module][mpath]["fullName"] in x:
                     print(x, mpath)
-
-
-def func_module_subcmd(args):
-    """Entry point for "buildtest module" subcommand.
-
-    :param args: command line arguments passed to buildtest
-    :type args: dict, required
-    """
-
-    if args.diff_trees:
-        diff_trees(args.diff_trees)
-
-    if args.easybuild:
-        check_easybuild_module()
-
-    if args.spack:
-        check_spack_module()
-
-    if args.module_deps:
-        find_module_deps(args.module_deps)
-
-    if args.list_all_parents:
-        list_all_parent_modules()
-
-    if args.software:
-        list_software()
