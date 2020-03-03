@@ -1,9 +1,10 @@
 .. _spider:
 
 Understanding Lmod Spider
-=================================
+=========================
 
-This section will cover the fundamentals of how Lmod spider interacts with buildtest. Before you proceed with next
+This section will cover the fundamentals of how Lmod spider interacts with buildtest,
+given that you have Lmod installed and a test configuration uses it. Before you proceed with next
 section read the spider `documentation <https://lmod.readthedocs.io/en/latest/136_spider.html>`_ first.
 
 

@@ -4,6 +4,7 @@ CHANGELOG
 v0.8.0 (Feb xxx, 2020)
 -----------------------
 
+ - removing dependency of Lmod, only needed if modules specified in configs
  - replace toolkit/suite with site in code and documentation examples
  - removing bash script and sourcing in favor of Python module install
  - build test "root" replaced with user home ``$HOME/.buildtest``

@@ -11,26 +11,6 @@ from buildtest.tools.file import create_dir, is_file, is_dir
 from buildtest.tools.log import BuildTestError
 
 
-def func_collection_subcmd(args):
-    """Entry point for ``buildtest module collection``.
-
-    :param args: command line arguments to buildtest
-    :type args: dict, required
-    """
-    if args.clear:
-        clear_module_collection()
-    if args.check:
-        check_module_collection()
-    if args.add:
-        add_collection()
-    if args.list:
-        list_collection()
-    if args.update is not None:
-        update_collection(args.update)
-    if args.remove is not None:
-        remove_collection(args.remove)
-
-
 def add_collection():
     """This method save modules as a module collection in a json file. It updates
     the json file and prints content to STDOUT
