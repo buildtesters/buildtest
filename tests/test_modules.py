@@ -10,11 +10,6 @@ from buildtest.tools.log import BuildTestError
 from buildtest.tools.modulesystem.module_difference import diff_trees
 from buildtest.module import Module, get_all_collections
 
-@pytest.mark.skip("not working")
-def test_module_configs_exists():
-    assert os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE)
-    assert os.path.exists(BUILDTEST_SPIDER_FILE)
-
 
 def test_module_diff():
     """Testing module difference between two trees. First test is testing against same module tree, and the second
@@ -64,6 +59,10 @@ class TestModule:
         assert 0 == cmd.test_collection("settarg")
         assert 0 == cmd.test_collection()
 
+    @pytest.mark.skip("not working")
+    def test_collection_exists(self):
+        assert "settarg" in get_all_collections()
+
     @pytest.mark.xfail(
         reason="Collection Name must be string when saving", raises=TypeError
     )
@@ -83,10 +82,6 @@ class TestModule:
         a = Module()
         assert "module restore settarg" == a.get_collection("settarg")
         assert "module restore default" == a.get_collection()
-
-    @pytest.mark.skip("not working")
-    def test_collection_exists(self):
-        assert "settarg" in get_all_collections()
 
     @pytest.mark.xfail(
         reason="Type error when a non-string argument to ModuleCollection class",
