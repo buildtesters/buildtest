@@ -22,7 +22,7 @@ class Spider:
 
             # Lmod can be optionally installed for using modules
             self.spider_content = []
-            if os.getenv("LMOD_DIR"):
+            if os.getenv("LMOD_DIR") and os.path.exists(os.getenv("LMOD_DIR", "")):
                 spider_cmd = (
                     f"{os.getenv('LMOD_DIR')}/spider -o spider-json {self.tree}"
                 )
