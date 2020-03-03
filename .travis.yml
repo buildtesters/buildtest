@@ -28,7 +28,7 @@ install:
   - pip --version
   - pip install --upgrade pip
   - pip --version
-  - pip install python-coveralls
+  - pip install coveralls
   - pip install -r docs/requirements.txt
   - source $TRAVIS_BUILD_DIR/buildtest/scripts/install_deps.sh $LMOD_VERSION
 
