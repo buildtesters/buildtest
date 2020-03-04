@@ -8,8 +8,6 @@ or derived here.
 import pwd
 import os
 
-from buildtest import BUILDTEST_VERSION
-
 logID = "buildtest"
 
 # Get user home based on effective uid, root of install to copy files

@@ -22,6 +22,8 @@ def create_config_files():
     if not os.path.exists(BUILDTEST_CONFIG_FILE):
         shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
         shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)
+
+
 def create_logfile():
     """Create a logfile to keep track of messages for the user, if doesn't exist
     """
@@ -29,6 +31,7 @@ def create_logfile():
         build_dict = {"build": {}}
         with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
             json.dump(build_dict, outfile, indent=2)
+
 
 def init():
     """Buildtest init should check that the buildtest user root exists,

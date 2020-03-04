@@ -12,6 +12,7 @@ from buildtest.tools.config import config_opts
 from buildtest.tools.defaults import logID
 from buildtest.tools.log import BuildTestError
 
+
 def get_yaml_schema():
     mpi_schema = {
         "type": dict,

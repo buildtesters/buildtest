@@ -17,6 +17,7 @@ from buildtest.tools.configuration.config import (
 from buildtest.tools.show import func_show_subcmd, show_schema_layout
 from buildtest.tools.buildsystem.status import show_status_report
 
+
 class BuildTestParser:
     def __init__(self):
         epilog_str = (

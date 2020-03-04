@@ -7,7 +7,6 @@ from buildtest.tools.file import (
     create_file,
     create_dir,
     walk_tree,
-    string_in_file,
 )
 from buildtest.tools.log import BuildTestError
 
@@ -97,15 +96,3 @@ def test_walk_tree():
 )
 def test_walk_tree_invalid_dir():
     walk_tree("/xyz", ".py")
-
-
-def test_string_in_file():
-    """Testing if string is in file."""
-    fname = "a.txt"
-    fd = open(fname, "w")
-    fd.write("Hello World!")
-    fd.close()
-
-    assert string_in_file("Hello", fname)
-    assert not string_in_file("Hello!", fname)
-    os.remove(fname)

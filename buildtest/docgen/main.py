@@ -50,6 +50,7 @@ def introspection_cmds():
 
         writer(fname, out, cmd)
 
+
 def build_cmds():
     build_dict = {
         "buildtest-build-clear.txt": "buildtest build --clear",

@@ -8,6 +8,7 @@ import platform
 import sys
 import subprocess
 
+
 class BuildTestCommand:
     """Class method to invoke shell commands and retrieve output and error. This class
     makes use of **subprocess.Popen()** to run the shell command. This class has no
@@ -127,13 +128,3 @@ class BuildTestSystem:
         if self.system["SYSTEM"] != "Linux":
             print("System must be Linux")
             sys.exit(1)
-
-def distro_short(distro_fname):
-    """Map Long Linux Distribution Name to short name."""
-
-    if "Red Hat Enterprise Linux Server" == distro_fname:
-        return "rhel"
-    elif "CentOS" == distro_fname:
-        return "centos"
-    elif "SUSE Linux Enterprise Server" == distro_fname:
-        return "suse"
