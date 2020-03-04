@@ -3,21 +3,10 @@ Functions for system package
 """
 
 import distro
-import json
 import os
 import platform
-import re
-import stat
 import sys
 import subprocess
-from buildtest.tools.defaults import (
-    BUILDTEST_MODULE_COLLECTION_FILE,
-    BUILDTEST_BUILD_LOGFILE,
-    BUILDTEST_SPIDER_FILE,
-)
-from buildtest.tools.file import create_dir, is_file
-from buildtest.tools.modules import module_obj, update_spider_file
-
 
 class BuildTestCommand:
     """Class method to invoke shell commands and retrieve output and error. This class
@@ -107,13 +96,6 @@ class BuildTestSystem:
             os.environ.get("LMOD_DIR", "")
         )
 
-        # If there is support, check if the spider file is already represented
-        if self.lmod:
-
-            # if file BUILDTEST_SPIDER_FILE does not exist load spider file
-            if not os.path.exists(BUILDTEST_SPIDER_FILE):
-                update_spider_file()
-
     def check_scheduler(self):
         """Check for batch scheduler. Currently checks for LSF or SLURM by running
           ``bhosts`` and ``sinfo`` command. It must be present in $PATH when running buildtest.
@@ -145,17 +127,6 @@ class BuildTestSystem:
         if self.system["SYSTEM"] != "Linux":
             print("System must be Linux")
             sys.exit(1)
-
-
-def get_module_collection():
-    """Return user Lmod module collection. Lmod collection can be retrieved
-    using command: ``module -t savelist``
-
-    :return: list of Lmod module collection
-    :rtype: list
-    """
-    return subprocess.getoutput("module -t savelist").split("\n")
-
 
 def distro_short(distro_fname):
     """Map Long Linux Distribution Name to short name."""

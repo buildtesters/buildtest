@@ -10,7 +10,6 @@ from buildtest.tools.defaults import (
     BUILDTEST_BUILD_LOGFILE,
     BUILDTEST_CONFIG_FILE,
     BUILDTEST_CONFIG_BACKUP_FILE,
-    BUILDTEST_MODULE_COLLECTION_FILE,
     BUILDTEST_ROOT,
     DEFAULT_CONFIG_FILE,
     EDITOR_LIST,
@@ -23,17 +22,6 @@ def create_config_files():
     if not os.path.exists(BUILDTEST_CONFIG_FILE):
         shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
         shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)
-
-
-def create_module_file():
-    """Create an empty json file with collections, if it doesn't exist
-    """
-    if not os.path.exists(BUILDTEST_MODULE_COLLECTION_FILE):
-        module_coll_dict = {"collection": []}
-        with open(BUILDTEST_MODULE_COLLECTION_FILE, "w") as outfile:
-            json.dump(module_coll_dict, outfile, indent=2)
-
-
 def create_logfile():
     """Create a logfile to keep track of messages for the user, if doesn't exist
     """
@@ -41,7 +29,6 @@ def create_logfile():
         build_dict = {"build": {}}
         with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
             json.dump(build_dict, outfile, indent=2)
-
 
 def init():
     """Buildtest init should check that the buildtest user root exists,
@@ -63,7 +50,6 @@ def init():
 
     # Create config files, module files, and log file
     create_config_files()
-    create_module_file()
     create_logfile()
 
 
@@ -73,20 +59,6 @@ config_yaml_keys = {
     "build": {
         "testdir": type("str"),
         "module": {"type": type(dict), "purge": {"type": type(bool)}},
-    },
-    "module": {
-        "list": {
-            "type": type(dict),
-            "exclude_version_files": {"type": type("str")},
-            "filter": {"type": type(dict), "include": {"type": type([])}},
-            "querylimit": {"type": type(int)},
-        },
-        "loadtest": {
-            "type": type(dict),
-            "login": {"type": type(bool)},
-            "purge_modules": {"type": type(bool)},
-            "numtest": {"type": type(int)},
-        },
     },
 }
 

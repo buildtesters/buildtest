@@ -1,5 +1,0 @@
-$ buildtest module tree -r /usr/share/lmod/lmod/modulefiles/Core
-Removing module tree: ['/usr/share/lmod/lmod/modulefiles/Core']
-Configuration File: /u/users/ssi29/.buildtest/settings.yml has been updated
-buildtest detected change in BUILDTEST_MODULEPATH
-buildtest will now update spider file: /u/users/ssi29/gpfs/buildtest-framework/var/spider.json

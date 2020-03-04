@@ -26,12 +26,6 @@ BUILDTEST_BUILD_LOGFILE = os.path.join(BUILDTEST_ROOT, "var", "build.json")
 BUILDTEST_BUILD_HISTORY = {}
 BUILDTEST_CONFIG_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml")
 BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml.bak")
-BUILDTEST_MODULE_COLLECTION_FILE = os.path.join(
-    BUILDTEST_ROOT, "var", "collection.json"
-)
-
-# BUILDTEST_SPIDER_FILE is used to keep a cache of Lmod spider locally to avoid rerunning spider every time
-BUILDTEST_SPIDER_FILE = os.path.join(BUILDTEST_ROOT, "root", "spider.json")
 
 # TESTCONFIG_ROOT is the root directory where test configurations are found
 # configs can be specified as full paths or relative to this path

@@ -1,2 +1,0 @@
-$ buildtest module collection --clear
-Initialize Module Collection File: /u/users/ssi29/gpfs/buildtest-framework/var/collection.json

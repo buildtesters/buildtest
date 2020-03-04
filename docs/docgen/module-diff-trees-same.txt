@@ -1,2 +1,0 @@
-$ buildtest module --diff-trees /usr/share/lmod/lmod/modulefiles/Core,/usr/share/lmod/lmod/modulefiles/Core
-No difference found between module tree:  /usr/share/lmod/lmod/modulefiles/Core  and module tree:  /usr/share/lmod/lmod/modulefiles/Core

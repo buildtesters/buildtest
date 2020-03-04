@@ -11,8 +11,6 @@ import yaml
 from buildtest.tools.config import config_opts
 from buildtest.tools.defaults import logID
 from buildtest.tools.log import BuildTestError
-from buildtest.tools.modules import module_selector
-
 
 def get_yaml_schema():
     mpi_schema = {
@@ -619,10 +617,6 @@ class SingleSource(BuildTestBuilder):
         """This method brings all the components together to form the test structure."""
 
         logger = logging.getLogger(logID)
-
-        self.testscript_content["module"] = module_selector(
-            self.lmod_collection, self.buildtest_collection
-        )
 
         self.testscript_content["metavars"].append(
             f"TESTDIR={config_opts['build']['testdir']}"
