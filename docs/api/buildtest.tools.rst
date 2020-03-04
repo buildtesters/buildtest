@@ -8,7 +8,6 @@ Subpackages
 
    buildtest.tools.buildsystem
    buildtest.tools.configuration
-   buildtest.tools.modulesystem
 
 Submodules
 ----------
@@ -22,7 +21,6 @@ Submodules
    buildtest.tools.get
    buildtest.tools.log
    buildtest.tools.menu
-   buildtest.tools.modules
    buildtest.tools.show
    buildtest.tools.system
    buildtest.tools.writer

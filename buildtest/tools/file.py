@@ -120,21 +120,3 @@ def create_dir(dirname):
         except OSError as err:
             print(err)
             raise
-
-
-def string_in_file(string, filename):
-    """Returns True/False to indicate if string is in file.
-
-    :param string: string to search
-    :type string: str, required
-    :param filename: file to check string
-    :type filename: str, required
-
-    :return: return True if string found, False on failure
-    :rtype: True or False
-    """
-
-    if string in open(filename).read():
-        return True
-
-    return False

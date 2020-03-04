@@ -16,9 +16,6 @@ from buildtest.tools.configuration.config import (
 
 from buildtest.tools.show import func_show_subcmd, show_schema_layout
 from buildtest.tools.buildsystem.status import show_status_report
-from buildtest.tools.system import get_module_collection
-
-module_collection = get_module_collection()
 
 
 class BuildTestParser:
@@ -42,7 +39,6 @@ class BuildTestParser:
         )
         self.subparser_dict = {
             "build": "Options for building test scripts",
-            "module": "Buildtest Module Utilities",
             "show": "Options for displaying buildtest configuration",
             "config": "Buildtest Configuration Menu",
         }

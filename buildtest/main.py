@@ -1,5 +1,4 @@
 import os
-import sys
 
 # column width for linewrap for argparse library
 os.environ["COLUMNS"] = "120"

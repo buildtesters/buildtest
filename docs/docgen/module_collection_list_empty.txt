@@ -1,2 +1,0 @@
-$ buildtest module collection -l
-No module collection found.
