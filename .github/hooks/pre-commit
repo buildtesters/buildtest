@@ -52,7 +52,7 @@ fi
 if black --version >/dev/null 2>&1
 then
 	printf "Black is installed\n"
-        black buildtest tests/*.py examples/*.py
+        black buildtest tests/*.py
         if [ "$?" -ne "0" ]
             then
                 printf "There was a problem with formatting, commit cancelled.\n"

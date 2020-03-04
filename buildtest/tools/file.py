@@ -120,4 +120,3 @@ def create_dir(dirname):
         except OSError as err:
             print(err)
             raise
-
