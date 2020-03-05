@@ -87,10 +87,7 @@ Description
 generate test scripts. The framework is tightly integrated with Lmod module system to allow the framework to load modules
 properly when building test. buildtest was designed on the premise of reusable and easy to read test configuration that
 can be shared by the HPC community sites. buildtest aims to abstract test complexity so the user can
-focus on writing test with minimal knowledge of the system. buildtest provides a rich set of YAML keys see :ref:`singlesource_schema`
-for more details.
-
-For a brief summary of buildtest features see :ref:`feature_overview`
+focus on writing test with minimal knowledge of the system.
 
 buildtest is available on Github at https://github.com/HPC-buildtest/buildtest-framework
 

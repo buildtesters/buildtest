@@ -148,31 +148,31 @@ Now let's take at the recipe in the tutorials folder under ``compilers/hello.f.y
 
 And here is how to run the build, and see the output on the screen::
 
-        $ buildtest build -c compilers/hello.f.yml 
-	$ buildtest build -c hello.f.yml 
-	________________________________________________________________________________
-		                     build time: 03/01/2020 10:24:04
-		                        command: buildtest build -c compilers/hello.f.yml
-		        test configuration root: /home/users/vsochat/.buildtest/site
-		             configuration file: hello.f.yml
-		                      buildpath: /home/users/vsochat/.buildtest/testdir/build_7
-		                        logpath: /home/users/vsochat/.buildtest/testdir/build_7/log/buildtest_10_24_01_03_2020.log
-	________________________________________________________________________________
+    $ buildtest build -c compilers/hello.f.yml
+    $ buildtest build -c hello.f.yml
+    ________________________________________________________________________________
+                             build time: 03/01/2020 10:24:04
+                                command: buildtest build -c compilers/hello.f.yml
+                test configuration root: /home/users/vsochat/.buildtest/site
+                     configuration file: hello.f.yml
+                              buildpath: /home/users/vsochat/.buildtest/testdir/build_7
+                                logpath: /home/users/vsochat/.buildtest/testdir/build_7/log/buildtest_10_24_01_03_2020.log
+    ________________________________________________________________________________
 
 
 
-	STAGE                                    VALUE
-	________________________________________________________________________________
-	[LOAD CONFIG]                            PASSED
-	[SCHEMA CHECK]                           PASSED
-	[PROGRAM LANGUAGE]                       fortran
-	[COMPILER NAME]                          intel
-	[WRITING TEST]                           PASSED
-	[NUMBER OF TEST]                         1
-	Running All Tests from Test Directory: /home/users/vsochat/.buildtest/testdir/build_7
-	==============================================================
-		                 Test summary                         
-	Executed 1 tests
+    STAGE                                    VALUE
+    ________________________________________________________________________________
+    [LOAD CONFIG]                            PASSED
+    [SCHEMA CHECK]                           PASSED
+    [PROGRAM LANGUAGE]                       fortran
+    [COMPILER NAME]                          intel
+    [WRITING TEST]                           PASSED
+    [NUMBER OF TEST]                         1
+    Running All Tests from Test Directory: /home/users/vsochat/.buildtest/testdir/build_7
+    ==============================================================
+                         Test summary
+    Executed 1 tests
 
 We can see the input paths and metadata for the build, along with the various steps (and if they
 were successful) at the bottom. Note that the outputs for our build are in a "build_7" folder
