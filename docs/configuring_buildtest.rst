@@ -57,8 +57,6 @@ the following message
 If you don't specify a module tree for BUILDTEST_MODULEPATH then buildtest
 will read the value of MODULEPATH.
 
-Alternately, you can configure BUILDTEST_MODULEPATH from command line. For more details see :ref:`module_tree_operation`
-
 .. _configuring_spider:
 
 Configure Spider View

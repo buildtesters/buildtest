@@ -2,29 +2,6 @@ Introspection Operation
 =========================
 
 
-List Software (``buildtest module --software``)
----------------------------------------------------------------
-
-buildtest can report the software list by running the following ``buildtest module --software`` or
-short option ``buildtest module -s``
-
-
-buildtest determines the software list based on the module trees specified in ``BUILDTEST_MODULEPATH``
-and processes each module tree and returns a  unique software list
-
-.. program-output:: head -n 10 docgen/buildtest_module_--software.txt
-
-
-Listing Modules (``buildtest module list``)
-------------------------------------------------
-
-If you want to view a breakdown of all modules then use ``buildtest module list``. The output will be sorted by software
-and each entry will correspond to the full path of the modulefile.
-
-.. program-output:: head -n 10 docgen/buildtest_module_list.txt
-
-For more information see :ref:`buildtest_module_list`
-
 Show Options (``buildtest show --help``)
 _________________________________________
 

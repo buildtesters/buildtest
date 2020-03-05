@@ -44,7 +44,6 @@ its clear to the reader.
    :caption: Background
 
    what_is_buildtest.rst
-   feature_overview.rst
    getting_started.rst
 
 .. toctree::
@@ -53,10 +52,8 @@ its clear to the reader.
 
    installing_buildtest.rst
    configuring_buildtest.rst
-   building_test.rst
    introspection.rst
    spider.rst
-   module_operation.rst
 
 .. toctree::
    :maxdepth: 2

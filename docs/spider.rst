@@ -11,27 +11,13 @@ section read the spider `documentation <https://lmod.readthedocs.io/en/latest/13
 How buildtest implements its module operations
 ------------------------------------------------
 
-buildtest is able to implement some high-level :ref:`module_operation` such as
-
-- Automating Module Load Test
-
-- Listing of all modules and module file path and sub-trees
-
-- Detect easybuild/spack modules
-
-- List unique software names
-
-- List of all parent modules
-
-- Report all child modules for a given parent
-
 All of this is possible with the help of ``spider``. buildtest will invoke the following command::
 
   $LMOD_DIR/spider -o spider-json $BUILDTEST_MODULEPATH
 
 buildtest will cache the content of spider in a json file that can be found in root of buildtest under ``var/spider.json``.
 This allows bulidtest to process spider record from a single file which is faster as pose to running **spider** command
-every time. Almost all operations under ``buildtest module`` rely on spider.
+every time.
 
 Whenever there is a change to ``BUILDTEST_MODULEPATH`` in configuration, buildtest will rewrite the ``var/spider.json``.
 Changes to BUILDTEST_MODULEPATH are done with any of the commands::

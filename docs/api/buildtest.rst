@@ -15,8 +15,6 @@ Submodules
 .. toctree::
 
    buildtest.main
-   buildtest.module
-   buildtest.spider
 
 Module contents
 ---------------
