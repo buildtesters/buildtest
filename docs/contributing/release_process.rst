@@ -1,5 +1,14 @@
-Release Process
+Maintainer Guide
 ================
+
+Incoming Pull Request
+------------------------
+
+Any incoming Pull Request should be assigned to one or more maintainers for review. Upon approval, the PR should
+be **Squash and Merge**. If it's important to preserve a few commits during PR then **Rebase and merge** is acceptable.
+
+Release Process
+-----------------
 
 Every buildtest release will be tagged with a version number using format **X.Y.Z**. Every release will have a git tags
 such as ``v1.2.3`` to correspond to release **1.2.3**. Git tags should be pushed to upstream by **release manager** only.
@@ -22,12 +31,3 @@ Every release must have a release note that is maintained in file `CHANGELOG.rst
 
 Under buildtest `releases <https://github.com/HPC-buildtest/buildtest-framework/releases>`_ a new release can be created that
 corresponds to the git tag. In the release summary, just direct with a message stating **refer to CHANGELOG.rst for more details**
-
-Formatting Code
-----------------
-
-buildtest is using `black  <https://github.com/psf/black>`_ to format Python code. We let **black** take care of
-formatting the entire project so you can focus more time in development. buildtest has a GitHub action trigger in
-``.github/workflows/black.yml`` that formats code upon **push** and **pull request**.
-
-You can see the status of all GitHub actions at https://github.com/HPC-buildtest/buildtest-framework/actions

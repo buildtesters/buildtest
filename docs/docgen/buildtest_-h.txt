@@ -10,11 +10,9 @@ optional arguments:
 COMMANDS:
   
         build           Options for building test scripts
-        module           Buildtest Module Utilities
         show           Options for displaying buildtest configuration
-        testconfigs           Options for list, view, and edit test configuration
         config           Buildtest Configuration Menu
 
-  {build,module,config,show,testconfigs}
+  {build,config,show}
 
 Documentation: https://buildtest.readthedocs.io/en/latest/index.html

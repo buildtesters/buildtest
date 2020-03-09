@@ -6,14 +6,4 @@ build:
     purge:
       force: false
   testdir: /tmp/$USER/buildtest
-module:
-  list:
-    exclude_version_files: true
-    filter:
-      include: []
-    querylimit: -1
-  loadtest:
-    login: false
-    numtest: -1
-    purge_modules: true
-  spider_view: current
+

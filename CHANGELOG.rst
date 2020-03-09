@@ -1,14 +1,17 @@
 CHANGELOG
 =================
 
-v0.8.0 (Feb xxx, 2020)
+v0.8.0 (TBD, 2020)
 -----------------------
 
+ - Add pre-commit hook to automate python format via ``black``. Add ``black --check`` as automated check see #172, #179
+ - Remove CLI option ``buildtest build [run|log|test]`` see #163
+ - Remove all module operations and cli menu ``buildtest module``. This is now moved to an API lmodule at https://github.com/HPC-buildtest/lmodule
  - removing dependency of Lmod, only needed if modules specified in configs
- - replace toolkit/suite with site in code and documentation examples
+ - replace ``toolkit/suite`` with ``site`` directory  in code and documentation examples
  - removing bash script and sourcing in favor of Python module install
  - build test "root" replaced with user home ``$HOME/.buildtest``
- - addition of buildtest get command to clone repository into toolkit/suite
+ - addition of ``buildtest get`` command to clone repository into toolkit/suite
 
 v0.7.6 (Feb 4th, 2020)
 -----------------------
