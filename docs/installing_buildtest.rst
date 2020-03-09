@@ -70,27 +70,6 @@ Depending on your python version, install buildtest::
     $ python3 setup.py install
 
 
-If you want auto-completion using ``argcomplete`` on buildtest options, you can
-run this command::
-
-    # for bash, shell
-    eval "$(register-python-argcomplete buildtest)"
-
-    # for csh, tsch
-    eval `register-python-argcomplete --shell tcsh buildtest
-
-
-You can add this to your bash ``.profile`` at ``$HOME/.profile`` to have it sourced
-each time. After you do this, you can press **TAB** key on the keyboard to
-fill in the arguments options::
-
-    $ buildtest
-    build        -h           module       --version
-    config       --help       show         -V
-
-
-For more details on argcomplete please see https://pypi.org/project/argcomplete/
-
 Usage (``buildtest --help``)
 ------------------------------
 
