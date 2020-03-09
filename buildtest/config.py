@@ -5,8 +5,8 @@ import sys
 import yaml
 
 from buildtest import BUILDTEST_VERSION
-from buildtest.tools.file import create_dir
-from buildtest.tools.defaults import (
+from buildtest.utils.file import create_dir
+from buildtest.defaults import (
     BUILDTEST_BUILD_LOGFILE,
     BUILDTEST_CONFIG_FILE,
     BUILDTEST_CONFIG_BACKUP_FILE,
@@ -146,39 +146,6 @@ def load_configuration(config_path=None):
             config_opts["BUILDTEST_MODULEPATH"] = tree_list
 
     return config_opts
-
-
-def show_configuration():
-    """This method display buildtest configuration to terminal and this
-       implements command buildtest show --config.
-    """
-    exclude_list = ["BUILDTEST_VERSION"]
-
-    for key in sorted(config_opts):
-        if key in exclude_list:
-            continue
-
-        if key == "BUILDTEST_MODULEPATH":
-            tree = ""
-            for mod_tree in config_opts[key]:
-                tree += mod_tree + ":"
-
-            # remove last colon
-            tree = tree[:-1]
-            print((f"{key} \t =").expandtabs(50), tree)
-        # print all keys in module dictionary
-        elif key in ["module", "build"]:
-            module_keys = config_opts[key].keys()
-
-            for m in module_keys:
-                if isinstance(config_opts[key][m], dict):
-                    for k, v in config_opts[key][m].items():
-                        print((f"{key}[{m}][{k}] \t =").expandtabs(50), v)
-                else:
-                    print((f"{key}[{m}] \t =").expandtabs(50), config_opts[key][m])
-
-        else:
-            print((f"{key} \t =").expandtabs(50), f"{config_opts[key]}")
 
 
 # Run on init, so we only load once

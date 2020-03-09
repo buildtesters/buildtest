@@ -4,7 +4,7 @@ Methods related to buildtest logging
 import os
 import logging
 from datetime import datetime
-from buildtest.tools.defaults import logID
+from buildtest.defaults import logID
 
 
 class BuildTestError(Exception):

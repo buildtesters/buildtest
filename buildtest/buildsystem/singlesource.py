@@ -8,9 +8,9 @@ import random
 import yaml
 
 
-from buildtest.tools.config import config_opts
-from buildtest.tools.defaults import logID
-from buildtest.tools.log import BuildTestError
+from buildtest.config import config_opts
+from buildtest.defaults import logID
+from buildtest.log import BuildTestError
 
 
 def get_yaml_schema():

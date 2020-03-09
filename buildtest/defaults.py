@@ -12,7 +12,7 @@ logID = "buildtest"
 
 # Get user home based on effective uid, root of install to copy files
 userhome = pwd.getpwuid(os.getuid())[5]
-root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+root = os.path.dirname(os.path.abspath(__file__))
 
 # root of buildtest-framework user home
 BUILDTEST_ROOT = os.path.join(userhome, ".buildtest")

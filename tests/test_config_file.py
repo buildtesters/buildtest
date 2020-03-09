@@ -1,10 +1,10 @@
 import os
 
-from buildtest.tools.defaults import (
+from buildtest.defaults import (
     BUILDTEST_CONFIG_FILE,
     BUILDTEST_CONFIG_BACKUP_FILE,
 )
-from buildtest.tools.configuration.config import func_config_view, func_config_restore
+from buildtest.menu.config import func_config_view, func_config_restore
 
 
 def test_config_file_exists():

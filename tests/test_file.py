@@ -1,14 +1,14 @@
 import pytest
 import os
 import shutil
-from buildtest.tools.file import (
+from buildtest.utils.file import (
     is_dir,
     is_file,
     create_file,
     create_dir,
     walk_tree,
 )
-from buildtest.tools.log import BuildTestError
+from buildtest.log import BuildTestError
 
 here = os.path.dirname(os.path.abspath(__file__))
 
