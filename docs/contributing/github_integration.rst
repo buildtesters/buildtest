@@ -1,9 +1,9 @@
-GitHub Integration
+GitHub Integrations
 ====================
 
-buildtest has several github integration, including automated checks during PR that maintainers will check to
+buildtest has several github integration, including automated checks during PR that maintainers will check
 during the PR review. You should check results from the `buildtest actions <https://github.com/HPC-buildtest/buildtest-framework/actions>`_
-to see if any fixes need to me made.
+that are also typically linked as part of the pull request testing suite.
 
 It's good practice to check Travis `builds <https://travis-ci.com/HPC-buildtest/buildtest-framework>`_ since we use Travis
 to run regression test and Codecov and Coveralls depend on Travis to pass all checks.
@@ -11,37 +11,25 @@ to run regression test and Codecov and Coveralls depend on Travis to pass all ch
 You will want to make sure code is formatted via black as we have automated checks for python formatting. If you have not
 setup the black hook check out :ref:`black_hook`
 
+If you notice the black linter step in `GitHub Actions <https://github.com/HPC-buildtest/buildtest-framework/actions>`_ is
+failing, make sure you have the right version of black installation.
+
 GitHub Apps
 ------------
 
 The following apps are configured with buildtest.
 
-- **Travis CI** - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted continuous integration system.
+- `Travis CI <https://travis-ci.com/HPC-buildtest/buildtest-framework>`_ - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted continuous integration system.
 
-- **CodeCov** - Codecov provides highly integrated tools to group, merge, archive and compare coverage reports
+- `CodeCov <https://codecov.io/gh/HPC-buildtest/buildtest-framework>`_ - Codecov provides highly integrated tools to group, merge, archive and compare coverage reports
 
-- **Coverall** - Coveralls is a web service to help you track your code coverage over time, and ensure that all your new code is fully covered.
+- `Coveralls <https://coveralls.io/github/HPC-buildtest/buildtest-framework>`_ - Coveralls is a web service to help you track your code coverage over time, and ensure that all your new code is fully covered.
 
-- **CodeFactor** - CodeFactor instantly performs Code Review with every GitHub Commit or PR. Zero setup time. Get actionable feedback within seconds. Customize rules, get refactoring tips and ignore irrelevant issues.
+- `CodeFactor <https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework>`_ - CodeFactor instantly performs Code Review with every GitHub Commit or PR. Zero setup time. Get actionable feedback within seconds. Customize rules, get refactoring tips and ignore irrelevant issues.
 
-- **GuardRails** - GuardRails provides continuous security feedback for modern development teams
+- `GuardRails <https://dashboard.guardrails.io/default/gh/HPC-buildtest>`_ - GuardRails provides continuous security feedback for modern development teams
 
-- **Snyk** - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
-
-Links to the following apps
-
-- **Travis**: https://travis-ci.com/HPC-buildtest/buildtest-framework
-
-- **CodeCov**: https://codecov.io/gh/HPC-buildtest/buildtest-framework
-
-- **Coveralls**: https://coveralls.io/github/HPC-buildtest/buildtest-framework
-
-- **CodeFactor**: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework
-
-- **Snyk**: https://app.snyk.io/org/hpc-buildtest/
-
-- **GuardRails**: https://dashboard.guardrails.io/default/gh/HPC-buildtest
-
+- `Snyk <https://app.snyk.io/org/hpc-buildtest/>`_  - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
 
 GitHub Actions
 --------------
@@ -108,7 +96,7 @@ The changes will be shown with lines removed or added via ``-`` and ``+``. For m
 GitHub Bots
 -----------
 
-Buildtest has a few bots to do various operations that are described below.
+buildtest has a few bots to do various operations that are described below.
 
 - **Stale**  - buildtest is using `Stale <https://github.com/marketplace/stale>`_ to close outdated issues. This is configured in ``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
 

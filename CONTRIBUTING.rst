@@ -167,7 +167,7 @@ complete, you will want to add the tests, commit and push as follows::
   git commit -m <MESSAGE>
   git push
 
-Buildtest Regression Test
+buildtest Regression Test
 --------------------------
 
 buildtest has a suite of regression tests to verify the state of buildtest. These tests are located in
