@@ -3,7 +3,6 @@ buildtest menu
 """
 
 import argparse
-import argcomplete
 
 from buildtest.tools.config import config_opts
 from buildtest.tools.build import func_build_subcmd
@@ -73,8 +72,6 @@ class BuildTestParser:
         :return: return a parsed dictionary returned by ArgumentParser
         :rtype: dict
         """
-
-        argcomplete.autocomplete(self.parser)
         args = self.parser.parse_args()
 
         if args.subcommands:

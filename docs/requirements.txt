@@ -1,5 +1,4 @@
 alabaster==0.7.12
-argcomplete==1.11.1
 Babel==2.8.0
 certifi==2019.11.28
 chardet==3.0.4
@@ -29,6 +28,5 @@ sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-programoutput==0.15
 sphinxcontrib-qthelp==1.0.3
 sphinxcontrib-serializinghtml==1.1.4
-termcolor==1.1.0
 urllib3==1.25.8
 zipp==3.0.0
