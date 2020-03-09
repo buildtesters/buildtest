@@ -18,4 +18,5 @@ jobs:
 
         # Choose whether to include file with no URLs in the prints.
         print_all: False
-        
+
+        white_listed_urls: "https://github.com/marketplace/trafico-pull-request-labeler,https://github.com/HPC-buildtest/buildtest-framework,https://easybuild.readthedocs.io/en/latest/,https://github.com/HPC-buildtest/buildtest-framework/issues,https://buildtest.readthedocs.io/en/latest/index.html"
