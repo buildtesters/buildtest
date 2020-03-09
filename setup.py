@@ -27,10 +27,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "argcomplete==1.9.5",
         "PyYAML>=5.2",
         "distro==1.4.0",
-        "termcolor==1.1.0",
     ],
     entry_points={"console_scripts": ["buildtest=buildtest.main:main"]},
 )

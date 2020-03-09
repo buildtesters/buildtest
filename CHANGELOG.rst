@@ -1,9 +1,10 @@
 CHANGELOG
-=================
+=========
 
-v0.8.0 (Feb xxx, 2020)
+v0.8.0 (Mar xxx, 2020)
 -----------------------
 
+ - removing extra dependencies argcomplete and termcolor
  - removing dependency of Lmod, only needed if modules specified in configs
  - replace toolkit/suite with site in code and documentation examples
  - removing bash script and sourcing in favor of Python module install
