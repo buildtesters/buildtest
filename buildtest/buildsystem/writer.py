@@ -2,8 +2,8 @@ import logging
 import os
 import stat
 
-from buildtest.tools.defaults import logID, BUILDTEST_BUILD_HISTORY
-from buildtest.tools.buildsystem.status import get_total_build_ids
+from buildtest.defaults import logID, BUILDTEST_BUILD_HISTORY
+from buildtest.buildsystem.status import get_total_build_ids
 
 
 def write_test(content):

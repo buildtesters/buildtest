@@ -1,6 +1,6 @@
 .. _Getting Started:
 
-Getting Started with Buildtest
+Getting Started with buildtest
 ==============================
 
 Interacting with the client
@@ -57,7 +57,7 @@ with the latter, and change directory to interact with our test configurations::
     $ cd /home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials
 
 
-Let's take a look at the simplest of examples - a "Hello Buildtest" example! This is
+Let's take a look at the simplest of examples - a "Hello buildtest" example! This is
 located in ``hello-world``::
 
     $ cd hello-world
@@ -82,7 +82,7 @@ the bat that this is intended to test a bash script. Let's take a look at the fi
 
     testtype: singlesource
     scheduler: local
-    description: Hello World Buildtest Example
+    description: Hello World buildtest Example
     maintainer:
     - vsoch
 
@@ -98,7 +98,7 @@ There are no surprises here::
     $ cat src/hello.sh 
     #!/bin/bash
 
-    printf "Hello Buildtest\n"
+    printf "Hello buildtest\n"
 
 
 On a high level, the scripts you will run to test and other source files will
@@ -183,7 +183,7 @@ Inspect Results
 ---------------
 
 Aside from the terminal print above, we might want to look at results, especially if the
-build is not successful. Buildtest by default creates a new build_x directory under
+build is not successful. buildtest by default creates a new build_x directory under
 the buildtest home testdir (defaults to ``$HOME/.buildtest/testdir``) that contains
 a script generated to run the build, a folder for logs, and a folder for run output.::
 

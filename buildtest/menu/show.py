@@ -4,8 +4,8 @@ import sys
 import yaml
 
 
-from buildtest.tools.config import show_configuration
-from buildtest.tools.buildsystem.singlesource import get_yaml_schema
+from buildtest.menu.config import show_configuration
+from buildtest.buildsystem.singlesource import get_yaml_schema
 
 
 def func_show_subcmd(args):

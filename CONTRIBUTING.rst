@@ -119,11 +119,9 @@ It is best practice to run ``make clean`` to ensure sphinx will remove old html 
 skip ``make clean`` if you are making minor changes.
 
 Running ``make html`` will build the sphinx project and generate all the html files in ``docs/_build/html``. Once this process is
-complete you may want to view the documentation. If you have ``firefox`` in your system you can simply run the following
+complete you may want to view the documentation. If you have ``firefox`` in your system you can simply run the following::
 
-::
-
-  make view
+    make view
 
 This will open a ``firefox`` session to the root of your documentation that was recently generated. You will want to
 make sure you have X11 forwarding in order for firefox to work properly. Refer to the ``Makefile`` to see all of the
@@ -169,7 +167,7 @@ complete, you will want to add the tests, commit and push as follows::
   git commit -m <MESSAGE>
   git push
 
-Buildtest Regression Test
+buildtest Regression Test
 --------------------------
 
 buildtest has a suite of regression tests to verify the state of buildtest. These tests are located in
