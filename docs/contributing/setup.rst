@@ -4,9 +4,6 @@ Getting Started
 Contribution is not easy, so we created this document to describe how to get you setup
 so you can contribute back and make everyone's life easier.
 
-PreparationContribution is not easy, so we created this document to describe how to get you setup
-so you can contribute back and make everyone's life easier.
-
 GitHub Account
 --------------
 
@@ -67,8 +64,6 @@ fork as follows::
 Repeat this same operation with ``master`` branch if you want to sync it with
 upstream repo
 
-
-
 Feature Branch
 ------------------
 
@@ -90,8 +85,47 @@ Once you are ready to push to your fork repo do the following::
 Once the branch is created in your fork, you can create a PR for the ``devel``
 branch for ``upstream`` repo (https://github.com/HPC-buildtest/buildtest-framework)
 
-Review
--------
+Pull Request Review
+--------------------
 
-Someone from the **buildtest team** will review the PR and get back to you with the feedback. If the reviewer requests
-some changes, then the user is requested to make changes and update the branch used for sending PR
+Once you have submitted a Pull Request, please check the automated checks that are run for your PR to ensure checks are
+passed. Please wait for buildtest maintainers to review your PR and provide feedback. If the reviewer requests
+some changes, then you are requested to make changes and update the branch used for sending PR
+
+
+Often times, you may start a feature branch and your PR get's out of sync with ``devel`` branch which may lead to conflicts,
+this is a result of merging incoming PRs that may cause your PR to be out of date. The maintainers will check for this during
+PR review or GitHub will report file conflicts during merge.
+
+Syncing your feature branch with devel is out of scope for this documentation, however you can use the steps below
+as a *guide* when you run into this issue.
+
+Anyhow, you may want to take the steps to first sync devel branch and then selectively rebase or merge ``devel`` into your
+feature branch.
+
+First go to ``devel`` branch and fetch changes from upstream::
+
+    git checkout devel
+    git fetch upstream devel
+
+Note you shouldn't be making any changes to your local ``devel`` branch, if ``git fetch`` was successful you can merge your
+``devel`` with upstream as follows::
+
+    git merge upstream/devel
+
+Next, navigate to your feature branch and sync feature changes with devel::
+
+    git checkout <feature-branch>
+    git merge devel
+
+.. Note:: Running above command will sync your feature branch with ``devel`` but you may have some file conflicts depending
+on files changed during PR. You will need to resolve them manually before pushing your changes
+
+Instead of merge from ``devel`` you can rebase your commits interactively when syncing with ``devel``. This can be done by running::
+
+    git rebase -i devel
+
+Once you have synced your branch push your changes and check if file conflicts are resolved in your Pull Request::
+
+    git push origin <feature-branch>
+

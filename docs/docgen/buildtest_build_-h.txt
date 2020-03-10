@@ -1,7 +1,6 @@
 $ buildtest build -h
 usage: buildtest [options] [COMMANDS] build [-h] [--clear] [-c TEST CONFIGURATION] [-d] [-v]
-                                            [-co Lmod Collection Name | -mc COLLECTION-ID]
-                                            {report,log,test,run} ...
+                                            {report} ...
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -11,16 +10,9 @@ optional arguments:
   -d, --dry             dry-run mode, buildtest will not write the test scripts but print content of test that would
                         be written
   -v, --verbose         verbosity level (default: 0)
-  -co Lmod Collection Name, --collection Lmod Collection Name
-                        Use user Lmod module collection when building test
-  -mc COLLECTION-ID, --module-collection COLLECTION-ID
-                        Use internal buildtest module collection when building test.
 
 subcommands:
   Report status on builds performed by buildtest.
 
-  {report,log,test,run}
+  {report}
     report              Report status details of all builds
-    log                 Report build log for a particular build
-    test                Report test scripts based on build ID
-    run                 Run test scripts based on build ID

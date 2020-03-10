@@ -1,6 +1,6 @@
 .. _Setup:
 
-Installing Buildtest
+Installing buildtest
 =====================
 
 Requirements
@@ -44,7 +44,7 @@ Or you may switch to the **devel** branch if you already cloned it::
 
     $ git checkout devel
 
-Buildtest Dependencies
+buildtest Dependencies
 -----------------------
 
 Next, we need to install buildtest dependencies from ``docs/requirements.txt`` by running ::

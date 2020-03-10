@@ -1,5 +1,5 @@
-Buildtest Regression Test
-=========================
+Regression Tests
+=================
 
 buildtest has a suite of regression tests to verify the state of buildtest. These tests are located in
 ``$BUILDTEST_ROOT/tests`` and the tests can be executed using ``pytest``.

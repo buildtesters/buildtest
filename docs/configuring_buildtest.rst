@@ -57,43 +57,6 @@ the following message
 If you don't specify a module tree for BUILDTEST_MODULEPATH then buildtest
 will read the value of MODULEPATH.
 
-.. _configuring_spider:
-
-Configure Spider View
----------------------
-
-Lmod ``spider`` is used to retrieve module details in json format, this is done in buildtest during startup as follows::
-
-    $ spider -o spider-json $BUILDTEST_MODULEPATH
-
-The default configuration for ``spider_view`` is set to **current**  as shown below::
-
-    module:
-        spider_view: current
-
-Valid values for spider_view are [``all``, ``current``].
-
-If ``spider_view: all``, then buildtest will retrieve **all spider records** that includes all trees defined in
-$BUILDTEST_MODULEPATH and any subtrees as a result. This is the default behavior of spider. For instance, if you have
-two module trees ``/apps/modules/Compilers``, ``/apps/modules/MPI`` where ``/apps/modules/MPI`` is a sub-tree of
-``/apps/modules/Compilers`` and you run the spider command as follows::
-
-    spider -o spider-json /apps/modules/Compilers
-
-The resulting output will retrieve modules from ``/apps/modules/MPI`` as well.
-
-If you want to restrict the search of module retrieval to only trees defined in ``/apps/modules/Compilers`` and none of the
-sub-trees then you must set ``spider_view: current``. This will instruct buildtest to only retrieve spider
-records whose modulefile absolute path is a sub-directory of ``/apps/modules/Compilers``.
-
-In the previous example, if ``spider_view: current`` and you run::
-
-    spider -o spider-json /apps/modules/Compilers
-
-Spider will retrieve records from both trees (``/apps/modules/Compilers``, ``/apps/modules/MPI``), but buildtest will
-check if absolute path to modulefile is part of sub-directory (``/apps/modules/Compilers``). Any record from ``/apps/modules/MPI``
-will be ignored.
-
 Purging Modules In Tests
 --------------------------
 
