@@ -1,0 +1,21 @@
+{
+  "$id": "https://HPC-buildtest.github.io/schemas/global/outer.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BuildTest Wrapper for Test Configurations",
+  "type": "object",
+  "required": ["version"],
+  "propertyNames": {
+    "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+  },
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The semver version of the schema to use (x.x.x)."
+      }
+    },
+    "patternProperties": {
+      "^[A-Za-z_.][A-Za-z0-9_]*$": {
+         "type": ["object", "string"]
+       }
+    }
+}

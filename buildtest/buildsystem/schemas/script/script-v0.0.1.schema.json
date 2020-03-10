@@ -1,0 +1,37 @@
+{
+  "$id": "https://HPC-buildtest.github.io/schemas/script/script-v0.0.1.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BuildTest Test Configuration for Script",
+  "type": "object",
+  "required": ["type", "run"],
+  "propertyNames": {
+    "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+  },
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^script$"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description for the build recipe."
+    },
+    "maintainers": {
+      "type": "array",
+      "description": "One or more maintainers or aliases",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "shell": {
+      "type": "string",
+      "default": "bash",
+      "description": "The shell interpreter to use."
+    },
+    "run": {
+      "type": "string",
+      "description": "A script to run using the default shell."
+    }
+  }
+}
