@@ -8,11 +8,11 @@ import os
 import re
 import sys
 
-from buildtest.tools.config import config_opts
-from buildtest.tools.defaults import TESTCONFIG_ROOT
+from buildtest.config import config_opts
+from buildtest.defaults import TESTCONFIG_ROOT
 
-from buildtest.tools.file import create_dir
-from buildtest.tools.log import init_log
+from buildtest.utils.file import create_dir
+from buildtest.log import init_log
 
 
 def func_get_subcmd(args):

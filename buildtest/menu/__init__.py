@@ -1,20 +1,21 @@
 """
-buildtest menu
+buildtest menu: include functions to build, get test configurations, and 
+interact with a global configuration for buildtest.
 """
 
 import argparse
 
-from buildtest.tools.config import config_opts
-from buildtest.tools.build import func_build_subcmd
-from buildtest.tools.get import func_get_subcmd
-from buildtest.tools.configuration.config import (
+from buildtest.config import config_opts
+from buildtest.menu.build import func_build_subcmd
+from buildtest.menu.get import func_get_subcmd
+from buildtest.menu.config import (
     func_config_edit,
     func_config_view,
     func_config_restore,
 )
 
-from buildtest.tools.show import func_show_subcmd, show_schema_layout
-from buildtest.tools.buildsystem.status import show_status_report
+from buildtest.menu.show import func_show_subcmd, show_schema_layout
+from buildtest.menu.status import show_status_report
 
 
 class BuildTestParser:

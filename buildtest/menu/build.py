@@ -11,19 +11,19 @@ import shutil
 import sys
 import subprocess
 
-from buildtest.tools.config import config_opts
-from buildtest.tools.defaults import (
+from buildtest.config import config_opts
+from buildtest.defaults import (
     BUILDTEST_BUILD_HISTORY,
     BUILDTEST_BUILD_LOGFILE,
     TESTCONFIG_ROOT,
 )
 
-from buildtest.tools.buildsystem.singlesource import SingleSource
-from buildtest.tools.buildsystem.dry import dry_view
-from buildtest.tools.file import create_dir, walk_tree
-from buildtest.tools.log import init_log
-from buildtest.tools.buildsystem.status import get_total_build_ids
-from buildtest.tools.writer import write_test
+from buildtest.buildsystem.singlesource import SingleSource
+from buildtest.buildsystem.dry import dry_view
+from buildtest.utils.file import create_dir, walk_tree
+from buildtest.log import init_log
+from buildtest.buildsystem.status import get_total_build_ids
+from buildtest.buildsystem.writer import write_test
 
 
 def discover_configs(config_file):

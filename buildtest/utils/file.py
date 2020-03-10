@@ -11,8 +11,8 @@ include the following:
 import os
 import logging
 
-from buildtest.tools.defaults import logID
-from buildtest.tools.log import BuildTestError
+from buildtest.defaults import logID
+from buildtest.log import BuildTestError
 
 
 def is_file(fname):

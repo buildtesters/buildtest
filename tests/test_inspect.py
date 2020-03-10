@@ -1,5 +1,5 @@
-from buildtest.tools.config import show_configuration
-from buildtest.tools.show import show_schema_layout
+from buildtest.menu.config import show_configuration
+from buildtest.menu.show import show_schema_layout
 
 
 def test_show_config():
