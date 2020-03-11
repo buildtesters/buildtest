@@ -24,9 +24,9 @@
 buildtest
 ---------
 
-buildtest is a software stack testing framework that automates test creation and execution to help HPC facilities to
-better support and validate their software stack. buildtest is a central repository with collection of tests for all
-scientific software that is installed in HPC. buildtest makes use of `YAML <https://yaml.org/>`_ configuration to write
+buildtest is a software stack testing framework that automates test creation and execution to help users and 
+HPC facilities to better support and validate their software stack. buildtest can provide a means to share central repositories 
+with collections of tests for scientific software. buildtest makes use of `YAML <https://yaml.org/>`_ configuration to write
 test configuration that is reusable and adaptable to other HPC sites.
 
 To get started with buildtest see `Installing buildtest <https://buildtest.readthedocs.io/en/latest/installing_buildtest.html>`_
