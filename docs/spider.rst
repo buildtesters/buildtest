@@ -119,7 +119,7 @@ There will be some records that **dont** have a ``parentAA`` field for example t
         "Version": "8.1.0",
         "hidden": false,
         "fullName": "GCCcore/8.1.0",
-        "help": "\nDescription\n===========\nThe GNU Compiler Collection includes front ends for C, C++, Objective-C, Fortran, Java, and Ada,\n as well as libraries for these languages (libstdc++, libgcj,...).\n\n\nMore information\n================\n - Homepage: http://gcc.gnu.org/\n",
+        "help": "\nDescription\n===========\nThe GNU Compiler Collection includes front ends for C, C++, Objective-C, Fortran, Java, and Ada,\n as well as libraries for these languages (libstdc++, libgcj,...).\n\n\nMore information\n================\n - Homepage: http://gcc.gnu.org/",
         "lpathA": {
             "/mxg-hpc/users/ssi29/easybuild-HMNS/software/GCCcore/8.1.0/lib": 1,
             "/mxg-hpc/users/ssi29/easybuild-HMNS/software/GCCcore/8.1.0/lib64": 1,
