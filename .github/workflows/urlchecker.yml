@@ -11,6 +11,9 @@ jobs:
     - name: URLs-checker
       uses: urlstechie/URLs-checker@add/checkout-optional-git-path
       with:
+        # check this subfolder only
+        subfolder: docs
+
         # A comma-separated list of file types to cover in the URL checks
         file_types: .md,.py,.rst
 

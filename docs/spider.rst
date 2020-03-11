@@ -61,7 +61,7 @@ Shown below is an example spider record for ``flex``
                 ],
                 "hidden": false,
                 "fullName": "flex/2.6.4",
-                "help": "\nDescription\n===========\nFlex (Fast Lexical Analyzer) is a tool for generating scanners. A scanner, \n sometimes called a tokenizer, is a program which recognizes lexical patterns\n in text.\n\n\nMore information\n================\n - Homepage: http://flex.sourceforge.net/\n",
+                "help": "\nDescription\n===========\nFlex (Fast Lexical Analyzer) is a tool for generating scanners. A scanner, \n sometimes called a tokenizer, is a program which recognizes lexical patterns\n in text.\n\n\nMore information\n================\n - Homepage: http://flex.sourceforge.net/",
                 "lpathA": {
                     "/mxg-hpc/users/ssi29/easybuild-HMNS/software/flex/2.6.4-GCCcore-8.1.0/lib": 1
                 }
