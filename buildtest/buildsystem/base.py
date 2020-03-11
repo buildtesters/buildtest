@@ -63,7 +63,6 @@ class BuildConfig:
         # validate each schema defined in the recipes
         self._validate()
 
-
     def __str__(self):
         return "[buildtest-build-config]"
 
@@ -75,10 +74,10 @@ class BuildConfig:
            to buildtest. If a version is provided, honor it. If not, use latest.
            We also don't allow repeated keys in the same file.
         """
-        version = self.recipe.get("version", "latest") 
+        version = self.recipe.get("version", "latest")
         seen = set()
         for name, section in self.recipe.items():
- 
+
             if name == "version":
                 continue
 
@@ -88,18 +87,21 @@ class BuildConfig:
             seen.add(name)
 
             # Ensure we have a recipe for it
-            if section["type"] not in self.lookup.keys():                          
+            if section["type"] not in self.lookup.keys():
                 sys.exit("type %s is not known to buildtest." % section["type"])
 
             # And that there is a version file
-            if version not in self.lookup[section['type']]:
-                sys.exit("version %s is not known for type %s. Try using latest." % version, section['type'])
+            if version not in self.lookup[section["type"]]:
+                sys.exit(
+                    "version %s is not known for type %s. Try using latest." % version,
+                    section["type"],
+                )
 
             # Finally, validate the section against the schema
-            schema_file = os.path.join(here, section['type'], self.lookup[section['type']][version])
+            schema_file = os.path.join(
+                here, section["type"], self.lookup[section["type"]][version]
+            )
             validate(instance=section, schema=load_schema(schema_file))
-
-
 
     def _validate_global(self, config_file=None):
         """the global validation ensures that the overall structure of the

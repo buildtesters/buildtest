@@ -5,6 +5,7 @@ import os
 
 here = os.path.dirname(os.path.abspath(__file__))
 
+
 def test_load_configs():
 
     # Examples folder
