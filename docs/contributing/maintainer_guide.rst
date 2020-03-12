@@ -82,8 +82,7 @@ Shown below is the recommended configuration.
 
 If you notice a deviation, please consult with the maintainers.
 
-Google pwd
-
+Google Analytics
 -----------------
 
 The buildtest site is tracked via Google Analytics, if you are interested in get access contact **Shahzeb Siddiqui (@shahzebsiddiqui)**
