@@ -10,7 +10,7 @@ import yaml
 
 from buildtest.config import config_opts
 from buildtest.defaults import logID
-from buildtest.log import BuildTestError
+from buildtest.exceptions import BuildTestError
 
 
 def get_yaml_schema():

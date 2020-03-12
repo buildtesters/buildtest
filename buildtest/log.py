@@ -7,26 +7,6 @@ from datetime import datetime
 from buildtest.defaults import logID
 
 
-class BuildTestError(Exception):
-    """Class responsible for error handling in buildtest. This is a sub-class
-    of Exception class."""
-
-    def __init__(self, msg, *args):
-        """Constructor Method.
-
-        :param msg: message to print
-        :type msg: str, required
-        :param args:
-        :type args:
-        """
-        if args:
-            msg = msg % args
-        self.msg = msg
-
-    def __str__(self):
-        return repr(self.msg)
-
-
 def init_log(config_opts):
     """Initialize log file and define log attributes. This method invokes
        datetime.now() to name logfile using strftime().

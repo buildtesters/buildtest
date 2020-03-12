@@ -4,7 +4,7 @@ This file is used for generating documentation tests.
 import os, sys
 
 from buildtest.defaults import BUILDTEST_ROOT
-from buildtest.system import BuildTestCommand
+from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir
 
 docgen = os.path.join(BUILDTEST_ROOT, "docs", "docgen")
