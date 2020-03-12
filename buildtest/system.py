@@ -10,6 +10,7 @@ import subprocess
 
 from buildtest.utils.command import BuildTestCommand
 
+
 class BuildTestSystem:
     """BuildTestSystem is a class that detects system configuration and outputs the result
        in .run file which are generated upon test execution. This module also keeps

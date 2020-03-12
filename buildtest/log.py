@@ -6,6 +6,7 @@ import logging
 from datetime import datetime
 from buildtest.defaults import logID
 
+
 def init_log(config_opts):
     """Initialize log file and define log attributes. This method invokes
        datetime.now() to name logfile using strftime().

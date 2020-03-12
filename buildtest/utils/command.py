@@ -1,5 +1,6 @@
 import subprocess
 
+
 class BuildTestError(Exception):
     """Class responsible for error handling in buildtest. This is a sub-class
     of Exception class."""
