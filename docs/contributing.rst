@@ -18,7 +18,7 @@ Maintainers
 
 If you need to get hold of a buildtest maintainer, please contact one of the maintainers.
 
-Maintainers are listed in alphabetical order by Last Name:
+Maintainers are listed in alphabetical order by last name:
 
 - Shahzeb Siddiqui (**@shahzebsiddiqui**)
 
@@ -38,6 +38,7 @@ General Tips
 
 5. Please don't open a duplicate issue if there is an existing issue addressing similar problem, instead you can participate in discussion in the issue or contact appropriate individuals directly in slack
 
+6. There should not be any branches other than ``master`` or ``devel``. Feature branches should be pushed to your fork and not to origin
 
 
 Contributing Topics

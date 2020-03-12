@@ -21,6 +21,8 @@ These are just a few points to consider when dealing with incoming pull requests
 
 6. Maintainers are requested that committer name and email is from a valid Github account. If not please request the committer to fix the author name and email.
 
+7. All incoming PRs should be pushed to ``devel`` branch, if you see any PR sent to any other branch please inform code owner to fix it
+
 
 Release Process
 -----------------
@@ -62,8 +64,26 @@ Branch Settings
 All maintainers are encouraged to view branch `settings <https://github.com/HPC-buildtest/buildtest-framework/settings/branches>`_
 for ``devel`` and ``master``. If something is not correct please consult with the maintainers.
 
+The master and devel branches should be protected branches and master should be enabled as default branch. Shown
+below is the expected configuration.
 
-Google Analytics
+.. image:: buildtest_branch_settings.png
+
+Merge Settings
+----------------
+
+We have disabled ``Merge Commits`` for the Merge button in Pull Request.  This was done because we
+wanted a linear history as a requirement for ``devel`` branch. This avoids having a maintainer accidently
+merge a PR with ``Merge Commit`` which adds an extra commit.
+
+Shown below is the recommended configuration.
+
+.. image:: buildtest_merge_options.png
+
+If you notice a deviation, please consult with the maintainers.
+
+Google pwd
+
 -----------------
 
 The buildtest site is tracked via Google Analytics, if you are interested in get access contact **Shahzeb Siddiqui (@shahzebsiddiqui)**
@@ -73,3 +93,9 @@ Read The Docs Access
 
 buildtest project for readthedocs can be found at https://readthedocs.org/projects/buildtest/. If you need
 to administer project configuration, please contact **Shahzeb Siddiqui @shahzebsiddiqui** to gain access.
+
+Slack Admin Access
+-------------------
+
+If you need admin access to Slack Channel please contact **Shahzeb Siddiqui @shahzebsiddiqui**. The
+slack admin link is https://hpcbuildtest.slack.com/admin
