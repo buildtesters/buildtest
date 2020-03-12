@@ -1,5 +1,6 @@
 import subprocess
 
+
 class BuildTestCommand:
     """Class method to invoke shell commands and retrieve output and error. This class
     makes use of **subprocess.Popen()** to run the shell command. This class has no
