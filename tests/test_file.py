@@ -8,7 +8,7 @@ from buildtest.utils.file import (
     create_dir,
     walk_tree,
 )
-from buildtest.log import BuildTestError
+from buildtest.utils.command import BuildTestError
 
 here = os.path.dirname(os.path.abspath(__file__))
 

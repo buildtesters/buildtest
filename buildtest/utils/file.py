@@ -12,7 +12,7 @@ import os
 import logging
 
 from buildtest.defaults import logID
-from buildtest.log import BuildTestError
+from buildtest.utils.command import BuildTestError
 
 
 def is_file(fname):
