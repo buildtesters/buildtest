@@ -37,7 +37,6 @@ def run(query):
 def introspection_cmds():
 
     queries = [
-        "buildtest show schema",
         "buildtest show --config",
         "buildtest config view",
         "buildtest config restore",
@@ -49,7 +48,6 @@ def introspection_cmds():
         fname = os.path.join(docgen, tmp_fname)
 
         writer(fname, out, cmd)
-
 
 def build_cmds():
     build_dict = {

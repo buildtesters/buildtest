@@ -14,7 +14,7 @@ from buildtest.menu.config import (
     func_config_restore,
 )
 
-from buildtest.menu.show import func_show_subcmd, show_schema_layout
+from buildtest.menu.show import func_show_subcmd
 from buildtest.menu.status import show_status_report
 
 
@@ -171,9 +171,4 @@ class BuildTestParser:
             help="show buildtest environment configuration",
             action="store_true",
         )
-        subparsers_show = parser_show.add_subparsers(
-            description="buildtest configuration"
-        )
-        parser_schema = subparsers_show.add_parser("schema", help="Display YAML schema")
-        parser_schema.set_defaults(func=show_schema_layout)
         parser_show.set_defaults(func=func_show_subcmd)
