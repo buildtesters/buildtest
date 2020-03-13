@@ -3,8 +3,9 @@ BuildConfig: loader and manager for build configurations, and schema validation
 Copyright (C) 2020 Vanessa Sochat.
 """
 
-import os
+import datetime
 import json
+import os
 import re
 import sys
 import yaml
@@ -12,6 +13,8 @@ import yaml
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
+from buildtest.config import config_opts
+from buildtest.defaults import logID
 from buildtest.buildsystem.schemas.utils import (
     load_schema,
     load_recipe,
@@ -19,8 +22,11 @@ from buildtest.buildsystem.schemas.utils import (
     here,
 )
 
-
+# each has a subfolder in buildtest/buildsystem/schemas/ with *.schema.json
 supported_schemas = ["script"]
+
+# global config sections that are known, added to buildbase.metadata
+known_sections = ["env", "pre_run", "post_run"]
 
 
 class BuildConfig:
@@ -35,6 +41,9 @@ class BuildConfig:
        If the schema fails validation, we also don't continue.
     """
 
+    # Metadata keys are not considered build sections
+    metadata = ["version"]
+
     def __init__(self, config_file):
         """initiate a build configuration file, meaning that we read in the
            file, match it to a schema provided by buildtest, and 
@@ -44,6 +53,7 @@ class BuildConfig:
            ==========
            config_file: the pull path to the configuration file, must exist.
         """
+        self.recipe = None
         self.config_file = os.path.abspath(config_file)
 
         if not os.path.exists(self.config_file):
@@ -68,6 +78,8 @@ class BuildConfig:
 
     def __repr__(self):
         return "[buildtest-build-config]"
+
+    # Validation
 
     def _validate(self):
         """Given a loaded recipe, validate that the type is known in the lookup
@@ -119,3 +131,186 @@ class BuildConfig:
                 "Test configuration %s does not pass validation of the outer schema."
                 % config_file
             )
+
+    # Builders
+
+    def get_builders(self):
+        """Based on a loaded configuration file, return the correct builder
+           for each based on the type. Each type is associated with a known 
+           Builder class.
+        """
+        builders = []
+        if self.recipe:
+            for name in self.keys():
+                recipe_config = self.recipe[name]
+
+                # Add the builder based on the type
+                if recipe_config["type"] == "script":
+                    builders.append(ScriptBuilder(name, recipe_config))
+                else:
+                    print(
+                        "%s is not recognized by buildtest, skipping."
+                        % recipe_config["type"]
+                    )
+
+        return builders
+
+    def keys(self):
+        """Return the list of keys for the loaded recipe, not including
+           the metadata keys defined for any global recipe.
+        """
+        keys = []
+        if self.recipe:
+            keys = [x for x in self.recipe.keys() if x not in self.metadata]
+        return keys
+
+    def get(self, name):
+        """Given the name of a section (typically a build configuration name)
+           return the loaded section from self.recipe. If you need to parse
+           through just section names, use self.keys() to filter out metadata
+        """
+        return self.recipe.get(name)
+
+
+class BuilderBase:
+    """The BuilderBase is an abstract class that implements common functions for
+       any kind of builder.
+    """
+
+    def __init__(self, name, recipe_config):
+        """initiate a builder base. A recipe configuration (loaded) is required.
+           this can be handled easily with the BuildConfig class:
+
+           bc = BuildConfig(config_file)
+           recipe_config = bc.get("section_name")
+           builder = ScriptBuilder(recipe_config)
+
+           Parameters
+           ==========
+           name: a name for the build recipe (required)
+           config_file: the pull path to the configuration file, must exist.
+        """
+        self.name = name
+        self.build_id = None
+
+        # A builder is required to define the type attribute
+        if not hasattr(self, "type"):
+            sys.exit(
+                "A builder base is required to define the 'type' as a class variable"
+            )
+
+        # The recipe must be loaded as a dictionary
+        if not isinstance(recipe_config, dict):
+            sys.exit(
+                "Please load a recipe configuration before providing to the builder."
+            )
+
+        # The type must match the type of the builder
+        self.recipe = recipe_config
+        if self.recipe.get("type") != self.type:
+            sys.exit(
+                "Mismatch in type. Builder expects %s but found %s."
+                % (self.type, self.recipe.get("type"))
+            )
+
+        # TODO need to add logger for builder here
+        logger = logging.getLogger(logID)
+
+    def _prepare_run(self):
+        """Prepare run provides shared functions to set up metadata and
+           class data structures that are used by both run and dry_run
+           This section cannot be reached without a valid, loaded recipe
+        """
+        # Generate a unique id for the build based on key and unique string
+        self.build_id = self._generate_build_id()
+
+        # History is returned at the end of a run
+        self.history = {}
+        self.history["TESTS"] = []
+
+        # Create a deep copy of config_opts for the build file
+        self.options = deepcopy(config_opts)
+
+        # Metadata includes known sections in a config recipe (pre/post_run, env)
+        # These should all be validated for type, format, by the schema validator
+        self.metadata = {}
+        for known_section in known_sections:
+            if known_section in self.recipe:
+                self.metadata[known_section] = self.recipe.get(known_section)
+
+        # TODO: look at what this function did, decide where to derive content.
+        # likely this section should produce a base of metadata that can
+        # be added to in the calling subclass, and then the result shown/run
+        # content = singlesource_test.build_test_content()
+
+    def run(self):
+        """Given the name of a section in the loaded recipe, run the build.
+           This parent class handles shared starting functions for each step
+           and then calls the subclass function (_run) if it exists.
+        """
+        # Generate build id, history, and refreshed config options
+        self._prepare_run()
+
+        # Each subclass has a _run function to perform custom build operations
+        if not hasattr(self, "_run"):
+            raise NotImplementedError
+
+        # Run the build for the subclass
+        self._run()
+
+    def dry_run(self):
+        """Akin to a build preview
+        """
+        # Generate build id, history, and refreshed config options
+        self._prepare_run()
+
+        # Each subclass has a _run function to perform custom build operations
+        if not hasattr(self, "_dry_run"):
+            raise NotImplementedError
+
+        # Run the build for the subclass
+        self._dry_run()
+
+    def _generate_build_id(self):
+        """Generate a build id based on the recipe name, type, and datetime
+        """
+        now = datetime.datetime.now().strftime("%m-%d-%Y-%H-%M-S")
+        return "%s_%s_%s" % (self.name, self.type, now)
+
+    def _write_test(self):
+        """Given test metadata, write test content. (need to think this through)
+        """
+        raise NotImplementedError
+
+    def _build_command(self):
+        """Generate a command for a custom test configuration type
+        """
+        raise NotImplementedError
+
+
+class ScriptBuilder(BuilderBase):
+
+    type = "script"
+
+    def _run(self):
+        """Given the name of a section in the loaded recipe, run the build.
+           We get here when the user calls run() for the parent class, 
+           and metadata and a build id are prepared.
+        """
+        # TODO- this is where class specific work will use the self.metadata
+        # To finish up and then write the test content. The write function
+        # should be shared and provided by the builder base.
+        # write the test to run
+        self._write_test(self.content)
+
+    def _build_command(self):
+        """Generate a command for a custom test configuration type
+        """
+        raise NotImplementedError
+
+    def _dry_run(self):
+        """This will be run by the builder base after dry_run(). We don't
+           write tests to file, but instead preview a build (not written)
+        """
+        # TODO reproduce this function with self.content, ideally use global function
+        # dry_view(content)

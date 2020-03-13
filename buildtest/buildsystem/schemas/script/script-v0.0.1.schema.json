@@ -24,14 +24,34 @@
         "type": "string"
       }
     },
+    "env": {
+      "type": "object",
+      "description": "One or more key value pairs for an environment (key=value)",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minItems": 1,
+        "propertyNames": {
+           "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+        }
+      }
+    },
     "shell": {
       "type": "string",
       "default": "bash",
       "description": "The shell interpreter to use."
     },
+    "pre_run": {
+      "type": "string",
+      "description": "A script run before the default run using the default shell."
+    },
     "run": {
       "type": "string",
       "description": "A script to run using the default shell."
+    },
+    "post_run": {
+      "type": "string",
+      "description": "A script run after the default run using the default shell."
     }
   }
 }

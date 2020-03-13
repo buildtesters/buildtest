@@ -11,18 +11,18 @@ import shutil
 import sys
 import subprocess
 
-from buildtest.config import config_opts
 from buildtest.defaults import (
     BUILDTEST_BUILD_HISTORY,
     BUILDTEST_BUILD_LOGFILE,
     TESTCONFIG_ROOT,
 )
 
-from buildtest.buildsystem.singlesource import SingleSource
-from buildtest.buildsystem.dry import dry_view
+from buildtest.buildsystem.base import BuildConfig
+
+# from buildtest.buildsystem.singlesource import SingleSource
+# from buildtest.buildsystem.dry import dry_view
 from buildtest.utils.file import create_dir, walk_tree
 from buildtest.log import init_log
-from buildtest.buildsystem.status import get_total_build_ids
 from buildtest.buildsystem.writer import write_test
 
 
@@ -90,31 +90,34 @@ def func_build_subcmd(args):
     # Discover list of one or more config files based on path provided
     config_files = discover_configs(args.config)
 
-    # TODO: read in all config files here, validate
-    # There could be a yaml file that isn't a recipe, so they should be removed
+    # Read in all config files here, loading each will validate the entire file
+    # TODO: allow some level of skipping invalid files, an argument?
+    for config_file in config_files:
+        bc = BuildConfig(config_file)
 
     # Keep track of total metrics
     total_tests = 0
 
+    # Each configuration file can have multiple tests
     for config_file in config_files:
 
-        build_id = get_total_build_ids()
-        BUILDTEST_BUILD_HISTORY[build_id] = {}
-        BUILDTEST_BUILD_HISTORY[build_id]["TESTS"] = []
-        cmd_executed = "buildtest " + " ".join(str(arg) for arg in sys.argv[1:])
+        # Each configuration file can be loaded as a BuildConfig
+        bc = BuildConfig(config_file)
 
-        # Create a deep copy of config_opts for the build file
-        options = deepcopy(config_opts)
-        config_file = os.path.abspath(config_file)
+        # TODO: need to add this back in somehow?
+        # cmd_executed = "buildtest " + " ".join(str(arg) for arg in sys.argv[1:])
 
-        # TODO: derive type based on config type
-        singlesource_test = SingleSource(config_file)
-        content = singlesource_test.build_test_content()
+        # And builders parsed through for each
+        for builder in bc.get_builders():
+            if not args.dry:
+                result = builder.run()
+            else:
+                result = builder.dry_run()
 
-        if args.dry:
-            dry_view(content)
-        else:
-            write_test(content)
+            # Update build history
+            BUILDTEST_BUILD_HISTORY[result["build_id"]] = result
+
+        # STOPPED HERE - write functions above, then finish parsing the end.
 
         BUILD_TIME = datetime.now().strftime("%m/%d/%Y %X")
 
