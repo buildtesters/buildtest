@@ -16,6 +16,7 @@ root = os.path.dirname(os.path.abspath(__file__))
 
 # root of buildtest-framework user home
 BUILDTEST_ROOT = os.path.join(userhome, ".buildtest")
+BUILDTEST_DEFAULT_SHELL = os.environ.get("SHELL", "bash")
 
 # json file used by buildtest to write build meta-data
 BUILDTEST_BUILD_LOGFILE = os.path.join(BUILDTEST_ROOT, "var", "build.json")

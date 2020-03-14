@@ -3,10 +3,13 @@ BuildConfig: loader and manager for build configurations, and schema validation
 Copyright (C) 2020 Vanessa Sochat.
 """
 
+from copy import deepcopy
 import datetime
 import json
+import logging
 import os
 import re
+import stat
 import sys
 import yaml
 
@@ -14,7 +17,7 @@ from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
 from buildtest.config import config_opts
-from buildtest.defaults import logID
+from buildtest.defaults import logID, BUILDTEST_SHELL_DEFAULT
 from buildtest.buildsystem.schemas.utils import (
     load_schema,
     load_recipe,
@@ -191,7 +194,9 @@ class BuilderBase:
            config_file: the pull path to the configuration file, must exist.
         """
         self.name = name
+        self.result = {}
         self.build_id = None
+        self.metadata = {}
 
         # A builder is required to define the type attribute
         if not hasattr(self, "type"):
@@ -213,10 +218,15 @@ class BuilderBase:
                 % (self.type, self.recipe.get("type"))
             )
 
-        # TODO need to add logger for builder here
-        logger = logging.getLogger(logID)
+        self.logger = logging.getLogger(logID)
 
-    def _prepare_run(self):
+    def __str__(self):
+        return "[builder-%s-%s]" % (self.type, self.name)
+
+    def __repr__(self):
+        return self.__str__()
+
+    def prepare_run(self):
         """Prepare run provides shared functions to set up metadata and
            class data structures that are used by both run and dry_run
            This section cannot be reached without a valid, loaded recipe
@@ -238,31 +248,73 @@ class BuilderBase:
             if known_section in self.recipe:
                 self.metadata[known_section] = self.recipe.get(known_section)
 
-        # TODO: look at what this function did, decide where to derive content.
-        # likely this section should produce a base of metadata that can
-        # be added to in the calling subclass, and then the result shown/run
-        # content = singlesource_test.build_test_content()
+        # Every build recipe has a shell (defaults to BUILDTEST_SHELL_DEFAULT
+        self.metadata["shell"] = self.recipe.get("shell", BUILDTEST_SHELL_DEFAULT)
+
+        # Every test starts with cd to TESTDIR
+        self.metadata["build"] = ["cd $TESTDIR"]
+
+        # Define the testfile name based on config root and build_id
+        self.execname = "%s.exec" % self.build_id
+
+        # Derive the path to the test script TODO: this needs to have subfolder
+        self.metadata["testpath"] = "%s.sh" % (
+            os.path.join(self.options["build"]["testdir"], self.name, self.build_id)
+        )
+
+        # logger.debug(f"Source Directory: {self.srcdir}")
+        # logger.debug(f"Source File: {self.srcfile}")
+
+        # pre_run and post_run, env and shell are already both added to metadata
+        # build_command is added after the subclass has a chance to update metadata
+
+    def _prepare_run(self):
+        """Implemented by the child class only if build metadata needs to be
+           extended or customized. This means
+           that the client updates self.metadata as follows:
+
+           build: will have the cd $TESTDIR
+           pre_run, post_run, shell: are already included if defined
+        """
+        pass
+
+    def _build_command(self):
+        """By default, we return an empty build command. It's up to the 
+           subclass to implement generation of the build command, which
+           is done during _prepare_run which is after prepare_run. This
+           means that self.metadata is defined for known sections (pre_run,
+           post_run, shell) and the recipe is loaded as self.recipe. 
+           Custom variables (vars) could also be loaded here.
+        """
+        return ""
 
     def run(self):
-        """Given the name of a section in the loaded recipe, run the build.
+        """Run the builder associated with the loaded recipe.
            This parent class handles shared starting functions for each step
            and then calls the subclass function (_run) if it exists.
         """
-        # Generate build id, history, and refreshed config options
-        self._prepare_run()
+        # Generate build id, history, refreshed config options, and base tests
+        self.prepare_run()
 
-        # Each subclass has a _run function to perform custom build operations
-        if not hasattr(self, "_run"):
-            raise NotImplementedError
+        # If the subclass has a _prepare_run class, honor it
+        if hasattr(self, "_prepare_run"):
+            self._prepare_run()
 
-        # Run the build for the subclass
-        self._run()
+        # Write and run the test, sets result at self.result
+        testfile = self._write_test()
+        self._run(testfile)
+
+        # If the subclass has a _finish_run function, honor it
+        if hasattr(self, "_finish_run"):
+            self._finish_run()
+
+        return self.result
 
     def dry_run(self):
         """Akin to a build preview
         """
-        # Generate build id, history, and refreshed config options
-        self._prepare_run()
+        # Generate build id, history, refreshed config options, and base tests
+        self.prepare_run()
 
         # Each subclass has a _run function to perform custom build operations
         if not hasattr(self, "_dry_run"):
@@ -280,7 +332,17 @@ class BuilderBase:
     def _write_test(self):
         """Given test metadata, write test content. (need to think this through)
         """
-        raise NotImplementedError
+        # TODO derive test path should include build_id
+        testpath = os.path.expandvars(self.metadata["testpath"])
+        testdir = os.path.dirname(testpath)
+
+        self.logger.info(f"Opening Test File for Writing: {testpath}")
+
+        # Create test directory if doesn't exist
+        if not os.path.exists(testdir):
+            os.mkdir(testdir)
+
+        # STOPPED HERE - need to get exact path (with subfolder) and write file
 
     def _build_command(self):
         """Generate a command for a custom test configuration type
@@ -292,21 +354,10 @@ class ScriptBuilder(BuilderBase):
 
     type = "script"
 
-    def _run(self):
-        """Given the name of a section in the loaded recipe, run the build.
-           We get here when the user calls run() for the parent class, 
-           and metadata and a build id are prepared.
-        """
-        # TODO- this is where class specific work will use the self.metadata
-        # To finish up and then write the test content. The write function
-        # should be shared and provided by the builder base.
-        # write the test to run
-        self._write_test(self.content)
-
     def _build_command(self):
-        """Generate a command for a custom test configuration type
+        """A script build command runs some string of commands using a shell.
         """
-        raise NotImplementedError
+        return self.recipe.get("run", "")
 
     def _dry_run(self):
         """This will be run by the builder base after dry_run(). We don't
@@ -314,3 +365,4 @@ class ScriptBuilder(BuilderBase):
         """
         # TODO reproduce this function with self.content, ideally use global function
         # dry_view(content)
+        pass

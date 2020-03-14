@@ -23,7 +23,6 @@ from buildtest.buildsystem.base import BuildConfig
 # from buildtest.buildsystem.dry import dry_view
 from buildtest.utils.file import create_dir, walk_tree
 from buildtest.log import init_log
-from buildtest.buildsystem.writer import write_test
 
 
 def discover_configs(config_file):
@@ -103,9 +102,6 @@ def func_build_subcmd(args):
 
         # Each configuration file can be loaded as a BuildConfig
         bc = BuildConfig(config_file)
-
-        # TODO: need to add this back in somehow?
-        # cmd_executed = "buildtest " + " ".join(str(arg) for arg in sys.argv[1:])
 
         # And builders parsed through for each
         for builder in bc.get_builders():

@@ -24,3 +24,26 @@ def test_load_configs():
         # {'script': {'0.0.1': 'script-v0.0.1.schema.json', 'latest': 'script-v0.0.1.schema.json'}}
         for supported_schema in supported_schemas:
             assert supported_schema in bc.lookup
+
+        # The test configs (currently) each have two builders
+        # [[builder-script-login_node_check], [builder-script-slurm_check]]
+        builders = bc.get_builders()
+        assert len(builders) == 2
+
+        for builder in builders:
+
+            # Builders (on init) don't have metadata or build_id
+            assert not builder.metadata
+            assert not builder.build_id
+
+            # Manually run prepare_run to define the above (this is usually handled by run)
+            builder.prepare_run()
+            assert "build" in builder.metadata
+            assert "shell" in builder.metadata
+            assert builder.build_id
+
+            # If recipe had sections for pre_run, post_run, shell, they would be added here as well
+
+            # TODO: run,
+            result = builder.run()
+            assert "build_id" in result
