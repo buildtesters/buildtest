@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: URLs-checker
-      uses: urlstechie/URLs-checker@add/checkout-optional-git-path
+      uses: urlstechie/URLs-checker@0.1.6
       with:
         # check this subfolder only
         subfolder: docs
