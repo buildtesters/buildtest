@@ -60,6 +60,15 @@ def get_schema_version(schema):
         return match["version"]
 
 
+def get_schema_fullpath(schema_file, name=None):
+    """Return the full path of a schema file (expected to be under schemas
+    """
+    if not name:
+        name = schema_file.split("-v", 1)[0]
+    schema_file = os.path.join(here, name, schema_file)
+    return schema_file
+
+
 def get_schemas_available():
     """Based on the schemas installed to buildtest under
        buildtest/buildsystem/schemas, return a lookup for names (e.g., script)
@@ -73,7 +82,6 @@ def get_schemas_available():
         if os.path.isdir(os.path.join(here, x)) and not x.startswith("_")
     ]
     for schema_name in schema_names:
-        print(schema_name)
         schema_dir = os.path.join(here, schema_name)
         schemas = [x for x in os.listdir(schema_dir) if x.endswith(".schema.json")]
 

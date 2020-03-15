@@ -18,11 +18,7 @@ from buildtest.defaults import (
 )
 
 from buildtest.buildsystem.base import BuildConfig
-
-# from buildtest.buildsystem.singlesource import SingleSource
-# from buildtest.buildsystem.dry import dry_view
 from buildtest.utils.file import create_dir, walk_tree
-from buildtest.log import init_log
 
 
 def discover_configs(config_file):
@@ -96,6 +92,8 @@ def func_build_subcmd(args):
 
     # Keep track of total metrics
     total_tests = 0
+    failed_tests = 0
+    passed_tests = 0
 
     # Each configuration file can have multiple tests
     for config_file in config_files:
@@ -105,78 +103,37 @@ def func_build_subcmd(args):
 
         # And builders parsed through for each
         for builder in bc.get_builders():
+
+            # Keep track of total number of tests run
+            total_tests += 1
             if not args.dry:
                 result = builder.run()
             else:
                 result = builder.dry_run()
 
             # Update build history
-            BUILDTEST_BUILD_HISTORY[result["build_id"]] = result
+            BUILDTEST_BUILD_HISTORY[result["BUILD_ID"]] = result
 
-        # STOPPED HERE - write functions above, then finish parsing the end.
-
-        BUILD_TIME = datetime.now().strftime("%m/%d/%Y %X")
-
-        options["build"]["testdir"] = os.path.join(
-            options["build"]["testdir"], f"build_{str(build_id)}"
+    if not args.dry_run():
+        print(f"Finished running {total_tests} total tests.")
+        print
+        print
+        print("==============================================================")
+        print("                         Test summary                         ")
+        print(f"Executed {total_tests} tests")
+        print(
+            f"Passed Tests: {passed_tests} Percentage: {passed_test*100/total_tests}%"
         )
-        if not args.dry:
-            create_dir(options["build"]["testdir"])
-            BUILDTEST_BUILD_HISTORY[build_id]["TESTDIR"] = options["build"]["testdir"]
-
-        logger, LOGFILE = init_log(options)
-        logger.info(f"Creating Directory: {options['build']['testdir']}")
-        logger.debug(f"Current build ID: {build_id}")
-
-        print("{:_<80}".format(""))
-        print("{:>40} {}".format("build time:", BUILD_TIME))
-        print("{:>40} {}".format("command:", cmd_executed))
-        print("{:>40} {}".format("test configuration root:", TESTCONFIG_ROOT))
-        print("{:>40} {}".format("configuration file:", args.config))
-        print("{:>40} {}".format("buildpath:", options["build"]["testdir"]))
-        print("{:>40} {}".format("logpath:", LOGFILE))
-        print("{:_<80}".format(""))
-
-        print("\n\n")
-        print("{:<40} {}".format("STAGE", "VALUE"))
-        print("{:_<80}".format(""))
-
-        print("{:<40} {}".format("[WRITING TEST]", "PASSED"))
-
-        if not args.dry:
-
-            BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"] = len(
-                BUILDTEST_BUILD_HISTORY[build_id]["TESTS"]
-            )
-            print(
-                "{:<40} {}".format(
-                    "[NUMBER OF TEST]", BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"]
-                )
-            )
-            total_tests += BUILDTEST_BUILD_HISTORY[build_id]["TESTCOUNT"]
-
-            BUILDTEST_BUILD_HISTORY[build_id]["CMD"] = cmd_executed
-            BUILDTEST_BUILD_HISTORY[build_id]["BUILD_TIME"] = BUILD_TIME
-            BUILDTEST_BUILD_HISTORY[build_id]["LOGFILE"] = LOGFILE
-
-            logger.info(f"Reading Build Log File: {BUILDTEST_BUILD_LOGFILE}")
-
-            with open(BUILDTEST_BUILD_LOGFILE, "r") as fd:
-                build_dict = json.load(fd)
-
-            build_dict["build"][build_id] = BUILDTEST_BUILD_HISTORY[build_id]
-            logger.debug("Adding latest build to dictionary")
-            logger.debug(f"{BUILDTEST_BUILD_HISTORY[build_id]}")
-            logger.info(f"Updating Build Log File: {BUILDTEST_BUILD_LOGFILE}")
-
-            with open(BUILDTEST_BUILD_LOGFILE, "w") as fd:
-                json.dump(build_dict, fd, indent=4)
-
-            run_tests(build_id)
+        print(
+            f"Failed Tests: {failed_tests} Percentage: {failed_test*100/total_tests}%"
+        )
+        print
+        print
 
 
 def clear_builds():
     """This method clears the build history and removes all tests. This implements command ``buildtest build --clear``"""
+    # TODO: refactor this so it uses modular functions shared from somewhere else
     if os.path.isfile(BUILDTEST_BUILD_LOGFILE):
         os.remove(BUILDTEST_BUILD_LOGFILE)
     if os.path.isdir(config_opts["build"]["testdir"]):
@@ -186,54 +143,3 @@ def clear_builds():
     build_dict = {"build": {}}
     with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
         json.dump(build_dict, outfile, indent=2)
-
-
-def run_tests(build_id):
-    """This method actually runs the test and display test summary"""
-
-    with open(BUILDTEST_BUILD_LOGFILE, "r") as fd:
-        content = json.load(fd)
-
-    tests = content["build"][str(build_id)]["TESTS"]
-
-    # all tests are in same directory, retrieving parent directory of test
-    test_dir = content["build"][str(build_id)]["TESTDIR"]
-
-    runfile = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.run")
-    run_output_file = os.path.join(test_dir, "run", runfile)
-    create_dir(os.path.join(test_dir, "run"))
-
-    count_test = len(tests)
-    passed_test = 0
-    failed_test = 0
-
-    with open(run_output_file, "w") as fd:
-        for test in tests:
-            ret = subprocess.Popen(
-                test, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-            )
-            output = ret.communicate()[0].decode("utf-8")
-
-            ret_code = ret.returncode
-            fd.write("Test Name:" + test + "\n")
-            fd.write("Return Code: " + str(ret_code) + "\n")
-            fd.write("---------- START OF TEST OUTPUT ---------------- \n")
-            fd.write(output)
-            fd.write("------------ END OF TEST OUTPUT ---------------- \n")
-
-            if ret_code == 0:
-                passed_test += 1
-            else:
-                failed_test += 1
-
-    print(f"Running All Tests from Test Directory: {test_dir}")
-    print
-    print
-    print("==============================================================")
-    print("                         Test summary                         ")
-    print(f"Executed {count_test} tests")
-    print(f"Passed Tests: {passed_test} Percentage: {passed_test*100/count_test}%")
-    print(f"Failed Tests: {failed_test} Percentage: {failed_test*100/count_test}%")
-    print
-    print
-    print("Writing results to " + run_output_file)

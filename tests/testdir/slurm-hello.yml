@@ -1,9 +1,12 @@
 version: 0.0.1
 
 # Shell would be accepted to indicate a single line shell command (or similar)
-login_node_check:
+hello_dinosaur:
   type: script
-  run: "ping login 1"
+  env:
+    FIRST_NAME: avocado
+    LAST_NAME: dinosaur
+  run: printf "${FIRST_NAME} ${LAST_NAME}\n"
 
 # Run (akin to snakemake) would be a more full script with multiple lines
 slurm_check:

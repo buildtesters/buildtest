@@ -4,11 +4,11 @@ from buildtest.utils.command import BuildTestCommand
 class TestBuildTestCommand:
     def test_command(self):
 
-        a = BuildTestCommand()
         cmd = "hostname"
-        a.execute(cmd)
+        a = BuildTestCommand(cmd)
+        a.execute()
 
-        out, err, ret = a.get_output(), a.get_error(), a.returnCode()
+        out, err, ret = a.get_output(), a.get_error(), a.returncode
 
         print("Command: {cmd}")
         print(f"Output: {out}")
@@ -18,11 +18,11 @@ class TestBuildTestCommand:
 
     def test_error_command(self):
 
-        a = BuildTestCommand()
         cmd = "xyz"
-        a.execute(cmd)
+        a = BuildTestCommand(cmd)
+        a.execute()
 
-        out, err, ret = a.get_output(), a.get_error(), a.returnCode()
+        out, err, ret = a.get_output(), a.get_error(), a.returncode
 
         print("Command: {cmd}")
         print(f"Output: {out}")

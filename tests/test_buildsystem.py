@@ -38,12 +38,22 @@ def test_load_configs():
 
             # Manually run prepare_run to define the above (this is usually handled by run)
             builder.prepare_run()
-            assert "build" in builder.metadata
-            assert "shell" in builder.metadata
+
+            for key in ["shell"]:
+                assert key in builder.metadata
             assert builder.build_id
 
             # If recipe had sections for pre_run, post_run, shell, they would be added here as well
 
-            # TODO: run,
             result = builder.run()
-            assert "build_id" in result
+            for value in [
+                "BUILD_ID",
+                "START_TIME",
+                "END_TIME",
+                "RETURN_CODE",
+                "LOGFILE",
+            ]:
+                assert value in result
+
+            # Dry run should just print to screen
+            result = builder.dry_run()
