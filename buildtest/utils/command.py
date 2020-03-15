@@ -42,7 +42,8 @@ class BuildTestCommand:
         # The executable must be found.
         executable = shutil.which(self.cmd[0])
         if not executable:
-            sys.exit("%s not found." % self.cmd[0])
+            err = ["%s not found." % self.cmd[0]]
+            return (self.out, err)
 
         # remove the original executable
         args = self.cmd[1:]

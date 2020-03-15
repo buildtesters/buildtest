@@ -34,12 +34,12 @@ def show_schema_layout(args):
             % (args.name, "\n".join(supported_schemas))
         )
 
-    schema = get_schemas_available(fullpath=True)[args.name]
+    schema = get_schemas_available()[args.name]
     version = args.version or "latest"
 
     if version not in schema:
         print("Warning, %s is not a known version, showing latest." % version)
 
     schema = get_schema_fullpath(schema.get(version, schema.get("latest")))
-    schema = load_schema(schema_file)
+    schema = load_schema(schema)
     print(json.dumps(schema, indent=4))
