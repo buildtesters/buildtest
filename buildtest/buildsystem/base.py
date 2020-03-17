@@ -1,26 +1,13 @@
 """
 BuildConfig: loader and manager for build configurations, and schema validation
-Copyright (C) 2020 Vanessa Sochat.
+Copyright (C) 2020 Vanessa Sochat. 
 
-A build configuration file can define any of the following sections, which
-are added to the test script in the following order:
-
- - pre_build
- - build
- - post_build
- - pre_run
- - run
- - post_run
-
-A cd to the $TESTDIR is always the first step taken, and any defined
-sections after that are added if not empty.
-The following sections can be defined, and serve different purposes:
-
- - env
-
+BuildConfig is intended to read in a configuration file with one or 
+more buildtest setups defined, and then generate builders based on the type 
+of each. The BuilderBase is the base class for all builders that 
+expose functions to run builds.
 """
 
-from copy import deepcopy
 import datetime
 import json
 import os
@@ -30,6 +17,7 @@ import subprocess
 import sys
 import yaml
 
+from copy import deepcopy
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
@@ -56,7 +44,7 @@ known_sections = variable_sections + build_sections
 
 
 class BuildConfig:
-    """A BuildConfig is a base class for a build test configuration.
+    """A BuildConfig is a base class for a build configuration.
        The type (e.g., script) and version are derived from reading in
        the file, and then matching to a buildtest schema, each of which is
        developed at https://github.com/HPC-buildtest/schemas and added to
@@ -64,7 +52,7 @@ class BuildConfig:
        The schema object can load in a general test configuration file
        to validate it, and then match it to a schema available.
        If the version of a schema is not specified, we use the latest.
-       If the schema fails validation, we also don't continue.
+       If the schema fails validation check, then we stop immediately.
     """
 
     # Metadata keys are not considered build sections
