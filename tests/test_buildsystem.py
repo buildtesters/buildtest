@@ -1,7 +1,12 @@
-from buildtest.buildsystem.base import BuildConfig, supported_schemas
+"""
+BuildConfig: testing functions
+Copyright (c) 2020 Vanessa Sochat.
+"""
 
 import pytest
 import os
+
+from buildtest.buildsystem.base import BuildConfig, supported_schemas
 
 here = os.path.dirname(os.path.abspath(__file__))
 

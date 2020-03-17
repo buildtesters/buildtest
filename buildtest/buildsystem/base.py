@@ -60,7 +60,7 @@ class BuildConfig:
        The type (e.g., script) and version are derived from reading in
        the file, and then matching to a buildtest schema, each of which is
        developed at https://github.com/HPC-buildtest/schemas and added to
-       subfolders named accordingly under buildtest/tools/buildsystem/schemas.
+       subfolders named accordingly under buildtest/buildsystem/schemas.
        The schema object can load in a general test configuration file
        to validate it, and then match it to a schema available.
        If the version of a schema is not specified, we use the latest.
