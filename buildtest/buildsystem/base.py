@@ -447,6 +447,13 @@ class BuilderBase:
 
         result["RETURN_CODE"] = command.returncode
         result["END_TIME"] = self.get_formatted_time("end_time")
+
+        # Print the test result for the user
+        if command.returncode == 0:
+            print("{:<40} {}".format("[RUNNING TEST]", "PASSED"))
+        else:
+            print("{:<40} {}".format("[RUNNING TEST]", "FAILED"))
+
         print("Writing results to " + run_output_file)
         return result
 

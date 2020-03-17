@@ -108,13 +108,19 @@ def func_build_subcmd(args):
             total_tests += 1
             if not args.dry:
                 result = builder.run()
+
+                # Update results
+                if result["RETURN_CODE"] == 0:
+                    passed_tests += 1
+                else:
+                    failed_tests += 1
             else:
                 result = builder.dry_run()
 
             # Update build history
             BUILDTEST_BUILD_HISTORY[result["BUILD_ID"]] = result
 
-    if not args.dry_run():
+    if not args.dry:
         print(f"Finished running {total_tests} total tests.")
         print
         print
@@ -122,10 +128,10 @@ def func_build_subcmd(args):
         print("                         Test summary                         ")
         print(f"Executed {total_tests} tests")
         print(
-            f"Passed Tests: {passed_tests} Percentage: {passed_test*100/total_tests}%"
+            f"Passed Tests: {passed_tests} Percentage: {passed_tests*100/total_tests}%"
         )
         print(
-            f"Failed Tests: {failed_tests} Percentage: {failed_test*100/total_tests}%"
+            f"Failed Tests: {failed_tests} Percentage: {failed_tests*100/total_tests}%"
         )
         print
         print

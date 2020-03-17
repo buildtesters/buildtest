@@ -67,15 +67,17 @@ class BuildTestParser:
         )
 
     def parse_options(self):
-        """This method parses the argument from ArgumentParser class and returns as a dictionary. Also it
-        redirects sub-commands to appropriate methods.
+        """This method parses the argument from ArgumentParser class and returns
+        the arguments. We store extra (non parsed arguments) with the class if
+        they are needed.
 
         :return: return a parsed dictionary returned by ArgumentParser
         :rtype: dict
         """
-        args = self.parser.parse_args()
+        args, extra = self.parser.parse_known_args()
+        self.extra = extra
 
-        if args.subcommands:
+        if args.subcommands and args.func:
             args.func(args)
 
         return args
@@ -107,7 +109,7 @@ class BuildTestParser:
             action="store_true",
         )
 
-        # parser_build.set_defaults(func=func_build_subcmd)
+        parser_build.set_defaults(func=func_build_subcmd)
 
         # -------------------------- buildtest build report ------------------------------
         subparsers_build = parser_build.add_subparsers(
