@@ -11,9 +11,9 @@ class TestBuildTestError:
     def test_exception(self):
         """This test will check if we can raise Exception of type BuildTestError"""
 
-        a = BuildTestCommand()
         cmd = "touch /etc/passwd"
-        a.execute(cmd)
+        a = BuildTestCommand(cmd)
+        a.execute()
         err = a.get_error()
         ret = a.returnCode()
         raise BuildTestError(

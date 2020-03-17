@@ -7,4 +7,8 @@ def test_show_config():
 
 
 def test_show_schema():
-    show_schema_layout()
+    class args:
+        name = "script"
+        version = "latest"
+
+    show_schema_layout(args)

@@ -28,8 +28,8 @@ def build_helper():
 def run(query):
     """The ``run()`` method will execute the command and retrieve the output as part of documentation examples """
     print(f"Executing Command: {query}")
-    cmd = BuildTestCommand()
-    cmd.execute(query)
+    cmd = BuildTestCommand(query)
+    cmd.execute()
     out = cmd.get_output()
     return out
 

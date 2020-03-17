@@ -7,21 +7,28 @@ from datetime import datetime
 from buildtest.defaults import logID
 
 
-def init_log(config_opts):
-    """Initialize log file and define log attributes. This method invokes
-       datetime.now() to name logfile using strftime().
+def init_log():
+    """Initialize a log file for a builder. This is different from
+    init_log that simply provides a logger that doesn't write to file.
 
-    :return: Returns logger object and log path and logfile name
-    :rtype: multiple return types (logger object, logpath, logfile)
+    :return: Returns logger object
     """
-    fname = datetime.now().strftime("buildtest_%H_%M_%d_%m_%Y.log")
-    BUILDTEST_LOGDIR = os.path.join(config_opts["build"]["testdir"], "log")
+    logger = logging.getLogger(logID)
+    stream = logging.StreamHandler()
+    formatter = logging.Formatter(
+        "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
+    )
+    stream.setFormatter(formatter)
+    logger.addHandler(stream)
+    logger.setLevel(logging.DEBUG)
+    return logger
 
-    logfile = os.path.join(BUILDTEST_LOGDIR, fname)
-    # if log directory is not present create it automatically
-    if not os.path.exists(BUILDTEST_LOGDIR):
-        os.makedirs(BUILDTEST_LOGDIR)
 
+def init_logfile(logfile):
+    """Initialize a log file intended for a builder. This requires
+    passing the filename intended for the log (from the builder)
+    and returns the logger.
+    """
     logger = logging.getLogger(logID)
     fh = logging.FileHandler(logfile)
     formatter = logging.Formatter(
@@ -31,4 +38,4 @@ def init_log(config_opts):
     logger.addHandler(fh)
     logger.setLevel(logging.DEBUG)
 
-    return logger, logfile
+    return logger

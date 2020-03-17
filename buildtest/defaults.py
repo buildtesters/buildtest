@@ -10,12 +10,21 @@ import os
 
 logID = "buildtest"
 
+# each has a subfolder in buildtest/buildsystem/schemas/ with *.schema.json
+supported_schemas = ["script"]
+
+# global config sections that are known, added to buildbase.metadata
+variable_sections = ["env"]
+build_sections = ["pre_build", "build", "post_build", "pre_run", "run", "post_run"]
+known_sections = variable_sections + build_sections
+
 # Get user home based on effective uid, root of install to copy files
 userhome = pwd.getpwuid(os.getuid())[5]
 root = os.path.dirname(os.path.abspath(__file__))
 
-# root of buildtest-framework user home
+# root of buildtest-framework user home, default shell
 BUILDTEST_ROOT = os.path.join(userhome, ".buildtest")
+BUILDTEST_SHELL = os.environ.get("SHELL", "/bin/bash")
 
 # json file used by buildtest to write build meta-data
 BUILDTEST_BUILD_LOGFILE = os.path.join(BUILDTEST_ROOT, "var", "build.json")

@@ -84,13 +84,6 @@ class BuildTestParser:
         """This method implements argparse argument for ``buildtest build``"""
 
         parser_build = self.subparsers.add_parser("build")
-        subparsers_build = parser_build.add_subparsers(
-            description="Report status on builds performed by buildtest."
-        )
-        ##################### buildtest build report ###########################
-        parser_build_report = subparsers_build.add_parser(
-            "report", help="Report status details of all builds "
-        )
 
         ##################### buildtest build     ###########################
         parser_build.add_argument(
@@ -102,10 +95,7 @@ class BuildTestParser:
         parser_build.add_argument(
             "-c",
             "--config",
-            help=(
-                "Specify test configuration path (file or directory) relative to ",
-                "present working directory or to build test configuration directory.",
-            ),
+            help="Specify test configuration file.",
             metavar="TEST CONFIGURATION",
         )
 
@@ -117,8 +107,17 @@ class BuildTestParser:
             action="store_true",
         )
 
-        parser_build_report.set_defaults(func=show_status_report)
-        parser_build.set_defaults(func=func_build_subcmd)
+        # parser_build.set_defaults(func=func_build_subcmd)
+
+        # -------------------------- buildtest build report ------------------------------
+        subparsers_build = parser_build.add_subparsers(
+            description="Report status on builds performed by buildtest."
+        )
+
+        parser_report = subparsers_build.add_parser(
+            "report", help="Report status details of all builds "
+        )
+        parser_report.set_defaults(func=show_status_report)
 
     def get_menu(self):
         """This method implements argparse argument for ``buildtest get``"""
@@ -163,17 +162,27 @@ class BuildTestParser:
     def show_menu(self):
         """This method adds argparse argument for ``buildtest show``"""
 
-        parser_show = self.subparsers.add_parser("show")
         # -------------------------- buildtest show options ------------------------------
+        parser_show = self.subparsers.add_parser("show")
         parser_show.add_argument(
             "-c",
             "--config",
-            help="show buildtest environment configuration",
+            help="show buildtest global configuration",
             action="store_true",
         )
+        parser_show.set_defaults(func=func_show_subcmd)
+
+        # -------------------------- buildtest show schemas ------------------------------
         subparsers_show = parser_show.add_subparsers(
             description="buildtest configuration"
         )
-        parser_schema = subparsers_show.add_parser("schema", help="Display YAML schema")
+        parser_schema = subparsers_show.add_parser(
+            "schema", help="Display test config schema"
+        )
+        parser_schema.add_argument(
+            "-v", "--version", help="choose a specific version of schema to show.",
+        )
+        parser_schema.add_argument(
+            "-n", "--name", help="show schema by name (e.g., script)",
+        )
         parser_schema.set_defaults(func=show_schema_layout)
-        parser_show.set_defaults(func=func_show_subcmd)
