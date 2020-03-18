@@ -1,5 +1,5 @@
 """
-Functions for system package
+This module detects System changes defined in class BuildTestSystem.
 """
 
 import distro
@@ -7,7 +7,6 @@ import os
 import platform
 import shutil
 import sys
-import subprocess
 
 from buildtest.utils.command import BuildTestCommand
 

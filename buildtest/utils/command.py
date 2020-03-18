@@ -2,7 +2,6 @@ import locale
 import subprocess
 import shlex
 import shutil
-import sys
 
 
 class BuildTestCommand:
