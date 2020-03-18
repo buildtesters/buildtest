@@ -1,4 +1,4 @@
-include README.md LICENSE settings.yml
+include README.md LICENSE
 recursive-include buildtest *
 graft buildtest
 include CONTRIBUTING.rst

@@ -5,6 +5,7 @@ Functions for system package
 import distro
 import os
 import platform
+import shutil
 import sys
 import subprocess
 
@@ -56,21 +57,24 @@ class BuildTestSystem:
            :return: return string **LSF** or **SLURM**. If neither found returns **None**
            :rtype: str or None
         """
+        # Assue we don't have either installed to start
+        lsf_ec_code = 255
+        slurm_ec_code = 255
 
-        lsf_cmd = BuildTestCommand()
-        lsf_cmd.execute("bhosts")
-        lsf_ec_code = lsf_cmd.returnCode()
+        if shutil.which("bhosts"):
+            lsf_cmd = BuildTestCommand("bhosts")
+            lsf_cmd.execute()
+            lsf_ec_code = lsf_cmd.returncode
 
-        slurm_cmd = BuildTestCommand()
-        slurm_cmd.execute("sinfo")
-        slurm_ec_code = slurm_cmd.returnCode()
+        elif shutil.which("sinfo"):
+            slurm_cmd = BuildTestCommand("sinfo")
+            slurm_cmd.execute()
+            slurm_ec_code = slurm_cmd.returncode
 
         if slurm_ec_code == 0:
             return "SLURM"
         if lsf_ec_code == 0:
             return "LSF"
-
-        return None
 
     def check_system_requirements(self):
         """Checking system requirements."""

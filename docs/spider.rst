@@ -61,7 +61,7 @@ Shown below is an example spider record for ``flex``
                 ],
                 "hidden": false,
                 "fullName": "flex/2.6.4",
-                "help": "\nDescription\n===========\nFlex (Fast Lexical Analyzer) is a tool for generating scanners. A scanner, \n sometimes called a tokenizer, is a program which recognizes lexical patterns\n in text.\n\n\nMore information\n================\n - Homepage: http://flex.sourceforge.net/\n",
+                "help": "\nDescription\n===========\nFlex (Fast Lexical Analyzer) is a tool for generating scanners. A scanner, \n sometimes called a tokenizer, is a program which recognizes lexical patterns\n in text.\n\n\nMore information\n================\n - Homepage: http://flex.sourceforge.net/",
                 "lpathA": {
                     "/mxg-hpc/users/ssi29/easybuild-HMNS/software/flex/2.6.4-GCCcore-8.1.0/lib": 1
                 }
@@ -119,7 +119,7 @@ There will be some records that **dont** have a ``parentAA`` field for example t
         "Version": "8.1.0",
         "hidden": false,
         "fullName": "GCCcore/8.1.0",
-        "help": "\nDescription\n===========\nThe GNU Compiler Collection includes front ends for C, C++, Objective-C, Fortran, Java, and Ada,\n as well as libraries for these languages (libstdc++, libgcj,...).\n\n\nMore information\n================\n - Homepage: http://gcc.gnu.org/\n",
+        "help": "\nDescription\n===========\nThe GNU Compiler Collection includes front ends for C, C++, Objective-C, Fortran, Java, and Ada,\n as well as libraries for these languages (libstdc++, libgcj,...).\n\n\nMore information\n================\n - Homepage: http://gcc.gnu.org/",
         "lpathA": {
             "/mxg-hpc/users/ssi29/easybuild-HMNS/software/GCCcore/8.1.0/lib": 1,
             "/mxg-hpc/users/ssi29/easybuild-HMNS/software/GCCcore/8.1.0/lib64": 1,

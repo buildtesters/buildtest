@@ -8,9 +8,7 @@ import os
 import re
 import sys
 
-from buildtest.config import config_opts
 from buildtest.defaults import TESTCONFIG_ROOT
-
 from buildtest.utils.file import create_dir
 from buildtest.log import init_log
 
@@ -31,7 +29,7 @@ def func_get_subcmd(args):
     if not re.search("github.com", args.repo):
         sys.exit("Currently only GitHub is supported for buildtest get.")
 
-    logger, LOGFILE = init_log(config_opts)
+    logger = init_log()
     root = os.path.join(TESTCONFIG_ROOT, "github.com")
     create_dir(root)
 
