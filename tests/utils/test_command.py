@@ -1,32 +1,32 @@
 from buildtest.utils.command import BuildTestCommand
 
+def test_command1():
 
-class TestBuildTestCommand:
-    def test_command(self):
+    cmd = "hostname -f"
+    a = BuildTestCommand(cmd)
+    out, err = a.execute()
+    ret = a.returnCode()
 
-        cmd = "hostname"
-        a = BuildTestCommand(cmd)
-        a.execute()
+    print(f"Command: {cmd}")
+    print(f"Output: {out}")
+    print(f"Error: {err}")
+    print(f"Return Code: {ret}")
 
-        out, err, ret = a.get_output(), a.get_error(), a.returncode
+    assert 0 == ret
 
-        print("Command: {cmd}")
-        print(f"Output: {out}")
-        print(f"Error: {err}")
-        print(f"Return Code: {ret}")
-        assert 0 == ret
+def test_command2():
 
-    def test_error_command(self):
+    cmd = "echo $SHELL"
+    a = BuildTestCommand(cmd)
+    a.execute()
 
-        cmd = "xyz"
-        a = BuildTestCommand(cmd)
-        a.execute()
+    out = a.get_output()
+    err = a.get_error()
+    ret = a.returnCode()
 
-        out, err, ret = a.get_output(), a.get_error(), a.returncode
+    print(f"Command: {cmd}")
+    print(f"Output: {out}")
+    print(f"Error: {err}")
+    print(f"Return Code: {ret}")
 
-        print("Command: {cmd}")
-        print(f"Output: {out}")
-        print(f"Error: {err}")
-        print(f"Return Code: {ret}")
 
-        assert 0 != ret
