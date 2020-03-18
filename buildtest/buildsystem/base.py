@@ -9,13 +9,10 @@ expose functions to run builds.
 """
 
 import datetime
-import json
 import os
 import re
 import stat
-import subprocess
 import sys
-import yaml
 
 from copy import deepcopy
 from jsonschema import validate
@@ -25,10 +22,7 @@ from buildtest.config import config_opts
 from buildtest.log import init_logfile, init_log
 from buildtest.defaults import (
     BUILDTEST_SHELL,
-    TESTCONFIG_ROOT,
-    BUILDTEST_BUILD_LOGFILE,
     build_sections,
-    supported_schemas,
     variable_sections,
 )
 from buildtest.utils.file import create_dir

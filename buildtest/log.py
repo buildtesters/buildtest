@@ -1,9 +1,7 @@
 """
 Methods related to buildtest logging
 """
-import os
 import logging
-from datetime import datetime
 from buildtest.defaults import logID
 
 

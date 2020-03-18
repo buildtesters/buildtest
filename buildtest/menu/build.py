@@ -3,13 +3,10 @@ This module contains all the methods related to "buildtest build" which is used
 for building test scripts from test configuration.
 """
 
-from copy import deepcopy
-from datetime import datetime
 import json
 import os
 import shutil
 import sys
-import subprocess
 
 from buildtest.defaults import (
     BUILDTEST_BUILD_HISTORY,
@@ -18,7 +15,7 @@ from buildtest.defaults import (
 )
 
 from buildtest.buildsystem.base import BuildConfig
-from buildtest.utils.file import create_dir, walk_tree
+from buildtest.utils.file import walk_tree
 
 
 def discover_configs(config_file):

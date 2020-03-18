@@ -16,9 +16,11 @@ import os
 import sys
 from sphinx.ext.apidoc import main as sphinx_apidoc
 
-BUILDTEST_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-os.environ["BUILDTEST_ROOT"] = BUILDTEST_ROOT
-sys.path.insert(0, BUILDTEST_ROOT)
+from buildtest import BUILDTEST_VERSION
+# TODO: need to check if these two lines are needed
+here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, here)
+
 
 
 # -- Project information -----------------------------------------------------
@@ -27,7 +29,7 @@ copyright = "2017-2020, Shahzeb Siddiqui"
 author = "Shahzeb Siddiqui"
 
 # The short X.Y version
-version = "0.8.0"
+version = BUILDTEST_VERSION
 # The full version, including alpha/beta/rc tags
 release = "2019.04.02"
 
@@ -48,9 +50,7 @@ extensions = [
     "sphinxcontrib.programoutput",
 ]
 
-
-apidoc = ["--force", "--no-toc", "-e", "--output-dir=api"]
-sphinx_apidoc(apidoc + ["../buildtest"])
+sphinx_apidoc(["--force", "--no-toc", "-e", "--output-dir=api", "../buildtest"])
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
