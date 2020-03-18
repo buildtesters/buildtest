@@ -8,7 +8,7 @@ import os
 
 from buildtest.buildsystem.base import BuildConfig, supported_schemas
 
-here = os.path.dirname(os.path.abspath(__file__))
+here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def test_load_configs():
