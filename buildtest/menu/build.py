@@ -132,17 +132,3 @@ def func_build_subcmd(args):
         )
         print
         print
-
-
-def clear_builds():
-    """This method clears the build history and removes all tests. This implements command ``buildtest build --clear``"""
-    # TODO: refactor this so it uses modular functions shared from somewhere else
-    if os.path.isfile(BUILDTEST_BUILD_LOGFILE):
-        os.remove(BUILDTEST_BUILD_LOGFILE)
-    if os.path.isdir(config_opts["build"]["testdir"]):
-        shutil.rmtree(config_opts["build"]["testdir"])
-
-    print("Clearing Build History")
-    build_dict = {"build": {}}
-    with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
-        json.dump(build_dict, outfile, indent=2)
