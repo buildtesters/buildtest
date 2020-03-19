@@ -90,8 +90,7 @@ you can do the following::
     -    x=0+1*3
     +    x = 0 + 1 * 3
 
-The changes will be shown with lines removed or added via ``-`` and ``+``. For more details refer to black
-`documentation <https://github.com/psf/black>`_.
+The changes will be shown with lines removed or added via ``-`` and ``+``. For more details refer to `black documentation <https://github.com/psf/black>`_.
 
 GitHub Bots
 -----------

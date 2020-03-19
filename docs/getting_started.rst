@@ -130,7 +130,7 @@ Since we don't have it on the path, let's load "ifort" with a module::
     $ module load ifort
 
 
-Now let's take at the recipe in the tutorials folder under ``compilers/hello.f.yml ``::
+Now let's take at the recipe in the tutorials folder under ``compilers/hello.f.yml``::
 
 
 	testtype: singlesource

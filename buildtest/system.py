@@ -49,9 +49,9 @@ class BuildTestSystem:
 
     def check_scheduler(self):
         """Check for batch scheduler. Currently checks for LSF or SLURM by running
-          ``bhosts`` and ``sinfo`` command. It must be present in $PATH when running buildtest.
-            Since it's unlikely for a single host to have more than one scheduler,
-            we check for multiple and return the first found.
+           ``bhosts`` and ``sinfo`` command. It must be present in $PATH when running buildtest.
+           Since it's unlikely for a single host to have more than one scheduler,
+           we check for multiple and return the first found.
 
            :return: return string **LSF** or **SLURM**. If neither found returns **None**
            :rtype: str or None

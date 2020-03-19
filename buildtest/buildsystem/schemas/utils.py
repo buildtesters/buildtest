@@ -16,8 +16,8 @@ here = os.path.dirname(os.path.abspath(__file__))
 def load_schema(path):
     """load a schema from file. We assume a json file
 
-       Parameters
-       ==========
+       Parameters:
+
        path: the path to the schema file.
     """
     if not os.path.exists(path):
@@ -30,8 +30,8 @@ def load_schema(path):
 def load_recipe(path):
     """load a yaml recipe file. The recipe is validated against a schema.
 
-       Parameters
-       ==========
+       Parameters:
+
        path: the path to the recipe file.
     """
     if not os.path.exists(path):
@@ -44,8 +44,8 @@ def load_recipe(path):
 def get_latest(schema1, schema2):
     """between two schema files, compare versions and determine which is latest
 
-       Parameters
-       ==========
+       Parameters:
+
        schema1: the path to the first schema file.
        schema2: the path to the second schema file.
     """
@@ -62,8 +62,8 @@ def get_schema_version(schema):
     """Given a schema file, use the convention naming of
        <name>-v<version>.schema.json to derive the version
 
-       Parameters
-       ==========
+       Parameters:
+
        schema: the path to the schema file.
     """
     match = re.search(
@@ -76,8 +76,8 @@ def get_schema_version(schema):
 def get_schema_fullpath(schema_file, name=None):
     """Return the full path of a schema file (expected to be under schemas
 
-       Parameters
-       ==========
+       Parameters:
+
        schema_file: the path to the schema file.
        name: the schema type. If not provided, derived from filename.
     """

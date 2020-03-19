@@ -57,8 +57,8 @@ class BuildConfig:
            file, match it to a schema provided by buildtest, and 
            validate it
 
-           Parameters
-           ==========
+           Parameters:
+
            config_file: the pull path to the configuration file, must exist.
         """
         self.recipe = None
@@ -73,8 +73,8 @@ class BuildConfig:
         """load a config file. We check that it exists, and that it is valid.
            we exit on any error, as the config is not loadable
 
-           Parameters
-           ==========
+           Parameters:
+
            config_file: the pull path to the configuration file, must exist.
         """
         self.config_file = os.path.abspath(config_file)
@@ -207,8 +207,8 @@ class BuilderBase:
            recipe_config = bc.get("section_name")
            builder = ScriptBuilder(recipe_config)
 
-           Parameters
-           ==========
+           Parameters:
+
            name: a name for the build recipe (required)
            recipe_config: the loaded section from the config_file for the user.
            config_file: the pull path to the configuration file, must exist.
@@ -455,8 +455,8 @@ class BuilderBase:
         """Given some timestamp key in self.metadata, return a pretty printed
            version of it. This is intended to log in the console for the user.
 
-           Parameters
-           ==========
+           Parameters:
+
            key: The key to look up in the metadata
            fmt: the format string to use
         """
