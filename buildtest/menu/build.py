@@ -75,9 +75,6 @@ def func_build_subcmd(args):
 
     :rtype: None
     """
-    if args.clear:
-        clear_builds()
-        sys.exit(0)
 
     # Discover list of one or more config files based on path provided
     config_files = discover_configs(args.config)
