@@ -5,7 +5,7 @@ bzip_compression:
   env:
     FILE: 1mb_bzip2.txt
     TARFILE: 1mb_bzip2.txt.bz2
-  shell: csh
+  shell: bash
   run: |
     dd if=/dev/zero of="$FILE" bs=1M count=1
     tar cvjf "$TARFILE" "$FILE"

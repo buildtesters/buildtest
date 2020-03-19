@@ -280,7 +280,6 @@ class BuilderBase:
         """Return the test extension, which depends on the shell used. Based
            on the value of ``shell`` key we return the shell extension.
 
-           shell: csh --> csh
            shell: python --> py
            shell: bash --> sh (default)
         """
@@ -288,8 +287,7 @@ class BuilderBase:
         shell = self.get_shell()
         if "python" in shell:
             return "py"
-        if "csh" in shell:
-            return "csh"
+
         return "sh"
 
     def get_environment(self):
@@ -310,12 +308,8 @@ class BuilderBase:
         # Parse environment depending on expected shell
         if pairs:
 
-            # Handles csh and tsch
-            if "csh" in shell:
-                [env.append("setenv %s %s" % (k, v)) for k, v in pairs.items()]
-
             # Handles bash and sh
-            elif re.search("(bash|sh)$", shell):
+            if re.search("(bash|sh)$", shell):
                 [env.append("%s=%s" % (k, v)) for k, v in pairs.items()]
 
             # python interpreter can be a shell
@@ -550,9 +544,6 @@ class BuilderBase:
 
         # Every test starts with cd to TESTDIR
         lines = ["#!/bin/bash"]
-
-        if self.get_shell() == "csh":
-            lines = ["#!/bin/csh"]
 
         lines += ["cd $TESTDIR"]
 
