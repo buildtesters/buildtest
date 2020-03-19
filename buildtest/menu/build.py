@@ -83,7 +83,6 @@ def func_build_subcmd(args):
     config_files = discover_configs(args.config)
 
     # Read in all config files here, loading each will validate the entire file
-    # TODO: allow some level of skipping invalid files, an argument?
     for config_file in config_files:
         bc = BuildConfig(config_file)
 
