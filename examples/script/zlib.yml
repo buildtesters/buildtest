@@ -1,0 +1,19 @@
+version: 0.0.1
+
+zlib_compression:
+  type: script
+  run: |
+    dd if=/dev/zero of=1mb.txt bs=1M count=1
+    tar cvzf 1mb.tar.gz 1mb.txt
+    ls -lh 1mb.tar.gz
+    gzip -l 1mb.tar.gz
+
+zlib_decompress:
+  type: script
+  run: |
+    dd if=/dev/zero of=1mb.txt bs=1M count=1
+    tar cvzf 1mb.tar.gz 1mb.txt
+    ls -l 1mb.tar.gz
+    gzip -l 1mb.tar.gz
+    gzip -d 1mb.tar.gz
+    

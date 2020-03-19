@@ -1,0 +1,12 @@
+version: 0.0.1
+
+bzip_compression:
+  type: script
+  env:
+    FILE: 1mb_bzip2.txt
+    TARFILE: 1mb_bzip2.txt.bz2
+  run: |
+    dd if=/dev/zero of="$FILE" bs=1M count=1
+    tar cvjf "$TARFILE" "$FILE"
+    ls -l "$TARFILE"
+
