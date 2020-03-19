@@ -88,11 +88,6 @@ class BuildTestParser:
         parser_build = self.subparsers.add_parser("build")
 
         ##################### buildtest build     ###########################
-        parser_build.add_argument(
-            "--clear",
-            help="Clear build history and remove all tests",
-            action="store_true",
-        )
 
         parser_build.add_argument(
             "-c",
