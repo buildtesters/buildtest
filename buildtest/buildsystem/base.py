@@ -54,7 +54,7 @@ class BuildConfig:
 
     def __init__(self, config_file):
         """initiate a build configuration file, meaning that we read in the
-           file, match it to a schema provided by buildtest, and validate it
+           file, match it to a schema provided by buildtest, and validate it.
 
            Parameters:
 
@@ -69,8 +69,8 @@ class BuildConfig:
         self.load(config_file)
 
     def load(self, config_file):
-        """load a config file. We check that it exists, and that it is valid.
-           we exit on any error, as the config is not loadable
+        """Load a config file. We check that it exists, and that it is valid.
+           we exit on any error, as the config is not loadable.
 
            Parameters:
 
@@ -105,6 +105,7 @@ class BuildConfig:
            to buildtest. If a version is provided, honor it. If not, use latest.
            We also don't allow repeated keys in the same file.
         """
+
         version = self.recipe.get("version", "latest")
         seen = set()
         for name, section in self.recipe.items():
@@ -135,11 +136,12 @@ class BuildConfig:
             validate(instance=section, schema=load_schema(schema_file))
 
     def _validate_global(self, config_file=None):
-        """the global validation ensures that the overall structure of the
+        """The global validation ensures that the overall structure of the
            file is sound for further parsing. We load in the outer.schema.json
            for this purpose. The function also allows a custom config to be 
            to extend the usage of the class.
         """
+
         config_file = config_file or self.config_file
         outer_schema = load_schema(os.path.join(here, "outer.schema.json"))
         self.recipe = load_recipe(config_file)
@@ -158,6 +160,7 @@ class BuildConfig:
            for each based on the type. Each type is associated with a known 
            Builder class.
         """
+
         builders = []
         if self.recipe:
             for name in self.keys():
@@ -180,6 +183,7 @@ class BuildConfig:
         """Return the list of keys for the loaded recipe, not including
            the metadata keys defined for any global recipe.
         """
+
         keys = []
         if self.recipe:
             keys = [x for x in self.recipe.keys() if x not in self.metadata]
@@ -188,8 +192,9 @@ class BuildConfig:
     def get(self, name):
         """Given the name of a section (typically a build configuration name)
            return the loaded section from self.recipe. If you need to parse
-           through just section names, use self.keys() to filter out metadata
+           through just section names, use self.keys() to filter out metadata.
         """
+
         return self.recipe.get(name)
 
 
@@ -199,7 +204,7 @@ class BuilderBase:
     """
 
     def __init__(self, name, recipe_config, config_file=None):
-        """initiate a builder base. A recipe configuration (loaded) is required.
+        """Initiate a builder base. A recipe configuration (loaded) is required.
            this can be handled easily with the BuildConfig class:
 
            bc = BuildConfig(config_file)
@@ -212,6 +217,7 @@ class BuilderBase:
            recipe_config: the loaded section from the config_file for the user.
            config_file: the pull path to the configuration file, must exist.
         """
+
         self.name = name
         self.result = {}
         self.build_id = None
@@ -246,8 +252,9 @@ class BuilderBase:
 
     def _create_test_folders(self):
         """Create all needed test folders on init, and add their paths
-           to self.metadata
+           to self.metadata.
         """
+
         testpath = os.path.expandvars(self.metadata["testpath"])
         testdir = os.path.dirname(testpath)
         create_dir(testdir)
@@ -260,6 +267,7 @@ class BuilderBase:
         """Initialize the logger. This is called at the end of prepare_run,
            so the testpath is defined with the build id.
         """
+
         if to_file:
             self.metadata["logfile"] = os.path.join(
                 self.metadata["logdir"], "%s.log" % self.build_id
@@ -269,9 +277,14 @@ class BuilderBase:
             self.logger = init_log()
 
     def get_test_extension(self):
-        """Return the test extension, which depends on the shell used. We
-           return .sh for all shell types except for python, we return .py.
+        """Return the test extension, which depends on the shell used. Based
+           on the value of ``shell`` key we return the shell extension.
+
+           shell: csh --> csh
+           shell: python --> py
+           shell: bash --> sh (default)
         """
+
         shell = self.get_shell()
         if "python" in shell:
             return "py"
@@ -317,7 +330,7 @@ class BuilderBase:
         return env
 
     def get_shell(self):
-        """Return the shell defined in the recipe, or default to bash"""
+        """Return the shell defined in the recipe, or default to bash."""
 
         return self.recipe.get("shell", BUILDTEST_SHELL)
 
