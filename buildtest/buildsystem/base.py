@@ -215,12 +215,15 @@ class BuilderBase:
            recipe_config: the loaded section from the config_file for the user.
            config_file: the pull path to the configuration file, must exist.
         """
-        self.testdir = testdir or os.path.join(os.getcwd(), ".buildtest")
         self.name = name
         self.result = {}
         self.build_id = None
         self.metadata = {}
         self.config_file = config_file
+        self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(config_file))
+        self.testdir = testdir or os.path.join(
+            os.getcwd(), ".buildtest", self.config_name
+        )
 
         # A builder is required to define the type attribute
         if not hasattr(self, "type"):

@@ -95,7 +95,7 @@ def func_build_subcmd(args):
         bc = BuildConfig(config_file)
 
         # And builders parsed through for each
-        for builder in bc.get_builders():
+        for builder in bc.get_builders(testdir=args.testdir):
 
             # Keep track of total number of tests run
             total_tests += 1
