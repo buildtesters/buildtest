@@ -382,7 +382,7 @@ class BuilderBase:
 
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
-            os.path.join(self.options["build"]["testdir"], self.name, self.build_id),
+            os.path.join(self.options["build"]["testdir"], self.name),
             self.get_test_extension(),
         )
         self.metadata["testdir"] = os.path.dirname(self.metadata["testpath"])
