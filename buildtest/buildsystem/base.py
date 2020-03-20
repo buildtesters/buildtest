@@ -220,6 +220,7 @@ class BuilderBase:
         """
 
         self.name = name
+        self.pwd = os.getcwd()
         self.result = {}
         self.build_id = None
         self.metadata = {}
@@ -251,13 +252,19 @@ class BuilderBase:
     def __repr__(self):
         return self.__str__()
 
+    def _get_testdir(self):
+        """Based on the testfile path, return the testing directory.
+
+           Returns: full path to testing directory
+        """
+        testpath = os.path.expandvars(self.metadata["testpath"])
+        return os.path.dirname(testpath)
+
     def _create_test_folders(self):
         """Create all needed test folders on init, and add their paths
            to self.metadata.
         """
-
-        testpath = os.path.expandvars(self.metadata["testpath"])
-        testdir = os.path.dirname(testpath)
+        testdir = self._get_testdir()
         create_dir(testdir)
         for folder in ["run", "log"]:
             name = "%sdir" % folder
@@ -424,6 +431,9 @@ class BuilderBase:
         result["LOGFILE"] = self.metadata.get("logfile", "")
         result["BUILD_ID"] = self.build_id
 
+        # Change to the test directory
+        os.chdir(self._get_testdir())
+
         # Run the test file using the shell
         cmd = [self.get_shell(), testfile]
         command = BuildTestCommand(cmd)
@@ -462,6 +472,9 @@ class BuilderBase:
             print("{:<40} {}".format("[RUNNING TEST]", "FAILED"))
 
         print("Writing results to " + run_output_file)
+
+        # Return to starting directory for next test
+        os.chdir(self.pwd)
         return result
 
     def get_formatted_time(self, key, fmt="%m/%d/%Y %X"):
@@ -542,18 +555,14 @@ class BuilderBase:
 
     def _get_test_lines(self):
         """Given test metadata, get test lines to write to file or show."""
-        
+
         lines = []
         shell = shutil.which(self.get_shell())
-        
+
         if not shell:
             shell = BUILDTEST_SHELL
 
         lines += [f"#!{shell}"]
-        
-
-        # Every test starts with cd to TESTDIR
-        lines += ["cd $TESTDIR"]
 
         # Add environment variables
         lines += self.get_environment()
