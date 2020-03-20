@@ -546,9 +546,9 @@ class BuilderBase:
 
         if self.get_shell() in ["sh", "/bin/sh"]:
             lines += [f"#!/bin/sh"]
-            
+
         elif self.get_shell() in ["bash", "/bin/bash"]:
-            lines += [BUILDTEST_SHELL]
+            lines += [f"#!{BUILDTEST_SHELL}"]
 
         # Every test starts with cd to TESTDIR
         lines += ["cd $TESTDIR"]
