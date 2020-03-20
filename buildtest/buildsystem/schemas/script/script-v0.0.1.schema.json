@@ -39,6 +39,7 @@
     "shell": {
       "type": "string",
       "default": "bash",
+      "enum": ["bash", "sh", "/bin/bash", "/bin/sh"],
       "description": "The shell interpreter to use."
     },
     "pre_run": {

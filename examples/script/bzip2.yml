@@ -2,11 +2,30 @@ version: 0.0.1
 
 bzip_compression:
   type: script
+  description: "1MB compression with bzip2"
   env:
     FILE: 1mb_bzip2.txt
     TARFILE: 1mb_bzip2.txt.bz2
+  shell: bash
   run: |
     dd if=/dev/zero of="$FILE" bs=1M count=1
     tar cvjf "$TARFILE" "$FILE"
     ls -l "$TARFILE"
 
+bzip_version:
+  type: script
+  description: "bzip2 version"
+  shell: sh
+  run: "bzip2 --version"
+
+bzip_help:
+  type: script
+  description: "bzip2 help"
+  shell: /bin/sh
+  run: "bzip2 --help"
+
+bzip2_help:
+  type: script
+  description: "bzip2 help"
+  shell: /bin/bash
+  run: "bzip2 -h"
