@@ -11,6 +11,7 @@ expose functions to run builds.
 import datetime
 import os
 import re
+import shutil
 import stat
 import sys
 
@@ -543,12 +544,13 @@ class BuilderBase:
         """Given test metadata, get test lines to write to file or show."""
         
         lines = []
+        shell = shutil.which(self.get_shell())
+        
+        if not shell:
+            shell = BUILDTEST_SHELL
 
-        if self.get_shell() in ["sh", "/bin/sh"]:
-            lines += [f"#!/bin/sh"]
-
-        elif self.get_shell() in ["bash", "/bin/bash"]:
-            lines += [f"#!{BUILDTEST_SHELL}"]
+        lines += [f"#!{shell}"]
+        
 
         # Every test starts with cd to TESTDIR
         lines += ["cd $TESTDIR"]
