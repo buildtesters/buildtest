@@ -541,10 +541,16 @@ class BuilderBase:
 
     def _get_test_lines(self):
         """Given test metadata, get test lines to write to file or show."""
+        
+        lines = []
+
+        if self.get_shell() in ["sh", "/bin/sh"]:
+            lines += [f"#!/bin/sh"]
+            
+        elif self.get_shell() in ["bash", "/bin/bash"]:
+            lines += [BUILDTEST_SHELL]
 
         # Every test starts with cd to TESTDIR
-        lines = ["#!/bin/bash"]
-
         lines += ["cd $TESTDIR"]
 
         # Add environment variables
