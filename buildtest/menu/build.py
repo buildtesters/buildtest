@@ -75,9 +75,6 @@ def func_build_subcmd(args):
 
     :rtype: None
     """
-    if args.clear:
-        clear_builds()
-        sys.exit(0)
 
     # Discover list of one or more config files based on path provided
     config_files = discover_configs(args.config)
@@ -113,9 +110,6 @@ def func_build_subcmd(args):
                     failed_tests += 1
             else:
                 result = builder.dry_run()
-
-            # Update build history
-            BUILDTEST_BUILD_HISTORY[result["BUILD_ID"]] = result
 
     if not args.dry:
         print(f"Finished running {total_tests} total tests.")
