@@ -156,7 +156,7 @@ class BuildConfig:
 
     # Builders
 
-    def get_builders(self):
+    def get_builders(self, testdir=None):
         """Based on a loaded configuration file, return the correct builder
            for each based on the type. Each type is associated with a known 
            Builder class.
@@ -170,7 +170,9 @@ class BuildConfig:
                 # Add the builder based on the type
                 if recipe_config["type"] == "script":
                     builders.append(
-                        ScriptBuilder(name, recipe_config, self.config_file)
+                        ScriptBuilder(
+                            name, recipe_config, self.config_file, testdir=testdir
+                        )
                     )
                 else:
                     print(
@@ -204,8 +206,8 @@ class BuilderBase:
        any kind of builder.
     """
 
-    def __init__(self, name, recipe_config, config_file=None):
-        """Initiate a builder base. A recipe configuration (loaded) is required.
+    def __init__(self, name, recipe_config, config_file=None, testdir=None):
+        """initiate a builder base. A recipe configuration (loaded) is required.
            this can be handled easily with the BuildConfig class:
 
            bc = BuildConfig(config_file)
@@ -225,6 +227,10 @@ class BuilderBase:
         self.build_id = None
         self.metadata = {}
         self.config_file = config_file
+        self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(config_file))
+        self.testdir = testdir or os.path.join(
+            os.getcwd(), ".buildtest", self.config_name
+        )
 
         # A builder is required to define the type attribute
         if not hasattr(self, "type"):
@@ -362,7 +368,7 @@ class BuilderBase:
         if hasattr(self, "_finish_run"):
             self._finish_run()
 
-    def prepare_run(self):
+    def prepare_run(self, testdir=None):
         """Prepare run provides shared functions to set up metadata and
            class data structures that are used by both run and dry_run
            This section cannot be reached without a valid, loaded recipe.
@@ -374,9 +380,6 @@ class BuilderBase:
         # History is returned at the end of a run
         self.history = {}
         self.history["TESTS"] = []
-
-        # Create a deep copy of config_opts for the build file
-        self.options = deepcopy(config_opts)
 
         # Metadata includes known sections in a config recipe (pre/post_run, env)
         # These should all be validated for type, format, by the schema validator
@@ -390,7 +393,7 @@ class BuilderBase:
 
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
-            os.path.join(self.options["build"]["testdir"], self.name),
+            os.path.join(self.testdir, self.name),
             self.get_test_extension(),
         )
         self.metadata["testdir"] = os.path.dirname(self.metadata["testpath"])
@@ -410,6 +413,9 @@ class BuilderBase:
         """Run the builder associated with the loaded recipe.
            This parent class handles shared starting functions for each step
            and then calls the subclass function (_run) if it exists.
+
+           Parameters:
+           testdir: the directory to write tests to. Defaults to os.getcwd()
         """
 
         # Create test directory and run folder they don't exist

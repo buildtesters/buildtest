@@ -80,7 +80,6 @@ def func_build_subcmd(args):
     config_files = discover_configs(args.config)
 
     # Read in all config files here, loading each will validate the entire file
-    # TODO: allow some level of skipping invalid files, an argument?
     for config_file in config_files:
         bc = BuildConfig(config_file)
 
@@ -96,7 +95,7 @@ def func_build_subcmd(args):
         bc = BuildConfig(config_file)
 
         # And builders parsed through for each
-        for builder in bc.get_builders():
+        for builder in bc.get_builders(testdir=args.testdir):
 
             # Keep track of total number of tests run
             total_tests += 1

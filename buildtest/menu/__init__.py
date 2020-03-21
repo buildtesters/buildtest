@@ -97,6 +97,12 @@ class BuildTestParser:
         )
 
         parser_build.add_argument(
+            "-t",
+            "--testdir",
+            help="specify a custom test directory. By default, use .buildtest in $PWD.",
+        )
+
+        parser_build.add_argument(
             "-d",
             "--dry",
             help="dry-run mode, buildtest will not write the test scripts but print "
