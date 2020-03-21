@@ -16,13 +16,13 @@ stream_openmp_c:
     wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c
     gcc -fopenmp -D_OPENMP -O2 stream.c -o stream
 
-    export OMP_NUM_THREAD=2 
+    export OMP_NUM_THREAD=2
     ./stream
 
-    export OMP_NUM_THREAD=4 
+    export OMP_NUM_THREAD=4
     ./stream
 
-    export OMP_NUM_THREAD=8  
+    export OMP_NUM_THREAD=8
     ./stream
 
     export OMP_NUM_THREAD=16
