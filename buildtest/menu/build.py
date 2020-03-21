@@ -110,9 +110,6 @@ def func_build_subcmd(args):
             else:
                 result = builder.dry_run()
 
-            # Update build history
-            BUILDTEST_BUILD_HISTORY[result["BUILD_ID"]] = result
-
     if not args.dry:
         print(f"Finished running {total_tests} total tests.")
         print
