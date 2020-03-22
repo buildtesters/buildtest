@@ -1,0 +1,29 @@
+version: 0.0.1
+
+stream_uniprocess_c:
+  type: script
+  description: "STREAM Microbenchmark C test on uniprocessor"
+  run: |
+    wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c
+    gcc -O2 stream.c -o stream
+    ./stream
+
+
+stream_openmp_c:
+  type: script
+  description: "STREAM Microbenchmark C Test with OpenMP"
+  run: |
+    wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c
+    gcc -fopenmp -D_OPENMP -O2 stream.c -o stream
+
+    export OMP_NUM_THREAD=2
+    ./stream
+
+    export OMP_NUM_THREAD=4
+    ./stream
+
+    export OMP_NUM_THREAD=8
+    ./stream
+
+    export OMP_NUM_THREAD=16
+    ./stream
