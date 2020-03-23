@@ -6,6 +6,18 @@
             "description": "submit job locally",
             "scheduler": "local",
             "launcher": "local"
-        }        
+        },
+        {
+            "name": "admin",
+            "description": "Admin Queue",
+            "scheduler": "slurm",
+            "launcher": "sbatch",
+            "options": [
+                "#SBATCH -n 1"       
+            ],
+            "vars": {
+                "FOO": "BAR"
+            }
+        }   
     ]
 }
