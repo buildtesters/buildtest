@@ -20,17 +20,18 @@ from buildtest.defaults import (
 )
 from buildtest.buildsystem.schemas.utils import load_schema
 
+
 def create_config_files():
-    """if default config files don't exist, create them
-    """
+    """If default config files don't exist, create them."""
+
     if not os.path.exists(BUILDTEST_CONFIG_FILE):
         shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
         shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)
 
 
 def create_logfile():
-    """Create a logfile to keep track of messages for the user, if doesn't exist
-    """
+    """Create a logfile to keep track of messages for the user, if doesn't exist."""
+
     if not os.path.exists(BUILDTEST_BUILD_LOGFILE):
         build_dict = {"build": {}}
         with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
@@ -42,6 +43,7 @@ def init():
        and that dependency files are created. This is called by 
        load_configuration.
     """
+
     # check if $HOME/.buildtest exists, if not create directory
     if not os.path.exists(BUILDTEST_ROOT):
         print(
@@ -59,29 +61,36 @@ def init():
     create_config_files()
     create_logfile()
 
-def check_configuration():
-    """Checks all keys in configuration file (settings.json) are valid
-       keys and ensure value of each key matches expected type . For some keys
-       special logic is taken to ensure values are correct and directory path
-       exists.       
 
-       If any error is found buildtest will terminate immediately.
+def check_configuration():
+    """Checks all keys in configuration file (``settings.json``) are valid
+       against schema ``config_schema.json``. If there are any errors during schema check
+       an exception of type ``ValidationError`` will be raised.
+
+       :raises ValidationError: ``jsonschema.validate`` will raise ValidationError if validation check fails against given schema.
+
        :return: returns gracefully if all checks passes otherwise terminate immediately
        :rtype: exit code 1 if checks failed
     """
-    ec = 0
-    
-    
+
     config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
     try:
         validate(instance=config_opts, schema=config_schema)
     except ValidationError:
-        sys.exit("Buildtest Configuration Check Failed! \n" +
-                 f"Configuration File: {BUILDTEST_CONFIG_FILE} failed to validate against schema: {DEFAULT_CONFIG_SCHEMA}" 
+        sys.exit(
+            "Buildtest Configuration Check Failed! \n"
+            + f"Configuration File: {BUILDTEST_CONFIG_FILE} failed to validate against schema: {DEFAULT_CONFIG_SCHEMA}"
         )
 
+
 def load_configuration(config_path=None):
-    """load the default configuration file.
+    """Load the default configuration file.
+    
+       Parameters:
+
+       :param config_path: Path to buildtest configuration file (json)
+       :type config_path: str, optional
+
     """
     init()
 
@@ -89,8 +98,6 @@ def load_configuration(config_path=None):
 
     # load the configuration file
     config_opts = load_schema(config_path)
-    
-    #config_opts["BUILDTEST_VERSION"] = BUILDTEST_VERSION    
 
     return config_opts
 
