@@ -1,54 +1,23 @@
 {
-  "$id": "https://raw.githubusercontent.com/HPC-buildtest/buildtest-framework/devel/buildtest/settings.json",
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Buildtest Configuration Schema Definition",
-  "type": "object",
-  "defs": {
-    "alphanumeric": {
-        "type": "string",
-        "pattern": "([a-zA-Z0-9_]|-)+"
-    },
-    "vars": {
-        "type": "object",
-        "minItems": 1,
-        "items": {
-            "type": "object",
-            "minItems": 1,            
-            "propertyNames": {
-                "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
-            }
-        }        
-    }
-  },
-  "properties": {
-    "editor": { 
-        "type": "string",
-        "enum": ["vi","vim","nano","emacs"]
-    },
-    "partitions": {
-        "type": "array",
-        "items": {
-            "type": "object",
-            "properties": {
-                "name": {"$ref": "#/defs/alphanumeric"},
-                "description": {"type": "string"},
-                "scheduler": {
-                    "type": "string",
-                    "enum": ["local", "slurm"]
-                },
-                "launcher": {
-                    "type": "string",
-                    "enum": ["local", "mpirun", "mpiexec", "sbatch", "srun"]
-                },
-                "options": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                },
-                "vars": {"$ref": "#/defs/vars"},                
-            }                
+    "editor": "vi",
+    "queues": [
+        {
+            "name": "localhost",
+            "description": "submit job locally",
+            "scheduler": "local",
+            "launcher": "local"
         },
-        "required": ["name", "scheduler", "launcher"],
-        "additionalProperties": false
-    }    
-  }
+        {
+            "name": "admin",
+            "description": "submit job locally",
+            "scheduler": "slurm",
+            "launcher": "sbatch",
+            "options": [
+                "#SBATCH -n 1"       
+            ],
+            "vars": {
+                "FOO": "BAR"
+            }
+        }   
+    ]
 }
