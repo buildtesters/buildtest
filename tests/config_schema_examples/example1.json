@@ -1,0 +1,11 @@
+{
+    "editor": "vi",
+    "queues": [
+        {
+            "name": "localhost",
+            "description": "submit job locally",
+            "scheduler": "local",
+            "launcher": "local"
+        }        
+    ]
+}
