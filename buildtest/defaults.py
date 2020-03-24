@@ -8,6 +8,8 @@ or derived here.
 import pwd
 import os
 
+from buildtest.system import BuildTestSystem
+
 logID = "buildtest"
 
 # each has a subfolder in buildtest/buildsystem/schemas/ with *.schema.json
@@ -42,3 +44,7 @@ TESTCONFIG_ROOT = os.path.join(BUILDTEST_ROOT, "site")
 DEFAULT_CONFIG_FILE = os.path.join(root, "settings", "settings.json")
 DEFAULT_CONFIG_SCHEMA = os.path.join(root, "settings", "settings.schema.json")
 EDITOR_LIST = ["vim", "emacs", "nano"]
+supported_launcher_dict = {
+    "local": ["local", "mpirun", "mpiexec"],
+    "slurm": ["mpirun", "mpiexec", "srun"],
+}

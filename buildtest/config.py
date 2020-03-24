@@ -10,7 +10,7 @@ from jsonschema.exceptions import ValidationError
 from buildtest import BUILDTEST_VERSION
 from buildtest.utils.file import create_dir
 from buildtest.defaults import (
-    system    
+    system,
     BUILDTEST_BUILD_LOGFILE,
     BUILDTEST_CONFIG_FILE,
     BUILDTEST_CONFIG_BACKUP_FILE,
@@ -18,7 +18,7 @@ from buildtest.defaults import (
     DEFAULT_CONFIG_FILE,
     DEFAULT_CONFIG_SCHEMA,
     EDITOR_LIST,
-    
+    supported_launcher_dict,
 )
 from buildtest.buildsystem.schemas.utils import load_schema
 
@@ -48,10 +48,7 @@ def init():
 
     # check if $HOME/.buildtest exists, if not create directory
     if not os.path.exists(BUILDTEST_ROOT):
-        print(
-            f"Creating buildtest configuration directory: \
-                 {BUILDTEST_ROOT}"
-        )
+        print(f"Creating buildtest configuration directory: {BUILDTEST_ROOT}")
         os.mkdir(BUILDTEST_ROOT)
 
     # Create subfolders for var and root
@@ -83,8 +80,14 @@ def check_configuration():
             "Buildtest Configuration Check Failed! \n"
             + f"Configuration File: {BUILDTEST_CONFIG_FILE} failed to validate against schema: {DEFAULT_CONFIG_SCHEMA}"
         )
-    
-    validate_queues(config_opts["queues"],system)        
+
+    editor_path = shutil.which(config_opts["editor"]) or None
+
+    if editor_path is None:
+        sys.exit(f"Can't find editor: {config_opts['editor']} in $PATH")
+
+    validate_queues(config_opts["queues"])
+
 
 def load_configuration(config_path=None):
     """Load the default configuration file.
@@ -108,33 +111,43 @@ def load_configuration(config_path=None):
 # Run on init, so we only load once
 config_opts = load_configuration()
 
-supported_launcher_dict = {
-    "local": ["local", "mpirun", "mpiexec"],
-    "slurm": ["mpirun", "mpiexec", "srun"]
-}
 
-def validate_queues(config_queues)
+def validate_queues(queues):
     """This method will validate queues defined in buildtest configuration with queue semantic. 
-       A queue type will be validated against the supported launcher type defined in configuration.          
-    """
-    
-    for queue in config_queue:
-        if queue["scheduler"] == "local":
-            validate_local_scheduler(queue["launcher"])                        
-            
-        elif queue["scheduler"] == "slurm":
-            system["slurm"]["partitions"]
+       A queue type will be validated against the supported launcher type defined in configuration.    
 
-def validate_local_scheduler(launcher):
+       Parameters:
+
+       :param queues: list of queue configuration defined in buildtest configuration  
+    """
+
+    for queue in queues:
+        if queue["scheduler"] == "local":
+            validate_local_queue(queue["launcher"])
+
+        elif queue["scheduler"] == "slurm":
+            validate_slurm_queue(queue)
+
+
+def validate_local_queue(launcher):
     """This method will check launcher type for ``scheduler: local`` defined in configuration file.
        Valid launchers for local scheduler are ``local``, ```mpiexec``, ``mpirun``. If launcher 
        type is not of supported type we exit immediately. Furthermore we check that mpiexec and mpirun
        are in $PATH so we can use them. 
 
+       Parameters:
 
-    
-       :return: 
+       :param launcher: launcher name specified for local
+       :type launcher: str, required       
     """
+
+    # if launcher name is not supported by local scheduler then exit
+    if launcher not in supported_launcher_dict["local"]:
+        sys.exit(
+            f"Invalid launcher type: {launcher} for scheduler: local \n"
+            + f"Supported Launchers for scheduler:local are the following {supported_launcher_dict['local']}"
+        )
+
     # if mpiexec is not found in $PATH we can't use mpiexec as a launcher type
     if launcher == "mpiexec" and system["mpiexec"] is None:
         sys.exit("Can't find binary 'mpiexec' in $PATH")
@@ -143,7 +156,33 @@ def validate_local_scheduler(launcher):
     if launcher == "mpirun" and system["mpirun"] is None:
         sys.exit("Can't find binary 'mpirun' in $PATH")
 
-    if launcher is not in supported_launcher_dict["local"]:
-        sys.exit(f"Invalid launcher type: {launcher} for scheduler: local \n" +
-                 f"Supported Launchers for scheduler: local {supported_launcher_dict['local']}"
+
+def validate_slurm_queue(queue):
+    """This method will validate slurm partition defined in buildtest configuration with 
+       available slurm partition. We also check if launcher is compatible with slurm.
+
+       Parameters:
+
+       :param queue: slurm partition defined in buildtest configuration file
+       :type queue: dict
+    """
+
+    slurm_partitions = system["slurm"]["partitions"]
+    name = queue["name"]
+    launcher = queue["launcher"]
+
+    # if slurm partition is not available, then exit
+    if name not in slurm_partitions:
+        sys.exit(
+            f"Invalid Partition name: {name}. List of available Slurm Partitions: {slurm_partitions}"
         )
+
+    # if launcher name is not a supported by slurm, then exit
+    if launcher not in supported_launcher_dict["slurm"]:
+        sys.exit(
+            f"Invalid launcher type: {launcher} for scheduler: slurm \n"
+            + f"Supported Launchers for scheduler:slurm are the following {supported_launcher_dict['slurm']}"
+        )
+
+    if launcher == "srun" and system["srun"] is not None:
+        sys.exit("Can't find binary 'srun' in $PATH")

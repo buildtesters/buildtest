@@ -45,12 +45,7 @@
                         "properties": {
                             "purge": {"type": "boolean"},
                             "force": {"type": "boolean"},
-                            "names": {
-                                "type": "array", 
-                                "items": {
-                                    "type": "string"
-                                    } 
-                                }
+                            "names": { "type": "array", "items": {"type": "string" } }
                         }
                     },
                     "options": {

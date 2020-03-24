@@ -5,7 +5,15 @@
             "name": "localhost",
             "description": "submit job locally",
             "scheduler": "local",
-            "launcher": "local"
+            "launcher": "local",
+            "vars": {
+                "FOO": "BAR"
+            },
+            "modules":{
+                "purge": true,
+                "force": false,
+                "names": ["GCC", "binutils"]
+            }
         }        
     ]
 }
