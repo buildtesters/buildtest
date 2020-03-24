@@ -27,25 +27,15 @@ def test_config_restore():
     func_config_restore()
 
 
-def test_config_ex1():
-    example_schema = os.path.join(
-        pytest_root, "config_schema_examples", "example1.json"
-    )
+def test_settings_localhost():
+    example_schema = os.path.join(pytest_root, "settings", "localhost.json")
     schema_config = load_schema(DEFAULT_CONFIG_SCHEMA)
     example = load_schema(example_schema)
     validate(instance=example, schema=schema_config)
 
 
-def test_config_ex2():
-    example_schema = os.path.join(
-        pytest_root, "config_schema_examples", "example2.json"
-    )
+def test_settings_slurm():
+    example_schema = os.path.join(pytest_root, "settings", "slurm.json")
     schema_config = load_schema(DEFAULT_CONFIG_SCHEMA)
     example = load_schema(example_schema)
-    try:
-        validate(instance=example, schema=schema_config)
-    except ValidationError:
-        print(
-            f"Failed to validate configuration file: {example_schema} with schema {DEFAULT_CONFIG_SCHEMA}"
-        )
-        assert True
+    validate(instance=example, schema=schema_config)

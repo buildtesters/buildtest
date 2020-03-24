@@ -1,12 +1,12 @@
 {
-    "editor": "vi",
+    "editor": "vim",
     "queues": [
         {
             "name": "localhost",
             "description": "submit job locally",
             "scheduler": "local",
             "launcher": "local"
-        },
+        },  
         {
             "name": "admin",
             "description": "Admin Queue",
@@ -18,6 +18,6 @@
             "vars": {
                 "FOO": "BAR"
             }
-        }   
-    ]
+        }         
+    ]    
 }
