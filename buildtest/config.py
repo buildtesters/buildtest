@@ -10,6 +10,7 @@ from jsonschema.exceptions import ValidationError
 from buildtest import BUILDTEST_VERSION
 from buildtest.utils.file import create_dir
 from buildtest.defaults import (
+    system    
     BUILDTEST_BUILD_LOGFILE,
     BUILDTEST_CONFIG_FILE,
     BUILDTEST_CONFIG_BACKUP_FILE,
@@ -17,6 +18,7 @@ from buildtest.defaults import (
     DEFAULT_CONFIG_FILE,
     DEFAULT_CONFIG_SCHEMA,
     EDITOR_LIST,
+    
 )
 from buildtest.buildsystem.schemas.utils import load_schema
 
@@ -81,7 +83,8 @@ def check_configuration():
             "Buildtest Configuration Check Failed! \n"
             + f"Configuration File: {BUILDTEST_CONFIG_FILE} failed to validate against schema: {DEFAULT_CONFIG_SCHEMA}"
         )
-
+    
+    validate_queues(config_opts["queues"],system)        
 
 def load_configuration(config_path=None):
     """Load the default configuration file.
@@ -104,3 +107,43 @@ def load_configuration(config_path=None):
 
 # Run on init, so we only load once
 config_opts = load_configuration()
+
+supported_launcher_dict = {
+    "local": ["local", "mpirun", "mpiexec"],
+    "slurm": ["mpirun", "mpiexec", "srun"]
+}
+
+def validate_queues(config_queues)
+    """This method will validate queues defined in buildtest configuration with queue semantic. 
+       A queue type will be validated against the supported launcher type defined in configuration.          
+    """
+    
+    for queue in config_queue:
+        if queue["scheduler"] == "local":
+            validate_local_scheduler(queue["launcher"])                        
+            
+        elif queue["scheduler"] == "slurm":
+            system["slurm"]["partitions"]
+
+def validate_local_scheduler(launcher):
+    """This method will check launcher type for ``scheduler: local`` defined in configuration file.
+       Valid launchers for local scheduler are ``local``, ```mpiexec``, ``mpirun``. If launcher 
+       type is not of supported type we exit immediately. Furthermore we check that mpiexec and mpirun
+       are in $PATH so we can use them. 
+
+
+    
+       :return: 
+    """
+    # if mpiexec is not found in $PATH we can't use mpiexec as a launcher type
+    if launcher == "mpiexec" and system["mpiexec"] is None:
+        sys.exit("Can't find binary 'mpiexec' in $PATH")
+
+    # if mpirun is not found in $PATH we can't use mpirun as a launcher type
+    if launcher == "mpirun" and system["mpirun"] is None:
+        sys.exit("Can't find binary 'mpirun' in $PATH")
+
+    if launcher is not in supported_launcher_dict["local"]:
+        sys.exit(f"Invalid launcher type: {launcher} for scheduler: local \n" +
+                 f"Supported Launchers for scheduler: local {supported_launcher_dict['local']}"
+        )

@@ -38,7 +38,20 @@
                     },
                     "launcher": {
                         "type": "string",
-                        "enum": ["local", "mpirun", "mpiexec", "sbatch", "srun"]
+                        "enum": ["local", "mpirun", "mpiexec", "srun"]
+                    },
+                    "modules": {
+                        "type": "object",
+                        "properties": {
+                            "purge": {"type": "boolean"},
+                            "force": {"type": "boolean"},
+                            "names": {
+                                "type": "array", 
+                                "items": {
+                                    "type": "string"
+                                    } 
+                                }
+                        }
                     },
                     "options": {
                         "type": "array",

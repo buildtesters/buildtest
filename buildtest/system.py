@@ -24,19 +24,23 @@ class BuildTestSystem:
            class variable **system** which is a dictionary
         """
         self.init_system()
-        self.system["SYSTEM"] = platform.system()
-        self.scheduler = self.check_scheduler()
+        self.system["system"] = platform.system()
+        self.check_scheduler()
         self.check_lmod()
 
+        
     def init_system(self):
         """Based on the module "distro" set the linux distrubution name and version
         """
-        self.system["OS_NAME"] = distro.linux_distribution(
-            full_distribution_name=False
-        )[0]
-        self.system["OS_VERSION"] = distro.linux_distribution(
-            full_distribution_name=False
-        )[1]
+        self.system["distro"] = distro.id()
+
+        self.system["version"] = distro.version(best=True)
+        self.system["version_parts"] = {}
+        self.system["version_parts"]["major"] = distro.major_version(best=True)
+        self.system["version_parts"]["minor"] = distro.minor_version(best=True)
+        self.system["version_parts"]["build_number"] = distro.build_number(best=True)
+        self.system["mpirun"] = shutil.which("mpirun") or None
+        self.system["mpiexec"] = shutil.which("mpiexec") or None
 
     def check_lmod(self):
         """Check if the system has Lmod installed, determine by setting
@@ -59,25 +63,41 @@ class BuildTestSystem:
         # Assue we don't have either installed to start
         lsf_ec_code = 255
         slurm_ec_code = 255
-
+        
+        
+        
         if shutil.which("bhosts"):
             lsf_cmd = BuildTestCommand("bhosts")
             lsf_cmd.execute()
             lsf_ec_code = lsf_cmd.returncode
+            
 
         elif shutil.which("sinfo"):
             slurm_cmd = BuildTestCommand("sinfo")
             slurm_cmd.execute()
             slurm_ec_code = slurm_cmd.returncode
+                        
+
+            self.system["scheduler"]["slurm"]["partitions"] = get_slurm_partitions()
 
         if slurm_ec_code == 0:
-            return "SLURM"
+            return "slurm"
         if lsf_ec_code == 0:
-            return "LSF"
+            return "lsf"
 
     def check_system_requirements(self):
         """Checking system requirements."""
 
-        if self.system["SYSTEM"] != "Linux":
+        if self.system["system"] != "Linux":
             print("System must be Linux")
             sys.exit(1)
+    
+def get_slurm_partitions():
+    """Get listing of all slurm partitions."""
+    cmd = """sinfo -o "%R" -h """
+    out = subprocess.check_output(cmd,shell=True,encoding="utf-8").split()
+    # last entry in list is empty, so we remove it 
+    del out[-1]
+    
+    return out
+

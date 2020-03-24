@@ -11,7 +11,7 @@
             "name": "admin",
             "description": "Admin Queue",
             "scheduler": "slurm",
-            "launcher": "sbatch",
+            "launcher": "srun",
             "options": [
                 "#SBATCH -n 1"       
             ],
