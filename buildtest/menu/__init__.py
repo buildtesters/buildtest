@@ -15,7 +15,7 @@ from buildtest.menu.config import (
     func_config_restore,
 )
 
-from buildtest.menu.show import func_show_subcmd, show_schema_layout
+from buildtest.menu.show import show_schema_layout
 from buildtest.menu.status import show_status_report
 
 
@@ -168,13 +168,6 @@ class BuildTestParser:
 
         # -------------------------- buildtest show options ------------------------------
         parser_show = self.subparsers.add_parser("show")
-        parser_show.add_argument(
-            "-c",
-            "--config",
-            help="show buildtest global configuration",
-            action="store_true",
-        )
-        parser_show.set_defaults(func=func_show_subcmd)
 
         # -------------------------- buildtest show schemas ------------------------------
         subparsers_show = parser_show.add_subparsers(

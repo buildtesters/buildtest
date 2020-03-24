@@ -10,16 +10,6 @@ from buildtest.buildsystem.schemas.utils import (
 )
 
 
-def func_show_subcmd(args):
-    """Entry point to ``buildtest show`` sub command.
-
-    :param args: command line arguments to buildtest
-    :type args: dict, required
-    """
-    if args.config:
-        show_configuration()
-
-
 def show_schema_layout(args):
     """Implements method ``buildtest show schema``"""
 
