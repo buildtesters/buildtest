@@ -31,12 +31,12 @@ BUILDTEST_BUILD_LOGFILE = os.path.join(BUILDTEST_ROOT, "var", "build.json")
 
 # dictionary used for storing status of builds
 BUILDTEST_BUILD_HISTORY = {}
-BUILDTEST_CONFIG_FILE = os.path.join(BUILDTEST_ROOT, "settings.json")
-BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(BUILDTEST_ROOT, "settings.json.bak")
+BUILDTEST_CONFIG_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml")
+BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml.bak")
 
 # TESTCONFIG_ROOT is the root directory where test configurations are found
 # configs can be specified as full paths or relative to this path
 TESTCONFIG_ROOT = os.path.join(BUILDTEST_ROOT, "site")
-DEFAULT_CONFIG_FILE = os.path.join(root, "settings.json")
-DEFAULT_CONFIG_SCHEMA = os.path.join(root, "config_schema.json")
+DEFAULT_CONFIG_FILE = os.path.join(root, "settings", "default.yml")
+DEFAULT_CONFIG_SCHEMA = os.path.join(root, "settings", "default-schema.json")
 EDITOR_LIST = ["vim", "emacs", "nano"]

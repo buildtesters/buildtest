@@ -1,0 +1,11 @@
+
+editor: vi
+executors:
+  local:
+    type: local
+    description: submit jobs locally
+  slurm:
+    type: slurm
+    description: submit jobs with slurm using srun instead of sbatch
+    vars:
+      launcher: srun

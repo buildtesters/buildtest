@@ -20,6 +20,7 @@ from buildtest.defaults import (
 )
 from buildtest.buildsystem.schemas.utils import load_schema
 
+
 def create_config_files():
     """if default config files don't exist, create them
     """
@@ -59,8 +60,9 @@ def init():
     create_config_files()
     create_logfile()
 
+
 def check_configuration():
-    """Checks all keys in configuration file (settings.json) are valid
+    """Checks all keys in configuration file (settings/default.yml) are valid
        keys and ensure value of each key matches expected type . For some keys
        special logic is taken to ensure values are correct and directory path
        exists.       
@@ -69,16 +71,15 @@ def check_configuration():
        :return: returns gracefully if all checks passes otherwise terminate immediately
        :rtype: exit code 1 if checks failed
     """
-    ec = 0
-    
-    
     config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
     try:
         validate(instance=config_opts, schema=config_schema)
     except ValidationError:
-        sys.exit("Buildtest Configuration Check Failed! \n" +
-                 f"Configuration File: {BUILDTEST_CONFIG_FILE} failed to validate against schema: {DEFAULT_CONFIG_SCHEMA}" 
+        sys.exit(
+            "Buildtest Configuration Check Failed! \n"
+            + f"Configuration File: {BUILDTEST_CONFIG_FILE} failed to validate against schema: {DEFAULT_CONFIG_SCHEMA}"
         )
+
 
 def load_configuration(config_path=None):
     """load the default configuration file.
@@ -89,8 +90,8 @@ def load_configuration(config_path=None):
 
     # load the configuration file
     config_opts = load_schema(config_path)
-    
-    #config_opts["BUILDTEST_VERSION"] = BUILDTEST_VERSION    
+
+    # config_opts["BUILDTEST_VERSION"] = BUILDTEST_VERSION
 
     return config_opts
 
