@@ -6,11 +6,12 @@ Copyright (c) 2020 Vanessa Sochat.
 import pytest
 import os
 
+from jsonschema import validate
 from buildtest.executors.base import BuildExecutor
 from buildtest.buildsystem.schemas.utils import load_schema
 from buildtest.defaults import DEFAULT_CONFIG_SCHEMA
 
-pytest_root = os.path.dirname(os.path.abspath(__file__))
+pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def test_build_executor():

@@ -38,7 +38,7 @@ def test_config_local():
 
 def test_config_slurm():
     example_schema = os.path.join(
-        pytest_root, "config_schema_examples", "local-slurm.yml"
+        pytest_root, "config_schema_examples", "slurm-example.yml"
     )
     schema_config = load_schema(DEFAULT_CONFIG_SCHEMA)
     example = load_schema(example_schema)
