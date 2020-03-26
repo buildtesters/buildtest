@@ -3,17 +3,12 @@ import pytest
 from jsonschema import validate, ValidationError
 from buildtest.defaults import BUILDTEST_CONFIG_BACKUP_FILE, DEFAULT_CONFIG_SCHEMA
 from buildtest.menu.config import (
-    show_configuration,
     func_config_view,
     func_config_restore,
 )
 from buildtest.buildsystem.schemas.utils import load_schema
 
 pytest_root = os.path.dirname(os.path.dirname(__file__))
-
-
-def test_show_config():
-    show_configuration()
 
 
 def test_view_configuration():

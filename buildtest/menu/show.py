@@ -2,22 +2,11 @@ import json
 import sys
 
 from buildtest.defaults import supported_schemas
-from buildtest.menu.config import show_configuration
 from buildtest.buildsystem.schemas.utils import (
     load_schema,
     get_schemas_available,
     get_schema_fullpath,
 )
-
-
-def func_show_subcmd(args):
-    """Entry point to ``buildtest show`` sub command.
-
-    :param args: command line arguments to buildtest
-    :type args: dict, required
-    """
-    if args.config:
-        show_configuration()
 
 
 def show_schema_layout(args):
