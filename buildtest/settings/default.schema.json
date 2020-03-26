@@ -1,0 +1,80 @@
+{
+  "$id": "https://raw.githubusercontent.com/HPC-buildtest/buildtest-framework/devel/buildtest/default.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Buildtest Configuration Global Schema",
+  "type": "object",
+  "required": ["editor", "executors"],
+  "additionalProperties": false,
+  "properties": {
+      "editor": { 
+          "type": "string",
+          "enum": ["vi", "vim", "nano", "emacs"]
+      },
+      "executors": {
+          "type": "object",
+          "patternProperties": {
+              "^.*$": {
+                 "anyOf": [
+                     {"$ref": "#/definitions/local"},
+                     {"$ref": "#/definitions/slurm"}
+                 ]
+             }
+          }
+      }, 
+      "additionalProperties": false
+  },
+  "definitions": {
+      "alphanumeric": {
+          "type": "string",
+          "pattern": "([a-zA-Z0-9_]|-)+"
+      },
+      "vars": {
+          "type": "object",
+          "minItems": 1,
+          "items": {
+              "type": "object",
+              "minItems": 1,            
+              "propertyNames": {
+                  "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+              }
+          }        
+      },
+      "local": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "description": {"type": "string"},
+              "type": {
+                  "type": "string",
+                  "enum": ["local"]
+               },
+               "options": {
+                   "type": "array",
+                   "items": {
+                       "type": "string"
+                   }
+               },
+               "vars": {"$ref": "#/definitions/vars"} 
+           },
+          "required": ["type"]
+       },
+
+      "slurm": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "description": {"type": "string"},
+              "type": {
+                  "type": "string",
+                  "enum": ["slurm"]
+               },
+               "options": {
+                   "type": "array",
+                   "items": {"type": "string"}
+               },
+               "vars": {"$ref": "#/definitions/vars"} 
+           },
+          "required": ["type"]
+       }
+    }
+}

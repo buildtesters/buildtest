@@ -5,6 +5,7 @@ interact with a global configuration for buildtest.
 
 import argparse
 
+from buildtest import BUILDTEST_VERSION
 from buildtest.config import config_opts
 from buildtest.menu.build import func_build_subcmd
 from buildtest.menu.get import func_get_subcmd
@@ -63,7 +64,7 @@ class BuildTestParser:
             "-V",
             "--version",
             action="version",
-            version=f"""buildtest version {config_opts["BUILDTEST_VERSION"]}""",
+            version=f"""buildtest version {BUILDTEST_VERSION}""",
         )
 
     def parse_options(self):

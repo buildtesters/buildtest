@@ -4,6 +4,9 @@ import shutil
 import sys
 import yaml
 
+from jsonschema import validate
+from jsonschema.exceptions import ValidationError
+
 from buildtest import BUILDTEST_VERSION
 from buildtest.utils.file import create_dir
 from buildtest.defaults import (
@@ -12,8 +15,10 @@ from buildtest.defaults import (
     BUILDTEST_CONFIG_BACKUP_FILE,
     BUILDTEST_ROOT,
     DEFAULT_CONFIG_FILE,
+    DEFAULT_CONFIG_SCHEMA,
     EDITOR_LIST,
 )
+from buildtest.buildsystem.schemas.utils import load_schema
 
 
 def create_config_files():
@@ -56,63 +61,24 @@ def init():
     create_logfile()
 
 
-config_yaml_keys = {
-    "BUILDTEST_MODULEPATH": type([]),
-    "EDITOR": type("str"),
-    "build": {
-        "testdir": type("str"),
-        "module": {"type": type(dict), "purge": {"type": type(bool)}},
-    },
-}
-
-
 def check_configuration():
-    """Checks all keys in configuration file (settings.yml) are valid
+    """Checks all keys in configuration file (settings/default.yml) are valid
        keys and ensure value of each key matches expected type . For some keys
        special logic is taken to ensure values are correct and directory path
-       exists.
-
-       Also check if module command is found.
+       exists.       
 
        If any error is found buildtest will terminate immediately.
        :return: returns gracefully if all checks passes otherwise terminate immediately
        :rtype: exit code 1 if checks failed
     """
-    ec = 0
-
-    if config_opts["BUILDTEST_MODULEPATH"] == None:
-        print(
-            "Please specify a module tree to BUILDTEST_MODULEPATH"
-            + f"in configuration {BUILDTEST_CONFIG_FILE}"
+    config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
+    try:
+        validate(instance=config_opts, schema=config_schema)
+    except ValidationError:
+        sys.exit(
+            "Buildtest Configuration Check Failed! \n"
+            + f"Configuration File: {BUILDTEST_CONFIG_FILE} failed to validate against schema: {DEFAULT_CONFIG_SCHEMA}"
         )
-    else:
-        for module_root in config_opts["BUILDTEST_MODULEPATH"]:
-            if not os.path.isdir(module_root):
-                print(
-                    f"{module_root} directory does not exist"
-                    + " specified in BUILDTEST_MODULEPATH"
-                )
-                ec = 1
-
-    if config_opts["EDITOR"] not in EDITOR_LIST:
-        print(f"Invalid EDITOR key: {config_opts['EDITOR']}")
-        print(f"Please pick a valid editor option from the following: {EDITOR_LIST}")
-        ec = 1
-
-    if config_opts["build"]["testdir"]:
-        config_opts["build"]["testdir"] = os.path.expandvars(
-            config_opts["build"]["testdir"]
-        )
-        # create the directory if it doesn't exist
-        if not os.path.isdir(config_opts["build"]["testdir"]):
-            dir = config_opts["build"]["testdir"]
-            print(f"creating directory: {dir}")
-            os.makedirs(config_opts["build"]["testdir"])
-
-    if ec:
-        print("CONFIGURATION CHECK FAILED")
-        print(f"Check your configuration: {BUILDTEST_CONFIG_FILE}")
-        sys.exit(1)
 
 
 def load_configuration(config_path=None):
@@ -123,29 +89,7 @@ def load_configuration(config_path=None):
     config_path = config_path or BUILDTEST_CONFIG_FILE
 
     # load the configuration file
-    with open(BUILDTEST_CONFIG_FILE, "r") as fd:
-        config_opts = yaml.safe_load(fd)
-
-    config_opts["BUILDTEST_VERSION"] = BUILDTEST_VERSION
-
-    # if BUILDTEST_MODULEPATH is empty list then check if MODULEPATH is defined
-    # and set result to BUILDTEST_MODULEPATH
-    if not config_opts["BUILDTEST_MODULEPATH"]:
-        if not os.getenv("MODULEPATH"):
-            config_opts["BUILDTEST_MODULEPATH"] = []
-        else:
-
-            # otherwise set this to MODULEPATH
-            tree_list = []
-
-            # check each directory in MODULEPATH and add it to BUILDTEST_MODULEPATH
-            for tree in os.getenv("MODULEPATH", "").split(":"):
-                if os.path.isdir(tree):
-                    tree_list.append(tree)
-
-            config_opts["BUILDTEST_MODULEPATH"] = tree_list
-
-    return config_opts
+    return load_schema(config_path)
 
 
 # Run on init, so we only load once

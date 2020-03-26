@@ -1,0 +1,8 @@
+
+editor: vi
+executors:
+  slurm:
+    type: slurm
+    description: submit jobs with slurm using srun instead of sbatch
+    vars:
+      launcher: srun

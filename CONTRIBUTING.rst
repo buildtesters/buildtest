@@ -212,8 +212,6 @@ as it will test your pull request before merging to ``devel`` branch.
 
 - **Stale**  - buildtest is using this app to close outdated issues. This is configured in ``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
 
-- **Issue-Label-Bot** - buildtest is using this app to mark issues using Machine Learning. This app can be found in marketplace at https://github.com/marketplace/issue-label-bot. The configuration ``.github/issue_label_bot.yaml`` defines the settings for **issue-label bot** when marking new issues with the corresponding labels. For a list of predictions on all issues check the following link: https://mlbot.net/data/HPC-buildtest/buildtest-framework
-
 Release Process
 ---------------
 

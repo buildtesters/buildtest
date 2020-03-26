@@ -14,7 +14,9 @@ here = os.path.dirname(os.path.abspath(__file__))
 
 
 def load_schema(path):
-    """load a schema from file. We assume a json file
+    """load a schema from file. We assume either a json or yml file by
+       the extension. This allows for using the function to load either,
+       as the user might have difference preferences.
 
        Parameters:
 
@@ -23,7 +25,10 @@ def load_schema(path):
     if not os.path.exists(path):
         sys.exit("schema file %s does not exist." % path)
     with open(path, "r") as fd:
-        schema = json.loads(fd.read())
+        if path.endswith("json"):
+            schema = json.loads(fd.read())
+        elif path.endswith("ml"):
+            schema = yaml.load(fd.read(), Loader=yaml.SafeLoader)
     return schema
 
 
