@@ -24,4 +24,4 @@ jobs:
         retry_count: 3
 
         # Cannot check private GitHub settings
-        white_listed_patterns: https://github.com/HPC-buildtest/buildtest-framework/settings,https://mlbot.net
+        white_listed_patterns: https://github.com/HPC-buildtest/buildtest-framework/settings

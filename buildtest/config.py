@@ -89,11 +89,7 @@ def load_configuration(config_path=None):
     config_path = config_path or BUILDTEST_CONFIG_FILE
 
     # load the configuration file
-    config_opts = load_schema(config_path)
-
-    # config_opts["BUILDTEST_VERSION"] = BUILDTEST_VERSION
-
-    return config_opts
+    return load_schema(config_path)
 
 
 # Run on init, so we only load once

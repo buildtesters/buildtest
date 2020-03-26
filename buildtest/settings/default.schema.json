@@ -1,5 +1,5 @@
 {
-  "$id": "https://raw.githubusercontent.com/HPC-buildtest/buildtest-framework/devel/buildtest/default-schema.json",
+  "$id": "https://raw.githubusercontent.com/HPC-buildtest/buildtest-framework/devel/buildtest/default.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Buildtest Configuration Global Schema",
   "type": "object",
@@ -56,7 +56,7 @@
                },
                "vars": {"$ref": "#/definitions/vars"} 
            },
-          "required": ["type", "description"]
+          "required": ["type"]
        },
 
       "slurm": {
@@ -74,7 +74,7 @@
                },
                "vars": {"$ref": "#/definitions/vars"} 
            },
-          "required": ["type", "description"]
+          "required": ["type"]
        }
     }
 }

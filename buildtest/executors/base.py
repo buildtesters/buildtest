@@ -55,12 +55,14 @@ class BaseExecutor:
     """
 
     def __init__(self, name, settings):
-        """initiate a base executor, meaning we provide a name (also held
+        """Initiate a base executor, meaning we provide a name (also held
            by the BuildExecutor base that holds it) and the loaded dictionary
            of config opts to parse.
 
-           name: a name for the base executor and key provided in the configuration file
-           settings: the original config opts to extract variables from.
+           :param name: a name for the base executor and key provided in the configuration file
+           :type name: string (required)
+           :param settings: the original config opts to extract variables from.
+           :type settings: dict (required)
         """
 
         self.name = name
@@ -96,7 +98,8 @@ class SlurmExecutor(BaseExecutor):
            added and indexed with "name." For slurm we look for the following
            in vars:
 
-           launcher: defaults to sbatch
+           :param launcher: defaults to sbatch
+           :type launcher: string
         """
         variables = self._settings.get("vars", {})
         self.launcher = variables.get("launcher", "sbatch")
