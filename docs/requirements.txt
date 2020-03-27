@@ -26,7 +26,7 @@ pyparsing==2.4.6
 pyrsistent==0.15.7
 pytest==5.4.1
 pytz==2019.3
-PyYAML==5.3
+PyYAML==5.3.1
 regex==2020.2.20
 requests==2.23.0
 six==1.14.0
