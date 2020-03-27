@@ -38,7 +38,6 @@ def introspection_cmds():
 
     queries = [
         "buildtest show schema",
-        "buildtest show --config",
         "buildtest config view",
         "buildtest config restore",
     ]

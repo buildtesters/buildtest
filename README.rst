@@ -1,4 +1,4 @@
-| |license| |docs| |travis| |codecov| |coverall| |slack| |codefactor| |core_infrastructure| |black| |tags| 
+| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |core_infrastructure| |black| |tags| 
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -11,7 +11,7 @@
 .. |tags| image:: https://img.shields.io/github/v/tag/HPC-buildtest/buildtest-framework.svg
 .. |codecov| image:: https://codecov.io/gh/HPC-buildtest/buildtest-framework/branch/devel/graph/badge.svg
     :target: https://codecov.io/gh/HPC-buildtest/buildtest-framework
-.. |coverall| image:: https://coveralls.io/repos/github/HPC-buildtest/buildtest-framework/badge.svg?branch=devel
+.. |coveralls| image:: https://coveralls.io/repos/github/HPC-buildtest/buildtest-framework/badge.svg?branch=devel
     :target: https://coveralls.io/github/HPC-buildtest/buildtest-framework?branch=devel
 .. |codefactor| image:: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework/badge
    :target: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework
@@ -48,9 +48,6 @@ References
 
 - Snyk: https://app.snyk.io/org/hpc-buildtest/
 
-- GuardRails: https://dashboard.guardrails.io/default/gh/HPC-buildtest
-
-
 Why buildtest?
 ---------------
 
@@ -67,12 +64,10 @@ if you face similar issue. If all else fails please create a ticket.
 Source Code
 ------------
 
-buildtest source code is under ``src`` directory found in the root of this repository, with the exception of
-`buildtest <https://github.com/HPC-buildtest/buildtest-framework/blob/master/buildtest>`_ which is in the root of this
-repo.
-
-The documentation  is under ``docs`` which consist of ``Makefile`` to build the sphinx project along with documentation
-pages in RestructuredText and test scripts for documentation under ``docs/scripts``
+buildtest source code is under ``buildtest`` directory found in the root of this repository. The documentation  
+is under ``docs`` which consist of ``Makefile`` and ``conf.py`` to build the sphinx project along with documentation
+pages in ReStructuredText (rst). The regression test are found in top-level directory named ``tests`` and
+the test suite is run via pytest.
 
 Slack
 ------
@@ -89,8 +84,7 @@ We would love to get your contribution, if you are not sure check out the
 Author
 -------
 
-buildtest was founded by `Shahzeb Siddiqui <https://github.com/shahzebsiddiqui>`_ on Feb 24th 2017 see
-`first commit <https://github.com/HPC-buildtest/buildtest-framework/commit/902237c1a3707e00b32da5830d3f8abc92ecf296>`_
+buildtest was founded by `Shahzeb Siddiqui <https://github.com/shahzebsiddiqui>`_ on Feb 24th 2017.
 
 LICENSE
 --------
