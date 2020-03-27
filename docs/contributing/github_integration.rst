@@ -34,9 +34,9 @@ GitHub Actions
 
 buildtest runs a few automated checks via GitHub Actions that can be found in ``.github/workflows``
 
-- **Black** - buildtest is using `black  <https://github.com/psf/black>`_ to format Python code. We let **black** take care of formatting the entire project so you can focus more time in development. The workflow is defined in `black.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/black.yml>`_
+- `Black  <https://github.com/psf/black>`_ - Black auto-formats Python code, so we let **black** take care of formatting the entire project so you can focus more time in development. The workflow is defined in `black.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/black.yml>`_.
 
-- **URLs-checker** - buildtest is a GitHub action called **URLs-checker** found at https://github.com/marketplace/actions/urlchecker-action. The workflow is defined in `urlchecker.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/urlchecker.yml>`_
+- `urlchecker-action <https://github.com/marketplace/actions/urlchecker-action>`_ - is a GitHub action to collect and check URLs in project code and documentation. There is an automated check for every issued PR and the workflow is defined in `urlchecker.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/urlchecker.yml>`_
 
 .. _black_hook:
 
@@ -96,8 +96,8 @@ buildtest has a few bots to do various operations that are described below.
 
 - `Stale <https://github.com/marketplace/stale>`_  - stale bot is used to close outdated issues. This is configured in ``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
 
-- `CodeCov <https://github.com/marketplace/codecov>_` - The codecov bot will report codecov report from the issued pull request once coverage report is complete. The configuration for codecov is defined in ``.codecov.yml`` found in root of repo.
+- `CodeCov <https://github.com/marketplace/codecov>`_ - The codecov bot will report codecov report from the issued pull request once coverage report is complete. The configuration for codecov is defined in ``.codecov.yml`` found in root of repo.
 
-- `Pull Request Size <https://github.com/marketplace/pull-request-size>`_ - is a bot that labels Pull Request by number of **changed* lines of code.
+- `Pull Request Size <https://github.com/marketplace/pull-request-size>`_ - is a bot that labels Pull Request by number of **changed** lines of code.
 
 - `Trafico <https://github.com/marketplace/trafico-pull-request-labeler>`_ - is a bot that automatically labels Pull Request depending on their status, during code reviews. The configuration is found in ``.github/trafico.yml``.

@@ -36,10 +36,10 @@ Conference
   
   - Slides: [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hpckp17.pdf>`_]
   
- Publications
- --------------
+Publications
+--------------
 
- - Siddiqui S. (2020) `Buildtest: A Software Testing Framework with Module Operations for HPC Systems <https://doi.org/10.1007/978-3-030-44728-1_1>`_ . In: Juckeland G., Chandrasekaran S. (eds) Tools and Techniques for High Performance Computing. HUST 2019, SE-HER 2019, WIHPC 2019. Communications in Computer and Information Science, vol 1190. Springer, Cham
+- Siddiqui S. (2020) `Buildtest: A Software Testing Framework with Module Operations for HPC Systems <https://doi.org/10.1007/978-3-030-44728-1_1>`_ . In: Juckeland G., Chandrasekaran S. (eds) Tools and Techniques for High Performance Computing. HUST 2019, SE-HER 2019, WIHPC 2019. Communications in Computer and Information Science, vol 1190. Springer, Cham
 
 
 .. _FOSDEM20: https://fosdem.org/2020/schedule/track/hpc_big_data_and_data_science/

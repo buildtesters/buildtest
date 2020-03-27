@@ -4,7 +4,3 @@ Configuring buildtest
 ======================
 
 
-Configuration File
---------------------
-
-
