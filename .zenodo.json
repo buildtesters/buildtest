@@ -1,0 +1,21 @@
+{
+  "creators": [
+    {
+      "name": "Siddiqui, Shahzeb",
+      "orcid": "0000-0002-2342-6974"
+    },
+    {
+      "affiliation": "Stanford University Research Computing Center, Stanford University, Stanford CA USA",
+      "name": "Sochat, Vanessa",
+      "orcid": "0000-0002-4387-3819"
+    },
+  ],
+  "keywords": [
+    "build testing",
+    "high performance computing",
+    "testing",
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "upload_type": "software"
+}
