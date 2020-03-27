@@ -18,20 +18,6 @@ Terminology
 As you go through the documentation, we wanted to define a few terminology often used through the docs so
 its clear to the reader.
 
-- **module:**  is a shell function to bash and csh/tcsh used for dynamically changing user environment (*PATH*, *LD_LIBRARY_PATH*, *MANPATH*)  by loading one or more module files.
-
-- **Modulefile:** is a LUA or TCL file containing instructions on how to load an application environment.
-
-- **User Collection:** is a list of one or more modules that can be referenced by a collection name. The collection name is not an actual module. Collections are found in ``$HOME/.lmod.d/<collection>``.
-
-- **Module Tree:** is the root directory where **Modulefile** are found.
-
-- **Subtree:** is a **Module Tree** but directory is not exposed to **MODULEPATH** which is typically set by some module (``parent module``). Often used in Hierarchical Module Naming Scheme.
-
-- **Parent Module:** is a module that sets **MODULEPATH** to a **Module Tree** often called **Subtree**.
-
-- **Spider:** is a tool provided by Lmod  to build the system spider cache and often used by System Administrator to keep cache up to date upon software install. This is not to be confused with ``module spider`` command that is typically used by users to find modules. See `spider <https://lmod.readthedocs.io/en/latest/136_spider.html>`_ for more details
-
 - **Test Configuration:** - A YAML file that is complaint to one of the buildtest **Schema**. The configuration is used to describe how test is to be generated. The YAML file is passed to ``buildtest`` to generate the test-script.
 
 - **Testscript:** This refers to the generated test script (shell-script) by buildtest

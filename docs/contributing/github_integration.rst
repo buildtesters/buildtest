@@ -27,8 +27,6 @@ The following apps are configured with buildtest.
 
 - `CodeFactor <https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework>`_ - CodeFactor instantly performs Code Review with every GitHub Commit or PR. Zero setup time. Get actionable feedback within seconds. Customize rules, get refactoring tips and ignore irrelevant issues.
 
-- `GuardRails <https://dashboard.guardrails.io/default/gh/HPC-buildtest>`_ - GuardRails provides continuous security feedback for modern development teams
-
 - `Snyk <https://app.snyk.io/org/hpc-buildtest/>`_  - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
 
 GitHub Actions
@@ -55,7 +53,6 @@ commit. To install the hook, simply copy the file to the ``.git/hooks`` folder a
 This hook will exit on error either if you don't have black installed::
 
     pip install black==19.3b0
-
 
 or if you have black installed, but running it on the repository code results in an error due
 to a functional issue with the code. Code that simply needs to be formatted will be formatted,
@@ -97,4 +94,10 @@ GitHub Bots
 
 buildtest has a few bots to do various operations that are described below.
 
-- **Stale**  - buildtest is using `Stale <https://github.com/marketplace/stale>`_ to close outdated issues. This is configured in ``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
+- `Stale <https://github.com/marketplace/stale>`_  - stale bot is used to close outdated issues. This is configured in ``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
+
+- `CodeCov <https://github.com/marketplace/codecov>_` - The codecov bot will report codecov report from the issued pull request once coverage report is complete. The configuration for codecov is defined in ``.codecov.yml`` found in root of repo.
+
+- `Pull Request Size <https://github.com/marketplace/pull-request-size>`_ - is a bot that labels Pull Request by number of **changed* lines of code.
+
+- `Trafico <https://github.com/marketplace/trafico-pull-request-labeler>`_ - is a bot that automatically labels Pull Request depending on their status, during code reviews. The configuration is found in ``.github/trafico.yml``.
