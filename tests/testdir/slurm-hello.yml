@@ -3,7 +3,6 @@ version: 0.0.1
 # Shell would be accepted to indicate a single line shell command (or similar)
 hello_dinosaur:
   type: script
-  executor: runlocal
   env:
     FIRST_NAME: avocado
     LAST_NAME: dinosaur
@@ -12,7 +11,6 @@ hello_dinosaur:
 # Run (akin to snakemake) would be a more full script with multiple lines
 slurm_check:
   type: script
-  executor: runlocal
   run: |
       systemctl is-active slurmd
       systemctl is-enabled slurmd | grep enabled

@@ -3,7 +3,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "BuildTest Test Configuration for Script",
   "type": "object",
-  "required": ["type", "executor","run"],
+  "required": ["type", "run"],
   "propertyNames": {
     "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
   },

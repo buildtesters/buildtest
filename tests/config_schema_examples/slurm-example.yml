@@ -1,8 +1,13 @@
-
 editor: vi
 executors:
-  slurm:
+  normal:
     type: slurm
     description: submit jobs with slurm using srun instead of sbatch
+    launcher: sbatch
     vars:
-      launcher: srun
+      FOO: BAR
+    options:
+      - "-p normal"
+      - "-t 00:10"
+      - "-N 1"
+      - "-n 1"
