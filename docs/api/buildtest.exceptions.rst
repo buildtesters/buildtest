@@ -1,7 +1,7 @@
-buildtest.tools.show module
+buildtest.exceptions module
 ===========================
 
-.. automodule:: buildtest.tools.show
+.. automodule:: buildtest.exceptions
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,4 +1,4 @@
-buildtest.tools.configuration package
+buildtest.buildsystem.schemas package
 =====================================
 
 Submodules
@@ -6,12 +6,12 @@ Submodules
 
 .. toctree::
 
-   buildtest.tools.configuration.config
+   buildtest.buildsystem.schemas.utils
 
 Module contents
 ---------------
 
-.. automodule:: buildtest.tools.configuration
+.. automodule:: buildtest.buildsystem.schemas
    :members:
    :undoc-members:
    :show-inheritance:
