@@ -7,8 +7,6 @@ executors:
     type: slurm
     description: submit jobs with slurm using srun instead of sbatch
     launcher: sbatch
-    vars:
-      FOO: BAR
     options:
       - "-p normal"
       - "-t 00:10"

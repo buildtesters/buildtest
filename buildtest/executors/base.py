@@ -101,5 +101,5 @@ class SlurmExecutor(BaseExecutor):
            :param launcher: defaults to sbatch
            :type launcher: string
         """
-        variables = self._settings.get("vars", {})
-        self.launcher = variables.get("launcher", "sbatch")
+
+        self.launcher = self._settings.get("launcher", "sbatch")
