@@ -74,6 +74,7 @@ def check_configuration():
     config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
     validate(instance=config_opts, schema=config_schema)
 
+
 def load_configuration(config_path=None):
     """load the default configuration file.
     """
