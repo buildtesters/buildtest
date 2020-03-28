@@ -68,13 +68,17 @@
                   "type": "string",
                   "enum": ["slurm"]
                },
+              "launcher": {
+                  "type": "string",
+                  "enum": ["sbatch"]
+               },
                "options": {
                    "type": "array",
                    "items": {"type": "string"}
                },
                "vars": {"$ref": "#/definitions/vars"} 
            },
-          "required": ["type"]
+          "required": ["type","launcher"]
        }
     }
 }
