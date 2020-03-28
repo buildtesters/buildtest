@@ -1,7 +1,7 @@
-buildtest.tools.file module
+buildtest.menu.build module
 ===========================
 
-.. automodule:: buildtest.tools.file
+.. automodule:: buildtest.menu.build
    :members:
    :undoc-members:
    :show-inheritance:

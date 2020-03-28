@@ -16,11 +16,9 @@ import os
 import sys
 from sphinx.ext.apidoc import main as sphinx_apidoc
 
-from buildtest import BUILDTEST_VERSION
-# TODO: need to check if these two lines are needed
 here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, here)
-
+from buildtest import BUILDTEST_VERSION
 
 
 # -- Project information -----------------------------------------------------

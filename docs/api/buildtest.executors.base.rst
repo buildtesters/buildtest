@@ -1,7 +1,7 @@
-buildtest.tools.defaults module
+buildtest.executors.base module
 ===============================
 
-.. automodule:: buildtest.tools.defaults
+.. automodule:: buildtest.executors.base
    :members:
    :undoc-members:
    :show-inheritance:
