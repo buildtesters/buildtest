@@ -20,13 +20,12 @@
                  ]
              }
           }
-      }, 
-      "additionalProperties": false
+      },
+      "additionalProperties": false       
   },
   "definitions": {
       "local": {
-          "type": "object",
-          "additionalProperties": false,
+          "type": "object",          
           "properties": {
               "description": {"type": "string"},
               "type": {
@@ -44,8 +43,7 @@
        },
 
       "slurm": {
-          "type": "object",
-          "additionalProperties": false,
+          "type": "object",          
           "properties": {
               "description": {"type": "string"},
               "type": {
