@@ -53,7 +53,6 @@ def introspection_cmds():
 def build_cmds():
     build_dict = {
         "buildtest-build-clear.txt": "buildtest build --clear",
-        "build-report.txt": "buildtest build report",
     }
     for k, v in build_dict.items():
         out = run(v)
