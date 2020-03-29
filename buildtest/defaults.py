@@ -30,7 +30,6 @@ BUILDTEST_SHELL = os.environ.get("SHELL", "/bin/bash")
 BUILDTEST_BUILD_LOGFILE = os.path.join(BUILDTEST_ROOT, "var", "build.json")
 
 # dictionary used for storing status of builds
-BUILDTEST_BUILD_HISTORY = {}
 BUILDTEST_CONFIG_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml")
 BUILDTEST_CONFIG_BACKUP_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml.bak")
 

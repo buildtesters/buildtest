@@ -14,9 +14,7 @@ from buildtest.menu.config import (
     func_config_view,
     func_config_restore,
 )
-
 from buildtest.menu.show import show_schema_layout
-from buildtest.menu.status import show_status_report
 
 
 class BuildTestParser:
@@ -112,16 +110,6 @@ class BuildTestParser:
         )
 
         parser_build.set_defaults(func=func_build_subcmd)
-
-        # -------------------------- buildtest build report ------------------------------
-        subparsers_build = parser_build.add_subparsers(
-            description="Report status on builds performed by buildtest."
-        )
-
-        parser_report = subparsers_build.add_parser(
-            "report", help="Report status details of all builds "
-        )
-        parser_report.set_defaults(func=show_status_report)
 
     def get_menu(self):
         """This method implements argparse argument for ``buildtest get``"""
