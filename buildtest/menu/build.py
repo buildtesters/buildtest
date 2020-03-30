@@ -9,11 +9,14 @@ import shutil
 import sys
 
 from buildtest.defaults import (
+    DEFAULT_CONFIG_FILE,
     BUILDTEST_BUILD_LOGFILE,
     TESTCONFIG_ROOT,
 )
 
 from buildtest.buildsystem.base import BuildConfig
+from buildtest.config import config_opts
+from buildtest.executors.base import BuildExecutor
 from buildtest.utils.file import walk_tree
 
 
@@ -87,6 +90,9 @@ def func_build_subcmd(args):
     failed_tests = 0
     passed_tests = 0
 
+    # Load BuildExecutors
+    executor = BuildExecutor(config_opts, default=args.executor)
+
     # Each configuration file can have multiple tests
     for config_file in config_files:
 
@@ -99,7 +105,7 @@ def func_build_subcmd(args):
             # Keep track of total number of tests run
             total_tests += 1
             if not args.dry:
-                result = builder.run()
+                result = executor.run(builder)
 
                 # Update results
                 if result["RETURN_CODE"] == 0:
@@ -107,7 +113,7 @@ def func_build_subcmd(args):
                 else:
                     failed_tests += 1
             else:
-                result = builder.dry_run()
+                result = executor.dry_run(builder)
 
     if not args.dry:
         print(f"Finished running {total_tests} total tests.")
