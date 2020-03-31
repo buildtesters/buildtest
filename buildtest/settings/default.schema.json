@@ -20,28 +20,12 @@
                  ]
              }
           }
-      }, 
-      "additionalProperties": false
+      },
+      "additionalProperties": false       
   },
   "definitions": {
-      "alphanumeric": {
-          "type": "string",
-          "pattern": "([a-zA-Z0-9_]|-)+"
-      },
-      "vars": {
-          "type": "object",
-          "minItems": 1,
-          "items": {
-              "type": "object",
-              "minItems": 1,            
-              "propertyNames": {
-                  "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
-              }
-          }        
-      },
       "local": {
-          "type": "object",
-          "additionalProperties": false,
+          "type": "object",          
           "properties": {
               "description": {"type": "string"},
               "type": {
@@ -53,28 +37,29 @@
                    "items": {
                        "type": "string"
                    }
-               },
-               "vars": {"$ref": "#/definitions/vars"} 
+               }
            },
           "required": ["type"]
        },
 
       "slurm": {
-          "type": "object",
-          "additionalProperties": false,
+          "type": "object",          
           "properties": {
               "description": {"type": "string"},
               "type": {
                   "type": "string",
                   "enum": ["slurm"]
                },
+              "launcher": {
+                  "type": "string",
+                  "enum": ["sbatch"]
+               },
                "options": {
                    "type": "array",
                    "items": {"type": "string"}
-               },
-               "vars": {"$ref": "#/definitions/vars"} 
+               }
            },
-          "required": ["type"]
+          "required": ["type","launcher"]
        }
     }
 }

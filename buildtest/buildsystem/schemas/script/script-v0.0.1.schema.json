@@ -36,6 +36,9 @@
         }
       }
     },
+    "executor": {
+      "type": "string"
+    },
     "shell": {
       "type": "string",
       "default": "bash",

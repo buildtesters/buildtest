@@ -72,13 +72,7 @@ def check_configuration():
        :rtype: exit code 1 if checks failed
     """
     config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
-    try:
-        validate(instance=config_opts, schema=config_schema)
-    except ValidationError:
-        sys.exit(
-            "Buildtest Configuration Check Failed! \n"
-            + f"Configuration File: {BUILDTEST_CONFIG_FILE} failed to validate against schema: {DEFAULT_CONFIG_SCHEMA}"
-        )
+    validate(instance=config_opts, schema=config_schema)
 
 
 def load_configuration(config_path=None):
