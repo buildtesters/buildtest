@@ -25,9 +25,9 @@ def load_schema(path):
     if not os.path.exists(path):
         sys.exit("schema file %s does not exist." % path)
     with open(path, "r") as fd:
-        if re.search(".json$", path):
+        if re.search("[.]json$", path):
             schema = json.loads(fd.read())
-        elif re.search("(.yaml|.yml)$", path):
+        elif re.search("[.](yaml|yml)$", path):
             schema = yaml.load(fd.read(), Loader=yaml.SafeLoader)
     return schema
 
