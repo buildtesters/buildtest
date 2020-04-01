@@ -19,7 +19,7 @@ def test_config_restore():
     # removing config file and testing if reset works
     os.remove(BUILDTEST_CONFIG_FILE)
     func_config_reset()
-    assert True == os.path.exists(BUILDTEST_CONFIG_FILE)
+    assert os.path.exists(BUILDTEST_CONFIG_FILE)
 
 
 def test_config_local():
