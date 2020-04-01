@@ -1,37 +1,29 @@
 import json
 import os
 import shutil
-import sys
-import yaml
-
 from jsonschema import validate
-from jsonschema.exceptions import ValidationError
 
-from buildtest import BUILDTEST_VERSION
 from buildtest.utils.file import create_dir
 from buildtest.defaults import (
     BUILDTEST_BUILD_LOGFILE,
     BUILDTEST_CONFIG_FILE,
-    BUILDTEST_CONFIG_BACKUP_FILE,
     BUILDTEST_ROOT,
     DEFAULT_CONFIG_FILE,
     DEFAULT_CONFIG_SCHEMA,
-    EDITOR_LIST,
 )
 from buildtest.buildsystem.schemas.utils import load_schema
 
 
 def create_config_files():
-    """if default config files don't exist, create them
-    """
+    """If default config files don't exist, copy the default configuration provided by buildtest."""
+
     if not os.path.exists(BUILDTEST_CONFIG_FILE):
         shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
-        shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)
 
 
 def create_logfile():
-    """Create a logfile to keep track of messages for the user, if doesn't exist
-    """
+    """Create a logfile to keep track of messages for the user, if doesn't exist."""
+
     if not os.path.exists(BUILDTEST_BUILD_LOGFILE):
         build_dict = {"build": {}}
         with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
@@ -41,8 +33,8 @@ def create_logfile():
 def init():
     """Buildtest init should check that the buildtest user root exists,
        and that dependency files are created. This is called by 
-       load_configuration.
-    """
+       load_configuration."""
+
     # check if $HOME/.buildtest exists, if not create directory
     if not os.path.exists(BUILDTEST_ROOT):
         print(
@@ -71,13 +63,14 @@ def check_configuration():
        :return: returns gracefully if all checks passes otherwise terminate immediately
        :rtype: exit code 1 if checks failed
     """
+
     config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
     validate(instance=config_opts, schema=config_schema)
 
 
 def load_configuration(config_path=None):
-    """load the default configuration file.
-    """
+    """Load the default configuration file."""
+
     init()
 
     config_path = config_path or BUILDTEST_CONFIG_FILE
