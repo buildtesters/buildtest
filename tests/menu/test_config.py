@@ -6,6 +6,7 @@ from buildtest.menu.config import (
     func_config_view,
     func_config_restore,
 )
+from buildtest.utils.file import walk_tree
 from buildtest.buildsystem.schemas.utils import load_schema
 
 pytest_root = os.path.dirname(os.path.dirname(__file__))
@@ -21,26 +22,10 @@ def test_config_restore():
     os.remove(BUILDTEST_CONFIG_BACKUP_FILE)
     func_config_restore()
 
+def test_valid_config_schemas():
 
-def test_config_local():
-    example_schema = os.path.join(
-        pytest_root, "config_schema_examples", "local-example.yml"
-    )
+    valid_schema_dir = os.path.join(pytest_root,"examples","config_schemas","valid")
     schema_config = load_schema(DEFAULT_CONFIG_SCHEMA)
-    example = load_schema(example_schema)
-    validate(instance=example, schema=schema_config)
-
-
-def test_config_slurm():
-    example_schema = os.path.join(
-        pytest_root, "config_schema_examples", "slurm-example.yml"
-    )
-    schema_config = load_schema(DEFAULT_CONFIG_SCHEMA)
-    example = load_schema(example_schema)
-    try:
+    for schema in walk_tree(valid_schema_dir,".yml"):        
+        example = load_schema(os.path.abspath(schema))
         validate(instance=example, schema=schema_config)
-    except ValidationError:
-        print(
-            f"Failed to validate configuration file: {example_schema} with schema {DEFAULT_CONFIG_SCHEMA}"
-        )
-        assert True
