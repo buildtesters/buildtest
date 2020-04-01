@@ -1,0 +1,9 @@
+{
+    "editor": "vi", 
+    "executors": {
+        "local": {
+            "type": "local", 
+            "description": "submit jobs locally"
+        }
+    }
+}
