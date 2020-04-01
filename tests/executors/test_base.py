@@ -25,9 +25,9 @@ def test_build_executor():
     # Load BuildExecutor
     be = BuildExecutor(example)
 
-    # We should have loaded a local and slurm executor
+    # We should have loaded a local and slurm executor, and one defualt
     # {'local': [executor-local-local], 'slurm': [executor-slurm-slurm]}
-    assert len(be.executors) == 2
+    assert len(be.executors) == 3
 
     # Each should have
     for name, executor in be.executors.items():

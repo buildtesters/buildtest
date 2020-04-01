@@ -251,6 +251,9 @@ class BuilderBase:
                 % (self.type, self.recipe.get("type"))
             )
 
+        # Start with just terminal logger (changes to file on run)
+        self._init_logger(to_file=False)
+
     def __str__(self):
         return "[builder-%s-%s]" % (self.type, self.name)
 
