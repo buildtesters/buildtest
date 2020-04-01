@@ -3,7 +3,6 @@ from shutil import copy
 from buildtest.config import config_opts
 from buildtest.defaults import (
     BUILDTEST_CONFIG_FILE,
-    BUILDTEST_CONFIG_BACKUP_FILE,
     DEFAULT_CONFIG_FILE,
 )
 
@@ -20,13 +19,9 @@ def func_config_view(args=None):
     os.system(f"cat {BUILDTEST_CONFIG_FILE}")
 
 
-def func_config_restore(args=None):
-    """Restore buildtest configuration from backup file. This implements ``buildtest config restore``"""
-    if os.path.isfile(BUILDTEST_CONFIG_BACKUP_FILE):
-        copy(BUILDTEST_CONFIG_BACKUP_FILE, BUILDTEST_CONFIG_FILE)
-        print(f"Restore configuration from backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
-    else:
-        print(f"Can't find backup file: {BUILDTEST_CONFIG_BACKUP_FILE}")
-        print(f"Restoring from default configuration: {DEFAULT_CONFIG_FILE}")
-        copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
-        copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_BACKUP_FILE)
+def func_config_reset(args=None):
+    """Reset buildtest configuration by copying default configuration provided by buildtest to
+       $HOME/.buildtest/settings.yml. This implements ``buildtest config reset`` command."""
+
+    print(f"Restoring from default configuration: {DEFAULT_CONFIG_FILE}")
+    copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)

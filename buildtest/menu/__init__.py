@@ -6,13 +6,12 @@ interact with a global configuration for buildtest.
 import argparse
 
 from buildtest import BUILDTEST_VERSION
-from buildtest.config import config_opts
 from buildtest.menu.build import func_build_subcmd
 from buildtest.menu.get import func_get_subcmd
 from buildtest.menu.config import (
     func_config_edit,
     func_config_view,
-    func_config_restore,
+    func_config_reset,
 )
 from buildtest.menu.show import show_schema_layout
 
@@ -150,12 +149,12 @@ class BuildTestParser:
             "edit", help="Edit Buildtest Configuration File"
         )
         parser_config_restore = subparsers_config.add_parser(
-            "restore", help="Restore Buildtest Configuration File from backup"
+            "reset", help="Reset buildtest configuration file. "
         )
 
         parser_config_view.set_defaults(func=func_config_view)
         parser_config_edit.set_defaults(func=func_config_edit)
-        parser_config_restore.set_defaults(func=func_config_restore)
+        parser_config_restore.set_defaults(func=func_config_reset)
 
     def show_menu(self):
         """This method adds argparse argument for ``buildtest show``"""
