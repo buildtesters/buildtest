@@ -103,6 +103,9 @@ class BuildExecutor:
         # Run each step defined for dry run
         for step in executor.steps:
             if getattr(executor, step, None):
+                executor.builder.logger.debug(
+                    "Running %s for executor %s" % (step, executor)
+                )
                 getattr(executor, step)()
         return executor.result
 
@@ -135,7 +138,7 @@ class BaseExecutor:
        executors must have a listing of steps and dryrun_steps
     """
 
-    steps = ["setup", "build"]
+    steps = ["setup", "run"]
     dryrun_steps = ["setup", "dry"]
     type = "base"
 
@@ -156,7 +159,7 @@ class BaseExecutor:
         self._settings = settings
         self.load(name)
         self.builder = None
-        self.result = None
+        self.result = {}
 
     def load(self, name=None):
         """Load a particular configuration based on the name. This method
@@ -169,6 +172,7 @@ class BaseExecutor:
         """Setup the executor, meaning we check that the builder is defined,
            the only step needed for a local (base) executor.
         """
+        print(self.builder)
         if not self.builder:
             sys.exit("Builder is not defined for executor.")
 

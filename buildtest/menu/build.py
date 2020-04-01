@@ -9,7 +9,6 @@ import shutil
 import sys
 
 from buildtest.defaults import (
-    DEFAULT_CONFIG_FILE,
     BUILDTEST_BUILD_LOGFILE,
     TESTCONFIG_ROOT,
 )
