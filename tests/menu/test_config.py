@@ -22,10 +22,11 @@ def test_config_restore():
     os.remove(BUILDTEST_CONFIG_BACKUP_FILE)
     func_config_restore()
 
+
 def test_valid_config_schemas():
 
-    valid_schema_dir = os.path.join(pytest_root,"examples","config_schemas","valid")
+    valid_schema_dir = os.path.join(pytest_root, "examples", "config_schemas", "valid")
     schema_config = load_schema(DEFAULT_CONFIG_SCHEMA)
-    for schema in walk_tree(valid_schema_dir,".yml"):        
+    for schema in walk_tree(valid_schema_dir, ".yml"):
         example = load_schema(os.path.abspath(schema))
         validate(instance=example, schema=schema_config)

@@ -16,7 +16,7 @@ pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def test_build_executor():
     example_schema = os.path.join(
-        pytest_root, "config_schema_examples", "combined-example.yml"
+        pytest_root, "examples", "config_schemas", "valid", "combined-example.yml"
     )
     schema_config = load_schema(DEFAULT_CONFIG_SCHEMA)
     example = load_schema(example_schema)
