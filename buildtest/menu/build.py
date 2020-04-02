@@ -8,10 +8,7 @@ import os
 import shutil
 import sys
 
-from buildtest.defaults import (
-    TESTCONFIG_ROOT,
-    BUILDTEST_CONFIG_FILE
-)
+from buildtest.defaults import TESTCONFIG_ROOT, BUILDTEST_CONFIG_FILE
 
 from buildtest.buildsystem.base import BuildConfig
 from buildtest.config import load_configuration, check_configuration

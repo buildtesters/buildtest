@@ -8,7 +8,7 @@ from buildtest.defaults import (
     BUILDTEST_CONFIG_FILE,
     BUILDTEST_ROOT,
     DEFAULT_CONFIG_FILE,
-    DEFAULT_CONFIG_SCHEMA
+    DEFAULT_CONFIG_SCHEMA,
 )
 from buildtest.buildsystem.schemas.utils import load_schema
 
