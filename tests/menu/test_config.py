@@ -15,7 +15,7 @@ def test_view_configuration():
     func_config_view()
 
 
-def test_config_restore():
+def test_config_reset():
 
     # removing config file and testing if reset works
     os.remove(BUILDTEST_CONFIG_FILE)

@@ -13,7 +13,7 @@ from buildtest.defaults import (
 from buildtest.buildsystem.schemas.utils import load_schema
 
 
-def create_config_files():
+def create_config_file():
     """If default config files don't exist, copy the default configuration provided by buildtest."""
 
     if not os.path.exists(BUILDTEST_CONFIG_FILE):
@@ -38,7 +38,7 @@ def init():
     create_dir(os.path.join(BUILDTEST_ROOT, "site"))
 
     # Create config files, module files, and log file
-    create_config_files()
+    create_config_file()
 
 
 def check_configuration(config_path=None):
@@ -52,7 +52,7 @@ def check_configuration(config_path=None):
        :rtype: exit code 1 if checks failed
     """
 
-    user_schema = load_schema(config_path)
+    user_schema = load_configuration(config_path)
     config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
     validate(instance=user_schema, schema=config_schema)
 
