@@ -8,13 +8,10 @@ import os
 import shutil
 import sys
 
-from buildtest.defaults import (
-    BUILDTEST_BUILD_LOGFILE,
-    TESTCONFIG_ROOT,
-)
+from buildtest.defaults import TESTCONFIG_ROOT, BUILDTEST_CONFIG_FILE
 
 from buildtest.buildsystem.base import BuildConfig
-from buildtest.config import config_opts
+from buildtest.config import load_configuration, check_configuration
 from buildtest.executors.base import BuildExecutor
 from buildtest.utils.file import walk_tree
 
@@ -76,6 +73,15 @@ def func_build_subcmd(args):
 
     :rtype: None
     """
+
+    # if buildtest settings specified on CLI, it would be in args.settings otherwise set
+    # to default configuration (BUILDTEST_CONFIG_FILE)
+    config_file = args.settings or BUILDTEST_CONFIG_FILE
+
+    # load the configuration file
+    config_opts = load_configuration(config_file)
+
+    check_configuration(config_file)
 
     # Discover list of one or more config files based on path provided
     config_files = discover_configs(args.config)

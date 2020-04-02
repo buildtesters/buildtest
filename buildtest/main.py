@@ -7,7 +7,6 @@ os.environ["COLUMNS"] = "120"
 def main():
     """Entry point to buildtest."""
 
-    from buildtest.config import check_configuration
     from buildtest.menu import BuildTestParser
     from buildtest.system import BuildTestSystem
 
@@ -15,7 +14,6 @@ def main():
     buildtest_system = BuildTestSystem()
     buildtest_system.check_system_requirements()
 
-    check_configuration()
     parser = BuildTestParser()
     parser.parse_options()
 

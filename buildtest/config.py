@@ -5,7 +5,6 @@ from jsonschema import validate
 
 from buildtest.utils.file import create_dir
 from buildtest.defaults import (
-    BUILDTEST_BUILD_LOGFILE,
     BUILDTEST_CONFIG_FILE,
     BUILDTEST_ROOT,
     DEFAULT_CONFIG_FILE,
@@ -14,20 +13,11 @@ from buildtest.defaults import (
 from buildtest.buildsystem.schemas.utils import load_schema
 
 
-def create_config_files():
+def create_config_file():
     """If default config files don't exist, copy the default configuration provided by buildtest."""
 
     if not os.path.exists(BUILDTEST_CONFIG_FILE):
         shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
-
-
-def create_logfile():
-    """Create a logfile to keep track of messages for the user, if doesn't exist."""
-
-    if not os.path.exists(BUILDTEST_BUILD_LOGFILE):
-        build_dict = {"build": {}}
-        with open(BUILDTEST_BUILD_LOGFILE, "w") as outfile:
-            json.dump(build_dict, outfile, indent=2)
 
 
 def init():
@@ -44,16 +34,14 @@ def init():
         os.mkdir(BUILDTEST_ROOT)
 
     # Create subfolders for var and root
-    create_dir(os.path.join(BUILDTEST_ROOT, "var"))
     create_dir(os.path.join(BUILDTEST_ROOT, "root"))
     create_dir(os.path.join(BUILDTEST_ROOT, "site"))
 
     # Create config files, module files, and log file
-    create_config_files()
-    create_logfile()
+    create_config_file()
 
 
-def check_configuration():
+def check_configuration(config_path=None):
     """Checks all keys in configuration file (settings/default.yml) are valid
        keys and ensure value of each key matches expected type . For some keys
        special logic is taken to ensure values are correct and directory path
@@ -64,12 +52,19 @@ def check_configuration():
        :rtype: exit code 1 if checks failed
     """
 
+    user_schema = load_configuration(config_path)
     config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
-    validate(instance=config_opts, schema=config_schema)
+    validate(instance=user_schema, schema=config_schema)
 
 
 def load_configuration(config_path=None):
-    """Load the default configuration file."""
+    """Load the default configuration file if no argument is specified.
+
+       Parameters:
+
+       :param config_path: Path to buildtest configuration file
+       :type config_path: str, optional
+    """
 
     init()
 
@@ -79,5 +74,7 @@ def load_configuration(config_path=None):
     return load_schema(config_path)
 
 
-# Run on init, so we only load once
-config_opts = load_configuration()
+def get_default_configuration():
+    """Load and return the default buildtest configuration file. """
+
+    return load_configuration()

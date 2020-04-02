@@ -26,9 +26,6 @@ root = os.path.dirname(os.path.abspath(__file__))
 BUILDTEST_ROOT = os.path.join(userhome, ".buildtest")
 BUILDTEST_SHELL = os.environ.get("SHELL", "/bin/bash")
 
-# json file used by buildtest to write build meta-data
-BUILDTEST_BUILD_LOGFILE = os.path.join(BUILDTEST_ROOT, "var", "build.json")
-
 # dictionary used for storing status of builds
 BUILDTEST_CONFIG_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml")
 

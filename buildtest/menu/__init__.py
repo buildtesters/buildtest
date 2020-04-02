@@ -114,6 +114,10 @@ class BuildTestParser:
             action="store_true",
         )
 
+        parser_build.add_argument(
+            "--settings", help="Specify an alternate buildtest settings file to use",
+        )
+
         parser_build.set_defaults(func=func_build_subcmd)
 
     def get_menu(self):

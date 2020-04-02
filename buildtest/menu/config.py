@@ -1,6 +1,6 @@
 import os
 from shutil import copy
-from buildtest.config import config_opts
+from buildtest.config import get_default_configuration
 from buildtest.defaults import (
     BUILDTEST_CONFIG_FILE,
     DEFAULT_CONFIG_FILE,
@@ -10,6 +10,7 @@ from buildtest.defaults import (
 def func_config_edit(args=None):
     """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
 
+    config_opts = get_default_configuration()
     os.system(f"{config_opts['editor']} {BUILDTEST_CONFIG_FILE}")
 
 
