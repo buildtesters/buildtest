@@ -14,7 +14,7 @@ from buildtest.defaults import (
 )
 
 from buildtest.buildsystem.base import BuildConfig
-from buildtest.config import config_opts
+from buildtest.config import load_configuration, check_configuration
 from buildtest.executors.base import BuildExecutor
 from buildtest.utils.file import walk_tree
 
@@ -76,6 +76,14 @@ def func_build_subcmd(args):
 
     :rtype: None
     """
+
+    # if custom user configuration specified, it would be in args.settings otherwise set to None
+    config_file = args.settings or None
+    # if config_opts is None it will load the default configuration
+    config_opts = load_configuration(config_file)
+
+    check_configuration(config_file)
+
 
     # Discover list of one or more config files based on path provided
     config_files = discover_configs(args.config)

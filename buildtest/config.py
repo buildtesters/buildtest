@@ -9,7 +9,7 @@ from buildtest.defaults import (
     BUILDTEST_CONFIG_FILE,
     BUILDTEST_ROOT,
     DEFAULT_CONFIG_FILE,
-    DEFAULT_CONFIG_SCHEMA,
+    DEFAULT_CONFIG_SCHEMA
 )
 from buildtest.buildsystem.schemas.utils import load_schema
 
@@ -53,7 +53,7 @@ def init():
     create_logfile()
 
 
-def check_configuration():
+def check_configuration(config_path=None):
     """Checks all keys in configuration file (settings/default.yml) are valid
        keys and ensure value of each key matches expected type . For some keys
        special logic is taken to ensure values are correct and directory path
@@ -64,12 +64,19 @@ def check_configuration():
        :rtype: exit code 1 if checks failed
     """
 
+    user_schema = load_schema(config_path)
     config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
-    validate(instance=config_opts, schema=config_schema)
+    validate(instance=user_schema, schema=config_schema)
 
 
 def load_configuration(config_path=None):
-    """Load the default configuration file."""
+    """Load the default configuration file if no argument is specified.
+
+       Parameters:
+
+       :param config_path: Path to buildtest configuration file
+       :type config_path: str, optional
+    """
 
     init()
 
@@ -79,5 +86,7 @@ def load_configuration(config_path=None):
     return load_schema(config_path)
 
 
-# Run on init, so we only load once
-config_opts = load_configuration()
+def get_default_configuration():
+    """Load and return the default buildtest configuration file. """
+
+    return load_configuration()

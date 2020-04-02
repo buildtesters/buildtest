@@ -6,9 +6,6 @@ Copyright (C) 2020 Vanessa Sochat.
 import os
 import sys
 
-from buildtest.config import config_opts
-
-
 class BuildExecutor:
     """A BuildExector is a base class some type of executor, defined under
        the buildtest/settings/default-config.json schema. For example,
