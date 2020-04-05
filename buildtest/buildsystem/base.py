@@ -252,7 +252,7 @@ class BuilderBase:
             )
 
         # Start with just terminal logger (changes to file on run)
-        self._init_logger(to_file=False)
+        # self._init_logger(to_file=False)
 
     def __str__(self):
         return "[builder-%s-%s]" % (self.type, self.name)
@@ -284,13 +284,13 @@ class BuilderBase:
            so the testpath is defined with the build id.
         """
 
-        if to_file:
-            self.metadata["logfile"] = os.path.join(
-                self.metadata["logdir"], "%s.log" % self.build_id
-            )
-            self.logger = init_logfile(self.metadata["logfile"])
-        else:
-            self.logger = init_log()
+        # if to_file:
+        self.metadata["logfile"] = os.path.join(
+            self.metadata["testdir"], "log", "%s.log" % self.build_id
+        )
+        self.logger = init_logfile(self.metadata["logfile"])
+        # else:
+        #    self.logger = init_log()
 
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
@@ -444,6 +444,7 @@ class BuilderBase:
 
         # Run the test file using the shell
         cmd = [self.get_shell(), testfile]
+
         command = BuildTestCommand(cmd)
         out, err = command.execute()
 
@@ -455,31 +456,35 @@ class BuilderBase:
             self.metadata.get("rundir"), "%s.out" % self.build_id
         )
 
-        # Run the test file, print output to file
+        # Keep an error file
+        run_error_file = os.path.join(
+            self.metadata.get("rundir"), "%s.err" % self.build_id
+        )
+
+        # write output of test to .out file
         with open(run_output_file, "w") as fd:
+            fd.write("\n".join(out))
 
-            fd.write("Test Name:" + self.build_id + "\n")
-            fd.write("Return Code: %s \n" % command.returncode)
-
-            if out:
-                fd.write("---------- START OF TEST OUTPUT ---------------- \n")
-                fd.write("\n".join(out))
-                fd.write("------------ END OF TEST OUTPUT ---------------- \n")
-            if err:
-                fd.write("---------- START OF TEST ERROR ---------------- \n")
-                fd.write("\n".join(err))
-                fd.write("------------ END OF TEST ERROR ---------------- \n")
+        # write error from test to .err file
+        with open(run_error_file, "w") as fd:
+            fd.write("\n".join(err))
 
         result["RETURN_CODE"] = command.returncode
         result["END_TIME"] = self.get_formatted_time("end_time")
 
         # Print the test result for the user
         if command.returncode == 0:
-            print("{:<40} {}".format("[RUNNING TEST]", "PASSED"))
+            print(
+                "{:<30} {:<30} {:<30} {:<30}".format(
+                    self.config_name, self.name, "PASSED", self.config_file
+                )
+            )
         else:
-            print("{:<40} {}".format("[RUNNING TEST]", "FAILED"))
-
-        print("Writing results to " + run_output_file)
+            print(
+                "{:<30} {:<30} {:<30} {:<30}".format(
+                    self.config_name, self.name, "PASSED", self.config_file
+                )
+            )
 
         # Return to starting directory for next test
         os.chdir(self.pwd)
@@ -501,21 +506,16 @@ class BuilderBase:
 
     def show_prepare(self):
         """Print basic run information to the user, if defined, before the run."""
-
-        start_time = self.get_formatted_time("start_time")
+        # return for now, later remove this method.
+        return
 
         print("{:_<80}".format(""))
-        print("{:>40} {}".format("start time:", self.metadata.get("start_time")))
 
         if self.config_file:
             print("{:>40} {}".format("configuration file:", self.config_file))
         print("{:>40} {}".format("testdir:", self.metadata.get("testdir")))
         print("{:>40} {}".format("testpath:", self.metadata.get("testpath")))
         print("{:>40} {}".format("logpath:", self.metadata.get("logfile")))
-        print("{:_<80}".format(""))
-
-        print("\n\n")
-        print("{:<40} {}".format("STAGE", "VALUE"))
         print("{:_<80}".format(""))
 
     @run_wrapper
@@ -558,7 +558,7 @@ class BuilderBase:
             testpath,
             stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
         )
-        print("{:<40} {}".format("[WRITING TEST]", "PASSED"))
+
         return testpath
 
     def _get_test_lines(self):

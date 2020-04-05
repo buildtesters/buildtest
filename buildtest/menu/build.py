@@ -97,7 +97,12 @@ def func_build_subcmd(args):
 
     # Load BuildExecutors
     executor = BuildExecutor(config_opts, default=args.executor)
-
+    print(
+        "{:<30} {:<30} {:<30} {:<30}".format(
+            "Config Name", "SubTest", "Status", "Config Path"
+        )
+    )
+    print("{:_<120}".format(""))
     # Each configuration file can have multiple tests
     for config_file in config_files:
 
@@ -121,7 +126,6 @@ def func_build_subcmd(args):
                 result = executor.dry_run(builder)
 
     if not args.dry:
-        print(f"Finished running {total_tests} total tests.")
         print
         print
         print("==============================================================")

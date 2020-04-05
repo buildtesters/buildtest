@@ -101,9 +101,7 @@ class BuildExecutor:
         # Run each step defined for dry run
         for step in executor.steps:
             if getattr(executor, step, None):
-                executor.builder.logger.debug(
-                    "Running %s for executor %s" % (step, executor)
-                )
+                # executor.builder.logger.debug("Running %s for executor %s" % (step, executor))
                 getattr(executor, step)()
         return executor.result
 
@@ -170,7 +168,7 @@ class BaseExecutor:
         """Setup the executor, meaning we check that the builder is defined,
            the only step needed for a local (base) executor.
         """
-        print(self.builder)
+
         if not self.builder:
             sys.exit("Builder is not defined for executor.")
 
