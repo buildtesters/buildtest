@@ -31,7 +31,7 @@ class BuildTestSystem:
         self.scheduler = self.check_scheduler()
         self.check_lmod()
 
-        if self.system['platform'] != "Linux":
+        if self.system["platform"] != "Linux":
             print("System must be Linux")
             sys.exit(1)
 
@@ -43,9 +43,9 @@ class BuildTestSystem:
         self.system["os_name"] = distro.linux_distribution(
             full_distribution_name=False
         )[0]
-        self.system["os_ver"] = distro.linux_distribution(
-            full_distribution_name=False
-        )[1]
+        self.system["os_ver"] = distro.linux_distribution(full_distribution_name=False)[
+            1
+        ]
         self.logger.info(f"Operating System: {self.system['os_name']}")
         self.logger.info(f"Operating System Version: {self.system['os_ver']}")
 

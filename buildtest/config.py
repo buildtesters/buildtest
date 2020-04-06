@@ -63,6 +63,7 @@ def check_configuration(config_path=None):
     validate(instance=user_schema, schema=config_schema)
     logger.debug("Validation was successful")
 
+
 def load_configuration(config_path=None):
     """Load the default configuration file if no argument is specified.
 

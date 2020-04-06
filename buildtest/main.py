@@ -10,6 +10,7 @@ def main():
     from buildtest.menu import BuildTestParser
     from buildtest.system import BuildTestSystem
     from buildtest.log import init_logfile
+
     logger = init_logfile("buildtest.log")
     logger.info("Starting buildtest log")
 

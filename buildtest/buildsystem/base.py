@@ -65,7 +65,9 @@ class BuildConfig:
         # Read the lookup to get schemas available
         self.lookup = get_schemas_available()
 
-        self.logger.debug(f"buildtest found the available schema: {self.lookup} in schema library")
+        self.logger.debug(
+            f"buildtest found the available schema: {self.lookup} in schema library"
+        )
 
         # Load the configuration file, fails on any error
         self.load(config_file)
@@ -520,7 +522,9 @@ class BuilderBase:
             testpath,
             stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
         )
-        self.logger.debug(f"Applying permission 755 to {testpath} so that test can be executed")
+        self.logger.debug(
+            f"Applying permission 755 to {testpath} so that test can be executed"
+        )
         return testpath
 
     def _get_test_lines(self):

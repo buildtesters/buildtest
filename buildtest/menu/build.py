@@ -47,13 +47,18 @@ def discover_configs(config_file):
 
     # Now handle path based on being a directory or file path
     if os.path.isdir(config_file):
-        logger.debug(f"Config File: {config_file} is a directory so traversing directory tree to find all .yml files.")
+        logger.debug(
+            f"Config File: {config_file} is a directory so traversing directory tree to find all .yml files."
+        )
         config_files = walk_tree(config_file, ".yml")
     elif os.path.isfile(config_file):
         config_files = [config_file]
         logger.debug(f"Config File: {config_file} is a file")
     else:
-        msg = "Please provide an absolute or relative path to a directory file from your present working directory or %s" % TESTCONFIG_ROOT
+        msg = (
+            "Please provide an absolute or relative path to a directory file from your present working directory or %s"
+            % TESTCONFIG_ROOT
+        )
         logger.error(msg)
         sys.exit(msg)
 
@@ -86,7 +91,9 @@ def func_build_subcmd(args):
     config_file = args.settings or BUILDTEST_CONFIG_FILE
 
     if args.settings:
-        logger.debug("Detected --settings from command line so override default settings file.")
+        logger.debug(
+            "Detected --settings from command line so override default settings file."
+        )
 
     logger.debug(f"Detected the following buildtest settings file: {config_file}")
 
