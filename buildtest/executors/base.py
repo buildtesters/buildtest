@@ -3,7 +3,7 @@ BuildExecutor: manager for test executors
 Copyright (C) 2020 Vanessa Sochat. 
 """
 
-import os
+import logging
 import sys
 
 
@@ -28,9 +28,11 @@ class BuildExecutor:
            :type default: str
         """
         self.executors = {}
-
+        self.logger = logging.getLogger(__name__)
+        self.logger.debug("Getting Executors from buildtest settings")
         # Load the executors
         for name, executor in config_opts.get("executors", {}).items():
+            self.logger.debug(f"Executor Name: {name}  Executor Value: {executor}")
             if executor["type"] == "local":
                 self.executors[name] = LocalExecutor(name, executor)
             elif executor["type"] == "slurm":

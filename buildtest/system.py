@@ -3,6 +3,7 @@ This module detects System changes defined in class BuildTestSystem.
 """
 
 import distro
+import logging
 import os
 import platform
 import shutil
@@ -23,20 +24,30 @@ class BuildTestSystem:
         """Constructor method for BuildTestSystem(). Defines all system configuration using
            class variable **system** which is a dictionary
         """
+        self.logger = logging.getLogger(__name__)
+        self.logger.debug("Starting System Compatibility Check")
         self.init_system()
-        self.system["SYSTEM"] = platform.system()
+        self.system["platform"] = platform.system()
         self.scheduler = self.check_scheduler()
         self.check_lmod()
+
+        if self.system['platform'] != "Linux":
+            print("System must be Linux")
+            sys.exit(1)
+
+        self.logger.debug("Finished System Compatibility Check")
 
     def init_system(self):
         """Based on the module "distro" set the linux distrubution name and version
         """
-        self.system["OS_NAME"] = distro.linux_distribution(
+        self.system["os_name"] = distro.linux_distribution(
             full_distribution_name=False
         )[0]
-        self.system["OS_VERSION"] = distro.linux_distribution(
+        self.system["os_ver"] = distro.linux_distribution(
             full_distribution_name=False
         )[1]
+        self.logger.info(f"Operating System: {self.system['os_name']}")
+        self.logger.info(f"Operating System Version: {self.system['os_ver']}")
 
     def check_lmod(self):
         """Check if the system has Lmod installed, determine by setting
@@ -46,6 +57,7 @@ class BuildTestSystem:
         self.lmod = "LMOD_DIR" in os.environ and os.path.exists(
             os.environ.get("LMOD_DIR", "")
         )
+        self.logger.info(f"LMOD_DIR: {self.lmod}")
 
     def check_scheduler(self):
         """Check for batch scheduler. Currently checks for LSF or SLURM by running
@@ -74,10 +86,3 @@ class BuildTestSystem:
             return "SLURM"
         if lsf_ec_code == 0:
             return "LSF"
-
-    def check_system_requirements(self):
-        """Checking system requirements."""
-
-        if self.system["SYSTEM"] != "Linux":
-            print("System must be Linux")
-            sys.exit(1)

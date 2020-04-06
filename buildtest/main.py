@@ -9,10 +9,12 @@ def main():
 
     from buildtest.menu import BuildTestParser
     from buildtest.system import BuildTestSystem
+    from buildtest.log import init_logfile
+    logger = init_logfile("buildtest.log")
+    logger.info("Starting buildtest log")
 
     # Create a build test system, and check requirements
-    buildtest_system = BuildTestSystem()
-    buildtest_system.check_system_requirements()
+    BuildTestSystem()
 
     parser = BuildTestParser()
     parser.parse_options()

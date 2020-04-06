@@ -11,7 +11,6 @@ include the following:
 import os
 import logging
 
-from buildtest.defaults import logID
 from buildtest.exceptions import BuildTestError
 
 
@@ -87,7 +86,7 @@ def create_file(filename):
     :return: writes an empty file or print an exception message if failed to write file
     :rtype: Catches exception of type OSError
     """
-    logger = logging.getLogger(logID)
+    logger = logging.getLogger(__name__)
     filename = os.path.expandvars(filename)
     filename = os.path.expanduser(filename)
     if not os.path.isfile(filename):
@@ -112,7 +111,7 @@ def create_dir(dirname):
     """
     dirname = os.path.expandvars(dirname)
     dirname = os.path.expanduser(dirname)
-    logger = logging.getLogger(logID)
+    logger = logging.getLogger(__name__)
     if not os.path.isdir(dirname):
         try:
             os.makedirs(dirname)

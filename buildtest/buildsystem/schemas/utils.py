@@ -3,9 +3,9 @@ Utility and helper functions for schemas.
 Copyright (C) 2020 Vanessa Sochat.
 """
 
-import os
 import json
-from jsonschema import validate
+import logging
+import os
 import re
 import sys
 import yaml
@@ -22,13 +22,23 @@ def load_schema(path):
 
        path: the path to the schema file.
     """
+
+    logger = logging.getLogger(__name__)
+
     if not os.path.exists(path):
         sys.exit("schema file %s does not exist." % path)
+
     with open(path, "r") as fd:
         if re.search("[.]json$", path):
             schema = json.loads(fd.read())
         elif re.search("[.](yaml|yml)$", path):
             schema = yaml.load(fd.read(), Loader=yaml.SafeLoader)
+        else:
+            msg = "Invalid extension for schema must be on of the following: [.json, .yml, .yaml]"
+            logger.error(msg)
+            sys.exit(msg)
+
+    logger.debug(f"Successfully loaded schema file: {path}")
     return schema
 
 

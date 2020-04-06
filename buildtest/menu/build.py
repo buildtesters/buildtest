@@ -3,9 +3,8 @@ This module contains all the methods related to "buildtest build" which is used
 for building test scripts from test configuration.
 """
 
-import json
+import logging
 import os
-import shutil
 import sys
 
 from buildtest.defaults import TESTCONFIG_ROOT, BUILDTEST_CONFIG_FILE
@@ -34,6 +33,7 @@ def discover_configs(config_file):
        # relative directory path in build test root (returns multiple)
        buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/
     """
+    logger = logging.getLogger(__name__)
     config_files = []
 
     # If no config file provided, assume discovering across buildtest/site
@@ -47,19 +47,23 @@ def discover_configs(config_file):
 
     # Now handle path based on being a directory or file path
     if os.path.isdir(config_file):
+        logger.debug(f"Config File: {config_file} is a directory so traversing directory tree to find all .yml files.")
         config_files = walk_tree(config_file, ".yml")
     elif os.path.isfile(config_file):
         config_files = [config_file]
+        logger.debug(f"Config File: {config_file} is a file")
     else:
-        sys.exit(
-            "Please provide an absolute or relative path to a directory file ",
-            "from your present working directory or %s" % TESTCONFIG_ROOT,
-        )
+        msg = "Please provide an absolute or relative path to a directory file from your present working directory or %s" % TESTCONFIG_ROOT
+        logger.error(msg)
+        sys.exit(msg)
 
     # If we don't have any files discovered
     if not config_files:
-        sys.exit("No test configuration files found as %s." % config_file)
+        msg = "No test configuration files found as %s." % config_file
+        logger.error(msg)
+        sys.exit(msg)
 
+    logger.info(f"Found the following config files: {config_files}")
     return config_files
 
 
@@ -74,9 +78,17 @@ def func_build_subcmd(args):
     :rtype: None
     """
 
+    # buildtest logger
+    logger = logging.getLogger(__name__)
+
     # if buildtest settings specified on CLI, it would be in args.settings otherwise set
     # to default configuration (BUILDTEST_CONFIG_FILE)
     config_file = args.settings or BUILDTEST_CONFIG_FILE
+
+    if args.settings:
+        logger.debug("Detected --settings from command line so override default settings file.")
+
+    logger.debug(f"Detected the following buildtest settings file: {config_file}")
 
     # load the configuration file
     config_opts = load_configuration(config_file)
@@ -85,10 +97,6 @@ def func_build_subcmd(args):
 
     # Discover list of one or more config files based on path provided
     config_files = discover_configs(args.config)
-
-    # Read in all config files here, loading each will validate the entire file
-    for config_file in config_files:
-        bc = BuildConfig(config_file)
 
     # Keep track of total metrics
     total_tests = 0
@@ -106,7 +114,7 @@ def func_build_subcmd(args):
     # Each configuration file can have multiple tests
     for config_file in config_files:
 
-        # Each configuration file can be loaded as a BuildConfig
+        # Read in all config files here, loading each will validate the entire file
         bc = BuildConfig(config_file)
 
         # And builders parsed through for each

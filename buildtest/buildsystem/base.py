@@ -9,17 +9,14 @@ expose functions to run builds.
 """
 
 import datetime
+import logging
 import os
 import re
 import shutil
 import stat
 import sys
 
-from copy import deepcopy
 from jsonschema import validate
-from jsonschema.exceptions import ValidationError
-
-from buildtest.log import init_logfile, init_log
 from buildtest.defaults import (
     BUILDTEST_SHELL,
     build_sections,
@@ -60,10 +57,15 @@ class BuildConfig:
 
            config_file: the pull path to the configuration file, must exist.
         """
+
+        self.logger = logging.getLogger(__name__)
+
         self.recipe = None
 
         # Read the lookup to get schemas available
         self.lookup = get_schemas_available()
+
+        self.logger.debug(f"buildtest found the available schema: {self.lookup} in schema library")
 
         # Load the configuration file, fails on any error
         self.load(config_file)
@@ -77,14 +79,6 @@ class BuildConfig:
            config_file: the pull path to the configuration file, must exist.
         """
         self.config_file = os.path.abspath(config_file)
-
-        if not os.path.exists(self.config_file):
-            sys.exit("Build configuration %s does not exist." % self.config_file)
-
-        elif os.path.isdir(self.config_file):
-            sys.exit(
-                "Please provide a file path (not a directory path) to a build recipe."
-            )
 
         # all test configs must pass global validation (sets self.recipe)
         self._validate_global()
@@ -143,15 +137,14 @@ class BuildConfig:
         """
 
         config_file = config_file or self.config_file
-        outer_schema = load_schema(os.path.join(here, "outer.schema.json"))
+        outer_schema_file = os.path.join(here, "outer.schema.json")
+
+        outer_schema = load_schema(outer_schema_file)
         self.recipe = load_recipe(config_file)
-        try:
-            validate(instance=self.recipe, schema=outer_schema)
-        except ValidationError:
-            sys.exit(
-                "Test configuration %s does not pass validation of the outer schema."
-                % config_file
-            )
+
+        self.logger.debug(f"Validating {config_file} with schema: {outer_schema_file}")
+        validate(instance=self.recipe, schema=outer_schema)
+        self.logger.debug("Validation was successful")
 
     # Builders
 
@@ -230,6 +223,7 @@ class BuilderBase:
         self.testdir = testdir or os.path.join(
             os.getcwd(), ".buildtest", self.config_name
         )
+        self.logger = logging.getLogger(__name__)
 
         # A builder is required to define the type attribute
         if not hasattr(self, "type"):
@@ -251,9 +245,6 @@ class BuilderBase:
                 % (self.type, self.recipe.get("type"))
             )
 
-        # Start with just terminal logger (changes to file on run)
-        # self._init_logger(to_file=False)
-
     def __str__(self):
         return "[builder-%s-%s]" % (self.type, self.name)
 
@@ -274,23 +265,10 @@ class BuilderBase:
         """
         testdir = self._get_testdir()
         create_dir(testdir)
-        for folder in ["run", "log"]:
+        for folder in ["run"]:
             name = "%sdir" % folder
             self.metadata[name] = os.path.join(testdir, folder)
             create_dir(self.metadata[name])
-
-    def _init_logger(self, to_file=True):
-        """Initialize the logger. This is called at the end of prepare_run,
-           so the testpath is defined with the build id.
-        """
-
-        # if to_file:
-        self.metadata["logfile"] = os.path.join(
-            self.metadata["testdir"], "log", "%s.log" % self.build_id
-        )
-        self.logger = init_logfile(self.metadata["logfile"])
-        # else:
-        #    self.logger = init_log()
 
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
@@ -347,14 +325,12 @@ class BuilderBase:
     def run_wrapper(func):
         """The run wrapper will execute any prepare_run and finish_run 
            sections around some main run function (run or dry_run).
-           A return the result. The show_prepare function
-           log updates to the terminal for the user. The function sets
-           self.result and also returns it to the calling function.
+           A return the result. The function sets self.result and also
+           returns it to the calling function.
         """
 
         def wrapper(self):
             self.prepare_run()
-            self.show_prepare()
             self.result = func(self)
             self.finish_run()
             return self.result
@@ -422,7 +398,6 @@ class BuilderBase:
 
         # Create test directory and run folder they don't exist
         self._create_test_folders()
-        self._init_logger()
         testfile = self._write_test()
         result = self.run_tests(testfile)
         return result
@@ -441,9 +416,12 @@ class BuilderBase:
 
         # Change to the test directory
         os.chdir(self._get_testdir())
+        self.logger.debug(f"Changing to directory {self._get_testdir()}")
 
         # Run the test file using the shell
         cmd = [self.get_shell(), testfile]
+
+        self.logger.debug(f"Running Test via command: {cmd}")
 
         command = BuildTestCommand(cmd)
         out, err = command.execute()
@@ -504,20 +482,6 @@ class BuilderBase:
             timestamp = timestamp.strftime(fmt)
         return timestamp
 
-    def show_prepare(self):
-        """Print basic run information to the user, if defined, before the run."""
-        # return for now, later remove this method.
-        return
-
-        print("{:_<80}".format(""))
-
-        if self.config_file:
-            print("{:>40} {}".format("configuration file:", self.config_file))
-        print("{:>40} {}".format("testdir:", self.metadata.get("testdir")))
-        print("{:>40} {}".format("testpath:", self.metadata.get("testpath")))
-        print("{:>40} {}".format("logpath:", self.metadata.get("logfile")))
-        print("{:_<80}".format(""))
-
     @run_wrapper
     def dry_run(self):
         """Akin to a build preview, we prepare and finish a run, but only
@@ -525,7 +489,6 @@ class BuilderBase:
         """
 
         # Dry run just prints the testing script
-        self._init_logger(to_file=False)
         lines = self._get_test_lines()
         print("\n".join(lines))
 
@@ -545,7 +508,6 @@ class BuilderBase:
         # '$HOME/.buildtest/testdir/<name>/<name>_<timestamp>.sh'
         # This will put output (latest run) in same directory - do we want this?
         testpath = os.path.expandvars(self.metadata["testpath"])
-        testdir = os.path.dirname(testpath)
 
         self.logger.info(f"Opening Test File for Writing: {testpath}")
 
@@ -558,7 +520,7 @@ class BuilderBase:
             testpath,
             stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
         )
-
+        self.logger.debug(f"Applying permission 755 to {testpath} so that test can be executed")
         return testpath
 
     def _get_test_lines(self):

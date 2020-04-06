@@ -1,4 +1,4 @@
-import json
+import logging
 import os
 import shutil
 from jsonschema import validate
@@ -52,10 +52,16 @@ def check_configuration(config_path=None):
        :rtype: exit code 1 if checks failed
     """
 
-    user_schema = load_configuration(config_path)
-    config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
-    validate(instance=user_schema, schema=config_schema)
+    logger = logging.getLogger(__name__)
 
+    user_schema = load_configuration(config_path)
+
+    config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
+    logger.debug(f"Loading default configuration schema: {DEFAULT_CONFIG_SCHEMA}")
+
+    logger.debug(f"Validating user schema: {user_schema} with schema: {config_schema}")
+    validate(instance=user_schema, schema=config_schema)
+    logger.debug("Validation was successful")
 
 def load_configuration(config_path=None):
     """Load the default configuration file if no argument is specified.
