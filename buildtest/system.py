@@ -67,12 +67,12 @@ class BuildTestSystem:
             f"Operating System Build Number: {self.system['os']['build_number']}"
         )
 
-        self.logger.info("Session Environment Variables")
-        self.logger.info("{:_<80}".format(""))
+        self.logger.debug("Session Environment Variables")
+        self.logger.debug("{:_<80}".format(""))
         for k, v in self.system["env"].items():
-            self.logger.info(f"{k}: {v}")
-        self.logger.info("{:_<80}".format(""))
-        self.logger.info(f"Python Path: {self.system['python']}")
+            self.logger.debug(f"{k}: {v}")
+        self.logger.debug("{:_<80}".format(""))
+        self.logger.debug(f"Python Path: {self.system['python']}")
 
     def check_lmod(self):
         """Check if the system has Lmod installed, determine by setting
@@ -82,7 +82,7 @@ class BuildTestSystem:
         self.lmod = "LMOD_DIR" in os.environ and os.path.exists(
             os.environ.get("LMOD_DIR", "")
         )
-        self.logger.info(f"LMOD_DIR: {self.lmod}")
+        self.logger.debug(f"LMOD_DIR: {self.lmod}")
 
     def check_scheduler(self):
         """Check for batch scheduler. Currently checks for LSF or SLURM by running
