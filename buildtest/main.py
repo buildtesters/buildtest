@@ -11,7 +11,11 @@ def main():
     from buildtest.system import BuildTestSystem
     from buildtest.log import init_logfile
 
-    logger = init_logfile("buildtest.log")
+    buildtest_logfile = "buildtest.log"
+    if os.path.exists(buildtest_logfile):
+        os.remove(buildtest_logfile)
+
+    logger = init_logfile(buildtest_logfile)
     logger.info("Starting buildtest log")
 
     # Create a build test system, and check requirements
