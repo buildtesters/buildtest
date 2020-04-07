@@ -40,14 +40,39 @@ class BuildTestSystem:
     def init_system(self):
         """Based on the module "distro" set the linux distrubution name and version
         """
-        self.system["os_name"] = distro.linux_distribution(
+
+        self.system["os"] = {}
+
+        self.system["os"]["name"] = distro.linux_distribution(
             full_distribution_name=False
         )[0]
-        self.system["os_ver"] = distro.linux_distribution(full_distribution_name=False)[
-            1
-        ]
-        self.logger.info(f"Operating System: {self.system['os_name']}")
-        self.logger.info(f"Operating System Version: {self.system['os_ver']}")
+        self.system["os"]["version"] = distro.linux_distribution(
+            full_distribution_name=False
+        )[1]
+        self.system["os"]["major_version"] = distro.major_version(best=True)
+        self.system["os"]["minor_version"] = distro.major_version(best=True)
+        self.system["os"]["build_number"] = distro.build_number(best=True)
+        self.system["env"] = dict(os.environ)
+        self.system["python"] = shutil.which("python") or None
+
+        self.logger.info(f"Operating System: {self.system['os']['name']}")
+        self.logger.info(f"Operating System Version: {self.system['os']['version']}")
+        self.logger.info(
+            f"Operating System Major Version: {self.system['os']['major_version']}"
+        )
+        self.logger.info(
+            f"Operating System Minor Version: {self.system['os']['minor_version']}"
+        )
+        self.logger.info(
+            f"Operating System Build Number: {self.system['os']['build_number']}"
+        )
+
+        self.logger.info("Session Environment Variables")
+        self.logger.info("{:_<80}".format(""))
+        for k, v in self.system["env"].items():
+            self.logger.info(f"{k}: {v}")
+        self.logger.info("{:_<80}".format(""))
+        self.logger.info(f"Python Path: {self.system['python']}")
 
     def check_lmod(self):
         """Check if the system has Lmod installed, determine by setting

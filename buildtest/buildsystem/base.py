@@ -376,7 +376,9 @@ class BuilderBase:
             os.path.join(self.testdir, self.name),
             self.get_test_extension(),
         )
-        self.metadata["testdir"] = os.path.dirname(os.path.expandvars(self.metadata["testpath"]))
+        self.metadata["testdir"] = os.path.dirname(
+            os.path.expandvars(self.metadata["testpath"])
+        )
 
         # The start time to print for the user
         self.metadata["start_time"] = datetime.datetime.now()
@@ -432,14 +434,10 @@ class BuilderBase:
         self.metadata["end_time"] = datetime.datetime.now()
 
         # Keep an output file
-        run_output_file = os.path.join(
-            self.metadata.get("rundir"), self.build_id
-        )
+        run_output_file = os.path.join(self.metadata.get("rundir"), self.build_id)
 
         # Keep an error file
-        run_error_file = os.path.join(
-            self.metadata.get("rundir"), self.build_id
-        )
+        run_error_file = os.path.join(self.metadata.get("rundir"), self.build_id)
 
         # write output of test to .out file
         with open(run_output_file + ".out", "w") as fd:

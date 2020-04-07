@@ -103,7 +103,9 @@ class BuildExecutor:
         # Run each step defined for dry run
         for step in executor.steps:
             if getattr(executor, step, None):
-                executor.builder.logger.debug("Running %s for executor %s" % (step, executor))
+                executor.builder.logger.debug(
+                    "Running %s for executor %s" % (step, executor)
+                )
                 getattr(executor, step)()
         return executor.result
 
