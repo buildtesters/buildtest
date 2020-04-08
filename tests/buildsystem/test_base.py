@@ -18,8 +18,8 @@ def test_load_configs():
     examples_dir = os.path.join(here, "testdir")
 
     # An empty path evaluated to be a directory should exit
-    with pytest.raises(SystemExit) as e_info:
-        BuildConfig("")
+    # with pytest.raises(SystemExit) as e_info:
+    #    BuildConfig("")
 
     # Test loading config files
     for config_file in os.listdir(examples_dir):
