@@ -136,5 +136,3 @@ def resolve_path(path):
     real_path = os.path.realpath(shell_expansion)
     if os.path.exists(real_path):
         return real_path
-    else:
-        return None

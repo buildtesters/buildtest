@@ -37,18 +37,18 @@ def test_discover_configs():
         invalid_file = str(uuid.uuid4())
         discover_configs(invalid_file)
 
+
 def test_exclude_configs():
 
-    config = os.path.join(root,"examples","script")
+    config = os.path.join(root, "examples", "script")
     detected_config_files = discover_configs(config)
-
 
     exclude_list = None
     # nothing to exclude so normalized_config_files should be same as detected_config_files
     normalized_config_files = exclude_configs(detected_config_files, exclude_list)
     assert detected_config_files == normalized_config_files
 
-    remove_config = os.path.join(config,"zlib.yml")
+    remove_config = os.path.join(config, "zlib.yml")
     remove_list = [remove_config]
 
     # check if examples/script/zlib.yml is detected
@@ -62,5 +62,4 @@ def test_exclude_configs():
     # this will do a directory exclusion in examples/script and since we are searching for same directory
     # this should return an empty list
     normalized_config_files = exclude_configs(detected_config_files, remove_list)
-
     assert not normalized_config_files
