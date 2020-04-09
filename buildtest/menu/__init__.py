@@ -74,7 +74,7 @@ class BuildTestParser:
         """
         args, extra = self.parser.parse_known_args()
         self.extra = extra
-
+        
         if args.subcommands and args.func:
             args.func(args)
 
@@ -118,6 +118,12 @@ class BuildTestParser:
             "--settings", help="Specify an alternate buildtest settings file to use",
         )
 
+        parser_build.add_argument(
+            "-x",
+            "--exclude",
+            action='append',
+            help="Exclude one or more configs from processing. Configs can be files or directories.",
+        )
         parser_build.set_defaults(func=func_build_subcmd)
 
     def get_menu(self):

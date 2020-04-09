@@ -1,7 +1,7 @@
 import os
 import pytest
 import uuid
-from buildtest.menu.build import discover_configs
+from buildtest.menu.build import discover_configs, exclude_configs
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)
@@ -36,3 +36,23 @@ def test_discover_configs():
     with pytest.raises(SystemExit) as e_info:
         invalid_file = str(uuid.uuid4())
         discover_configs(invalid_file)
+
+def test_exclude_configs():
+
+    config = os.path.join(root,"examples","script")
+    detected_config_files = discover_configs(config)
+
+
+    exclude_list = None
+    # nothing to exclude so normalized_config_files should be same as detected_config_files
+    normalized_config_files = exclude_configs(detected_config_files, exclude_list)
+    assert detected_config_files == normalized_config_files
+
+    remove_config = os.path.join(config,"zlib.yml")
+    remove_list = [remove_config]
+
+    # check if examples/script/zlib.yml is detected
+    assert remove_config in detected_config_files
+    # now attempting to exclude examples/script/zlib.yml and checking if it is removed after exclusion
+    normalized_config_files = exclude_configs(detected_config_files, remove_list)
+    assert remove_config not in normalized_config_files

@@ -74,9 +74,57 @@ def discover_configs(config_file):
         logger.error(msg)
         sys.exit(msg)
 
+    # return all configs with absolute path
+    tmp = [ os.path.abspath(config) for config in config_files ]
+    config_files = tmp
+
     logger.info(f"Found the following config files: {config_files}")
     return config_files
 
+def exclude_configs(config_files, exclude_list):
+    """This method will exclude configs from being processed after discovery and
+       this implements option ``buildtest build -x``. User can pass multiple
+       configs to be exclude which could be a file or a directory. This method
+       will return a modified list with configs that are excluded. If an invalid
+       file or directory is passed to exclude_list it will be ignored.
+
+       Parameters:
+
+       :param config_files: List of discovered configurations
+       :type config_files: list
+       :param exclude_list: List of exclude configurations
+       :type exclude_list: list
+       :return: a modified list after discovery with excluded configurations
+       :rtype: list
+    """
+    # if there is nothing to exclude return original list
+    if not exclude_list:
+        return config_files
+
+    # check all configs exist and return a list of configs with absolute path with shell expansion.
+    tmp = [ os.path.expandvars(os.path.abspath(config)) for config in exclude_list if os.path.exists(os.path.expandvars(os.path.abspath(config))) ]
+    exclude_list = tmp
+
+    # empty list to store all exclude config files
+    exclude_config_files = []
+    for config in exclude_list:
+        # if its a directory traverse directory and find all config files with .yml extension
+        if os.path.isdir(config):
+            tmp = walk_tree(config, ".yml")
+            exclude_config_files += tmp
+        elif os.path.isfile(config):
+            exclude_config_files.append(config)
+
+    # if exclude list is empty after attempting to find all configs then return original list since nothing to return
+    if not exclude_config_files:
+        return config_files
+
+    # for every exclude config see if it exist in discovered list of configs and try to remove it
+    for config in exclude_config_files:
+        if config in config_files:
+            config_files.remove(config)
+
+    return config_files
 
 def func_build_subcmd(args):
     """Entry point for ``buildtest build`` sub-command. Depending on the command
@@ -110,6 +158,13 @@ def func_build_subcmd(args):
 
     # Discover list of one or more config files based on path provided
     config_files = discover_configs(args.config)
+
+    config_files = exclude_configs(config_files, args.exclude)
+
+    if not config_files:
+        msg = "There are no config files to process."
+        sys.exit(msg)
+
 
     # Keep track of total metrics
     total_tests = 0
