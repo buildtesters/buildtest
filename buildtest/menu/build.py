@@ -75,11 +75,12 @@ def discover_configs(config_file):
         sys.exit(msg)
 
     # return all configs with absolute path
-    tmp = [ os.path.abspath(config) for config in config_files ]
+    tmp = [os.path.abspath(config) for config in config_files]
     config_files = tmp
 
     logger.info(f"Found the following config files: {config_files}")
     return config_files
+
 
 def exclude_configs(config_files, exclude_list):
     """This method will exclude configs from being processed after discovery and
@@ -102,8 +103,13 @@ def exclude_configs(config_files, exclude_list):
         return config_files
 
     # check all configs exist and return a list of configs with absolute path with shell expansion.
-    tmp = [ os.path.expandvars(os.path.abspath(config)) for config in exclude_list if os.path.exists(os.path.expandvars(os.path.abspath(config))) ]
+    tmp = [
+        os.path.expandvars(os.path.abspath(config))
+        for config in exclude_list
+        if os.path.exists(os.path.expandvars(os.path.abspath(config)))
+    ]
     exclude_list = tmp
+
 
     # empty list to store all exclude config files
     exclude_config_files = []
@@ -125,6 +131,7 @@ def exclude_configs(config_files, exclude_list):
             config_files.remove(config)
 
     return config_files
+
 
 def func_build_subcmd(args):
     """Entry point for ``buildtest build`` sub-command. Depending on the command
@@ -164,7 +171,6 @@ def func_build_subcmd(args):
     if not config_files:
         msg = "There are no config files to process."
         sys.exit(msg)
-
 
     # Keep track of total metrics
     total_tests = 0

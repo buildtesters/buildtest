@@ -56,3 +56,11 @@ def test_exclude_configs():
     # now attempting to exclude examples/script/zlib.yml and checking if it is removed after exclusion
     normalized_config_files = exclude_configs(detected_config_files, remove_list)
     assert remove_config not in normalized_config_files
+
+    remove_config = config
+    remove_list = [remove_config]
+    # this will do a directory exclusion in examples/script and since we are searching for same directory
+    # this should return an empty list
+    normalized_config_files = exclude_configs(detected_config_files, remove_list)
+
+    assert not normalized_config_files
