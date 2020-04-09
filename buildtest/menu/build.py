@@ -153,10 +153,10 @@ def func_build_subcmd(args):
         print("                         Test summary                         ")
         print(f"Executed {total_tests} tests")
         print(
-            f"Passed Tests: {passed_tests} Percentage: {passed_tests*100/total_tests}%"
+            f"Passed Tests: {passed_tests}/{total_tests} Percentage: {passed_tests*100/total_tests}%"
         )
         print(
-            f"Failed Tests: {failed_tests} Percentage: {failed_tests*100/total_tests}%"
+            f"Failed Tests: {failed_tests}/{total_tests} Percentage: {failed_tests*100/total_tests}%"
         )
         print
         print

@@ -41,31 +41,12 @@ class BuildTestSystem:
         """Based on the module "distro" set the linux distrubution name and version
         """
 
-        self.system["os"] = {}
+        self.system["os"] = " ".join(distro.linux_distribution())
 
-        self.system["os"]["name"] = distro.linux_distribution(
-            full_distribution_name=False
-        )[0]
-        self.system["os"]["version"] = distro.linux_distribution(
-            full_distribution_name=False
-        )[1]
-        self.system["os"]["major_version"] = distro.major_version(best=True)
-        self.system["os"]["minor_version"] = distro.major_version(best=True)
-        self.system["os"]["build_number"] = distro.build_number(best=True)
         self.system["env"] = dict(os.environ)
         self.system["python"] = shutil.which("python")
 
-        self.logger.debug(f"Operating System: {self.system['os']['name']}")
-        self.logger.debug(f"Operating System Version: {self.system['os']['version']}")
-        self.logger.debug(
-            f"Operating System Major Version: {self.system['os']['major_version']}"
-        )
-        self.logger.debug(
-            f"Operating System Minor Version: {self.system['os']['minor_version']}"
-        )
-        self.logger.debug(
-            f"Operating System Build Number: {self.system['os']['build_number']}"
-        )
+        self.logger.debug(f"Operating System: {self.system['os']}")
 
         self.logger.debug("Session Environment Variables")
         self.logger.debug("{:_<80}".format(""))

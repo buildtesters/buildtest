@@ -466,7 +466,7 @@ class BuilderBase:
         else:
             print(
                 "{:<30} {:<30} {:<30} {:<30}".format(
-                    self.config_name, self.name, "PASSED", self.config_file
+                    self.config_name, self.name, "FAILED", self.config_file
                 )
             )
 
