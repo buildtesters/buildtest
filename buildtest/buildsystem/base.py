@@ -266,8 +266,7 @@ class BuilderBase:
 
            Returns: full path to testing directory
         """
-        testpath = os.path.expandvars(self.metadata["testpath"])
-        return os.path.dirname(testpath)
+        return os.path.dirname(self.metadata["testpath"])
 
     def _create_test_folders(self):
         """Create all needed test folders on init, and add their paths
@@ -384,9 +383,8 @@ class BuilderBase:
             os.path.join(self.testdir, self.name),
             self.get_test_extension(),
         )
-        self.metadata["testdir"] = os.path.dirname(
-            os.path.expandvars(self.metadata["testpath"])
-        )
+        self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
+        self.metadata["testdir"] = os.path.dirname(self.metadata["testpath"])
 
         # The start time to print for the user
         self.metadata["start_time"] = datetime.datetime.now()
@@ -515,7 +513,7 @@ class BuilderBase:
 
         # '$HOME/.buildtest/testdir/<name>/<name>_<timestamp>.sh'
         # This will put output (latest run) in same directory - do we want this?
-        testpath = os.path.expandvars(self.metadata["testpath"])
+        testpath = self.metadata["testpath"]
 
         self.logger.info(f"Opening Test File for Writing: {testpath}")
 

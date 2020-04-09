@@ -53,24 +53,24 @@ class BuildTestSystem:
         self.system["os"]["minor_version"] = distro.major_version(best=True)
         self.system["os"]["build_number"] = distro.build_number(best=True)
         self.system["env"] = dict(os.environ)
-        self.system["python"] = shutil.which("python") or None
+        self.system["python"] = shutil.which("python")
 
-        self.logger.info(f"Operating System: {self.system['os']['name']}")
-        self.logger.info(f"Operating System Version: {self.system['os']['version']}")
-        self.logger.info(
+        self.logger.debug(f"Operating System: {self.system['os']['name']}")
+        self.logger.debug(f"Operating System Version: {self.system['os']['version']}")
+        self.logger.debug(
             f"Operating System Major Version: {self.system['os']['major_version']}"
         )
-        self.logger.info(
+        self.logger.debug(
             f"Operating System Minor Version: {self.system['os']['minor_version']}"
         )
-        self.logger.info(
+        self.logger.debug(
             f"Operating System Build Number: {self.system['os']['build_number']}"
         )
 
         self.logger.debug("Session Environment Variables")
         self.logger.debug("{:_<80}".format(""))
-        for k, v in self.system["env"].items():
-            self.logger.debug(f"{k}: {v}")
+        for k in self.system["env"].keys():
+            self.logger.debug(k)
         self.logger.debug("{:_<80}".format(""))
         self.logger.debug(f"Python Path: {self.system['python']}")
 
