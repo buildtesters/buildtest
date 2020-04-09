@@ -119,3 +119,22 @@ def create_dir(dirname):
         except OSError as err:
             print(err)
             raise
+
+
+def resolve_path(path):
+    """This method will resolve a file path with accounts for shell expansion and resolve paths in
+       when a symlink is provided in the file. This method assumes file already exists.
+
+       Parameter:
+
+       :param path: file path to resolve
+       :type path: str, required
+       :return: return realpath to file if found otherwise return None
+       :rtype: str or None
+    """
+    shell_expansion = os.path.expandvars(path)
+    real_path = os.path.realpath(shell_expansion)
+    if os.path.exists(real_path):
+        return real_path
+    else:
+        return None

@@ -6,11 +6,11 @@ zlib_compression:
     FILE: 1mb.txt
     TARFILE: 1mb.tar.gz
   run: |
-    dd if=/dev/zero of=$FILE bs=1M count=1
-    tar cvzf $TARFILE $FILE
-    ls -lh $TARFILE
-    gzip -l $TARFILE
-    rm $TARFILE $FILE
+    dd if=/dev/zero of=${FILE} bs=1M count=1
+    tar cvzf ${TARFILE} ${FILE}
+    ls -lh ${TARFILE}
+    gzip -l ${TARFILE}
+    rm ${TARFILE} ${FILE}
 
 
 zlib_decompress:
@@ -19,11 +19,11 @@ zlib_decompress:
     FILE: 1mb.txt
     TARFILE: 1mb.tar.gz
   run: |
-    dd if=/dev/zero of=$FILE bs=1M count=1
-    tar cvzf $TARFILE $FILE
-    ls -l $TARFILE
-    gzip -l $TARFILE
-    gzip -d $TARFILE
-    rm $FILE
+    dd if=/dev/zero of=${FILE} bs=1M count=1
+    tar cvzf ${TARFILE} ${FILE}
+    ls -l ${TARFILE}
+    gzip -l ${TARFILE}
+    gzip -d ${TARFILE}
+    rm ${FILE}
     rm 1mb.tar
     

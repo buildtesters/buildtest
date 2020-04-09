@@ -13,7 +13,7 @@ from buildtest.defaults import TESTCONFIG_ROOT, BUILDTEST_CONFIG_FILE
 from buildtest.buildsystem.base import BuildConfig
 from buildtest.config import load_configuration, check_configuration
 from buildtest.executors.base import BuildExecutor
-from buildtest.utils.file import walk_tree
+from buildtest.utils.file import walk_tree, resolve_path
 
 
 def discover_configs(config_file):
@@ -103,13 +103,8 @@ def exclude_configs(config_files, exclude_list):
         return config_files
 
     # check all configs exist and return a list of configs with absolute path with shell expansion.
-    tmp = [
-        os.path.expandvars(os.path.abspath(config))
-        for config in exclude_list
-        if os.path.exists(os.path.expandvars(os.path.abspath(config)))
-    ]
+    tmp = [resolve_path(config) for config in exclude_list]
     exclude_list = tmp
-
 
     # empty list to store all exclude config files
     exclude_config_files = []

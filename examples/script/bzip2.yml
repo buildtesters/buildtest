@@ -8,9 +8,9 @@ bzip_compression:
     TARFILE: 1mb_bzip2.txt.bz2
   shell: bash
   run: |
-    dd if=/dev/zero of="$FILE" bs=1M count=1
-    tar cvjf "$TARFILE" "$FILE"
-    ls -l "$TARFILE"
+    dd if=/dev/zero of=${FILE} bs=1M count=1
+    tar cvjf ${TARFILE} ${FILE}
+    ls -l ${TARFILE}
     rm $TARFILE
     rm $FILE
 
