@@ -5,6 +5,7 @@ for building test scripts from test configuration.
 
 import logging
 import os
+import re
 import sys
 
 from buildtest.defaults import TESTCONFIG_ROOT, BUILDTEST_CONFIG_FILE
@@ -52,6 +53,11 @@ def discover_configs(config_file):
         )
         config_files = walk_tree(config_file, ".yml")
     elif os.path.isfile(config_file):
+        if not re.search("[.](yaml|yml)$", config_file):
+            msg = f"{config_file} does not end in file extension .yaml or .yml"
+            logger.error(msg)
+            sys.exit(msg)
+
         config_files = [config_file]
         logger.debug(f"Config File: {config_file} is a file")
     else:

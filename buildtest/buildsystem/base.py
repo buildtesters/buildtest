@@ -82,6 +82,14 @@ class BuildConfig:
         """
         self.config_file = os.path.abspath(config_file)
 
+        if not os.path.exists(self.config_file):
+            sys.exit("Build configuration %s does not exist." % self.config_file)
+
+        elif os.path.isdir(self.config_file):
+            sys.exit(
+                "Please provide a file path (not a directory path) to a build recipe."
+            )
+
         # all test configs must pass global validation (sets self.recipe)
         self._validate_global()
 
