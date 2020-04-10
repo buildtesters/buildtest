@@ -8,14 +8,11 @@ Terminology
     :header: "Name", "Description"
     :widths: 30, 60
 
-    **SpecFile**,"A ``SpecFile`` is a YAML file that buildtest interprets when generating the test. The SpecFile may
-    contain one or more specs."
-    **Spec**,"A Spec is the basic building block for writing a test specification that is compatible with one of the
-    Spec Schema."
-    **Spec Schema**,"A Spec Schema is a JSON file defining the schema with valid key/value pairs that are acceptable
-    for the schema."
-    **Schema Library**,"A Schema Library is a collection of one or more ``Spec Schema`` provided by buildtest."
-    **Test Script**,"A Test Script is a generated shell script by buildtest as a result of processing one of the SpecFile."
+    **BuildSpec**,"``BuildSpec`` is a YAML file that buildtest interprets when generating the test. A BuildSpec may
+    contain one or more test blocks that is validated by a ``BuildSpec Schema``."
+    **BuildSpec Schema**,"is a JSON file defining  valid/invalid key value pairs and formatting for the file"
+    **Schema Library**,"A Schema Library is a collection of one or more ``BuildSpec Schema`` provided by buildtest."
+    **Test Script**,"A Test Script is a generated shell script by buildtest as a result of processing one of the BuildSpec."
     **Settings**,"Settings is a buildtest configuration file that can be in YAML/JSON that configures buildtest at your
     site. The Settings file must be compatible with the Settings Schema."
     **Settings Schema**,"A schema definition that dictates how to validate a ``Settings`` file."
