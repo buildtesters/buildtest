@@ -122,7 +122,7 @@ def create_dir(dirname):
 
 
 def resolve_path(path):
-    """This method will resolve a file path with accounts for shell expansion and resolve paths in
+    """This method will resolve a file path to account for shell expansion and resolve paths in
        when a symlink is provided in the file. This method assumes file already exists.
 
        Parameter:

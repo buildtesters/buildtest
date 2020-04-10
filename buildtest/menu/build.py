@@ -15,6 +15,8 @@ from buildtest.config import load_configuration, check_configuration
 from buildtest.executors.base import BuildExecutor
 from buildtest.utils.file import walk_tree, resolve_path
 
+logger = logging.getLogger(__name__)
+
 
 def discover_configs(config_file):
     """Given a config file specified by the user with buildtest build -c,
@@ -34,7 +36,7 @@ def discover_configs(config_file):
        # relative directory path in build test root (returns multiple)
        buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/
     """
-    logger = logging.getLogger(__name__)
+
     config_files = []
 
     # If no config file provided, assume discovering across buildtest/site
@@ -96,8 +98,6 @@ def include_file(file_path, white_list_patterns):
        :rtype: bool or str
     """
 
-    logger = logging.getLogger(__name__)
-
     if not white_list_patterns:
         logger.debug("No white list patterns provided, returning True")
         return True
@@ -127,9 +127,6 @@ def func_build_subcmd(args):
        :rtype: None
     """
 
-    # buildtest logger
-    logger = logging.getLogger(__name__)
-
     # if buildtest settings specified on CLI, it would be in args.settings otherwise set
     # to default configuration (BUILDTEST_CONFIG_FILE)
     config_file = args.settings or BUILDTEST_CONFIG_FILE
@@ -152,16 +149,11 @@ def func_build_subcmd(args):
     # if no files discovered let's stop now
     if not config_files:
         msg = "There are no config files to process."
-        logger.error(msg)
         sys.exit(msg)
 
-    print("\n")
-    print("{:^45}".format("Discovered Files"))
-    print("\n")
-    for config in config_files:
-        print(config)
-    print("\n")
-    print("\n")
+    print("\n {:^45} \n".format("Discovered Files"))
+    [print(config) for config in config_files]
+    print("\n\n")
 
     logger.debug(
         f"Based on input argument: -c {args.config} buildtest discovered the following configuration {config_files}"
@@ -169,14 +161,10 @@ def func_build_subcmd(args):
 
     if args.exclude:
         logger.debug(f"The exclude config pattern are the following: -e {args.exclude}")
-
-    config_files = [
-        config for config in config_files if include_file(config, args.exclude)
-    ]
-
-    logger.debug(
-        f"Normalized configuration list that buildtest will process are the following: {config_files}"
-    )
+        config_files = [
+            config for config in config_files if include_file(config, args.exclude)
+        ]
+        logger.debug(f"Configuration List after applying exclusion: {config_files}")
 
     # Keep track of total metrics
     total_tests = 0
@@ -214,9 +202,7 @@ def func_build_subcmd(args):
                 result = executor.dry_run(builder)
 
     if not args.dry:
-        print("\n")
-        print("\n")
-        print("{:=<60}".format(""))
+        print("\n\n{:=<60}".format(""))
         print("{:^60}".format("Test summary"))
         print("{:=<60}".format(""))
         print(f"Executed {total_tests} tests")

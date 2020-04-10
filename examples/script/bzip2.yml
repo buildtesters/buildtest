@@ -11,8 +11,8 @@ bzip_compression:
     dd if=/dev/zero of=${FILE} bs=1M count=1
     tar cvjf ${TARFILE} ${FILE}
     ls -l ${TARFILE}
-    rm $TARFILE
-    rm $FILE
+    rm ${TARFILE}
+    rm ${FILE}
 
 bzip_help:
   type: script
