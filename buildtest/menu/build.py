@@ -13,7 +13,7 @@ from buildtest.defaults import TESTCONFIG_ROOT, BUILDTEST_CONFIG_FILE
 from buildtest.buildsystem.base import BuildConfig
 from buildtest.config import load_configuration, check_configuration
 from buildtest.executors.base import BuildExecutor
-from buildtest.utils.file import walk_tree, resolve_path
+from buildtest.utils.file import walk_tree, resolve_path, is_dir, is_file
 
 logger = logging.getLogger(__name__)
 
@@ -104,7 +104,7 @@ def include_file(file_path, white_list_patterns):
 
     logger.debug(f"white list pattern before resolving paths: {white_list_patterns}")
 
-    white_list_patterns = [resolve_path(path) for path in white_list_patterns]
+    white_list_patterns = [resolve_path(path) for path in white_list_patterns ]
 
     logger.debug(f"white list pattern after resolving paths: {white_list_patterns}")
 
@@ -151,10 +151,6 @@ def func_build_subcmd(args):
         msg = "There are no config files to process."
         sys.exit(msg)
 
-    print("\n {:^45} \n".format("Discovered Files"))
-    [print(config) for config in config_files]
-    print("\n\n")
-
     logger.debug(
         f"Based on input argument: -c {args.config} buildtest discovered the following configuration {config_files}"
     )
@@ -165,6 +161,15 @@ def func_build_subcmd(args):
             config for config in config_files if include_file(config, args.exclude)
         ]
         logger.debug(f"Configuration List after applying exclusion: {config_files}")
+
+        # if no files remain after exclusion let's stop now.
+        if not config_files:
+            msg = "There are no config files to process."
+            sys.exit(msg)
+
+    print("\n {:^45} \n".format("Discovered Files"))
+    [print(config) for config in config_files]
+    print("\n\n")
 
     # Keep track of total metrics
     total_tests = 0
