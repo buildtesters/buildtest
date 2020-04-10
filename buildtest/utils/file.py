@@ -132,7 +132,11 @@ def resolve_path(path):
        :return: return realpath to file if found otherwise return None
        :rtype: str or None
     """
-    shell_expansion = os.path.expandvars(path)
-    real_path = os.path.realpath(shell_expansion)
+    # apply shell expansion  when file includes something like $HOME/example
+    path = os.path.expandvars(path)
+    # apply user expansion when file includes something like  ~/example
+    path = os.path.expanduser(path)
+
+    real_path = os.path.realpath(path)
     if os.path.exists(real_path):
         return real_path

@@ -74,58 +74,44 @@ def discover_configs(config_file):
         logger.error(msg)
         sys.exit(msg)
 
-    # return all configs with absolute path
-    tmp = [os.path.abspath(config) for config in config_files]
-    config_files = tmp
+    # return all configs by resolving path, this gets the real canonical path and address shell expansion and user expansion
+    config_files = [resolve_path(config) for config in config_files]
 
     logger.info(f"Found the following config files: {config_files}")
     return config_files
 
 
-def exclude_configs(config_files, exclude_list):
-    """This method will exclude configs from being processed after discovery and
-       this implements option ``buildtest build -x``. User can pass multiple
-       configs to be exclude which could be a file or a directory. This method
-       will return a modified list with configs that are excluded. If an invalid
-       file or directory is passed to exclude_list it will be ignored.
+def include_file(file_path, white_list_patterns):
+    """Check if file is included based on OR regular expression. If no white_list_patterns
+       provided method will return ``True``. Otherwise it will return the list of files that don't
+       match the regular expression
 
-       Parameters:
+    Parameters:
 
-       :param config_files: List of discovered configurations
-       :type config_files: list
-       :param exclude_list: List of exclude configurations
-       :type exclude_list: list
-       :return: a modified list after discovery with excluded configurations
-       :rtype: list
+    :param file_path: file path to run regular expression upon
+    :type file_path: str, required
+    :param white_list_patterns: the exclude list provided on command line option
+    :type white_list_patterns: list, required
+    :return: Returns True or a list of files that don't match regular expression
+    :rtype: bool or str
     """
-    # if there is nothing to exclude return original list
-    if not exclude_list:
-        return config_files
 
-    # check all configs exist and return a list of configs with absolute path with shell expansion.
-    tmp = [resolve_path(config) for config in exclude_list]
-    exclude_list = tmp
+    logger = logging.getLogger(__name__)
 
-    # empty list to store all exclude config files
-    exclude_config_files = []
-    for config in exclude_list:
-        # if its a directory traverse directory and find all config files with .yml extension
-        if os.path.isdir(config):
-            tmp = walk_tree(config, ".yml")
-            exclude_config_files += tmp
-        elif os.path.isfile(config):
-            exclude_config_files.append(config)
+    if not white_list_patterns:
+        logger.debug("No white list patterns provided, returning True")
+        return True
 
-    # if exclude list is empty after attempting to find all configs then return original list since nothing to return
-    if not exclude_config_files:
-        return config_files
+    logger.debug(f"white list pattern before resolving paths: {white_list_patterns}")
 
-    # for every exclude config see if it exist in discovered list of configs and try to remove it
-    for config in exclude_config_files:
-        if config in config_files:
-            config_files.remove(config)
+    white_list_patterns = [resolve_path(path) for path in white_list_patterns]
 
-    return config_files
+    logger.debug(f"white list pattern after resolving paths: {white_list_patterns}")
+
+    regexp = "(%s)" % "|".join(white_list_patterns)
+    logger.debug(f"Applying Regular Expression Search: {regexp} to file: {file_path}")
+
+    return not re.search(regexp, file_path)
 
 
 def func_build_subcmd(args):
@@ -161,10 +147,26 @@ def func_build_subcmd(args):
     # Discover list of one or more config files based on path provided
     config_files = discover_configs(args.config)
 
-    config_files = exclude_configs(config_files, args.exclude)
+    logger.debug(
+        f"Based on input argument: -c {args.config} buildtest discovered the following configuration {config_files}"
+    )
+
+    if args.exclude:
+        logger.debug(f"The exclude config pattern are the following: -e {args.exclude}")
+
+    config_files = [
+        config for config in config_files if include_file(config, args.exclude)
+    ]
+
+    logger.debug(
+        f"Normalized configuration list that buildtest will process are the following: {config_files}"
+    )
+
+    # config_files = exclude_configs(config_files, args.exclude)
 
     if not config_files:
         msg = "There are no config files to process."
+        logger.error(msg)
         sys.exit(msg)
 
     # Keep track of total metrics
