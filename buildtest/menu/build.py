@@ -155,13 +155,13 @@ def func_build_subcmd(args):
         logger.error(msg)
         sys.exit(msg)
 
-    print ("\n")
-    print ("{:^45}".format("Discovered Files"))
-    print ("\n")
+    print("\n")
+    print("{:^45}".format("Discovered Files"))
+    print("\n")
     for config in config_files:
         print(config)
-    print ("\n")
-    print ("\n")
+    print("\n")
+    print("\n")
 
     logger.debug(
         f"Based on input argument: -c {args.config} buildtest discovered the following configuration {config_files}"
@@ -177,8 +177,6 @@ def func_build_subcmd(args):
     logger.debug(
         f"Normalized configuration list that buildtest will process are the following: {config_files}"
     )
-
-
 
     # Keep track of total metrics
     total_tests = 0
@@ -216,8 +214,8 @@ def func_build_subcmd(args):
                 result = executor.dry_run(builder)
 
     if not args.dry:
-        print ("\n")
-        print ("\n")
+        print("\n")
+        print("\n")
         print("{:=<60}".format(""))
         print("{:^60}".format("Test summary"))
         print("{:=<60}".format(""))
@@ -226,8 +224,12 @@ def func_build_subcmd(args):
         pass_rate = passed_tests * 100 / total_tests
         fail_rate = failed_tests * 100 / total_tests
 
-        print(f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%")
+        print(
+            f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%"
+        )
 
-        print(f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%")
+        print(
+            f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%"
+        )
         print
         print
