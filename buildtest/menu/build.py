@@ -104,7 +104,7 @@ def include_file(file_path, white_list_patterns):
 
     logger.debug(f"white list pattern before resolving paths: {white_list_patterns}")
 
-    white_list_patterns = [resolve_path(path) for path in white_list_patterns ]
+    white_list_patterns = [resolve_path(path) for path in white_list_patterns]
 
     logger.debug(f"white list pattern after resolving paths: {white_list_patterns}")
 

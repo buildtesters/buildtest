@@ -13,6 +13,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def is_file(fname):
     """This method will check if file exist and if not found throws an exception.
 
@@ -119,5 +120,5 @@ def resolve_path(path):
     path = os.path.expanduser(path)
 
     real_path = os.path.realpath(path)
-    #if os.path.exists(real_path):
+    # if os.path.exists(real_path):
     return real_path

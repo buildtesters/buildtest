@@ -5,6 +5,7 @@ from buildtest.defaults import TESTCONFIG_ROOT
 from buildtest.menu.get import clone
 from buildtest.utils.file import is_dir, create_dir
 
+
 def test_clone():
     repo = "https://github.com/HPC-buildtest/tutorials.git"
     root = os.path.join(TESTCONFIG_ROOT, "github.com")
@@ -14,13 +15,13 @@ def test_clone():
 
     create_dir(root)
 
-    assert is_dir(clone(repo,root))
+    assert is_dir(clone(repo, root))
 
     # cloning same repo twice will result in failure
     with pytest.raises(SystemExit) as e_info:
-        clone(repo,root)
+        clone(repo, root)
 
     shutil.rmtree(root)
     # will fail to clone if invalid branch is specified
     with pytest.raises(SystemExit) as e_info:
-        clone(repo,root,"develop")
+        clone(repo, root, "develop")

@@ -13,6 +13,7 @@ from buildtest.utils.file import create_dir
 
 logger = logging.getLogger(__name__)
 
+
 def func_get_subcmd(args):
     """Entry point for ``buildtest get`` sub-command. The expected
     single argument provided should be a valid repository address to clone.
