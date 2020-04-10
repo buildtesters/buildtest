@@ -2,18 +2,28 @@ version: 0.0.1
 
 zlib_compression:
   type: script
+  env:
+    FILE: 1mb.txt
+    TARFILE: 1mb.tar.gz
   run: |
-    dd if=/dev/zero of=1mb.txt bs=1M count=1
-    tar cvzf 1mb.tar.gz 1mb.txt
-    ls -lh 1mb.tar.gz
-    gzip -l 1mb.tar.gz
+    dd if=/dev/zero of=${FILE} bs=1M count=1
+    tar cvzf ${TARFILE} ${FILE}
+    ls -lh ${TARFILE}
+    gzip -l ${TARFILE}
+    rm ${TARFILE} ${FILE}
+
 
 zlib_decompress:
   type: script
+  env:
+    FILE: 1mb.txt
+    TARFILE: 1mb.tar.gz
   run: |
-    dd if=/dev/zero of=1mb.txt bs=1M count=1
-    tar cvzf 1mb.tar.gz 1mb.txt
-    ls -l 1mb.tar.gz
-    gzip -l 1mb.tar.gz
-    gzip -d 1mb.tar.gz
+    dd if=/dev/zero of=${FILE} bs=1M count=1
+    tar cvzf ${TARFILE} ${FILE}
+    ls -l ${TARFILE}
+    gzip -l ${TARFILE}
+    gzip -d ${TARFILE}
+    rm ${FILE}
+    rm 1mb.tar
     

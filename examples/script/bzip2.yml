@@ -8,15 +8,11 @@ bzip_compression:
     TARFILE: 1mb_bzip2.txt.bz2
   shell: bash
   run: |
-    dd if=/dev/zero of="$FILE" bs=1M count=1
-    tar cvjf "$TARFILE" "$FILE"
-    ls -l "$TARFILE"
-
-bzip_version:
-  type: script
-  description: "bzip2 version"
-  shell: sh
-  run: "bzip2 --version"
+    dd if=/dev/zero of=${FILE} bs=1M count=1
+    tar cvjf ${TARFILE} ${FILE}
+    ls -l ${TARFILE}
+    rm ${TARFILE}
+    rm ${FILE}
 
 bzip_help:
   type: script
