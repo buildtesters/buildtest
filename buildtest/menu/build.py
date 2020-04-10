@@ -86,14 +86,14 @@ def include_file(file_path, white_list_patterns):
        provided method will return ``True``. Otherwise it will return the list of files that don't
        match the regular expression
 
-    Parameters:
+       Parameters:
 
-    :param file_path: file path to run regular expression upon
-    :type file_path: str, required
-    :param white_list_patterns: the exclude list provided on command line option
-    :type white_list_patterns: list, required
-    :return: Returns True or a list of files that don't match regular expression
-    :rtype: bool or str
+       :param file_path: file path to run regular expression upon
+       :type file_path: str, required
+       :param white_list_patterns: the exclude list provided on command line option
+       :type white_list_patterns: list, required
+       :return: Returns True or a list of files that don't match regular expression
+       :rtype: bool or str
     """
 
     logger = logging.getLogger(__name__)
@@ -116,13 +116,15 @@ def include_file(file_path, white_list_patterns):
 
 def func_build_subcmd(args):
     """Entry point for ``buildtest build`` sub-command. Depending on the command
-    arguments, buildtest will set values in dictionary ``config_opts`` that is used
-    to trigger the appropriate build action.
+       arguments, buildtest will set values in dictionary ``config_opts`` that is used
+       to trigger the appropriate build action.
 
-    :param args: arguments passed from command line
-    :type args: dict, required
+       Parameters:
 
-    :rtype: None
+       :param args: arguments passed from command line
+       :type args: dict, required
+
+       :rtype: None
     """
 
     # buildtest logger
@@ -147,6 +149,20 @@ def func_build_subcmd(args):
     # Discover list of one or more config files based on path provided
     config_files = discover_configs(args.config)
 
+    # if no files discovered let's stop now
+    if not config_files:
+        msg = "There are no config files to process."
+        logger.error(msg)
+        sys.exit(msg)
+
+    print ("\n")
+    print ("{:^45}".format("Discovered Files"))
+    print ("\n")
+    for config in config_files:
+        print(config)
+    print ("\n")
+    print ("\n")
+
     logger.debug(
         f"Based on input argument: -c {args.config} buildtest discovered the following configuration {config_files}"
     )
@@ -162,12 +178,7 @@ def func_build_subcmd(args):
         f"Normalized configuration list that buildtest will process are the following: {config_files}"
     )
 
-    # config_files = exclude_configs(config_files, args.exclude)
 
-    if not config_files:
-        msg = "There are no config files to process."
-        logger.error(msg)
-        sys.exit(msg)
 
     # Keep track of total metrics
     total_tests = 0
@@ -205,16 +216,18 @@ def func_build_subcmd(args):
                 result = executor.dry_run(builder)
 
     if not args.dry:
-        print
-        print
-        print("==============================================================")
-        print("                         Test summary                         ")
+        print ("\n")
+        print ("\n")
+        print("{:=<60}".format(""))
+        print("{:^60}".format("Test summary"))
+        print("{:=<60}".format(""))
         print(f"Executed {total_tests} tests")
-        print(
-            f"Passed Tests: {passed_tests}/{total_tests} Percentage: {passed_tests*100/total_tests}%"
-        )
-        print(
-            f"Failed Tests: {failed_tests}/{total_tests} Percentage: {failed_tests*100/total_tests}%"
-        )
+
+        pass_rate = passed_tests * 100 / total_tests
+        fail_rate = failed_tests * 100 / total_tests
+
+        print(f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%")
+
+        print(f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%")
         print
         print
