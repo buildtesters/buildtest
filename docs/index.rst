@@ -12,24 +12,12 @@ For more details on buildtest check :ref:`summary_of_buildtest`
 
 This documentation was last rebuild on |today| and is intended for version |version|.
 
-Terminology
--------------
-
-As you go through the documentation, we wanted to define a few terminology often used through the docs so
-its clear to the reader.
-
-- **Test Configuration:** - A YAML file that is complaint to one of the buildtest **Schema**. The configuration is used to describe how test is to be generated. The YAML file is passed to ``buildtest`` to generate the test-script.
-
-- **Testscript:** This refers to the generated test script (shell-script) by buildtest
-
-- **Schema:** This refers to the YAML schema defined for writing **Test Configuration** in buildtest.
-
-
 .. toctree::
    :maxdepth: 2
    :caption: Background
 
    what_is_buildtest.rst
+   terminology.rst
    getting_started.rst
 
 .. toctree::
