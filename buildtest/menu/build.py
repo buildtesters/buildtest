@@ -18,50 +18,50 @@ from buildtest.utils.file import walk_tree, resolve_path, is_dir, is_file
 logger = logging.getLogger(__name__)
 
 
-def discover_configs(config_file):
-    """Given a config file specified by the user with buildtest build -c,
+def discover_buildspecs(buildspec):
+    """Given a buildspec file specified by the user with ``buildtest build --buildspec``,
        discover one or more files and return a list for buildtest to parse.
        Examples of intended functionality are documented here. For all of
        the below, test config root refers to $HOME/.buildtest/site
  
        # A relative path to a file in the PWD (outside of test config root, returns single)
-       buildtest build -c relative-folder/hello.sh.yml
+       buildtest build --buildspec relative-folder/hello.sh.yml
 
        # A relative path to a file in build test root (returns single)
-       buildtest build -c buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/hello.sh.ym
+       buildtest build --buildspec github.com/HPC-buildtest/tutorials/hello-world/hello.sh.yml
 
        # relative directory path (returns multiple)
-       buildtest build -c hello-world
+       buildtest build --buildspec hello-world
 
        # relative directory path in build test root (returns multiple)
-       buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/
+       buildtest build --buildspec github.com/HPC-buildtest/tutorials/hello-world/
     """
 
-    config_files = []
+    buildspec_files = []
 
     # If no config file provided, assume discovering across buildtest/site
-    if not config_file:
+    if not buildspec:
         config_file = TESTCONFIG_ROOT
 
     # First try, the path is an absolute path to file or folder
     # Second try, the path can be relative to the TESTCONFIG_ROOT
-    elif not os.path.exists(config_file):
-        config_file = os.path.join(TESTCONFIG_ROOT, config_file)
+    elif not os.path.exists(buildspec):
+        buildspec = os.path.join(TESTCONFIG_ROOT, buildspec)
 
     # Now handle path based on being a directory or file path
-    if os.path.isdir(config_file):
+    if os.path.isdir(buildspec):
         logger.debug(
-            f"Config File: {config_file} is a directory so traversing directory tree to find all .yml files."
+            f"Buildspec File: {buildspec} is a directory so traversing directory tree to find all Buildspec files with .yml extension"
         )
-        config_files = walk_tree(config_file, ".yml")
-    elif os.path.isfile(config_file):
-        if not re.search("[.](yaml|yml)$", config_file):
-            msg = f"{config_file} does not end in file extension .yaml or .yml"
+        buildspec_files = walk_tree(buildspec, ".yml")
+    elif os.path.isfile(buildspec):
+        if not re.search("[.](yaml|yml)$", buildspec):
+            msg = f"{buildspec} does not end in file extension .yaml or .yml"
             logger.error(msg)
             sys.exit(msg)
 
-        config_files = [config_file]
-        logger.debug(f"Config File: {config_file} is a file")
+        buildspec_files = [buildspec]
+        logger.debug(f"Config File: {buildspec} is a file")
     else:
         msg = (
             "Please provide an absolute or relative path to a directory file from your present working directory or %s"
@@ -71,16 +71,16 @@ def discover_configs(config_file):
         sys.exit(msg)
 
     # If we don't have any files discovered
-    if not config_files:
-        msg = "No test configuration files found as %s." % config_file
+    if not buildspec_files:
+        msg = "No Buildspec files found as %s." % buildspec
         logger.error(msg)
         sys.exit(msg)
 
-    # return all configs by resolving path, this gets the real canonical path and address shell expansion and user expansion
-    config_files = [resolve_path(config) for config in config_files]
+    # return all buildspec by resolving path, this gets the real canonical path and address shell expansion and user expansion
+    buildspec_files = [resolve_path(file) for file in buildspec_files]
 
-    logger.info(f"Found the following config files: {config_files}")
-    return config_files
+    logger.info(f"Found the following config files: {buildspec_files}")
+    return buildspec_files
 
 
 def include_file(file_path, white_list_patterns):
@@ -115,9 +115,12 @@ def include_file(file_path, white_list_patterns):
 
 
 def func_build_subcmd(args):
-    """Entry point for ``buildtest build`` sub-command. Depending on the command
-       arguments, buildtest will set values in dictionary ``config_opts`` that is used
-       to trigger the appropriate build action.
+    """Entry point for ``buildtest build`` sub-command. This method will discover
+       buildspecs in method ``discover_buildspecs``. If there are any exclusion list
+       this will be checked, once buildtest knows all buildspecs to process it will
+       begin validation in ``ValidateBuildSpec`` and finally kick of an execution
+       using one of the executors. A report of all builds, along with test summary
+       will be displayed to screen.
 
        Parameters:
 
@@ -143,32 +146,32 @@ def func_build_subcmd(args):
 
     check_configuration(config_file)
 
-    # Discover list of one or more config files based on path provided
-    config_files = discover_configs(args.config)
+    # Discover list of one or more buildspec files based on path provided
+    buildspec_files = discover_buildspecs(args.buildspec)
 
     # if no files discovered let's stop now
-    if not config_files:
+    if not buildspec_files:
         msg = "There are no config files to process."
         sys.exit(msg)
 
     logger.debug(
-        f"Based on input argument: -c {args.config} buildtest discovered the following configuration {config_files}"
+        f"Based on input argument: --buildspec {args.buildspec} buildtest discovered the following Buildspecs: {buildspec_files}"
     )
 
     if args.exclude:
         logger.debug(f"The exclude config pattern are the following: -e {args.exclude}")
-        config_files = [
-            config for config in config_files if include_file(config, args.exclude)
+        buildspec_files = [
+            config for config in buildspec_files if include_file(config, args.exclude)
         ]
-        logger.debug(f"Configuration List after applying exclusion: {config_files}")
+        logger.debug(f"Buildspec list after applying exclusion: {buildspec_files}")
 
         # if no files remain after exclusion let's stop now.
-        if not config_files:
-            msg = "There are no config files to process."
+        if not buildspec_files:
+            msg = "There are no Buildspec files to process."
             sys.exit(msg)
 
-    print("\n {:^45} \n".format("Discovered Files"))
-    [print(config) for config in config_files]
+    print("\n {:^45} \n".format("Discovered Buildspec Files"))
+    [print(buildspec) for buildspec in buildspec_files]
     print("\n\n")
 
     # Keep track of total metrics
@@ -180,15 +183,15 @@ def func_build_subcmd(args):
     executor = BuildExecutor(config_opts, default=args.executor)
     print(
         "{:<30} {:<30} {:<30} {:<30}".format(
-            "Config Name", "SubTest", "Status", "Config Path"
+            "Buildspec Name", "SubTest", "Status", "Buildspec Path"
         )
     )
     print("{:_<120}".format(""))
     # Each configuration file can have multiple tests
-    for config_file in config_files:
+    for buildspec in buildspec_files:
 
-        # Read in all config files here, loading each will validate the entire file
-        bc = BuildConfig(config_file)
+        # Read in buildspec file here, loading each will validate the buildspec file
+        bc = BuildConfig(buildspec)
 
         # And builders parsed through for each
         for builder in bc.get_builders(testdir=args.testdir):

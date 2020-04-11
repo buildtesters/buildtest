@@ -13,7 +13,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-
 def is_file(fname):
     """This method will check if file exist and if not found throws an exception.
 
@@ -24,12 +23,18 @@ def is_file(fname):
     :rtype: bool
     """
 
+    # resolve_path will return the full canonical filename or return None if file doesn't exist
     fname = resolve_path(fname)
+
+    # if return is None we return False since file is non-existent
+    if not fname:
+        return False
+
+    # at this stage we know it's a valid file but we don't know if its a file or directory
     if os.path.isfile(fname):
         return True
 
     return False
-
 
 def is_dir(dirname):
     """This method will check if a directory exist and if not found throws an exception.
@@ -43,13 +48,18 @@ def is_dir(dirname):
        :rtype: bool
     """
 
+    # resolve_path will return the full canonical directory name or return None if directory doesn't exist
     dirname = resolve_path(dirname)
 
+    # if return is None we stop here and return False since directory is non-existent.
+    if not dirname:
+        return False
+
+    # at this stage we know it's a valid file but we don't know if its a file or directory
     if os.path.isdir(dirname):
         return True
 
     return False
-
 
 def walk_tree(root_dir, ext):
     """This method will traverse a directory tree and return list of files
@@ -91,7 +101,11 @@ def create_dir(dirname):
        :rtype: Catches exception of type OSError
     """
 
-    dirname = resolve_path(dirname)
+    # these three lines implement same as ``resolve_path`` will return None when it's not a known file. We expect
+    # input to create_dir will be a non-existent path so we run these lines manually
+    dirname = os.path.expanduser(dirname)
+    dirname = os.path.expandvars(dirname)
+    dirname = os.path.realpath(dirname)
 
     if not os.path.isdir(dirname):
         try:
@@ -120,5 +134,6 @@ def resolve_path(path):
     path = os.path.expanduser(path)
 
     real_path = os.path.realpath(path)
-    # if os.path.exists(real_path):
-    return real_path
+
+    if os.path.exists(real_path):
+        return real_path

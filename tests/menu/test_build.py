@@ -1,38 +1,38 @@
 import os
 import pytest
 import uuid
-from buildtest.menu.build import discover_configs
+from buildtest.menu.build import discover_buildspecs
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)
 
 
-def test_discover_configs():
+def test_discover_buildspecs():
 
     # testing single file
-    config = os.path.join(test_root, "testdir", "slurm-hello.yml")
-    config_files = discover_configs(config)
+    buildspec = os.path.join(test_root, "testdir", "slurm-hello.yml")
+    buildspec_files = discover_buildspecs(buildspec)
 
-    assert isinstance(config_files, list)
-    assert config in config_files
+    assert isinstance(buildspec_files, list)
+    assert buildspec in buildspec_files
 
     # testing with directory
-    config_dir = os.path.join(test_root, "testdir")
-    config_files = discover_configs(config_dir)
+    buildspec_dir = os.path.join(test_root, "testdir")
+    buildspec_files = discover_buildspecs(buildspec_dir)
 
-    assert isinstance(config_files, list)
-    assert config in config_files
+    assert isinstance(buildspec_files, list)
+    assert buildspec in buildspec_files
 
     # invalid file extension must be of type .yml or .yaml
     with pytest.raises(SystemExit) as e_info:
-        discover_configs(os.path.join(root, "README.rst"))
+        discover_buildspecs(os.path.join(root, "README.rst"))
 
-    # when no config files found in a valid directory
+    # when no Buildspec files found in a valid directory
     with pytest.raises(SystemExit) as e_info:
         # searching for all configs in current directory
-        discover_configs(os.path.dirname(os.path.abspath(__file__)))
+        discover_buildspecs(os.path.dirname(os.path.abspath(__file__)))
 
     # when you pass invalid file it should fail
     with pytest.raises(SystemExit) as e_info:
         invalid_file = str(uuid.uuid4())
-        discover_configs(invalid_file)
+        discover_buildspecs(invalid_file)

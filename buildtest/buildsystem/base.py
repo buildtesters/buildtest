@@ -35,13 +35,13 @@ known_sections = variable_sections + build_sections
 
 
 class BuildConfig:
-    """A BuildConfig is a base class for a build configuration.
+    """A BuildConfig is a base class for loading and validating a Buildspec file.
        The type (e.g., script) and version are derived from reading in
-       the file, and then matching to a buildtest schema, each of which is
+       the file, and then matching to a Buildspec schema, each of which is
        developed at https://github.com/HPC-buildtest/schemas and added to
        subfolders named accordingly under buildtest/buildsystem/schemas.
-       The schema object can load in a general test configuration file
-       to validate it, and then match it to a schema available.
+       The schema object can load in a general Buildspec file
+       to validate it, and then match it to a Buildspec Schema available.
        If the version of a schema is not specified, we use the latest.
        If the schema fails validation check, then we stop immediately.
     """
@@ -49,18 +49,18 @@ class BuildConfig:
     # Metadata keys are not considered build sections
     metadata = ["version"]
 
-    def __init__(self, config_file):
+    def __init__(self, buildspec_file):
         """initiate a build configuration file, meaning that we read in the
            file, match it to a schema provided by buildtest, and validate it.
 
            Parameters:
 
-           config_file: the pull path to the configuration file, must exist.
+           buildspec_file: the pull path to the configuration file, must exist.
         """
 
         self.logger = logging.getLogger(__name__)
 
-        self.recipe = None
+        self.buildspec_recipe = None
 
         # Read the lookup to get schemas available
         self.lookup = get_schemas_available()
@@ -69,28 +69,28 @@ class BuildConfig:
             f"buildtest found the available schema: {self.lookup} in schema library"
         )
 
-        # Load the configuration file, fails on any error
-        self.load(config_file)
+        # Load the Buildspec file, fails on any error
+        self.load(buildspec_file)
 
-    def load(self, config_file):
-        """Load a config file. We check that it exists, and that it is valid.
+    def load(self, buildspec_file):
+        """Load a Buildspec file. We check that it exists, and that it is valid.
            we exit on any error, as the config is not loadable.
 
            Parameters:
 
-           config_file: the pull path to the configuration file, must exist.
+           buildspec_file: the pull path to the configuration file, must exist.
         """
-        self.config_file = os.path.abspath(config_file)
+        self.buildspec_file = os.path.abspath(buildspec_file)
 
-        if not os.path.exists(self.config_file):
-            sys.exit("Build configuration %s does not exist." % self.config_file)
+        if not os.path.exists(self.buildspec_file):
+            sys.exit("BuildSpec File: %s does not exist." % self.buildspec_file)
 
-        elif os.path.isdir(self.config_file):
+        elif os.path.isdir(self.buildspec_file):
             sys.exit(
-                "Please provide a file path (not a directory path) to a build recipe."
+                "Please provide a file path (not a directory path) to a Buildspec file."
             )
 
-        # all test configs must pass global validation (sets self.recipe)
+        # Buildspec must pass global validation (sets self.buildspec_recipe)
         self._validate_global()
 
         # validate each schema defined in the recipes
@@ -105,24 +105,24 @@ class BuildConfig:
     # Validation
 
     def _validate(self):
-        """Given a loaded recipe, validate that the type is known in the lookup
+        """Given a loaded Buildspec recipe, validate that the type is known in the lookup
            to buildtest. If a version is provided, honor it. If not, use latest.
            We also don't allow repeated keys in the same file.
         """
 
-        version = self.recipe.get("version", "latest")
+        version = self.buildspec_recipe.get("version", "latest")
         seen = set()
-        for name, section in self.recipe.items():
+        for name, section in self.buildspec_recipe.items():
 
             if name == "version":
                 continue
 
             # Check for repeated keys
             elif name in seen:
-                sys.exit("Invalid recipe: %s is repeated more than once." % name)
+                sys.exit("Invalid Buildspec recipe: %s is repeated more than once." % name)
             seen.add(name)
 
-            # Ensure we have a recipe for it
+            # Ensure we have a Buildspec recipe with a valid type
             if section["type"] not in self.lookup.keys():
                 sys.exit("type %s is not known to buildtest." % section["type"])
 
@@ -139,68 +139,68 @@ class BuildConfig:
             )
             validate(instance=section, schema=load_schema(schema_file))
 
-    def _validate_global(self, config_file=None):
+    def _validate_global(self, buildspec_file=None):
         """The global validation ensures that the overall structure of the
-           file is sound for further parsing. We load in the outer.schema.json
+           file is sound for further parsing. We load in the global.schema.json
            for this purpose. The function also allows a custom config to be 
            to extend the usage of the class.
         """
 
-        config_file = config_file or self.config_file
-        outer_schema_file = os.path.join(here, "outer.schema.json")
+        buildspec_file = buildspec_file or self.buildspec_file
+        global_schema_file = os.path.join(here, "global.schema.json")
 
-        outer_schema = load_schema(outer_schema_file)
-        self.recipe = load_recipe(config_file)
+        outer_schema = load_schema(global_schema_file)
+        self.buildspec_recipe = load_recipe(buildspec_file)
 
-        self.logger.debug(f"Validating {config_file} with schema: {outer_schema_file}")
-        validate(instance=self.recipe, schema=outer_schema)
+        self.logger.debug(f"Validating {buildspec_file} with schema: {global_schema_file}")
+        validate(instance=self.buildspec_recipe, schema=outer_schema)
         self.logger.debug("Validation was successful")
 
     # Builders
 
     def get_builders(self, testdir=None):
-        """Based on a loaded configuration file, return the correct builder
+        """Based on a loaded Buildspec file, return the correct builder
            for each based on the type. Each type is associated with a known 
            Builder class.
         """
 
         builders = []
-        if self.recipe:
+        if self.buildspec_recipe:
             for name in self.keys():
-                recipe_config = self.recipe[name]
+                recipe = self.buildspec_recipe[name]
 
                 # Add the builder based on the type
-                if recipe_config["type"] == "script":
+                if recipe["type"] == "script":
                     builders.append(
                         ScriptBuilder(
-                            name, recipe_config, self.config_file, testdir=testdir
+                            name, recipe, self.buildspec_file, testdir=testdir
                         )
                     )
                 else:
                     print(
                         "%s is not recognized by buildtest, skipping."
-                        % recipe_config["type"]
+                        % recipe["type"]
                     )
 
         return builders
 
     def keys(self):
-        """Return the list of keys for the loaded recipe, not including
+        """Return the list of keys for the loaded Buildspec recipe, not including
            the metadata keys defined for any global recipe.
         """
 
         keys = []
-        if self.recipe:
-            keys = [x for x in self.recipe.keys() if x not in self.metadata]
+        if self.buildspec_recipe:
+            keys = [x for x in self.buildspec_recipe.keys() if x not in self.metadata]
         return keys
 
     def get(self, name):
         """Given the name of a section (typically a build configuration name)
-           return the loaded section from self.recipe. If you need to parse
+           return the loaded section from self.buildspec_recipe. If you need to parse
            through just section names, use self.keys() to filter out metadata.
         """
 
-        return self.recipe.get(name)
+        return self.buildspec_recipe.get(name)
 
 
 class BuilderBase:
@@ -208,19 +208,19 @@ class BuilderBase:
        any kind of builder.
     """
 
-    def __init__(self, name, recipe_config, config_file=None, testdir=None):
-        """initiate a builder base. A recipe configuration (loaded) is required.
+    def __init__(self, name, buildspec_recipe, buildspec_file=None, testdir=None):
+        """Initiate a builder base. A buildspec_recipe configuration (loaded) is required.
            this can be handled easily with the BuildConfig class:
 
-           bc = BuildConfig(config_file)
-           recipe_config = bc.get("section_name")
-           builder = ScriptBuilder(recipe_config)
+           bc = BuildConfig(buildspec_file)
+           buildspec_recipe = bc.get("section_name")
+           builder = ScriptBuilder(buildspec_recipe)
 
            Parameters:
 
-           name: a name for the build recipe (required)
-           recipe_config: the loaded section from the config_file for the user.
-           config_file: the pull path to the configuration file, must exist.
+           name: a name for the Buildspec recipe (required)
+           buildspec_recipe: the loaded section from the buildspec_file for the user.
+           buildspec_file: the pull path to the Buildspec file, must exist.
         """
 
         self.name = name
@@ -228,10 +228,10 @@ class BuilderBase:
         self.result = {}
         self.build_id = None
         self.metadata = {}
-        self.config_file = config_file
-        self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(config_file))
+        self.buildspec_file = buildspec_file
+        self.buildspec_name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec_file))
         self.testdir = testdir or os.path.join(
-            os.getcwd(), ".buildtest", self.config_name
+            os.getcwd(), ".buildtest", self.buildspec_name
         )
         self.logger = logging.getLogger(__name__)
 
@@ -242,13 +242,13 @@ class BuilderBase:
             )
 
         # The recipe must be loaded as a dictionary
-        if not isinstance(recipe_config, dict):
+        if not isinstance(buildspec_recipe, dict):
             sys.exit(
-                "Please load a recipe configuration before providing to the builder."
+                "Please load a Buildspec recipe before providing to the builder."
             )
 
         # The type must match the type of the builder
-        self.recipe = recipe_config
+        self.recipe = buildspec_recipe
         if self.recipe.get("type") != self.type:
             sys.exit(
                 "Mismatch in type. Builder expects %s but found %s."
@@ -272,6 +272,7 @@ class BuilderBase:
         """Create all needed test folders on init, and add their paths
            to self.metadata.
         """
+
         testdir = self._get_testdir()
         create_dir(testdir)
         for folder in ["run"]:
@@ -285,6 +286,9 @@ class BuilderBase:
 
            shell: python --> py
            shell: bash --> sh (default)
+
+           :return: returns test extension based on shell type
+           :rtype: str
         """
 
         shell = self.get_shell()
@@ -298,8 +302,10 @@ class BuilderBase:
            to the start of the testscript. Return lines that define
            variables specific to the shell.
 
-           Returns: list of lines to add to beginning of test script.
+           :return: list of environment variable lines to add to test script.
+           :rtype: list
         """
+
         env = []
         pairs = self.recipe.get("env")
         shell = self.get_shell()
@@ -368,14 +374,14 @@ class BuilderBase:
         self.history = {}
         self.history["TESTS"] = []
 
-        # Metadata includes known sections in a config recipe (pre/post_run, env)
-        # These should all be validated for type, format, by the schema validator
+        # Metadata includes known sections in a Buildspec (pre/post_run, env)
+        # These should all be validated for type, format, by the Buildspec schema
         self.metadata = {}
         for known_section in known_sections:
             if known_section in self.recipe:
                 self.metadata[known_section] = self.recipe.get(known_section)
 
-        # Every build recipe has a shell (defaults to BUILDTEST_SHELL_DEFAULT
+        # Every Buildspec recipe has a shell (defaults to BUILDTEST_SHELL_DEFAULT)
         self.metadata["shell"] = self.get_shell()
 
         # Derive the path to the test script
@@ -398,7 +404,7 @@ class BuilderBase:
 
     @run_wrapper
     def run(self):
-        """Run the builder associated with the loaded recipe.
+        """Run the builder associated with the loaded Buildspec recipe.
            This parent class handles shared starting functions for each step
            and then calls the subclass function (_run) if it exists.
 
@@ -457,13 +463,13 @@ class BuilderBase:
         if command.returncode == 0:
             print(
                 "{:<30} {:<30} {:<30} {:<30}".format(
-                    self.config_name, self.name, "PASSED", self.config_file
+                    self.buildspec_name, self.name, "PASSED", self.buildspec_file
                 )
             )
         else:
             print(
                 "{:<30} {:<30} {:<30} {:<30}".format(
-                    self.config_name, self.name, "FAILED", self.config_file
+                    self.buildspec_name, self.name, "FAILED", self.buildspec_file
                 )
             )
 
@@ -496,7 +502,7 @@ class BuilderBase:
         print("\n".join(lines))
 
     def _generate_build_id(self):
-        """Generate a build id based on the recipe name, and datetime."""
+        """Generate a build id based on the Buildspec name, and datetime."""
 
         now = datetime.datetime.now().strftime("%m-%d-%Y-%H-%M")
         return "%s_%s" % (self.name, now)
@@ -529,7 +535,11 @@ class BuilderBase:
         return testpath
 
     def _get_test_lines(self):
-        """Given test metadata, get test lines to write to file or show."""
+        """Given test metadata, get test lines to write to file or show.
+
+           :return: return content of test script
+           :rtype: list
+        """
 
         lines = []
         shell = shutil.which(self.get_shell())

@@ -32,6 +32,6 @@ BUILDTEST_CONFIG_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml")
 # TESTCONFIG_ROOT is the root directory where test configurations are found
 # configs can be specified as full paths or relative to this path
 TESTCONFIG_ROOT = os.path.join(BUILDTEST_ROOT, "site")
-DEFAULT_CONFIG_FILE = os.path.join(root, "settings", "default.yml")
-DEFAULT_CONFIG_SCHEMA = os.path.join(root, "settings", "default.schema.json")
+DEFAULT_CONFIG_FILE = os.path.join(root, "settings", "settings.yml")
+DEFAULT_CONFIG_SCHEMA = os.path.join(root, "settings", "settings.schema.json")
 EDITOR_LIST = ["vim", "emacs", "nano"]
