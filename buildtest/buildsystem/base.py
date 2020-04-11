@@ -154,9 +154,7 @@ class BuildConfig:
         outer_schema = load_schema(global_schema_file)
         self.recipe = load_recipe(buildspec)
 
-        self.logger.debug(
-            f"Validating {buildspec} with schema: {global_schema_file}"
-        )
+        self.logger.debug(f"Validating {buildspec} with schema: {global_schema_file}")
         validate(instance=self.recipe, schema=outer_schema)
         self.logger.debug("Validation was successful")
 
@@ -176,9 +174,7 @@ class BuildConfig:
                 # Add the builder based on the type
                 if recipe["type"] == "script":
                     builders.append(
-                        ScriptBuilder(
-                            name, recipe, self.buildspec, testdir=testdir
-                        )
+                        ScriptBuilder(name, recipe, self.buildspec, testdir=testdir)
                     )
                 else:
                     print(
@@ -232,12 +228,8 @@ class BuilderBase:
         self.build_id = None
         self.metadata = {}
         self.buildspec = buildspec
-        self.name = re.sub(
-            "[.](yml|yaml)", "", os.path.basename(buildspec)
-        )
-        self.testdir = testdir or os.path.join(
-            os.getcwd(), ".buildtest", self.name
-        )
+        self.name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec))
+        self.testdir = testdir or os.path.join(os.getcwd(), ".buildtest", self.name)
         self.logger = logging.getLogger(__name__)
 
         # A builder is required to define the type attribute
