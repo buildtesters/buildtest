@@ -36,14 +36,14 @@ def test_directory_expansion():
 
 
 def test_create_dir():
-    dir1 = os.path.join("$HOME","a","b","c")
+    dir1 = os.path.join("$HOME", "a", "b", "c")
     dir2 = os.path.join("~", "x", "y", "z")
     create_dir(dir1)
     create_dir(dir2)
     assert is_dir(dir1)
     assert is_dir(dir2)
-    shutil.rmtree(os.path.expandvars(os.path.join("$HOME","a")))
-    shutil.rmtree(os.path.expanduser(os.path.join("~","x")))
+    shutil.rmtree(os.path.expandvars(os.path.join("$HOME", "a")))
+    shutil.rmtree(os.path.expanduser(os.path.join("~", "x")))
 
 
 @pytest.mark.xfail(

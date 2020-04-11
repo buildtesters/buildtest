@@ -119,7 +119,9 @@ class BuildConfig:
 
             # Check for repeated keys
             elif name in seen:
-                sys.exit("Invalid Buildspec recipe: %s is repeated more than once." % name)
+                sys.exit(
+                    "Invalid Buildspec recipe: %s is repeated more than once." % name
+                )
             seen.add(name)
 
             # Ensure we have a Buildspec recipe with a valid type
@@ -152,7 +154,9 @@ class BuildConfig:
         outer_schema = load_schema(global_schema_file)
         self.buildspec_recipe = load_recipe(buildspec_file)
 
-        self.logger.debug(f"Validating {buildspec_file} with schema: {global_schema_file}")
+        self.logger.debug(
+            f"Validating {buildspec_file} with schema: {global_schema_file}"
+        )
         validate(instance=self.buildspec_recipe, schema=outer_schema)
         self.logger.debug("Validation was successful")
 
@@ -178,8 +182,7 @@ class BuildConfig:
                     )
                 else:
                     print(
-                        "%s is not recognized by buildtest, skipping."
-                        % recipe["type"]
+                        "%s is not recognized by buildtest, skipping." % recipe["type"]
                     )
 
         return builders
@@ -229,7 +232,9 @@ class BuilderBase:
         self.build_id = None
         self.metadata = {}
         self.buildspec_file = buildspec_file
-        self.buildspec_name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec_file))
+        self.buildspec_name = re.sub(
+            "[.](yml|yaml)", "", os.path.basename(buildspec_file)
+        )
         self.testdir = testdir or os.path.join(
             os.getcwd(), ".buildtest", self.buildspec_name
         )
@@ -243,9 +248,7 @@ class BuilderBase:
 
         # The recipe must be loaded as a dictionary
         if not isinstance(buildspec_recipe, dict):
-            sys.exit(
-                "Please load a Buildspec recipe before providing to the builder."
-            )
+            sys.exit("Please load a Buildspec recipe before providing to the builder.")
 
         # The type must match the type of the builder
         self.recipe = buildspec_recipe

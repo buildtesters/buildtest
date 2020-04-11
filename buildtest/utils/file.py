@@ -13,6 +13,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def is_file(fname):
     """This method will check if file exist and if not found throws an exception.
 
@@ -35,6 +36,7 @@ def is_file(fname):
         return True
 
     return False
+
 
 def is_dir(dirname):
     """This method will check if a directory exist and if not found throws an exception.
@@ -60,6 +62,7 @@ def is_dir(dirname):
         return True
 
     return False
+
 
 def walk_tree(root_dir, ext):
     """This method will traverse a directory tree and return list of files
