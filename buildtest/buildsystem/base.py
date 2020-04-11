@@ -49,18 +49,18 @@ class BuildConfig:
     # Metadata keys are not considered build sections
     metadata = ["version"]
 
-    def __init__(self, buildspec_file):
+    def __init__(self, buildspec):
         """initiate a build configuration file, meaning that we read in the
            file, match it to a schema provided by buildtest, and validate it.
 
            Parameters:
 
-           buildspec_file: the pull path to the configuration file, must exist.
+           buildspec: the pull path to the Buildspec file, must exist.
         """
 
         self.logger = logging.getLogger(__name__)
 
-        self.buildspec_recipe = None
+        self.recipe = None
 
         # Read the lookup to get schemas available
         self.lookup = get_schemas_available()
@@ -70,27 +70,27 @@ class BuildConfig:
         )
 
         # Load the Buildspec file, fails on any error
-        self.load(buildspec_file)
+        self.load(buildspec)
 
-    def load(self, buildspec_file):
+    def load(self, buildspec):
         """Load a Buildspec file. We check that it exists, and that it is valid.
            we exit on any error, as the config is not loadable.
 
            Parameters:
 
-           buildspec_file: the pull path to the configuration file, must exist.
+           buildspec: the pull path to the configuration file, must exist.
         """
-        self.buildspec_file = os.path.abspath(buildspec_file)
+        self.buildspec = os.path.abspath(buildspec)
 
-        if not os.path.exists(self.buildspec_file):
-            sys.exit("BuildSpec File: %s does not exist." % self.buildspec_file)
+        if not os.path.exists(self.buildspec):
+            sys.exit("Buildspec File: %s does not exist." % self.buildspec)
 
-        elif os.path.isdir(self.buildspec_file):
+        elif os.path.isdir(self.buildspec):
             sys.exit(
                 "Please provide a file path (not a directory path) to a Buildspec file."
             )
 
-        # Buildspec must pass global validation (sets self.buildspec_recipe)
+        # Buildspec must pass global validation (sets self.recipe)
         self._validate_global()
 
         # validate each schema defined in the recipes
@@ -105,14 +105,14 @@ class BuildConfig:
     # Validation
 
     def _validate(self):
-        """Given a loaded Buildspec recipe, validate that the type is known in the lookup
+        """Given a loaded recipe, validate that the type is known in the lookup
            to buildtest. If a version is provided, honor it. If not, use latest.
            We also don't allow repeated keys in the same file.
         """
 
-        version = self.buildspec_recipe.get("version", "latest")
+        version = self.recipe.get("version", "latest")
         seen = set()
-        for name, section in self.buildspec_recipe.items():
+        for name, section in self.recipe.items():
 
             if name == "version":
                 continue
@@ -141,23 +141,23 @@ class BuildConfig:
             )
             validate(instance=section, schema=load_schema(schema_file))
 
-    def _validate_global(self, buildspec_file=None):
+    def _validate_global(self, buildspec=None):
         """The global validation ensures that the overall structure of the
            file is sound for further parsing. We load in the global.schema.json
            for this purpose. The function also allows a custom config to be 
            to extend the usage of the class.
         """
 
-        buildspec_file = buildspec_file or self.buildspec_file
+        buildspec = buildspec or self.buildspec
         global_schema_file = os.path.join(here, "global.schema.json")
 
         outer_schema = load_schema(global_schema_file)
-        self.buildspec_recipe = load_recipe(buildspec_file)
+        self.recipe = load_recipe(buildspec)
 
         self.logger.debug(
-            f"Validating {buildspec_file} with schema: {global_schema_file}"
+            f"Validating {buildspec} with schema: {global_schema_file}"
         )
-        validate(instance=self.buildspec_recipe, schema=outer_schema)
+        validate(instance=self.recipe, schema=outer_schema)
         self.logger.debug("Validation was successful")
 
     # Builders
@@ -169,15 +169,15 @@ class BuildConfig:
         """
 
         builders = []
-        if self.buildspec_recipe:
+        if self.recipe:
             for name in self.keys():
-                recipe = self.buildspec_recipe[name]
+                recipe = self.recipe[name]
 
                 # Add the builder based on the type
                 if recipe["type"] == "script":
                     builders.append(
                         ScriptBuilder(
-                            name, recipe, self.buildspec_file, testdir=testdir
+                            name, recipe, self.buildspec, testdir=testdir
                         )
                     )
                 else:
@@ -193,17 +193,17 @@ class BuildConfig:
         """
 
         keys = []
-        if self.buildspec_recipe:
-            keys = [x for x in self.buildspec_recipe.keys() if x not in self.metadata]
+        if self.recipe:
+            keys = [x for x in self.recipe.keys() if x not in self.metadata]
         return keys
 
     def get(self, name):
         """Given the name of a section (typically a build configuration name)
-           return the loaded section from self.buildspec_recipe. If you need to parse
+           return the loaded section from self.recipe. If you need to parse
            through just section names, use self.keys() to filter out metadata.
         """
 
-        return self.buildspec_recipe.get(name)
+        return self.recipe.get(name)
 
 
 class BuilderBase:
@@ -211,19 +211,19 @@ class BuilderBase:
        any kind of builder.
     """
 
-    def __init__(self, name, buildspec_recipe, buildspec_file=None, testdir=None):
-        """Initiate a builder base. A buildspec_recipe configuration (loaded) is required.
+    def __init__(self, name, recipe, buildspec=None, testdir=None):
+        """Initiate a builder base. A recipe configuration (loaded) is required.
            this can be handled easily with the BuildConfig class:
 
-           bc = BuildConfig(buildspec_file)
-           buildspec_recipe = bc.get("section_name")
-           builder = ScriptBuilder(buildspec_recipe)
+           bc = BuildConfig(buildspec)
+           recipe = bc.get("section_name")
+           builder = ScriptBuilder(recipe)
 
            Parameters:
 
            name: a name for the Buildspec recipe (required)
-           buildspec_recipe: the loaded section from the buildspec_file for the user.
-           buildspec_file: the pull path to the Buildspec file, must exist.
+           recipe: the loaded section from the buildspec for the user.
+           buildspec: the pull path to the Buildspec file, must exist.
         """
 
         self.name = name
@@ -231,12 +231,12 @@ class BuilderBase:
         self.result = {}
         self.build_id = None
         self.metadata = {}
-        self.buildspec_file = buildspec_file
-        self.buildspec_name = re.sub(
-            "[.](yml|yaml)", "", os.path.basename(buildspec_file)
+        self.buildspec = buildspec
+        self.name = re.sub(
+            "[.](yml|yaml)", "", os.path.basename(buildspec)
         )
         self.testdir = testdir or os.path.join(
-            os.getcwd(), ".buildtest", self.buildspec_name
+            os.getcwd(), ".buildtest", self.name
         )
         self.logger = logging.getLogger(__name__)
 
@@ -247,11 +247,11 @@ class BuilderBase:
             )
 
         # The recipe must be loaded as a dictionary
-        if not isinstance(buildspec_recipe, dict):
+        if not isinstance(recipe, dict):
             sys.exit("Please load a Buildspec recipe before providing to the builder.")
 
         # The type must match the type of the builder
-        self.recipe = buildspec_recipe
+        self.recipe = recipe
         if self.recipe.get("type") != self.type:
             sys.exit(
                 "Mismatch in type. Builder expects %s but found %s."
@@ -466,13 +466,13 @@ class BuilderBase:
         if command.returncode == 0:
             print(
                 "{:<30} {:<30} {:<30} {:<30}".format(
-                    self.buildspec_name, self.name, "PASSED", self.buildspec_file
+                    self.name, self.name, "PASSED", self.buildspec
                 )
             )
         else:
             print(
                 "{:<30} {:<30} {:<30} {:<30}".format(
-                    self.buildspec_name, self.name, "FAILED", self.buildspec_file
+                    self.name, self.name, "FAILED", self.buildspec
                 )
             )
 

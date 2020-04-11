@@ -147,31 +147,31 @@ def func_build_subcmd(args):
     check_configuration(config_file)
 
     # Discover list of one or more buildspec files based on path provided
-    buildspec_files = discover_buildspecs(args.buildspec)
+    buildspecs = discover_buildspecs(args.buildspec)
 
     # if no files discovered let's stop now
-    if not buildspec_files:
+    if not buildspecs:
         msg = "There are no config files to process."
         sys.exit(msg)
 
     logger.debug(
-        f"Based on input argument: --buildspec {args.buildspec} buildtest discovered the following Buildspecs: {buildspec_files}"
+        f"Based on input argument: --buildspec {args.buildspec} buildtest discovered the following Buildspecs: {buildspecs}"
     )
 
     if args.exclude:
         logger.debug(f"The exclude config pattern are the following: -e {args.exclude}")
-        buildspec_files = [
-            config for config in buildspec_files if include_file(config, args.exclude)
+        buildspecs = [
+            config for config in buildspecs if include_file(config, args.exclude)
         ]
-        logger.debug(f"Buildspec list after applying exclusion: {buildspec_files}")
+        logger.debug(f"Buildspec list after applying exclusion: {buildspecs}")
 
         # if no files remain after exclusion let's stop now.
-        if not buildspec_files:
+        if not buildspecs:
             msg = "There are no Buildspec files to process."
             sys.exit(msg)
 
-    print("\n {:^45} \n".format("Discovered Buildspec Files"))
-    [print(buildspec) for buildspec in buildspec_files]
+    print("\n {:^45} \n".format("Discovered Buildspecs "))
+    [print(buildspec) for buildspec in buildspecs]
     print("\n\n")
 
     # Keep track of total metrics
@@ -188,7 +188,7 @@ def func_build_subcmd(args):
     )
     print("{:_<120}".format(""))
     # Each configuration file can have multiple tests
-    for buildspec in buildspec_files:
+    for buildspec in buildspecs:
 
         # Read in buildspec file here, loading each will validate the buildspec file
         bc = BuildConfig(buildspec)
