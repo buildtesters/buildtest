@@ -10,7 +10,7 @@ import sys
 
 from buildtest.defaults import TESTCONFIG_ROOT, BUILDTEST_CONFIG_FILE
 
-from buildtest.buildsystem.base import BuildConfig
+from buildtest.buildsystem.base import BuildspecParser
 from buildtest.config import load_configuration, check_configuration
 from buildtest.executors.base import BuildExecutor
 from buildtest.utils.file import walk_tree, resolve_path, is_dir, is_file
@@ -191,7 +191,7 @@ def func_build_subcmd(args):
     for buildspec in buildspecs:
 
         # Read in buildspec file here, loading each will validate the buildspec file
-        bc = BuildConfig(buildspec)
+        bc = BuildspecParser(buildspec)
 
         # And builders parsed through for each
         for builder in bc.get_builders(testdir=args.testdir):

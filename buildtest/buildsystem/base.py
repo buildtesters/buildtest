@@ -1,8 +1,8 @@
 """
-BuildConfig: loader and manager for build configurations, and schema validation
+BuildspecParser: loader and manager for build configurations, and schema validation
 Copyright (C) 2020 Vanessa Sochat. 
 
-BuildConfig is intended to read in a configuration file with one or 
+BuildspecParser is intended to read in a configuration file with one or
 more buildtest setups defined, and then generate builders based on the type 
 of each. The BuilderBase is the base class for all builders that 
 expose functions to run builds.
@@ -34,8 +34,8 @@ from buildtest.buildsystem.schemas.utils import (
 known_sections = variable_sections + build_sections
 
 
-class BuildConfig:
-    """A BuildConfig is a base class for loading and validating a Buildspec file.
+class BuildspecParser:
+    """A BuildspecParser is a base class for loading and validating a Buildspec file.
        The type (e.g., script) and version are derived from reading in
        the file, and then matching to a Buildspec schema, each of which is
        developed at https://github.com/HPC-buildtest/schemas and added to
@@ -209,9 +209,9 @@ class BuilderBase:
 
     def __init__(self, name, recipe, buildspec=None, testdir=None):
         """Initiate a builder base. A recipe configuration (loaded) is required.
-           this can be handled easily with the BuildConfig class:
+           this can be handled easily with the BuildspecParser class:
 
-           bc = BuildConfig(buildspec)
+           bc = BuildspecParser(buildspec)
            recipe = bc.get("section_name")
            builder = ScriptBuilder(recipe)
 

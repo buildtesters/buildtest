@@ -97,7 +97,7 @@ class BuildExecutor:
         return executor.result
 
     def run(self, builder):
-        """Given a buildtest.buildsystem.BuildConfig (subclass) go through the
+        """Given a buildtest.buildsystem.BuildspecParser (subclass) go through the
            steps defined for the executor to run the build. This should
            be instantiated by the subclass. For a simple script run, we expect a 
            setup, build, and finish.
