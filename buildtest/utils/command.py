@@ -38,11 +38,16 @@ class BuildTestCommand:
         :return: Output and Error from shell command
         :rtype: two str objects
         """
-        # The executable must be found.
+        # Reset the output and error records
+        self.out = []
+        self.err = []
+
+        # The executable must be found, return code 1 if not
         executable = shutil.which(self.cmd[0])
         if not executable:
-            err = ["%s not found." % self.cmd[0]]
-            return (self.out, err)
+            self.err = ["%s not found." % self.cmd[0]]
+            self.returncode = 1
+            return (self.out, self.err)
 
         # remove the original executable
         args = self.cmd[1:]
@@ -52,23 +57,26 @@ class BuildTestCommand:
 
         # open the process for writing
         process = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        returncode = process.poll()
 
         # Iterate through the output
-        while True:
+        while returncode is None:
+
             out = self.decode(process.stdout.readline())
             err = self.decode(process.stderr.readline())
-
-            # If we have a return value, break
-            returncode = process.poll()
-            if returncode is not None:
-                self.returncode = returncode
-                break
 
             # Append output and error
             if out:
                 self.out.append(out)
             if err:
                 self.err.append(out)
+            returncode = process.poll()
+
+        # Get the remainder of lines, add return code
+        out, err = process.communicate()
+        self.out += ["%s\n" % x for x in self.decode(out).split("\n") if x]
+        self.err += ["%s\n" % x for x in self.decode(err).split("\n") if x]
+        self.returncode = returncode
 
         return (self.out, self.err)
 
