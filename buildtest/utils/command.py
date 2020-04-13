@@ -38,11 +38,16 @@ class BuildTestCommand:
         :return: Output and Error from shell command
         :rtype: two str objects
         """
-        # The executable must be found.
+        # Reset the output and error records
+        self.out = []
+        self.err = []
+
+        # The executable must be found, return code 1 if not
         executable = shutil.which(self.cmd[0])
         if not executable:
-            err = ["%s not found." % self.cmd[0]]
-            return (self.out, err)
+            self.err = ["%s not found." % self.cmd[0]]
+            self.returncode = 1
+            return (self.out, self.err)
 
         # remove the original executable
         args = self.cmd[1:]
