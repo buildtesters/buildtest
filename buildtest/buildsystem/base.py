@@ -211,8 +211,8 @@ class BuilderBase:
         """Initiate a builder base. A recipe configuration (loaded) is required.
            this can be handled easily with the BuildspecParser class:
 
-           bc = BuildspecParser(buildspec)
-           recipe = bc.get("section_name")
+           bp = BuildspecParser(buildspec)
+           recipe = bp.get("section_name")
            builder = ScriptBuilder(recipe)
 
            Parameters:
@@ -228,8 +228,10 @@ class BuilderBase:
         self.build_id = None
         self.metadata = {}
         self.buildspec = buildspec
-        self.name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec))
-        self.testdir = testdir or os.path.join(os.getcwd(), ".buildtest", self.name)
+        self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec))
+        self.testdir = testdir or os.path.join(
+            os.getcwd(), ".buildtest", self.config_name
+        )
         self.logger = logging.getLogger(__name__)
 
         # A builder is required to define the type attribute
@@ -458,13 +460,13 @@ class BuilderBase:
         if command.returncode == 0:
             print(
                 "{:<30} {:<30} {:<30} {:<30}".format(
-                    self.name, self.name, "PASSED", self.buildspec
+                    self.config_name, self.name, "PASSED", self.buildspec
                 )
             )
         else:
             print(
                 "{:<30} {:<30} {:<30} {:<30}".format(
-                    self.name, self.name, "FAILED", self.buildspec
+                    self.config_name, self.name, "FAILED", self.buildspec
                 )
             )
 

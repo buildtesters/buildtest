@@ -88,7 +88,7 @@ class BuildTestParser:
         ##################### buildtest build     ###########################
 
         parser_build.add_argument(
-            "-bs",
+            "-b",
             "--buildspec",
             help="Specify a Buildspec (YAML) file to build and run the test.",
         )
