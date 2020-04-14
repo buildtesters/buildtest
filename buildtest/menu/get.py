@@ -3,13 +3,15 @@ This module contains all the methods related to "buildtest get" which is used
 for retrieving test repository that can be used for building tests with buildtest.
 """
 
+import logging
 import os
 import re
 import sys
 
-from buildtest.defaults import TESTCONFIG_ROOT
+from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
 from buildtest.utils.file import create_dir
-from buildtest.log import init_log
+
+logger = logging.getLogger(__name__)
 
 
 def func_get_subcmd(args):
@@ -28,8 +30,7 @@ def func_get_subcmd(args):
     if not re.search("github.com", args.repo):
         sys.exit("Currently only GitHub is supported for buildtest get.")
 
-    logger = init_log()
-    root = os.path.join(TESTCONFIG_ROOT, "github.com")
+    root = os.path.join(BUILDSPEC_DEFAULT_PATH, "github.com")
     create_dir(root)
 
     # Parse the repository name

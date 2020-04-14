@@ -1,6 +1,6 @@
 import os
 from jsonschema import validate, ValidationError
-from buildtest.defaults import DEFAULT_CONFIG_SCHEMA, BUILDTEST_CONFIG_FILE
+from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, BUILDTEST_SETTINGS_FILE
 from buildtest.menu.config import (
     func_config_view,
     func_config_reset,
@@ -18,15 +18,15 @@ def test_view_configuration():
 def test_config_reset():
 
     # removing config file and testing if reset works
-    os.remove(BUILDTEST_CONFIG_FILE)
+    os.remove(BUILDTEST_SETTINGS_FILE)
     func_config_reset()
-    assert os.path.exists(BUILDTEST_CONFIG_FILE)
+    assert os.path.exists(BUILDTEST_SETTINGS_FILE)
 
 
 def test_valid_config_schemas():
 
     valid_schema_dir = os.path.join(pytest_root, "examples", "config_schemas", "valid")
-    schema_config = load_schema(DEFAULT_CONFIG_SCHEMA)
+    schema_config = load_schema(DEFAULT_SETTINGS_SCHEMA)
     for schema in walk_tree(valid_schema_dir, ".yml"):
         example = load_schema(os.path.abspath(schema))
         validate(instance=example, schema=schema_config)
