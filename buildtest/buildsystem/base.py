@@ -1,5 +1,5 @@
 """
-BuildspecParser: loader and manager for build configurations, and schema validation
+BuildspecParser: loader and manager for Buildspec, and schema validation
 Copyright (C) 2020 Vanessa Sochat. 
 
 BuildspecParser is intended to read in a configuration file with one or

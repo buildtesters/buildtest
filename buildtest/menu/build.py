@@ -1,6 +1,6 @@
 """
 This module contains all the methods related to "buildtest build" which is used
-for building test scripts from test configuration.
+for building test scripts from a Buildspec
 """
 
 import logging
@@ -8,12 +8,12 @@ import os
 import re
 import sys
 
-from buildtest.defaults import TESTCONFIG_ROOT, BUILDTEST_CONFIG_FILE
+from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, BUILDTEST_SETTINGS_FILE
 
 from buildtest.buildsystem.base import BuildspecParser
-from buildtest.config import load_configuration, check_configuration
+from buildtest.config import load_settings, check_settings
 from buildtest.executors.base import BuildExecutor
-from buildtest.utils.file import walk_tree, resolve_path, is_dir, is_file
+from buildtest.utils.file import walk_tree, resolve_path
 
 logger = logging.getLogger(__name__)
 
@@ -41,12 +41,12 @@ def discover_buildspecs(buildspec):
 
     # If no config file provided, assume discovering across buildtest/site
     if not buildspec:
-        buildspec = TESTCONFIG_ROOT
+        buildspec = BUILDSPEC_DEFAULT_PATH
 
     # First try, the path is an absolute path to file or folder
-    # Second try, the path can be relative to the TESTCONFIG_ROOT
+    # Second try, the path can be relative to the BUILDSPEC_DEFAULT_PATH
     elif not os.path.exists(buildspec):
-        buildspec = os.path.join(TESTCONFIG_ROOT, buildspec)
+        buildspec = os.path.join(BUILDSPEC_DEFAULT_PATH, buildspec)
 
     # Now handle path based on being a directory or file path
     if os.path.isdir(buildspec):
@@ -61,11 +61,11 @@ def discover_buildspecs(buildspec):
             sys.exit(msg)
 
         buildspecs = [buildspec]
-        logger.debug(f"Config File: {buildspec} is a file")
+        logger.debug(f"BuildSpec: {buildspec} is a file")
     else:
         msg = (
             "Please provide an absolute or relative path to a directory file from your present working directory or %s"
-            % TESTCONFIG_ROOT
+            % BUILDSPEC_DEFAULT_PATH
         )
         logger.error(msg)
         sys.exit(msg)
@@ -131,8 +131,8 @@ def func_build_subcmd(args):
     """
 
     # if buildtest settings specified on CLI, it would be in args.settings otherwise set
-    # to default configuration (BUILDTEST_CONFIG_FILE)
-    settings_file = args.settings or BUILDTEST_CONFIG_FILE
+    # to default configuration (BUILDTEST_SETTINGS_FILE)
+    settings_file = args.settings or BUILDTEST_SETTINGS_FILE
 
     if args.settings:
         logger.debug(
@@ -142,9 +142,9 @@ def func_build_subcmd(args):
     logger.debug(f"Detected the following buildtest settings file: {settings_file}")
 
     # load the configuration file
-    config_opts = load_configuration(settings_file)
+    config_opts = load_settings(settings_file)
 
-    check_configuration(settings_file)
+    check_settings(settings_file)
 
     # Discover list of one or more buildspec files based on path provided
     buildspecs = discover_buildspecs(args.buildspec)

@@ -12,7 +12,7 @@ from buildtest.defaults import supported_schemas
 here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def test_load_configs():
+def test_BuildspecParser():
 
     # Examples folder
     examples_dir = os.path.join(here, "testdir")
@@ -21,17 +21,16 @@ def test_load_configs():
     with pytest.raises(SystemExit) as e_info:
         BuildspecParser("")
 
-    # Test loading config files
-    for config_file in os.listdir(examples_dir):
-        config_file = os.path.join(examples_dir, config_file)
-        bp = BuildspecParser(config_file)
+    # Test loading Buildspec files
+    for buildspec in os.listdir(examples_dir):
+        buildspec = os.path.join(examples_dir, buildspec)
+        bp = BuildspecParser(buildspec)
 
         # The lookup should have the base schema
         # {'script': {'0.0.1': 'script-v0.0.1.schema.json', 'latest': 'script-v0.0.1.schema.json'}}
         for supported_schema in supported_schemas:
             assert supported_schema in bp.lookup
 
-        # The test configs (currently) each have two builders
         # [[builder-script-login_node_check], [builder-script-slurm_check]]
         builders = bp.get_builders()
         assert len(builders) == 2

@@ -29,7 +29,7 @@ def test_discover_buildspecs():
 
     # when no Buildspec files found in a valid directory
     with pytest.raises(SystemExit) as e_info:
-        # searching for all configs in current directory
+        # searching for all Buildspecs in current directory
         discover_buildspecs(os.path.dirname(os.path.abspath(__file__)))
 
     # when you pass invalid file it should fail

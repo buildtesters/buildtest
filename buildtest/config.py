@@ -5,25 +5,25 @@ from jsonschema import validate
 
 from buildtest.utils.file import create_dir
 from buildtest.defaults import (
-    BUILDTEST_CONFIG_FILE,
+    BUILDTEST_SETTINGS_FILE,
     BUILDTEST_ROOT,
-    DEFAULT_CONFIG_FILE,
-    DEFAULT_CONFIG_SCHEMA,
+    DEFAULT_SETTINGS_FILE,
+    DEFAULT_SETTINGS_SCHEMA,
 )
 from buildtest.buildsystem.schemas.utils import load_schema
 
 
-def create_config_file():
-    """If default config files don't exist, copy the default configuration provided by buildtest."""
+def create_settings_file():
+    """If default settings file don't exist, copy the default settings provided by buildtest."""
 
-    if not os.path.exists(BUILDTEST_CONFIG_FILE):
-        shutil.copy(DEFAULT_CONFIG_FILE, BUILDTEST_CONFIG_FILE)
+    if not os.path.exists(BUILDTEST_SETTINGS_FILE):
+        shutil.copy(DEFAULT_SETTINGS_FILE, BUILDTEST_SETTINGS_FILE)
 
 
 def init():
     """Buildtest init should check that the buildtest user root exists,
        and that dependency files are created. This is called by 
-       load_configuration."""
+       ``load_settings``."""
 
     # check if $HOME/.buildtest exists, if not create directory
     if not os.path.exists(BUILDTEST_ROOT):
@@ -33,15 +33,15 @@ def init():
         )
         os.mkdir(BUILDTEST_ROOT)
 
-    # Create subfolders for var and root
+    # Create subfolders for root, site
     create_dir(os.path.join(BUILDTEST_ROOT, "root"))
     create_dir(os.path.join(BUILDTEST_ROOT, "site"))
 
-    # Create config files, module files, and log file
-    create_config_file()
+    # Create settings files
+    create_settings_file()
 
 
-def check_configuration(config_path=None):
+def check_settings(config_path=None):
     """Checks all keys in configuration file (settings/settings.yml) are valid
        keys and ensure value of each key matches expected type . For some keys
        special logic is taken to ensure values are correct and directory path
@@ -54,34 +54,34 @@ def check_configuration(config_path=None):
 
     logger = logging.getLogger(__name__)
 
-    user_schema = load_configuration(config_path)
+    user_schema = load_settings(config_path)
 
-    config_schema = load_schema(DEFAULT_CONFIG_SCHEMA)
-    logger.debug(f"Loading default configuration schema: {DEFAULT_CONFIG_SCHEMA}")
+    config_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
+    logger.debug(f"Loading default configuration schema: {DEFAULT_SETTINGS_SCHEMA}")
 
     logger.debug(f"Validating user schema: {user_schema} with schema: {config_schema}")
     validate(instance=user_schema, schema=config_schema)
     logger.debug("Validation was successful")
 
 
-def load_configuration(config_path=None):
-    """Load the default configuration file if no argument is specified.
+def load_settings(config_path=None):
+    """Load the default settings file if no argument is specified.
 
        Parameters:
 
-       :param config_path: Path to buildtest configuration file
+       :param config_path: Path to buildtest settings file
        :type config_path: str, optional
     """
 
     init()
 
-    config_path = config_path or BUILDTEST_CONFIG_FILE
+    config_path = config_path or BUILDTEST_SETTINGS_FILE
 
     # load the configuration file
     return load_schema(config_path)
 
 
-def get_default_configuration():
-    """Load and return the default buildtest configuration file. """
+def get_default_settings():
+    """Load and return the default buildtest settings file. """
 
-    return load_configuration()
+    return load_settings()
