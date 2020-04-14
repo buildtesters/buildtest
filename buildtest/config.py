@@ -41,7 +41,7 @@ def init():
     create_settings_file()
 
 
-def check_settings(config_path=None):
+def check_settings(settings_path=None):
     """Checks all keys in configuration file (settings/settings.yml) are valid
        keys and ensure value of each key matches expected type . For some keys
        special logic is taken to ensure values are correct and directory path
@@ -54,7 +54,7 @@ def check_settings(config_path=None):
 
     logger = logging.getLogger(__name__)
 
-    user_schema = load_settings(config_path)
+    user_schema = load_settings(settings_path)
 
     config_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
     logger.debug(f"Loading default configuration schema: {DEFAULT_SETTINGS_SCHEMA}")
@@ -64,21 +64,21 @@ def check_settings(config_path=None):
     logger.debug("Validation was successful")
 
 
-def load_settings(config_path=None):
+def load_settings(settings_path=None):
     """Load the default settings file if no argument is specified.
 
        Parameters:
 
-       :param config_path: Path to buildtest settings file
-       :type config_path: str, optional
+       :param settings_path: Path to buildtest settings file
+       :type settings_path: str, optional
     """
 
     init()
 
-    config_path = config_path or BUILDTEST_SETTINGS_FILE
+    settings_path = settings_path or BUILDTEST_SETTINGS_FILE
 
     # load the configuration file
-    return load_schema(config_path)
+    return load_schema(settings_path)
 
 
 def get_default_settings():
