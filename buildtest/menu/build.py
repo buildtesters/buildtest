@@ -37,11 +37,11 @@ def discover_buildspecs(buildspec):
        buildtest build --buildspec github.com/HPC-buildtest/tutorials/hello-world/
     """
 
-    buildspec_files = []
+    buildspecs = []
 
     # If no config file provided, assume discovering across buildtest/site
     if not buildspec:
-        config_file = TESTCONFIG_ROOT
+        buildspec = TESTCONFIG_ROOT
 
     # First try, the path is an absolute path to file or folder
     # Second try, the path can be relative to the TESTCONFIG_ROOT
@@ -53,14 +53,14 @@ def discover_buildspecs(buildspec):
         logger.debug(
             f"Buildspec File: {buildspec} is a directory so traversing directory tree to find all Buildspec files with .yml extension"
         )
-        buildspec_files = walk_tree(buildspec, ".yml")
+        buildspecs = walk_tree(buildspec, ".yml")
     elif os.path.isfile(buildspec):
         if not re.search("[.](yaml|yml)$", buildspec):
             msg = f"{buildspec} does not end in file extension .yaml or .yml"
             logger.error(msg)
             sys.exit(msg)
 
-        buildspec_files = [buildspec]
+        buildspecs = [buildspec]
         logger.debug(f"Config File: {buildspec} is a file")
     else:
         msg = (
@@ -71,16 +71,16 @@ def discover_buildspecs(buildspec):
         sys.exit(msg)
 
     # If we don't have any files discovered
-    if not buildspec_files:
-        msg = "No Buildspec files found as %s." % buildspec
+    if not buildspecs:
+        msg = "No Buildspec files found as %s." % buildspecs
         logger.error(msg)
         sys.exit(msg)
 
     # return all buildspec by resolving path, this gets the real canonical path and address shell expansion and user expansion
-    buildspec_files = [resolve_path(file) for file in buildspec_files]
+    buildspecs = [resolve_path(file) for file in buildspecs]
 
-    logger.info(f"Found the following config files: {buildspec_files}")
-    return buildspec_files
+    logger.info(f"Found the following config files: {buildspecs}")
+    return buildspecs
 
 
 def include_file(file_path, white_list_patterns):
@@ -132,19 +132,19 @@ def func_build_subcmd(args):
 
     # if buildtest settings specified on CLI, it would be in args.settings otherwise set
     # to default configuration (BUILDTEST_CONFIG_FILE)
-    config_file = args.settings or BUILDTEST_CONFIG_FILE
+    settings_file = args.settings or BUILDTEST_CONFIG_FILE
 
     if args.settings:
         logger.debug(
             "Detected --settings from command line so override default settings file."
         )
 
-    logger.debug(f"Detected the following buildtest settings file: {config_file}")
+    logger.debug(f"Detected the following buildtest settings file: {settings_file}")
 
     # load the configuration file
-    config_opts = load_configuration(config_file)
+    config_opts = load_configuration(settings_file)
 
-    check_configuration(config_file)
+    check_configuration(settings_file)
 
     # Discover list of one or more buildspec files based on path provided
     buildspecs = discover_buildspecs(args.buildspec)
@@ -191,10 +191,10 @@ def func_build_subcmd(args):
     for buildspec in buildspecs:
 
         # Read in buildspec file here, loading each will validate the buildspec file
-        bc = BuildspecParser(buildspec)
+        bp = BuildspecParser(buildspec)
 
         # And builders parsed through for each
-        for builder in bc.get_builders(testdir=args.testdir):
+        for builder in bp.get_builders(testdir=args.testdir):
 
             # Keep track of total number of tests run
             total_tests += 1

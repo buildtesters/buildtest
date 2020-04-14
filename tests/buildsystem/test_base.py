@@ -24,16 +24,16 @@ def test_load_configs():
     # Test loading config files
     for config_file in os.listdir(examples_dir):
         config_file = os.path.join(examples_dir, config_file)
-        bc = BuildspecParser(config_file)
+        bp = BuildspecParser(config_file)
 
         # The lookup should have the base schema
         # {'script': {'0.0.1': 'script-v0.0.1.schema.json', 'latest': 'script-v0.0.1.schema.json'}}
         for supported_schema in supported_schemas:
-            assert supported_schema in bc.lookup
+            assert supported_schema in bp.lookup
 
         # The test configs (currently) each have two builders
         # [[builder-script-login_node_check], [builder-script-slurm_check]]
-        builders = bc.get_builders()
+        builders = bp.get_builders()
         assert len(builders) == 2
 
         for builder in builders:
