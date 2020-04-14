@@ -34,17 +34,16 @@ def test_directory_expansion():
     assert is_dir(dir1)
     assert is_dir(dir2)
 
-
-def test_create_dir():
-    dir1 = os.path.join("$HOME", "a", "b", "c")
-    dir2 = os.path.join("~", "x", "y", "z")
-    create_dir(dir1)
-    create_dir(dir2)
-    assert is_dir(dir1)
-    assert is_dir(dir2)
-    shutil.rmtree(os.path.expandvars(os.path.join("$HOME", "a")))
-    shutil.rmtree(os.path.expanduser(os.path.join("~", "x")))
-
+def test_create_dir(tmp_path):
+    # since tmp_path creates a directory we will create a subdirectory "test" in tmp_path using create_dir
+    assert is_dir(tmp_path)
+    dirname = os.path.join(tmp_path,"test")
+    # check we dont have a directory before creation
+    assert not is_dir(dirname)
+    # creating directory
+    create_dir(dirname)
+    # check if directory is created  after invoking create_dir
+    assert is_dir(dirname)
 
 @pytest.mark.xfail(
     reason="This test is expected to fail due to insufficient privileges",
