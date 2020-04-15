@@ -39,5 +39,4 @@ def test_init_creation_of_buildtest_dir():
 
     shutil.rmtree(BUILDTEST_ROOT)
     init()
-    assert is_dir(os.path.join(BUILDTEST_ROOT, "root"))
     assert is_dir(os.path.join(BUILDTEST_ROOT, "site"))

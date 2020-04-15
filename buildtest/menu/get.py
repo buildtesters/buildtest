@@ -45,7 +45,18 @@ def func_get_subcmd(args):
 
 
 def clone(url, dest, branch="master"):
-    """clone a repository from Github"""
+    """Clone a repository from Github
+
+       Parameters:
+
+       :param url: URL to Github repository to clone
+       :type url: str, required
+       :param dest: location where to clone repo
+       :type dest: str, required
+       :param branch: select which branch to clone, defaults to 'master' branch
+       :type branch: str, optional
+    """
+
     name = os.path.basename(url).replace(".git", "")
     dest = os.path.join(dest, name)
 

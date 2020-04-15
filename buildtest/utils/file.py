@@ -81,7 +81,10 @@ def walk_tree(root_dir, ext):
     """
 
     list_files = []
-    is_dir(root_dir)
+    # if directory doesn't exist let's return empty list before doing a directory traversal since no files to traverse
+    if not is_dir(root_dir):
+        return list_files
+
     for root, subdir, files in os.walk(root_dir):
         for fname in files:
             if fname.endswith(ext):

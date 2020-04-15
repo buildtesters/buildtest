@@ -2,8 +2,8 @@
 BuildspecParser: loader and manager for Buildspec, and schema validation
 Copyright (C) 2020 Vanessa Sochat. 
 
-BuildspecParser is intended to read in a configuration file with one or
-more buildtest setups defined, and then generate builders based on the type 
+BuildspecParser is intended to read in a Buildspec file with one or
+more test blocks, and then generate builders based on the type
 of each. The BuilderBase is the base class for all builders that 
 expose functions to run builds.
 """
@@ -17,19 +17,19 @@ import stat
 import sys
 
 from jsonschema import validate
-from buildtest.defaults import (
-    BUILDTEST_SHELL,
-    build_sections,
-    variable_sections,
-)
-from buildtest.utils.file import create_dir
-from buildtest.utils.command import BuildTestCommand
 from buildtest.buildsystem.schemas.utils import (
     load_schema,
     load_recipe,
     get_schemas_available,
     here,
 )
+from buildtest.defaults import (
+    BUILDTEST_SHELL,
+    build_sections,
+    variable_sections,
+)
+from buildtest.utils.command import BuildTestCommand
+from buildtest.utils.file import create_dir, is_file, is_dir
 
 known_sections = variable_sections + build_sections
 
@@ -55,7 +55,8 @@ class BuildspecParser:
 
            Parameters:
 
-           buildspec: the pull path to the Buildspec file, must exist.
+           :param buildspec: the pull path to the Buildspec file, must exist.
+           :type buildspec: str, required
         """
 
         self.logger = logging.getLogger(__name__)
@@ -78,14 +79,15 @@ class BuildspecParser:
 
            Parameters:
 
-           buildspec: the pull path to the configuration file, must exist.
+           :param buildspec: the pull path to the configuration file, must exist.
+           :type buildspec: str, required
         """
         self.buildspec = os.path.abspath(buildspec)
 
-        if not os.path.exists(self.buildspec):
+        if not is_file(self.buildspec):
             sys.exit("Buildspec File: %s does not exist." % self.buildspec)
 
-        elif os.path.isdir(self.buildspec):
+        elif is_dir(self.buildspec):
             sys.exit(
                 "Please provide a file path (not a directory path) to a Buildspec file."
             )
@@ -144,8 +146,8 @@ class BuildspecParser:
     def _validate_global(self, buildspec=None):
         """The global validation ensures that the overall structure of the
            file is sound for further parsing. We load in the global.schema.json
-           for this purpose. The function also allows a custom config to be 
-           to extend the usage of the class.
+           for this purpose. The function also allows a custom Buildspec to
+           extend the usage of the class.
         """
 
         buildspec = buildspec or self.buildspec
@@ -164,6 +166,11 @@ class BuildspecParser:
         """Based on a loaded Buildspec file, return the correct builder
            for each based on the type. Each type is associated with a known 
            Builder class.
+
+           Parameters:
+
+           :param testdir: Test Destination directory, specified by --testdir
+           :type testdir: str, optional
         """
 
         builders = []
@@ -217,9 +224,14 @@ class BuilderBase:
 
            Parameters:
 
-           name: a name for the Buildspec recipe (required)
-           recipe: the loaded section from the buildspec for the user.
-           buildspec: the pull path to the Buildspec file, must exist.
+           :param name: a name for the Buildspec recipe
+           :type name: str, required
+           :param recipe: the loaded section from the buildspec for the user.
+           :type recipe: dict, required
+           :param buildspec: the pull path to the Buildspec file, must exist.
+           :type buildspec: str, optional
+           :param testdir: Test Destination directory where to write test
+           :type testdir: str, optional
         """
 
         self.name = name
@@ -378,7 +390,7 @@ class BuilderBase:
             if known_section in self.recipe:
                 self.metadata[known_section] = self.recipe.get(known_section)
 
-        # Every Buildspec recipe has a shell (defaults to BUILDTEST_SHELL_DEFAULT)
+        # Get the shell (sh, bash) for writing testscript. A Buildspec could specify this via ``shell`` key
         self.metadata["shell"] = self.get_shell()
 
         # Derive the path to the test script
@@ -419,6 +431,11 @@ class BuilderBase:
         """The shared _run function will run a test file, which must be
            provided. This is called by run() after generation of the
            test file, and it return a result object (dict).
+
+           Parameters:
+
+           :param testfile: Generated testfile by buildtest as a result of a Buildspec. This file is now executed based on the executor type
+           :type testfile: str, required
         """
 
         # Keep a result object
@@ -434,7 +451,7 @@ class BuilderBase:
         # Run the test file using the shell
         cmd = [self.get_shell(), testfile]
 
-        self.logger.debug(f"Running Test via command: {cmd}")
+        self.logger.debug(f"Running Test via command: {' '.join(cmd)}")
 
         command = BuildTestCommand(cmd)
         out, err = command.execute()
@@ -448,11 +465,12 @@ class BuilderBase:
         # write output of test to .out file
         with open(run_output_file + ".out", "w") as fd:
             fd.write("\n".join(out))
-
+        self.logger.debug(f"Writing run output to file: {run_output_file+'.out'}")
         # write error from test to .err file
         with open(run_output_file + ".err", "w") as fd:
             fd.write("\n".join(err))
-
+        self.logger.debug(f"Writing run error to file: {run_output_file + '.err'}")
+        self.logger.debug(f"Return code: {command.returncode} for test: {testfile}")
         result["RETURN_CODE"] = command.returncode
         result["END_TIME"] = self.get_formatted_time("end_time")
 
