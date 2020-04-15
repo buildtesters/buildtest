@@ -63,7 +63,7 @@ def test_walk_tree():
 
 def test_walk_tree_no_files(tmp_path):
     list_of_files = walk_tree(tmp_path, ".py")
-    print(f"Detected {len(list_of_files)} .py files found in directory: {here}")
+    print(f"Detected {len(list_of_files)} .py files found in directory: {tmp_path}")
     assert 0 == len(list_of_files)
 
 

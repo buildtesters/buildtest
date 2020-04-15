@@ -15,35 +15,36 @@ from buildtest.utils.file import create_dir, is_dir, is_file
 logger = logging.getLogger(__name__)
 
 
-def create_settings_file():
+def create_settings_file(settings_file):
     """If default settings file don't exist, copy the default settings provided by buildtest."""
 
-    if not is_file(BUILDTEST_SETTINGS_FILE):
-        logger.debug(f"Detected File: {BUILDTEST_SETTINGS_FILE} is not present")
-        shutil.copy(DEFAULT_SETTINGS_FILE, BUILDTEST_SETTINGS_FILE)
-        logger.debug(
-            f"Copying file: {DEFAULT_SETTINGS_FILE} to {BUILDTEST_SETTINGS_FILE}"
-        )
+    if not is_file(settings_file):
+        logger.debug(f"Detected File: {settings_file} is not present")
+        shutil.copy(DEFAULT_SETTINGS_FILE, settings_file)
+        logger.debug(f"Copying file: {DEFAULT_SETTINGS_FILE} to {settings_file}")
 
 
-def init():
+def init(settings_path):
     """Buildtest init should check that the buildtest user root exists,
        and that dependency files are created. This is called by 
        ``load_settings``.
     """
 
+    # if settings_path is not defined dirname is equivalent to BUILDTEST_ROOT, since BUILDTEST_SETTINGS_FILE is in BUILDTEST_ROOT
+    dirname = os.path.dirname(settings_path)
+
     # check if $HOME/.buildtest exists, if not create directory
-    if not is_dir(BUILDTEST_ROOT):
-        create_dir(BUILDTEST_ROOT)
-        msg = f"Creating buildtest settings directory: {BUILDTEST_ROOT}"
+    if not is_dir(dirname):
+        create_dir(dirname)
+        msg = f"Creating buildtest settings directory: {dirname}"
         print(msg)
         logger.debug(msg)
 
     # Create subfolders site
-    create_dir(os.path.join(BUILDTEST_ROOT, "site"))
+    create_dir(os.path.join(dirname, "site"))
 
     # Create settings files
-    create_settings_file()
+    create_settings_file(settings_path)
 
 
 def check_settings(settings_path=None):
@@ -82,9 +83,9 @@ def load_settings(settings_path=None):
        :type settings_path: str, optional
     """
 
-    init()
-
     settings_path = settings_path or BUILDTEST_SETTINGS_FILE
+
+    init(settings_path)
 
     # load the settings file into a schema object
     return load_schema(settings_path)
