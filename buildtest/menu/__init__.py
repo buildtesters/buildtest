@@ -91,6 +91,7 @@ class BuildTestParser:
             "-b",
             "--buildspec",
             help="Specify a Buildspec (YAML) file to build and run the test.",
+            action="append",
         )
 
         parser_build.add_argument(

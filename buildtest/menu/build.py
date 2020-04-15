@@ -146,8 +146,14 @@ def func_build_subcmd(args):
 
     check_settings(settings_file)
 
-    # Discover list of one or more buildspec files based on path provided
-    buildspecs = discover_buildspecs(args.buildspec)
+    buildspecs = []
+    # Discover list of one or more buildspec files based on path provided. Since --buildspec can be provided multiple
+    # times we need to invoke discover_buildspecs one per argument.
+    for buildtest_argument in args.buildspec:
+        buildspecs += discover_buildspecs(buildtest_argument)
+
+    # remove any duplicates from list by converting to set and then back to list
+    buildspecs = list(set(buildspecs))
 
     # if no files discovered let's stop now
     if not buildspecs:
