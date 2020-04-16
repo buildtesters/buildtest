@@ -29,7 +29,7 @@ from buildtest.defaults import (
     variable_sections,
 )
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, is_file, is_dir
+from buildtest.utils.file import create_dir, is_file, is_dir, resolve_path
 
 known_sections = variable_sections + build_sections
 
@@ -82,15 +82,14 @@ class BuildspecParser:
            :param buildspec: the pull path to the configuration file, must exist.
            :type buildspec: str, required
         """
-        self.buildspec = os.path.abspath(buildspec)
 
-        if not is_file(self.buildspec):
-            sys.exit("Buildspec File: %s does not exist." % self.buildspec)
+        self.buildspec = resolve_path(buildspec)
 
-        elif is_dir(self.buildspec):
-            sys.exit(
-                "Please provide a file path (not a directory path) to a Buildspec file."
-            )
+        if not self.buildspec:
+            sys.exit("Can't process input: %s " % buildspec)
+
+        if is_dir(self.buildspec):
+            sys.exit(f"Detected {self.buildspec} is a directory, please provide a file path (not a directory path) to BuildspecParser.")
 
         # Buildspec must pass global validation (sets self.recipe)
         self._validate_global()

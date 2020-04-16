@@ -37,8 +37,7 @@ def init(settings_path):
     if not is_dir(dirname):
         create_dir(dirname)
         msg = f"Creating buildtest settings directory: {dirname}"
-        print(msg)
-        logger.debug(msg)
+        logger.info(msg)
 
     # Create subfolders site
     create_dir(os.path.join(dirname, "site"))
