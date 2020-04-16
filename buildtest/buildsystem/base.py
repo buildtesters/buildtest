@@ -89,7 +89,9 @@ class BuildspecParser:
             sys.exit("Can't process input: %s " % buildspec)
 
         if is_dir(self.buildspec):
-            sys.exit(f"Detected {self.buildspec} is a directory, please provide a file path (not a directory path) to BuildspecParser.")
+            sys.exit(
+                f"Detected {self.buildspec} is a directory, please provide a file path (not a directory path) to BuildspecParser."
+            )
 
         # Buildspec must pass global validation (sets self.recipe)
         self._validate_global()
