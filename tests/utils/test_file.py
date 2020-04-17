@@ -57,12 +57,24 @@ def test_fail_create_dir():
 
 def test_walk_tree():
     list_of_files = walk_tree(here, ".py")
+    print(f"Detected {len(list_of_files)} .py files found in directory: {here}")
     assert len(list_of_files) > 0
 
 
-@pytest.mark.xfail(
-    reason="This test is expected to fail since we passed invalid path for directory traversal",
-    raises=BuildTestError,
-)
-def test_walk_tree_invalid_dir():
-    walk_tree("/xyz", ".py")
+def test_walk_tree_no_files(tmp_path):
+    list_of_files = walk_tree(tmp_path, ".py")
+    print(f"Detected {len(list_of_files)} .py files found in directory: {tmp_path}")
+    assert 0 == len(list_of_files)
+
+
+def test_walk_tree_invalid_dir(tmp_path):
+    # we want to test an invalid directory so we remove temporary directory created by tmp_path
+    shutil.rmtree(tmp_path)
+    print(
+        f"Removing directory: {tmp_path} first before doing directory traversal on invalid directory"
+    )
+    list_of_files = walk_tree(tmp_path, ".py")
+    print(
+        f"Returned following files: {list_of_files} with .py extension for path: {tmp_path}"
+    )
+    assert not list_of_files

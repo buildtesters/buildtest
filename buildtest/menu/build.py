@@ -116,10 +116,11 @@ def include_file(file_path, white_list_patterns):
 
 def func_build_subcmd(args):
     """Entry point for ``buildtest build`` sub-command. This method will discover
-       buildspecs in method ``discover_buildspecs``. If there are any exclusion list
-       this will be checked, once buildtest knows all buildspecs to process it will
-       begin validation in ``ValidateBuildSpec`` and finally kick of an execution
-       using one of the executors. A report of all builds, along with test summary
+       Buildspecs in method ``discover_buildspecs``. If there is an exclusion list
+       this will be checked, once buildtest knows all Buildspecs to process it will
+       begin validation by calling ``BuildspecParser`` and followed by an executor
+       instance by invoking BuildExecutor that is responsible for executing the
+       test based on the executor type. A report of all builds, along with test summary
        will be displayed to screen.
 
        Parameters:
@@ -141,18 +142,21 @@ def func_build_subcmd(args):
 
     logger.debug(f"Detected the following buildtest settings file: {settings_file}")
 
-    # load the configuration file
+    # load the user's buildtest settings file
     config_opts = load_settings(settings_file)
 
+    # check user's buildtest setting for any errors by validating against settings schema
     check_settings(settings_file)
 
+    # list to store all Buildspecs that are found using discover_buildspecs followed by exclusion check
     buildspecs = []
-    # Discover list of one or more buildspec files based on path provided. Since --buildspec can be provided multiple
-    # times we need to invoke discover_buildspecs one per argument.
+
+    # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
+    # times we need to invoke discover_buildspecs once per argument.
     for buildtest_argument in args.buildspec:
         buildspecs += discover_buildspecs(buildtest_argument)
 
-    # remove any duplicates from list by converting to set and then back to list
+    # remove any duplicate Buildspec from list by converting list to set and then back to list
     buildspecs = list(set(buildspecs))
 
     # if no files discovered let's stop now
@@ -165,10 +169,8 @@ def func_build_subcmd(args):
     )
 
     if args.exclude:
-        logger.debug(f"The exclude config pattern are the following: -e {args.exclude}")
-        buildspecs = [
-            config for config in buildspecs if include_file(config, args.exclude)
-        ]
+        logger.debug(f"The exclude pattern is the following: -e {args.exclude}")
+        buildspecs = [file for file in buildspecs if include_file(file, args.exclude)]
         logger.debug(f"Buildspec list after applying exclusion: {buildspecs}")
 
         # if no files remain after exclusion let's stop now.
@@ -193,10 +195,12 @@ def func_build_subcmd(args):
         )
     )
     print("{:_<120}".format(""))
-    # Each configuration file can have multiple tests
+    # Process each Buildspec iteratively by parsing using BuildspecParser followed by
+    # getting the appropriate builder and invoking the executor instance of type BuildExecutor
+    # to run the test
     for buildspec in buildspecs:
 
-        # Read in buildspec file here, loading each will validate the buildspec file
+        # Read in Buildspec file here, loading each will validate the buildspec file
         bp = BuildspecParser(buildspec)
 
         # And builders parsed through for each

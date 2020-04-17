@@ -21,6 +21,14 @@ def test_BuildspecParser():
     with pytest.raises(SystemExit) as e_info:
         BuildspecParser("")
 
+    # Passing 'None' will raise an error
+    with pytest.raises(SystemExit) as e_info:
+        BuildspecParser(None)
+
+    # A directory is not allowed either, this will raise an error.
+    with pytest.raises(SystemExit) as e_info:
+        BuildspecParser(examples_dir)
+
     # Test loading Buildspec files
     for buildspec in os.listdir(examples_dir):
         buildspec = os.path.join(examples_dir, buildspec)

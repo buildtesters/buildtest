@@ -28,16 +28,20 @@ def test_get_default_settings():
     assert "executors" in loaded_settings.keys()
 
 
-def test_create_settings_file():
+def test_create_settings_file(tmp_path):
 
-    os.remove(BUILDTEST_SETTINGS_FILE)
-    create_settings_file()
-    assert is_file(BUILDTEST_SETTINGS_FILE)
+    settings = os.path.join(tmp_path, "settings.yml")
+    print(f"Creating buildtest settings file: {settings}")
+    create_settings_file(settings)
+    print(f"Checking if file: {settings} is valid")
+    assert is_file(settings)
 
 
-def test_init_creation_of_buildtest_dir():
+def test_init_creation_of_buildtest_dir(tmp_path):
 
-    shutil.rmtree(BUILDTEST_ROOT)
-    init()
-    assert is_dir(os.path.join(BUILDTEST_ROOT, "root"))
-    assert is_dir(os.path.join(BUILDTEST_ROOT, "site"))
+    settings = os.path.join(tmp_path, "settings.yml")
+    init(settings)
+    print(f"Checking buildtest settings file: {settings}")
+    print(f"Checking if 'site' sub-directory: {os.path.join(tmp_path,'site')} exists")
+    assert is_file(settings)
+    assert is_dir(os.path.join(tmp_path, "site"))
