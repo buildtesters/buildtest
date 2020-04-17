@@ -55,6 +55,24 @@
     "post_run": {
       "type": "string",
       "description": "A script run after the default run using the default shell."
+    },
+    "status": {
+      "type": "object",
+      "properties":
+        {
+          "returncode": {"type":  "integer"},
+          "regex": {
+            "type": "object",
+            "properties": {
+              "stream": {
+                "type": "string",
+                "enum": ["stdout","stderr"]
+              },
+              "exp": {"type": "string" }
+            },
+            "required": ["stream","exp"]
+          }
+        }
     }
   }
 }
