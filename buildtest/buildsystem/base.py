@@ -82,6 +82,9 @@ class BuildspecParser:
            :param buildspec: the pull path to the configuration file, must exist.
            :type buildspec: str, required
         """
+        # if invalid input for buildspec
+        if not buildspec:
+            sys.exit("Invalid input type for Buildspec, must be of type 'string'.")
 
         self.buildspec = resolve_path(buildspec)
 
