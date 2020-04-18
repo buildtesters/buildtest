@@ -15,6 +15,7 @@ import re
 import shutil
 import stat
 import sys
+import uuid
 
 from jsonschema import validate
 from buildtest.buildsystem.schemas.utils import (
@@ -246,7 +247,7 @@ class BuilderBase:
         self.buildspec = buildspec
         self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec))
         self.testdir = testdir or os.path.join(
-            os.getcwd(), ".buildtest", self.config_name
+            os.getcwd(), ".buildtest", str(uuid.uuid4()), self.config_name
         )
         self.logger = logging.getLogger(__name__)
 
@@ -274,23 +275,15 @@ class BuilderBase:
     def __repr__(self):
         return self.__str__()
 
-    def _get_testdir(self):
-        """Based on the testfile path, return the testing directory.
-
-           Returns: full path to testing directory
-        """
-        return os.path.dirname(self.metadata["testpath"])
-
     def _create_test_folders(self):
         """Create all needed test folders on init, and add their paths
            to self.metadata.
         """
 
-        testdir = self._get_testdir()
-        create_dir(testdir)
+        create_dir(self.testdir)
         for folder in ["run"]:
             name = "%sdir" % folder
-            self.metadata[name] = os.path.join(testdir, folder)
+            self.metadata[name] = os.path.join(self.testdir, folder)
             create_dir(self.metadata[name])
 
     def get_test_extension(self):
@@ -374,7 +367,7 @@ class BuilderBase:
         if hasattr(self, "_finish_run"):
             self._finish_run()
 
-    def prepare_run(self, testdir=None):
+    def prepare_run(self):
         """Prepare run provides shared functions to set up metadata and
            class data structures that are used by both run and dry_run
            This section cannot be reached without a valid, loaded recipe.
@@ -427,19 +420,14 @@ class BuilderBase:
 
         # Create test directory and run folder they don't exist
         self._create_test_folders()
-        testfile = self._write_test()
-        result = self.run_tests(testfile)
+        self._write_test()
+        result = self.run_tests()
         return result
 
-    def run_tests(self, testfile):
+    def run_tests(self):
         """The shared _run function will run a test file, which must be
            provided. This is called by run() after generation of the
            test file, and it return a result object (dict).
-
-           Parameters:
-
-           :param testfile: Generated testfile by buildtest as a result of a Buildspec. This file is now executed based on the executor type
-           :type testfile: str, required
         """
 
         # Keep a result object
@@ -449,11 +437,12 @@ class BuilderBase:
         result["BUILD_ID"] = self.build_id
 
         # Change to the test directory
-        os.chdir(self._get_testdir())
-        self.logger.debug(f"Changing to directory {self._get_testdir()}")
+        os.chdir(self.testdir)
+
+        self.logger.debug(f"Changing to test directory {self.testdir}")
 
         # Run the test file using the shell
-        cmd = [self.get_shell(), testfile]
+        cmd = [self.get_shell(), self.metadata["testpath"]]
 
         self.logger.debug(f"Running Test via command: {' '.join(cmd)}")
 
@@ -474,7 +463,9 @@ class BuilderBase:
         with open(run_output_file + ".err", "w") as fd:
             fd.write("\n".join(err))
         self.logger.debug(f"Writing run error to file: {run_output_file + '.err'}")
-        self.logger.debug(f"Return code: {command.returncode} for test: {testfile}")
+        self.logger.debug(
+            f"Return code: {command.returncode} for test: {self.metadata['testpath']}"
+        )
         result["RETURN_CODE"] = command.returncode
         result["END_TIME"] = self.get_formatted_time("end_time")
 
@@ -494,6 +485,7 @@ class BuilderBase:
 
         # Return to starting directory for next test
         os.chdir(self.pwd)
+
         return result
 
     def get_formatted_time(self, key, fmt="%m/%d/%Y %X"):
@@ -533,25 +525,20 @@ class BuilderBase:
         if not lines:
             lines = self._get_test_lines()
 
-        # '$HOME/.buildtest/testdir/<name>/<name>_<timestamp>.sh'
-        # This will put output (latest run) in same directory - do we want this?
-        testpath = self.metadata["testpath"]
-
-        self.logger.info(f"Opening Test File for Writing: {testpath}")
+        self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
 
         # Open the test file and write contents
-        with open(testpath, "w") as fd:
+        with open(self.metadata["testpath"], "w") as fd:
             fd.write("\n".join(lines))
 
         # Change permission of the file to executable
         os.chmod(
-            testpath,
+            self.metadata["testpath"],
             stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
         )
         self.logger.debug(
-            f"Applying permission 755 to {testpath} so that test can be executed"
+            f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
         )
-        return testpath
 
     def _get_test_lines(self):
         """Given test metadata, get test lines to write to file or show.
