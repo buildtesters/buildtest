@@ -15,7 +15,7 @@ import re
 import shutil
 import stat
 import sys
-import uuid
+
 
 from jsonschema import validate
 from buildtest.buildsystem.schemas.utils import (
@@ -30,7 +30,7 @@ from buildtest.defaults import (
     variable_sections,
 )
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, is_file, is_dir, resolve_path
+from buildtest.utils.file import create_dir, is_dir, resolve_path
 
 known_sections = variable_sections + build_sections
 
@@ -247,7 +247,7 @@ class BuilderBase:
         self.buildspec = buildspec
         self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec))
         self.testdir = testdir or os.path.join(
-            os.getcwd(), ".buildtest", self.config_name + "-" + str(uuid.uuid4())[:8]
+            os.getcwd(), ".buildtest", self.config_name
         )
         self.logger = logging.getLogger(__name__)
 
