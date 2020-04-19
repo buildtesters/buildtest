@@ -247,7 +247,7 @@ class BuilderBase:
         self.buildspec = buildspec
         self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec))
         self.testdir = testdir or os.path.join(
-            os.getcwd(), ".buildtest", str(uuid.uuid4()), self.config_name
+            os.getcwd(), ".buildtest", self.config_name + "-" + str(uuid.uuid4())[:8]
         )
         self.logger = logging.getLogger(__name__)
 
