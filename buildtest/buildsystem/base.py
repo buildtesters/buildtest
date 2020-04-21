@@ -275,6 +275,7 @@ class BuilderBase:
     def __repr__(self):
         return self.__str__()
 
+
     def _create_test_folders(self):
         """Create all needed test folders on init, and add their paths
            to self.metadata.
@@ -420,11 +421,11 @@ class BuilderBase:
 
         # Create test directory and run folder they don't exist
         self._create_test_folders()
-        self._write_test()
-        result = self.run_tests()
+        testfile = self._write_test()
+        result = self.run_tests(testfile)
         return result
 
-    def run_tests(self):
+    def run_tests(self, testfile):
         """The shared _run function will run a test file, which must be
            provided. This is called by run() after generation of the
            test file, and it return a result object (dict).
@@ -442,7 +443,7 @@ class BuilderBase:
         self.logger.debug(f"Changing to test directory {self.testdir}")
 
         # Run the test file using the shell
-        cmd = [self.get_shell(), self.metadata["testpath"]]
+        cmd = [self.get_shell(), testfile]
 
         self.logger.debug(f"Running Test via command: {' '.join(cmd)}")
 
@@ -464,7 +465,7 @@ class BuilderBase:
             fd.write("\n".join(err))
         self.logger.debug(f"Writing run error to file: {run_output_file + '.err'}")
         self.logger.debug(
-            f"Return code: {command.returncode} for test: {self.metadata['testpath']}"
+            f"Return code: {command.returncode} for test: {testfile}"
         )
         result["RETURN_CODE"] = command.returncode
         result["END_TIME"] = self.get_formatted_time("end_time")
@@ -539,6 +540,7 @@ class BuilderBase:
         self.logger.debug(
             f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
         )
+        return self.metadata['testpath']
 
     def _get_test_lines(self):
         """Given test metadata, get test lines to write to file or show.
