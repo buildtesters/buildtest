@@ -212,7 +212,7 @@ def func_build_subcmd(args):
                 result = executor.run(builder)
 
                 # Update results
-                if result["RETURN_CODE"] == 0:
+                if result["TEST_STATE"] == "PASS":
                     passed_tests += 1
                 else:
                     failed_tests += 1

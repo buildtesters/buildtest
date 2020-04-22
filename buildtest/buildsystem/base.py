@@ -82,6 +82,7 @@ class BuildspecParser:
            :param buildspec: the pull path to the configuration file, must exist.
            :type buildspec: str, required
         """
+
         # if invalid input for buildspec
         if not buildspec:
             sys.exit("Invalid input type for Buildspec, must be of type 'string'.")
@@ -431,6 +432,29 @@ class BuilderBase:
         result = self.run_tests(testfile)
         return result
 
+    def check_returncode(self, recipe_returncode, result_returncode):
+        if recipe_returncode == result_returncode:
+            return True
+
+        return  False
+
+    def check_regex(self,regex):
+        if regex["stream"] == "stdout":
+            self.logger.debug(f"Detected regex stream 'stdout' so reading output file: {self.metadata['outfile']}")
+            with open(self.metadata["outfile"], "r") as fd:
+                content = fd.read()
+        elif regex["stream"] == "stderr":
+            self.logger.debug(f"Detected regex stream 'stderr' so reading error file: {self.metadata['errfile']}")
+            with open(self.metadata["errfile"], "r") as fd:
+                content = fd.read()
+
+        self.logger.debug(f"Applying re.search with exp: {regex['exp']}")
+        # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
+        if re.search(regex["exp"],content):
+            return  True
+
+        return  False
+
     def run_tests(self, testfile):
         """The shared _run function will run a test file, which must be
            provided. This is called by run() after generation of the
@@ -466,6 +490,9 @@ class BuilderBase:
         # Keep an output file
         run_output_file = os.path.join(self.metadata.get("rundir"), self.build_id)
 
+        self.metadata["outfile"] = run_output_file + ".out"
+        self.metadata["errfile"] = run_output_file + ".err"
+
         # write output of test to .out file
         with open(run_output_file + ".out", "w") as fd:
             fd.write("\n".join(out))
@@ -478,19 +505,54 @@ class BuilderBase:
         result["RETURN_CODE"] = command.returncode
         result["END_TIME"] = self.get_formatted_time("end_time")
 
-        # Print the test result for the user
-        if command.returncode == 0:
-            print(
-                "{:<30} {:<30} {:<30} {:<30}".format(
-                    self.config_name, self.name, "PASSED", self.buildspec
-                )
-            )
+        status = self.recipe.get("status")
+
+
+        test_state = ""
+
+        # if status is defined in Buildspec, then check for returncode and regex
+        if status:
+
+            # returncode_match is boolean to check if reference returncode matches return code from test
+            returncode_match = True
+
+            # regex_match is boolean to check if output/error stream matches regex defined in Buildspec,
+            # if no regex is defined we set this to True since we do a logical AND
+            regex_match = True
+
+            # check returncode from result matches value defined in Buildspec recipe, self.check_returncode returns a bool
+            if "returncode" in status.keys():
+                self.logger.debug("Conducting Return Code check")
+                self.logger.debug("Status Return Code: %s   Result Return Code: %s" % (status["returncode"], result["RETURN_CODE"]))
+                returncode_match = self.check_returncode(status["returncode"], result["RETURN_CODE"])
+
+            # check regex expression in Buildspec with output or error stream. self_check_regex returns a boolean (True/False)
+            # by using re.search to check expression
+            if "regex" in status.keys():
+                self.logger.debug("Conducting Regular Expression check")
+                regex_match = self.check_regex(status["regex"])
+
+            self.logger.info("ReturnCode Match: %s Regex Match: %s " % (returncode_match, regex_match))
+
+            if returncode_match and regex_match:
+                test_state = "PASS"
+            else:
+                test_state = "FAIL"
+        # if status is not defined we check reference returncode for PASS is 0,
         else:
-            print(
-                "{:<30} {:<30} {:<30} {:<30}".format(
-                    self.config_name, self.name, "FAILED", self.buildspec
-                )
+            if command.returncode == 0:
+                test_state = "PASS"
+            else:
+                test_state = "FAIL"
+
+        #this variable is used later when counting all the pass/fail test in buildtest/menu/build.py
+        result["TEST_STATE"] = test_state
+
+        print(
+            "{:<30} {:<30} {:<30} {:<30}".format(
+                self.config_name, self.name, result["TEST_STATE"], self.buildspec
             )
+        )
 
         # Return to starting directory for next test
         os.chdir(self.pwd)
