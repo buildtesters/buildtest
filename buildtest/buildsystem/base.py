@@ -29,7 +29,7 @@ from buildtest.defaults import (
     variable_sections,
 )
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, is_file, is_dir, resolve_path
+from buildtest.utils.file import create_dir, is_dir, resolve_path, read_file, write_file
 
 known_sections = variable_sections + build_sections
 
@@ -470,15 +470,16 @@ class BuilderBase:
             self.logger.debug(
                 f"Detected regex stream 'stdout' so reading output file: {self.metadata['outfile']}"
             )
-            with open(self.metadata["outfile"], "r") as fd:
-                content = fd.read()
+            content = read_file(self.metadata["outfile"])
+
         elif regex["stream"] == "stderr":
             self.logger.debug(
                 f"Detected regex stream 'stderr' so reading error file: {self.metadata['errfile']}"
             )
-            with open(self.metadata["errfile"], "r") as fd:
-                content = fd.read()
+            content = read_file(self.metadata["errfile"])
 
+        # convert list to string
+        content = "\n".join(content)
         self.logger.debug(f"Applying re.search with exp: {regex['exp']}")
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
         if re.search(regex["exp"], content):
@@ -525,12 +526,13 @@ class BuilderBase:
         self.metadata["errfile"] = run_output_file + ".err"
 
         # write output of test to .out file
-        with open(self.metadata["outfile"], "w") as fd:
-            fd.write("\n".join(out))
+        write_file(self.metadata["outfile"],out)
+
         self.logger.debug(f"Writing run output to file: {self.metadata['outfile']}")
+
         # write error from test to .err file
-        with open(self.metadata["errfile"], "w") as fd:
-            fd.write("\n".join(err))
+        write_file(self.metadata["errfile"], out)
+
         self.logger.debug(f"Writing run error to file: {self.metadata['errfile']}")
         self.logger.debug(f"Return code: {command.returncode} for test: {testfile}")
         result["RETURN_CODE"] = command.returncode
