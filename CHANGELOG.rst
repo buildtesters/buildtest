@@ -6,7 +6,7 @@ v0.8.0 (Mar xxx, 2020)
 
  - Add pre-commit hook to automate python format via ``black``. Add ``black --check`` as automated check see #172, #179
  - Remove CLI option ``buildtest build [run|log|test]`` see #163
- - Remove all module operations and cli menu ``buildtest module``. This is now moved to an API lmodule at https://github.com/HPC-buildtest/lmodule
+ - Remove all module operations and cli menu ``buildtest module``. This is now moved to an API lmodule at https://github.com/buildtesters/lmodule
  - removing extra dependencies argcomplete and termcolor
  - removing dependency of Lmod, only needed if modules specified in configs
  - replace ``toolkit/suite`` with ``site`` directory  in code and documentation examples
@@ -63,7 +63,7 @@ v0.7.4 (Dec 11th, 2019)
 - change path to output/error files in ``buildtest module loadtest`` and print actual ``module load`` command
 - adding github stalebot configuration see ``.github/stale.yml``
 - adding github sponsor page ``.github/FUNDING.yml``
-- add stream benchmark test see https://github.com/HPC-buildtest/buildtest-framework/commit/d2a2a4dc2e71c5921b211d4df4d68b7f52cbbf52
+- add stream benchmark test see https://github.com/buildtesters/buildtest/commit/d2a2a4dc2e71c5921b211d4df4d68b7f52cbbf52
 - adding github workflow ``black`` to format all python code base see ``.github/workflow/black.yml``
 - install lmod and its dependency in travis build
 
@@ -74,7 +74,7 @@ v0.7.3 (Nov 25th, 2019)
 - enable ``cuda``, ``intel``, ``pgi`` compilation, this can be set via ``compilers`` key
 - Define shell variables ``CC``, ``FC``, ``CXX`` to be used to reference builds
 - Define shell variable ``EXECUTABLE`` to reference generated executable
-- Fix Code Style issues reported by CodeFactor (https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework)
+- Fix Code Style issues reported by CodeFactor (https://www.codefactor.io/repository/github/buildtesters/buildtest)
 - Add , hust-19 slides, buildtest architecture and workflow diagram in documentation
 - Simplify output of ``buildtest module --easybuild`` and ``buildtest module --spack``
 - Add ``module purge`` or ``module --force purge`` in test (#122)
@@ -86,7 +86,7 @@ v0.7.3 (Nov 25th, 2019)
 v0.7.2 (Nov 8th, 2019)
 ----------------------
 - automate documentation test generation using python script
-- add support for coverage see https://codecov.io/gh/HPC-buildtest/buildtest-framework
+- add support for coverage see https://codecov.io/gh/buildtesters/buildtest
 - adding dry option when building tests (short: ``-d`` or long option:``--dry``)
 - automate buildtest testing process via pytest. Add initial support with 25+ regression tests
 - adding directory expansion support when files or directory are references such as $HOME or tilde (~) operation
@@ -127,7 +127,7 @@ v0.7.0 (Aug 22, 2019)
 - Rename main program **_buildtest** to **buildtest** and changed source code directory layout
 - Add option ``-b`` or ``--binary`` for native support for sanity check on binary commands in framework without using yaml files
 - Update requirements.txt
-- Migrate documentation to buildtest-framework
+- Migrate documentation to buildtest
 - Create subcommand **find** and move option ``-ft`` and ``-fc`` to this menu
 - Add logo for license, version, download, status to README.rst
 - Type checking support for buildtest configuration file
@@ -166,8 +166,8 @@ v0.6.0 (Oct 18, 2018)
 - Add test count, passed and failed test after each test run when using ``_buildtest run``.
 - option ``--rebuild`` and ``--overwrite`` will work with ``--all-software`` and ``--all-package`` in yaml subcommand to automate rebuilding of yaml files
 -  Move option `--module-naming-scheme`  to build subcommand
-- **bug fix:** directory issue for running buildtest first time https://github.com/HPC-buildtest/buildtest-framework/issues/81
-- **bug fix:** print error https://github.com/HPC-buildtest/buildtest-framework/issues/80
+- **bug fix:** directory issue for running buildtest first time https://github.com/buildtesters/buildtest/issues/81
+- **bug fix:** print error https://github.com/buildtesters/buildtest/issues/80
 
 v0.5.0 (Oct 8, 2018)
 -----------------------
@@ -200,11 +200,11 @@ v0.5.0 (Oct 8, 2018)
    - ``--testname``
 - Added basic error handling support
 - Add ``description`` key in all yaml files
--  Tests have permission ``755`` so they can run automatically as any user see https://github.com/HPC-buildtest/buildtest-framework/pull/79/commits/6a2570e9d547b0fb3ab81a14770583a192092224
-- Options for ``--ebyaml`` now generates date-time stamp for ``command.yaml`` see https://github.com/HPC-buildtest/buildtest-framework/pull/79/commits/a5968263e4faeac0b65386b22d9b1d5cff604185
+-  Tests have permission ``755`` so they can run automatically as any user see https://github.com/buildtesters/buildtest/pull/79/commits/6a2570e9d547b0fb3ab81a14770583a192092224
+- Options for ``--ebyaml`` now generates date-time stamp for ``command.yaml`` see https://github.com/buildtesters/buildtest/pull/79/commits/a5968263e4faeac0b65386b22d9b1d5cff604185
 - Add script ``check.sh`` to automate testing of buildtest features and package building for verification
-- **bug fix:** https://github.com/HPC-buildtest/buildtest-framework/pull/79/commits/8017d48c10cee706669ae5b56077640722442571
-- **bug fix:** https://github.com/HPC-buildtest/buildtest-framework/pull/79/commits/8dfe78bce930e23eb2242e4e4666f926bf60131f
+- **bug fix:** https://github.com/buildtesters/buildtest/pull/79/commits/8017d48c10cee706669ae5b56077640722442571
+- **bug fix:** https://github.com/buildtesters/buildtest/pull/79/commits/8dfe78bce930e23eb2242e4e4666f926bf60131f
 
 v0.4.0 (Sep 11, 2018)
 --------------------------
@@ -214,11 +214,11 @@ v0.4.0 (Sep 11, 2018)
 v0.3.0 () (Aug 7, 2018)
 ----------------------------------
 
-- Package buildtest as pypi package, now it can be installed via ``pip install buildtest-framework``
+- Package buildtest as pypi package, now it can be installed via ``pip install buildtest``
 - Rename ``buildtest`` to ``_buildtest`` and all code is now under ``buildtest``
 - All buildtest repos are now packaged as pypi package and test are moved under `buildtest` directory
 - The option `--ebyaml` is now working with auto-complete feature and ability to create yaml files for software packages
-- Binary test are now created based on unique sha256sum see https://github.com/HPC-buildtest/buildtest-framework/commit/92c012431000ff338532a899e3b5f465f18786dd
+- Binary test are now created based on unique sha256sum see https://github.com/buildtesters/buildtest/commit/92c012431000ff338532a899e3b5f465f18786dd
 - Output of `--scantest` has been fixed and added to documentation
 - Add singularity CDASH script, need some more work on getting server setup properly
 
@@ -237,8 +237,8 @@ Bug Fixes
 ~~~~~~~~~~~~~
 
 - Fix issue with `--runtest` option, it was broken at some point now it is working as expected
-- Add extra configuration option in `config_opts` to reuse variable that were needed throughout code and fix bug with `--sysyaml` see https://github.com/HPC-buildtest/buildtest-framework/commit/493b53e4cfdb5710b384409edc7c85ceb05395ba
-- Fix bug with directory not found in menu,py by moving function `check_configuration` and `override_configuration` from main.py to menu,py see https://github.com/HPC-buildtest/buildtest-framework/commit/d2c78076eb551683bf81a3a7d12ae10971460971
+- Add extra configuration option in `config_opts` to reuse variable that were needed throughout code and fix bug with `--sysyaml` see https://github.com/buildtesters/buildtest/commit/493b53e4cfdb5710b384409edc7c85ceb05395ba
+- Fix bug with directory not found in menu,py by moving function `check_configuration` and `override_configuration` from main.py to menu,py see https://github.com/buildtesters/buildtest/commit/d2c78076eb551683bf81a3a7d12ae10971460971
 
 v0.2.0 (May 18, 2018)
 ---------------------------
@@ -279,28 +279,28 @@ v0.1.8 (Feb 27, 2018)
 
 - Automate batch job submission from buildtest via **--submitjob**
 - Fix shell magic (#!/bin/sh, #!/bin/bash, #!/bin/csh) for binary test
-- Tab completion for buildtest argument using ``argcomplete`` module. See https://github.com/HPC-buildtest/buildtest-framework/pull/52/commits/ddb9e426f1b466d3e9b1957a009f0955c236f7a2
+- Tab completion for buildtest argument using ``argcomplete`` module. See https://github.com/buildtesters/buildtest/pull/52/commits/ddb9e426f1b466d3e9b1957a009f0955c236f7a2
 - autopopulate choice for ``--system``, ``--sysyaml``, and ``--software``
-- Fix output of ``-svr`` and resolve bug when 2 modules with same app/version found in different trees. Only in HMNS. See https://github.com/HPC-buildtest/buildtest-framework/pull/52/commits/7ddf91b761f88ddacf0548c7f259b2badd93bdfd for more details
+- Fix output of ``-svr`` and resolve bug when 2 modules with same app/version found in different trees. Only in HMNS. See https://github.com/buildtesters/buildtest/pull/52/commits/7ddf91b761f88ddacf0548c7f259b2badd93bdfd for more details
 - Group buildtest commands for ease of use.
-- Support for yaml keys **scheduler** and **jobslot** to enable jobscript creation from yaml files. See https://github.com/HPC-buildtest/buildtest-framework/pull/52/commits/0fe4189df0694bef586e9d8e4565ec4cc3e169c9
+- Support for yaml keys **scheduler** and **jobslot** to enable jobscript creation from yaml files. See https://github.com/buildtesters/buildtest/pull/52/commits/0fe4189df0694bef586e9d8e4565ec4cc3e169c9
 - Further support for scheduler and automatic detection. Currently supports LSF and SLURM.
 
 v0.1.7 (Feb 27, 2018)
 ------------------------
 
-- Add support for creating LSF Job scripts via templates. Use **buildtest --job-template** see https://github.com/HPC-buildtest/buildtest-framework/commit/927dc09e347fdafa7020d7cfd3016fd8f430ac10
-- Add support for creating YAML config for system package binary testing  via **buildtest --sysyaml** see https://github.com/HPC-buildtest/buildtest-framework/commit/4ab8870eddb9da5177b6c414e98f1231d14b35ab
-- adding keys envvar, procrange, threadrange in YAML https://github.com/HPC-buildtest/buildtest-framework/commit/9a2152307dbf88943618a0b7ee8f6984de3a5340 https://github.com/HPC-buildtest/buildtest-framework/commit/1524238919be638edc831df6395425f92e46bc2c   https://github.com/HPC-buildtest/buildtest-framework/commit/3d43b8a68946c4a376e1645c4ad204c7498ae6c3
--  Add support for multiple shell (csh, bash, sh) see https://github.com/HPC-buildtest/buildtest-framework/commit/aea9d6ff06dcc207e84ba0953c53e2cbd67a49fe https://github.com/HPC-buildtest/buildtest-framework/commit/c154db87f876251cc6b2985e8bfb8c2265843216
+- Add support for creating LSF Job scripts via templates. Use **buildtest --job-template** see https://github.com/buildtesters/buildtest/commit/927dc09e347fdafa7020d7cfd3016fd8f430ac10
+- Add support for creating YAML config for system package binary testing  via **buildtest --sysyaml** see https://github.com/buildtesters/buildtest/commit/4ab8870eddb9da5177b6c414e98f1231d14b35ab
+- adding keys envvar, procrange, threadrange in YAML https://github.com/buildtesters/buildtest/commit/9a2152307dbf88943618a0b7ee8f6984de3a5340 https://github.com/buildtesters/buildtest/commit/1524238919be638edc831df6395425f92e46bc2c   https://github.com/buildtesters/buildtest/commit/3d43b8a68946c4a376e1645c4ad204c7498ae6c3
+-  Add support for multiple shell (csh, bash, sh) see https://github.com/buildtesters/buildtest/commit/aea9d6ff06dcc207e84ba0953c53e2cbd67a49fe https://github.com/buildtesters/buildtest/commit/c154db87f876251cc6b2985e8bfb8c2265843216
 - remove verbose option from buildtest
-- major code refactor see https://github.com/HPC-buildtest/buildtest-framework/commit/fd8d466dc1f009f5822d2161eaf73e85f42a985e https://github.com/HPC-buildtest/buildtest-framework/commit/9d112c0e2e8c6800013eeda7968f568a749f2586
-- Fixed a bug during compiler detection when building GCC see https://github.com/HPC-buildtest/buildtest-framework/commit/f139756213a280301771214894c8f48e8bcee4e8
-- create a pretty menu for Interactive Testing via **buildtest --runtest** see https://github.com/HPC-buildtest/buildtest-framework/commit/231cfeb0cf88cbc70826a9e76697947d06f0a6e1
+- major code refactor see https://github.com/buildtesters/buildtest/commit/fd8d466dc1f009f5822d2161eaf73e85f42a985e https://github.com/buildtesters/buildtest/commit/9d112c0e2e8c6800013eeda7968f568a749f2586
+- Fixed a bug during compiler detection when building GCC see https://github.com/buildtesters/buildtest/commit/f139756213a280301771214894c8f48e8bcee4e8
+- create a pretty menu for Interactive Testing via **buildtest --runtest** see https://github.com/buildtesters/buildtest/commit/231cfeb0cf88cbc70826a9e76697947d06f0a6e1
 - replace shell commands **subprocess.Popen()** with python library equivalents
-- Add support for **--testset Tcl** see https://github.com/HPC-buildtest/buildtest-framework/commit/373cc1ea2fb2c5aedcf9ddadf105a94232cc1fa4
-- Add support for **--testset Ruby** see https://github.com/HPC-buildtest/buildtest-framework/commit/c6b7133b5fc4b0690b8040d0e437784567cc1963
-- Print software in alphabetical order for -svr option see https://github.com/HPC-buildtest/buildtest-framework/commit/fcf61019c644cd305e459234a85c5d39df06433f
+- Add support for **--testset Tcl** see https://github.com/buildtesters/buildtest/commit/373cc1ea2fb2c5aedcf9ddadf105a94232cc1fa4
+- Add support for **--testset Ruby** see https://github.com/buildtesters/buildtest/commit/c6b7133b5fc4b0690b8040d0e437784567cc1963
+- Print software in alphabetical order for -svr option see https://github.com/buildtesters/buildtest/commit/fcf61019c644cd305e459234a85c5d39df06433f
 
 v0.1.6 (Feb 27, 2018)
 -------------------------
@@ -321,7 +321,7 @@ v0.1.6 (Feb 27, 2018)
 v0.1.5 (Feb 27, 2018)
 ------------------------------
 
-The buildtest repo has been moved from http://github.com/shahzebsiddiqui to http://github.com/HPC-buildtest
+The buildtest repo has been moved from http://github.com/shahzebsiddiqui to http://github.com/buildtesters
 
 - Report what tests can be generated from buildtest through YAML files by using **--scantest**
 - Fixed a bug with flag **-svr** that was related to structure of easybuild repo, now no dependency on easybuild repo. Also added pretty output

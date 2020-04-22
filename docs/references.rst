@@ -8,33 +8,33 @@ Conference
   
   - Date: Feb 2nd 2020
   
-  - Slides: [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fosdem20.pdf>`_], [`pptx <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fosdem20.pptx>`_] [`Video <https://ftp.osuosl.org/pub/fosdem/2020/UB5.132/buildtest.webm>`_]
+  - Slides: [`pdf <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest-fosdem20.pdf>`_], [`pptx <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest-fosdem20.pptx>`_] [`Video <https://ftp.osuosl.org/pub/fosdem/2020/UB5.132/buildtest.webm>`_]
 
 
 - **buildtest: HPC Software Stack Testing Framework** at 5thEasybuildUserMeeting_
 
   - Date: Jan 30th 2020
   
-  - Slides: [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fifth-easybuild-user-meeting.pdf>`_], [`pptx <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest-fifth-easybuild-user-meeting.pptx>`_] [`Video <https://youtu.be/YcaXjufRRgI>`_]
+  - Slides: [`pdf <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest-fifth-easybuild-user-meeting.pdf>`_], [`pptx <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest-fifth-easybuild-user-meeting.pptx>`_] [`Video <https://youtu.be/YcaXjufRRgI>`_]
 
 -  **buildtest: A Software Testing Framework with Module Operations for HPC systems** at HUST_ workshop in SC19_
   
   - Date: Nov 18th 2019
   
-  - Slides: [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hust19.pdf>`_], [`pptx <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hust19.pptx>`_]
+  - Slides: [`pdf <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest_hust19.pdf>`_], [`pptx <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest_hust19.pptx>`_]
 
 - **Software Stack Testing with buildtest** at HPCKP18_
 
   - Date: June 22th 2018
   
-  - Slides: [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hpckp18.pdf>`_]
+  - Slides: [`pdf <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest_hpckp18.pdf>`_]
 
   
 - **HPC Application Testing Framework - buildtest** at HPCKP17_
   
   - Date: June 15th 2017
   
-  - Slides: [`pdf <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/docs/slides/buildtest_hpckp17.pdf>`_]
+  - Slides: [`pdf <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest_hpckp17.pdf>`_]
   
 Publications
 --------------

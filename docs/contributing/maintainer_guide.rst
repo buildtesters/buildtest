@@ -44,9 +44,9 @@ We have created the tag locally, next we must push the tag to the upstream repo 
 
   git push origin v.1.2.3
 
-Every release must have a release note that is maintained in file `CHANGELOG.rst <https://github.com/HPC-buildtest/buildtest-framework/blob/master/CHANGELOG.rst>`_
+Every release must have a release note that is maintained in file `CHANGELOG.rst <https://github.com/buildtesters/buildtest/blob/master/CHANGELOG.rst>`_
 
-Under buildtest `releases <https://github.com/HPC-buildtest/buildtest-framework/releases>`_ a new release can be created that
+Under buildtest `releases <https://github.com/buildtesters/buildtest/releases>`_ a new release can be created that
 corresponds to the git tag. In the release summary, just direct with a message stating **refer to CHANGELOG.rst for more details**
 
 Once the release is published, make sure to open a pull request from ``devel`` --> ``master`` and **Rebase and Merge**
@@ -61,7 +61,7 @@ The ``master`` branch should be setup as the default branch.
 Branch Settings
 ----------------
 
-All maintainers are encouraged to view branch `settings <https://github.com/HPC-buildtest/buildtest-framework/settings/branches>`_
+All maintainers are encouraged to view branch `settings <https://github.com/buildtesters/buildtest/settings/branches>`_
 for ``devel`` and ``master``. If something is not correct please consult with the maintainers.
 
 The master and devel branches should be protected branches and master should be enabled as default branch. Shown

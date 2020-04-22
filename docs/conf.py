@@ -103,7 +103,7 @@ html_static_path = ["_static"]
 html_context = {
     # "display_github": True,  # Integrate GitHub
     # "github_user": "shahzebmsiddiqui",  # Username
-    # "github_repo": "buildtest-framework",  # Repo name
+    # "github_repo": "buildtest",  # Repo name
     # "github_version": "master",  # Version
     "css_files": ["_static/theme_overrides.css"]  # override wide tables in RTD theme
 }

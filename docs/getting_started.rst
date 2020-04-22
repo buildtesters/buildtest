@@ -26,22 +26,22 @@ Cloning Tutorials
 To get started, let's clone a repository with tutorial tests. Since this is a group of tests,
 we can put it in our tests directory by using the "get" command::
 
-    $ buildtest get https://github.com/HPC-buildtest/tutorials.git
-    Cloning into '/home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials'...
+    $ buildtest get https://github.com/buildtesters/tutorials.git
+    Cloning into '/home/users/vsochat/.buildtest/site/github.com/buildtesters/tutorials'...
 
 Which would be equivalent to doing this::
 
-    $ mkdir -p $HOME/.buildtest/site/github.com/HPC-buildtest
-    $ git clone https://github.com/HPC-buildtest/tutorials.git $HOME/.buildtest/site/github.com/HPC-buildtest/tutorials
+    $ mkdir -p $HOME/.buildtest/site/github.com/buildtesters
+    $ git clone https://github.com/buildtesters/tutorials.git $HOME/.buildtest/site/github.com/buildtesters/tutorials
 
 You can also clone a specific branch::
 
-    $ buildtest get -b add/hello-world-test https://github.com/HPC-buildtest/tutorials.git
+    $ buildtest get -b add/hello-world-test https://github.com/buildtesters/tutorials.git
 
 And in either case, if the folder already exists, you'll be told::
 
-    $ buildtest get https://github.com/HPC-buildtest/tutorials.git
-    /home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials already exists. Remove and try again.
+    $ buildtest get https://github.com/buildtesters/tutorials.git
+    /home/users/vsochat/.buildtest/site/github.com/buildtesters/tutorials already exists. Remove and try again.
 
 The tests are organized by their namespace, meaning that you'll find GitHub repos organized under
 github.com, then the organization or username, and then the repository name.
@@ -54,7 +54,7 @@ We can refer to a config as a relative path to the test config root at ``$HOME/.
 we can provide a relative path to a config file anywhere on our system. Let's start
 with the latter, and change directory to interact with our test configurations::
 
-    $ cd /home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials
+    $ cd /home/users/vsochat/.buildtest/site/github.com/buildtesters/tutorials
 
 
 Let's take a look at the simplest of examples - a "Hello buildtest" example! This is
@@ -113,7 +113,7 @@ Let's run our test! We could be doing this from a relative path to the test conf
 file, **or** as a relative path from the root of our testdir at ``$HOME/.buildtest/site``
 For example, either of the two would work in the case of this test::
 
-    $ buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/hello.sh.yml
+    $ buildtest build -c github.com/buildtesters/tutorials/hello-world/hello.sh.yml
     $ buildtest build -c hello.sh.yml
 
 
@@ -204,7 +204,7 @@ If we look in the shell script at the top level, we see exactly what was run.::
 
 	#!/bin/bash
 	TESTDIR=/home/users/vsochat/.buildtest/testdir/build_6
-	SRCDIR=/home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials/compilers/src
+	SRCDIR=/home/users/vsochat/.buildtest/site/github.com/buildtesters/tutorials/compilers/src
 	SRCFILE=$SRCDIR/hello.f90
 	FC=ifort
 	FFLAGS="-O2"
@@ -220,12 +220,12 @@ And then if we look in the logs directory, we see verbose output for the entire 
 
 	2020-03-01 10:23:39,580 [build.py:58 - func_build_subcmd() ] - [INFO] Creating Directory: /home/users/vsochat/.buildtest/testdir/build_6
 	2020-03-01 10:23:39,581 [build.py:59 - func_build_subcmd() ] - [DEBUG] Current build ID: 6
-	2020-03-01 10:23:39,586 [singlesource.py:410 - __init__() ] - [DEBUG] Source Directory: /home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials/compilers/src
+	2020-03-01 10:23:39,586 [singlesource.py:410 - __init__() ] - [DEBUG] Source Directory: /home/users/vsochat/.buildtest/site/github.com/buildtesters/tutorials/compilers/src
 	2020-03-01 10:23:39,586 [singlesource.py:411 - __init__() ] - [DEBUG] Source File: hello.f90
 	2020-03-01 10:23:39,725 [singlesource.py:705 - build_test_content() ] - [DEBUG] testpath:/home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh
 	2020-03-01 10:23:39,725 [singlesource.py:705 - build_test_content() ] - [DEBUG] shell:['#!/bin/bash']
 	2020-03-01 10:23:39,725 [singlesource.py:705 - build_test_content() ] - [DEBUG] module:None
-	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] metavars:['TESTDIR=/home/users/vsochat/.buildtest/testdir/build_6', 'SRCDIR=/home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials/compilers/src', 'SRCFILE=$SRCDIR/hello.f90', 'FC=ifort', 'FFLAGS="-O2"', 'EXECUTABLE=hello.f.yml.0x741db6a9.exec']
+	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] metavars:['TESTDIR=/home/users/vsochat/.buildtest/testdir/build_6', 'SRCDIR=/home/users/vsochat/.buildtest/site/github.com/buildtesters/tutorials/compilers/src', 'SRCFILE=$SRCDIR/hello.f90', 'FC=ifort', 'FFLAGS="-O2"', 'EXECUTABLE=hello.f.yml.0x741db6a9.exec']
 	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] envs:[]
 	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] build:['cd $TESTDIR', '$FC $FFLAGS -o $EXECUTABLE $SRCFILE']
 	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] run:['$EXECUTABLE', 'rm ./$EXECUTABLE']
@@ -265,7 +265,7 @@ in your testing root at ``$HOME/.buildtest/site``::
 The following will target a specific file path under your test config root::
 
 
-	buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/hello.sh.ym
+	buildtest build -c github.com/buildtesters/tutorials/hello-world/hello.sh.ym
 
 
 If you provide a directory name as a relative path, buildtest will discover all test configurations under it::
@@ -277,7 +277,7 @@ If you provide a directory name as a relative path, buildtest will discover all 
 And if you provide a relative path under the test config root, that directory will be targeted instead::
 
 
-	buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/
+	buildtest build -c github.com/buildtesters/tutorials/hello-world/
 
 
 And of course you can provide a direct path to a single file, as we showed in the examples above.

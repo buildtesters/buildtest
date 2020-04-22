@@ -27,18 +27,18 @@ Cloning buildtest
 
 To get started, clone the buildtest repository in your local machine as follows::
 
-    $ git clone https://github.com/HPC-buildtest/buildtest-framework.git
+    $ git clone https://github.com/buildtesters/buildtest.git
 
 If you prefer the SSH method, make sure your GitHub account is configured properly, for more details see
 `Connecting to GitHub with SSH <https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh>`_
 
 Once your account is configured you can clone the repository as follows::
 
-    $ git clone git@github.com:HPC-buildtest/buildtest-framework.git
+    $ git clone git@github.com:buildtesters/buildtest.git
 
 If you prefer the latest code release, please pull the **devel** branch::
 
-    $ git clone -b devel git@github.com:HPC-buildtest/buildtest-framework.git
+    $ git clone -b devel git@github.com:buildtesters/buildtest.git
 
 Or you may switch to the **devel** branch if you already cloned it::
 

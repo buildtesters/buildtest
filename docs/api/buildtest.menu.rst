@@ -10,7 +10,6 @@ Submodules
    buildtest.menu.config
    buildtest.menu.get
    buildtest.menu.show
-   buildtest.menu.status
 
 Module contents
 ---------------

@@ -6,14 +6,14 @@ import sys
 from buildtest import BUILDTEST_VERSION
 
 setup(
-    name="buildtest-framework",
+    name="buildtest",
     version=BUILDTEST_VERSION,
     author="Shahzeb Siddiqui",
     author_email="shahzebmsiddiqui@gmail.com",
     description="HPC Application Testing Framework",
     long_description=open("README.rst").read(),
-    url="https://github.com/HPC-buildtest/buildtest-framework",
-    license="GPLv2",
+    url="https://github.com/buildtesters/buildtest",
+    license="MIT",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",

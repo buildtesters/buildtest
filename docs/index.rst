@@ -1,7 +1,7 @@
 buildtest
 ==========
 
-`buildtest <https://github.com/HPC-buildtest/buildtest-framework>`_  is
+`buildtest <https://github.com/buildtesters/buildtest>`_  is
 a testing framework designed for HPC Software Stack Testing that is compatible with Lmod module system.
 buildtest provides a set of YAML keys to write test configuration (YAML) that buildtest translates into complex test
 scripts. This allows users to focus on writing test configuration with minimal knowledge of the
