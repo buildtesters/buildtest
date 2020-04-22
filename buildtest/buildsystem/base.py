@@ -452,7 +452,6 @@ class BuilderBase:
 
         return False
 
-
     def check_regex(self, regex):
         """ This method conducts a regular expression check using 're.search' with regular
             expression defined in Buildspec. User must specify an output stream (stdout, stderr)
@@ -486,7 +485,6 @@ class BuilderBase:
             return True
 
         return False
-
 
     def run_tests(self, testfile):
         """The shared _run function will run a test file, which must be
