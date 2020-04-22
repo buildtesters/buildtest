@@ -433,12 +433,40 @@ class BuilderBase:
         return result
 
     def check_returncode(self, recipe_returncode, result_returncode):
+        """ This method checks if return code from Buildspec recipe matches
+            return code from test. The return type is a bool either 'True'/'False'
+            depending if the return codes match
+
+            Parameters:
+
+            :param recipe_returncode: return code specified in recipe
+            :type recipe_returncode: int, required
+            :param result_returncode: return code from test
+            :type result_returncode: int, required
+            :return: A boolean return True/False based on conditional equality
+            :rtype: bool
+        """
+
         if recipe_returncode == result_returncode:
             return True
 
         return False
 
+
     def check_regex(self, regex):
+        """ This method conducts a regular expression check using 're.search' with regular
+            expression defined in Buildspec. User must specify an output stream (stdout, stderr)
+            to select when performing regex. In buildtest, this would read the .out or .err file
+            based on stream and run the regular expression to see if there is a match.
+
+            Parameters:
+
+            :param regex: Regular expression object defined in Buildspec file
+            :type regex: str, required
+            :return:  A boolean return True/False based on if re.search is successful or not
+            :rtype: bool
+        """
+
         if regex["stream"] == "stdout":
             self.logger.debug(
                 f"Detected regex stream 'stdout' so reading output file: {self.metadata['outfile']}"
@@ -458,6 +486,7 @@ class BuilderBase:
             return True
 
         return False
+
 
     def run_tests(self, testfile):
         """The shared _run function will run a test file, which must be
