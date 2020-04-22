@@ -5,7 +5,7 @@ from buildtest.utils.file import is_dir, create_dir
 
 
 def test_clone(tmp_path):
-    repo = "https://github.com/HPC-buildtest/tutorials.git"
+    repo = "https://github.com/buildtesters/tutorials.git"
 
     assert is_dir(clone(repo, tmp_path))
 

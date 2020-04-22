@@ -6,18 +6,18 @@
     :target: https://buildtest.readthedocs.io/en/latest/?badge=latest
 
 .. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
-.. |license| image:: https://img.shields.io/github/license/HPC-buildtest/buildtest-framework.svg
+.. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
 .. |core_infrastructure| image:: https://bestpractices.coreinfrastructure.org/projects/3469/badge
-.. |tags| image:: https://img.shields.io/github/v/tag/HPC-buildtest/buildtest-framework.svg
-.. |codecov| image:: https://codecov.io/gh/HPC-buildtest/buildtest-framework/branch/devel/graph/badge.svg
-    :target: https://codecov.io/gh/HPC-buildtest/buildtest-framework
-.. |coveralls| image:: https://coveralls.io/repos/github/HPC-buildtest/buildtest-framework/badge.svg?branch=devel
-    :target: https://coveralls.io/github/HPC-buildtest/buildtest-framework?branch=devel
-.. |codefactor| image:: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework/badge
-   :target: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework
+.. |tags| image:: https://img.shields.io/github/v/tag/buildtesters/buildtest.svg
+.. |codecov| image:: https://codecov.io/gh/buildtesters/buildtest/branch/devel/graph/badge.svg
+    :target: https://codecov.io/gh/buildtesters/buildtest
+.. |coveralls| image:: https://coveralls.io/repos/github/buildtesters/buildtest/badge.svg?branch=devel
+    :target: https://coveralls.io/github/buildtesters/buildtest?branch=devel
+.. |codefactor| image:: https://www.codefactor.io/repository/github/buildtesters/buildtest/badge
+   :target: https://www.codefactor.io/repository/github/buildtesters/buildtest
    :alt: CodeFactor
-.. |travis| image:: https://travis-ci.com/HPC-buildtest/buildtest-framework.svg?branch=devel
-    :target: https://travis-ci.com/HPC-buildtest/buildtest-framework
+.. |travis| image:: https://travis-ci.com/buildtesters/buildtest.svg?branch=devel
+    :target: https://travis-ci.com/buildtesters/buildtest
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
 
@@ -38,15 +38,15 @@ References
 
 - ReadTheDocs: https://readthedocs.org/projects/buildtest/
 
-- Travis: https://travis-ci.com/HPC-buildtest/buildtest-framework
+- Travis: https://travis-ci.com/buildtesters/buildtest
 
-- CodeCov: https://codecov.io/gh/HPC-buildtest/buildtest-framework
+- CodeCov: https://codecov.io/gh/buildtesters/buildtest
 
-- Coveralls: https://coveralls.io/github/HPC-buildtest/buildtest-framework
+- Coveralls: https://coveralls.io/github/buildtesters/buildtest
 
-- CodeFactor: https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework
+- CodeFactor: https://www.codefactor.io/repository/github/buildtesters/buildtest
 
-- Snyk: https://app.snyk.io/org/hpc-buildtest/
+- Snyk: https://app.snyk.io/org/buildtesters/
 
 Why buildtest?
 ---------------
@@ -58,7 +58,7 @@ Documentation
 -------------
 
 buildtest `documentation <http://buildtest.readthedocs.io/en/latest/>`_  is your source for getting help with buildtest.
-If you get stuck check out the `current issues <https://github.com/HPC-buildtest/buildtest-framework/issues>`_ to see
+If you get stuck check out the `current issues <https://github.com/buildtesters/buildtest/issues>`_ to see
 if you face similar issue. If all else fails please create a ticket.
 
 Source Code
@@ -90,4 +90,4 @@ LICENSE
 --------
 
 buildtest is released under the MIT License. See
-`LICENSE <https://github.com/HPC-buildtest/buildtest-framework/blob/master/LICENSE>`_ for more details
+`LICENSE <https://github.com/buildtesters/buildtest/blob/master/LICENSE>`_ for more details

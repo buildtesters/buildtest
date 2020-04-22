@@ -3,7 +3,7 @@ Contributing Guide
 
 There are many ways you can help contribute to buildtest that may include
 
-- File an `issue <https://github.com/HPC-buildtest/buildtest-framework/issues>`_ with the framework
+- File an `issue <https://github.com/buildtesters/buildtest/issues>`_ with the framework
 - Proofread documentation and report or fix issues
 - Participate in discussions and join the slack `channel <http://hpcbuildtest.slack.com>`_
 - Share your tests

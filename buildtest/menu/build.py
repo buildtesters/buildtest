@@ -28,13 +28,13 @@ def discover_buildspecs(buildspec):
        buildtest build --buildspec relative-folder/hello.sh.yml
 
        # A relative path to a file in build test root (returns single)
-       buildtest build --buildspec github.com/HPC-buildtest/tutorials/hello-world/hello.sh.yml
+       buildtest build --buildspec github.com/buildtesters/tutorials/hello-world/hello.sh.yml
 
        # relative directory path (returns multiple)
        buildtest build --buildspec hello-world
 
        # relative directory path in build test root (returns multiple)
-       buildtest build --buildspec github.com/HPC-buildtest/tutorials/hello-world/
+       buildtest build --buildspec github.com/buildtesters/tutorials/hello-world/
     """
 
     buildspecs = []

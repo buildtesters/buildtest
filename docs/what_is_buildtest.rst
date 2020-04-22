@@ -89,5 +89,5 @@ properly when building test. buildtest was designed on the premise of reusable a
 can be shared by the HPC community sites. buildtest aims to abstract test complexity so the user can
 focus on writing test with minimal knowledge of the system.
 
-buildtest is available on Github at https://github.com/HPC-buildtest/buildtest-framework
+buildtest is available on Github at https://github.com/buildtesters/buildtest
 

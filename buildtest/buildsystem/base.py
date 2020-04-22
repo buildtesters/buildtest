@@ -38,7 +38,7 @@ class BuildspecParser:
     """A BuildspecParser is a base class for loading and validating a Buildspec file.
        The type (e.g., script) and version are derived from reading in
        the file, and then matching to a Buildspec schema, each of which is
-       developed at https://github.com/HPC-buildtest/schemas and added to
+       developed at https://github.com/buildtesters/schemas and added to
        subfolders named accordingly under buildtest/buildsystem/schemas.
        The schema object can load in a general Buildspec file
        to validate it, and then match it to a Buildspec Schema available.

@@ -22,7 +22,7 @@ known_sections = variable_sections + build_sections
 userhome = pwd.getpwuid(os.getuid())[5]
 root = os.path.dirname(os.path.abspath(__file__))
 
-# root of buildtest-framework user home, default shell
+# root of buildtest user home, default shell
 BUILDTEST_ROOT = os.path.join(userhome, ".buildtest")
 BUILDTEST_SHELL = os.environ.get("SHELL", "/bin/bash")
 
