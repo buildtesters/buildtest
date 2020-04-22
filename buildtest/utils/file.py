@@ -145,6 +145,23 @@ def resolve_path(path):
         return real_path
 
 
+def read(filepath):
+    with open(filepath, "r") as fd:
+        content = fd.read()
+    return content
+
+
+def write(filepath, content):
+
+    # check if parent directory where file is being written is a valid directory.
+    print(filepath)
+    if not is_dir(os.path.dirname(filepath)):
+        return None
+
+    with open(filepath, "w") as fd:
+        fd.write(content)
+
+
 def read_file(filepath):
     """ This method provides capability to read a file.
 
@@ -168,17 +185,7 @@ def read_file(filepath):
     if not filepath:
         return None
 
-    content = []
-    fd = open(filepath, "r")
-
-    while True:
-
-        line = fd.readline()
-        if line:
-            content.append(line)
-        else:
-            break
-
+    content = read(filepath)
     return content
 
 
@@ -190,7 +197,7 @@ def write_file(filepath, content):
         :param filepath: file name to write
         :type filepath: str, required
         :param content: content to write to file
-        :type content: list, required
+        :type content: str, required
         :return: return content of file
         :rtype: list
     """
@@ -199,26 +206,13 @@ def write_file(filepath, content):
     if not isinstance(filepath, str):
         return None
 
-    # if content was passed as a string, let's convert to list
-    if isinstance(content, str):
-        content = content.splitlines(True)
-
-    # shown below is equivalent to running 'resolve_path' but we can't invoke it since we expect this method
-    # to write to a new file. resolve_path assumes filepath already exists and returns realpath otherwise returns
-    # None.
-    filepath = os.path.expanduser(filepath)
-    filepath = os.path.expandvars(filepath)
-    filepath = os.path.realpath(filepath)
+    # ensure content is of type string
+    if not isinstance(content, str):
+        return None
 
     # if filepath is an actual file, let's not write to file and return None.
     # also if filepath is a directory let's also return None
     if is_file(filepath) or is_dir(filepath):
         return None
 
-    fd = open(filepath, "w")
-    # process each line and write to file
-    for line in content:
-        if line:
-            fd.writelines(line)
-
-    fd.close()
+    write(filepath, content)

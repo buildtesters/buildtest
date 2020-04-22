@@ -526,14 +526,17 @@ class BuilderBase:
         self.metadata["errfile"] = run_output_file + ".err"
 
         # write output of test to .out file
-        write_file(self.metadata["outfile"], out)
 
+        out = "\n".join(out)
+        err = "\n".join(err)
+
+        write_file(self.metadata["outfile"], out)
         self.logger.debug(f"Writing run output to file: {self.metadata['outfile']}")
 
         # write error from test to .err file
-        write_file(self.metadata["errfile"], out)
-
+        write_file(self.metadata["errfile"], err)
         self.logger.debug(f"Writing run error to file: {self.metadata['errfile']}")
+
         self.logger.debug(f"Return code: {command.returncode} for test: {testfile}")
         result["RETURN_CODE"] = command.returncode
         result["END_TIME"] = self.get_formatted_time("end_time")
