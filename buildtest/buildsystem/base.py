@@ -526,7 +526,7 @@ class BuilderBase:
         self.metadata["errfile"] = run_output_file + ".err"
 
         # write output of test to .out file
-        write_file(self.metadata["outfile"],out)
+        write_file(self.metadata["outfile"], out)
 
         self.logger.debug(f"Writing run output to file: {self.metadata['outfile']}")
 
@@ -553,7 +553,7 @@ class BuilderBase:
             regex_match = True
 
             # check returncode from result matches value defined in Buildspec recipe, self.check_returncode returns a bool
-            if "returncode" in status.keys():
+            if "returncode" in status:
                 self.logger.debug("Conducting Return Code check")
                 self.logger.debug(
                     "Status Return Code: %s   Result Return Code: %s"

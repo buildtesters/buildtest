@@ -144,6 +144,7 @@ def resolve_path(path):
     if os.path.exists(real_path):
         return real_path
 
+
 def read_file(filepath):
     """ This method provides capability to read a file.
 
@@ -156,7 +157,7 @@ def read_file(filepath):
     """
 
     # type check filepath to ensure its a string, if not return None
-    if not isinstance(filepath,str):
+    if not isinstance(filepath, str):
         return None
 
     # resolve_path will handle shell and user expansion and account for any symlinks and check for file existence.
@@ -180,6 +181,7 @@ def read_file(filepath):
 
     return content
 
+
 def write_file(filepath, content):
     """ This method provides capability to write a file.
 
@@ -194,7 +196,7 @@ def write_file(filepath, content):
     """
 
     # type check filepath to ensure its a string, if not return None
-    if not isinstance(filepath,str):
+    if not isinstance(filepath, str):
         return None
 
     # if content was passed as a string, let's convert to list
@@ -212,7 +214,7 @@ def write_file(filepath, content):
     # also if filepath is a directory let's also return None
     if is_file(filepath) or is_dir(filepath):
         return None
-    
+
     fd = open(filepath, "w")
     # process each line and write to file
     for line in content:
