@@ -144,24 +144,6 @@ def resolve_path(path):
     if os.path.exists(real_path):
         return real_path
 
-
-def read(filepath):
-    with open(filepath, "r") as fd:
-        content = fd.read()
-    return content
-
-
-def write(filepath, content):
-
-    # check if parent directory where file is being written is a valid directory.
-    print(filepath)
-    if not is_dir(os.path.dirname(filepath)):
-        return None
-
-    with open(filepath, "w") as fd:
-        fd.write(content)
-
-
 def read_file(filepath):
     """ This method provides capability to read a file.
 
@@ -185,7 +167,9 @@ def read_file(filepath):
     if not filepath:
         return None
 
-    content = read(filepath)
+    with open(filepath, "r") as fd:
+        content = fd.read()
+
     return content
 
 
@@ -215,4 +199,10 @@ def write_file(filepath, content):
     if is_file(filepath) or is_dir(filepath):
         return None
 
-    write(filepath, content)
+    # check if parent directory is
+    if not is_dir(os.path.dirname(filepath)):
+        return None
+
+    with open(filepath, "w") as fd:
+        fd.write(content)
+
