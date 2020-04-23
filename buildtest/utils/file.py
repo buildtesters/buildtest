@@ -144,6 +144,7 @@ def resolve_path(path):
     if os.path.exists(real_path):
         return real_path
 
+
 def read_file(filepath):
     """ This method provides capability to read a file.
 
@@ -205,4 +206,3 @@ def write_file(filepath, content):
 
     with open(filepath, "w") as fd:
         fd.write(content)
-
