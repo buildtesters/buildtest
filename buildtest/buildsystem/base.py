@@ -447,10 +447,7 @@ class BuilderBase:
             :rtype: bool
         """
 
-        if recipe_returncode == result_returncode:
-            return True
-
-        return False
+        return recipe_returncode == result_returncode
 
     def check_regex(self, regex):
         """ This method conducts a regular expression check using 're.search' with regular
@@ -555,21 +552,22 @@ class BuilderBase:
             # if no regex is defined we set this to True since we do a logical AND
             regex_match = True
 
-            # check returncode from result matches value defined in Buildspec recipe, self.check_returncode returns a bool
             if "returncode" in status:
                 self.logger.debug("Conducting Return Code check")
                 self.logger.debug(
                     "Status Return Code: %s   Result Return Code: %s"
                     % (status["returncode"], result["RETURN_CODE"])
                 )
+                # self.check_returncode checks if test returncode matches returncode specified in Buildspec.
+                # The return value is a bool
                 returncode_match = self.check_returncode(
                     status["returncode"], result["RETURN_CODE"]
                 )
 
-            # check regex expression in Buildspec with output or error stream. self_check_regex returns a boolean (True/False)
-            # by using re.search to check expression
             if "regex" in status.keys():
                 self.logger.debug("Conducting Regular Expression check")
+                # self.check_regex  applies regular expression check specified in Buildspec with output or error
+                # stream. self.check_regex returns a boolean (True/False) by using re.search
                 regex_match = self.check_regex(status["regex"])
 
             self.logger.info(
