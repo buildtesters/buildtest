@@ -582,7 +582,6 @@ class BuilderBase:
             if command.returncode == 0:
                 test_state = "PASS"
 
-
         # this variable is used later when counting all the pass/fail test in buildtest/menu/build.py
         result["TEST_STATE"] = test_state
 
