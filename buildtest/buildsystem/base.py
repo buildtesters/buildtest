@@ -476,13 +476,12 @@ class BuilderBase:
             content = read_file(self.metadata["errfile"])
 
         # convert list to string
-        content = "\n".join(content)
-        self.logger.debug(f"Applying re.search with exp: {regex['exp']}")
-        # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
-        if re.search(regex["exp"], content):
-            return True
+        # content = "\n".join(content)
 
-        return False
+        self.logger.debug(f"Applying re.search with exp: {regex['exp']}")
+
+        # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
+        return re.search(regex["exp"], content) != None
 
     def run_tests(self, testfile):
         """The shared _run function will run a test file, which must be
@@ -540,7 +539,7 @@ class BuilderBase:
 
         status = self.recipe.get("status")
 
-        test_state = ""
+        test_state = "FAIL"
 
         # if status is defined in Buildspec, then check for returncode and regex
         if status:
@@ -564,7 +563,7 @@ class BuilderBase:
                     status["returncode"], result["RETURN_CODE"]
                 )
 
-            if "regex" in status.keys():
+            if "regex" in status:
                 self.logger.debug("Conducting Regular Expression check")
                 # self.check_regex  applies regular expression check specified in Buildspec with output or error
                 # stream. self.check_regex returns a boolean (True/False) by using re.search
@@ -577,15 +576,12 @@ class BuilderBase:
 
             if returncode_match and regex_match:
                 test_state = "PASS"
-            else:
-                test_state = "FAIL"
 
         # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
         else:
             if command.returncode == 0:
                 test_state = "PASS"
-            else:
-                test_state = "FAIL"
+
 
         # this variable is used later when counting all the pass/fail test in buildtest/menu/build.py
         result["TEST_STATE"] = test_state
