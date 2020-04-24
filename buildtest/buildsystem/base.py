@@ -1,7 +1,4 @@
 """
-BuildspecParser: loader and manager for Buildspec, and schema validation
-Copyright (C) 2020 Vanessa Sochat. 
-
 BuildspecParser is intended to read in a Buildspec file with one or
 more test blocks, and then generate builders based on the type
 of each. The BuilderBase is the base class for all builders that 

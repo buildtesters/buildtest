@@ -12,8 +12,9 @@ Background
 
 HPC computing environment is a tightly coupled system that includes a cluster of nodes and accelerators interconnected
 with a high-speed interconnect, a parallel filesystem, multiple storage tiers, a batch scheduler for users to submit
-jobs to the cluster and a software stack for users to run their workflows. A **software stack is a collection of compilers, MPI, libraries, system utilities and scientific packages**
-typically installed in a parallel file-system. A module tool like ``environment-modules`` or ``Lmod`` is generally used
+jobs to the cluster and a software stack for users to run their workflows. A
+**software stack is a collection of compilers, MPI, libraries, system utilities and scientific packages** typically
+installed in a parallel file-system. A module tool like ``environment-modules`` or ``Lmod`` is generally used
 for loading the software environment into the users’ shell environment.
 
 Software are packaged in various forms that determine how they are installed. A few package formats are:
@@ -83,11 +84,9 @@ and source code and documentation can be found on GitHub.
 Description
 -----------
 
-**buildtest** is a python framework for automating software stack testing by utilizing test configurations (YAML) to
-generate test scripts. The framework is tightly integrated with Lmod module system to allow the framework to load modules
-properly when building test. buildtest was designed on the premise of reusable and easy to read test configuration that
-can be shared by the HPC community sites. buildtest aims to abstract test complexity so the user can
-focus on writing test with minimal knowledge of the system.
+**buildtest** is a python framework for testing for HPC systems by utilizing test configurations known as
+**Buildspec** written in YAML. buildtest comes with a set of json-schema that defines how to write a Buildspec, which
+buildtest uses to validate, and parse the YAML file followed by generating the test for execution.
 
 buildtest is available on Github at https://github.com/buildtesters/buildtest
 

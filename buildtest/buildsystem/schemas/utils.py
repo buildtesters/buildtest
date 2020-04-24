@@ -1,6 +1,5 @@
 """
 Utility and helper functions for schemas.
-Copyright (C) 2020 Vanessa Sochat.
 """
 
 import json
