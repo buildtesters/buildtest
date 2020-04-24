@@ -21,7 +21,8 @@ If you don't see buildtest go back and review section :ref:`Setup`.
 Cloning Tutorials
 -----------------
 
-To get started, let's clone the ``tutorials`` repository provided by buildtest using ``buildtest get`` command::
+To get started, let's clone the `tutorials <https://github.com/buildtesters/tutorials>`_ repository provided by buildtest
+using ``buildtest get`` command::
 
     $ buildtest get https://github.com/buildtesters/tutorials.git
     Cloning into '/u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials'...
@@ -51,8 +52,8 @@ github.com, then the organization or username, and then the repository name.
 Building a Test
 ----------------
 
-The ``buildtest build`` command is used for building a Buildspec. We use the ``-b`` option to select the Buildspec to build,
-let's run the following::
+The ``buildtest build`` command is used for building a Buildspec. We use the ``-b`` option to select the Buildspec to
+build let's run the following::
 
     $ buildtest build -b $HOME/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
 
@@ -74,9 +75,9 @@ let's run the following::
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
 
-Buildtest will discover the Buildspec as you will see you can provide more than one Buildspec at a time. Buildtest will display
-the Buildspec Name, a Test name, Status of the test, and full path to Buildspec file. Finally, buildtest will summarize
-the test results with list of pass and failed tests.
+Buildtest will discover the Buildspecs specified by ``-b`` option, later you will see you can provide more than one
+Buildspec on the command line. Buildtest will display the Buildspec Name, a Test name, Status of the test, and
+full path to Buildspec file. Finally, buildtest will summarize the test results with list of pass and failed tests.
 
 In the command above we specified an absolute path to a Buildspec, alternately we can specify a relative path from ``site``
 directory to build the test. For example, the above command could be achieved by running::
@@ -117,8 +118,8 @@ example let's build the following::
 
 
 buildtest can automatically detect Buildspecs based on filepath and directory so if you know location to where
-Buildspecs are located you can do that as well. For example, we can build all Buildspecs in a directory ``system`` as
-follows::
+Buildspecs are located you can specify a directory. For instance, we can build all Buildspecs in a directory ``system``
+as follows::
 
     $ buildtest build -b system/
 

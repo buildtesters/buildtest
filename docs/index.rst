@@ -25,7 +25,6 @@ This documentation was last rebuild on |today| and is intended for version |vers
    configuring_buildtest.rst
    getting_started.rst
    introspection.rst
-   spider.rst
 
 .. toctree::
    :maxdepth: 2
