@@ -2,11 +2,9 @@ buildtest
 ==========
 
 `buildtest <https://github.com/buildtesters/buildtest>`_  is
-a testing framework designed for HPC Software Stack Testing that is compatible with Lmod module system.
-buildtest provides a set of YAML keys to write test configuration (YAML) that buildtest translates into complex test
-scripts. This allows users to focus on writing test configuration with minimal knowledge of the
-underlying system. Test configuration are reusable between HPC sites with the goal of sharing tests between the
-HPC community.
+a testing framework designed to automate testing on any Linux systems including HPC clusters, workstation, or laptop.
+buildtest provides several json-schemas that define how to write your test-configuration (YAML) also known as **Buildspecs**
+that buildtest translates into a shell script.
 
 For more details on buildtest check :ref:`summary_of_buildtest`
 
@@ -18,7 +16,6 @@ This documentation was last rebuild on |today| and is intended for version |vers
 
    what_is_buildtest.rst
    terminology.rst
-   getting_started.rst
 
 .. toctree::
    :maxdepth: 2
@@ -26,8 +23,8 @@ This documentation was last rebuild on |today| and is intended for version |vers
 
    installing_buildtest.rst
    configuring_buildtest.rst
+   getting_started.rst
    introspection.rst
-   spider.rst
 
 .. toctree::
    :maxdepth: 2

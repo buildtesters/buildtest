@@ -1,6 +1,5 @@
 """
 BuildExecutor: manager for test executors
-Copyright (C) 2020 Vanessa Sochat. 
 """
 
 import logging
