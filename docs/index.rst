@@ -2,8 +2,8 @@ buildtest
 ==========
 
 `buildtest <https://github.com/buildtesters/buildtest>`_  is
-a framework designed to automate testing of HPC systems by writing tests in YAML markup language.
-buildtest provides several json-schemas that define how to write your test-configuration also known as **Buildspecs**
+a testing framework designed to automate testing on any Linux systems including HPC clusters, workstation, or laptop.
+buildtest provides several json-schemas that define how to write your test-configuration (YAML) also known as **Buildspecs**
 that buildtest translates into a shell script.
 
 For more details on buildtest check :ref:`summary_of_buildtest`

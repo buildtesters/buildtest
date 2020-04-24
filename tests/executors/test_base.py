@@ -1,6 +1,5 @@
 """
 BuildExecutor: testing functions
-Copyright (c) 2020 Vanessa Sochat.
 """
 
 import pytest
