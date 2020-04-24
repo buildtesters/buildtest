@@ -10,6 +10,7 @@ include the following:
 
 import os
 import logging
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -153,20 +154,21 @@ def read_file(filepath):
         :param filepath: file name to read
         :type filepath: str, required
         :return: return content of file
-        :rtype: list
+        :rtype: str
     """
 
     # type check filepath to ensure its a string, if not return None
     if not isinstance(filepath, str):
-        return None
+        sys.exit(f"Invalid type for file: {filepath} must be of type 'str' ")
 
+    input_file = filepath
     # resolve_path will handle shell and user expansion and account for any symlinks and check for file existence.
     # if resolve_path does not return gracefully it implies file does not exist and will return None
     filepath = resolve_path(filepath)
 
-    # if it's invalid file let's return None
+    # if it's invalid file let's raise an error
     if not filepath:
-        return None
+        sys.exit(f"Unable to find input file: {input_file}. Please specify a valid file")
 
     with open(filepath, "r") as fd:
         content = fd.read()
@@ -183,25 +185,18 @@ def write_file(filepath, content):
         :type filepath: str, required
         :param content: content to write to file
         :type content: str, required
-        :return: return content of file
-        :rtype: list
     """
 
     # type check filepath to ensure its a string, if not return None
     if not isinstance(filepath, str):
-        return None
+        sys.exit(f"Invalid type for file: {filepath} must be of type 'str' ")
+
+    #  if filepath is a directory let's, this is an error
+    if is_dir(filepath):
+        sys.exit(f"Detected {filepath} is a directory, please specify a file path.")
 
     # ensure content is of type string
     if not isinstance(content, str):
-        return None
-
-    # if filepath is an actual file, let's not write to file and return None.
-    # also if filepath is a directory let's also return None
-    if is_file(filepath) or is_dir(filepath):
-        return None
-
-    # check if parent directory is
-    if not is_dir(os.path.dirname(filepath)):
         return None
 
     with open(filepath, "w") as fd:

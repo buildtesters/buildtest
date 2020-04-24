@@ -114,26 +114,27 @@ def test_write_file_exceptions(tmp_path):
     file = os.path.join(tmp_path, "name.txt")
     print(f"Writing content: {input} to file {file}")
     write_file(file, input)
-    print("Writing to same file again, is not allowed!!!")
-    # rewriting to same file is not allowed, expected return is 'None'
-    assert not write_file(file, input)
 
-    # testing invalid type for file stream, expected to return None
-    assert not write_file(None, input)
+    # testing invalid type for file stream
+    with pytest.raises(SystemExit) as e_info:
+        write_file(None, input)
 
-    # testing if directory is passed as filepath, this is also not allowed, expected to return None
-    assert not write_file(tmp_path, input)
-
+    # testing if directory is passed as filepath, this is also not allowed and expected to raise error
+    with pytest.raises(SystemExit) as e_info:
+        write_file(tmp_path, input)
 
 def test_read_file(tmp_path):
     # testing invalid type for read_file, expects of type string. Expected return is 'None'
     print("Reading file with invalid type, passing 'None'")
-    assert not read_file(None)
+    with pytest.raises(SystemExit) as e_info:
+        read_file(None)
+
     file = os.path.join(tmp_path, "hello.txt")
     print(f"Checking {file} is not a file.")
     # ensure file is not valid
     assert not is_file(file)
 
     print(f"Now reading an invalid file: {file}, expecting read_file to return 'None'")
-    # checking invalid file returns None
-    assert not read_file(file)
+    # checking invalid file should report an error
+    with pytest.raises(SystemExit) as e_info:
+        read_file(file)

@@ -6,7 +6,7 @@ import shutil
 
 class BuildTestCommand:
     """Class method to invoke shell commands and retrieve output and error.
-       This class is inspired and derived from utils functions in 
+       This class is inspired and derived from utils functions in
        https://github.com/vsoch/scif
     """
 
@@ -32,7 +32,6 @@ class BuildTestCommand:
 
     def execute(self):
         """Execute a system command and return output and error.
-
         :param cmd: shell command to execute
         :type cmd: str, required
         :return: Output and Error from shell command
@@ -88,7 +87,7 @@ class BuildTestCommand:
         return self.returncode
 
     def decode(self, line):
-        """Given a line of output (error or regular) decode using the 
+        """Given a line of output (error or regular) decode using the
            system default, if appropriate
         """
         loc = locale.getdefaultlocale()[1]
@@ -101,14 +100,12 @@ class BuildTestCommand:
 
     def get_output(self):
         """Returns the output from shell command
-
         :rtype: str
         """
         return self.out
 
     def get_error(self):
         """Returns the error from shell command
-
         :rtype: str
         """
         return self.err
