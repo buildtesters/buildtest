@@ -151,7 +151,7 @@ def read_file(filepath):
         :rtype: str
     """
 
-    # type check filepath to ensure its a string, if not return None
+    # ensure filepath is a string, if not, we raise an error.
     if not isinstance(filepath, str):
         sys.exit(f"Invalid type for file: {filepath} must be of type 'str' ")
 
@@ -183,7 +183,7 @@ def write_file(filepath, content):
         :type content: str, required
     """
 
-    # type check filepath to ensure its a string, if not return None
+    # ensure filepath is a string, if not we raise an error
     if not isinstance(filepath, str):
         sys.exit(f"Invalid type for file: {filepath} must be of type 'str' ")
 

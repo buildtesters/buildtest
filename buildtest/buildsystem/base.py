@@ -475,9 +475,6 @@ class BuilderBase:
             )
             content = read_file(self.metadata["errfile"])
 
-        # convert list to string
-        # content = "\n".join(content)
-
         self.logger.debug(f"Applying re.search with exp: {regex['exp']}")
 
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
@@ -526,12 +523,12 @@ class BuilderBase:
         out = "\n".join(out)
         err = "\n".join(err)
 
-        write_file(self.metadata["outfile"], out)
         self.logger.debug(f"Writing run output to file: {self.metadata['outfile']}")
+        write_file(self.metadata["outfile"], out)
 
         # write error from test to .err file
-        write_file(self.metadata["errfile"], err)
         self.logger.debug(f"Writing run error to file: {self.metadata['errfile']}")
+        write_file(self.metadata["errfile"], err)
 
         self.logger.debug(f"Return code: {command.returncode} for test: {testfile}")
         result["RETURN_CODE"] = command.returncode
