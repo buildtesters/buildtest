@@ -1,7 +1,7 @@
 {
-  "$id": "https://raw.githubusercontent.com/HPC-buildtest/buildtest-framework/devel/buildtest/default.schema.json",
+  "$id": "https://buildtesters.github.io/schemas/settings/settings.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Buildtest Configuration Global Schema",
+  "title": "Buildtest Settings Schema",
   "type": "object",
   "required": ["editor", "executors"],
   "additionalProperties": false,

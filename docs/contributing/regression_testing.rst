@@ -18,8 +18,8 @@ Writing Regression Tests
 -------------------------
 
 If you want to write a new regression test, you would want to get familiar with the coverage report gather in codecov and
-coveralls. The coverage report for codecov (https://codecov.io/gh/HPC-buildtest/buildtest-framework) or coveralls
-(https://coveralls.io/github/HPC-buildtest/buildtest-framework) will give a detailed line-line coverage detail of source
+coveralls. The coverage report for codecov (https://codecov.io/gh/buildtesters/buildtest) or coveralls
+(https://coveralls.io/github/buildtesters/buildtest) will give a detailed line-line coverage detail of source
 code HIT/MISS when running the regression test. Increasing coverage report would be great way to write a new regression test.
 
 The ``tests`` directory is structured in a way that each source file has a corresponding test file that starts with ``test_``.

@@ -1,6 +1,5 @@
 """
 BuildExecutor: manager for test executors
-Copyright (C) 2020 Vanessa Sochat. 
 """
 
 import logging
@@ -20,13 +19,16 @@ class BuildExecutor:
     def __init__(self, config_opts, default=None):
         """initiate executors, meaning that we provide the config_opts
            that are validated, and can instantiate each executor to be available
-           
+
+           Parameters:
+
            :param config_opts: the validated config opts provided by buildtest.
-           :type config_opts: dictionary
+           :type config_opts: dictionary, required
            :param default: the name of the default executor. If not set (or undefined)
            we fall back to buildtest defaults (see set_default).
-           :type default: str
+           :type default: str, optional
         """
+
         self.executors = {}
         self.logger = logging.getLogger(__name__)
         self.logger.debug("Getting Executors from buildtest settings")
@@ -57,15 +59,18 @@ class BuildExecutor:
            look at the builder metadata to determine if a default
            is set for the executor, and fall back to the default.
 
-           :param builder: the builder with the loaded test configuration.
+           Parameters:
+
+           :param builder: the builder with the loaded Buildspec.
            :type builder: buildtest.buildsystem.BuilderBase (or subclass).
         """
+
         executor = builder.metadata.get("executor", "default")
 
         # The executor (or a default) must be define
         if executor not in self.executors:
             builder.logger.warning(
-                "executor %s is not defined in default.yml" % executor
+                "executor %s is not defined in settings.yml" % executor
             )
             sys.exit(1)
 
@@ -77,9 +82,10 @@ class BuildExecutor:
     def dry_run(self, builder):
         """A dry run typically includes all of the steps up to run
 
-           :param builder: the builder with the loaded test configuration.
+           :param builder: the builder with the loaded Buildspec.
            :type builder: buildtest.buildsystem.BuilderBase (or subclass).
         """
+
         # Choose the executor based on the builder provided
         executor = self._choose_executor(builder)
 
@@ -90,7 +96,7 @@ class BuildExecutor:
         return executor.result
 
     def run(self, builder):
-        """Given a buildtest.buildsystem.BuildConfig (subclass) go through the
+        """Given a buildtest.buildsystem.BuildspecParser (subclass) go through the
            steps defined for the executor to run the build. This should
            be instantiated by the subclass. For a simple script run, we expect a 
            setup, build, and finish.
@@ -147,6 +153,8 @@ class BaseExecutor:
            by the BuildExecutor base that holds it) and the loaded dictionary
            of config opts to parse.
 
+            Parameters:
+
            :param name: a name for the base executor and key provided in the configuration file
            :type name: string (required)
            :param settings: the original config opts to extract variables from.
@@ -184,8 +192,7 @@ class BaseExecutor:
         self.result = self.builder.run()
 
     def dryrun(self):
-        """The dry run step defines the result based on a dry run.
-        """
+        """The dry run step defines the result based on a dry run."""
         self.result = self.builder.dry_run()
 
     def __str__(self):

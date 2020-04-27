@@ -2,16 +2,16 @@ GitHub Integrations
 ====================
 
 buildtest has several github integration, including automated checks during PR that maintainers will check
-during the PR review. You should check results from the `buildtest actions <https://github.com/HPC-buildtest/buildtest-framework/actions>`_
+during the PR review. You should check results from the `buildtest actions <https://github.com/buildtesters/buildtest/actions>`_
 that are also typically linked as part of the pull request testing suite.
 
-It's good practice to check Travis `builds <https://travis-ci.com/HPC-buildtest/buildtest-framework>`_ since we use Travis
+It's good practice to check Travis `builds <https://travis-ci.com/buildtesters/buildtest>`_ since we use Travis
 to run regression test and Codecov and Coveralls depend on Travis to pass all checks.
 
 You will want to make sure code is formatted via black as we have automated checks for python formatting. If you have not
 setup the black hook check out :ref:`black_hook`
 
-If you notice the black linter step in `GitHub Actions <https://github.com/HPC-buildtest/buildtest-framework/actions>`_ is
+If you notice the black linter step in `GitHub Actions <https://github.com/buildtesters/buildtest/actions>`_ is
 failing, make sure you have the right version of black installation.
 
 GitHub Apps
@@ -19,24 +19,24 @@ GitHub Apps
 
 The following apps are configured with buildtest.
 
-- `Travis CI <https://travis-ci.com/HPC-buildtest/buildtest-framework>`_ - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted continuous integration system.
+- `Travis CI <https://travis-ci.com/buildtesters/buildtest>`_ - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted continuous integration system.
 
-- `CodeCov <https://codecov.io/gh/HPC-buildtest/buildtest-framework>`_ - Codecov provides highly integrated tools to group, merge, archive and compare coverage reports
+- `CodeCov <https://codecov.io/gh/buildtesters/buildtest>`_ - Codecov provides highly integrated tools to group, merge, archive and compare coverage reports
 
-- `Coveralls <https://coveralls.io/github/HPC-buildtest/buildtest-framework>`_ - Coveralls is a web service to help you track your code coverage over time, and ensure that all your new code is fully covered.
+- `Coveralls <https://coveralls.io/github/buildtesters/buildtest>`_ - Coveralls is a web service to help you track your code coverage over time, and ensure that all your new code is fully covered.
 
-- `CodeFactor <https://www.codefactor.io/repository/github/hpc-buildtest/buildtest-framework>`_ - CodeFactor instantly performs Code Review with every GitHub Commit or PR. Zero setup time. Get actionable feedback within seconds. Customize rules, get refactoring tips and ignore irrelevant issues.
+- `CodeFactor <https://www.codefactor.io/repository/github/buildtesters/buildtest>`_ - CodeFactor instantly performs Code Review with every GitHub Commit or PR. Zero setup time. Get actionable feedback within seconds. Customize rules, get refactoring tips and ignore irrelevant issues.
 
-- `Snyk <https://app.snyk.io/org/hpc-buildtest/>`_  - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
+- `Snyk <https://app.snyk.io/org/buildtesters/>`_  - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
 
 GitHub Actions
 --------------
 
 buildtest runs a few automated checks via GitHub Actions that can be found in ``.github/workflows``
 
-- `Black  <https://github.com/psf/black>`_ - Black auto-formats Python code, so we let **black** take care of formatting the entire project so you can focus more time in development. The workflow is defined in `black.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/black.yml>`_.
+- `Black  <https://github.com/psf/black>`_ - Black auto-formats Python code, so we let **black** take care of formatting the entire project so you can focus more time in development. The workflow is defined in `black.yml <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/black.yml>`_.
 
-- `urlchecker-action <https://github.com/marketplace/actions/urlchecker-action>`_ - is a GitHub action to collect and check URLs in project code and documentation. There is an automated check for every issued PR and the workflow is defined in `urlchecker.yml <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/.github/workflows/urlchecker.yml>`_
+- `urlchecker-action <https://github.com/marketplace/actions/urlchecker-action>`_ - is a GitHub action to collect and check URLs in project code and documentation. There is an automated check for every issued PR and the workflow is defined in `urlchecker.yml <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/urlchecker.yml>`_
 
 .. _black_hook:
 
@@ -64,7 +64,7 @@ what the pre-commit hook will do ::
 
     $ git commit -m "test black on one of the regtest"
     Black is installed
-    reformatted /mxg-hpc/users/ssi29/buildtest-framework/tests/test_inspect.py
+    reformatted /mxg-hpc/users/ssi29/buildtest/tests/test_inspect.py
     All done! ✨ 🍰 ✨
     1 file reformatted, 39 files left unchanged.
     [test_black_hook 008fc62] test black on one of the regtest

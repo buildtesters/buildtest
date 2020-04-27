@@ -1,39 +1,45 @@
 """
-BuildConfig: testing functions
-Copyright (c) 2020 Vanessa Sochat.
+BuildspecParser: testing functions
 """
 
 import pytest
 import os
 
-from buildtest.buildsystem.base import BuildConfig
+from buildtest.buildsystem.base import BuildspecParser
 from buildtest.defaults import supported_schemas
 
 here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def test_load_configs():
+def test_BuildspecParser():
 
     # Examples folder
     examples_dir = os.path.join(here, "testdir")
 
     # An empty path evaluated to be a directory should exit
     with pytest.raises(SystemExit) as e_info:
-        BuildConfig("")
+        BuildspecParser("")
 
-    # Test loading config files
-    for config_file in os.listdir(examples_dir):
-        config_file = os.path.join(examples_dir, config_file)
-        bc = BuildConfig(config_file)
+    # Passing 'None' will raise an error
+    with pytest.raises(SystemExit) as e_info:
+        BuildspecParser(None)
+
+    # A directory is not allowed either, this will raise an error.
+    with pytest.raises(SystemExit) as e_info:
+        BuildspecParser(examples_dir)
+
+    # Test loading Buildspec files
+    for buildspec in os.listdir(examples_dir):
+        buildspec = os.path.join(examples_dir, buildspec)
+        bp = BuildspecParser(buildspec)
 
         # The lookup should have the base schema
         # {'script': {'0.0.1': 'script-v0.0.1.schema.json', 'latest': 'script-v0.0.1.schema.json'}}
         for supported_schema in supported_schemas:
-            assert supported_schema in bc.lookup
+            assert supported_schema in bp.lookup
 
-        # The test configs (currently) each have two builders
         # [[builder-script-login_node_check], [builder-script-slurm_check]]
-        builders = bc.get_builders()
+        builders = bp.get_builders()
         assert len(builders) == 2
 
         for builder in builders:

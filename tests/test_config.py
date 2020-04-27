@@ -1,42 +1,47 @@
 import os
 import shutil
-from buildtest.defaults import BUILDTEST_CONFIG_FILE, BUILDTEST_ROOT
+from buildtest.defaults import BUILDTEST_SETTINGS_FILE, BUILDTEST_ROOT
 from buildtest.config import (
-    load_configuration,
-    check_configuration,
-    get_default_configuration,
-    create_config_file,
+    load_settings,
+    check_settings,
+    get_default_settings,
+    create_settings_file,
     init,
 )
+from buildtest.utils.file import is_file, is_dir
 
 
-def test_load_and_check_configuration():
+def test_load_and_check_settings():
 
-    load_configuration(BUILDTEST_CONFIG_FILE)
-    assert os.path.exists(BUILDTEST_CONFIG_FILE)
+    load_settings(BUILDTEST_SETTINGS_FILE)
+    assert os.path.exists(BUILDTEST_SETTINGS_FILE)
 
-    check_configuration()
-
-
-def test_get_default_configuration():
-
-    config_opts = get_default_configuration()
-    assert isinstance(config_opts, dict)
-
-    assert "editor" in config_opts.keys()
-    assert "executors" in config_opts.keys()
+    check_settings()
 
 
-def test_create_config_file():
+def test_get_default_settings():
 
-    os.remove(BUILDTEST_CONFIG_FILE)
-    create_config_file()
-    assert os.path.exists(BUILDTEST_CONFIG_FILE)
+    loaded_settings = get_default_settings()
+    assert isinstance(loaded_settings, dict)
+
+    assert "editor" in loaded_settings.keys()
+    assert "executors" in loaded_settings.keys()
 
 
-def test_init_creation_of_buildtest_dir():
+def test_create_settings_file(tmp_path):
 
-    shutil.rmtree(BUILDTEST_ROOT)
-    init()
-    assert os.path.exists(os.path.join(BUILDTEST_ROOT, "root"))
-    assert os.path.exists(os.path.join(BUILDTEST_ROOT, "site"))
+    settings = os.path.join(tmp_path, "settings.yml")
+    print(f"Creating buildtest settings file: {settings}")
+    create_settings_file(settings)
+    print(f"Checking if file: {settings} is valid")
+    assert is_file(settings)
+
+
+def test_init_creation_of_buildtest_dir(tmp_path):
+
+    settings = os.path.join(tmp_path, "settings.yml")
+    init(settings)
+    print(f"Checking buildtest settings file: {settings}")
+    print(f"Checking if 'site' sub-directory: {os.path.join(tmp_path,'site')} exists")
+    assert is_file(settings)
+    assert is_dir(os.path.join(tmp_path, "site"))

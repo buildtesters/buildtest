@@ -88,10 +88,10 @@ class BuildTestParser:
         ##################### buildtest build     ###########################
 
         parser_build.add_argument(
-            "-c",
-            "--config",
-            help="Specify test configuration file.",
-            metavar="TEST CONFIGURATION",
+            "-b",
+            "--buildspec",
+            help="Specify a Buildspec (YAML) file to build and run the test.",
+            action="append",
         )
 
         parser_build.add_argument(
@@ -110,7 +110,7 @@ class BuildTestParser:
             "-d",
             "--dry",
             help="dry-run mode, buildtest will not write the test scripts but print "
-            "content of test that would be written",
+            "content of test-script that would be written",
             action="store_true",
         )
 

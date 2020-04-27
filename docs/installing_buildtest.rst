@@ -10,47 +10,38 @@ You need the following packages to get started.
 
 - Python >= 3.6
 
-
-The following packages are required for using environment modules:
-
-- Lmod
-
-
-You can install Lmod in RedHat, Centos or Fedora as rpm (i.e ``yum install Lmod``). For Ubuntu you can install Lmod
-by running ``apt-get install lmod``.
-
-If you want to build Lmod from source see `Installing Lmod <https://lmod.readthedocs.io/en/latest/030_installing.html>`_
-
-
 Cloning buildtest
 ------------------
 
 To get started, clone the buildtest repository in your local machine as follows::
 
-    $ git clone https://github.com/HPC-buildtest/buildtest-framework.git
+    $ git clone https://github.com/buildtesters/buildtest.git
 
 If you prefer the SSH method, make sure your GitHub account is configured properly, for more details see
 `Connecting to GitHub with SSH <https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh>`_
 
 Once your account is configured you can clone the repository as follows::
 
-    $ git clone git@github.com:HPC-buildtest/buildtest-framework.git
+    $ git clone git@github.com:buildtesters/buildtest.git
 
 If you prefer the latest code release, please pull the **devel** branch::
 
-    $ git clone -b devel git@github.com:HPC-buildtest/buildtest-framework.git
+    $ git clone -b devel git@github.com:buildtesters/buildtest.git
 
 Or you may switch to the **devel** branch if you already cloned it::
 
     $ git checkout devel
 
-buildtest Dependencies
+Installing buildtest
 -----------------------
 
-Next, we need to install buildtest dependencies from ``docs/requirements.txt`` by running ::
+Depending on your python version, install buildtest as follows::
 
-    $ pip install -r docs/requirements.txt
+    # for site installed python
+    $ python3 setup.py install --user
 
+    # for virtual environment, local install
+    $ python3 setup.py install
 
 You may want to create an isolated python environment of choice depending on your preference you can use any of the following
 
@@ -60,15 +51,13 @@ You may want to create an isolated python environment of choice depending on you
 
 - `pipenv <https://pipenv.readthedocs.io/en/latest/>`_
 
+Development Dependencies (Optional)
+------------------------------------
 
-Depending on your python version, install buildtest::
+If you plan to contribute back to buildtest, you will need to install additional dependencies found in the
+requirements file in ``docs/requirements.txt`` as follows::
 
-    # for site installed python
-    $ python3 setup.py install --user
-
-    # for virtual environment, local install
-    $ python3 setup.py install
-
+    $ pip install -r docs/requirements.txt
 
 Usage (``buildtest --help``)
 ------------------------------

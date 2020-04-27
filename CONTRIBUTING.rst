@@ -9,7 +9,7 @@ If you don't have a GitHub account please `register <http://github.com/join>`_ y
 Fork the repo
 --------------
 
-First, you'll need to fork the repo https://github.com/HPC-buildtest/buildtest-framework
+First, you'll need to fork the repo https://github.com/buildtesters/buildtest
 
 You might need to setup your SSH keys in your git profile if you are using ssh option for cloning. For more details on
 setting up SSH keys in your profile, follow instruction found in
@@ -17,7 +17,7 @@ https://help.github.com/articles/connecting-to-github-with-ssh/
 
 SSH key will help you pull and push to repository without requesting for password for every commit. Once you have forked the repo, clone your local repo::
 
-  git clone git@github.com:YOUR\_GITHUB\_LOGIN/buildtest-framework.git
+  git clone git@github.com:YOUR\_GITHUB\_LOGIN/buildtest.git
 
 
 Adding Upstream Remote
@@ -26,7 +26,7 @@ Adding Upstream Remote
 First you need to add the ``upstream`` repo, to do this you can issue the
 following::
 
- git remote add upstream git@github.com/HPC-buildtest/buildtest-framework.git
+ git remote add upstream git@github.com/buildtesters/buildtest.git
 
 The ``upstream`` tag is used to sync changes from upstream repo to keep your
 repo in sync before you contribute back.
@@ -45,7 +45,7 @@ Sync your branch from upstream
 The ``devel`` from upstream will get Pull Requests from other contributors, in-order
 to sync your forked repo with upstream, run the commands below::
 
- cd buildtest-framework
+ cd buildtest
  git checkout devel
  git fetch upstream devel
  git pull upstream devel
@@ -71,7 +71,7 @@ push to ``master`` or ``devel`` branch on your fork or upstream.
 
 Create a new branch from ``devel`` as follows::
 
-  cd buildtest-framework
+  cd buildtest
   git checkout devel
   git checkout -b featureX
 
@@ -82,7 +82,7 @@ Once you are ready to push to your fork repo do the following::
 
 
 Once the branch is created in your fork, you can create a PR for the ``devel``
-branch for ``upstream`` repo (https://github.com/HPC-buildtest/buildtest-framework)
+branch for ``upstream`` repo (https://github.com/buildtesters/buildtest)
 
 Review
 -------
@@ -194,18 +194,18 @@ The following apps are configured with buildtest.
 
 - **CodeCov** - Codecov provides highly integrated tools to group, merge, archive and compare coverage reports
 
-  - Link: https://codecov.io/gh/HPC-buildtest/buildtest-framework
+  - Link: https://codecov.io/gh/buildtesters/buildtest
 - **GuardRails** - GuardRails provides continuous security feedback for modern development teams
 
-  - Link: https://dashboard.guardrails.io/default/gh/HPC-buildtest
+  - Link: https://dashboard.guardrails.io/default/gh/buildtesters
 
 - **Travis CI** - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted continuous integration system.
 
-  - Link: https://travis-ci.com/HPC-buildtest/buildtest-framework
+  - Link: https://travis-ci.com/buildtesters/buildtest
 
 - **Snyk** - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
 
-  - Link: https://app.snyk.io/org/hpc-buildtest/
+  - Link: https://app.snyk.io/org/buildtesters/
 
 When contributing back to buildtest, please consider checking the following GitHub apps, most important being **Travis-CI**
 as it will test your pull request before merging to ``devel`` branch.
@@ -232,9 +232,9 @@ We have created the tag locally, next we must push the tag to the upstream repo 
 
   git push origin v.1.2.3
 
-Every release must have a release note that is maintained in file `CHANGELOG.rst <https://github.com/HPC-buildtest/buildtest-framework/blob/devel/CHANGELOG.rst>`_
+Every release must have a release note that is maintained in file `CHANGELOG.rst <https://github.com/buildtesters/buildtest/blob/devel/CHANGELOG.rst>`_
 
-Under buildtest `releases <https://github.com/HPC-buildtest/buildtest-framework/releases>`_ a new release can be created that
+Under buildtest `releases <https://github.com/buildtesters/buildtest/releases>`_ a new release can be created that
 corresponds to the git tag. In the release summary, just direct with a message stating **refer to CHANGELOG.rst for more details**
 
 Formatting Code
@@ -244,7 +244,7 @@ buildtest is using `black  <https://github.com/psf/black>`_ to format Python cod
 formatting the entire project so you can focus more time in development. buildtest has a GitHub action trigger in
 ``.github/workflows/black.yml`` that formats code upon **push** and **pull request**.
 
-You can see the status of all GitHub actions at https://github.com/HPC-buildtest/buildtest-framework/actions
+You can see the status of all GitHub actions at https://github.com/buildtesters/buildtest/actions
 
 
 

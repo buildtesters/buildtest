@@ -12,7 +12,7 @@ If you don't have a GitHub account please `register <http://github.com/join>`_ y
 Fork the repo
 --------------
 
-First, you'll need to fork the repo https://github.com/HPC-buildtest/buildtest-framework
+First, you'll need to fork the repo https://github.com/buildtesters/buildtest
 
 You might need to setup your SSH keys in your git profile if you are using ssh option for cloning. For more details on
 setting up SSH keys in your profile, follow instruction found in
@@ -20,7 +20,7 @@ https://help.github.com/articles/connecting-to-github-with-ssh/
 
 SSH key will help you pull and push to repository without requesting for password for every commit. Once you have forked the repo, clone your local repo::
 
-  git clone git@github.com:YOUR\_GITHUB\_LOGIN/buildtest-framework.git
+  git clone git@github.com:YOUR\_GITHUB\_LOGIN/buildtest.git
 
 
 Adding Upstream Remote
@@ -29,7 +29,7 @@ Adding Upstream Remote
 First you need to add the ``upstream`` repo, to do this you can issue the
 following::
 
- git remote add upstream git@github.com/HPC-buildtest/buildtest-framework.git
+ git remote add upstream git@github.com/buildtesters/buildtest.git
 
 The ``upstream`` tag is used to sync changes from upstream repo to keep your
 repo in sync before you contribute back.
@@ -48,7 +48,7 @@ Sync your branch from upstream
 The ``devel`` from upstream will get Pull Requests from other contributors, in-order
 to sync your forked repo with upstream, run the commands below::
 
- cd buildtest-framework
+ cd buildtest
  git checkout devel
  git fetch upstream devel
  git pull upstream devel
@@ -72,7 +72,7 @@ push to ``master`` or ``devel`` branch on your fork or upstream.
 
 Create a new branch from ``devel`` as follows::
 
-  cd buildtest-framework
+  cd buildtest
   git checkout devel
   git checkout -b featureX
 
@@ -83,7 +83,7 @@ Once you are ready to push to your fork repo do the following::
 
 
 Once the branch is created in your fork, you can create a PR for the ``devel``
-branch for ``upstream`` repo (https://github.com/HPC-buildtest/buildtest-framework)
+branch for ``upstream`` repo (https://github.com/buildtesters/buildtest)
 
 Pull Request Review
 --------------------

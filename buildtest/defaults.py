@@ -22,16 +22,16 @@ known_sections = variable_sections + build_sections
 userhome = pwd.getpwuid(os.getuid())[5]
 root = os.path.dirname(os.path.abspath(__file__))
 
-# root of buildtest-framework user home, default shell
+# root of buildtest user home, default shell
 BUILDTEST_ROOT = os.path.join(userhome, ".buildtest")
 BUILDTEST_SHELL = os.environ.get("SHELL", "/bin/bash")
 
 # dictionary used for storing status of builds
-BUILDTEST_CONFIG_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml")
+BUILDTEST_SETTINGS_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml")
 
-# TESTCONFIG_ROOT is the root directory where test configurations are found
-# configs can be specified as full paths or relative to this path
-TESTCONFIG_ROOT = os.path.join(BUILDTEST_ROOT, "site")
-DEFAULT_CONFIG_FILE = os.path.join(root, "settings", "default.yml")
-DEFAULT_CONFIG_SCHEMA = os.path.join(root, "settings", "default.schema.json")
+# BUILDSPEC_DEFAULT_PATH is the root directory where Buildspec are found
+# when using buildtest get to clone a buildtest test repo
+BUILDSPEC_DEFAULT_PATH = os.path.join(BUILDTEST_ROOT, "site")
+DEFAULT_SETTINGS_FILE = os.path.join(root, "settings", "settings.yml")
+DEFAULT_SETTINGS_SCHEMA = os.path.join(root, "settings", "settings.schema.json")
 EDITOR_LIST = ["vim", "emacs", "nano"]

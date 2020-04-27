@@ -12,9 +12,7 @@ After you install buildtest, you should find the client on your path::
       $ which buildtest
       ~/.local/bin/buildtest
 
-
-At this point you've also already configured build test, and are either working
-on a cluster with Lmod or have it installed. As a reminder:
+If you don't see buildtest go back and review section :ref:`Setup`.
 
  - The test directory is where tests will be written, which defaults to ``$HOME/.buildtest/testdir``.
  - You can store tests (that can be referenced with relative paths) under ``$HOME/.buildtest/site``.
@@ -23,261 +21,176 @@ on a cluster with Lmod or have it installed. As a reminder:
 Cloning Tutorials
 -----------------
 
-To get started, let's clone a repository with tutorial tests. Since this is a group of tests,
-we can put it in our tests directory by using the "get" command::
+To get started, let's clone the `tutorials <https://github.com/buildtesters/tutorials>`_ repository provided by buildtest
+using ``buildtest get`` command::
 
-    $ buildtest get https://github.com/HPC-buildtest/tutorials.git
-    Cloning into '/home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials'...
+    $ buildtest get https://github.com/buildtesters/tutorials.git
+    Cloning into '/u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials'...
+    remote: Enumerating objects: 91, done.
+    remote: Counting objects: 100% (91/91), done.
+    remote: Compressing objects: 100% (64/64), done.
+    remote: Total 91 (delta 23), reused 85 (delta 19), pack-reused 0
+    Unpacking objects: 100% (91/91), done.
 
-Which would be equivalent to doing this::
+This is equivalent to doing this::
 
-    $ mkdir -p $HOME/.buildtest/site/github.com/HPC-buildtest
-    $ git clone https://github.com/HPC-buildtest/tutorials.git $HOME/.buildtest/site/github.com/HPC-buildtest/tutorials
+    $ mkdir -p $HOME/.buildtest/site/github.com/buildtesters
+    $ git clone https://github.com/buildtesters/tutorials.git $HOME/.buildtest/site/github.com/buildtesters/tutorials
 
 You can also clone a specific branch::
 
-    $ buildtest get -b add/hello-world-test https://github.com/HPC-buildtest/tutorials.git
+    $ buildtest get -b add/hello-world-test https://github.com/buildtesters/tutorials.git
 
 And in either case, if the folder already exists, you'll be told::
 
-    $ buildtest get https://github.com/HPC-buildtest/tutorials.git
-    /home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials already exists. Remove and try again.
+    $ buildtest get https://github.com/buildtesters/tutorials.git
+    /home/users/vsochat/.buildtest/site/github.com/buildtesters/tutorials already exists. Remove and try again.
 
 The tests are organized by their namespace, meaning that you'll find GitHub repos organized under
 github.com, then the organization or username, and then the repository name.
 
+Building a Test
+----------------
 
-Create a Test Configuration
----------------------------
+The ``buildtest build`` command is used for building a Buildspec. We use the ``-b`` option to select the Buildspec to
+build let's run the following::
 
-We can refer to a config as a relative path to the test config root at ``$HOME/.buildtest/site`` or
-we can provide a relative path to a config file anywhere on our system. Let's start
-with the latter, and change directory to interact with our test configurations::
+    $ buildtest build -b $HOME/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
 
-    $ cd /home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials
+            Discovered Buildspecs
 
-
-Let's take a look at the simplest of examples - a "Hello buildtest" example! This is
-located in ``hello-world``::
-
-    $ cd hello-world
-
-Let's take a quick look at the structure of the folder here::
-
-
-    $ tree
-    .
-    ├── hello.sh.yml
-    └── src
-        └── hello.sh
-
-    1 directory, 2 files
-
-
-The yaml (extension ``yml`` above) files in the root of the folder are test configurations.
-This means that we write here the commands, environment, and other variables that are needed
-for the test. Notice that the naming is in the format of ``[name][language].yml``. We know off
-the bat that this is intended to test a bash script. Let's take a look at the file::
-
-
-    testtype: singlesource
-    scheduler: local
-    description: Hello World buildtest Example
-    maintainer:
-    - vsoch
-
-    program:
-      source: hello.sh
-    
-
-You'll see that most of the file is metadata. The testtype ``singlesource`` is exactly
-what it sounds like - we are going to run a single script, the program ``hello.sh``.
-There are no surprises here::
-
-
-    $ cat src/hello.sh 
-    #!/bin/bash
-
-    printf "Hello buildtest\n"
-
-
-On a high level, the scripts you will run to test and other source files will
-be located in the ``src`` folder of a test root, directly under one or more
-configurations that reference them.
-
-
-Run the Test Configuration
----------------------------
-
-Let's run our test! We could be doing this from a relative path to the test configuration
-file, **or** as a relative path from the root of our testdir at ``$HOME/.buildtest/site``
-For example, either of the two would work in the case of this test::
-
-    $ buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/hello.sh.yml
-    $ buildtest build -c hello.sh.yml
-
-
-**Note** This test is currently expected to work when the recipe types are updated.
-
-Run a Compiler Configuration
-----------------------------
-
-The example above is relatively simple because we don't actually build anything.
-However, buildtest is strongest in it's ability to model compilers and settings.
-For this next example, let's run a configuration intended to test a fortran compiler.
-Since we don't have it on the path, let's load "ifort" with a module::
-
-    $ module load ifort
-
-
-Now let's take at the recipe in the tutorials folder under ``compilers/hello.f.yml``::
-
-
-	testtype: singlesource
-	description: Hello World Fortran example using Intel compiler
-	scheduler: local
-
-	program:
-	  source: hello.f90
-	  compiler: intel
-	  fflags: -O2
-
-	maintainer:
-	- shahzeb siddiqui shahzebmsiddiqui@gmail.com
-
-
-And here is how to run the build, and see the output on the screen::
-
-    $ buildtest build -c compilers/hello.f.yml
-    $ buildtest build -c hello.f.yml
-    ________________________________________________________________________________
-                             build time: 03/01/2020 10:24:04
-                                command: buildtest build -c compilers/hello.f.yml
-                test configuration root: /home/users/vsochat/.buildtest/site
-                     configuration file: hello.f.yml
-                              buildpath: /home/users/vsochat/.buildtest/testdir/build_7
-                                logpath: /home/users/vsochat/.buildtest/testdir/build_7/log/buildtest_10_24_01_03_2020.log
-    ________________________________________________________________________________
+    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
 
 
 
-    STAGE                                    VALUE
-    ________________________________________________________________________________
-    [LOAD CONFIG]                            PASSED
-    [SCHEMA CHECK]                           PASSED
-    [PROGRAM LANGUAGE]                       fortran
-    [COMPILER NAME]                          intel
-    [WRITING TEST]                           PASSED
-    [NUMBER OF TEST]                         1
-    Running All Tests from Test Directory: /home/users/vsochat/.buildtest/testdir/build_7
-    ==============================================================
-                         Test summary
+    Buildspec Name                 SubTest                        Status                         Buildspec Path
+    ________________________________________________________________________________________________________________________
+    systemd                        systemd_default_target         PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
+
+
+    ============================================================
+                            Test summary
+    ============================================================
     Executed 1 tests
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%
 
-We can see the input paths and metadata for the build, along with the various steps (and if they
-were successful) at the bottom. Note that the outputs for our build are in a "build_7" folder
-under our buildest home testdir, we'll be looking at that next.
+Buildtest will discover the Buildspecs specified by ``-b`` option, later you will see you can provide more than one
+Buildspec on the command line. Buildtest will display the Buildspec Name, a Test name, Status of the test, and
+full path to Buildspec file. Finally, buildtest will summarize the test results with list of pass and failed tests.
 
+In the command above we specified an absolute path to a Buildspec, alternately we can specify a relative path from ``site``
+directory to build the test. For example, the above command could be achieved by running::
 
-Inspect Results
----------------
+    buildtest build -b github.com/buildtesters/tutorials/system/systemd.yml
 
-Aside from the terminal print above, we might want to look at results, especially if the
-build is not successful. buildtest by default creates a new build_x directory under
-the buildtest home testdir (defaults to ``$HOME/.buildtest/testdir``) that contains
-a script generated to run the build, a folder for logs, and a folder for run output.::
+Buildtest, will resolve the Buildspec path relative to your working directory, so if you don't like to specify a long path.
+you can ``cd`` into a particular location and build from there. For instance, you can go to the root of **tutorials** repo
+and build your Buildspec as follows::
 
+    cd $HOME/.buildtest/site/github.com/buildtesters/tutorials
+    buildtest build -b system/systemd.yml
 
-    $ tree /home/users/vsochat/.buildtest/testdir/build_7/
-    ├── hello.f.yml.0x741db6a9.sh
-    ├── log
-    │   ├── buildtest_10_23_01_03_2020.log
-    │   └── buildtest_13_49_29_02_2020.log
-    └── run
-        └── buildtest_10_23_01_03_2020.run
+Buildtest supports building multiple Buildspecs, just specify the ``-b`` option for every Buildspec you want to build. For
+example let's build the following::
 
-    2 directories, 4 files
+    $ buildtest build -b system/disk_usage.yml -b system/selinux.yml
 
+            Discovered Buildspecs
 
-If we look in the shell script at the top level, we see exactly what was run.::
-
-
-	#!/bin/bash
-	TESTDIR=/home/users/vsochat/.buildtest/testdir/build_6
-	SRCDIR=/home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials/compilers/src
-	SRCFILE=$SRCDIR/hello.f90
-	FC=ifort
-	FFLAGS="-O2"
-	EXECUTABLE=hello.f.yml.0x741db6a9.exec
-
-	cd $TESTDIR
-	$FC $FFLAGS -o $EXECUTABLE $SRCFILE
-	$EXECUTABLE
-	rm ./$EXECUTABLE
+    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/disk_usage.yml
+    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/selinux.yml
 
 
-And then if we look in the logs directory, we see verbose output for the entire build:: 
 
-	2020-03-01 10:23:39,580 [build.py:58 - func_build_subcmd() ] - [INFO] Creating Directory: /home/users/vsochat/.buildtest/testdir/build_6
-	2020-03-01 10:23:39,581 [build.py:59 - func_build_subcmd() ] - [DEBUG] Current build ID: 6
-	2020-03-01 10:23:39,586 [singlesource.py:410 - __init__() ] - [DEBUG] Source Directory: /home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials/compilers/src
-	2020-03-01 10:23:39,586 [singlesource.py:411 - __init__() ] - [DEBUG] Source File: hello.f90
-	2020-03-01 10:23:39,725 [singlesource.py:705 - build_test_content() ] - [DEBUG] testpath:/home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh
-	2020-03-01 10:23:39,725 [singlesource.py:705 - build_test_content() ] - [DEBUG] shell:['#!/bin/bash']
-	2020-03-01 10:23:39,725 [singlesource.py:705 - build_test_content() ] - [DEBUG] module:None
-	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] metavars:['TESTDIR=/home/users/vsochat/.buildtest/testdir/build_6', 'SRCDIR=/home/users/vsochat/.buildtest/site/github.com/HPC-buildtest/tutorials/compilers/src', 'SRCFILE=$SRCDIR/hello.f90', 'FC=ifort', 'FFLAGS="-O2"', 'EXECUTABLE=hello.f.yml.0x741db6a9.exec']
-	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] envs:[]
-	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] build:['cd $TESTDIR', '$FC $FFLAGS -o $EXECUTABLE $SRCFILE']
-	2020-03-01 10:23:39,726 [singlesource.py:705 - build_test_content() ] - [DEBUG] run:['$EXECUTABLE', 'rm ./$EXECUTABLE']
-	2020-03-01 10:23:39,727 [writer.py:16 - write_test() ] - [INFO] Opening Test File for Writing: /home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh
-	2020-03-01 10:23:39,733 [build.py:115 - func_build_subcmd() ] - [INFO] Reading Build Log File: /home/users/vsochat/.buildtest/var/build.json
-	2020-03-01 10:23:39,734 [build.py:121 - func_build_subcmd() ] - [DEBUG] Adding latest build to dictionary
-	2020-03-01 10:23:39,734 [build.py:122 - func_build_subcmd() ] - [DEBUG] {'TESTS': ['/home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh'], 'TESTDIR': '/home/users/vsochat/.buildtest/testdir/build_6', 'TESTCOUNT': 1, 'CMD': 'buildtest build -c hello.f.yml', 'BUILD_TIME': '03/01/2020 10:23:39', 'LOGFILE': '/home/users/vsochat/.buildtest/testdir/build_6/log/buildtest_10_23_01_03_2020.log'}
-	2020-03-01 10:23:39,734 [build.py:123 - func_build_subcmd() ] - [INFO] Updating Build Log File: /home/users/vsochat/.buildtest/var/build.json
-	2020-03-01 10:23:39,742 [file.py:119 - create_dir() ] - [DEBUG] Creating Directory: /home/users/vsochat/.buildtest/testdir/build_6/run
+    Buildspec Name                 SubTest                        Status                         Buildspec Path
+    ________________________________________________________________________________________________________________________
+    disk_usage                     root_disk_usage                PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/disk_usage.yml
+    selinux                        selinux_disable                PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/selinux.yml
 
 
-And finally,  the output file for the run is located in ``run``. 
-This file can be very important, especially in the case of failed builds. 
-For example, let's say that forgot to load the module "ifort." We would
-have seen this output file instead, along with a failed build message::
-
-	Test Name:/home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh
-	Return Code: 1
-	---------- START OF TEST OUTPUT ---------------- 
-	/home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh: line 10: ifort: command not found
-	/home/users/vsochat/.buildtest/testdir/build_6/hello.f.yml.0x741db6a9.sh: line 11: hello.f.yml.0x741db6a9.exec: command not found
-	rm: cannot remove ‘./hello.f.yml.0x741db6a9.exec’: No such file or directory
-	------------ END OF TEST OUTPUT ---------------- 
-
-Next Steps
-----------
-
-We've just shown you how to target a specific configuration file. In fact, you
-can use ``buildtest build`` to discover more than one configuration file,
-either under a specific directory outside of your buildtest test config directory
-or within it. For example, the following command will find either a ``hello.sh.yml``
-that is located in your present working directory, or the first file named ``hello.sh.yml``
-in your testing root at ``$HOME/.buildtest/site``::
-
-	buildtest build -c hello.sh.yml
-
-The following will target a specific file path under your test config root::
+    ============================================================
+                            Test summary
+    ============================================================
+    Executed 2 tests
+    Passed Tests: 2/2 Percentage: 100.000%
+    Failed Tests: 0/2 Percentage: 0.000%
 
 
-	buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/hello.sh.ym
+buildtest can automatically detect Buildspecs based on filepath and directory so if you know location to where
+Buildspecs are located you can specify a directory. For instance, we can build all Buildspecs in a directory ``system``
+as follows::
+
+    $ buildtest build -b system/
+
+            Discovered Buildspecs
+
+    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/ulimits.yml
+    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/disk_usage.yml
+    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
+    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/selinux.yml
 
 
-If you provide a directory name as a relative path, buildtest will discover all test configurations under it::
+
+    Buildspec Name                 SubTest                        Status                         Buildspec Path
+    ________________________________________________________________________________________________________________________
+    ulimits                        ulimit_filelock                PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/ulimits.yml
+    ulimits                        ulimit_cputime                 PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/ulimits.yml
+    ulimits                        ulimit_stacksize               FAILED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/ulimits.yml
+    disk_usage                     root_disk_usage                PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/disk_usage.yml
+    systemd                        systemd_default_target         PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
+    selinux                        selinux_disable                PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/selinux.yml
 
 
-	buildtest build -c hello-world
+    ============================================================
+                            Test summary
+    ============================================================
+    Executed 6 tests
+    Passed Tests: 5/6 Percentage: 83.333%
+    Failed Tests: 1/6 Percentage: 16.667%
+
+Buildtest will recursively find all ``.yml`` files when you specify a directory and process each Buildspec iteratively. You
+may mix file and directory with ``-b`` option to control what Buildspecs to build.
+
+Buildtest provides ``-x`` option to exclude Buildspecs which can be useful when you want to build in a directory and exclude
+a few Buildspecs. For example we can exclude the failed test ``ulimits.yml`` as follows::
 
 
-And if you provide a relative path under the test config root, that directory will be targeted instead::
+    $ buildtest build -b system/ -x system/ulimits.yml
+
+                Discovered Buildspecs
+
+    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/disk_usage.yml
+    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
+    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/selinux.yml
 
 
-	buildtest build -c github.com/HPC-buildtest/tutorials/hello-world/
+
+    Buildspec Name                 SubTest                        Status                         Buildspec Path
+    ________________________________________________________________________________________________________________________
+    disk_usage                     root_disk_usage                PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/disk_usage.yml
+    systemd                        systemd_default_target         PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
+    selinux                        selinux_disable                PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/selinux.yml
 
 
-And of course you can provide a direct path to a single file, as we showed in the examples above.
+    ============================================================
+                            Test summary
+    ============================================================
+    Executed 3 tests
+    Passed Tests: 3/3 Percentage: 100.000%
+    Failed Tests: 0/3 Percentage: 0.000%
+
+buildtest will discover all Buildspecs defined by ``-b`` option followed by excluding tests that were discovered by option
+``-x``. You can specify ``-x`` multiple times as you like to exclude a file or directory.
+
+For example, we can undo discovery by passing same option to ``-b`` and ``-x``  as follows::
+
+    $ buildtest build -b system/ -x system/
+    There are no Buildspec files to process.
+
+Buildtest will stop immediately if there are no Buildspecs to process, this is true if you were to specify files instead of
+directory.
+
+
+
+

@@ -17,6 +17,7 @@ def build_helper():
         "buildtest show -h",
         "buildtest build -h",
         "buildtest config -h",
+        "buildtest get -h",
     ]
     for cmd in help_cmds:
         out = run(cmd)
@@ -39,7 +40,7 @@ def introspection_cmds():
     queries = [
         "buildtest show schema",
         "buildtest config view",
-        "buildtest config restore",
+        "buildtest config reset",
     ]
 
     for cmd in queries:

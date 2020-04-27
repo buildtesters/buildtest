@@ -1,5 +1,5 @@
 {
-  "$id": "https://HPC-buildtest.github.io/schemas/global/outer.schema.json",
+  "$id": "https://buildtesters.github.io/schemas/global/global.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "BuildTest Wrapper for Test Configurations",
   "type": "object",
