@@ -141,13 +141,19 @@ def resolve_path(path):
 
 
 def read_file(filepath):
-    """ This method provides capability to read a file.
+    """ This method is used to read a file specified by argument ``filepath``. If filepath is not a string we raise
+        an error. We also run ``resolve_path`` to get realpath to file and account for shell or user expansion. The
+        return from ``resolve_path`` will be a valid file or ``None`` so  we check if input is an invalid file.
+        Finally we read the file and return the content of the file as a string.
 
         Parameters:
 
         :param filepath: file name to read
         :type filepath: str, required
-        :return: return content of file
+        :raises:
+          SystemError: If filepath is not a string
+          SystemError: If filepath is not valid file
+        :return: return content of file as a string
         :rtype: str
     """
 
@@ -173,7 +179,11 @@ def read_file(filepath):
 
 
 def write_file(filepath, content):
-    """ This method provides capability to write a file.
+    """ This method is used to write an input ``content`` to a file specified by ``filepath. Both filepath
+        and content must be a str. An error is raised if filepath is not a string or a directory. If ``content``
+        is not a str, we return ``None`` since we can't process the content for writing. Finally, we write the content
+        to file and return. A successful write will return nothing otherwise an exception will occur during the write
+        process.
 
         Parameters:
 
@@ -181,13 +191,18 @@ def write_file(filepath, content):
         :type filepath: str, required
         :param content: content to write to file
         :type content: str, required
+        :raises:
+          SystemError: System error if filepath is not string
+          SystemError: System error if filepath is a directory
+        :return: Return nothing if write is successful. A system error if ``filepath`` is not str or directory. If
+                 argument ``content`` is not str we return ``None``
     """
 
     # ensure filepath is a string, if not we raise an error
     if not isinstance(filepath, str):
         sys.exit(f"Invalid type for file: {filepath} must be of type 'str' ")
 
-    #  if filepath is a directory let's, this is an error
+    #  if filepath is a directory, we raise an exception noting that user must specify a filepath
     if is_dir(filepath):
         sys.exit(f"Detected {filepath} is a directory, please specify a file path.")
 
