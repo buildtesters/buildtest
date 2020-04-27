@@ -2,7 +2,15 @@ import pytest
 import os
 import shutil
 import uuid
-from buildtest.utils.file import is_dir, is_file, create_dir, walk_tree, resolve_path
+from buildtest.utils.file import (
+    is_dir,
+    is_file,
+    create_dir,
+    walk_tree,
+    resolve_path,
+    read_file,
+    write_file,
+)
 from buildtest.exceptions import BuildTestError
 
 here = os.path.dirname(os.path.abspath(__file__))
@@ -78,3 +86,61 @@ def test_walk_tree_invalid_dir(tmp_path):
         f"Returned following files: {list_of_files} with .py extension for path: {tmp_path}"
     )
     assert not list_of_files
+
+
+def test_write_file(tmp_path):
+    input = """This is a 
+    multi-line
+    string"""
+
+    file = os.path.join(tmp_path, "test.txt")
+
+    print(f"Writing content to file: {file}")
+    write_file(file, input)
+
+    print(f"Reading content from file: {file}")
+    content = read_file(file)
+
+    # ensure return type of read_file is a list
+    assert isinstance(content, str)
+    # split origin input by newline to create a list
+
+    # perform a string equality between input content and result of read_file
+    assert input == content
+
+
+def test_write_file_exceptions(tmp_path):
+    input = "hi my name is Bob"
+    file = os.path.join(tmp_path, "name.txt")
+    print(f"Writing content: {input} to file {file}")
+    write_file(file, input)
+
+    # testing invalid type for file stream
+    with pytest.raises(SystemExit) as e_info:
+        print("Passing 'None' as input filestream to write_file")
+        write_file(None, input)
+
+    # testing if directory is passed as filepath, this is also not allowed and expected to raise error
+    with pytest.raises(SystemExit) as e_info:
+        print(f"Passing directory: {tmp_path} as input filestream to write_file")
+        write_file(tmp_path, input)
+
+    # input content must be a string, will return None upon
+    assert not write_file(os.path.join(tmp_path, "null.txt"), ["hi"])
+
+
+def test_read_file(tmp_path):
+    # testing invalid type for read_file, expects of type string. Expected return is 'None'
+    print("Reading file with invalid type, passing 'None'")
+    with pytest.raises(SystemExit) as e_info:
+        read_file(None)
+
+    file = os.path.join(tmp_path, "hello.txt")
+    print(f"Checking {file} is not a file.")
+    # ensure file is not valid
+    assert not is_file(file)
+
+    print(f"Now reading an invalid file: {file}, expecting read_file to return 'None'")
+    # checking invalid file should report an error
+    with pytest.raises(SystemExit) as e_info:
+        read_file(file)

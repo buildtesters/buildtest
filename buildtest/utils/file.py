@@ -1,15 +1,16 @@
 """
 This module provides some generic file and directory level operation that
 include the following:
-1. Check if File and Directory exist
-2. Create File and Directory
-3. Check if string is in file
-4. Walk a directory tree based on single and multiple extension
-5. Strip Hidden file character
+1. Check if path is a File or Directory via is_file(), is_dir()
+2. Create a directory via create_dir()
+3. Walk a directory tree based on single extension using walk_tree()
+4. Resolve path including shell and user expansion along with getting realpath to file using resolve_path()
+5. Read and write a file via read_file(), write_file()
 """
 
 import os
 import logging
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ def is_file(fname):
     :param file: file path
     :type file: str, required
 
-    :return: returns True if file exists otherwise terminates with an exception
+    :return: returns a boolean True/False depending on if input is a valid file.
     :rtype: bool
     """
 
@@ -32,10 +33,7 @@ def is_file(fname):
         return False
 
     # at this stage we know it's a valid file but we don't know if its a file or directory
-    if os.path.isfile(fname):
-        return True
-
-    return False
+    return os.path.isfile(fname)
 
 
 def is_dir(dirname):
@@ -46,7 +44,7 @@ def is_dir(dirname):
        :param dir: directory path
        :type dir: str, required
 
-       :return: returns ``True`` if directory exists otherwise returns ``False``
+       :return: returns a boolean True/False depending on if input is a valid directory.
        :rtype: bool
     """
 
@@ -57,11 +55,8 @@ def is_dir(dirname):
     if not dirname:
         return False
 
-    # at this stage we know it's a valid file but we don't know if its a file or directory
-    if os.path.isdir(dirname):
-        return True
-
-    return False
+    # at this stage we know it's a valid file, so return if file is a directory or not
+    return os.path.isdir(dirname)
 
 
 def walk_tree(root_dir, ext):
@@ -143,3 +138,77 @@ def resolve_path(path):
 
     if os.path.exists(real_path):
         return real_path
+
+
+def read_file(filepath):
+    """ This method is used to read a file specified by argument ``filepath``. If filepath is not a string we raise
+        an error. We also run ``resolve_path`` to get realpath to file and account for shell or user expansion. The
+        return from ``resolve_path`` will be a valid file or ``None`` so  we check if input is an invalid file.
+        Finally we read the file and return the content of the file as a string.
+
+        Parameters:
+
+        :param filepath: file name to read
+        :type filepath: str, required
+        :raises:
+          SystemError: If filepath is not a string
+          SystemError: If filepath is not valid file
+        :return: return content of file as a string
+        :rtype: str
+    """
+
+    # ensure filepath is a string, if not, we raise an error.
+    if not isinstance(filepath, str):
+        sys.exit(f"Invalid type for file: {filepath} must be of type 'str' ")
+
+    input_file = filepath
+    # resolve_path will handle shell and user expansion and account for any symlinks and check for file existence.
+    # if resolve_path does not return gracefully it implies file does not exist and will return None
+    filepath = resolve_path(filepath)
+
+    # if it's invalid file let's raise an error
+    if not filepath:
+        sys.exit(
+            f"Unable to find input file: {input_file}. Please specify a valid file"
+        )
+
+    with open(filepath, "r") as fd:
+        content = fd.read()
+
+    return content
+
+
+def write_file(filepath, content):
+    """ This method is used to write an input ``content`` to a file specified by ``filepath. Both filepath
+        and content must be a str. An error is raised if filepath is not a string or a directory. If ``content``
+        is not a str, we return ``None`` since we can't process the content for writing. Finally, we write the content
+        to file and return. A successful write will return nothing otherwise an exception will occur during the write
+        process.
+
+        Parameters:
+
+        :param filepath: file name to write
+        :type filepath: str, required
+        :param content: content to write to file
+        :type content: str, required
+        :raises:
+          SystemError: System error if filepath is not string
+          SystemError: System error if filepath is a directory
+        :return: Return nothing if write is successful. A system error if ``filepath`` is not str or directory. If
+                 argument ``content`` is not str we return ``None``
+    """
+
+    # ensure filepath is a string, if not we raise an error
+    if not isinstance(filepath, str):
+        sys.exit(f"Invalid type for file: {filepath} must be of type 'str' ")
+
+    #  if filepath is a directory, we raise an exception noting that user must specify a filepath
+    if is_dir(filepath):
+        sys.exit(f"Detected {filepath} is a directory, please specify a file path.")
+
+    # ensure content is of type string
+    if not isinstance(content, str):
+        return None
+
+    with open(filepath, "w") as fd:
+        fd.write(content)
