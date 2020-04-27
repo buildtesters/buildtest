@@ -1,11 +1,11 @@
 """
 This module provides some generic file and directory level operation that
 include the following:
-1. Check if File and Directory exist
-2. Create File and Directory
-3. Check if string is in file
-4. Walk a directory tree based on single and multiple extension
-5. Strip Hidden file character
+1. Check if path is a File or Directory via is_file(), is_dir()
+2. Create a directory via create_dir()
+3. Walk a directory tree based on single extension using walk_tree()
+4. Resolve path including shell and user expansion along with getting realpath to file using resolve_path()
+5. Read and write a file via read_file(), write_file()
 """
 
 import os
@@ -21,7 +21,7 @@ def is_file(fname):
     :param file: file path
     :type file: str, required
 
-    :return: returns True if file exists otherwise terminates with an exception
+    :return: returns a boolean True/False depending on if input is a valid file.
     :rtype: bool
     """
 
@@ -33,10 +33,7 @@ def is_file(fname):
         return False
 
     # at this stage we know it's a valid file but we don't know if its a file or directory
-    if os.path.isfile(fname):
-        return True
-
-    return False
+    return os.path.isfile(fname)
 
 
 def is_dir(dirname):
@@ -47,7 +44,7 @@ def is_dir(dirname):
        :param dir: directory path
        :type dir: str, required
 
-       :return: returns ``True`` if directory exists otherwise returns ``False``
+       :return: returns a boolean True/False depending on if input is a valid directory.
        :rtype: bool
     """
 
@@ -58,11 +55,8 @@ def is_dir(dirname):
     if not dirname:
         return False
 
-    # at this stage we know it's a valid file but we don't know if its a file or directory
-    if os.path.isdir(dirname):
-        return True
-
-    return False
+    # at this stage we know it's a valid file, so return if file is a directory or not
+    return os.path.isdir(dirname)
 
 
 def walk_tree(root_dir, ext):
@@ -168,7 +162,9 @@ def read_file(filepath):
 
     # if it's invalid file let's raise an error
     if not filepath:
-        sys.exit(f"Unable to find input file: {input_file}. Please specify a valid file")
+        sys.exit(
+            f"Unable to find input file: {input_file}. Please specify a valid file"
+        )
 
     with open(filepath, "r") as fd:
         content = fd.read()

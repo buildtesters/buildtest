@@ -117,11 +117,17 @@ def test_write_file_exceptions(tmp_path):
 
     # testing invalid type for file stream
     with pytest.raises(SystemExit) as e_info:
+        print("Passing 'None' as input filestream to write_file")
         write_file(None, input)
 
     # testing if directory is passed as filepath, this is also not allowed and expected to raise error
     with pytest.raises(SystemExit) as e_info:
+        print(f"Passing directory: {tmp_path} as input filestream to write_file")
         write_file(tmp_path, input)
+
+    # input content must be a string, will return None upon
+    assert not write_file(os.path.join(tmp_path, "null.txt"), ["hi"])
+
 
 def test_read_file(tmp_path):
     # testing invalid type for read_file, expects of type string. Expected return is 'None'
