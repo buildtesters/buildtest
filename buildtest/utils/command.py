@@ -56,7 +56,9 @@ class BuildTestCommand:
         cmd = [executable] + args
 
         # open the process for writing
-        process = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        process = subprocess.Popen(
+            cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True
+        )
         returncode = process.poll()
 
         # Iterate through the output
