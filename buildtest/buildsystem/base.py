@@ -247,7 +247,8 @@ class BuilderBase:
             os.getcwd(), ".buildtest", self.config_name
         )
         self.logger = logging.getLogger(__name__)
-
+        self.logger.debug(f"Processing Buildspec: {self.buildspec}")
+        self.logger.debug(f"Processing Buildspec section: {self.name}")
         # A builder is required to define the type attribute
         if not hasattr(self, "type"):
             sys.exit(
@@ -265,6 +266,36 @@ class BuilderBase:
                 "Mismatch in type. Builder expects %s but found %s."
                 % (self.type, self.recipe.get("type"))
             )
+
+        self.shell = self.recipe.get("shell")
+        # if 'shell' key not found in Buildspec, let's set it to BUILDTEST_SHELL and log a message
+        if not self.shell:
+            self.logger.debug(
+                f"shell not found in Buildspec, setting shell to {BUILDTEST_SHELL} "
+            )
+            self.shell = BUILDTEST_SHELL
+
+        self.shell_name = self.shell.split()[0]
+        self.shell_opts = self.shell.split()[1:]
+
+        self.shebang = self.recipe.get("shebang")
+        # if shebang is not found in recipe let's set it to #!/bin/bash
+        if not self.shebang:
+            # when shell: python we set shebang to location of 'python' wrapper
+            if "python" in self.shell_name:
+                self.shebang = "#!" + shutil.which("python")
+            # otherwise we set to #!/bin/bash
+            else:
+                self.shebang = "#!" + BUILDTEST_SHELL
+
+            self.logger.debug(
+                f"shebang not found in Buildspec, setting shebang to {self.shebang} "
+            )
+
+        self.logger.debug(f"shell: {self.shell}")
+        self.logger.debug(f"shell name: {self.shell_name}")
+        self.logger.debug(f"shell opts: {self.shell_opts}")
+        self.logger.debug(f"shebang: {self.shebang}")
 
     def __str__(self):
         return "[builder-%s-%s]" % (self.type, self.name)
@@ -302,10 +333,11 @@ class BuilderBase:
            :rtype: str
         """
 
-        shell = self.get_shell()
-        if "python" in shell:
+        if "python" in self.shell_name:
+            self.logger.debug("Setting test extension to 'py'")
             return "py"
 
+        self.logger.debug("Setting test extension to 'sh'")
         return "sh"
 
     def get_environment(self):
@@ -319,8 +351,7 @@ class BuilderBase:
 
         env = []
         pairs = self.recipe.get("env")
-        shell = self.get_shell()
-
+        shell = self.shell_name
         # If we are using a python shell, we need to import os first
         if "python" in shell:
             env.append("import os")
@@ -393,7 +424,8 @@ class BuilderBase:
                 self.metadata[known_section] = self.recipe.get(known_section)
 
         # Get the shell (sh, bash) for writing testscript. A Buildspec could specify this via ``shell`` key
-        self.metadata["shell"] = self.get_shell()
+        self.metadata["shell"] = self.shell_name
+        self.metadata["shell_opts"] = self.shell_opts
 
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
@@ -498,8 +530,14 @@ class BuilderBase:
         os.chdir(self._get_testdir())
         self.logger.debug(f"Changing to directory {self._get_testdir()}")
 
-        # Run the test file using the shell
-        cmd = [self.get_shell(), testfile]
+        # build the command to run the test-script
+        cmd = []
+        # add the shell (/bin/bash, /bin/sh, sh, bash, python)
+        cmd += [self.shell_name]
+        # add shell opts if set
+        if self.shell_opts:
+            cmd += self.shell_opts
+        cmd += [testfile]
 
         self.logger.debug(f"Running Test via command: {' '.join(cmd)}")
 
@@ -653,13 +691,8 @@ class BuilderBase:
            :rtype: list
         """
 
-        lines = []
-        shell = shutil.which(self.get_shell())
-
-        if not shell:
-            shell = BUILDTEST_SHELL
-
-        lines += [f"#!{shell}"]
+        # start of each test should have the shebang
+        lines = [self.shebang]
 
         # Add environment variables
         lines += self.get_environment()

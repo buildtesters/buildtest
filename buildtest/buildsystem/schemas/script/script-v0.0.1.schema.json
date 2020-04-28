@@ -41,9 +41,9 @@
     },
     "shell": {
       "type": "string",
-      "default": "bash",
-      "description": "The shell interpreter to use."
+      "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*"
     },
+    "shebang": { "type": "string" },
     "pre_run": {
       "type": "string",
       "description": "A script run before the default run using the default shell."
