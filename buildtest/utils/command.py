@@ -1,4 +1,5 @@
 from buildtest.utils.file import read_file
+import os
 import locale
 import subprocess
 import shlex
@@ -9,7 +10,21 @@ import tempfile
 class Capturing:
     """capture output from stdout and stderr into capture object.
        This is based off of github.com/vsoch/gridtest but modified
-       to write files.
+       to write files. The stderr and stdout are set to temporary files at
+       the init of the capture, and then they are closed when we exit. This
+       means expected usage looks like:
+
+       with Capturing() as capture:
+           process = subprocess.POpen(...)
+           
+
+       And then the output and error are retrieved from reading the files:
+       and exposed as properties to the client:
+
+           capture.out
+           capture.err
+
+       And cleanup means deleting these files, if they exist.
     """
 
     def __enter__(self):
@@ -29,13 +44,21 @@ class Capturing:
 
     @property
     def out(self):
+        """Return output stream. Returns empty string if empty or doesn't exist.
+           Returns (str) : output stream written to file
+        """
         if os.path.exists(self.stdout.name):
             return read_file(self.stdout.name)
+        return ""
 
     @property
     def err(self):
+        """Return error stream. Returns empty string if empty or doesn't exist.
+           Returns (str) : error stream written to file
+        """
         if os.path.exists(self.stderr.name):
             return read_file(self.stderr.name)
+        return ""
 
     def cleanup(self):
         for filename in [self.stdout.name, self.stderr.name]:
@@ -110,6 +133,9 @@ class BuildTestCommand:
         # Get the remainder of lines, add return code
         self.out += ["%s\n" % x for x in self.decode(capture.out).split("\n") if x]
         self.err += ["%s\n" % x for x in self.decode(capture.err).split("\n") if x]
+
+        # Cleanup capture files and save final return code
+        capture.cleanup()
         self.returncode = returncode
 
         return (self.out, self.err)
