@@ -281,7 +281,9 @@ class BuilderBase:
 
         # if shell program (bash, sh, python) is not present in system raise an error
         if not shutil.which(self.shell_name):
-            raise BuildTestError(f"Can't find executable {self.shell_name}, please check your $PATH or install the appropriate package")
+            raise BuildTestError(
+                f"Can't find executable {self.shell_name}, please check your $PATH or install the appropriate package"
+            )
 
         self.shebang = self.recipe.get("shebang")
 
