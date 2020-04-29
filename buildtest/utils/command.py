@@ -1,11 +1,10 @@
-from buildtest.utils.file import read_file
 import os
 import locale
 import subprocess
 import shlex
 import shutil
 import tempfile
-
+from buildtest.utils.file import read_file
 
 class Capturing:
     """capture output from stdout and stderr into capture object.
