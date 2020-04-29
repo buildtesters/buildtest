@@ -15,7 +15,7 @@ class Capturing:
        means expected usage looks like:
 
        with Capturing() as capture:
-           process = subprocess.POpen(...)
+           process = subprocess.Popen(...)
            
 
        And then the output and error are retrieved from reading the files:
