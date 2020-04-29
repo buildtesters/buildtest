@@ -25,6 +25,7 @@ from buildtest.defaults import (
     build_sections,
     variable_sections,
 )
+from buildtest.exceptions import BuildTestError
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, is_dir, resolve_path, read_file, write_file
 
@@ -278,7 +279,12 @@ class BuilderBase:
         self.shell_name = self.shell.split()[0]
         self.shell_opts = self.shell.split()[1:]
 
+        # if shell program (bash, sh, python) is not present in system raise an error
+        if not shutil.which(self.shell_name):
+            raise BuildTestError(f"Can't find executable {self.shell_name}, please check your $PATH or install the appropriate package")
+
         self.shebang = self.recipe.get("shebang")
+
         # if shebang is not found in recipe let's set it to #!/bin/bash
         if not self.shebang:
             # when shell: python we set shebang to location of 'python' wrapper
