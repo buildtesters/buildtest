@@ -6,6 +6,7 @@ import shutil
 import tempfile
 from buildtest.utils.file import read_file
 
+
 class Capturing:
     """capture output from stdout and stderr into capture object.
        This is based off of github.com/vsoch/gridtest but modified
