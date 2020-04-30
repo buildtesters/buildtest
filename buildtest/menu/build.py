@@ -189,12 +189,13 @@ def func_build_subcmd(args):
 
     # Load BuildExecutors
     executor = BuildExecutor(config_opts, default=args.executor)
-    print(
-        "{:<30} {:<30} {:<30} {:<30}".format(
-            "Buildspec Name", "SubTest", "Status", "Buildspec Path"
+    if not args.dry:
+        print(
+            "{:<30} {:<30} {:<30} {:<30}".format(
+                "Buildspec Name", "SubTest", "Status", "Buildspec Path"
+            )
         )
-    )
-    print("{:_<120}".format(""))
+        print("{:_<120}".format(""))
     # Process each Buildspec iteratively by parsing using BuildspecParser followed by
     # getting the appropriate builder and invoking the executor instance of type BuildExecutor
     # to run the test
@@ -208,6 +209,7 @@ def func_build_subcmd(args):
 
             # Keep track of total number of tests run
             total_tests += 1
+
             if not args.dry:
                 result = executor.run(builder)
 
