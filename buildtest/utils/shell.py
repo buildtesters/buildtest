@@ -3,7 +3,7 @@ from buildtest.exceptions import BuildTestError
 
 
 class Shell:
-    def __init__(self, shell):
+    def __init__(self, shell="bash"):
         """ The Shell initializer takes an input shell and shell options and split
             string by shell name and options.
 
@@ -22,11 +22,18 @@ class Shell:
         self.name = shell.split()[0]
         self.opts = " ".join(shell.split()[1:])
 
+        path = shutil.which(self.name)
+
+        # raise an exception if shell program is not found
+        if not path:
+            raise BuildTestError(f"Can't find program: {self.name}")
+
     def opts(self, shell_opts):
         """Override the shell options in class attribute, this would be useful
            when shell options need to change due to change in shell program."""
 
         self.opts = shell_opts
+        return self.opts
 
     @property
     def path(self):
