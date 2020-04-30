@@ -20,20 +20,22 @@ class Shell:
             )
 
         self.name = shell.split()[0]
-        self.opts = " ".join(shell.split()[1:])
+        self._opts = " ".join(shell.split()[1:])
+        self.path = self.name
 
-        path = shutil.which(self.name)
+    @property
+    def opts(self):
+        """retrieve the shell opts that are set on init, and updated with setter
+        """
+        return self._opts
 
-        # raise an exception if shell program is not found
-        if not path:
-            raise BuildTestError(f"Can't find program: {self.name}")
-
+    @opts.setter
     def opts(self, shell_opts):
         """Override the shell options in class attribute, this would be useful
-           when shell options need to change due to change in shell program."""
-
-        self.opts = shell_opts
-        return self.opts
+           when shell options need to change due to change in shell program.
+        """
+        self._opts = shell_opts
+        return self._opts
 
     @property
     def path(self):
@@ -52,23 +54,38 @@ class Shell:
            '/usr/bin/sh'
 
         """
+        return self._path
 
-        path = shutil.which(self.name)
+    # Identity functions
+    def __str__(self):
+        return "[buildtest.shell][%s]" % self.name
+
+    def __repr__(self):
+        return self.__str__()
+
+    @path.setter
+    def path(self, name):
+        """If the user provides a new path with a name, do same checks to 
+           ensure that it's found.
+        """
+        path = shutil.which(name)
 
         # raise an exception if shell program is not found
         if not path:
-            raise BuildTestError(f"Can't find program: {self.name}")
+            raise BuildTestError(f"Can't find program: {name}")
+
+        # Update the name not that we are sure path is found
+        self.name = name
+        self._path = path
 
         # shebang is formed by adding the char '#!' with path to program
         self.shebang = f"#!{path}"
-        return path
 
     def get(self):
         """Return shell attributes as a dictionary"""
-
-        self.shell = {}
-        self.shell["name"] = self.name
-        self.shell["opts"] = self.opts
-        self.shell["path"] = self.path
-        self.shell["shebang"] = self.shebang
-        return self.shell
+        return {
+            "name": self.name,
+            "opts": self._opts,
+            "path": self._path,
+            "shebang": self.shebang,
+        }
