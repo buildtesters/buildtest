@@ -28,6 +28,7 @@ from buildtest.defaults import (
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, is_dir, resolve_path, read_file, write_file
+from buildtest.utils.shell import Shell
 
 known_sections = variable_sections + build_sections
 
@@ -267,43 +268,19 @@ class BuilderBase:
                 "Mismatch in type. Builder expects %s but found %s."
                 % (self.type, self.recipe.get("type"))
             )
+        # The default shell will be bash
+        shell = Shell()
+        # if 'shell' key  is defined in Buildspec let's override the default shell
+        if self.recipe.get("shell"):
+            shell = Shell(self.recipe.get("shell"))
 
-        self.shell = self.recipe.get("shell")
-        # if 'shell' key not found in Buildspec, let's set it to BUILDTEST_SHELL and log a message
-        if not self.shell:
-            self.logger.debug(
-                f"shell not found in Buildspec, setting shell to {BUILDTEST_SHELL} "
-            )
-            self.shell = BUILDTEST_SHELL
+        self.shell = shell.get()
 
-        self.shell_name = self.shell.split()[0]
-        self.shell_opts = self.shell.split()[1:]
+        # set shebang to value defined in Buildspec, if not defined then get one from Shell class
+        self.shebang = self.recipe.get("shebang") or self.shell["shebang"]
 
-        # if shell program (bash, sh, python) is not present in system raise an error
-        if not shutil.which(self.shell_name):
-            raise BuildTestError(
-                f"Can't find executable {self.shell_name}, please check your $PATH or install the appropriate package"
-            )
-
-        self.shebang = self.recipe.get("shebang")
-
-        # if shebang is not found in recipe let's set it to #!/bin/bash
-        if not self.shebang:
-            # when shell: python we set shebang to location of 'python' wrapper
-            if "python" in self.shell_name:
-                self.shebang = "#!" + shutil.which("python")
-            # otherwise we set to #!/bin/bash
-            else:
-                self.shebang = "#!" + BUILDTEST_SHELL
-
-            self.logger.debug(
-                f"shebang not found in Buildspec, setting shebang to {self.shebang} "
-            )
-
-        self.logger.debug(f"shell: {self.shell}")
-        self.logger.debug(f"shell name: {self.shell_name}")
-        self.logger.debug(f"shell opts: {self.shell_opts}")
-        self.logger.debug(f"shebang: {self.shebang}")
+        self.logger.debug(f"Shell Details: {self.shell}")
+        self.logger.debug(f"Shebang: {self.shebang}")
 
     def __str__(self):
         return "[builder-%s-%s]" % (self.type, self.name)
@@ -341,7 +318,7 @@ class BuilderBase:
            :rtype: str
         """
 
-        if "python" in self.shell_name:
+        if "python" in self.shell["name"]:
             self.logger.debug("Setting test extension to 'py'")
             return "py"
 
@@ -359,10 +336,7 @@ class BuilderBase:
 
         env = []
         pairs = self.recipe.get("env")
-        shell = self.shell_name
-        # If we are using a python shell, we need to import os first
-        if "python" in shell:
-            env.append("import os")
+        shell = self.shell["name"]
 
         # Parse environment depending on expected shell
         if pairs:
@@ -371,21 +345,12 @@ class BuilderBase:
             if re.search("(bash|sh)$", shell):
                 [env.append("%s=%s" % (k, v)) for k, v in pairs.items()]
 
-            # python interpreter can be a shell
-            elif "python" in shell:
-                [env.append("os.putenv('%s','%s')" % (k, v)) for k, v in pairs.items()]
-
             else:
                 self.logger.warning(
                     f"{shell} is not supported, skipping environment variables."
                 )
 
         return env
-
-    def get_shell(self):
-        """Return the shell defined in the recipe, or default to bash."""
-
-        return self.recipe.get("shell", BUILDTEST_SHELL)
 
     def run_wrapper(func):
         """The run wrapper will execute any prepare_run and finish_run 
@@ -432,8 +397,7 @@ class BuilderBase:
                 self.metadata[known_section] = self.recipe.get(known_section)
 
         # Get the shell (sh, bash) for writing testscript. A Buildspec could specify this via ``shell`` key
-        self.metadata["shell"] = self.shell_name
-        self.metadata["shell_opts"] = self.shell_opts
+        self.metadata["shell"] = self.shell
 
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
@@ -538,18 +502,14 @@ class BuilderBase:
         os.chdir(self._get_testdir())
         self.logger.debug(f"Changing to directory {self._get_testdir()}")
 
-        # build the command to run the test-script
+        # command to run the test
         cmd = []
-        # add the shell (/bin/bash, /bin/sh, sh, bash, python)
-        cmd += [self.shell_name]
-        # add shell opts if set
-        if self.shell_opts:
-            cmd += self.shell_opts
-        cmd += [testfile]
-
-        self.logger.debug(f"Running Test via command: {' '.join(cmd)}")
-
-        command = BuildTestCommand(cmd)
+        # build the run command that includes the shell path, shell options and path to test file
+        cmd += [self.shell["path"], self.shell["opts"], testfile]
+        self.metadata["command"] = " ".join(cmd)
+        self.logger.debug(f"Running Test via command: {self.metadata['command']}")
+        
+        command = BuildTestCommand(self.metadata["command"])
         out, err = command.execute()
 
         # Record the ending time
