@@ -339,16 +339,16 @@ class BuilderBase:
         shell = self.shell.name
 
         # Parse environment depending on expected shell
-        # if pairs:
+        if pairs:
 
-        # Handles bash and sh
-        if re.search("(bash|sh)$", shell):
-            [env.append("%s=%s" % (k, v)) for k, v in pairs.items()]
+            # Handles bash and sh
+            if re.search("(bash|sh)$", shell):
+                [env.append("%s=%s" % (k, v)) for k, v in pairs.items()]
 
-        else:
-            self.logger.warning(
-                f"{shell} is not supported, skipping environment variables."
-            )
+            else:
+                self.logger.warning(
+                    f"{shell} is not supported, skipping environment variables."
+                )
 
         return env
 
@@ -396,6 +396,7 @@ class BuilderBase:
             if known_section in self.recipe:
                 self.metadata[known_section] = self.recipe.get(known_section)
 
+        self.metadata["shell"] = self.shell.name
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
             os.path.join(self.testdir, self.name),
