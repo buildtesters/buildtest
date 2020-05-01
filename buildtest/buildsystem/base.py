@@ -269,18 +269,18 @@ class BuilderBase:
                 % (self.type, self.recipe.get("type"))
             )
         # The default shell will be bash
-        shell = Shell()
-        # if 'shell' key  is defined in Buildspec let's override the default shell
-        if self.recipe.get("shell"):
-            shell = Shell(self.recipe.get("shell"))
-
-        self.shell = shell.get()
+        self.shell = Shell(self.recipe.get("shell", "bash"))
 
         # set shebang to value defined in Buildspec, if not defined then get one from Shell class
-        self.shebang = self.recipe.get("shebang") or self.shell["shebang"]
+        self.shebang = self.recipe.get("shebang") or self.shell.shebang
 
-        self.logger.debug(f"Shell Details: {self.shell}")
-        self.logger.debug(f"Shebang: {self.shebang}")
+        self.logger.debug(f"Shell Details: ")
+        self.logger.debug(f"Shell Name: {self.shell.name}")
+        self.logger.debug(f"Shell Opts: {self.shell.opts}")
+        self.logger.debug(f"Shell Path: {self.shell.path}")
+        self.logger.debug(f"Shell Shebang: {self.shell.shebang}")
+
+        self.logger.debug(f"Shebang used for test: {self.shebang}")
 
     def __str__(self):
         return "[builder-%s-%s]" % (self.type, self.name)
@@ -318,7 +318,7 @@ class BuilderBase:
            :rtype: str
         """
 
-        if "python" in self.shell["name"]:
+        if "python" in self.shell.name:
             self.logger.debug("Setting test extension to 'py'")
             return "py"
 
@@ -335,20 +335,20 @@ class BuilderBase:
         """
 
         env = []
-        pairs = self.recipe.get("env")
-        shell = self.shell["name"]
+        pairs = self.recipe.get("env", [])
+        shell = self.shell.name
 
         # Parse environment depending on expected shell
-        if pairs:
+        # if pairs:
 
-            # Handles bash and sh
-            if re.search("(bash|sh)$", shell):
-                [env.append("%s=%s" % (k, v)) for k, v in pairs.items()]
+        # Handles bash and sh
+        if re.search("(bash|sh)$", shell):
+            [env.append("%s=%s" % (k, v)) for k, v in pairs.items()]
 
-            else:
-                self.logger.warning(
-                    f"{shell} is not supported, skipping environment variables."
-                )
+        else:
+            self.logger.warning(
+                f"{shell} is not supported, skipping environment variables."
+            )
 
         return env
 
@@ -395,9 +395,6 @@ class BuilderBase:
         for known_section in known_sections:
             if known_section in self.recipe:
                 self.metadata[known_section] = self.recipe.get(known_section)
-
-        # Get the shell (sh, bash) for writing testscript. A Buildspec could specify this via ``shell`` key
-        self.metadata["shell"] = self.shell
 
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
@@ -505,7 +502,7 @@ class BuilderBase:
         # command to run the test
         cmd = []
         # build the run command that includes the shell path, shell options and path to test file
-        cmd += [self.shell["path"], self.shell["opts"], testfile]
+        cmd += [self.shell.path, self.shell.opts, testfile]
         self.metadata["command"] = " ".join(cmd)
         self.logger.debug(f"Running Test via command: {self.metadata['command']}")
 

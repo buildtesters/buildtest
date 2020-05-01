@@ -16,7 +16,7 @@ class Capturing:
 
        with Capturing() as capture:
            process = subprocess.Popen(...)
-           
+
 
        And then the output and error are retrieved from reading the files:
        and exposed as properties to the client:
