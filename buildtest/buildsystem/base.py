@@ -508,7 +508,7 @@ class BuilderBase:
         cmd += [self.shell["path"], self.shell["opts"], testfile]
         self.metadata["command"] = " ".join(cmd)
         self.logger.debug(f"Running Test via command: {self.metadata['command']}")
-        
+
         command = BuildTestCommand(self.metadata["command"])
         out, err = command.execute()
 
