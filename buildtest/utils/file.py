@@ -176,7 +176,7 @@ def read_file(filepath):
         with open(filepath, "r") as fd:
             content = fd.read()
     except IOError as err:
-        raise BuildTestError("Failed to read: %s: %s", filepath, err)
+        raise BuildTestError("Failed to read: %s: %s" % (filepath, err))
 
     return content
 
@@ -214,7 +214,7 @@ def write_file(filepath, content):
         return None
 
     try:
-        with open(filepath, "r") as fd:
-            content = fd.write()
+        with open(filepath, "w") as fd:
+            fd.write(content)
     except IOError as err:
-        raise BuildTestError("Failed to write: %s: %s", filepath, err)
+        raise BuildTestError(f"Failed to write: {filepath}: {err}")

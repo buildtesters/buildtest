@@ -93,7 +93,7 @@ def test_write_file(tmp_path):
     multi-line
     string"""
 
-    file = os.path.join(tmp_path, "test.txt")
+    file = os.path.join(tmp_path, "test_write.txt")
 
     print(f"Writing content to file: {file}")
     write_file(file, input)
@@ -125,6 +125,11 @@ def test_write_file_exceptions(tmp_path):
         print(f"Passing directory: {tmp_path} as input filestream to write_file")
         write_file(tmp_path, input)
 
+    print("Writing to '/etc/shadow' will raise an exception BuildTestError")
+    # writing to /etc/shadow will raise an error during write since /etc/shadow will result in Permission Error
+    with pytest.raises(BuildTestError) as e_info:
+        write_file("/etc/shadow", input)
+
     # input content must be a string, will return None upon
     assert not write_file(os.path.join(tmp_path, "null.txt"), ["hi"])
 
@@ -144,3 +149,8 @@ def test_read_file(tmp_path):
     # checking invalid file should report an error
     with pytest.raises(SystemExit) as e_info:
         read_file(file)
+
+    print("Reading '/etc/shadow' will raise an exception BuildTestError")
+    # reading /etc/shadow will raise a Permission error so we catch this exception BuildTestError
+    with pytest.raises(BuildTestError) as e_info:
+        read_file("/etc/shadow")
