@@ -11,6 +11,7 @@ include the following:
 import os
 import logging
 import sys
+from buildtest.exceptions import BuildTestError
 
 logger = logging.getLogger(__name__)
 
@@ -171,9 +172,11 @@ def read_file(filepath):
         sys.exit(
             f"Unable to find input file: {input_file}. Please specify a valid file"
         )
-
-    with open(filepath, "r") as fd:
-        content = fd.read()
+    try:
+        with open(filepath, "r") as fd:
+            content = fd.read()
+    except IOError as err:
+        raise BuildTestError("Failed to read: %s: %s", filepath, err)
 
     return content
 
@@ -210,5 +213,8 @@ def write_file(filepath, content):
     if not isinstance(content, str):
         return None
 
-    with open(filepath, "w") as fd:
-        fd.write(content)
+    try:
+        with open(filepath, "r") as fd:
+            content = fd.write()
+    except IOError as err:
+        raise BuildTestError("Failed to write: %s: %s", filepath, err)
