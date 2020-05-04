@@ -500,10 +500,8 @@ class BuilderBase:
         os.chdir(self._get_testdir())
         self.logger.debug(f"Changing to directory {self._get_testdir()}")
 
-        # command to run the test
-        cmd = []
         # build the run command that includes the shell path, shell options and path to test file
-        cmd += [self.shell.path, self.shell.opts, testfile]
+        cmd = [self.shell.path, self.shell.opts, testfile]
         self.metadata["command"] = " ".join(cmd)
         self.logger.debug(f"Running Test via command: {self.metadata['command']}")
 
