@@ -2,7 +2,7 @@ version: 0.0.1
 
 circle_area:
   type: script
-  shell: python
+  shell: python 
   description: "Calculate circle of area given a radius"
   run: | 
     import math
@@ -10,5 +10,3 @@ circle_area:
     area = math.pi * radius * radius
     print("Circle Radius ", radius)
     print("Area of circle ", area)
-    if True:
-        print("Block")
