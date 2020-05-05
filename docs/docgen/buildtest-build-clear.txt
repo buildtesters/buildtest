@@ -1,2 +1,0 @@
-$ buildtest build --clear
-Clearing Build History

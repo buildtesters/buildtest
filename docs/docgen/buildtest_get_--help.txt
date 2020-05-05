@@ -1,0 +1,8 @@
+$ buildtest get --help
+usage: buildtest [options] [COMMANDS] get [-h] [-b BRANCH] repo
+ positional arguments:
+   repo                  specify github.com or other repository to clone.
+ optional arguments:
+   -h, --help            show this help message and exit
+   -b BRANCH, --branch BRANCH
+                         Clone a particular branch (defaults to master)

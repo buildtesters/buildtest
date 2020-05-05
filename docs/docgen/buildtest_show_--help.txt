@@ -1,0 +1,8 @@
+$ buildtest show --help
+usage: buildtest [options] [COMMANDS] show [-h] {schema} ...
+ optional arguments:
+   -h, --help  show this help message and exit
+ subcommands:
+   buildtest configuration
+   {schema}
+     schema    Display test config schema

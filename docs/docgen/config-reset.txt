@@ -1,0 +1,2 @@
+$ buildtest config reset
+Restoring from default configuration: /mxg-hpc/users/ssi29/buildtest/buildtest/settings/settings.yml

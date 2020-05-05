@@ -1,0 +1,6 @@
+$ buildtest config view
+editor: vi
+ executors:
+   runlocal:
+     type: local
+     description: submit jobs locally
