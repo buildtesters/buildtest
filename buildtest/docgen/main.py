@@ -34,7 +34,7 @@ def run(query):
     cmd = BuildTestCommand(query)
     cmd.execute()
     out = cmd.get_output()
-    out = ' '.join(out)
+    out = " ".join(out)
     return out
 
 
@@ -42,7 +42,7 @@ def introspection_cmds():
     cmd_dict = {
         "config-view.txt": "buildtest config view",
         "config-reset.txt": "buildtest config reset",
-        "script-schema.txt": "buildtest show schema -n script"
+        "script-schema.txt": "buildtest show schema -n script",
     }
 
     for k, v in cmd_dict.items():
@@ -79,4 +79,3 @@ def main():
 if __name__ == "__main__":
     """Entry Point, invoking main() method"""
     main()
-
