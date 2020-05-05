@@ -1,9 +1,0 @@
-$ buildtest config view
-BUILDTEST_MODULEPATH: []
-EDITOR: vim
-build:
-  module:
-    purge:
-      force: false
-  testdir: /tmp/$USER/buildtest
-

@@ -1,0 +1,7 @@
+$ buildtest show schema --help
+usage: buildtest [options] [COMMANDS] show schema [-h] [-v VERSION] [-n NAME]
+ optional arguments:
+   -h, --help            show this help message and exit
+   -v VERSION, --version VERSION
+                         choose a specific version of schema to show.
+   -n NAME, --name NAME  show schema by name (e.g., script)

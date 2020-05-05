@@ -8,6 +8,7 @@ Submodules
 
    buildtest.utils.command
    buildtest.utils.file
+   buildtest.utils.shell
 
 Module contents
 ---------------

@@ -37,43 +37,22 @@ This is equivalent to doing this::
     $ mkdir -p $HOME/.buildtest/site/github.com/buildtesters
     $ git clone https://github.com/buildtesters/tutorials.git $HOME/.buildtest/site/github.com/buildtesters/tutorials
 
-You can also clone a specific branch::
+For more details see :ref:`buildtest_get`
 
-    $ buildtest get -b add/hello-world-test https://github.com/buildtesters/tutorials.git
+Build Usage
+------------
 
-And in either case, if the folder already exists, you'll be told::
+The ``buildtest build`` command is used for building and running tests. Buildtest will read one or more Buildspecs (YAML)
+file that adheres to one of the buildtest schemas. For a complete list of build options, run ``buildtest build --help``
 
-    $ buildtest get https://github.com/buildtesters/tutorials.git
-    /home/users/vsochat/.buildtest/site/github.com/buildtesters/tutorials already exists. Remove and try again.
-
-The tests are organized by their namespace, meaning that you'll find GitHub repos organized under
-github.com, then the organization or username, and then the repository name.
+.. program-output:: cat docgen/buildtest_build_--help.txt
 
 Building a Test
 ----------------
 
-The ``buildtest build`` command is used for building a Buildspec. We use the ``-b`` option to select the Buildspec to
-build let's run the following::
+To build a test, we use the ``-b`` option to select the Buildspec to build let's run the following
 
-    $ buildtest build -b $HOME/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
-
-            Discovered Buildspecs
-
-    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
-
-
-
-    Buildspec Name                 SubTest                        Status                         Buildspec Path
-    ________________________________________________________________________________________________________________________
-    systemd                        systemd_default_target         PASSED                         /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
-
-
-    ============================================================
-                            Test summary
-    ============================================================
-    Executed 1 tests
-    Passed Tests: 1/1 Percentage: 100.000%
-    Failed Tests: 0/1 Percentage: 0.000%
+.. program-output:: cat docgen/gettingstarted-example1.txt
 
 Buildtest will discover the Buildspecs specified by ``-b`` option, later you will see you can provide more than one
 Buildspec on the command line. Buildtest will display the Buildspec Name, a Test name, Status of the test, and
