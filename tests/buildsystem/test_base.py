@@ -8,13 +8,13 @@ import os
 from buildtest.buildsystem.base import BuildspecParser
 from buildtest.defaults import supported_schemas
 
-here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def test_BuildspecParser():
 
     # Examples folder
-    examples_dir = os.path.join(here, "testdir")
+    examples_dir = os.path.join(testroot, "examples", "buildspecs")
 
     # An empty path evaluated to be a directory should exit
     with pytest.raises(SystemExit) as e_info:
@@ -38,9 +38,7 @@ def test_BuildspecParser():
         for supported_schema in supported_schemas:
             assert supported_schema in bp.lookup
 
-        # [[builder-script-login_node_check], [builder-script-slurm_check]]
         builders = bp.get_builders()
-        assert len(builders) == 2
 
         for builder in builders:
 
@@ -50,9 +48,8 @@ def test_BuildspecParser():
 
             # Manually run prepare_run to define the above (this is usually handled by run)
             builder.prepare_run()
-
-            for key in ["shell"]:
-                assert key in builder.metadata
+            for k in ["testpath", "testdir", "start_time"]:
+                assert k in builder.metadata
             assert builder.build_id
 
             # If recipe had sections for pre_run, post_run, shell, they would be added here as well

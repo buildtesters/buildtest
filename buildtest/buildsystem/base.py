@@ -9,7 +9,6 @@ import datetime
 import logging
 import os
 import re
-import shutil
 import stat
 import sys
 
@@ -20,17 +19,10 @@ from buildtest.buildsystem.schemas.utils import (
     get_schemas_available,
     here,
 )
-from buildtest.defaults import (
-    BUILDTEST_SHELL,
-    build_sections,
-    variable_sections,
-)
-from buildtest.exceptions import BuildTestError
+
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, is_dir, resolve_path, read_file, write_file
 from buildtest.utils.shell import Shell
-
-known_sections = variable_sections + build_sections
 
 
 class BuildspecParser:
@@ -376,7 +368,7 @@ class BuilderBase:
         if hasattr(self, "_finish_run"):
             self._finish_run()
 
-    def prepare_run(self, testdir=None):
+    def prepare_run(self):
         """Prepare run provides shared functions to set up metadata and
            class data structures that are used by both run and dry_run
            This section cannot be reached without a valid, loaded recipe.
@@ -389,14 +381,10 @@ class BuilderBase:
         self.history = {}
         self.history["TESTS"] = []
 
-        # Metadata includes known sections in a Buildspec (pre/post_run, env)
+        # Metadata includes known sections in a Buildspec
         # These should all be validated for type, format, by the Buildspec schema
         self.metadata = {}
-        for known_section in known_sections:
-            if known_section in self.recipe:
-                self.metadata[known_section] = self.recipe.get(known_section)
 
-        self.metadata["shell"] = self.shell.name
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
             os.path.join(self.testdir, self.name),
@@ -411,9 +399,6 @@ class BuilderBase:
         # If the subclass has a _prepare_run class, honor it
         if hasattr(self, "_prepare_run"):
             self._prepare_run()
-
-        # pre_build, build, post_build, pre_run, run, post_run, env and shell
-        # are already both added to metadata
 
     @run_wrapper
     def run(self):
@@ -430,23 +415,6 @@ class BuilderBase:
         testfile = self._write_test()
         result = self.run_tests(testfile)
         return result
-
-    def check_returncode(self, recipe_returncode, result_returncode):
-        """ This method checks if return code from Buildspec recipe matches
-            return code from test. The return type is a bool either 'True'/'False'
-            depending if the return codes match
-
-            Parameters:
-
-            :param recipe_returncode: return code specified in recipe
-            :type recipe_returncode: int, required
-            :param result_returncode: return code from test
-            :type result_returncode: int, required
-            :return: A boolean return True/False based on conditional equality
-            :rtype: bool
-        """
-
-        return recipe_returncode == result_returncode
 
     def check_regex(self, regex):
         """ This method conducts a regular expression check using 're.search' with regular
@@ -553,11 +521,8 @@ class BuilderBase:
                     "Status Return Code: %s   Result Return Code: %s"
                     % (status["returncode"], result["RETURN_CODE"])
                 )
-                # self.check_returncode checks if test returncode matches returncode specified in Buildspec.
-                # The return value is a bool
-                returncode_match = self.check_returncode(
-                    status["returncode"], result["RETURN_CODE"]
-                )
+                # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
+                returncode_match = status["returncode"] == result["RETURN_CODE"]
 
             if "regex" in status:
                 self.logger.debug("Conducting Regular Expression check")
@@ -612,7 +577,7 @@ class BuilderBase:
         """
 
         # Dry run just prints the testing script
-        lines = self._get_test_lines()
+        lines = self._build_testcontent()
         print("\n".join(lines))
 
     def _generate_build_id(self):
@@ -626,7 +591,7 @@ class BuilderBase:
 
         # If no lines provided, generate
         if not lines:
-            lines = self._get_test_lines()
+            lines = self._build_testcontent()
 
         # '$HOME/.buildtest/testdir/<name>/<name>_<timestamp>.sh'
         # This will put output (latest run) in same directory - do we want this?
@@ -648,8 +613,19 @@ class BuilderBase:
         )
         return testpath
 
-    def _get_test_lines(self):
-        """Given test metadata, get test lines to write to file or show.
+    def _build_testcontent(self):
+        """Build the testcript content implemented in each subclass"""
+        pass
+
+
+class ScriptBuilder(BuilderBase):
+    type = "script"
+    known_sections = ["type", "run"]
+
+    def _build_testcontent(self):
+        """This method builds the testscript content based on the builder type. For ScriptBuilder we
+           need to add the shebang, environment variables and the run section. Environment variables are
+           declared first followed by run section
 
            :return: return content of test script
            :rtype: list
@@ -660,14 +636,7 @@ class BuilderBase:
 
         # Add environment variables
         lines += self.get_environment()
-
-        # Add lines from each build section
-        for section in build_sections:
-            if section in self.metadata:
-                lines += [self.metadata.get(section)] or []
+        # Add run section
+        lines += [self.recipe.get("run")]
 
         return lines
-
-
-class ScriptBuilder(BuilderBase):
-    type = "script"
