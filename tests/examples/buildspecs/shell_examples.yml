@@ -1,0 +1,33 @@
+version: 0.0.1
+
+_bin_sh_shell:
+  type: script
+  description: "/bin/sh shell example"
+  shell: /bin/sh
+  run: "bzip2 --help"
+
+_bin_bash_shell:
+  type: script
+  description: "/bin/bash shell example"
+  shell: /bin/bash
+  run: "bzip2 -h"
+
+bash_shell:
+  type: script
+  description: "bash shell example"
+  shell: bash
+  run: "echo $SHELL"
+
+sh_shell:
+  type: script
+  description: "sh shell example"
+  shell: sh
+  run: "echo $SHELL"
+
+shell_options:
+  type: script
+  description: "shell options"
+  shell: "sh -x"
+  run: |
+    echo $SHELL
+    hostname

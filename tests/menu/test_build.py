@@ -10,14 +10,18 @@ root = os.path.dirname(test_root)
 def test_discover_buildspecs():
 
     # testing single file
-    buildspec = os.path.join(test_root, "testdir", "slurm-hello.yml")
+    buildspec_dir = os.path.join(test_root, "examples", "buildspecs")
+
+    # test single buildspec file
+    buildspec = os.path.join(buildspec_dir, "environment.yml")
+    # check file exists before sending to discover_buildspecs
+    assert buildspec
     buildspec_files = discover_buildspecs(buildspec)
 
     assert isinstance(buildspec_files, list)
     assert buildspec in buildspec_files
 
     # testing with directory
-    buildspec_dir = os.path.join(test_root, "testdir")
     buildspec_files = discover_buildspecs(buildspec_dir)
 
     assert isinstance(buildspec_files, list)
