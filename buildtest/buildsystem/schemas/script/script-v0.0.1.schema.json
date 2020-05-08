@@ -16,14 +16,6 @@
       "type": "string",
       "description": "A description for the build recipe."
     },
-    "maintainers": {
-      "type": "array",
-      "description": "One or more maintainers or aliases",
-      "minItems": 1,
-      "items": {
-        "type": "string"
-      }
-    },
     "env": {
       "type": "object",
       "description": "One or more key value pairs for an environment (key=value)",
@@ -44,17 +36,9 @@
       "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*"
     },
     "shebang": { "type": "string" },
-    "pre_run": {
-      "type": "string",
-      "description": "A script run before the default run using the default shell."
-    },
     "run": {
       "type": "string",
       "description": "A script to run using the default shell."
-    },
-    "post_run": {
-      "type": "string",
-      "description": "A script run after the default run using the default shell."
     },
     "status": {
       "type": "object",

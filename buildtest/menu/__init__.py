@@ -6,6 +6,7 @@ interact with a global configuration for buildtest.
 import argparse
 
 from buildtest import BUILDTEST_VERSION
+from buildtest.defaults import supported_schemas
 from buildtest.menu.build import func_build_subcmd
 from buildtest.menu.get import func_get_subcmd
 from buildtest.menu.config import (
@@ -183,6 +184,17 @@ class BuildTestParser:
             "-v", "--version", help="choose a specific version of schema to show.",
         )
         parser_schema.add_argument(
-            "-n", "--name", help="show schema by name (e.g., script)",
+            "-n",
+            "--name",
+            help="show schema by name (e.g., script)",
+            choices=supported_schemas,
+        )
+        # can't use attribute args.global so setting dest=main for argparse
+        parser_schema.add_argument(
+            "-g",
+            "--global",
+            dest="main",
+            help="show global schema",
+            action="store_true",
         )
         parser_schema.set_defaults(func=show_schema_layout)
