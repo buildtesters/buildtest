@@ -23,22 +23,18 @@ def show_schema_layout(args):
        :result: output of json schema on console
     """
 
-    # implements ``buildtest show schema --global``. Since we can't use args.global we set this to main
-    if args.main:
-        global_schema = os.path.join(here, "global.schema.json")
-        # check if file exists
-        assert global_schema
-        recipe = load_schema(global_schema)
-        print(json.dumps(recipe, indent=2))
-        return
+    # implements buildtest show schema --global
+    if args._global:
+        schema = os.path.join(here, "global.schema.json")
+    # implements buildtest show schema --name
+    elif args.name:
+        schema = get_schemas_available()[args.name]
+        version = args.version or "latest"
 
-    # section below implements ``buildtest show schema --name``
-    schema = get_schemas_available()[args.name]
-    version = args.version or "latest"
+        if version not in schema:
+            print("Warning, %s is not a known version, showing latest." % version)
 
-    if version not in schema:
-        print("Warning, %s is not a known version, showing latest." % version)
+        schema = get_schema_fullpath(schema.get(version, schema.get("latest")))
 
-    schema = get_schema_fullpath(schema.get(version, schema.get("latest")))
-    schema = load_schema(schema)
-    print(json.dumps(schema, indent=2))
+    recipe = load_schema(schema)
+    print(json.dumps(recipe, indent=2))

@@ -189,11 +189,10 @@ class BuildTestParser:
             help="show schema by name (e.g., script)",
             choices=supported_schemas,
         )
-        # can't use attribute args.global so setting dest=main for argparse
         parser_schema.add_argument(
             "-g",
             "--global",
-            dest="main",
+            dest="_global",
             help="show global schema",
             action="store_true",
         )
