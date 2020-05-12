@@ -1,0 +1,50 @@
+{
+  "$id": "https://buildtesters.github.io/schemas/compiler/compiler-v0.0.1.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BuildTest Schema for compiler",
+  "type": "object",
+  "required": ["type", "compiler"],
+  "propertyNames": {
+    "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+  },
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^compiler$"
+    },
+    "description": {
+      "type": "string"
+    },
+    "module": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "compiler": {
+      "type": "object",
+      "properties": {
+        "source": { "type": "string" },
+        "gnu": { "$ref": "#/definitions/compiler" },
+        "intel": { "$ref": "#/definitions/compiler" }
+      },
+      "oneOf": [
+        { "required": ["source","gnu"] },
+        { "required": ["source","intel"] }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "definitions": {
+    "compiler": {
+      "type": "object",
+      "properties": {
+        "cflags": {"type":  "string"},
+        "cxxflags": {"type":  "string"},
+        "fflags": {"type":  "string"},
+        "cppflags": {"type":  "string"},
+        "ldflags": {"type": "string"},
+        "exec_args": {"type": "string"}
+      }
+    }
+  }
+}

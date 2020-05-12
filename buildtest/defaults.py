@@ -9,7 +9,7 @@ import os
 logID = "buildtest"
 
 # each has a subfolder in buildtest/buildsystem/schemas/ with *.schema.json
-supported_schemas = ["script"]
+supported_schemas = ["script", "compiler"]
 
 # Get user home based on effective uid, root of install to copy files
 userhome = pwd.getpwuid(os.getuid())[5]
