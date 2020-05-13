@@ -647,31 +647,54 @@ class ScriptBuilder(BuilderBase):
 
 class CompilerBuilder(BuilderBase):
     type = "compiler"
-    c_exts = [".c"]
-    cplus_exts = [".cc", ".cxx", ".cpp", ".c++", ".C"]
-    fortran_exts = [
-        ".f90",
-        ".f95",
-        ".f03",
-        ".f",
-        ".F",
-        ".F90",
-        ".FPP",
-        ".FOR",
-        ".FTN",
-        ".for",
-        ".ftn",
-    ]
-    cc = ""
-    cxx = ""
-    fc = ""
-    ldflags = ""
-    cflags = ""
-    cxxflags = ""
-    fflags = ""
-    cppflags = ""
+
+    # Fortran Extensions Links:
+    # https://software.intel.com/content/www/us/en/develop/documentation/fortran-compiler-developer-guide-and-reference/top/compiler-setup/using-the-command-line/understanding-file-extensions.html
+    # Fortran Extensions: http://fortranwiki.org/fortran/show/File+extensions
+    lang_ext_table = {
+        ".c": "C",
+        ".cc": "C++",
+        ".cxx": "C++",
+        ".cpp": "C++",
+        ".c++": "C++",
+        ".f90": "Fortran",
+        ".F90": "Fortran",
+        ".f95": "Fortran",
+        ".f03": "Fortran",
+        ".f": "Fortran",
+        ".F": "Fortran",
+        ".FOR": "Fortran",
+        ".for": "Fortran",
+        ".FTN": "Fortran",
+        ".ftn": "Fortran",
+    }
+    # compiler table based on Language types
+    compiler_table = {
+        "gnu": {"C": "gcc", "C++": "g++", "Fortran": "gfortran"},
+        "intel": {"C": "icc", "C++": "icpc", "Fortran": "ifort"},
+        "pgi": {"C": "pgcc", "C++": "pgc++", "Fortran": "pgfortran"},
+        "cray": {"C": "cc", "C++": "CC", "Fortran": "ftn"},
+    }
+
+    cc = None
+    cxx = None
+    fc = None
+    ldflags = None
+    cflags = None
+    cxxflags = None
+    fflags = None
+    cppflags = None
 
     def _build_testcontent(self):
+        """This method will build the test content from a Buildspec that uses compiler schema. We need a 'compiler'
+           and 'source' key which specifies the source files to compile. We resolve the source file path which can
+           be an absolute value or relative path with respect to Buildspec. The file extension of sourcefile is used
+           to detect the Programming Language which is used to lookup the compiler wrapper based on Language + Compiler.
+           During compiler detection, we set class variables ``self.cc``, ``self.cxx``. ``self.fc``, ``self.cflags``,
+           ``self.cxxflags``, ``self.fflags``, ``self.cppflags``. ``self.ldflags``. Finally we generate the compile
+           command and add each instruction to ``lines`` which contains content of test. Upon completion, we return
+           a list that contains content of the test.
+        """
 
         self.compiler_recipe = self.recipe.get("compiler")
         sourcefile = self.compiler_recipe["source"]
@@ -711,10 +734,15 @@ class CompilerBuilder(BuilderBase):
         # add compile command to test
         lines.append(" ".join(cmd))
 
-        run = [self.executable]
-        # if 'exec_opts' defined add this to run line
-        if "exec_opts" in self.compiler_recipe[self.compiler_name]:
-            run.append(self.compiler_recipe[self.compiler_name]["exec_opts"])
+        # build run command that launches generated executable. Format: <exec> <args>
+        # if 'exec_args' is not defined it will return 'None' which means no arguments to be passed when running executable
+        run = [
+            self.executable,
+            self.compiler_recipe[self.compiler_name].get("exec_args"),
+        ]
+
+        # remove 'None' in case 'exec_args' is not defined in Buildspec
+        run = list(filter(None, run))
 
         # add run line to test
         lines.append(" ".join(run))
@@ -732,47 +760,38 @@ class CompilerBuilder(BuilderBase):
         # variable used to store name of Programming Language (C, C++, Fortran)
         self.lang = None
 
-        # Get Program Language based on file extension
-        if ext in self.c_exts:
-            self.lang = "C"
-        elif ext in self.cplus_exts:
-            self.lang = "C++"
-        elif ext in self.fortran_exts:
-            self.lang = "Fortran"
-        else:
+        # if ext not in lang_ext_table then raise an error. This table consist of all file extensions that map to a Programming Language
+        if ext not in self.lang_ext_table:
             raise BuildTestError(
                 f"Unable to detect Program Language based on extension: {ext} in file {sourcefile}"
             )
+        # Set Programming Language based on ext. Programming Language could be (C, C++, Fortran)
+        self.lang = self.lang_ext_table[ext]
 
-        # Detect compiler based on Program Language and Compiler Name
-        if self.lang == "Fortran" and self.compiler_name == "gnu":
-            self.fc = "gfortran"
-        elif self.lang == "Fortran" and self.compiler_name == "intel":
-            self.fc = "ifort"
-        elif self.lang == "C++" and self.compiler_name == "gnu":
-            self.cxx = "g++"
-        elif self.lang == "C++" and self.compiler_name == "intel":
-            self.cxx = "icpc"
-        elif self.lang == "C" and self.compiler_name == "gnu":
-            self.cc = "gcc"
-        elif self.lang == "C" and self.compiler_name == "intel":
-            self.cc = "icc"
+        if self.lang == "C":
+            self.cc = self.compiler_table[self.compiler_name].get(self.lang)
+        elif self.lang == "C++":
+            self.cxx = self.compiler_table[self.compiler_name].get(self.lang)
+        elif self.lang == "Fortran":
+            self.fc = self.compiler_table[self.compiler_name].get(self.lang)
 
-        # Set LDFLAGS, CPPFLAGS, CFLAGS, CXXFLAGS, FFLAGS if defined in Buildspec
-        if "ldflags" in self.compiler_recipe[self.compiler_name]:
-            self.ldflags = self.compiler_recipe[self.compiler_name]["ldflags"]
+        # if we fail to set any C, C++, Fortran compiler we raise an error since we can't proceed
+        if not any([self.cc, self.cxx, self.fc]):
 
-        if "cppflags" in self.compiler_recipe[self.compiler_name]:
-            self.cppflags = self.compiler_recipe[self.compiler_name]["cppflags"]
+            print("{:>15} | {:<10}".format("Extension", "Programming Language"))
+            print("{:_<60}".format(""))
+            for k, v in self.lang_ext_table.items():
+                print("{:>15} | {:<10}".format(k, v))
 
-        if "cflags" in self.compiler_recipe[self.compiler_name]:
-            self.cflags = self.compiler_recipe[self.compiler_name]["cflags"]
+            raise BuildTestError(
+                "Fail to set any C, C++, or Fortran compiler. Please check if you have valid file extension or select the appropriate compiler"
+            )
 
-        if "cxxflags" in self.compiler_recipe[self.compiler_name]:
-            self.cxxflags = self.compiler_recipe[self.compiler_name]["cxxflags"]
-
-        if "fflags" in self.compiler_recipe[self.compiler_name]:
-            self.fflags = self.compiler_recipe[self.compiler_name]["fflags"]
+        # Set ldflags, cppflags, cflags, cxxflags, fflags if defined in Buildspec
+        self.ldflags = self.compiler_recipe[self.compiler_name].get("ldflags")
+        self.cppflags = self.compiler_recipe[self.compiler_name].get("cppflags")
+        self.cflags = self.compiler_recipe[self.compiler_name].get("cflags")
+        self.fflags = self.compiler_recipe[self.compiler_name].get("fflags")
 
     def generate_compile_cmd(self):
         """This method generates the compilation line and returns the output as a list. The compilation line depends
@@ -815,5 +834,5 @@ class CompilerBuilder(BuilderBase):
                 self.source,
                 self.ldflags,
             ]
-
-        return cmd
+        # remove any None from list
+        return list(filter(None, cmd))

@@ -25,11 +25,15 @@
       "properties": {
         "source": { "type": "string" },
         "gnu": { "$ref": "#/definitions/compiler" },
-        "intel": { "$ref": "#/definitions/compiler" }
+        "intel": { "$ref": "#/definitions/compiler" },
+        "pgi": { "$ref": "#/definitions/compiler" },
+        "cray": { "$ref": "#/definitions/compiler" }
       },
       "oneOf": [
         { "required": ["source","gnu"] },
-        { "required": ["source","intel"] }
+        { "required": ["source","intel"] },
+        { "required": ["source","pgi"] },
+        { "required": ["source","cray"] }
       ],
       "additionalProperties": false
     }
