@@ -9,6 +9,7 @@ import datetime
 import logging
 import os
 import re
+import shutil
 import stat
 import sys
 
@@ -668,13 +669,6 @@ class CompilerBuilder(BuilderBase):
         ".FTN": "Fortran",
         ".ftn": "Fortran",
     }
-    # compiler table based on Language types
-    compiler_table = {
-        "gnu": {"C": "gcc", "C++": "g++", "Fortran": "gfortran"},
-        "intel": {"C": "icc", "C++": "icpc", "Fortran": "ifort"},
-        "pgi": {"C": "pgcc", "C++": "pgc++", "Fortran": "pgfortran"},
-        "cray": {"C": "cc", "C++": "CC", "Fortran": "ftn"},
-    }
 
     cc = None
     cxx = None
@@ -715,12 +709,40 @@ class CompilerBuilder(BuilderBase):
         self.executable = "%s.exe" % os.path.basename(self.source)
 
         self.compiler_name = None
-        if "gnu" in self.compiler_recipe:
-            self.compiler_name = "gnu"
-        elif "intel" in self.compiler_recipe:
-            self.compiler_name = "intel"
+        self.lang = self.detect_lang(self.source)
 
-        self.detect_compiler(self.source)
+        # Get GNU Compiler if 'gnu' defined in compiler properties.
+        if self.compiler_recipe.get("gnu"):
+            self.compiler_name = "gnu"
+            gnu = GNUCompiler()
+            # get_compilers() will return a list that returns C, C++, and Fortran GNU wrapper
+            self.cc, self.cxx, self.fc = gnu.get_compilers()
+
+        # Get Intel Compiler
+        elif self.compiler_recipe.get("intel"):
+            self.compiler_name = "intel"
+            intel = IntelCompiler()
+            self.cc, self.cxx, self.fc = intel.get_compilers()
+
+        # Get PGI Compiler
+        elif self.compiler_recipe.get("pgi"):
+            self.compiler_name = "pgi"
+            pgi = PGICompiler()
+            self.cc, self.cxx, self.fc = pgi.get_compilers()
+
+        # Get Cray Compiler
+        elif self.compiler_recipe.get("cray"):
+            self.compiler_name = "cray"
+            cray = CrayCompiler()
+            self.cc, self.cxx, self.fc = cray.get_compilers()
+
+        # Set ldflags, cppflags, cflags, cxxflags, fflags if defined in Buildspec
+        self.ldflags = self.compiler_recipe[self.compiler_name].get("ldflags")
+        self.cppflags = self.compiler_recipe[self.compiler_name].get("cppflags")
+        self.cflags = self.compiler_recipe[self.compiler_name].get("cflags")
+        self.fflags = self.compiler_recipe[self.compiler_name].get("fflags")
+        self.cxxflags = self.compiler_recipe[self.compiler_name].get("cxxflags")
+
         cmd = self.generate_compile_cmd()
 
         # every test starts with shebang line
@@ -746,52 +768,21 @@ class CompilerBuilder(BuilderBase):
 
         # add run line to test
         lines.append(" ".join(run))
-
         return lines
 
-    def detect_compiler(self, sourcefile):
-        """This method will detect the compiler wrapper based on the sourcefile and compiler name. This method supports
-           compiler detection for 'gnu' and 'intel'. The compiler detection is based on file extension of source file
-           and name of compiler name.
-        """
+    def detect_lang(self, sourcefile):
+        """This method will return the Programming Language based by looking up  file extension of source file."""
 
         ext = os.path.splitext(sourcefile)[1]
 
-        # variable used to store name of Programming Language (C, C++, Fortran)
-        self.lang = None
-
-        # if ext not in lang_ext_table then raise an error. This table consist of all file extensions that map to a Programming Language
+        # if ext not in self.lang_ext_table then raise an error. This table consist of all file extensions that map to a Programming Language
         if ext not in self.lang_ext_table:
             raise BuildTestError(
                 f"Unable to detect Program Language based on extension: {ext} in file {sourcefile}"
             )
         # Set Programming Language based on ext. Programming Language could be (C, C++, Fortran)
-        self.lang = self.lang_ext_table[ext]
-
-        if self.lang == "C":
-            self.cc = self.compiler_table[self.compiler_name].get(self.lang)
-        elif self.lang == "C++":
-            self.cxx = self.compiler_table[self.compiler_name].get(self.lang)
-        elif self.lang == "Fortran":
-            self.fc = self.compiler_table[self.compiler_name].get(self.lang)
-
-        # if we fail to set any C, C++, Fortran compiler we raise an error since we can't proceed
-        if not any([self.cc, self.cxx, self.fc]):
-
-            print("{:>15} | {:<10}".format("Extension", "Programming Language"))
-            print("{:_<60}".format(""))
-            for k, v in self.lang_ext_table.items():
-                print("{:>15} | {:<10}".format(k, v))
-
-            raise BuildTestError(
-                "Fail to set any C, C++, or Fortran compiler. Please check if you have valid file extension or select the appropriate compiler"
-            )
-
-        # Set ldflags, cppflags, cflags, cxxflags, fflags if defined in Buildspec
-        self.ldflags = self.compiler_recipe[self.compiler_name].get("ldflags")
-        self.cppflags = self.compiler_recipe[self.compiler_name].get("cppflags")
-        self.cflags = self.compiler_recipe[self.compiler_name].get("cflags")
-        self.fflags = self.compiler_recipe[self.compiler_name].get("fflags")
+        lang = self.lang_ext_table[ext]
+        return lang
 
     def generate_compile_cmd(self):
         """This method generates the compilation line and returns the output as a list. The compilation line depends
@@ -836,3 +827,91 @@ class CompilerBuilder(BuilderBase):
             ]
         # remove any None from list
         return list(filter(None, cmd))
+
+
+class GNUCompiler(CompilerBuilder):
+
+    cc = "gcc"
+    cxx = "g++"
+    fc = "gfortran"
+
+    def __init__(self):
+        pass
+
+    def get_compilers(self):
+        return [self.cc, self.cxx, self.fc]
+
+    def get_path(self):
+        """This method returns the full path for GNU Compilers: ``gcc``, ``g++``, ``gfortran``"""
+        path = {
+            "gcc": shutil.which(self.cc),
+            "g++": shutil.which(self.cxx),
+            "gfortran": shutil.which(self.fc),
+        }
+        return path
+
+
+class IntelCompiler(CompilerBuilder):
+
+    cc = "icc"
+    cxx = "icpc"
+    fc = "ifort"
+
+    def __init__(self):
+        pass
+
+    def get_compilers(self):
+        return [self.cc, self.cxx, self.fc]
+
+    def get_path(self):
+        """This method returns the full path for Intel Compilers: ``icc``, ``icpc``, ``ifort``"""
+        path = {
+            "icc": shutil.which(self.cc),
+            "icpc": shutil.which(self.cxx),
+            "ifort": shutil.which(self.fc),
+        }
+        return path
+
+
+class PGICompiler(CompilerBuilder):
+
+    cc = "pgcc"
+    cxx = "pgc++"
+    fc = "pgfortran"
+
+    def __init__(self):
+        pass
+
+    def get_compilers(self):
+        return [self.cc, self.cxx, self.fc]
+
+    def get_path(self):
+        """This method returns the full path for PGI Compilers: ``pgcc``, ``pgc++``, ``pgfortran``"""
+        path = {
+            "pgcc": shutil.which(self.cc),
+            "pgc++": shutil.which(self.cxx),
+            "pgfortran": shutil.which(self.fc),
+        }
+        return path
+
+
+class CrayCompiler(CompilerBuilder):
+
+    cc = "cc"
+    cxx = "CC"
+    fc = "ftn"
+
+    def __init__(self):
+        pass
+
+    def get_compilers(self):
+        return [self.cc, self.cxx, self.fc]
+
+    def get_path(self):
+        """This method returns the full path for Cray Compilers: ``cc``, ``CC``, ``ftn``"""
+        path = {
+            "cc": shutil.which(self.cc),
+            "CC": shutil.which(self.cxx),
+            "ftn": shutil.which(self.fc),
+        }
+        return path
