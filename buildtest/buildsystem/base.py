@@ -183,11 +183,11 @@ class BuildspecParser:
                     builders.append(
                         CompilerBuilder(name, recipe, self.buildspec, testdir=testdir)
                     )
+                    launch_compiler(recipe)
                 else:
                     print(
                         "%s is not recognized by buildtest, skipping." % recipe["type"]
                     )
-
         return builders
 
     def keys(self):
@@ -590,22 +590,18 @@ class BuilderBase:
         now = datetime.datetime.now().strftime("%m-%d-%Y-%H-%M")
         return "%s_%s" % (self.name, now)
 
-    def _write_test(self, lines=None):
+    def _write_test(self):
         """Given test metadata, write test content."""
-
-        # If no lines provided, generate
-        if not lines:
-            lines = self._build_testcontent()
 
         # '$HOME/.buildtest/testdir/<name>/<name>_<timestamp>.sh'
         # This will put output (latest run) in same directory - do we want this?
         testpath = self.metadata["testpath"]
 
-        self.logger.info(f"Opening Test File for Writing: {testpath}")
+        lines = self._build_testcontent()
+        lines = "\n".join(lines)
 
-        # Open the test file and write contents
-        with open(testpath, "w") as fd:
-            fd.write("\n".join(lines))
+        self.logger.info(f"Opening Test File for Writing: {testpath}")
+        write_file(testpath, lines)
 
         # Change permission of the file to executable
         os.chmod(
@@ -618,7 +614,7 @@ class BuilderBase:
         return testpath
 
     def _build_testcontent(self):
-        """Build the testcript content implemented in each subclass"""
+        """Build the testscript content implemented in each subclass"""
         pass
 
 
@@ -678,6 +674,123 @@ class CompilerBuilder(BuilderBase):
     cxxflags = None
     fflags = None
     cppflags = None
+    executable = None
+
+    def set_cc(self, cc):
+        self.cc = cc
+
+    def set_cxx(self, cxx):
+        self.cxx = cxx
+
+    def set_fc(self, fc):
+        self.fc = fc
+
+    def set_cflags(self, cflags):
+        self.cflags = cflags
+
+    def set_fflags(self, fflags):
+        self.fflags = fflags
+
+    def set_cxxflags(self, cxxflags):
+        self.cxxflags = cxxflags
+
+    def set_cppflags(self, cppflags):
+        self.cppflags = cppflags
+
+    def set_ldflags(self, ldflags):
+        self.ldflags = ldflags
+
+    def get_cc(self):
+        return self.cc
+
+    def get_cxx(self):
+        return self.cxx
+
+    def get_fc(self):
+        return self.fc
+
+    def get_cflags(self):
+        return self.cflags
+
+    def get_cxxflags(self):
+        return self.cxxflags
+
+    def get_fflags(self):
+        return self.fflags
+
+    def get_cppfilags(self):
+        return self.cppflags
+
+    def get_ldflags(self):
+        return self.ldflags
+
+    def resolve_source(self, source):
+        """This method resolves full path to source file, it checks for absolute path first before checking relative
+           path that is relative to Buildspec recipe.
+        """
+
+        source_relpath = resolve_path(source) or resolve_path(
+            os.path.join(
+                os.path.dirname(self.buildspec), self.compiler_recipe["source"]
+            )
+        )
+        # raise error if we can't find source file to compile
+        if not source_relpath:
+            sys.exit(
+                f"Failed to resolve path specified by key 'source': {self.compiler_recipe['source']}"
+            )
+
+        return source_relpath
+
+    def get_modules(self, modules):
+        """Return a list of modules as a list"""
+        return [module for module in modules]
+
+    def simple_run(self, workdir=None):
+        """This method executes the binary without any argument. This is the most simple run.
+        The method returns a list with the executable. User may specify a working directory via
+        ``workdir`` to indicate the path to binary relative to their working directory. By default
+        the executable is in the same directory as workdir so we can access executable as
+        ``./{self.executable}``. If workdir is defined, it is simply added in front of executable path.
+
+        Parameters:
+
+        :param workdir: relative path to binary from working directory, if not specified it's assumed executable
+                        is in working directory.
+        :type workdir: str, optional
+        :return: A list containing path to executable
+        :rtype: list
+        """
+
+        if workdir:
+            return [f"{workdir}/{self.executable}"]
+
+        return [f"./{self.executable}"]
+
+    def run_with_args(self, args):
+
+        run = []
+        run += self.simple_run()
+        run.append(args)
+        return run
+
+    def build_run_cmd(self, args):
+
+        if args:
+            return self.run_with_args(args)
+
+        return self.simple_run()
+
+    def set_executable_name(self, name=None):
+        """This method set the executable name. One may specify a custom name to executable via ``name``
+           argument. Otherwise the executable is using the filename of ``self.sourcefile`` and adding ``.exe``
+           extension at end.
+        """
+
+        if name:
+            return name
+
+        return "%s.exe" % os.path.basename(self.sourcefile)
 
     def _build_testcontent(self):
         """This method will build the test content from a Buildspec that uses compiler schema. We need a 'compiler'
@@ -691,83 +804,32 @@ class CompilerBuilder(BuilderBase):
         """
 
         self.compiler_recipe = self.recipe.get("compiler")
-        sourcefile = self.compiler_recipe["source"]
-        # The 'source' key can accept an absolute path or relative path with respect to Buildspec file.
-        # resolve_path returns full path to file or None if not found. We first check absolute path if not found we
-        # check for relative path.
-        self.source = resolve_path(sourcefile) or resolve_path(
-            os.path.join(
-                os.path.dirname(self.buildspec), self.compiler_recipe["source"]
-            )
-        )
+        self.sourcefile = self.resolve_source(self.compiler_recipe["source"])
 
-        # raise error if we can't find source file to compile
-        if not self.source:
-            sys.exit(f"Failed to resolve path specified by key 'source': {sourcefile}")
-
-        # name of generated executable. Add the .exe extension at end of source file name.
-        self.executable = "%s.exe" % os.path.basename(self.source)
-
-        self.compiler_name = None
-        self.lang = self.detect_lang(self.source)
-
-        # Get GNU Compiler if 'gnu' defined in compiler properties.
-        if self.compiler_recipe.get("gnu"):
-            self.compiler_name = "gnu"
-            gnu = GNUCompiler()
-            # get_compilers() will return a list that returns C, C++, and Fortran GNU wrapper
-            self.cc, self.cxx, self.fc = gnu.get_compilers()
-
-        # Get Intel Compiler
-        elif self.compiler_recipe.get("intel"):
-            self.compiler_name = "intel"
-            intel = IntelCompiler()
-            self.cc, self.cxx, self.fc = intel.get_compilers()
-
-        # Get PGI Compiler
-        elif self.compiler_recipe.get("pgi"):
-            self.compiler_name = "pgi"
-            pgi = PGICompiler()
-            self.cc, self.cxx, self.fc = pgi.get_compilers()
-
-        # Get Cray Compiler
-        elif self.compiler_recipe.get("cray"):
-            self.compiler_name = "cray"
-            cray = CrayCompiler()
-            self.cc, self.cxx, self.fc = cray.get_compilers()
-
-        # Set ldflags, cppflags, cflags, cxxflags, fflags if defined in Buildspec
-        self.ldflags = self.compiler_recipe[self.compiler_name].get("ldflags")
-        self.cppflags = self.compiler_recipe[self.compiler_name].get("cppflags")
-        self.cflags = self.compiler_recipe[self.compiler_name].get("cflags")
-        self.fflags = self.compiler_recipe[self.compiler_name].get("fflags")
-        self.cxxflags = self.compiler_recipe[self.compiler_name].get("cxxflags")
+        # set executable name and assign to self.executable
+        self.executable = self.set_executable_name()
+        self.lang = self.detect_lang(self.sourcefile)
 
         cmd = self.generate_compile_cmd()
-
         # every test starts with shebang line
         lines = [self.shebang]
 
         # if 'module' defined in Buildspec add modules to test
         if self.recipe.get("module"):
-            for module in self.recipe.get("module"):
-                lines.append(module)
+            lines += self.get_modules(self.recipe.get("module"))
 
         # add compile command to test
         lines.append(" ".join(cmd))
 
-        # build run command that launches generated executable. Format: <exec> <args>
-        # if 'exec_args' is not defined it will return 'None' which means no arguments to be passed when running executable
-        run = [
-            self.executable,
-            self.compiler_recipe[self.compiler_name].get("exec_args"),
-        ]
-
-        # remove 'None' in case 'exec_args' is not defined in Buildspec
-        run = list(filter(None, run))
-
-        # add run line to test
-        lines.append(" ".join(run))
+        # get compiler name from 'compiler' object. Schema enforces there must be one compiler so we break once we
+        # got a match
+        for compiler in ["gnu", "intel", "pgi", "cray"]:
+            if compiler in self.compiler_recipe:
+                compiler_name = compiler
+                break
+        run = self.build_run_cmd(self.compiler_recipe[compiler_name].get("exec_args"))
+        lines += run
+        print(lines)
         return lines
 
     def detect_lang(self, sourcefile):
@@ -798,7 +860,7 @@ class CompilerBuilder(BuilderBase):
                 self.cflags,
                 "-o",
                 self.executable,
-                self.source,
+                self.sourcefile,
                 self.ldflags,
             ]
 
@@ -810,7 +872,7 @@ class CompilerBuilder(BuilderBase):
                 self.cxxflags,
                 "-o",
                 self.executable,
-                self.source,
+                self.sourcefile,
                 self.ldflags,
             ]
 
@@ -822,7 +884,7 @@ class CompilerBuilder(BuilderBase):
                 self.fflags,
                 "-o",
                 self.executable,
-                self.source,
+                self.sourcefile,
                 self.ldflags,
             ]
         # remove any None from list
@@ -838,8 +900,23 @@ class GNUCompiler(CompilerBuilder):
     def __init__(self):
         pass
 
-    def get_compilers(self):
-        return [self.cc, self.cxx, self.fc]
+    def setup(self, recipe):
+        self.cflags = recipe.get("cflags")
+        self.fflags = recipe.get("fflags")
+        self.cxxflags = recipe.get("cxxflags")
+        self.ldflags = recipe.get("ldflags")
+        self.cppflags = recipe.get("cppflags")
+        print(
+            self.cc,
+            self.cxx,
+            self.fc,
+            self.cflags,
+            self.fflags,
+            self.cxxflags,
+            self.ldflags,
+            self.cppflags,
+        )
+        self.build_run_cmd(recipe.get("exec_args"))
 
     def get_path(self):
         """This method returns the full path for GNU Compilers: ``gcc``, ``g++``, ``gfortran``"""
@@ -860,9 +937,6 @@ class IntelCompiler(CompilerBuilder):
     def __init__(self):
         pass
 
-    def get_compilers(self):
-        return [self.cc, self.cxx, self.fc]
-
     def get_path(self):
         """This method returns the full path for Intel Compilers: ``icc``, ``icpc``, ``ifort``"""
         path = {
@@ -881,9 +955,6 @@ class PGICompiler(CompilerBuilder):
 
     def __init__(self):
         pass
-
-    def get_compilers(self):
-        return [self.cc, self.cxx, self.fc]
 
     def get_path(self):
         """This method returns the full path for PGI Compilers: ``pgcc``, ``pgc++``, ``pgfortran``"""
@@ -904,9 +975,6 @@ class CrayCompiler(CompilerBuilder):
     def __init__(self):
         pass
 
-    def get_compilers(self):
-        return [self.cc, self.cxx, self.fc]
-
     def get_path(self):
         """This method returns the full path for Cray Compilers: ``cc``, ``CC``, ``ftn``"""
         path = {
@@ -915,3 +983,21 @@ class CrayCompiler(CompilerBuilder):
             "ftn": shutil.which(self.fc),
         }
         return path
+
+
+def launch_compiler(recipe):
+    compiler_recipe = recipe.get("compiler")
+    if compiler_recipe.get("gnu"):
+        gnu_recipe = compiler_recipe["gnu"]
+        gnu = GNUCompiler()
+        gnu.setup(gnu_recipe)
+
+    elif compiler_recipe.get("intel"):
+        intel_recipe = compiler_recipe["intel"]
+        intel = IntelCompiler()
+        intel.set_cflags(intel_recipe.get("cflags"))
+        intel.set_cxxflags(intel_recipe.get("cxxflags"))
+        intel.set_fflags(intel_recipe.get("cxxflags"))
+        intel.set_cppflags(intel_recipe.get("cppflags"))
+        intel.set_ldflags(intel_recipe.get("ldflags"))
+        intel.build_run_cmd(intel_recipe.get("exec_args"))
