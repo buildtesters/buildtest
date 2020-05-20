@@ -792,6 +792,40 @@ class CompilerBuilder(BuilderBase):
 
         return "%s.exe" % os.path.basename(self.sourcefile)
 
+    def compiler_setup(self):
+        pass
+
+    def setup(
+        self,
+        cc=None,
+        cxx=None,
+        fc=None,
+        cflags=None,
+        cxxflags=None,
+        fflags=None,
+        ldflags=None,
+        cppflags=None,
+    ):
+
+        self.cc = cc
+        self.cxx = cxx
+        self.fc = fc
+        self.cflags = cflags
+        self.fflags = fflags
+        self.cxxflags = cxxflags
+        self.ldflags = ldflags
+        self.cppflags = cppflags
+
+        print(
+            "setup:",
+            self.cc,
+            self.cflags,
+            self.fc,
+            self.fflags,
+            self.cxx,
+            self.cxxflags,
+        )
+
     def _build_testcontent(self):
         """This method will build the test content from a Buildspec that uses compiler schema. We need a 'compiler'
            and 'source' key which specifies the source files to compile. We resolve the source file path which can
@@ -803,14 +837,25 @@ class CompilerBuilder(BuilderBase):
            a list that contains content of the test.
         """
 
+        self.compiler_setup()
+        # self.setup()
         self.compiler_recipe = self.recipe.get("compiler")
         self.sourcefile = self.resolve_source(self.compiler_recipe["source"])
-
+        print(
+            "_build_testcontent:",
+            self.cc,
+            self.cflags,
+            self.fc,
+            self.fflags,
+            self.cxx,
+            self.cxxflags,
+        )
         # set executable name and assign to self.executable
         self.executable = self.set_executable_name()
         self.lang = self.detect_lang(self.sourcefile)
+        self.compile_cmd = self.generate_compile_cmd()
 
-        cmd = self.generate_compile_cmd()
+        self.run_cmd = self.build_run_cmd(self.compiler_recipe.get("exec_args"))
         # every test starts with shebang line
         lines = [self.shebang]
 
@@ -818,18 +863,10 @@ class CompilerBuilder(BuilderBase):
         if self.recipe.get("module"):
             lines += self.get_modules(self.recipe.get("module"))
 
-        # add compile command to test
-        lines.append(" ".join(cmd))
-
-        # get compiler name from 'compiler' object. Schema enforces there must be one compiler so we break once we
-        # got a match
-        for compiler in ["gnu", "intel", "pgi", "cray"]:
-            if compiler in self.compiler_recipe:
-                compiler_name = compiler
-                break
-        run = self.build_run_cmd(self.compiler_recipe[compiler_name].get("exec_args"))
-        lines += run
-        print(lines)
+        # add compile command
+        lines.append(" ".join(self.compile_cmd))
+        # add run command
+        lines.append(" ".join(self.run_cmd))
         return lines
 
     def detect_lang(self, sourcefile):
@@ -900,23 +937,23 @@ class GNUCompiler(CompilerBuilder):
     def __init__(self):
         pass
 
-    def setup(self, recipe):
+    def compiler_setup(self, recipe):
         self.cflags = recipe.get("cflags")
         self.fflags = recipe.get("fflags")
         self.cxxflags = recipe.get("cxxflags")
         self.ldflags = recipe.get("ldflags")
         self.cppflags = recipe.get("cppflags")
-        print(
-            self.cc,
-            self.cxx,
-            self.fc,
-            self.cflags,
-            self.fflags,
-            self.cxxflags,
-            self.ldflags,
-            self.cppflags,
+
+        self.setup(
+            cc=self.cc,
+            cxx=self.cxx,
+            fc=self.fc,
+            cflags=self.cflags,
+            fflags=self.fflags,
+            cxxflags=self.cxxflags,
+            ldflags=self.ldflags,
+            cppflags=self.cppflags,
         )
-        self.build_run_cmd(recipe.get("exec_args"))
 
     def get_path(self):
         """This method returns the full path for GNU Compilers: ``gcc``, ``g++``, ``gfortran``"""
@@ -928,76 +965,10 @@ class GNUCompiler(CompilerBuilder):
         return path
 
 
-class IntelCompiler(CompilerBuilder):
-
-    cc = "icc"
-    cxx = "icpc"
-    fc = "ifort"
-
-    def __init__(self):
-        pass
-
-    def get_path(self):
-        """This method returns the full path for Intel Compilers: ``icc``, ``icpc``, ``ifort``"""
-        path = {
-            "icc": shutil.which(self.cc),
-            "icpc": shutil.which(self.cxx),
-            "ifort": shutil.which(self.fc),
-        }
-        return path
-
-
-class PGICompiler(CompilerBuilder):
-
-    cc = "pgcc"
-    cxx = "pgc++"
-    fc = "pgfortran"
-
-    def __init__(self):
-        pass
-
-    def get_path(self):
-        """This method returns the full path for PGI Compilers: ``pgcc``, ``pgc++``, ``pgfortran``"""
-        path = {
-            "pgcc": shutil.which(self.cc),
-            "pgc++": shutil.which(self.cxx),
-            "pgfortran": shutil.which(self.fc),
-        }
-        return path
-
-
-class CrayCompiler(CompilerBuilder):
-
-    cc = "cc"
-    cxx = "CC"
-    fc = "ftn"
-
-    def __init__(self):
-        pass
-
-    def get_path(self):
-        """This method returns the full path for Cray Compilers: ``cc``, ``CC``, ``ftn``"""
-        path = {
-            "cc": shutil.which(self.cc),
-            "CC": shutil.which(self.cxx),
-            "ftn": shutil.which(self.fc),
-        }
-        return path
-
-
 def launch_compiler(recipe):
+
     compiler_recipe = recipe.get("compiler")
     if compiler_recipe.get("gnu"):
         gnu_recipe = compiler_recipe["gnu"]
         gnu = GNUCompiler()
-        gnu.setup(gnu_recipe)
-
-    elif compiler_recipe.get("intel"):
-        intel_recipe = compiler_recipe["intel"]
-        intel = IntelCompiler()
-        intel.set_cflags(intel_recipe.get("cflags"))
-        intel.set_cxxflags(intel_recipe.get("cxxflags"))
-        intel.set_fflags(intel_recipe.get("cxxflags"))
-        intel.set_cppflags(intel_recipe.get("cppflags"))
-        intel.set_ldflags(intel_recipe.get("ldflags"))
-        intel.build_run_cmd(intel_recipe.get("exec_args"))
+        gnu.compiler_setup(gnu_recipe)

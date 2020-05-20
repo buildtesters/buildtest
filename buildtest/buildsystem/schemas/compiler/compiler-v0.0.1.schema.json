@@ -24,6 +24,7 @@
       "type": "object",
       "properties": {
         "source": { "type": "string" },
+        "exec_args": {"type": "string"},
         "gnu": { "$ref": "#/definitions/compiler" },
         "intel": { "$ref": "#/definitions/compiler" },
         "pgi": { "$ref": "#/definitions/compiler" },
@@ -46,8 +47,7 @@
         "cxxflags": {"type":  "string"},
         "fflags": {"type":  "string"},
         "cppflags": {"type":  "string"},
-        "ldflags": {"type": "string"},
-        "exec_args": {"type": "string"}
+        "ldflags": {"type": "string"}
       }
     }
   }
