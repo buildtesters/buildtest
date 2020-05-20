@@ -33,9 +33,14 @@ def func_get_subcmd(args):
     root = os.path.join(BUILDSPEC_DEFAULT_PATH, "github.com")
     create_dir(root)
 
-    # Parse the repository name
+    # Parse the repository name assumes it is using HTTPS in format https://github.com/<username>/<repo>.git
     username = args.repo.split("/")[-2]
-    repo = args.repo.split("/")[-1]
+
+    # resolve url when its using SSH in format git@github.com:<username>/<repo>
+    if re.search("^(git@github.com)", args.repo):
+        url = args.repo.split(":")[1]
+        username = url.split("/")[0]
+
     clone_path = os.path.join(root, username)
     create_dir(clone_path)
 
