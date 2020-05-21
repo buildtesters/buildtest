@@ -194,7 +194,7 @@ class BuildspecParser:
                         )
                     elif recipe["compiler"].get("name") == "cray":
                         builders.append(
-                            GNUCompiler(name, recipe, self.buildspec, testdir=testdir)
+                            CrayCompiler(name, recipe, self.buildspec, testdir=testdir)
                         )
                     else:
                         continue
