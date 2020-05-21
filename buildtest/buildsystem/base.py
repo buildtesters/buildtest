@@ -180,10 +180,25 @@ class BuildspecParser:
                         ScriptBuilder(name, recipe, self.buildspec, testdir=testdir)
                     )
                 elif recipe["type"] == "compiler":
-                    builders.append(
-                        CompilerBuilder(name, recipe, self.buildspec, testdir=testdir)
-                    )
-                    launch_compiler(recipe)
+                    if recipe["compiler"].get("name") == "gnu":
+                        builders.append(
+                            GNUCompiler(name, recipe, self.buildspec, testdir=testdir)
+                        )
+                    elif recipe["compiler"].get("name") == "intel":
+                        builders.append(
+                            IntelCompiler(name, recipe, self.buildspec, testdir=testdir)
+                        )
+                    elif recipe["compiler"].get("name") == "pgi":
+                        builders.append(
+                            PGICompiler(name, recipe, self.buildspec, testdir=testdir)
+                        )
+                    elif recipe["compiler"].get("name") == "cray":
+                        builders.append(
+                            GNUCompiler(name, recipe, self.buildspec, testdir=testdir)
+                        )
+                    else:
+                        continue
+
                 else:
                     print(
                         "%s is not recognized by buildtest, skipping." % recipe["type"]
@@ -724,6 +739,15 @@ class CompilerBuilder(BuilderBase):
     def get_ldflags(self):
         return self.ldflags
 
+    def get_path(self):
+        """This method returns the full path for GNU Compilers: ``gcc``, ``g++``, ``gfortran``"""
+        path = {
+            self.cc: shutil.which(self.cc),
+            self.cxx: shutil.which(self.cxx),
+            self.fc: shutil.which(self.fc),
+        }
+        return path
+
     def resolve_source(self, source):
         """This method resolves full path to source file, it checks for absolute path first before checking relative
            path that is relative to Buildspec recipe.
@@ -792,39 +816,23 @@ class CompilerBuilder(BuilderBase):
 
         return "%s.exe" % os.path.basename(self.sourcefile)
 
-    def compiler_setup(self):
-        pass
+    def setup(self):
 
-    def setup(
-        self,
-        cc=None,
-        cxx=None,
-        fc=None,
-        cflags=None,
-        cxxflags=None,
-        fflags=None,
-        ldflags=None,
-        cppflags=None,
-    ):
+        self.compiler_recipe = self.recipe.get("compiler")
+        self.sourcefile = self.resolve_source(self.compiler_recipe["source"])
 
-        self.cc = cc
-        self.cxx = cxx
-        self.fc = fc
-        self.cflags = cflags
-        self.fflags = fflags
-        self.cxxflags = cxxflags
-        self.ldflags = ldflags
-        self.cppflags = cppflags
+        # set executable name and assign to self.executable
+        self.executable = self.set_executable_name()
+        self.lang = self.detect_lang(self.sourcefile)
+        self.compile_cmd = self.generate_compile_cmd()
 
-        print(
-            "setup:",
-            self.cc,
-            self.cflags,
-            self.fc,
-            self.fflags,
-            self.cxx,
-            self.cxxflags,
-        )
+        self.run_cmd = self.build_run_cmd(self.compiler_recipe.get("exec_args"))
+
+        self.cflags = self.compiler_recipe.get("cflags")
+        self.fflags = self.compiler_recipe.get("fflags")
+        self.cxxflags = self.compiler_recipe.get("cxxflags")
+        self.ldflags = self.compiler_recipe.get("ldflags")
+        self.cppflags = self.compiler_recipe.get("cppflags")
 
     def _build_testcontent(self):
         """This method will build the test content from a Buildspec that uses compiler schema. We need a 'compiler'
@@ -838,24 +846,8 @@ class CompilerBuilder(BuilderBase):
         """
 
         self.compiler_setup()
-        # self.setup()
-        self.compiler_recipe = self.recipe.get("compiler")
-        self.sourcefile = self.resolve_source(self.compiler_recipe["source"])
-        print(
-            "_build_testcontent:",
-            self.cc,
-            self.cflags,
-            self.fc,
-            self.fflags,
-            self.cxx,
-            self.cxxflags,
-        )
-        # set executable name and assign to self.executable
-        self.executable = self.set_executable_name()
-        self.lang = self.detect_lang(self.sourcefile)
-        self.compile_cmd = self.generate_compile_cmd()
+        self.setup()
 
-        self.run_cmd = self.build_run_cmd(self.compiler_recipe.get("exec_args"))
         # every test starts with shebang line
         lines = [self.shebang]
 
@@ -934,41 +926,23 @@ class GNUCompiler(CompilerBuilder):
     cxx = "g++"
     fc = "gfortran"
 
-    def __init__(self):
-        pass
 
-    def compiler_setup(self, recipe):
-        self.cflags = recipe.get("cflags")
-        self.fflags = recipe.get("fflags")
-        self.cxxflags = recipe.get("cxxflags")
-        self.ldflags = recipe.get("ldflags")
-        self.cppflags = recipe.get("cppflags")
+class IntelCompiler(CompilerBuilder):
 
-        self.setup(
-            cc=self.cc,
-            cxx=self.cxx,
-            fc=self.fc,
-            cflags=self.cflags,
-            fflags=self.fflags,
-            cxxflags=self.cxxflags,
-            ldflags=self.ldflags,
-            cppflags=self.cppflags,
-        )
-
-    def get_path(self):
-        """This method returns the full path for GNU Compilers: ``gcc``, ``g++``, ``gfortran``"""
-        path = {
-            "gcc": shutil.which(self.cc),
-            "g++": shutil.which(self.cxx),
-            "gfortran": shutil.which(self.fc),
-        }
-        return path
+    cc = "icc"
+    cxx = "icpc"
+    fc = "ifort"
 
 
-def launch_compiler(recipe):
+class PGICompiler(CompilerBuilder):
 
-    compiler_recipe = recipe.get("compiler")
-    if compiler_recipe.get("gnu"):
-        gnu_recipe = compiler_recipe["gnu"]
-        gnu = GNUCompiler()
-        gnu.compiler_setup(gnu_recipe)
+    cc = "pgcc"
+    cxx = "pgc++"
+    fc = "pfortran"
+
+
+class CrayCompiler(CompilerBuilder):
+
+    cc = "cc"
+    cxx = "CC"
+    fc = "ftn"

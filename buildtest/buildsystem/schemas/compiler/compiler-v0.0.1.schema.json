@@ -23,19 +23,19 @@
     "compiler": {
       "type": "object",
       "properties": {
+        "name": {
+          "type": "string",
+          "enum": ["gnu", "intel", "pgi", "cray"]
+        },
         "source": { "type": "string" },
         "exec_args": {"type": "string"},
-        "gnu": { "$ref": "#/definitions/compiler" },
-        "intel": { "$ref": "#/definitions/compiler" },
-        "pgi": { "$ref": "#/definitions/compiler" },
-        "cray": { "$ref": "#/definitions/compiler" }
+        "cflags": {"type":  "string"},
+        "cxxflags": {"type":  "string"},
+        "fflags": {"type":  "string"},
+        "cppflags": {"type":  "string"},
+        "ldflags": {"type": "string"}
       },
-      "oneOf": [
-        { "required": ["source","gnu"] },
-        { "required": ["source","intel"] },
-        { "required": ["source","pgi"] },
-        { "required": ["source","cray"] }
-      ],
+      "required": ["source", "name"],
       "additionalProperties": false
     }
   },
