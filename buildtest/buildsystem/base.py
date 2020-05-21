@@ -787,7 +787,7 @@ class CompilerBuilder(BuilderBase):
         """
 
         if workdir:
-            return [f"{workdir}/{self.executable}"]
+            return [os.path.join(workdir / self.executable)]
 
         return [f"./{self.executable}"]
 
