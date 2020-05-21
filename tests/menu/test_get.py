@@ -4,7 +4,7 @@ import shutil
 
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
 from buildtest.menu.get import clone, func_get_subcmd
-from buildtest.utils.file import is_dir, create_dir
+from buildtest.utils.file import is_dir
 
 
 class none_repo:
@@ -46,6 +46,12 @@ def test_clone(tmp_path):
     # test http link
     clone(http_link, tmp_path, "master")
 
+
+@pytest.mark.skipif(
+    "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true",
+    reason="Skipping Travis Test",
+)
+def test_ssh_clone():
     # test ssh repo
     func_get_subcmd(ssh_repo)
     url = ssh_repo.repo.split(":")[1]
