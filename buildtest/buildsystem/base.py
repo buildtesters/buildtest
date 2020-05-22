@@ -787,7 +787,7 @@ class CompilerBuilder(BuilderBase):
         """
 
         if workdir:
-            return [os.path.join(workdir / self.executable)]
+            return [os.path.join(workdir, self.executable)]
 
         return [f"./{self.executable}"]
 
@@ -799,7 +799,7 @@ class CompilerBuilder(BuilderBase):
         return run
 
     def build_run_cmd(self, args):
-
+        """This method builds the run command which refers to how to run the generated binary after compilation."""
         if args:
             return self.run_with_args(args)
 
@@ -845,7 +845,6 @@ class CompilerBuilder(BuilderBase):
            a list that contains content of the test.
         """
 
-        self.compiler_setup()
         self.setup()
 
         # every test starts with shebang line

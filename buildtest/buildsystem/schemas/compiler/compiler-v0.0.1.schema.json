@@ -38,17 +38,5 @@
       "required": ["source", "name"],
       "additionalProperties": false
     }
-  },
-  "definitions": {
-    "compiler": {
-      "type": "object",
-      "properties": {
-        "cflags": {"type":  "string"},
-        "cxxflags": {"type":  "string"},
-        "fflags": {"type":  "string"},
-        "cppflags": {"type":  "string"},
-        "ldflags": {"type": "string"}
-      }
-    }
   }
 }
