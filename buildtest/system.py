@@ -31,7 +31,7 @@ class BuildTestSystem:
         self.scheduler = self.check_scheduler()
         self.check_lmod()
 
-        if self.system["platform"] != "Linux":
+        if self.system["platform"] not in ["Linux", "Darwin"]:
             print("System must be Linux")
             sys.exit(1)
 

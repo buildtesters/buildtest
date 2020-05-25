@@ -9,6 +9,7 @@ import datetime
 import logging
 import os
 import re
+import shutil
 import stat
 import sys
 
@@ -19,7 +20,7 @@ from buildtest.buildsystem.schemas.utils import (
     get_schemas_available,
     here,
 )
-
+from buildtest.exceptions import BuildTestError
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, is_dir, resolve_path, read_file, write_file
 from buildtest.utils.shell import Shell
@@ -38,7 +39,7 @@ class BuildspecParser:
     """
 
     # Metadata keys are not considered build sections
-    metadata = ["version"]
+    metadata = ["version", "maintainers"]
 
     def __init__(self, buildspec):
         """initiate a build configuration file, meaning that we read in the
@@ -112,7 +113,7 @@ class BuildspecParser:
         seen = set()
         for name, section in self.recipe.items():
 
-            if name == "version":
+            if name in self.metadata:
                 continue
 
             # Check for repeated keys
@@ -173,17 +174,35 @@ class BuildspecParser:
         if self.recipe:
             for name in self.keys():
                 recipe = self.recipe[name]
-
                 # Add the builder based on the type
                 if recipe["type"] == "script":
                     builders.append(
                         ScriptBuilder(name, recipe, self.buildspec, testdir=testdir)
                     )
+                elif recipe["type"] == "compiler":
+                    if recipe["compiler"].get("name") == "gnu":
+                        builders.append(
+                            GNUCompiler(name, recipe, self.buildspec, testdir=testdir)
+                        )
+                    elif recipe["compiler"].get("name") == "intel":
+                        builders.append(
+                            IntelCompiler(name, recipe, self.buildspec, testdir=testdir)
+                        )
+                    elif recipe["compiler"].get("name") == "pgi":
+                        builders.append(
+                            PGICompiler(name, recipe, self.buildspec, testdir=testdir)
+                        )
+                    elif recipe["compiler"].get("name") == "cray":
+                        builders.append(
+                            CrayCompiler(name, recipe, self.buildspec, testdir=testdir)
+                        )
+                    else:
+                        continue
+
                 else:
                     print(
                         "%s is not recognized by buildtest, skipping." % recipe["type"]
                     )
-
         return builders
 
     def keys(self):
@@ -586,22 +605,18 @@ class BuilderBase:
         now = datetime.datetime.now().strftime("%m-%d-%Y-%H-%M")
         return "%s_%s" % (self.name, now)
 
-    def _write_test(self, lines=None):
+    def _write_test(self):
         """Given test metadata, write test content."""
-
-        # If no lines provided, generate
-        if not lines:
-            lines = self._build_testcontent()
 
         # '$HOME/.buildtest/testdir/<name>/<name>_<timestamp>.sh'
         # This will put output (latest run) in same directory - do we want this?
         testpath = self.metadata["testpath"]
 
-        self.logger.info(f"Opening Test File for Writing: {testpath}")
+        lines = self._build_testcontent()
+        lines = "\n".join(lines)
 
-        # Open the test file and write contents
-        with open(testpath, "w") as fd:
-            fd.write("\n".join(lines))
+        self.logger.info(f"Opening Test File for Writing: {testpath}")
+        write_file(testpath, lines)
 
         # Change permission of the file to executable
         os.chmod(
@@ -614,7 +629,7 @@ class BuilderBase:
         return testpath
 
     def _build_testcontent(self):
-        """Build the testcript content implemented in each subclass"""
+        """Build the testscript content implemented in each subclass"""
         pass
 
 
@@ -640,3 +655,293 @@ class ScriptBuilder(BuilderBase):
         lines += [self.recipe.get("run")]
 
         return lines
+
+
+class CompilerBuilder(BuilderBase):
+    type = "compiler"
+
+    # Fortran Extensions Links:
+    # https://software.intel.com/content/www/us/en/develop/documentation/fortran-compiler-developer-guide-and-reference/top/compiler-setup/using-the-command-line/understanding-file-extensions.html
+    # Fortran Extensions: http://fortranwiki.org/fortran/show/File+extensions
+    lang_ext_table = {
+        ".c": "C",
+        ".cc": "C++",
+        ".cxx": "C++",
+        ".cpp": "C++",
+        ".c++": "C++",
+        ".f90": "Fortran",
+        ".F90": "Fortran",
+        ".f95": "Fortran",
+        ".f03": "Fortran",
+        ".f": "Fortran",
+        ".F": "Fortran",
+        ".FOR": "Fortran",
+        ".for": "Fortran",
+        ".FTN": "Fortran",
+        ".ftn": "Fortran",
+    }
+
+    cc = None
+    cxx = None
+    fc = None
+    ldflags = None
+    cflags = None
+    cxxflags = None
+    fflags = None
+    cppflags = None
+    executable = None
+
+    def set_cc(self, cc):
+        self.cc = cc
+
+    def set_cxx(self, cxx):
+        self.cxx = cxx
+
+    def set_fc(self, fc):
+        self.fc = fc
+
+    def set_cflags(self, cflags):
+        self.cflags = cflags
+
+    def set_fflags(self, fflags):
+        self.fflags = fflags
+
+    def set_cxxflags(self, cxxflags):
+        self.cxxflags = cxxflags
+
+    def set_cppflags(self, cppflags):
+        self.cppflags = cppflags
+
+    def set_ldflags(self, ldflags):
+        self.ldflags = ldflags
+
+    def get_cc(self):
+        return self.cc
+
+    def get_cxx(self):
+        return self.cxx
+
+    def get_fc(self):
+        return self.fc
+
+    def get_cflags(self):
+        return self.cflags
+
+    def get_cxxflags(self):
+        return self.cxxflags
+
+    def get_fflags(self):
+        return self.fflags
+
+    def get_cppfilags(self):
+        return self.cppflags
+
+    def get_ldflags(self):
+        return self.ldflags
+
+    def get_path(self):
+        """This method returns the full path for GNU Compilers: ``gcc``, ``g++``, ``gfortran``"""
+        path = {
+            self.cc: shutil.which(self.cc),
+            self.cxx: shutil.which(self.cxx),
+            self.fc: shutil.which(self.fc),
+        }
+        return path
+
+    def resolve_source(self, source):
+        """This method resolves full path to source file, it checks for absolute path first before checking relative
+           path that is relative to Buildspec recipe.
+        """
+
+        source_relpath = resolve_path(source) or resolve_path(
+            os.path.join(
+                os.path.dirname(self.buildspec), self.compiler_recipe["source"]
+            )
+        )
+        # raise error if we can't find source file to compile
+        if not source_relpath:
+            sys.exit(
+                f"Failed to resolve path specified by key 'source': {self.compiler_recipe['source']}"
+            )
+
+        return source_relpath
+
+    def get_modules(self, modules):
+        """Return a list of modules as a list"""
+        return [module for module in modules]
+
+    def simple_run(self, workdir=None):
+        """This method executes the binary without any argument. This is the most simple run.
+        The method returns a list with the executable. User may specify a working directory via
+        ``workdir`` to indicate the path to binary relative to their working directory. By default
+        the executable is in the same directory as workdir so we can access executable as
+        ``./{self.executable}``. If workdir is defined, it is simply added in front of executable path.
+
+        Parameters:
+
+        :param workdir: relative path to binary from working directory, if not specified it's assumed executable
+                        is in working directory.
+        :type workdir: str, optional
+        :return: A list containing path to executable
+        :rtype: list
+        """
+
+        if workdir:
+            return [os.path.join(workdir, self.executable)]
+
+        return [f"./{self.executable}"]
+
+    def run_with_args(self, args):
+
+        run = []
+        run += self.simple_run()
+        run.append(args)
+        return run
+
+    def build_run_cmd(self, args):
+        """This method builds the run command which refers to how to run the generated binary after compilation."""
+        if args:
+            return self.run_with_args(args)
+
+        return self.simple_run()
+
+    def set_executable_name(self, name=None):
+        """This method set the executable name. One may specify a custom name to executable via ``name``
+           argument. Otherwise the executable is using the filename of ``self.sourcefile`` and adding ``.exe``
+           extension at end.
+        """
+
+        if name:
+            return name
+
+        return "%s.exe" % os.path.basename(self.sourcefile)
+
+    def setup(self):
+
+        self.compiler_recipe = self.recipe.get("compiler")
+        self.sourcefile = self.resolve_source(self.compiler_recipe["source"])
+
+        # set executable name and assign to self.executable
+        self.executable = self.set_executable_name()
+        self.lang = self.detect_lang(self.sourcefile)
+        self.compile_cmd = self.generate_compile_cmd()
+
+        self.run_cmd = self.build_run_cmd(self.compiler_recipe.get("exec_args"))
+
+        self.cflags = self.compiler_recipe.get("cflags")
+        self.fflags = self.compiler_recipe.get("fflags")
+        self.cxxflags = self.compiler_recipe.get("cxxflags")
+        self.ldflags = self.compiler_recipe.get("ldflags")
+        self.cppflags = self.compiler_recipe.get("cppflags")
+
+    def _build_testcontent(self):
+        """This method will build the test content from a Buildspec that uses compiler schema. We need a 'compiler'
+           and 'source' key which specifies the source files to compile. We resolve the source file path which can
+           be an absolute value or relative path with respect to Buildspec. The file extension of sourcefile is used
+           to detect the Programming Language which is used to lookup the compiler wrapper based on Language + Compiler.
+           During compiler detection, we set class variables ``self.cc``, ``self.cxx``. ``self.fc``, ``self.cflags``,
+           ``self.cxxflags``, ``self.fflags``, ``self.cppflags``. ``self.ldflags``. Finally we generate the compile
+           command and add each instruction to ``lines`` which contains content of test. Upon completion, we return
+           a list that contains content of the test.
+        """
+
+        self.setup()
+
+        # every test starts with shebang line
+        lines = [self.shebang]
+
+        # if 'module' defined in Buildspec add modules to test
+        if self.recipe.get("module"):
+            lines += self.get_modules(self.recipe.get("module"))
+
+        # add compile command
+        lines.append(" ".join(self.compile_cmd))
+        # add run command
+        lines.append(" ".join(self.run_cmd))
+        return lines
+
+    def detect_lang(self, sourcefile):
+        """This method will return the Programming Language based by looking up  file extension of source file."""
+
+        ext = os.path.splitext(sourcefile)[1]
+
+        # if ext not in self.lang_ext_table then raise an error. This table consist of all file extensions that map to a Programming Language
+        if ext not in self.lang_ext_table:
+            raise BuildTestError(
+                f"Unable to detect Program Language based on extension: {ext} in file {sourcefile}"
+            )
+        # Set Programming Language based on ext. Programming Language could be (C, C++, Fortran)
+        lang = self.lang_ext_table[ext]
+        return lang
+
+    def generate_compile_cmd(self):
+        """This method generates the compilation line and returns the output as a list. The compilation line depends
+           on the the language detected that is stored in variable ``self.lang``.
+        """
+        cmd = []
+
+        # Generate C compilation line
+        if self.lang == "C":
+            cmd = [
+                self.cc,
+                self.cppflags,
+                self.cflags,
+                "-o",
+                self.executable,
+                self.sourcefile,
+                self.ldflags,
+            ]
+
+        # Generate C++ compilation line
+        elif self.lang == "C++":
+            cmd = [
+                self.cxx,
+                self.cppflags,
+                self.cxxflags,
+                "-o",
+                self.executable,
+                self.sourcefile,
+                self.ldflags,
+            ]
+
+        # Generate Fortran compilation line
+        elif self.lang == "Fortran":
+            cmd = [
+                self.fc,
+                self.cppflags,
+                self.fflags,
+                "-o",
+                self.executable,
+                self.sourcefile,
+                self.ldflags,
+            ]
+        # remove any None from list
+        return list(filter(None, cmd))
+
+
+class GNUCompiler(CompilerBuilder):
+
+    cc = "gcc"
+    cxx = "g++"
+    fc = "gfortran"
+
+
+class IntelCompiler(CompilerBuilder):
+
+    cc = "icc"
+    cxx = "icpc"
+    fc = "ifort"
+
+
+class PGICompiler(CompilerBuilder):
+
+    cc = "pgcc"
+    cxx = "pgc++"
+    fc = "pfortran"
+
+
+class CrayCompiler(CompilerBuilder):
+
+    cc = "cc"
+    cxx = "CC"
+    fc = "ftn"
