@@ -65,8 +65,10 @@ def discover_buildspecs(buildspec, search_path=[]):
         buildspecs = [buildspec]
         logger.debug(f"BuildSpec: {buildspec} is a file")
     else:
-        msg = f"Unable to find any buildspecs in search paths: {search_path} \n" + \
-              "Please provide an absolute or relative path to a directory or file or file relative to current directory."
+        msg = (
+            f"Unable to find any buildspecs in search paths: {search_path} \n"
+            + "Please provide an absolute or relative path to a directory or file or file relative to current directory."
+        )
 
         logger.error(msg)
         sys.exit(msg)
@@ -150,7 +152,9 @@ def func_build_subcmd(args):
     check_settings(settings_file)
 
     config_paths_testdir = config_opts.get("config").get("paths").get("testdir")
-    config_paths_buildspec_path = config_opts.get("config").get("paths").get("buildspec_path")
+    config_paths_buildspec_path = (
+        config_opts.get("config").get("paths").get("buildspec_path")
+    )
 
     # return a unique list of directory paths where buildtest should search for buildspecs
     # this is equivalent to $PATH for buildspec
