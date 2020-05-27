@@ -151,14 +151,15 @@ def func_build_subcmd(args):
     # check user's buildtest setting for any errors by validating against settings schema
     check_settings(settings_file)
 
-    config_paths_testdir = config_opts.get("config").get("paths").get("testdir")
+    config_paths_testdir = config_opts.get("config", {}).get("paths", {}).get("testdir")
     config_paths_buildspec_path = (
-        config_opts.get("config").get("paths").get("buildspec_path")
+        config_opts.get("config", {}).get("paths", {}).get("buildspec_path")
     )
-
-    # return a unique list of directory paths where buildtest should search for buildspecs
-    # this is equivalent to $PATH for buildspec
-    buildspec_paths = list(set(config_paths_buildspec_path.split(":")))
+    buildspec_paths = []
+    if config_paths_buildspec_path:
+        # return a unique list of directory paths where buildtest should search for buildspecs
+        # this is equivalent to $PATH for buildspec
+        buildspec_paths = list(set(config_paths_buildspec_path.split(":")))
 
     # if testdir defined in configuration file get realpath
     if config_paths_testdir:
