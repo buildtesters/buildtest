@@ -196,4 +196,7 @@ class BuildTestParser:
             help="show global schema",
             action="store_true",
         )
+        parser_schema.add_argument(
+            "-s", "--settings", help="show settings schema", action="store_true",
+        )
         parser_schema.set_defaults(func=show_schema_layout)
