@@ -34,7 +34,7 @@ def func_get_subcmd(args):
     config_opts = get_default_settings()
     repo_path = None
     config_path_get_repo_path = (
-        config_opts.get("config", {}).get("paths", {}).get("get_repo_path")
+        config_opts.get("config", {}).get("paths", {}).get("clonepath")
     )
     if config_path_get_repo_path:
         repo_path = os.path.realpath(config_path_get_repo_path)

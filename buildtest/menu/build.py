@@ -18,7 +18,7 @@ from buildtest.utils.file import walk_tree, resolve_path
 logger = logging.getLogger(__name__)
 
 
-def discover_buildspecs(buildspec, search_path=[]):
+def discover_buildspecs(buildspec, search_path=None):
     """Given a buildspec file specified by the user with ``buildtest build --buildspec``,
        discover one or more files and return a list for buildtest to parse.
        Examples of intended functionality are documented here. For all of
@@ -38,6 +38,7 @@ def discover_buildspecs(buildspec, search_path=[]):
     """
 
     buildspecs = []
+    search_path = search_path or []
     # add default path to search path
     search_path.append(BUILDSPEC_DEFAULT_PATH)
 
@@ -67,7 +68,7 @@ def discover_buildspecs(buildspec, search_path=[]):
     else:
         msg = (
             f"Unable to find any buildspecs in search paths: {search_path} \n"
-            + "Please provide an absolute or relative path to a directory or file or file relative to current directory."
+            + "Please provide an absolute or relative path to a directory or file relative to current directory."
         )
 
         logger.error(msg)
@@ -152,14 +153,25 @@ def func_build_subcmd(args):
     check_settings(settings_file)
 
     config_paths_testdir = config_opts.get("config", {}).get("paths", {}).get("testdir")
-    config_paths_buildspec_path = (
-        config_opts.get("config", {}).get("paths", {}).get("buildspec_path")
+    config_paths_searchpath = (
+        config_opts.get("config", {}).get("paths", {}).get("searchpath")
     )
     buildspec_paths = []
-    if config_paths_buildspec_path:
+
+    if config_paths_searchpath:
         # return a unique list of directory paths where buildtest should search for buildspecs
         # this is equivalent to $PATH for buildspec
-        buildspec_paths = list(set(config_paths_buildspec_path.split(":")))
+
+        # if no colon found assume single directory passed into searchpath
+        if not re.search(":", config_paths_searchpath):
+            buildspec_paths = [config_paths_searchpath]
+        else:
+            # delete last colon if found at end of searchpath
+            if re.search(":$", config_paths_searchpath):
+                config_paths_searchpath = config_paths_searchpath[:-1]
+
+            # split by colon to get all unique directory in searchpath
+            buildspec_paths = list(set(config_paths_searchpath.split(":")))
 
     # if testdir defined in configuration file get realpath
     if config_paths_testdir:
