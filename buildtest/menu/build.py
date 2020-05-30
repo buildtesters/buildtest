@@ -18,7 +18,7 @@ from buildtest.utils.file import walk_tree, resolve_path
 logger = logging.getLogger(__name__)
 
 
-def discover_buildspecs(buildspec):
+def discover_buildspecs(buildspec, search_path=None):
     """Given a buildspec file specified by the user with ``buildtest build --buildspec``,
        discover one or more files and return a list for buildtest to parse.
        Examples of intended functionality are documented here. For all of
@@ -38,15 +38,18 @@ def discover_buildspecs(buildspec):
     """
 
     buildspecs = []
-
-    # If no config file provided, assume discovering across buildtest/site
-    if not buildspec:
-        buildspec = BUILDSPEC_DEFAULT_PATH
+    search_path = search_path or []
+    # add default path to search path
+    search_path.append(BUILDSPEC_DEFAULT_PATH)
 
     # First try, the path is an absolute path to file or folder
     # Second try, the path can be relative to the BUILDSPEC_DEFAULT_PATH
-    elif not os.path.exists(buildspec):
-        buildspec = os.path.join(BUILDSPEC_DEFAULT_PATH, buildspec)
+    if not os.path.exists(buildspec):
+        # find the first valid buildspec path from the list of search paths
+        for path in search_path:
+            if os.path.exists(os.path.join(path, buildspec)):
+                buildspec = os.path.join(path, buildspec)
+                break
 
     # Now handle path based on being a directory or file path
     if os.path.isdir(buildspec):
@@ -64,9 +67,10 @@ def discover_buildspecs(buildspec):
         logger.debug(f"BuildSpec: {buildspec} is a file")
     else:
         msg = (
-            "Please provide an absolute or relative path to a directory file from your present working directory or %s"
-            % BUILDSPEC_DEFAULT_PATH
+            f"Unable to find any buildspecs in search paths: {search_path} \n"
+            + "Please provide an absolute or relative path to a directory or file relative to current directory."
         )
+
         logger.error(msg)
         sys.exit(msg)
 
@@ -148,13 +152,43 @@ def func_build_subcmd(args):
     # check user's buildtest setting for any errors by validating against settings schema
     check_settings(settings_file)
 
+    config_paths_testdir = config_opts.get("config", {}).get("paths", {}).get("testdir")
+    config_paths_searchpath = (
+        config_opts.get("config", {}).get("paths", {}).get("searchpath")
+    )
+    buildspec_paths = []
+
+    if config_paths_searchpath:
+        # return a unique list of directory paths where buildtest should search for buildspecs
+        # this is equivalent to $PATH for buildspec
+
+        # if no colon found assume single directory passed into searchpath
+        if not re.search(":", config_paths_searchpath):
+            buildspec_paths = [config_paths_searchpath]
+        else:
+            # delete last colon if found at end of searchpath
+            if re.search(":$", config_paths_searchpath):
+                config_paths_searchpath = config_paths_searchpath[:-1]
+
+            # split by colon to get all unique directory in searchpath
+            buildspec_paths = list(set(config_paths_searchpath.split(":")))
+
+    # if testdir defined in configuration file get realpath
+    if config_paths_testdir:
+        config_paths_testdir = os.path.realpath(config_paths_testdir)
+
+    # test directory first preference is command line option --testdir, next is path
+    # in configuration file, if neither is defined then buildtest will set to
+    # .buildtest in current directory
+    test_directory = args.testdir or config_paths_testdir
+
     # list to store all Buildspecs that are found using discover_buildspecs followed by exclusion check
     buildspecs = []
 
     # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
     # times we need to invoke discover_buildspecs once per argument.
     for buildtest_argument in args.buildspec:
-        buildspecs += discover_buildspecs(buildtest_argument)
+        buildspecs += discover_buildspecs(buildtest_argument, buildspec_paths)
 
     # remove any duplicate Buildspec from list by converting list to set and then back to list
     buildspecs = list(set(buildspecs))
@@ -205,7 +239,7 @@ def func_build_subcmd(args):
         bp = BuildspecParser(buildspec)
 
         # And builders parsed through for each
-        for builder in bp.get_builders(testdir=args.testdir):
+        for builder in bp.get_builders(testdir=test_directory):
 
             # Keep track of total number of tests run
             total_tests += 1

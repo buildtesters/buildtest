@@ -6,7 +6,7 @@
   "required": ["editor", "executors"],
   "additionalProperties": false,
   "properties": {
-      "editor": { 
+      "editor": {
           "type": "string",
           "enum": ["vi", "vim", "nano", "emacs"]
       },
@@ -21,11 +21,31 @@
              }
           }
       },
-      "additionalProperties": false       
+      "config": {
+        "type": "object",
+        "properties": {
+          "paths": {
+            "type": "object",
+            "properties": {
+              "clonepath": {
+                "type": "string"
+              },
+              "searchpath": {
+                "type": "string"
+              },
+              "testdir": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "additionalProperties": false
   },
   "definitions": {
       "local": {
-          "type": "object",          
+          "type": "object",
           "properties": {
               "description": {"type": "string"},
               "type": {
@@ -43,7 +63,7 @@
        },
 
       "slurm": {
-          "type": "object",          
+          "type": "object",
           "properties": {
               "description": {"type": "string"},
               "type": {
@@ -63,3 +83,4 @@
        }
     }
 }
+

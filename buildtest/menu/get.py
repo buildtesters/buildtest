@@ -8,6 +8,7 @@ import os
 import re
 import sys
 
+from buildtest.config import get_default_settings
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
 from buildtest.utils.file import create_dir
 
@@ -30,7 +31,15 @@ def func_get_subcmd(args):
     if not re.search("github.com", args.repo):
         sys.exit("Currently only GitHub is supported for buildtest get.")
 
-    root = os.path.join(BUILDSPEC_DEFAULT_PATH, "github.com")
+    config_opts = get_default_settings()
+    repo_path = None
+    config_path_get_repo_path = (
+        config_opts.get("config", {}).get("paths", {}).get("clonepath")
+    )
+    if config_path_get_repo_path:
+        repo_path = os.path.realpath(config_path_get_repo_path)
+    repo_search_path = repo_path or BUILDSPEC_DEFAULT_PATH
+    root = os.path.join(repo_search_path, "github.com")
     create_dir(root)
 
     # Parse the repository name assumes it is using HTTPS in format https://github.com/<username>/<repo>.git
