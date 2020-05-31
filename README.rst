@@ -32,7 +32,7 @@ you can start writing tests in your own repository with
 `Buildtest schema library <https://buildtesters.github.io/schemas/>`_.
 
 
-To get started with buildtest see `Installing buildtest <https://buildtest.readthedocs.io/en/latest/installing_buildtest.html>`_
+To get started with buildtest see `Installing buildtest <https://buildtest.readthedocs.io/en/latest/installing_buildtest.html>`_.
 
 Schema Development
 -------------------
