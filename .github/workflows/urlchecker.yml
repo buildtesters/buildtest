@@ -9,17 +9,22 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: URLs-checker
-      uses: urlstechie/urlchecker-action@0.1.7
+      uses: urlstechie/urlchecker-action@0.2.1
       with:
         # check this subfolder only
         subfolder: docs
 
+        # clone devel
+        branch: devel  
         # A comma-separated list of file types to cover in the URL checks
         file_types: .md,.py,.rst
 
         # Choose whether to include file with no URLs in the prints.
         print_all: false
 
+        # timeout in 10 seconds if url is not reached
+        timeout: 10
+       
         # How many times to retry a failed request (defaults to 1)
         retry_count: 3
 
