@@ -24,12 +24,22 @@
 buildtest
 ---------
 
-buildtest is a software stack testing framework that automates test creation and execution to help users and 
-HPC facilities to better support and validate their software stack. buildtest can provide a means to share central repositories 
-with collections of tests for scientific software. buildtest makes use of `YAML <https://yaml.org/>`_ configuration to write
-test configuration that is reusable and adaptable to other HPC sites.
+buildtest is a HPC testing framework that automates test build and execution to help 
+HPC facilities validate their system. buildtest makes use of `YAML <https://yaml.org/>`_ configuration
+called *Buildspecs* to write test configuration. Buildtest makes use `jsonschema <https://json-schema.org/>`_ 
+to specify schema which is the core structure of how Buildspecs are written. Once you learn buildtest,
+you can start writing tests in your own repository with 
+`Buildtest schema library <https://buildtesters.github.io/schemas/>`_.
+
 
 To get started with buildtest see `Installing buildtest <https://buildtest.readthedocs.io/en/latest/installing_buildtest.html>`_
+
+Schema Development
+-------------------
+
+The schemas are maintained in https://github.com/buildtesters/schemas to drive development 
+of schema functionality indepdendent of buildtest. This prevents buildtest from breaking due to 
+schema change which is very important. For any issues with schema, please create issue in buildtest `issue tracker <https://github.com/buildtesters/buildtest/issues>`_.
 
 References
 ------------
@@ -84,7 +94,7 @@ We would love to get your contribution, if you are not sure check out the
 Author
 -------
 
-buildtest was founded by `Shahzeb Siddiqui <https://github.com/shahzebsiddiqui>`_ on Feb 24th 2017.
+buildtest was founded by `Shahzeb Siddiqui <https://github.com/shahzebsiddiqui>`_.
 
 LICENSE
 --------
