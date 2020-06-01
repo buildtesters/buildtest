@@ -6,7 +6,6 @@ from jsonschema import validate
 from buildtest.buildsystem.schemas.utils import load_schema
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
-    BUILDTEST_ROOT,
     DEFAULT_SETTINGS_FILE,
     DEFAULT_SETTINGS_SCHEMA,
 )

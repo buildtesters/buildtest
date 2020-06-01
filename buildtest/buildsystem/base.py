@@ -285,7 +285,7 @@ class BuilderBase:
         # set shebang to value defined in Buildspec, if not defined then get one from Shell class
         self.shebang = self.recipe.get("shebang") or self.shell.shebang
 
-        self.logger.debug(f"Shell Details: ")
+        self.logger.debug("Shell Details: ")
         self.logger.debug(f"Shell Name: {self.shell.name}")
         self.logger.debug(f"Shell Opts: {self.shell.opts}")
         self.logger.debug(f"Shell Path: {self.shell.path}")

@@ -14,13 +14,19 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Setup black linter
-        run: conda create --quiet --name black black
+        run: conda create --quiet --name black black pyflakes
 
-      - name: Lint python code
+      - name: Lint python code with black
         run: |
           export PATH="/usr/share/miniconda/bin:$PATH"
           source activate black
           black --check buildtest tests/*.py
+
+      - name: Check imports with pyflakes
+        run: |
+          export PATH="/usr/share/miniconda/bin:$PATH"
+          source activate black
+          pyflakes buildtest
 
       - name: Derive organization name
         if: github.event_name == 'pull_request' && failure()
