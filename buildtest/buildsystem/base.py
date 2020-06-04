@@ -375,7 +375,6 @@ class BuilderBase:
         """
 
         def wrapper(self):
-            # self.prepare_run()
             self.result = func(self)
             self.finish_run()
             return self.result
@@ -430,23 +429,13 @@ class BuilderBase:
         # The start time to print for the user
         self.metadata["start_time"] = datetime.datetime.now()
 
-        # If the subclass has a _prepare_run class, honor it
-        # if hasattr(self, "_build_setup"):
-        #    self._build_setup()
-
     @run_wrapper
     def run(self):
         """Run the builder associated with the loaded Buildspec recipe.
            This parent class handles shared starting functions for each step
            and then calls the subclass function (_run) if it exists.
-
-           Parameters:
-           testdir: the directory to write tests to. Defaults to os.getcwd()
         """
 
-        # Create test directory and run folder they don't exist
-        #        self._create_test_folders()
-        #        self._write_test()
         result = self.run_tests()
         return result
 

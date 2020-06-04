@@ -1,14 +1,14 @@
 executors:
   local:
-    bash_shell:
+    bash:
       description: submit jobs on local machine using bash shell
       shell: bash
 
-    sh_shell:
+    sh:
       description: submit jobs on local machine using sh shell
       shell: sh
 
-    python_shell:
+    python:
       description: submit jobs on local machine using python shell
       shell: python
   ssh:
