@@ -1,7 +1,6 @@
 import os
 
 from buildtest.config import load_settings, check_settings
-from buildtest.defaults import BUILDTEST_SETTINGS_FILE
 from buildtest.menu import BuildTestParser
 from buildtest.menu.build import func_build_subcmd
 from buildtest.system import BuildTestSystem
