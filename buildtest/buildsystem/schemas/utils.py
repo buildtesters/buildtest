@@ -80,9 +80,7 @@ def get_schema_version(schema):
 
        schema: the path to the schema file.
     """
-    match = re.search(
-        "v(?P<version>[0-9]{1}[.][0-9]{1}[.][0-9]{1})[.]schema[.]json", schema
-    )
+    match = re.search("v(?P<version>[0-9]{1}[.][0-9]{1})[.]schema[.]json", schema)
     if match:
         return match["version"]
 

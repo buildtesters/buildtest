@@ -3,39 +3,43 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Buildtest Settings Schema",
   "type": "object",
-  "required": ["editor", "executors"],
+  "required": ["config", "executors"],
   "additionalProperties": false,
   "properties": {
-      "editor": {
-          "type": "string",
-          "enum": ["vi", "vim", "nano", "emacs"]
-      },
       "executors": {
           "type": "object",
-          "patternProperties": {
-              "^.*$": {
-                 "anyOf": [
-                     {"$ref": "#/definitions/local"},
-                     {"$ref": "#/definitions/slurm"}
-                 ]
-             }
-          }
+          "properties": {
+            "local": {
+              "type": "object",
+              "patternProperties": { "^.*$": { "$ref": "#/definitions/local" } }
+            },
+            "slurm": {
+              "type": "object",
+              "patternProperties": { "^.*$": { "$ref": "#/definitions/slurm" } }
+            },
+            "ssh": {
+              "type": "object",
+              "patternProperties": { "^.*$": { "$ref": "#/definitions/ssh" } }
+            }
+          },
+        "additionalProperties": false
       },
       "config": {
         "type": "object",
         "properties": {
+          "editor": {
+            "type": "string",
+            "enum": ["vi", "vim", "nano", "emacs"],
+            "default": "vim"
+          },
           "paths": {
             "type": "object",
             "properties": {
-              "clonepath": {
-                "type": "string"
-              },
-              "searchpath": {
-                "type": "string"
-              },
-              "testdir": {
-                "type": "string"
-              }
+              "prefix": { "type":  "string" },
+              "clonepath": { "type": "string" },
+              "logdir": {"type":  "string" },
+              "searchpath": { "type": "string" },
+              "testdir": { "type": "string" }
             }
           }
         },
@@ -44,43 +48,71 @@
       "additionalProperties": false
   },
   "definitions": {
+      "env": {
+          "type": "object",
+          "description": "One or more key value pairs for an environment (key=value)",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "minItems": 1,
+            "propertyNames": {
+               "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+            }
+          }
+      },
+      "modules": {
+        "type": "object",
+        "properties": {
+          "purge": { "type": "boolean" },
+          "load": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "local": {
           "type": "object",
           "properties": {
               "description": {"type": "string"},
-              "type": {
-                  "type": "string",
-                  "enum": ["local"]
-               },
-               "options": {
-                   "type": "array",
-                   "items": {
-                       "type": "string"
-                   }
-               }
-           },
-          "required": ["type"]
+              "shell":  {"type": "string",  "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*" },
+              "environment": {"$ref":  "#/definitions/env"},
+              "variables": {"$ref": "#/definitions/env"},
+              "retry": {"type": "integer", "minimum": 1, "maximum": 5},
+              "modules": {"$ref":  "#/definitions/modules"}
+          },
+          "additionalProperties": false
        },
 
       "slurm": {
           "type": "object",
           "properties": {
               "description": {"type": "string"},
-              "type": {
-                  "type": "string",
-                  "enum": ["slurm"]
-               },
-              "launcher": {
-                  "type": "string",
-                  "enum": ["sbatch"]
-               },
-               "options": {
-                   "type": "array",
-                   "items": {"type": "string"}
-               }
+              "launcher": { "type": "string", "enum": ["sbatch"] },
+              "options": { "type": "array", "items": {"type": "string"} },
+              "environment": {"$ref":  "#/definitions/env"},
+              "variables": {"$ref":  "#/definitions/env"},
+              "modules": {"$ref":  "#/definitions/modules"}
            },
-          "required": ["type","launcher"]
-       }
+          "additionalProperties": false,
+          "required": ["launcher"]
+       },
+      "ssh": {
+        "type": "object",
+        "properties": {
+          "description": {"type": "string"},
+          "host": {"type":  "string"},
+          "user": {"type":  "string"},
+          "identity_file": {"type": "string"},
+          "environment": {"$ref":  "#/definitions/env"},
+          "variables": {"$ref":  "#/definitions/env"},
+          "modules": {"$ref":  "#/definitions/modules"}
+        },
+        "required": ["host","user","identity_file"],
+        "additionalProperties": false
+      }
     }
 }
 

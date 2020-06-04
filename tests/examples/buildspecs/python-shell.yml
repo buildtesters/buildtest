@@ -1,6 +1,7 @@
-version: 0.0.1
+version: "1.0"
 
 circle_area:
+  executor: local.python
   type: script
   shell: python 
   description: "Calculate circle of area given a radius"

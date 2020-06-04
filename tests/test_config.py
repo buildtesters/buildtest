@@ -24,7 +24,7 @@ def test_get_default_settings():
     loaded_settings = get_default_settings()
     assert isinstance(loaded_settings, dict)
 
-    assert "editor" in loaded_settings.keys()
+    assert "config" in loaded_settings.keys()
     assert "executors" in loaded_settings.keys()
 
 

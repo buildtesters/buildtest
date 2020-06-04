@@ -7,7 +7,7 @@ import sys
 
 
 class BuildExecutor:
-    """A BuildExector is a base class some type of executor, defined under
+    """A BuildExecutor is a base class some type of executor, defined under
        the buildtest/settings/default-config.json schema. For example,
        the types "local" and "slurm" would map to `LocalExecutor` and
        `SlurmExecutor` here, each expecting a particular set of
@@ -32,15 +32,23 @@ class BuildExecutor:
         self.executors = {}
         self.logger = logging.getLogger(__name__)
         self.logger.debug("Getting Executors from buildtest settings")
-        # Load the executors
-        for name, executor in config_opts.get("executors", {}).items():
-            self.logger.debug(f"Executor Name: {name}  Executor Value: {executor}")
-            if executor["type"] == "local":
-                self.executors[name] = LocalExecutor(name, executor)
-            elif executor["type"] == "slurm":
-                self.executors[name] = SlurmExecutor(name, executor)
 
-        self.set_default(default)
+        for name in config_opts["executors"].get("local", {}).keys():
+            self.executors[f"local.{name}"] = LocalExecutor(
+                name, config_opts["executors"]["local"][name]
+            )
+
+        for name in config_opts["executors"].get("ssh", {}).keys():
+            self.executors[f"ssh.{name}"] = SSHExecutor(
+                name, config_opts["executors"]["ssh"][name]
+            )
+
+        for name in config_opts["executors"].get("slurm", {}).keys():
+            self.executors[f"slurm.{name}"] = SlurmExecutor(
+                name, config_opts["executors"]["slurm"][name]
+            )
+
+        # self.set_default(default)
 
     def __str__(self):
         return "[buildtest-executor]"
@@ -65,7 +73,7 @@ class BuildExecutor:
            :type builder: buildtest.buildsystem.BuilderBase (or subclass).
         """
 
-        executor = builder.metadata.get("executor", "default")
+        executor = builder.metadata.get("recipe").get("executor")
 
         # The executor (or a default) must be define
         if executor not in self.executors:
@@ -204,6 +212,10 @@ class BaseExecutor:
 
 class LocalExecutor(BaseExecutor):
     type = "local"
+
+
+class SSHExecutor(BaseExecutor):
+    type = "ssh"
 
 
 class SlurmExecutor(BaseExecutor):

@@ -1,15 +1,18 @@
 import os
 
+from buildtest.config import load_settings, check_settings
+from buildtest.defaults import BUILDTEST_SETTINGS_FILE
+from buildtest.menu import BuildTestParser
+from buildtest.menu.build import func_build_subcmd
+from buildtest.system import BuildTestSystem
+from buildtest.log import init_logfile
+
 # column width for linewrap for argparse library
 os.environ["COLUMNS"] = "120"
 
 
 def main():
     """Entry point to buildtest."""
-
-    from buildtest.menu import BuildTestParser
-    from buildtest.system import BuildTestSystem
-    from buildtest.log import init_logfile
 
     buildtest_logfile = "buildtest.log"
     if os.path.exists(buildtest_logfile):
@@ -22,7 +25,18 @@ def main():
     BuildTestSystem()
 
     parser = BuildTestParser()
-    parser.parse_options()
+    args = parser.parse_options()
+
+    # invoking load_settings will attempt to initialize buildtest settings and
+    # load the schema
+    buildtest_configuration = load_settings()
+    check_settings()
+
+    if args.subcommands == "build":
+        func_build_subcmd(args, buildtest_configuration)
+    else:
+        if args.subcommands and args.func:
+            args.func(args)
 
 
 if __name__ == "__main__":

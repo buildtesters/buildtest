@@ -11,7 +11,7 @@ def func_config_edit(args=None):
     """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
 
     config_opts = get_default_settings()
-    os.system(f"{config_opts['editor']} {BUILDTEST_SETTINGS_FILE}")
+    os.system(f"{config_opts['config']['editor']} {BUILDTEST_SETTINGS_FILE}")
 
 
 def func_config_view(args=None):

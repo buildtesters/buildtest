@@ -252,7 +252,6 @@ class BuilderBase:
         self.name = name
         self.pwd = os.getcwd()
         self.result = {}
-        self.build_id = None
         self.metadata = {}
         self.buildspec = buildspec
         self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec))
@@ -262,6 +261,11 @@ class BuilderBase:
         self.logger = logging.getLogger(__name__)
         self.logger.debug(f"Processing Buildspec: {self.buildspec}")
         self.logger.debug(f"Processing Buildspec section: {self.name}")
+
+        self.metadata["name"] = self.config_name
+        self.metadata["buildspec"] = buildspec
+        self.metadata["recipe"] = recipe
+
         # A builder is required to define the type attribute
         if not hasattr(self, "type"):
             sys.exit(
@@ -371,7 +375,6 @@ class BuilderBase:
         """
 
         def wrapper(self):
-            self.prepare_run()
             self.result = func(self)
             self.finish_run()
             return self.result
@@ -387,14 +390,25 @@ class BuilderBase:
         if hasattr(self, "_finish_run"):
             self._finish_run()
 
-    def prepare_run(self):
-        """Prepare run provides shared functions to set up metadata and
-           class data structures that are used by both run and dry_run
+    def build(self):
+        """ This method is responsible for invoking setup, creating test
+            directory and writing test.
+
+        :return:
+        """
+        self._build_setup()
+        self._create_test_folders()
+        self._write_test()
+
+    def _build_setup(self):
+        """This method is the setup operation to get ready to build test which
+           includes getting unique build id, setting up metadata object to store
+           test details such as where test will be located and directory of test.
            This section cannot be reached without a valid, loaded recipe.
         """
 
         # Generate a unique id for the build based on key and unique string
-        self.build_id = self._generate_build_id()
+        self.metadata["build_id"] = self._generate_build_id()
 
         # History is returned at the end of a run
         self.history = {}
@@ -402,7 +416,7 @@ class BuilderBase:
 
         # Metadata includes known sections in a Buildspec
         # These should all be validated for type, format, by the Buildspec schema
-        self.metadata = {}
+        # self.metadata = {}
 
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
@@ -415,24 +429,14 @@ class BuilderBase:
         # The start time to print for the user
         self.metadata["start_time"] = datetime.datetime.now()
 
-        # If the subclass has a _prepare_run class, honor it
-        if hasattr(self, "_prepare_run"):
-            self._prepare_run()
-
     @run_wrapper
     def run(self):
         """Run the builder associated with the loaded Buildspec recipe.
            This parent class handles shared starting functions for each step
            and then calls the subclass function (_run) if it exists.
-
-           Parameters:
-           testdir: the directory to write tests to. Defaults to os.getcwd()
         """
 
-        # Create test directory and run folder they don't exist
-        self._create_test_folders()
-        testfile = self._write_test()
-        result = self.run_tests(testfile)
+        result = self.run_tests()
         return result
 
     def check_regex(self, regex):
@@ -466,29 +470,25 @@ class BuilderBase:
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
         return re.search(regex["exp"], content) != None
 
-    def run_tests(self, testfile):
+    def run_tests(self):
         """The shared _run function will run a test file, which must be
            provided. This is called by run() after generation of the
            test file, and it return a result object (dict).
 
-           Parameters:
-
-           :param testfile: Generated testfile by buildtest as a result of a Buildspec. This file is now executed based on the executor type
-           :type testfile: str, required
         """
 
         # Keep a result object
         result = {}
         result["START_TIME"] = self.get_formatted_time("start_time")
         result["LOGFILE"] = self.metadata.get("logfile", "")
-        result["BUILD_ID"] = self.build_id
+        result["BUILD_ID"] = self.metadata["build_id"]
 
         # Change to the test directory
         os.chdir(self._get_testdir())
         self.logger.debug(f"Changing to directory {self._get_testdir()}")
 
         # build the run command that includes the shell path, shell options and path to test file
-        cmd = [self.shell.path, self.shell.opts, testfile]
+        cmd = [self.shell.path, self.shell.opts, self.metadata["testpath"]]
         self.metadata["command"] = " ".join(cmd)
         self.logger.debug(f"Running Test via command: {self.metadata['command']}")
 
@@ -499,7 +499,9 @@ class BuilderBase:
         self.metadata["end_time"] = datetime.datetime.now()
 
         # Keep an output file
-        run_output_file = os.path.join(self.metadata.get("rundir"), self.build_id)
+        run_output_file = os.path.join(
+            self.metadata.get("rundir"), self.metadata["build_id"]
+        )
 
         self.metadata["outfile"] = run_output_file + ".out"
         self.metadata["errfile"] = run_output_file + ".err"
@@ -516,7 +518,9 @@ class BuilderBase:
         self.logger.debug(f"Writing run error to file: {self.metadata['errfile']}")
         write_file(self.metadata["errfile"], err)
 
-        self.logger.debug(f"Return code: {command.returncode} for test: {testfile}")
+        self.logger.debug(
+            f"Return code: {command.returncode} for test: {self.metadata['testpath']}"
+        )
         result["RETURN_CODE"] = command.returncode
         result["END_TIME"] = self.get_formatted_time("end_time")
 
@@ -610,23 +614,22 @@ class BuilderBase:
 
         # '$HOME/.buildtest/testdir/<name>/<name>_<timestamp>.sh'
         # This will put output (latest run) in same directory - do we want this?
-        testpath = self.metadata["testpath"]
 
         lines = self._build_testcontent()
         lines = "\n".join(lines)
 
-        self.logger.info(f"Opening Test File for Writing: {testpath}")
-        write_file(testpath, lines)
+        self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
+
+        write_file(self.metadata["testpath"], lines)
 
         # Change permission of the file to executable
         os.chmod(
-            testpath,
+            self.metadata["testpath"],
             stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
         )
         self.logger.debug(
-            f"Applying permission 755 to {testpath} so that test can be executed"
+            f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
         )
-        return testpath
 
     def _build_testcontent(self):
         """Build the testscript content implemented in each subclass"""
