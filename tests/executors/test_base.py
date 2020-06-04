@@ -23,14 +23,10 @@ def test_build_executor():
 
     # Load BuildExecutor
     be = BuildExecutor(example)
-
-    # We should have loaded a local and slurm executor, and one defualt
-    # {'local': [executor-local-local], 'slurm': [executor-slurm-slurm]}
-    assert len(be.executors) == 3
+    # We should have a total of 5 executors, 3 local, 1 ssh, 1 slurm executor
+    assert len(be.executors) == 5
+    assert list(be.executors.keys()) == ['local.bash', 'local.sh', 'local.python', 'ssh.localhost', 'slurm.haswell']
 
     # Each should have
     for name, executor in be.executors.items():
         assert hasattr(executor, "_settings")
-
-        if name == "slurm":
-            assert executor.launcher == "srun"

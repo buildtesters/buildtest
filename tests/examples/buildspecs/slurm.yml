@@ -1,12 +1,13 @@
-version: 0.0.1
+version: "1.0"
 
 slurm_down_nodes_reason:
+  executor: local.bash
   type: "script"
   description: "Show SLURM nodes that are down or drain with a reason"
-  executor: normal
   run: "sinfo -R"
 
 slurm_not_responding_nodes:
+  executor: local.bash
   type: "script"
   description: "Show a list of slurm nodes not responding"
   run: "sinfo -d"

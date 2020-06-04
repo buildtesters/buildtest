@@ -33,11 +33,21 @@ def func_get_subcmd(args):
 
     config_opts = get_default_settings()
     repo_path = None
-    config_path_get_repo_path = (
+
+    settings_clonepath = (
         config_opts.get("config", {}).get("paths", {}).get("clonepath")
     )
-    if config_path_get_repo_path:
-        repo_path = os.path.realpath(config_path_get_repo_path)
+    settings_prefix = config_opts.get("config", {}).get("paths", {}).get("prefix")
+
+    # if prefix is defined set clone path to sub-directory 'repos'
+    if settings_prefix:
+        repo_path = os.path.join(settings_prefix,"repos")
+
+    # if clonepath key is defined than override value generated from 'prefix'
+    if settings_clonepath:
+        repo_path = os.path.realpath(settings_clonepath)
+
+    # it is possible prefix and clonepath are not defined, in that case we used default value
     repo_search_path = repo_path or BUILDSPEC_DEFAULT_PATH
     root = os.path.join(repo_search_path, "github.com")
     create_dir(root)

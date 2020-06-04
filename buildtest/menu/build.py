@@ -118,7 +118,7 @@ def include_file(file_path, white_list_patterns):
     return not re.search(regexp, file_path)
 
 
-def func_build_subcmd(args):
+def func_build_subcmd(args, config_opts):
     """Entry point for ``buildtest build`` sub-command. This method will discover
        Buildspecs in method ``discover_buildspecs``. If there is an exclusion list
        this will be checked, once buildtest knows all Buildspecs to process it will
@@ -137,22 +137,40 @@ def func_build_subcmd(args):
 
     # if buildtest settings specified on CLI, it would be in args.settings otherwise set
     # to default configuration (BUILDTEST_SETTINGS_FILE)
-    settings_file = args.settings or BUILDTEST_SETTINGS_FILE
+
 
     if args.settings:
         logger.debug(
             "Detected --settings from command line so override default settings file."
         )
 
-    logger.debug(f"Detected the following buildtest settings file: {settings_file}")
+        # load the user's buildtest settings file
+        config_opts = load_settings(args.settings)
 
-    # load the user's buildtest settings file
-    config_opts = load_settings(settings_file)
+        # check user's buildtest setting for any errors by validating against settings schema
+        check_settings(args.settings)
 
-    # check user's buildtest setting for any errors by validating against settings schema
-    check_settings(settings_file)
+    prefix = config_opts.get("config", {}).get("paths", {}).get("prefix")
+    # variable to set test directory if prefix is set
+    prefix_testdir = None
+    if prefix:
+        prefix = resolve_path(prefix)
+        if prefix:
+            prefix_testdir = os.path.join(prefix,"tests")
 
     config_paths_testdir = config_opts.get("config", {}).get("paths", {}).get("testdir")
+
+    # if testdir defined in configuration file get realpath
+    if config_paths_testdir:
+        config_paths_testdir = resolve_path(config_paths_testdir)
+
+    # Order of precedence when detecting test directory
+    # 1. Command line option --testdir
+    # 2. Configuration option specified by 'testdir'
+    # 3. Configuration option specified by 'prefix'
+    # 4. Defaults to current working directory in .buildtest subdirectory
+    test_directory = args.testdir or config_paths_testdir or prefix_testdir
+
     config_paths_searchpath = (
         config_opts.get("config", {}).get("paths", {}).get("searchpath")
     )
@@ -173,14 +191,11 @@ def func_build_subcmd(args):
             # split by colon to get all unique directory in searchpath
             buildspec_paths = list(set(config_paths_searchpath.split(":")))
 
-    # if testdir defined in configuration file get realpath
-    if config_paths_testdir:
-        config_paths_testdir = os.path.realpath(config_paths_testdir)
-
-    # test directory first preference is command line option --testdir, next is path
-    # in configuration file, if neither is defined then buildtest will set to
-    # .buildtest in current directory
-    test_directory = args.testdir or config_paths_testdir
+    print ("Paths:")
+    print ("{:_<10}".format(""))
+    print (f"Prefix: {prefix}")
+    print (f"Test Directory: {test_directory}")
+    print (f"Search Path: {buildspec_paths}")
 
     # list to store all Buildspecs that are found using discover_buildspecs followed by exclusion check
     buildspecs = []
@@ -216,23 +231,16 @@ def func_build_subcmd(args):
     [print(buildspec) for buildspec in buildspecs]
     print("\n\n")
 
-    # Keep track of total metrics
-    total_tests = 0
-    failed_tests = 0
-    passed_tests = 0
-
-    # Load BuildExecutors
-    executor = BuildExecutor(config_opts, default=args.executor)
     if not args.dry:
-        print(
-            "{:<30} {:<30} {:<30} {:<30}".format(
-                "Buildspec Name", "SubTest", "Status", "Buildspec Path"
-            )
-        )
+        print ("{:>40}".format("Building Test"))
+        print("\n\n")
+        print("{:<30} {:<30}".format("Name", "TestPath"))
         print("{:_<120}".format(""))
     # Process each Buildspec iteratively by parsing using BuildspecParser followed by
     # getting the appropriate builder and invoking the executor instance of type BuildExecutor
     # to run the test
+    builders = []
+    # build all the tests
     for buildspec in buildspecs:
 
         # Read in Buildspec file here, loading each will validate the buildspec file
@@ -241,19 +249,35 @@ def func_build_subcmd(args):
         # And builders parsed through for each
         for builder in bp.get_builders(testdir=test_directory):
 
-            # Keep track of total number of tests run
-            total_tests += 1
+            builder.build()
+            print ("{:<30} {:<30}".format(builder.metadata['name'], builder.metadata['testpath']))
+            builders.append(builder)
 
-            if not args.dry:
-                result = executor.run(builder)
+    executor = BuildExecutor(config_opts)
 
-                # Update results
-                if result["TEST_STATE"] == "PASS":
-                    passed_tests += 1
-                else:
-                    failed_tests += 1
-            else:
-                result = executor.dry_run(builder)
+    # run all the tests
+    passed_tests = 0
+    failed_tests = 0
+    total_tests = 0
+    print ("\n")
+    print ("{:>40}".format("Running Test"))
+    print ("\n\n")
+    print(
+        "{:<30} {:<30} {:<30} {:<30}".format(
+            "Name", "Section", "Status", "Buildspec Path"
+        )
+    )
+    print ("{:_<80}".format(""))
+    for builder in builders:
+
+        result = executor.run(builder)
+
+        if result["TEST_STATE"] == "PASS":
+            passed_tests += 1
+        else:
+            failed_tests += 1
+
+        total_tests += 1
 
     if not args.dry:
         print("\n\n{:=<60}".format(""))

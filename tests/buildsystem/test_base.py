@@ -34,7 +34,7 @@ def test_BuildspecParser():
         bp = BuildspecParser(buildspec)
 
         # The lookup should have the base schema
-        # {'script': {'0.0.1': 'script-v0.0.1.schema.json', 'latest': 'script-v0.0.1.schema.json'}}
+        # {'script': {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}}
         for supported_schema in supported_schemas:
             assert supported_schema in bp.lookup
 
@@ -43,14 +43,18 @@ def test_BuildspecParser():
         for builder in builders:
 
             # Builders (on init) don't have metadata or build_id
-            assert not builder.metadata
-            assert not builder.build_id
+            assert builder.metadata
 
-            # Manually run prepare_run to define the above (this is usually handled by run)
-            builder.prepare_run()
-            for k in ["testpath", "testdir", "start_time"]:
+            # the following keys below are defined in metadata upon init
+            for k in ["name", "buildspec", "recipe"]:
                 assert k in builder.metadata
-            assert builder.build_id
+
+            # Invoking build will setup test metadata by adding few more keys to metadata
+            # and write test
+            builder.build()
+
+            for k in ["testpath", "testdir", "rundir", "build_id"]:
+                assert k in builder.metadata
 
             # If recipe had sections for pre_run, post_run, shell, they would be added here as well
 

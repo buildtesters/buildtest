@@ -1,5 +1,5 @@
 {
-  "$id": "https://buildtesters.github.io/schemas/compiler/compiler-v0.0.1.schema.json",
+  "$id": "https://buildtesters.github.io/schemas/compiler/compiler-v1.0.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "BuildTest Schema for compiler",
   "type": "object",

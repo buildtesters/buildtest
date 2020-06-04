@@ -1,7 +1,8 @@
-version: 0.0.1
+version: "1.0"
 
 # Shell would be accepted to indicate a single line shell command (or similar)
 hello_dinosaur:
+  executor: local.bash
   type: script
   env:
     FIRST_NAME: avocado
