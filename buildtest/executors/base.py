@@ -34,15 +34,21 @@ class BuildExecutor:
         self.logger.debug("Getting Executors from buildtest settings")
 
         for name in config_opts["executors"].get("local", {}).keys():
-            self.executors[f"local.{name}"] = LocalExecutor(name,config_opts['executors']['local'][name])
+            self.executors[f"local.{name}"] = LocalExecutor(
+                name, config_opts["executors"]["local"][name]
+            )
 
         for name in config_opts["executors"].get("ssh", {}).keys():
-            self.executors[f"ssh.{name}"] = SSHExecutor(name,config_opts['executors']['ssh'][name])
+            self.executors[f"ssh.{name}"] = SSHExecutor(
+                name, config_opts["executors"]["ssh"][name]
+            )
 
         for name in config_opts["executors"].get("slurm", {}).keys():
-            self.executors[f"slurm.{name}"] = SlurmExecutor(name, config_opts['executors']['slurm'][name])
+            self.executors[f"slurm.{name}"] = SlurmExecutor(
+                name, config_opts["executors"]["slurm"][name]
+            )
 
-        #self.set_default(default)
+        # self.set_default(default)
 
     def __str__(self):
         return "[buildtest-executor]"
@@ -207,8 +213,10 @@ class BaseExecutor:
 class LocalExecutor(BaseExecutor):
     type = "local"
 
+
 class SSHExecutor(BaseExecutor):
     type = "ssh"
+
 
 class SlurmExecutor(BaseExecutor):
     """The slurm executor is optimized to setup, run, and check jobs, so it

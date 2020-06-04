@@ -34,14 +34,12 @@ def func_get_subcmd(args):
     config_opts = get_default_settings()
     repo_path = None
 
-    settings_clonepath = (
-        config_opts.get("config", {}).get("paths", {}).get("clonepath")
-    )
+    settings_clonepath = config_opts.get("config", {}).get("paths", {}).get("clonepath")
     settings_prefix = config_opts.get("config", {}).get("paths", {}).get("prefix")
 
     # if prefix is defined set clone path to sub-directory 'repos'
     if settings_prefix:
-        repo_path = os.path.join(settings_prefix,"repos")
+        repo_path = os.path.join(settings_prefix, "repos")
 
     # if clonepath key is defined than override value generated from 'prefix'
     if settings_clonepath:

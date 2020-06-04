@@ -262,9 +262,9 @@ class BuilderBase:
         self.logger.debug(f"Processing Buildspec: {self.buildspec}")
         self.logger.debug(f"Processing Buildspec section: {self.name}")
 
-        self.metadata['name'] = self.config_name
-        self.metadata['buildspec'] = buildspec
-        self.metadata['recipe'] = recipe
+        self.metadata["name"] = self.config_name
+        self.metadata["buildspec"] = buildspec
+        self.metadata["recipe"] = recipe
 
         # A builder is required to define the type attribute
         if not hasattr(self, "type"):
@@ -409,7 +409,7 @@ class BuilderBase:
         """
 
         # Generate a unique id for the build based on key and unique string
-        self.metadata['build_id'] = self._generate_build_id()
+        self.metadata["build_id"] = self._generate_build_id()
 
         # History is returned at the end of a run
         self.history = {}
@@ -417,7 +417,7 @@ class BuilderBase:
 
         # Metadata includes known sections in a Buildspec
         # These should all be validated for type, format, by the Buildspec schema
-       # self.metadata = {}
+        # self.metadata = {}
 
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
@@ -431,7 +431,7 @@ class BuilderBase:
         self.metadata["start_time"] = datetime.datetime.now()
 
         # If the subclass has a _prepare_run class, honor it
-        #if hasattr(self, "_build_setup"):
+        # if hasattr(self, "_build_setup"):
         #    self._build_setup()
 
     @run_wrapper
@@ -445,8 +445,8 @@ class BuilderBase:
         """
 
         # Create test directory and run folder they don't exist
-#        self._create_test_folders()
-#        self._write_test()
+        #        self._create_test_folders()
+        #        self._write_test()
         result = self.run_tests()
         return result
 
@@ -492,7 +492,7 @@ class BuilderBase:
         result = {}
         result["START_TIME"] = self.get_formatted_time("start_time")
         result["LOGFILE"] = self.metadata.get("logfile", "")
-        result["BUILD_ID"] = self.metadata['build_id']
+        result["BUILD_ID"] = self.metadata["build_id"]
 
         # Change to the test directory
         os.chdir(self._get_testdir())
@@ -510,7 +510,9 @@ class BuilderBase:
         self.metadata["end_time"] = datetime.datetime.now()
 
         # Keep an output file
-        run_output_file = os.path.join(self.metadata.get("rundir"), self.metadata['build_id'])
+        run_output_file = os.path.join(
+            self.metadata.get("rundir"), self.metadata["build_id"]
+        )
 
         self.metadata["outfile"] = run_output_file + ".out"
         self.metadata["errfile"] = run_output_file + ".err"
@@ -527,7 +529,9 @@ class BuilderBase:
         self.logger.debug(f"Writing run error to file: {self.metadata['errfile']}")
         write_file(self.metadata["errfile"], err)
 
-        self.logger.debug(f"Return code: {command.returncode} for test: {self.metadata['testpath']}")
+        self.logger.debug(
+            f"Return code: {command.returncode} for test: {self.metadata['testpath']}"
+        )
         result["RETURN_CODE"] = command.returncode
         result["END_TIME"] = self.get_formatted_time("end_time")
 

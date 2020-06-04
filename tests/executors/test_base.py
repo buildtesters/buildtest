@@ -25,7 +25,13 @@ def test_build_executor():
     be = BuildExecutor(example)
     # We should have a total of 5 executors, 3 local, 1 ssh, 1 slurm executor
     assert len(be.executors) == 5
-    assert list(be.executors.keys()) == ['local.bash', 'local.sh', 'local.python', 'ssh.localhost', 'slurm.haswell']
+    assert list(be.executors.keys()) == [
+        "local.bash",
+        "local.sh",
+        "local.python",
+        "ssh.localhost",
+        "slurm.haswell",
+    ]
 
     # Each should have
     for name, executor in be.executors.items():

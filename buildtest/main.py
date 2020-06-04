@@ -36,7 +36,7 @@ def main():
         func_build_subcmd(args, buildtest_configuration)
     else:
         if args.subcommands and args.func:
-             args.func(args)
+            args.func(args)
 
 
 if __name__ == "__main__":

@@ -138,7 +138,6 @@ def func_build_subcmd(args, config_opts):
     # if buildtest settings specified on CLI, it would be in args.settings otherwise set
     # to default configuration (BUILDTEST_SETTINGS_FILE)
 
-
     if args.settings:
         logger.debug(
             "Detected --settings from command line so override default settings file."
@@ -156,7 +155,7 @@ def func_build_subcmd(args, config_opts):
     if prefix:
         prefix = resolve_path(prefix)
         if prefix:
-            prefix_testdir = os.path.join(prefix,"tests")
+            prefix_testdir = os.path.join(prefix, "tests")
 
     config_paths_testdir = config_opts.get("config", {}).get("paths", {}).get("testdir")
 
@@ -191,11 +190,11 @@ def func_build_subcmd(args, config_opts):
             # split by colon to get all unique directory in searchpath
             buildspec_paths = list(set(config_paths_searchpath.split(":")))
 
-    print ("Paths:")
-    print ("{:_<10}".format(""))
-    print (f"Prefix: {prefix}")
-    print (f"Test Directory: {test_directory}")
-    print (f"Search Path: {buildspec_paths}")
+    print("Paths:")
+    print("{:_<10}".format(""))
+    print(f"Prefix: {prefix}")
+    print(f"Test Directory: {test_directory}")
+    print(f"Search Path: {buildspec_paths}")
 
     # list to store all Buildspecs that are found using discover_buildspecs followed by exclusion check
     buildspecs = []
@@ -232,7 +231,7 @@ def func_build_subcmd(args, config_opts):
     print("\n\n")
 
     if not args.dry:
-        print ("{:>40}".format("Building Test"))
+        print("{:>40}".format("Building Test"))
         print("\n\n")
         print("{:<30} {:<30}".format("Name", "TestPath"))
         print("{:_<120}".format(""))
@@ -250,7 +249,11 @@ def func_build_subcmd(args, config_opts):
         for builder in bp.get_builders(testdir=test_directory):
 
             builder.build()
-            print ("{:<30} {:<30}".format(builder.metadata['name'], builder.metadata['testpath']))
+            print(
+                "{:<30} {:<30}".format(
+                    builder.metadata["name"], builder.metadata["testpath"]
+                )
+            )
             builders.append(builder)
 
     executor = BuildExecutor(config_opts)
@@ -259,15 +262,15 @@ def func_build_subcmd(args, config_opts):
     passed_tests = 0
     failed_tests = 0
     total_tests = 0
-    print ("\n")
-    print ("{:>40}".format("Running Test"))
-    print ("\n\n")
+    print("\n")
+    print("{:>40}".format("Running Test"))
+    print("\n\n")
     print(
         "{:<30} {:<30} {:<30} {:<30}".format(
             "Name", "Section", "Status", "Buildspec Path"
         )
     )
-    print ("{:_<80}".format(""))
+    print("{:_<80}".format(""))
     for builder in builders:
 
         result = executor.run(builder)
