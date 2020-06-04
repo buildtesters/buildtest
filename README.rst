@@ -41,6 +41,8 @@ The schemas are maintained in https://github.com/buildtesters/schemas to drive d
 of schema functionality indepdendent of buildtest. This prevents buildtest from breaking due to 
 schema change which is very important. For any issues with schema, please create issue in buildtest `issue tracker <https://github.com/buildtesters/buildtest/issues>`_.
 
+The schema documentation is available at https://buildtesters.github.io/schemas/
+
 References
 ------------
 
