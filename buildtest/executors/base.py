@@ -40,7 +40,7 @@ class BuildExecutor:
             self.executors[f"ssh.{name}"] = SSHExecutor(name,config_opts['executors']['ssh'][name])
 
         for name in config_opts["executors"].get("slurm", {}).keys():
-            self.executors[f"slurm.{name}"] = SSHExecutor(name, config_opts['executors']['slurm'][name])
+            self.executors[f"slurm.{name}"] = SlurmExecutor(name, config_opts['executors']['slurm'][name])
 
         #self.set_default(default)
 
