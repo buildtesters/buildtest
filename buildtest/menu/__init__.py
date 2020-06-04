@@ -7,7 +7,6 @@ import argparse
 
 from buildtest import BUILDTEST_VERSION
 from buildtest.defaults import supported_schemas
-from buildtest.menu.build import func_build_subcmd
 from buildtest.menu.get import func_get_subcmd
 from buildtest.menu.config import (
     func_config_edit,

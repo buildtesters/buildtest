@@ -1,15 +1,17 @@
 Global Schema
 ==============
 
-- Framework Schema File: https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/buildsystem/schemas/global.schema.json
-- Development Schema File: https://buildtesters.github.io/schemas/global/global.schema.json
+The global schema is validated with for all schema types and is the top-level
+schema when defining a Buildspec.
 
-Description
-------------
+For more details see `Global Schema Documentation <https://buildtesters.github.io/schemas/global/>`_.
 
-.. csv-table::
-   :header: "Field", "Type", "Description"
-   :widths: 20, 20, 60
+Schema Files
+-------------
 
-   **version**, **string**, version field selects the schema version based on the **type** field. The version follows semantic version (X.Y.Z)
+- `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/buildsystem/schemas/global.schema.json>`_
+- `Development Schema <https://buildtesters.github.io/schemas/global/global.schema.json>`_
 
+
+Examples
+--------

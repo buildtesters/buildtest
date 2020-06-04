@@ -8,7 +8,7 @@ import os
 import re
 import sys
 
-from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, BUILDTEST_SETTINGS_FILE
+from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
 
 from buildtest.buildsystem.base import BuildspecParser
 from buildtest.config import load_settings, check_settings
