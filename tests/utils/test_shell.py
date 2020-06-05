@@ -50,15 +50,15 @@ def test_update_instance():
 
 def test_shell_exceptions(tmp_path):
     # Shell will raise an error if program is not found
-    with pytest.raises(BuildTestError) as einfo:
+    with pytest.raises(BuildTestError):
         Shell("xyz")
 
     # input argument to Shell must be a string, any other value will raise an exception
-    with pytest.raises(BuildTestError) as einfo:
+    with pytest.raises(BuildTestError):
         Shell(["sh"])
 
     shell = Shell()
     # update shell.path to invalid program will raise an error. In this case we use tmp_path to set a random filepath
     # to shell.path and we expect Shell to raise an exception of type BuildTestError
-    with pytest.raises(BuildTestError) as einfo:
+    with pytest.raises(BuildTestError):
         shell.path = tmp_path

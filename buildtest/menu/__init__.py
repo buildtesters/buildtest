@@ -7,7 +7,7 @@ import argparse
 
 from buildtest import BUILDTEST_VERSION
 from buildtest.defaults import supported_schemas
-from buildtest.menu.get import func_get_subcmd
+from buildtest.menu.repo import func_repo_add, func_repo_list, func_repo_remove
 from buildtest.menu.config import (
     func_config_edit,
     func_config_view,
@@ -43,7 +43,7 @@ class BuildTestParser:
 
         self.main_menu()
         self.build_menu()
-        self.get_menu()
+        self.repo_menu()
         self.config_menu()
         self.show_menu()
 
@@ -122,24 +122,42 @@ class BuildTestParser:
             help="Exclude one or more configs from processing. Configs can be files or directories.",
         )
 
-    def get_menu(self):
-        """This method implements argparse argument for ``buildtest get``"""
+    def repo_menu(self):
+        """This method implements argparse argument for ``buildtest repo``"""
 
-        parser_get = self.subparsers.add_parser("get")
+        parser_repo = self.subparsers.add_parser("repo")
 
-        ##################### buildtest get       ###########################
-        parser_get.add_argument(
-            "repo", help="specify github.com or other repository to clone."
+        ##################### buildtest repo       ###########################
+
+        subparser_repo = parser_repo.add_subparsers(
+            title="commands", description="repository commands"
+        )
+        parser_repo_add = subparser_repo.add_parser(
+            "add", help="Add repository to buildtest."
+        )
+        parser_repo_list = subparser_repo.add_parser(
+            "list", help="List all repositories active in buildtest"
+        )
+        parser_repo_rm = subparser_repo.add_parser(
+            "rm", help="Remove repository from buildtest"
         )
 
-        parser_get.add_argument(
+        parser_repo_add.add_argument(
             "-b",
             "--branch",
             help="Clone a particular branch (defaults to master)",
             default="master",
         )
+        parser_repo_add.add_argument("repo", help="repository to clone into buildtest")
+        parser_repo_list.add_argument(
+            "-s", "--show", action="store_true", help="show repository details"
+        )
 
-        parser_get.set_defaults(func=func_get_subcmd)
+        parser_repo_rm.add_argument("repo", help="repository to remove from buildtest")
+
+        parser_repo_add.set_defaults(func=func_repo_add)
+        parser_repo_list.set_defaults(func=func_repo_list)
+        parser_repo_rm.set_defaults(func=func_repo_remove)
 
     def config_menu(self):
         """This method adds argparse argument for ``buildtest config``"""

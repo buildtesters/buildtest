@@ -6,16 +6,18 @@ for retrieving test repository that can be used for building tests with buildtes
 import logging
 import os
 import re
+import shutil
 import sys
+import yaml
 
 from buildtest.config import get_default_settings
-from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
-from buildtest.utils.file import create_dir
+from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, REPO_FILE
+from buildtest.utils.file import create_dir, is_file
 
 logger = logging.getLogger(__name__)
 
 
-def func_get_subcmd(args):
+def func_repo_add(args):
     """Entry point for ``buildtest get`` sub-command. The expected
     single argument provided should be a valid repository address to clone.
 
@@ -82,15 +84,81 @@ def clone(url, dest, branch="master"):
     name = os.path.basename(url).replace(".git", "")
     dest = os.path.join(dest, name)
 
-    # Ensure https prefix is provided
-    if not re.search("^(http|git@)", url):
-        url = "https://%s" % url
+    # If http prefix is provided, change this to https
+    if re.search("^(http://)", url):
+        url = "https://" + url.split("http://")[1]
+
+    # get repository entry for example https://github.com/buildtesters/buildtest-cori
+    # this will extract buildtesters/buildtest-cori
+    if re.search("^(https)", url):
+        username = url.split("/")[-2]
+        reponame = url.split("/")[-1]
+    # otherwise entry will be SSH so for example git@github.com:buildtesters/buildtest-stampede2.git
+    # this will retrieve buildtesters/buildtest-stampede2
+    else:
+        username = url.split(":")[1].split("/")[0]
+        reponame = url.split(":")[1].split("/")[1]
+        reponame = reponame.rstrip(".git")
 
     # Fail early if path exists
     if os.path.exists(dest):
         sys.exit("%s already exists. Remove and try again." % dest)
 
     return_code = os.system("git clone -b %s %s %s" % (branch, url, dest))
-    if return_code == 0:
-        return dest
-    sys.exit("Error cloning repo %s" % url)
+
+    if return_code != 0:
+        sys.exit("Error cloning repo %s" % url)
+
+    repo_entry = os.path.join(username, reponame)
+    repo_dict = {}
+
+    # if file exists, then read file and load YAML into repo_dict
+    if is_file(REPO_FILE):
+        with open(REPO_FILE, "r") as fd:
+            repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
+
+    # if its new entry add to file otherwise file won't be updated
+    if repo_entry not in repo_dict.keys():
+        repo_dict[repo_entry] = {}
+        repo_dict[repo_entry]["url"] = url
+        repo_dict[repo_entry]["dest"] = dest
+        with open(REPO_FILE, "w") as fd:
+            yaml.dump(repo_dict, fd, default_flow_style=False)
+
+    return dest
+
+
+def func_repo_list(args):
+    if not is_file(REPO_FILE):
+        raise SystemExit(
+            "No repositories found, please consider adding a repository via 'buildtest repo add'"
+        )
+
+    with open(REPO_FILE, "r") as fd:
+        repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
+
+    if args.show:
+        print(yaml.dump(repo_dict, default_flow_style=False))
+    else:
+        for repo in repo_dict.keys():
+            print(repo)
+
+
+def func_repo_remove(args):
+
+    if not is_file(REPO_FILE):
+        raise SystemExit(f"Unable to find repository file: {REPO_FILE}")
+
+    with open(REPO_FILE, "r") as fd:
+        repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
+
+    if not args.repo in repo_dict.keys():
+        raise SystemExit(f"Unable to delete repository {args.repo}")
+
+    destdir = repo_dict[args.repo]["dest"]
+    shutil.rmtree(destdir)
+    print(f"Removing Repository: {args.repo} and deleting files from {destdir}")
+
+    del repo_dict[args.repo]
+    with open(REPO_FILE, "w") as fd:
+        yaml.dump(repo_dict, fd, default_flow_style=False)

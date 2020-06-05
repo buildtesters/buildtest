@@ -28,15 +28,15 @@ def test_discover_buildspecs():
     assert buildspec in buildspec_files
 
     # invalid file extension must be of type .yml or .yaml
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         discover_buildspecs(os.path.join(root, "README.rst"))
 
     # when no Buildspec files found in a valid directory
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         # searching for all Buildspecs in current directory
         discover_buildspecs(os.path.dirname(os.path.abspath(__file__)))
 
     # when you pass invalid file it should fail
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         invalid_file = str(uuid.uuid4())
         discover_buildspecs(invalid_file)

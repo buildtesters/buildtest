@@ -1,6 +1,5 @@
 import os
-import shutil
-from buildtest.defaults import BUILDTEST_SETTINGS_FILE, BUILDTEST_ROOT
+from buildtest.defaults import BUILDTEST_SETTINGS_FILE
 from buildtest.config import (
     load_settings,
     check_settings,
