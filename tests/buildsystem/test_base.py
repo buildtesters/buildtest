@@ -17,15 +17,15 @@ def test_BuildspecParser():
     examples_dir = os.path.join(testroot, "examples", "buildspecs")
 
     # An empty path evaluated to be a directory should exit
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         BuildspecParser("")
 
     # Passing 'None' will raise an error
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         BuildspecParser(None)
 
     # A directory is not allowed either, this will raise an error.
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         BuildspecParser(examples_dir)
 
     # Test loading Buildspec files

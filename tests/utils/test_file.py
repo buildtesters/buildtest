@@ -7,7 +7,6 @@ from buildtest.utils.file import (
     is_file,
     create_dir,
     walk_tree,
-    resolve_path,
     read_file,
     write_file,
 )
@@ -116,18 +115,18 @@ def test_write_file_exceptions(tmp_path):
     write_file(file, input)
 
     # testing invalid type for file stream
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         print("Passing 'None' as input filestream to write_file")
         write_file(None, input)
 
     # testing if directory is passed as filepath, this is also not allowed and expected to raise error
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         print(f"Passing directory: {tmp_path} as input filestream to write_file")
         write_file(tmp_path, input)
 
     print("Writing to '/etc/shadow' will raise an exception BuildTestError")
     # writing to /etc/shadow will raise an error during write since /etc/shadow will result in Permission Error
-    with pytest.raises(BuildTestError) as e_info:
+    with pytest.raises(BuildTestError):
         write_file("/etc/shadow", input)
 
     # input content must be a string, will return None upon
@@ -137,7 +136,7 @@ def test_write_file_exceptions(tmp_path):
 def test_read_file(tmp_path):
     # testing invalid type for read_file, expects of type string. Expected return is 'None'
     print("Reading file with invalid type, passing 'None'")
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         read_file(None)
 
     file = os.path.join(tmp_path, "hello.txt")
@@ -147,10 +146,10 @@ def test_read_file(tmp_path):
 
     print(f"Now reading an invalid file: {file}, expecting read_file to return 'None'")
     # checking invalid file should report an error
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         read_file(file)
 
     print("Reading '/etc/shadow' will raise an exception BuildTestError")
     # reading /etc/shadow will raise a Permission error so we catch this exception BuildTestError
-    with pytest.raises(BuildTestError) as e_info:
+    with pytest.raises(BuildTestError):
         read_file("/etc/shadow")

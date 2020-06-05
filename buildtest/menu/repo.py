@@ -12,7 +12,7 @@ import yaml
 
 from buildtest.config import get_default_settings
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, REPO_FILE
-from buildtest.utils.file import create_dir, is_file, read_file, write_file
+from buildtest.utils.file import create_dir, is_file
 
 logger = logging.getLogger(__name__)
 

@@ -2,7 +2,6 @@
 BuildExecutor: testing functions
 """
 
-import pytest
 import os
 
 from jsonschema import validate

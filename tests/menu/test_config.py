@@ -1,5 +1,5 @@
 import os
-from jsonschema import validate, ValidationError
+from jsonschema import validate
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, BUILDTEST_SETTINGS_FILE
 from buildtest.menu.config import (
     func_config_view,

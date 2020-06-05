@@ -28,12 +28,12 @@ def test_clone(tmp_path):
     assert is_dir(clone(https_link, tmp_path))
 
     # cloning same repo twice will result in failure
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         clone(https_link, tmp_path)
 
     shutil.rmtree(tmp_path)
     # will fail to clone if invalid branch is specified
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         clone(https_link, tmp_path, "develop")
 
 
@@ -42,11 +42,11 @@ def test_func_repo_add(tmp_path):
     http_link = "http://github.com/buildtesters/buildtest-cori"
 
     # check if repo is None, this raises error
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         func_repo_add(none_repo)
 
     # currently we support fetching github repos, so testing a gitlab repo
-    with pytest.raises(SystemExit) as e_info:
+    with pytest.raises(SystemExit):
         func_repo_add(only_github_repo)
 
     # test http link
