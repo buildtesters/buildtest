@@ -7,11 +7,17 @@ import argparse
 
 from buildtest import BUILDTEST_VERSION
 from buildtest.defaults import supported_schemas
-from buildtest.menu.repo import func_repo_add, func_repo_list, func_repo_remove
 from buildtest.menu.config import (
     func_config_edit,
     func_config_view,
     func_config_reset,
+)
+from buildtest.menu.repo import func_repo_add, func_repo_list, func_repo_remove
+from buildtest.menu.buildspec import (
+    func_buildspec_find,
+    func_buildspec_view,
+    func_buildspec_edit,
+    func_buildspec_check,
 )
 from buildtest.menu.show import show_schema_layout
 
@@ -22,10 +28,9 @@ class BuildTestParser:
             "Documentation: " + "https://buildtest.readthedocs.io/en/latest/index.html"
         )
         description_str = (
-            "buildtest is a software testing framework designed "
-            + "for HPC facilities to verify their Software Stack. buildtest "
-            + "abstracts test complexity into YAML files that is interpreted"
-            + "by buildtest into shell script"
+            "buildtest is a HPC testing framework for building and executing"
+            + "tests. Buildtest comes with a set of json-schemas used to write "
+            + "test configuration (Buildspecs) in YAML to generate test scripts."
         )
 
         self.parser = argparse.ArgumentParser(
@@ -39,6 +44,8 @@ class BuildTestParser:
             "build": "Options for building test scripts",
             "show": "Options for displaying buildtest configuration",
             "config": "Buildtest Configuration Menu",
+            "repo": "Options for managing buildtest repositories",
+            "buildspec": "Command options for buildspecs",
         }
 
         self.main_menu()
@@ -46,6 +53,7 @@ class BuildTestParser:
         self.repo_menu()
         self.config_menu()
         self.show_menu()
+        self.buildspec_menu()
 
     def main_menu(self):
         """This method adds argument to ArgumentParser to main menu of buildtest"""
@@ -213,3 +221,35 @@ class BuildTestParser:
             "-s", "--settings", help="show settings schema", action="store_true",
         )
         parser_schema.set_defaults(func=show_schema_layout)
+
+    def buildspec_menu(self):
+
+        # -------------------------- buildtest show options ------------------------------
+        parser_buildspec = self.subparsers.add_parser("buildspec")
+
+        # -------------------------- buildtest show schemas ------------------------------
+        subparsers_buildspec = parser_buildspec.add_subparsers(
+            description="Commands options for Buildspecs"
+        )
+        buildspec_find = subparsers_buildspec.add_parser(
+            "find", help="find all buildspecs"
+        )
+        buildspec_view = subparsers_buildspec.add_parser(
+            "view", help="view a buildspec"
+        )
+        buildspec_view.add_argument("buildspec", help="name of buildspec")
+        buildspec_edit = subparsers_buildspec.add_parser(
+            "edit", help="edit a buildspec"
+        )
+        buildspec_edit.add_argument("buildspec", help="name of buildspec")
+        buildspec_check = subparsers_buildspec.add_parser(
+            "check", help="check buildspec is valid"
+        )
+        buildspec_find.add_argument(
+            "-r", "--repo", help="find all buildspecs from a repository"
+        )
+
+        buildspec_find.set_defaults(func=func_buildspec_find)
+        buildspec_view.set_defaults(func=func_buildspec_view)
+        buildspec_edit.set_defaults(func=func_buildspec_edit)
+        buildspec_check.set_defaults(func=func_buildspec_check)
