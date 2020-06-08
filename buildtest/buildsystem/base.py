@@ -14,6 +14,7 @@ import stat
 import sys
 
 from jsonschema import validate
+
 from buildtest.buildsystem.schemas.utils import (
     load_schema,
     load_recipe,
@@ -54,16 +55,24 @@ class BuildspecParser:
         self.logger = logging.getLogger(__name__)
 
         self.recipe = None
+        # boolean to determine if buildspec is valid. By default we assume file
+        # is valid and set to False if it reachs one of the invalid cases.
 
         # Read the lookup to get schemas available
-        self.lookup = get_schemas_available()
+        self.schema_table = get_schemas_available()
 
         self.logger.debug(
-            f"buildtest found the available schema: {self.lookup} in schema library"
+            f"buildtest found the available schema: {self.schema_table} in schema library"
         )
 
         # Load the Buildspec file, fails on any error
         self.load(buildspec)
+
+    def __str__(self):
+        return "[buildspec-parser]"
+
+    def __repr__(self):
+        return "[buildspec-parser]"
 
     def load(self, buildspec):
         """Load a Buildspec file. We check that it exists, and that it is valid.
@@ -95,11 +104,25 @@ class BuildspecParser:
         # validate each schema defined in the recipes
         self._validate()
 
-    def __str__(self):
-        return "[buildtest-build-config]"
+    def _validate_global(self):
+        """The global validation ensures that the overall structure of the
+           file is sound for further parsing. We load in the global.schema.json
+           for this purpose. The function also allows a custom Buildspec to
+           extend the usage of the class.
+        """
 
-    def __repr__(self):
-        return "[buildtest-build-config]"
+        global_schema_file = os.path.join(here, "global.schema.json")
+
+        outer_schema = load_schema(global_schema_file)
+        self.recipe = load_recipe(self.buildspec)
+
+        self.logger.debug(
+            f"Validating {self.buildspec} with schema: {global_schema_file}"
+        )
+
+        validate(instance=self.recipe, schema=outer_schema)
+
+        self.logger.debug("Validation was successful")
 
     # Validation
 
@@ -110,52 +133,40 @@ class BuildspecParser:
         """
 
         version = self.recipe.get("version", "latest")
-        seen = set()
-        for name, section in self.recipe.items():
+
+        for name in self.recipe.keys():
 
             if name in self.metadata:
                 continue
 
-            # Check for repeated keys
-            elif name in seen:
-                sys.exit(
-                    "Invalid Buildspec recipe: %s is repeated more than once." % name
-                )
-            seen.add(name)
+            # the buildspec section must be an dict where test is defined. If
+            # it's not a dict then we should raise an error.
+            if not isinstance(self.recipe[name], dict):
+                sys.exit(f"Section: {self.recipe[name]} must be a dictionary")
+
+            # extract type field from test, if not found set to None
+            type = self.recipe.get(name).get("type") or None
+
+            # if type not found in section, raise an error since we every test
+            # must be associated to a schema which is controlled by 'type' key
+            if not type:
+                sys.exit(f"Did not find 'type' key in test section: {name}")
 
             # Ensure we have a Buildspec recipe with a valid type
-            if section["type"] not in self.lookup.keys():
-                sys.exit("type %s is not known to buildtest." % section["type"])
+            if type not in self.schema_table.keys():
+                sys.exit("type %s is not known to buildtest." % type)
 
             # And that there is a version file
-            if version not in self.lookup[section["type"]]:
+            if version not in self.schema_table[type]:
                 sys.exit(
-                    "version %s is not known for type %s. Try using latest." % version,
-                    section["type"],
+                    "version %s is not known for type %s. Try using latest."
+                    % (version, self.schema_table[type])
                 )
 
             # Finally, validate the section against the schema
-            schema_file = os.path.join(
-                here, section["type"], self.lookup[section["type"]][version]
-            )
-            validate(instance=section, schema=load_schema(schema_file))
+            schema_file = os.path.join(here, type, self.schema_table[type][version])
 
-    def _validate_global(self, buildspec=None):
-        """The global validation ensures that the overall structure of the
-           file is sound for further parsing. We load in the global.schema.json
-           for this purpose. The function also allows a custom Buildspec to
-           extend the usage of the class.
-        """
-
-        buildspec = buildspec or self.buildspec
-        global_schema_file = os.path.join(here, "global.schema.json")
-
-        outer_schema = load_schema(global_schema_file)
-        self.recipe = load_recipe(buildspec)
-
-        self.logger.debug(f"Validating {buildspec} with schema: {global_schema_file}")
-        validate(instance=self.recipe, schema=outer_schema)
-        self.logger.debug("Validation was successful")
+            validate(instance=self.recipe[name], schema=load_schema(schema_file))
 
     # Builders
 
