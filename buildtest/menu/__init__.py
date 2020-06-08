@@ -17,7 +17,6 @@ from buildtest.menu.buildspec import (
     func_buildspec_find,
     func_buildspec_view,
     func_buildspec_edit,
-    func_buildspec_check,
 )
 from buildtest.menu.show import show_schema_layout
 
@@ -242,14 +241,7 @@ class BuildTestParser:
             "edit", help="edit a buildspec"
         )
         buildspec_edit.add_argument("buildspec", help="name of buildspec")
-        buildspec_check = subparsers_buildspec.add_parser(
-            "check", help="check buildspec is valid"
-        )
-        buildspec_find.add_argument(
-            "-r", "--repo", help="find all buildspecs from a repository"
-        )
 
         buildspec_find.set_defaults(func=func_buildspec_find)
         buildspec_view.set_defaults(func=func_buildspec_view)
         buildspec_edit.set_defaults(func=func_buildspec_edit)
-        buildspec_check.set_defaults(func=func_buildspec_check)

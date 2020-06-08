@@ -7,7 +7,7 @@ import logging
 import os
 import re
 import sys
-
+from jsonschema.exceptions import ValidationError
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
 
 from buildtest.buildsystem.base import BuildspecParser
@@ -239,11 +239,16 @@ def func_build_subcmd(args, config_opts):
     # getting the appropriate builder and invoking the executor instance of type BuildExecutor
     # to run the test
     builders = []
+    skipped_tests = []
     # build all the tests
     for buildspec in buildspecs:
 
-        # Read in Buildspec file here, loading each will validate the buildspec file
-        bp = BuildspecParser(buildspec)
+        try:
+            # Read in Buildspec file here, loading each will validate the buildspec file
+            bp = BuildspecParser(buildspec)
+        except (SystemExit, ValidationError):
+            skipped_tests.append(f"Skipping {buildspec} since it failed to validate")
+            continue
 
         # And builders parsed through for each
         for builder in bp.get_builders(testdir=test_directory):
@@ -255,6 +260,11 @@ def func_build_subcmd(args, config_opts):
                 )
             )
             builders.append(builder)
+
+    # print any skipped buildspecs if they failed to validate during build stage
+    if len(skipped_tests) > 0:
+        for test in skipped_tests:
+            print(test)
 
     executor = BuildExecutor(config_opts)
 
