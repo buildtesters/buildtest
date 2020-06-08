@@ -41,24 +41,24 @@ class BuildTestParser:
         )
         self.subparser_dict = {
             "build": "Options for building test scripts",
-            "show": "Options for displaying buildtest configuration",
-            "config": "Buildtest Configuration Menu",
-            "repo": "Options for managing buildtest repositories",
             "buildspec": "Command options for buildspecs",
+            "show": "Options for displaying buildtest configuration",
+            "repo": "Options for managing buildtest repositories",
+            "config": "Buildtest Configuration Menu",
         }
 
         self.main_menu()
         self.build_menu()
+        self.buildspec_menu()
+        self.show_menu()
         self.repo_menu()
         self.config_menu()
-        self.show_menu()
-        self.buildspec_menu()
 
     def main_menu(self):
         """This method adds argument to ArgumentParser to main menu of buildtest"""
         command_description = ""
         for k, v in self.subparser_dict.items():
-            command_description += f"""\n      {k}           {v}"""
+            command_description += "\n {:<30} {:<30}".format(k, v)
 
         self.subparsers = self.parser.add_subparsers(
             title="COMMANDS", description=command_description, dest="subcommands"
@@ -223,10 +223,9 @@ class BuildTestParser:
 
     def buildspec_menu(self):
 
-        # -------------------------- buildtest show options ------------------------------
+        # -------------------------- buildtest buildspec options ------------------------------
         parser_buildspec = self.subparsers.add_parser("buildspec")
 
-        # -------------------------- buildtest show schemas ------------------------------
         subparsers_buildspec = parser_buildspec.add_subparsers(
             description="Commands options for Buildspecs"
         )
