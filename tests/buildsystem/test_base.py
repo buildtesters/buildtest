@@ -55,18 +55,3 @@ def test_BuildspecParser():
 
             for k in ["testpath", "testdir", "rundir", "build_id"]:
                 assert k in builder.metadata
-
-            # If recipe had sections for pre_run, post_run, shell, they would be added here as well
-
-            result = builder.run()
-            for value in [
-                "BUILD_ID",
-                "START_TIME",
-                "END_TIME",
-                "RETURN_CODE",
-                "LOGFILE",
-            ]:
-                assert value in result
-
-            # Dry run should just print to screen
-            result = builder.dry_run()

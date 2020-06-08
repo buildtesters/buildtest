@@ -22,8 +22,7 @@ from buildtest.buildsystem.schemas.utils import (
     here,
 )
 from buildtest.exceptions import BuildTestError
-from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, is_dir, resolve_path, read_file, write_file
+from buildtest.utils.file import create_dir, is_dir, resolve_path, write_file
 from buildtest.utils.shell import Shell
 
 
@@ -54,35 +53,12 @@ class BuildspecParser:
 
         self.logger = logging.getLogger(__name__)
 
-        self.recipe = None
-        # boolean to determine if buildspec is valid. By default we assume file
-        # is valid and set to False if it reachs one of the invalid cases.
-
         # Read the lookup to get schemas available
         self.schema_table = get_schemas_available()
 
         self.logger.debug(
             f"buildtest found the available schema: {self.schema_table} in schema library"
         )
-
-        # Load the Buildspec file, fails on any error
-        self.load(buildspec)
-
-    def __str__(self):
-        return "[buildspec-parser]"
-
-    def __repr__(self):
-        return "[buildspec-parser]"
-
-    def load(self, buildspec):
-        """Load a Buildspec file. We check that it exists, and that it is valid.
-           we exit on any error, as the config is not loadable.
-
-           Parameters:
-
-           :param buildspec: the pull path to the configuration file, must exist.
-           :type buildspec: str, required
-        """
 
         # if invalid input for buildspec
         if not buildspec:
@@ -98,11 +74,19 @@ class BuildspecParser:
                 f"Detected {self.buildspec} is a directory, please provide a file path (not a directory path) to BuildspecParser."
             )
 
+        self.recipe = load_recipe(self.buildspec)
+
         # Buildspec must pass global validation (sets self.recipe)
         self._validate_global()
 
         # validate each schema defined in the recipes
         self._validate()
+
+    def __str__(self):
+        return "[buildspec-parser]"
+
+    def __repr__(self):
+        return "[buildspec-parser]"
 
     def _validate_global(self):
         """The global validation ensures that the overall structure of the
@@ -114,7 +98,6 @@ class BuildspecParser:
         global_schema_file = os.path.join(here, "global.schema.json")
 
         outer_schema = load_schema(global_schema_file)
-        self.recipe = load_recipe(self.buildspec)
 
         self.logger.debug(
             f"Validating {self.buildspec} with schema: {global_schema_file}"
@@ -240,7 +223,7 @@ class BuilderBase:
        any kind of builder.
     """
 
-    def __init__(self, name, recipe, buildspec=None, testdir=None):
+    def __init__(self, name, recipe, buildspec, testdir=None):
         """Initiate a builder base. A recipe configuration (loaded) is required.
            this can be handled easily with the BuildspecParser class:
 
@@ -255,7 +238,7 @@ class BuilderBase:
            :param recipe: the loaded section from the buildspec for the user.
            :type recipe: dict, required
            :param buildspec: the pull path to the Buildspec file, must exist.
-           :type buildspec: str, optional
+           :type buildspec: str, required
            :param testdir: Test Destination directory where to write test
            :type testdir: str, optional
         """
@@ -314,23 +297,15 @@ class BuilderBase:
     def __repr__(self):
         return self.__str__()
 
-    def _get_testdir(self):
-        """Based on the testfile path, return the testing directory.
-
-           Returns: full path to testing directory
-        """
-        return os.path.dirname(self.metadata["testpath"])
-
     def _create_test_folders(self):
         """Create all needed test folders on init, and add their paths
            to self.metadata.
         """
 
-        testdir = self._get_testdir()
-        create_dir(testdir)
+        create_dir(self.metadata["testdir"])
         for folder in ["run"]:
             name = "%sdir" % folder
-            self.metadata[name] = os.path.join(testdir, folder)
+            self.metadata[name] = os.path.join(self.metadata["testdir"], folder)
             create_dir(self.metadata[name])
 
     def get_test_extension(self):
@@ -378,29 +353,6 @@ class BuilderBase:
 
         return env
 
-    def run_wrapper(func):
-        """The run wrapper will execute any prepare_run and finish_run 
-           sections around some main run function (run or dry_run).
-           A return the result. The function sets self.result and also
-           returns it to the calling function.
-        """
-
-        def wrapper(self):
-            self.result = func(self)
-            self.finish_run()
-            return self.result
-
-        return wrapper
-
-    def finish_run(self):
-        """Finish up the run (not sure what might go here yet, other than
-           honoring a custom subclass function.
-        """
-
-        # If the subclass has a _finish_run function, honor it
-        if hasattr(self, "_finish_run"):
-            self._finish_run()
-
     def build(self):
         """ This method is responsible for invoking setup, creating test
             directory and writing test.
@@ -436,183 +388,6 @@ class BuilderBase:
         )
         self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
         self.metadata["testdir"] = os.path.dirname(self.metadata["testpath"])
-
-        # The start time to print for the user
-        self.metadata["start_time"] = datetime.datetime.now()
-
-    @run_wrapper
-    def run(self):
-        """Run the builder associated with the loaded Buildspec recipe.
-           This parent class handles shared starting functions for each step
-           and then calls the subclass function (_run) if it exists.
-        """
-
-        result = self.run_tests()
-        return result
-
-    def check_regex(self, regex):
-        """ This method conducts a regular expression check using 're.search' with regular
-            expression defined in Buildspec. User must specify an output stream (stdout, stderr)
-            to select when performing regex. In buildtest, this would read the .out or .err file
-            based on stream and run the regular expression to see if there is a match.
-
-            Parameters:
-
-            :param regex: Regular expression object defined in Buildspec file
-            :type regex: str, required
-            :return:  A boolean return True/False based on if re.search is successful or not
-            :rtype: bool
-        """
-
-        if regex["stream"] == "stdout":
-            self.logger.debug(
-                f"Detected regex stream 'stdout' so reading output file: {self.metadata['outfile']}"
-            )
-            content = read_file(self.metadata["outfile"])
-
-        elif regex["stream"] == "stderr":
-            self.logger.debug(
-                f"Detected regex stream 'stderr' so reading error file: {self.metadata['errfile']}"
-            )
-            content = read_file(self.metadata["errfile"])
-
-        self.logger.debug(f"Applying re.search with exp: {regex['exp']}")
-
-        # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
-        return re.search(regex["exp"], content) != None
-
-    def run_tests(self):
-        """The shared _run function will run a test file, which must be
-           provided. This is called by run() after generation of the
-           test file, and it return a result object (dict).
-
-        """
-
-        # Keep a result object
-        result = {}
-        result["START_TIME"] = self.get_formatted_time("start_time")
-        result["LOGFILE"] = self.metadata.get("logfile", "")
-        result["BUILD_ID"] = self.metadata["build_id"]
-
-        # Change to the test directory
-        os.chdir(self._get_testdir())
-        self.logger.debug(f"Changing to directory {self._get_testdir()}")
-
-        # build the run command that includes the shell path, shell options and path to test file
-        cmd = [self.shell.path, self.shell.opts, self.metadata["testpath"]]
-        self.metadata["command"] = " ".join(cmd)
-        self.logger.debug(f"Running Test via command: {self.metadata['command']}")
-
-        command = BuildTestCommand(self.metadata["command"])
-        out, err = command.execute()
-
-        # Record the ending time
-        self.metadata["end_time"] = datetime.datetime.now()
-
-        # Keep an output file
-        run_output_file = os.path.join(
-            self.metadata.get("rundir"), self.metadata["build_id"]
-        )
-
-        self.metadata["outfile"] = run_output_file + ".out"
-        self.metadata["errfile"] = run_output_file + ".err"
-
-        # write output of test to .out file
-
-        out = "\n".join(out)
-        err = "\n".join(err)
-
-        self.logger.debug(f"Writing run output to file: {self.metadata['outfile']}")
-        write_file(self.metadata["outfile"], out)
-
-        # write error from test to .err file
-        self.logger.debug(f"Writing run error to file: {self.metadata['errfile']}")
-        write_file(self.metadata["errfile"], err)
-
-        self.logger.debug(
-            f"Return code: {command.returncode} for test: {self.metadata['testpath']}"
-        )
-        result["RETURN_CODE"] = command.returncode
-        result["END_TIME"] = self.get_formatted_time("end_time")
-
-        status = self.recipe.get("status")
-
-        test_state = "FAIL"
-
-        # if status is defined in Buildspec, then check for returncode and regex
-        if status:
-
-            # returncode_match is boolean to check if reference returncode matches return code from test
-            returncode_match = True
-
-            # regex_match is boolean to check if output/error stream matches regex defined in Buildspec,
-            # if no regex is defined we set this to True since we do a logical AND
-            regex_match = True
-
-            if "returncode" in status:
-                self.logger.debug("Conducting Return Code check")
-                self.logger.debug(
-                    "Status Return Code: %s   Result Return Code: %s"
-                    % (status["returncode"], result["RETURN_CODE"])
-                )
-                # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
-                returncode_match = status["returncode"] == result["RETURN_CODE"]
-
-            if "regex" in status:
-                self.logger.debug("Conducting Regular Expression check")
-                # self.check_regex  applies regular expression check specified in Buildspec with output or error
-                # stream. self.check_regex returns a boolean (True/False) by using re.search
-                regex_match = self.check_regex(status["regex"])
-
-            self.logger.info(
-                "ReturnCode Match: %s Regex Match: %s "
-                % (returncode_match, regex_match)
-            )
-
-            if returncode_match and regex_match:
-                test_state = "PASS"
-
-        # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
-        else:
-            if command.returncode == 0:
-                test_state = "PASS"
-
-        # this variable is used later when counting all the pass/fail test in buildtest/menu/build.py
-        result["TEST_STATE"] = test_state
-
-        print(
-            "{:<30} {:<30} {:<30} {:<30}".format(
-                self.config_name, self.name, result["TEST_STATE"], self.buildspec
-            )
-        )
-
-        # Return to starting directory for next test
-        os.chdir(self.pwd)
-        return result
-
-    def get_formatted_time(self, key, fmt="%m/%d/%Y %X"):
-        """Given some timestamp key in self.metadata, return a pretty printed
-           version of it. This is intended to log in the console for the user.
-
-           Parameters:
-
-           key: The key to look up in the metadata
-           fmt: the format string to use
-        """
-        timestamp = self.metadata.get(key, "")
-        if timestamp:
-            timestamp = timestamp.strftime(fmt)
-        return timestamp
-
-    @run_wrapper
-    def dry_run(self):
-        """Akin to a build preview, we prepare and finish a run, but only
-           print the script to the screen without writing or running files.
-        """
-
-        # Dry run just prints the testing script
-        lines = self._build_testcontent()
-        print("\n".join(lines))
 
     def _generate_build_id(self):
         """Generate a build id based on the Buildspec name, and datetime."""
