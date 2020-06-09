@@ -77,20 +77,23 @@ class BuildExecutor:
         executor = builder.metadata.get("recipe").get("executor")
         # if executor not defined in buildspec we raise an error
         if not executor:
-            builder.logger.error(
-                "'executor' key not defined in buildspec: %s in section: %s",
-                builder.metadata["buildspec"],
+            msg = "[%s]: 'executor' key not defined in buildspec: %s" % (
                 builder.metadata["name"],
+                builder.metadata["buildspec"],
             )
+            builder.logger.error(msg)
             builder.logger.debug("test: %s", builder.metadata["recipe"])
-            sys.exit(1)
+            sys.exit(msg)
 
         # The executor (or a default) must be define
         if executor not in self.executors:
-            builder.logger.warning(
-                "executor %s is not defined in %s" % (executor, BUILDTEST_SETTINGS_FILE)
+            msg = "[%s]: executor %s is not defined in %s" % (
+                builder.metadata["name"],
+                executor,
+                BUILDTEST_SETTINGS_FILE,
             )
-            sys.exit(1)
+            builder.logger.error(msg)
+            sys.exit(msg)
 
         # Get the executor by name, and add the builder to it
         executor = self.executors.get(executor)
@@ -271,6 +274,7 @@ class LocalExecutor(BaseExecutor):
 
         command = BuildTestCommand(self.builder.metadata["command"])
         out, err = command.execute()
+        # print (self.builder.metadata['command'])
 
         # Record the ending time
         self.builder.metadata["end_time"] = datetime.datetime.now()
@@ -347,15 +351,6 @@ class LocalExecutor(BaseExecutor):
 
         # this variable is used later when counting all the pass/fail test in buildtest/menu/build.py
         self.result["TEST_STATE"] = test_state
-
-        print(
-            "{:<30} {:<30} {:<30} {:<30}".format(
-                self.builder.config_name,
-                self.builder.name,
-                self.result["TEST_STATE"],
-                self.builder.buildspec,
-            )
-        )
 
         # Return to starting directory for next test
         os.chdir(self.builder.pwd)

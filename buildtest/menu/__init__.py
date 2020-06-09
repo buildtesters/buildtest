@@ -105,14 +105,6 @@ class BuildTestParser:
         )
 
         parser_build.add_argument(
-            "-d",
-            "--dry",
-            help="dry-run mode, buildtest will not write the test scripts but print "
-            "content of test-script that would be written",
-            action="store_true",
-        )
-
-        parser_build.add_argument(
             "--settings", help="Specify an alternate buildtest settings file to use",
         )
 

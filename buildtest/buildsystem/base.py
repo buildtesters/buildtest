@@ -115,7 +115,7 @@ class BuildspecParser:
            We also don't allow repeated keys in the same file.
         """
 
-        version = self.recipe.get("version", "latest")
+        self.schema_version = self.recipe.get("version", "latest")
 
         for name in self.recipe.keys():
 
@@ -140,16 +140,18 @@ class BuildspecParser:
                 sys.exit("type %s is not known to buildtest." % type)
 
             # And that there is a version file
-            if version not in self.schema_table[type]:
+            if self.schema_version not in self.schema_table[type]:
                 sys.exit(
                     "version %s is not known for type %s. Try using latest."
-                    % (version, self.schema_table[type])
+                    % (self.schema_version, self.schema_table[type])
                 )
 
             # Finally, validate the section against the schema
-            schema_file = os.path.join(here, type, self.schema_table[type][version])
+            self.schema_file = os.path.join(
+                here, type, self.schema_table[type][self.schema_version]
+            )
 
-            validate(instance=self.recipe[name], schema=load_schema(schema_file))
+            validate(instance=self.recipe[name], schema=load_schema(self.schema_file))
 
     # Builders
 
@@ -171,24 +173,54 @@ class BuildspecParser:
                 # Add the builder based on the type
                 if recipe["type"] == "script":
                     builders.append(
-                        ScriptBuilder(name, recipe, self.buildspec, testdir=testdir)
+                        ScriptBuilder(
+                            name,
+                            recipe,
+                            self.buildspec,
+                            self.schema_version,
+                            testdir=testdir,
+                        )
                     )
                 elif recipe["type"] == "compiler":
                     if recipe["compiler"].get("name") == "gnu":
                         builders.append(
-                            GNUCompiler(name, recipe, self.buildspec, testdir=testdir)
+                            GNUCompiler(
+                                name,
+                                recipe,
+                                self.buildspec,
+                                self.schema_version,
+                                testdir=testdir,
+                            )
                         )
                     elif recipe["compiler"].get("name") == "intel":
                         builders.append(
-                            IntelCompiler(name, recipe, self.buildspec, testdir=testdir)
+                            IntelCompiler(
+                                name,
+                                recipe,
+                                self.buildspec,
+                                self.schema_version,
+                                testdir=testdir,
+                            )
                         )
                     elif recipe["compiler"].get("name") == "pgi":
                         builders.append(
-                            PGICompiler(name, recipe, self.buildspec, testdir=testdir)
+                            PGICompiler(
+                                name,
+                                recipe,
+                                self.buildspec,
+                                self.schema_version,
+                                testdir=testdir,
+                            )
                         )
                     elif recipe["compiler"].get("name") == "cray":
                         builders.append(
-                            CrayCompiler(name, recipe, self.buildspec, testdir=testdir)
+                            CrayCompiler(
+                                name,
+                                recipe,
+                                self.buildspec,
+                                self.schema_version,
+                                testdir=testdir,
+                            )
                         )
                     else:
                         continue
@@ -223,7 +255,7 @@ class BuilderBase:
        any kind of builder.
     """
 
-    def __init__(self, name, recipe, buildspec, testdir=None):
+    def __init__(self, name, recipe, buildspec, version, testdir=None):
         """Initiate a builder base. A recipe configuration (loaded) is required.
            this can be handled easily with the BuildspecParser class:
 
@@ -239,6 +271,8 @@ class BuilderBase:
            :type recipe: dict, required
            :param buildspec: the pull path to the Buildspec file, must exist.
            :type buildspec: str, required
+           :param version: Version specified in buildspec
+           :type version: str, required
            :param testdir: Test Destination directory where to write test
            :type testdir: str, optional
         """
@@ -269,6 +303,12 @@ class BuilderBase:
         # The type must match the type of the builder
         self.recipe = recipe
 
+        # get the schema name that this buildspec was validated with
+        self.schema_table = get_schemas_available()
+        type = self.recipe["type"]
+        self.schemafile = self.schema_table[type][version]
+
+        self.executor = self.recipe.get("executor")
         # The default shell will be bash
         self.shell = Shell(self.recipe.get("shell", "bash"))
 
