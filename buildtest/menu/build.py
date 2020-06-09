@@ -206,6 +206,7 @@ def func_build_subcmd(args, config_opts):
 
     # remove any duplicate Buildspec from list by converting list to set and then back to list
     buildspecs = list(set(buildspecs))
+    all_buildspecs = buildspecs
 
     # if no files discovered let's stop now
     if not buildspecs:
@@ -218,6 +219,7 @@ def func_build_subcmd(args, config_opts):
 
     if args.exclude:
         logger.debug(f"The exclude pattern is the following: -e {args.exclude}")
+
         buildspecs = [file for file in buildspecs if include_file(file, args.exclude)]
         logger.debug(f"Buildspec list after applying exclusion: {buildspecs}")
 
@@ -226,15 +228,33 @@ def func_build_subcmd(args, config_opts):
             msg = "There are no Buildspec files to process."
             sys.exit(msg)
 
-    print("\n {:^45} \n".format("Discovered Buildspecs "))
-    [print(buildspec) for buildspec in buildspecs]
-    print("\n\n")
+    print("\nStage: Discovered Buildspecs \n")
+    print(
+        """
++-------------------------------+
+| Stage: Discovered Buildspecs  |
++-------------------------------+ 
+"""
+    )
 
-    if not args.dry:
-        print("{:>40}".format("Building Test"))
-        print("\n\n")
-        print("{:<30} {:<30}".format("Name", "TestPath"))
-        print("{:_<120}".format(""))
+    [print(buildspec) for buildspec in buildspecs]
+
+    exclude_buildspecs = list(set(all_buildspecs) - set(buildspecs))
+    print("\nExcluded Buildspecs: ", exclude_buildspecs)
+    print(
+        """
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+"""
+    )
+
+    print(
+        "{:<25} {:<25} {:<25} {:<40} {:<40}".format(
+            "Name", "Schema Validation File ", "Executor Name", "TestPath", "Buildspec"
+        )
+    )
+    print("{:_<160}".format(""))
     # Process each Buildspec iteratively by parsing using BuildspecParser followed by
     # getting the appropriate builder and invoking the executor instance of type BuildExecutor
     # to run the test
@@ -255,8 +275,12 @@ def func_build_subcmd(args, config_opts):
 
             builder.build()
             print(
-                "{:<30} {:<30}".format(
-                    builder.metadata["name"], builder.metadata["testpath"]
+                "{:<25} {:<25} {:<25} {:<40} {:<40}".format(
+                    builder.metadata["name"],
+                    builder.schemafile,
+                    builder.executor,
+                    builder.metadata["testpath"],
+                    builder.buildspec,
                 )
             )
             builders.append(builder)
@@ -272,9 +296,14 @@ def func_build_subcmd(args, config_opts):
     passed_tests = 0
     failed_tests = 0
     total_tests = 0
-    print("\n")
-    print("{:>40}".format("Running Test"))
-    print("\n\n")
+    errmsg = []
+    print(
+        """
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+"""
+    )
     print(
         "{:<30} {:<30} {:<30} {:<30}".format(
             "Name", "Section", "Status", "Buildspec Path"
@@ -282,31 +311,49 @@ def func_build_subcmd(args, config_opts):
     )
     print("{:_<80}".format(""))
     for builder in builders:
-
-        result = executor.run(builder)
+        try:
+            result = executor.run(builder)
+        except SystemExit as err:
+            errmsg.append(err)
+            continue
 
         if result["TEST_STATE"] == "PASS":
             passed_tests += 1
         else:
             failed_tests += 1
 
+        print(
+            "{:<30} {:<30} {:<30} {:<30}".format(
+                builder.config_name,
+                builder.name,
+                result["TEST_STATE"],
+                builder.buildspec,
+            )
+        )
+
         total_tests += 1
 
-    if not args.dry:
-        print("\n\n{:=<60}".format(""))
-        print("{:^60}".format("Test summary"))
-        print("{:=<60}".format(""))
-        print(f"Executed {total_tests} tests")
+    if errmsg:
+        print("\n")
+        for error in errmsg:
+            print(error)
+        print("\n")
 
-        pass_rate = passed_tests * 100 / total_tests
-        fail_rate = failed_tests * 100 / total_tests
+    print(
+        """
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+"""
+    )
 
-        print(
-            f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%"
-        )
+    print(f"Executed {total_tests} tests")
 
-        print(
-            f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%"
-        )
-        print
-        print
+    pass_rate = passed_tests * 100 / total_tests
+    fail_rate = failed_tests * 100 / total_tests
+
+    print(f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%")
+
+    print(f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%")
+    print
+    print
