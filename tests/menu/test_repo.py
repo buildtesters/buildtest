@@ -22,6 +22,14 @@ class ssh_repo:
     branch = "master"
 
 
+class repo_list_command:
+    show = None
+
+
+class repo_list_show_command:
+    show = True
+
+
 def test_clone(tmp_path):
     https_link = "https://github.com/buildtesters/tutorials.git"
 
@@ -37,12 +45,12 @@ def test_clone(tmp_path):
         clone(https_link, tmp_path, "develop")
 
     class args:
-        repo = " buildtesters/tutorials.git"
+        repo = "buildtesters/tutorials.git"
 
     func_repo_remove(args)
 
 
-def test_func_repo_add(tmp_path):
+def test_func_repo_add():
 
     # check if repo is None, this raises error
     with pytest.raises(SystemExit):
@@ -52,8 +60,18 @@ def test_func_repo_add(tmp_path):
     with pytest.raises(SystemExit):
         func_repo_add(only_github_repo)
 
+    avail_repos = func_repo_list(repo_list_command)
+    # remove buildtesters/buildtest-cori before adding to list to ensure
+    # directory does not exist and entry is removed from REPO_FILE
+    if "buildtesters/buildtest-cori" in avail_repos:
+
+        class args:
+            repo = "buildtesters/buildtest-cori"
+
+        func_repo_remove(args)
+
     class args:
-        http_link = "http://github.com/buildtesters/buildtest-cori"
+        repo = "http://github.com/buildtesters/buildtest-cori"
         branch = "master"
 
     # test http link
@@ -77,11 +95,6 @@ def test_ssh_clone():
 
 
 def test_func_repo_list():
-    class repo_list_command:
-        show = None
-
-    class repo_list_show_command:
-        show = True
 
     func_repo_list(repo_list_command)
     func_repo_list(repo_list_show_command)
@@ -130,7 +143,7 @@ def test_repofile_not_found():
     os.remove(REPO_FILE)
 
     class args:
-        repo = "http://github.com/buildtesters/buildtest-cori"
+        repo = "buildtesters/buildtest-cori"
 
     # since REPO_FILE does not exist this will raise an error
     with pytest.raises(SystemExit):
