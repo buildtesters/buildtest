@@ -274,7 +274,6 @@ class LocalExecutor(BaseExecutor):
 
         command = BuildTestCommand(self.builder.metadata["command"])
         out, err = command.execute()
-        # print (self.builder.metadata['command'])
 
         # Record the ending time
         self.builder.metadata["end_time"] = datetime.datetime.now()
