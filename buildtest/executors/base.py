@@ -190,9 +190,6 @@ class BaseExecutor:
         """The dry run step defines the result based on a dry run."""
         self.result = self.builder.dry_run()
 
-    def setup(self):
-        pass
-
     def __str__(self):
         return "[executor-%s-%s]" % (self.type, self.name)
 

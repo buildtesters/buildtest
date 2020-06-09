@@ -31,15 +31,16 @@ def test_clone(tmp_path):
     with pytest.raises(SystemExit):
         clone(https_link, tmp_path)
 
-    shutil.rmtree(tmp_path)
+    # shutil.rmtree(tmp_path)
     # will fail to clone if invalid branch is specified
     with pytest.raises(SystemExit):
         clone(https_link, tmp_path, "develop")
 
+    class args:
+        repo= " buildtesters/tutorials.git"
+    func_repo_remove(args)
 
 def test_func_repo_add(tmp_path):
-
-    http_link = "http://github.com/buildtesters/buildtest-cori"
 
     # check if repo is None, this raises error
     with pytest.raises(SystemExit):
@@ -49,8 +50,13 @@ def test_func_repo_add(tmp_path):
     with pytest.raises(SystemExit):
         func_repo_add(only_github_repo)
 
+    class args:
+        http_link = "http://github.com/buildtesters/buildtest-cori"
+        branch = "master"
+
     # test http link
-    clone(http_link, tmp_path, "master")
+    func_repo_add(args)
+
 
 
 @pytest.mark.skipif(
@@ -88,6 +94,7 @@ def test_func_repo_remove():
     with pytest.raises(SystemExit):
         func_repo_remove(args)
 
+    # generate random repo string
     class args:
         repo = "".join(random.choice(string.ascii_letters) for i in range(10))
 
@@ -102,8 +109,34 @@ def test_func_repo_remove():
     # ensure repo_entries is not an empty dict
     assert repo_entries
 
-    # get first item in repo dictionary
     class args:
-        repo = repo_entries[0]
+        show = False
 
-    func_repo_remove(args)
+    avail_repos = func_repo_list(args)
+    assert avail_repos
+
+    for repository in avail_repos:
+        # get first item in repo dictionary
+        class args:
+            repo = repository
+
+        func_repo_remove(args)
+
+def test_repofile_not_found():
+
+
+    shutil.copyfile(REPO_FILE,REPO_FILE+".bak")
+    os.remove(REPO_FILE)
+    class args:
+        repo = "http://github.com/buildtesters/buildtest-cori"
+
+    # since REPO_FILE does not exist this will raise an error
+    with pytest.raises(SystemExit):
+        func_repo_remove(args)
+
+    class args:
+        show = True
+    with pytest.raises(SystemExit):
+        func_repo_list(args)
+
+    shutil.move(REPO_FILE+".bak", REPO_FILE)

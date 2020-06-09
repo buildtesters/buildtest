@@ -105,12 +105,6 @@ class BuildTestParser:
         )
 
         parser_build.add_argument(
-            "-e",
-            "--executor",
-            help='specify a named executor to use (defaults to "default" key, first in list, then local (base) executor',
-        )
-
-        parser_build.add_argument(
             "-d",
             "--dry",
             help="dry-run mode, buildtest will not write the test scripts but print "
