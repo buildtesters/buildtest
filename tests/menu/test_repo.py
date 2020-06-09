@@ -37,8 +37,10 @@ def test_clone(tmp_path):
         clone(https_link, tmp_path, "develop")
 
     class args:
-        repo= " buildtesters/tutorials.git"
+        repo = " buildtesters/tutorials.git"
+
     func_repo_remove(args)
+
 
 def test_func_repo_add(tmp_path):
 
@@ -56,7 +58,6 @@ def test_func_repo_add(tmp_path):
 
     # test http link
     func_repo_add(args)
-
 
 
 @pytest.mark.skipif(
@@ -122,11 +123,12 @@ def test_func_repo_remove():
 
         func_repo_remove(args)
 
+
 def test_repofile_not_found():
 
-
-    shutil.copyfile(REPO_FILE,REPO_FILE+".bak")
+    shutil.copyfile(REPO_FILE, REPO_FILE + ".bak")
     os.remove(REPO_FILE)
+
     class args:
         repo = "http://github.com/buildtesters/buildtest-cori"
 
@@ -136,7 +138,8 @@ def test_repofile_not_found():
 
     class args:
         show = True
+
     with pytest.raises(SystemExit):
         func_repo_list(args)
 
-    shutil.move(REPO_FILE+".bak", REPO_FILE)
+    shutil.move(REPO_FILE + ".bak", REPO_FILE)
