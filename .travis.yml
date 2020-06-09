@@ -6,42 +6,21 @@ python:
   - 3.6
   - 3.7
   - 3.8
+  - 3.9
 git:
   quiet: true
 branches:
   only:
     - devel
-env:
-  matrix:
-    - LMOD_VERSION=6.6.2
-    - LMOD_VERSION=7.8.2
-addons:
-  apt:
-    packages:
-      # install Lmod Deps
-      - lua-filesystem
-      - lua-json
-      - lua-posix
-      - lua-term
-      - lua5.2
 install:
   - pip --version
   - pip install --upgrade pip
   - pip --version
   - pip install coveralls
   - pip install -r docs/requirements.txt
-  - source $TRAVIS_BUILD_DIR/tests/install_deps.sh $LMOD_VERSION
-
-before_script:
-  - type module
-  - module --version
 
 script:
-  - module use $LMOD_PKG/modulefiles/Core
-  - echo $MODULEPATH
   - cd $TRAVIS_BUILD_DIR
-  - echo $MODULEPATH
-  - module av
   - coverage run -m pytest -vra tests/
   - coverage report -m
 

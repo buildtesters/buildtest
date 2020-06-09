@@ -143,6 +143,8 @@ def func_repo_list(args):
         for repo in repo_dict.keys():
             print(repo)
 
+    return repo_dict.keys()
+
 
 def func_repo_remove(args):
 

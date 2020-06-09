@@ -266,17 +266,9 @@ class BuilderBase:
                 "A builder base is required to define the 'type' as a class variable"
             )
 
-        # The recipe must be loaded as a dictionary
-        if not isinstance(recipe, dict):
-            sys.exit("Please load a Buildspec recipe before providing to the builder.")
-
         # The type must match the type of the builder
         self.recipe = recipe
-        if self.recipe.get("type") != self.type:
-            sys.exit(
-                "Mismatch in type. Builder expects %s but found %s."
-                % (self.type, self.recipe.get("type"))
-            )
+
         # The default shell will be bash
         self.shell = Shell(self.recipe.get("shell", "bash"))
 
