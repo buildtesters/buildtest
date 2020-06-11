@@ -13,12 +13,13 @@ from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
 from buildtest.buildsystem.base import BuildspecParser
 from buildtest.config import load_settings, check_settings
 from buildtest.executors.base import BuildExecutor
+from buildtest.menu.repo import get_repo_paths
 from buildtest.utils.file import walk_tree, resolve_path
 
 logger = logging.getLogger(__name__)
 
 
-def discover_buildspecs(buildspec, search_path=None):
+def discover_buildspecs(buildspec):
     """Given a buildspec file specified by the user with ``buildtest build --buildspec``,
        discover one or more files and return a list for buildtest to parse.
        Examples of intended functionality are documented here. For all of
@@ -38,7 +39,7 @@ def discover_buildspecs(buildspec, search_path=None):
     """
 
     buildspecs = []
-    search_path = search_path or []
+    search_path = get_repo_paths()
     # add default path to search path
     search_path.append(BUILDSPEC_DEFAULT_PATH)
 
@@ -170,39 +171,29 @@ def func_build_subcmd(args, config_opts):
     # 4. Defaults to current working directory in .buildtest subdirectory
     test_directory = args.testdir or config_paths_testdir or prefix_testdir
 
-    config_paths_searchpath = (
-        config_opts.get("config", {}).get("paths", {}).get("searchpath")
-    )
-    buildspec_paths = []
+    # returns a list of destination directories where repositories are cloned, if
+    # REPO_FILE is not found get_repo_paths will return None, in that case we
+    # set buildspec_searchpath to empty list
+    buildspec_searchpath = get_repo_paths() or []
 
-    if config_paths_searchpath:
-        # return a unique list of directory paths where buildtest should search for buildspecs
-        # this is equivalent to $PATH for buildspec
-
-        # if no colon found assume single directory passed into searchpath
-        if not re.search(":", config_paths_searchpath):
-            buildspec_paths = [config_paths_searchpath]
-        else:
-            # delete last colon if found at end of searchpath
-            if re.search(":$", config_paths_searchpath):
-                config_paths_searchpath = config_paths_searchpath[:-1]
-
-            # split by colon to get all unique directory in searchpath
-            buildspec_paths = list(set(config_paths_searchpath.split(":")))
+    # add default path to search path
+    buildspec_searchpath.append(BUILDSPEC_DEFAULT_PATH)
 
     print("Paths:")
     print("{:_<10}".format(""))
     print(f"Prefix: {prefix}")
+    print(f"Buildspec Search Path: {buildspec_searchpath}")
     print(f"Test Directory: {test_directory}")
-    print(f"Search Path: {buildspec_paths}")
 
-    # list to store all Buildspecs that are found using discover_buildspecs followed by exclusion check
+
+    # list to store all Buildspecs that are found using discover_buildspecs
+    # followed by exclusion check
     buildspecs = []
 
     # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
     # times we need to invoke discover_buildspecs once per argument.
     for buildtest_argument in args.buildspec:
-        buildspecs += discover_buildspecs(buildtest_argument, buildspec_paths)
+        buildspecs += discover_buildspecs(buildtest_argument)
 
     # remove any duplicate Buildspec from list by converting list to set and then back to list
     buildspecs = list(set(buildspecs))

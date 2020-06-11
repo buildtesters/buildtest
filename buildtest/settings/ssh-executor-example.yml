@@ -1,0 +1,10 @@
+executors:
+  ssh:
+    localhost:
+      host: localhost
+      user: siddiq90
+      identity_file: ~/.ssh/id_rsa
+config:
+  editor: vi
+  paths:
+    prefix: /tmp

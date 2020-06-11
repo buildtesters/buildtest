@@ -1,11 +1,12 @@
-editor: vi
 executors:
-  normal:
-    type: slurm
-    description: submit jobs with slurm using srun instead of sbatch
-    launcher: sbatch
-    options:
-      - "-p normal"
-      - "-t 00:10"
-      - "-N 1"
-      - "-n 1"
+  slurm:
+    haswell:
+      options: ["-C haswell"]
+      launcher: sbatch
+      modules:
+        purge: True
+        load: [PrgEnv-intel]
+config:
+  editor: vi
+  paths:
+    prefix: /tmp
