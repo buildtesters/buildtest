@@ -6,47 +6,71 @@ ______________________________________________
 
 .. program-output:: cat docgen/buildtest_config_--help.txt
 
-The ``buildtest config`` command allows user to see view or edit your buildtest settings file (``settings.yml``). You
-can run ``buildtest config view`` to see the content of your buildtest settings as follows
+The ``buildtest config`` command allows user to see view or edit your buildtest
+settings file (``settings.yml``). To see content of your buildtest settings run::
+
+    buildtest config view
+
+Shown below is an example output.
 
 .. program-output:: cat docgen/config-view.txt
 
-Similarly, you can edit the configuration from the command line by running ``buildtest config edit`` which will open the
-file in an editor (vim, emacs, nano).
+Likewise, you can edit the file by running::
 
-If you want to reset the buildtest settings to the default settings, you can run ``buildtest config reset`` which will
-overwrite your **settings.yml** with one provided by buildtest.
+    buildtest config edit
+
+If you want to reset the buildtest settings to the default settings, you can run
+``buildtest config reset`` which will overwrite your **settings.yml** with one
+provided by buildtest.
 
 Shown below is an example
 
 .. program-output:: cat docgen/config-reset.txt
 
 
-.. _buildtest_get:
+.. _buildtest_repo:
 
-Get Options (``buildtest get --help``)
-_______________________________________
+Managing Repositories
+_______________________
 
-.. program-output:: cat docgen/buildtest_get_--help.txt
+.. program-output:: cat docgen/buildtest_repo_--help.txt
 
-buildtest can clone git repository via ``buildtest get`` that is used for cloning your buildtest test repositories in a
-pre-determined location that buildtest can resolve when searching for Buildspecs.
+buildtest allows you to pull in any Github repository hosted on https://github.com.
+buildtest doesn't come with any tests, therefore users are encouraged to
+manage tests in their repositories and pull in their repos into buildtest via
+``buildtest repo`` command.
 
-The tests are organized by their namespace, meaning that you'll find GitHub repos organized under
-github.com, then the organization or username, and then the repository name.
+Adding Repository
+~~~~~~~~~~~~~~~~~~
+
+To clone a git repository use ``buildtest repo add <url>``::
+
+    $ buildtest repo add https://github.com/buildtesters/tutorials.git
+    Cloning into '/Users/siddiq90/.buildtest/site/github.com/buildtesters/tutorials'...
+    remote: Enumerating objects: 106, done.
+    remote: Counting objects: 100% (106/106), done.
+    remote: Compressing objects: 100% (73/73), done.
+    remote: Total 106 (delta 32), reused 97 (delta 25), pack-reused 0
+    Receiving objects: 100% (106/106), 20.97 KiB | 5.24 MiB/s, done.
+    Resolving deltas: 100% (32/32), done.
+
+
+The tests are organized by their namespace, meaning that you'll find GitHub
+repos organized under github.com, then the organization or username, and then
+the repository name.
 
 The repos are stored in ``$HOME/.buildtest/site/github.com``
-which is organized by github organization followed by the repository name.
 
 For example we can clone ``tutorials`` and ``buildtest-stampede2`` as follows::
 
-    buildtest get https://github.com/buildtesters/tutorials.git
-    buildtest get https://github.com/buildtesters/buildtest-stampede2.git
+    buildtest repo add https://github.com/buildtesters/tutorials.git
+    buildtest repo add https://github.com/buildtesters/buildtest-stampede2.git
 
-This will store the ``tutorials`` and ``buildtest-stampede2`` repo in directory ``buildtesters`` which is the organization
-name. Shown below is a tree view after the two clones::
+This will store the ``tutorials`` and ``buildtest-stampede2`` repo in directory
+``buildtesters`` which is the organization name. Shown below is a directory layout
+of the two clones::
 
-    (buildtest) ssi29@ag-mxg-hulk090> tree -L 2 $HOME/.buildtest/site/github.com
+    $ tree -L 2 $HOME/.buildtest/site/github.com
     /u/users/ssi29/.buildtest/site/github.com
     └── buildtesters
         ├── buildtest-stampede2
@@ -57,15 +81,46 @@ name. Shown below is a tree view after the two clones::
 
 If you try to clone a repo with folder that already exists, you'll be told the following::
 
-    $ buildtest get https://github.com/buildtesters/tutorials.git
-    /u/users/ssi29/.buildtest/site/github.com/buildtesters/tutorials already exists. Remove and try again.
-
-Clone Branches
-----------------
+    $ buildtest repo add https://github.com/buildtesters/tutorials.git
+    /Users/siddiq90/.buildtest/site/github.com/buildtesters/tutorials already exists. Remove and try again.
 
 You can also clone a specific branch via ``-b`` option as follows::
 
-    $ buildtest get -b add/hello-world-test https://github.com/buildtesters/tutorials.git
+    $ buildtest repo add -b add/hello-world-test https://github.com/buildtesters/tutorials.git
+
+Listing Available Repositories
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+buildtest will track all repos added by ``buildtest repo add`` in a file
+``$HOME/.buildtest/repo.yaml``. This file keeps track of all clone repos
+and location where they are installed.
+
+To get listing of all available repos you can run ``buildtest repo list``::
+
+    $ buildtest repo list
+    buildtesters/tutorials.git
+
+You can see repository details by running::
+
+    $ buildtest repo list -s
+    buildtesters/tutorials.git:
+      dest: /Users/siddiq90/.buildtest/site/github.com/buildtesters/tutorials
+      url: https://github.com/buildtesters/tutorials.git
+
+This will show the content of the repo file ``$HOME/.buildtest/repo.yaml``.
+
+Removing Repository
+~~~~~~~~~~~~~~~~~~~~
+
+To remove a repository from buildtest, use ``buildtest repo rm <repo>``. For
+example, we can remove the current repository as follows::
+
+    $ buildtest repo rm buildtesters/tutorials.git
+    Removing Repository: buildtesters/tutorials.git and deleting files from /Users/siddiq90/.buildtest/site/github.com/buildtesters/tutorials
+
+This will remove the repo from filesystem and remove entry from ``repo.yaml``.
+
+
 
 Show Options (``buildtest show --help``)
 _________________________________________
@@ -77,7 +132,7 @@ Show Schemas (``buildtest show schema``)
 ----------------------------------------------
 
 buildtest can show json schema that is used for writing tests. This can be retrieved via
-``buildtest show schema``. Shown below us the command usage
+``buildtest show schema``. Shown below is the command usage
 
 .. program-output:: cat docgen/buildtest_show_schema_--help.txt
 

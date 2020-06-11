@@ -3,7 +3,6 @@ This file is used for generating documentation tests.
 """
 import os
 
-from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir
 
@@ -19,7 +18,8 @@ def build_helper():
         "buildtest show schema --help",
         "buildtest build --help",
         "buildtest config --help",
-        "buildtest get --help",
+        "buildtest repo --help",
+        "buildtest buildspec --help",
     ]
     for cmd in help_cmds:
         out = run(cmd)
@@ -52,9 +52,8 @@ def introspection_cmds():
 
 
 def build_cmds():
-    build_dict = {
-        "gettingstarted-example1.txt": f"buildtest build -b {BUILDTEST_ROOT}/site/github.com/buildtesters/tutorials/system/systemd.yml",
-    }
+    pass
+    build_dict = {}
     for k, v in build_dict.items():
         out = run(v)
         fname = os.path.join(docgen, k)

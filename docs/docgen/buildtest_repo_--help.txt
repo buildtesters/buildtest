@@ -1,0 +1,10 @@
+$ buildtest repo --help
+usage: buildtest [options] [COMMANDS] repo [-h] {add,list,rm} ...
+ optional arguments:
+   -h, --help     show this help message and exit
+ commands:
+   repository commands
+   {add,list,rm}
+     add          Add repository to buildtest.
+     list         List all repositories active in buildtest
+     rm           Remove repository from buildtest

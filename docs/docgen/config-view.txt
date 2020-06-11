@@ -1,6 +1,27 @@
 $ buildtest config view
-editor: vi
- executors:
-   runlocal:
-     type: local
-     description: submit jobs locally
+executors:
+   local:
+     bash:
+       description: submit jobs on local machine using bash shell
+       shell: bash
+     sh:
+       description: submit jobs on local machine using sh shell
+       shell: sh
+     python:
+       description: submit jobs on local machine using python shell
+       shell: python
+   ssh:
+     localhost:
+       host: localhost
+       user: siddiq90
+       identity_file: ~/.ssh/id_rsa
+   slurm:
+     haswell:
+       options: ["-C haswell"]
+       launcher: sbatch
+ config:
+   editor: vi
+   paths:
+     searchpath: /tmp
+     logdir: /tmp
+     testdir: /tmp
