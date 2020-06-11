@@ -3,7 +3,6 @@ This file is used for generating documentation tests.
 """
 import os
 
-from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir
 
