@@ -16,15 +16,7 @@ executors:
       host: localhost
       user: siddiq90
       identity_file: ~/.ssh/id_rsa
-  slurm:
-    haswell:
-      options: ["-C haswell"]
-      launcher: sbatch
 config:
   editor: vi
   paths:
     prefix: /tmp
-    clonepath: /tmp
-    searchpath: /tmp
-    logdir: /tmp
-    testdir: /tmp

@@ -45,7 +45,7 @@ def test_clone(tmp_path):
         clone(https_link, tmp_path, "develop")
 
     class args:
-        repo = "buildtesters/tutorials.git"
+        repo = "buildtesters/tutorials"
 
     func_repo_remove(args)
 

@@ -31,21 +31,18 @@ def func_repo_add(args):
 
     # Currently just support for GitHub
     if not re.search("github.com", args.repo):
-        sys.exit("Currently only GitHub is supported for buildtest get.")
+        sys.exit("Currently only GitHub is supported by buildtest.")
 
     config_opts = get_default_settings()
     repo_path = None
 
-    settings_clonepath = config_opts.get("config", {}).get("paths", {}).get("clonepath")
-    settings_prefix = config_opts.get("config", {}).get("paths", {}).get("prefix")
-
-    # if prefix is defined set clone path to sub-directory 'repos'
-    if settings_prefix:
-        repo_path = os.path.join(settings_prefix, "repos")
+    clone_prefix = config_opts.get("config", {}).get("paths", {}).get(
+        "clonepath"
+    ) or config_opts.get("config", {}).get("paths", {}).get("prefix")
 
     # if clonepath key is defined than override value generated from 'prefix'
-    if settings_clonepath:
-        repo_path = os.path.realpath(settings_clonepath)
+    if clone_prefix:
+        repo_path = os.path.realpath(clone_prefix)
 
     # it is possible prefix and clonepath are not defined, in that case we used default value
     repo_search_path = repo_path or BUILDSPEC_DEFAULT_PATH
@@ -98,7 +95,8 @@ def clone(url, dest, branch="master"):
     else:
         username = url.split(":")[1].split("/")[0]
         reponame = url.split(":")[1].split("/")[1]
-        reponame = reponame.rstrip(".git")
+
+    reponame = reponame.replace(".git", "")
 
     # Fail early if path exists
     if os.path.exists(dest):
@@ -144,6 +142,43 @@ def func_repo_list(args):
             print(repo)
 
     return repo_dict.keys()
+
+
+def active_repos():
+    """ Return list of active repository names from REPO_FILE
+
+        :return: list of repository names as string type
+        :rtype: list
+    """
+    repo_dict = {}
+
+    if not is_file(REPO_FILE):
+        return
+
+    with open(REPO_FILE, "r") as fd:
+        repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
+
+    return list(repo_dict.keys())
+
+
+def get_repo_paths():
+    """ Return list of destination path where repositories are cloned. This
+        is used to build the buildspec search path.
+
+        :return: A list of directory path where repos are cloned
+        :rtype: list
+    """
+    dest_paths = []
+
+    if not is_file(REPO_FILE):
+        return
+
+    with open(REPO_FILE, "r") as fd:
+        repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
+    for repo in repo_dict.keys():
+        dest_paths.append(repo_dict[repo]["dest"])
+
+    return dest_paths
 
 
 def func_repo_remove(args):
