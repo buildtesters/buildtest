@@ -185,7 +185,6 @@ def func_build_subcmd(args, config_opts):
     print(f"Buildspec Search Path: {buildspec_searchpath}")
     print(f"Test Directory: {test_directory}")
 
-
     # list to store all Buildspecs that are found using discover_buildspecs
     # followed by exclusion check
     buildspecs = []

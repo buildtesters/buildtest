@@ -36,7 +36,9 @@ def func_repo_add(args):
     config_opts = get_default_settings()
     repo_path = None
 
-    clone_prefix = config_opts.get("config", {}).get("paths", {}).get("clonepath") or config_opts.get("config", {}).get("paths", {}).get("prefix")
+    clone_prefix = config_opts.get("config", {}).get("paths", {}).get(
+        "clonepath"
+    ) or config_opts.get("config", {}).get("paths", {}).get("prefix")
 
     # if clonepath key is defined than override value generated from 'prefix'
     if clone_prefix:
@@ -77,7 +79,7 @@ def clone(url, dest, branch="master"):
     """
 
     name = os.path.basename(url).replace(".git", "")
-    print ("name:", name)
+    print("name:", name)
     dest = os.path.join(dest, name)
 
     # If http prefix is provided, change this to https
@@ -95,7 +97,7 @@ def clone(url, dest, branch="master"):
         username = url.split(":")[1].split("/")[0]
         reponame = url.split(":")[1].split("/")[1]
 
-    reponame = reponame.replace(".git","")
+    reponame = reponame.replace(".git", "")
 
     # Fail early if path exists
     if os.path.exists(dest):
@@ -142,6 +144,7 @@ def func_repo_list(args):
 
     return repo_dict.keys()
 
+
 def active_repos():
     """ Return list of active repository names from REPO_FILE
 
@@ -158,6 +161,7 @@ def active_repos():
 
     return list(repo_dict.keys())
 
+
 def get_repo_paths():
     dest_paths = []
     with open(REPO_FILE, "r") as fd:
@@ -166,6 +170,8 @@ def get_repo_paths():
         dest_paths.append(repo_dict[repo]["dest"])
 
     return dest_paths
+
+
 def func_repo_remove(args):
 
     if not is_file(REPO_FILE):
