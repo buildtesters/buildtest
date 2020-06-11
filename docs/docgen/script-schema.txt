@@ -1,93 +1,77 @@
 $ buildtest show schema -n script
 {
-     "$id": "https://buildtesters.github.io/schemas/script/script-v0.0.1.schema.json",
-     "$schema": "http://json-schema.org/draft-07/schema#",
-     "title": "BuildTest Test Configuration for Script",
-     "type": "object",
-     "required": [
-         "type",
-         "run"
-     ],
-     "propertyNames": {
-         "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+   "$id": "https://buildtesters.github.io/schemas/script/script-v1.0.schema.json",
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "title": "BuildTest Test Configuration for Script",
+   "type": "object",
+   "required": [
+     "type",
+     "run"
+   ],
+   "propertyNames": {
+     "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+   },
+   "properties": {
+     "type": {
+       "type": "string",
+       "pattern": "^script$"
      },
-     "properties": {
-         "type": {
-             "type": "string",
-             "pattern": "^script$"
-         },
-         "description": {
-             "type": "string",
-             "description": "A description for the build recipe."
-         },
-         "maintainers": {
-             "type": "array",
-             "description": "One or more maintainers or aliases",
-             "minItems": 1,
-             "items": {
-                 "type": "string"
-             }
-         },
-         "env": {
-             "type": "object",
-             "description": "One or more key value pairs for an environment (key=value)",
-             "minItems": 1,
-             "items": {
-                 "type": "object",
-                 "minItems": 1,
-                 "propertyNames": {
-                     "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
-                 }
-             }
-         },
-         "executor": {
-             "type": "string"
-         },
-         "shell": {
-             "type": "string",
-             "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*"
-         },
-         "shebang": {
-             "type": "string"
-         },
-         "pre_run": {
-             "type": "string",
-             "description": "A script run before the default run using the default shell."
-         },
-         "run": {
-             "type": "string",
-             "description": "A script to run using the default shell."
-         },
-         "post_run": {
-             "type": "string",
-             "description": "A script run after the default run using the default shell."
-         },
-         "status": {
-             "type": "object",
-             "properties": {
-                 "returncode": {
-                     "type": "integer"
-                 },
-                 "regex": {
-                     "type": "object",
-                     "properties": {
-                         "stream": {
-                             "type": "string",
-                             "enum": [
-                                 "stdout",
-                                 "stderr"
-                             ]
-                         },
-                         "exp": {
-                             "type": "string"
-                         }
-                     },
-                     "required": [
-                         "stream",
-                         "exp"
-                     ]
-                 }
-             }
+     "description": {
+       "type": "string",
+       "description": "A description for the build recipe."
+     },
+     "env": {
+       "type": "object",
+       "description": "One or more key value pairs for an environment (key=value)",
+       "minItems": 1,
+       "items": {
+         "type": "object",
+         "minItems": 1,
+         "propertyNames": {
+           "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
          }
+       }
+     },
+     "executor": {
+       "type": "string"
+     },
+     "shell": {
+       "type": "string",
+       "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*"
+     },
+     "shebang": {
+       "type": "string"
+     },
+     "run": {
+       "type": "string",
+       "description": "A script to run using the default shell."
+     },
+     "status": {
+       "type": "object",
+       "properties": {
+         "returncode": {
+           "type": "integer"
+         },
+         "regex": {
+           "type": "object",
+           "properties": {
+             "stream": {
+               "type": "string",
+               "enum": [
+                 "stdout",
+                 "stderr"
+               ]
+             },
+             "exp": {
+               "type": "string"
+             }
+           },
+           "required": [
+             "stream",
+             "exp"
+           ]
+         }
+       }
      }
+   }
  }

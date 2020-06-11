@@ -1,17 +1,11 @@
 $ buildtest build --help
-usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-t TESTDIR] [-e EXECUTOR] [-d] [--settings SETTINGS]
-                                             [-x EXCLUDE]
+usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-t TESTDIR] [--settings SETTINGS] [-x EXCLUDE]
  optional arguments:
    -h, --help            show this help message and exit
    -b BUILDSPEC, --buildspec BUILDSPEC
                          Specify a Buildspec (YAML) file to build and run the test.
    -t TESTDIR, --testdir TESTDIR
                          specify a custom test directory. By default, use .buildtest in $PWD.
-   -e EXECUTOR, --executor EXECUTOR
-                         specify a named executor to use (defaults to "default" key, first in list, then local (base)
-                         executor
-   -d, --dry             dry-run mode, buildtest will not write the test scripts but print content of test-script that
-                         would be written
    --settings SETTINGS   Specify an alternate buildtest settings file to use
    -x EXCLUDE, --exclude EXCLUDE
                          Exclude one or more configs from processing. Configs can be files or directories.

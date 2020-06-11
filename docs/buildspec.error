@@ -1,0 +1,114 @@
+buildspec=/private/tmp/github.com/buildtesters/buildtest-cori/settings.yml failed with error message='version' is a required property
+
+Failed validating 'required' in schema:
+    {'$id': 'https://buildtesters.github.io/schemas/global/global.schema.json',
+     '$schema': 'http://json-schema.org/draft-07/schema#',
+     'patternProperties': {'^[A-Za-z_.][A-Za-z0-9_]*$': {'type': ['object',
+                                                                  'string',
+                                                                  'array']}},
+     'properties': {'maintainers': {'description': 'One or more '
+                                                   'maintainers or aliases',
+                                    'items': {'type': 'string'},
+                                    'minItems': 1,
+                                    'type': 'array'},
+                    'version': {'description': 'The semver version of the '
+                                               'schema to use (x.x.x).',
+                                'type': 'string'}},
+     'propertyNames': {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'},
+     'required': ['version'],
+     'title': 'buildtest Global Schema',
+     'type': 'object'}
+
+On instance:
+    {'config': {'editor': 'vi', 'paths': {'prefix': '$HOME/cache/'}},
+     'executors': {'local': {'bash': {'description': 'submit jobs on local '
+                                                     'machine using bash '
+                                                     'shell',
+                                      'shell': 'bash'},
+                             'python': {'description': 'submit jobs on '
+                                                       'local machine '
+                                                       'using python shell',
+                                        'shell': 'python'},
+                             'sh': {'description': 'submit jobs on local '
+                                                   'machine using sh shell',
+                                    'shell': 'sh'}}}} 
+buildspec=/private/tmp/github.com/buildtesters/buildtest-cori/slurm/sacctmgr.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/buildtest-cori/slurm/scontrol.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/buildtest-cori/slurm/squeue.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/buildtest-cori/slurm/partition.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/buildtest-cori/slurm/slurm_check.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/buildtest-cori/slurm/sinfo.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/buildtest-cori/slurm/utils/sqs.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/mpi/hello.c.yml failed with error message='version' is a required property
+
+Failed validating 'required' in schema:
+    {'$id': 'https://buildtesters.github.io/schemas/global/global.schema.json',
+     '$schema': 'http://json-schema.org/draft-07/schema#',
+     'patternProperties': {'^[A-Za-z_.][A-Za-z0-9_]*$': {'type': ['object',
+                                                                  'string',
+                                                                  'array']}},
+     'properties': {'maintainers': {'description': 'One or more '
+                                                   'maintainers or aliases',
+                                    'items': {'type': 'string'},
+                                    'minItems': 1,
+                                    'type': 'array'},
+                    'version': {'description': 'The semver version of the '
+                                               'schema to use (x.x.x).',
+                                'type': 'string'}},
+     'propertyNames': {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'},
+     'required': ['version'],
+     'title': 'buildtest Global Schema',
+     'type': 'object'}
+
+On instance:
+    {'description': 'MPI Hello World program.',
+     'maintainer': ['shahzeb siddiqui shahzebmsiddiqui@gmail.com'],
+     'mpi': True,
+     'program': {'cflags': '-Wall -g',
+                 'compiler': 'gnu',
+                 'mpi': {'flavor': 'openmpi',
+                         'launcher': 'mpirun',
+                         'launcher_opts': '-n 2'},
+                 'post_run': 'mpirun --version',
+                 'pre_build': 'mpicc --version',
+                 'source': 'hello.c'},
+     'scheduler': 'local',
+     'testtype': 'singlesource'} 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/cuda/saxpy.c.yml failed with error message='version' is a required property
+
+Failed validating 'required' in schema:
+    {'$id': 'https://buildtesters.github.io/schemas/global/global.schema.json',
+     '$schema': 'http://json-schema.org/draft-07/schema#',
+     'patternProperties': {'^[A-Za-z_.][A-Za-z0-9_]*$': {'type': ['object',
+                                                                  'string',
+                                                                  'array']}},
+     'properties': {'maintainers': {'description': 'One or more '
+                                                   'maintainers or aliases',
+                                    'items': {'type': 'string'},
+                                    'minItems': 1,
+                                    'type': 'array'},
+                    'version': {'description': 'The semver version of the '
+                                               'schema to use (x.x.x).',
+                                'type': 'string'}},
+     'propertyNames': {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'},
+     'required': ['version'],
+     'title': 'buildtest Global Schema',
+     'type': 'object'}
+
+On instance:
+    {'description': 'SAXPY example in CUDA',
+     'maintainer': ['shahzeb siddiqui <shahzebmsiddiqui@gmail.com>'],
+     'program': {'compiler': 'cuda', 'source': 'saxpy.cu'},
+     'scheduler': 'local',
+     'testtype': 'singlesource'} 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/system/systemd.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/system/disk_usage.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/system/selinux.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/system/ulimits.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/apps/openacc/vecadd.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/apps/compression/zlib.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/apps/compression/bzip2.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/apps/serial/compiler_schema_hello.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'compiler-v1.0.schema.json', 'latest': 'compiler-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/apps/serial/hello.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/apps/openmp/helloworld/omp_hello.c.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 
+buildspec=/private/tmp/github.com/buildtesters/tutorials/apps/openmp/matrixmux/matrixmux.c.yml failed with error message=version 0.0.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest. 

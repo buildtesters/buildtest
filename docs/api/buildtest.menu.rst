@@ -7,8 +7,9 @@ Submodules
 .. toctree::
 
    buildtest.menu.build
+   buildtest.menu.buildspec
    buildtest.menu.config
-   buildtest.menu.get
+   buildtest.menu.repo
    buildtest.menu.show
 
 Module contents
