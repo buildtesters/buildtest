@@ -79,7 +79,6 @@ def clone(url, dest, branch="master"):
     """
 
     name = os.path.basename(url).replace(".git", "")
-    print("name:", name)
     dest = os.path.join(dest, name)
 
     # If http prefix is provided, change this to https
@@ -163,7 +162,17 @@ def active_repos():
 
 
 def get_repo_paths():
+    """ Return list of destination path where repositories are cloned. This
+        is used to build the buildspec search path.
+
+        :return: A list of directory path where repos are cloned
+        :rtype: list
+    """
     dest_paths = []
+
+    if not is_file(REPO_FILE):
+        return
+
     with open(REPO_FILE, "r") as fd:
         repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
     for repo in repo_dict.keys():

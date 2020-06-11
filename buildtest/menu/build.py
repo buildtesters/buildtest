@@ -39,7 +39,7 @@ def discover_buildspecs(buildspec):
     """
 
     buildspecs = []
-    search_path = get_repo_paths()
+    search_path = get_repo_paths() or []
     # add default path to search path
     search_path.append(BUILDSPEC_DEFAULT_PATH)
 
