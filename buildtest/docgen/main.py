@@ -20,7 +20,7 @@ def build_helper():
         "buildtest build --help",
         "buildtest config --help",
         "buildtest repo --help",
-        "buildtest buildspec --help"
+        "buildtest buildspec --help",
     ]
     for cmd in help_cmds:
         out = run(cmd)
@@ -54,7 +54,7 @@ def introspection_cmds():
 
 def build_cmds():
     pass
-    build_dict = { }
+    build_dict = {}
     for k, v in build_dict.items():
         out = run(v)
         fname = os.path.join(docgen, k)
