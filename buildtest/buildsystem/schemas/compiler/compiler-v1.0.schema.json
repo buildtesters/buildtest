@@ -3,7 +3,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "BuildTest Schema for compiler",
   "type": "object",
-  "required": ["type", "compiler"],
+  "required": ["type", "compiler", "executor"],
   "propertyNames": {
     "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
   },
@@ -19,6 +19,15 @@
     "module": {
       "type": "array",
       "items": { "type": "string" }
+    },
+    "executor": {
+      "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/executor"
+    },
+    "env": {
+      "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
+    },
+    "status": {
+      "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/status"
     },
     "compiler": {
       "type": "object",
