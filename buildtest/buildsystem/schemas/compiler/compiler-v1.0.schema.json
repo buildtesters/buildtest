@@ -26,6 +26,9 @@
     "env": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
     },
+    "status": {
+      "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/status"
+    },
     "compiler": {
       "type": "object",
       "properties": {
