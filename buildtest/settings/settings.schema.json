@@ -47,18 +47,6 @@
       "additionalProperties": false
   },
   "definitions": {
-      "env": {
-          "type": "object",
-          "description": "One or more key value pairs for an environment (key=value)",
-          "minItems": 1,
-          "items": {
-            "type": "object",
-            "minItems": 1,
-            "propertyNames": {
-               "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
-            }
-          }
-      },
       "modules": {
         "type": "object",
         "properties": {
@@ -77,8 +65,8 @@
           "properties": {
               "description": {"type": "string"},
               "shell":  {"type": "string",  "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*" },
-              "environment": {"$ref":  "#/definitions/env"},
-              "variables": {"$ref": "#/definitions/env"},
+              "environment": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
+              "variables": {"$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
               "retry": {"type": "integer", "minimum": 1, "maximum": 5},
               "modules": {"$ref":  "#/definitions/modules"}
           },
@@ -91,8 +79,8 @@
               "description": {"type": "string"},
               "launcher": { "type": "string", "enum": ["sbatch"] },
               "options": { "type": "array", "items": {"type": "string"} },
-              "environment": {"$ref":  "#/definitions/env"},
-              "variables": {"$ref":  "#/definitions/env"},
+              "environment": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
+              "variables": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
               "modules": {"$ref":  "#/definitions/modules"}
            },
           "additionalProperties": false,
@@ -105,8 +93,8 @@
           "host": {"type":  "string"},
           "user": {"type":  "string"},
           "identity_file": {"type": "string"},
-          "environment": {"$ref":  "#/definitions/env"},
-          "variables": {"$ref":  "#/definitions/env"},
+          "environment": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
+          "variables": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
           "modules": {"$ref":  "#/definitions/modules"}
         },
         "required": ["host","user","identity_file"],
