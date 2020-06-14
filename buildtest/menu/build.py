@@ -4,17 +4,18 @@ for building test scripts from a Buildspec
 """
 
 import logging
+import json
 import os
 import re
 import sys
 from jsonschema.exceptions import ValidationError
-from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
+from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, BUILD_REPORT
 
 from buildtest.buildsystem.base import BuildspecParser
 from buildtest.config import load_settings, check_settings
 from buildtest.executors.base import BuildExecutor
 from buildtest.menu.repo import get_repo_paths
-from buildtest.utils.file import walk_tree, resolve_path
+from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir
 
 logger = logging.getLogger(__name__)
 
@@ -250,6 +251,7 @@ def func_build_subcmd(args, config_opts):
     # to run the test
     builders = []
     skipped_tests = []
+    builder_info = []
     # build all the tests
     for buildspec in buildspecs:
 
@@ -274,6 +276,7 @@ def func_build_subcmd(args, config_opts):
                 )
             )
             builders.append(builder)
+            builder_info.append(builder.metadata)
 
     # print any skipped buildspecs if they failed to validate during build stage
     if len(skipped_tests) > 0:
@@ -287,6 +290,7 @@ def func_build_subcmd(args, config_opts):
     failed_tests = 0
     total_tests = 0
     errmsg = []
+    results = []
     print(
         """
 +----------------------+
@@ -294,11 +298,7 @@ def func_build_subcmd(args, config_opts):
 +----------------------+ 
 """
     )
-    print(
-        "{:<30} {:<30} {:<30} {:<30}".format(
-            "Name", "Section", "Status", "Buildspec Path"
-        )
-    )
+    print("{:<30} {:<30} {:<30}".format("Name", "Status", "Buildspec Path"))
     print("{:_<80}".format(""))
     for builder in builders:
         try:
@@ -307,17 +307,15 @@ def func_build_subcmd(args, config_opts):
             errmsg.append(err)
             continue
 
-        if result["TEST_STATE"] == "PASS":
+        results.append(result)
+        if result["state"] == "PASS":
             passed_tests += 1
         else:
             failed_tests += 1
 
         print(
-            "{:<30} {:<30} {:<30} {:<30}".format(
-                builder.config_name,
-                builder.name,
-                result["TEST_STATE"],
-                builder.buildspec,
+            "{:<30} {:<30} {:<30}".format(
+                builder.name, result["state"], builder.buildspec,
             )
         )
 
@@ -347,3 +345,36 @@ def func_build_subcmd(args, config_opts):
     print(f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%")
     print
     print
+
+    if not is_file(os.path.dirname(BUILD_REPORT)):
+        create_dir(os.path.dirname(BUILD_REPORT))
+
+    try:
+        with open(BUILD_REPORT, "r") as fd:
+            report = json.loads(fd.read())
+    except OSError:
+        report = {}
+
+    for info in builder_info:
+        buildspec = info["buildspec"]
+        name = info["name"]
+        entry = {}
+
+        report[buildspec] = report.get(buildspec) or {}
+        report[buildspec][name] = report.get(buildspec, {}).get(name) or []
+
+        entry["build_id"] = info["build_id"]
+        entry["testroot"] = info["testroot"]
+        entry["testpath"] = info["testpath"]
+        entry["command"] = info["command"]
+        entry["outfile"] = info["outfile"]
+        entry["errfile"] = info["errfile"]
+        entry["starttime"] = info["result"]["starttime"]
+        entry["endtime"] = info["result"]["endtime"]
+        entry["runtime"] = info["result"]["runtime"]
+        entry["state"] = info["result"]["state"]
+        entry["returncode"] = info["result"]["returncode"]
+        report[buildspec][name].append(entry)
+
+    with open(BUILD_REPORT, "w") as fd:
+        json.dump(report, fd, indent=2)

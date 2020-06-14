@@ -11,7 +11,7 @@ from buildtest.defaults import supported_schemas
 testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def test_BuildspecParser():
+def test_BuildspecParser(tmp_path):
 
     # Examples folder
     examples_dir = os.path.join(testroot, "examples", "buildspecs")
@@ -38,7 +38,7 @@ def test_BuildspecParser():
         for supported_schema in supported_schemas:
             assert supported_schema in bp.schema_table
 
-        builders = bp.get_builders()
+        builders = bp.get_builders(tmp_path)
 
         for builder in builders:
 
@@ -53,5 +53,5 @@ def test_BuildspecParser():
             # and write test
             builder.build()
 
-            for k in ["testpath", "testdir", "rundir", "build_id"]:
+            for k in ["testpath", "testroot", "rundir", "build_id"]:
                 assert k in builder.metadata

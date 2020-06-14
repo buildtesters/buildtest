@@ -7,9 +7,11 @@ import os
 import re
 import sys
 
+
 from buildtest.defaults import BUILDTEST_SETTINGS_FILE
 from buildtest.utils.file import write_file, read_file
 from buildtest.utils.command import BuildTestCommand
+from buildtest.utils.timer import Timer
 
 
 class BuildExecutor:
@@ -252,14 +254,13 @@ class LocalExecutor(BaseExecutor):
 
         # Keep a result object
         self.result = {}
-        self.result["START_TIME"] = self.get_formatted_time("start_time")
 
         self.result["LOGFILE"] = self.builder.metadata.get("logfile", "")
         self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
 
         # Change to the test directory
-        os.chdir(self.builder.metadata["testdir"])
-        self.logger.debug(f"Changing to directory {self.builder.metadata['testdir']}")
+        os.chdir(self.builder.metadata["testroot"])
+        self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
 
         # build the run command that includes the shell path, shell options and path to test file
         cmd = [
@@ -273,10 +274,17 @@ class LocalExecutor(BaseExecutor):
         )
 
         command = BuildTestCommand(self.builder.metadata["command"])
+        self.builder.metadata["starttime"] = datetime.datetime.now()
+        self.result["starttime"] = self.get_formatted_time("starttime")
+
+        t = Timer()
+        t.start()
         out, err = command.execute()
 
-        # Record the ending time
-        self.builder.metadata["end_time"] = datetime.datetime.now()
+        self.result["runtime"] = t.stop()
+
+        self.builder.metadata["endtime"] = datetime.datetime.now()
+        self.result["endtime"] = self.get_formatted_time("endtime")
 
         # Keep an output file
         run_output_file = os.path.join(
@@ -303,8 +311,7 @@ class LocalExecutor(BaseExecutor):
         self.logger.debug(
             f"Return code: {command.returncode} for test: {self.builder.metadata['testpath']}"
         )
-        self.result["RETURN_CODE"] = command.returncode
-        self.result["END_TIME"] = self.get_formatted_time("end_time")
+        self.result["returncode"] = command.returncode
 
         status = self.builder.recipe.get("status")
 
@@ -324,10 +331,10 @@ class LocalExecutor(BaseExecutor):
                 self.logger.debug("Conducting Return Code check")
                 self.logger.debug(
                     "Status Return Code: %s   Result Return Code: %s"
-                    % (status["returncode"], self.result["RETURN_CODE"])
+                    % (status["returncode"], self.result["returncode"])
                 )
                 # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
-                returncode_match = status["returncode"] == self.result["RETURN_CODE"]
+                returncode_match = status["returncode"] == self.result["returncode"]
 
             if "regex" in status:
                 self.logger.debug("Conducting Regular Expression check")
@@ -349,10 +356,12 @@ class LocalExecutor(BaseExecutor):
                 test_state = "PASS"
 
         # this variable is used later when counting all the pass/fail test in buildtest/menu/build.py
-        self.result["TEST_STATE"] = test_state
+        self.result["state"] = test_state
 
         # Return to starting directory for next test
         os.chdir(self.builder.pwd)
+
+        self.builder.metadata["result"] = self.result
 
 
 class SSHExecutor(BaseExecutor):

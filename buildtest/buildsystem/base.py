@@ -42,8 +42,13 @@ class BuildspecParser:
     metadata = ["version", "maintainers"]
 
     def __init__(self, buildspec):
-        """initiate a build configuration file, meaning that we read in the
-           file, match it to a schema provided by buildtest, and validate it.
+        """The init method will run some checks against buildspec before loading
+           buildspec. We retrieve available schemas via method
+           ``get_schemas_available`` and check if ``type`` in buildspec
+           match available schema. We validate the entire buildspec with
+           global.schema.json and validate each test section with the designated
+           type schema. If there is any error during the init method, an
+           exception will be raised.
 
            Parameters:
 
@@ -155,7 +160,7 @@ class BuildspecParser:
 
     # Builders
 
-    def get_builders(self, testdir=None):
+    def get_builders(self, testdir):
         """Based on a loaded Buildspec file, return the correct builder
            for each based on the type. Each type is associated with a known 
            Builder class.
@@ -259,9 +264,6 @@ class BuilderBase:
         """Initiate a builder base. A recipe configuration (loaded) is required.
            this can be handled easily with the BuildspecParser class:
 
-           bp = BuildspecParser(buildspec)
-           recipe = bp.get("section_name")
-           builder = ScriptBuilder(recipe)
 
            Parameters:
 
@@ -283,14 +285,13 @@ class BuilderBase:
         self.metadata = {}
         self.buildspec = buildspec
         self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec))
-        self.testdir = testdir or os.path.join(
-            os.getcwd(), ".buildtest", self.config_name
-        )
+        self.testdir = os.path.join(testdir, self.config_name)
+
         self.logger = logging.getLogger(__name__)
         self.logger.debug(f"Processing Buildspec: {self.buildspec}")
         self.logger.debug(f"Processing Buildspec section: {self.name}")
 
-        self.metadata["name"] = self.config_name
+        self.metadata["name"] = self.name
         self.metadata["buildspec"] = buildspec
         self.metadata["recipe"] = recipe
 
@@ -334,10 +335,10 @@ class BuilderBase:
            to self.metadata.
         """
 
-        create_dir(self.metadata["testdir"])
+        create_dir(self.metadata["testroot"])
         for folder in ["run"]:
             name = "%sdir" % folder
-            self.metadata[name] = os.path.join(self.metadata["testdir"], folder)
+            self.metadata[name] = os.path.join(self.metadata["testroot"], folder)
             create_dir(self.metadata[name])
 
     def get_test_extension(self):
@@ -419,7 +420,7 @@ class BuilderBase:
             self.get_test_extension(),
         )
         self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
-        self.metadata["testdir"] = os.path.dirname(self.metadata["testpath"])
+        self.metadata["testroot"] = os.path.dirname(self.metadata["testpath"])
 
     def _generate_build_id(self):
         """Generate a build id based on the Buildspec name, and datetime."""
@@ -428,10 +429,11 @@ class BuilderBase:
         return "%s_%s" % (self.name, now)
 
     def _write_test(self):
-        """Given test metadata, write test content."""
-
-        # '$HOME/.buildtest/testdir/<name>/<name>_<timestamp>.sh'
-        # This will put output (latest run) in same directory - do we want this?
+        """This method is responsible for invoking ``_build_testcontent`` that
+           formulates content of testscript which is implemented in each subclass.
+           Next we write content to file and apply 755 permission on script so
+           it has executable permission.
+        """
 
         lines = self._build_testcontent()
         lines = "\n".join(lines)
@@ -758,7 +760,7 @@ class PGICompiler(CompilerBuilder):
 
     cc = "pgcc"
     cxx = "pgc++"
-    fc = "pfortran"
+    fc = "pgfortran"
 
 
 class CrayCompiler(CompilerBuilder):

@@ -5,6 +5,7 @@ BuildExecutor: testing functions
 import os
 
 from jsonschema import validate
+from jsonschema.exceptions import ValidationError
 from buildtest.executors.base import BuildExecutor
 from buildtest.buildsystem.schemas.utils import load_schema
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA
@@ -13,7 +14,7 @@ from buildtest.buildsystem.base import BuildspecParser
 pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def test_build_executor():
+def test_build_executor(tmp_path):
     example_schema = os.path.join(
         pytest_root, "examples", "config_schemas", "valid", "combined-example.yml"
     )
@@ -40,9 +41,13 @@ def test_build_executor():
     examples_dir = os.path.join(pytest_root, "examples", "buildspecs")
     for buildspec in os.listdir(examples_dir):
         buildspec = os.path.join(examples_dir, buildspec)
-        bp = BuildspecParser(buildspec)
+        try:
+            bp = BuildspecParser(buildspec)
+        except (SystemExit, ValidationError):
+            continue
 
-        builders = bp.get_builders()
+        builders = bp.get_builders(tmp_path)
+        print(builders)
         # build each test and then run it
         for builder in builders:
             builder.build()

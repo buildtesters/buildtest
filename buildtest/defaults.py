@@ -25,6 +25,8 @@ REPO_FILE = os.path.join(BUILDTEST_ROOT, "repo.yaml")
 
 BUILDSPEC_CACHE_FILE = os.path.join(BUILDTEST_ROOT, "buildspec.cache")
 
+BUILD_REPORT = os.path.join(os.path.dirname(root), "var", "report.json")
+
 # BUILDSPEC_DEFAULT_PATH is the root directory where Buildspec are found
 # when using buildtest get to clone a buildtest test repo
 BUILDSPEC_DEFAULT_PATH = os.path.join(BUILDTEST_ROOT, "site")
