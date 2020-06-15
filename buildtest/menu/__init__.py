@@ -124,7 +124,6 @@ class BuildTestParser:
 
         ##################### buildtest report     ###########################
 
-
         parser_report.set_defaults(func=func_report)
 
     def repo_menu(self):
