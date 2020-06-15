@@ -308,8 +308,10 @@ class BuilderBase:
         self.schema_table = get_schemas_available()
         type = self.recipe["type"]
         self.schemafile = self.schema_table[type][version]
+        self.metadata["schemafile"] = self.schemafile
 
         self.executor = self.recipe.get("executor")
+        self.metadata["executor"] = self.executor
         # The default shell will be bash
         self.shell = Shell(self.recipe.get("shell", "bash"))
 

@@ -241,8 +241,8 @@ def func_build_subcmd(args, config_opts):
     )
 
     print(
-        "{:<25} {:<25} {:<25} {:<40} {:<40}".format(
-            "Name", "Schema Validation File ", "Executor Name", "TestPath", "Buildspec"
+        "{:<25} {:<25} {:<40} {:<40}".format(
+            "Name", "Schema Validation File ", "TestPath", "Buildspec"
         )
     )
     print("{:_<160}".format(""))
@@ -267,10 +267,9 @@ def func_build_subcmd(args, config_opts):
 
             builder.build()
             print(
-                "{:<25} {:<25} {:<25} {:<40} {:<40}".format(
+                "{:<25} {:<25} {:<40} {:<40}".format(
                     builder.metadata["name"],
                     builder.schemafile,
-                    builder.executor,
                     builder.metadata["testpath"],
                     builder.buildspec,
                 )
@@ -298,8 +297,12 @@ def func_build_subcmd(args, config_opts):
 +----------------------+ 
 """
     )
-    print("{:<30} {:<30} {:<30}".format("Name", "Status", "Buildspec Path"))
-    print("{:_<80}".format(""))
+    print(
+        "{:<20} {:<20} {:<20} {:<20} {:<20}".format(
+            "Name", "Executor", "Status", "Return Code", "Buildspec Path"
+        )
+    )
+    print("{:_<120}".format(""))
     for builder in builders:
         try:
             result = executor.run(builder)
@@ -314,8 +317,12 @@ def func_build_subcmd(args, config_opts):
             failed_tests += 1
 
         print(
-            "{:<30} {:<30} {:<30}".format(
-                builder.name, result["state"], builder.buildspec,
+            "{:<20} {:<20} {:<20} {:<20} {:<20}".format(
+                builder.name,
+                builder.executor,
+                result["state"],
+                result["returncode"],
+                builder.buildspec,
             )
         )
 
@@ -363,17 +370,24 @@ def func_build_subcmd(args, config_opts):
         report[buildspec] = report.get(buildspec) or {}
         report[buildspec][name] = report.get(buildspec, {}).get(name) or []
 
-        entry["build_id"] = info["build_id"]
-        entry["testroot"] = info["testroot"]
-        entry["testpath"] = info["testpath"]
-        entry["command"] = info["command"]
-        entry["outfile"] = info["outfile"]
-        entry["errfile"] = info["errfile"]
-        entry["starttime"] = info["result"]["starttime"]
-        entry["endtime"] = info["result"]["endtime"]
-        entry["runtime"] = info["result"]["runtime"]
-        entry["state"] = info["result"]["state"]
-        entry["returncode"] = info["result"]["returncode"]
+        # query over attributes found in builder.metadata, we only assign
+        # keys that we care obout for reporting
+        for item in [
+            "build_id",
+            "testroot",
+            "testpath",
+            "command",
+            "outfile",
+            "errfile",
+            "schemafile",
+            "executor",
+        ]:
+            entry[item] = info[item]
+
+        # query over result attributes, we only assign some keys of interest
+        for item in ["starttime", "endtime", "runtime", "state", "returncode"]:
+            entry[item] = info["result"][item]
+
         report[buildspec][name].append(entry)
 
     with open(BUILD_REPORT, "w") as fd:
