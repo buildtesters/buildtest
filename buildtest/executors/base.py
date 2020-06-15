@@ -201,7 +201,7 @@ class BaseExecutor:
     def __repr__(self):
         return self.__str__()
 
-    def get_formatted_time(self, key, fmt="%m/%d/%Y %X"):
+    def get_formatted_time(self, key, fmt="%Y/%m/%d %X"):
         """Given some timestamp key in self.metadata, return a pretty printed
            version of it. This is intended to log in the console for the user.
 

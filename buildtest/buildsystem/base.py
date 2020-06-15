@@ -427,7 +427,7 @@ class BuilderBase:
     def _generate_build_id(self):
         """Generate a build id based on the Buildspec name, and datetime."""
 
-        now = datetime.datetime.now().strftime("%m-%d-%Y-%H-%M")
+        now = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
         return "%s_%s" % (self.name, now)
 
     def _write_test(self):
