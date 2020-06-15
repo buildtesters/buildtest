@@ -7,17 +7,18 @@ import argparse
 
 from buildtest import BUILDTEST_VERSION
 from buildtest.defaults import supported_schemas
+from buildtest.menu.buildspec import (
+    func_buildspec_find,
+    func_buildspec_view,
+    func_buildspec_edit,
+)
 from buildtest.menu.config import (
     func_config_edit,
     func_config_view,
     func_config_reset,
 )
 from buildtest.menu.repo import func_repo_add, func_repo_list, func_repo_remove
-from buildtest.menu.buildspec import (
-    func_buildspec_find,
-    func_buildspec_view,
-    func_buildspec_edit,
-)
+from buildtest.menu.report import func_report
 from buildtest.menu.show import show_schema_layout
 
 
@@ -42,6 +43,7 @@ class BuildTestParser:
         self.subparser_dict = {
             "build": "Options for building test scripts",
             "buildspec": "Command options for buildspecs",
+            "report": "Show report for test results",
             "show": "Options for displaying buildtest configuration",
             "repo": "Options for managing buildtest repositories",
             "config": "Buildtest Configuration Menu",
@@ -50,6 +52,7 @@ class BuildTestParser:
         self.main_menu()
         self.build_menu()
         self.buildspec_menu()
+        self.report_menu()
         self.show_menu()
         self.repo_menu()
         self.config_menu()
@@ -114,6 +117,14 @@ class BuildTestParser:
             action="append",
             help="Exclude one or more configs from processing. Configs can be files or directories.",
         )
+
+    def report_menu(self):
+
+        parser_report = self.subparsers.add_parser("report")
+
+        ##################### buildtest report     ###########################
+
+        parser_report.set_defaults(func=func_report)
 
     def repo_menu(self):
         """This method implements argparse argument for ``buildtest repo``"""
