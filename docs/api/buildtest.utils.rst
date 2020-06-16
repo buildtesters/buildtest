@@ -9,6 +9,7 @@ Submodules
    buildtest.utils.command
    buildtest.utils.file
    buildtest.utils.shell
+   buildtest.utils.timer
 
 Module contents
 ---------------

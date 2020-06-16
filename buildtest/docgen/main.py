@@ -4,7 +4,7 @@ This file is used for generating documentation tests.
 import os
 
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir
+from buildtest.utils.file import create_dir, write_file
 
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 docgen = os.path.join(root, "docs", "docgen")
@@ -36,6 +36,31 @@ def run(query):
     out = cmd.get_output()
     out = " ".join(out)
     return out
+
+
+def tutorial():
+    prefix = "getting_started"
+    cmd_dict = {
+        f"{os.path.join(prefix, 'buildspec-find.txt')}": "buildtest buildspec find",
+        f"{os.path.join(prefix, 'buildspec-view.txt')}": "buildtest buildspec view systemd_default_target",
+        f"{os.path.join(prefix,'buildspec-abspath.txt')}": "buildtest build -b /tmp/github.com/buildtesters/tutorials/examples/systemd.yml",
+        f"{os.path.join(prefix,'buildspec-relpath.txt')}": "buildtest build -b examples/systemd.yml",
+        f"{os.path.join(prefix, 'multi-buildspecs.txt')}": "buildtest build -b examples/systemd.yml -b examples/selinux.yml",
+        f"{os.path.join(prefix, 'buildspec-directory.txt')}": "buildtest build -b examples/openacc/",
+        f"{os.path.join(prefix, 'buildspec-directory-and-file.txt')}": "buildtest build -b examples/openacc/ -b examples/selinux.yml",
+        f"{os.path.join(prefix, 'invalid-buildspec.txt')}": "buildtest build -b examples/invalid_buildspec_section.yml -b examples/systemd.yml",
+        f"{os.path.join(prefix, 'invalid-executor.txt')}": "buildtest build -b examples/invalid_executor.yml",
+    }
+
+    create_dir(os.path.join(docgen, prefix))
+
+    for k, v in cmd_dict.items():
+        out = run(v)
+        out = f"$ {v} \n" + out
+
+        fname = os.path.join(docgen, k)
+        write_file(fname, out)
+        print(f"Writing File: {fname}")
 
 
 def introspection_cmds():
@@ -71,6 +96,7 @@ def writer(fname, out, query):
 def main():
     create_dir(docgen)
     build_helper()
+    tutorial()
     introspection_cmds()
     build_cmds()
 

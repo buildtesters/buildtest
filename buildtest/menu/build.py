@@ -251,15 +251,16 @@ def func_build_subcmd(args, config_opts):
     # to run the test
     builders = []
     skipped_tests = []
-    builder_info = []
+    valid_builders = []
     # build all the tests
     for buildspec in buildspecs:
 
         try:
             # Read in Buildspec file here, loading each will validate the buildspec file
             bp = BuildspecParser(buildspec)
-        except (SystemExit, ValidationError):
+        except (SystemExit, ValidationError) as err:
             skipped_tests.append(f"Skipping {buildspec} since it failed to validate")
+            logger.error(err)
             continue
 
         # And builders parsed through for each
@@ -275,7 +276,6 @@ def func_build_subcmd(args, config_opts):
                 )
             )
             builders.append(builder)
-            builder_info.append(builder.metadata)
 
     # print any skipped buildspecs if they failed to validate during build stage
     if len(skipped_tests) > 0:
@@ -310,6 +310,7 @@ def func_build_subcmd(args, config_opts):
             errmsg.append(err)
             continue
 
+        valid_builders.append(builder)
         results.append(result)
         if result["state"] == "PASS":
             passed_tests += 1
@@ -334,6 +335,9 @@ def func_build_subcmd(args, config_opts):
             print(error)
         print("\n")
 
+    if total_tests == 0:
+        print("No tests were executed")
+        return
     print(
         """
 +----------------------+
@@ -362,9 +366,9 @@ def func_build_subcmd(args, config_opts):
     except OSError:
         report = {}
 
-    for info in builder_info:
-        buildspec = info["buildspec"]
-        name = info["name"]
+    for builder in valid_builders:
+        buildspec = builder.metadata["buildspec"]
+        name = builder.metadata["name"]
         entry = {}
 
         report[buildspec] = report.get(buildspec) or {}
@@ -382,11 +386,11 @@ def func_build_subcmd(args, config_opts):
             "schemafile",
             "executor",
         ]:
-            entry[item] = info[item]
+            entry[item] = builder.metadata[item]
 
         # query over result attributes, we only assign some keys of interest
         for item in ["starttime", "endtime", "runtime", "state", "returncode"]:
-            entry[item] = info["result"][item]
+            entry[item] = builder.metadata["result"][item]
 
         report[buildspec][name].append(entry)
 

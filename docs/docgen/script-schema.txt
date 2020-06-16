@@ -6,7 +6,8 @@ $ buildtest show schema -n script
    "type": "object",
    "required": [
      "type",
-     "run"
+     "run",
+     "executor"
    ],
    "propertyNames": {
      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
@@ -21,19 +22,10 @@ $ buildtest show schema -n script
        "description": "A description for the build recipe."
      },
      "env": {
-       "type": "object",
-       "description": "One or more key value pairs for an environment (key=value)",
-       "minItems": 1,
-       "items": {
-         "type": "object",
-         "minItems": 1,
-         "propertyNames": {
-           "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
-         }
-       }
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
      },
      "executor": {
-       "type": "string"
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/executor"
      },
      "shell": {
        "type": "string",
@@ -47,31 +39,7 @@ $ buildtest show schema -n script
        "description": "A script to run using the default shell."
      },
      "status": {
-       "type": "object",
-       "properties": {
-         "returncode": {
-           "type": "integer"
-         },
-         "regex": {
-           "type": "object",
-           "properties": {
-             "stream": {
-               "type": "string",
-               "enum": [
-                 "stdout",
-                 "stderr"
-               ]
-             },
-             "exp": {
-               "type": "string"
-             }
-           },
-           "required": [
-             "stream",
-             "exp"
-           ]
-         }
-       }
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/status"
      }
    }
  }
