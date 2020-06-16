@@ -1,0 +1,6 @@
+version: "1.0"
+hostname:
+  type: script
+  run: "hostname"
+# wrong type for maintainers key, expects a string
+maintainers: 1

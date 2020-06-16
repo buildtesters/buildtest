@@ -1,38 +1,31 @@
-from buildtest.menu.show import show_schema_layout
+import pytest
+from buildtest.defaults import supported_schemas
+from buildtest.menu.show import func_schema
 
 
-class script_schema:
-    _global = False
-    name = "script"
-    version = "latest"
-    settings = False
+def test_func_schema():
 
+    for schema in supported_schemas:
 
-class script_mismatch_version_schema:
-    _global = False
-    name = "script"
-    # invalid version for script schema this should resort to latest schema
-    version = "99.99"
-    settings = False
+        class args:
+            name = schema
+            json = True
+            example = True
 
+        func_schema(args)
 
-class global_schema:
-    _global = True
-    name = None
-    version = None
-    settings = False
+    class args:
+        name = None
+        json = False
+        example = False
 
+    func_schema(args)
 
-class settings_schema:
-    _global = False
-    name = None
-    settings = True
-    version = None
+    # passing --json or --example without --name will result in SystemExit exception
+    class args:
+        name = None
+        json = True
+        example = False
 
-
-def test_show_schema():
-
-    show_schema_layout(script_schema)
-    show_schema_layout(global_schema)
-    show_schema_layout(script_mismatch_version_schema)
-    show_schema_layout(settings_schema)
+    with pytest.raises(SystemExit):
+        func_schema(args)

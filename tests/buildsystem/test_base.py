@@ -36,6 +36,10 @@ def test_BuildspecParser(tmp_path):
         # The lookup should have the base schema
         # {'script': {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}}
         for supported_schema in supported_schemas:
+
+            if supported_schema == "settings.schema.json":
+                continue
+
             assert supported_schema in bp.schema_table
 
         builders = bp.get_builders(tmp_path)
