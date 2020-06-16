@@ -1,0 +1,14 @@
+$ buildtest buildspec find 
+Name                      Type                      Buildspec                
+ ________________________________________________________________________________
+ systemd_default_target    script                    /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+ root_disk_usage           script                    /private/tmp/github.com/buildtesters/tutorials/examples/disk_usage.yml
+ selinux_disable           script                    /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
+ ulimit_filelock           script                    /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
+ ulimit_cputime            script                    /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
+ ulimit_stacksize          script                    /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
+ vecadd_gnu                compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/openacc/vecadd.yml
+ hello_f                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml
+ hello_c                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml
+ hello_cplusplus           compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml
+ passing_args              compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml

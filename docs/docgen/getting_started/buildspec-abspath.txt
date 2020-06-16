@@ -1,0 +1,30 @@
+$ buildtest build -b /tmp/github.com/buildtesters/tutorials/examples/systemd.yml 
+Paths:
+ __________
+ Prefix: /private/tmp
+ Buildspec Search Path: ['/private/tmp/github.com/buildtesters/tutorials', '/Users/siddiq90/.buildtest/site']
+ Test Directory: /private/tmp/tests
+ Stage: Discovered Buildspecs 
+ +-------------------------------+
+ | Stage: Discovered Buildspecs  |
+ +-------------------------------+ 
+ /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+ Excluded Buildspecs:  []
+ +----------------------+
+ | Stage: Building Test |
+ +----------------------+ 
+ Name                      Schema Validation File    TestPath                                 Buildspec                               
+ ________________________________________________________________________________________________________________________________________________________________
+ systemd_default_target    script-v1.0.schema.json   /private/tmp/tests/systemd/systemd_default_target.sh /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+ +----------------------+
+ | Stage: Running Test  |
+ +----------------------+ 
+ Name                 Executor             Status               Return Code          Buildspec Path      
+ ________________________________________________________________________________________________________________________
+ systemd_default_target local.bash           FAIL                 1                    /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+ +----------------------+
+ | Stage: Test Summary  |
+ +----------------------+ 
+ Executed 1 tests
+ Passed Tests: 0/1 Percentage: 0.000%
+ Failed Tests: 1/1 Percentage: 100.000%

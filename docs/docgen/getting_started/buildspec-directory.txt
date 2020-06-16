@@ -1,0 +1,30 @@
+$ buildtest build -b examples/openacc/ 
+Paths:
+ __________
+ Prefix: /private/tmp
+ Buildspec Search Path: ['/private/tmp/github.com/buildtesters/tutorials', '/Users/siddiq90/.buildtest/site']
+ Test Directory: /private/tmp/tests
+ Stage: Discovered Buildspecs 
+ +-------------------------------+
+ | Stage: Discovered Buildspecs  |
+ +-------------------------------+ 
+ /private/tmp/github.com/buildtesters/tutorials/examples/openacc/vecadd.yml
+ Excluded Buildspecs:  []
+ +----------------------+
+ | Stage: Building Test |
+ +----------------------+ 
+ Name                      Schema Validation File    TestPath                                 Buildspec                               
+ ________________________________________________________________________________________________________________________________________________________________
+ vecadd_gnu                compiler-v1.0.schema.json /private/tmp/tests/vecadd/vecadd_gnu.sh  /private/tmp/github.com/buildtesters/tutorials/examples/openacc/vecadd.yml
+ +----------------------+
+ | Stage: Running Test  |
+ +----------------------+ 
+ Name                 Executor             Status               Return Code          Buildspec Path      
+ ________________________________________________________________________________________________________________________
+ vecadd_gnu           local.bash           PASS                 0                    /private/tmp/github.com/buildtesters/tutorials/examples/openacc/vecadd.yml
+ +----------------------+
+ | Stage: Test Summary  |
+ +----------------------+ 
+ Executed 1 tests
+ Passed Tests: 1/1 Percentage: 100.000%
+ Failed Tests: 0/1 Percentage: 0.000%
