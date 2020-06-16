@@ -308,6 +308,7 @@ def func_build_subcmd(args, config_opts):
             result = executor.run(builder)
         except SystemExit as err:
             errmsg.append(err)
+            logger.error(err)
             continue
 
         valid_builders.append(builder)

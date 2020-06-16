@@ -230,3 +230,11 @@ form. Shown below is an example::
 
 buildtest will store result metadata of each test in a file ``var/report.json`` which
 is found in root of buildtest. This file is updated upon every ``buildtest build`` command.
+
+Logfile
+-------
+
+Currently, buildtest will write the log file for any ``buildtest build`` command
+in ``buildtest.log`` of the current directory. The logfile will be overwritten
+if you run repeative commands from same directory. A permanent log file location
+will be implemented (TBD).
