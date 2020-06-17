@@ -111,6 +111,8 @@ def get_schemas_available():
         for x in os.listdir(here)
         if os.path.isdir(os.path.join(here, x)) and not x.startswith("_")
     ]
+    schema_names = ["script", "compiler"]
+
     for schema_name in schema_names:
         schema_dir = os.path.join(here, schema_name)
         schemas = [x for x in os.listdir(schema_dir) if x.endswith(".schema.json")]

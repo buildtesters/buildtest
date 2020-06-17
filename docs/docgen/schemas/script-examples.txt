@@ -1,0 +1,166 @@
+$ buildtest schema -n script-v1.0.schema.json -e 
+File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/script/examples/1.0/valid/examples.yml
+ Valid State: True
+ ________________________________________________________________________________
+ version: "1.0"
+ multiline_run:
+   executor: local.bash
+   type: script
+   description: multiline run command
+   run: |
+     echo "1"
+     echo "2"
+ single_command_run:
+   executor: local.bash
+   type: script
+   description: single command as a string for run command
+   run: "hostname"
+ declare_env:
+   executor: local.bash
+   type: script
+   description: declaring environment variables
+   env:
+     FOO: BAR
+     X: 1
+   run: |
+     echo $FOO
+     echo $X
+ declare_shell_sh:
+   executor: local.sh
+   type: script
+   description: declare shell name to sh
+   shell: sh
+   run: hostname
+ declare_shell_bash:
+   executor: local.bash
+   type: script
+   description: declare shell name to bash
+   shell: bash
+   run: hostname
+ declare_shell_python:
+   executor: local.python
+   type: script
+   description: declare shell name to python
+   shell: python
+   run: |
+     print("Hello World")
+ declare_shell_bin_bash:
+   executor: local.bash
+   type: script
+   description: declare shell name to /bin/bash
+   shell: "/bin/bash -e"
+   run: hostname
+ declare_shell_name_bin_sh:
+   executor: local.script
+   type: script
+   description: declare shell name to /bin/sh
+   shell: "/bin/sh -e"
+   run: hostname
+ declare_shell_opts:
+   executor: local.sh
+   type: script
+   description: declare shell name to sh
+   shell: "sh -e"
+   run: hostname
+ declare_shebang:
+   executor: local.bash
+   type: script
+   description: declare shell name to sh
+   shebang: "#!/usr/bin/env bash"
+   run: hostname
+ status_returncode:
+   executor: local.bash
+   type: script
+   description: This test pass because using a valid return code
+   run: hostname
+   status:
+     returncode: 0
+ status_regex:
+   executor: local.bash
+   type: script
+   description: This test pass with a regular expression status check
+   run: hostname
+   status:
+     regex:
+       stream: stdout
+       exp: "^$"
+ status_regex_returncode:
+   executor: local.bash
+   type: script
+   description: This test fails because returncode and regex specified
+   run: hostname
+   status:
+     returncode: 0
+     regex:
+       stream: stdout
+       exp: "^hello"
+ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/script/examples/1.0/invalid/examples.yml
+ Valid State: FAIL
+ ________________________________________________________________________________
+ version: "1.0"
+ invalid_test_name_&!@#$%:
+   type: script
+   description: "invalid test name"
+ invalid_bash:
+   type: script
+   shell: "bash-missing-run"
+ missing_run_key:
+   type: script
+   description: invalid key name roon, missing run key
+   roon: |
+       systemctl is-active slurmd
+       systemctl is-enabled slurmd | grep enabled
+ invalid_env_type:
+   type: script
+   description: env key should be a dictionary
+   env:
+     - FOO=BAR
+   run: echo $FOO
+ invalid_description:
+   type: script
+   description:
+     - "Multi Line description"
+     - "is not accepted"
+ invalid_regex_stream:
+   type: script
+   description: This test fails because of invalid regex stream
+   run: hostname
+   status:
+     regex:
+       stream: file
+       exp: "world$"
+ missing_regex_exp:
+   type: script
+   description: This test fails because of missing key 'exp' in regex
+   run: hostname
+   status:
+     regex:
+       stream: stdout
+ invalid_returncode_type:
+   type: script
+   description: This test fails because of invalid return code type
+   run: hostname
+   status:
+     returncode: ["1"]
+ invalid_shell_usr_bin_bash:
+   type: script
+   description: invalid shell name, since we only support 'sh', 'bash', 'python' '/bin/bash' /bin/sh
+   shell: /usr/bin/bash
+   run: hostname
+ invalid_shell_type:
+   type: script
+   description: invalid shell type must be a string
+   shell: ["/bin/bash"]
+   run: hostname
+ invalid_type_shell_shebang:
+   type: script
+   description: invalid type for shell shebang, must be a string
+   shell:
+     shebang: ["#!/bin/bash"]
+   run: hostname
+ ________________________________________ Validation Error ________________________________________
+ 'invalid_test_name_&!@#$%' does not match '^[A-Za-z_][A-Za-z0-9_]*$'
+ Failed validating 'pattern' in schema['propertyNames']:
+     {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'}
+ On instance:
+     'invalid_test_name_&!@#$%'

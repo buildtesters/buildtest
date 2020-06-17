@@ -1,0 +1,105 @@
+version: "1.0"
+multiline_run:
+  executor: local.bash
+  type: script
+  description: multiline run command
+  run: |
+    echo "1"
+    echo "2"
+
+single_command_run:
+  executor: local.bash
+  type: script
+  description: single command as a string for run command
+  run: "hostname"
+
+declare_env:
+  executor: local.bash
+  type: script
+  description: declaring environment variables
+  env:
+    FOO: BAR
+    X: 1
+  run: |
+    echo $FOO
+    echo $X
+
+declare_shell_sh:
+  executor: local.sh
+  type: script
+  description: declare shell name to sh
+  shell: sh
+  run: hostname
+
+declare_shell_bash:
+  executor: local.bash
+  type: script
+  description: declare shell name to bash
+  shell: bash
+  run: hostname
+
+declare_shell_python:
+  executor: local.python
+  type: script
+  description: declare shell name to python
+  shell: python
+  run: |
+    print("Hello World")
+
+declare_shell_bin_bash:
+  executor: local.bash
+  type: script
+  description: declare shell name to /bin/bash
+  shell: "/bin/bash -e"
+  run: hostname
+
+declare_shell_name_bin_sh:
+  executor: local.script
+  type: script
+  description: declare shell name to /bin/sh
+  shell: "/bin/sh -e"
+  run: hostname
+
+
+declare_shell_opts:
+  executor: local.sh
+  type: script
+  description: declare shell name to sh
+  shell: "sh -e"
+  run: hostname
+
+declare_shebang:
+  executor: local.bash
+  type: script
+  description: declare shell name to sh
+  shebang: "#!/usr/bin/env bash"
+  run: hostname
+
+status_returncode:
+  executor: local.bash
+  type: script
+  description: This test pass because using a valid return code
+  run: hostname
+  status:
+    returncode: 0
+
+status_regex:
+  executor: local.bash
+  type: script
+  description: This test pass with a regular expression status check
+  run: hostname
+  status:
+    regex:
+      stream: stdout
+      exp: "^$"
+
+status_regex_returncode:
+  executor: local.bash
+  type: script
+  description: This test fails because returncode and regex specified
+  run: hostname
+  status:
+    returncode: 0
+    regex:
+      stream: stdout
+      exp: "^hello"

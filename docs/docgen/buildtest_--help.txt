@@ -9,8 +9,8 @@ usage: buildtest [options] [COMMANDS]
     build                          Options for building test scripts
     buildspec                      Command options for buildspecs
     report                         Show report for test results  
-    show                           Options for displaying buildtest configuration
+    schema                         Commands for viewing buildtest schemas
     repo                           Options for managing buildtest repositories
     config                         Buildtest Configuration Menu  
-   {build,buildspec,report,show,repo,config}
+   {build,buildspec,report,schema,repo,config}
  Documentation: https://buildtest.readthedocs.io/en/latest/index.html

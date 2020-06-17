@@ -13,6 +13,8 @@ testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def test_BuildspecParser(tmp_path):
 
+    type_schemas = ["script", "compiler"]
+
     # Examples folder
     examples_dir = os.path.join(testroot, "examples", "buildspecs")
 
@@ -35,7 +37,8 @@ def test_BuildspecParser(tmp_path):
 
         # The lookup should have the base schema
         # {'script': {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}}
-        for supported_schema in supported_schemas:
+        for supported_schema in type_schemas:
+
             assert supported_schema in bp.schema_table
 
         builders = bp.get_builders(tmp_path)

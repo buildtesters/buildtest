@@ -1,0 +1,5 @@
+version: "1.0"
+# invalid pattern for test. Must be matching regex "^[A-Za-z_.][A-Za-z0-9_]*$" when declaring a dict
+(badname:
+  type: script
+  run: "ping login 1"

@@ -1,0 +1,17 @@
+executors:
+  local:
+    bash:
+      description: submit jobs on local machine using bash shell
+      shell: bash
+
+    sh:
+      description: submit jobs on local machine using sh shell
+      shell: sh
+
+    python:
+      description: submit jobs on local machine using python shell
+      shell: python
+config:
+  editor: vi
+  paths:
+    prefix: /tmp

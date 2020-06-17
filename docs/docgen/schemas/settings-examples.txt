@@ -1,0 +1,47 @@
+$ buildtest schema -n settings.schema.json -e 
+File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/settings/examples/valid/local-executor.yml
+ Valid State: True
+ ________________________________________________________________________________
+ executors:
+   local:
+     bash:
+       description: submit jobs on local machine using bash shell
+       shell: bash
+     sh:
+       description: submit jobs on local machine using sh shell
+       shell: sh
+     python:
+       description: submit jobs on local machine using python shell
+       shell: python
+ config:
+   editor: vi
+   paths:
+     prefix: /tmp
+ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/settings/examples/valid/slurm-example.yml
+ Valid State: True
+ ________________________________________________________________________________
+ executors:
+   slurm:
+     haswell:
+       options: ["-C haswell"]
+       launcher: sbatch
+       modules:
+         purge: True
+         load: [PrgEnv-intel]
+ config:
+   editor: vi
+   paths:
+     prefix: /tmp
+ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/settings/examples/valid/ssh-executor-example.yml
+ Valid State: True
+ ________________________________________________________________________________
+ executors:
+   ssh:
+     localhost:
+       host: localhost
+       user: siddiq90
+       identity_file: ~/.ssh/id_rsa
+ config:
+   editor: vi
+   paths:
+     prefix: /tmp

@@ -19,7 +19,7 @@ from buildtest.menu.config import (
 )
 from buildtest.menu.repo import func_repo_add, func_repo_list, func_repo_remove
 from buildtest.menu.report import func_report
-from buildtest.menu.show import show_schema_layout
+from buildtest.menu.show import func_schema
 
 
 class BuildTestParser:
@@ -44,7 +44,7 @@ class BuildTestParser:
             "build": "Options for building test scripts",
             "buildspec": "Command options for buildspecs",
             "report": "Show report for test results",
-            "show": "Options for displaying buildtest configuration",
+            "schema": "Commands for viewing buildtest schemas",
             "repo": "Options for managing buildtest repositories",
             "config": "Buildtest Configuration Menu",
         }
@@ -53,7 +53,7 @@ class BuildTestParser:
         self.build_menu()
         self.buildspec_menu()
         self.report_menu()
-        self.show_menu()
+        self.schema_menu()
         self.repo_menu()
         self.config_menu()
 
@@ -184,39 +184,43 @@ class BuildTestParser:
         parser_config_edit.set_defaults(func=func_config_edit)
         parser_config_restore.set_defaults(func=func_config_reset)
 
-    def show_menu(self):
-        """This method adds argparse argument for ``buildtest show``"""
+    def schema_menu(self):
+        """This method adds argparse argument for ``buildtest show``
 
-        # -------------------------- buildtest show options ------------------------------
-        parser_show = self.subparsers.add_parser("show")
+            Command Usage
 
-        # -------------------------- buildtest show schemas ------------------------------
-        subparsers_show = parser_show.add_subparsers(
-            description="buildtest configuration"
-        )
-        parser_schema = subparsers_show.add_parser(
-            "schema", help="Display test config schema"
-        )
-        parser_schema.add_argument(
-            "-v", "--version", help="choose a specific version of schema to show.",
-        )
+            # list all schema names
+            buildtest schema
+
+            # list all schema in json
+            buildtest schema -j
+
+            # list schema global.schema.json in json
+            buildtest schema -n global.schema.json -j
+
+            # list schema examples for global.schema.json
+            buildtest schema  -n global.schema.json -e
+
+        """
+
+        # ----------------- buildtest schema options -------------
+        parser_schema = self.subparsers.add_parser("schema")
+
         parser_schema.add_argument(
             "-n",
             "--name",
             help="show schema by name (e.g., script)",
+            metavar="Schema Name",
             choices=supported_schemas,
         )
         parser_schema.add_argument(
-            "-g",
-            "--global",
-            dest="_global",
-            help="show global schema",
-            action="store_true",
+            "-e", "--example", action="store_true", help="Show schema examples"
         )
         parser_schema.add_argument(
-            "-s", "--settings", help="show settings schema", action="store_true",
+            "-j", "--json", action="store_true", help="View schema json content"
         )
-        parser_schema.set_defaults(func=show_schema_layout)
+
+        parser_schema.set_defaults(func=func_schema)
 
     def buildspec_menu(self):
 

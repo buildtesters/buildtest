@@ -45,7 +45,7 @@ def init(settings_path):
     create_settings_file(settings_path)
 
 
-def check_settings(settings_path=None):
+def check_settings(settings_path=None, run_init=True):
     """Checks all keys in configuration file (settings/settings.yml) are valid
        keys and ensure value of each key matches expected type . For some keys
        special logic is taken to ensure values are correct and directory path
@@ -62,7 +62,7 @@ def check_settings(settings_path=None):
        :rtype: exit code 1 if checks failed
     """
 
-    user_schema = load_settings(settings_path)
+    user_schema = load_settings(settings_path, run_init)
 
     config_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
     logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
@@ -72,7 +72,7 @@ def check_settings(settings_path=None):
     logger.debug("Validation was successful")
 
 
-def load_settings(settings_path=None):
+def load_settings(settings_path=None, run_init=True):
     """Load the default settings file if no argument is specified.
 
        Parameters:
@@ -83,7 +83,8 @@ def load_settings(settings_path=None):
 
     settings_path = settings_path or BUILDTEST_SETTINGS_FILE
 
-    init(settings_path)
+    if run_init:
+        init(settings_path)
 
     # load the settings file into a schema object
     return load_schema(settings_path)

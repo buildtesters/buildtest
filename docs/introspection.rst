@@ -122,27 +122,23 @@ This will remove the repo from filesystem and remove entry from ``repo.yaml``.
 
 
 
-Show Options (``buildtest show --help``)
-_________________________________________
-
-.. program-output:: cat docgen/buildtest_show_--help.txt
-
-
-Show Schemas (``buildtest show schema``)
+Schemas (``buildtest schema``)
 ----------------------------------------------
 
-buildtest can show json schema that is used for writing tests. This can be retrieved via
-``buildtest show schema``. Shown below is the command usage
+The ``buildtest schema`` command can show you list of available schemas just run
+the command with no options and it will show all the json schemas buildtest supports.
 
-.. program-output:: cat docgen/buildtest_show_schema_--help.txt
+.. program-output:: cat docgen/schemas/avail-schemas.txt
 
-The json schemas are hosted on the web at https://buildtesters.github.io/schemas/. buildtest provides
-a means to display the json schema from the buildtest interface. Note that buildtest will show the schemas
-provided in buildtest repo and not ones provided by `schemas <https://github.com/buildtesters/schemas>`_ repo. This
+Shown below is the command usage of ``buildtest schema``
+
+.. program-output:: cat docgen/buildtest_schema_--help.txt
+
+The json schemas are hosted on the web at https://buildtesters.github.io/schemas/.
+buildtest provides a means to display the json schema from the buildtest interface.
+Note that buildtest will show the schemas provided in buildtest repo and not
+ones provided by `schemas <https://github.com/buildtesters/schemas>`_ repo. This
 is because, we let development of schema run independent of the framework.
 
-For example we can view the latest ``script`` schema as follows.
-
-.. program-output:: cat docgen/script-schema.txt
 
 
