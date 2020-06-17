@@ -1,6 +1,6 @@
 import pytest
 from buildtest.defaults import supported_schemas
-from buildtest.menu.show import func_schema
+from buildtest.menu.schema import func_schema
 
 
 def test_func_schema():

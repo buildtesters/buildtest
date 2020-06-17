@@ -19,7 +19,7 @@ from buildtest.menu.config import (
 )
 from buildtest.menu.repo import func_repo_add, func_repo_list, func_repo_remove
 from buildtest.menu.report import func_report
-from buildtest.menu.show import func_schema
+from buildtest.menu.schema import func_schema
 
 
 class BuildTestParser:

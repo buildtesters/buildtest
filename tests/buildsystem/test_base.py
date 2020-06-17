@@ -6,7 +6,6 @@ import pytest
 import os
 
 from buildtest.buildsystem.base import BuildspecParser
-from buildtest.defaults import supported_schemas
 
 testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
