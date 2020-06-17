@@ -1,0 +1,80 @@
+$ buildtest schema -n compiler-v1.0.schema.json -j 
+{
+   "$id": "https://buildtesters.github.io/schemas/compiler/compiler-v1.0.schema.json",
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "title": "BuildTest Schema for compiler",
+   "type": "object",
+   "required": [
+     "type",
+     "compiler",
+     "executor"
+   ],
+   "propertyNames": {
+     "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+   },
+   "additionalProperties": false,
+   "properties": {
+     "type": {
+       "type": "string",
+       "pattern": "^compiler$"
+     },
+     "description": {
+       "type": "string"
+     },
+     "module": {
+       "type": "array",
+       "items": {
+         "type": "string"
+       }
+     },
+     "executor": {
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/executor"
+     },
+     "env": {
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
+     },
+     "status": {
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/status"
+     },
+     "compiler": {
+       "type": "object",
+       "properties": {
+         "name": {
+           "type": "string",
+           "enum": [
+             "gnu",
+             "intel",
+             "pgi",
+             "cray"
+           ]
+         },
+         "source": {
+           "type": "string"
+         },
+         "exec_args": {
+           "type": "string"
+         },
+         "cflags": {
+           "type": "string"
+         },
+         "cxxflags": {
+           "type": "string"
+         },
+         "fflags": {
+           "type": "string"
+         },
+         "cppflags": {
+           "type": "string"
+         },
+         "ldflags": {
+           "type": "string"
+         }
+       },
+       "required": [
+         "source",
+         "name"
+       ],
+       "additionalProperties": false
+     }
+   }
+ }

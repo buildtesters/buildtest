@@ -1,0 +1,178 @@
+$ buildtest schema -n compiler-v1.0.schema.json -e 
+File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler/examples/1.0/valid/examples.yml
+ Valid State: True
+ ________________________________________________________________________________
+ version: "1.0"
+ gnu_example:
+   executor: local.bash
+   type: compiler
+   description: "gnu example using cflags, exec_args"
+   module:
+      - "module purge && module load gcc/4.0"
+      - "module purge && module load gcc/6.0"
+   compiler:
+     name: gnu
+     source: src/hello.c
+     cflags: "-O1"
+     exec_args: "1 2 3"
+ intel_example:
+   executor: local.bash
+   type: compiler
+   description: "intel example using cflags"
+   module:
+     -  "module purge &&  module load intel/17"
+     -  "module purge &&  module load intel/18"
+   compiler:
+     name: intel
+     source: src/hello.c
+     cflags: "-O1"
+ pgi_example:
+   executor: local.bash
+   type: compiler
+   description: "pgi example using cxxflags, ldflags, and exec_args key"
+   module:
+     -  "module purge &&  module load pgi"
+   compiler:
+     source: src/hello.cpp
+     name: pgi
+     cxxflags: "-O1"
+     ldflags: "-lm"
+     exec_args: hello world
+ cray_example:
+   executor: local.bash
+   type: compiler
+   description: "cray example using fflags and cppflags"
+   compiler:
+     name: cray
+     source: src/hello.f90
+     fflags: "-O1"
+     cppflags: "-DFOO"
+ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler/examples/1.0/invalid/examples.yml
+ Valid State: FAIL
+ ________________________________________________________________________________
+ version: "1.0"
+ missing_type:
+   executor: local.bash
+   description: "type key is missing, this is a required field"
+   module:
+    -  "module purge &&  module load intel/17"
+    -  "module purge &&  module load intel/18"
+   compiler:
+     source: src/hello.c
+     name: intel
+     cflags: "-O1"
+ missing_compiler:
+   executor: local.bash
+   type: compiler
+   description: "compiler key is missing, this is a required field"
+   module:
+    -  "module purge &&  module load intel/17"
+    -  "module purge &&  module load intel/18"
+ invalid_type_value:
+   executor: local.bash
+   type: script
+   description: "invalid value for type field must be 'compiler' "
+   module:
+      - "module purge && module load gcc/4.0"
+      - "module purge && module load gcc/6.0"
+   compiler:
+     source: src/hello.c
+     name: gnu
+     cflags: "-O1"
+ invalid_description_value:
+   executor: local.bash
+   type: compiler
+   description: 1
+   module:
+      - "module purge && module load gcc/4.0"
+      - "module purge && module load gcc/6.0"
+   compiler:
+     source: src/hello.c
+     name: gnu
+     cflags: "-O1"
+ invalid_type_module:
+   executor: local.bash
+   type: compiler
+   description: "type for 'module' key, expecting type 'array' but received 'string' "
+   module: "module purge && module load gcc/4.0"
+   compiler:
+     source: src/hello.c
+     name: gnu
+     cflags: "-O1"
+ module_mismatch_array_items:
+   executor: local.bash
+   type: compiler
+   description: "The module is an array of string items, this test as a mix of numbers and string"
+   module:
+     - 1
+     - "module purge && module load intel"
+   compiler:
+     source: src/hello.c
+     name: intel
+     cflags: "-O1"
+ missing_source_in_compiler:
+   executor: local.bash
+   type: compiler
+   description: "missing source key in compiler object"
+   module:
+   - "module purge && module load gcc/4.0"
+   compiler:
+     name: gnu
+     cflags: "-O1"
+ missing_a_compilername_in_compiler:
+   executor: local.bash
+   type: compiler
+   description: "missing name key in compiler object"
+   module:
+   - "module purge && module load gcc/4.0"
+   compiler:
+     source: src/hello.c
+ compiler_name_type_mismatch:
+   executor: local.bash
+   type: compiler
+   description: "compiler 'name' expects a string but received a list"
+   module:
+   - "module purge && module load gcc/4.0"
+   compiler:
+     source: src/hello.c
+     name: ["gnu", "intel"]
+     cflags: "-O1"
+     ldflags: "-lm"
+ test_additionalProperties_compiler:
+   executor: local.bash
+   type: compiler
+   description: "test additionalProperties in compiler object. Schema does not allow for additional keys"
+   module:
+   - "module purge && module load gcc/4.0"
+   compiler:
+     source: src/hello.c
+     foo: bar
+     name: gnu
+     cflags: "-O1"
+     ldflags: "-lm"
+ test_additionalProperties_main_schema:
+   executor: local.bash
+   type: compiler
+   description: "test additionalProperties in main schema"
+   foo: bar
+   module:
+   - "module purge && module load gcc/4.0"
+   compiler:
+     source: src/hello.c
+     name: gnu
+     cflags: "-O1"
+     ldflags: "-lm"
+ type_mismatch_exec_args:
+   executor: local.bash
+   type: compiler
+   description: "type mismatch on exec_args key"
+   module:
+   - "module purge && module load gcc/4.0"
+   compiler:
+     source: src/hello.c
+     name: gnu
+     cflags: "-O1"
+     ldflags: "-lm"
+     exec_args: 1
+ ________________________________________ Validation Error ________________________________________
+ Did not find 'type' key in test section: missing_type

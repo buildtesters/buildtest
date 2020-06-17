@@ -14,8 +14,7 @@ def build_helper():
     """This method will write output of several helper options for all sub-commands in buildtest"""
     help_cmds = [
         "buildtest --help",
-        "buildtest show --help",
-        "buildtest show schema --help",
+        "buildtest schema --help",
         "buildtest build --help",
         "buildtest config --help",
         "buildtest repo --help",
@@ -38,6 +37,18 @@ def run(query):
     return out
 
 
+def generate_tests(prefix, cmd_dict):
+    create_dir(os.path.join(docgen, prefix))
+
+    for k, v in cmd_dict.items():
+        out = run(v)
+        out = f"$ {v} \n" + out
+
+        fname = os.path.join(docgen, k)
+        write_file(fname, out)
+        print(f"Writing File: {fname}")
+
+
 def tutorial():
     prefix = "getting_started"
     cmd_dict = {
@@ -52,34 +63,32 @@ def tutorial():
         f"{os.path.join(prefix, 'invalid-executor.txt')}": "buildtest build -b examples/invalid_executor.yml",
     }
 
-    create_dir(os.path.join(docgen, prefix))
+    generate_tests(prefix, cmd_dict)
 
-    for k, v in cmd_dict.items():
-        out = run(v)
-        out = f"$ {v} \n" + out
 
-        fname = os.path.join(docgen, k)
-        write_file(fname, out)
-        print(f"Writing File: {fname}")
+def schemas():
+    prefix = "schemas"
+    cmd_dict = {
+        f"{os.path.join(prefix, 'avail-schemas.txt')}": "buildtest schema",
+        f"{os.path.join(prefix, 'compiler-json.txt')}": "buildtest schema -n compiler-v1.0.schema.json -j",
+        f"{os.path.join(prefix, 'compiler-examples.txt')}": "buildtest schema -n compiler-v1.0.schema.json -e",
+        f"{os.path.join(prefix,'script-json.txt')}": "buildtest schema -n script-v1.0.schema.json -j",
+        f"{os.path.join(prefix,'script-examples.txt')}": "buildtest schema -n script-v1.0.schema.json -e",
+        f"{os.path.join(prefix, 'global-json.txt')}": "buildtest schema -n global.schema.json -j",
+        f"{os.path.join(prefix, 'global-examples.txt')}": "buildtest schema -n global.schema.json -e",
+        f"{os.path.join(prefix, 'settings-json.txt')}": "buildtest schema -n settings.schema.json -j",
+        f"{os.path.join(prefix, 'settings-examples.txt')}": "buildtest schema -n settings.schema.json -e",
+    }
+    generate_tests(prefix, cmd_dict)
 
 
 def introspection_cmds():
     cmd_dict = {
         "config-view.txt": "buildtest config view",
         "config-reset.txt": "buildtest config reset",
-        "script-schema.txt": "buildtest show schema -n script",
     }
 
     for k, v in cmd_dict.items():
-        out = run(v)
-        fname = os.path.join(docgen, k)
-        writer(fname, out, v)
-
-
-def build_cmds():
-    pass
-    build_dict = {}
-    for k, v in build_dict.items():
         out = run(v)
         fname = os.path.join(docgen, k)
         writer(fname, out, v)
@@ -97,8 +106,8 @@ def main():
     create_dir(docgen)
     build_helper()
     tutorial()
+    schemas()
     introspection_cmds()
-    build_cmds()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,79 @@
+$ buildtest schema -n global.schema.json -j 
+{
+   "$id": "https://buildtesters.github.io/schemas/global/global.schema.json",
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "title": "buildtest Global Schema",
+   "type": "object",
+   "required": [
+     "version"
+   ],
+   "propertyNames": {
+     "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+   },
+   "properties": {
+     "version": {
+       "type": "string",
+       "description": "The semver version of the schema to use (x.x)."
+     },
+     "maintainers": {
+       "type": "array",
+       "description": "One or more maintainers or aliases",
+       "minItems": 1,
+       "items": {
+         "type": "string"
+       }
+     }
+   },
+   "patternProperties": {
+     "^[A-Za-z_.][A-Za-z0-9_]*$": {
+       "type": [
+         "object",
+         "string"
+       ]
+     }
+   },
+   "definitions": {
+     "env": {
+       "type": "object",
+       "description": "One or more key value pairs for an environment (key=value)",
+       "minItems": 1,
+       "items": {
+         "type": "object",
+         "minItems": 1,
+         "propertyNames": {
+           "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+         }
+       }
+     },
+     "executor": {
+       "type": "string"
+     },
+     "status": {
+       "type": "object",
+       "properties": {
+         "returncode": {
+           "type": "integer"
+         },
+         "regex": {
+           "type": "object",
+           "properties": {
+             "stream": {
+               "type": "string",
+               "enum": [
+                 "stdout",
+                 "stderr"
+               ]
+             },
+             "exp": {
+               "type": "string"
+             }
+           },
+           "required": [
+             "stream",
+             "exp"
+           ]
+         }
+       }
+     }
+   }
+ }
