@@ -17,7 +17,13 @@ from buildtest.menu.config import (
     func_config_view,
     func_config_reset,
 )
-from buildtest.menu.repo import func_repo_add, func_repo_list, func_repo_remove
+from buildtest.menu.repo import (
+    func_repo_add,
+    func_repo_list,
+    func_repo_remove,
+    active_repos,
+    func_repo_update,
+)
 from buildtest.menu.report import func_report
 from buildtest.menu.schema import func_schema
 
@@ -88,11 +94,27 @@ class BuildTestParser:
         return args
 
     def build_menu(self):
-        """This method implements argparse argument for ``buildtest build``"""
+        """This method implements the ``buildtest build`` command
+
+           Command Usage:
+
+            # single buildspec file
+           buildtest build -b <file>
+
+           # single buildspec directory (builds all buildspec in directory
+           buildtest build -b <dir>
+
+           # build a buildspec and exclude some buildspecs. The exclude (-x) accepts both file and directory
+           buildtest build -b <file> -x <file>
+
+           # multiple buildspecs build and exclude
+           buildtest build -b <file> -b <dir> -x <file> -x <file>
+
+        """
 
         parser_build = self.subparsers.add_parser("build")
 
-        ##################### buildtest build     ###########################
+        ##################### buildtest build  ###########################
 
         parser_build.add_argument(
             "-b",
@@ -119,19 +141,33 @@ class BuildTestParser:
         )
 
     def report_menu(self):
+        """This method implements the ``buildtest report`` command options
+
+        """
 
         parser_report = self.subparsers.add_parser("report")
 
-        ##################### buildtest report     ###########################
+        ##################### buildtest report   ###########################
 
         parser_report.set_defaults(func=func_report)
 
     def repo_menu(self):
-        """This method implements argparse argument for ``buildtest repo``"""
+        """This method implements ``buildtest repo``
+
+
+           Command Usage
+
+           buildtest repo add <url>
+           buildtest repo add -b <branch> <url>
+           buildtest repo rm <repo>
+           buildtest repo list
+           buildtest repo list -s
+           buildtest repo update --state <STATE> <repo>
+        """
 
         parser_repo = self.subparsers.add_parser("repo")
 
-        ##################### buildtest repo       ###########################
+        ##################### buildtest repo  ###########################
 
         subparser_repo = parser_repo.add_subparsers(
             title="commands", description="repository commands"
@@ -140,12 +176,26 @@ class BuildTestParser:
             "add", help="Add repository to buildtest."
         )
         parser_repo_list = subparser_repo.add_parser(
-            "list", help="List all repositories active in buildtest"
+            "list", help="List all repositories in buildtest"
         )
         parser_repo_rm = subparser_repo.add_parser(
             "rm", help="Remove repository from buildtest"
         )
 
+        parser_repo_update = subparser_repo.add_parser(
+            "update", help="Update repository configuration"
+        )
+        parser_repo_update.add_argument(
+            "repo", help="select repository to update", choices=active_repos()
+        )
+        parser_repo_update.add_argument(
+            "--state",
+            help="update state of repository. If you want "
+            "buildtest to add repository to buildspec search path, set state "
+            "to 'enabled' if you want buildtest to disable repo set state to "
+            "'disabled'. buildtest will not add repository to buildspec search path.",
+            choices=["enabled", "disabled"],
+        )
         parser_repo_add.add_argument(
             "-b",
             "--branch",
@@ -162,11 +212,19 @@ class BuildTestParser:
         parser_repo_add.set_defaults(func=func_repo_add)
         parser_repo_list.set_defaults(func=func_repo_list)
         parser_repo_rm.set_defaults(func=func_repo_remove)
+        parser_repo_update.set_defaults(func=func_repo_update)
 
     def config_menu(self):
-        """This method adds argparse argument for ``buildtest config``"""
+        """This method adds argparse argument for ``buildtest config``
+
+           Command Usage
+
+           buildtest config view
+           buildtest config edit
+           buildtest config reset
+        """
         parser_config = self.subparsers.add_parser("config")
-        # -------------------------------- config  menu --------------------------
+        # #################### buildtest config   ###############################
         subparsers_config = parser_config.add_subparsers(
             description="buildtest configuration"
         )
@@ -203,7 +261,7 @@ class BuildTestParser:
 
         """
 
-        # ----------------- buildtest schema options -------------
+        # ################### buildtest schema  ########################
         parser_schema = self.subparsers.add_parser("schema")
 
         parser_schema.add_argument(
@@ -223,8 +281,15 @@ class BuildTestParser:
         parser_schema.set_defaults(func=func_schema)
 
     def buildspec_menu(self):
+        """This method implements ``buildtest buildspec`` command
 
-        # -------------------------- buildtest buildspec options ------------------------------
+            Command Usage
+
+            buildtest buildspec find
+            buildtest buildspec view <name>
+            buildtest buildspec edit <name>
+        """
+        # ####################### buildtest buildspec  ########################
         parser_buildspec = self.subparsers.add_parser("buildspec")
 
         subparsers_buildspec = parser_buildspec.add_subparsers(
