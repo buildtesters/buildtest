@@ -246,6 +246,93 @@ class BaseExecutor:
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
         return re.search(regex["exp"], content) != None
 
+    def write_test(self, command, out, err):
+
+        self.builder.metadata["endtime"] = datetime.datetime.now()
+        self.result["endtime"] = self.get_formatted_time("endtime")
+
+        # Keep an output file
+        run_output_file = os.path.join(
+            self.builder.metadata.get("rundir"), self.builder.metadata.get("build_id")
+        )
+        outfile = run_output_file + ".out"
+        errfile = run_output_file + ".err"
+
+        # write output of test to .out file
+
+        out = "\n".join(out)
+        err = "\n".join(err)
+
+        self.logger.debug(f"Writing run output to file: {outfile}")
+        write_file(outfile, out)
+
+        # write error from test to .err file
+        self.logger.debug(f"Writing run error to file: {errfile}")
+        write_file(errfile, err)
+
+        self.builder.metadata["outfile"] = outfile
+        self.builder.metadata["errfile"] = errfile
+
+        self.logger.debug(
+            f"Return code: {command.returncode} for test: {self.builder.metadata['testpath']}"
+        )
+        self.result["returncode"] = command.returncode
+
+    def check_test_state(self):
+        """This method is responsible for detecting state of test (PASS/FAIL)
+           based on returncode or regular expression.
+        """
+        status = self.builder.recipe.get("status")
+
+        test_state = "FAIL"
+
+        # if status is defined in Buildspec, then check for returncode and regex
+        if status:
+
+            # returncode_match is boolean to check if reference returncode matches return code from test
+            returncode_match = True
+
+            # regex_match is boolean to check if output/error stream matches regex defined in Buildspec,
+            # if no regex is defined we set this to True since we do a logical AND
+            regex_match = True
+
+            if "returncode" in status:
+                self.logger.debug("Conducting Return Code check")
+                self.logger.debug(
+                    "Status Return Code: %s   Result Return Code: %s"
+                    % (status["returncode"], self.result["returncode"])
+                )
+                # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
+                returncode_match = status["returncode"] == self.result[
+                    "returncode"]
+
+            if "regex" in status:
+                self.logger.debug("Conducting Regular Expression check")
+                # self.check_regex  applies regular expression check specified in Buildspec with output or error
+                # stream. self.check_regex returns a boolean (True/False) by using re.search
+                regex_match = self.check_regex(status["regex"])
+
+            self.logger.info(
+                "ReturnCode Match: %s Regex Match: %s "
+                % (returncode_match, regex_match)
+            )
+
+            if returncode_match and regex_match:
+                test_state = "PASS"
+
+        # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
+        else:
+            if self.result["returncode"] == 0:
+                test_state = "PASS"
+
+        # this variable is used later when counting all the pass/fail test in buildtest/menu/build.py
+        self.result["state"] = test_state
+
+        # Return to starting directory for next test
+        os.chdir(self.builder.pwd)
+
+        self.builder.metadata["result"] = self.result
+
 
 class LocalExecutor(BaseExecutor):
     type = "local"
@@ -280,88 +367,10 @@ class LocalExecutor(BaseExecutor):
         t = Timer()
         t.start()
         out, err = command.execute()
-
         self.result["runtime"] = t.stop()
 
-        self.builder.metadata["endtime"] = datetime.datetime.now()
-        self.result["endtime"] = self.get_formatted_time("endtime")
-
-        # Keep an output file
-        run_output_file = os.path.join(
-            self.builder.metadata.get("rundir"), self.builder.metadata.get("build_id")
-        )
-        outfile = run_output_file + ".out"
-        errfile = run_output_file + ".err"
-
-        # write output of test to .out file
-
-        out = "\n".join(out)
-        err = "\n".join(err)
-
-        self.logger.debug(f"Writing run output to file: {outfile}")
-        write_file(outfile, out)
-
-        # write error from test to .err file
-        self.logger.debug(f"Writing run error to file: {errfile}")
-        write_file(errfile, err)
-
-        self.builder.metadata["outfile"] = outfile
-        self.builder.metadata["errfile"] = errfile
-
-        self.logger.debug(
-            f"Return code: {command.returncode} for test: {self.builder.metadata['testpath']}"
-        )
-        self.result["returncode"] = command.returncode
-
-        status = self.builder.recipe.get("status")
-
-        test_state = "FAIL"
-
-        # if status is defined in Buildspec, then check for returncode and regex
-        if status:
-
-            # returncode_match is boolean to check if reference returncode matches return code from test
-            returncode_match = True
-
-            # regex_match is boolean to check if output/error stream matches regex defined in Buildspec,
-            # if no regex is defined we set this to True since we do a logical AND
-            regex_match = True
-
-            if "returncode" in status:
-                self.logger.debug("Conducting Return Code check")
-                self.logger.debug(
-                    "Status Return Code: %s   Result Return Code: %s"
-                    % (status["returncode"], self.result["returncode"])
-                )
-                # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
-                returncode_match = status["returncode"] == self.result["returncode"]
-
-            if "regex" in status:
-                self.logger.debug("Conducting Regular Expression check")
-                # self.check_regex  applies regular expression check specified in Buildspec with output or error
-                # stream. self.check_regex returns a boolean (True/False) by using re.search
-                regex_match = self.check_regex(status["regex"])
-
-            self.logger.info(
-                "ReturnCode Match: %s Regex Match: %s "
-                % (returncode_match, regex_match)
-            )
-
-            if returncode_match and regex_match:
-                test_state = "PASS"
-
-        # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
-        else:
-            if command.returncode == 0:
-                test_state = "PASS"
-
-        # this variable is used later when counting all the pass/fail test in buildtest/menu/build.py
-        self.result["state"] = test_state
-
-        # Return to starting directory for next test
-        os.chdir(self.builder.pwd)
-
-        self.builder.metadata["result"] = self.result
+        self.write_test(command, out, err)
+        self.check_test_state()
 
 
 class SSHExecutor(BaseExecutor):
@@ -393,4 +402,37 @@ class SlurmExecutor(BaseExecutor):
            :type launcher: string
         """
 
-        self.launcher = self._settings.get("launcher", "sbatch")
+        self.launcher = self._settings.get("launcher")
+        self.launcher_opts = self._settings.get("options")
+
+    def dispatch(self):
+
+        # Keep a result object
+        self.result = {}
+        self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
+
+        os.chdir(self.builder.metadata["testroot"])
+        self.logger.debug(
+            f"Changing to directory {self.builder.metadata['testroot']}")
+
+        # build the run command that includes the shell path, shell options and path to test file
+        cmd = [
+            self.launcher,
+            ' '.join(self.launcher_opts),
+            self.builder.metadata["testpath"],
+        ]
+
+        self.builder.metadata["command"] = " ".join(cmd)
+        self.logger.debug(
+            f"Running Test via command: {self.builder.metadata['command']}"
+        )
+
+        self.builder.metadata["starttime"] = datetime.datetime.now()
+        self.result["starttime"] = self.get_formatted_time("starttime")
+
+        command = BuildTestCommand(self.builder.metadata["command"])
+        out, err = command.execute()
+
+        self.result["runtime"] = "0"
+        self.write_test(command, out, err)
+        self.check_test_state()
