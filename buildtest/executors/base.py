@@ -6,6 +6,7 @@ import logging
 import os
 import re
 import sys
+import time
 
 
 from buildtest.defaults import BUILDTEST_SETTINGS_FILE
@@ -435,7 +436,30 @@ class SlurmExecutor(BaseExecutor):
 
         command = BuildTestCommand(self.builder.metadata["command"])
         out, err = command.execute()
+        self.job_id = int(re.search(r"\d+$",''.join(out)).group())
 
         self.result["runtime"] = "0"
         self.write_testresults(command, out, err)
         self.check_test_state()
+
+    def poll(self):
+        """ This method will poll for job each interval specified by time interval
+            until job finishes. We use `sacct` to poll for job id and sleep for given
+            time interval until trying again. The command to be run is
+            sacct -j <jobid> -o State -n -X
+        """
+        while True:
+            
+            time.sleep(10)
+            self.logger.debug(f"Query Job: {self.job_id}")
+            poll_cmd = f"sacct -j {self.job_id} -o State -n -X"
+            self.logger.debug(poll_cmd)
+            cmd = BuildTestCommand(poll_cmd)
+            cmd.execute()
+            job_state = cmd.get_output()
+            job_state = ''.join(job_state).strip()
+            
+            if job_state not in ["PENDING", "RUNNING"]:
+                break
+        
+        print ("job_state:", job_state)
