@@ -120,6 +120,8 @@ def clone(url, dest, branch="master"):
         repo_dict[repo_entry] = {}
         repo_dict[repo_entry]["url"] = url
         repo_dict[repo_entry]["dest"] = dest
+        repo_dict[repo_entry]["branch"] = branch
+        repo_dict[repo_entry]["state"] = "enabled"
         with open(REPO_FILE, "w") as fd:
             yaml.dump(repo_dict, fd, default_flow_style=False)
 
@@ -175,8 +177,10 @@ def get_repo_paths():
 
     with open(REPO_FILE, "r") as fd:
         repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
+
     for repo in repo_dict.keys():
-        dest_paths.append(repo_dict[repo]["dest"])
+        if repo_dict[repo]["state"] == "enabled":
+            dest_paths.append(repo_dict[repo]["dest"])
 
     return dest_paths
 
@@ -199,3 +203,18 @@ def func_repo_remove(args):
     del repo_dict[args.repo]
     with open(REPO_FILE, "w") as fd:
         yaml.dump(repo_dict, fd, default_flow_style=False)
+
+
+def func_repo_update(args):
+
+    if not is_file(REPO_FILE):
+        raise SystemExit(f"Unable to find repository file: {REPO_FILE}")
+
+    with open(REPO_FILE, "r") as fd:
+        repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
+
+    repo_dict[args.repo]["state"] = args.state
+    with open(REPO_FILE, "w") as fd:
+        yaml.dump(repo_dict, fd, default_flow_style=False)
+
+    print(f"Update repo: {args.repo} to state: {args.state}")

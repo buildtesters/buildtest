@@ -5,7 +5,14 @@ import shutil
 import string
 import yaml
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, REPO_FILE
-from buildtest.menu.repo import clone, func_repo_add, func_repo_list, func_repo_remove
+from buildtest.menu.repo import (
+    clone,
+    func_repo_add,
+    func_repo_list,
+    func_repo_remove,
+    get_repo_paths,
+    func_repo_update,
+)
 from buildtest.utils.file import is_dir
 
 
@@ -34,6 +41,12 @@ def test_clone(tmp_path):
     https_link = "https://github.com/buildtesters/tutorials.git"
 
     assert is_dir(clone(https_link, tmp_path))
+
+    class args:
+        repo = "buildtesters/tutorials"
+        state = "disabled"
+
+    func_repo_update(args)
 
     # cloning same repo twice will result in failure
     with pytest.raises(SystemExit):
@@ -148,6 +161,9 @@ def test_repofile_not_found():
     # since REPO_FILE does not exist this will raise an error
     with pytest.raises(SystemExit):
         func_repo_remove(args)
+
+    # when REPO file not found get_repo_paths() will return empty list
+    assert not get_repo_paths()
 
     class args:
         show = True
