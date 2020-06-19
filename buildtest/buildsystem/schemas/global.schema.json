@@ -42,6 +42,12 @@
     "executor": {
       "type": "string"
     },
+    "sbatch": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "status": {
       "type": "object",
       "properties":

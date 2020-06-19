@@ -246,7 +246,7 @@ class BaseExecutor:
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
         return re.search(regex["exp"], content) != None
 
-    def write_test(self, command, out, err):
+    def write_testresults(self, command, out, err):
 
         self.builder.metadata["endtime"] = datetime.datetime.now()
         self.result["endtime"] = self.get_formatted_time("endtime")
@@ -303,8 +303,7 @@ class BaseExecutor:
                     % (status["returncode"], self.result["returncode"])
                 )
                 # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
-                returncode_match = status["returncode"] == self.result[
-                    "returncode"]
+                returncode_match = status["returncode"] == self.result["returncode"]
 
             if "regex" in status:
                 self.logger.debug("Conducting Regular Expression check")
@@ -338,7 +337,11 @@ class LocalExecutor(BaseExecutor):
     type = "local"
 
     def run(self):
-
+        """This method is responsible for running test for LocalExecutor which
+           runs test locally. We keep track of metadata in ``self.builder.metadata``
+           and self.result keeps track of run result. The output and error file
+           is written to filesystem. After test
+        """
         # Keep a result object
         self.result = {}
 
@@ -369,7 +372,7 @@ class LocalExecutor(BaseExecutor):
         out, err = command.execute()
         self.result["runtime"] = t.stop()
 
-        self.write_test(command, out, err)
+        self.write_testresults(command, out, err)
         self.check_test_state()
 
 
@@ -406,19 +409,19 @@ class SlurmExecutor(BaseExecutor):
         self.launcher_opts = self._settings.get("options")
 
     def dispatch(self):
+        """This method is responsible for dispatching job to slurm scheduler."""
 
         # Keep a result object
         self.result = {}
         self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
 
         os.chdir(self.builder.metadata["testroot"])
-        self.logger.debug(
-            f"Changing to directory {self.builder.metadata['testroot']}")
+        self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
 
-        # build the run command that includes the shell path, shell options and path to test file
+        # the command used to send job to scheduler. i.e sbatch <opts> test.sh
         cmd = [
             self.launcher,
-            ' '.join(self.launcher_opts),
+            " ".join(self.launcher_opts),
             self.builder.metadata["testpath"],
         ]
 
@@ -434,5 +437,5 @@ class SlurmExecutor(BaseExecutor):
         out, err = command.execute()
 
         self.result["runtime"] = "0"
-        self.write_test(command, out, err)
+        self.write_testresults(command, out, err)
         self.check_test_state()

@@ -23,6 +23,9 @@
     "executor": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/executor"
     },
+    "sbatch": {
+      "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/sbatch"
+    },
     "env": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
     },
