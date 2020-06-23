@@ -395,7 +395,9 @@ class SlurmExecutor(BaseExecutor):
     """
 
     type = "slurm"
+    poll_interval = 10
     steps = ["setup", "check", "dispatch", "poll", "gather", "close"]
+    sacct_fields = ["Account","AllocNodes","AllocTRES","Constraints","ConsumedEnergyRaw","CPUTimeRaw","End","ExitCode","JobID","JobName","NCPUS","NNodes","QOS","Reason","ReqGRES","ReqMem","ReqNodes","ReqTRES","Start","State","Submit","UID","User","WorkDir"]
 
     def load(self, name):
         """Load the executor preferences from the provided config, which is
@@ -448,18 +450,39 @@ class SlurmExecutor(BaseExecutor):
             time interval until trying again. The command to be run is
             sacct -j <jobid> -o State -n -X
         """
+
         while True:
             
-            time.sleep(10)
+            print (f"Polling Job {self.job_id} in  {self.poll_interval} seconds for test {self.builder.metadata['name']}")
+            time.sleep(self.poll_interval)
             self.logger.debug(f"Query Job: {self.job_id}")
-            poll_cmd = f"sacct -j {self.job_id} -o State -n -X"
+            poll_cmd = f"sacct -j {self.job_id} -o State -n -X -P"
             self.logger.debug(poll_cmd)
             cmd = BuildTestCommand(poll_cmd)
             cmd.execute()
             job_state = cmd.get_output()
-            job_state = ''.join(job_state).strip()
-            
+            job_state = ''.join(job_state)
+
+            print (f"Job {self.job_id} in {job_state} state for test: {self.builder.metadata['name']}")
             if job_state not in ["PENDING", "RUNNING"]:
                 break
         
-        print ("job_state:", job_state)
+
+    def gather(self):
+        """Gather Slurm detail after job completion"""
+
+        gather_cmd = f"sacct -j {self.job_id} -X -n -P -o {','.join(self.sacct_fields)}"
+        cmd = BuildTestCommand(gather_cmd)
+        cmd.execute()
+        out = ''.join(cmd.get_output())
+        # split by | since
+        out = out.split("|")
+        job_data = {}
+        
+        for field,value in zip(self.sacct_fields, out):
+            job_data[field] = value
+        
+        self.builder.metadata['job'] = job_data
+        # Exit Code field is in format <ExitCode>:<Signal> for now we care only
+        # about first number
+        self.result["returncode"] = job_data["ExitCode"].split(":")[0]
