@@ -279,6 +279,9 @@ def func_build_subcmd(args, config_opts):
 
     # print any skipped buildspecs if they failed to validate during build stage
     if len(skipped_tests) > 0:
+        print("\n\n")
+        print("Error Messages from Stage: Build")
+        print("{:_<80}".format(""))
         for test in skipped_tests:
             print(test)
 
@@ -307,6 +310,7 @@ def func_build_subcmd(args, config_opts):
         try:
             result = executor.run(builder)
         except SystemExit as err:
+            print("[%s]: Failed to Run Test" % builder.metadata['name'])
             errmsg.append(err)
             logger.error(err)
             continue
@@ -330,8 +334,11 @@ def func_build_subcmd(args, config_opts):
 
         total_tests += 1
 
+
     if errmsg:
-        print("\n")
+        print("\n\n")
+        print("Error Messages from Stage: Run")
+        print("{:_<80}".format(""))
         for error in errmsg:
             print(error)
         print("\n")

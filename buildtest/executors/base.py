@@ -5,7 +5,9 @@ import datetime
 import logging
 import os
 import re
+import shutil
 import sys
+import time
 
 
 from buildtest.defaults import BUILDTEST_SETTINGS_FILE
@@ -129,6 +131,15 @@ class BuildExecutor:
         """
         executor = self._choose_executor(builder)
 
+        if executor.type == "local":
+            executor.setup()
+            executor.run()
+        elif executor.type == "slurm":
+            executor.check()
+            executor.dispatch()
+            executor.gather()
+
+        """
         # Run each step defined for dry run
         for step in executor.steps:
             if getattr(executor, step, None):
@@ -136,6 +147,7 @@ class BuildExecutor:
                     "Running %s for executor %s" % (step, executor)
                 )
                 getattr(executor, step)()
+        """
         return executor.result
 
 
@@ -196,7 +208,7 @@ class BaseExecutor:
         self.result = self.builder.dry_run()
 
     def __str__(self):
-        return "[executor-%s-%s]" % (self.type, self.name)
+        return "%s.%s" % (self.type, self.name)
 
     def __repr__(self):
         return self.__str__()
@@ -246,42 +258,7 @@ class BaseExecutor:
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
         return re.search(regex["exp"], content) != None
 
-
-class LocalExecutor(BaseExecutor):
-    type = "local"
-
-    def run(self):
-
-        # Keep a result object
-        self.result = {}
-
-        self.result["LOGFILE"] = self.builder.metadata.get("logfile", "")
-        self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
-
-        # Change to the test directory
-        os.chdir(self.builder.metadata["testroot"])
-        self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
-
-        # build the run command that includes the shell path, shell options and path to test file
-        cmd = [
-            self.builder.shell.path,
-            self.builder.shell.opts,
-            self.builder.metadata["testpath"],
-        ]
-        self.builder.metadata["command"] = " ".join(cmd)
-        self.logger.debug(
-            f"Running Test via command: {self.builder.metadata['command']}"
-        )
-
-        command = BuildTestCommand(self.builder.metadata["command"])
-        self.builder.metadata["starttime"] = datetime.datetime.now()
-        self.result["starttime"] = self.get_formatted_time("starttime")
-
-        t = Timer()
-        t.start()
-        out, err = command.execute()
-
-        self.result["runtime"] = t.stop()
+    def write_testresults(self, command, out, err):
 
         self.builder.metadata["endtime"] = datetime.datetime.now()
         self.result["endtime"] = self.get_formatted_time("endtime")
@@ -313,6 +290,10 @@ class LocalExecutor(BaseExecutor):
         )
         self.result["returncode"] = command.returncode
 
+    def check_test_state(self):
+        """This method is responsible for detecting state of test (PASS/FAIL)
+           based on returncode or regular expression.
+        """
         status = self.builder.recipe.get("status")
 
         test_state = "FAIL"
@@ -352,7 +333,7 @@ class LocalExecutor(BaseExecutor):
 
         # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
         else:
-            if command.returncode == 0:
+            if self.result["returncode"] == 0:
                 test_state = "PASS"
 
         # this variable is used later when counting all the pass/fail test in buildtest/menu/build.py
@@ -362,6 +343,49 @@ class LocalExecutor(BaseExecutor):
         os.chdir(self.builder.pwd)
 
         self.builder.metadata["result"] = self.result
+
+
+class LocalExecutor(BaseExecutor):
+    type = "local"
+
+    def run(self):
+        """This method is responsible for running test for LocalExecutor which
+           runs test locally. We keep track of metadata in ``self.builder.metadata``
+           and self.result keeps track of run result. The output and error file
+           is written to filesystem. After test
+        """
+        # Keep a result object
+        self.result = {}
+
+        self.result["LOGFILE"] = self.builder.metadata.get("logfile", "")
+        self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
+
+        # Change to the test directory
+        os.chdir(self.builder.metadata["testroot"])
+        self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
+
+        # build the run command that includes the shell path, shell options and path to test file
+        cmd = [
+            self.builder.shell.path,
+            self.builder.shell.opts,
+            self.builder.metadata["testpath"],
+        ]
+        self.builder.metadata["command"] = " ".join(cmd)
+        self.logger.debug(
+            f"Running Test via command: {self.builder.metadata['command']}"
+        )
+
+        command = BuildTestCommand(self.builder.metadata["command"])
+        self.builder.metadata["starttime"] = datetime.datetime.now()
+        self.result["starttime"] = self.get_formatted_time("starttime")
+
+        t = Timer()
+        t.start()
+        out, err = command.execute()
+        self.result["runtime"] = t.stop()
+
+        self.write_testresults(command, out, err)
+        self.check_test_state()
 
 
 class SSHExecutor(BaseExecutor):
@@ -382,7 +406,21 @@ class SlurmExecutor(BaseExecutor):
     """
 
     type = "slurm"
+    poll_interval = 10
     steps = ["setup", "check", "dispatch", "poll", "gather", "close"]
+    poll_cmd = "sacct"
+    sacct_fields = ["Account","AllocNodes","AllocTRES","Constraints","ConsumedEnergyRaw","CPUTimeRaw","End","ExitCode","JobID","JobName","NCPUS","NNodes","QOS","Reason","ReqGRES","ReqMem","ReqNodes","ReqTRES","Start","State","Submit","UID","User","WorkDir"]
+
+    def check(self):
+        """Check slurm binary is available before running tests. This will check
+           the launcher (sbatch) and sacct are available
+        """
+
+        if not shutil.which(self.launcher):
+            sys.exit(f"[{self.builder.metadata['name']}]: Cannot find launcher program: {self.launcher}")
+
+        if not shutil.which(self.poll_cmd):
+            sys.exit(f"[{self.builder.metadata['name']}]: Cannot find slurm poll command: {self.poll_cmd}")
 
     def load(self, name):
         """Load the executor preferences from the provided config, which is
@@ -393,4 +431,80 @@ class SlurmExecutor(BaseExecutor):
            :type launcher: string
         """
 
-        self.launcher = self._settings.get("launcher", "sbatch")
+        self.launcher = self._settings.get("launcher")
+        self.launcher_opts = self._settings.get("options")
+
+    def dispatch(self):
+        """This method is responsible for dispatching job to slurm scheduler."""
+
+        # Keep a result object
+        self.result = {}
+        self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
+
+        os.chdir(self.builder.metadata["testroot"])
+        self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
+
+        # the command used to send job to scheduler. i.e sbatch <opts> test.sh
+        cmd = [
+            self.launcher,
+            " ".join(self.launcher_opts),
+            self.builder.metadata["testpath"],
+        ]
+
+        self.builder.metadata["command"] = " ".join(cmd)
+        self.logger.debug(
+            f"Running Test via command: {self.builder.metadata['command']}"
+        )
+
+        self.builder.metadata["starttime"] = datetime.datetime.now()
+        self.result["starttime"] = self.get_formatted_time("starttime")
+
+        command = BuildTestCommand(self.builder.metadata["command"])
+        out, err = command.execute()
+        self.job_id = int(re.search(r"\d+$",''.join(out)).group())
+
+        self.result["runtime"] = "0"
+        self.write_testresults(command, out, err)
+        self.check_test_state()
+
+    def poll(self):
+        """ This method will poll for job each interval specified by time interval
+            until job finishes. We use `sacct` to poll for job id and sleep for given
+            time interval until trying again. The command to be run is
+            sacct -j <jobid> -o State -n -X
+        """
+
+        while True:
+            
+            print (f"Polling Job {self.job_id} in  {self.poll_interval} seconds for test {self.builder.metadata['name']}")
+            time.sleep(self.poll_interval)
+            self.logger.debug(f"Query Job: {self.job_id}")
+            slurm_query = f"{self.poll_cmd} -j {self.job_id} -o State -n -X -P"
+            self.logger.debug(slurm_query)
+            cmd = BuildTestCommand(slurm_query)
+            cmd.execute()
+            job_state = cmd.get_output()
+            job_state = ''.join(job_state)
+
+            print (f"Job {self.job_id} in {job_state} state for test: {self.builder.metadata['name']}")
+            if job_state not in ["PENDING", "RUNNING"]:
+                break
+
+    def gather(self):
+        """Gather Slurm detail after job completion"""
+
+        gather_cmd = f"{self.poll_cmd} -j {self.job_id} -X -n -P -o {','.join(self.sacct_fields)}"
+        cmd = BuildTestCommand(gather_cmd)
+        cmd.execute()
+        out = ''.join(cmd.get_output())
+        # split by | since
+        out = out.split("|")
+        job_data = {}
+        
+        for field,value in zip(self.sacct_fields, out):
+            job_data[field] = value
+        
+        self.builder.metadata['job'] = job_data
+        # Exit Code field is in format <ExitCode>:<Signal> for now we care only
+        # about first number
+        self.result["returncode"] = job_data["ExitCode"].split(":")[0]

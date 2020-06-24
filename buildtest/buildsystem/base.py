@@ -1,7 +1,7 @@
 """
 BuildspecParser is intended to read in a Buildspec file with one or
 more test blocks, and then generate builders based on the type
-of each. The BuilderBase is the base class for all builders that 
+of each. The BuilderBase is the base class for all builders that
 expose functions to run builds.
 """
 
@@ -162,7 +162,7 @@ class BuildspecParser:
 
     def get_builders(self, testdir):
         """Based on a loaded Buildspec file, return the correct builder
-           for each based on the type. Each type is associated with a known 
+           for each based on the type. Each type is associated with a known
            Builder class.
 
            Parameters:
@@ -388,6 +388,18 @@ class BuilderBase:
 
         return env
 
+    def get_sbatch(self):
+
+        lines = []
+        sbatch = self.recipe.get("sbatch")
+
+        if sbatch:
+
+            for sbatch_cmd in sbatch:
+                lines.append(f"#SBATCH {sbatch_cmd}")
+
+        return lines
+
     def build(self):
         """ This method is responsible for invoking setup, creating test
             directory and writing test.
@@ -473,6 +485,10 @@ class ScriptBuilder(BuilderBase):
 
         # start of each test should have the shebang
         lines = [self.shebang]
+
+        sbatch = self.get_sbatch()
+        if sbatch:
+            lines += sbatch
 
         # Add environment variables
         lines += self.get_environment()
@@ -675,6 +691,10 @@ class CompilerBuilder(BuilderBase):
         # every test starts with shebang line
         lines = [self.shebang]
 
+        sbatch_cmds = self.get_sbatch()
+        if not sbatch_cmds:
+            lines += sbatch_cmds
+
         # if 'module' defined in Buildspec add modules to test
         if self.recipe.get("module"):
             lines += self.get_modules(self.recipe.get("module"))
@@ -683,6 +703,7 @@ class CompilerBuilder(BuilderBase):
         lines.append(" ".join(self.compile_cmd))
         # add run command
         lines.append(" ".join(self.run_cmd))
+
         return lines
 
     def detect_lang(self, sourcefile):
@@ -770,3 +791,4 @@ class CrayCompiler(CompilerBuilder):
     cc = "cc"
     cxx = "CC"
     fc = "ftn"
+
