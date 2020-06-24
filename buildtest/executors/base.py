@@ -5,6 +5,7 @@ import datetime
 import logging
 import os
 import re
+import shutil
 import sys
 import time
 
@@ -130,6 +131,15 @@ class BuildExecutor:
         """
         executor = self._choose_executor(builder)
 
+        if executor.type == "local":
+            executor.setup()
+            executor.run()
+        elif executor.type == "slurm":
+            executor.check()
+            executor.dispatch()
+            executor.gather()
+
+        """
         # Run each step defined for dry run
         for step in executor.steps:
             if getattr(executor, step, None):
@@ -137,6 +147,7 @@ class BuildExecutor:
                     "Running %s for executor %s" % (step, executor)
                 )
                 getattr(executor, step)()
+        """
         return executor.result
 
 
@@ -197,7 +208,7 @@ class BaseExecutor:
         self.result = self.builder.dry_run()
 
     def __str__(self):
-        return "[executor-%s-%s]" % (self.type, self.name)
+        return "%s.%s" % (self.type, self.name)
 
     def __repr__(self):
         return self.__str__()
@@ -397,7 +408,19 @@ class SlurmExecutor(BaseExecutor):
     type = "slurm"
     poll_interval = 10
     steps = ["setup", "check", "dispatch", "poll", "gather", "close"]
+    poll_cmd = "sacct"
     sacct_fields = ["Account","AllocNodes","AllocTRES","Constraints","ConsumedEnergyRaw","CPUTimeRaw","End","ExitCode","JobID","JobName","NCPUS","NNodes","QOS","Reason","ReqGRES","ReqMem","ReqNodes","ReqTRES","Start","State","Submit","UID","User","WorkDir"]
+
+    def check(self):
+        """Check slurm binary is available before running tests. This will check
+           the launcher (sbatch) and sacct are available
+        """
+
+        if not shutil.which(self.launcher):
+            sys.exit(f"[{self.builder.metadata['name']}]: Cannot find launcher program: {self.launcher}")
+
+        if not shutil.which(self.poll_cmd):
+            sys.exit(f"[{self.builder.metadata['name']}]: Cannot find slurm poll command: {self.poll_cmd}")
 
     def load(self, name):
         """Load the executor preferences from the provided config, which is
@@ -456,9 +479,9 @@ class SlurmExecutor(BaseExecutor):
             print (f"Polling Job {self.job_id} in  {self.poll_interval} seconds for test {self.builder.metadata['name']}")
             time.sleep(self.poll_interval)
             self.logger.debug(f"Query Job: {self.job_id}")
-            poll_cmd = f"sacct -j {self.job_id} -o State -n -X -P"
-            self.logger.debug(poll_cmd)
-            cmd = BuildTestCommand(poll_cmd)
+            slurm_query = f"{self.poll_cmd} -j {self.job_id} -o State -n -X -P"
+            self.logger.debug(slurm_query)
+            cmd = BuildTestCommand(slurm_query)
             cmd.execute()
             job_state = cmd.get_output()
             job_state = ''.join(job_state)
@@ -466,12 +489,11 @@ class SlurmExecutor(BaseExecutor):
             print (f"Job {self.job_id} in {job_state} state for test: {self.builder.metadata['name']}")
             if job_state not in ["PENDING", "RUNNING"]:
                 break
-        
 
     def gather(self):
         """Gather Slurm detail after job completion"""
 
-        gather_cmd = f"sacct -j {self.job_id} -X -n -P -o {','.join(self.sacct_fields)}"
+        gather_cmd = f"{self.poll_cmd} -j {self.job_id} -X -n -P -o {','.join(self.sacct_fields)}"
         cmd = BuildTestCommand(gather_cmd)
         cmd.execute()
         out = ''.join(cmd.get_output())
