@@ -104,22 +104,6 @@ class BuildExecutor:
         executor.builder = builder
         return executor
 
-    def dry_run(self, builder):
-        """A dry run typically includes all of the steps up to run
-
-           :param builder: the builder with the loaded Buildspec.
-           :type builder: buildtest.buildsystem.BuilderBase (or subclass).
-        """
-
-        # Choose the executor based on the builder provided
-        executor = self._choose_executor(builder)
-
-        # Run each step defined for dry run
-        for step in executor.dryrun_steps:
-            if getattr(executor, step, None):
-                getattr(executor, step)()
-        return executor.result
-
     def run(self, builder):
         """Given a buildtest.buildsystem.BuildspecParser (subclass) go through the
            steps defined for the executor to run the build. This should
@@ -137,6 +121,7 @@ class BuildExecutor:
         elif executor.type == "slurm":
             executor.check()
             executor.dispatch()
+            executor.poll()
             executor.gather()
 
         """
@@ -202,10 +187,6 @@ class BaseExecutor:
            we set the result to return.
         """
         pass
-
-    def dryrun(self):
-        """The dry run step defines the result based on a dry run."""
-        self.result = self.builder.dry_run()
 
     def __str__(self):
         return "%s.%s" % (self.type, self.name)
