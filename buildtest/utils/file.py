@@ -214,7 +214,7 @@ def write_file(filepath, content):
 
     # ensure content is of type string
     if not isinstance(content, str):
-        return None
+        return
 
     try:
         with open(filepath, "w") as fd:

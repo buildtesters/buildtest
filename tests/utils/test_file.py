@@ -122,15 +122,19 @@ def test_write_file_exceptions(tmp_path):
         print("Passing 'None' as input filestream to write_file")
         write_file(None, input)
 
+    assert is_dir(tmp_path)
     # testing if directory is passed as filepath, this is also not allowed and expected to raise error
     with pytest.raises(SystemExit):
-        print(f"Passing directory: {tmp_path} as input filestream to write_file")
+        print(f"Passing directory: {tmp_path} as input filestream to method write_file")
         write_file(tmp_path, input)
 
-    print("Writing to '/etc/shadow' will raise an exception BuildTestError")
-    # writing to /etc/shadow will raise an error during write since /etc/shadow will result in Permission Error
+    filename = "".join(random.choice(string.ascii_letters) for i in range(10))
+    path = os.path.join("/",filename)
+    print(f"Can't write to path: {path} due to permissions")
+
+
     with pytest.raises(BuildTestError):
-        write_file("/etc/shadow", input)
+        write_file(path, input)
 
     # input content must be a string, will return None upon
     assert not write_file(os.path.join(tmp_path, "null.txt"), ["hi"])
