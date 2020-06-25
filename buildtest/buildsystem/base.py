@@ -791,4 +791,3 @@ class CrayCompiler(CompilerBuilder):
     cc = "cc"
     cxx = "CC"
     fc = "ftn"
-
