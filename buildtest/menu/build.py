@@ -15,6 +15,7 @@ from buildtest.buildsystem.base import BuildspecParser
 from buildtest.config import load_settings, check_settings
 from buildtest.executors.base import BuildExecutor
 from buildtest.menu.repo import get_repo_paths
+from buildtest.menu.report import update_report
 from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir
 
 logger = logging.getLogger(__name__)
@@ -365,6 +366,8 @@ def func_build_subcmd(args, config_opts):
     print
     print
 
+    update_report(valid_builders)
+    """
     if not is_file(os.path.dirname(BUILD_REPORT)):
         create_dir(os.path.dirname(BUILD_REPORT))
 
@@ -404,3 +407,4 @@ def func_build_subcmd(args, config_opts):
 
     with open(BUILD_REPORT, "w") as fd:
         json.dump(report, fd, indent=2)
+    """

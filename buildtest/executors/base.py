@@ -457,7 +457,7 @@ class SlurmExecutor(BaseExecutor):
 
         while True:
             
-            print (f"Polling Job {self.job_id} in  {self.poll_interval} seconds for test {self.builder.metadata['name']}")
+            print (f"[{self.builder.metadata['name']}]: Polling Job {self.job_id} in  {self.poll_interval} seconds")
             time.sleep(self.poll_interval)
             self.logger.debug(f"Query Job: {self.job_id}")
             slurm_query = f"{self.poll_cmd} -j {self.job_id} -o State -n -X -P"
@@ -475,6 +475,7 @@ class SlurmExecutor(BaseExecutor):
         """Gather Slurm detail after job completion"""
 
         gather_cmd = f"{self.poll_cmd} -j {self.job_id} -X -n -P -o {','.join(self.sacct_fields)}"
+        self.logger.debug("Gather slurm job data by running:", gather_cmd)
         cmd = BuildTestCommand(gather_cmd)
         cmd.execute()
         out = ''.join(cmd.get_output())

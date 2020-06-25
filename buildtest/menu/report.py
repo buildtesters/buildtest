@@ -1,7 +1,8 @@
 import json
+import os
 import sys
 from buildtest.defaults import BUILD_REPORT
-from buildtest.utils.file import is_file
+from buildtest.utils.file import is_file, create_dir
 
 
 def func_report(args):
@@ -50,3 +51,44 @@ def func_report(args):
                         buildspec,
                     )
                 )
+
+def update_report(valid_builders):
+    if not is_file(os.path.dirname(BUILD_REPORT)):
+        create_dir(os.path.dirname(BUILD_REPORT))
+
+    try:
+        with open(BUILD_REPORT, "r") as fd:
+            report = json.loads(fd.read())
+    except OSError:
+        report = {}
+
+    for builder in valid_builders:
+        buildspec = builder.metadata["buildspec"]
+        name = builder.metadata["name"]
+        entry = {}
+
+        report[buildspec] = report.get(buildspec) or {}
+        report[buildspec][name] = report.get(buildspec, {}).get(name) or []
+
+        # query over attributes found in builder.metadata, we only assign
+        # keys that we care obout for reporting
+        for item in [
+            "build_id",
+            "testroot",
+            "testpath",
+            "command",
+            "outfile",
+            "errfile",
+            "schemafile",
+            "executor",
+        ]:
+            entry[item] = builder.metadata[item]
+
+        # query over result attributes, we only assign some keys of interest
+        for item in ["starttime", "endtime", "runtime", "state", "returncode"]:
+            entry[item] = builder.metadata["result"][item]
+
+        report[buildspec][name].append(entry)
+
+    with open(BUILD_REPORT, "w") as fd:
+        json.dump(report, fd, indent=2)
