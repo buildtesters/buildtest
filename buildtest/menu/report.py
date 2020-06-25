@@ -54,9 +54,19 @@ def func_report(args):
 
 
 def update_report(valid_builders):
+    """This method will update BUILD_REPORT after every test run performed
+       by ``buildtest build``. If BUILD_REPORT is not created, we will create
+       file and update json file by extracting contents from builder.metadata
+
+       Parameters
+
+       :param valid_builders: builder object that were successful during build and able to execute test
+    """
+
     if not is_file(os.path.dirname(BUILD_REPORT)):
         create_dir(os.path.dirname(BUILD_REPORT))
 
+    # if file exists, read json file otherwise set report to empty dict
     try:
         with open(BUILD_REPORT, "r") as fd:
             report = json.loads(fd.read())
