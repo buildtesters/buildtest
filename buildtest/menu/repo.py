@@ -12,7 +12,7 @@ import yaml
 
 from buildtest.config import get_default_settings
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, REPO_FILE
-from buildtest.utils.file import create_dir, is_file
+from buildtest.utils.file import create_dir, is_file, resolve_path
 
 logger = logging.getLogger(__name__)
 
@@ -36,13 +36,16 @@ def func_repo_add(args):
     config_opts = get_default_settings()
     repo_path = None
 
-    clone_prefix = config_opts.get("config", {}).get("paths", {}).get(
-        "clonepath"
-    ) or config_opts.get("config", {}).get("paths", {}).get("prefix")
-
     # if clonepath key is defined than override value generated from 'prefix'
+
+    clonepath = config_opts.get("config", {}).get("paths", {}).get("clonepath")
+    prefix = config_opts.get("config", {}).get("paths", {}).get("prefix")
+
+    clone_prefix = clonepath or prefix
+
     if clone_prefix:
-        repo_path = os.path.realpath(clone_prefix)
+        # resolve clone prefix, this accounts for shell expansion, directory expansion and gets realpath. We don't care if path exists to ensure we don't return None
+        repo_path = resolve_path(clone_prefix, exist=False)
 
     # it is possible prefix and clonepath are not defined, in that case we used default value
     repo_search_path = repo_path or BUILDSPEC_DEFAULT_PATH
