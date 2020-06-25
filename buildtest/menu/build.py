@@ -311,7 +311,7 @@ def func_build_subcmd(args, config_opts):
         try:
             result = executor.run(builder)
         except SystemExit as err:
-            print("[%s]: Failed to Run Test" % builder.metadata['name'])
+            print("[%s]: Failed to Run Test" % builder.metadata["name"])
             errmsg.append(err)
             logger.error(err)
             continue
@@ -334,7 +334,6 @@ def func_build_subcmd(args, config_opts):
         )
 
         total_tests += 1
-
 
     if errmsg:
         print("\n\n")

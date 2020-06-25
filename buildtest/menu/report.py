@@ -52,6 +52,7 @@ def func_report(args):
                     )
                 )
 
+
 def update_report(valid_builders):
     if not is_file(os.path.dirname(BUILD_REPORT)):
         create_dir(os.path.dirname(BUILD_REPORT))

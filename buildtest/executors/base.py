@@ -390,7 +390,32 @@ class SlurmExecutor(BaseExecutor):
     poll_interval = 10
     steps = ["setup", "check", "dispatch", "poll", "gather", "close"]
     poll_cmd = "sacct"
-    sacct_fields = ["Account","AllocNodes","AllocTRES","Constraints","ConsumedEnergyRaw","CPUTimeRaw","End","ExitCode","JobID","JobName","NCPUS","NNodes","QOS","Reason","ReqGRES","ReqMem","ReqNodes","ReqTRES","Start","State","Submit","UID","User","WorkDir"]
+    sacct_fields = [
+        "Account",
+        "AllocNodes",
+        "AllocTRES",
+        "Constraints",
+        "ConsumedEnergyRaw",
+        "CPUTimeRaw",
+        "End",
+        "ExitCode",
+        "JobID",
+        "JobName",
+        "NCPUS",
+        "NNodes",
+        "QOS",
+        "Reason",
+        "ReqGRES",
+        "ReqMem",
+        "ReqNodes",
+        "ReqTRES",
+        "Start",
+        "State",
+        "Submit",
+        "UID",
+        "User",
+        "WorkDir",
+    ]
 
     def check(self):
         """Check slurm binary is available before running tests. This will check
@@ -398,10 +423,14 @@ class SlurmExecutor(BaseExecutor):
         """
 
         if not shutil.which(self.launcher):
-            sys.exit(f"[{self.builder.metadata['name']}]: Cannot find launcher program: {self.launcher}")
+            sys.exit(
+                f"[{self.builder.metadata['name']}]: Cannot find launcher program: {self.launcher}"
+            )
 
         if not shutil.which(self.poll_cmd):
-            sys.exit(f"[{self.builder.metadata['name']}]: Cannot find slurm poll command: {self.poll_cmd}")
+            sys.exit(
+                f"[{self.builder.metadata['name']}]: Cannot find slurm poll command: {self.poll_cmd}"
+            )
 
     def load(self, name):
         """Load the executor preferences from the provided config, which is
@@ -442,7 +471,7 @@ class SlurmExecutor(BaseExecutor):
 
         command = BuildTestCommand(self.builder.metadata["command"])
         out, err = command.execute()
-        self.job_id = int(re.search(r"\d+$",''.join(out)).group())
+        self.job_id = int(re.search(r"\d+$", "".join(out)).group())
 
         self.result["runtime"] = "0"
         self.write_testresults(command, out, err)
@@ -456,8 +485,10 @@ class SlurmExecutor(BaseExecutor):
         """
 
         while True:
-            
-            print (f"[{self.builder.metadata['name']}]: Polling Job {self.job_id} in  {self.poll_interval} seconds")
+
+            print(
+                f"[{self.builder.metadata['name']}]: Polling Job {self.job_id} in  {self.poll_interval} seconds"
+            )
             time.sleep(self.poll_interval)
             self.logger.debug(f"Query Job: {self.job_id}")
             slurm_query = f"{self.poll_cmd} -j {self.job_id} -o State -n -X -P"
@@ -465,9 +496,11 @@ class SlurmExecutor(BaseExecutor):
             cmd = BuildTestCommand(slurm_query)
             cmd.execute()
             job_state = cmd.get_output()
-            job_state = ''.join(job_state)
+            job_state = "".join(job_state)
 
-            print (f"Job {self.job_id} in {job_state} state for test: {self.builder.metadata['name']}")
+            print(
+                f"Job {self.job_id} in {job_state} state for test: {self.builder.metadata['name']}"
+            )
             if job_state not in ["PENDING", "RUNNING"]:
                 break
 
@@ -475,18 +508,18 @@ class SlurmExecutor(BaseExecutor):
         """Gather Slurm detail after job completion"""
 
         gather_cmd = f"{self.poll_cmd} -j {self.job_id} -X -n -P -o {','.join(self.sacct_fields)}"
-        self.logger.debug("Gather slurm job data by running:", gather_cmd)
+        self.logger.debug(f"Gather slurm job data by running: {gather_cmd}")
         cmd = BuildTestCommand(gather_cmd)
         cmd.execute()
-        out = ''.join(cmd.get_output())
+        out = "".join(cmd.get_output())
         # split by | since
         out = out.split("|")
         job_data = {}
-        
-        for field,value in zip(self.sacct_fields, out):
+
+        for field, value in zip(self.sacct_fields, out):
             job_data[field] = value
-        
-        self.builder.metadata['job'] = job_data
+
+        self.builder.metadata["job"] = job_data
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only
         # about first number
         self.result["returncode"] = job_data["ExitCode"].split(":")[0]
