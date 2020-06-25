@@ -4,19 +4,18 @@ for building test scripts from a Buildspec
 """
 
 import logging
-import json
 import os
 import re
 import sys
 from jsonschema.exceptions import ValidationError
-from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, BUILD_REPORT
+from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
 
 from buildtest.buildsystem.base import BuildspecParser
 from buildtest.config import load_settings, check_settings
 from buildtest.executors.base import BuildExecutor
 from buildtest.menu.repo import get_repo_paths
 from buildtest.menu.report import update_report
-from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir
+from buildtest.utils.file import walk_tree, resolve_path
 
 logger = logging.getLogger(__name__)
 
@@ -362,48 +361,6 @@ def func_build_subcmd(args, config_opts):
     print(f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%")
 
     print(f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%")
-    print
-    print
+    print("\n\n")
 
     update_report(valid_builders)
-    """
-    if not is_file(os.path.dirname(BUILD_REPORT)):
-        create_dir(os.path.dirname(BUILD_REPORT))
-
-    try:
-        with open(BUILD_REPORT, "r") as fd:
-            report = json.loads(fd.read())
-    except OSError:
-        report = {}
-
-    for builder in valid_builders:
-        buildspec = builder.metadata["buildspec"]
-        name = builder.metadata["name"]
-        entry = {}
-
-        report[buildspec] = report.get(buildspec) or {}
-        report[buildspec][name] = report.get(buildspec, {}).get(name) or []
-
-        # query over attributes found in builder.metadata, we only assign
-        # keys that we care obout for reporting
-        for item in [
-            "build_id",
-            "testroot",
-            "testpath",
-            "command",
-            "outfile",
-            "errfile",
-            "schemafile",
-            "executor",
-        ]:
-            entry[item] = builder.metadata[item]
-
-        # query over result attributes, we only assign some keys of interest
-        for item in ["starttime", "endtime", "runtime", "state", "returncode"]:
-            entry[item] = builder.metadata["result"][item]
-
-        report[buildspec][name].append(entry)
-
-    with open(BUILD_REPORT, "w") as fd:
-        json.dump(report, fd, indent=2)
-    """
