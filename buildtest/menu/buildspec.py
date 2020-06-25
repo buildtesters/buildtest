@@ -27,6 +27,13 @@ def func_buildspec_find(args):
     """
 
     cache = {}
+    # implements buildtest buildspec find --clear which removes cache file before finding all buildspecs
+    if args.clear:
+        try:
+            os.remove(BUILDSPEC_CACHE_FILE)
+            print(f"Clearing cache file: {BUILDSPEC_CACHE_FILE}")
+        except OSError:
+            pass
 
     if is_file(BUILDSPEC_CACHE_FILE):
         with open(BUILDSPEC_CACHE_FILE, "r") as fd:

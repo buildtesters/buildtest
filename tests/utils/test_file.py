@@ -1,6 +1,8 @@
 import pytest
 import os
+import random
 import shutil
+import string
 import uuid
 from buildtest.utils.file import (
     is_dir,
@@ -9,6 +11,7 @@ from buildtest.utils.file import (
     walk_tree,
     read_file,
     write_file,
+    resolve_path,
 )
 from buildtest.exceptions import BuildTestError
 
@@ -153,3 +156,18 @@ def test_read_file(tmp_path):
     # reading /etc/shadow will raise a Permission error so we catch this exception BuildTestError
     with pytest.raises(BuildTestError):
         read_file("/etc/shadow")
+
+
+def test_resolve_path():
+    assert resolve_path("$HOME")
+    assert resolve_path("~")
+
+    random_name = "".join(random.choice(string.ascii_letters) for i in range(10))
+    # test a directory path that doesn't exist in $HOME with random key, but setting exist=False will return
+    # path but doesn't mean file exists
+    path = resolve_path(os.path.join("$HOME", random_name), exist=False)
+
+    # checking if path is not file, or directory and not None. This is only valid when exist=False is set
+    assert not is_file(path)
+    assert not is_dir(path)
+    assert path is not None

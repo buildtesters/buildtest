@@ -298,6 +298,12 @@ class BuildTestParser:
         buildspec_find = subparsers_buildspec.add_parser(
             "find", help="find all buildspecs"
         )
+        buildspec_find.add_argument(
+            "-c",
+            "--clear",
+            help="Clear buildspec cache and find all buildspecs again",
+            action="store_true",
+        )
         buildspec_view = subparsers_buildspec.add_parser(
             "view", help="view a buildspec"
         )

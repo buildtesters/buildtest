@@ -30,6 +30,7 @@ def test_repofile_not_found():
 
     class args:
         find = True
+        clear = False
 
     with pytest.raises(SystemExit):
         func_buildspec_find(args)
@@ -42,7 +43,9 @@ def test_func_buildspec_find():
 
     func_repo_add(args)
 
+    # testing buildtest buildspec find --clear
     class args:
         find = True
+        clear = True
 
     func_buildspec_find(args)

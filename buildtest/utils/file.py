@@ -118,7 +118,7 @@ def create_dir(dirname):
             raise
 
 
-def resolve_path(path):
+def resolve_path(path, exist=True):
     """This method will resolve a file path to account for shell expansion and resolve paths in
        when a symlink is provided in the file. This method assumes file already exists.
 
@@ -138,6 +138,9 @@ def resolve_path(path):
     real_path = os.path.realpath(path)
 
     if os.path.exists(real_path):
+        return real_path
+
+    if not exist:
         return real_path
 
 
