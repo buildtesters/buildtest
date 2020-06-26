@@ -20,6 +20,9 @@
     "env": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
     },
+    "vars": {
+      "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
+    },
     "executor": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/executor"
     },
