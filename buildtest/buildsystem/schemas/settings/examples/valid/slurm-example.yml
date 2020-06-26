@@ -3,6 +3,7 @@ executors:
     haswell:
       options: ["-C haswell"]
       launcher: sbatch
+      pollinterval: 20
       modules:
         purge: True
         load: [PrgEnv-intel]

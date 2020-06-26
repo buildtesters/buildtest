@@ -387,7 +387,7 @@ class SlurmExecutor(BaseExecutor):
     """
 
     type = "slurm"
-    poll_interval = 10
+    DEFAULT_POLL_INTERVAL = 30
     steps = ["setup", "check", "dispatch", "poll", "gather", "close"]
     poll_cmd = "sacct"
     sacct_fields = [
@@ -443,6 +443,7 @@ class SlurmExecutor(BaseExecutor):
 
         self.launcher = self._settings.get("launcher")
         self.launcher_opts = self._settings.get("options")
+        self.poll_interval = self._settings.get("pollinterval") or self.DEFAULT_POLL_INTERVAL
 
     def dispatch(self):
         """This method is responsible for dispatching job to slurm scheduler."""
