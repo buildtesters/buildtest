@@ -367,7 +367,7 @@ class LocalExecutor(BaseExecutor):
         self.builder.metadata["endtime"] = datetime.datetime.now()
         self.result["endtime"] = self.get_formatted_time("endtime")
 
-        self.write_testresults(command, out, err)
+        self.write_testresults(out, err)
 
         self.logger.debug(
             f"Return code: {command.returncode} for test: {self.builder.metadata['testpath']}"
