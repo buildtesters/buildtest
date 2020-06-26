@@ -239,10 +239,15 @@ class BaseExecutor:
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
         return re.search(regex["exp"], content) != None
 
-    def write_testresults(self, command, out, err):
+    def write_testresults(self, out, err):
+        """This method writes test results into output and error file.
 
-        self.builder.metadata["endtime"] = datetime.datetime.now()
-        self.result["endtime"] = self.get_formatted_time("endtime")
+           Parameters
+           :param out: content of output stream
+           :type out: list
+           :param err: content of error stream
+           :type err: list
+        """
 
         # Keep an output file
         run_output_file = os.path.join(
@@ -252,9 +257,8 @@ class BaseExecutor:
         errfile = run_output_file + ".err"
 
         # write output of test to .out file
-
-        out = "\n".join(out)
-        err = "\n".join(err)
+        out = "".join(out)
+        err = "".join(err)
 
         self.logger.debug(f"Writing run output to file: {outfile}")
         write_file(outfile, out)
@@ -265,11 +269,6 @@ class BaseExecutor:
 
         self.builder.metadata["outfile"] = outfile
         self.builder.metadata["errfile"] = errfile
-
-        self.logger.debug(
-            f"Return code: {command.returncode} for test: {self.builder.metadata['testpath']}"
-        )
-        self.result["returncode"] = command.returncode
 
     def check_test_state(self):
         """This method is responsible for detecting state of test (PASS/FAIL)
@@ -365,7 +364,16 @@ class LocalExecutor(BaseExecutor):
         out, err = command.execute()
         self.result["runtime"] = t.stop()
 
+        self.builder.metadata["endtime"] = datetime.datetime.now()
+        self.result["endtime"] = self.get_formatted_time("endtime")
+
         self.write_testresults(command, out, err)
+
+        self.logger.debug(
+            f"Return code: {command.returncode} for test: {self.builder.metadata['testpath']}"
+        )
+        self.result["returncode"] = command.returncode
+
         self.check_test_state()
 
 
@@ -443,7 +451,9 @@ class SlurmExecutor(BaseExecutor):
 
         self.launcher = self._settings.get("launcher")
         self.launcher_opts = self._settings.get("options")
-        self.poll_interval = self._settings.get("pollinterval") or self.DEFAULT_POLL_INTERVAL
+        self.poll_interval = (
+            self._settings.get("pollinterval") or self.DEFAULT_POLL_INTERVAL
+        )
 
     def dispatch(self):
         """This method is responsible for dispatching job to slurm scheduler."""

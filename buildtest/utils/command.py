@@ -133,7 +133,6 @@ class BuildTestCommand:
         # Get the remainder of lines, add return code
         self.out += ["%s\n" % x for x in self.decode(capture.out).split("\n") if x]
         self.err += ["%s\n" % x for x in self.decode(capture.err).split("\n") if x]
-
         # Cleanup capture files and save final return code
         capture.cleanup()
         self.returncode = returncode
