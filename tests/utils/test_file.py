@@ -129,9 +129,8 @@ def test_write_file_exceptions(tmp_path):
         write_file(tmp_path, input)
 
     filename = "".join(random.choice(string.ascii_letters) for i in range(10))
-    path = os.path.join("/",filename)
+    path = os.path.join("/", filename)
     print(f"Can't write to path: {path} due to permissions")
-
 
     with pytest.raises(BuildTestError):
         write_file(path, input)

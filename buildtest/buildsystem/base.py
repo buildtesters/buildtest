@@ -362,9 +362,8 @@ class BuilderBase:
         return "sh"
 
     def get_environment(self):
-        """Take the environment section, return a list of lines to add
-           to the start of the testscript. Return lines that define
-           variables specific to the shell.
+        """Retrieve a list of environment variables defined in buildspec and
+           return them as list with the shell equivalent command
 
            :return: list of environment variable lines to add to test script.
            :rtype: list
@@ -372,6 +371,32 @@ class BuilderBase:
 
         env = []
         pairs = self.recipe.get("env", [])
+        shell = self.shell.name
+
+        # Parse environment depending on expected shell
+        if pairs:
+
+            # Handles bash and sh
+            if re.search("(bash|sh)$", shell):
+                [env.append("export %s=%s" % (k, v)) for k, v in pairs.items()]
+
+            else:
+                self.logger.warning(
+                    f"{shell} is not supported, skipping environment variables."
+                )
+
+        return env
+
+    def get_variables(self):
+        """Retrieve a list of  variables defined in buildspec and
+           return them as list with the shell equivalent command.
+
+           :return: list of variables variable lines to add to test script.
+           :rtype: list
+        """
+
+        env = []
+        pairs = self.recipe.get("vars", [])
         shell = self.shell.name
 
         # Parse environment depending on expected shell
@@ -492,6 +517,10 @@ class ScriptBuilder(BuilderBase):
 
         # Add environment variables
         lines += self.get_environment()
+
+        # Add variables
+        lines += self.get_variables()
+
         # Add run section
         lines += [self.recipe.get("run")]
 
@@ -691,9 +720,12 @@ class CompilerBuilder(BuilderBase):
         # every test starts with shebang line
         lines = [self.shebang]
 
-        sbatch_cmds = self.get_sbatch()
-        if not sbatch_cmds:
-            lines += sbatch_cmds
+        # get sbatch commmands
+        lines += self.get_sbatch()
+        # get environment variables
+        lines += self.get_environment()
+        # get variables
+        lines += self.get_variables()
 
         # if 'module' defined in Buildspec add modules to test
         if self.recipe.get("module"):
