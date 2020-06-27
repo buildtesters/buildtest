@@ -1,4 +1,5 @@
-# Shell would be accepted to indicate a single line shell command (or similar)
-login_node_check:
-  type: script
-  run: "ping login 1"
+buildspecs:
+  # Shell would be accepted to indicate a single line shell command (or similar)
+  login_node_check:
+    type: script
+    run: "ping login 1"

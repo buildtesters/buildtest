@@ -1,32 +1,31 @@
 version: "1.0"
-# regex pattern: "^[A-Za-z_.][A-Za-z0-9_]*$"
+buildspecs:
+  # testing all caps
+  ABCDEFGHIJKLMNOPQRSTUVWXYZ:
+    type: script
+    executor: local.bash
+    run: "hostname"
 
-# testing all caps
-ABCDEFGHIJKLMNOPQRSTUVWXYZ:
-  type: script
-  executor: local.bash
-  run: "hostname"
+  # testing all lowercase letters
+  abcdefghijklmnopqrstuvwxyz:
+    type: script
+    executor: local.bash
+    run: "hostname"
 
-# testing all lowercase letters
-abcdefghijklmnopqrstuvwxyz:
-  type: script
-  executor: local.bash
-  run: "hostname"
+  # testing both caps and lowercase and numbers
+  ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:
+    type: script
+    executor: local.bash
+    run: "hostname"
 
-# testing both caps and lowercase and numbers
-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:
-  type: script
-  executor: local.bash
-  run: "hostname"
+  # testing '_' followed by all caps, lowercase and numbers
+  _ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:
+    type: script
+    executor: local.bash
+    run: "hostname"
 
-# testing '_' followed by all caps, lowercase and numbers
-_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:
-  type: script
-  executor: local.bash
-  run: "hostname"
-
-# testing '_' in middle and end of word
-ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz_0123456789_:
-  type: script
-  executor: local.bash
-  run: "hostname"
+  # testing '_' in middle and end of word
+  ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz_0123456789_:
+    type: script
+    executor: local.bash
+    run: "hostname"

@@ -1,72 +1,99 @@
 version: "1.0"
+buildspecs:
+  invalid_test_name_&!@#$%:
+    type: script
+    executor: local.bash
+    description: "invalid test name"
 
-invalid_test_name_&!@#$%:
-  type: script
-  description: "invalid test name"
+  invalid_bash:
+    type: script
+    executor: local.bash
+    shell: "bash-missing-run"
 
-invalid_bash:
-  type: script
-  shell: "bash-missing-run"
+  missing_run_key:
+    type: script
+    executor: local.bash
+    description: invalid key name roon, missing run key
+    roon: |
+        systemctl is-active slurmd
+        systemctl is-enabled slurmd | grep enabled
 
-missing_run_key:
-  type: script
-  description: invalid key name roon, missing run key
-  roon: |
-      systemctl is-active slurmd
-      systemctl is-enabled slurmd | grep enabled
+  invalid_env_type:
+    type: script
+    executor: local.bash
+    description: env key should be a dictionary
+    env:
+      - FOO=BAR
+    run: echo $FOO
 
-invalid_env_type:
-  type: script
-  description: env key should be a dictionary
-  env:
-    - FOO=BAR
-  run: echo $FOO
+  invalid_vars_type:
+    type: script
+    executor: local.bash
+    description: var key should be a dictionary
+    vars:
+      - FOO=BAR
+    run: echo $FOO
 
-invalid_description:
-  type: script
-  description:
-    - "Multi Line description"
-    - "is not accepted"
 
-invalid_regex_stream:
-  type: script
-  description: This test fails because of invalid regex stream
-  run: hostname
-  status:
-    regex:
-      stream: file
-      exp: "world$"
+  invalid_description:
+    type: script
+    executor: local.bash
+    description:
+      - "Multi Line description"
+      - "is not accepted"
 
-missing_regex_exp:
-  type: script
-  description: This test fails because of missing key 'exp' in regex
-  run: hostname
-  status:
-    regex:
-      stream: stdout
+  invalid_regex_stream:
+    type: script
+    executor: local.bash
+    description: This test fails because of invalid regex stream
+    run: hostname
+    status:
+      regex:
+        stream: file
+        exp: "world$"
 
-invalid_returncode_type:
-  type: script
-  description: This test fails because of invalid return code type
-  run: hostname
-  status:
-    returncode: ["1"]
+  missing_regex_exp:
+    type: script
+    executor: local.bash
+    description: This test fails because of missing key 'exp' in regex
+    run: hostname
+    status:
+      regex:
+        stream: stdout
 
-invalid_shell_usr_bin_bash:
-  type: script
-  description: invalid shell name, since we only support 'sh', 'bash', 'python' '/bin/bash' /bin/sh
-  shell: /usr/bin/bash
-  run: hostname
+  invalid_returncode_type:
+    type: script
+    executor: local.bash
+    description: This test fails because of invalid return code type
+    run: hostname
+    status:
+      returncode: ["1"]
 
-invalid_shell_type:
-  type: script
-  description: invalid shell type must be a string
-  shell: ["/bin/bash"]
-  run: hostname
+  invalid_shell_usr_bin_bash:
+    type: script
+    executor: local.bash
+    description: invalid shell name, since we only support 'sh', 'bash', 'python' '/bin/bash' /bin/sh
+    shell: /usr/bin/bash
+    run: hostname
 
-invalid_type_shell_shebang:
-  type: script
-  description: invalid type for shell shebang, must be a string
-  shell:
-    shebang: ["#!/bin/bash"]
-  run: hostname
+  invalid_shell_type:
+    type: script
+    executor: local.bash
+    description: invalid shell type must be a string
+    shell: ["/bin/bash"]
+    run: hostname
+
+  invalid_type_shell_shebang:
+    type: script
+    executor: local.bash
+    description: invalid type for shell shebang, must be a string
+    shell:
+      shebang: ["#!/bin/bash"]
+    run: hostname
+
+  additionalProperties_test:
+    type: script
+    executor: local.bash
+    description: additional properties are not allowed so any invalid key/value pair will result in error
+    FOO: BAR
+    run: hostname

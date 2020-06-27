@@ -374,6 +374,7 @@ class LocalExecutor(BaseExecutor):
         )
         self.result["returncode"] = command.returncode
 
+        self.write_testresults(out, err)
         self.check_test_state()
 
 
@@ -485,8 +486,7 @@ class SlurmExecutor(BaseExecutor):
         self.job_id = int(re.search(r"\d+$", "".join(out)).group())
 
         self.result["runtime"] = "0"
-        self.write_testresults(command, out, err)
-        self.check_test_state()
+        self.write_testresults(out, err)
 
     def poll(self):
         """ This method will poll for job each interval specified by time interval
@@ -534,3 +534,5 @@ class SlurmExecutor(BaseExecutor):
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only
         # about first number
         self.result["returncode"] = job_data["ExitCode"].split(":")[0]
+
+        self.check_test_state()

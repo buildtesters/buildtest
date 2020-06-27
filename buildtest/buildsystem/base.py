@@ -122,18 +122,18 @@ class BuildspecParser:
 
         self.schema_version = self.recipe.get("version", "latest")
 
-        for name in self.recipe.keys():
+        for name in self.recipe["buildspecs"].keys():
 
             if name in self.metadata:
                 continue
 
             # the buildspec section must be an dict where test is defined. If
             # it's not a dict then we should raise an error.
-            if not isinstance(self.recipe[name], dict):
+            if not isinstance(self.recipe["buildspecs"][name], dict):
                 sys.exit(f"Section: {self.recipe[name]} must be a dictionary")
 
             # extract type field from test, if not found set to None
-            type = self.recipe.get(name).get("type") or None
+            type = self.recipe.get("buildspecs").get(name).get("type") or None
 
             # if type not found in section, raise an error since we every test
             # must be associated to a schema which is controlled by 'type' key
@@ -156,7 +156,10 @@ class BuildspecParser:
                 here, type, self.schema_table[type][self.schema_version]
             )
 
-            validate(instance=self.recipe[name], schema=load_schema(self.schema_file))
+            validate(
+                instance=self.recipe["buildspecs"][name],
+                schema=load_schema(self.schema_file),
+            )
 
     # Builders
 
@@ -174,7 +177,7 @@ class BuildspecParser:
         builders = []
         if self.recipe:
             for name in self.keys():
-                recipe = self.recipe[name]
+                recipe = self.recipe["buildspecs"][name]
                 # Add the builder based on the type
                 if recipe["type"] == "script":
                     builders.append(
@@ -243,7 +246,7 @@ class BuildspecParser:
 
         keys = []
         if self.recipe:
-            keys = [x for x in self.recipe.keys() if x not in self.metadata]
+            keys = [x for x in self.recipe["buildspecs"].keys()]
         return keys
 
     def get(self, name):
