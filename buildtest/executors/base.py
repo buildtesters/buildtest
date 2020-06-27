@@ -488,7 +488,6 @@ class SlurmExecutor(BaseExecutor):
         self.result["runtime"] = "0"
         self.write_testresults(out, err)
 
-
     def poll(self):
         """ This method will poll for job each interval specified by time interval
             until job finishes. We use `sacct` to poll for job id and sleep for given
