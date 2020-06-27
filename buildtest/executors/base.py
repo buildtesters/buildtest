@@ -374,6 +374,7 @@ class LocalExecutor(BaseExecutor):
         )
         self.result["returncode"] = command.returncode
 
+        self.write_testresults(out, err)
         self.check_test_state()
 
 
@@ -485,7 +486,7 @@ class SlurmExecutor(BaseExecutor):
         self.job_id = int(re.search(r"\d+$", "".join(out)).group())
 
         self.result["runtime"] = "0"
-        self.write_testresults(command, out, err)
+        self.write_testresults(out, err)
         self.check_test_state()
 
     def poll(self):
