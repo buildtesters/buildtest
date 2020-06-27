@@ -4,9 +4,6 @@
   "title": "BuildTest Test Configuration for Script",
   "type": "object",
   "required": ["type", "run", "executor"],
-  "propertyNames": {
-    "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
-  },
   "additionalProperties": false,
   "properties": {
     "type": {
@@ -17,6 +14,9 @@
       "type": "string",
       "description": "A description for the build recipe."
     },
+    "sbatch": {
+      "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/sbatch"
+    },
     "env": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
     },
@@ -25,9 +25,6 @@
     },
     "executor": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/executor"
-    },
-    "sbatch": {
-      "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/sbatch"
     },
     "shell": {
       "type": "string",
