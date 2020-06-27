@@ -487,7 +487,7 @@ class SlurmExecutor(BaseExecutor):
 
         self.result["runtime"] = "0"
         self.write_testresults(out, err)
-        self.check_test_state()
+
 
     def poll(self):
         """ This method will poll for job each interval specified by time interval
@@ -535,3 +535,5 @@ class SlurmExecutor(BaseExecutor):
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only
         # about first number
         self.result["returncode"] = job_data["ExitCode"].split(":")[0]
+
+        self.check_test_state()
