@@ -694,18 +694,18 @@ class CompilerBuilder(BuilderBase):
         self.compiler_recipe = self.recipe.get("compiler")
         self.sourcefile = self.resolve_source(self.compiler_recipe["source"])
 
+        self.cflags = self.compiler_recipe.get("cflags")
+        self.fflags = self.compiler_recipe.get("fflags")
+        self.cxxflags = self.compiler_recipe.get("cxxflags")
+        self.ldflags = self.compiler_recipe.get("ldflags")
+        self.cppflags = self.compiler_recipe.get("cppflags")
+
         # set executable name and assign to self.executable
         self.executable = self.set_executable_name()
         self.lang = self.detect_lang(self.sourcefile)
         self.compile_cmd = self.generate_compile_cmd()
 
         self.run_cmd = self.build_run_cmd(self.compiler_recipe.get("exec_args"))
-
-        self.cflags = self.compiler_recipe.get("cflags")
-        self.fflags = self.compiler_recipe.get("fflags")
-        self.cxxflags = self.compiler_recipe.get("cxxflags")
-        self.ldflags = self.compiler_recipe.get("ldflags")
-        self.cppflags = self.compiler_recipe.get("cppflags")
 
     def _build_testcontent(self):
         """This method will build the test content from a Buildspec that uses compiler schema. We need a 'compiler'
@@ -760,7 +760,6 @@ class CompilerBuilder(BuilderBase):
            on the the language detected that is stored in variable ``self.lang``.
         """
         cmd = []
-
         # Generate C compilation line
         if self.lang == "C":
             cmd = [
