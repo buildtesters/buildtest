@@ -163,7 +163,7 @@ for every Buildspec you want to build. For example let's build the following
 
 buildtest can automatically detect Buildspecs based on filepath and directory so
 if you know location to where Buildspecs are located you can specify a directory.
-For instance, we can build all Buildspecs in a directory ``system`` as follows
+For instance, we can build all Buildspecs in a directory ``examples/openacc`` as follows
 
 .. program-output:: cat docgen/getting_started/buildspec-directory.txt
 

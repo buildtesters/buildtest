@@ -9,9 +9,6 @@ $ buildtest schema -n compiler-v1.0.schema.json -j
      "compiler",
      "executor"
    ],
-   "propertyNames": {
-     "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
-   },
    "additionalProperties": false,
    "properties": {
      "type": {
@@ -30,7 +27,13 @@ $ buildtest schema -n compiler-v1.0.schema.json -j
      "executor": {
        "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/executor"
      },
+     "sbatch": {
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/sbatch"
+     },
      "env": {
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
+     },
+     "vars": {
        "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
      },
      "status": {

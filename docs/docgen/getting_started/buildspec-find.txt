@@ -1,14 +1,23 @@
 $ buildtest buildspec find 
-Name                      Type                      Buildspec                
+Detected 1 invalid buildspecs
+ Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/buildspec.error 
+ Name                      Type                      Buildspec                
  ________________________________________________________________________________
  systemd_default_target    script                    /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
  root_disk_usage           script                    /private/tmp/github.com/buildtesters/tutorials/examples/disk_usage.yml
+ environment_variables     script                    /private/tmp/github.com/buildtesters/tutorials/examples/environment.yml
+ variables                 script                    /private/tmp/github.com/buildtesters/tutorials/examples/vars.yml
  selinux_disable           script                    /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
+ wrongexecutor             script                    /private/tmp/github.com/buildtesters/tutorials/examples/invalid_executor.yml
+ circle_area               script                    /private/tmp/github.com/buildtesters/tutorials/examples/python-shell.yml
  ulimit_filelock           script                    /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
  ulimit_cputime            script                    /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
  ulimit_stacksize          script                    /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
  vecadd_gnu                compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/openacc/vecadd.yml
- hello_f                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml
- hello_c                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml
- hello_cplusplus           compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml
- passing_args              compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml
+ hello_f                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/intel_hello.yml
+ hello_c                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/intel_hello.yml
+ hello_cplusplus           compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/intel_hello.yml
+ hello_f                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+ hello_c                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+ hello_cplusplus           compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+ passing_args              compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml

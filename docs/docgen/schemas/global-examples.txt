@@ -3,41 +3,42 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/e
  Valid State: True
  ________________________________________________________________________________
  version: "1.0"
- # regex pattern: "^[A-Za-z_.][A-Za-z0-9_]*$"
- # testing all caps
- ABCDEFGHIJKLMNOPQRSTUVWXYZ:
-   type: script
-   executor: local.bash
-   run: "hostname"
- # testing all lowercase letters
- abcdefghijklmnopqrstuvwxyz:
-   type: script
-   executor: local.bash
-   run: "hostname"
- # testing both caps and lowercase and numbers
- ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:
-   type: script
-   executor: local.bash
-   run: "hostname"
- # testing '_' followed by all caps, lowercase and numbers
- _ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:
-   type: script
-   executor: local.bash
-   run: "hostname"
- # testing '_' in middle and end of word
- ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz_0123456789_:
-   type: script
-   executor: local.bash
-   run: "hostname"
+ buildspecs:
+   # testing all caps
+   ABCDEFGHIJKLMNOPQRSTUVWXYZ:
+     type: script
+     executor: local.bash
+     run: "hostname"
+   # testing all lowercase letters
+   abcdefghijklmnopqrstuvwxyz:
+     type: script
+     executor: local.bash
+     run: "hostname"
+   # testing both caps and lowercase and numbers
+   ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:
+     type: script
+     executor: local.bash
+     run: "hostname"
+   # testing '_' followed by all caps, lowercase and numbers
+   _ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:
+     type: script
+     executor: local.bash
+     run: "hostname"
+   # testing '_' in middle and end of word
+   ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz_0123456789_:
+     type: script
+     executor: local.bash
+     run: "hostname"
  File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/examples/invalid/maintainers_type_mismatch.yml
  Valid State: FAIL
  ________________________________________________________________________________
  version: "1.0"
- hostname:
-   type: script
-   run: "hostname"
  # wrong type for maintainers key, expects a string
  maintainers: 1
+ buildspecs:
+   hostname:
+     type: script
+     run: "hostname"
  ________________________________________ Validation Error ________________________________________
  1 is not of type 'array'
  Failed validating 'type' in schema['properties']['maintainers']:
@@ -51,28 +52,31 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/e
  Valid State: FAIL
  ________________________________________________________________________________
  version: "1.0"
- # invalid pattern for test. Must be matching regex "^[A-Za-z_.][A-Za-z0-9_]*$" when declaring a dict
- (badname:
-   type: script
-   run: "ping login 1"
+ buildspecs:
+   # invalid pattern for test. Must be matching regex "^[A-Za-z_.][A-Za-z0-9_]*$" when declaring a dict
+   (badname:
+     type: script
+     run: "ping login 1"
  ________________________________________ Validation Error ________________________________________
  '(badname' does not match '^[A-Za-z_][A-Za-z0-9_]*$'
- Failed validating 'pattern' in schema['propertyNames']:
+ Failed validating 'pattern' in schema['properties']['buildspecs']['propertyNames']:
      {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'}
- On instance:
+ On instance['buildspecs']:
      '(badname'
  File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/examples/invalid/missing-version.yml
  Valid State: FAIL
  ________________________________________________________________________________
- # Shell would be accepted to indicate a single line shell command (or similar)
- login_node_check:
-   type: script
-   run: "ping login 1"
+ buildspecs:
+   # Shell would be accepted to indicate a single line shell command (or similar)
+   login_node_check:
+     type: script
+     run: "ping login 1"
  ________________________________________ Validation Error ________________________________________
  'version' is a required property
  Failed validating 'required' in schema:
      {'$id': 'https://buildtesters.github.io/schemas/global/global.schema.json',
       '$schema': 'http://json-schema.org/draft-07/schema#',
+      'additionalProperties': False,
       'definitions': {'env': {'description': 'One or more key value pairs '
                                              'for an environment '
                                              '(key=value)',
@@ -82,6 +86,8 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/e
                               'minItems': 1,
                               'type': 'object'},
                       'executor': {'type': 'string'},
+                      'sbatch': {'items': {'type': 'string'},
+                                 'type': 'array'},
                       'status': {'properties': {'regex': {'properties': {'exp': {'type': 'string'},
                                                                          'stream': {'enum': ['stdout',
                                                                                              'stderr'],
@@ -91,9 +97,9 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/e
                                                           'type': 'object'},
                                                 'returncode': {'type': 'integer'}},
                                  'type': 'object'}},
-      'patternProperties': {'^[A-Za-z_.][A-Za-z0-9_]*$': {'type': ['object',
-                                                                   'string']}},
-      'properties': {'maintainers': {'description': 'One or more '
+      'properties': {'buildspecs': {'propertyNames': {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'},
+                                    'type': 'object'},
+                     'maintainers': {'description': 'One or more '
                                                     'maintainers or aliases',
                                      'items': {'type': 'string'},
                                      'minItems': 1,
@@ -101,9 +107,9 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/e
                      'version': {'description': 'The semver version of the '
                                                 'schema to use (x.x).',
                                  'type': 'string'}},
-      'propertyNames': {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'},
-      'required': ['version'],
+      'required': ['version', 'buildspecs'],
       'title': 'buildtest Global Schema',
       'type': 'object'}
  On instance:
-     {'login_node_check': {'run': 'ping login 1', 'type': 'script'}}
+     {'buildspecs': {'login_node_check': {'run': 'ping login 1',
+                                          'type': 'script'}}}
