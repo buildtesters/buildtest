@@ -707,8 +707,6 @@ class CompilerBuilder(BuilderBase):
 
         self.run_cmd = self.build_run_cmd(self.compiler_recipe.get("exec_args"))
 
-
-
     def _build_testcontent(self):
         """This method will build the test content from a Buildspec that uses compiler schema. We need a 'compiler'
            and 'source' key which specifies the source files to compile. We resolve the source file path which can
