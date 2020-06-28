@@ -83,7 +83,7 @@ def func_schema(args):
                     err_msg = err
 
             content = read_file(example)
-            print("\n")
+            print("\n\n")
             print(f"File: {example}")
             print(f"Valid State: {valid_state}")
             print("{:_<80}".format(""))

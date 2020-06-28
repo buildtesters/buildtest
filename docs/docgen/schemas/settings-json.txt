@@ -136,6 +136,11 @@ $ buildtest schema -n settings.schema.json -j
              "type": "string"
            }
          },
+         "pollinterval": {
+           "type": "integer",
+           "minimum": 10,
+           "maximum": 300
+         },
          "environment": {
            "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
          },

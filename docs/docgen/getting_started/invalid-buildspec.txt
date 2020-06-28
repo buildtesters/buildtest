@@ -8,8 +8,8 @@ Paths:
  +-------------------------------+
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
- /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
  /private/tmp/github.com/buildtesters/tutorials/examples/invalid_buildspec_section.yml
+ /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
  Excluded Buildspecs:  []
  +----------------------+
  | Stage: Building Test |
@@ -17,6 +17,8 @@ Paths:
  Name                      Schema Validation File    TestPath                                 Buildspec                               
  ________________________________________________________________________________________________________________________________________________________________
  systemd_default_target    script-v1.0.schema.json   /private/tmp/tests/systemd/systemd_default_target.sh /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+ Error Messages from Stage: Build
+ ________________________________________________________________________________
  Skipping /private/tmp/github.com/buildtesters/tutorials/examples/invalid_buildspec_section.yml since it failed to validate
  +----------------------+
  | Stage: Running Test  |

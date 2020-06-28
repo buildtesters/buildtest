@@ -25,6 +25,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/settings
      haswell:
        options: ["-C haswell"]
        launcher: sbatch
+       pollinterval: 20
        modules:
          purge: True
          load: [PrgEnv-intel]

@@ -5,11 +5,10 @@ $ buildtest schema -n global.schema.json -j
    "title": "buildtest Global Schema",
    "type": "object",
    "required": [
-     "version"
+     "version",
+     "buildspecs"
    ],
-   "propertyNames": {
-     "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
-   },
+   "additionalProperties": false,
    "properties": {
      "version": {
        "type": "string",
@@ -22,14 +21,12 @@ $ buildtest schema -n global.schema.json -j
        "items": {
          "type": "string"
        }
-     }
-   },
-   "patternProperties": {
-     "^[A-Za-z_.][A-Za-z0-9_]*$": {
-       "type": [
-         "object",
-         "string"
-       ]
+     },
+     "buildspecs": {
+       "type": "object",
+       "propertyNames": {
+         "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+       }
      }
    },
    "definitions": {
@@ -47,6 +44,12 @@ $ buildtest schema -n global.schema.json -j
      },
      "executor": {
        "type": "string"
+     },
+     "sbatch": {
+       "type": "array",
+       "items": {
+         "type": "string"
+       }
      },
      "status": {
        "type": "object",

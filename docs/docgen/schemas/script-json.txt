@@ -9,9 +9,7 @@ $ buildtest schema -n script-v1.0.schema.json -j
      "run",
      "executor"
    ],
-   "propertyNames": {
-     "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
-   },
+   "additionalProperties": false,
    "properties": {
      "type": {
        "type": "string",
@@ -21,7 +19,13 @@ $ buildtest schema -n script-v1.0.schema.json -j
        "type": "string",
        "description": "A description for the build recipe."
      },
+     "sbatch": {
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/sbatch"
+     },
      "env": {
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
+     },
+     "vars": {
        "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
      },
      "executor": {

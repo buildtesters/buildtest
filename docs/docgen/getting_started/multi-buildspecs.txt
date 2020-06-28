@@ -8,23 +8,23 @@ Paths:
  +-------------------------------+
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
- /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
  /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+ /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
  Excluded Buildspecs:  []
  +----------------------+
  | Stage: Building Test |
  +----------------------+ 
  Name                      Schema Validation File    TestPath                                 Buildspec                               
  ________________________________________________________________________________________________________________________________________________________________
- selinux_disable           script-v1.0.schema.json   /private/tmp/tests/selinux/selinux_disable.sh /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
  systemd_default_target    script-v1.0.schema.json   /private/tmp/tests/systemd/systemd_default_target.sh /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+ selinux_disable           script-v1.0.schema.json   /private/tmp/tests/selinux/selinux_disable.sh /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
  +----------------------+
  | Stage: Running Test  |
  +----------------------+ 
  Name                 Executor             Status               Return Code          Buildspec Path      
  ________________________________________________________________________________________________________________________
- selinux_disable      local.bash           FAIL                 1                    /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
  systemd_default_target local.bash           FAIL                 1                    /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+ selinux_disable      local.bash           FAIL                 1                    /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
  +----------------------+
  | Stage: Test Summary  |
  +----------------------+ 
