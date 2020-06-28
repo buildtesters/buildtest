@@ -81,7 +81,7 @@ def func_buildspec_find(args):
                 invalid_buildspecs[buildspec] = err
                 continue
 
-            recipe = parse.recipe
+            recipe = parse.recipe["buildspecs"]
 
             cache[buildspec] = {}
             cache[buildspec]["sections"] = []
