@@ -11,7 +11,7 @@ Submodules
    buildtest.menu.config
    buildtest.menu.repo
    buildtest.menu.report
-   buildtest.menu.show
+   buildtest.menu.schema
 
 Module contents
 ---------------
