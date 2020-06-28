@@ -1,4 +1,4 @@
-| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |core_infrastructure| |black| |tags| 
+| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |core_infrastructure| |black| |synk|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -8,7 +8,6 @@
 .. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
 .. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
 .. |core_infrastructure| image:: https://bestpractices.coreinfrastructure.org/projects/3469/badge
-.. |tags| image:: https://img.shields.io/github/v/tag/buildtesters/buildtest.svg
 .. |codecov| image:: https://codecov.io/gh/buildtesters/buildtest/branch/devel/graph/badge.svg
     :target: https://codecov.io/gh/buildtesters/buildtest
 .. |coveralls| image:: https://coveralls.io/repos/github/buildtesters/buildtest/badge.svg?branch=devel
@@ -20,6 +19,8 @@
     :target: https://travis-ci.com/buildtesters/buildtest
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
+.. |snyk| image:: https://snyk.io/test/github/buildtesters/buildtest/badge.svg
+    :target: https://app.snyk.io/org/buildtesters/
 
 buildtest
 ---------
