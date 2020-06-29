@@ -364,7 +364,6 @@ class LocalExecutor(BaseExecutor):
         out, err = command.execute()
         self.result["runtime"] = t.stop()
 
-        self.builder.metadata["endtime"] = datetime.datetime.now()
         self.result["endtime"] = self.get_formatted_time("endtime")
 
         self.write_testresults(out, err)
@@ -535,4 +534,11 @@ class SlurmExecutor(BaseExecutor):
         # about first number
         self.result["returncode"] = job_data["ExitCode"].split(":")[0]
 
+        self.result["endtime"] = job_data["End"]
+        self.builder.metadata["outfile"] = os.path.join(
+            job_data["WorkDir"].rstrip(), f"slurm-{job_data['JobID']}.out"
+        )
+        self.builder.metadata["errfile"] = os.path.join(
+            job_data["WorkDir"].rstrip(), f"slurm-{job_data['JobID']}.err"
+        )
         self.check_test_state()
