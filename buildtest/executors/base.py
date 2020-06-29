@@ -276,8 +276,7 @@ class BaseExecutor:
         """
         status = self.builder.recipe.get("status")
 
-        test_state = "FAIL"
-
+        self.result["state"] = "FAIL"
         # if status is defined in Buildspec, then check for returncode and regex
         if status:
 
@@ -309,15 +308,12 @@ class BaseExecutor:
             )
 
             if returncode_match and regex_match:
-                test_state = "PASS"
+                self.result["state"] = "PASS"
 
         # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
         else:
             if self.result["returncode"] == 0:
-                test_state = "PASS"
-
-        # this variable is used later when counting all the pass/fail test in buildtest/menu/build.py
-        self.result["state"] = test_state
+                self.result["state"] = "PASS"
 
         # Return to starting directory for next test
         os.chdir(self.builder.pwd)
@@ -506,7 +502,7 @@ class SlurmExecutor(BaseExecutor):
             cmd = BuildTestCommand(slurm_query)
             cmd.execute()
             job_state = cmd.get_output()
-            job_state = "".join(job_state)
+            job_state = "".join(job_state).rstrip()
 
             print(
                 f"Job {self.job_id} in {job_state} state for test: {self.builder.metadata['name']}"
