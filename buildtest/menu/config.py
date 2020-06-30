@@ -1,6 +1,7 @@
 import os
+from jsonschema import ValidationError
 from shutil import copy
-from buildtest.config import get_default_settings
+from buildtest.config import get_default_settings, check_settings
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
     DEFAULT_SETTINGS_FILE,
@@ -11,7 +12,19 @@ def func_config_edit(args=None):
     """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
 
     config_opts = get_default_settings()
-    os.system(f"{config_opts['config']['editor']} {BUILDTEST_SETTINGS_FILE}")
+
+    while True:
+        success = True
+        os.system(f"{config_opts['config']['editor']} {BUILDTEST_SETTINGS_FILE}")
+        try:
+            check_settings(run_init=False)
+        except ValidationError as err:
+            print(err)
+            input("Press any key to continue")
+            success = False
+
+        if success:
+            break
 
 
 def func_config_view(args=None):
