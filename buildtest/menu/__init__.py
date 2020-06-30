@@ -16,7 +16,7 @@ from buildtest.menu.config import (
     func_config_edit,
     func_config_view,
     func_config_reset,
-    func_config_validate
+    func_config_validate,
 )
 from buildtest.menu.repo import (
     func_repo_add,

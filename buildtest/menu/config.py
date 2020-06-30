@@ -22,7 +22,8 @@ def func_config_validate(args=None):
         print(err)
         raise sys.exit(f"{BUILDTEST_SETTINGS_FILE} is not valid")
 
-    print (f"{BUILDTEST_SETTINGS_FILE} is valid")
+    print(f"{BUILDTEST_SETTINGS_FILE} is valid")
+
 
 def func_config_edit(args=None):
     """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
