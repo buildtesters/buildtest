@@ -89,6 +89,32 @@ class BuildTestSystem:
             slurm_ec_code = slurm_cmd.returncode
 
         if slurm_ec_code == 0:
+            self.get_slurm_config()
+
             return "SLURM"
         if lsf_ec_code == 0:
             return "LSF"
+
+    def get_slurm_config(self):
+        """Get slurm configuration"""
+
+        self.system["slurm"] = {}
+
+        # get list of partitions
+        query = "sinfo -a -h -O partitionname"
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        self.system["slurm"]["partition"] = cmd.get_output()
+
+        query = "sacctmgr list cluster -P -n format=Cluster"
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        self.system["slurm"]["cluster"] = cmd.get_output()
+
+        query = "sacctmgr list qos -P -n  format=Name"
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        self.system["slurm"]["qos"] = cmd.get_output()
+
+        print(self.system["slurm"])
+
