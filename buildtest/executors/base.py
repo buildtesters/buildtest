@@ -14,7 +14,7 @@ from buildtest.defaults import BUILDTEST_SETTINGS_FILE
 from buildtest.utils.file import write_file, read_file
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.timer import Timer
-
+from buildtest.system import get_slurm_partitions, get_slurm_qos, get_slurm_clusters
 
 class BuildExecutor:
     """A BuildExecutor is a base class some type of executor, defined under
@@ -435,6 +435,31 @@ class SlurmExecutor(BaseExecutor):
             sys.exit(
                 f"[{self.builder.metadata['name']}]: Cannot find slurm poll command: {self.poll_cmd}"
             )
+        # if 'partition' key defined check if its valid partition
+        if self.partition:
+
+            slurm_partitions = get_slurm_partitions()
+            if self.partition not in slurm_partitions:
+                sys.exit(f"{self.partition} not a valid partition!. Please select one of the following partitions: {slurm_partitions}")
+
+            query = "sinfo -p {self.partition} -h -O available"
+            cmd = BuildTestCommand(query)
+            cmd.execute()
+            part_state = "".cmd.get_output().rstrip()
+
+            if part_state != "up":
+                sys.exit(f"{self.partition} is in state: {part_state}. It must be in 'up' state in order to accept jobs")
+
+        if self.qos:
+            slurm_qos = get_slurm_qos()
+            if self.qos not in slurm_qos:
+                sys.exit(f"{self.qos} not a valid qos! Please select one of the following qos: {slurm_qos}")
+
+        if self.cluster:
+            slurm_cluster = get_slurm_clusters()
+            if self.cluster not in slurm_cluster:
+                sys.exit(
+                    f"{self.cluster} not a valid qos! Please select one of the following qos: {slurm_cluster}")
 
     def load(self, name):
         """Load the executor preferences from the provided config, which is
@@ -450,6 +475,9 @@ class SlurmExecutor(BaseExecutor):
         self.poll_interval = (
             self._settings.get("pollinterval") or self.DEFAULT_POLL_INTERVAL
         )
+        self.cluster = self._settings.get("cluster")
+        self.partition = self._settings.get("partition")
+        self.qos = self._settings.get("qos")
 
     def dispatch(self):
         """This method is responsible for dispatching job to slurm scheduler."""

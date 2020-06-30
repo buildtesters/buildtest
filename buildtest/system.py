@@ -89,32 +89,37 @@ class BuildTestSystem:
             slurm_ec_code = slurm_cmd.returncode
 
         if slurm_ec_code == 0:
-            self.get_slurm_config()
-
             return "SLURM"
         if lsf_ec_code == 0:
             return "LSF"
 
-    def get_slurm_config(self):
-        """Get slurm configuration"""
+def get_slurm_partitions():
+    """Get slurm partitions"""
 
-        self.system["slurm"] = {}
+    # get list of partitions
+    query = "sinfo -a -h -O partitionname"
+    cmd = BuildTestCommand(query)
+    cmd.execute()
+    out = cmd.get_output()
 
-        # get list of partitions
-        query = "sinfo -a -h -O partitionname"
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        self.system["slurm"]["partition"] = cmd.get_output()
+    partitions = [partition.rstrip() for partition in out ]
+    return partitions
 
-        query = "sacctmgr list cluster -P -n format=Cluster"
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        self.system["slurm"]["cluster"] = cmd.get_output()
+def get_slurm_clusters():
 
-        query = "sacctmgr list qos -P -n  format=Name"
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        self.system["slurm"]["qos"] = cmd.get_output()
+    query = "sacctmgr list cluster -P -n format=Cluster"
+    cmd = BuildTestCommand(query)
+    cmd.execute()
+    out = cmd.get_output()
 
-        print(self.system["slurm"])
+    slurm_clusters = [clustername.rstrip() for clustername in out]
+    return slurm_clusters
 
+def get_slurm_qos():
+    """Return all slurm qos"""
+    query = "sacctmgr list qos -P -n  format=Name"
+    cmd = BuildTestCommand(query)
+    cmd.execute()
+    out = cmd.get_output()
+    slurm_qos = [qos.rstrip() for qos in out]
+    return slurm_qos
