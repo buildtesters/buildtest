@@ -93,6 +93,7 @@ class BuildTestSystem:
         if lsf_ec_code == 0:
             return "LSF"
 
+
 def get_slurm_partitions():
     """Get slurm partitions"""
 
@@ -102,8 +103,9 @@ def get_slurm_partitions():
     cmd.execute()
     out = cmd.get_output()
 
-    partitions = [partition.rstrip() for partition in out ]
+    partitions = [partition.rstrip() for partition in out]
     return partitions
+
 
 def get_slurm_clusters():
 
@@ -114,6 +116,7 @@ def get_slurm_clusters():
 
     slurm_clusters = [clustername.rstrip() for clustername in out]
     return slurm_clusters
+
 
 def get_slurm_qos():
     """Return all slurm qos"""

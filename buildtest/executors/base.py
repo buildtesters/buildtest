@@ -16,6 +16,7 @@ from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.timer import Timer
 from buildtest.system import get_slurm_partitions, get_slurm_qos, get_slurm_clusters
 
+
 class BuildExecutor:
     """A BuildExecutor is a base class some type of executor, defined under
        the buildtest/settings/default-config.json schema. For example,
@@ -440,7 +441,9 @@ class SlurmExecutor(BaseExecutor):
 
             slurm_partitions = get_slurm_partitions()
             if self.partition not in slurm_partitions:
-                sys.exit(f"{self.partition} not a valid partition!. Please select one of the following partitions: {slurm_partitions}")
+                sys.exit(
+                    f"{self.partition} not a valid partition!. Please select one of the following partitions: {slurm_partitions}"
+                )
 
             query = "sinfo -p {self.partition} -h -O available"
             cmd = BuildTestCommand(query)
@@ -448,18 +451,23 @@ class SlurmExecutor(BaseExecutor):
             part_state = "".cmd.get_output().rstrip()
 
             if part_state != "up":
-                sys.exit(f"{self.partition} is in state: {part_state}. It must be in 'up' state in order to accept jobs")
+                sys.exit(
+                    f"{self.partition} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
+                )
 
         if self.qos:
             slurm_qos = get_slurm_qos()
             if self.qos not in slurm_qos:
-                sys.exit(f"{self.qos} not a valid qos! Please select one of the following qos: {slurm_qos}")
+                sys.exit(
+                    f"{self.qos} not a valid qos! Please select one of the following qos: {slurm_qos}"
+                )
 
         if self.cluster:
             slurm_cluster = get_slurm_clusters()
             if self.cluster not in slurm_cluster:
                 sys.exit(
-                    f"{self.cluster} not a valid qos! Please select one of the following qos: {slurm_cluster}")
+                    f"{self.cluster} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_cluster}"
+                )
 
     def load(self, name):
         """Load the executor preferences from the provided config, which is
@@ -489,14 +497,23 @@ class SlurmExecutor(BaseExecutor):
         os.chdir(self.builder.metadata["testroot"])
         self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
 
-        # the command used to send job to scheduler. i.e sbatch <opts> test.sh
-        cmd = [
-            self.launcher,
-            " ".join(self.launcher_opts),
-            self.builder.metadata["testpath"],
-        ]
+        sbatch_cmd = [self.launcher]
 
-        self.builder.metadata["command"] = " ".join(cmd)
+        if self.partition:
+            sbatch_cmd += [f"-p {self.partition}"]
+
+        if self.qos:
+            sbatch_cmd += [f"-q {self.qos}"]
+
+        if self.cluster:
+            sbatch_cmd += [f"-M {self.cluster}"]
+
+        if self.launcher_opts:
+            sbatch_cmd += [" ".join(self.launcher_opts)]
+
+        sbatch_cmd.append(self.builder.metadata["testpath"])
+
+        self.builder.metadata["command"] = " ".join(sbatch_cmd)
         self.logger.debug(
             f"Running Test via command: {self.builder.metadata['command']}"
         )
@@ -505,8 +522,16 @@ class SlurmExecutor(BaseExecutor):
         self.result["starttime"] = self.get_formatted_time("starttime")
 
         command = BuildTestCommand(self.builder.metadata["command"])
-        out, err = command.execute()
-        self.job_id = int(re.search(r"\d+$", "".join(out)).group())
+        command.execute()
+        out = command.get_output()
+        err = command.get_error()
+
+        if command.returncode != 0:
+            err = f"[{self.builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
+            err += f"[{self.builder.metadata['name']}] running command: {sbatch_cmd}"
+            sys.exit(err)
+
+        self.job_ids = int(re.search(r"\d+", "".join(out)).group())
 
         self.result["runtime"] = "0"
         self.write_testresults(out, err)
