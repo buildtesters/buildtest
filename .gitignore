@@ -8,6 +8,9 @@ buildtest_framework.egg-info/
 dist/
 build/
 
+# logfile
+*.log
+
 # C extensions
 *.so
 
