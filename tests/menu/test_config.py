@@ -4,6 +4,7 @@ from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, BUILDTEST_SETTINGS_FILE
 from buildtest.menu.config import (
     func_config_view,
     func_config_reset,
+    func_config_validate,
 )
 from buildtest.utils.file import walk_tree
 from buildtest.buildsystem.schemas.utils import load_schema
@@ -30,3 +31,8 @@ def test_valid_config_schemas():
     for schema in walk_tree(valid_schema_dir, ".yml"):
         example = load_schema(os.path.abspath(schema))
         validate(instance=example, schema=schema_config)
+
+
+def test_config_validate():
+
+    func_config_validate()

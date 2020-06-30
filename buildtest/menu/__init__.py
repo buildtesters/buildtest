@@ -16,6 +16,7 @@ from buildtest.menu.config import (
     func_config_edit,
     func_config_view,
     func_config_reset,
+    func_config_validate,
 )
 from buildtest.menu.repo import (
     func_repo_add,
@@ -237,10 +238,14 @@ class BuildTestParser:
         parser_config_restore = subparsers_config.add_parser(
             "reset", help="Reset buildtest configuration file. "
         )
+        parser_config_validate = subparsers_config.add_parser(
+            "validate", help="Validate buildtest settings file with schema."
+        )
 
         parser_config_view.set_defaults(func=func_config_view)
         parser_config_edit.set_defaults(func=func_config_edit)
         parser_config_restore.set_defaults(func=func_config_reset)
+        parser_config_validate.set_defaults(func=func_config_validate)
 
     def schema_menu(self):
         """This method adds argparse argument for ``buildtest show``
