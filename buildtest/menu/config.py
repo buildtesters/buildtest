@@ -1,4 +1,5 @@
 import os
+import sys
 from jsonschema import ValidationError
 from shutil import copy
 from buildtest.config import get_default_settings, check_settings
@@ -7,6 +8,21 @@ from buildtest.defaults import (
     DEFAULT_SETTINGS_FILE,
 )
 
+
+def func_config_validate(args=None):
+    """This method implements ``buildtest config validate`` which attempts to
+       validate buildtest settings with schema. If it not validate an exception
+       an exception of type SystemError is raised. We invoke ``check_settings``
+       method which will validate the configuration, if it fails we except an exception
+       of type ValidationError which we catch and print message.
+    """
+    try:
+        check_settings()
+    except ValidationError as err:
+        print(err)
+        raise sys.exit(f"{BUILDTEST_SETTINGS_FILE} is not valid")
+
+    print (f"{BUILDTEST_SETTINGS_FILE} is valid")
 
 def func_config_edit(args=None):
     """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
