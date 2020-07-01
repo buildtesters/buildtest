@@ -556,17 +556,16 @@ class SlurmExecutor(BaseExecutor):
 
             # to query jobs from another cluster we must add -M <cluster> to sacct
             if self.cluster:
-                slurm_query += " -M {self.cluster}"
+                slurm_query += f" -M {self.cluster}"
 
             self.logger.debug(slurm_query)
             cmd = BuildTestCommand(slurm_query)
             cmd.execute()
             job_state = cmd.get_output()
             job_state = "".join(job_state).rstrip()
-
-            print(
-                f"Job {self.job_id} in {job_state} state for test: {self.builder.metadata['name']}"
-            )
+            msg = f"Job {self.job_id} in {job_state} state for test: {self.builder.metadata['name']}"
+            print(msg)
+            self.logger.debug(msg)
             if job_state not in ["PENDING", "RUNNING"]:
                 break
 
@@ -577,7 +576,7 @@ class SlurmExecutor(BaseExecutor):
 
         # to query jobs from another cluster we must add -M <cluster> to sacct
         if self.cluster:
-            gather_cmd += " -M {self.cluster}"
+            gather_cmd += f" -M {self.cluster}"
 
         self.logger.debug(f"Gather slurm job data by running: {gather_cmd}")
         cmd = BuildTestCommand(gather_cmd)
