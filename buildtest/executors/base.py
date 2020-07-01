@@ -532,7 +532,7 @@ class SlurmExecutor(BaseExecutor):
             err += f"[{self.builder.metadata['name']}] running command: {sbatch_cmd}"
             sys.exit(err)
 
-        self.job_ids = int(re.search(r"\d+", "".join(out)).group())
+        self.job_id = int(re.search(r"\d+", "".join(out)).group())
 
         self.result["runtime"] = "0"
         self.write_testresults(out, err)
