@@ -68,8 +68,12 @@ def func_buildspec_find(args):
             buildspecs += buildspec
 
         # remove any files in .buildtest directory of root of repo.
-        buildspecs = [ buildspec for buildspec in buildspecs if os.path.basename(os.path.dirname(buildspec)) != ".buildtest"]
-        print (f"Found {len(buildspecs)} buildspecs")
+        buildspecs = [
+            buildspec
+            for buildspec in buildspecs
+            if os.path.basename(os.path.dirname(buildspec)) != ".buildtest"
+        ]
+        print(f"Found {len(buildspecs)} buildspecs")
         # process each buildspec by invoking BuildspecParser which will validate
         # buildspec, if it fails it will raise SystemExit or ValidationError in
         # this case we skip to next buildspec
@@ -87,7 +91,7 @@ def func_buildspec_find(args):
                 continue
 
             if count % 5 == 0:
-                print (f"Validated {count}/{len(buildspecs)} buildspecs")
+                print(f"Validated {count}/{len(buildspecs)} buildspecs")
 
             recipe = parse.recipe["buildspecs"]
 
@@ -109,12 +113,12 @@ def func_buildspec_find(args):
                     name
                 ].get("description")
 
-        print (f"Validated {count}/{len(buildspecs)} buildspecs")
+        print(f"Validated {count}/{len(buildspecs)} buildspecs")
 
         with open(BUILDSPEC_CACHE_FILE, "w") as fd:
             json.dump(cache, fd, indent=2)
 
-        print(f"\n Detected {len(invalid_buildspecs)} invalid buildspecs \n")
+        print(f"\nDetected {len(invalid_buildspecs)} invalid buildspecs \n")
 
         # write invalid buildspecs to file if any found
         if invalid_buildspecs:
