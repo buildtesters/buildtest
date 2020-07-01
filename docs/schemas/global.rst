@@ -1,3 +1,5 @@
+.. _global_schema:
+
 Global Schema
 ==============
 
@@ -12,11 +14,6 @@ Schema Files
 - `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/buildsystem/schemas/global.schema.json>`_
 - `Development Schema <https://buildtesters.github.io/schemas/global/global.schema.json>`_
 
-global.schema.json
--------------------
-
-.. program-output:: cat docgen/schemas/global-json.txt
-
 Examples
 ---------
 
@@ -24,3 +21,9 @@ You can see below a list of global schema examples that can be accessible
 via ``buildtest schema -n global.schema.json -e``
 
 .. program-output:: cat docgen/schemas/global-examples.txt
+
+global.schema.json
+-------------------
+
+.. program-output:: cat docgen/schemas/global-json.txt
+
