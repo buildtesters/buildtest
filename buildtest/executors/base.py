@@ -436,6 +436,7 @@ class SlurmExecutor(BaseExecutor):
             sys.exit(
                 f"[{self.builder.metadata['name']}]: Cannot find slurm poll command: {self.poll_cmd}"
             )
+
         # if 'partition' key defined check if its valid partition
         if self.partition:
 
@@ -449,19 +450,19 @@ class SlurmExecutor(BaseExecutor):
             cmd = BuildTestCommand(query)
             cmd.execute()
             part_state = "".cmd.get_output().rstrip()
-
+            # check if partition is in 'up' state. If not we raise an error.
             if part_state != "up":
                 sys.exit(
                     f"{self.partition} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
                 )
-
+        # check if 'qos' key is valid qos
         if self.qos:
             slurm_qos = get_slurm_qos()
             if self.qos not in slurm_qos:
                 sys.exit(
                     f"{self.qos} not a valid qos! Please select one of the following qos: {slurm_qos}"
                 )
-
+        # check if 'cluster' key is valid slurm cluster
         if self.cluster:
             slurm_cluster = get_slurm_clusters()
             if self.cluster not in slurm_cluster:
@@ -550,7 +551,13 @@ class SlurmExecutor(BaseExecutor):
             )
             time.sleep(self.poll_interval)
             self.logger.debug(f"Query Job: {self.job_id}")
+
             slurm_query = f"{self.poll_cmd} -j {self.job_id} -o State -n -X -P"
+
+            # to query jobs from another cluster we must add -M <cluster> to sacct
+            if self.cluster:
+                slurm_query += " -M {self.cluster}"
+
             self.logger.debug(slurm_query)
             cmd = BuildTestCommand(slurm_query)
             cmd.execute()
@@ -567,6 +574,11 @@ class SlurmExecutor(BaseExecutor):
         """Gather Slurm detail after job completion"""
 
         gather_cmd = f"{self.poll_cmd} -j {self.job_id} -X -n -P -o {','.join(self.sacct_fields)}"
+
+        # to query jobs from another cluster we must add -M <cluster> to sacct
+        if self.cluster:
+            gather_cmd += " -M {self.cluster}"
+
         self.logger.debug(f"Gather slurm job data by running: {gather_cmd}")
         cmd = BuildTestCommand(gather_cmd)
         cmd.execute()
