@@ -22,6 +22,14 @@ site configuration.
 
 .. program-output:: cat ../buildtest/settings/settings.yml
 
+Settings Example
+-----------------
+
+To retrieve a list of settings example you can run ``buildtest schema -n settings.schema.json -e``
+which will show a listing a valid buildtest settings.
+
+.. program-output:: cat docgen/schemas/settings-examples.txt
+
 Settings Schema
 -----------------
 
@@ -30,10 +38,4 @@ Shown below is the json schema for buildtest settings that can be retrieved via
 
 .. program-output:: cat docgen/schemas/settings-json.txt
 
-Settings Example
------------------
 
-To retrieve a list of settings example you can run ``buildtest schema -n settings.schema.json -e``
-which will show a listing a valid buildtest settings.
-
-.. program-output:: cat docgen/schemas/settings-examples.txt

@@ -1,3 +1,5 @@
+.. _global_schema:
+
 Global Schema
 ==============
 
