@@ -92,3 +92,37 @@ class BuildTestSystem:
             return "SLURM"
         if lsf_ec_code == 0:
             return "LSF"
+
+
+def get_slurm_partitions():
+    """Get slurm partitions"""
+
+    # get list of partitions
+    query = "sinfo -a -h -O partitionname"
+    cmd = BuildTestCommand(query)
+    cmd.execute()
+    out = cmd.get_output()
+
+    partitions = [partition.rstrip() for partition in out]
+    return partitions
+
+
+def get_slurm_clusters():
+
+    query = "sacctmgr list cluster -P -n format=Cluster"
+    cmd = BuildTestCommand(query)
+    cmd.execute()
+    out = cmd.get_output()
+
+    slurm_clusters = [clustername.rstrip() for clustername in out]
+    return slurm_clusters
+
+
+def get_slurm_qos():
+    """Return all slurm qos"""
+    query = "sacctmgr list qos -P -n  format=Name"
+    cmd = BuildTestCommand(query)
+    cmd.execute()
+    out = cmd.get_output()
+    slurm_qos = [qos.rstrip() for qos in out]
+    return slurm_qos

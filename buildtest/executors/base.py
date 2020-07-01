@@ -14,6 +14,7 @@ from buildtest.defaults import BUILDTEST_SETTINGS_FILE
 from buildtest.utils.file import write_file, read_file
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.timer import Timer
+from buildtest.system import get_slurm_partitions, get_slurm_qos, get_slurm_clusters
 
 
 class BuildExecutor:
@@ -436,6 +437,39 @@ class SlurmExecutor(BaseExecutor):
                 f"[{self.builder.metadata['name']}]: Cannot find slurm poll command: {self.poll_cmd}"
             )
 
+        # if 'partition' key defined check if its valid partition
+        if self.partition:
+
+            slurm_partitions = get_slurm_partitions()
+            if self.partition not in slurm_partitions:
+                sys.exit(
+                    f"{self.partition} not a valid partition!. Please select one of the following partitions: {slurm_partitions}"
+                )
+
+            query = "sinfo -p {self.partition} -h -O available"
+            cmd = BuildTestCommand(query)
+            cmd.execute()
+            part_state = "".cmd.get_output().rstrip()
+            # check if partition is in 'up' state. If not we raise an error.
+            if part_state != "up":
+                sys.exit(
+                    f"{self.partition} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
+                )
+        # check if 'qos' key is valid qos
+        if self.qos:
+            slurm_qos = get_slurm_qos()
+            if self.qos not in slurm_qos:
+                sys.exit(
+                    f"{self.qos} not a valid qos! Please select one of the following qos: {slurm_qos}"
+                )
+        # check if 'cluster' key is valid slurm cluster
+        if self.cluster:
+            slurm_cluster = get_slurm_clusters()
+            if self.cluster not in slurm_cluster:
+                sys.exit(
+                    f"{self.cluster} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_cluster}"
+                )
+
     def load(self, name):
         """Load the executor preferences from the provided config, which is
            added and indexed with "name." For slurm we look for the following
@@ -450,6 +484,9 @@ class SlurmExecutor(BaseExecutor):
         self.poll_interval = (
             self._settings.get("pollinterval") or self.DEFAULT_POLL_INTERVAL
         )
+        self.cluster = self._settings.get("cluster")
+        self.partition = self._settings.get("partition")
+        self.qos = self._settings.get("qos")
 
     def dispatch(self):
         """This method is responsible for dispatching job to slurm scheduler."""
@@ -461,14 +498,23 @@ class SlurmExecutor(BaseExecutor):
         os.chdir(self.builder.metadata["testroot"])
         self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
 
-        # the command used to send job to scheduler. i.e sbatch <opts> test.sh
-        cmd = [
-            self.launcher,
-            " ".join(self.launcher_opts),
-            self.builder.metadata["testpath"],
-        ]
+        sbatch_cmd = [self.launcher]
 
-        self.builder.metadata["command"] = " ".join(cmd)
+        if self.partition:
+            sbatch_cmd += [f"-p {self.partition}"]
+
+        if self.qos:
+            sbatch_cmd += [f"-q {self.qos}"]
+
+        if self.cluster:
+            sbatch_cmd += [f"-M {self.cluster}"]
+
+        if self.launcher_opts:
+            sbatch_cmd += [" ".join(self.launcher_opts)]
+
+        sbatch_cmd.append(self.builder.metadata["testpath"])
+
+        self.builder.metadata["command"] = " ".join(sbatch_cmd)
         self.logger.debug(
             f"Running Test via command: {self.builder.metadata['command']}"
         )
@@ -477,8 +523,16 @@ class SlurmExecutor(BaseExecutor):
         self.result["starttime"] = self.get_formatted_time("starttime")
 
         command = BuildTestCommand(self.builder.metadata["command"])
-        out, err = command.execute()
-        self.job_id = int(re.search(r"\d+$", "".join(out)).group())
+        command.execute()
+        out = command.get_output()
+        err = command.get_error()
+
+        if command.returncode != 0:
+            err = f"[{self.builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
+            err += f"[{self.builder.metadata['name']}] running command: {sbatch_cmd}"
+            sys.exit(err)
+
+        self.job_id = int(re.search(r"\d+", "".join(out)).group())
 
         self.result["runtime"] = "0"
         self.write_testresults(out, err)
@@ -497,16 +551,21 @@ class SlurmExecutor(BaseExecutor):
             )
             time.sleep(self.poll_interval)
             self.logger.debug(f"Query Job: {self.job_id}")
+
             slurm_query = f"{self.poll_cmd} -j {self.job_id} -o State -n -X -P"
+
+            # to query jobs from another cluster we must add -M <cluster> to sacct
+            if self.cluster:
+                slurm_query += f" -M {self.cluster}"
+
             self.logger.debug(slurm_query)
             cmd = BuildTestCommand(slurm_query)
             cmd.execute()
             job_state = cmd.get_output()
             job_state = "".join(job_state).rstrip()
-
-            print(
-                f"Job {self.job_id} in {job_state} state for test: {self.builder.metadata['name']}"
-            )
+            msg = f"Job {self.job_id} in {job_state} state for test: {self.builder.metadata['name']}"
+            print(msg)
+            self.logger.debug(msg)
             if job_state not in ["PENDING", "RUNNING"]:
                 break
 
@@ -514,6 +573,11 @@ class SlurmExecutor(BaseExecutor):
         """Gather Slurm detail after job completion"""
 
         gather_cmd = f"{self.poll_cmd} -j {self.job_id} -X -n -P -o {','.join(self.sacct_fields)}"
+
+        # to query jobs from another cluster we must add -M <cluster> to sacct
+        if self.cluster:
+            gather_cmd += f" -M {self.cluster}"
+
         self.logger.debug(f"Gather slurm job data by running: {gather_cmd}")
         cmd = BuildTestCommand(gather_cmd)
         cmd.execute()

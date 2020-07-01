@@ -82,6 +82,9 @@
               "pollinterval": { "type":  "integer", "minimum": 10, "maximum": 300},
               "environment": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
               "variables": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
+              "cluster": {"type":  "string"},
+              "partition": {"type":  "string"},
+              "qos": {"type":  "string"},
               "modules": {"$ref":  "#/definitions/modules"}
            },
           "additionalProperties": false,
