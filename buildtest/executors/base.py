@@ -334,7 +334,6 @@ class LocalExecutor(BaseExecutor):
         if not shutil.which(self.shell):
             sys.exit(f"Unable to find shell: {self.shell}")
 
-
     def run(self):
         """This method is responsible for running test for LocalExecutor which
            runs test locally. We keep track of metadata in ``self.builder.metadata``
@@ -345,10 +344,16 @@ class LocalExecutor(BaseExecutor):
         # self.result = {}
 
         # check shell type mismatch between buildspec shell and executor shell. We can't support python with sh/bash.
-        if (self.builder.shell.name in ["sh", "bash", "/bin/bash", "/bin/sh"] and self.shell == "python") or \
-           (self.builder.shell.name == "python" and self.shell in ["sh", "bash", "/bin/bash", "/bin/sh"]):
-            sys.exit(f"[{self.name}]: shell mismatch, expecting {self.shell} while buildspec shell is {self.builder.shell.name}")
-
+        if (
+            self.builder.shell.name in ["sh", "bash", "/bin/bash", "/bin/sh"]
+            and self.shell == "python"
+        ) or (
+            self.builder.shell.name == "python"
+            and self.shell in ["sh", "bash", "/bin/bash", "/bin/sh"]
+        ):
+            sys.exit(
+                f"[{self.name}]: shell mismatch, expecting {self.shell} while buildspec shell is {self.builder.shell.name}"
+            )
 
         self.result["LOGFILE"] = self.builder.metadata.get("logfile", "")
         self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
