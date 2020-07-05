@@ -15,12 +15,133 @@ For more details on schema attributes see `Settings Schema Documentation <https:
 Default Settings
 -----------------------
 
-The default buildtest settings is found in ``buildtest/settings/settings.yml``. At
-start of buildtest this file is copied to ``$HOME/.buildtest/settings.yml`` to
-help you get started. You are expected to customize this file to best suit your
-site configuration.
+The default settings for buildtest is found in ``buildtest/settings/settings.yml``.
+At start of buildtest this file is copied to ``$HOME/.buildtest/settings.yml`` to
+help you get started. Shown below is the default settings file.
 
 .. program-output:: cat ../buildtest/settings/settings.yml
+
+
+Executors
+----------
+
+Executors are responsible for running jobs, currently buildtest supports **local**
+and **slurm** executor, while **ssh** executor supported in schema but currently is not
+supported by buildtest at the moment.
+
+The local executor is responsible for submitting jobs locally. Currently, buildtest
+supports ``bash``, ``sh`` and ``python`` shell. The executors are referenced in
+your buildspec with the ``executor`` key such as::
+
+    executor: local.bash
+
+The ``executor`` key in buildtest settings is of type ``object``, the sub-fields
+are ``local``, ``ssh``, and ``slurm``.
+
+Local Executors
+~~~~~~~~~~~~~~~~
+
+The local executors are defined in the following section::
+
+    executors:
+      local:
+        <local-executor1>:
+        <local-executor2>:
+
+Each local executor requires the ``shell`` key which takes the pattern
+``^(/bin/bash|/bin/sh|sh|bash|python).*``. A bash executor is defined as
+follows::
+
+    executors:
+      local:
+        bash:
+          shell: bash
+
+A buildspec can reference this executor via ``executor: local.bash`` and buildtest
+will submit job as ``bash /path/to/test.sh``.
+
+You can pass options to shell which will get passed into each job submission.
+For instance if you want bash executor to submit jobs by login mode you can do
+the following::
+
+    executors:
+      local:
+        login_bash:
+          shell: bash --login
+
+Then you can reference this executor as ``executor: local.login_bash`` and your
+tests will be submitted via ``bash --login /path/to/test.sh``.
+
+Slurm Executors
+~~~~~~~~~~~~~~~~~
+
+The slurm executors are defined in the following section::
+
+    executors:
+      slurm:
+        <slurm-executor1>:
+        <slurm-executor2>:
+
+Slurm executors are responsible for submitting jobs to slurm resource manager.
+You can define as many slurm executors as you wish, so long as you have a unique
+name to reference each executor. Generally, you will need one slurm executor
+per partition or qos that you have at your site. Let's take a look at an example
+slurm executor called ``normal``::
+
+    executors:
+      slurm:
+        normal:
+          options: ["-C haswell"]
+          qos: normal
+          launcher: sbatch
+          pollinterval: 20
+
+This executor can be referenced in buildspec as ``executor: slurm.normal``. This
+executor defines the following:
+
+- The ``launcher`` controls the launcher method, currently we only support sbatch as the launcher.
+- ``qos: normal`` will add ``-q normal`` to the launcher command. buildtest will check if qos is found in slurm configuration. If not found, buildtest will reject job submission.
+- ``options`` key is used to pass any options to launcher command. In this example we add ``-C haswell``.
+- ``pollinterval`` controls at what frequency to poll jobs after submission via `sacct`. The unit of measure is in seconds.
+
+Let's look at the slurm executor configuration for Cori at NERSC::
+
+    executors:
+      slurm:
+        debug:
+          description: jobs for debug qos
+          launcher: sbatch
+          qos: debug
+          pollinterval: 20
+        shared:
+          description: jobs for shared qos
+          launcher: sbatch
+          qos: shared
+          pollinterval: 20
+        bigmem:
+          description: bigmem jobs
+          launcher: sbatch
+          cluster: escori
+          qos: bigmem
+          pollinterval: 20
+
+In this example we define three executors `debug`, `shared` and `bigmem`.
+At Cori, jobs are submitted via qos instead of partition so each slurm executor
+has the `qos` key. The ``description`` key is a brief description of the executor
+which you can use to document the behavior of the executor. We introduce a new
+key ``cluster`` in the **bigmem** executor. At Cori, we have two slurm clusters,
+in order to submit jobs to ``bigmem`` qos we need to specify ``-M escori``
+where escori is the slurm cluster. buildtest will detect slurm configuration
+and check if cluster is a valid cluster name. In addition, `sacct` will poll job
+against the cluster name (``sacct -M <cluster>``).
+
+Settings Example
+-----------------
+
+To retrieve a list of settings example you can run ``buildtest schema -n settings.schema.json -e``
+which will show a listing a valid buildtest settings.
+
+.. program-output:: cat docgen/schemas/settings-examples.txt
 
 Settings Schema
 -----------------
@@ -30,10 +151,4 @@ Shown below is the json schema for buildtest settings that can be retrieved via
 
 .. program-output:: cat docgen/schemas/settings-json.txt
 
-Settings Example
------------------
 
-To retrieve a list of settings example you can run ``buildtest schema -n settings.schema.json -e``
-which will show a listing a valid buildtest settings.
-
-.. program-output:: cat docgen/schemas/settings-examples.txt

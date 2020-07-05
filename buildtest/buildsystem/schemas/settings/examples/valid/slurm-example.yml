@@ -1,12 +1,10 @@
 executors:
   slurm:
-    haswell:
+    normal:
       options: ["-C haswell"]
+      qos: normal
       launcher: sbatch
       pollinterval: 20
-      modules:
-        purge: True
-        load: [PrgEnv-intel]
 config:
   editor: vi
   paths:

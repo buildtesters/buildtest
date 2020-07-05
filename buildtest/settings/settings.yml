@@ -11,11 +11,6 @@ executors:
     python:
       description: submit jobs on local machine using python shell
       shell: python
-  ssh:
-    localhost:
-      host: localhost
-      user: siddiq90
-      identity_file: ~/.ssh/id_rsa
 config:
   editor: vi
   paths:
