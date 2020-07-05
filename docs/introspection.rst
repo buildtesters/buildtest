@@ -27,6 +27,37 @@ Shown below is an example
 
 .. program-output:: cat docgen/config-reset.txt
 
+To check if your buildtest settings is valid, run ``buildtest config validate``.
+This will validate your ``settings.yml`` with the schema **settings.schema.json**.
+The output will be::
+
+     $ buildtest config validate
+    /Users/siddiq90/.buildtest/settings.yml is valid
+
+If there is an error during validation, the output from **jsonschema.exceptions.ValidationError**
+will be displayed in terminal. For example the error below indicates there was an error
+on ``editor`` key in **config** object which expects the editor to be one of the
+enum types [``vi``, ``vim``, ``nano``, ``emacs``]::
+
+    $ buildtest config validate
+    Traceback (most recent call last):
+      File "/Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/buildtest", line 11, in <module>
+        load_entry_point('buildtest', 'console_scripts', 'buildtest')()
+      File "/Users/siddiq90/Documents/buildtest/buildtest/main.py", line 32, in main
+        check_settings()
+      File "/Users/siddiq90/Documents/buildtest/buildtest/config.py", line 71, in check_settings
+        validate(instance=user_schema, schema=config_schema)
+      File "/Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/lib/python3.7/site-packages/jsonschema/validators.py", line 899, in validate
+        raise error
+    jsonschema.exceptions.ValidationError: 'gedit' is not one of ['vi', 'vim', 'nano', 'emacs']
+
+    Failed validating 'enum' in schema['properties']['config']['properties']['editor']:
+        {'default': 'vim',
+         'enum': ['vi', 'vim', 'nano', 'emacs'],
+         'type': 'string'}
+
+    On instance['config']['editor']:
+        'gedit'
 
 .. _buildtest_repo:
 
@@ -98,13 +129,15 @@ and location where they are installed.
 To get listing of all available repos you can run ``buildtest repo list``::
 
     $ buildtest repo list
-    buildtesters/tutorials.git
+    buildtesters/tutorials
 
 You can see repository details by running::
 
     $ buildtest repo list -s
-    buildtesters/tutorials.git:
+    buildtesters/tutorials:
+      branch: master
       dest: /Users/siddiq90/.buildtest/site/github.com/buildtesters/tutorials
+      state: enabled
       url: https://github.com/buildtesters/tutorials.git
 
 This will show the content of the repo file ``$HOME/.buildtest/repo.yaml``.
@@ -115,8 +148,8 @@ Removing Repository
 To remove a repository from buildtest, use ``buildtest repo rm <repo>``. For
 example, we can remove the current repository as follows::
 
-    $ buildtest repo rm buildtesters/tutorials.git
-    Removing Repository: buildtesters/tutorials.git and deleting files from /Users/siddiq90/.buildtest/site/github.com/buildtesters/tutorials
+    $ buildtest repo rm buildtesters/tutorials
+    Removing Repository: buildtesters/tutorials and deleting files from /Users/siddiq90/.buildtest/site/github.com/buildtesters/tutorials
 
 This will remove the repo from filesystem and remove entry from ``repo.yaml``.
 

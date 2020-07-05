@@ -87,8 +87,8 @@ This documentation was last rebuild on |today| and is intended for version |vers
    installing_buildtest.rst
    configuring_buildtest.rst
    getting_started.rst
-   introspection.rst
    schemas.rst
+   introspection.rst
 
 .. toctree::
    :maxdepth: 2

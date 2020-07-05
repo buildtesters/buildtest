@@ -3,6 +3,7 @@ This file is used for generating documentation tests.
 """
 import os
 
+from buildtest.menu.repo import active_repos, func_repo_add
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, write_file
 
@@ -103,6 +104,15 @@ def writer(fname, out, query):
 
 
 def main():
+
+    if "buildtesters/tutorial" not in active_repos():
+
+        class args:
+            repo = "https://github.com/buildtesters/tutorials.git"
+            branch = "master"
+
+        func_repo_add(args)
+
     create_dir(docgen)
     build_helper()
     tutorial()

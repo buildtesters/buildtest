@@ -116,7 +116,10 @@ $ buildtest schema -n settings.schema.json -j
            "$ref": "#/definitions/modules"
          }
        },
-       "additionalProperties": false
+       "additionalProperties": false,
+       "required": [
+         "shell"
+       ]
      },
      "slurm": {
        "type": "object",
@@ -146,6 +149,15 @@ $ buildtest schema -n settings.schema.json -j
          },
          "variables": {
            "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
+         },
+         "cluster": {
+           "type": "string"
+         },
+         "partition": {
+           "type": "string"
+         },
+         "qos": {
+           "type": "string"
          },
          "modules": {
            "$ref": "#/definitions/modules"
