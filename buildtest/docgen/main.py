@@ -106,6 +106,7 @@ def writer(fname, out, query):
 def main():
 
     if "buildtesters/tutorial" not in active_repos():
+
         class args:
             repo = "https://github.com/buildtesters/tutorials.git"
             branch = "master"
