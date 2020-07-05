@@ -21,7 +21,6 @@ help you get started. Shown below is the default settings file.
 
 .. program-output:: cat ../buildtest/settings/settings.yml
 
-
 Executors
 ----------
 
@@ -150,5 +149,3 @@ Shown below is the json schema for buildtest settings that can be retrieved via
 ``buildtest schema -n settings.schema.json -j``
 
 .. program-output:: cat docgen/schemas/settings-json.txt
-
-

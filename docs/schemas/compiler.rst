@@ -11,11 +11,6 @@ Schema Files
 - `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/buildsystem/schemas/compiler/compiler-v1.0.schema.json>`_
 - `Development Schema <https://buildtesters.github.io/schemas/compiler/compiler-v1.0.schema.json>`_
 
-compiler-v1.0.schema.json
--------------------------
-
-.. program-output:: cat docgen/schemas/compiler-json.txt
-
 Examples
 ---------
 
@@ -25,4 +20,11 @@ Each example is validated with schema ``compiler-v1.0.schema.json`` and error
 message from invalid examples are also shown in example output.
 
 .. program-output:: cat docgen/schemas/compiler-examples.txt
+
+compiler-v1.0.schema.json
+-------------------------
+
+.. program-output:: cat docgen/schemas/compiler-json.txt
+
+
 
