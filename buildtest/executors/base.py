@@ -497,7 +497,6 @@ class SlurmExecutor(BaseExecutor):
         self.partition = self._settings.get("partition")
         self.qos = self._settings.get("qos")
 
-
     def dispatch(self):
         """This method is responsible for dispatching job to slurm scheduler."""
 
