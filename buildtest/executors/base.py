@@ -117,10 +117,8 @@ class BuildExecutor:
         executor = self._choose_executor(builder)
 
         if executor.type == "local":
-            executor.setup()
             executor.run()
         elif executor.type == "slurm":
-            executor.check()
             executor.dispatch()
             executor.poll()
             executor.gather()
@@ -143,7 +141,6 @@ class BaseExecutor:
     """
 
     steps = ["setup", "run"]
-    dryrun_steps = ["setup", "dry"]
     type = "base"
 
     def __init__(self, name, settings):
@@ -163,24 +160,16 @@ class BaseExecutor:
         self.logger = logging.getLogger(__name__)
         self.name = name
         self._settings = settings
-        self.load(name)
+        self.load()
         self.builder = None
         self.result = {}
 
-    def load(self, name=None):
+    def load(self):
         """Load a particular configuration based on the name. This method
            should set defaults for the executor, and will vary based on the
            class.
         """
         pass
-
-    def setup(self):
-        """Setup the executor, meaning we check that the builder is defined,
-           the only step needed for a local (base) executor.
-        """
-
-        if not self.builder:
-            sys.exit("Builder is not defined for executor.")
 
     def run(self):
         """The run step basically runs the build. This is run after setup
@@ -325,6 +314,16 @@ class BaseExecutor:
 class LocalExecutor(BaseExecutor):
     type = "local"
 
+    def load(self):
+        self.shell = self._settings.get("shell")
+
+        self.check()
+
+    def check(self):
+
+        if not shutil.which(self.shell):
+            sys.exit(f"Unable to find shell: {self.shell}")
+
     def run(self):
         """This method is responsible for running test for LocalExecutor which
            runs test locally. We keep track of metadata in ``self.builder.metadata``
@@ -332,7 +331,19 @@ class LocalExecutor(BaseExecutor):
            is written to filesystem. After test
         """
         # Keep a result object
-        self.result = {}
+        # self.result = {}
+
+        # check shell type mismatch between buildspec shell and executor shell. We can't support python with sh/bash.
+        if (
+            self.builder.shell.name in ["sh", "bash", "/bin/bash", "/bin/sh"]
+            and self.shell == "python"
+        ) or (
+            self.builder.shell.name == "python"
+            and self.shell in ["sh", "bash", "/bin/bash", "/bin/sh"]
+        ):
+            sys.exit(
+                f"[{self.name}]: shell mismatch, expecting {self.shell} while buildspec shell is {self.builder.shell.name}"
+            )
 
         self.result["LOGFILE"] = self.builder.metadata.get("logfile", "")
         self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
@@ -393,7 +404,7 @@ class SlurmExecutor(BaseExecutor):
 
     type = "slurm"
     DEFAULT_POLL_INTERVAL = 30
-    steps = ["setup", "check", "dispatch", "poll", "gather", "close"]
+    steps = ["dispatch", "poll", "gather", "close"]
     poll_cmd = "sacct"
     sacct_fields = [
         "Account",
@@ -424,7 +435,11 @@ class SlurmExecutor(BaseExecutor):
 
     def check(self):
         """Check slurm binary is available before running tests. This will check
-           the launcher (sbatch) and sacct are available
+           the launcher (sbatch) and sacct are available. If qos, partition, and
+           cluster key defined we check if its a valid entity in slurm configuration.
+           For partition, we also check if its in the ``up`` state before dispatching
+           jobs. This method will raise an exception of type SystemExit if any
+           checks fail.
         """
 
         if not shutil.which(self.launcher):
@@ -470,14 +485,8 @@ class SlurmExecutor(BaseExecutor):
                     f"{self.cluster} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_cluster}"
                 )
 
-    def load(self, name):
-        """Load the executor preferences from the provided config, which is
-           added and indexed with "name." For slurm we look for the following
-           in vars:
-
-           :param launcher: defaults to sbatch
-           :type launcher: string
-        """
+    def load(self):
+        """Load the a slurm executor configuration from buildtest settings."""
 
         self.launcher = self._settings.get("launcher")
         self.launcher_opts = self._settings.get("options")
@@ -492,7 +501,10 @@ class SlurmExecutor(BaseExecutor):
         """This method is responsible for dispatching job to slurm scheduler."""
 
         # Keep a result object
-        self.result = {}
+        # self.result = {}
+
+        self.check()
+
         self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
 
         os.chdir(self.builder.metadata["testroot"])
@@ -541,7 +553,7 @@ class SlurmExecutor(BaseExecutor):
         """ This method will poll for job each interval specified by time interval
             until job finishes. We use `sacct` to poll for job id and sleep for given
             time interval until trying again. The command to be run is
-            sacct -j <jobid> -o State -n -X
+            ``sacct -j <jobid> -o State -n -X -P``
         """
 
         while True:

@@ -23,18 +23,10 @@ def test_checking_directory():
     assert not is_dir(dirname)
 
 
-@pytest.mark.xfail(
-    reason="Test expected to fail when checking an obscure file", raises=BuildTestError
-)
 def test_checking_file():
     file_name = str(uuid.uuid4())
     assert not is_file(file_name)
-
-    file1 = "~/.profile"
-    file2 = "$HOME/.profile"
-
-    assert is_file(file1)
-    assert is_file(file2)
+    assert is_file("/bin/bash")
 
 
 def test_directory_expansion():
@@ -56,13 +48,8 @@ def test_create_dir(tmp_path):
     # check if directory is created  after invoking create_dir
     assert is_dir(dirname)
 
-
-@pytest.mark.xfail(
-    reason="This test is expected to fail due to insufficient privileges",
-    raises=OSError,
-)
-def test_fail_create_dir():
-    create_dir("/xyz")
+    with pytest.raises(OSError):
+        create_dir("/xyz")
 
 
 def test_walk_tree():
