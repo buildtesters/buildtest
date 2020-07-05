@@ -117,7 +117,6 @@ class BuildExecutor:
         executor = self._choose_executor(builder)
 
         if executor.type == "local":
-            executor.setup()
             executor.run()
         elif executor.type == "slurm":
             executor.dispatch()
@@ -142,7 +141,6 @@ class BaseExecutor:
     """
 
     steps = ["setup", "run"]
-    dryrun_steps = ["setup", "dry"]
     type = "base"
 
     def __init__(self, name, settings):
@@ -172,14 +170,6 @@ class BaseExecutor:
            class.
         """
         pass
-
-    def setup(self):
-        """Setup the executor, meaning we check that the builder is defined,
-           the only step needed for a local (base) executor.
-        """
-
-        if not self.builder:
-            sys.exit("Builder is not defined for executor.")
 
     def run(self):
         """The run step basically runs the build. This is run after setup
@@ -445,7 +435,11 @@ class SlurmExecutor(BaseExecutor):
 
     def check(self):
         """Check slurm binary is available before running tests. This will check
-           the launcher (sbatch) and sacct are available
+           the launcher (sbatch) and sacct are available. If qos, partition, and
+           cluster key defined we check if its a valid entity in slurm configuration.
+           For partition, we also check if its in the ``up`` state before dispatching
+           jobs. This method will raise an exception of type SystemExit if any
+           checks fail.
         """
 
         if not shutil.which(self.launcher):
@@ -503,14 +497,14 @@ class SlurmExecutor(BaseExecutor):
         self.partition = self._settings.get("partition")
         self.qos = self._settings.get("qos")
 
-        # after load we check the slurm executor which validates the executor.
-        self.check()
 
     def dispatch(self):
         """This method is responsible for dispatching job to slurm scheduler."""
 
         # Keep a result object
         # self.result = {}
+
+        self.check()
 
         self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
 
