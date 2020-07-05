@@ -70,7 +70,8 @@
               "retry": {"type": "integer", "minimum": 1, "maximum": 5},
               "modules": {"$ref":  "#/definitions/modules"}
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "required": ["shell"]
        },
 
       "slurm": {
