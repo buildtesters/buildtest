@@ -1,10 +1,11 @@
 $ buildtest config --help
-usage: buildtest [options] [COMMANDS] config [-h] {view,edit,reset} ...
+usage: buildtest [options] [COMMANDS] config [-h] {view,edit,reset,validate} ...
  optional arguments:
-   -h, --help         show this help message and exit
+   -h, --help            show this help message and exit
  subcommands:
    buildtest configuration
-   {view,edit,reset}
-     view             View Buildtest Configuration File
-     edit             Edit Buildtest Configuration File
-     reset            Reset buildtest configuration file.
+   {view,edit,reset,validate}
+     view                View Buildtest Configuration File
+     edit                Edit Buildtest Configuration File
+     reset               Reset buildtest configuration file.
+     validate            Validate buildtest settings file with schema.
