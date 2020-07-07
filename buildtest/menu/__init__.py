@@ -66,6 +66,7 @@ class BuildTestParser:
 
     def main_menu(self):
         """This method adds argument to ArgumentParser to main menu of buildtest"""
+
         command_description = ""
         for k, v in self.subparser_dict.items():
             command_description += "\n {:<30} {:<30}".format(k, v)
@@ -97,19 +98,21 @@ class BuildTestParser:
     def build_menu(self):
         """This method implements the ``buildtest build`` command
 
-           Command Usage:
-
             # single buildspec file
-           buildtest build -b <file>
 
-           # single buildspec directory (builds all buildspec in directory)
-           buildtest build -b <dir>
+            ``buildtest build -b <file>``
 
-           # build a buildspec and exclude some buildspecs. The exclude (-x) accepts both file and directory
-           buildtest build -b <file> -x <file>
+            # single buildspec directory (builds all buildspec in directory)
+
+            ``buildtest build -b <dir>``
+
+            # build a buildspec and exclude some buildspecs. The exclude (-x) accepts both file and directory
+
+            ``buildtest build -b <file> -x <file>``
 
            # multiple buildspecs build and exclude
-           buildtest build -b <file> -b <dir> -x <file> -x <file>
+
+           ``buildtest build -b <file> -b <dir> -x <file> -x <file>``
 
         """
 
@@ -141,10 +144,96 @@ class BuildTestParser:
             help="Exclude one or more configs from processing. Configs can be files or directories.",
         )
 
-    def report_menu(self):
-        """This method implements the ``buildtest report`` command options
+
+    def buildspec_menu(self):
+        """This method implements ``buildtest buildspec`` command
+
+            Command Usage
+
+            # find all buildspecs
+
+            ``buildtest buildspec find``
+
+            # view a buildspec file
+
+            ``buildtest buildspec view <name>``
+
+            # edit and validate a buildspec file
+
+            ``buildtest buildspec edit <name>``
 
         """
+        # ####################### buildtest buildspec  ########################
+        parser_buildspec = self.subparsers.add_parser("buildspec")
+
+        subparsers_buildspec = parser_buildspec.add_subparsers(
+            description="Commands options for Buildspecs"
+        )
+        buildspec_find = subparsers_buildspec.add_parser(
+            "find", help="find all buildspecs"
+        )
+        buildspec_find.add_argument(
+            "-c",
+            "--clear",
+            help="Clear buildspec cache and find all buildspecs again",
+            action="store_true",
+        )
+        buildspec_view = subparsers_buildspec.add_parser(
+            "view", help="view a buildspec"
+        )
+        buildspec_view.add_argument("buildspec", help="name of buildspec")
+        buildspec_edit = subparsers_buildspec.add_parser(
+            "edit", help="edit a buildspec"
+        )
+        buildspec_edit.add_argument("buildspec", help="name of buildspec")
+
+        buildspec_find.set_defaults(func=func_buildspec_find)
+        buildspec_view.set_defaults(func=func_buildspec_view)
+        buildspec_edit.set_defaults(func=func_buildspec_edit)
+
+    def config_menu(self):
+        """This method adds argparse argument for ``buildtest config``
+
+           Command Usage
+
+            # view buildtest settings file
+
+            ``buildtest config view``
+
+           # open buildtest settings in editor and validate upon saving
+
+           ``buildtest config edit``
+
+           # reset buildtest settings to default file
+
+           ``buildtest config reset``
+        """
+
+        parser_config = self.subparsers.add_parser("config")
+        # #################### buildtest config   ###############################
+        subparsers_config = parser_config.add_subparsers(
+            description="buildtest configuration"
+        )
+        parser_config_view = subparsers_config.add_parser(
+            "view", help="View Buildtest Configuration File"
+        )
+        parser_config_edit = subparsers_config.add_parser(
+            "edit", help="Edit Buildtest Configuration File"
+        )
+        parser_config_restore = subparsers_config.add_parser(
+            "reset", help="Reset buildtest configuration file. "
+        )
+        parser_config_validate = subparsers_config.add_parser(
+            "validate", help="Validate buildtest settings file with schema."
+        )
+
+        parser_config_view.set_defaults(func=func_config_view)
+        parser_config_edit.set_defaults(func=func_config_edit)
+        parser_config_restore.set_defaults(func=func_config_reset)
+        parser_config_validate.set_defaults(func=func_config_validate)
+
+    def report_menu(self):
+        """This method implements the ``buildtest report`` command options"""
 
         parser_report = self.subparsers.add_parser("report")
 
@@ -153,17 +242,34 @@ class BuildTestParser:
         parser_report.set_defaults(func=func_report)
 
     def repo_menu(self):
-        """This method implements ``buildtest repo``
+        """ This method implements ``buildtest repo``
 
+            Command Usage
 
-           Command Usage
+            # add test repository to buildtest, this will clone repository locally and update repository cache
 
-           buildtest repo add <url>
-           buildtest repo add -b <branch> <url>
-           buildtest repo rm <repo>
-           buildtest repo list
-           buildtest repo list -s
-           buildtest repo update --state <STATE> <repo>
+           ``buildtest repo add <url>``
+
+            # add test repository with specific branch
+
+           ``buildtest repo add -b <branch> <url>``
+
+           # remove a repository from buildtest repository cache. This will remove the repository from filesystem
+
+           ``buildtest repo rm <repo>``
+
+           # list all repository in buildtest repository cache
+
+           ``buildtest repo list``
+
+           # show content of repository cache
+
+           ``buildtest repo list -s``
+
+           # enable/disable repository state
+
+           ``buildtest repo update --state <STATE> <repo>``
+
         """
 
         parser_repo = self.subparsers.add_parser("repo")
@@ -215,37 +321,7 @@ class BuildTestParser:
         parser_repo_rm.set_defaults(func=func_repo_remove)
         parser_repo_update.set_defaults(func=func_repo_update)
 
-    def config_menu(self):
-        """This method adds argparse argument for ``buildtest config``
 
-           Command Usage
-
-           buildtest config view
-           buildtest config edit
-           buildtest config reset
-        """
-        parser_config = self.subparsers.add_parser("config")
-        # #################### buildtest config   ###############################
-        subparsers_config = parser_config.add_subparsers(
-            description="buildtest configuration"
-        )
-        parser_config_view = subparsers_config.add_parser(
-            "view", help="View Buildtest Configuration File"
-        )
-        parser_config_edit = subparsers_config.add_parser(
-            "edit", help="Edit Buildtest Configuration File"
-        )
-        parser_config_restore = subparsers_config.add_parser(
-            "reset", help="Reset buildtest configuration file. "
-        )
-        parser_config_validate = subparsers_config.add_parser(
-            "validate", help="Validate buildtest settings file with schema."
-        )
-
-        parser_config_view.set_defaults(func=func_config_view)
-        parser_config_edit.set_defaults(func=func_config_edit)
-        parser_config_restore.set_defaults(func=func_config_reset)
-        parser_config_validate.set_defaults(func=func_config_validate)
 
     def schema_menu(self):
         """This method adds argparse argument for ``buildtest show``
@@ -253,16 +329,20 @@ class BuildTestParser:
             Command Usage
 
             # list all schema names
-            buildtest schema
+
+            -``buildtest schema``
 
             # list all schema in json
-            buildtest schema -j
+
+            -``buildtest schema -j``
 
             # list schema global.schema.json in json
-            buildtest schema -n global.schema.json -j
+
+            -``buildtest schema -n global.schema.json -j``
 
             # list schema examples for global.schema.json
-            buildtest schema  -n global.schema.json -e
+
+            -``buildtest schema  -n global.schema.json -e``
 
         """
 
@@ -285,39 +365,3 @@ class BuildTestParser:
 
         parser_schema.set_defaults(func=func_schema)
 
-    def buildspec_menu(self):
-        """This method implements ``buildtest buildspec`` command
-
-            Command Usage
-
-            buildtest buildspec find
-            buildtest buildspec view <name>
-            buildtest buildspec edit <name>
-        """
-        # ####################### buildtest buildspec  ########################
-        parser_buildspec = self.subparsers.add_parser("buildspec")
-
-        subparsers_buildspec = parser_buildspec.add_subparsers(
-            description="Commands options for Buildspecs"
-        )
-        buildspec_find = subparsers_buildspec.add_parser(
-            "find", help="find all buildspecs"
-        )
-        buildspec_find.add_argument(
-            "-c",
-            "--clear",
-            help="Clear buildspec cache and find all buildspecs again",
-            action="store_true",
-        )
-        buildspec_view = subparsers_buildspec.add_parser(
-            "view", help="view a buildspec"
-        )
-        buildspec_view.add_argument("buildspec", help="name of buildspec")
-        buildspec_edit = subparsers_buildspec.add_parser(
-            "edit", help="edit a buildspec"
-        )
-        buildspec_edit.add_argument("buildspec", help="name of buildspec")
-
-        buildspec_find.set_defaults(func=func_buildspec_find)
-        buildspec_view.set_defaults(func=func_buildspec_view)
-        buildspec_edit.set_defaults(func=func_buildspec_edit)

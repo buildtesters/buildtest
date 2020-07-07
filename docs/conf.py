@@ -14,7 +14,6 @@
 #
 import os
 import sys
-from sphinx.ext.apidoc import main as sphinx_apidoc
 
 here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, here)
@@ -42,13 +41,19 @@ release = "2019.04.02"
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
     "sphinx.ext.imgmath",
     "sphinxcontrib.programoutput",
+    "autoapi.extension"
 ]
 
-sphinx_apidoc(["--force", "--no-toc", "-e", "--output-dir=api", "../buildtest"])
+# Document Python Code
+autoapi_type = 'python'
+autoapi_dirs = ['../buildtest']
+autoapi_add_toctree_entry = True
+autoapi_member_order = "alphabetical"
+autoapi_root = 'api'
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
