@@ -102,7 +102,7 @@ class BuildTestParser:
             # single buildspec file
            buildtest build -b <file>
 
-           # single buildspec directory (builds all buildspec in directory
+           # single buildspec directory (builds all buildspec in directory)
            buildtest build -b <dir>
 
            # build a buildspec and exclude some buildspecs. The exclude (-x) accepts both file and directory
