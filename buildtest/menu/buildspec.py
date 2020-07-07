@@ -148,8 +148,7 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
        :param buildspec: buildspec file section to view or edit.
        :param view: boolean to determine if we want to view buildspec file
        :param edit: boolean to control if we want to edit buildspec file in editor.
-       :return: Shows the content of buildspec or let's user interactively edit
-                buildspec. An exception can be raised if it's unable to find buildspec
+       :return: Shows the content of buildspec or let's user interactively edit buildspec. An exception can be raised if it's unable to find buildspec
 
     """
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
