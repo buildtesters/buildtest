@@ -96,6 +96,7 @@ This documentation was last rebuild on |today| and is intended for version |vers
 
    contributing.rst
    references.rst
+   api.rst
 
 License
 --------
