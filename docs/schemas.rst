@@ -4,7 +4,7 @@ Schemas
 .. toctree::
    :maxdepth: 1
 
-   schemas/writing_buildspecs.rst
    schemas/global.rst
-   schemas/compiler.rst
+   schemas/writing_buildspecs.rst
    schemas/script.rst
+   schemas/compiler.rst
