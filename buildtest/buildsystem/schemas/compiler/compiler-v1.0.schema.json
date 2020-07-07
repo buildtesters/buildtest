@@ -39,6 +39,9 @@
           "type": "string",
           "enum": ["gnu", "intel", "pgi", "cray"]
         },
+        "cc": {"type":  "string"},
+        "fc": {"type":  "string"},
+        "cxx": {"type":  "string"},
         "source": { "type": "string" },
         "exec_args": {"type": "string"},
         "cflags": {"type":  "string"},
