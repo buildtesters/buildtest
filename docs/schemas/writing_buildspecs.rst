@@ -1,3 +1,5 @@
+.. writing_buildspecs:
+
 Writing buildspecs
 ===================
 
@@ -74,7 +76,7 @@ buildtest settings will provide a bash executor as follows::
           description: submit jobs on local machine using bash shell
           shell: bash
 
-The `shell: bash` instructs that this executor will use `bash` to run the test scripts.
+The ``shell: bash`` indicates this executor will use `bash` to run the test scripts.
 To reference this executor use the format ``<type>.<name>`` in this case **local.bash**
 refers to bash executor.
 
