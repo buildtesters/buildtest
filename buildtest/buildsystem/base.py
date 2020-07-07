@@ -694,6 +694,9 @@ class CompilerBuilder(BuilderBase):
         self.compiler_recipe = self.recipe.get("compiler")
         self.sourcefile = self.resolve_source(self.compiler_recipe["source"])
 
+        self.cc = self.compiler_recipe.get("cc") or self.cc
+        self.fc = self.compiler_recipe.get("fc") or self.fc
+        self.cxx = self.compiler_recipe.get("cxx") or self.cxx
         self.cflags = self.compiler_recipe.get("cflags")
         self.fflags = self.compiler_recipe.get("fflags")
         self.cxxflags = self.compiler_recipe.get("cxxflags")
