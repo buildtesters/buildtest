@@ -144,7 +144,6 @@ class BuildTestParser:
             help="Exclude one or more configs from processing. Configs can be files or directories.",
         )
 
-
     def buildspec_menu(self):
         """This method implements ``buildtest buildspec`` command
 
@@ -321,8 +320,6 @@ class BuildTestParser:
         parser_repo_rm.set_defaults(func=func_repo_remove)
         parser_repo_update.set_defaults(func=func_repo_update)
 
-
-
     def schema_menu(self):
         """This method adds argparse argument for ``buildtest show``
 
@@ -364,4 +361,3 @@ class BuildTestParser:
         )
 
         parser_schema.set_defaults(func=func_schema)
-

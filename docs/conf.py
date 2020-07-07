@@ -44,15 +44,15 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.imgmath",
     "sphinxcontrib.programoutput",
-    "autoapi.extension"
+    "autoapi.extension",
 ]
 
 # Document Python Code
-autoapi_type = 'python'
-autoapi_dirs = ['../buildtest']
+autoapi_type = "python"
+autoapi_dirs = ["../buildtest"]
 autoapi_add_toctree_entry = True
 autoapi_member_order = "alphabetical"
-autoapi_root = 'api'
+autoapi_root = "api"
 
 
 # Add any paths that contain templates here, relative to this directory.
