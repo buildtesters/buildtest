@@ -34,6 +34,9 @@ For more details see :ref:`buildtest_repo`
 Buildspecs
 ------------
 
+Finding Buildspecs
+~~~~~~~~~~~~~~~~~~~~
+
 buildtest is able to find and validate all buildspecs in your repos. The
 command ``buildtest buildspec`` comes with the following options.
 
@@ -51,6 +54,15 @@ buildtest will find all buildspecs and validate each file with the appropriate
 schema type. buildspecs that pass validation will be displayed on screen.
 buildtest will report all invalid buildspecs in a text file for you to review.
 
+buildtest will cache the results in **$HOME/.buildtest/buildspec.cache** so subsequent
+runs to ``buildtest buildspec find`` will be much faster since we read from cache.
+If you decide to add/remove repositories via ``buildtest repo`` commands see
+:ref:`buildtest_repo` then you can rebuild cache by running::
+
+    $ buildtest buildspec find --clear
+
+Viewing Buildspecs
+~~~~~~~~~~~~~~~~~~~~
 If you want to view or edit a buildspec you can type the name of test. Since we
 can have more than one test in a buildspec, opening any of the `name` entry
 that map to same file will result in same operation.
@@ -58,6 +70,9 @@ that map to same file will result in same operation.
 For example, we can view ``systemd_default_target`` as follows
 
 .. program-output:: cat docgen/getting_started/buildspec-view.txt
+
+Editing Buildspecs
+~~~~~~~~~~~~~~~~~~~~
 
 To edit a buildspec you can run ``buildtest buildspec edit <name>`` which
 will open file in editor. Once you make change, buildtest will validate the
@@ -107,11 +122,11 @@ it is a path found in the buildspec search path
 
 .. code-block:: console
 
-    (buildtest) siddiq90@DOE-7086392 ~ % pwd
+    $ pwd
     /Users/siddiq90
-    (buildtest) siddiq90@DOE-7086392 ~ % ls examples/systemd.yml
+    $ ls examples/systemd.yml
     ls: examples/systemd.yml: No such file or directory
-    (buildtest) siddiq90@DOE-7086392 ~ % buildtest build -b examples/systemd.yml
+    $ buildtest build -b examples/systemd.yml
     Paths:
     __________
     Prefix: /private/tmp
@@ -230,6 +245,21 @@ form. Shown below is an example::
 
 buildtest will store result metadata of each test in a file ``var/report.json`` which
 is found in root of buildtest. This file is updated upon every ``buildtest build`` command.
+
+Debug Mode
+------------
+
+buildtest can stream logs to ``stdout`` stream for debugging. You can use ``buildtest -d <DEBUGLEVEL>``
+or long option ``--debug`` with any buildtest commands. The DEBUGLEVEL are:
+``DEBUG``, ``INFO``, ``WARNING``, ``ERROR``,  ``CRITICAL`` which controls
+log level to be displayed in console. buildtest is using
+`logging.setLevel <https://docs.python.org/3/library/logging.html#logging.Logger.setLevel>`_
+to control log level.
+
+The same content is logged in **buildtest.log** with default log level of ``DEBUG``.
+If you want to get all logs use ``-d DEBUG`` with your buildtest command::
+
+    buildtest -d DEBUG <command>
 
 Logfile
 -------
