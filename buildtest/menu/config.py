@@ -5,9 +5,7 @@ import sys
 from jsonschema import ValidationError
 import shutil
 from buildtest import BUILDTEST_VERSION
-from buildtest.buildsystem.schemas.utils import (
-    get_schema_fullpath,
-)
+from buildtest.buildsystem.schemas.utils import get_schema_fullpath
 from buildtest.config import get_default_settings, check_settings, load_settings
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
