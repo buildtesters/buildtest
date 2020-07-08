@@ -8,10 +8,11 @@ import os
 
 logID = "buildtest"
 
+
+supported_type_schemas = ["script-v1.0.schema.json", "compiler-v1.0.schema.json"]
+
 # each has a subfolder in buildtest/buildsystem/schemas/ with *.schema.json
-supported_schemas = [
-    "script-v1.0.schema.json",
-    "compiler-v1.0.schema.json",
+supported_schemas = supported_type_schemas + [
     "global.schema.json",
     "settings.schema.json",
 ]

@@ -9,14 +9,15 @@ from buildtest import BUILDTEST_VERSION
 from buildtest.defaults import supported_schemas
 from buildtest.menu.buildspec import (
     func_buildspec_find,
-    func_buildspec_view,
     func_buildspec_edit,
+    func_buildspec_view,
 )
 from buildtest.menu.config import (
     func_config_edit,
-    func_config_view,
     func_config_reset,
+    func_config_summary,
     func_config_validate,
+    func_config_view,
 )
 from buildtest.menu.repo import (
     func_repo_add,
@@ -212,6 +213,10 @@ class BuildTestParser:
            # reset buildtest settings to default file
 
            ``buildtest config reset``
+
+           # validate buildtest settings
+
+           ``buildtest config validate``
         """
 
         parser_config = self.subparsers.add_parser("config")
@@ -231,11 +236,15 @@ class BuildTestParser:
         parser_config_validate = subparsers_config.add_parser(
             "validate", help="Validate buildtest settings file with schema."
         )
+        parser_config__summary = subparsers_config.add_parser(
+            "summary", help="Provide summary of buildtest settings."
+        )
 
         parser_config_view.set_defaults(func=func_config_view)
         parser_config_edit.set_defaults(func=func_config_edit)
         parser_config_restore.set_defaults(func=func_config_reset)
         parser_config_validate.set_defaults(func=func_config_validate)
+        parser_config__summary.set_defaults(func=func_config_summary)
 
     def report_menu(self):
         """This method implements the ``buildtest report`` command options"""

@@ -1,12 +1,25 @@
+import getpass
+import json
 import os
 import sys
 from jsonschema import ValidationError
-from shutil import copy
-from buildtest.config import get_default_settings, check_settings
+import shutil
+from buildtest import BUILDTEST_VERSION
+from buildtest.buildsystem.schemas.utils import (
+    get_schema_fullpath,
+    get_schemas_available,
+)
+from buildtest.config import get_default_settings, check_settings, load_settings
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
+    BUILDSPEC_CACHE_FILE,
     DEFAULT_SETTINGS_FILE,
+    REPO_FILE,
 )
+from buildtest.menu.repo import active_repos, get_repo_paths
+from buildtest.utils.file import is_file
+from buildtest.defaults import supported_type_schemas, supported_schemas
+from buildtest.system import BuildTestSystem
 
 
 def func_config_validate(args=None):
@@ -55,4 +68,86 @@ def func_config_reset(args=None):
        $HOME/.buildtest/settings.yml. This implements ``buildtest config reset`` command."""
 
     print(f"Restoring from default configuration: {DEFAULT_SETTINGS_FILE}")
-    copy(DEFAULT_SETTINGS_FILE, BUILDTEST_SETTINGS_FILE)
+    shutil.copy(DEFAULT_SETTINGS_FILE, BUILDTEST_SETTINGS_FILE)
+
+
+def func_config_summary(args=None):
+    """This method implements ``buildtest config summary`` option. In this method
+       we will display a summary of System Details, Buildtest settings, Schemas,
+       Repository details, Buildspecs files and test names.
+
+    """
+
+    system = BuildTestSystem()
+    print("buildtest version: ", BUILDTEST_VERSION)
+    print("buildtest Path:", shutil.which("buildtest"))
+
+    print("\n")
+    print("Machine Details")
+    print("{:_<30}".format(""))
+    print("Operating System: ", system.system["os"])
+    print("Hostname: ", system.system["host"])
+    print("Machine: ", system.system["machine"])
+    print("Processor: ", system.system["processor"])
+    print("Python Path", system.system["python"])
+    print("Python Version:", system.system["pyver"])
+    print("User:", getpass.getuser())
+
+    print("\n")
+
+    print("Buildtest Settings")
+    print("{:_<80}".format(""))
+    print(f"Buildtest Settings: {BUILDTEST_SETTINGS_FILE}")
+
+    validstate = "VALID"
+    try:
+        check_settings()
+    except ValidationError:
+        validstate = "INVALID"
+
+    print("Buildtest Settings is ", validstate)
+
+    settings = load_settings()
+
+    executors = []
+    for executor_type in settings.get("executors").keys():
+        for name in settings["executors"][executor_type].keys():
+            executors.append(f"{executor_type}.{name}")
+
+    print("Executors: ", executors)
+
+    print("Buildtest Repositories:")
+    print("{:_<80}".format(""))
+    repos = active_repos()
+    repo_paths = get_repo_paths()
+    print("Repo File:", REPO_FILE)
+    print("Active Repos:", repos)
+    print("Repo Paths:", repo_paths)
+    print("Buildspec Cache File:", BUILDSPEC_CACHE_FILE)
+
+    if is_file(BUILDSPEC_CACHE_FILE):
+        with open(BUILDSPEC_CACHE_FILE, "r") as fd:
+            buildspecs = json.loads(fd.read())
+
+            tests = []
+            count = 0
+            for file in buildspecs:
+                count += 1
+                tests += buildspecs[file]["sections"]
+
+            print("Number of buildspecs: ", count)
+            print("Number of Tests:", len(tests))
+            print("Tests: ", tests)
+
+    print("\n")
+
+    print("Buildtest Schemas")
+    print("{:_<80}".format(""))
+    print("Available Schemas:", supported_schemas)
+    print("Supported Sub-Schemas")
+    print("{:_<80}".format(""))
+    for schema in supported_type_schemas:
+        path = get_schema_fullpath(schema)
+        print(schema, ":", path)
+        examples_dir = os.path.join(os.path.dirname(path), "examples")
+        print("Examples Directory for schema: ", examples_dir)
