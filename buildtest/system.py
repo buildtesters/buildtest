@@ -47,12 +47,6 @@ class BuildTestSystem:
         self.system["python"] = shutil.which("python")
 
         self.logger.debug(f"Operating System: {self.system['os']}")
-
-        self.logger.debug("Session Environment Variables")
-        self.logger.debug("{:_<80}".format(""))
-        for k in self.system["env"].keys():
-            self.logger.debug(k)
-        self.logger.debug("{:_<80}".format(""))
         self.logger.debug(f"Python Path: {self.system['python']}")
 
     def check_lmod(self):

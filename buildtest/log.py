@@ -2,6 +2,7 @@
 Methods related to buildtest logging
 """
 import logging
+import sys
 from buildtest.defaults import logID
 
 
@@ -19,4 +20,17 @@ def init_logfile(logfile):
     logger.addHandler(fh)
     logger.setLevel(logging.DEBUG)
 
+    return logger
+
+
+def streamlog(debuglevel):
+
+    logger = logging.getLogger(logID)
+    streamhandler = logging.StreamHandler(sys.stdout)
+    streamhandler.setLevel(debuglevel)
+    formatter = logging.Formatter(
+        "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
+    )
+    streamhandler.setFormatter(formatter)
+    logger.addHandler(streamhandler)
     return logger
