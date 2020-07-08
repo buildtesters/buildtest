@@ -217,6 +217,10 @@ class BuildTestParser:
            # validate buildtest settings
 
            ``buildtest config validate``
+
+           # summary of buildtest
+
+           ``buildtest config summary``
         """
 
         parser_config = self.subparsers.add_parser("config")
@@ -236,7 +240,7 @@ class BuildTestParser:
         parser_config_validate = subparsers_config.add_parser(
             "validate", help="Validate buildtest settings file with schema."
         )
-        parser_config__summary = subparsers_config.add_parser(
+        parser_config_summary = subparsers_config.add_parser(
             "summary", help="Provide summary of buildtest settings."
         )
 
@@ -244,7 +248,7 @@ class BuildTestParser:
         parser_config_edit.set_defaults(func=func_config_edit)
         parser_config_restore.set_defaults(func=func_config_reset)
         parser_config_validate.set_defaults(func=func_config_validate)
-        parser_config__summary.set_defaults(func=func_config_summary)
+        parser_config_summary.set_defaults(func=func_config_summary)
 
     def report_menu(self):
         """This method implements the ``buildtest report`` command options"""

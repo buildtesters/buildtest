@@ -7,7 +7,6 @@ import shutil
 from buildtest import BUILDTEST_VERSION
 from buildtest.buildsystem.schemas.utils import (
     get_schema_fullpath,
-    get_schemas_available,
 )
 from buildtest.config import get_default_settings, check_settings, load_settings
 from buildtest.defaults import (
@@ -75,7 +74,6 @@ def func_config_summary(args=None):
     """This method implements ``buildtest config summary`` option. In this method
        we will display a summary of System Details, Buildtest settings, Schemas,
        Repository details, Buildspecs files and test names.
-
     """
 
     system = BuildTestSystem()
