@@ -45,7 +45,10 @@ class BuildTestSystem:
 
         self.system["env"] = dict(os.environ)
         self.system["python"] = shutil.which("python")
-
+        self.system["pyver"] = platform.python_version()
+        self.system["processor"] = platform.processor()
+        self.system["host"] = platform.node()
+        self.system["machine"] = platform.machine()
         self.logger.debug(f"Operating System: {self.system['os']}")
         self.logger.debug(f"Python Path: {self.system['python']}")
 
