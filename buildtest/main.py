@@ -4,7 +4,7 @@ from buildtest.config import load_settings, check_settings
 from buildtest.menu import BuildTestParser
 from buildtest.menu.build import func_build_subcmd
 from buildtest.system import BuildTestSystem
-from buildtest.log import init_logfile
+from buildtest.log import init_logfile, streamlog
 
 # column width for linewrap for argparse library
 os.environ["COLUMNS"] = "120"
@@ -26,6 +26,8 @@ def main():
     parser = BuildTestParser()
     args = parser.parse_options()
 
+    if args.debug:
+        streamlog(args.debug)
     # invoking load_settings will attempt to initialize buildtest settings and
     # load the schema
     buildtest_configuration = load_settings()

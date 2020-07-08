@@ -81,6 +81,12 @@ class BuildTestParser:
             action="version",
             version=f"""buildtest version {BUILDTEST_VERSION}""",
         )
+        self.parser.add_argument(
+            "-d",
+            "--debug",
+            choices=["DEBUG","INFO","WARNING","ERROR","CRITICAL"],
+            help="Enable debugging messages."
+        )
 
     def parse_options(self):
         """This method parses the argument from ArgumentParser class and returns
