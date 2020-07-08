@@ -84,8 +84,8 @@ class BuildTestParser:
         self.parser.add_argument(
             "-d",
             "--debug",
-            choices=["DEBUG","INFO","WARNING","ERROR","CRITICAL"],
-            help="Enable debugging messages."
+            choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+            help="Enable debugging messages.",
         )
 
     def parse_options(self):

@@ -22,12 +22,15 @@ def init_logfile(logfile):
 
     return logger
 
+
 def streamlog(debuglevel):
 
     logger = logging.getLogger(logID)
     streamhandler = logging.StreamHandler(sys.stdout)
     streamhandler.setLevel(debuglevel)
-    formatter =  logging.Formatter("%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s")
+    formatter = logging.Formatter(
+        "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
+    )
     streamhandler.setFormatter(formatter)
     logger.addHandler(streamhandler)
     return logger
