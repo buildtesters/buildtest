@@ -4,6 +4,8 @@ usage: buildtest [options] [COMMANDS]
  optional arguments:
    -h, --help            show this help message and exit
    -V, --version         show program's version number and exit
+   -d {DEBUG,INFO,WARNING,ERROR,CRITICAL}, --debug {DEBUG,INFO,WARNING,ERROR,CRITICAL}
+                         Enable debugging messages.
  COMMANDS:
    
     build                          Options for building test scripts

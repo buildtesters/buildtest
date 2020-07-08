@@ -1,5 +1,9 @@
 $ buildtest buildspec find 
-Detected 1 invalid buildspecs
+Found 14 buildspecs
+ Validated 5/14 buildspecs
+ Validated 10/14 buildspecs
+ Validated 14/14 buildspecs
+ Detected 1 invalid buildspecs 
  Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/buildspec.error 
  Name                      Type                      Buildspec                
  ________________________________________________________________________________
@@ -8,6 +12,9 @@ Detected 1 invalid buildspecs
  environment_variables     script                    /private/tmp/github.com/buildtesters/tutorials/examples/environment.yml
  variables                 script                    /private/tmp/github.com/buildtesters/tutorials/examples/vars.yml
  selinux_disable           script                    /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
+ exit1_fail                script                    /private/tmp/github.com/buildtesters/tutorials/examples/pass_returncode.yml
+ exit1_pass                script                    /private/tmp/github.com/buildtesters/tutorials/examples/pass_returncode.yml
+ returncode_mismatch       script                    /private/tmp/github.com/buildtesters/tutorials/examples/pass_returncode.yml
  wrongexecutor             script                    /private/tmp/github.com/buildtesters/tutorials/examples/invalid_executor.yml
  circle_area               script                    /private/tmp/github.com/buildtesters/tutorials/examples/python-shell.yml
  ulimit_filelock           script                    /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
@@ -20,4 +27,7 @@ Detected 1 invalid buildspecs
  hello_f                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
  hello_c                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
  hello_cplusplus           compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
- passing_args              compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+ cc_example                compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+ fc_example                compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+ cxx_example               compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+ executable_arguments      compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/passing_args.yml

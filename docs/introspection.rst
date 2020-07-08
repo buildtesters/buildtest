@@ -29,10 +29,9 @@ Shown below is an example
 
 To check if your buildtest settings is valid, run ``buildtest config validate``.
 This will validate your ``settings.yml`` with the schema **settings.schema.json**.
-The output will be::
+The output will be the following.
 
-     $ buildtest config validate
-    /Users/siddiq90/.buildtest/settings.yml is valid
+.. program-output:: cat docgen/config-validate.txt
 
 If there is an error during validation, the output from **jsonschema.exceptions.ValidationError**
 will be displayed in terminal. For example the error below indicates there was an error
@@ -58,6 +57,12 @@ enum types [``vi``, ``vim``, ``nano``, ``emacs``]::
 
     On instance['config']['editor']:
         'gedit'
+
+
+You can get a summary of buildtest using ``buildtest config summary``, this will
+display information from several sources into one single command along.
+
+.. program-output:: cat docgen/config-summary.txt
 
 .. _buildtest_repo:
 
