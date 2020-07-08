@@ -88,7 +88,7 @@ def introspection_cmds():
         "config-view.txt": "buildtest config view",
         "config-reset.txt": "buildtest config reset",
         "config-validate.txt": "buildtest config validate",
-        "config-summary.txt": "buildtest config summary"
+        "config-summary.txt": "buildtest config summary",
     }
 
     for k, v in cmd_dict.items():
@@ -114,7 +114,6 @@ def main():
             branch = "master"
 
         func_repo_add(args)
-
 
     create_dir(docgen)
     build_helper()
