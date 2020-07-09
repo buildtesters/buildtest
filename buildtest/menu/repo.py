@@ -12,7 +12,7 @@ import yaml
 
 from buildtest.config import get_default_settings
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, REPO_FILE
-from buildtest.utils.file import create_dir, is_file, resolve_path
+from buildtest.utils.file import create_dir, is_file, resolve_path, is_dir
 
 logger = logging.getLogger(__name__)
 
@@ -132,6 +132,13 @@ def clone(url, dest, branch="master"):
 
 
 def func_repo_list(args):
+    """This method implements ``buildtest repo list`` which shows content of all
+       repositories from REPO_FILE. If no repositories are found we print a message
+       and return otherwise we show the list of repository entries when
+       ``buildtest repo list`` is issued, if ``buildtest repo list -s`` is
+       issued we show content of REPO_FILE.
+    """
+
     if not is_file(REPO_FILE):
         raise SystemExit(
             "No repositories found, please consider adding a repository via 'buildtest repo add'"
@@ -140,13 +147,20 @@ def func_repo_list(args):
     with open(REPO_FILE, "r") as fd:
         repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
 
+    # if no repos found we return with message
+    if not repo_dict:
+        print ("No repositories found")
+        return
+
+    # show content of yaml file if buildtest repo list --show is issued otherwise
+    # report a list of all repositories.
     if args.show:
         print(yaml.dump(repo_dict, default_flow_style=False))
     else:
         for repo in repo_dict.keys():
             print(repo)
 
-    return repo_dict.keys()
+    #return repo_dict.keys()
 
 
 def active_repos():
@@ -166,6 +180,32 @@ def active_repos():
     return list(repo_dict.keys())
 
 
+def validate_repos():
+    """Remove any invalid repos from repo file when destination path is removed
+       manually but repo entry exists.
+    """
+
+    if not is_file(REPO_FILE):
+        return
+
+    with open(REPO_FILE, "r") as fd:
+        repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
+
+    invalid_repos = []
+    # remove any repos that don't have dest directory defined
+    for repo in repo_dict.keys():
+        if not is_dir(repo_dict[repo]["dest"]):
+            invalid_repos.append(repo)
+
+    if invalid_repos:
+        print("Removing invalid repos:", invalid_repos)
+        for repo in invalid_repos:
+            del repo_dict[repo]
+
+        with open(REPO_FILE, "w") as fd:
+            yaml.dump(repo_dict, fd, default_flow_style=False)
+
+
 def get_repo_paths():
     """ Return list of destination path where repositories are cloned. This
         is used to build the buildspec search path.
@@ -173,10 +213,13 @@ def get_repo_paths():
         :return: A list of directory path where repos are cloned
         :rtype: list
     """
+
     dest_paths = []
 
     if not is_file(REPO_FILE):
         return
+
+    validate_repos()
 
     with open(REPO_FILE, "r") as fd:
         repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
@@ -189,6 +232,8 @@ def get_repo_paths():
 
 
 def func_repo_remove(args):
+    """This method implements command ``buildtest repo rm`` which removes repository
+       entries from REPO_FILE and updates file. """
 
     if not is_file(REPO_FILE):
         raise SystemExit(f"Unable to find repository file: {REPO_FILE}")
@@ -209,6 +254,9 @@ def func_repo_remove(args):
 
 
 def func_repo_update(args):
+    """This method implements command ``buildtest repo update`` which
+       allows user to enable/disable repository state.
+    """
 
     if not is_file(REPO_FILE):
         raise SystemExit(f"Unable to find repository file: {REPO_FILE}")
