@@ -7,6 +7,7 @@ import yaml
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, REPO_FILE
 from buildtest.menu.repo import (
     clone,
+    active_repos,
     func_repo_add,
     func_repo_list,
     func_repo_remove,
@@ -73,7 +74,9 @@ def test_func_repo_add():
     with pytest.raises(SystemExit):
         func_repo_add(only_github_repo)
 
-    avail_repos = func_repo_list(repo_list_command)
+    func_repo_list(repo_list_command)
+
+    avail_repos = active_repos()
     # remove buildtesters/buildtest-cori before adding to list to ensure
     # directory does not exist and entry is removed from REPO_FILE
     if "buildtesters/buildtest-cori" in avail_repos:
@@ -139,7 +142,7 @@ def test_func_repo_remove():
     class args:
         show = False
 
-    avail_repos = func_repo_list(args)
+    avail_repos = active_repos()
     assert avail_repos
 
     for repository in avail_repos:
