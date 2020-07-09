@@ -74,7 +74,6 @@ def test_func_repo_add():
     with pytest.raises(SystemExit):
         func_repo_add(only_github_repo)
 
-
     func_repo_list(repo_list_command)
 
     avail_repos = active_repos()
