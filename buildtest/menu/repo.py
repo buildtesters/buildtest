@@ -149,7 +149,7 @@ def func_repo_list(args):
 
     # if no repos found we return with message
     if not repo_dict:
-        print ("No repositories found")
+        print("No repositories found")
         return
 
     # show content of yaml file if buildtest repo list --show is issued otherwise
@@ -160,7 +160,7 @@ def func_repo_list(args):
         for repo in repo_dict.keys():
             print(repo)
 
-    #return repo_dict.keys()
+    # return repo_dict.keys()
 
 
 def active_repos():
