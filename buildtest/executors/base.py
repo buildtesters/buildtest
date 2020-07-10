@@ -461,7 +461,7 @@ class SlurmExecutor(BaseExecutor):
                     f"{self.partition} not a valid partition!. Please select one of the following partitions: {slurm_partitions}"
                 )
 
-            query = "sinfo -p {self.partition} -h -O available"
+            query = f"sinfo -p {self.partition} -h -O available"
             cmd = BuildTestCommand(query)
             cmd.execute()
             part_state = "".join(cmd.get_output())
