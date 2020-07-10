@@ -545,7 +545,11 @@ class SlurmExecutor(BaseExecutor):
             err += f"[{self.builder.metadata['name']}] running command: {sbatch_cmd}"
             sys.exit(err)
 
-        self.job_id = int(re.search(r"\d+", "".join(out)).group())
+        # get last job ID
+        cmd = BuildTestCommand("squeue -u $USER -h -O JobID | tail -n 1")
+        cmd.execute()
+        out = "".join(cmd.get_output()).strip()
+        self.job_id = int(out)
 
         self.result["runtime"] = "0"
         self.write_testresults(out, err)
