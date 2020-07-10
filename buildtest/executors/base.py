@@ -121,8 +121,8 @@ class BuildExecutor:
             executor.run()
         elif executor.type == "slurm":
             executor.dispatch()
-            executor.poll()
-            executor.gather()
+            # executor.poll()
+            # executor.gather()
 
         """
         # Run each step defined for dry run
@@ -135,6 +135,18 @@ class BuildExecutor:
         """
         return executor.result
 
+    def poll(self, builder):
+
+        executor = self._choose_executor(builder)
+        if executor.type != "slurm":
+            return True
+
+        job_state = executor.poll()
+        if job_state not in ["PENDING", "RUNNING"]:
+            executor.gather()
+            return True
+
+        return False
 
 class BaseExecutor:
     """The BaseExecutor is an abstract base class for all executors. All
@@ -547,10 +559,14 @@ class SlurmExecutor(BaseExecutor):
             sys.exit(err)
 
         # get last job ID
-        output = subprocess.check_output("squeue -u $USER -h -O JobID | tail -n 1", shell=True,universal_newlines=True)
+        output = subprocess.check_output(
+            "squeue -u $USER -h -O JobID | tail -n 1",
+            shell=True,
+            universal_newlines=True,
+        )
         self.job_id = int(output.strip())
 
-
+        self.result["state"] = "N/A"
         self.result["runtime"] = "0"
         self.write_testresults(out, err)
 
@@ -561,30 +577,31 @@ class SlurmExecutor(BaseExecutor):
             ``sacct -j <jobid> -o State -n -X -P``
         """
 
-        while True:
+        #while True:
 
-            print(
-                f"[{self.builder.metadata['name']}]: Polling Job {self.job_id} in  {self.poll_interval} seconds"
-            )
-            time.sleep(self.poll_interval)
-            self.logger.debug(f"Query Job: {self.job_id}")
+        print(
+            f"[{self.builder.metadata['name']}]: Polling Job {self.job_id} in  {self.poll_interval} seconds"
+        )
+        # time.sleep(self.poll_interval)
+        self.logger.debug(f"Query Job: {self.job_id}")
 
-            slurm_query = f"{self.poll_cmd} -j {self.job_id} -o State -n -X -P"
+        slurm_query = f"{self.poll_cmd} -j {self.job_id} -o State -n -X -P"
 
-            # to query jobs from another cluster we must add -M <cluster> to sacct
-            if self.cluster:
-                slurm_query += f" -M {self.cluster}"
+        # to query jobs from another cluster we must add -M <cluster> to sacct
+        if self.cluster:
+            slurm_query += f" -M {self.cluster}"
 
-            self.logger.debug(slurm_query)
-            cmd = BuildTestCommand(slurm_query)
-            cmd.execute()
-            job_state = cmd.get_output()
-            job_state = "".join(job_state).rstrip()
-            msg = f"Job {self.job_id} in {job_state} state for test: {self.builder.metadata['name']}"
-            print(msg)
-            self.logger.debug(msg)
-            if job_state not in ["PENDING", "RUNNING"]:
-                break
+        self.logger.debug(slurm_query)
+        cmd = BuildTestCommand(slurm_query)
+        cmd.execute()
+        self.job_state = cmd.get_output()
+        self.job_state = "".join(self.job_state).rstrip()
+        msg = f"Job {self.job_id} in {self.job_state} state for test: {self.builder.metadata['name']}"
+        print(msg)
+        self.logger.debug(msg)
+        return self.job_state
+            #if self.job_state not in ["PENDING", "RUNNING"]:
+            #    break
 
     def gather(self):
         """Gather Slurm detail after job completion"""

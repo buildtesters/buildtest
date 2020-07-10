@@ -7,6 +7,7 @@ import logging
 import os
 import re
 import sys
+import time
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
 
@@ -341,6 +342,18 @@ def func_build_subcmd(args, config_opts):
         for error in errmsg:
             print(error)
         print("\n")
+
+    while True:
+        statelist = []
+        time.sleep(20)
+
+        for builder in builders:
+            state = executor.poll(builder)
+            statelist.append(state)
+
+        # break when all poll states are True
+        if all(statelist):
+            break
 
     if total_tests == 0:
         print("No tests were executed")
