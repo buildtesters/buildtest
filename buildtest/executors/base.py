@@ -6,6 +6,7 @@ import logging
 import os
 import re
 import shutil
+import subprocess
 import sys
 import time
 
@@ -546,10 +547,9 @@ class SlurmExecutor(BaseExecutor):
             sys.exit(err)
 
         # get last job ID
-        cmd = BuildTestCommand("squeue -u $USER -h -O JobID | tail -n 1")
-        cmd.execute()
-        out = "".join(cmd.get_output()).strip()
-        self.job_id = int(out)
+        output = subprocess.check_output("squeue -u $USER -h -O JobID | tail -n 1", shell=True,universal_newlines=True)
+        self.job_id = int(output.strip())
+
 
         self.result["runtime"] = "0"
         self.write_testresults(out, err)
