@@ -148,6 +148,7 @@ class BuildExecutor:
 
         return False
 
+
 class BaseExecutor:
     """The BaseExecutor is an abstract base class for all executors. All
        executors must have a listing of steps and dryrun_steps
@@ -568,6 +569,7 @@ class SlurmExecutor(BaseExecutor):
 
         self.result["state"] = "N/A"
         self.result["runtime"] = "0"
+        self.result["returncode"] = "0"
         self.write_testresults(out, err)
 
     def poll(self):
@@ -577,7 +579,7 @@ class SlurmExecutor(BaseExecutor):
             ``sacct -j <jobid> -o State -n -X -P``
         """
 
-        #while True:
+        # while True:
 
         print(
             f"[{self.builder.metadata['name']}]: Polling Job {self.job_id} in  {self.poll_interval} seconds"
@@ -600,8 +602,8 @@ class SlurmExecutor(BaseExecutor):
         print(msg)
         self.logger.debug(msg)
         return self.job_state
-            #if self.job_state not in ["PENDING", "RUNNING"]:
-            #    break
+        # if self.job_state not in ["PENDING", "RUNNING"]:
+        #    break
 
     def gather(self):
         """Gather Slurm detail after job completion"""
