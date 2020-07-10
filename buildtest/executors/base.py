@@ -464,7 +464,8 @@ class SlurmExecutor(BaseExecutor):
             query = "sinfo -p {self.partition} -h -O available"
             cmd = BuildTestCommand(query)
             cmd.execute()
-            part_state = "".cmd.get_output().rstrip()
+            part_state = "".cmd.get_output()
+            part_state = part_state.rstrip()
             # check if partition is in 'up' state. If not we raise an error.
             if part_state != "up":
                 sys.exit(

@@ -160,8 +160,6 @@ def func_repo_list(args):
         for repo in repo_dict.keys():
             print(repo)
 
-    # return repo_dict.keys()
-
 
 def active_repos():
     """ Return list of active repository names from REPO_FILE
