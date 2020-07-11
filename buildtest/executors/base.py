@@ -135,20 +135,55 @@ class BuildExecutor:
         """
         return executor.result
 
-    def poll(self, builder):
+    def poll(self):
 
+        print("Executor List: ", self.executors)
+
+        interval = 10
+        while True:
+            statelist = []
+            print("\n")
+            print(f"Polling Jobs in {interval} seconds")
+            print("{:_<40}".format(""))
+
+            time.sleep(interval)
+
+            slurm_executors = [
+                self.executors[executor]
+                for executor in self.executors.keys()
+                if executor.startswith("slurm")
+            ]
+            print("slurm_executors:", slurm_executors)
+            for executor in slurm_executors:
+                if (
+                    executor.job_state in ["PENDING", "RUNNING"]
+                    or not executor.job_state
+                ):
+                    state = False
+                    executor.poll(executor.builder)
+                else:
+                    state = True
+                    executor.gather()
+
+                statelist.append(state)
+                print("State List:", statelist)
+                # break when all poll states are True
+                if all(statelist):
+                    break
+        """        
         executor = self._choose_executor(builder)
         if executor.type != "slurm":
             return True
-
+        
         # only poll job if its in PENDING or RUNNING state
-        if executor.job_state in ["PENDING", "RUNNING"]:
+        if executor.job_state in ["PENDING", "RUNNING"] or not executor.job_state:
             executor.poll()
         else:
             executor.gather()
             return True
 
         return False
+        """
 
 
 class BaseExecutor:
