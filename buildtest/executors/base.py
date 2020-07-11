@@ -16,6 +16,7 @@ from buildtest.utils.file import write_file, read_file
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.timer import Timer
 
+
 class BuildExecutor:
     """A BuildExecutor is a base class some type of executor, defined under
        the buildtest/settings/default-config.json schema. For example,
@@ -546,7 +547,6 @@ class SlurmExecutor(BaseExecutor):
             ``sacct -j <jobid> -o State -n -X -P``
         """
 
-
         self.logger.debug(f"Query Job: {self.job_id}")
 
         slurm_query = f"{self.poll_cmd} -j {self.job_id} -o State -n -X -P"
@@ -564,7 +564,6 @@ class SlurmExecutor(BaseExecutor):
         print(msg)
         self.logger.debug(msg)
         return self.job_state
-
 
     def gather(self):
         """Gather Slurm detail after job completion"""
