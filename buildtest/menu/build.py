@@ -7,6 +7,7 @@ import logging
 import os
 import re
 import sys
+import time
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
 
@@ -293,6 +294,7 @@ def func_build_subcmd(args, config_opts):
     total_tests = 0
     errmsg = []
     results = []
+    poll = False
     print(
         """
 +----------------------+
@@ -322,6 +324,9 @@ def func_build_subcmd(args, config_opts):
         else:
             failed_tests += 1
 
+        if result["state"] == "N/A":
+            poll = True
+
         print(
             "{:<20} {:<20} {:<20} {:<20} {:<20}".format(
                 builder.name,
@@ -342,9 +347,30 @@ def func_build_subcmd(args, config_opts):
             print(error)
         print("\n")
 
+    # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
+
+    if poll:
+        interval = 10
+        while True:
+            statelist = []
+            print("\n")
+            print(f"Polling Jobs in {interval} seconds")
+            print("{:_<40}".format(""))
+
+            time.sleep(interval)
+
+            for builder in builders:
+                state = executor.poll(builder)
+                statelist.append(state)
+
+            # break when all poll states are True
+            if all(statelist):
+                break
+
     if total_tests == 0:
         print("No tests were executed")
         return
+
     print(
         """
 +----------------------+
