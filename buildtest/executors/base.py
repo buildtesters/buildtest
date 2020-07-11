@@ -559,6 +559,9 @@ class SlurmExecutor(BaseExecutor):
             err += f"[{self.builder.metadata['name']}] running command: {sbatch_cmd}"
             sys.exit(err)
 
+        # wait 5 seconds before querying slurm for jobID. It can take some time for output
+        # of job to show up from time of submission and running squeue.
+        time.sleep(5)
         # get last job ID
         output = subprocess.check_output(
             "squeue -u $USER -h -O JobID | tail -n 1",
@@ -566,7 +569,7 @@ class SlurmExecutor(BaseExecutor):
             universal_newlines=True,
         )
         self.job_id = int(output.strip())
-
+        self.logger.debug(f"[{self.builder.metadata['name']}] JobID: {self.job_id} dispatched to scheduler")
         self.result["state"] = "N/A"
         self.result["runtime"] = "0"
         self.result["returncode"] = "0"
