@@ -115,7 +115,7 @@ def validate_slurm_executors(slurm_executor):
 
     slurm_partitions = get_slurm_partitions()
     slurm_qos = get_slurm_qos()
-    slurm_cluster = get_slurm_qos()
+    slurm_cluster = get_slurm_clusters()
 
     for executor in slurm_executor:
 
