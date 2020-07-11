@@ -141,6 +141,7 @@ class BuildExecutor:
         if executor.type != "slurm":
             return True
 
+        # only poll job if its in PENDING or RUNNING state
         if executor.job_state in ["PENDING", "RUNNING"]:
             executor.poll()
         else:
@@ -420,6 +421,7 @@ class SlurmExecutor(BaseExecutor):
     type = "slurm"
     DEFAULT_POLL_INTERVAL = 30
     steps = ["dispatch", "poll", "gather", "close"]
+    job_state = None
     poll_cmd = "sacct"
     sacct_fields = [
         "Account",
@@ -585,9 +587,6 @@ class SlurmExecutor(BaseExecutor):
 
         # while True:
 
-        print(
-            f"[{self.builder.metadata['name']}]: Polling Job {self.job_id} in  {self.poll_interval} seconds"
-        )
         # time.sleep(self.poll_interval)
         self.logger.debug(f"Query Job: {self.job_id}")
 
@@ -602,7 +601,7 @@ class SlurmExecutor(BaseExecutor):
         cmd.execute()
         self.job_state = cmd.get_output()
         self.job_state = "".join(self.job_state).rstrip()
-        msg = f"Job {self.job_id} in {self.job_state} state for test: {self.builder.metadata['name']}"
+        msg = f"[{self.builder.metadata['name']}]: JobID {self.job_id} in {self.job_state} state: "
         print(msg)
         self.logger.debug(msg)
         return self.job_state
