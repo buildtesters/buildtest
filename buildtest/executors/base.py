@@ -140,7 +140,7 @@ class BuildExecutor:
         executor = self._choose_executor(builder)
         if executor.type != "slurm":
             return True
-        
+
         # only poll job if its in PENDING or RUNNING state
         if executor.job_state in ["PENDING", "RUNNING"] or not executor.job_state:
             executor.poll()
@@ -516,10 +516,7 @@ class SlurmExecutor(BaseExecutor):
     def dispatch(self):
         """This method is responsible for dispatching job to slurm scheduler."""
 
-        # Keep a result object
-        # self.result = {}
-
-        self.check()
+        # self.check()
 
         self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
 
@@ -555,14 +552,21 @@ class SlurmExecutor(BaseExecutor):
         out = command.get_output()
         err = command.get_error()
 
+        # if sbatch job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
             err = f"[{self.builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
             err += f"[{self.builder.metadata['name']}] running command: {sbatch_cmd}"
             sys.exit(err)
 
-        # wait 5 seconds before querying slurm for jobID. It can take some time for output
+        interval = 10
+
+        print (f"[{self.builder.metadata['name']}] job dispatched to scheduler")
+        print (f"[{self.builder.metadata['name']}] acquiring job id in {interval} seconds")
+
+        # wait 10 seconds before querying slurm for jobID. It can take some time for output
         # of job to show up from time of submission and running squeue.
-        time.sleep(5)
+        time.sleep(interval)
+
         # get last job ID
         output = subprocess.check_output(
             "squeue -u $USER -h -O JobID | tail -n 1",
@@ -601,7 +605,7 @@ class SlurmExecutor(BaseExecutor):
         cmd.execute()
         self.job_state = cmd.get_output()
         self.job_state = "".join(self.job_state).rstrip()
-        msg = f"[{self.builder.metadata['name']}]: JobID {self.job_id} in {self.job_state} state: "
+        msg = f"[{self.builder.metadata['name']}]: JobID {self.job_id} in {self.job_state} state "
         print(msg)
         self.logger.debug(msg)
         return self.job_state

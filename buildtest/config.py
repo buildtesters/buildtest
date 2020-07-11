@@ -1,6 +1,7 @@
 import logging
 import os
 import shutil
+import sys
 from jsonschema import validate
 
 from buildtest.buildsystem.schemas.utils import load_schema
@@ -9,6 +10,8 @@ from buildtest.defaults import (
     DEFAULT_SETTINGS_FILE,
     DEFAULT_SETTINGS_SCHEMA,
 )
+from buildtest.system import get_slurm_partitions,get_slurm_qos, get_slurm_clusters
+from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, is_dir, is_file
 
 logger = logging.getLogger(__name__)
@@ -72,6 +75,12 @@ def check_settings(settings_path=None, run_init=True):
     logger.debug("Validation was successful")
 
 
+    slurm_executors = user_schema.get("executors", {}).get("slurm")
+
+    if slurm_executors:
+        validate_slurm_executors(slurm_executors)
+
+
 def load_settings(settings_path=None, run_init=True):
     """Load the default settings file if no argument is specified.
 
@@ -94,3 +103,53 @@ def get_default_settings():
     """Load and return the default buildtest settings file. """
 
     return load_settings()
+
+def validate_slurm_executors(slurm_executor):
+    """This method will validate slurm executors, we check if partition, qos,
+       and cluster fields are valid values by retrieving details from slurm configuration.
+       These checks are performed if ``partition``, ``qos`` or ``cluster`` field
+       is specified in slurm executor section.
+
+       :param slurm_executor: list of slurm executors defined in settings['executors]['slurm'] dictionary, where settings is loaded buildtest setting
+    """
+
+    slurm_partitions = get_slurm_partitions()
+    slurm_qos = get_slurm_qos()
+    slurm_cluster = get_slurm_qos()
+
+    for executor in slurm_executor:
+
+        # if 'partition' key defined check if its valid partition
+        if slurm_executor[executor].get("partition"):
+
+            if slurm_executor[executor]["partition"] not in slurm_partitions:
+                sys.exit(
+                    f"{slurm_executor[executor]['partition']} not a valid partition!. Please select one of the following partitions: {slurm_partitions}"
+                )
+
+            query = f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
+            cmd = BuildTestCommand(query)
+            cmd.execute()
+            part_state = "".join(cmd.get_output())
+            part_state = part_state.rstrip()
+            # check if partition is in 'up' state. If not we raise an error.
+            if part_state != "up":
+                sys.exit(
+                    f"{slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
+                )
+        # check if 'qos' key is valid qos
+        if slurm_executor[executor].get('qos'):
+
+            if slurm_executor[executor]['qos'] not in slurm_qos:
+                sys.exit(
+                    f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm_qos}"
+                )
+        # check if 'cluster' key is valid slurm cluster
+        if slurm_executor[executor].get('cluster'):
+
+            if slurm_executor[executor]['cluster'] not in slurm_cluster:
+                sys.exit(
+                    f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_cluster}"
+                )
+
+
