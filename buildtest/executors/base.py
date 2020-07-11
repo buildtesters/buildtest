@@ -424,7 +424,6 @@ class SlurmExecutor(BaseExecutor):
         "Account",
         "AllocNodes",
         "AllocTRES",
-        "Constraints",
         "ConsumedEnergyRaw",
         "CPUTimeRaw",
         "End",
@@ -434,7 +433,6 @@ class SlurmExecutor(BaseExecutor):
         "NCPUS",
         "NNodes",
         "QOS",
-        "Reason",
         "ReqGRES",
         "ReqMem",
         "ReqNodes",
@@ -569,7 +567,9 @@ class SlurmExecutor(BaseExecutor):
             universal_newlines=True,
         )
         self.job_id = int(output.strip())
-        self.logger.debug(f"[{self.builder.metadata['name']}] JobID: {self.job_id} dispatched to scheduler")
+        self.logger.debug(
+            f"[{self.builder.metadata['name']}] JobID: {self.job_id} dispatched to scheduler"
+        )
         self.result["state"] = "N/A"
         self.result["runtime"] = "0"
         self.result["returncode"] = "0"
