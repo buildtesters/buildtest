@@ -343,9 +343,15 @@ def func_build_subcmd(args, config_opts):
             print(error)
         print("\n")
 
+
+    interval = 20
     while True:
         statelist = []
-        time.sleep(20)
+        print ("\n")
+        print (f"Polling Jobs in {interval} seconds")
+        print ("{:_<80}".format(""))
+
+        time.sleep(interval)
 
         for builder in builders:
             state = executor.poll(builder)

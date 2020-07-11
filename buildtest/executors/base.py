@@ -141,8 +141,9 @@ class BuildExecutor:
         if executor.type != "slurm":
             return True
 
-        job_state = executor.poll()
-        if job_state not in ["PENDING", "RUNNING"]:
+        if executor.job_state in ["PENDING", "RUNNING"]:
+            executor.poll()
+        else:
             executor.gather()
             return True
 
