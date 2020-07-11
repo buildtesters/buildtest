@@ -15,8 +15,6 @@ from buildtest.defaults import BUILDTEST_SETTINGS_FILE
 from buildtest.utils.file import write_file, read_file
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.timer import Timer
-from buildtest.system import get_slurm_partitions, get_slurm_qos, get_slurm_clusters
-
 
 class BuildExecutor:
     """A BuildExecutor is a base class some type of executor, defined under
@@ -121,18 +119,7 @@ class BuildExecutor:
             executor.run()
         elif executor.type == "slurm":
             executor.dispatch()
-            # executor.poll()
-            # executor.gather()
 
-        """
-        # Run each step defined for dry run
-        for step in executor.steps:
-            if getattr(executor, step, None):
-                executor.builder.logger.debug(
-                    "Running %s for executor %s" % (step, executor)
-                )
-                getattr(executor, step)()
-        """
         return executor.result
 
     def poll(self, builder):
@@ -467,7 +454,6 @@ class SlurmExecutor(BaseExecutor):
                 f"[{self.builder.metadata['name']}]: Cannot find slurm poll command: {self.poll_cmd}"
             )
 
-
     def load(self):
         """Load the a slurm executor configuration from buildtest settings."""
 
@@ -541,12 +527,9 @@ class SlurmExecutor(BaseExecutor):
             cmd += [f"-M {self.cluster}"]
         cmd += ["-u $USER -h -O JobID | tail -n 1"]
         cmd = " ".join(cmd)
+
         # get last job ID
-        output = subprocess.check_output(
-            cmd,
-            shell=True,
-            universal_newlines=True,
-        )
+        output = subprocess.check_output(cmd, shell=True, universal_newlines=True)
         self.job_id = int(output.strip())
         self.logger.debug(
             f"[{self.builder.metadata['name']}] JobID: {self.job_id} dispatched to scheduler"
@@ -563,9 +546,7 @@ class SlurmExecutor(BaseExecutor):
             ``sacct -j <jobid> -o State -n -X -P``
         """
 
-        # while True:
 
-        # time.sleep(self.poll_interval)
         self.logger.debug(f"Query Job: {self.job_id}")
 
         slurm_query = f"{self.poll_cmd} -j {self.job_id} -o State -n -X -P"
@@ -583,8 +564,7 @@ class SlurmExecutor(BaseExecutor):
         print(msg)
         self.logger.debug(msg)
         return self.job_state
-        # if self.job_state not in ["PENDING", "RUNNING"]:
-        #    break
+
 
     def gather(self):
         """Gather Slurm detail after job completion"""
