@@ -28,7 +28,7 @@ def func_config_validate(args=None):
     """
     try:
         check_settings()
-    except (ValidationError,SystemExit) as err:
+    except (ValidationError, SystemExit) as err:
         print(err)
         raise sys.exit(f"{BUILDTEST_SETTINGS_FILE} is not valid")
 

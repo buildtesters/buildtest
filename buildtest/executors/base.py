@@ -467,39 +467,6 @@ class SlurmExecutor(BaseExecutor):
                 f"[{self.builder.metadata['name']}]: Cannot find slurm poll command: {self.poll_cmd}"
             )
 
-        # if 'partition' key defined check if its valid partition
-        if self.partition:
-
-            slurm_partitions = get_slurm_partitions()
-            if self.partition not in slurm_partitions:
-                sys.exit(
-                    f"{self.partition} not a valid partition!. Please select one of the following partitions: {slurm_partitions}"
-                )
-
-            query = f"sinfo -p {self.partition} -h -O available"
-            cmd = BuildTestCommand(query)
-            cmd.execute()
-            part_state = "".join(cmd.get_output())
-            part_state = part_state.rstrip()
-            # check if partition is in 'up' state. If not we raise an error.
-            if part_state != "up":
-                sys.exit(
-                    f"{self.partition} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
-                )
-        # check if 'qos' key is valid qos
-        if self.qos:
-            slurm_qos = get_slurm_qos()
-            if self.qos not in slurm_qos:
-                sys.exit(
-                    f"{self.qos} not a valid qos! Please select one of the following qos: {slurm_qos}"
-                )
-        # check if 'cluster' key is valid slurm cluster
-        if self.cluster:
-            slurm_cluster = get_slurm_clusters()
-            if self.cluster not in slurm_cluster:
-                sys.exit(
-                    f"{self.cluster} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_cluster}"
-                )
 
     def load(self):
         """Load the a slurm executor configuration from buildtest settings."""
@@ -516,7 +483,7 @@ class SlurmExecutor(BaseExecutor):
     def dispatch(self):
         """This method is responsible for dispatching job to slurm scheduler."""
 
-        # self.check()
+        self.check()
 
         self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
 
@@ -560,16 +527,23 @@ class SlurmExecutor(BaseExecutor):
 
         interval = 10
 
-        print (f"[{self.builder.metadata['name']}] job dispatched to scheduler")
-        print (f"[{self.builder.metadata['name']}] acquiring job id in {interval} seconds")
+        print(f"[{self.builder.metadata['name']}] job dispatched to scheduler")
+        print(
+            f"[{self.builder.metadata['name']}] acquiring job id in {interval} seconds"
+        )
 
         # wait 10 seconds before querying slurm for jobID. It can take some time for output
         # of job to show up from time of submission and running squeue.
         time.sleep(interval)
 
+        cmd = ["squeue"]
+        if self.cluster:
+            cmd += [f"-M {self.cluster}"]
+        cmd += ["-u $USER -h -O JobID | tail -n 1"]
+        cmd = " ".join(cmd)
         # get last job ID
         output = subprocess.check_output(
-            "squeue -u $USER -h -O JobID | tail -n 1",
+            cmd,
             shell=True,
             universal_newlines=True,
         )

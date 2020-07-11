@@ -10,7 +10,7 @@ from buildtest.defaults import (
     DEFAULT_SETTINGS_FILE,
     DEFAULT_SETTINGS_SCHEMA,
 )
-from buildtest.system import get_slurm_partitions,get_slurm_qos, get_slurm_clusters
+from buildtest.system import get_slurm_partitions, get_slurm_qos, get_slurm_clusters
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, is_dir, is_file
 
@@ -74,7 +74,6 @@ def check_settings(settings_path=None, run_init=True):
     validate(instance=user_schema, schema=config_schema)
     logger.debug("Validation was successful")
 
-
     slurm_executors = user_schema.get("executors", {}).get("slurm")
 
     if slurm_executors:
@@ -103,6 +102,7 @@ def get_default_settings():
     """Load and return the default buildtest settings file. """
 
     return load_settings()
+
 
 def validate_slurm_executors(slurm_executor):
     """This method will validate slurm executors, we check if partition, qos,
@@ -138,18 +138,16 @@ def validate_slurm_executors(slurm_executor):
                     f"{slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
                 )
         # check if 'qos' key is valid qos
-        if slurm_executor[executor].get('qos'):
+        if slurm_executor[executor].get("qos"):
 
-            if slurm_executor[executor]['qos'] not in slurm_qos:
+            if slurm_executor[executor]["qos"] not in slurm_qos:
                 sys.exit(
                     f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm_qos}"
                 )
         # check if 'cluster' key is valid slurm cluster
-        if slurm_executor[executor].get('cluster'):
+        if slurm_executor[executor].get("cluster"):
 
-            if slurm_executor[executor]['cluster'] not in slurm_cluster:
+            if slurm_executor[executor]["cluster"] not in slurm_cluster:
                 sys.exit(
                     f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_cluster}"
                 )
-
-
