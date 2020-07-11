@@ -349,10 +349,7 @@ def func_build_subcmd(args, config_opts):
 
     # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
 
-    if poll:
-        executor.poll()
 
-    """
     if poll:
         interval = 10
         while True:
@@ -370,7 +367,6 @@ def func_build_subcmd(args, config_opts):
             # break when all poll states are True
             if all(statelist):
                 break
-    """
 
     if total_tests == 0:
         print("No tests were executed")
