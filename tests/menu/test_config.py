@@ -5,6 +5,7 @@ from buildtest.menu.config import (
     func_config_view,
     func_config_reset,
     func_config_validate,
+    func_config_summary,
 )
 from buildtest.utils.file import walk_tree
 from buildtest.buildsystem.schemas.utils import load_schema
@@ -36,3 +37,8 @@ def test_valid_config_schemas():
 def test_config_validate():
 
     func_config_validate()
+
+
+def test_config_summary():
+
+    func_config_summary()

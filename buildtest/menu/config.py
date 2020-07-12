@@ -1,9 +1,9 @@
 import getpass
 import json
 import os
+import shutil
 import sys
 from jsonschema import ValidationError
-import shutil
 from buildtest import BUILDTEST_VERSION
 from buildtest.buildsystem.schemas.utils import get_schema_fullpath
 from buildtest.config import get_default_settings, check_settings, load_settings

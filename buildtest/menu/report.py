@@ -5,7 +5,7 @@ from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.file import is_file, create_dir
 
 
-def func_report(args):
+def func_report(args=None):
 
     # raise error if BUILD_REPORT not found
     if not is_file(BUILD_REPORT):

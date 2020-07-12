@@ -4,7 +4,6 @@ from buildtest.config import (
     load_settings,
     check_settings,
     get_default_settings,
-    create_settings_file,
     init,
 )
 from buildtest.utils.file import is_file, is_dir
@@ -12,10 +11,14 @@ from buildtest.utils.file import is_file, is_dir
 
 def test_load_and_check_settings():
 
-    load_settings(BUILDTEST_SETTINGS_FILE)
-    assert os.path.exists(BUILDTEST_SETTINGS_FILE)
+    init(BUILDTEST_SETTINGS_FILE)
+    print(f"Checking if file: {BUILDTEST_SETTINGS_FILE} is valid")
+    assert is_file(BUILDTEST_SETTINGS_FILE)
 
-    check_settings()
+    recipe = load_settings(BUILDTEST_SETTINGS_FILE)
+    assert isinstance(recipe, dict)
+
+    check_settings(executor_check=False)
 
 
 def test_get_default_settings():
@@ -25,15 +28,6 @@ def test_get_default_settings():
 
     assert "config" in loaded_settings.keys()
     assert "executors" in loaded_settings.keys()
-
-
-def test_create_settings_file(tmp_path):
-
-    settings = os.path.join(tmp_path, "settings.yml")
-    print(f"Creating buildtest settings file: {settings}")
-    create_settings_file(settings)
-    print(f"Checking if file: {settings} is valid")
-    assert is_file(settings)
 
 
 def test_init_creation_of_buildtest_dir(tmp_path):
