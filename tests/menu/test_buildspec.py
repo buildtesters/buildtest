@@ -9,7 +9,62 @@ from buildtest.defaults import REPO_FILE, BUILDSPEC_CACHE_FILE
 from buildtest.utils.file import is_file
 
 
-def test_repofile_not_found():
+def test_func_buildspec_find():
+    class args:
+        repo = "http://github.com/buildtesters/tutorials"
+        branch = "master"
+
+    try:
+        func_repo_add(args)
+    except SystemExit:
+        pass
+
+    enabled_repos = active_repos()
+    assert enabled_repos
+
+    org_name = os.path.basename(os.path.dirname(args.repo))
+    repo_name = os.path.basename(args.repo)
+    repo = os.path.join(org_name, repo_name)
+    print(repo)
+    print(active_repos())
+    assert repo in active_repos()
+
+    # testing buildtest buildspec find --clear
+    class args:
+        find = True
+        clear = True
+
+    func_buildspec_find(args)
+
+    # rerunning buildtest buildspec find without --clear option this will read from cache file
+    class args:
+        find = True
+        clear = False
+
+    func_buildspec_find(args)
+
+def test_buildspec_view():
+
+    assert BUILDSPEC_CACHE_FILE
+
+    with open(BUILDSPEC_CACHE_FILE, "r") as fd:
+        buildspecs = json.loads(fd.read())
+
+        # get first test name from first buildspec
+        for file in buildspecs:
+            test_name = buildspecs[file]["sections"][0]
+            break
+        print(f"Viewing buildspec test: {test_name}")
+
+        class args:
+            buildspec = test_name
+            view = True
+            edit = False
+
+        func_buildspec_view(args)
+
+
+def test_repofile_not_found_buildspec_find():
     """"Testing when REPO_FILE does not exist, then ``buildtest buildspec find``
         should raise SystemExit
     """
@@ -46,58 +101,3 @@ def test_repofile_not_found():
     move(backup_repofile, REPO_FILE)
     move(backup_cache, BUILDSPEC_CACHE_FILE)
 
-
-def test_func_buildspec_find():
-    class args:
-        repo = "http://github.com/buildtesters/tutorials"
-        branch = "master"
-
-    try:
-        func_repo_add(args)
-    except SystemExit:
-        pass
-
-    enabled_repos = active_repos()
-    assert enabled_repos
-
-    org_name = os.path.basename(os.path.dirname(args.repo))
-    repo_name = os.path.basename(args.repo)
-    repo = os.path.join(org_name, repo_name)
-    print(repo)
-    print(active_repos())
-    assert repo in active_repos()
-
-    # testing buildtest buildspec find --clear
-    class args:
-        find = True
-        clear = True
-
-    func_buildspec_find(args)
-
-    # rerunning buildtest buildspec find without --clear option this will read from cache file
-    class args:
-        find = True
-        clear = False
-
-    func_buildspec_find(args)
-
-
-def test_buildspec_view():
-
-    assert BUILDSPEC_CACHE_FILE
-
-    with open(BUILDSPEC_CACHE_FILE, "r") as fd:
-        buildspecs = json.loads(fd.read())
-
-        # get first test name from first buildspec
-        for file in buildspecs:
-            test_name = buildspecs[file]["sections"][0]
-            break
-        print(f"Viewing buildspec test: {test_name}")
-
-        class args:
-            buildspec = test_name
-            view = True
-            edit = False
-
-        func_buildspec_view(args)

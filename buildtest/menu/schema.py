@@ -70,7 +70,7 @@ def func_schema(args):
             # for settings.schema.json we validate each test by running check_settings
             if args.name == "settings.schema.json":
                 try:
-                    check_settings(example, run_init=False)
+                    check_settings(example, run_init=False, executor_check=False)
                 except ValidationError as err:
                     valid_state = "FAIL"
                     err_msg = err
