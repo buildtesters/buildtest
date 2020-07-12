@@ -48,7 +48,7 @@ def init(settings_path):
     create_settings_file(settings_path)
 
 
-def check_settings(settings_path=None, run_init=True):
+def check_settings(settings_path=None, run_init=True, executor_check=True):
     """Checks all keys in configuration file (settings/settings.yml) are valid
        keys and ensure value of each key matches expected type . For some keys
        special logic is taken to ensure values are correct and directory path
@@ -74,10 +74,13 @@ def check_settings(settings_path=None, run_init=True):
     validate(instance=user_schema, schema=config_schema)
     logger.debug("Validation was successful")
 
-    slurm_executors = user_schema.get("executors", {}).get("slurm")
-
-    if slurm_executors:
-        validate_slurm_executors(slurm_executors)
+    # only perform executor check if executor_check is True. This is default
+    # behavior, this can be disabled only for regression test where executor check
+    # such as slurm check are not applicable.
+    if executor_check:
+        slurm_executors = user_schema.get("executors", {}).get("slurm")
+        if slurm_executors:
+            validate_slurm_executors(slurm_executors)
 
 
 def load_settings(settings_path=None, run_init=True):

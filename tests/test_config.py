@@ -12,10 +12,12 @@ from buildtest.utils.file import is_file, is_dir
 
 def test_load_and_check_settings():
 
-    load_settings(BUILDTEST_SETTINGS_FILE)
     assert os.path.exists(BUILDTEST_SETTINGS_FILE)
 
-    check_settings()
+    recipe = load_settings(BUILDTEST_SETTINGS_FILE)
+    assert isinstance(recipe, dict)
+
+    check_settings(executor_check=False)
 
 
 def test_get_default_settings():
