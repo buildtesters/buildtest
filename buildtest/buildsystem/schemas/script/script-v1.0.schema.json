@@ -39,6 +39,9 @@
     },
     "status": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/status"
+    },
+    "skip": {
+      "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/skip"
     }
   }
 }

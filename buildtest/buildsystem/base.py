@@ -178,6 +178,11 @@ class BuildspecParser:
         if self.recipe:
             for name in self.keys():
                 recipe = self.recipe["buildspecs"][name]
+
+                if recipe.get("skip"):
+                    print(f"[{name}] test is skipped.")
+                    continue
+
                 # Add the builder based on the type
                 if recipe["type"] == "script":
                     builders.append(
