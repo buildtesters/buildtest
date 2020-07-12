@@ -38,6 +38,9 @@
         }
       }
     },
+    "skip": {
+      "type": "boolean"
+    },
     "executor": {
       "type": "string"
     },
