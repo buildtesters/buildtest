@@ -43,6 +43,7 @@ def test_func_buildspec_find():
 
     func_buildspec_find(args)
 
+
 def test_buildspec_view():
 
     assert BUILDSPEC_CACHE_FILE
@@ -100,4 +101,3 @@ def test_repofile_not_found_buildspec_find():
     # restore from backup files
     move(backup_repofile, REPO_FILE)
     move(backup_cache, BUILDSPEC_CACHE_FILE)
-
