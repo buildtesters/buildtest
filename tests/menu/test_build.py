@@ -70,12 +70,13 @@ def test_func_build_subcmd():
 
     repo_paths = get_repo_paths()
     prefix = repo_paths[0]
+
     class args:
-        buildspec = [os.path.join(prefix,"examples")]
+        buildspec = [os.path.join(prefix, "examples")]
         debug = False
         settings = BUILDTEST_SETTINGS_FILE
         testdir = "/tmp"
-        exclude = [os.path.join(prefix,"examples")]
+        exclude = [os.path.join(prefix, "examples")]
 
     # this results in no buildspecs built
     with pytest.raises(SystemExit):
