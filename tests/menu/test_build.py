@@ -1,8 +1,9 @@
 import os
 import pytest
 import uuid
-from buildtest.menu.build import discover_buildspecs
-
+from buildtest.config import load_settings
+from buildtest.menu.build import discover_buildspecs, func_build_subcmd
+from buildtest.menu.repo import active_repos, func_repo_add
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)
 
@@ -40,3 +41,26 @@ def test_discover_buildspecs():
     with pytest.raises(SystemExit):
         invalid_file = str(uuid.uuid4())
         discover_buildspecs(invalid_file)
+
+def test_func_build_subcmd():
+
+    class args:
+        buildspec = ["examples"]
+        settings = None
+        testdir = None
+        exclude = None
+
+
+    buildtest_configuration = load_settings()
+
+    tutorials = "buildtesters/tutorials"
+    if tutorials not in active_repos():
+        class repocmd:
+            repo = "https://github.com/buildtesters/tutorials.git"
+            branch = "master"
+
+        func_repo_add(repocmd)
+
+        assert tutorials in active_repos()
+
+    func_build_subcmd(args, buildtest_configuration)
