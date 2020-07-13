@@ -137,11 +137,9 @@ def func_build_subcmd(args, config_opts):
 
        :rtype: None
     """
-
+    print(args)
     # if buildtest settings specified on CLI, it would be in args.settings otherwise set
     # to default configuration (BUILDTEST_SETTINGS_FILE)
-
-    print(args)
 
     if args.settings:
         logger.debug(
