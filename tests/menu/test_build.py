@@ -2,6 +2,7 @@ import os
 import pytest
 import uuid
 from buildtest.config import load_settings
+from buildtest.defaults import BUILDTEST_SETTINGS_FILE
 from buildtest.menu.build import discover_buildspecs, func_build_subcmd
 from buildtest.menu.repo import active_repos, func_repo_add
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -64,3 +65,14 @@ def test_func_build_subcmd():
         assert tutorials in active_repos()
 
     func_build_subcmd(args, buildtest_configuration)
+
+    class args:
+        buildspec = ["examples"]
+        settings = BUILDTEST_SETTINGS_FILE
+        testdir = "/tmp"
+        exclude = "examples"
+
+    # this results in no buildspecs built
+    func_build_subcmd(args, buildtest_configuration)
+
+
