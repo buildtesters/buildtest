@@ -170,7 +170,7 @@ def active_repos():
     repo_dict = {}
 
     if not is_file(REPO_FILE):
-        return
+        return []
 
     with open(REPO_FILE, "r") as fd:
         repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
