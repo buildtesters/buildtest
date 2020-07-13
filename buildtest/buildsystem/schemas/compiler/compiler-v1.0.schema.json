@@ -35,6 +35,9 @@
     "skip": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/skip"
     },
+    "tags": {
+      "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/tags"
+    },
     "compiler": {
       "type": "object",
       "properties": {
