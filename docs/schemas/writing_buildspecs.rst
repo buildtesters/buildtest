@@ -43,10 +43,8 @@ pair for variable assignment. The `run` section is required for script schema wh
 defines the content of the test script.
 
 Let's look at a more interesting example, shown below is a multi line run
-example using the `script` schema with test name called `systemd_default_target`
-which is used to check default target on system.
-
-::
+example using the `script` schema with test name called
+`systemd_default_target`, shown below is the content of test::
 
     version: "1.0"
     buildspecs:
@@ -192,7 +190,9 @@ Here is a python example calculating area of circle::
       circle_area:
         executor: local.python
         type: script
+        shell: python
         description: "Calculate circle of area given a radius"
+        tags: ["python"]
         run: |
           import math
           radius = 2
@@ -201,9 +201,92 @@ Here is a python example calculating area of circle::
           print("Area of circle ", area)
 
 
-Python scripts are very picky when it comes to formatting, in the ``run`` section
-if you are defining multiline python script you must remember to use 2 space indent
-to register multiline string. buildtest will extract the content from run section
-and inject in your test script. To ensure proper formatting for a more complex python
-script you may be better of writing a python script in separate file and call it
-in ``run`` section.
+The ``shell: python`` will let us write python script in the ``run`` section.
+The ``tags`` field can be used to classify test, the field expects an array of
+string items.
+
+.. note::
+    Python scripts are very picky when it comes to formatting, in the ``run`` section
+    if you are defining multiline python script you must remember to use 2 space indent
+    to register multiline string. buildtest will extract the content from run section
+    and inject in your test script. To ensure proper formatting for a more complex python
+    script you may be better of writing a python script in separate file and call it
+    in ``run`` section.
+
+Skipping test
+-------------
+
+By default, buildtest will run all tests defined in ``buildspecs`` section, if you
+want to skip a test use the ``skip:`` field which expects a boolean value. Shown
+below is an example test::
+
+    version: "1.0"
+    buildspecs:
+      skip:
+        type: script
+        executor: local.bash
+        skip: true
+        run: hostname
+
+      unskipped:
+        type: script
+        executor: local.bash
+        skip: false
+        run: hostname
+
+The first test `skip` will be skipped by buildtest because ``skip: true`` is defined.
+
+.. note::
+
+    YAML and JSON have different representation for boolean. For json schema
+    valid values are ``true`` and ``false`` see https://json-schema.org/understanding-json-schema/reference/boolean.html
+    however YAML has many more representation for boolean see https://yaml.org/type/bool.html. You
+    may use any of the YAML boolean, however it's best to stick with json schema values
+    ``true`` and ``false``.
+
+
+Here is an example build, notice message ``[skip] test is skipped`` during the build
+stage::
+
+    $ buildtest build -b examples/skip_tests.yml
+    Paths:
+    __________
+    Prefix: /private/tmp
+    Buildspec Search Path: ['/private/tmp/github.com/buildtesters/tutorials', '/Users/siddiq90/.buildtest/site']
+    Test Directory: /private/tmp/tests
+
+    Stage: Discovered Buildspecs
+
+
+    +-------------------------------+
+    | Stage: Discovered Buildspecs  |
+    +-------------------------------+
+
+    /Users/siddiq90/Documents/tutorials/examples/skip_tests.yml
+
+    Excluded Buildspecs:  []
+
+    +----------------------+
+    | Stage: Building Test |
+    +----------------------+
+
+    Name                      Schema Validation File    TestPath                                 Buildspec
+    ________________________________________________________________________________________________________________________________________________________________
+    [skip] test is skipped.
+    unskipped                 script-v1.0.schema.json   /private/tmp/tests/skip_tests/unskipped.sh /Users/siddiq90/Documents/tutorials/examples/skip_tests.yml
+
+    +----------------------+
+    | Stage: Running Test  |
+    +----------------------+
+
+    Name                 Executor             Status               Return Code          Buildspec Path
+    ________________________________________________________________________________________________________________________
+    unskipped            local.bash           PASS                 0                    /Users/siddiq90/Documents/tutorials/examples/skip_tests.yml
+
+    +----------------------+
+    | Stage: Test Summary  |
+    +----------------------+
+
+    Executed 1 tests
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%

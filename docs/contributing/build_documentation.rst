@@ -45,23 +45,9 @@ following::
   make view
 
 This will open a ``firefox`` session to the root of your documentation that was
-recently generated. Mae sure you have X11 forwarding in order for firefox to
+recently generated. Make sure you have X11 forwarding in order for firefox to
 work properly. Refer to the ``Makefile`` to see all of the make tags or run
 ``make`` or ``make help`` for additional help.
-
-When you run ``make html``, it will build API docs  which are located under
-``docs/api``. Make sure the api docs are committed if git reports any changes.
-Changes to api docs will happen only if new methods or classes are added or any
-modification to docstrings.
-
-If you want to rebuild API docs, it is best to remove all existing docs and
-regenerate them. This can be done as follows::
-
-    git rm -rf docs/api/*
-    make apidocs
-
-Next you can add and commit the api docs.
-
 
 Automate Documentation Examples
 --------------------------------
