@@ -89,6 +89,20 @@ you can do the following::
 
 The changes will be shown with lines removed or added via ``-`` and ``+``. For more details refer to `black documentation <https://github.com/psf/black>`_.
 
+pyflakes
+----------
+
+There is an automated test to check for unused imports using pyflakes. pyflakes
+should be available in your python environment if you installed buildtest extra
+dependencies in requirements.txt (``pip install -r docs/requirements.txt``).
+
+You can run pyflakes against buildtest source by running::
+
+    pyflakes buildtest
+
+If you see errors, please fix them and wait for CI checks to pass.
+
+
 GitHub Bots
 -----------
 

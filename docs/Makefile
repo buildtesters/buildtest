@@ -19,8 +19,5 @@ help:
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-apidocs:
-	sphinx-apidoc -f -e -o api ../buildtest
-
 view:
 	firefox _build/html/index.html
