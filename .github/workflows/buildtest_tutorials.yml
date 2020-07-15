@@ -35,7 +35,7 @@ jobs:
     - name: Test buildtest tutorials
       run: |
         git --version
-        git fetch -u origin develop:develop
+        git fetch -u origin devel:devel
         python --version
         python setup.py install
         which buildtest
