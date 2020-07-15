@@ -30,16 +30,23 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-      
    
-    - name: Test buildtest tutorials
+   
+    - name: Get buildtest
       run: |
         git --version
         git fetch -u origin devel:devel
         python --version
         python setup.py install
         which buildtest
+        buildtest --version
         buildtest --help
+   
+    - name: Validate buildspecs in tutorials
+      run: |
         buildtest repo add https://github.com/buildtesters/tutorials.git
         buildtest repo list
         buildtest buildspec find
+    
+    - name: Running Tutorials Example
+      run: buildtest build -b examples
