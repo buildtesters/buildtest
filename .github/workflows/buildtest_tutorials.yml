@@ -36,6 +36,7 @@ jobs:
       run: |
         git --version
         git fetch -u origin develop:develop
+        python --version
         python setup.py install
         which buildtest
         buildtest --help
