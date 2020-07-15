@@ -61,7 +61,7 @@ Some other options can be useful for troubleshooting such as::
     pytest -rf tests
 
     # print all test with verbose
-    pytests -v tests
+    pytest -v tests
 
     # print all except Pass tests
     pytest -ra tests
