@@ -108,3 +108,18 @@ in report. For more details on coverage refer to
 `coverage documentation <https://coverage.readthedocs.io/>`_.
 
 
+Tox
+----
+
+buildtest provides a `tox.ini` configuration to allow user to test regression test
+in isolated virtual environment. To get started install tox::
+
+    pip install tox
+
+Refer to `tox documentation <https://tox.readthedocs.io/en/latest/>`_ for more details.
+To run tox for all envrionment you can run::
+
+    tox
+
+If your system has one python instance let's say python 3.7 you can
+test for python 3.7 environment by running ``tox -e py37``.
