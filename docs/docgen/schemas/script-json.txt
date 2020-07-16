@@ -44,6 +44,12 @@ $ buildtest schema -n script-v1.0.schema.json -j
      },
      "status": {
        "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/status"
+     },
+     "skip": {
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/skip"
+     },
+     "tags": {
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/tags"
      }
    }
  }

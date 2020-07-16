@@ -115,6 +115,23 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/script/e
        - "-N 1"
        - "-n 8"
      run: hostname
+   skip_example:
+     type: script
+     executor: local.bash
+     description: this test is skip
+     skip: true
+     run: hostname
+   tag_example:
+     type: script
+     executor: local.bash
+     description: This is a tag example
+     sbatch:
+       - "-t 10:00:00"
+       - "-p normal"
+       - "-N 1"
+       - "-n 8"
+     tags: [slurm]
+     run: hostname
  File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/script/examples/1.0/invalid/examples.yml
  Valid State: FAIL
  ________________________________________________________________________________
@@ -195,8 +212,19 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/script/e
      type: script
      executor: local.bash
      description: invalid type for shell shebang, must be a string
-     shell:
-       shebang: ["#!/bin/bash"]
+     shebang: ["#!/bin/bash"]
+     run: hostname
+   invalid_skip_value:
+     type: script
+     executor: local.bash
+     description: invalid value for skip, must be boolean
+     skip: 1
+     run: hostname
+   invalid_tags_value:
+     type: script
+     executor: local.bash
+     description: invalid tag value must be all string items
+     tags: ["compiler", 400 ]
      run: hostname
    additionalProperties_test:
      type: script

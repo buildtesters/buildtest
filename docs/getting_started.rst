@@ -97,28 +97,45 @@ file that adheres to one of the buildtest schemas. For a complete list of build 
 Building a Test
 ----------------
 
-To build a test, we use the ``-b`` to specify the the path to Buildspec file.
-buildtest will discover the buildspecs specified by ``-b`` option, later you will
-see you can provide more than one buildspec on the command line.
+To build a test, we use the ``--buildspec`` or short option ``-b`` to specify the
+path to Buildspec file.
 
-You can specify a full path to buildspec as follows
+The buildspec search resolution is as follows:
+
+    1. If file doesn't exist, check for every search prefix check if relative path exists (``if os.path.exists(os.path.join(path, buildspec))``), break after first match
+
+    2.
+        a. If buildspec path is a directory, traverse directory recursively to find all ``.yml`` extensions
+        b. If buildspec path is a file, check if file extension is not ``.yml``, if so (i.e ``buildtest build -b file.txt``) exit immediately
+        c. If buildspec is neither directory (2a) or file (2b) then we raise error, must be invalid file
+
+    3. If no files found during directory traversal (2a) (i.e no .yml files in directory) then raise error
+
+    4. Return resolved paths for every buildspec as a list back to buildtest. The resolved path runs ``os.path.expandvars``, ``os.path.expanduser`` and ``os.path.realpath``
+
+Let's see some examples, first we specify a full path to buildspec file which will
+perform step ``2b`` and ``4``
 
 .. program-output:: cat docgen/getting_started/buildspec-abspath.txt
 
-Alternately, you can specify a relative path from your current directory. The same
-test can be built if you change into directory and run as follows::
+buildtest won't accept ``.yaml`` file extension for file, this can be demonstrated as
+follows::
 
-    cd /tmp/github.com/buildtesters/tutorials
-    buildtest build -b system/systemd.yml
+    $ buildtest build -b tests/examples/buildspecs/os.yaml
+    Paths:
+    __________
+    Prefix: /private/tmp
+    Buildspec Search Path: ['/Users/siddiq90/.buildtest/site']
+    Test Directory: /private/tmp/tests
+    tests/examples/buildspecs/os.yaml does not end in file extension .yml
 
-Here is an example build with relative path
+In this example, the search resolution will run step ``2b`` and raised an error.
 
-.. program-output:: cat docgen/getting_started/buildspec-relpath.txt
-
-buildtest will add the cloned repository in buildspec search path which is a colon
-separated list of paths to search. For example shown below we are at $HOME and we
-are able the test ``examples/systemd.yml`` even if it's not in relative path but
-it is a path found in the buildspec search path
+buildtest can resolve path relative to search path from a cloned repository
+:ref:`buildtest_repo` which is a colon separated list of paths to search.
+For example shown below we are at $HOME and we are able the test ``examples/systemd.yml``
+even if it's not in relative path but it is a path found in the buildspec search path.
+The search resolution will perform step ``1``, ``2b``, ``4``.
 
 .. code-block:: console
 
@@ -168,31 +185,39 @@ it is a path found in the buildspec search path
     Passed Tests: 0/1 Percentage: 0.000%
     Failed Tests: 1/1 Percentage: 100.000%
 
+
+buildtest can perform a directory build for instance let's build
+for directory ``tests/examples/buildspecs`` where search resolution will perform
+steps ``2a`` and ``4``. buildtest will recursively search for all ``.yml`` files
+
+.. program-output:: cat docgen/getting_started/buildspec-directory.txt
+
+In next section, you will see, we can build multiple buildspecs and interchange
+file and directory with ``-b`` option.
+
+
 Building Multiple Buildspecs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Buildtest supports building multiple Buildspecs, just specify the ``-b`` option
-for every Buildspec you want to build. For example let's build the following
+for every Buildspec you want to build. In this example, we specify a file and
+directory path. The search resolution is performed for every argument (``-b``)
+independently, and accumulated into list.
+
+In the file example ``-b examples/selinux.yml`` the resolution will perform steps
+``1``, ``2b``, and ``4`` while directory instance ``-b tests/examples/buildspec``
+will perform steps ``2a`` and ``4``.
 
 .. program-output:: cat docgen/getting_started/multi-buildspecs.txt
 
-buildtest can automatically detect Buildspecs based on filepath and directory so
-if you know location to where Buildspecs are located you can specify a directory.
-For instance, we can build all Buildspecs in a directory ``examples/openacc`` as follows
-
-.. program-output:: cat docgen/getting_started/buildspec-directory.txt
-
-Buildtest will recursively find all ``.yml`` files when you specify a directory
-and process each Buildspec iteratively. You may mix file and directory with
-``-b`` option to control what Buildspecs to build.
 
 Excluding Buildspecs
 ~~~~~~~~~~~~~~~~~~~~~
 
-Buildtest provides ``-x`` option to exclude Buildspecs which can be useful when
-you want to build in a directory and exclude a few files or an entire directory.
-For example we can do the following to exclude ``examples/systemd.yml`` but build
-all buildspecs in ``examples`` directory::
+Buildtest provides ``--exclude`` or short option ``-x`` to exclude Buildspecs which
+can be useful when you want to build in a directory and exclude a few files or an entire directory.
+For example we can build all buildspecs in ``examples`` but exclude file ``examples/systemd.yml``
+by running::
 
     $ buildtest build -b examples -x examples/systemd.yml
 
