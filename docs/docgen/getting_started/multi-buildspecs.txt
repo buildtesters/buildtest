@@ -1,4 +1,4 @@
-$ buildtest build -b examples/systemd.yml -b examples/selinux.yml 
+$ buildtest build -b tests/examples/buildspecs/ -b examples/selinux.yml 
 Paths:
  __________
  Prefix: /private/tmp
@@ -8,26 +8,45 @@ Paths:
  +-------------------------------+
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
- /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+ /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+ /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
+ /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
  /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
+ /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
  Excluded Buildspecs:  []
  +----------------------+
  | Stage: Building Test |
  +----------------------+ 
  Name                      Schema Validation File    TestPath                                 Buildspec                               
  ________________________________________________________________________________________________________________________________________________________________
- systemd_default_target    script-v1.0.schema.json   /private/tmp/tests/systemd/systemd_default_target.sh /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+ slurm_down_nodes_reason   script-v1.0.schema.json   /private/tmp/tests/slurm/slurm_down_nodes_reason.sh /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+ slurm_not_responding_nodes script-v1.0.schema.json   /private/tmp/tests/slurm/slurm_not_responding_nodes.sh /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+ hello_dinosaur            script-v1.0.schema.json   /private/tmp/tests/environment/hello_dinosaur.sh /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
+ circle_area               script-v1.0.schema.json   /private/tmp/tests/python-shell/circle_area.py /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
  selinux_disable           script-v1.0.schema.json   /private/tmp/tests/selinux/selinux_disable.sh /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
+ _bin_sh_shell             script-v1.0.schema.json   /private/tmp/tests/shell_examples/_bin_sh_shell.sh /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ _bin_bash_shell           script-v1.0.schema.json   /private/tmp/tests/shell_examples/_bin_bash_shell.sh /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ bash_shell                script-v1.0.schema.json   /private/tmp/tests/shell_examples/bash_shell.sh /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ sh_shell                  script-v1.0.schema.json   /private/tmp/tests/shell_examples/sh_shell.sh /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ shell_options             script-v1.0.schema.json   /private/tmp/tests/shell_examples/shell_options.sh /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
  +----------------------+
  | Stage: Running Test  |
  +----------------------+ 
  Name                 Executor             Status               Return Code          Buildspec Path      
  ________________________________________________________________________________________________________________________
- systemd_default_target local.bash           FAIL                 1                    /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+ slurm_down_nodes_reason local.bash           FAIL                 127                  /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+ slurm_not_responding_nodes local.bash           FAIL                 127                  /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+ hello_dinosaur       local.bash           PASS                 0                    /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
+ circle_area          local.python         PASS                 0                    /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
  selinux_disable      local.bash           FAIL                 1                    /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
+ _bin_sh_shell        local.sh             PASS                 0                    /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ _bin_bash_shell      local.bash           PASS                 0                    /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ bash_shell           local.bash           PASS                 0                    /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ sh_shell             local.sh             PASS                 0                    /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ shell_options        local.sh             PASS                 0                    /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
  +----------------------+
  | Stage: Test Summary  |
  +----------------------+ 
- Executed 2 tests
- Passed Tests: 0/2 Percentage: 0.000%
- Failed Tests: 2/2 Percentage: 100.000%
+ Executed 10 tests
+ Passed Tests: 7/10 Percentage: 70.000%
+ Failed Tests: 3/10 Percentage: 30.000%

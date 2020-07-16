@@ -290,3 +290,165 @@ stage::
     Executed 1 tests
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
+
+
+Slurm Executor (Experimental Feature)
+--------------------------------------
+
+buildtest can dispatch jobs to slurm, in order to use a slurm scheduler, you must
+define a :ref:`slurm_executors` and reference it via ``executor``. In this example
+we have a slurm executor ``slurm.debug``, in addition we can specify #SBATCH directives
+using ``sbatch`` field. The sbatch field is a list of string types, buildtest will
+insert #SBATCH in front of each option.
+
+Shown below is an example buildspec::
+
+    version: "1.0"
+    buildspecs:
+      slurm_metadata:
+        description: Get metadata from compute node when submitting job
+        type: script
+        executor: slurm.debug
+        sbatch:
+          - "-t 00:05"
+          - "-C haswell"
+          - "-N 1"
+        run: |
+          export SLURM_JOB_NAME="firstjob"
+          echo "jobname:" $SLURM_JOB_NAME
+          echo "slurmdb host:" $SLURMD_NODENAME
+          echo "pid:" $SLURM_TASK_PID
+          echo "submit host:" $SLURM_SUBMIT_HOST
+          echo "nodeid:" $SLURM_NODEID
+          echo "partition:" $SLURM_JOB_PARTITION
+
+
+Shown below is an example build of this test::
+
+    $ buildtest build -b metadata.yml
+    Paths:
+    __________
+    Prefix: /global/u1/s/siddiq90/cache
+    Buildspec Search Path: ['/global/homes/s/siddiq90/.buildtest/site']
+    Test Directory: /global/u1/s/siddiq90/cache/tests
+
+    Stage: Discovered Buildspecs
+
+
+    +-------------------------------+
+    | Stage: Discovered Buildspecs  |
+    +-------------------------------+
+
+    /global/u1/s/siddiq90/buildtest-cori/slurm/valid_jobs/metadata.yml
+
+    Excluded Buildspecs:  []
+
+    +----------------------+
+    | Stage: Building Test |
+    +----------------------+
+
+    Name                      Schema Validation File    TestPath                                 Buildspec
+    ________________________________________________________________________________________________________________________________________________________________
+    slurm_metadata            script-v1.0.schema.json   /global/u1/s/siddiq90/cache/tests/metadata/slurm_metadata.sh /global/u1/s/siddiq90/buildtest-cori/slurm/valid_jobs/metadata.yml
+
+    +----------------------+
+    | Stage: Running Test  |
+    +----------------------+
+
+    Name                 Executor             Status               Return Code          Buildspec Path
+    ________________________________________________________________________________________________________________________
+    [slurm_metadata] job dispatched to scheduler
+    [slurm_metadata] acquiring job id in 10 seconds
+    slurm_metadata       slurm.debug          N/A                  0                    /global/u1/s/siddiq90/buildtest-cori/slurm/valid_jobs/metadata.yml
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    [slurm_metadata]: JobID 32501309 in COMPLETED state
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+
+    +----------------------+
+    | Stage: Test Summary  |
+    +----------------------+
+
+    Executed 1 tests
+    Passed Tests: 0/1 Percentage: 0.000%
+    Failed Tests: 1/1 Percentage: 100.000%
+
+
+Unlike the LocalExecutor, the Run stage, will dispatch the slurm job and poll
+until job is completed. Once job is complete, it will gather the results and terminate.
+
+Shown below, we perform hostname for every slurm executor for Cori system at NERSC.
+
+::
+
+    version: "1.0"
+    buildspecs:
+      debug_qos_knl_hostname:
+        description: run hostname on KNL computenode
+        type: script
+        executor: slurm.debug
+        sbatch:
+          - "-t 5"
+          - "-C knl"
+          - "-N 1"
+        run: hostname
+
+      debug_qos_haswell_hostname:
+        description: run hostname on KNL computenode
+        type: script
+        executor: slurm.debug
+        sbatch:
+          - "-t 5"
+          - "-C haswell"
+          - "-N 1"
+        run: hostname
+
+      shared_qos_hostname:
+        description: run hostname through shared qos
+        type: script
+        executor: slurm.shared
+        sbatch:
+          - "-t 5"
+          - "-C haswell"
+          - "-N 1"
+        run: hostname
+
+      bigmem_qos_hostname:
+        description: run hostname through bigmem qos
+        type: script
+        executor: slurm.bigmem
+        sbatch:
+          - "-t 5"
+          - "-C haswell"
+          - "-N 1"
+        run: hostname
+
+      xfer_qos_hostname:
+        description: run hostname through bigmem qos
+        type: script
+        executor: slurm.xfer
+        sbatch:
+          - "-t 5"
+          - "-N 1"
+        run: hostname
+
+
+The ``SlurmExecutor`` class responsible for managing slurm jobs will perform the
+following action
+
+  1. Check slurm binary ``sbatch`` and ``sacct``.
+  2. Dispatch Job and acquire job ID
+  3. Poll Job
+  4. Gather Job results
+
+buildtest will dispatch all jobs and poll all jobs in a ``while (True)`` until all
+jobs are complete. If job is in [**PENDING** | **RUNNING** ] then buildtest will
+keep polling at set interval until job is complete. Once job is not in **PENDING**
+or **RUNNING** stage, buildtest will gather job results and wait until all jobs have
+finished.
+

@@ -61,8 +61,8 @@ def discover_buildspecs(buildspec):
         )
         buildspecs = walk_tree(buildspec, ".yml")
     elif os.path.isfile(buildspec):
-        if not re.search("[.](yaml|yml)$", buildspec):
-            msg = f"{buildspec} does not end in file extension .yaml or .yml"
+        if not re.search(".yml$", buildspec):
+            msg = f"{buildspec} does not end in file extension .yml"
             logger.error(msg)
             sys.exit(msg)
 
@@ -137,7 +137,7 @@ def func_build_subcmd(args, config_opts):
 
        :rtype: None
     """
-    print(args)
+
     # if buildtest settings specified on CLI, it would be in args.settings otherwise set
     # to default configuration (BUILDTEST_SETTINGS_FILE)
 

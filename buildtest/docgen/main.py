@@ -57,9 +57,8 @@ def tutorial():
         f"{os.path.join(prefix, 'buildspec-view.txt')}": "buildtest buildspec view systemd_default_target",
         f"{os.path.join(prefix,'buildspec-abspath.txt')}": "buildtest build -b /tmp/github.com/buildtesters/tutorials/examples/systemd.yml",
         f"{os.path.join(prefix,'buildspec-relpath.txt')}": "buildtest build -b examples/systemd.yml",
-        f"{os.path.join(prefix, 'multi-buildspecs.txt')}": "buildtest build -b examples/systemd.yml -b examples/selinux.yml",
-        f"{os.path.join(prefix, 'buildspec-directory.txt')}": "buildtest build -b examples/openacc/",
-        f"{os.path.join(prefix, 'buildspec-directory-and-file.txt')}": "buildtest build -b examples/openacc/ -b examples/selinux.yml",
+        f"{os.path.join(prefix, 'buildspec-directory.txt')}": "buildtest build -b tests/examples/buildspecs/",
+        f"{os.path.join(prefix, 'multi-buildspecs.txt')}": "buildtest build -b tests/examples/buildspecs/ -b examples/selinux.yml",
         f"{os.path.join(prefix, 'invalid-buildspec.txt')}": "buildtest build -b examples/invalid_buildspec_section.yml -b examples/systemd.yml",
         f"{os.path.join(prefix, 'invalid-executor.txt')}": "buildtest build -b examples/invalid_executor.yml",
     }

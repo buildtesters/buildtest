@@ -71,6 +71,8 @@ the following::
 Then you can reference this executor as ``executor: local.login_bash`` and your
 tests will be submitted via ``bash --login /path/to/test.sh``.
 
+.. _slurm_executors:
+
 Slurm Executors
 ~~~~~~~~~~~~~~~~~
 
