@@ -70,7 +70,7 @@ def discover_buildspecs(buildspec):
         logger.debug(f"BuildSpec: {buildspec} is a file")
     else:
         msg = (
-            f"Unable to find any buildspecs in search paths: {search_path} \n"
+            f"Unable to find any buildspecs with name: {buildspec} in search paths: {search_path} \n"
             + "Please provide an absolute or relative path to a directory or file relative to current directory."
         )
 
@@ -88,37 +88,6 @@ def discover_buildspecs(buildspec):
 
     logger.info(f"Found the following config files: {buildspecs}")
     return buildspecs
-
-
-def include_file(file_path, white_list_patterns):
-    """Check if file is included based on OR regular expression. If no white_list_patterns
-       provided method will return ``True``. Otherwise it will return the list of files that don't
-       match the regular expression
-
-       Parameters:
-
-       :param file_path: file path to run regular expression upon
-       :type file_path: str, required
-       :param white_list_patterns: the exclude list provided on command line option
-       :type white_list_patterns: list, required
-       :return: Returns True or a list of files that don't match regular expression
-       :rtype: bool or str
-    """
-
-    if not white_list_patterns:
-        logger.debug("No white list patterns provided, returning True")
-        return True
-
-    logger.debug(f"white list pattern before resolving paths: {white_list_patterns}")
-
-    white_list_patterns = [resolve_path(path) for path in white_list_patterns]
-
-    logger.debug(f"white list pattern after resolving paths: {white_list_patterns}")
-
-    regexp = "(%s)" % "|".join(white_list_patterns)
-    logger.debug(f"Applying Regular Expression Search: {regexp} to file: {file_path}")
-
-    return not re.search(regexp, file_path)
 
 
 def func_build_subcmd(args, config_opts):
@@ -193,12 +162,11 @@ def func_build_subcmd(args, config_opts):
 
     # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
     # times we need to invoke discover_buildspecs once per argument.
-    for buildtest_argument in args.buildspec:
-        buildspecs += discover_buildspecs(buildtest_argument)
+    for option in args.buildspec:
+        buildspecs += discover_buildspecs(option)
 
     # remove any duplicate Buildspec from list by converting list to set and then back to list
     buildspecs = list(set(buildspecs))
-    all_buildspecs = buildspecs
 
     # if no files discovered let's stop now
     if not buildspecs:
@@ -210,9 +178,17 @@ def func_build_subcmd(args, config_opts):
     )
 
     if args.exclude:
+        exclude_buildspecs = []
+        for option in args.exclude:
+            exclude_buildspecs += discover_buildspecs(option)
+
+        exclude_buildspecs = list(set(exclude_buildspecs))
+
         logger.debug(f"The exclude pattern is the following: -e {args.exclude}")
 
-        buildspecs = [file for file in buildspecs if include_file(file, args.exclude)]
+        # exclude files that are found in exclude_buildspecs list
+        buildspecs = [file for file in buildspecs if file not in exclude_buildspecs]
+
         logger.debug(f"Buildspec list after applying exclusion: {buildspecs}")
 
         # if no files remain after exclusion let's stop now.
@@ -220,7 +196,6 @@ def func_build_subcmd(args, config_opts):
             msg = "There are no Buildspec files to process."
             sys.exit(msg)
 
-    print("\nStage: Discovered Buildspecs \n")
     print(
         """
 +-------------------------------+
@@ -231,8 +206,9 @@ def func_build_subcmd(args, config_opts):
 
     [print(buildspec) for buildspec in buildspecs]
 
-    exclude_buildspecs = list(set(all_buildspecs) - set(buildspecs))
-    print("\nExcluded Buildspecs: ", exclude_buildspecs)
+    if args.exclude:
+        print("\nExcluded Buildspecs: ", exclude_buildspecs)
+
     print(
         """
 +----------------------+
