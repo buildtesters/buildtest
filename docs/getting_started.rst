@@ -133,7 +133,8 @@ In this example, the search resolution will run step ``2b`` and raised an error.
 
 buildtest can resolve path relative to search path from a cloned repository
 :ref:`buildtest_repo` which is a colon separated list of paths to search.
-For example shown below we are at $HOME and we are able the test ``examples/systemd.yml``
+
+In next example, our current directory is at $HOME and we are able the test ``examples/systemd.yml``
 even if it's not in relative path but it is a path found in the buildspec search path.
 The search resolution will perform step ``1``, ``2b``, ``4``.
 
@@ -143,47 +144,8 @@ The search resolution will perform step ``1``, ``2b``, ``4``.
     /Users/siddiq90
     $ ls examples/systemd.yml
     ls: examples/systemd.yml: No such file or directory
-    $ buildtest build -b examples/systemd.yml
-    Paths:
-    __________
-    Prefix: /private/tmp
-    Buildspec Search Path: ['/private/tmp/github.com/buildtesters/tutorials', '/Users/siddiq90/.buildtest/site']
-    Test Directory: /private/tmp/tests
 
-    Stage: Discovered Buildspecs
-
-
-    +-------------------------------+
-    | Stage: Discovered Buildspecs  |
-    +-------------------------------+
-
-    /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
-
-    Excluded Buildspecs:  []
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-    Name                      Schema Validation File    TestPath                                 Buildspec
-    ________________________________________________________________________________________________________________________________________________________________
-    systemd_default_target    script-v1.0.schema.json   /private/tmp/tests/systemd/systemd_default_target.sh /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
-
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
-
-    Name                 Executor             Status               Return Code          Buildspec Path
-    ________________________________________________________________________________________________________________________
-    systemd_default_target local.bash           FAIL                 1                    /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-    Executed 1 tests
-    Passed Tests: 0/1 Percentage: 0.000%
-    Failed Tests: 1/1 Percentage: 100.000%
+.. program-output:: cat docgen/getting_started/buildspec-relpath.txt
 
 
 buildtest can perform a directory build for instance let's build
