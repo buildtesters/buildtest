@@ -196,7 +196,6 @@ def func_build_subcmd(args, config_opts):
             msg = "There are no Buildspec files to process."
             sys.exit(msg)
 
-
     print(
         """
 +-------------------------------+
