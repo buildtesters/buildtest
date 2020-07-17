@@ -20,6 +20,7 @@ def build_helper():
         "buildtest config --help",
         "buildtest repo --help",
         "buildtest buildspec --help",
+        "buildtest report --help",
     ]
     for cmd in help_cmds:
         out = run(cmd)
@@ -88,6 +89,9 @@ def introspection_cmds():
         "config-reset.txt": "buildtest config reset",
         "config-validate.txt": "buildtest config validate",
         "config-summary.txt": "buildtest config summary",
+        "report.txt": "buildtest report",
+        "report-helpformat.txt": "buildtest report --helpformat",
+        "report-format.txt": "buildtest report --format name,schemafile,executor,state,returncode",
     }
 
     for k, v in cmd_dict.items():

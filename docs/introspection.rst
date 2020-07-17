@@ -2,7 +2,7 @@ Introspection Operation
 =========================
 
 Config Options (``buildtest config --help``)
-______________________________________________
+-----------------------------------------------
 
 .. program-output:: cat docgen/buildtest_config_--help.txt
 
@@ -64,10 +64,54 @@ display information from several sources into one single command along.
 
 .. program-output:: cat docgen/config-summary.txt
 
+
+Schemas (``buildtest schema``)
+-------------------------------
+
+The ``buildtest schema`` command can show you list of available schemas just run
+the command with no options and it will show all the json schemas buildtest supports.
+
+.. program-output:: cat docgen/schemas/avail-schemas.txt
+
+Shown below is the command usage of ``buildtest schema``
+
+.. program-output:: cat docgen/buildtest_schema_--help.txt
+
+The json schemas are hosted on the web at https://buildtesters.github.io/schemas/.
+buildtest provides a means to display the json schema from the buildtest interface.
+Note that buildtest will show the schemas provided in buildtest repo and not
+ones provided by `schemas <https://github.com/buildtesters/schemas>`_ repo. This
+is because, we let development of schema run independent of the framework.
+
+
+Test Reports (``buildtest report``)
+-------------------------------------
+
+buildtest keeps track of all test results which can be retrieved via
+**buildtest report**. Shown below is command usage.
+
+.. program-output:: cat docgen/buildtest_report_--help.txt
+
+You may run ``buildtest report`` and buildtest will display report
+with default format fields.
+
+.. program-output:: cat docgen/report.txt
+
+There are more fields captured in the report, so if you want to see a
+list of available format fields run ``buildtest report --helpformat``.
+
+.. program-output:: cat docgen/report-helpformat.txt
+
+You can filter report using ``--format`` field which expects field
+name separated by comma (i.e **--format <field1>,<field2>**). In this example
+we format by fields ``--format name,type,executor,state,returncode``
+
+.. program-output:: cat docgen/report-format.txt
+
 .. _buildtest_repo:
 
 Managing Repositories
-_______________________
+----------------------
 
 .. program-output:: cat docgen/buildtest_repo_--help.txt
 
@@ -77,7 +121,7 @@ manage tests in their repositories and pull in their repos into buildtest via
 ``buildtest repo`` command.
 
 Adding Repository
-~~~~~~~~~~~~~~~~~~
+-------------------
 
 To clone a git repository use ``buildtest repo add <url>``::
 
@@ -125,7 +169,7 @@ You can also clone a specific branch via ``-b`` option as follows::
     $ buildtest repo add -b add/hello-world-test https://github.com/buildtesters/tutorials.git
 
 Listing Available Repositories
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 buildtest will track all repos added by ``buildtest repo add`` in a file
 ``$HOME/.buildtest/repo.yaml``. This file keeps track of all clone repos
@@ -148,7 +192,7 @@ You can see repository details by running::
 This will show the content of the repo file ``$HOME/.buildtest/repo.yaml``.
 
 Removing Repository
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 To remove a repository from buildtest, use ``buildtest repo rm <repo>``. For
 example, we can remove the current repository as follows::
@@ -157,26 +201,3 @@ example, we can remove the current repository as follows::
     Removing Repository: buildtesters/tutorials and deleting files from /Users/siddiq90/.buildtest/site/github.com/buildtesters/tutorials
 
 This will remove the repo from filesystem and remove entry from ``repo.yaml``.
-
-
-
-Schemas (``buildtest schema``)
-----------------------------------------------
-
-The ``buildtest schema`` command can show you list of available schemas just run
-the command with no options and it will show all the json schemas buildtest supports.
-
-.. program-output:: cat docgen/schemas/avail-schemas.txt
-
-Shown below is the command usage of ``buildtest schema``
-
-.. program-output:: cat docgen/buildtest_schema_--help.txt
-
-The json schemas are hosted on the web at https://buildtesters.github.io/schemas/.
-buildtest provides a means to display the json schema from the buildtest interface.
-Note that buildtest will show the schemas provided in buildtest repo and not
-ones provided by `schemas <https://github.com/buildtesters/schemas>`_ repo. This
-is because, we let development of schema run independent of the framework.
-
-
-

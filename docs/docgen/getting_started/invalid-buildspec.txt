@@ -7,8 +7,8 @@ Paths:
  +-------------------------------+
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
- /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
  /private/tmp/github.com/buildtesters/tutorials/examples/invalid_buildspec_section.yml
+ /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
  +----------------------+
  | Stage: Building Test |
  +----------------------+ 
