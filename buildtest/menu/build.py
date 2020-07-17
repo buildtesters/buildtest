@@ -217,12 +217,7 @@ def func_build_subcmd(args, config_opts):
 +----------------------+ 
 """
     )
-    table = {
-        "name": [],
-        "schemafile": [],
-        "testpath": [],
-        "buildspec": []
-    }
+    table = {"name": [], "schemafile": [], "testpath": [], "buildspec": []}
 
     # Process each Buildspec iteratively by parsing using BuildspecParser followed by
     # getting the appropriate builder and invoking the executor instance of type BuildExecutor
@@ -252,7 +247,13 @@ def func_build_subcmd(args, config_opts):
 
             builders.append(builder)
 
-    print (tabulate(table,headers=["Name", "Schema File", "Test Path", "Buildspec"], tablefmt="presto"))
+    print(
+        tabulate(
+            table,
+            headers=["Name", "Schema File", "Test Path", "Buildspec"],
+            tablefmt="presto",
+        )
+    )
     # print any skipped buildspecs if they failed to validate during build stage
     if len(skipped_tests) > 0:
         print("\n\n")
@@ -277,15 +278,8 @@ def func_build_subcmd(args, config_opts):
 +----------------------+ 
 """
     )
-    table = {
-        "name": [],
-        "executor": [],
-        "status": [],
-        "returncode": [],
-        "testpath": []
+    table = {"name": [], "executor": [], "status": [], "returncode": [], "testpath": []}
 
-    }
-   
     for builder in builders:
         try:
             result = executor.run(builder)
@@ -307,13 +301,13 @@ def func_build_subcmd(args, config_opts):
 
         table["name"].append(builder.name)
         table["executor"].append(builder.executor)
-        table["status"].append(result['state'])
-        table["returncode"].append(result['returncode'])
+        table["status"].append(result["state"])
+        table["returncode"].append(result["returncode"])
         table["testpath"].append(builder.metadata["testpath"])
 
         total_tests += 1
 
-    print(tabulate(table,headers=table.keys(),tablefmt="presto"))
+    print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
     if errmsg:
         print("\n\n")

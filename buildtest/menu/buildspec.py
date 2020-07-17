@@ -105,7 +105,6 @@ def func_buildspec_find(args):
 
                 cache[buildspec][name] = recipe[name]
 
-
         print(f"Validated {count}/{len(buildspecs)} buildspecs")
 
         with open(BUILDSPEC_CACHE_FILE, "w") as fd:
@@ -123,27 +122,22 @@ def func_buildspec_find(args):
             print(f"Writing invalid buildspecs to file: {buildspec_error_file} ")
             print("\n\n")
 
-    table = {
-        "Name" : [],
-        "Type": [],
-        "Executor": [],
-        "Description": []
-    }
-    #print("{:<25} {:<25} {:<25}".format("Name", "Schema Type", "Executor"))
-    #print("{:_<80}".format(""))
+    table = {"Name": [], "Type": [], "Executor": [], "Description": []}
+    # print("{:<25} {:<25} {:<25}".format("Name", "Schema Type", "Executor"))
+    # print("{:_<80}".format(""))
     for buildspecfile in cache.keys():
         for test in cache[buildspecfile].keys():
 
             type = cache[buildspecfile][test]["type"]
             executor = cache[buildspecfile][test]["executor"]
             description = cache[buildspecfile][test].get("description")
-            #print("{:<25} {:<25} {:<25}".format(test, type, executor))
+            # print("{:<25} {:<25} {:<25}".format(test, type, executor))
             table["Name"].append(test)
             table["Type"].append(type)
             table["Executor"].append(executor)
             table["Description"].append(description)
 
-    print (tabulate(table,headers=table.keys(),tablefmt="grid"))
+    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
 
 def func_buildspec_view_edit(buildspec, view=False, edit=False):
