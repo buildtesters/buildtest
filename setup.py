@@ -26,6 +26,6 @@ setup(
     ],
     packages=find_packages(),
     include_package_data=True,
-    install_requires=["PyYAML>=5.2", "distro==1.4.0", "jsonschema==3.0.2",],
+    install_requires=["PyYAML>=5.2", "distro==1.4.0", "jsonschema==3.0.2","tabulate"],
     entry_points={"console_scripts": ["buildtest=buildtest.main:main"]},
 )
