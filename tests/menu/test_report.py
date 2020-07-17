@@ -3,8 +3,8 @@ import pytest
 from buildtest.defaults import BUILD_REPORT
 from buildtest.menu.report import func_report
 
-def test_report_format():
 
+def test_report_format():
     class args:
         helpformat = False
         format = None
@@ -24,6 +24,7 @@ def test_report_format():
     with pytest.raises(SystemExit):
         func_report(args)
 
+
 def test_func_report_when_BUILD_REPORT_missing():
 
     try:
@@ -34,9 +35,10 @@ def test_func_report_when_BUILD_REPORT_missing():
     with pytest.raises(SystemExit):
         func_report()
 
-def test_report_helpformat():
 
+def test_report_helpformat():
     class args:
         helpformat = True
         format = None
+
     func_report(args)
