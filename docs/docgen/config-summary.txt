@@ -21,15 +21,3 @@ buildtest version:  0.8.0
  Active Repos: ['buildtesters/tutorials']
  Repo Paths: ['/private/tmp/github.com/buildtesters/tutorials']
  Buildspec Cache File: /Users/siddiq90/.buildtest/buildspec.cache
- Number of buildspecs:  14
- Number of Tests: 26
- Tests:  ['systemd_default_target', 'root_disk_usage', 'environment_variables', 'variables', 'selinux_disable', 'exit1_fail', 'exit1_pass', 'returncode_mismatch', 'wrongexecutor', 'circle_area', 'skip', 'unskipped', 'ulimit_filelock', 'ulimit_cputime', 'ulimit_stacksize', 'vecadd_gnu', 'hello_f', 'hello_c', 'hello_cplusplus', 'hello_f', 'hello_c', 'hello_cplusplus', 'cc_example', 'fc_example', 'cxx_example', 'executable_arguments']
- Buildtest Schemas
- ________________________________________________________________________________
- Available Schemas: ['script-v1.0.schema.json', 'compiler-v1.0.schema.json', 'global.schema.json', 'settings.schema.json']
- Supported Sub-Schemas
- ________________________________________________________________________________
- script-v1.0.schema.json : /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/script/script-v1.0.schema.json
- Examples Directory for schema:  /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/script/examples
- compiler-v1.0.schema.json : /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler/compiler-v1.0.schema.json
- Examples Directory for schema:  /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler/examples

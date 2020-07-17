@@ -1,33 +1,63 @@
 $ buildtest buildspec find 
-Found 14 buildspecs
- Validated 5/14 buildspecs
- Validated 10/14 buildspecs
- Validated 14/14 buildspecs
+Found 15 buildspecs
+ Validated 5/15 buildspecs
+ Validated 10/15 buildspecs
+ Validated 15/15 buildspecs
+ Validated 15/15 buildspecs
  Detected 1 invalid buildspecs 
  Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/buildspec.error 
- Name                      Type                      Buildspec                
- ________________________________________________________________________________
- systemd_default_target    script                    /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
- root_disk_usage           script                    /private/tmp/github.com/buildtesters/tutorials/examples/disk_usage.yml
- environment_variables     script                    /private/tmp/github.com/buildtesters/tutorials/examples/environment.yml
- variables                 script                    /private/tmp/github.com/buildtesters/tutorials/examples/vars.yml
- selinux_disable           script                    /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
- exit1_fail                script                    /private/tmp/github.com/buildtesters/tutorials/examples/pass_returncode.yml
- exit1_pass                script                    /private/tmp/github.com/buildtesters/tutorials/examples/pass_returncode.yml
- returncode_mismatch       script                    /private/tmp/github.com/buildtesters/tutorials/examples/pass_returncode.yml
- wrongexecutor             script                    /private/tmp/github.com/buildtesters/tutorials/examples/invalid_executor.yml
- circle_area               script                    /private/tmp/github.com/buildtesters/tutorials/examples/python-shell.yml
- ulimit_filelock           script                    /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
- ulimit_cputime            script                    /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
- ulimit_stacksize          script                    /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
- vecadd_gnu                compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/openacc/vecadd.yml
- hello_f                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/intel_hello.yml
- hello_c                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/intel_hello.yml
- hello_cplusplus           compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/intel_hello.yml
- hello_f                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
- hello_c                   compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
- hello_cplusplus           compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
- cc_example                compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
- fc_example                compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
- cxx_example               compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
- executable_arguments      compiler                  /private/tmp/github.com/buildtesters/tutorials/examples/serial/passing_args.yml
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | Name                   | Type     | Executor     | Description                                              |
+ +========================+==========+==============+==========================================================+
+ | systemd_default_target | script   | local.bash   | check if default target is multi-user.target             |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | root_disk_usage        | script   | local.bash   | Check root disk usage and report if it exceeds threshold |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | environment_variables  | script   | local.bash   |                                                          |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | variables              | script   | local.bash   |                                                          |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | selinux_disable        | script   | local.bash   | Check if SELinux is Disabled                             |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | exit1_fail             | script   | local.sh     | exit 1 by default is FAIL                                |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | exit1_pass             | script   | local.sh     | report exit 1 as PASS                                    |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | returncode_mismatch    | script   | local.sh     | exit 2 failed since it failed to match returncode 1      |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | wrongexecutor          | script   | badexecutor  | valid test but invalid executor name so test won't run   |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | circle_area            | script   | local.python | Calculate circle of area given a radius                  |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | skip                   | script   | local.bash   |                                                          |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | unskipped              | script   | local.bash   |                                                          |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | ulimit_filelock        | script   | local.sh     | Check if file lock is set to unlimited in ulimits        |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | ulimit_cputime         | script   | local.bash   | Check if cputime is set to unlimited in ulimits          |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | ulimit_stacksize       | script   | local.bash   | Check if stack size is set to unlimited in ulimits       |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | vecadd_gnu             | compiler | local.bash   | Vector Addition example with GNU compiler                |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | hello_f                | compiler | local.bash   | Hello World Fortran Compilation                          |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | hello_c                | compiler | local.bash   | Hello World C Compilation                                |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | hello_cplusplus        | compiler | local.bash   | Hello World C++ Compilation                              |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | hello_f                | compiler | local.bash   | Hello World Fortran Compilation                          |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | hello_c                | compiler | local.bash   | Hello World C Compilation                                |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | hello_cplusplus        | compiler | local.bash   | Hello World C++ Compilation                              |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | cc_example             | compiler | local.bash   | Example by using cc to set C compiler                    |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | fc_example             | compiler | local.bash   | Example by using fc to set Fortran compiler              |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | cxx_example            | compiler | local.bash   | Example by using cxx to set C++ compiler                 |
+ +------------------------+----------+--------------+----------------------------------------------------------+
+ | executable_arguments   | compiler | local.bash   | Passing arguments example                                |
+ +------------------------+----------+--------------+----------------------------------------------------------+

@@ -4,28 +4,26 @@ Paths:
  Prefix: /private/tmp
  Buildspec Search Path: ['/private/tmp/github.com/buildtesters/tutorials', '/Users/siddiq90/.buildtest/site']
  Test Directory: /private/tmp/tests
- Stage: Discovered Buildspecs 
  +-------------------------------+
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
- /private/tmp/github.com/buildtesters/tutorials/examples/invalid_buildspec_section.yml
  /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
- Excluded Buildspecs:  []
+ /private/tmp/github.com/buildtesters/tutorials/examples/invalid_buildspec_section.yml
  +----------------------+
  | Stage: Building Test |
  +----------------------+ 
- Name                      Schema Validation File    TestPath                                 Buildspec                               
- ________________________________________________________________________________________________________________________________________________________________
- systemd_default_target    script-v1.0.schema.json   /private/tmp/tests/systemd/systemd_default_target.sh /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+  Name                   | Schema File             | Test Path                                            | Buildspec
+ ------------------------+-------------------------+------------------------------------------------------+---------------------------------------------------------------------
+  systemd_default_target | script-v1.0.schema.json | /private/tmp/tests/systemd/systemd_default_target.sh | /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
  Error Messages from Stage: Build
  ________________________________________________________________________________
  Skipping /private/tmp/github.com/buildtesters/tutorials/examples/invalid_buildspec_section.yml since it failed to validate
  +----------------------+
  | Stage: Running Test  |
  +----------------------+ 
- Name                 Executor             Status               Return Code          Buildspec Path      
- ________________________________________________________________________________________________________________________
- systemd_default_target local.bash           FAIL                 1                    /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
+  name                   | executor   | status   |   returncode | testpath
+ ------------------------+------------+----------+--------------+------------------------------------------------------
+  systemd_default_target | local.bash | FAIL     |            1 | /private/tmp/tests/systemd/systemd_default_target.sh
  +----------------------+
  | Stage: Test Summary  |
  +----------------------+ 
