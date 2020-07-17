@@ -40,7 +40,7 @@ def func_report(args=None):
         "endtime",
         "runtime",
         "state",
-        "returncode"
+        "returncode",
     ]
     # generate help format table for printing purposes
     format_table = [
@@ -58,12 +58,14 @@ def func_report(args=None):
         ["endtime", "End Time for Test in date format"],
         ["runtime", "Total runtime in seconds"],
         ["state", "Test State reported by buildtest (PASS/FAIL)"],
-        ["returncode", "Return Code from Test Execution"]
+        ["returncode", "Return Code from Test Execution"],
     ]
     # implements buildtest report --helpformat
     if args.helpformat:
 
-        print(tabulate(format_table,headers=["Fields","Description"],tablefmt="simple"))
+        print(
+            tabulate(format_table, headers=["Fields", "Description"], tablefmt="simple")
+        )
         return
 
     # default table format fields
@@ -113,8 +115,8 @@ def func_report(args=None):
 
                     display_table[field].append(test[field])
 
+    print(tabulate(display_table, headers=display_table.keys(), tablefmt="grid"))
 
-    print(tabulate(display_table,headers=display_table.keys(),tablefmt="grid"))
 
 def update_report(valid_builders):
     """This method will update BUILD_REPORT after every test run performed

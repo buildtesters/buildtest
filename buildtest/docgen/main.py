@@ -91,7 +91,7 @@ def introspection_cmds():
         "config-summary.txt": "buildtest config summary",
         "report.txt": "buildtest report",
         "report-helpformat.txt": "buildtest report --helpformat",
-        "report-format.txt": "buildtest report --format name,schemafile,executor,state,returncode"
+        "report-format.txt": "buildtest report --format name,schemafile,executor,state,returncode",
     }
 
     for k, v in cmd_dict.items():

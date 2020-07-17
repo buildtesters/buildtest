@@ -254,8 +254,13 @@ class BuildTestParser:
         """This method implements the ``buildtest report`` command options"""
 
         parser_report = self.subparsers.add_parser("report")
-        parser_report.add_argument("--helpformat", action="store_true", help="List of available format fields")
-        parser_report.add_argument("--format", help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (--format <field1>,<field2>,...)")
+        parser_report.add_argument(
+            "--helpformat", action="store_true", help="List of available format fields"
+        )
+        parser_report.add_argument(
+            "--format",
+            help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (--format <field1>,<field2>,...)",
+        )
 
         ##################### buildtest report   ###########################
 
