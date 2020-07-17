@@ -25,12 +25,14 @@ def test_report_format():
     with pytest.raises(SystemExit):
         func_report(args)
 
+
 def test_report_helpformat():
     class args:
         helpformat = True
         format = None
 
     func_report(args)
+
 
 def test_func_report_when_BUILD_REPORT_missing():
 
@@ -50,5 +52,3 @@ def test_func_report_when_BUILD_REPORT_missing():
         pass
 
     assert BUILD_REPORT
-
-
