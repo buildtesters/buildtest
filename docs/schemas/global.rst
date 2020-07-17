@@ -113,7 +113,7 @@ All schema files use the file extension **.schema.json** to distinguish itself
 as a json schema definition from an ordinary json file. All sub-schemas
 must be versioned, with the exception of ``global.schema.json``.
 
-If you have got this far you may proceed with :ref: `writing_buildspecs`
+If you have got this far you may proceed with :ref:`writing_buildspecs`
 
 Examples
 ---------

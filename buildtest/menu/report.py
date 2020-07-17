@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+from tabulate import tabulate
 from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.file import is_file, create_dir
 
@@ -23,35 +24,97 @@ def func_report(args=None):
             f"or remove file"
         )
 
-    print(
-        "{:<20} {:<20} {:<20} {:<20} {:<20} {:<20} {:<20} {:<20}".format(
-            "name",
-            "state",
-            "returncode",
-            "starttime",
-            "endtime",
-            "runtime",
-            "buildid",
-            "buildspec",
-        )
-    )
+    # all format fields available for --helpformat
+    format_fields = [
+        "buildspec",
+        "name",
+        "build_id",
+        "testroot",
+        "testpath",
+        "command",
+        "outfile",
+        "errfile",
+        "schemafile",
+        "executor",
+        "starttime",
+        "endtime",
+        "runtime",
+        "state",
+        "returncode"
+    ]
+    # generate help format table for printing purposes
+    format_table = [
+        ["buildspec", "Buildspec file"],
+        ["name", "Name of test defined in buildspec"],
+        ["build_id", "Unique Build Identifier"],
+        ["testroot", "Root of test directory"],
+        ["testpath", "Path to test"],
+        ["command", "Command executed"],
+        ["outfile", "Output file"],
+        ["errfile", "Error File"],
+        ["schemafile", "Schema file used for validation"],
+        ["executor", "Executor name"],
+        ["starttime", "Start Time of test in date format"],
+        ["endtime", "End Time for Test in date format"],
+        ["runtime", "Total runtime in seconds"],
+        ["state", "Test State reported by buildtest (PASS/FAIL)"],
+        ["returncode", "Return Code from Test Execution"]
+    ]
+    # implements buildtest report --helpformat
+    if args.helpformat:
+
+        print(tabulate(format_table,headers=["Fields","Description"],tablefmt="simple"))
+        return
+
+    # default table format fields
+    display_table = {
+        "name": [],
+        "state": [],
+        "returncode": [],
+        "starttime": [],
+        "endtime": [],
+        "runtime": [],
+        "build_id": [],
+        "buildspec": [],
+    }
+
+    fields = display_table.keys()
+
+    # if buildtest report --format specified split field by "," and validate each
+    # format field and generate display_table
+    if args.format:
+        fields = args.format.split(",")
+
+        # check all input format fields are valid fields
+        for field in fields:
+            if field not in format_fields:
+                sys.exit(f"Invalid format field: {field}")
+
+        display_table = {}
+
+        for field in fields:
+            display_table[field] = []
 
     for buildspec in report.keys():
         for name in report[buildspec].keys():
             for test in report[buildspec][name]:
-                print(
-                    "{:<20} {:<20} {:<20} {:<20} {:<20} {:06.2f} {:<20} {:<20}".format(
-                        name,
-                        test["state"],
-                        test["returncode"],
-                        test["starttime"],
-                        test["endtime"],
-                        test["runtime"],
-                        test["build_id"],
-                        buildspec,
-                    )
-                )
 
+                if "buildspec" in display_table.keys():
+                    display_table["buildspec"].append(buildspec)
+
+                if "name" in display_table.keys():
+                    display_table["name"].append(name)
+
+                for field in fields:
+                    # skip fields buildspec or name since they are accounted above and not part
+                    # of test dictionary
+                    if field in ["buildspec", "name"]:
+                        continue
+
+                    display_table[field].append(test[field])
+
+
+    print(tabulate(display_table,headers=display_table.keys(),tablefmt="grid"))
 
 def update_report(valid_builders):
     """This method will update BUILD_REPORT after every test run performed

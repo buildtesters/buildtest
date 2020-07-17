@@ -7,41 +7,41 @@ Paths:
  +-------------------------------+
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
- /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
  /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
+ /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
  /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
  /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
- /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
  +----------------------+
  | Stage: Building Test |
  +----------------------+ 
   Name                       | Schema File             | Test Path                                              | Buildspec
  ----------------------------+-------------------------+--------------------------------------------------------+----------------------------------------------------------------------------------
-  circle_area                | script-v1.0.schema.json | /private/tmp/tests/python-shell/circle_area.py         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
   _bin_sh_shell              | script-v1.0.schema.json | /private/tmp/tests/shell_examples/_bin_sh_shell.sh     | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
   _bin_bash_shell            | script-v1.0.schema.json | /private/tmp/tests/shell_examples/_bin_bash_shell.sh   | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
   bash_shell                 | script-v1.0.schema.json | /private/tmp/tests/shell_examples/bash_shell.sh        | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
   sh_shell                   | script-v1.0.schema.json | /private/tmp/tests/shell_examples/sh_shell.sh          | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
   shell_options              | script-v1.0.schema.json | /private/tmp/tests/shell_examples/shell_options.sh     | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
-  selinux_disable            | script-v1.0.schema.json | /private/tmp/tests/selinux/selinux_disable.sh          | /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
-  hello_dinosaur             | script-v1.0.schema.json | /private/tmp/tests/environment/hello_dinosaur.sh       | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
+  circle_area                | script-v1.0.schema.json | /private/tmp/tests/python-shell/circle_area.py         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
   slurm_down_nodes_reason    | script-v1.0.schema.json | /private/tmp/tests/slurm/slurm_down_nodes_reason.sh    | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
   slurm_not_responding_nodes | script-v1.0.schema.json | /private/tmp/tests/slurm/slurm_not_responding_nodes.sh | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+  selinux_disable            | script-v1.0.schema.json | /private/tmp/tests/selinux/selinux_disable.sh          | /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
+  hello_dinosaur             | script-v1.0.schema.json | /private/tmp/tests/environment/hello_dinosaur.sh       | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
  +----------------------+
  | Stage: Running Test  |
  +----------------------+ 
   name                       | executor     | status   |   returncode | testpath
  ----------------------------+--------------+----------+--------------+--------------------------------------------------------
-  circle_area                | local.python | PASS     |            0 | /private/tmp/tests/python-shell/circle_area.py
   _bin_sh_shell              | local.sh     | PASS     |            0 | /private/tmp/tests/shell_examples/_bin_sh_shell.sh
   _bin_bash_shell            | local.bash   | PASS     |            0 | /private/tmp/tests/shell_examples/_bin_bash_shell.sh
   bash_shell                 | local.bash   | PASS     |            0 | /private/tmp/tests/shell_examples/bash_shell.sh
   sh_shell                   | local.sh     | PASS     |            0 | /private/tmp/tests/shell_examples/sh_shell.sh
   shell_options              | local.sh     | PASS     |            0 | /private/tmp/tests/shell_examples/shell_options.sh
-  selinux_disable            | local.bash   | FAIL     |            1 | /private/tmp/tests/selinux/selinux_disable.sh
-  hello_dinosaur             | local.bash   | PASS     |            0 | /private/tmp/tests/environment/hello_dinosaur.sh
+  circle_area                | local.python | PASS     |            0 | /private/tmp/tests/python-shell/circle_area.py
   slurm_down_nodes_reason    | local.bash   | FAIL     |          127 | /private/tmp/tests/slurm/slurm_down_nodes_reason.sh
   slurm_not_responding_nodes | local.bash   | FAIL     |          127 | /private/tmp/tests/slurm/slurm_not_responding_nodes.sh
+  selinux_disable            | local.bash   | FAIL     |            1 | /private/tmp/tests/selinux/selinux_disable.sh
+  hello_dinosaur             | local.bash   | PASS     |            0 | /private/tmp/tests/environment/hello_dinosaur.sh
  +----------------------+
  | Stage: Test Summary  |
  +----------------------+ 
