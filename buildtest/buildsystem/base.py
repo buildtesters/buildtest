@@ -195,7 +195,7 @@ class BuildspecParser:
                         )
                     )
                 elif recipe["type"] == "compiler":
-                    if recipe["compiler"].get("name") == "gnu":
+                    if recipe["build"].get("name") == "gnu":
                         builders.append(
                             GNUCompiler(
                                 name,
@@ -205,7 +205,7 @@ class BuildspecParser:
                                 testdir=testdir,
                             )
                         )
-                    elif recipe["compiler"].get("name") == "intel":
+                    elif recipe["build"].get("name") == "intel":
                         builders.append(
                             IntelCompiler(
                                 name,
@@ -215,7 +215,7 @@ class BuildspecParser:
                                 testdir=testdir,
                             )
                         )
-                    elif recipe["compiler"].get("name") == "pgi":
+                    elif recipe["build"].get("name") == "pgi":
                         builders.append(
                             PGICompiler(
                                 name,
@@ -225,7 +225,7 @@ class BuildspecParser:
                                 testdir=testdir,
                             )
                         )
-                    elif recipe["compiler"].get("name") == "cray":
+                    elif recipe["build"].get("name") == "cray":
                         builders.append(
                             CrayCompiler(
                                 name,
@@ -648,40 +648,24 @@ class CompilerBuilder(BuilderBase):
         """Return a list of modules as a list"""
         return [module for module in modules]
 
-    def simple_run(self, workdir=None):
-        """This method executes the binary without any argument. This is the most simple run.
-        The method returns a list with the executable. User may specify a working directory via
-        ``workdir`` to indicate the path to binary relative to their working directory. By default
-        the executable is in the same directory as workdir so we can access executable as
-        ``./{self.executable}``. If workdir is defined, it is simply added in front of executable path.
-
-        Parameters:
-
-        :param workdir: relative path to binary from working directory, if not specified it's assumed executable
-                        is in working directory.
-        :type workdir: str, optional
-        :return: A list containing path to executable
-        :rtype: list
-        """
-
-        if workdir:
-            return [os.path.join(workdir, self.executable)]
-
-        return [f"./{self.executable}"]
-
-    def run_with_args(self, args):
+    def build_run_cmd(self):
+        """This method builds the run command which refers to how to run the generated binary after compilation."""
+        self.run_dict = self.recipe.get("run")
 
         run = []
-        run += self.simple_run()
-        run.append(args)
+
+        # add launcher in front of execution if defined
+        if self.run_dict.get("launcher"):
+            run.append(self.run_dict.get("launcher"))
+
+        run.append(f"./{self.executable}")
+
+        # add args after executable if defined
+        if self.run_dict.get("args"):
+            run.append(self.run_dict.get("args"))
+
         return run
-
-    def build_run_cmd(self, args):
-        """This method builds the run command which refers to how to run the generated binary after compilation."""
-        if args:
-            return self.run_with_args(args)
-
-        return self.simple_run()
+        # return self.simple_run()
 
     def set_executable_name(self, name=None):
         """This method set the executable name. One may specify a custom name to executable via ``name``
@@ -696,7 +680,7 @@ class CompilerBuilder(BuilderBase):
 
     def setup(self):
 
-        self.compiler_recipe = self.recipe.get("compiler")
+        self.compiler_recipe = self.recipe.get("build")
         self.sourcefile = self.resolve_source(self.compiler_recipe["source"])
 
         self.cc = self.compiler_recipe.get("cc") or self.cc
@@ -713,7 +697,7 @@ class CompilerBuilder(BuilderBase):
         self.lang = self.detect_lang(self.sourcefile)
         self.compile_cmd = self.generate_compile_cmd()
 
-        self.run_cmd = self.build_run_cmd(self.compiler_recipe.get("exec_args"))
+        self.run_cmd = self.build_run_cmd()
 
     def _build_testcontent(self):
         """This method will build the test content from a Buildspec that uses compiler schema. We need a 'compiler'

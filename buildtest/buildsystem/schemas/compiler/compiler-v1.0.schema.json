@@ -3,7 +3,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "BuildTest Schema for compiler",
   "type": "object",
-  "required": ["type", "compiler", "executor"],
+  "required": ["type", "build", "executor"],
   "additionalProperties": false,
   "properties": {
     "type": {
@@ -38,7 +38,7 @@
     "tags": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/tags"
     },
-    "compiler": {
+    "build": {
       "type": "object",
       "properties": {
         "name": {
@@ -49,7 +49,6 @@
         "fc": {"type":  "string"},
         "cxx": {"type":  "string"},
         "source": { "type": "string" },
-        "exec_args": {"type": "string"},
         "cflags": {"type":  "string"},
         "cxxflags": {"type":  "string"},
         "fflags": {"type":  "string"},
@@ -57,6 +56,14 @@
         "ldflags": {"type": "string"}
       },
       "required": ["source", "name"],
+      "additionalProperties": false
+    },
+    "run":{
+      "type": "object",
+      "properties": {
+        "launcher": { "type": "string" },
+        "args": { "type": "string" }
+      },
       "additionalProperties": false
     }
   }
