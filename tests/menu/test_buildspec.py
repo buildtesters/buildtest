@@ -51,18 +51,15 @@ def test_buildspec_view():
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
         buildspecs = json.loads(fd.read())
 
-        # get first test name from first buildspec
-        for file in buildspecs:
-            test_name = buildspecs[file]["sections"][0]
-            break
-        print(f"Viewing buildspec test: {test_name}")
+    test_name = "cc_example"
+    print(f"Viewing buildspec test: {test_name}")
 
-        class args:
-            buildspec = test_name
-            view = True
-            edit = False
+    class args:
+        buildspec = test_name
+        view = True
+        edit = False
 
-        func_buildspec_view(args)
+    func_buildspec_view(args)
 
 
 def test_repofile_not_found_buildspec_find():

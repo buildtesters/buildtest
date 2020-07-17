@@ -154,10 +154,10 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
         cache = json.loads(fd.read())
 
-    for buildspec_entry in cache.keys():
-        if buildspec in cache[buildspec_entry].keys():
+    for buildspecfile in cache.keys():
+        if buildspec in cache[buildspecfile].keys():
             if view:
-                cmd = f"cat {buildspec_entry}"
+                cmd = f"cat {buildspecfile}"
                 output = subprocess.check_output(cmd, shell=True).decode("utf-8")
                 print(output)
             if edit:
@@ -168,9 +168,9 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
                 while True:
                     success = True
                     config_opts = get_default_settings()
-                    os.system(f"{config_opts['config']['editor']} {buildspec_entry}")
+                    os.system(f"{config_opts['config']['editor']} {buildspecfile}")
                     try:
-                        BuildspecParser(buildspec_entry)
+                        BuildspecParser(buildspecfile)
                     except (SystemExit, ValidationError) as err:
                         print(err)
                         input("Press any key to continue")

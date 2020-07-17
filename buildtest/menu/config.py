@@ -129,7 +129,7 @@ def func_config_summary(args=None):
             count = 0
             for file in buildspecs:
                 count += 1
-                tests += buildspecs[file]["sections"]
+                tests += buildspecs[file].keys()
 
             print("Number of buildspecs: ", count)
             print("Number of Tests:", len(tests))
