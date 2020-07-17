@@ -8,6 +8,7 @@ import os
 import re
 import sys
 import time
+from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
 
@@ -216,13 +217,13 @@ def func_build_subcmd(args, config_opts):
 +----------------------+ 
 """
     )
+    table = {
+        "name": [],
+        "schemafile": [],
+        "testpath": [],
+        "buildspec": []
+    }
 
-    print(
-        "{:<25} {:<25} {:<40} {:<40}".format(
-            "Name", "Schema Validation File ", "TestPath", "Buildspec"
-        )
-    )
-    print("{:_<160}".format(""))
     # Process each Buildspec iteratively by parsing using BuildspecParser followed by
     # getting the appropriate builder and invoking the executor instance of type BuildExecutor
     # to run the test
@@ -244,16 +245,14 @@ def func_build_subcmd(args, config_opts):
         for builder in bp.get_builders(testdir=test_directory):
 
             builder.build()
-            print(
-                "{:<25} {:<25} {:<40} {:<40}".format(
-                    builder.metadata["name"],
-                    builder.schemafile,
-                    builder.metadata["testpath"],
-                    builder.buildspec,
-                )
-            )
+            table["name"].append(builder.metadata["name"])
+            table["schemafile"].append(builder.schemafile)
+            table["testpath"].append(builder.metadata["testpath"])
+            table["buildspec"].append(builder.buildspec)
+
             builders.append(builder)
 
+    print (tabulate(table,headers=["Name", "Schema File", "Test Path", "Buildspec"], tablefmt="presto"))
     # print any skipped buildspecs if they failed to validate during build stage
     if len(skipped_tests) > 0:
         print("\n\n")
@@ -278,12 +277,15 @@ def func_build_subcmd(args, config_opts):
 +----------------------+ 
 """
     )
-    print(
-        "{:<20} {:<20} {:<20} {:<20} {:<20}".format(
-            "Name", "Executor", "Status", "Return Code", "Buildspec Path"
-        )
-    )
-    print("{:_<120}".format(""))
+    table = {
+        "name": [],
+        "executor": [],
+        "status": [],
+        "returncode": [],
+        "testpath": []
+
+    }
+   
     for builder in builders:
         try:
             result = executor.run(builder)
@@ -303,17 +305,15 @@ def func_build_subcmd(args, config_opts):
         if result["state"] == "N/A":
             poll = True
 
-        print(
-            "{:<20} {:<20} {:<20} {:<20} {:<20}".format(
-                builder.name,
-                builder.executor,
-                result["state"],
-                result["returncode"],
-                builder.buildspec,
-            )
-        )
+        table["name"].append(builder.name)
+        table["executor"].append(builder.executor)
+        table["status"].append(result['state'])
+        table["returncode"].append(result['returncode'])
+        table["testpath"].append(builder.metadata["testpath"])
 
         total_tests += 1
+
+    print(tabulate(table,headers=table.keys(),tablefmt="presto"))
 
     if errmsg:
         print("\n\n")
