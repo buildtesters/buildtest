@@ -4,24 +4,22 @@ Paths:
  Prefix: /private/tmp
  Buildspec Search Path: ['/private/tmp/github.com/buildtesters/tutorials', '/Users/siddiq90/.buildtest/site']
  Test Directory: /private/tmp/tests
- Stage: Discovered Buildspecs 
  +-------------------------------+
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
  /private/tmp/github.com/buildtesters/tutorials/examples/invalid_executor.yml
- Excluded Buildspecs:  []
  +----------------------+
  | Stage: Building Test |
  +----------------------+ 
- Name                      Schema Validation File    TestPath                                 Buildspec                               
- ________________________________________________________________________________________________________________________________________________________________
- wrongexecutor             script-v1.0.schema.json   /private/tmp/tests/invalid_executor/wrongexecutor.sh /private/tmp/github.com/buildtesters/tutorials/examples/invalid_executor.yml
+  Name          | Schema File             | Test Path                                            | Buildspec
+ ---------------+-------------------------+------------------------------------------------------+------------------------------------------------------------------------------
+  wrongexecutor | script-v1.0.schema.json | /private/tmp/tests/invalid_executor/wrongexecutor.sh | /private/tmp/github.com/buildtesters/tutorials/examples/invalid_executor.yml
  +----------------------+
  | Stage: Running Test  |
  +----------------------+ 
- Name                 Executor             Status               Return Code          Buildspec Path      
- ________________________________________________________________________________________________________________________
  [wrongexecutor]: Failed to Run Test
+  name   | executor   | status   | returncode   | testpath
+ --------+------------+----------+--------------+------------
  Error Messages from Stage: Run
  ________________________________________________________________________________
  [wrongexecutor]: executor badexecutor is not defined in /Users/siddiq90/.buildtest/settings.yml

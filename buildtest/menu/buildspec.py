@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import yaml
+from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import REPO_FILE, BUILDSPEC_CACHE_FILE
 from buildtest.config import get_default_settings
@@ -96,22 +97,13 @@ def func_buildspec_find(args):
             recipe = parse.recipe["buildspecs"]
 
             cache[buildspec] = {}
-            cache[buildspec]["sections"] = []
-            cache[buildspec]["section_summary"] = {}
 
             for name in recipe.keys():
 
                 if not isinstance(recipe[name], dict):
                     continue
 
-                cache[buildspec]["sections"].append(name)
-                cache[buildspec]["section_summary"][name] = {}
-                cache[buildspec]["section_summary"][name]["type"] = recipe[name].get(
-                    "type"
-                )
-                cache[buildspec]["section_summary"][name]["description"] = recipe[
-                    name
-                ].get("description")
+                cache[buildspec][name] = recipe[name]
 
         print(f"Validated {count}/{len(buildspecs)} buildspecs")
 
@@ -130,14 +122,22 @@ def func_buildspec_find(args):
             print(f"Writing invalid buildspecs to file: {buildspec_error_file} ")
             print("\n\n")
 
-    print("{:<25} {:<25} {:<25}".format("Name", "Type", "Buildspec"))
-    print("{:_<80}".format(""))
-    for buildspec in cache.keys():
-        for name in cache[buildspec]["section_summary"].keys():
+    table = {"Name": [], "Type": [], "Executor": [], "Description": []}
+    # print("{:<25} {:<25} {:<25}".format("Name", "Schema Type", "Executor"))
+    # print("{:_<80}".format(""))
+    for buildspecfile in cache.keys():
+        for test in cache[buildspecfile].keys():
 
-            type = cache[buildspec]["section_summary"][name]["type"]
-            type = str(type)
-            print("{:<25} {:<25} {:<25}".format(name, type, buildspec))
+            type = cache[buildspecfile][test]["type"]
+            executor = cache[buildspecfile][test]["executor"]
+            description = cache[buildspecfile][test].get("description")
+            # print("{:<25} {:<25} {:<25}".format(test, type, executor))
+            table["Name"].append(test)
+            table["Type"].append(type)
+            table["Executor"].append(executor)
+            table["Description"].append(description)
+
+    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
 
 def func_buildspec_view_edit(buildspec, view=False, edit=False):
@@ -154,10 +154,10 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
         cache = json.loads(fd.read())
 
-    for buildspec_entry in cache.keys():
-        if buildspec in cache[buildspec_entry]["sections"]:
+    for buildspecfile in cache.keys():
+        if buildspec in cache[buildspecfile].keys():
             if view:
-                cmd = f"cat {buildspec_entry}"
+                cmd = f"cat {buildspecfile}"
                 output = subprocess.check_output(cmd, shell=True).decode("utf-8")
                 print(output)
             if edit:
@@ -168,9 +168,9 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
                 while True:
                     success = True
                     config_opts = get_default_settings()
-                    os.system(f"{config_opts['config']['editor']} {buildspec_entry}")
+                    os.system(f"{config_opts['config']['editor']} {buildspecfile}")
                     try:
-                        BuildspecParser(buildspec_entry)
+                        BuildspecParser(buildspecfile)
                     except (SystemExit, ValidationError) as err:
                         print(err)
                         input("Press any key to continue")
