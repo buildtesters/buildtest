@@ -7,15 +7,14 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler
    gnu_example:
      executor: local.bash
      type: compiler
-     description: "gnu example using cflags, exec_args"
+     description: "gnu example with modules, and cflags example"
      module:
         - "module purge && module load gcc/4.0"
         - "module purge && module load gcc/6.0"
-     compiler:
+     build:
        name: gnu
        source: src/hello.c
        cflags: "-O1"
-       exec_args: "1 2 3"
    intel_example:
      executor: local.bash
      type: compiler
@@ -23,31 +22,75 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler
      module:
        -  "module purge &&  module load intel/17"
        -  "module purge &&  module load intel/18"
-     compiler:
+     build:
        name: intel
        source: src/hello.c
        cflags: "-O1"
    pgi_example:
      executor: local.bash
      type: compiler
-     description: "pgi example using cxxflags, ldflags, and exec_args key"
+     description: "pgi example using cxxflags, ldflags key"
      module:
        -  "module purge &&  module load pgi"
-     compiler:
+     build:
        source: src/hello.cpp
        name: pgi
        cxxflags: "-O1"
        ldflags: "-lm"
-       exec_args: hello world
    cray_example:
      executor: local.bash
      type: compiler
      description: "cray example using fflags and cppflags"
-     compiler:
+     sbatch: ["-C knl", "-q normal", "-t 01:00"]
+     build:
        name: cray
        source: src/hello.f90
        fflags: "-O1"
        cppflags: "-DFOO"
+   cc_example:
+     type: compiler
+     description: Example by using cc to set C compiler
+     executor: local.bash
+     build:
+       source: "src/hello.c"
+       name: gnu
+       cc: gcc
+   fc_example:
+     type: compiler
+     description: Example by using fc to set Fortran compiler
+     executor: local.bash
+     build:
+       source: "src/hello.f90"
+       name: gnu
+       fc: gfortran
+   cxx_example:
+     type: compiler
+     description: Example by using cxx to set C++ compiler
+     executor: local.bash
+     build:
+       source: "src/hello.cpp"
+       name: gnu
+       cxx: g++
+   args_example:
+     type: compiler
+     description: Launcher example
+     executor: local.bash
+     build:
+       source: "src/hello.cpp"
+       name: gnu
+     run:
+       args: "1 2 4"
+   mpi_launcher_example:
+     type: compiler
+     description: Launcher example
+     executor: local.bash
+     build:
+       source: "src/hello.cpp"
+       name: gnu
+       cxx: mpicxx
+       cxxflags: "-O3"
+     run:
+       launcher: mpirun -np 2
  File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler/examples/1.0/invalid/examples.yml
  Valid State: FAIL
  ________________________________________________________________________________
@@ -59,14 +102,14 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler
      module:
       -  "module purge &&  module load intel/17"
       -  "module purge &&  module load intel/18"
-     compiler:
+     build:
        source: src/hello.c
        name: intel
        cflags: "-O1"
-   missing_compiler:
+   missing_build:
      executor: local.bash
      type: compiler
-     description: "compiler key is missing, this is a required field"
+     description: "build key is missing, this is a required field"
      module:
       -  "module purge &&  module load intel/17"
       -  "module purge &&  module load intel/18"
@@ -77,7 +120,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler
      module:
         - "module purge && module load gcc/4.0"
         - "module purge && module load gcc/6.0"
-     compiler:
+     build:
        source: src/hello.c
        name: gnu
        cflags: "-O1"
@@ -88,7 +131,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler
      module:
         - "module purge && module load gcc/4.0"
         - "module purge && module load gcc/6.0"
-     compiler:
+     build:
        source: src/hello.c
        name: gnu
        cflags: "-O1"
@@ -97,7 +140,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler
      type: compiler
      description: "type for 'module' key, expecting type 'array' but received 'string' "
      module: "module purge && module load gcc/4.0"
-     compiler:
+     build:
        source: src/hello.c
        name: gnu
        cflags: "-O1"
@@ -108,7 +151,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler
      module:
        - 1
        - "module purge && module load intel"
-     compiler:
+     build:
        source: src/hello.c
        name: intel
        cflags: "-O1"
@@ -118,24 +161,24 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler
      description: "missing source key in compiler object"
      module:
      - "module purge && module load gcc/4.0"
-     compiler:
+     build:
        name: gnu
        cflags: "-O1"
-   missing_a_compilername_in_compiler:
+   missing_name_in_build:
      executor: local.bash
      type: compiler
-     description: "missing name key in compiler object"
+     description: "missing name key in build object"
      module:
      - "module purge && module load gcc/4.0"
-     compiler:
+     build:
        source: src/hello.c
-   compiler_name_type_mismatch:
+   name_type_mismatch:
      executor: local.bash
      type: compiler
      description: "compiler 'name' expects a string but received a list"
      module:
      - "module purge && module load gcc/4.0"
-     compiler:
+     build:
        source: src/hello.c
        name: ["gnu", "intel"]
        cflags: "-O1"
@@ -146,7 +189,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler
      description: "test additionalProperties in compiler object. Schema does not allow for additional keys"
      module:
      - "module purge && module load gcc/4.0"
-     compiler:
+     build:
        source: src/hello.c
        foo: bar
        name: gnu
@@ -159,22 +202,23 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/compiler
      foo: bar
      module:
      - "module purge && module load gcc/4.0"
-     compiler:
+     build:
        source: src/hello.c
        name: gnu
        cflags: "-O1"
        ldflags: "-lm"
-   type_mismatch_exec_args:
+   type_mismatch_args:
      executor: local.bash
      type: compiler
-     description: "type mismatch on exec_args key"
+     description: "type mismatch on args key"
      module:
      - "module purge && module load gcc/4.0"
-     compiler:
+     build:
        source: src/hello.c
        name: gnu
        cflags: "-O1"
        ldflags: "-lm"
-       exec_args: 1
+     run:
+       args: 1
  ________________________________________ Validation Error ________________________________________
  Did not find 'type' key in test section: missing_type

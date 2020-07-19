@@ -6,7 +6,7 @@ $ buildtest schema -n compiler-v1.0.schema.json -j
    "type": "object",
    "required": [
      "type",
-     "compiler",
+     "build",
      "executor"
    ],
    "additionalProperties": false,
@@ -45,7 +45,7 @@ $ buildtest schema -n compiler-v1.0.schema.json -j
      "tags": {
        "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/tags"
      },
-     "compiler": {
+     "build": {
        "type": "object",
        "properties": {
          "name": {
@@ -69,9 +69,6 @@ $ buildtest schema -n compiler-v1.0.schema.json -j
          "source": {
            "type": "string"
          },
-         "exec_args": {
-           "type": "string"
-         },
          "cflags": {
            "type": "string"
          },
@@ -92,6 +89,18 @@ $ buildtest schema -n compiler-v1.0.schema.json -j
          "source",
          "name"
        ],
+       "additionalProperties": false
+     },
+     "run": {
+       "type": "object",
+       "properties": {
+         "launcher": {
+           "type": "string"
+         },
+         "args": {
+           "type": "string"
+         }
+       },
        "additionalProperties": false
      }
    }

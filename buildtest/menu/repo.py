@@ -204,7 +204,7 @@ def validate_repos():
             yaml.dump(repo_dict, fd, default_flow_style=False)
 
 
-def get_repo_paths():
+def get_repo_paths(repo_name=None):
     """ Return list of destination path where repositories are cloned. This
         is used to build the buildspec search path.
 
@@ -221,6 +221,9 @@ def get_repo_paths():
 
     with open(REPO_FILE, "r") as fd:
         repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
+
+    if repo_name and repo_name in active_repos():
+        return repo_dict[repo_name]["dest"]
 
     for repo in repo_dict.keys():
         if repo_dict[repo]["state"] == "enabled":
