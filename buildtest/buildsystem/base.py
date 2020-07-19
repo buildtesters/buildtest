@@ -662,11 +662,10 @@ class CompilerBuilder(BuilderBase):
 
         if self.run_dict:
             # add args after executable if defined
-             run.append(self.run_dict.get("args"))
-
+            run.append(self.run_dict.get("args"))
 
         # remove None object if found in list this would be present if launcher and args key are not defined
-        run = [ cmd for cmd in run if cmd]
+        run = [cmd for cmd in run if cmd]
 
         return run
         # return self.simple_run()
