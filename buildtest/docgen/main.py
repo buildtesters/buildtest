@@ -82,6 +82,7 @@ def schemas():
     }
     generate_tests(prefix, cmd_dict)
 
+
 def compiler_schema():
 
     path = get_repo_paths("buildtesters/tutorials")
@@ -91,22 +92,26 @@ def compiler_schema():
     create_dir(dest)
 
     # directory examples for compiler examples
-    directories = [ os.path.join(path,"examples","serial"), os.path.join(path,"examples","openacc")]
+    directories = [
+        os.path.join(path, "examples", "serial"),
+        os.path.join(path, "examples", "openacc"),
+    ]
 
     for src in directories:
         buildspecs = walk_tree(src, ".yml")
 
         # copying files from tutorials/examples/serial to docgen/compiler_schema/
         for file in buildspecs:
-            destfile = os.path.join(dest,os.path.basename(file))
-            print (f"Copying file: {file} to {destfile}")
-            copy(file,destfile)
+            destfile = os.path.join(dest, os.path.basename(file))
+            print(f"Copying file: {file} to {destfile}")
+            copy(file, destfile)
 
     cmd_dict = {
         f"{os.path.join(prefix, 'gnu_hello.txt')}": "buildtest build -b examples/serial/gnu_hello.yml",
         f"{os.path.join(prefix, 'vecadd.txt')}": "buildtest build -b examples/openacc/vecadd.yml",
     }
     generate_tests(prefix, cmd_dict)
+
 
 def introspection_cmds():
     cmd_dict = {
