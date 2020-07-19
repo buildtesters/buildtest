@@ -654,15 +654,19 @@ class CompilerBuilder(BuilderBase):
 
         run = []
 
-        # add launcher in front of execution if defined
-        if self.run_dict.get("launcher"):
+        if self.run_dict:
+            # add launcher in front of execution if defined
             run.append(self.run_dict.get("launcher"))
 
         run.append(f"./{self.executable}")
 
-        # add args after executable if defined
-        if self.run_dict.get("args"):
-            run.append(self.run_dict.get("args"))
+        if self.run_dict:
+            # add args after executable if defined
+             run.append(self.run_dict.get("args"))
+
+
+        # remove None object if found in list this would be present if launcher and args key are not defined
+        run = [ cmd for cmd in run if cmd]
 
         return run
         # return self.simple_run()

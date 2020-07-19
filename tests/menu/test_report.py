@@ -6,6 +6,8 @@ from buildtest.menu.report import func_report
 
 
 def test_report_format():
+
+    assert os.path.exists(BUILD_REPORT)
     class args:
         helpformat = False
         format = None
