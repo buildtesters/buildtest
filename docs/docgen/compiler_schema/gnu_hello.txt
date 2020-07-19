@@ -1,0 +1,38 @@
+$ buildtest build -b examples/serial/gnu_hello.yml 
+Paths:
+ __________
+ Prefix: /private/tmp
+ Buildspec Search Path: ['/private/tmp/github.com/buildtesters/tutorials', '/Users/siddiq90/.buildtest/site']
+ Test Directory: /private/tmp/tests
+ +-------------------------------+
+ | Stage: Discovered Buildspecs  |
+ +-------------------------------+ 
+ /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+ +----------------------+
+ | Stage: Building Test |
+ +----------------------+ 
+  Name            | Schema File               | Test Path                                       | Buildspec
+ -----------------+---------------------------+-------------------------------------------------+------------------------------------------------------------------------------
+  hello_f         | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/hello_f.sh         | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+  hello_c         | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/hello_c.sh         | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+  hello_cplusplus | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/hello_cplusplus.sh | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+  cc_example      | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/cc_example.sh      | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+  fc_example      | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/fc_example.sh      | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+  cxx_example     | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/cxx_example.sh     | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+ +----------------------+
+ | Stage: Running Test  |
+ +----------------------+ 
+  name            | executor   | status   |   returncode | testpath
+ -----------------+------------+----------+--------------+-------------------------------------------------
+  hello_f         | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/hello_f.sh
+  hello_c         | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/hello_c.sh
+  hello_cplusplus | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/hello_cplusplus.sh
+  cc_example      | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/cc_example.sh
+  fc_example      | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/fc_example.sh
+  cxx_example     | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/cxx_example.sh
+ +----------------------+
+ | Stage: Test Summary  |
+ +----------------------+ 
+ Executed 6 tests
+ Passed Tests: 6/6 Percentage: 100.000%
+ Failed Tests: 0/6 Percentage: 0.000%

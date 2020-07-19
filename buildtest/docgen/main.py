@@ -2,10 +2,10 @@
 This file is used for generating documentation tests.
 """
 import os
-
-from buildtest.menu.repo import active_repos, func_repo_add
+from shutil import copy
+from buildtest.menu.repo import active_repos, func_repo_add, get_repo_paths
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, write_file
+from buildtest.utils.file import create_dir, write_file, walk_tree
 
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 docgen = os.path.join(root, "docs", "docgen")
@@ -83,6 +83,36 @@ def schemas():
     generate_tests(prefix, cmd_dict)
 
 
+def compiler_schema():
+
+    path = get_repo_paths("buildtesters/tutorials")
+
+    prefix = "compiler_schema"
+    dest = os.path.join(docgen, prefix)
+    create_dir(dest)
+
+    # directory examples for compiler examples
+    directories = [
+        os.path.join(path, "examples", "serial"),
+        os.path.join(path, "examples", "openacc"),
+    ]
+
+    for src in directories:
+        buildspecs = walk_tree(src, ".yml")
+
+        # copying files from tutorials/examples/serial to docgen/compiler_schema/
+        for file in buildspecs:
+            destfile = os.path.join(dest, os.path.basename(file))
+            print(f"Copying file: {file} to {destfile}")
+            copy(file, destfile)
+
+    cmd_dict = {
+        f"{os.path.join(prefix, 'gnu_hello.txt')}": "buildtest build -b examples/serial/gnu_hello.yml",
+        f"{os.path.join(prefix, 'vecadd.txt')}": "buildtest build -b examples/openacc/vecadd.yml",
+    }
+    generate_tests(prefix, cmd_dict)
+
+
 def introspection_cmds():
     cmd_dict = {
         "config-view.txt": "buildtest config view",
@@ -122,6 +152,7 @@ def main():
     build_helper()
     tutorial()
     schemas()
+    compiler_schema()
     introspection_cmds()
 
 

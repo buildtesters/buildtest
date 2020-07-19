@@ -6,15 +6,15 @@ buildspecs:
     module:
      -  "module purge &&  module load intel/17"
      -  "module purge &&  module load intel/18"
-    compiler:
+    build:
       source: src/hello.c
       name: intel
       cflags: "-O1"
 
-  missing_compiler:
+  missing_build:
     executor: local.bash
     type: compiler
-    description: "compiler key is missing, this is a required field"
+    description: "build key is missing, this is a required field"
     module:
      -  "module purge &&  module load intel/17"
      -  "module purge &&  module load intel/18"
@@ -26,7 +26,7 @@ buildspecs:
     module:
        - "module purge && module load gcc/4.0"
        - "module purge && module load gcc/6.0"
-    compiler:
+    build:
       source: src/hello.c
       name: gnu
       cflags: "-O1"
@@ -38,7 +38,7 @@ buildspecs:
     module:
        - "module purge && module load gcc/4.0"
        - "module purge && module load gcc/6.0"
-    compiler:
+    build:
       source: src/hello.c
       name: gnu
       cflags: "-O1"
@@ -48,7 +48,7 @@ buildspecs:
     type: compiler
     description: "type for 'module' key, expecting type 'array' but received 'string' "
     module: "module purge && module load gcc/4.0"
-    compiler:
+    build:
       source: src/hello.c
       name: gnu
       cflags: "-O1"
@@ -60,7 +60,7 @@ buildspecs:
     module:
       - 1
       - "module purge && module load intel"
-    compiler:
+    build:
       source: src/hello.c
       name: intel
       cflags: "-O1"
@@ -71,26 +71,26 @@ buildspecs:
     description: "missing source key in compiler object"
     module:
     - "module purge && module load gcc/4.0"
-    compiler:
+    build:
       name: gnu
       cflags: "-O1"
 
-  missing_a_compilername_in_compiler:
+  missing_name_in_build:
     executor: local.bash
     type: compiler
-    description: "missing name key in compiler object"
+    description: "missing name key in build object"
     module:
     - "module purge && module load gcc/4.0"
-    compiler:
+    build:
       source: src/hello.c
 
-  compiler_name_type_mismatch:
+  name_type_mismatch:
     executor: local.bash
     type: compiler
     description: "compiler 'name' expects a string but received a list"
     module:
     - "module purge && module load gcc/4.0"
-    compiler:
+    build:
       source: src/hello.c
       name: ["gnu", "intel"]
       cflags: "-O1"
@@ -103,7 +103,7 @@ buildspecs:
     description: "test additionalProperties in compiler object. Schema does not allow for additional keys"
     module:
     - "module purge && module load gcc/4.0"
-    compiler:
+    build:
       source: src/hello.c
       foo: bar
       name: gnu
@@ -117,21 +117,23 @@ buildspecs:
     foo: bar
     module:
     - "module purge && module load gcc/4.0"
-    compiler:
+    build:
       source: src/hello.c
       name: gnu
       cflags: "-O1"
       ldflags: "-lm"
 
-  type_mismatch_exec_args:
+  type_mismatch_args:
     executor: local.bash
     type: compiler
-    description: "type mismatch on exec_args key"
+    description: "type mismatch on args key"
     module:
     - "module purge && module load gcc/4.0"
-    compiler:
+    build:
       source: src/hello.c
       name: gnu
       cflags: "-O1"
       ldflags: "-lm"
-      exec_args: 1
+
+    run:
+      args: 1
