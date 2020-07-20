@@ -43,35 +43,37 @@ buildtest runs a few automated checks via GitHub Actions that can be found in ``
 Configuring Black Pre-Commit Hook
 -----------------------------------
 
-The above actions check formatting, but are conservative and do not do commits to fix issues on behalf of the user.
-To support an easier workflow, we have provided a git hook that you can install locally to run black directly before each
-commit. To install the hook, simply copy the file to the ``.git/hooks`` folder as follows::
+To configure pre-commit hook, make sure ``pre-commit`` is available if not
+``pip install pre-commit``. The pre-commit is available if you install buildtest
+dependencies.
 
-    cp .github/hooks/pre-commit .git/hooks/
+You can configure ``.pre-commit-config.yaml`` with the version of python you are using.
+It is currently setup to run for python 3.7 version as follows::
+
+    language_version: python3.7
+
+Alter this value based on python version you are using or refer to `black version control integration <https://black.readthedocs.io/en/stable/version_control_integration.html>`_.
+
+To install the pre-commit hook run::
+
+    $ pre-commit install
+    pre-commit installed at .git/hooks/pre-commit
 
 
-This hook will exit on error either if you don't have black installed::
+This will invoke hook ``.git/hooks/pre-commit`` prior to ``git commit``. Shown below
+we attempt to commit which resulted in pre commit hook and caused black to format code.
 
-    pip install black==19.3b0
+::
 
-or if you have black installed, but running it on the repository code results in an error due
-to a functional issue with the code. Code that simply needs to be formatted will be formatted,
-and then the commit will follow.
+    $ git commit -m "test black commit with precommit"
+    black....................................................................Failed
+    - hook id: black
+    - files were modified by this hook
 
-Once you have installed the ``pre-commit`` hook and black, then you can expect
-black will auto-format your code during the commit phase. Here is a snapshot of
-what the pre-commit hook will do ::
-
-    $ git commit -m "test black on one of the regtest"
-    Black is installed
-    reformatted /mxg-hpc/users/ssi29/buildtest/tests/test_inspect.py
+    reformatted buildtest/config.py
     All done! ✨ 🍰 ✨
-    1 file reformatted, 39 files left unchanged.
-    [test_black_hook 008fc62] test black on one of the regtest
-     1 file changed, 1 insertion(+)
+    1 file reformatted.
 
-The pre-commit hook will auto-format specific directories where python files are found. Refer to the
-pre-commit hook (``.github/hooks/pre-commit``) for more details.
 
 If you are interested in running black locally to see diff result from black without auto-formatting code,
 you can do the following::
