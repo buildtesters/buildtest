@@ -458,7 +458,9 @@ class SlurmExecutor(BaseExecutor):
     def load(self):
         """Load the a slurm executor configuration from buildtest settings."""
 
-        self.launcher = self._settings.get("launcher") or self._buildtestsettings["executors"].get("defaults", {}).get("launcher")
+        self.launcher = self._settings.get("launcher") or self._buildtestsettings[
+            "executors"
+        ].get("defaults", {}).get("launcher")
         self.launcher_opts = self._settings.get("options")
 
         self.cluster = self._settings.get("cluster")
