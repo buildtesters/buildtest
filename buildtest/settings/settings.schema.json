@@ -9,6 +9,14 @@
       "executors": {
           "type": "object",
           "properties": {
+             "defaults": {
+              "type": "object",
+              "additionalProperties": false,
+               "properties": {
+                 "pollinterval": { "type":  "integer", "minimum": 10, "maximum": 300, "default": 30 },
+                 "launcher": { "type": "string", "enum": ["sbatch"] }
+              }
+            },
             "local": {
               "type": "object",
               "patternProperties": { "^.*$": { "$ref": "#/definitions/local" } }
@@ -80,7 +88,6 @@
               "description": {"type": "string"},
               "launcher": { "type": "string", "enum": ["sbatch"] },
               "options": { "type": "array", "items": {"type": "string"} },
-              "pollinterval": { "type":  "integer", "minimum": 10, "maximum": 300},
               "environment": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
               "variables": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
               "cluster": {"type":  "string"},
