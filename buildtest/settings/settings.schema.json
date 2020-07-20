@@ -9,6 +9,14 @@
       "executors": {
           "type": "object",
           "properties": {
+             "defaults": {
+              "type": "object",
+              "additionalProperties": false,
+               "properties": {
+                 "pollinterval": { "type":  "integer", "minimum": 10, "maximum": 300, "default": 30 },
+                 "launcher": { "type": "string", "enum": ["sbatch"] }
+              }
+            },
             "local": {
               "type": "object",
               "patternProperties": { "^.*$": { "$ref": "#/definitions/local" } }
@@ -62,6 +70,8 @@
       },
       "local": {
           "type": "object",
+          "additionalProperties": false,
+          "required": ["shell"],
           "properties": {
               "description": {"type": "string"},
               "shell":  {"type": "string",  "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*" },
@@ -69,30 +79,27 @@
               "variables": {"$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
               "retry": {"type": "integer", "minimum": 1, "maximum": 5},
               "modules": {"$ref":  "#/definitions/modules"}
-          },
-          "additionalProperties": false,
-          "required": ["shell"]
+          }
        },
 
       "slurm": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
               "description": {"type": "string"},
               "launcher": { "type": "string", "enum": ["sbatch"] },
               "options": { "type": "array", "items": {"type": "string"} },
-              "pollinterval": { "type":  "integer", "minimum": 10, "maximum": 300},
               "environment": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
               "variables": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
               "cluster": {"type":  "string"},
               "partition": {"type":  "string"},
               "qos": {"type":  "string"},
               "modules": {"$ref":  "#/definitions/modules"}
-           },
-          "additionalProperties": false,
-          "required": ["launcher"]
+           }
        },
       "ssh": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "description": {"type": "string"},
           "host": {"type":  "string"},
@@ -102,8 +109,7 @@
           "variables": {"$ref":  "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"},
           "modules": {"$ref":  "#/definitions/modules"}
         },
-        "required": ["host","user","identity_file"],
-        "additionalProperties": false
+        "required": ["host","user","identity_file"]
       }
     }
 }

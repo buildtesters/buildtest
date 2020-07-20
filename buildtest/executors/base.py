@@ -43,17 +43,17 @@ class BuildExecutor:
 
         for name in config_opts["executors"].get("local", {}).keys():
             self.executors[f"local.{name}"] = LocalExecutor(
-                name, config_opts["executors"]["local"][name]
+                name, config_opts["executors"]["local"][name], config_opts
             )
 
         for name in config_opts["executors"].get("ssh", {}).keys():
             self.executors[f"ssh.{name}"] = SSHExecutor(
-                name, config_opts["executors"]["ssh"][name]
+                name, config_opts["executors"]["ssh"][name], config_opts
             )
 
         for name in config_opts["executors"].get("slurm", {}).keys():
             self.executors[f"slurm.{name}"] = SlurmExecutor(
-                name, config_opts["executors"]["slurm"][name]
+                name, config_opts["executors"]["slurm"][name], config_opts
             )
 
     def __str__(self):
@@ -147,7 +147,7 @@ class BaseExecutor:
     steps = ["setup", "run"]
     type = "base"
 
-    def __init__(self, name, settings):
+    def __init__(self, name, settings, config_opts):
         """Initiate a base executor, meaning we provide a name (also held
            by the BuildExecutor base that holds it) and the loaded dictionary
            of config opts to parse.
@@ -164,6 +164,7 @@ class BaseExecutor:
         self.logger = logging.getLogger(__name__)
         self.name = name
         self._settings = settings
+        self._buildtestsettings = config_opts
         self.load()
         self.builder = None
         self.result = {}
@@ -407,7 +408,6 @@ class SlurmExecutor(BaseExecutor):
     """
 
     type = "slurm"
-    DEFAULT_POLL_INTERVAL = 30
     steps = ["dispatch", "poll", "gather", "close"]
     job_state = None
     poll_cmd = "sacct"
@@ -458,11 +458,11 @@ class SlurmExecutor(BaseExecutor):
     def load(self):
         """Load the a slurm executor configuration from buildtest settings."""
 
-        self.launcher = self._settings.get("launcher")
+        self.launcher = self._settings.get("launcher") or self._buildtestsettings[
+            "executors"
+        ].get("defaults", {}).get("launcher")
         self.launcher_opts = self._settings.get("options")
-        self.poll_interval = (
-            self._settings.get("pollinterval") or self.DEFAULT_POLL_INTERVAL
-        )
+
         self.cluster = self._settings.get("cluster")
         self.partition = self._settings.get("partition")
         self.qos = self._settings.get("qos")
