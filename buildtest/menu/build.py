@@ -336,13 +336,13 @@ def func_build_subcmd(args, config_opts):
 
             logger.debug(f"Sleeping for {interval} seconds")
             time.sleep(interval)
-            logger.debug(f"Polling Jobs: {poll_builders}")
+            logger.debug(f"Polling Jobs: {poll_queue}")
 
             for builder in poll_queue:
                 state = executor.poll(builder)
                 # remove builder from poll_queue when state is True
                 if state:
-                    self.logger.debug(
+                    logger.debug(
                         f"{builder} poll complete, removing test from poll queue"
                     )
                     poll_queue.remove(builder)
