@@ -276,13 +276,14 @@ class BaseExecutor:
         if status:
 
             # returncode_match is boolean to check if reference returncode matches return code from test
-            returncode_match = True
+            returncode_match = False
 
             # regex_match is boolean to check if output/error stream matches regex defined in Buildspec,
             # if no regex is defined we set this to True since we do a logical AND
-            regex_match = True
+            regex_match = False
 
-            if "returncode" in status:
+            slurm_job_state_match = False
+            if status.get("returncode"):
                 self.logger.debug("Conducting Return Code check")
                 self.logger.debug(
                     "Status Return Code: %s   Result Return Code: %s"
@@ -291,18 +292,26 @@ class BaseExecutor:
                 # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
                 returncode_match = status["returncode"] == self.result["returncode"]
 
-            if "regex" in status:
+            if status.get("regex"):
                 self.logger.debug("Conducting Regular Expression check")
                 # self.check_regex  applies regular expression check specified in Buildspec with output or error
                 # stream. self.check_regex returns a boolean (True/False) by using re.search
                 regex_match = self.check_regex(status["regex"])
+
+            # if slurm_job_state_codes defined in buildspec.
+            # self.builder.metadata["job"] only defined when job run through SlurmExecutor
+            if status.get("slurm_job_state_codes") and self.builder.metadata.get("job"):
+                slurm_job_state_match = (
+                    status["slurm_job_state_codes"]
+                    == self.builder.metadata["job"]["State"]
+                )
 
             self.logger.info(
                 "ReturnCode Match: %s Regex Match: %s "
                 % (returncode_match, regex_match)
             )
 
-            if returncode_match and regex_match:
+            if returncode_match or regex_match or slurm_job_state_match:
                 self.result["state"] = "PASS"
 
         # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
