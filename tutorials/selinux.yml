@@ -1,0 +1,12 @@
+version: "1.0"
+buildspecs:
+  selinux_disable:
+    executor: local.bash
+    type: script
+    description: Check if SELinux is Disabled
+    run: cat /etc/selinux/config  | egrep -e "^SELINUX=disabled$"
+    status:
+      regex:
+        stream: stdout
+        exp: "^SELINUX=disabled$"
+      returncode: 0

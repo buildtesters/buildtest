@@ -1,0 +1,13 @@
+version: "1.0"
+buildspecs:
+  environment_variables:
+    executor: local.bash
+    type: script
+    env:
+      FIRST_NAME: avocado
+      LAST_NAME: dinosaur
+    run: |
+      hostname
+      whoami
+      echo $USER
+      printf "${FIRST_NAME} ${LAST_NAME}\n"
