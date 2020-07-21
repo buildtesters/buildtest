@@ -328,7 +328,7 @@ def func_build_subcmd(args, config_opts):
         )
         # if no items in poll_queue terminate, this will happen as jobs complete polling
         # and they are removed from queue.
-        while not poll_queue:
+        while poll_queue:
 
             print("\n")
             print(f"Polling Jobs in {interval} seconds")
