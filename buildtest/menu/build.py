@@ -326,8 +326,10 @@ def func_build_subcmd(args, config_opts):
         interval = (
             config_opts.get("executors", {}).get("defaults", {}).get("pollinterval")
         )
-        while True:
-            statelist = []
+        # if no items in poll_queue terminate, this will happen as jobs complete polling
+        # and they are removed from queue.
+        while not poll_queue:
+
             print("\n")
             print(f"Polling Jobs in {interval} seconds")
             print("{:_<40}".format(""))
@@ -336,11 +338,6 @@ def func_build_subcmd(args, config_opts):
             time.sleep(interval)
             logger.debug(f"Polling Jobs: {poll_builders}")
 
-            # if no items in poll_queue terminate, this will happen as jobs complete polling
-            # and they are removed from queue.
-            if not poll_queue:
-                break
-
             for builder in poll_queue:
                 state = executor.poll(builder)
                 # remove builder from poll_queue when state is True
@@ -348,7 +345,7 @@ def func_build_subcmd(args, config_opts):
                     self.logger.debug(
                         f"{builder} poll complete, removing test from poll queue"
                     )
-                    del poll_queue[builder]
+                    poll_queue.remove(builder)
 
     if total_tests == 0:
         print("No tests were executed")
