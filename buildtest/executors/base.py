@@ -298,10 +298,11 @@ class BaseExecutor:
                 # stream. self.check_regex returns a boolean (True/False) by using re.search
                 regex_match = self.check_regex(status["regex"])
 
-            if status.get("slurm_job_state_codes") and status.get(
-                "slurm_job_state_codes"
-            ) in self.builder.metadata.get("job", {}).get("state"):
-                slurm_job_state_match = True
+            # if slurm_job_state_codes defined in buildspec.
+            # self.builder.metadata["job"] only defined when job run through SlurmExecutor
+            if status.get("slurm_job_state_codes") and self.builder.metadata.get("job"):
+                slurm_job_state_match = status["slurm_job_state_codes"] == self.builder.metadata["job"]["State"]
+
 
             self.logger.info(
                 "ReturnCode Match: %s Regex Match: %s "
