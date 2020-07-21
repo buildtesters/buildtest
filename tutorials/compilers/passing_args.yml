@@ -1,0 +1,12 @@
+version: "1.0"
+buildspecs:
+  executable_arguments:
+    type: compiler
+    description: Passing arguments example
+    executor: local.bash
+    build:
+      source: "src/argc.c"
+      name: gnu
+      cflags: -Wall
+    run:
+      args: "1 2 3"

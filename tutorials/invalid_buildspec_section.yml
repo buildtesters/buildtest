@@ -1,0 +1,11 @@
+version: "1.0"
+buildspecs:
+  invalid_type:
+    executor: local.bash
+    type: badscript
+    description: invalid type
+    env:
+      Address: 65 Whale Drive
+      City: Manchester
+    run: |
+      echo "I Live on $Address in $City"

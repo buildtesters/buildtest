@@ -1,0 +1,34 @@
+version: "1.0"
+buildspecs:
+  hello_f:
+    executor: local.bash
+    type: compiler
+    description: "Hello World Fortran Compilation"
+    module:
+      - "module purge && module load intel"
+    build:
+      name: intel
+      source: "src/hello.f90"
+      fflags: -Wall
+
+  hello_c:
+    executor: local.bash
+    type: compiler
+    description: "Hello World C Compilation"
+    module:
+      - "module purge && module load intel"
+    build:
+      name: intel
+      source: "src/hello.c"
+      cflags: -Wall
+
+  hello_cplusplus:
+    executor: local.bash
+    type: compiler
+    description: "Hello World C++ Compilation"
+    module:
+      - "module purge && module load intel"
+    build:
+      name: intel
+      source: "src/hello.cpp"
+      cxxflags: -Wall

@@ -1,0 +1,25 @@
+version: "1.0"
+buildspecs:
+
+  exit1_fail:
+    executor: local.sh
+    type: script
+    description: exit 1 by default is FAIL
+    run: exit 1
+
+  exit1_pass:
+    executor: local.sh
+    type: script
+    description: report exit 1 as PASS
+    run: exit 1
+    status:
+      returncode: 1
+
+  returncode_mismatch:
+    executor: local.sh
+    type: script
+    description: exit 2 failed since it failed to match returncode 1
+    run: exit 2
+    status:
+      returncode: 1
+

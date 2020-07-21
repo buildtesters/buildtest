@@ -1,0 +1,10 @@
+version: "1.0"
+buildspecs:
+  variables:
+    type: script
+    executor: local.bash
+    vars:
+      X: 1
+      Y: 2
+    run: echo "$X+$Y=" $(($X+$Y))
+    

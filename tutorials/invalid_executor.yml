@@ -1,0 +1,7 @@
+version: "1.0"
+buildspecs:
+  wrongexecutor:
+    executor: badexecutor
+    type: script
+    description: valid test but invalid executor name so test won't run
+    run: hostname
