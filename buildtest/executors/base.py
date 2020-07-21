@@ -301,8 +301,10 @@ class BaseExecutor:
             # if slurm_job_state_codes defined in buildspec.
             # self.builder.metadata["job"] only defined when job run through SlurmExecutor
             if status.get("slurm_job_state_codes") and self.builder.metadata.get("job"):
-                slurm_job_state_match = status["slurm_job_state_codes"] == self.builder.metadata["job"]["State"]
-
+                slurm_job_state_match = (
+                    status["slurm_job_state_codes"]
+                    == self.builder.metadata["job"]["State"]
+                )
 
             self.logger.info(
                 "ReturnCode Match: %s Regex Match: %s "

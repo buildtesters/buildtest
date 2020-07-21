@@ -280,6 +280,8 @@ def func_build_subcmd(args, config_opts):
     )
     table = {"name": [], "executor": [], "status": [], "returncode": [], "testpath": []}
 
+    poll_queue = []
+
     for builder in builders:
         try:
             result = executor.run(builder)
@@ -297,6 +299,7 @@ def func_build_subcmd(args, config_opts):
             failed_tests += 1
 
         if result["state"] == "N/A":
+            poll_queue.append(builder)
             poll = True
 
         table["name"].append(builder.name)
@@ -329,15 +332,23 @@ def func_build_subcmd(args, config_opts):
             print(f"Polling Jobs in {interval} seconds")
             print("{:_<40}".format(""))
 
+            logger.debug(f"Sleeping for {interval} seconds")
             time.sleep(interval)
+            logger.debug(f"Polling Jobs: {poll_builders}")
 
-            for builder in builders:
-                state = executor.poll(builder)
-                statelist.append(state)
-
-            # break when all poll states are True
-            if all(statelist):
+            # if no items in poll_queue terminate, this will happen as jobs complete polling
+            # and they are removed from queue.
+            if not poll_queue:
                 break
+
+            for builder in poll_queue:
+                state = executor.poll(builder)
+                # remove builder from poll_queue when state is True
+                if state:
+                    self.logger.debug(
+                        f"{builder} poll complete, removing test from poll queue"
+                    )
+                    del poll_queue[builder]
 
     if total_tests == 0:
         print("No tests were executed")
