@@ -349,7 +349,13 @@ def func_build_subcmd(args, config_opts):
                     poll_queue.remove(builder)
 
         table = {}
-
+        print(
+            """
++---------------------------------------------+
+| Stage: Final Results after Polling all Jobs |
++---------------------------------------------+ 
+    """
+        )
         # regenerate test results after poll
         passed_tests = 0
         failed_tests = 0
