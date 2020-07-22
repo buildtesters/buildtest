@@ -348,7 +348,13 @@ def func_build_subcmd(args, config_opts):
                     )
                     poll_queue.remove(builder)
 
-        table = {"name": [], "executor": [], "status": [], "returncode": [], "testpath": []}
+        table = {
+            "name": [],
+            "executor": [],
+            "status": [],
+            "returncode": [],
+            "testpath": [],
+        }
         print(
             """
 +---------------------------------------------+

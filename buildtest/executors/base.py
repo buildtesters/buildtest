@@ -611,5 +611,7 @@ class SlurmExecutor(BaseExecutor):
             job_data["WorkDir"].rstrip(), f"slurm-{job_data['JobID']}.err"
         )
         self.logger.debug(f"[{self.builder.name}] result: {self.result}")
-        self.logger.debug(f"[{self.builder.name}] returncode: {self.result['returncode']}")
+        self.logger.debug(
+            f"[{self.builder.name}] returncode: {self.result['returncode']}"
+        )
         self.check_test_state()
