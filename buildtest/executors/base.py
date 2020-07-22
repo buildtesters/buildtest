@@ -307,8 +307,8 @@ class BaseExecutor:
                 )
 
             self.logger.info(
-                "ReturnCode Match: %s Regex Match: %s "
-                % (returncode_match, regex_match)
+                "ReturnCode Match: %s Regex Match: %s Slurm Job State Match: %s"
+                % (returncode_match, regex_match, slurm_job_state_match)
             )
 
             if returncode_match or regex_match or slurm_job_state_match:
@@ -521,7 +521,7 @@ class SlurmExecutor(BaseExecutor):
             err += f"[{self.builder.metadata['name']}] running command: {sbatch_cmd}"
             sys.exit(err)
 
-        interval = 10
+        interval = 2
 
         print(f"[{self.builder.metadata['name']}] job dispatched to scheduler")
         print(
@@ -532,13 +532,14 @@ class SlurmExecutor(BaseExecutor):
         # of job to show up from time of submission and running squeue.
         time.sleep(interval)
 
-        cmd = ["squeue"]
+        cmd = ["sacct"]
         if self.cluster:
             cmd += [f"-M {self.cluster}"]
-        cmd += ["-u $USER -h -O JobID | tail -n 1"]
+        cmd += ["-X -n -P -u $USER --format=job | tail -n 1"]
         cmd = " ".join(cmd)
 
         # get last job ID
+        self.logger.debug(f"[Acquire Job ID]: {cmd}")
         output = subprocess.check_output(cmd, shell=True, universal_newlines=True)
         self.job_id = int(output.strip())
         self.logger.debug(
@@ -591,13 +592,16 @@ class SlurmExecutor(BaseExecutor):
         out = out.split("|")
         job_data = {}
 
+        self.logger.debug(f"[{self.builder.name}] Job Results:")
         for field, value in zip(self.sacct_fields, out):
             job_data[field] = value
+            self.logger.debug(f"field: {field}   value: {value}")
 
         self.builder.metadata["job"] = job_data
+
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only
         # about first number
-        self.result["returncode"] = job_data["ExitCode"].split(":")[0]
+        self.result["returncode"] = int(job_data["ExitCode"].split(":")[0])
 
         self.result["endtime"] = job_data["End"]
         self.builder.metadata["outfile"] = os.path.join(
@@ -605,5 +609,9 @@ class SlurmExecutor(BaseExecutor):
         )
         self.builder.metadata["errfile"] = os.path.join(
             job_data["WorkDir"].rstrip(), f"slurm-{job_data['JobID']}.err"
+        )
+        self.logger.debug(f"[{self.builder.name}] result: {self.result}")
+        self.logger.debug(
+            f"[{self.builder.name}] returncode: {self.result['returncode']}"
         )
         self.check_test_state()

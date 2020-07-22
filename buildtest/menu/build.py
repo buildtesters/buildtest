@@ -269,7 +269,7 @@ def func_build_subcmd(args, config_opts):
     failed_tests = 0
     total_tests = 0
     errmsg = []
-    results = []
+
     poll = False
     print(
         """
@@ -292,21 +292,22 @@ def func_build_subcmd(args, config_opts):
             continue
 
         valid_builders.append(builder)
-        results.append(result)
-        if result["state"] == "PASS":
-            passed_tests += 1
-        else:
-            failed_tests += 1
-
-        if result["state"] == "N/A":
-            poll_queue.append(builder)
-            poll = True
 
         table["name"].append(builder.name)
         table["executor"].append(builder.executor)
         table["status"].append(result["state"])
         table["returncode"].append(result["returncode"])
         table["testpath"].append(builder.metadata["testpath"])
+
+        if result["state"] == "N/A":
+            poll_queue.append(builder)
+            poll = True
+            continue
+
+        if result["state"] == "PASS":
+            passed_tests += 1
+        else:
+            failed_tests += 1
 
         total_tests += 1
 
@@ -346,6 +347,41 @@ def func_build_subcmd(args, config_opts):
                         f"{builder} poll complete, removing test from poll queue"
                     )
                     poll_queue.remove(builder)
+
+        table = {
+            "name": [],
+            "executor": [],
+            "status": [],
+            "returncode": [],
+            "testpath": [],
+        }
+        print(
+            """
++---------------------------------------------+
+| Stage: Final Results after Polling all Jobs |
++---------------------------------------------+ 
+    """
+        )
+        # regenerate test results after poll
+        passed_tests = 0
+        failed_tests = 0
+        total_tests = 0
+        for builder in valid_builders:
+            result = builder.metadata["result"]
+            if result["state"] == "PASS":
+                passed_tests += 1
+            else:
+                failed_tests += 1
+
+            table["name"].append(builder.name)
+            table["executor"].append(builder.executor)
+            table["status"].append(result["state"])
+            table["returncode"].append(result["returncode"])
+            table["testpath"].append(builder.metadata["testpath"])
+
+            total_tests += 1
+
+        print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
     if total_tests == 0:
         print("No tests were executed")
