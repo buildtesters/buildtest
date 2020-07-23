@@ -82,7 +82,7 @@ using both script and compiler schema::
         executor: local.bash
         module:
           - "module purge && module load gcc"
-        compiler:
+        build:
           source: "src/hello.f90"
           name: gnu
           fflags: -Wall
