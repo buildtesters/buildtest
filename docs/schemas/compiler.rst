@@ -84,8 +84,8 @@ Shown below is the file extension table for your reference
     "**C++**", ".cc .cxx .cpp .c++"
     "**Fortran**", ".f90 .F90 .f95 .f .F .FOR .for .FTN .ftn"
 
-More Examples
---------------
+Passing Arguments
+-------------------
 
 If you want to pass options to executable command use the ``args`` key. Shown
 below is an example test
@@ -98,6 +98,10 @@ requires input arguments. Shown below is a generated test::
     #!/bin/bash
     gcc -Wall -o argc.c.exe /global/u1/s/siddiq90/tutorials/examples/serial/src/argc.c
     ./argc.c.exe 1 2 3
+
+
+OpenACC Examples
+-----------------
 
 Next, we will make use of an OpenACC vector addition example shown below is an
 example test
@@ -119,7 +123,7 @@ you will notice the run section will have a Status of ``PASS``
 .. program-output:: cat docgen/compiler_schema/vecadd.txt
 
 The regular expression is performed using `re.search <https://docs.python.org/3/library/re.html#re.search>`_, for example if we can change
-the ```exp`` field as follows::
+the ``exp`` field as follows::
 
     exp: "^final result: 0.99$"
 
@@ -134,6 +138,85 @@ have a Return Code of **0**::
     ________________________________________________________________________________________________________________________
     vecadd_gnu           local.bash           FAIL                 0                    /global/u1/s/siddiq90/tutorials/examples/openacc/vecadd.yml
 
+
+In the next example, we extend the previous buildspec test to run at Cori GPU
+machine using Slurm scheduler. We use the executor ``slurm.gpu`` where our executor
+is defined as follows::
+
+    gpu:
+      description: submit jobs to GPU partition
+      options: ["-C gpu"]
+      cluster: escori
+
+In order to submit job to the Cori GPU cluster we must use ``sbatch -C gpu -M escori`` which
+is what ``slurm.gpu`` executor is doing.
+
+In this example we make use of ``module`` field to load modules into the test, for
+this test we load the modules ``cuda`` and ``gcc/8.1.1-openacc-gcc-8-branch-20190215``.
+This test will launch job via ``srun`` and check job state code is ``COMPLETED``.
+
+::
+
+    version: "1.0"
+    buildspecs:
+      vecadd_openacc_gnu:
+        type: compiler
+        description: Vector Addition example with GNU compiler
+        executor: slurm.gpu
+        sbatch: ["-G 1", "-t 5", "-N 1"]
+        module:
+          - "module load cuda"
+          - "module load gcc/8.1.1-openacc-gcc-8-branch-20190215"
+        build:
+          name: gnu
+          source: src/vecAdd.c
+          cflags: -fopenacc
+          ldflags: -lm
+        run:
+          launcher: srun
+        status:
+          slurm_job_state_codes: COMPLETED
+
+buildtest will generate the following test, buildtest will add the #SBATCH directives
+followed by module commands. The executable is run via ``srun`` because we specify the ``launcher`` field. ::
+
+    #!/bin/bash
+    #SBATCH -G 1
+    #SBATCH -t 5
+    #SBATCH -N 1
+    module load cuda
+    module load gcc/8.1.1-openacc-gcc-8-branch-20190215
+    gcc -fopenacc -o vecAdd.c.exe /global/u1/s/siddiq90/buildtest-cori/apps/openacc/src/vecAdd.c -lm
+    srun ./vecAdd.c.exe
+
+In this next example, we build same test using `hpcsdk <https://docs.nvidia.com/hpc-sdk/index.html>`_
+compiler by NVIDIA that acquired PGI compiler. At cori, we must load ``hpcsdk``
+and ``cuda`` module in order to use the hpcsdk compiler. The ``name`` is a
+required field however buildtest will ignore since we specify
+``cc`` field. NVIDIA changed their compiler names instead of ``pgcc`` we must use
+``nvc`` with flag ``-acc`` to offload to GPU. For CoriGPU we must use
+``srun`` to acquire GPU access hence ``launcher`` field is set to srun.
+
+::
+
+    version: "1.0"
+    buildspecs:
+      vecadd_hpcsdk_gnu:
+        type: compiler
+        description: Vector Addition example with hpcsdk (pgi) compiler
+        executor: slurm.gpu
+        sbatch: ["-G 1", "-t 5", "-N 1"]
+        module:
+          - "module load hpcsdk"
+          - "module load cuda"
+        build:
+          name: pgi
+          cc: nvc
+          source: src/vecAdd.c
+          cflags: -acc
+          ldflags: -lm
+        run:
+          launcher: srun
 
 
 Compiler Schema Examples

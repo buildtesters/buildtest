@@ -94,8 +94,6 @@ slurm executor called ``normal``::
         normal:
           options: ["-C haswell"]
           qos: normal
-          launcher: sbatch
-          pollinterval: 20
 
 This executor can be referenced in buildspec as ``executor: slurm.normal``. This
 executor defines the following:
@@ -103,38 +101,82 @@ executor defines the following:
 - The ``launcher`` controls the launcher method, currently we only support sbatch as the launcher.
 - ``qos: normal`` will add ``-q normal`` to the launcher command. buildtest will check if qos is found in slurm configuration. If not found, buildtest will reject job submission.
 - ``options`` key is used to pass any options to launcher command. In this example we add ``-C haswell``.
-- ``pollinterval`` controls at what frequency to poll jobs after submission via `sacct`. The unit of measure is in seconds.
 
-Let's look at the slurm executor configuration for Cori at NERSC::
+buildtest setting for Cori - NERSC
+------------------------------------
+
+Let's take a look at Cori buildtest setting::
 
     executors:
+
+      defaults:
+        pollinterval: 10
+        launcher: sbatch
+
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
+
+        python:
+          description: submit jobs on local machine using python shell
+          shell: python
+
       slurm:
         debug:
           description: jobs for debug qos
-          launcher: sbatch
           qos: debug
-          pollinterval: 20
+          cluster: cori
+
         shared:
           description: jobs for shared qos
-          launcher: sbatch
           qos: shared
-          pollinterval: 20
+
         bigmem:
           description: bigmem jobs
-          launcher: sbatch
           cluster: escori
           qos: bigmem
-          pollinterval: 20
 
-In this example we define three executors `debug`, `shared` and `bigmem`.
+        xfer:
+          description: xfer qos jobs
+          qos: xfer
+
+        gpu:
+          description: submit jobs to GPU partition
+          options: ["-C gpu"]
+          cluster: escori
+
+    config:
+      editor: vi
+      paths:
+        prefix: $HOME/cache/
+
+In this setting, we define 3 LocalExecutors: ``local.bash``, ``local.sh`` and ``local.python``
+and 5 SlurmExecutors: ``slurm.debug``, ``slurm.shared``, ``slurm.bigmem``, ``slurm.xfer``, and ``slurm.gpu``.
+We also introduce section ``default`` in executor section which is used for setting default
+setting for all executor. At the moment, the ``launcher`` and ``pollinterval`` are available
+fields in default which only apply for SlurmExecutors. Currently, buildtest supports
+batch submission via ``sbatch`` so all SlurmExecutors will inherit ``sbatch`` as launcher.
+The ``pollinterval`` field is used with SlurmExecutor to poll jobs at set interval in seconds
+when job active in queue (PENDING, RUNNING).
+
+
 At Cori, jobs are submitted via qos instead of partition so each slurm executor
 has the `qos` key. The ``description`` key is a brief description of the executor
-which you can use to document the behavior of the executor. We introduce a new
-key ``cluster`` in the **bigmem** executor. At Cori, we have two slurm clusters,
-in order to submit jobs to ``bigmem`` qos we need to specify ``-M escori``
-where escori is the slurm cluster. buildtest will detect slurm configuration
-and check if cluster is a valid cluster name. In addition, `sacct` will poll job
-against the cluster name (``sacct -M <cluster>``).
+which you can use to document the behavior of the executor. The ``cluster`` field
+specifies which slurm cluster to use, at Cori in order to use ``bigmem`` qos we
+need to specify ``-M escori`` where escori is the slurm cluster. buildtest will
+detect slurm configuration and check if cluster is a valid cluster name.
+In addition, `sacct` will poll job against the cluster name (``sacct -M <cluster>``).
+
+The ``options`` field is use to specify any additional options to launcher (``sbatch``)
+on command line. For ``slurm.gpu`` executor, we use this executor for submit to CoriGPU
+which requies ``sbatch -M escori -C gpu``. Any additional #SBATCH options are defined
+in buildspec using ``sbatch`` key.
 
 Settings Example
 -----------------
