@@ -175,7 +175,7 @@ In addition, `sacct` will poll job against the cluster name (``sacct -M <cluster
 
 The ``options`` field is use to specify any additional options to launcher (``sbatch``)
 on command line. For ``slurm.gpu`` executor, we use this executor for submit to CoriGPU
-which requies ``sbatch -M escori -C gpu``. Any additional #SBATCH options are defined
+which requires ``sbatch -M escori -C gpu``. Any additional #SBATCH options are defined
 in buildspec using ``sbatch`` key.
 
 Settings Example
