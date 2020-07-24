@@ -1,10 +1,11 @@
 executors:
+  defaults:
+    pollinterval: 20
+    launcher: sbatch
   slurm:
     normal:
       options: ["-C haswell"]
       qos: normal
-      launcher: sbatch
-      pollinterval: 20
 config:
   editor: vi
   paths:

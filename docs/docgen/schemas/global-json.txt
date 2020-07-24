@@ -63,7 +63,17 @@ $ buildtest schema -n global.schema.json -j
      },
      "status": {
        "type": "object",
+       "additionalProperties": false,
        "properties": {
+         "slurm_job_state_codes": {
+           "type": "string",
+           "enum": [
+             "COMPLETED",
+             "FAILED",
+             "OUT_OF_MEMORY",
+             "TIMEOUT"
+           ]
+         },
          "returncode": {
            "type": "integer"
          },
