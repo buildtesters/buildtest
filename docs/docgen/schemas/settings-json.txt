@@ -13,6 +13,24 @@ $ buildtest schema -n settings.schema.json -j
      "executors": {
        "type": "object",
        "properties": {
+         "defaults": {
+           "type": "object",
+           "additionalProperties": false,
+           "properties": {
+             "pollinterval": {
+               "type": "integer",
+               "minimum": 10,
+               "maximum": 300,
+               "default": 30
+             },
+             "launcher": {
+               "type": "string",
+               "enum": [
+                 "sbatch"
+               ]
+             }
+           }
+         },
          "local": {
            "type": "object",
            "patternProperties": {
@@ -93,6 +111,10 @@ $ buildtest schema -n settings.schema.json -j
      },
      "local": {
        "type": "object",
+       "additionalProperties": false,
+       "required": [
+         "shell"
+       ],
        "properties": {
          "description": {
            "type": "string"
@@ -115,14 +137,11 @@ $ buildtest schema -n settings.schema.json -j
          "modules": {
            "$ref": "#/definitions/modules"
          }
-       },
-       "additionalProperties": false,
-       "required": [
-         "shell"
-       ]
+       }
      },
      "slurm": {
        "type": "object",
+       "additionalProperties": false,
        "properties": {
          "description": {
            "type": "string"
@@ -138,11 +157,6 @@ $ buildtest schema -n settings.schema.json -j
            "items": {
              "type": "string"
            }
-         },
-         "pollinterval": {
-           "type": "integer",
-           "minimum": 10,
-           "maximum": 300
          },
          "environment": {
            "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
@@ -162,14 +176,11 @@ $ buildtest schema -n settings.schema.json -j
          "modules": {
            "$ref": "#/definitions/modules"
          }
-       },
-       "additionalProperties": false,
-       "required": [
-         "launcher"
-       ]
+       }
      },
      "ssh": {
        "type": "object",
+       "additionalProperties": false,
        "properties": {
          "description": {
            "type": "string"
@@ -197,8 +208,7 @@ $ buildtest schema -n settings.schema.json -j
          "host",
          "user",
          "identity_file"
-       ],
-       "additionalProperties": false
+       ]
      }
    }
  }

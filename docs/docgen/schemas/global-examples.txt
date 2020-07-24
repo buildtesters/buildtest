@@ -1,5 +1,5 @@
 $ buildtest schema -n global.schema.json -e 
-File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/examples/valid/examples.yml
+File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/global/examples/valid/examples.yml
  Valid State: True
  ________________________________________________________________________________
  version: "1.0"
@@ -29,41 +29,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/e
      type: script
      executor: local.bash
      run: "hostname"
- File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/examples/invalid/maintainers_type_mismatch.yml
- Valid State: FAIL
- ________________________________________________________________________________
- version: "1.0"
- # wrong type for maintainers key, expects a string
- maintainers: 1
- buildspecs:
-   hostname:
-     type: script
-     run: "hostname"
- ________________________________________ Validation Error ________________________________________
- 1 is not of type 'array'
- Failed validating 'type' in schema['properties']['maintainers']:
-     {'description': 'One or more maintainers or aliases',
-      'items': {'type': 'string'},
-      'minItems': 1,
-      'type': 'array'}
- On instance['maintainers']:
-     1
- File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/examples/invalid/invalid_pattern.yml
- Valid State: FAIL
- ________________________________________________________________________________
- version: "1.0"
- buildspecs:
-   # invalid pattern for test. Must be matching regex "^[A-Za-z_.][A-Za-z0-9_]*$" when declaring a dict
-   (badname:
-     type: script
-     run: "ping login 1"
- ________________________________________ Validation Error ________________________________________
- '(badname' does not match '^[A-Za-z_][A-Za-z0-9_]*$'
- Failed validating 'pattern' in schema['properties']['buildspecs']['propertyNames']:
-     {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'}
- On instance['buildspecs']:
-     '(badname'
- File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/examples/invalid/missing-version.yml
+ File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/global/examples/invalid/missing-version.yml
  Valid State: FAIL
  ________________________________________________________________________________
  buildspecs:
@@ -89,14 +55,20 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/e
                       'sbatch': {'items': {'type': 'string'},
                                  'type': 'array'},
                       'skip': {'type': 'boolean'},
-                      'status': {'properties': {'regex': {'properties': {'exp': {'type': 'string'},
+                      'status': {'additionalProperties': False,
+                                 'properties': {'regex': {'properties': {'exp': {'type': 'string'},
                                                                          'stream': {'enum': ['stdout',
                                                                                              'stderr'],
                                                                                     'type': 'string'}},
                                                           'required': ['stream',
                                                                        'exp'],
                                                           'type': 'object'},
-                                                'returncode': {'type': 'integer'}},
+                                                'returncode': {'type': 'integer'},
+                                                'slurm_job_state_codes': {'enum': ['COMPLETED',
+                                                                                   'FAILED',
+                                                                                   'OUT_OF_MEMORY',
+                                                                                   'TIMEOUT'],
+                                                                          'type': 'string'}},
                                  'type': 'object'},
                       'tags': {'items': {'type': 'string'},
                                'minItems': 1,
@@ -117,3 +89,37 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/buildsystem/schemas/global/e
  On instance:
      {'buildspecs': {'login_node_check': {'run': 'ping login 1',
                                           'type': 'script'}}}
+ File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/global/examples/invalid/invalid_pattern.yml
+ Valid State: FAIL
+ ________________________________________________________________________________
+ version: "1.0"
+ buildspecs:
+   # invalid pattern for test. Must be matching regex "^[A-Za-z_.][A-Za-z0-9_]*$" when declaring a dict
+   (badname:
+     type: script
+     run: "ping login 1"
+ ________________________________________ Validation Error ________________________________________
+ '(badname' does not match '^[A-Za-z_][A-Za-z0-9_]*$'
+ Failed validating 'pattern' in schema['properties']['buildspecs']['propertyNames']:
+     {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'}
+ On instance['buildspecs']:
+     '(badname'
+ File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/global/examples/invalid/maintainers_type_mismatch.yml
+ Valid State: FAIL
+ ________________________________________________________________________________
+ version: "1.0"
+ # wrong type for maintainers key, expects a string
+ maintainers: 1
+ buildspecs:
+   hostname:
+     type: script
+     run: "hostname"
+ ________________________________________ Validation Error ________________________________________
+ 1 is not of type 'array'
+ Failed validating 'type' in schema['properties']['maintainers']:
+     {'description': 'One or more maintainers or aliases',
+      'items': {'type': 'string'},
+      'minItems': 1,
+      'type': 'array'}
+ On instance['maintainers']:
+     1
