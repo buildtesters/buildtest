@@ -1,9 +1,10 @@
 buildtest
 ==========
 
+This documentation was last rebuild on |today| and is intended for version |version|.
+
 Status
 -----------
-
 
 |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |core_infrastructure| |black|
 
@@ -65,13 +66,24 @@ Description
 ------------
 
 `buildtest <https://github.com/buildtesters/buildtest>`_  is
-a testing framework designed to automate testing on any Linux systems including HPC clusters, workstation, or laptop.
-buildtest provides several json-schemas that define how to write your test-configuration (YAML) also known as **Buildspecs**
-that buildtest translates into a shell script.
+a HPC testing framework to help sites perform acceptance & regression
+testing of an HPC system. buildtest utilizes `json schema <https://json-schema.org/>`_
+to define structure of test written in YAML called a  **Buildspec File**.
+The `schema docs <https://buildtesters.github.io/schemas/>`_ is a resource that
+hosts buildtest schemas and documents all field attributes for each schema, this will
+be useful when you are :ref:`writing_buildspecs`.
 
-For more details on buildtest check :ref:`summary_of_buildtest`
+A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_
+which is a Python API for `Lmod <https://lmod.readthedocs.io/en/latest/>`_. The buildtest
+module features were deprecated and moved to lmodule with the main object
+of automating module load testing. For more details on lmodule see https://github.com/buildtesters/lmodule
 
-This documentation was last rebuild on |today| and is intended for version |version|.
+To get started with buildtest, please review the :ref:`Terminology`
+and proceed to :ref:`Setup`  followed by :ref:`Getting Started`.
+
+For additional reference, you can read :ref:`summary_of_buildtest` and
+:ref:`conferences`.
+
 
 .. toctree::
    :maxdepth: 2
@@ -85,17 +97,17 @@ This documentation was last rebuild on |today| and is intended for version |vers
    :caption: Reference
 
    installing_buildtest.rst
-   configuring_buildtest.rst
    getting_started.rst
+   configuring_buildtest.rst
    schemas.rst
    introspection.rst
+   references.rst
 
 .. toctree::
    :maxdepth: 2
    :caption: Development Guide
 
    contributing.rst
-   references.rst
    api.rst
 
 License
