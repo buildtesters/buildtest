@@ -89,27 +89,24 @@ build a comprehensive test suite that will work with buildtest.
 Inception of buildtest
 ---------------------------
 
-buildtest was founded by *Shahzeb Siddiqui* in 2017 when he was at Pfizer tasked
-for testing software stack during a data center migration.
+buildtest was founded by `Shahzeb Siddiqui <https://github.com/shahzebsiddiqui>`_
+in 2017 when he was at `Pfizer <https://www.pfizer.com/>`_ tasked for testing
+software stack for a data center migration.
 
 Shahzeb was tasked with testing the software ecosystem by focusing on the most
 important application due to time constraints. During this period, several dozen
 test scripts were developed in shell-script that targeted core HPC tools such as
 compilers, **MPI**, **R**, **Python**, etc. A single master script was used to
-run all the tests which led to buildtest. Originally buildtest was implemented
-in bash and due to several language limitations, it was ported to Python.
-In September 2018, buildtest was ported from Python 2 to Python 3. The project
-was started on Feb 24th, 2017 and source code and documentation can be found on
-GitHub.
+run all the tests which led to buildtest.
 
+Timeline
+---------
 
-Description
------------
+.. csv-table::
+    :header: "Date", "Description"
+    :widths: 30, 60
 
-**buildtest** is a python framework for testing for HPC systems by utilizing test
-configurations known as **Buildspec** written in YAML. buildtest comes with a set
-of json-schema that defines how to write a Buildspec, which buildtest uses to
-validate, and parse the YAML file followed by generating the test for execution.
-
-buildtest is available on Github at https://github.com/buildtesters/buildtest
-
+    **Feb 18th 2017**,"Start of project"
+    **Aug 20th 2017**,"In `v0.1.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.1.5>`_ buildtest was converted from bash to Python and project was moved into github https://github.com/HPC-buildtest/buildtest"
+    **Sep 11th 2018**,"In `v0.4.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.4.0>`_ buildtest was ported from Python 2 to 3"
+    **Mar 3rd 2020**,"A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_ was formed based on buildtest module features"

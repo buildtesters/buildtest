@@ -164,7 +164,6 @@ batch submission via ``sbatch`` so all SlurmExecutors will inherit ``sbatch`` as
 The ``pollinterval`` field is used with SlurmExecutor to poll jobs at set interval in seconds
 when job active in queue (PENDING, RUNNING).
 
-
 At Cori, jobs are submitted via qos instead of partition so each slurm executor
 has the `qos` key. The ``description`` key is a brief description of the executor
 which you can use to document the behavior of the executor. The ``cluster`` field
