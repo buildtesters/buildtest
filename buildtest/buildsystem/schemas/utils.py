@@ -106,11 +106,7 @@ def get_schemas_available():
        as "latest"
     """
     lookup = {}
-    schema_names = [
-        x
-        for x in os.listdir(here)
-        if os.path.isdir(os.path.join(here, x)) and not x.startswith("_")
-    ]
+
     schema_names = ["script", "compiler"]
 
     for schema_name in schema_names:

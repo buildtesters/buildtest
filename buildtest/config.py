@@ -49,7 +49,7 @@ def init(settings_path):
 
 
 def check_settings(settings_path=None, run_init=True, executor_check=True):
-    """Checks all keys in configuration file (settings/settings.yml) are valid
+    """Checks all keys in configuration file (settings/config.yml) are valid
        keys and ensure value of each key matches expected type . For some keys
        special logic is taken to ensure values are correct and directory path
        exists.       

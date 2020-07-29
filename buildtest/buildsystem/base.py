@@ -21,11 +21,12 @@ from buildtest.buildsystem.schemas.utils import (
     get_schemas_available,
     here,
 )
+from buildtest.buildsystem.schemas.defaults import global_schema_file, global_schema
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import create_dir, is_dir, resolve_path, write_file
 from buildtest.utils.shell import Shell
 
-
+schema_table = get_schemas_available()
 class BuildspecParser:
     """A BuildspecParser is a base class for loading and validating a Buildspec file.
        The type (e.g., script) and version are derived from reading in
@@ -59,7 +60,8 @@ class BuildspecParser:
         self.logger = logging.getLogger(__name__)
 
         # Read the lookup to get schemas available
-        self.schema_table = get_schemas_available()
+        # self.schema_table = get_schemas_available()
+        self.schema_table = schema_table
 
         self.logger.debug(
             f"buildtest found the available schema: {self.schema_table} in schema library"
@@ -100,15 +102,15 @@ class BuildspecParser:
            extend the usage of the class.
         """
 
-        global_schema_file = os.path.join(here, "global.schema.json")
+        #global_schema_file = os.path.join(here, "global.schema.json")
 
-        outer_schema = load_schema(global_schema_file)
+        #outer_schema = load_schema(global_schema_file)
 
         self.logger.debug(
             f"Validating {self.buildspec} with schema: {global_schema_file}"
         )
 
-        validate(instance=self.recipe, schema=outer_schema)
+        validate(instance=self.recipe, schema=global_schema)
 
         self.logger.debug("Validation was successful")
 
@@ -313,7 +315,7 @@ class BuilderBase:
         self.recipe = recipe
 
         # get the schema name that this buildspec was validated with
-        self.schema_table = get_schemas_available()
+        self.schema_table = schema_table
         type = self.recipe["type"]
         self.schemafile = self.schema_table[type][version]
         self.metadata["schemafile"] = self.schemafile

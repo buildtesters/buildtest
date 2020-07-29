@@ -32,7 +32,7 @@ def test_get_default_settings():
 
 def test_init_creation_of_buildtest_dir(tmp_path):
 
-    settings = os.path.join(tmp_path, "settings.yml")
+    settings = os.path.join(tmp_path, "config.yml")
     init(settings)
     print(f"Checking buildtest settings file: {settings}")
     print(f"Checking if 'site' sub-directory: {os.path.join(tmp_path,'site')} exists")
