@@ -1,11 +1,12 @@
 import os
-
+import json
 from buildtest.config import load_settings, check_settings
 from buildtest.menu import BuildTestParser
 from buildtest.menu.repo import validate_repos
 from buildtest.menu.build import func_build_subcmd
 from buildtest.system import BuildTestSystem
 from buildtest.log import init_logfile, streamlog
+from buildtest.buildsystem.schemas.defaults import schema_table
 
 # column width for linewrap for argparse library
 os.environ["COLUMNS"] = "120"
