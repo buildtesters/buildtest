@@ -380,7 +380,10 @@ class BuildTestParser:
             choices=supported_schemas,
         )
         parser_schema.add_argument(
-            "-e", "--example", action="store_true", help="Show schema examples that are validated by corresponding schemafile"
+            "-e",
+            "--example",
+            action="store_true",
+            help="Show schema examples that are validated by corresponding schemafile",
         )
         parser_schema.add_argument(
             "-j", "--json", action="store_true", help="Display json schema file"
