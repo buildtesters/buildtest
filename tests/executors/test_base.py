@@ -9,7 +9,7 @@ from jsonschema.exceptions import ValidationError
 from buildtest.executors.base import BuildExecutor
 from buildtest.schemas.utils import load_schema
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA
-from buildtest.buildsystem.base import BuildspecParser
+from buildtest.buildsystem.parser import BuildspecParser
 
 pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

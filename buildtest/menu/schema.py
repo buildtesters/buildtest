@@ -1,7 +1,7 @@
 import json
 import os
 from jsonschema.exceptions import ValidationError
-from buildtest.buildsystem.base import BuildspecParser
+from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import check_settings
 from buildtest.schemas.utils import (
     load_schema,

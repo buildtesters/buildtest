@@ -7,7 +7,7 @@ from jsonschema.exceptions import ValidationError
 from buildtest.defaults import REPO_FILE, BUILDSPEC_CACHE_FILE
 from buildtest.config import get_default_settings
 from buildtest.utils.file import is_file, is_dir, walk_tree
-from buildtest.buildsystem.base import BuildspecParser
+from buildtest.buildsystem.parser import BuildspecParser
 
 
 def func_buildspec_find(args):
