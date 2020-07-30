@@ -15,12 +15,10 @@ import shutil
 import stat
 import sys
 
-from jsonschema import validate
 
-from buildtest.schemas.utils import load_recipe
 from buildtest.schemas.defaults import schema_table
 from buildtest.exceptions import BuildTestError
-from buildtest.utils.file import create_dir, is_dir, resolve_path, write_file
+from buildtest.utils.file import create_dir, resolve_path, write_file
 from buildtest.utils.shell import Shell
 
 
