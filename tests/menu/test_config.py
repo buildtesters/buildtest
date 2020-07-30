@@ -8,7 +8,7 @@ from buildtest.menu.config import (
     func_config_summary,
 )
 from buildtest.utils.file import walk_tree
-from buildtest.buildsystem.schemas.utils import load_schema
+from buildtest.schemas.utils import load_schema
 
 pytest_root = os.path.dirname(os.path.dirname(__file__))
 

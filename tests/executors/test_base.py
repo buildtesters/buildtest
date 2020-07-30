@@ -7,7 +7,7 @@ import os
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from buildtest.executors.base import BuildExecutor
-from buildtest.buildsystem.schemas.utils import load_schema
+from buildtest.schemas.utils import load_schema
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA
 from buildtest.buildsystem.base import BuildspecParser
 
