@@ -12,7 +12,7 @@ from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
 
-from buildtest.buildsystem.base import BuildspecParser
+from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import load_settings, check_settings
 from buildtest.executors.base import BuildExecutor
 from buildtest.menu.repo import get_repo_paths
