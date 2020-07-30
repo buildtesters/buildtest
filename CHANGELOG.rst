@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-v0.8.0 (Mar xxx, 2020)
+v0.8.0 (TBD)
 -----------------------
 
  - Add pre-commit hook to automate python format via ``black``. Add ``black --check`` as automated check see #172, #179
@@ -92,7 +92,7 @@ v0.7.2 (Nov 8th, 2019)
 - adding directory expansion support when files or directory are references such as $HOME or tilde (~) operation
 - adding several badges to README.rst
 
-v0.7.1 (Aug 30, 2019)
+v0.7.1 (Oct 30th, 2019)
 ---------------------
 - Re-implement core mechanics of the build framework by using new YAML schema.
 - Release buildtest under MIT license
@@ -105,7 +105,7 @@ v0.7.1 (Aug 30, 2019)
 - Add key TESTDIR in **build.json** to identify test directory, this makes it easier when running test
 
 
-v0.7.0 (Aug 22, 2019)
+v0.7.0 (Oct 16th, 2019)
 ----------------------
 - autodetect slurm configuration from system and write to json file
 - add option ``buildtest module --module-deps`` that prints modules dependent on parent modules
@@ -136,13 +136,10 @@ v0.7.0 (Aug 22, 2019)
 - Add threshold value for running test. This can be configured using BUILDTEST_SUCCESS_THRESHOLD
 - Create submenu ``module`` and move option ``--diff-trees`` and ``--module-load-test`` to this menu
 
-v0.6.3 (Oct 26, 2018)
+v0.6.3 (Oct 26th, 2018)
 ----------------------------
 - OpenHPC yaml files are moved from $BUILDTEST_CONFIGS_REPO/ohpc to  $BUILDTEST_CONFIGS_REPO/buildtest/ohpc
 - This led to minor fix on how buildtest will write yaml files via ``_buildtest yaml --ohpc`` and build tests via ``_buildtest build --ohpc``
-
-v0.6.2 (Oct 26, 2018)
-----------------------------
 - Add OpenHPC integration with buildtest with option ``--ophc``. This is available for ``build`` and ``yaml`` subcommand
 - Rename option ``--ignore-easybuild`` to ``--easybuild``. When this is set, buildtest will check if software is easybuild software.
 - BUILDTEST_EASYBUILD and BUILDTEST_OHPC can be defined in configuration file or environment variable
@@ -155,7 +152,7 @@ v0.6.1 (Oct 18, 2018)
 ---------------------------
 - Fix issue with pypi package dependency in version 0.6.0
 
-v0.6.0 (Oct 18, 2018)
+v0.6.0 (Oct 17th, 2018)
 ---------------------------
 - **New Feature:** option to build all software and system packages using ``--all-software`` and ``--all-package``
 - **New Feature:** option to build all yaml configuration for software and system package using ``--all-software`` and ``--all-package``
@@ -169,7 +166,7 @@ v0.6.0 (Oct 18, 2018)
 - **bug fix:** directory issue for running buildtest first time https://github.com/buildtesters/buildtest/issues/81
 - **bug fix:** print error https://github.com/buildtesters/buildtest/issues/80
 
-v0.5.0 (Oct 8, 2018)
+v0.5.0 (Oct 8th, 2018)
 -----------------------
 
 - **New Feature:** Add new sub-commands ``build`` ``list`` ``run`` to buildtest
@@ -206,12 +203,12 @@ v0.5.0 (Oct 8, 2018)
 - **bug fix:** https://github.com/buildtesters/buildtest/pull/79/commits/8017d48c10cee706669ae5b56077640722442571
 - **bug fix:** https://github.com/buildtesters/buildtest/pull/79/commits/8dfe78bce930e23eb2242e4e4666f926bf60131f
 
-v0.4.0 (Sep 11, 2018)
+v0.4.0 (Sep 11th, 2018)
 --------------------------
 
 - Must use Python 3.6 or higher to use this version. All versions < 0.4.0 are supported by Python 2.6 or higher
 
-v0.3.0 () (Aug 7, 2018)
+v0.3.0 () (Aug 7th, 2018)
 ----------------------------------
 
 - Package buildtest as pypi package, now it can be installed via ``pip install buildtest``
@@ -240,7 +237,7 @@ Bug Fixes
 - Add extra configuration option in `config_opts` to reuse variable that were needed throughout code and fix bug with `--sysyaml` see https://github.com/buildtesters/buildtest/commit/493b53e4cfdb5710b384409edc7c85ceb05395ba
 - Fix bug with directory not found in menu,py by moving function `check_configuration` and `override_configuration` from main.py to menu,py see https://github.com/buildtesters/buildtest/commit/d2c78076eb551683bf81a3a7d12ae10971460971
 
-v0.2.0 (May 18, 2018)
+v0.2.0 (May 18th, 2018)
 ---------------------------
 
 This is a major release update on buildtest with additional options and most importantly
@@ -274,7 +271,7 @@ module tree you will need to use ``--toolchain`` option
 - buildtest will only generate tests for packages in python, R, ruby, perl when using ``--testset`` option if software has these packages installed. This avoids having to create excess test when they are bound to fail
 - ``--testset`` option now works properly for both ``HMNS`` and ``FNS`` module naming scheme and is able to operate on modules that don't follow easybuild module naming convention
 
-v0.1.8 (Feb 27, 2018)
+v0.1.8 (Jan 8th, 2018)
 ------------------------
 
 - Automate batch job submission from buildtest via **--submitjob**
@@ -286,7 +283,7 @@ v0.1.8 (Feb 27, 2018)
 - Support for yaml keys **scheduler** and **jobslot** to enable jobscript creation from yaml files. See https://github.com/buildtesters/buildtest/pull/52/commits/0fe4189df0694bef586e9d8e4565ec4cc3e169c9
 - Further support for scheduler and automatic detection. Currently supports LSF and SLURM.
 
-v0.1.7 (Feb 27, 2018)
+v0.1.7 (Nob 28th, 2017)
 ------------------------
 
 - Add support for creating LSF Job scripts via templates. Use **buildtest --job-template** see https://github.com/buildtesters/buildtest/commit/927dc09e347fdafa7020d7cfd3016fd8f430ac10
@@ -302,7 +299,7 @@ v0.1.7 (Feb 27, 2018)
 - Add support for **--testset Ruby** see https://github.com/buildtesters/buildtest/commit/c6b7133b5fc4b0690b8040d0e437784567cc1963
 - Print software in alphabetical order for -svr option see https://github.com/buildtesters/buildtest/commit/fcf61019c644cd305e459234a85c5d39df06433f
 
-v0.1.6 (Feb 27, 2018)
+v0.1.6 (Sep 15th, 2017)
 -------------------------
 
 - Add support for FlatNamingScheme in buildtest, added flag ``--module-naming-scheme`` to control setting
@@ -318,7 +315,7 @@ v0.1.6 (Feb 27, 2018)
 - Fix issue when no toolchain is provided in CMakeList.txt
 - Optimize nested loop when performing --software-version-relationship
 
-v0.1.5 (Feb 27, 2018)
+v0.1.5 (Aug 30th, 2017)
 ------------------------------
 
 The buildtest repo has been moved from http://github.com/shahzebsiddiqui to http://github.com/buildtesters
@@ -337,7 +334,7 @@ The buildtest repo has been moved from http://github.com/shahzebsiddiqui to http
 There has been lots of restructuring of code. There still needs some improvement for organizing scripts by functions
 
 
-v0.1.4 (Feb 27, 2018)
+v0.1.4 (May 23th, 2017)
 ---------------------------
 
 - Major code restructure around processing binary test and support for logging environment variable
@@ -349,7 +346,7 @@ v0.1.4 (Feb 27, 2018)
 - Add support for Perl with ``--testset``
 - Add for more logging support in module and eb verification
 
-v0.1.3 (Feb 27, 2018)
+v0.1.3 (May 17th, 2017)
 --------------------------
 
 There have been several changes in the buildtest framework to allow for more capabilities.
@@ -366,7 +363,7 @@ this allows for multiple packages to reuse tests across different apps. For inst
 - Switching BUILDTEST_MODULEROOT to BUILDTEST_MODULE_EBROOT to emphasize module tree should be coming from what easybuild generates.
 - Fixed some bugs pertaining to CMakeLists.txt
 
-v0.1.2 (Feb 27, 2018)
+v0.1.2 (May 9th, 2017)
 ----------------------------
 
 The current release add supports for logging by default.
@@ -383,7 +380,7 @@ buildtest will now report useful operations for each function call that can be u
 - buildtest can now search YAML configs and buildtest generated test scripts using the command **-fc** and **-ft**
 - Now all buildtest-config files are removed and migrated to
 
-v0.1.1 (Feb 27, 2018)
+v0.1.1 (May 1, 2017)
 ------------------------
 
 
@@ -431,7 +428,7 @@ Tests for the following EB apps have been added:
 
 Added python documentation header for each function and GPL license section in all the files
 
-v0.1.0 (Feb 26, 2017)
+v0.1.0 (Feb 26th, 2017)
 ------------------------
 
 buildtest generates test scripts from YAML files. The following apps have tests:
