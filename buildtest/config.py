@@ -4,7 +4,7 @@ import shutil
 import sys
 from jsonschema import validate
 
-from buildtest.buildsystem.schemas.utils import load_schema
+from buildtest.schemas.utils import load_schema
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
     DEFAULT_SETTINGS_FILE,

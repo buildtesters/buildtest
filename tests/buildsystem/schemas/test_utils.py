@@ -2,7 +2,7 @@ import os
 import pytest
 import uuid
 
-from buildtest.buildsystem.schemas.utils import load_schema, load_recipe
+from buildtest.schemas.utils import load_schema, load_recipe
 
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 

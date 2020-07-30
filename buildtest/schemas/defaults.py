@@ -1,4 +1,4 @@
-from buildtest.buildsystem.schemas.utils import load_schema
+from buildtest.schemas.utils import load_schema
 import os
 
 here = os.path.dirname(os.path.abspath(__file__))
