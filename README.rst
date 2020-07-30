@@ -1,4 +1,4 @@
-| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |core_infrastructure| |black|
+| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |checkurls| |blackformat| |tutorials| |core_infrastructure| |black| 
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -19,6 +19,11 @@
     :target: https://travis-ci.com/buildtesters/buildtest
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
+
+.. |checkurls| image:: https://github.com/buildtesters/buildtest/workflows/Check%20URLs/badge.svg
+.. |blackformat| image:: https://github.com/buildtesters/buildtest/workflows/Black%20Formatter/badge.svg
+.. |tutorials| image:: https://github.com/buildtesters/buildtest/workflows/TutorialsValidation/badge.svg
+
 
 buildtest
 ---------
