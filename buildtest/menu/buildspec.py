@@ -114,11 +114,14 @@ def func_buildspec_find(args):
 
         # write invalid buildspecs to file if any found
         if invalid_buildspecs:
-            buildspec_error_file = os.path.abspath("buildspec.error")
+            buildspec_error_file = os.path.join(
+                os.path.dirname(BUILDSPEC_CACHE_FILE), "buildspec.error"
+            )
 
             with open(buildspec_error_file, "w") as fd:
                 for file, msg in invalid_buildspecs.items():
-                    fd.write(f"buildspec={file} failed with error message={msg} \n")
+                    fd.write(f"buildspec:{file} \n\n")
+                    fd.write(f"{msg} \n")
             print(f"Writing invalid buildspecs to file: {buildspec_error_file} ")
             print("\n\n")
 

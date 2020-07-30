@@ -34,12 +34,6 @@ def test_BuildspecParser(tmp_path):
         buildspec = os.path.join(examples_dir, buildspec)
         bp = BuildspecParser(buildspec)
 
-        # The lookup should have the base schema
-        # {'script': {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}}
-        for supported_schema in type_schemas:
-
-            assert supported_schema in bp.schema_table
-
         builders = bp.get_builders(tmp_path)
 
         for builder in builders:

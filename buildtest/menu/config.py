@@ -62,7 +62,7 @@ def func_config_view(args=None):
 
 def func_config_reset(args=None):
     """Reset buildtest configuration by copying default configuration provided by buildtest to
-       $HOME/.buildtest/settings.yml. This implements ``buildtest config reset`` command."""
+       $HOME/.buildtest/config.yml. This implements ``buildtest config reset`` command."""
 
     print(f"Restoring from default configuration: {DEFAULT_SETTINGS_FILE}")
     shutil.copy(DEFAULT_SETTINGS_FILE, BUILDTEST_SETTINGS_FILE)

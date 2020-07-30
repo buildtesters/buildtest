@@ -241,7 +241,7 @@ def func_build_subcmd(args, config_opts):
 
             builder.build()
             table["name"].append(builder.metadata["name"])
-            table["schemafile"].append(builder.schemafile)
+            table["schemafile"].append(builder.metadata["schemafile"])
             table["testpath"].append(builder.metadata["testpath"])
             table["buildspec"].append(builder.buildspec)
 

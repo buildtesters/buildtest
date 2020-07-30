@@ -25,16 +25,17 @@ root = os.path.dirname(os.path.abspath(__file__))
 BUILDTEST_ROOT = os.path.join(userhome, ".buildtest")
 
 # dictionary used for storing status of builds
-BUILDTEST_SETTINGS_FILE = os.path.join(BUILDTEST_ROOT, "settings.yml")
+BUILDTEST_SETTINGS_FILE = os.path.join(BUILDTEST_ROOT, "config.yml")
 
+var_dir = os.path.join(os.path.dirname(root), "var")
 REPO_FILE = os.path.join(BUILDTEST_ROOT, "repo.yaml")
 
-BUILDSPEC_CACHE_FILE = os.path.join(BUILDTEST_ROOT, "buildspec.cache")
+BUILDSPEC_CACHE_FILE = os.path.join(var_dir, "buildspec.cache")
 
-BUILD_REPORT = os.path.join(os.path.dirname(root), "var", "report.json")
+BUILD_REPORT = os.path.join(var_dir, "report.json")
 
 # BUILDSPEC_DEFAULT_PATH is the root directory where Buildspec are found
 # when using buildtest get to clone a buildtest test repo
 BUILDSPEC_DEFAULT_PATH = os.path.join(BUILDTEST_ROOT, "site")
-DEFAULT_SETTINGS_FILE = os.path.join(root, "settings", "settings.yml")
+DEFAULT_SETTINGS_FILE = os.path.join(root, "settings", "config.yml")
 DEFAULT_SETTINGS_SCHEMA = os.path.join(root, "settings", "settings.schema.json")

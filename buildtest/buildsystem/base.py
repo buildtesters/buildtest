@@ -15,12 +15,8 @@ import sys
 
 from jsonschema import validate
 
-from buildtest.buildsystem.schemas.utils import (
-    load_schema,
-    load_recipe,
-    get_schemas_available,
-    here,
-)
+from buildtest.buildsystem.schemas.utils import load_recipe
+from buildtest.buildsystem.schemas.defaults import schema_table
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import create_dir, is_dir, resolve_path, write_file
 from buildtest.utils.shell import Shell
@@ -38,9 +34,6 @@ class BuildspecParser:
        If the schema fails validation check, then we stop immediately.
     """
 
-    # Metadata keys are not considered build sections
-    metadata = ["version", "maintainers"]
-
     def __init__(self, buildspec):
         """The init method will run some checks against buildspec before loading
            buildspec. We retrieve available schemas via method
@@ -57,13 +50,6 @@ class BuildspecParser:
         """
 
         self.logger = logging.getLogger(__name__)
-
-        # Read the lookup to get schemas available
-        self.schema_table = get_schemas_available()
-
-        self.logger.debug(
-            f"buildtest found the available schema: {self.schema_table} in schema library"
-        )
 
         # if invalid input for buildspec
         if not buildspec:
@@ -100,17 +86,11 @@ class BuildspecParser:
            extend the usage of the class.
         """
 
-        global_schema_file = os.path.join(here, "global.schema.json")
-
-        outer_schema = load_schema(global_schema_file)
-
-        self.logger.debug(
-            f"Validating {self.buildspec} with schema: {global_schema_file}"
+        self.logger.info(
+            f"Validating {self.buildspec} with schema: {schema_table['global']['path']}"
         )
 
-        validate(instance=self.recipe, schema=outer_schema)
-
-        self.logger.debug("Validation was successful")
+        validate(instance=self.recipe, schema=schema_table["global"]["recipe"])
 
     # Validation
 
@@ -124,13 +104,16 @@ class BuildspecParser:
 
         for name in self.recipe["buildspecs"].keys():
 
-            if name in self.metadata:
-                continue
+            self.logger.info(
+                "Validating test - '%s' in recipe: %s" % (name, self.buildspec)
+            )
 
             # the buildspec section must be an dict where test is defined. If
             # it's not a dict then we should raise an error.
             if not isinstance(self.recipe["buildspecs"][name], dict):
                 sys.exit(f"Section: {self.recipe[name]} must be a dictionary")
+
+            self.logger.info("%s is a dictionary", name)
 
             # extract type field from test, if not found set to None
             type = self.recipe.get("buildspecs").get(name).get("type") or None
@@ -140,25 +123,35 @@ class BuildspecParser:
             if not type:
                 sys.exit(f"Did not find 'type' key in test section: {name}")
 
+            self.logger.info("Detected field 'type: %s'", type)
+
             # Ensure we have a Buildspec recipe with a valid type
-            if type not in self.schema_table.keys():
+            if type not in schema_table["types"]:
                 sys.exit("type %s is not known to buildtest." % type)
 
-            # And that there is a version file
-            if self.schema_version not in self.schema_table[type]:
-                sys.exit(
-                    "version %s is not known for type %s. Try using latest."
-                    % (self.schema_version, self.schema_table[type])
-                )
-
-            # Finally, validate the section against the schema
-            self.schema_file = os.path.join(
-                here, type, self.schema_table[type][self.schema_version]
+            self.logger.info(
+                "Checking %s in supported type schemas: %s", type, schema_table["types"]
             )
 
+            # And that there is a version file
+            if self.schema_version not in schema_table[type]["versions"]:
+                sys.exit(
+                    "version %s is not known for schema type %s. Valid options are: %s"
+                    % (self.schema_version, type, schema_table[type]["versions"])
+                )
+            self.logger.info(
+                "Checking version '%s' in version list: %s",
+                self.schema_version,
+                schema_table[type]["versions"],
+            )
+
+            self.logger.info(
+                "Validating test - '%s' with schemafile: %s"
+                % (name, os.path.basename(schema_table[type]["path"]))
+            )
             validate(
                 instance=self.recipe["buildspecs"][name],
-                schema=load_schema(self.schema_file),
+                schema=schema_table[type]["recipe"],
             )
 
     # Builders
@@ -312,11 +305,9 @@ class BuilderBase:
         # The type must match the type of the builder
         self.recipe = recipe
 
-        # get the schema name that this buildspec was validated with
-        self.schema_table = get_schemas_available()
-        type = self.recipe["type"]
-        self.schemafile = self.schema_table[type][version]
-        self.metadata["schemafile"] = self.schemafile
+        self.metadata["schemafile"] = os.path.basename(
+            schema_table[self.recipe["type"]]["path"]
+        )
 
         self.executor = self.recipe.get("executor")
         self.metadata["executor"] = self.executor
@@ -325,13 +316,7 @@ class BuilderBase:
 
         # set shebang to value defined in Buildspec, if not defined then get one from Shell class
         self.shebang = self.recipe.get("shebang") or self.shell.shebang
-
-        self.logger.debug("Shell Details: ")
-        self.logger.debug(f"Shell Name: {self.shell.name}")
-        self.logger.debug(f"Shell Opts: {self.shell.opts}")
-        self.logger.debug(f"Shell Path: {self.shell.path}")
-        self.logger.debug(f"Shell Shebang: {self.shell.shebang}")
-
+        self.logger.debug("Using shell %s", self.shell.name)
         self.logger.debug(f"Shebang used for test: {self.shebang}")
 
     def __str__(self):

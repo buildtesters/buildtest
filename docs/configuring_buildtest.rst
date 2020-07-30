@@ -7,19 +7,20 @@ Schema File
 ------------
 
 The schema file used for configuring and validating buildtest is done
-by `settings.script.json <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/settings/settings.schema.json>`_
+by `settings.schema.json <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/settings/settings.schema.json>`_
 
 For more details on schema attributes see `Settings Schema Documentation <https://buildtesters.github.io/schemas/settings/>`_
 
 
-Default Settings
+Default Configuration
 -----------------------
 
-The default settings for buildtest is found in ``buildtest/settings/settings.yml``.
-At start of buildtest this file is copied to ``$HOME/.buildtest/settings.yml`` to
-help you get started. Shown below is the default settings file.
+At start of buildtest a default configuration is copied to ``$HOME/.buildtest/config.yml``
+if file doesn't exist which helps setup .
+that
+Shown below is the default settings file.
 
-.. program-output:: cat ../buildtest/settings/settings.yml
+.. program-output:: cat ../buildtest/settings/config.yml
 
 Executors
 ----------
@@ -105,7 +106,7 @@ executor defines the following:
 buildtest setting for Cori - NERSC
 ------------------------------------
 
-Let's take a look at Cori buildtest setting::
+Let's take a look at Cori buildtest configuration::
 
     executors:
 
@@ -177,18 +178,17 @@ on command line. For ``slurm.gpu`` executor, we use this executor for submit to 
 which requires ``sbatch -M escori -C gpu``. Any additional #SBATCH options are defined
 in buildspec using ``sbatch`` key.
 
-Settings Example
------------------
+Example Configurations
+-------------------------
 
-To retrieve a list of settings example you can run ``buildtest schema -n settings.schema.json -e``
-which will show a listing a valid buildtest settings.
+buildtest provides a few example configurations for configuring buildtest this
+can be retrieved by running ``buildtest schema -n settings.schema.json --examples``
+or short option (``-e``), which will validate each example with schema file
+``settings.schema.json``.
 
 .. program-output:: cat docgen/schemas/settings-examples.txt
 
-Settings Schema
------------------
-
-Shown below is the json schema for buildtest settings that can be retrieved via
-``buildtest schema -n settings.schema.json -j``
+If you want to retrieve full json schema file run
+``buildtest schema -n settings.schema.json --json`` or short option ``-j``
 
 .. program-output:: cat docgen/schemas/settings-json.txt
