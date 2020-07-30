@@ -6,6 +6,7 @@ from buildtest.menu.repo import validate_repos
 from buildtest.menu.build import func_build_subcmd
 from buildtest.system import BuildTestSystem
 from buildtest.log import init_logfile, streamlog
+from buildtest.utils.file import create_dir
 
 # column width for linewrap for argparse library
 os.environ["COLUMNS"] = "120"
