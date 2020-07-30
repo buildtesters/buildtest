@@ -15,22 +15,13 @@ import sys
 
 from jsonschema import validate
 
-from buildtest.buildsystem.schemas.utils import (
-    load_schema,
-    load_recipe,
-    get_schemas_available,
-    here,
-)
-from buildtest.buildsystem.schemas.defaults import (
-    global_schema_file,
-    global_schema,
-    schema_table,
-)
+from buildtest.buildsystem.schemas.utils import load_recipe
+from buildtest.buildsystem.schemas.defaults import schema_table
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import create_dir, is_dir, resolve_path, write_file
 from buildtest.utils.shell import Shell
 
-# schema_table = get_schemas_available()
+
 class BuildspecParser:
     """A BuildspecParser is a base class for loading and validating a Buildspec file.
        The type (e.g., script) and version are derived from reading in
