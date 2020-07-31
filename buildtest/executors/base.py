@@ -645,6 +645,7 @@ class LSFExecutor(BaseExecutor):
     steps = ["check", "dispatch", "poll", "gather", "close"]
     job_state = None
     poll_cmd = "bjobs"
+    # format fields we retrieve in gather step
     format_fields = [
         "job_name",
         "stat",
@@ -667,7 +668,7 @@ class LSFExecutor(BaseExecutor):
     ]
 
     def check(self):
-
+        """Checking binary for lsf launcher and poll command. If not found we raise error"""
         if not shutil.which(self.launcher):
             sys.exit(
                 f"[{self.builder.metadata['name']}]: Cannot find launcher program: {self.launcher}"
@@ -675,7 +676,7 @@ class LSFExecutor(BaseExecutor):
 
         if not shutil.which(self.poll_cmd):
             sys.exit(
-                f"[{self.builder.metadata['name']}]: Cannot find slurm poll command: {self.poll_cmd}"
+                f"[{self.builder.metadata['name']}]: Cannot find poll command: {self.poll_cmd}"
             )
 
     def load(self):
@@ -756,11 +757,9 @@ class LSFExecutor(BaseExecutor):
         self.write_testresults(out, err)
 
     def poll(self):
-        """ This method will poll for job each interval specified by time interval
-            until job finishes. We use `bjobs` to poll for job id and sleep for given
-            time interval until trying again. The command to be run is
-            ``bjobs -noheader -o 'stat' <JOBID>`` which returns output in JSON and we search for
-            field "STAT" in RECORDS field.
+        """ This method will poll for job by using bjobs and return state of job.
+            The command to be run is ``bjobs -noheader -o 'stat' <JOBID>``
+             which returns job state.
         """
 
         self.logger.debug(f"Query Job: {self.job_id}")
@@ -778,8 +777,11 @@ class LSFExecutor(BaseExecutor):
         return self.job_state
 
     def gather(self):
-        """Gather Slurm detail after job completion"""
-
+        """Gather Job detail after completion of job. This method will retrieve output
+           fields defined for ``self.format_fields``. buildtest will run
+           ``bjobs -o '<field1> ... <fieldN>' <JOBID> -json``.
+        """
+        # command
         gather_cmd = (
             f"{self.poll_cmd} -o '{' '.join(self.format_fields)}' {self.job_id} -json"
         )
