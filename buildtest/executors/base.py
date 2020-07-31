@@ -644,7 +644,7 @@ class LSFExecutor(BaseExecutor):
     type = "lsf"
     steps = ["check", "dispatch", "poll", "gather", "close"]
     job_state = None
-    poll_cmd = "bacct"
+    poll_cmd = "bjobs"
 
     def check(self):
 
