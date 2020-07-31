@@ -124,7 +124,7 @@ def validate_lsf_executors(lsf_executors):
     valid_queue_state = "Open:Active"
     record = queue_dict["RECORDS"]
     # retrieve all queues from json record
-    for name in record.keys():
+    for name in record:
         queue_list.append(name["QUEUE_NAME"])
 
     # check all executors have defined valid queues and check queue state.
