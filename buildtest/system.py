@@ -132,6 +132,6 @@ def get_lsf_queues():
     query = "bqueues -o 'queue_name status' -json"
     cmd = BuildTestCommand(query)
     cmd.execute()
-    out = cmd.get_output()
+    out = "".join(cmd.get_output()).rstrip()
     json_queue = json.loads(out)
     return json_queue
