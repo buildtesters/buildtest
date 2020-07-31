@@ -4,12 +4,12 @@ BuildExecutor: manager for test executors
 import datetime
 import logging
 import os
+import json
 import re
 import shutil
 import subprocess
 import sys
 import time
-
 
 from buildtest.defaults import BUILDTEST_SETTINGS_FILE
 from buildtest.utils.file import write_file, read_file
@@ -781,22 +781,23 @@ class LSFExecutor(BaseExecutor):
         """Gather Slurm detail after job completion"""
 
         gather_cmd = (
-            f"{self.poll_cmd} -o {' '.join(self.format_fields)} {self.job_id} -json"
+            f"{self.poll_cmd} -o '{' '.join(self.format_fields)}' {self.job_id} -json"
         )
 
         self.logger.debug(f"Gather LSF job data by running: {gather_cmd}")
         cmd = BuildTestCommand(gather_cmd)
         cmd.execute()
-        out = "".join(cmd.get_output()).rstrip()
+        out = cmd.get_output()
+        out = "".join(out).rstrip()
 
-        job_data = json.loads(out)
-        print(json.dumps(job_data))
+        out = json.loads(out)
+        print(json.dumps(out, indent=2))
 
-        sys.exit(0)
         job_data = {}
 
         self.logger.debug(f"[{self.builder.name}] Job Results:")
-        for field, value in zip(self.sacct_fields, out):
+        records = out["RECORDS"][0]
+        for field, value in records.items():
             job_data[field] = value
             self.logger.debug(f"field: {field}   value: {value}")
 
@@ -804,15 +805,15 @@ class LSFExecutor(BaseExecutor):
 
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only
         # about first number
-        self.result["returncode"] = int(job_data["ExitCode"].split(":")[0])
+        if job_data["EXIT_CODE"] == "":
+            self.result["returncode"] = job_data["EXIT_CODE"]
+        else:
+            self.result["returncode"] = int(job_data["EXIT_CODE"])
 
-        self.result["endtime"] = job_data["End"]
-        self.builder.metadata["outfile"] = os.path.join(
-            job_data["WorkDir"].rstrip(), f"slurm-{job_data['JobID']}.out"
-        )
-        self.builder.metadata["errfile"] = os.path.join(
-            job_data["WorkDir"].rstrip(), f"slurm-{job_data['JobID']}.err"
-        )
+        self.result["endtime"] = job_data["FINISH_TIME"]
+        self.builder.metadata["outfile"] = job_data["OUTPUT_FILE"]
+        self.builder.metadata["errfile"] = job_data["ERROR_FILE"]
+
         self.logger.debug(f"[{self.builder.name}] result: {self.result}")
         self.logger.debug(
             f"[{self.builder.name}] returncode: {self.result['returncode']}"
