@@ -184,6 +184,18 @@ class BuilderBase:
 
         return lines
 
+    def get_bsub(self):
+
+        lines = []
+        bsub = self.recipe.get("bsub")
+
+        if bsub:
+
+            for bsub_cmd in bsub:
+                lines.append(f"#BSUB {bsub_cmd}")
+
+        return lines
+
     def build(self):
         """ This method is responsible for invoking setup, creating test
             directory and writing test.
@@ -270,9 +282,16 @@ class ScriptBuilder(BuilderBase):
         # start of each test should have the shebang
         lines = [self.shebang]
 
-        sbatch = self.get_sbatch()
-        if sbatch:
-            lines += sbatch
+        if self.recipe.get("sbatch"):
+
+            sbatch = self.get_sbatch()
+            if sbatch:
+                lines += sbatch
+        elif self.recipe.get("bsub"):
+
+            bsub = self.get_bsub()
+            if bsub:
+                lines += bsub
 
         # Add environment variables
         lines += self.get_environment()
