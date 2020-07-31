@@ -645,6 +645,26 @@ class LSFExecutor(BaseExecutor):
     steps = ["check", "dispatch", "poll", "gather", "close"]
     job_state = None
     poll_cmd = "bjobs"
+    format_fields = [
+        "job_name",
+        "stat",
+        "user",
+        "user_group",
+        "queue",
+        "proj_name",
+        "pids",
+        "exit_code",
+        "from_host",
+        "exec_host",
+        "submit_time",
+        "start_time",
+        "finish_time",
+        "nthreads",
+        "exec_home",
+        "exec_cwd",
+        "output_file",
+        "error_file",
+    ]
 
     def check(self):
 
@@ -756,3 +776,45 @@ class LSFExecutor(BaseExecutor):
         print(msg)
         self.logger.debug(msg)
         return self.job_state
+
+    def gather(self):
+        """Gather Slurm detail after job completion"""
+
+        gather_cmd = (
+            f"{self.poll_cmd} -o {' ',join(self.format_fields)} {self.job_id} -json"
+        )
+
+        self.logger.debug(f"Gather LSF job data by running: {gather_cmd}")
+        cmd = BuildTestCommand(gather_cmd)
+        cmd.execute()
+        out = "".cmd.get_output().rstrip()
+
+        job_data = json.loads(out)
+        print(json.dumps(job_data))
+
+        sys.exit(0)
+        job_data = {}
+
+        self.logger.debug(f"[{self.builder.name}] Job Results:")
+        for field, value in zip(self.sacct_fields, out):
+            job_data[field] = value
+            self.logger.debug(f"field: {field}   value: {value}")
+
+        self.builder.metadata["job"] = job_data
+
+        # Exit Code field is in format <ExitCode>:<Signal> for now we care only
+        # about first number
+        self.result["returncode"] = int(job_data["ExitCode"].split(":")[0])
+
+        self.result["endtime"] = job_data["End"]
+        self.builder.metadata["outfile"] = os.path.join(
+            job_data["WorkDir"].rstrip(), f"slurm-{job_data['JobID']}.out"
+        )
+        self.builder.metadata["errfile"] = os.path.join(
+            job_data["WorkDir"].rstrip(), f"slurm-{job_data['JobID']}.err"
+        )
+        self.logger.debug(f"[{self.builder.name}] result: {self.result}")
+        self.logger.debug(
+            f"[{self.builder.name}] returncode: {self.result['returncode']}"
+        )
+        self.check_test_state()
