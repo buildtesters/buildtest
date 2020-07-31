@@ -727,7 +727,7 @@ class LSFExecutor(BaseExecutor):
             err += f"[{self.builder.metadata['name']}] running command: {sbatch_cmd}"
             sys.exit(err)
 
-        interval = 2
+        interval = 5
 
         print(f"[{self.builder.metadata['name']}] job dispatched to scheduler")
         print(
@@ -765,10 +765,10 @@ class LSFExecutor(BaseExecutor):
 
         self.logger.debug(f"Query Job: {self.job_id}")
 
-        slurm_query = f"{self.poll_cmd} -noheader -o 'stat' {self.job_id}"
+        query = f"{self.poll_cmd} -noheader -o 'stat' {self.job_id}"
 
-        self.logger.debug(slurm_query)
-        cmd = BuildTestCommand(slurm_query)
+        self.logger.debug(query)
+        cmd = BuildTestCommand(query)
         cmd.execute()
         self.job_state = cmd.get_output()
         self.job_state = "".join(self.job_state).rstrip()
