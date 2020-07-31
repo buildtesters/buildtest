@@ -4,6 +4,7 @@ This module detects System changes defined in class BuildTestSystem.
 
 import distro
 import logging
+import json
 import os
 import platform
 import shutil
@@ -126,11 +127,11 @@ def get_slurm_qos():
 
 
 def get_lsf_queues():
-    """Return a list of LSF Queues"""
+    """Return json dictionary of available LSF Queues and their queue states"""
 
     query = "bqueues -o 'queue_name status' -json"
     cmd = BuildTestSystem(query)
     cmd.execute()
     out = cmd.get_output()
     json_queue = json.loads(out)
-    print(json.dumps(json_queue, indent=2))
+    return json_queue

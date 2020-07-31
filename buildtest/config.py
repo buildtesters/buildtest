@@ -10,7 +10,12 @@ from buildtest.defaults import (
     DEFAULT_SETTINGS_FILE,
     DEFAULT_SETTINGS_SCHEMA,
 )
-from buildtest.system import get_slurm_partitions, get_slurm_qos, get_slurm_clusters
+from buildtest.system import (
+    get_slurm_partitions,
+    get_slurm_qos,
+    get_slurm_clusters,
+    get_lsf_queues,
+)
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, is_dir, is_file
 
@@ -79,9 +84,13 @@ def check_settings(settings_path=None, run_init=True, executor_check=True):
     # such as slurm check are not applicable.
     if executor_check:
         slurm_executors = user_schema.get("executors", {}).get("slurm")
+        lsf_executors = user_schema.get("executors", {}.get("lsf"))
 
         if slurm_executors:
             validate_slurm_executors(slurm_executors)
+
+        if lsf_executors:
+            validate_lsf_executors(lsf_executors)
 
 
 def load_settings(settings_path=None, run_init=True):
@@ -106,6 +115,40 @@ def get_default_settings():
     """Load and return the default buildtest settings file. """
 
     return load_settings()
+
+
+def validate_lsf_executors(lsf_executors):
+    queue_dict = get_lsf_queues()
+
+    queue_list = []
+    valid_queue_state = "Open:Active"
+    record = queue_dict["RECORDS"][0]
+    for name in record.keys():
+        queue_list.append(record[name]["QUEUE_NAME"])
+
+    # check all executors have defined valid queues and check queue state.
+    for executor in lsf_executors:
+        queue = lsf_executors[executor].get("queue")
+        # if queue field is defined check if its valid queue
+        if queue:
+            if queue not in queue_list:
+                sys.exit(
+                    f"{lsf_executors[executor]['queue']} not a valid partition!. Please select one of the following partitions: {queue_list}"
+                )
+
+            # check queue record for Status
+            for name in record.keys():
+
+                # skip record until we find matching queue
+                if record[name]["QUEUE_NAME"] != queue:
+                    continue
+
+                queue_state = record[name]["STATUS"]
+                # if state not Open:Active we raise error
+                if not queue_state == valid_queue_state:
+                    sys.exit(
+                        f"{lsf_executors[executor]['queue']} is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs"
+                    )
 
 
 def validate_slurm_executors(slurm_executor):
