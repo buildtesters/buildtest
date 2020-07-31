@@ -123,3 +123,14 @@ def get_slurm_qos():
     out = cmd.get_output()
     slurm_qos = [qos.rstrip() for qos in out]
     return slurm_qos
+
+
+def get_lsf_queues():
+    """Return a list of LSF Queues"""
+
+    query = "bqueues -o 'queue_name status' -json"
+    cmd = BuildTestSystem(query)
+    cmd.execute()
+    out = cmd.get_output()
+    json_queue = json.loads(out)
+    print(json.dumps(json_queue, indent=2))

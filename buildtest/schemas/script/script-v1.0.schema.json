@@ -17,6 +17,9 @@
     "sbatch": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/sbatch"
     },
+    "bsub": {
+      "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/bsub"
+    },
     "env": {
       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
     },
