@@ -681,7 +681,7 @@ class LSFExecutor(BaseExecutor):
         bsub_cmd = [self.launcher]
 
         if self.queue:
-            bsub_cmd += [f"-q {self.bqueue}"]
+            bsub_cmd += [f"-q {self.queue}"]
 
         if self.launcher_opts:
             bsub_cmd += [" ".join(self.launcher_opts)]
