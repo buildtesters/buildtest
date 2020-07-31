@@ -84,7 +84,7 @@ def check_settings(settings_path=None, run_init=True, executor_check=True):
     # such as slurm check are not applicable.
     if executor_check:
         slurm_executors = user_schema.get("executors", {}).get("slurm")
-        lsf_executors = user_schema.get("executors", {}.get("lsf"))
+        lsf_executors = user_schema.get("executors", {}).get("lsf")
 
         if slurm_executors:
             validate_slurm_executors(slurm_executors)
