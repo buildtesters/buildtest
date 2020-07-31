@@ -806,7 +806,7 @@ class LSFExecutor(BaseExecutor):
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only
         # about first number
         if job_data["EXIT_CODE"] == "":
-            self.result["returncode"] = job_data["EXIT_CODE"]
+            self.result["returncode"] = 0
         else:
             self.result["returncode"] = int(job_data["EXIT_CODE"])
 
