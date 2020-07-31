@@ -781,13 +781,13 @@ class LSFExecutor(BaseExecutor):
         """Gather Slurm detail after job completion"""
 
         gather_cmd = (
-            f"{self.poll_cmd} -o {' ',join(self.format_fields)} {self.job_id} -json"
+            f"{self.poll_cmd} -o {' '.join(self.format_fields)} {self.job_id} -json"
         )
 
         self.logger.debug(f"Gather LSF job data by running: {gather_cmd}")
         cmd = BuildTestCommand(gather_cmd)
         cmd.execute()
-        out = "".cmd.get_output().rstrip()
+        out = "".join(cmd.get_output()).rstrip()
 
         job_data = json.loads(out)
         print(json.dumps(job_data))
