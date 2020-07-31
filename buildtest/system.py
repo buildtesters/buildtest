@@ -130,7 +130,7 @@ def get_lsf_queues():
     """Return json dictionary of available LSF Queues and their queue states"""
 
     query = "bqueues -o 'queue_name status' -json"
-    cmd = BuildTestSystem(query)
+    cmd = BuildTestCommand(query)
     cmd.execute()
     out = cmd.get_output()
     json_queue = json.loads(out)
