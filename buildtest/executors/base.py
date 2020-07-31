@@ -123,7 +123,7 @@ class BuildExecutor:
 
         if executor.type == "local":
             executor.run()
-        elif executor.type == "slurm":
+        elif executor.type in ["slurm", "lsf"]:
             executor.dispatch()
 
         return executor.result
@@ -630,7 +630,7 @@ class SlurmExecutor(BaseExecutor):
         self.check_test_state()
 
 
-class LSFExecutor:
+class LSFExecutor(BaseExecutor):
     """The LSFExecutor class is responsible for submitting jobs to LSF Scheduler.
        The LSFExecutor performs the following steps
 
