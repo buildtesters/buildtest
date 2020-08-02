@@ -10,7 +10,7 @@ import shutil
 import sys
 import yaml
 
-from buildtest.config import get_default_settings
+from buildtest.config import load_settings
 from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, REPO_FILE
 from buildtest.utils.file import create_dir, is_file, resolve_path, is_dir
 
@@ -33,7 +33,7 @@ def func_repo_add(args):
     if not re.search("github.com", args.repo):
         sys.exit("Currently only GitHub is supported by buildtest.")
 
-    config_opts = get_default_settings()
+    config_opts = load_settings()
     repo_path = None
 
     # if clonepath key is defined than override value generated from 'prefix'

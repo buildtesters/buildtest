@@ -6,7 +6,7 @@ import sys
 from jsonschema import ValidationError
 from buildtest import BUILDTEST_VERSION
 from buildtest.schemas.utils import get_schema_fullpath
-from buildtest.config import get_default_settings, check_settings, load_settings
+from buildtest.config import check_settings, load_settings
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
     BUILDSPEC_CACHE_FILE,
@@ -38,13 +38,14 @@ def func_config_validate(args=None):
 def func_config_edit(args=None):
     """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
 
-    config_opts = get_default_settings()
+    config_opts = load_settings()
 
     while True:
         success = True
-        os.system(f"{config_opts['config']['editor']} {BUILDTEST_SETTINGS_FILE}")
+        settings_file = os.path.exists(BUILDTEST_SETTINGS_FILE) or DEFAULT_SETTINGS_FILE
+        os.system(f"{config_opts['config']['editor']} {settings_file}")
         try:
-            check_settings(run_init=False)
+            check_settings()
         except ValidationError as err:
             print(err)
             input("Press any key to continue")
@@ -56,16 +57,8 @@ def func_config_edit(args=None):
 
 def func_config_view(args=None):
     """View buildtest configuration file. This implements ``buildtest config view``"""
-
-    os.system(f"cat {BUILDTEST_SETTINGS_FILE}")
-
-
-def func_config_reset(args=None):
-    """Reset buildtest configuration by copying default configuration provided by buildtest to
-       $HOME/.buildtest/config.yml. This implements ``buildtest config reset`` command."""
-
-    print(f"Restoring from default configuration: {DEFAULT_SETTINGS_FILE}")
-    shutil.copy(DEFAULT_SETTINGS_FILE, BUILDTEST_SETTINGS_FILE)
+    settings_file = os.path.exists(BUILDTEST_SETTINGS_FILE) or DEFAULT_SETTINGS_FILE
+    os.system(f"cat {settings_file}")
 
 
 def func_config_summary(args=None):

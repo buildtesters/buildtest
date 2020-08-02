@@ -14,7 +14,6 @@ from buildtest.menu.buildspec import (
 )
 from buildtest.menu.config import (
     func_config_edit,
-    func_config_reset,
     func_config_summary,
     func_config_validate,
     func_config_view,
@@ -210,10 +209,6 @@ class BuildTestParser:
 
            ``buildtest config edit``
 
-           # reset buildtest settings to default file
-
-           ``buildtest config reset``
-
            # validate buildtest settings
 
            ``buildtest config validate``
@@ -234,9 +229,6 @@ class BuildTestParser:
         parser_config_edit = subparsers_config.add_parser(
             "edit", help="Edit Buildtest Configuration File"
         )
-        parser_config_restore = subparsers_config.add_parser(
-            "reset", help="Reset buildtest configuration file. "
-        )
         parser_config_validate = subparsers_config.add_parser(
             "validate", help="Validate buildtest settings file with schema."
         )
@@ -246,7 +238,6 @@ class BuildTestParser:
 
         parser_config_view.set_defaults(func=func_config_view)
         parser_config_edit.set_defaults(func=func_config_edit)
-        parser_config_restore.set_defaults(func=func_config_reset)
         parser_config_validate.set_defaults(func=func_config_validate)
         parser_config_summary.set_defaults(func=func_config_summary)
 

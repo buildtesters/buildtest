@@ -4,8 +4,8 @@ import subprocess
 import yaml
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
-from buildtest.defaults import REPO_FILE, BUILDSPEC_CACHE_FILE
-from buildtest.config import get_default_settings
+from buildtest.defaults import REPO_FILE, BUILDSPEC_CACHE_FILE, BUILDTEST_ROOT
+from buildtest.config import load_settings
 from buildtest.utils.file import is_file, is_dir, walk_tree
 from buildtest.buildsystem.parser import BuildspecParser
 
@@ -53,7 +53,7 @@ def func_buildspec_find(args):
         with open(REPO_FILE, "r") as fd:
             repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
 
-        paths = []
+        paths = [os.path.join(BUILDTEST_ROOT, "tutorials")]
         for repo in repo_dict.keys():
             # only add if repository cloned locally exists in filepath
             if is_dir(repo_dict[repo]["dest"]):
@@ -170,7 +170,7 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
                 # to fix buildspec until it is valid.
                 while True:
                     success = True
-                    config_opts = get_default_settings()
+                    config_opts = load_settings()
                     os.system(f"{config_opts['config']['editor']} {buildspecfile}")
                     try:
                         BuildspecParser(buildspecfile)

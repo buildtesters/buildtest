@@ -10,7 +10,7 @@ import sys
 import time
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
-from buildtest.defaults import BUILDSPEC_DEFAULT_PATH
+from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, BUILDTEST_ROOT
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import load_settings, check_settings
@@ -45,6 +45,7 @@ def discover_buildspecs(buildspec):
     search_path = get_repo_paths() or []
     # add default path to search path
     search_path.append(BUILDSPEC_DEFAULT_PATH)
+    search_path.append(os.path.join(BUILDTEST_ROOT, "tutorials"))
 
     # First try, the path is an absolute path to file or folder
     # Second try, the path can be relative to the BUILDSPEC_DEFAULT_PATH
@@ -146,10 +147,10 @@ def func_build_subcmd(args, config_opts):
     # returns a list of destination directories where repositories are cloned, if
     # REPO_FILE is not found get_repo_paths will return None, in that case we
     # set buildspec_searchpath to empty list
-    buildspec_searchpath = get_repo_paths() or []
-
-    # add default path to search path
-    buildspec_searchpath.append(BUILDSPEC_DEFAULT_PATH)
+    buildspec_searchpath = get_repo_paths() or [
+        BUILDSPEC_DEFAULT_PATH,
+        os.path.join(BUILDTEST_ROOT, "tutorials"),
+    ]
 
     print("Paths:")
     print("{:_<10}".format(""))
