@@ -15,7 +15,6 @@ from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, BUILDTEST_ROOT
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import load_settings, check_settings
 from buildtest.executors.base import BuildExecutor
-from buildtest.menu.repo import get_repo_paths
 from buildtest.menu.report import update_report
 from buildtest.utils.file import walk_tree, resolve_path
 
@@ -42,7 +41,7 @@ def discover_buildspecs(buildspec):
     """
 
     buildspecs = []
-    search_path = get_repo_paths() or []
+    search_path = []
     # add default path to search path
     search_path.append(BUILDSPEC_DEFAULT_PATH)
     search_path.append(os.path.join(BUILDTEST_ROOT, "tutorials"))
@@ -142,12 +141,17 @@ def func_build_subcmd(args, config_opts):
     # 2. Configuration option specified by 'testdir'
     # 3. Configuration option specified by 'prefix'
     # 4. Defaults to current working directory in .buildtest subdirectory
-    test_directory = args.testdir or config_paths_testdir or prefix_testdir
+    test_directory = (
+        args.testdir
+        or config_paths_testdir
+        or prefix_testdir
+        or os.path.join(BUILDTEST_ROOT, "var", "tests")
+    )
 
     # returns a list of destination directories where repositories are cloned, if
     # REPO_FILE is not found get_repo_paths will return None, in that case we
     # set buildspec_searchpath to empty list
-    buildspec_searchpath = get_repo_paths() or [
+    buildspec_searchpath = [
         BUILDSPEC_DEFAULT_PATH,
         os.path.join(BUILDTEST_ROOT, "tutorials"),
     ]

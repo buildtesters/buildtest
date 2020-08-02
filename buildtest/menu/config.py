@@ -11,9 +11,7 @@ from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
     BUILDSPEC_CACHE_FILE,
     DEFAULT_SETTINGS_FILE,
-    REPO_FILE,
 )
-from buildtest.menu.repo import active_repos, get_repo_paths
 from buildtest.utils.file import is_file
 from buildtest.defaults import supported_type_schemas, supported_schemas
 from buildtest.system import BuildTestSystem
@@ -105,13 +103,6 @@ def func_config_summary(args=None):
 
     print("Executors: ", executors)
 
-    print("Buildtest Repositories:")
-    print("{:_<80}".format(""))
-    repos = active_repos()
-    repo_paths = get_repo_paths()
-    print("Repo File:", REPO_FILE)
-    print("Active Repos:", repos)
-    print("Repo Paths:", repo_paths)
     print("Buildspec Cache File:", BUILDSPEC_CACHE_FILE)
 
     if is_file(BUILDSPEC_CACHE_FILE):

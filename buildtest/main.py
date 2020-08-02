@@ -1,8 +1,7 @@
 import os
 from buildtest.config import load_settings, check_settings
-from buildtest.defaults import var_dir, BUILDTEST_USER_HOME
+from buildtest.defaults import var_root, var_buildspec, BUILDTEST_USER_HOME
 from buildtest.menu import BuildTestParser
-from buildtest.menu.repo import validate_repos
 from buildtest.menu.build import func_build_subcmd
 from buildtest.system import BuildTestSystem
 from buildtest.log import init_logfile, streamlog
@@ -23,12 +22,11 @@ def main():
     logger.info("Starting buildtest log")
 
     create_dir(BUILDTEST_USER_HOME)
-    create_dir(var_dir)
+    create_dir(var_root)
+    create_dir(var_buildspec)
 
     # Create a build test system, and check requirements
     BuildTestSystem()
-
-    validate_repos()
 
     parser = BuildTestParser()
     args = parser.parse_options()

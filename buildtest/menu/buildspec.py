@@ -1,12 +1,11 @@
 import json
 import os
 import subprocess
-import yaml
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
-from buildtest.defaults import REPO_FILE, BUILDSPEC_CACHE_FILE, BUILDTEST_ROOT
+from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_ROOT
 from buildtest.config import load_settings
-from buildtest.utils.file import is_file, is_dir, walk_tree
+from buildtest.utils.file import is_file, walk_tree
 from buildtest.buildsystem.parser import BuildspecParser
 
 
@@ -28,6 +27,7 @@ def func_buildspec_find(args):
     """
 
     cache = {}
+    cache["tests"] = {}
     # implements buildtest buildspec find --clear which removes cache file before finding all buildspecs
     if args.clear:
         try:
@@ -43,21 +43,8 @@ def func_buildspec_find(args):
     # all buildspecs based on available repos found in REPO_FILE and
     # traverse directory to find all .yml files
     else:
-        # if repo file not found then terminate with message since we can't find
-        # any buildspecs
-        if not is_file(REPO_FILE):
-            raise SystemExit(
-                "Unable to find any buildspecs because no repositories found."
-            )
-
-        with open(REPO_FILE, "r") as fd:
-            repo_dict = yaml.load(fd.read(), Loader=yaml.SafeLoader)
 
         paths = [os.path.join(BUILDTEST_ROOT, "tutorials")]
-        for repo in repo_dict.keys():
-            # only add if repository cloned locally exists in filepath
-            if is_dir(repo_dict[repo]["dest"]):
-                paths.append(repo_dict[repo]["dest"])
 
         buildspecs = []
         invalid_buildspecs = {}
@@ -96,14 +83,14 @@ def func_buildspec_find(args):
 
             recipe = parse.recipe["buildspecs"]
 
-            cache[buildspec] = {}
+            cache["tests"][buildspec] = {}
 
             for name in recipe.keys():
 
                 if not isinstance(recipe[name], dict):
                     continue
 
-                cache[buildspec][name] = recipe[name]
+                cache["tests"][buildspec][name] = recipe[name]
 
         print(f"Validated {count}/{len(buildspecs)} buildspecs")
 
@@ -128,12 +115,12 @@ def func_buildspec_find(args):
     table = {"Name": [], "Type": [], "Executor": [], "Description": []}
     # print("{:<25} {:<25} {:<25}".format("Name", "Schema Type", "Executor"))
     # print("{:_<80}".format(""))
-    for buildspecfile in cache.keys():
-        for test in cache[buildspecfile].keys():
+    for buildspecfile in cache["tests"].keys():
+        for test in cache["tests"][buildspecfile].keys():
 
-            type = cache[buildspecfile][test]["type"]
-            executor = cache[buildspecfile][test]["executor"]
-            description = cache[buildspecfile][test].get("description")
+            type = cache["tests"][buildspecfile][test]["type"]
+            executor = cache["tests"][buildspecfile][test]["executor"]
+            description = cache["tests"][buildspecfile][test].get("description")
             # print("{:<25} {:<25} {:<25}".format(test, type, executor))
             table["Name"].append(test)
             table["Type"].append(type)
@@ -157,8 +144,8 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
         cache = json.loads(fd.read())
 
-    for buildspecfile in cache.keys():
-        if buildspec in cache[buildspecfile].keys():
+    for buildspecfile in cache["tests"].keys():
+        if buildspec in cache["tests"][buildspecfile].keys():
             if view:
                 cmd = f"cat {buildspecfile}"
                 output = subprocess.check_output(cmd, shell=True).decode("utf-8")

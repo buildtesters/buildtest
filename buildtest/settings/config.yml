@@ -13,5 +13,3 @@ executors:
       shell: python
 config:
   editor: vi
-  paths:
-    prefix: /tmp

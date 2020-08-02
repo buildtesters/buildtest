@@ -3,7 +3,7 @@ This file is used for generating documentation tests.
 """
 import os
 from shutil import copy
-from buildtest.menu.repo import active_repos, func_repo_add, get_repo_paths
+from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, write_file, walk_tree
 
@@ -18,7 +18,6 @@ def build_helper():
         "buildtest schema --help",
         "buildtest build --help",
         "buildtest config --help",
-        "buildtest repo --help",
         "buildtest buildspec --help",
         "buildtest report --help",
     ]
@@ -85,7 +84,7 @@ def schemas():
 
 def compiler_schema():
 
-    path = get_repo_paths("buildtesters/tutorials")
+    path = os.path.join(BUILDTEST_ROOT, "tutorials")
 
     prefix = "compiler_schema"
     dest = os.path.join(docgen, prefix)
@@ -138,14 +137,6 @@ def writer(fname, out, query):
 
 
 def main():
-
-    if "buildtesters/tutorial" not in active_repos():
-
-        class args:
-            repo = "https://github.com/buildtesters/tutorials.git"
-            branch = "master"
-
-        func_repo_add(args)
 
     create_dir(docgen)
     build_helper()

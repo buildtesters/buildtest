@@ -14,24 +14,6 @@ After you install buildtest, you should find the client on your path::
 
 If you don't see buildtest go back and review section :ref:`Setup`.
 
-Cloning Tutorials
------------------
-
-To get started, let's clone the `tutorials <https://github.com/buildtesters/tutorials>`_ repository provided by buildtest
-using ``buildtest repo add`` command::
-
-    $ buildtest repo add https://github.com/buildtesters/tutorials.git
-    Cloning into '/tmp/github.com/buildtesters/tutorials'...
-    remote: Enumerating objects: 184, done.
-    remote: Counting objects: 100% (184/184), done.
-    remote: Compressing objects: 100% (129/129), done.
-    remote: Total 184 (delta 60), reused 169 (delta 47), pack-reused 0
-    Receiving objects: 100% (184/184), 32.65 KiB | 16.33 MiB/s, done.
-    Resolving deltas: 100% (60/60), done.
-
-
-For more details see :ref:`buildtest_repo`
-
 Buildspecs
 ------------
 

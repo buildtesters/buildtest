@@ -18,13 +18,7 @@ from buildtest.menu.config import (
     func_config_validate,
     func_config_view,
 )
-from buildtest.menu.repo import (
-    func_repo_add,
-    func_repo_list,
-    func_repo_remove,
-    active_repos,
-    func_repo_update,
-)
+
 from buildtest.menu.report import func_report
 from buildtest.menu.schema import func_schema
 
@@ -52,7 +46,6 @@ class BuildTestParser:
             "buildspec": "Command options for buildspecs",
             "report": "Show report for test results",
             "schema": "Commands for viewing buildtest schemas",
-            "repo": "Options for managing buildtest repositories",
             "config": "Buildtest Configuration Menu",
         }
 
@@ -61,7 +54,6 @@ class BuildTestParser:
         self.buildspec_menu()
         self.report_menu()
         self.schema_menu()
-        self.repo_menu()
         self.config_menu()
 
     def main_menu(self):
@@ -256,86 +248,6 @@ class BuildTestParser:
         ##################### buildtest report   ###########################
 
         parser_report.set_defaults(func=func_report)
-
-    def repo_menu(self):
-        """ This method implements ``buildtest repo``
-
-            Command Usage
-
-            # add test repository to buildtest, this will clone repository locally and update repository cache
-
-           ``buildtest repo add <url>``
-
-            # add test repository with specific branch
-
-           ``buildtest repo add -b <branch> <url>``
-
-           # remove a repository from buildtest repository cache. This will remove the repository from filesystem
-
-           ``buildtest repo rm <repo>``
-
-           # list all repository in buildtest repository cache
-
-           ``buildtest repo list``
-
-           # show content of repository cache
-
-           ``buildtest repo list -s``
-
-           # enable/disable repository state
-
-           ``buildtest repo update --state <STATE> <repo>``
-
-        """
-
-        parser_repo = self.subparsers.add_parser("repo")
-
-        ##################### buildtest repo  ###########################
-
-        subparser_repo = parser_repo.add_subparsers(
-            title="commands", description="repository commands"
-        )
-        parser_repo_add = subparser_repo.add_parser(
-            "add", help="Add repository to buildtest."
-        )
-        parser_repo_list = subparser_repo.add_parser(
-            "list", help="List all repositories in buildtest"
-        )
-        parser_repo_rm = subparser_repo.add_parser(
-            "rm", help="Remove repository from buildtest"
-        )
-
-        parser_repo_update = subparser_repo.add_parser(
-            "update", help="Update repository configuration"
-        )
-        parser_repo_update.add_argument(
-            "repo", help="select repository to update", choices=active_repos()
-        )
-        parser_repo_update.add_argument(
-            "--state",
-            help="update state of repository. If you want "
-            "buildtest to add repository to buildspec search path, set state "
-            "to 'enabled' if you want buildtest to disable repo set state to "
-            "'disabled'. buildtest will not add repository to buildspec search path.",
-            choices=["enabled", "disabled"],
-        )
-        parser_repo_add.add_argument(
-            "-b",
-            "--branch",
-            help="Clone a particular branch (defaults to master)",
-            default="master",
-        )
-        parser_repo_add.add_argument("repo", help="repository to clone into buildtest")
-        parser_repo_list.add_argument(
-            "-s", "--show", action="store_true", help="show repository details"
-        )
-
-        parser_repo_rm.add_argument("repo", help="repository to remove from buildtest")
-
-        parser_repo_add.set_defaults(func=func_repo_add)
-        parser_repo_list.set_defaults(func=func_repo_list)
-        parser_repo_rm.set_defaults(func=func_repo_remove)
-        parser_repo_update.set_defaults(func=func_repo_update)
 
     def schema_menu(self):
         """This method adds argparse argument for ``buildtest show``
