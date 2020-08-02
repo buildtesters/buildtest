@@ -1,6 +1,5 @@
 import logging
 import os
-import shutil
 import sys
 from jsonschema import validate
 
@@ -17,7 +16,7 @@ from buildtest.system import (
     get_lsf_queues,
 )
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, is_dir, is_file
+
 
 logger = logging.getLogger(__name__)
 
