@@ -19,14 +19,6 @@ Likewise, you can edit the file by running::
 
     buildtest config edit
 
-If you want to reset the buildtest settings to the default settings, you can run
-``buildtest config reset`` which will overwrite your **settings.yml** with one
-provided by buildtest.
-
-Shown below is an example
-
-.. program-output:: cat docgen/config-reset.txt
-
 To check if your buildtest settings is valid, run ``buildtest config validate``.
 This will validate your ``settings.yml`` with the schema **settings.schema.json**.
 The output will be the following.

@@ -15,10 +15,9 @@ For more details on schema attributes see `Settings Schema Documentation <https:
 Default Configuration
 -----------------------
 
-At start of buildtest a default configuration is copied to ``$HOME/.buildtest/config.yml``
-if file doesn't exist which helps setup .
-that
-Shown below is the default settings file.
+The default configuration for buildtest can be found at ``buildtest/settings/config.yml``.
+User may override the default configuration by creating their custom file in ``$HOME/.buildtest/config.yaml``.
+Shown below is the default configuration.
 
 .. program-output:: cat ../buildtest/settings/config.yml
 

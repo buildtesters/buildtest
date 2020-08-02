@@ -1,5 +1,5 @@
 $ buildtest schema -n settings.schema.json -e 
-File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/settings/examples/valid/local-executor.yml
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/local-executor.yml
  Valid State: True
  ________________________________________________________________________________
  executors:
@@ -17,20 +17,7 @@ File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/settings/exa
    editor: vi
    paths:
      prefix: /tmp
- File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/settings/examples/valid/ssh-executor-example.yml
- Valid State: True
- ________________________________________________________________________________
- executors:
-   ssh:
-     localhost:
-       host: localhost
-       user: siddiq90
-       identity_file: ~/.ssh/id_rsa
- config:
-   editor: vi
-   paths:
-     prefix: /tmp
- File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/settings/examples/valid/slurm-example.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/slurm-example.yml
  Valid State: True
  ________________________________________________________________________________
  executors:
@@ -41,6 +28,19 @@ File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/settings/exa
      normal:
        options: ["-C haswell"]
        qos: normal
+ config:
+   editor: vi
+   paths:
+     prefix: /tmp
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/ssh-executor-example.yml
+ Valid State: True
+ ________________________________________________________________________________
+ executors:
+   ssh:
+     localhost:
+       host: localhost
+       user: siddiq90
+       identity_file: ~/.ssh/id_rsa
  config:
    editor: vi
    paths:

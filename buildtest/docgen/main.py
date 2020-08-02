@@ -116,7 +116,6 @@ def compiler_schema():
 def introspection_cmds():
     cmd_dict = {
         "config-view.txt": "buildtest config view",
-        "config-reset.txt": "buildtest config reset",
         "config-validate.txt": "buildtest config validate",
         "config-summary.txt": "buildtest config summary",
         "report.txt": "buildtest report",
