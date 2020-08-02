@@ -1,8 +1,5 @@
 from setuptools import setup, find_packages
 
-import os
-import sys
-
 from buildtest import BUILDTEST_VERSION
 
 setup(
@@ -10,7 +7,7 @@ setup(
     version=BUILDTEST_VERSION,
     author="Shahzeb Siddiqui",
     author_email="shahzebmsiddiqui@gmail.com",
-    description="HPC Application Testing Framework",
+    description="HPC Testing Framework",
     long_description=open("README.rst").read(),
     url="https://github.com/buildtesters/buildtest",
     license="MIT",
@@ -26,6 +23,7 @@ setup(
     ],
     packages=find_packages(),
     include_package_data=True,
-    install_requires=["PyYAML>=5.2", "distro==1.4.0", "jsonschema==3.0.2", "tabulate"],
+    python_requires=">=3.6",
+    install_requires=["PyYAML>=5.2", "distro", "jsonschema", "tabulate"],
     entry_points={"console_scripts": ["buildtest=buildtest.main:main"]},
 )
