@@ -26,7 +26,8 @@ $ buildtest schema -n settings.schema.json -j
              "launcher": {
                "type": "string",
                "enum": [
-                 "sbatch"
+                 "sbatch",
+                 "bsub"
                ]
              }
            }
@@ -36,6 +37,14 @@ $ buildtest schema -n settings.schema.json -j
            "patternProperties": {
              "^.*$": {
                "$ref": "#/definitions/local"
+             }
+           }
+         },
+         "lsf": {
+           "type": "object",
+           "patternProperties": {
+             "^.*$": {
+               "$ref": "#/definitions/lsf"
              }
            }
          },
@@ -96,6 +105,7 @@ $ buildtest schema -n settings.schema.json -j
    "definitions": {
      "modules": {
        "type": "object",
+       "additionalProperties": false,
        "properties": {
          "purge": {
            "type": "boolean"
@@ -106,8 +116,7 @@ $ buildtest schema -n settings.schema.json -j
              "type": "string"
            }
          }
-       },
-       "additionalProperties": false
+       }
      },
      "local": {
        "type": "object",
@@ -171,6 +180,39 @@ $ buildtest schema -n settings.schema.json -j
            "type": "string"
          },
          "qos": {
+           "type": "string"
+         },
+         "modules": {
+           "$ref": "#/definitions/modules"
+         }
+       }
+     },
+     "lsf": {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+         "description": {
+           "type": "string"
+         },
+         "launcher": {
+           "type": "string",
+           "enum": [
+             "bsub"
+           ]
+         },
+         "options": {
+           "type": "array",
+           "items": {
+             "type": "string"
+           }
+         },
+         "environment": {
+           "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
+         },
+         "variables": {
+           "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
+         },
+         "queue": {
            "type": "string"
          },
          "modules": {

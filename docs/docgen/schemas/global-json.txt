@@ -61,6 +61,12 @@ $ buildtest schema -n global.schema.json -j
          "type": "string"
        }
      },
+     "bsub": {
+       "type": "array",
+       "items": {
+         "type": "string"
+       }
+     },
      "status": {
        "type": "object",
        "additionalProperties": false,

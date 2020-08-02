@@ -1,5 +1,5 @@
 $ buildtest schema -n global.schema.json -e 
-File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/global/examples/valid/examples.yml
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/valid/examples.yml
  Valid State: True
  ________________________________________________________________________________
  version: "1.0"
@@ -29,7 +29,41 @@ File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/global/examp
      type: script
      executor: local.bash
      run: "hostname"
- File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/global/examples/invalid/missing-version.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/invalid/maintainers_type_mismatch.yml
+ Valid State: FAIL
+ ________________________________________________________________________________
+ version: "1.0"
+ # wrong type for maintainers key, expects a string
+ maintainers: 1
+ buildspecs:
+   hostname:
+     type: script
+     run: "hostname"
+ ________________________________________ Validation Error ________________________________________
+ 1 is not of type 'array'
+ Failed validating 'type' in schema['properties']['maintainers']:
+     {'description': 'One or more maintainers or aliases',
+      'items': {'type': 'string'},
+      'minItems': 1,
+      'type': 'array'}
+ On instance['maintainers']:
+     1
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/invalid/invalid_pattern.yml
+ Valid State: FAIL
+ ________________________________________________________________________________
+ version: "1.0"
+ buildspecs:
+   # invalid pattern for test. Must be matching regex "^[A-Za-z_.][A-Za-z0-9_]*$" when declaring a dict
+   (badname:
+     type: script
+     run: "ping login 1"
+ ________________________________________ Validation Error ________________________________________
+ '(badname' does not match '^[A-Za-z_][A-Za-z0-9_]*$'
+ Failed validating 'pattern' in schema['properties']['buildspecs']['propertyNames']:
+     {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'}
+ On instance['buildspecs']:
+     '(badname'
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/invalid/missing-version.yml
  Valid State: FAIL
  ________________________________________________________________________________
  buildspecs:
@@ -43,7 +77,8 @@ File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/global/examp
      {'$id': 'https://buildtesters.github.io/schemas/global/global.schema.json',
       '$schema': 'http://json-schema.org/draft-07/schema#',
       'additionalProperties': False,
-      'definitions': {'env': {'description': 'One or more key value pairs '
+      'definitions': {'bsub': {'items': {'type': 'string'}, 'type': 'array'},
+                      'env': {'description': 'One or more key value pairs '
                                              'for an environment '
                                              '(key=value)',
                               'items': {'minItems': 1,
@@ -89,37 +124,3 @@ File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/global/examp
  On instance:
      {'buildspecs': {'login_node_check': {'run': 'ping login 1',
                                           'type': 'script'}}}
- File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/global/examples/invalid/invalid_pattern.yml
- Valid State: FAIL
- ________________________________________________________________________________
- version: "1.0"
- buildspecs:
-   # invalid pattern for test. Must be matching regex "^[A-Za-z_.][A-Za-z0-9_]*$" when declaring a dict
-   (badname:
-     type: script
-     run: "ping login 1"
- ________________________________________ Validation Error ________________________________________
- '(badname' does not match '^[A-Za-z_][A-Za-z0-9_]*$'
- Failed validating 'pattern' in schema['properties']['buildspecs']['propertyNames']:
-     {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'}
- On instance['buildspecs']:
-     '(badname'
- File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/global/examples/invalid/maintainers_type_mismatch.yml
- Valid State: FAIL
- ________________________________________________________________________________
- version: "1.0"
- # wrong type for maintainers key, expects a string
- maintainers: 1
- buildspecs:
-   hostname:
-     type: script
-     run: "hostname"
- ________________________________________ Validation Error ________________________________________
- 1 is not of type 'array'
- Failed validating 'type' in schema['properties']['maintainers']:
-     {'description': 'One or more maintainers or aliases',
-      'items': {'type': 'string'},
-      'minItems': 1,
-      'type': 'array'}
- On instance['maintainers']:
-     1

@@ -1,5 +1,5 @@
 $ buildtest schema -n compiler-v1.0.schema.json -e 
-File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/compiler/examples/1.0/valid/examples.yml
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/compiler/examples/1.0/valid/examples.yml
  Valid State: True
  ________________________________________________________________________________
  version: "1.0"
@@ -91,7 +91,7 @@ File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/compiler/exa
        cxxflags: "-O3"
      run:
        launcher: mpirun -np 2
- File: /global/u1/s/siddiq90/buildtest/buildtest/buildsystem/schemas/compiler/examples/1.0/invalid/examples.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/compiler/examples/1.0/invalid/examples.yml
  Valid State: FAIL
  ________________________________________________________________________________
  version: "1.0"

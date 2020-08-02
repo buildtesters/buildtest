@@ -1,2 +1,0 @@
-$ buildtest config reset
-Restoring from default configuration: /Users/siddiq90/Documents/buildtest/buildtest/settings/settings.yml

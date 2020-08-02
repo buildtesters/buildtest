@@ -30,6 +30,9 @@ $ buildtest schema -n compiler-v1.0.schema.json -j
      "sbatch": {
        "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/sbatch"
      },
+     "bsub": {
+       "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/bsub"
+     },
      "env": {
        "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
      },
