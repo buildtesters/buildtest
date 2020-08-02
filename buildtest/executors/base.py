@@ -725,7 +725,7 @@ class LSFExecutor(BaseExecutor):
         # if sbatch job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
             err = f"[{self.builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            err += f"[{self.builder.metadata['name']}] running command: {sbatch_cmd}"
+            err += f"[{self.builder.metadata['name']}] running command: {bsub_cmd}"
             sys.exit(err)
 
         interval = 5

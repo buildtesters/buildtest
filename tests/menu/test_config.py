@@ -3,7 +3,6 @@ from jsonschema import validate
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, BUILDTEST_SETTINGS_FILE
 from buildtest.menu.config import (
     func_config_view,
-    func_config_reset,
     func_config_validate,
     func_config_summary,
 )
@@ -15,14 +14,6 @@ pytest_root = os.path.dirname(os.path.dirname(__file__))
 
 def test_view_configuration():
     func_config_view()
-
-
-def test_config_reset():
-
-    # removing config file and testing if reset works
-    os.remove(BUILDTEST_SETTINGS_FILE)
-    func_config_reset()
-    assert os.path.exists(BUILDTEST_SETTINGS_FILE)
 
 
 def test_valid_config_schemas():
