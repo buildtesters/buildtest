@@ -38,10 +38,10 @@ Installing buildtest
 Depending on your python version, install buildtest as follows::
 
     # for site installed python
-    $ python3 setup.py install --user
+    $ pip install --user .
 
     # for virtual environment, local install
-    $ python3 setup.py install
+    $ pip install .
 
 You may want to create an isolated python environment of choice depending on your preference you can use any of the following
 
