@@ -4,7 +4,7 @@ import uuid
 from buildtest.config import load_settings
 from buildtest.defaults import BUILDTEST_SETTINGS_FILE
 from buildtest.menu.build import discover_buildspecs, func_build_subcmd
-from buildtest.menu.repo import active_repos, func_repo_add, get_repo_paths
+
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)
@@ -46,8 +46,10 @@ def test_discover_buildspecs():
 
 
 def test_func_build_subcmd():
+    buildspec_paths = os.path.join(test_root, "examples", "buildspecs")
+
     class args:
-        buildspec = ["examples"]
+        buildspec = [buildspec_paths]
         debug = False
         settings = None
         testdir = None
@@ -55,28 +57,14 @@ def test_func_build_subcmd():
 
     buildtest_configuration = load_settings()
 
-    tutorials = "buildtesters/tutorials"
-    if tutorials not in active_repos():
-
-        class repocmd:
-            repo = "https://github.com/buildtesters/tutorials.git"
-            branch = "master"
-
-        func_repo_add(repocmd)
-
-        assert tutorials in active_repos()
-
     func_build_subcmd(args, buildtest_configuration)
 
-    repo_paths = get_repo_paths()
-    prefix = repo_paths[0]
-
     class args:
-        buildspec = [os.path.join(prefix, "examples")]
+        buildspec = [buildspec_paths]
         debug = False
         settings = BUILDTEST_SETTINGS_FILE
         testdir = "/tmp"
-        exclude = [os.path.join(prefix, "examples")]
+        exclude = [buildspec_paths]
 
     # this results in no buildspecs built
     with pytest.raises(SystemExit):
