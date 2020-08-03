@@ -44,8 +44,6 @@ jobs:
    
     - name: Validate buildspecs in tutorials
       run: |
-        buildtest repo add https://github.com/buildtesters/tutorials.git
-        buildtest repo list
         buildtest buildspec find
     
     - name: Running Tutorials Example

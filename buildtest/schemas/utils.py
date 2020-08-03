@@ -5,7 +5,6 @@ Utility and helper functions for schemas.
 import json
 import logging
 import os
-import re
 import sys
 import yaml
 
