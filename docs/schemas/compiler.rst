@@ -8,7 +8,7 @@ single source file compilation. For more details see `Compiler Schema Documentat
 Schema Files
 -------------
 
-- `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/buildsystem/schemas/compiler/compiler-v1.0.schema.json>`_
+- `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/compiler/compiler-v1.0.schema.json>`_
 - `Development Schema <https://buildtesters.github.io/schemas/compiler/compiler-v1.0.schema.json>`_
 
 

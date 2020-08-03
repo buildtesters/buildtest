@@ -3,7 +3,7 @@ import os
 import sys
 from jsonschema import validate
 
-from buildtest.schemas.utils import load_schema
+from buildtest.schemas.utils import load_schema, load_recipe
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
     DEFAULT_SETTINGS_FILE,
@@ -70,14 +70,13 @@ def load_settings(settings_path=None):
        :type settings_path: str, optional
     """
 
-    settings_path = (
-        settings_path
-        or os.path.exists(BUILDTEST_SETTINGS_FILE)
-        or DEFAULT_SETTINGS_FILE
-    )
+    settings_path = settings_path or BUILDTEST_SETTINGS_FILE
+
+    if not os.path.exists(settings_path):
+        settings_path = DEFAULT_SETTINGS_FILE
 
     # load the settings file into a schema object
-    return load_schema(settings_path)
+    return load_recipe(settings_path)
 
 
 def validate_lsf_executors(lsf_executors):

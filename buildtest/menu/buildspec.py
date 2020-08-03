@@ -1,6 +1,7 @@
 import json
 import os
 import subprocess
+
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_ROOT
@@ -27,7 +28,20 @@ def func_buildspec_find(args):
     """
 
     cache = {}
-    cache["tests"] = {}
+    config_opts = load_settings()
+
+    buildspec_paths = (
+        config_opts.get("config", {}).get("paths", {}).get("buildspec_roots")
+    )
+    paths = []
+
+    if buildspec_paths:
+        paths = [
+            search_dir for search_dir in buildspec_paths if os.path.exists(search_dir)
+        ]
+
+    paths.append(os.path.join(BUILDTEST_ROOT, "tutorials"))
+
     # implements buildtest buildspec find --clear which removes cache file before finding all buildspecs
     if args.clear:
         try:
@@ -36,15 +50,11 @@ def func_buildspec_find(args):
         except OSError:
             pass
 
-    if is_file(BUILDSPEC_CACHE_FILE):
-        with open(BUILDSPEC_CACHE_FILE, "r") as fd:
-            cache = json.loads(fd.read())
     # if cache file is not found, then we will build cache by searching
-    # all buildspecs based on available repos found in REPO_FILE and
-    # traverse directory to find all .yml files
-    else:
+    # all buildspecs paths and traverse directory to find all .yml files
+    if not is_file(BUILDSPEC_CACHE_FILE):
 
-        paths = [os.path.join(BUILDTEST_ROOT, "tutorials")]
+        # paths = [os.path.join(BUILDTEST_ROOT, "tutorials")]
 
         buildspecs = []
         invalid_buildspecs = {}
@@ -52,6 +62,7 @@ def func_buildspec_find(args):
         # add all buildspecs from each repo. walk_tree will find all .yml files
         # recursively and add them to list
         for path in paths:
+            cache[path] = {}
             buildspec = walk_tree(path, ".yml")
             buildspecs += buildspec
 
@@ -62,6 +73,7 @@ def func_buildspec_find(args):
             if os.path.basename(os.path.dirname(buildspec)) != ".buildtest"
         ]
         print(f"Found {len(buildspecs)} buildspecs")
+
         # process each buildspec by invoking BuildspecParser which will validate
         # buildspec, if it fails it will raise SystemExit or ValidationError in
         # this case we skip to next buildspec
@@ -83,14 +95,21 @@ def func_buildspec_find(args):
 
             recipe = parse.recipe["buildspecs"]
 
-            cache["tests"][buildspec] = {}
+            path_root = [
+                path
+                for path in paths
+                if os.path.commonprefix([buildspec, path]) == path
+            ]
+            path_root = path_root[0]
+
+            cache[path_root][buildspec] = {}
 
             for name in recipe.keys():
 
                 if not isinstance(recipe[name], dict):
                     continue
 
-                cache["tests"][buildspec][name] = recipe[name]
+                cache[path_root][buildspec][name] = recipe[name]
 
         print(f"Validated {count}/{len(buildspecs)} buildspecs")
 
@@ -112,20 +131,26 @@ def func_buildspec_find(args):
             print(f"Writing invalid buildspecs to file: {buildspec_error_file} ")
             print("\n\n")
 
+    with open(BUILDSPEC_CACHE_FILE, "r") as fd:
+        cache = json.loads(fd.read())
+
+    paths = cache.keys()
+
     table = {"Name": [], "Type": [], "Executor": [], "Description": []}
     # print("{:<25} {:<25} {:<25}".format("Name", "Schema Type", "Executor"))
     # print("{:_<80}".format(""))
-    for buildspecfile in cache["tests"].keys():
-        for test in cache["tests"][buildspecfile].keys():
+    for path in paths:
+        for buildspecfile in cache[path].keys():
+            for test in cache[path][buildspecfile].keys():
 
-            type = cache["tests"][buildspecfile][test]["type"]
-            executor = cache["tests"][buildspecfile][test]["executor"]
-            description = cache["tests"][buildspecfile][test].get("description")
-            # print("{:<25} {:<25} {:<25}".format(test, type, executor))
-            table["Name"].append(test)
-            table["Type"].append(type)
-            table["Executor"].append(executor)
-            table["Description"].append(description)
+                type = cache[path][buildspecfile][test]["type"]
+                executor = cache[path][buildspecfile][test]["executor"]
+                description = cache[path][buildspecfile][test].get("description")
+                # print("{:<25} {:<25} {:<25}".format(test, type, executor))
+                table["Name"].append(test)
+                table["Type"].append(type)
+                table["Executor"].append(executor)
+                table["Description"].append(description)
 
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
@@ -144,33 +169,34 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
         cache = json.loads(fd.read())
 
-    for buildspecfile in cache["tests"].keys():
-        if buildspec in cache["tests"][buildspecfile].keys():
-            if view:
-                cmd = f"cat {buildspecfile}"
-                output = subprocess.check_output(cmd, shell=True).decode("utf-8")
-                print(output)
-            if edit:
-                # this loop will terminate once user has edited file, and we parse
-                # the file for any errors. If one of the exceptions is raised, we
-                # print error message and set 'success' to False and user is requested
-                # to fix buildspec until it is valid.
-                while True:
-                    success = True
-                    config_opts = load_settings()
-                    os.system(f"{config_opts['config']['editor']} {buildspecfile}")
-                    try:
-                        BuildspecParser(buildspecfile)
-                    except (SystemExit, ValidationError) as err:
-                        print(err)
-                        input("Press any key to continue")
-                        success = False
-                    # break out of while loop once user has successfully validated
-                    # buildspec.
-                    if success:
-                        break
+    for path in cache.keys():
+        for buildspecfile in cache[path].keys():
+            if buildspec in cache[path][buildspecfile].keys():
+                if view:
+                    cmd = f"cat {buildspecfile}"
+                    output = subprocess.check_output(cmd, shell=True).decode("utf-8")
+                    print(output)
+                if edit:
+                    # this loop will terminate once user has edited file, and we parse
+                    # the file for any errors. If one of the exceptions is raised, we
+                    # print error message and set 'success' to False and user is requested
+                    # to fix buildspec until it is valid.
+                    while True:
+                        success = True
+                        config_opts = load_settings()
+                        os.system(f"{config_opts['config']['editor']} {buildspecfile}")
+                        try:
+                            BuildspecParser(buildspecfile)
+                        except (SystemExit, ValidationError) as err:
+                            print(err)
+                            input("Press any key to continue")
+                            success = False
+                        # break out of while loop once user has successfully validated
+                        # buildspec.
+                        if success:
+                            break
 
-            return
+                return
 
     raise SystemExit(f"Unable to find buildspec {buildspec}")
 

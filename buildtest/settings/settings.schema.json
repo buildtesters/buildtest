@@ -47,6 +47,7 @@
           "paths": {
             "type": "object",
             "properties": {
+              "buildspec_roots": {"type": "array", "items": { "type": "string"}},
               "prefix": { "type":  "string" },
               "clonepath": { "type": "string" },
               "logdir": {"type":  "string" },
