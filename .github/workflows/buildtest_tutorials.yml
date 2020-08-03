@@ -35,9 +35,10 @@ jobs:
     - name: Get buildtest
       run: |
         git --version
+        pip install -U pip
         git fetch -u origin devel:devel
         python --version
-        python setup.py install
+        pip install .
         which buildtest
         buildtest --version
         buildtest --help
@@ -47,4 +48,4 @@ jobs:
         buildtest buildspec find
     
     - name: Running Tutorials Example
-      run: buildtest build -b examples
+      run: buildtest build -b tutorials/
