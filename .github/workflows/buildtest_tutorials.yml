@@ -35,6 +35,7 @@ jobs:
     - name: Get buildtest
       run: |
         git --version
+        pip install -u pip
         git fetch -u origin devel:devel
         python --version
         pip install .
