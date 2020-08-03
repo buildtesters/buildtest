@@ -10,7 +10,7 @@ for more details see `Script Schema Documentation <https://buildtesters.github.i
 Schema Files
 -------------
 
-- `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/buildsystem/schemas/script/script-v1.0.schema.json>`_
+- `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/script/script-v1.0.schema.json>`_
 - `Development Schema <https://buildtesters.github.io/schemas/script/script-v1.0.schema.json>`_
 
 Examples
