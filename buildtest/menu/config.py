@@ -55,7 +55,12 @@ def func_config_edit(args=None):
 
 def func_config_view(args=None):
     """View buildtest configuration file. This implements ``buildtest config view``"""
-    settings_file = os.path.exists(BUILDTEST_SETTINGS_FILE) or DEFAULT_SETTINGS_FILE
+    settings_file = BUILDTEST_SETTINGS_FILE
+
+    # if file doesn't exist use DEFAULT_SETTINGS_FILE
+    if not os.path.exists(settings_file):
+        settings_file = DEFAULT_SETTINGS_FILE
+
     os.system(f"cat {settings_file}")
 
 

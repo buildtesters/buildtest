@@ -13,9 +13,7 @@ here = os.path.dirname(os.path.abspath(__file__))
 
 
 def load_schema(path):
-    """load a schema from file. We assume either a json or yml file by
-       the extension. This allows for using the function to load either,
-       as the user might have difference preferences.
+    """Load a json schema file, the file extension must be '.schema.json'
 
        Parameters:
 
@@ -27,29 +25,30 @@ def load_schema(path):
     if not os.path.exists(path):
         sys.exit("schema file %s does not exist." % path)
 
+    if not path.endswith(".schema.json"):
+        msg = "Invalid extension for schema must be on of the following: '.schema.json'"
+        logger.error(msg)
+        sys.exit(msg)
+
     with open(path, "r") as fd:
-        if re.search("[.]json$", path):
-            schema = json.loads(fd.read())
-        elif re.search("[.]yml$", path):
-            schema = yaml.load(fd.read(), Loader=yaml.SafeLoader)
-        else:
-            msg = "Invalid extension for schema must be on of the following: [.json, .yml]"
-            logger.error(msg)
-            sys.exit(msg)
+        schema = json.loads(fd.read())
 
     logger.debug(f"Successfully loaded schema file: {path}")
     return schema
 
 
 def load_recipe(path):
-    """load a yaml recipe file. The recipe is validated against a schema.
+    """Load a yaml recipe file. The file must be in .yml extension
+       for buildtest to load.
 
        Parameters:
 
        path: the path to the recipe file.
     """
-    if not os.path.exists(path):
-        sys.exit("test configuration file %s does not exist." % path)
+    print(path)
+    if not (os.path.exists(path) or path.endswith(".yml")):
+        sys.exit("Check if file exists and ends in .yml extension" % path)
+
     with open(path, "r") as fd:
         content = yaml.load(fd.read(), Loader=yaml.SafeLoader)
     return content
