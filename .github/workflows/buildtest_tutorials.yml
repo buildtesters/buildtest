@@ -48,4 +48,4 @@ jobs:
         buildtest buildspec find
     
     - name: Running Tutorials Example
-      run: buildtest build -b examples
+      run: buildtest build -b tutorials/
