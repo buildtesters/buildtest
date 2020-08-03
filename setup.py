@@ -21,6 +21,10 @@ setup(
         "Topic :: Software Development :: Build Tools",
         "Topic :: Software Development :: Testing",
     ],
+    project_urls={
+        "Documentation": "https://buildtest.readthedocs.io/",
+        "Source": "https://github.com/buildtesters/buildtest",
+    },
     packages=find_packages(),
     include_package_data=True,
     python_requires=">=3.6",

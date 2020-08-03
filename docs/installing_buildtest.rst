@@ -35,7 +35,7 @@ Or you may switch to the **devel** branch if you already cloned it::
 Installing buildtest
 -----------------------
 
-Depending on your python version, install buildtest as follows::
+To install buildtest run the following::
 
     # for site installed python
     $ pip install --user .

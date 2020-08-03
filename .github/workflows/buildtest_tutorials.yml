@@ -37,7 +37,7 @@ jobs:
         git --version
         git fetch -u origin devel:devel
         python --version
-        python setup.py install
+        pip install .
         which buildtest
         buildtest --version
         buildtest --help
