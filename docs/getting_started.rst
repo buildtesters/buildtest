@@ -37,12 +37,8 @@ buildtest will find all buildspecs and validate each file with the appropriate
 schema type. buildspecs that pass validation will be displayed on screen.
 buildtest will report all invalid buildspecs in a text file for you to review.
 
-buildtest will cache the results in **$HOME/.buildtest/buildspec.cache** so subsequent
+buildtest will cache the results in **var/buildspec.cache** so subsequent
 runs to ``buildtest buildspec find`` will be much faster since we read from cache.
-If you decide to add/remove repositories via ``buildtest repo`` commands see
-:ref:`buildtest_repo` then you can rebuild cache by running::
-
-    $ buildtest buildspec find --clear
 
 Viewing Buildspecs
 ~~~~~~~~~~~~~~~~~~~~
@@ -113,9 +109,6 @@ follows::
     tests/examples/buildspecs/os.yaml does not end in file extension .yml
 
 In this example, the search resolution will run step ``2b`` and raised an error.
-
-buildtest can resolve path relative to search path from a cloned repository
-:ref:`buildtest_repo` which is a colon separated list of paths to search.
 
 In next example, our current directory is at $HOME and we are able the test ``examples/systemd.yml``
 even if it's not in relative path but it is a path found in the buildspec search path.
