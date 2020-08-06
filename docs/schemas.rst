@@ -8,3 +8,4 @@ Schemas
    schemas/writing_buildspecs.rst
    schemas/script.rst
    schemas/compiler.rst
+   schemas/batch_support.rst
