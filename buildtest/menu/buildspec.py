@@ -1,7 +1,6 @@
 import json
 import os
 import subprocess
-
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_ROOT

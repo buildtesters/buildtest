@@ -1,5 +1,3 @@
-import json
-
 from buildtest.menu.buildspec import func_buildspec_find, func_buildspec_view
 from buildtest.defaults import BUILDSPEC_CACHE_FILE
 
@@ -24,9 +22,6 @@ def test_func_buildspec_find():
 def test_buildspec_view():
 
     assert BUILDSPEC_CACHE_FILE
-
-    with open(BUILDSPEC_CACHE_FILE, "r") as fd:
-        buildspecs = json.loads(fd.read())
 
     test_name = "cc_example"
     print(f"Viewing buildspec test: {test_name}")

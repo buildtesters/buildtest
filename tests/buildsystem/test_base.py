@@ -12,8 +12,6 @@ testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def test_BuildspecParser(tmp_path):
 
-    type_schemas = ["script", "compiler"]
-
     # Examples folder
     examples_dir = os.path.join(testroot, "examples", "buildspecs")
 

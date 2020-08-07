@@ -1,6 +1,6 @@
 import os
 import pytest
-from shutil import copy
+import shutil
 from buildtest.defaults import BUILD_REPORT
 from buildtest.menu.report import func_report
 
@@ -42,7 +42,7 @@ def test_func_report_when_BUILD_REPORT_missing():
     backupfile = f"{BUILD_REPORT}.bak"
 
     try:
-        copy(BUILD_REPORT, backupfile)
+        shutil.copy(BUILD_REPORT, backupfile)
         os.remove(BUILD_REPORT)
     except OSError:
         pass
@@ -50,7 +50,7 @@ def test_func_report_when_BUILD_REPORT_missing():
     with pytest.raises(SystemExit):
         func_report()
     try:
-        move(backupfile, BUILD_REPORT)
+        shutil.move(backupfile, BUILD_REPORT)
     except:
         pass
 
