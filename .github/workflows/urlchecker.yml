@@ -29,4 +29,4 @@ jobs:
         retry_count: 3
 
         # Cannot check private GitHub settings
-        white_listed_patterns: https://github.com/buildtesters/buildtest/settings
+        white_listed_patterns: https://github.com/buildtesters/buildtest/settings,https://hpckp.org/past-edition/hpckp-17/,https://hpckp.org/past-edition/hpckp-18
