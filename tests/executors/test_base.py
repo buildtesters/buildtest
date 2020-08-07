@@ -7,7 +7,7 @@ import os
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from buildtest.executors.base import BuildExecutor
-from buildtest.schemas.utils import load_schema
+from buildtest.schemas.utils import load_schema, load_recipe
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA
 from buildtest.buildsystem.parser import BuildspecParser
 
@@ -19,7 +19,7 @@ def test_build_executor(tmp_path):
         pytest_root, "examples", "config_schemas", "valid", "combined-example.yml"
     )
     settings_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
-    example = load_schema(example_schema)
+    example = load_recipe(example_schema)
     validate(instance=example, schema=settings_schema)
 
     # Load BuildExecutor

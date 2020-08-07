@@ -44,9 +44,12 @@ def load_recipe(path):
 
        path: the path to the recipe file.
     """
-    print(path)
-    if not (os.path.exists(path) or path.endswith(".yml")):
-        sys.exit("Check if file exists and ends in .yml extension" % path)
+
+    if not os.path.exists(path):
+        sys.exit("Check if file exists %s" % path)
+
+    if not path.endswith(".yml"):
+        sys.exit("File must end in .yml extension")
 
     with open(path, "r") as fd:
         content = yaml.load(fd.read(), Loader=yaml.SafeLoader)
