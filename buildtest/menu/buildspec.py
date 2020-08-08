@@ -1,11 +1,12 @@
 import json
 import os
 import subprocess
+
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
-from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_ROOT
+from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDSPEC_DEFAULT_PATH
 from buildtest.config import load_settings
-from buildtest.utils.file import is_file, walk_tree
+from buildtest.utils.file import is_file, walk_tree, resolve_path
 from buildtest.buildsystem.parser import BuildspecParser
 
 
@@ -32,15 +33,16 @@ def func_buildspec_find(args):
     buildspec_paths = (
         config_opts.get("config", {}).get("paths", {}).get("buildspec_roots")
     )
-    paths = []
+    paths = [BUILDSPEC_DEFAULT_PATH]
 
     if buildspec_paths:
-        paths = [
-            search_dir for search_dir in buildspec_paths if os.path.exists(search_dir)
-        ]
 
-    paths.append(os.path.join(BUILDTEST_ROOT, "tutorials"))
+        for root in buildspec_paths:
+            path = resolve_path(root, exist=False)
+            if os.path.exists(path):
+                paths.append(path)
 
+    print("Searching buildspec in following directories: ", ",".join(paths))
     # implements buildtest buildspec find --clear which removes cache file before finding all buildspecs
     if args.clear:
         try:
@@ -52,8 +54,6 @@ def func_buildspec_find(args):
     # if cache file is not found, then we will build cache by searching
     # all buildspecs paths and traverse directory to find all .yml files
     if not is_file(BUILDSPEC_CACHE_FILE):
-
-        # paths = [os.path.join(BUILDTEST_ROOT, "tutorials")]
 
         buildspecs = []
         invalid_buildspecs = {}
@@ -170,7 +170,7 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
 
     for path in cache.keys():
         for buildspecfile in cache[path].keys():
-            if buildspec in cache[path][buildspecfile].keys():
+            if buildspec in list(cache[path][buildspecfile].keys()):
                 if view:
                     cmd = f"cat {buildspecfile}"
                     output = subprocess.check_output(cmd, shell=True).decode("utf-8")

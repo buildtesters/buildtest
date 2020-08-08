@@ -28,20 +28,16 @@ BUILDTEST_USER_HOME = os.path.join(userhome, ".buildtest")
 BUILDTEST_SETTINGS_FILE = os.path.join(BUILDTEST_USER_HOME, "config.yml")
 
 var_root = os.path.join(BUILDTEST_ROOT, "var")
-var_buildspec = os.path.join(var_root, "buildspec")
 
 BUILDSPEC_CACHE_FILE = os.path.join(var_root, "buildspec.cache")
 
 BUILD_REPORT = os.path.join(var_root, "report.json")
 
-# BUILDSPEC_DEFAULT_PATH is the root directory where Buildspec are found
-# when using buildtest get to clone a buildtest test repo
-BUILDSPEC_DEFAULT_PATH = os.path.join(var_root, "repo")
+BUILDSPEC_DEFAULT_PATH = os.path.join(BUILDTEST_ROOT, "tutorials")
+
 DEFAULT_SETTINGS_FILE = os.path.join(
     BUILDTEST_ROOT, "buildtest", "settings", "config.yml"
 )
 DEFAULT_SETTINGS_SCHEMA = os.path.join(
     BUILDTEST_ROOT, "buildtest", "settings", "settings.schema.json"
 )
-
-BUILDSPEC_PATH_FILE = os.path.join(var_buildspec, "path.json")
