@@ -170,9 +170,6 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
 
     for path in cache.keys():
         for buildspecfile in cache[path].keys():
-            print(buildspecfile)
-            print(list(cache[path][buildspecfile].keys()), buildspec)
-            # sys.exit(0)
             if buildspec in list(cache[path][buildspecfile].keys()):
                 if view:
                     cmd = f"cat {buildspecfile}"
