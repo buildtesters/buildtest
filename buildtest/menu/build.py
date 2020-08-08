@@ -151,10 +151,7 @@ def func_build_subcmd(args, config_opts):
     # returns a list of destination directories where repositories are cloned, if
     # REPO_FILE is not found get_repo_paths will return None, in that case we
     # set buildspec_searchpath to empty list
-    buildspec_searchpath = [
-        BUILDSPEC_DEFAULT_PATH,
-        os.path.join(BUILDTEST_ROOT, "tutorials"),
-    ]
+    buildspec_searchpath = [BUILDSPEC_DEFAULT_PATH]
 
     print("Paths:")
     print("{:_<10}".format(""))

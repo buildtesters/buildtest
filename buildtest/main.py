@@ -1,6 +1,6 @@
 import os
 from buildtest.config import load_settings, check_settings
-from buildtest.defaults import var_root, var_buildspec, BUILDTEST_USER_HOME
+from buildtest.defaults import var_root, BUILDTEST_USER_HOME
 from buildtest.menu import BuildTestParser
 from buildtest.menu.build import func_build_subcmd
 from buildtest.system import BuildTestSystem
@@ -23,7 +23,6 @@ def main():
 
     create_dir(BUILDTEST_USER_HOME)
     create_dir(var_root)
-    create_dir(var_buildspec)
 
     # Create a build test system, and check requirements
     BuildTestSystem()
