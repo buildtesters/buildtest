@@ -16,7 +16,7 @@ Default Configuration
 The default configuration for buildtest can be found in the git repo relative
 to root of buildtest at ``buildtest/settings/config.yml``.
 User may override the default configuration by creating their custom file in
-``$HOME/.buildtest/config.yaml``.
+``$HOME/.buildtest/config.yml``.
 
 Shown below is the default configuration.
 
@@ -222,6 +222,23 @@ suitable for your site.
       paths:
         prefix: /tmp
 
+Adding buildspec roots
+-----------------------
+
+buildtest can detect buildspec using ``buildspec_roots`` keyword.  For example we
+clone the repo https://github.com/buildtesters/buildtest-cori at **/Users/siddiq90/Documents/buildtest-cori**
+
+config:
+  editor: vi
+  paths:
+    buildspec_roots:
+      - /Users/siddiq90/Documents/buildtest-cori
+
+
+If you run ``buildtest buildspec find --clear`` it will detect all buildspecs in
+buildspec_roots. buildtest will find all `.yml` extension. By default buildtest will
+add the ``$BUILDTEST_ROOT/tutorials`` to search path, where $BUILDTEST_ROOT is root
+of buildtest repo.
 
 Example Configurations
 -------------------------

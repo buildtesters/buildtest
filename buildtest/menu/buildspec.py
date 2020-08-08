@@ -40,7 +40,7 @@ def func_buildspec_find(args):
         ]
 
     paths.append(os.path.join(BUILDTEST_ROOT, "tutorials"))
-
+    print("Searching buildspec in following directories: ", ",".join(paths))
     # implements buildtest buildspec find --clear which removes cache file before finding all buildspecs
     if args.clear:
         try:
@@ -52,8 +52,6 @@ def func_buildspec_find(args):
     # if cache file is not found, then we will build cache by searching
     # all buildspecs paths and traverse directory to find all .yml files
     if not is_file(BUILDSPEC_CACHE_FILE):
-
-        # paths = [os.path.join(BUILDTEST_ROOT, "tutorials")]
 
         buildspecs = []
         invalid_buildspecs = {}

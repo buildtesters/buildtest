@@ -37,7 +37,7 @@ buildtest will find all buildspecs and validate each file with the appropriate
 schema type. buildspecs that pass validation will be displayed on screen.
 buildtest will report all invalid buildspecs in a text file for you to review.
 
-buildtest will cache the results in **var/buildspec.cache** so subsequent
+buildtest will cache the results in **var/buildspec/buildspec.cache** so subsequent
 runs to ``buildtest buildspec find`` will be much faster since we read from cache.
 
 Viewing Buildspecs
