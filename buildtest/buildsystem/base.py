@@ -52,7 +52,7 @@ class BuilderBase:
         self.metadata = {}
         self.buildspec = buildspec
         self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec))
-        self.testdir = os.path.join(testdir, self.config_name)
+        self.testdir = os.path.join(testdir, recipe.get("executor"), self.config_name)
 
         self.logger = logging.getLogger(__name__)
         self.logger.debug(f"Processing Buildspec: {self.buildspec}")

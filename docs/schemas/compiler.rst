@@ -99,6 +99,152 @@ requires input arguments. Shown below is a generated test::
     gcc -Wall -o argc.c.exe /global/u1/s/siddiq90/tutorials/examples/serial/src/argc.c
     ./argc.c.exe 1 2 3
 
+OpenMP Example
+----------------
+
+Here is an example OpenMP reduction test that runs on 1 node using 32 tasks on a
+haswell node::
+
+    version: "1.0"
+    buildspecs:
+      reduction:
+        type: compiler
+        executor: slurm.debug
+        sbatch: ["-N 1", "--ntasks-per-node 32", "-C haswell", "-t 1"]
+        module:
+          - "module load PrgEnv-gnu"
+        env:
+          OMP_NUM_THREADS: 32
+          OMP_PROC_BIND: spread
+          OMP_PLACES: cores
+        build:
+          source: src/reduction.c
+          name: gnu
+          cflags: -fopenmp
+        tags: [openmp]
+
+In this example, we use the SlurmExecutor ``slurm.debug``, the source file is
+``src/reduction.c`` that is relative to buildspec file. The environment variables
+are defined using ``env`` section. To enable openmp flag, for GNU compilers we
+pass ``-fopenmp`` to C compiler. Finally we classify this test using ``tags``
+key which is set to `openmp`.
+
+The generated test looks as follows::
+
+    #!/bin/bash
+    #SBATCH -N 1
+    #SBATCH --ntasks-per-node 32
+    #SBATCH -C haswell
+    #SBATCH -t 1
+    export OMP_NUM_THREADS=32
+    export OMP_PROC_BIND=spread
+    export OMP_PLACES=cores
+    module load PrgEnv-gnu
+    gcc -fopenmp -o reduction.c.exe /global/u1/s/siddiq90/buildtest-cori/apps/openmp/src/reduction.c
+    ./reduction.c.exe
+
+MPI Example
+------------
+
+In this example we run a MPI Laplace code using 4 process on a KNL node using
+the module ``PrgEnv-intel``. The executable is launched using ``srun``, that
+is set via ``launcher`` field. The source code ``src/laplace_mpi.c`` must be run
+with 4 process, for this test we allocate 1 node with 4 tasks.
+
+The ``name`` field is a required field, buildtest uses this field to select the
+appropriate subclass, when you set ``name: intel`` buildtest will select the IntelCompiler
+subclass which sets the ``cc``, ``fc`` and ``cxx`` variables automatically. If you
+want to specify your compiler variables you can use ``cc``, ``fc`` and ``cxx`` fields
+and buildtest will honor your options.
+
+::
+
+    version: "1.0"
+    buildspecs:
+      laplace_mpi:
+        type: compiler
+        description: Laplace MPI code in C
+        sbatch: ["-C knl", "-N 1", "-n 4"]
+        executor: slurm.debug
+        tags: ["mpi"]
+        module:
+          - "module load PrgEnv-intel"
+        build:
+          name: intel
+          source: src/laplace_mpi.c
+          cflags: -O3
+        run:
+          launcher: srun -n 4
+
+The generated test is as follows::
+
+    #!/bin/bash
+    #SBATCH -C knl
+    #SBATCH -N 1
+    #SBATCH -n 4
+    module load PrgEnv-intel
+    icc -O3 -o laplace_mpi.c.exe /global/u1/s/siddiq90/buildtest-cori/apps/mpi/src/laplace_mpi.c
+    srun -n 4 ./laplace_mpi.c.exe
+
+Shown below is a sample build for this buildspec::
+
+    $ buildtest build -b mpi/laplace_mpi.yml
+    Paths:
+    __________
+    Prefix: /global/u1/s/siddiq90/cache
+    Buildspec Search Path: ['/global/u1/s/siddiq90/buildtest/tutorials']
+    Test Directory: /global/u1/s/siddiq90/cache/tests
+
+    +-------------------------------+
+    | Stage: Discovered Buildspecs  |
+    +-------------------------------+
+
+    /global/u1/s/siddiq90/buildtest-cori/apps/mpi/laplace_mpi.yml
+
+    +----------------------+
+    | Stage: Building Test |
+    +----------------------+
+
+     Name        | Schema File               | Test Path                                                    | Buildspec
+    -------------+---------------------------+--------------------------------------------------------------+---------------------------------------------------------------
+     laplace_mpi | compiler-v1.0.schema.json | /global/u1/s/siddiq90/cache/tests/laplace_mpi/laplace_mpi.sh | /global/u1/s/siddiq90/buildtest-cori/apps/mpi/laplace_mpi.yml
+
+    +----------------------+
+    | Stage: Running Test  |
+    +----------------------+
+
+    [laplace_mpi] job dispatched to scheduler
+    [laplace_mpi] acquiring job id in 2 seconds
+     name        | executor    | status   |   returncode | testpath
+    -------------+-------------+----------+--------------+--------------------------------------------------------------
+     laplace_mpi | slurm.debug | N/A      |            0 | /global/u1/s/siddiq90/cache/tests/laplace_mpi/laplace_mpi.sh
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    [laplace_mpi]: JobID 33306420 in COMPLETED state
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+
+    +---------------------------------------------+
+    | Stage: Final Results after Polling all Jobs |
+    +---------------------------------------------+
+
+     name        | executor    | status   |   returncode | testpath
+    -------------+-------------+----------+--------------+--------------------------------------------------------------
+     laplace_mpi | slurm.debug | PASS     |            0 | /global/u1/s/siddiq90/cache/tests/laplace_mpi/laplace_mpi.sh
+
+    +----------------------+
+    | Stage: Test Summary  |
+    +----------------------+
+
+    Executed 1 tests
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%
+
+
 
 OpenACC Examples
 -----------------

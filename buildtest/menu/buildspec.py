@@ -31,7 +31,7 @@ def func_buildspec_find(args):
     config_opts = load_settings()
 
     buildspec_paths = (
-        config_opts.get("config", {}).get("paths", {}).get("buildspec_roots")
+        config_opts.get("config", {}).get("paths", {}).get("buildspec_root")
     )
     paths = [BUILDSPEC_DEFAULT_PATH]
 
