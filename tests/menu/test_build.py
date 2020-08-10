@@ -54,6 +54,7 @@ def test_func_build_subcmd():
         settings = None
         testdir = None
         exclude = None
+        tags = None
 
     buildtest_configuration = load_settings()
 
@@ -65,6 +66,7 @@ def test_func_build_subcmd():
         settings = BUILDTEST_SETTINGS_FILE
         testdir = "/tmp"
         exclude = [buildspec_paths]
+        tags = None
 
     # this results in no buildspecs built
     with pytest.raises(SystemExit):

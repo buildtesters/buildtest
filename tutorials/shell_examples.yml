@@ -5,6 +5,7 @@ buildspecs:
     type: script
     description: "/bin/sh shell example"
     shell: /bin/sh
+    tags: [tutorials]
     run: "bzip2 --help"
 
   _bin_bash_shell:
@@ -12,6 +13,7 @@ buildspecs:
     type: script
     description: "/bin/bash shell example"
     shell: /bin/bash
+    tags: [tutorials]
     run: "bzip2 -h"
 
   bash_shell:
@@ -19,6 +21,7 @@ buildspecs:
     type: script
     description: "bash shell example"
     shell: bash
+    tags: [tutorials]
     run: "echo $SHELL"
 
   sh_shell:
@@ -26,6 +29,7 @@ buildspecs:
     type: script
     description: "sh shell example"
     shell: sh
+    tags: [tutorials]
     run: "echo $SHELL"
 
   shell_options:
@@ -33,6 +37,7 @@ buildspecs:
     type: script
     description: "shell options"
     shell: "sh -x"
+    tags: [tutorials]
     run: |
       echo $SHELL
       hostname

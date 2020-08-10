@@ -4,4 +4,5 @@ buildspecs:
     executor: badexecutor
     type: script
     description: valid test but invalid executor name so test won't run
+    tags: [tutorials]
     run: hostname

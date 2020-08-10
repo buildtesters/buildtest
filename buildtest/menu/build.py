@@ -4,13 +4,18 @@ for building test scripts from a Buildspec
 """
 
 import logging
+import json
 import os
 import re
 import sys
 import time
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
-from buildtest.defaults import BUILDSPEC_DEFAULT_PATH, BUILDTEST_ROOT
+from buildtest.defaults import (
+    BUILDSPEC_DEFAULT_PATH,
+    BUILDTEST_ROOT,
+    BUILDSPEC_CACHE_FILE,
+)
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import load_settings, check_settings
@@ -19,6 +24,39 @@ from buildtest.menu.report import update_report
 from buildtest.utils.file import walk_tree, resolve_path
 
 logger = logging.getLogger(__name__)
+
+
+def discover_buildspecs_by_tags(input_tag):
+    """This method discovers buildspecs by tags, using ``--tags`` option
+       from ``buildtest build`` command. This method will read BUILDSPEC_CACHE_FILE
+       and search for ``tags`` key in buildspec recipe and match with input
+       tag. Since ``tags`` field is a list, we check if input tag is in ``list``
+       and if so we add the entire buildspec into a list. The return is a list
+       of buildspec files to process.
+
+       :param input_tag: Input tags from command line argument ``buildtest build --tags <tags>``
+       :type input_tag: string
+       :return: a list of buildspec files that match tag name
+       :rtype: list
+    """
+
+    with open(BUILDSPEC_CACHE_FILE, "r") as fd:
+        cache = json.loads(fd.read())
+
+    buildspecs = []
+    # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
+    # if it matches input_tag we add buildspec to list
+    for path in cache.keys():
+        for buildspecfile in cache[path].keys():
+            for test in cache[path][buildspecfile].keys():
+
+                # if tags is not declared we set to empty list
+                tag = cache[path][buildspecfile][test].get("tags") or []
+
+                if input_tag in tag:
+                    buildspecs.append(buildspecfile)
+
+    return buildspecs
 
 
 def discover_buildspecs(buildspec):
@@ -140,7 +178,7 @@ def func_build_subcmd(args, config_opts):
     # 1. Command line option --testdir
     # 2. Configuration option specified by 'testdir'
     # 3. Configuration option specified by 'prefix'
-    # 4. Defaults to current working directory in .buildtest subdirectory
+    # 4. Defaults to $BUILDTEST_ROOT/var/tests
     test_directory = (
         args.testdir
         or config_paths_testdir
@@ -163,10 +201,14 @@ def func_build_subcmd(args, config_opts):
     # followed by exclusion check
     buildspecs = []
 
-    # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
-    # times we need to invoke discover_buildspecs once per argument.
-    for option in args.buildspec:
-        buildspecs += discover_buildspecs(option)
+    if args.tags:
+        buildspecs += discover_buildspecs_by_tags(args.tags)
+
+    if args.buildspec:
+        # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
+        # times we need to invoke discover_buildspecs once per argument.
+        for option in args.buildspec:
+            buildspecs += discover_buildspecs(option)
 
     # remove any duplicate Buildspec from list by converting list to set and then back to list
     buildspecs = list(set(buildspecs))
