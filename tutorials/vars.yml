@@ -3,6 +3,7 @@ buildspecs:
   variables:
     type: script
     executor: local.bash
+    tags: [tutorials]
     vars:
       X: 1
       Y: 2

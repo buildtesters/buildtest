@@ -5,6 +5,7 @@ buildspecs:
     type: script
     description: Check if SELinux is Disabled
     run: cat /etc/selinux/config  | egrep -e "^SELINUX=disabled$"
+    tags: [tutorials]
     status:
       regex:
         stream: stdout

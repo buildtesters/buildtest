@@ -4,11 +4,13 @@ buildspecs:
     type: script
     executor: local.bash
     skip: Yes
+    tags: [tutorials]
     run: hostname
 
   unskipped:
     type: script
     executor: local.bash
     skip: No
+    tags: [tutorials]
     run: hostname
 

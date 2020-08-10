@@ -31,7 +31,7 @@ def func_buildspec_find(args):
     config_opts = load_settings()
 
     buildspec_paths = (
-        config_opts.get("config", {}).get("paths", {}).get("buildspec_root")
+        config_opts.get("config", {}).get("paths", {}).get("buildspec_roots")
     )
     paths = [BUILDSPEC_DEFAULT_PATH]
 
@@ -127,6 +127,7 @@ def func_buildspec_find(args):
                 for file, msg in invalid_buildspecs.items():
                     fd.write(f"buildspec:{file} \n\n")
                     fd.write(f"{msg} \n")
+
             print(f"Writing invalid buildspecs to file: {buildspec_error_file} ")
             print("\n\n")
 
@@ -136,8 +137,7 @@ def func_buildspec_find(args):
     paths = cache.keys()
 
     table = {"Name": [], "Type": [], "Executor": [], "Description": []}
-    # print("{:<25} {:<25} {:<25}".format("Name", "Schema Type", "Executor"))
-    # print("{:_<80}".format(""))
+
     for path in paths:
         for buildspecfile in cache[path].keys():
             for test in cache[path][buildspecfile].keys():
@@ -145,7 +145,7 @@ def func_buildspec_find(args):
                 type = cache[path][buildspecfile][test]["type"]
                 executor = cache[path][buildspecfile][test]["executor"]
                 description = cache[path][buildspecfile][test].get("description")
-                # print("{:<25} {:<25} {:<25}".format(test, type, executor))
+
                 table["Name"].append(test)
                 table["Type"].append(type)
                 table["Executor"].append(executor)

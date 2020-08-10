@@ -5,7 +5,7 @@ buildspecs:
     type: script
     shell: python
     description: "Calculate circle of area given a radius"
-    tags: ["python"]
+    tags: [tutorials]
     run: |
       import math
       radius = 2

@@ -142,6 +142,12 @@ class BuildTestParser:
             help="Exclude one or more configs from processing. Configs can be files or directories.",
         )
 
+        parser_build.add_argument(
+            "--tags",
+            help="Specify buildspecs by tags",
+            # action="append",
+        )
+
     def buildspec_menu(self):
         """This method implements ``buildtest buildspec`` command
 

@@ -6,6 +6,7 @@ buildspecs:
     env:
       FIRST_NAME: avocado
       LAST_NAME: dinosaur
+    tags: [tutorials]
     run: |
       hostname
       whoami
