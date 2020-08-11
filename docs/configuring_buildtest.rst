@@ -222,8 +222,10 @@ suitable for your site.
       paths:
         prefix: /tmp
 
-Adding buildspec roots
------------------------
+.. _buildspec_roots:
+
+buildspec roots
+-----------------
 
 buildtest can detect buildspec using ``buildspec_roots`` keyword.  For example we
 clone the repo https://github.com/buildtesters/buildtest-cori at **/Users/siddiq90/Documents/buildtest-cori**

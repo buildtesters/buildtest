@@ -79,21 +79,21 @@ Building a Test
 To build a test, we use the ``--buildspec`` or short option ``-b`` to specify the
 path to Buildspec file.
 
-The buildspec search resolution is as follows:
+The buildspec search resolution is described as follows:
 
-    1. If file doesn't exist, check for every search prefix check if relative path exists (``if os.path.exists(os.path.join(path, buildspec))``), break after first match
+- If file doesn't exist, check for file in :ref:`buildspec_roots` and break after first match
 
-    2.
-        a. If buildspec path is a directory, traverse directory recursively to find all ``.yml`` extensions
-        b. If buildspec path is a file, check if file extension is not ``.yml``, if so (i.e ``buildtest build -b file.txt``) exit immediately
-        c. If buildspec is neither directory (2a) or file (2b) then we raise error, must be invalid file
+- If buildspec path is a directory, traverse directory recursively to find all ``.yml`` extensions
 
-    3. If no files found during directory traversal (2a) (i.e no .yml files in directory) then raise error
+- If buildspec path is a file, check if file extension is not ``.yml``,  exit immediately
 
-    4. Return resolved paths for every buildspec as a list back to buildtest. The resolved path runs ``os.path.expandvars``, ``os.path.expanduser`` and ``os.path.realpath``
+If buildspec is neither directory (2a) or file (2b) then we raise error, must be invalid file
 
-Let's see some examples, first we specify a full path to buildspec file which will
-perform step ``2b`` and ``4``
+- If no files found during directory traversal (2a) (i.e no .yml files in directory) then raise error
+
+- Return resolved paths for every buildspec as a list back to buildtest.
+
+Let's see some examples, first we specify a full path to buildspec file
 
 .. program-output:: cat docgen/getting_started/buildspec-abspath.txt
 
@@ -108,11 +108,10 @@ follows::
     Test Directory: /private/tmp/tests
     tests/examples/buildspecs/os.yaml does not end in file extension .yml
 
-In this example, the search resolution will run step ``2b`` and raised an error.
 
-In next example, our current directory is at $HOME and we are able the test ``examples/systemd.yml``
-even if it's not in relative path but it is a path found in the buildspec search path.
-The search resolution will perform step ``1``, ``2b``, ``4``.
+In next example, our current directory is at $HOME and we are able to build
+``examples/systemd.yml`` even if it's not in relative path but it is a path found
+in the buildspec search path.
 
 .. code-block:: console
 
@@ -125,8 +124,8 @@ The search resolution will perform step ``1``, ``2b``, ``4``.
 
 
 buildtest can perform a directory build for instance let's build
-for directory ``tests/examples/buildspecs`` where search resolution will perform
-steps ``2a`` and ``4``. buildtest will recursively search for all ``.yml`` files
+for directory ``tests/examples/buildspecs`` where buildtest will recursively
+search for all ``.yml`` files
 
 .. program-output:: cat docgen/getting_started/buildspec-directory.txt
 
@@ -137,14 +136,10 @@ file and directory with ``-b`` option.
 Building Multiple Buildspecs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Buildtest supports building multiple Buildspecs, just specify the ``-b`` option
+Buildtest supports building multiple buildspecs, just specify the ``-b`` option
 for every Buildspec you want to build. In this example, we specify a file and
 directory path. The search resolution is performed for every argument (``-b``)
 independently, and accumulated into list.
-
-In the file example ``-b examples/selinux.yml`` the resolution will perform steps
-``1``, ``2b``, and ``4`` while directory instance ``-b tests/examples/buildspec``
-will perform steps ``2a`` and ``4``.
 
 .. program-output:: cat docgen/getting_started/multi-buildspecs.txt
 
@@ -152,8 +147,10 @@ will perform steps ``2a`` and ``4``.
 Excluding Buildspecs
 ~~~~~~~~~~~~~~~~~~~~~
 
-Buildtest provides ``--exclude`` or short option ``-x`` to exclude Buildspecs which
-can be useful when you want to build in a directory and exclude a few files or an entire directory.
+Buildtest provides ``--exclude`` option or short option ``-x`` to exclude
+buildspecs which can be useful when you want to build all buildspecs in a directory
+but exclude a few buildspecs or exclude a sub-directory.
+
 For example we can build all buildspecs in ``examples`` but exclude file ``examples/systemd.yml``
 by running::
 
@@ -169,6 +166,102 @@ For example, we can undo discovery by passing same option to ``-b`` and ``-x``  
 
 Buildtest will stop immediately if there are no Buildspecs to process, this is
 true if you were to specify files instead of directory.
+
+Building By Tags
+~~~~~~~~~~~~~~~~~
+
+buildtest can perform builds by tags by using ``--tags`` option. To build all tutorials
+tests you can perform ``buildtest build --tags tutorials``. In the buildspec
+there is a field ``tags: [tutorials]`` to classify tests. buildtest will read the
+cache file ``var/buildspec-cache.json`` and see which buildspecs have a matching
+tag. You should run ``buildtest buildspec find`` atleast once, in order to detect
+cache file.
+
+
+::
+
+    $ buildtest build --tags tutorials
+    Paths:
+    __________
+    Prefix: None
+    Buildspec Search Path: ['/Users/siddiq90/Documents/buildtest/tutorials']
+    Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
+
+    +-------------------------------+
+    | Stage: Discovered Buildspecs  |
+    +-------------------------------+
+
+    /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+    /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+    /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+    /Users/siddiq90/Documents/buildtest/tutorials/environment.yml
+    /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+    /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+    /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
+    /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+    /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+
+    +----------------------+
+    | Stage: Building Test |
+    +----------------------+
+
+    [skip] test is skipped.
+     Name                  | Schema File               | Test Path                                                                                     | Buildspec
+    -----------------------+---------------------------+-----------------------------------------------------------------------------------------------+--------------------------------------------------------------------------
+     exit1_fail            | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+     exit1_pass            | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+     returncode_mismatch   | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch.sh | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+     circle_area           | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area.py        | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+     executable_arguments  | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments.sh | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+     environment_variables | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/environment_variables.sh | /Users/siddiq90/Documents/buildtest/tutorials/environment.yml
+     wrongexecutor         | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/badexecutor/invalid_executor/wrongexecutor.sh   | /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+     _bin_sh_shell         | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell.sh        | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+     _bin_bash_shell       | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell.sh    | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+     bash_shell            | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell.sh         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+     sh_shell              | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell.sh             | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+     shell_options         | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options.sh        | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+     selinux_disable       | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable.sh           | /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
+     unskipped             | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped.sh              | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+     variables             | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables.sh                    | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+
+    +----------------------+
+    | Stage: Running Test  |
+    +----------------------+
+
+    [wrongexecutor]: Failed to Run Test
+     name                  | executor     | status   |   returncode | testpath
+    -----------------------+--------------+----------+--------------+-----------------------------------------------------------------------------------------------
+     exit1_fail            | local.sh     | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail.sh
+     exit1_pass            | local.sh     | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass.sh
+     returncode_mismatch   | local.sh     | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch.sh
+     circle_area           | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area.py
+     executable_arguments  | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments.sh
+     environment_variables | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/environment_variables.sh
+     _bin_sh_shell         | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell.sh
+     _bin_bash_shell       | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell.sh
+     bash_shell            | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell.sh
+     sh_shell              | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell.sh
+     shell_options         | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options.sh
+     selinux_disable       | local.bash   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable.sh
+     unskipped             | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped.sh
+     variables             | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables.sh
+
+
+
+    Error Messages from Stage: Run
+    ________________________________________________________________________________
+    [wrongexecutor]: executor badexecutor is not defined in /Users/siddiq90/.buildtest/config.yml
+
+
+
+    +----------------------+
+    | Stage: Test Summary  |
+    +----------------------+
+
+    Executed 14 tests
+    Passed Tests: 11/14 Percentage: 78.571%
+    Failed Tests: 3/14 Percentage: 21.429%
+
 
 Invalid Buildspecs
 ~~~~~~~~~~~~~~~~~~~~
@@ -193,18 +286,38 @@ The ``buildtest report`` command will show result of all tests in a tabular
 form. Shown below is an example::
 
     $ buildtest report
-    name                 state                returncode           starttime            endtime              runtime              buildid              buildspec
-    systemd_default_target FAIL                 1                    2020/06/15 23:35:13  2020/06/15 23:35:13  000.01 systemd_default_target_2020-06-15-23-35 /private/tmp/github.com/buildtesters/tutorials/examples/systemd.yml
-    ulimit_filelock      FAIL                 1                    2020/06/15 23:35:13  2020/06/15 23:35:13  000.01 ulimit_filelock_2020-06-15-23-35 /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
-    ulimit_cputime       PASS                 0                    2020/06/15 23:35:13  2020/06/15 23:35:13  000.01 ulimit_cputime_2020-06-15-23-35 /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
-    ulimit_stacksize     FAIL                 1                    2020/06/15 23:35:13  2020/06/15 23:35:13  000.01 ulimit_stacksize_2020-06-15-23-35 /private/tmp/github.com/buildtesters/tutorials/examples/ulimits.yml
-    selinux_disable      FAIL                 1                    2020/06/15 23:35:13  2020/06/15 23:35:13  000.01 selinux_disable_2020-06-15-23-35 /private/tmp/github.com/buildtesters/tutorials/examples/selinux.yml
-    hello_f              FAIL                 127                  2020/06/15 23:35:13  2020/06/15 23:35:13  000.01 hello_f_2020-06-15-23-35 /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml
-    hello_c              PASS                 0                    2020/06/15 23:35:13  2020/06/15 23:35:14  000.12 hello_c_2020-06-15-23-35 /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml
-    hello_cplusplus      PASS                 0                    2020/06/15 23:35:14  2020/06/15 23:35:14  000.34 hello_cplusplus_2020-06-15-23-35 /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml
-    passing_args         PASS                 0                    2020/06/15 23:35:14  2020/06/15 23:35:14  000.11 passing_args_2020-06-15-23-35 /private/tmp/github.com/buildtesters/tutorials/examples/serial/compiler_schema_hello.yml
-    vecadd_gnu           PASS                 0                    2020/06/15 23:35:14  2020/06/15 23:35:14  000.12 vecadd_gnu_2020-06-15-23-35 /private/tmp/github.com/buildtesters/tutorials/examples/openacc/vecadd.yml
-    root_disk_usage      PASS                 0                    2020/06/15 23:35:14  2020/06/15 23:35:14  000.01 root_disk_usage_2020-06-15-23-35 /private/tmp/github.com/buildtesters/tutorials/examples/disk_usage.yml
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | name                  | state   |   returncode | starttime           | endtime   |    runtime | build_id                               | buildspec                                                                |
+    +=======================+=========+==============+=====================+===========+============+========================================+==========================================================================+
+    | _bin_sh_shell         | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | _bin_sh_shell_2020-08-11-10-17         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml         |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | _bin_bash_shell       | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | _bin_bash_shell_2020-08-11-10-17       | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml         |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | bash_shell            | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | bash_shell_2020-08-11-10-17            | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml         |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | sh_shell              | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | sh_shell_2020-08-11-10-17              | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml         |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | shell_options         | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | shell_options_2020-08-11-10-17         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml         |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | exit1_fail            | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | exit1_fail_2020-08-11-10-17            | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml        |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | exit1_pass            | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | exit1_pass_2020-08-11-10-17            | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml        |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | returncode_mismatch   | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | returncode_mismatch_2020-08-11-10-17   | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml        |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | selinux_disable       | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | selinux_disable_2020-08-11-10-17       | /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml                |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | variables             | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | variables_2020-08-11-10-17             | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml                   |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | circle_area           | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0538504  | circle_area_2020-08-11-10-17           | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml           |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | executable_arguments  | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | executable_arguments_2020-08-11-10-17  | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | unskipped             | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | unskipped_2020-08-11-10-17             | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml             |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+    | environment_variables | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | environment_variables_2020-08-11-10-17 | /Users/siddiq90/Documents/buildtest/tutorials/environment.yml            |
+    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
+
 
 buildtest will store result metadata of each test in a file ``var/report.json`` which
 is found in root of buildtest. This file is updated upon every ``buildtest build`` command.
