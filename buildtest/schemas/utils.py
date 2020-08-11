@@ -66,5 +66,5 @@ def get_schema_fullpath(schema_file, name=None):
     """
     if not name:
         name = schema_file.split("-v", 1)[0]
-    schema_file = os.path.join(here, name, schema_file)
+    schema_file = os.path.join(here, schema_file)
     return schema_file
