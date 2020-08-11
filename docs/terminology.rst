@@ -15,7 +15,7 @@ Terminology
     **Test Script**,"is a generated shell script by buildtest as a result of processing one of the Buildspec."
     **Settings**,"is a buildtest configuration file in YAML that configures buildtest at your site. The Settings file must be compatible with the Settings Schema."
     **Settings Schema**,"is a special schema file that defines structure of buildtest settings."
-    **Executor**,"is responsible for running a **TestScript**. An executor can be of several types such as ``local``, ``slurm`` which defines if test is run locally of via scheduler. The executors are defined in the ``Settings`` file."
+    **Executor**,"is responsible for running a **TestScript**. An executor can be of several types such as ``local``, ``slurm`` which defines if test is run locally or via a scheduler. The executors are defined in the ``Settings`` file."
 
 
 
