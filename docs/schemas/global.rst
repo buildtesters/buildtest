@@ -54,9 +54,9 @@ method. The sub-schema is the following section which is validated with the ``ty
       run: echo "hello world!"
 
 Every sub-schema requires **type** field in this case, ``type: script`` directs
-buildtest to validate with the `script schema <https://buildtesters.github.io/schemas/script/>`_.
-All type schemas have a version, currently buildtest supports **1.0** version for all
-type schemas. The ``version: "1.0"`` is used to select the version of the type schema,
+buildtest to validate with the script schema. All type schemas have a version,
+currently buildtest supports **1.0** version for all type schemas. The
+``version: "1.0"`` is used to select the version of the type schema,
 in this example we validate with the schema `script-v1.0.schema.json <https://buildtesters.github.io/schemas/schemas/script-v1.0.schema.json>`_.
 
 Test Names
