@@ -10,7 +10,7 @@ The buildtest must use ``type: script`` in order to use the script schema for va
 Schema Files
 -------------
 
-- `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/script/script-v1.0.schema.json>`_
+- `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/script-v1.0.schema.json>`_
 - `Development Schema <https://buildtesters.github.io/schemas/schemas/script-v1.0.schema.json>`_
 
 Examples
