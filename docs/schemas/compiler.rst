@@ -2,7 +2,7 @@ Compiler Schema
 =================
 
 The compiler schema is used for compilation of programs, currently we support
-single source file compilation. For more details see `Compiler Schema Documentation <https://buildtesters.github.io/schemas/schemadocs/compiler>`_.
+single source file compilation.
 
 
 Schema Files

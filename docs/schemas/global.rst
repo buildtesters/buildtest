@@ -6,7 +6,7 @@ Global Schema
 The global schema is validated with for all schema types and is the top-level
 schema when defining a Buildspec.
 
-For more details see `Global Schema Documentation <https://buildtesters.github.io/schemas/global/>`_.
+For more details see `Global Schema Documentation <https://buildtesters.github.io/schemas/schemadocs/global>`_.
 
 Schema Files
 -------------
