@@ -39,5 +39,5 @@ DEFAULT_SETTINGS_FILE = os.path.join(
     BUILDTEST_ROOT, "buildtest", "settings", "config.yml"
 )
 DEFAULT_SETTINGS_SCHEMA = os.path.join(
-    BUILDTEST_ROOT, "buildtest", "settings", "settings.schema.json"
+    BUILDTEST_ROOT, "buildtest", "schemas", "settings.schema.json"
 )
