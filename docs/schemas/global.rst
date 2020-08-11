@@ -6,13 +6,13 @@ Global Schema
 The global schema is validated with for all schema types and is the top-level
 schema when defining a Buildspec.
 
-For more details see `Global Schema Documentation <https://buildtesters.github.io/schemas/global/>`_.
+For more details see `Global Schema Documentation <https://buildtesters.github.io/schemas/schemadocs/global>`_.
 
 Schema Files
 -------------
 
 - `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/global.schema.json>`_
-- `Development Schema <https://buildtesters.github.io/schemas/global/global.schema.json>`_
+- `Development Schema <https://buildtesters.github.io/schemas/schemas/global.schema.json>`_
 
 Global Keys in buildspec
 --------------------------
@@ -54,10 +54,10 @@ method. The sub-schema is the following section which is validated with the ``ty
       run: echo "hello world!"
 
 Every sub-schema requires **type** field in this case, ``type: script`` directs
-buildtest to validate with the `script schema <https://buildtesters.github.io/schemas/script/>`_.
-All type schemas have a version, currently buildtest supports **1.0** version for all
-type schemas. The ``version: "1.0"`` is used to select the version of the type schema,
-in this example we validate with the schema `script-v1.0.schema.json <https://buildtesters.github.io/schemas/script/script-v1.0.schema.json>`_.
+buildtest to validate with the script schema. All type schemas have a version,
+currently buildtest supports **1.0** version for all type schemas. The
+``version: "1.0"`` is used to select the version of the type schema,
+in this example we validate with the schema `script-v1.0.schema.json <https://buildtesters.github.io/schemas/schemas/script-v1.0.schema.json>`_.
 
 Test Names
 -----------
@@ -100,9 +100,9 @@ using both script and compiler schema::
           printf "${FIRST_NAME} ${LAST_NAME}\n"
 
 In this example we have two tests **hello_f** and **environment_variables**. The
-test ``hello_f`` is using the `compiler-v1.0.schema.json <https://buildtesters.github.io/schemas/compiler/compiler-v1.0.schema.json>`_
+test ``hello_f`` is using the `compiler-v1.0.schema.json <https://buildtesters.github.io/schemas/schemas/compiler-v1.0.schema.json>`_
 for validation because ``type: compiler`` is set in sub-schema while ``environment_variables`` test
-is using `script-v1.0.schema.json <https://buildtesters.github.io/schemas/script/script-v1.0.schema.json>`_
+is using `script-v1.0.schema.json <https://buildtesters.github.io/schemas/schemas/script-v1.0.schema.json>`_
 for validation because ``type: script`` is set.
 
 

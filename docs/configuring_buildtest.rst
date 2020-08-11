@@ -4,10 +4,10 @@ Configuring buildtest
 ======================
 
 The buildtest configuration file is used for configuring behavior of buildtest.
-There is a json schema file `settings.schema.json <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/settings/settings.schema.json>`_
+There is a json schema file `settings.schema.json <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/settings.schema.json>`_
 that defines structure on how to write your configuration file.
 
-For more details on schema attributes see `Settings Schema Documentation <https://buildtesters.github.io/schemas/settings/>`_
+For more details on schema attributes see `Settings Schema Documentation <https://buildtesters.github.io/schemas/schemadocs/settings.html>`_
 
 
 Default Configuration

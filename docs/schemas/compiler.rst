@@ -1,15 +1,15 @@
-Compiler
-=========
+Compiler Schema
+=================
 
 The compiler schema is used for compilation of programs, currently we support
-single source file compilation. For more details see `Compiler Schema Documentation <https://buildtesters.github.io/schemas/compiler/>`_.
+single source file compilation.
 
 
 Schema Files
 -------------
 
-- `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/compiler/compiler-v1.0.schema.json>`_
-- `Development Schema <https://buildtesters.github.io/schemas/compiler/compiler-v1.0.schema.json>`_
+- `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/compiler-v1.0.schema.json>`_
+- `Development Schema <https://buildtesters.github.io/schemas/schemas/compiler-v1.0.schema.json>`_
 
 
 Compilation Examples
@@ -364,6 +364,70 @@ required field however buildtest will ignore since we specify
         run:
           launcher: srun
 
+
+Pre/Post sections for build and run section
+--------------------------------------------
+
+The compiler schema comes with ``pre_build``, ``post_build``, ``pre_run`` and
+``post_run`` fields where you can insert commands before and after ``build`` or
+``run`` section. The **build** section is where we compile code, and **run**
+section is where compiled binary is executed.
+
+Shown below is an example to illustrate this behavior::
+
+    version: "1.0"
+    buildspecs:
+      executable_arguments:
+        type: compiler
+        description: example using pre_build, post_build, pre_run, post_run example
+        executor: local.bash
+        tags: [tutorials]
+        pre_build: |
+          echo "This is a pre-build section"
+          gcc --version
+        build:
+          source: "src/hello.c"
+          name: gnu
+          cflags: -Wall
+        post_build: |
+          echo "This is post-build section"
+        pre_run: |
+          echo "This is pre-run section"
+          export FOO=BAR
+        post_run: |
+          echo "This is post-run section"
+
+
+The format of the test structure is the following::
+
+    #!{shebang path} -- defaults to #!/bin/bash depends on executor name (local.bash, local.sh)
+    {job directives} -- sbatch or bsub field
+    {environment variables} -- env field
+    {variable declaration} -- vars field
+    {module commands} -- modules field
+
+    {pre build commands} -- pre_build field
+    {compile program} -- build field
+    {post build commands} -- post_build field
+
+    {pre run commands} -- pre_run field
+    {run executable} -- run field
+    {post run commands} -- post_run field
+
+The generated test for this buildspec is the following::
+
+    #!/bin/bash
+    echo "This is a pre-build section"
+    gcc --version
+
+    gcc -Wall -o hello.c.exe /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
+    echo "This is post-build section"
+
+    echo "This is pre-run section"
+    export FOO=BAR
+
+    ./hello.c.exe
+    echo "This is post-run section"
 
 Compiler Schema Examples
 -------------------------

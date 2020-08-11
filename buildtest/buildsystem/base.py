@@ -464,6 +464,10 @@ class CompilerBuilder(BuilderBase):
         self.cxxflags = self.compiler_recipe.get("cxxflags")
         self.ldflags = self.compiler_recipe.get("ldflags")
         self.cppflags = self.compiler_recipe.get("cppflags")
+        self.pre_build = self.recipe.get("pre_build")
+        self.post_build = self.recipe.get("post_build")
+        self.pre_run = self.recipe.get("pre_run")
+        self.post_run = self.recipe.get("post_run")
 
         # set executable name and assign to self.executable
         self.executable = self.set_executable_name()
@@ -499,10 +503,21 @@ class CompilerBuilder(BuilderBase):
         if self.recipe.get("module"):
             lines += self.get_modules(self.recipe.get("module"))
 
+        if self.pre_build:
+            lines.append(self.pre_build)
         # add compile command
         lines.append(" ".join(self.compile_cmd))
+
+        if self.post_build:
+            lines.append(self.post_build)
+
+        if self.pre_run:
+            lines.append(self.pre_run)
         # add run command
         lines.append(" ".join(self.run_cmd))
+
+        if self.post_run:
+            lines.append(self.post_run)
 
         return lines
 
