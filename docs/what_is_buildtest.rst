@@ -110,3 +110,21 @@ Timeline
     **Aug 20th 2017**,"In `v0.1.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.1.5>`_ buildtest was converted from bash to Python and project was moved into github https://github.com/HPC-buildtest/buildtest"
     **Sep 11th 2018**,"In `v0.4.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.4.0>`_ buildtest was ported from Python 2 to 3"
     **Mar 3rd 2020**,"A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_ was formed based on buildtest module features"
+
+
+Related Projects and community efforts
+---------------------------------------
+
+- `ReFrame: <https://reframe-hpc.readthedocs.io/en/stable/>`_ ``Re`` gression ``FRAME`` work for Software Testing. ReFrame is developed by `CSCS <https://www.cscs.ch/>`_
+
+- `Pavilion2: <https://github.com/hpc/pavilion2>`_ is a framework for running and analyzing tests targeting HPC systems. Pavilion2 is developed by `LANL <https://www.lanl.gov/>`_
+
+- `Automatic Testing of Installed Software (ATIS) <https://github.com/besserox/ATIS>`_ - This project was presented by Xavier Besseron in `FOSDEM14 <https://archive.fosdem.org/2014/schedule/event/hpc_devroom_automatic_testing/>`_ however this project is no longer in development.
+
+- `hpcswtest <https://github.com/idaholab/hpcswtest>`_ - is a HPC Software Stack testing framework by `Idaho National Lab <http://www.inl.gov>`_ however this project is no longer in development.
+
+
+The `System Test Working Group <https://github.com/olcf/hpc-system-test-wg>`_ hosted
+a BOF `HPC System Testing: Procedures, Acceptance, Regression Testing, and Automation <https://sc19.supercomputing.org/presentation/?id=bof195&sess=sess324>`_
+in SuperComputing '19. This working group is aimed at discussing acceptance and regression
+testing procedure and lessons learned from other HPC centers.

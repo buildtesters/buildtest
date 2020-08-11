@@ -115,16 +115,6 @@ License
 
 buildtest is released under the `MIT license <https://github.com/buildtesters/buildtest/blob/devel/LICENSE>`_
 
-Related Projects
------------------
-
-- `ReFrame: <https://reframe-hpc.readthedocs.io/en/stable/>`_ ``Re`` gression ``FRAME`` work for Software Testing
-
-- `EasyBuild: <https://easybuild.readthedocs.io/en/latest/>`_ end-end software build framework with 1000+ software used for building tuned application for HPC clusters
-
-- `Spack: <https://spack.readthedocs.io/en/latest/>`_  is ``S`` upercomputing ``PACK`` age Manager that supports 1000+ software packages and extremely efficient in combinatorial builds
-
-- `Pavilion: <https://github.com/hpc/pavilion2>`_ is a framework for running and analyzing tests targeting HPC systems
 
 Indices and tables
 ==================
