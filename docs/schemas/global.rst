@@ -12,7 +12,7 @@ Schema Files
 -------------
 
 - `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/global.schema.json>`_
-- `Development Schema <https://buildtesters.github.io/schemas/global/global.schema.json>`_
+- `Development Schema <https://buildtesters.github.io/schemas/schemas/global.schema.json>`_
 
 Global Keys in buildspec
 --------------------------
