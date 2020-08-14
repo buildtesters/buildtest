@@ -534,15 +534,15 @@ class SlurmExecutor(BaseExecutor):
             err += f"[{self.builder.metadata['name']}] running command: {sbatch_cmd}"
             sys.exit(err)
 
-        interval = 2
+        interval = 5
 
         print(f"[{self.builder.metadata['name']}] job dispatched to scheduler")
         print(
             f"[{self.builder.metadata['name']}] acquiring job id in {interval} seconds"
         )
 
-        # wait 10 seconds before querying slurm for jobID. It can take some time for output
-        # of job to show up from time of submission and running squeue.
+        # wait 5 seconds before querying slurm for jobID. It can take few seconds
+        # for output of job to show up from time of submission and running squeue.
         time.sleep(interval)
 
         cmd = ["sacct"]
