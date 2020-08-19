@@ -16,13 +16,16 @@ the sub-schema.
 buildtest will invoke BuildspecParser against all discovered buildspecs and catch
 exceptions **ValidationError** and **SystemExit** and ignore those buildspecs. Next
 buildtest will build each test, this is implemented using base class `BuilderBase`.
-There is a subclass for **BuilderBase** responsible for generating test based on the
-`type` field.
+The subclass for **BuilderBase** such as **ScriptBuilder** and **CompilerBuilder**
+are responsible for generating the test script based on the ``type`` field.
 
-For example if ``type: script``, then buildtest will invoke **ScriptBuilder** class
-responsible for generating testscript. Likewise, if ``type: compiler`` in buildspec,
-then buildtest will invoke **CompilerBuilder** class. This allows buildtest to extend
-**BuilderBase** class and each subclass is responsible for one schema type.
+  -  ``type: script`` will invoke ScriptBuilder
+
+  - ``type: compiler`` will invoke CompilerBuilder
+
+
+This allows buildtest to extend **BuilderBase** class and each subclass is
+responsible for one schema type.
 
 .. image:: _static/BuildspecParser.jpg
 
