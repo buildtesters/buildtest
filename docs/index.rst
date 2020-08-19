@@ -99,6 +99,7 @@ For additional reference, you can read :ref:`summary_of_buildtest` and
    installing_buildtest.rst
    getting_started.rst
    configuring_buildtest.rst
+   builder.rst
    schemas.rst
    introspection.rst
    references.rst
