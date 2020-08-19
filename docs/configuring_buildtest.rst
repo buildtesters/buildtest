@@ -230,11 +230,13 @@ buildspec roots
 buildtest can detect buildspec using ``buildspec_roots`` keyword.  For example we
 clone the repo https://github.com/buildtesters/buildtest-cori at **/Users/siddiq90/Documents/buildtest-cori**
 
-config:
-  editor: vi
-  paths:
-    buildspec_roots:
-      - /Users/siddiq90/Documents/buildtest-cori
+::
+
+    config:
+      editor: vi
+      paths:
+        buildspec_roots:
+          - /Users/siddiq90/Documents/buildtest-cori
 
 
 If you run ``buildtest buildspec find --clear`` it will detect all buildspecs in

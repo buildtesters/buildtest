@@ -73,11 +73,10 @@ file that adheres to one of the buildtest schemas. For a complete list of build 
 
 .. program-output:: cat docgen/buildtest_build_--help.txt
 
-Building a Test
-----------------
+.. _discover_buildspecs:
 
-To build a test, we use the ``--buildspec`` or short option ``-b`` to specify the
-path to Buildspec file.
+Discover Buildspecs
+--------------------
 
 The buildspec search resolution is described as follows:
 
@@ -87,11 +86,21 @@ The buildspec search resolution is described as follows:
 
 - If buildspec path is a file, check if file extension is not ``.yml``,  exit immediately
 
-If buildspec is neither directory (2a) or file (2b) then we raise error, must be invalid file
+Shown below is a diagram on how buildtest discovers buildspecs. The user
+inputs a buildspec via ``--buildspec`` or tags (``--tags``) :ref:`build_by_tags`
+which will discover the buildspecs. User can :ref:`exclude_buildspecs`
+using ``--exclude`` option which is processed after discovering buildspecs. The
+excluded buildspecs are removed from list if found and final list of buildspecs
+is processed.
 
-- If no files found during directory traversal (2a) (i.e no .yml files in directory) then raise error
+.. image:: _static/DiscoverBuildspecs.jpg
 
-- Return resolved paths for every buildspec as a list back to buildtest.
+Building a Test
+----------------
+
+To build a test, we use the ``--buildspec`` or short option ``-b`` to specify the
+path to Buildspec file.
+
 
 Let's see some examples, first we specify a full path to buildspec file
 
@@ -143,6 +152,7 @@ independently, and accumulated into list.
 
 .. program-output:: cat docgen/getting_started/multi-buildspecs.txt
 
+.. _exclude_buildspecs:
 
 Excluding Buildspecs
 ~~~~~~~~~~~~~~~~~~~~~
@@ -166,6 +176,8 @@ For example, we can undo discovery by passing same option to ``-b`` and ``-x``  
 
 Buildtest will stop immediately if there are no Buildspecs to process, this is
 true if you were to specify files instead of directory.
+
+.. _build_by_tags:
 
 Building By Tags
 ~~~~~~~~~~~~~~~~~
@@ -262,6 +274,7 @@ cache file.
     Passed Tests: 11/14 Percentage: 78.571%
     Failed Tests: 3/14 Percentage: 21.429%
 
+.. _invalid_buildspecs:
 
 Invalid Buildspecs
 ~~~~~~~~~~~~~~~~~~~~
