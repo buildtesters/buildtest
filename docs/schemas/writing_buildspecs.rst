@@ -89,6 +89,18 @@ is a **FAIL**. Currently buildtest reports only two states: ``PASS``, ``FAIL``.
 In this example, buildtest will match the actual returncode with one defined
 in key `returncode` in the status section.
 
+.. _script_schema:
+
+Script Schema
+---------------
+
+The script schema is used for writing simple scripts (bash, sh, python) in Buildspec.
+To use this schema you must set ``type: script``. The `run` field is responsible
+for writing the content of test. The `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/script-v1.0.schema.json>`_
+and `Development Schema <https://buildtesters.github.io/schemas/schemas/script-v1.0.schema.json>`_
+are kept in sync where any schema development is done in **Development Schema** followed
+by merge to **Production Schema**.
+
 Return Code Matching
 ---------------------
 
@@ -128,44 +140,38 @@ executor which is using ``sh`` to run the test. We expect **exit1_fail** and
 To demonstrate we will build this test and pay close attention to the Status field
 in output::
 
-
     $ buildtest build -b pass_returncode.yml
     Paths:
     __________
-    Prefix: /private/tmp
-    Buildspec Search Path: ['/private/tmp/github.com/buildtesters/buildtest-cori', '/Users/siddiq90/.buildtest/site']
-    Test Directory: /private/tmp/tests
-
-    Stage: Discovered Buildspecs
-
+    Prefix: None
+    Buildspec Search Path: ['/Users/siddiq90/Documents/buildtest/tutorials']
+    Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
 
     +-------------------------------+
     | Stage: Discovered Buildspecs  |
     +-------------------------------+
 
-    /Users/siddiq90/Documents/tutorials/examples/pass_returncode.yml
-
-    Excluded Buildspecs:  []
+    /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 
     +----------------------+
     | Stage: Building Test |
     +----------------------+
 
-    Name                      Schema Validation File    TestPath                                 Buildspec
-    ________________________________________________________________________________________________________________________________________________________________
-    exit1_fail                script-v1.0.schema.json   /private/tmp/tests/pass_returncode/exit1_fail.sh /Users/siddiq90/Documents/tutorials/examples/pass_returncode.yml
-    exit1_pass                script-v1.0.schema.json   /private/tmp/tests/pass_returncode/exit1_pass.sh /Users/siddiq90/Documents/tutorials/examples/pass_returncode.yml
-    returncode_mismatch       script-v1.0.schema.json   /private/tmp/tests/pass_returncode/returncode_mismatch.sh /Users/siddiq90/Documents/tutorials/examples/pass_returncode.yml
+     Name                | Schema File             | Test Path                                                                                     | Buildspec
+    ---------------------+-------------------------+-----------------------------------------------------------------------------------------------+-------------------------------------------------------------------
+     exit1_fail          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+     exit1_pass          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+     returncode_mismatch | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch.sh | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 
     +----------------------+
     | Stage: Running Test  |
     +----------------------+
 
-    Name                 Executor             Status               Return Code          Buildspec Path
-    ________________________________________________________________________________________________________________________
-    exit1_fail           local.sh             FAIL                 1                    /Users/siddiq90/Documents/tutorials/examples/pass_returncode.yml
-    exit1_pass           local.sh             PASS                 1                    /Users/siddiq90/Documents/tutorials/examples/pass_returncode.yml
-    returncode_mismatch  local.sh             FAIL                 2                    /Users/siddiq90/Documents/tutorials/examples/pass_returncode.yml
+     name                | executor   | status   |   returncode | testpath
+    ---------------------+------------+----------+--------------+-----------------------------------------------------------------------------------------------
+     exit1_fail          | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail.sh
+     exit1_pass          | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass.sh
+     returncode_mismatch | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch.sh
 
     +----------------------+
     | Stage: Test Summary  |
@@ -174,6 +180,7 @@ in output::
     Executed 3 tests
     Passed Tests: 1/3 Percentage: 33.333%
     Failed Tests: 2/3 Percentage: 66.667%
+
 
 
 Python example
@@ -290,3 +297,19 @@ stage::
     Executed 1 tests
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
+
+Script Examples and Schema
+---------------------------
+
+buildtest command line interface provides access to schemas and example buildspecs
+for each schemas. The example buildspecs are validated with the schema, so they are
+self-documentating examples. For example, you can retrieve the script examples using
+``buildtest schema -n script-v1.0.schema.json -e``. Shown below we show valid and
+invalid examples. The examples are validated with the schema ``script-v1.0.schema.json``.
+
+.. program-output:: cat docgen/schemas/script-examples.txt
+
+Similarly, we can retrieve the json file using ``--json`` flag. For more help
+on schemas see :ref:`buildtest_schemas`.
+
+.. program-output:: cat docgen/schemas/script-json.txt

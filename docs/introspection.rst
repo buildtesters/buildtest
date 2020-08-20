@@ -56,6 +56,7 @@ display information from several sources into one single command along.
 
 .. program-output:: cat docgen/config-summary.txt
 
+.. _buildtest_schemas:
 
 Schemas (``buildtest schema``)
 -------------------------------

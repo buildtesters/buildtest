@@ -45,14 +45,14 @@ def func_schema(args):
     # implements buildtest show schema --global
     if args.name == "settings.schema.json":
         schema = DEFAULT_SETTINGS_SCHEMA
-        examples = os.path.join(here, "settings", "examples")
+        examples = os.path.join(here, "examples", args.name)
     elif args.name == "global.schema.json":
         schema = os.path.join(here, "global.schema.json")
-        examples = os.path.join(here, "global", "examples")
+        examples = os.path.join(here, "examples", args.name)
     elif args.name in ["script-v1.0.schema.json", "compiler-v1.0.schema.json"]:
         schema = get_schema_fullpath(args.name)
         # the examples directory is found same location where schema file is located
-        examples = os.path.join(os.path.dirname(schema), "examples")
+        examples = os.path.join(os.path.dirname(schema), "examples", args.name)
 
     recipe = load_schema(schema)
     if args.json:
@@ -63,7 +63,6 @@ def func_schema(args):
     # we show the error message.
     if args.example:
         schema_examples = walk_tree(examples, ".yml")
-
         for example in schema_examples:
             valid_state = True
             err_msg = None

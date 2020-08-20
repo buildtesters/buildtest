@@ -1,5 +1,5 @@
 $ buildtest schema -n settings.schema.json -e 
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/local-executor.yml
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/local-executor.yml
  Valid State: True
  ________________________________________________________________________________
  executors:
@@ -17,7 +17,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/va
    editor: vi
    paths:
      prefix: /tmp
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/ssh-executor.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/ssh-executor.yml
  Valid State: True
  ________________________________________________________________________________
  executors:
@@ -30,7 +30,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/va
    editor: vi
    paths:
      prefix: /tmp
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/lsf-executor.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-executor.yml
  Valid State: True
  ________________________________________________________________________________
  executors:
@@ -49,7 +49,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/va
        options: ["-W 20"]
  config:
    editor: vi
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/slurm-example.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
  Valid State: True
  ________________________________________________________________________________
  executors:
@@ -63,7 +63,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/va
    editor: vi
    paths:
      prefix: /tmp
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/combined_executor.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/combined_executor.yml
  Valid State: True
  ________________________________________________________________________________
  executors:
@@ -95,7 +95,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/va
      clonepath: /tmp/repo
      logdir: /tmp/logs
      testdir: /tmp/buildtest/tests
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/slurm-executor.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-executor.yml
  Valid State: True
  ________________________________________________________________________________
  executors:
@@ -110,7 +110,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/va
    editor: vi
    paths:
      prefix: /tmp
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/ssh-executor-example.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/ssh-executor-example.yml
  Valid State: True
  ________________________________________________________________________________
  executors:
@@ -123,7 +123,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/va
    editor: vi
    paths:
      prefix: /tmp
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/lsf-example.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-example.yml
  Valid State: True
  ________________________________________________________________________________
  executors:

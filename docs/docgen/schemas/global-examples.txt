@@ -1,5 +1,5 @@
 $ buildtest schema -n global.schema.json -e 
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/valid/examples.yml
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/valid/examples.yml
  Valid State: True
  ________________________________________________________________________________
  version: "1.0"
@@ -29,7 +29,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/vali
      type: script
      executor: local.bash
      run: "hostname"
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/invalid/maintainers_type_mismatch.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/maintainers_type_mismatch.yml
  Valid State: FAIL
  ________________________________________________________________________________
  version: "1.0"
@@ -48,7 +48,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/vali
       'type': 'array'}
  On instance['maintainers']:
      1
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/invalid/invalid_pattern.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/invalid_pattern.yml
  Valid State: FAIL
  ________________________________________________________________________________
  version: "1.0"
@@ -63,7 +63,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/vali
      {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'}
  On instance['buildspecs']:
      '(badname'
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/invalid/missing-version.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/missing-version.yml
  Valid State: FAIL
  ________________________________________________________________________________
  buildspecs:
