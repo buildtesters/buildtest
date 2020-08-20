@@ -27,7 +27,7 @@ class BuilderBase:
        any kind of builder.
     """
 
-    def __init__(self, name, recipe, buildspec, version, testdir=None):
+    def __init__(self, name, recipe, buildspec, testdir=None):
         """Initiate a builder base. A recipe configuration (loaded) is required.
            this can be handled easily with the BuildspecParser class:
 
@@ -40,8 +40,6 @@ class BuilderBase:
            :type recipe: dict, required
            :param buildspec: the pull path to the Buildspec file, must exist.
            :type buildspec: str, required
-           :param version: Version specified in buildspec
-           :type version: str, required
            :param testdir: Test Destination directory where to write test
            :type testdir: str, optional
         """
@@ -52,7 +50,9 @@ class BuilderBase:
         self.metadata = {}
         self.buildspec = buildspec
         self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec))
-        self.testdir = os.path.join(testdir, recipe.get("executor"), self.config_name)
+        self.testdir = os.path.join(
+            testdir, recipe.get("executor"), self.config_name, self.name
+        )
 
         self.logger = logging.getLogger(__name__)
         self.logger.debug(f"Processing Buildspec: {self.buildspec}")

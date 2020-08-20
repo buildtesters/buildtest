@@ -401,6 +401,7 @@ class LocalExecutor(BaseExecutor):
         out, err = command.execute()
         self.result["runtime"] = t.stop()
 
+        self.builder.metadata["endtime"] = datetime.datetime.now()
         self.result["endtime"] = self.get_formatted_time("endtime")
 
         self.write_testresults(out, err)
@@ -561,7 +562,7 @@ class SlurmExecutor(BaseExecutor):
         self.result["state"] = "N/A"
         self.result["runtime"] = "0"
         self.result["returncode"] = "0"
-        self.write_testresults(out, err)
+        # self.write_testresults(out, err)
 
     def poll(self):
         """ This method will poll for job each interval specified by time interval
