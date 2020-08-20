@@ -523,8 +523,6 @@ class SlurmExecutor(BaseExecutor):
 
         command = BuildTestCommand(self.builder.metadata["command"])
         command.execute()
-        out = command.get_output()
-        err = command.get_error()
 
         # if sbatch job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
@@ -718,10 +716,8 @@ class LSFExecutor(BaseExecutor):
 
         command = BuildTestCommand(self.builder.metadata["command"])
         command.execute()
-        out = command.get_output()
-        err = command.get_error()
 
-        # if sbatch job submission returns non-zero exit that means we have failure, exit immediately
+        # if job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
             err = f"[{self.builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
             err += f"[{self.builder.metadata['name']}] running command: {bsub_cmd}"
