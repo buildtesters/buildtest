@@ -179,54 +179,26 @@ class BuildspecParser:
                 # Add the builder based on the type
                 if recipe["type"] == "script":
                     builders.append(
-                        ScriptBuilder(
-                            name,
-                            recipe,
-                            self.buildspec,
-                            self.schema_version,
-                            testdir=testdir,
-                        )
+                        ScriptBuilder(name, recipe, self.buildspec, testdir=testdir,)
                     )
                 elif recipe["type"] == "compiler":
                     if recipe["build"].get("name") == "gnu":
                         builders.append(
-                            GNUCompiler(
-                                name,
-                                recipe,
-                                self.buildspec,
-                                self.schema_version,
-                                testdir=testdir,
-                            )
+                            GNUCompiler(name, recipe, self.buildspec, testdir=testdir,)
                         )
                     elif recipe["build"].get("name") == "intel":
                         builders.append(
                             IntelCompiler(
-                                name,
-                                recipe,
-                                self.buildspec,
-                                self.schema_version,
-                                testdir=testdir,
+                                name, recipe, self.buildspec, testdir=testdir,
                             )
                         )
                     elif recipe["build"].get("name") == "pgi":
                         builders.append(
-                            PGICompiler(
-                                name,
-                                recipe,
-                                self.buildspec,
-                                self.schema_version,
-                                testdir=testdir,
-                            )
+                            PGICompiler(name, recipe, self.buildspec, testdir=testdir,)
                         )
                     elif recipe["build"].get("name") == "cray":
                         builders.append(
-                            CrayCompiler(
-                                name,
-                                recipe,
-                                self.buildspec,
-                                self.schema_version,
-                                testdir=testdir,
-                            )
+                            CrayCompiler(name, recipe, self.buildspec, testdir=testdir,)
                         )
                     else:
                         continue
