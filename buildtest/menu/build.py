@@ -210,6 +210,8 @@ def func_build_subcmd(args, config_opts):
         for option in args.buildspec:
             buildspecs += discover_buildspecs(option)
 
+    stage = args.stage
+
     # remove any duplicate Buildspec from list by converting list to set and then back to list
     buildspecs = list(set(buildspecs))
 
@@ -254,14 +256,8 @@ def func_build_subcmd(args, config_opts):
     if args.exclude:
         print("\nExcluded Buildspecs: ", exclude_buildspecs)
 
-    print(
-        """
-+----------------------+
-| Stage: Building Test |
-+----------------------+ 
-"""
-    )
-    table = {"name": [], "schemafile": [], "testpath": [], "buildspec": []}
+    # table = {"name": [], "schemafile": [], "testpath": [], "buildspec": []}
+    table = {"schemafile": [], "validstate": [], "buildspec": []}
 
     # Process each Buildspec iteratively by parsing using BuildspecParser followed by
     # getting the appropriate builder and invoking the executor instance of type BuildExecutor
@@ -269,9 +265,18 @@ def func_build_subcmd(args, config_opts):
     builders = []
     skipped_tests = []
     valid_builders = []
+
+    print(
+        """
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+"""
+    )
     # build all the tests
     for buildspec in buildspecs:
 
+        valid_state = True
         try:
             # Read in Buildspec file here, loading each will validate the buildspec file
             bp = BuildspecParser(buildspec)
@@ -280,16 +285,46 @@ def func_build_subcmd(args, config_opts):
             logger.error(err)
             continue
 
+        table["schemafile"].append(bp.schema_file)
+        table["validstate"].append(valid_state)
+        table["buildspec"].append(buildspec)
+
+        builders += bp.get_builders(testdir=test_directory)
+
+    print(tabulate(table, headers=table.keys(), tablefmt="presto"))
+
+    # print any skipped buildspecs if they failed to validate during build stage
+    if len(skipped_tests) > 0:
+        print("\n\n")
+        print("Error Messages from Stage: Parse")
+        print("{:_<80}".format(""))
+        for test in skipped_tests:
+            print(test)
+
+    ########## END OF PARSE STAGE ####################
+    # if --stage=parse we stop here
+    if stage == "parse":
+        return
+
+    print(
+        """
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+"""
+    )
+    table = {"name": [], "schemafile": [], "testpath": [], "buildspec": []}
+    for builder in builders:
         # And builders parsed through for each
-        for builder in bp.get_builders(testdir=test_directory):
+        # for builder in bp.get_builders(testdir=test_directory):
 
-            builder.build()
-            table["name"].append(builder.metadata["name"])
-            table["schemafile"].append(builder.metadata["schemafile"])
-            table["testpath"].append(builder.metadata["testpath"])
-            table["buildspec"].append(builder.buildspec)
+        builder.build()
+        table["name"].append(builder.metadata["name"])
+        table["schemafile"].append(builder.metadata["schemafile"])
+        table["testpath"].append(builder.metadata["testpath"])
+        table["buildspec"].append(builder.buildspec)
 
-            builders.append(builder)
+        # builders.append(builder)
 
     print(
         tabulate(
@@ -298,13 +333,9 @@ def func_build_subcmd(args, config_opts):
             tablefmt="presto",
         )
     )
-    # print any skipped buildspecs if they failed to validate during build stage
-    if len(skipped_tests) > 0:
-        print("\n\n")
-        print("Error Messages from Stage: Build")
-        print("{:_<80}".format(""))
-        for test in skipped_tests:
-            print(test)
+
+    if stage == "build":
+        return
 
     executor = BuildExecutor(config_opts)
 

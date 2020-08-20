@@ -1,35 +1,41 @@
-$ buildtest build -b examples/serial/gnu_hello.yml 
+$ buildtest build -b tutorials/compilers/gnu_hello.yml 
 Paths:
  __________
- Prefix: /private/tmp
- Buildspec Search Path: ['/private/tmp/github.com/buildtesters/tutorials', '/Users/siddiq90/.buildtest/site']
- Test Directory: /private/tmp/tests
+ Prefix: None
+ Buildspec Search Path: ['/Users/siddiq90/Documents/buildtest/tutorials']
+ Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
  +-------------------------------+
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
- /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+ /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ +---------------------------+
+ | Stage: Parsing Buildspecs |
+ +---------------------------+ 
+  schemafile                | validstate   | buildspec
+ ---------------------------+--------------+-----------------------------------------------------------------------
+  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
  +----------------------+
  | Stage: Building Test |
  +----------------------+ 
-  Name            | Schema File               | Test Path                                       | Buildspec
- -----------------+---------------------------+-------------------------------------------------+------------------------------------------------------------------------------
-  hello_f         | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/hello_f.sh         | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
-  hello_c         | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/hello_c.sh         | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
-  hello_cplusplus | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/hello_cplusplus.sh | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
-  cc_example      | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/cc_example.sh      | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
-  fc_example      | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/fc_example.sh      | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
-  cxx_example     | compiler-v1.0.schema.json | /private/tmp/tests/gnu_hello/cxx_example.sh     | /private/tmp/github.com/buildtesters/tutorials/examples/serial/gnu_hello.yml
+  Name            | Schema File               | Test Path                                                                                             | Buildspec
+ -----------------+---------------------------+-------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------
+  hello_f         | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/hello_f.sh                 | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+  hello_c         | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/hello_c.sh                 | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+  hello_cplusplus | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/hello_cplusplus.sh | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+  cc_example      | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/cc_example.sh           | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+  fc_example      | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/fc_example.sh           | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+  cxx_example     | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/cxx_example.sh         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
  +----------------------+
  | Stage: Running Test  |
  +----------------------+ 
   name            | executor   | status   |   returncode | testpath
- -----------------+------------+----------+--------------+-------------------------------------------------
-  hello_f         | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/hello_f.sh
-  hello_c         | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/hello_c.sh
-  hello_cplusplus | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/hello_cplusplus.sh
-  cc_example      | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/cc_example.sh
-  fc_example      | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/fc_example.sh
-  cxx_example     | local.bash | PASS     |            0 | /private/tmp/tests/gnu_hello/cxx_example.sh
+ -----------------+------------+----------+--------------+-------------------------------------------------------------------------------------------------------
+  hello_f         | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/hello_f.sh
+  hello_c         | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/hello_c.sh
+  hello_cplusplus | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/hello_cplusplus.sh
+  cc_example      | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/cc_example.sh
+  fc_example      | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/fc_example.sh
+  cxx_example     | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/cxx_example.sh
  +----------------------+
  | Stage: Test Summary  |
  +----------------------+ 

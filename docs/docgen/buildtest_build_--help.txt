@@ -1,6 +1,6 @@
 $ buildtest build --help
 usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-t TESTDIR] [--settings SETTINGS] [-x EXCLUDE]
-                                             [--tags TAGS]
+                                             [--tags TAGS] [-s {parse,build}]
  optional arguments:
    -h, --help            show this help message and exit
    -b BUILDSPEC, --buildspec BUILDSPEC
@@ -11,3 +11,5 @@ usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-t TESTDIR] [--
    -x EXCLUDE, --exclude EXCLUDE
                          Exclude one or more configs from processing. Configs can be files or directories.
    --tags TAGS           Specify buildspecs by tags
+   -s {parse,build}, --stage {parse,build}
+                         control behavior of buildtest build

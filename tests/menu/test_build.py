@@ -45,29 +45,78 @@ def test_discover_buildspecs():
         discover_buildspecs(invalid_file)
 
 
-def test_func_build_subcmd():
+def test_build_buildspecs():
     buildspec_paths = os.path.join(test_root, "examples", "buildspecs")
+    buildtest_configuration = load_settings()
 
     class args:
         buildspec = [buildspec_paths]
         debug = False
+        stage = None
         settings = None
         testdir = None
         exclude = None
         tags = None
 
-    buildtest_configuration = load_settings()
-
+    #  testing buildtest build --buildspec tests/examples/buildspecs
     func_build_subcmd(args, buildtest_configuration)
 
     class args:
         buildspec = [buildspec_paths]
         debug = False
+        stage = None
         settings = BUILDTEST_SETTINGS_FILE
         testdir = "/tmp"
         exclude = [buildspec_paths]
         tags = None
 
+    #  testing buildtest build --buildspec tests/examples/buildspecs --exclude tests/examples/buildspecs
     # this results in no buildspecs built
     with pytest.raises(SystemExit):
         func_build_subcmd(args, buildtest_configuration)
+
+
+def test_build_by_tags():
+
+    buildtest_configuration = load_settings()
+
+    class args:
+        buildspec = None
+        debug = False
+        stage = None
+        settings = BUILDTEST_SETTINGS_FILE
+        testdir = None
+        exclude = None
+        tags = "tutorials"
+
+    #  testing buildtest build --tags tutorials
+    func_build_subcmd(args, buildtest_configuration)
+
+
+def test_build_by_stages():
+
+    buildtest_configuration = load_settings()
+
+    class args:
+        buildspec = None
+        debug = False
+        stage = "parse"
+        settings = BUILDTEST_SETTINGS_FILE
+        testdir = None
+        exclude = None
+        tags = "tutorials"
+
+    # testing buildtest build --tags tutorials --stage=parse
+    func_build_subcmd(args, buildtest_configuration)
+
+    class args:
+        buildspec = None
+        debug = False
+        stage = "build"
+        settings = BUILDTEST_SETTINGS_FILE
+        testdir = None
+        exclude = None
+        tags = "tutorials"
+
+    # testing buildtest build --tags tutorials --stage=build
+    func_build_subcmd(args, buildtest_configuration)

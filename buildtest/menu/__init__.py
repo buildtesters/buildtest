@@ -143,9 +143,13 @@ class BuildTestParser:
         )
 
         parser_build.add_argument(
-            "--tags",
-            help="Specify buildspecs by tags",
-            # action="append",
+            "--tags", help="Specify buildspecs by tags",
+        )
+        parser_build.add_argument(
+            "-s",
+            "--stage",
+            help="control behavior of buildtest build",
+            choices=["parse", "build"],
         )
 
     def buildspec_menu(self):
