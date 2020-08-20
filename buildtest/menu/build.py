@@ -197,6 +197,8 @@ def func_build_subcmd(args, config_opts):
     print(f"Buildspec Search Path: {buildspec_searchpath}")
     print(f"Test Directory: {test_directory}")
 
+    ########## BEGIN BUILDSPEC DISCOVER STAGE ####################
+
     # list to store all Buildspecs that are found using discover_buildspecs
     # followed by exclusion check
     buildspecs = []
@@ -256,7 +258,8 @@ def func_build_subcmd(args, config_opts):
     if args.exclude:
         print("\nExcluded Buildspecs: ", exclude_buildspecs)
 
-    # table = {"name": [], "schemafile": [], "testpath": [], "buildspec": []}
+    ########## END BUILDSPEC DISCOVER STAGE ####################
+
     table = {"schemafile": [], "validstate": [], "buildspec": []}
 
     # Process each Buildspec iteratively by parsing using BuildspecParser followed by
@@ -266,6 +269,7 @@ def func_build_subcmd(args, config_opts):
     skipped_tests = []
     valid_builders = []
 
+    ########## BEGIN PARSE STAGE ####################
     print(
         """
 +---------------------------+
@@ -306,6 +310,7 @@ def func_build_subcmd(args, config_opts):
     if stage == "parse":
         return
 
+    ########## BEGIN BUILD STAGE ####################
     print(
         """
 +----------------------+
@@ -324,8 +329,6 @@ def func_build_subcmd(args, config_opts):
         table["testpath"].append(builder.metadata["testpath"])
         table["buildspec"].append(builder.buildspec)
 
-        # builders.append(builder)
-
     print(
         tabulate(
             table,
@@ -336,7 +339,9 @@ def func_build_subcmd(args, config_opts):
 
     if stage == "build":
         return
+    ########## END BUILD STAGE ####################
 
+    ########## BEGIN RUN STAGE ####################
     executor = BuildExecutor(config_opts)
 
     # run all the tests
@@ -396,9 +401,11 @@ def func_build_subcmd(args, config_opts):
             print(error)
         print("\n")
 
-    # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
+    ########## END RUN STAGE ####################
 
+    # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
     if poll:
+        ########## BEGIN POLL STAGE ####################
         interval = (
             config_opts.get("executors", {}).get("defaults", {}).get("pollinterval")
         )
@@ -458,6 +465,9 @@ def func_build_subcmd(args, config_opts):
 
         print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
+        ########## END POLL STAGE ####################
+
+    ########## TEST SUMMARY ####################
     if total_tests == 0:
         print("No tests were executed")
         return

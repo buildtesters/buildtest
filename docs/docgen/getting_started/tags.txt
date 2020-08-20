@@ -7,69 +7,69 @@ Paths:
  +-------------------------------+
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
- /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
  /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
- /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
- /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
- /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
  /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+ /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+ /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+ /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
  /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
- /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+ /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
  /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+ /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
  +---------------------------+
  | Stage: Parsing Buildspecs |
  +---------------------------+ 
  [skip] test is skipped.
   schemafile                | validstate   | buildspec
  ---------------------------+--------------+--------------------------------------------------------------------------------
-  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
   compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
-  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
-  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
-  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
   script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
   script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
-  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
   script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
  +----------------------+
  | Stage: Building Test |
  +----------------------+ 
   Name                 | Schema File               | Test Path                                                                                                                | Buildspec
  ----------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------
-  unskipped            | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/unskipped.sh                               | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
   executable_arguments | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/executable_arguments/executable_arguments.sh | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
-  variables            | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables/variables.sh                                     | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
-  selinux_disable      | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable/selinux_disable.sh                      | /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
-  executable_arguments | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/executable_arguments.sh       | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
   exit1_fail           | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/exit1_fail.sh                          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
   exit1_pass           | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/exit1_pass.sh                          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
   returncode_mismatch  | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/returncode_mismatch.sh        | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+  unskipped            | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/unskipped.sh                               | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+  executable_arguments | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/executable_arguments.sh       | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+  variables            | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables/variables.sh                                     | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
   _bin_sh_shell        | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/_bin_sh_shell.sh                     | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
   _bin_bash_shell      | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/_bin_bash_shell.sh               | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
   bash_shell           | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/bash_shell.sh                         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
   sh_shell             | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/sh_shell.sh                               | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
   shell_options        | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/shell_options.sh                     | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
-  circle_area          | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/circle_area.py                       | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+  selinux_disable      | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable/selinux_disable.sh                      | /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
   wrongexecutor        | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/badexecutor/invalid_executor/wrongexecutor/wrongexecutor.sh                | /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+  circle_area          | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/circle_area.py                       | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
  +----------------------+
  | Stage: Running Test  |
  +----------------------+ 
  [wrongexecutor]: Failed to Run Test
   name                 | executor     | status   |   returncode | testpath
  ----------------------+--------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------------
-  unskipped            | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/unskipped.sh
   executable_arguments | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/executable_arguments/executable_arguments.sh
-  variables            | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables/variables.sh
-  selinux_disable      | local.bash   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable/selinux_disable.sh
-  executable_arguments | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/executable_arguments.sh
   exit1_fail           | local.sh     | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/exit1_fail.sh
   exit1_pass           | local.sh     | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/exit1_pass.sh
   returncode_mismatch  | local.sh     | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/returncode_mismatch.sh
+  unskipped            | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/unskipped.sh
+  executable_arguments | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/executable_arguments.sh
+  variables            | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables/variables.sh
   _bin_sh_shell        | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/_bin_sh_shell.sh
   _bin_bash_shell      | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/_bin_bash_shell.sh
   bash_shell           | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/bash_shell.sh
   sh_shell             | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/sh_shell.sh
   shell_options        | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/shell_options.sh
+  selinux_disable      | local.bash   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable/selinux_disable.sh
   circle_area          | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/circle_area.py
  Error Messages from Stage: Run
  ________________________________________________________________________________
