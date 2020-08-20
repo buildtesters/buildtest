@@ -1,5 +1,5 @@
 $ buildtest schema -n global.schema.json -e 
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/valid/examples.yml
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/valid/examples.yml
  Valid State: True
  ________________________________________________________________________________
  version: "1.0"
@@ -29,7 +29,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/vali
      type: script
      executor: local.bash
      run: "hostname"
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/invalid/maintainers_type_mismatch.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/maintainers_type_mismatch.yml
  Valid State: FAIL
  ________________________________________________________________________________
  version: "1.0"
@@ -48,7 +48,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/vali
       'type': 'array'}
  On instance['maintainers']:
      1
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/invalid/invalid_pattern.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/invalid_pattern.yml
  Valid State: FAIL
  ________________________________________________________________________________
  version: "1.0"
@@ -63,7 +63,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/vali
      {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'}
  On instance['buildspecs']:
      '(badname'
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/invalid/missing-version.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/missing-version.yml
  Valid State: FAIL
  ________________________________________________________________________________
  buildspecs:
@@ -74,10 +74,16 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/vali
  ________________________________________ Validation Error ________________________________________
  'version' is a required property
  Failed validating 'required' in schema:
-     {'$id': 'https://buildtesters.github.io/schemas/global/global.schema.json',
+     {'$id': 'https://buildtesters.github.io/schemas/schemas/global.schema.json',
       '$schema': 'http://json-schema.org/draft-07/schema#',
       'additionalProperties': False,
-      'definitions': {'bsub': {'items': {'type': 'string'}, 'type': 'array'},
+      'definitions': {'bsub': {'description': 'This field is used for '
+                                              'specifying #BSUB options in '
+                                              'test script. buildtest will '
+                                              'insert #BSUB in front of '
+                                              'each value',
+                               'items': {'type': 'string'},
+                               'type': 'array'},
                       'env': {'description': 'One or more key value pairs '
                                              'for an environment '
                                              '(key=value)',
@@ -86,29 +92,198 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/vali
                                         'type': 'object'},
                               'minItems': 1,
                               'type': 'object'},
-                      'executor': {'type': 'string'},
-                      'sbatch': {'items': {'type': 'string'},
+                      'executor': {'description': 'Select one of the '
+                                                  'executor name defined in '
+                                                  'your configuration file '
+                                                  '(``config.yml``). Every '
+                                                  'buildspec must have an '
+                                                  'executor which is '
+                                                  'responsible for running '
+                                                  'job. ',
+                                   'type': 'string'},
+                      'sbatch': {'description': 'This field is used for '
+                                                'specifying #SBATCH options '
+                                                'in test script. buildtest '
+                                                'will insert #SBATCH in '
+                                                'front of each value',
+                                 'items': {'type': 'string'},
                                  'type': 'array'},
-                      'skip': {'type': 'boolean'},
+                      'skip': {'description': 'The ``skip`` is a boolean '
+                                              'field that can be used to '
+                                              'skip tests during builds. By '
+                                              'default buildtest will build '
+                                              'and run all tests in your '
+                                              'buildspec file, if ``skip: '
+                                              'True`` is set it will skip '
+                                              'the buildspec.',
+                               'type': 'boolean'},
                       'status': {'additionalProperties': False,
-                                 'properties': {'regex': {'properties': {'exp': {'type': 'string'},
-                                                                         'stream': {'enum': ['stdout',
+                                 'description': 'The status section '
+                                                'describes how buildtest '
+                                                'detects PASS/FAIL on test. '
+                                                'By default returncode 0 is '
+                                                'a PASS and anything else '
+                                                'is a FAIL, however '
+                                                'buildtest can support '
+                                                'other types of PASS/FAIL '
+                                                'conditions.',
+                                 'properties': {'regex': {'description': 'Perform '
+                                                                         'regular '
+                                                                         'expression '
+                                                                         'search '
+                                                                         'using '
+                                                                         '``re.search`` '
+                                                                         'python '
+                                                                         'module '
+                                                                         'on '
+                                                                         'stdout/stderr '
+                                                                         'stream '
+                                                                         'for '
+                                                                         'reporting '
+                                                                         'if '
+                                                                         'test '
+                                                                         '``PASS``. ',
+                                                          'properties': {'exp': {'description': 'Specify '
+                                                                                                'a '
+                                                                                                'regular '
+                                                                                                'expression '
+                                                                                                'to '
+                                                                                                'run '
+                                                                                                'with '
+                                                                                                'input '
+                                                                                                'stream '
+                                                                                                'specified '
+                                                                                                'by '
+                                                                                                '``stream`` '
+                                                                                                'field. '
+                                                                                                'buildtest '
+                                                                                                'uses '
+                                                                                                're.search '
+                                                                                                'when '
+                                                                                                'performing '
+                                                                                                'regex',
+                                                                                 'type': 'string'},
+                                                                         'stream': {'description': 'The '
+                                                                                                   'stream '
+                                                                                                   'field '
+                                                                                                   'can '
+                                                                                                   'be '
+                                                                                                   'stdout '
+                                                                                                   'or '
+                                                                                                   'stderr. '
+                                                                                                   'buildtest '
+                                                                                                   'will '
+                                                                                                   'read '
+                                                                                                   'the '
+                                                                                                   'output '
+                                                                                                   'or '
+                                                                                                   'error '
+                                                                                                   'stream '
+                                                                                                   'after '
+                                                                                                   'completion '
+                                                                                                   'of '
+                                                                                                   'test '
+                                                                                                   'and '
+                                                                                                   'check '
+                                                                                                   'if '
+                                                                                                   'regex '
+                                                                                                   'matches '
+                                                                                                   'in '
+                                                                                                   'stream',
+                                                                                    'enum': ['stdout',
                                                                                              'stderr'],
                                                                                     'type': 'string'}},
                                                           'required': ['stream',
                                                                        'exp'],
                                                           'type': 'object'},
-                                                'returncode': {'type': 'integer'},
-                                                'slurm_job_state_codes': {'enum': ['COMPLETED',
+                                                'returncode': {'description': 'By '
+                                                                              'default, '
+                                                                              'returncode '
+                                                                              '0 '
+                                                                              'is '
+                                                                              'PASS, '
+                                                                              'if '
+                                                                              'you '
+                                                                              'want '
+                                                                              'to '
+                                                                              'emulate '
+                                                                              'a '
+                                                                              'non-zero '
+                                                                              'returncode '
+                                                                              'to '
+                                                                              'pass '
+                                                                              'then '
+                                                                              'specify '
+                                                                              'an '
+                                                                              'expected '
+                                                                              'return '
+                                                                              'code. '
+                                                                              'buildtest '
+                                                                              'will '
+                                                                              'match '
+                                                                              'actual '
+                                                                              'returncode '
+                                                                              'with '
+                                                                              'one '
+                                                                              'defined '
+                                                                              'in '
+                                                                              'this '
+                                                                              'field, '
+                                                                              'if '
+                                                                              'there '
+                                                                              'is '
+                                                                              'a '
+                                                                              'match '
+                                                                              'buildtest '
+                                                                              'will '
+                                                                              'report '
+                                                                              'as '
+                                                                              '``PASS``',
+                                                               'type': 'integer'},
+                                                'slurm_job_state_codes': {'description': 'This '
+                                                                                         'field '
+                                                                                         'can '
+                                                                                         'be '
+                                                                                         'used '
+                                                                                         'for '
+                                                                                         'checking '
+                                                                                         'Slurm '
+                                                                                         'Job '
+                                                                                         'State, '
+                                                                                         'if '
+                                                                                         'there '
+                                                                                         'is '
+                                                                                         'a '
+                                                                                         'match '
+                                                                                         'buildtest '
+                                                                                         'will '
+                                                                                         'report '
+                                                                                         'as '
+                                                                                         '``PASS`` ',
+                                                                          'enum': ['COMPLETED',
                                                                                    'FAILED',
                                                                                    'OUT_OF_MEMORY',
                                                                                    'TIMEOUT'],
                                                                           'type': 'string'}},
                                  'type': 'object'},
-                      'tags': {'items': {'type': 'string'},
+                      'tags': {'description': 'Classify tests using a tag '
+                                              'name, this can be used for '
+                                              'categorizing test and '
+                                              'building tests using '
+                                              '``--tags`` option',
+                               'items': {'type': 'string'},
                                'minItems': 1,
                                'type': 'array'}},
-      'properties': {'buildspecs': {'propertyNames': {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'},
+      'description': 'buildtest global schema is validated for all '
+                     'buildspecs. The global schema defines top-level '
+                     'structure of buildspec and defintions that are '
+                     'inherited for sub-schemas',
+      'properties': {'buildspecs': {'description': 'This section is used to '
+                                                   'define one or more '
+                                                   'tests (buildspecs). '
+                                                   'Each test must be '
+                                                   'unique name',
+                                    'propertyNames': {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'},
                                     'type': 'object'},
                      'maintainers': {'description': 'One or more '
                                                     'maintainers or aliases',
@@ -119,7 +294,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global/examples/vali
                                                 'schema to use (x.x).',
                                  'type': 'string'}},
       'required': ['version', 'buildspecs'],
-      'title': 'buildtest Global Schema',
+      'title': 'global schema',
       'type': 'object'}
  On instance:
      {'buildspecs': {'login_node_check': {'run': 'ping login 1',

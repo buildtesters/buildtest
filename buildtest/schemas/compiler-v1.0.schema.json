@@ -1,8 +1,8 @@
 {
   "$id": "https://buildtesters.github.io/schemas/schemas/compiler-v1.0.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "buildtest compiler schema version 1.0",
-  "description": "The compiler schema of type compiler in sub-schema which is used for compiling and running programs",
+  "title": "compiler schema version 1.0",
+  "description": "The compiler schema is of ``type: compiler`` in sub-schema which is used for compiling and running programs",
   "type": "object",
   "required": ["type", "build", "executor"],
   "additionalProperties": false,

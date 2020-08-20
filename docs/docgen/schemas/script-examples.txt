@@ -1,5 +1,5 @@
 $ buildtest schema -n script-v1.0.schema.json -e 
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/script/examples/1.0/valid/examples.yml
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/script-v1.0.schema.json/valid/examples.yml
  Valid State: True
  ________________________________________________________________________________
  version: "1.0"
@@ -132,7 +132,7 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/script/examples/1.0/
        - "-n 8"
      tags: [slurm]
      run: hostname
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/script/examples/1.0/invalid/examples.yml
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/script-v1.0.schema.json/invalid/examples.yml
  Valid State: FAIL
  ________________________________________________________________________________
  version: "1.0"

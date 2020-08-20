@@ -13,4 +13,5 @@ executors:
  config:
    editor: vi
    paths:
-     prefix: /tmp
+     buildspec_roots:
+       - /Users/siddiq90/Documents/buildtest-cori

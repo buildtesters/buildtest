@@ -37,7 +37,6 @@ Source Code
 Test Repositories
 ------------------
 
-- Tutorials: https://github.com/buildtesters/tutorials
 - Cori @ NERSC: https://github.com/buildtesters/buildtest-cori
 - Stampede2 @ TACC: https://github.com/buildtesters/buildtest-stampede2
 

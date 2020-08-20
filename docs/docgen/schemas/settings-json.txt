@@ -1,8 +1,8 @@
 $ buildtest schema -n settings.schema.json -j 
 {
-   "$id": "https://buildtesters.github.io/schemas/settings/settings.schema.json",
+   "$id": "https://buildtesters.github.io/schemas/schemas/settings.schema.json",
    "$schema": "http://json-schema.org/draft-07/schema#",
-   "title": "Buildtest Settings Schema",
+   "title": "buildtest configuration schema",
    "type": "object",
    "required": [
      "config",
@@ -12,13 +12,16 @@ $ buildtest schema -n settings.schema.json -j
    "properties": {
      "executors": {
        "type": "object",
+       "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``ssh``. The executors are referenced in buildspec using ``executor`` field.",
        "properties": {
          "defaults": {
            "type": "object",
+           "description": "Specify default executor settings for all executors",
            "additionalProperties": false,
            "properties": {
              "pollinterval": {
                "type": "integer",
+               "description": "Specify poll interval in seconds after job submission, where buildtest will sleep and poll all jobs for job states. This field can be configured based on your preference. Excessive polling every few seconds can result in system degradation. ",
                "minimum": 10,
                "maximum": 300,
                "default": 30
@@ -28,12 +31,14 @@ $ buildtest schema -n settings.schema.json -j
                "enum": [
                  "sbatch",
                  "bsub"
-               ]
+               ],
+               "description": "Specify batch launcher to use when submitting jobs, this is applicable for LSF and Slurm Executors."
              }
            }
          },
          "local": {
            "type": "object",
+           "description": "The ``local`` section is used for declaring local executors for running jobs on local machine",
            "patternProperties": {
              "^.*$": {
                "$ref": "#/definitions/local"
@@ -42,6 +47,7 @@ $ buildtest schema -n settings.schema.json -j
          },
          "lsf": {
            "type": "object",
+           "description": "The ``lsf`` section is used for declaring LSF executors for running jobs using LSF scheduler",
            "patternProperties": {
              "^.*$": {
                "$ref": "#/definitions/lsf"
@@ -50,6 +56,7 @@ $ buildtest schema -n settings.schema.json -j
          },
          "slurm": {
            "type": "object",
+           "description": "The ``slurm`` section is used for declaring Slurm executors for running jobs using Slurm scheduler",
            "patternProperties": {
              "^.*$": {
                "$ref": "#/definitions/slurm"
@@ -58,6 +65,7 @@ $ buildtest schema -n settings.schema.json -j
          },
          "ssh": {
            "type": "object",
+           "description": "The ``ssh`` section is used for declaring SSH executors for running jobs on remote node using ssh",
            "patternProperties": {
              "^.*$": {
                "$ref": "#/definitions/ssh"
@@ -72,6 +80,7 @@ $ buildtest schema -n settings.schema.json -j
        "properties": {
          "editor": {
            "type": "string",
+           "description": "The editor field is used for opening buildspecs in an editor. The default editor is ``vim``.",
            "enum": [
              "vi",
              "vim",
@@ -83,10 +92,14 @@ $ buildtest schema -n settings.schema.json -j
          "paths": {
            "type": "object",
            "properties": {
-             "prefix": {
-               "type": "string"
+             "buildspec_roots": {
+               "type": "array",
+               "items": {
+                 "type": "string"
+               },
+               "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
              },
-             "clonepath": {
+             "prefix": {
                "type": "string"
              },
              "logdir": {
@@ -126,25 +139,13 @@ $ buildtest schema -n settings.schema.json -j
        ],
        "properties": {
          "description": {
-           "type": "string"
+           "type": "string",
+           "description": "description field for documenting your executor"
          },
          "shell": {
            "type": "string",
+           "description": "Specify the shell launcher you want to use when running tests locally",
            "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*"
-         },
-         "environment": {
-           "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
-         },
-         "variables": {
-           "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
-         },
-         "retry": {
-           "type": "integer",
-           "minimum": 1,
-           "maximum": 5
-         },
-         "modules": {
-           "$ref": "#/definitions/modules"
          }
        }
      },
@@ -153,37 +154,34 @@ $ buildtest schema -n settings.schema.json -j
        "additionalProperties": false,
        "properties": {
          "description": {
-           "type": "string"
+           "type": "string",
+           "description": "description field for documenting your executor"
          },
          "launcher": {
            "type": "string",
            "enum": [
              "sbatch"
-           ]
+           ],
+           "description": "Specify the slurm batch scheduler to use. This overrides the default ``launcher`` field. This must be ``sbatch``. "
          },
          "options": {
            "type": "array",
            "items": {
              "type": "string"
-           }
-         },
-         "environment": {
-           "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
-         },
-         "variables": {
-           "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
+           },
+           "description": "Specify any other options for ``sbatch`` used by this executor for running all jobs."
          },
          "cluster": {
-           "type": "string"
+           "type": "string",
+           "description": "Specify the slurm cluster you want to use ``-M <cluster>``"
          },
          "partition": {
-           "type": "string"
+           "type": "string",
+           "description": "Specify the slurm partition you want to use ``-p <partition>``"
          },
          "qos": {
-           "type": "string"
-         },
-         "modules": {
-           "$ref": "#/definitions/modules"
+           "type": "string",
+           "description": "Specify the slurm qos you want to use ``-q <qos>``"
          }
        }
      },
@@ -192,31 +190,26 @@ $ buildtest schema -n settings.schema.json -j
        "additionalProperties": false,
        "properties": {
          "description": {
-           "type": "string"
+           "type": "string",
+           "description": "description field for documenting your executor"
          },
          "launcher": {
            "type": "string",
            "enum": [
              "bsub"
-           ]
+           ],
+           "description": "Specify the lsf batch scheduler to use. This overrides the default ``launcher`` field. It must be ``bsub``. "
          },
          "options": {
            "type": "array",
            "items": {
              "type": "string"
-           }
-         },
-         "environment": {
-           "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
-         },
-         "variables": {
-           "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
+           },
+           "description": "Specify any options for ``bsub`` for this executor when running all jobs associated to this executor"
          },
          "queue": {
-           "type": "string"
-         },
-         "modules": {
-           "$ref": "#/definitions/modules"
+           "type": "string",
+           "description": "Specify the lsf queue you want to use ``-q <queue>``"
          }
        }
      },
@@ -235,15 +228,6 @@ $ buildtest schema -n settings.schema.json -j
          },
          "identity_file": {
            "type": "string"
-         },
-         "environment": {
-           "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
-         },
-         "variables": {
-           "$ref": "https://buildtesters.github.io/schemas/global/global.schema.json#/definitions/env"
-         },
-         "modules": {
-           "$ref": "#/definitions/modules"
          }
        },
        "required": [
