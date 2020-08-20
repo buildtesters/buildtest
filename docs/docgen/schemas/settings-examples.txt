@@ -17,7 +17,85 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/va
    editor: vi
    paths:
      prefix: /tmp
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/ssh-executor.yml
+ Valid State: True
+ ________________________________________________________________________________
+ executors:
+   ssh:
+     localhost:
+       host: localhost
+       user: siddiq90
+       identity_file: ~/.ssh/id_rsa
+ config:
+   editor: vi
+   paths:
+     prefix: /tmp
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/lsf-executor.yml
+ Valid State: True
+ ________________________________________________________________________________
+ executors:
+   defaults:
+     pollinterval: 10
+     launcher: bsub
+   lsf:
+     batch:
+       description: "LSF Executor name 'batch' that submits jobs to 'batch' queue"
+       queue: batch
+       options: ["-W 20"]
+     test:
+       description: "LSF Executor name 'test' that submits jobs to 'test' queue"
+       launcher: bsub
+       queue: test
+       options: ["-W 20"]
+ config:
+   editor: vi
  File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/slurm-example.yml
+ Valid State: True
+ ________________________________________________________________________________
+ executors:
+   defaults:
+     pollinterval: 20
+   slurm:
+     normal:
+       options: ["-C haswell"]
+       qos: normal
+ config:
+   editor: vi
+   paths:
+     prefix: /tmp
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/combined_executor.yml
+ Valid State: True
+ ________________________________________________________________________________
+ executors:
+   local:
+     bash:
+       description: submit jobs on local machine
+       shell: bash -v
+   slurm:
+     haswell:
+       launcher: sbatch
+       options:
+         - "-p haswell"
+         - "-t 00:10"
+   lsf:
+     batch:
+       launcher: bsub
+       options:
+         - "-q batch"
+         - "-t 00:10"
+   ssh:
+      login:
+        host: cori
+        user: root
+        identity_file: ~/.ssh/nersc
+ config:
+   editor: vi
+   paths:
+     prefix: /tmp
+     clonepath: /tmp/repo
+     logdir: /tmp/logs
+     testdir: /tmp/buildtest/tests
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/slurm-executor.yml
  Valid State: True
  ________________________________________________________________________________
  executors:
@@ -45,3 +123,22 @@ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/va
    editor: vi
    paths:
      prefix: /tmp
+ File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings/examples/valid/lsf-example.yml
+ Valid State: True
+ ________________________________________________________________________________
+ executors:
+   defaults:
+     pollinterval: 10
+     launcher: bsub
+   lsf:
+     batch:
+       description: "LSF Executor name 'batch' that submits jobs to 'batch' queue"
+       queue: batch
+       options: ["-W 20"]
+     test:
+       description: "LSF Executor name 'test' that submits jobs to 'test' queue"
+       launcher: bsub
+       queue: test
+       options: ["-W 20"]
+ config:
+   editor: vi

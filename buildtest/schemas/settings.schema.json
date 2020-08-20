@@ -70,7 +70,6 @@
                 "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
               },
               "prefix": { "type":  "string" },
-              "clonepath": { "type": "string" },
               "logdir": {"type":  "string" },
               "testdir": { "type": "string" }
             }
@@ -99,12 +98,8 @@
           "additionalProperties": false,
           "required": ["shell"],
           "properties": {
-              "description": {"type": "string"},
-              "shell":  {"type": "string",  "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*" },
-              "environment": {"$ref":  "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/env"},
-              "variables": {"$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/env"},
-              "retry": {"type": "integer", "minimum": 1, "maximum": 5},
-              "modules": {"$ref":  "#/definitions/modules"}
+              "description": {"type": "string", "description":  "description field for documenting your executor"},
+              "shell":  {"type": "string",  "description": "Specify the shell launcher you want to use when running tests locally", "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*" }
           }
        },
 
@@ -112,28 +107,22 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-              "description": {"type": "string"},
-              "launcher": { "type": "string", "enum": ["sbatch"] },
-              "options": { "type": "array", "items": {"type": "string"} },
-              "environment": {"$ref":  "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/env"},
-              "variables": {"$ref":  "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/env"},
-              "cluster": {"type":  "string"},
-              "partition": {"type":  "string"},
-              "qos": {"type":  "string"},
-              "modules": {"$ref":  "#/definitions/modules"}
+              "description": {"type": "string", "description": "description field for documenting your executor"},
+              "launcher": { "type": "string", "enum": ["sbatch"], "description": "Specify the slurm batch scheduler to use. This overrides the default ``launcher`` field. This must be ``sbatch``. " },
+              "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any other options for ``sbatch`` used by this executor for running all jobs." },
+              "cluster": {"type":  "string", "description": "Specify the slurm cluster you want to use ``-M <cluster>``"},
+              "partition": {"type":  "string", "description": "Specify the slurm partition you want to use ``-p <partition>``"},
+              "qos": {"type":  "string", "description": "Specify the slurm qos you want to use ``-q <qos>``"}
            }
        },
       "lsf": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-              "description": {"type": "string"},
-              "launcher": { "type": "string", "enum": ["bsub"] },
-              "options": { "type": "array", "items": {"type": "string"} },
-              "environment": {"$ref":  "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/env"},
-              "variables": {"$ref":  "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/env"},
-              "queue": {"type":  "string"},
-              "modules": {"$ref":  "#/definitions/modules"}
+              "description": {"type": "string", "description": "description field for documenting your executor"},
+              "launcher": { "type": "string", "enum": ["bsub"], "description": "Specify the lsf batch scheduler to use. This overrides the default ``launcher`` field. It must be ``bsub``. " },
+              "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any options for ``bsub`` for this executor when running all jobs associated to this executor" },
+              "queue": {"type":  "string", "description": "Specify the lsf queue you want to use ``-q <queue>``"}
           }
        },
       "ssh": {
@@ -143,10 +132,7 @@
           "description": {"type": "string"},
           "host": {"type":  "string"},
           "user": {"type":  "string"},
-          "identity_file": {"type": "string"},
-          "environment": {"$ref":  "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/env"},
-          "variables": {"$ref":  "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/env"},
-          "modules": {"$ref":  "#/definitions/modules"}
+          "identity_file": {"type": "string"}
         },
         "required": ["host","user","identity_file"]
       }

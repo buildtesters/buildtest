@@ -99,6 +99,33 @@ test scripts were developed in shell-script that targeted core HPC tools such as
 compilers, **MPI**, **R**, **Python**, etc. A single master script was used to
 run all the tests which led to buildtest.
 
+Target Audience & Use Case
+---------------------------
+
+buildtest target audience is the following:
+
+  - `HPC Staff`:  that wants to perform acceptance & regression testing of their HPC system.
+  - `Research Software Engineers`: that want to test software installed in HPC system
+
+buildtest is not
+
+  - replacement for `make`, `cmake`, `autoconf`, `ctest`
+  - a software build framework (`easybuild`, `spack`, `nix`, `guix`)
+  - a replacement for benchmark tools or test suite from upstream package
+  - a replacement for writing tests, you will need to write your tests defined by buildtest schemas, however you can copy/paste & adapt tests from other sites that are applicable to you.
+
+Typical use-case :
+
+  1. Run your test suite during system maintenance
+
+  2. Perform daily tests for testing various system components. These tests should be short
+
+  3. Run weekly/biweekly test on medium/large workload including micro-benchmark
+
+
+If you are interested in buildtest, please `Join Slack Channel <https://hpcbuildtest.herokuapp.com/>`_
+and your feedback will help improve buildtest.
+
 Timeline
 ---------
 

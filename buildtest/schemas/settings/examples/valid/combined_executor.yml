@@ -3,34 +3,17 @@ executors:
     bash:
       description: submit jobs on local machine
       shell: bash -v
-      environment:
-        X: "1"
-      variables:
-        X: Y
-      retry: 1
-      modules:
-        purge: true
-        load: [gcc]
+
   slurm:
     haswell:
       launcher: sbatch
-      modules:
-        purge: true
-        load: [PrgEnv-intel]
       options:
         - "-p haswell"
         - "-t 00:10"
-      environment:
-        X: 1
-      variables:
-        Y: Z
 
   lsf:
     batch:
       launcher: bsub
-      modules:
-        purge: true
-        load: [PrgEnv-intel]
       options:
         - "-q batch"
         - "-t 00:10"
@@ -39,13 +22,6 @@ executors:
        host: cori
        user: root
        identity_file: ~/.ssh/nersc
-       modules:
-         purge: true
-         load: [PrgEnv-intel]
-       variables:
-         X: 1
-       environment:
-         Y: Z
 
 config:
   editor: vi

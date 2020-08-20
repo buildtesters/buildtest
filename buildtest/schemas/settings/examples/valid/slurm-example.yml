@@ -1,0 +1,12 @@
+executors:
+  defaults:
+    pollinterval: 20
+  slurm:
+    normal:
+      options: ["-C haswell"]
+      qos: normal
+
+config:
+  editor: vi
+  paths:
+    prefix: /tmp
