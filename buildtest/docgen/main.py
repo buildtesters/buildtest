@@ -55,12 +55,14 @@ def tutorial():
     cmd_dict = {
         f"{os.path.join(prefix, 'buildspec-find.txt')}": "buildtest buildspec find",
         f"{os.path.join(prefix, 'buildspec-view.txt')}": "buildtest buildspec view systemd_default_target",
-        f"{os.path.join(prefix,'buildspec-abspath.txt')}": "buildtest build -b /tmp/github.com/buildtesters/tutorials/examples/systemd.yml",
-        f"{os.path.join(prefix,'buildspec-relpath.txt')}": "buildtest build -b examples/systemd.yml",
+        f"{os.path.join(prefix,'buildspec-abspath.txt')}": "buildtest build -b /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml",
         f"{os.path.join(prefix, 'buildspec-directory.txt')}": "buildtest build -b tests/examples/buildspecs/",
-        f"{os.path.join(prefix, 'multi-buildspecs.txt')}": "buildtest build -b tests/examples/buildspecs/ -b examples/selinux.yml",
-        f"{os.path.join(prefix, 'invalid-buildspec.txt')}": "buildtest build -b examples/invalid_buildspec_section.yml -b examples/systemd.yml",
-        f"{os.path.join(prefix, 'invalid-executor.txt')}": "buildtest build -b examples/invalid_executor.yml",
+        f"{os.path.join(prefix, 'multi-buildspecs.txt')}": "buildtest build -b tests/examples/buildspecs/ -b tutorials/systemd.yml",
+        f"{os.path.join(prefix, 'invalid-buildspec.txt')}": "buildtest build -b tutorials/invalid_buildspec_section.yml",
+        f"{os.path.join(prefix, 'invalid-executor.txt')}": "buildtest build -b tutorials/invalid_executor.yml",
+        f"{os.path.join(prefix, 'tags.txt')}": "buildtest build --tags tutorials",
+        f"{os.path.join(prefix, 'stage_parse.txt')}": "buildtest build -b tutorials/systemd.yml --stage=parse",
+        f"{os.path.join(prefix, 'stage_build.txt')}": "buildtest build -b tutorials/systemd.yml --stage=build",
     }
 
     generate_tests(prefix, cmd_dict)
@@ -106,8 +108,8 @@ def compiler_schema():
             copy(file, destfile)
 
     cmd_dict = {
-        f"{os.path.join(prefix, 'gnu_hello.txt')}": "buildtest build -b examples/serial/gnu_hello.yml",
-        f"{os.path.join(prefix, 'vecadd.txt')}": "buildtest build -b examples/openacc/vecadd.yml",
+        f"{os.path.join(prefix, 'gnu_hello.txt')}": "buildtest build -b tutorials/compilers/gnu_hello.yml",
+        f"{os.path.join(prefix, 'vecadd.txt')}": "buildtest build -b tutorials/compilers/vecadd.yml",
     }
     generate_tests(prefix, cmd_dict)
 

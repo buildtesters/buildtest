@@ -1,25 +1,31 @@
-$ buildtest build -b examples/openacc/vecadd.yml 
+$ buildtest build -b tutorials/compilers/vecadd.yml 
 Paths:
  __________
- Prefix: /private/tmp
- Buildspec Search Path: ['/private/tmp/github.com/buildtesters/tutorials', '/Users/siddiq90/.buildtest/site']
- Test Directory: /private/tmp/tests
+ Prefix: None
+ Buildspec Search Path: ['/Users/siddiq90/Documents/buildtest/tutorials']
+ Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
  +-------------------------------+
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
- /private/tmp/github.com/buildtesters/tutorials/examples/openacc/vecadd.yml
+ /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+ +---------------------------+
+ | Stage: Parsing Buildspecs |
+ +---------------------------+ 
+  schemafile                | validstate   | buildspec
+ ---------------------------+--------------+--------------------------------------------------------------------
+  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
  +----------------------+
  | Stage: Building Test |
  +----------------------+ 
-  Name       | Schema File               | Test Path                               | Buildspec
- ------------+---------------------------+-----------------------------------------+----------------------------------------------------------------------------
-  vecadd_gnu | compiler-v1.0.schema.json | /private/tmp/tests/vecadd/vecadd_gnu.sh | /private/tmp/github.com/buildtesters/tutorials/examples/openacc/vecadd.yml
+  Name       | Schema File               | Test Path                                                                                | Buildspec
+ ------------+---------------------------+------------------------------------------------------------------------------------------+--------------------------------------------------------------------
+  vecadd_gnu | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/vecadd_gnu.sh | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
  +----------------------+
  | Stage: Running Test  |
  +----------------------+ 
   name       | executor   | status   |   returncode | testpath
- ------------+------------+----------+--------------+-----------------------------------------
-  vecadd_gnu | local.bash | PASS     |            0 | /private/tmp/tests/vecadd/vecadd_gnu.sh
+ ------------+------------+----------+--------------+------------------------------------------------------------------------------------------
+  vecadd_gnu | local.bash | PASS     |          0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/vecadd_gnu.sh
  +----------------------+
  | Stage: Test Summary  |
  +----------------------+ 

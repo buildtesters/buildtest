@@ -1,19 +1,25 @@
-$ buildtest build -b examples/invalid_executor.yml 
+$ buildtest build -b tutorials/invalid_executor.yml 
 Paths:
  __________
- Prefix: /private/tmp
- Buildspec Search Path: ['/private/tmp/github.com/buildtesters/tutorials', '/Users/siddiq90/.buildtest/site']
- Test Directory: /private/tmp/tests
+ Prefix: None
+ Buildspec Search Path: ['/Users/siddiq90/Documents/buildtest/tutorials']
+ Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
  +-------------------------------+
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
- /private/tmp/github.com/buildtesters/tutorials/examples/invalid_executor.yml
+ /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+ +---------------------------+
+ | Stage: Parsing Buildspecs |
+ +---------------------------+ 
+  schemafile              | validstate   | buildspec
+ -------------------------+--------------+--------------------------------------------------------------------
+  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
  +----------------------+
  | Stage: Building Test |
  +----------------------+ 
-  Name          | Schema File             | Test Path                                            | Buildspec
- ---------------+-------------------------+------------------------------------------------------+------------------------------------------------------------------------------
-  wrongexecutor | script-v1.0.schema.json | /private/tmp/tests/invalid_executor/wrongexecutor.sh | /private/tmp/github.com/buildtesters/tutorials/examples/invalid_executor.yml
+  Name          | Schema File             | Test Path                                                                                                 | Buildspec
+ ---------------+-------------------------+-----------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------
+  wrongexecutor | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/badexecutor/invalid_executor/wrongexecutor/wrongexecutor.sh | /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
  +----------------------+
  | Stage: Running Test  |
  +----------------------+ 
@@ -22,5 +28,5 @@ Paths:
  --------+------------+----------+--------------+------------
  Error Messages from Stage: Run
  ________________________________________________________________________________
- [wrongexecutor]: executor badexecutor is not defined in /Users/siddiq90/.buildtest/settings.yml
+ [wrongexecutor]: executor badexecutor is not defined in /Users/siddiq90/.buildtest/config.yml
  No tests were executed

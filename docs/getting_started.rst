@@ -117,21 +117,6 @@ follows::
     Test Directory: /private/tmp/tests
     tests/examples/buildspecs/os.yaml does not end in file extension .yml
 
-
-In next example, our current directory is at $HOME and we are able to build
-``examples/systemd.yml`` even if it's not in relative path but it is a path found
-in the buildspec search path.
-
-.. code-block:: console
-
-    $ pwd
-    /Users/siddiq90
-    $ ls examples/systemd.yml
-    ls: examples/systemd.yml: No such file or directory
-
-.. program-output:: cat docgen/getting_started/buildspec-relpath.txt
-
-
 buildtest can perform a directory build for instance let's build
 for directory ``tests/examples/buildspecs`` where buildtest will recursively
 search for all ``.yml`` files
@@ -189,99 +174,36 @@ cache file ``var/buildspec-cache.json`` and see which buildspecs have a matching
 tag. You should run ``buildtest buildspec find`` atleast once, in order to detect
 cache file.
 
-
-::
-
-    $ buildtest build --tags tutorials
-    Paths:
-    __________
-    Prefix: None
-    Buildspec Search Path: ['/Users/siddiq90/Documents/buildtest/tutorials']
-    Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
-
-    +-------------------------------+
-    | Stage: Discovered Buildspecs  |
-    +-------------------------------+
-
-    /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
-    /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
-    /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
-    /Users/siddiq90/Documents/buildtest/tutorials/environment.yml
-    /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
-    /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
-    /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
-    /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
-    /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-    [skip] test is skipped.
-     Name                  | Schema File               | Test Path                                                                                     | Buildspec
-    -----------------------+---------------------------+-----------------------------------------------------------------------------------------------+--------------------------------------------------------------------------
-     exit1_fail            | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
-     exit1_pass            | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
-     returncode_mismatch   | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch.sh | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
-     circle_area           | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area.py        | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
-     executable_arguments  | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments.sh | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
-     environment_variables | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/environment_variables.sh | /Users/siddiq90/Documents/buildtest/tutorials/environment.yml
-     wrongexecutor         | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/badexecutor/invalid_executor/wrongexecutor.sh   | /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
-     _bin_sh_shell         | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell.sh        | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
-     _bin_bash_shell       | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell.sh    | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
-     bash_shell            | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell.sh         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
-     sh_shell              | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell.sh             | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
-     shell_options         | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options.sh        | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
-     selinux_disable       | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable.sh           | /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
-     unskipped             | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped.sh              | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
-     variables             | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables.sh                    | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
-
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
-
-    [wrongexecutor]: Failed to Run Test
-     name                  | executor     | status   |   returncode | testpath
-    -----------------------+--------------+----------+--------------+-----------------------------------------------------------------------------------------------
-     exit1_fail            | local.sh     | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail.sh
-     exit1_pass            | local.sh     | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass.sh
-     returncode_mismatch   | local.sh     | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch.sh
-     circle_area           | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area.py
-     executable_arguments  | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments.sh
-     environment_variables | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/environment_variables.sh
-     _bin_sh_shell         | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell.sh
-     _bin_bash_shell       | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell.sh
-     bash_shell            | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell.sh
-     sh_shell              | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell.sh
-     shell_options         | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options.sh
-     selinux_disable       | local.bash   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable.sh
-     unskipped             | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped.sh
-     variables             | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables.sh
-
-
-
-    Error Messages from Stage: Run
-    ________________________________________________________________________________
-    [wrongexecutor]: executor badexecutor is not defined in /Users/siddiq90/.buildtest/config.yml
-
-
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-    Executed 14 tests
-    Passed Tests: 11/14 Percentage: 78.571%
-    Failed Tests: 3/14 Percentage: 21.429%
+.. program-output::  cat docgen/getting_started/tags.txt
 
 .. _invalid_buildspecs:
+
+Control builds by Stages
+-------------------------
+
+You can control behavior of ``buildtest build`` command to stop at certain point
+using ``--stage`` option. This takes two values ``parse`` or ``build``, which will
+stop buildtest after parsing buildspecs or building the test content.
+
+If you want to know your buildspecs are valid you can use ``--stage=parse`` to stop
+after parsing the buildspec. Shown below is an example build where we stop
+after parse stage.
+
+.. program-output:: cat docgen/getting_started/stage_parse.txt
+
+Likewise, if you want to troubleshoot your test script without running them you can
+use ``--stage=build`` which will stop after building your test script. This can
+be extremely useful when writing your buildspecs and not having to run your tests.
+In this next example, we stop our after the build stage using ``--stage=build``.
+
+.. program-output:: cat docgen/getting_started/stage_build.txt
 
 Invalid Buildspecs
 ~~~~~~~~~~~~~~~~~~~~
 
 buildtest will skip any buildspecs that fail to validate, in that case
-the test script will not be generated. Here is an example where only one buildspec
-was successfully built and run while the other failed to pass validation
+the test script will not be generated. Here is an example where we have an invalid
+buildspec.
 
 .. program-output:: cat docgen/getting_started/invalid-buildspec.txt
 

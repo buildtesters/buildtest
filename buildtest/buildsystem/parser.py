@@ -149,6 +149,8 @@ class BuildspecParser:
                 "Validating test - '%s' with schemafile: %s"
                 % (name, os.path.basename(schema_table[type]["path"]))
             )
+
+            self.schema_file = os.path.basename(schema_table[type]["path"])
             validate(
                 instance=self.recipe["buildspecs"][name],
                 schema=schema_table[type]["recipe"],
