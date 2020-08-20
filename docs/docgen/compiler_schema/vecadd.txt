@@ -25,7 +25,7 @@ Paths:
  +----------------------+ 
   name       | executor   | status   |   returncode | testpath
  ------------+------------+----------+--------------+------------------------------------------------------------------------------------------
-  vecadd_gnu | local.bash | PASS     |          0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/vecadd_gnu.sh
+  vecadd_gnu | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/vecadd_gnu.sh
  +----------------------+
  | Stage: Test Summary  |
  +----------------------+ 

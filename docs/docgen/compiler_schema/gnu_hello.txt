@@ -30,11 +30,11 @@ Paths:
  +----------------------+ 
   name            | executor   | status   |   returncode | testpath
  -----------------+------------+----------+--------------+-------------------------------------------------------------------------------------------------------
-  hello_f         | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/hello_f.sh
+  hello_f         | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/hello_f.sh
   hello_c         | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/hello_c.sh
   hello_cplusplus | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/hello_cplusplus.sh
   cc_example      | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/cc_example.sh
-  fc_example      | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/fc_example.sh
+  fc_example      | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/fc_example.sh
   cxx_example     | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/cxx_example.sh
  +----------------------+
  | Stage: Test Summary  |

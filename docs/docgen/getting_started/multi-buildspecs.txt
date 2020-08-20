@@ -8,20 +8,20 @@ Paths:
  | Stage: Discovered Buildspecs  |
  +-------------------------------+ 
  /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
- /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
- /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
- /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
  /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
+ /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+ /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
+ /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
  +---------------------------+
  | Stage: Parsing Buildspecs |
  +---------------------------+ 
   schemafile              | validstate   | buildspec
  -------------------------+--------------+----------------------------------------------------------------------------------
   script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
-  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
-  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
-  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
   script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
+  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
+  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
  +----------------------+
  | Stage: Building Test |
  +----------------------+ 
@@ -32,11 +32,11 @@ Paths:
   bash_shell                 | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/bash_shell.sh                        | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
   sh_shell                   | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/sh_shell.sh                              | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
   shell_options              | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/shell_options.sh                    | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+  hello_dinosaur             | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/hello_dinosaur.sh                   | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
+  systemd_default_target     | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/systemd_default_target.sh       | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+  circle_area                | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/circle_area.py                      | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
   slurm_down_nodes_reason    | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/slurm_down_nodes_reason.sh       | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
   slurm_not_responding_nodes | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/slurm_not_responding_nodes.sh | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
-  circle_area                | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/circle_area.py                      | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
-  systemd_default_target     | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/systemd_default_target.sh       | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
-  hello_dinosaur             | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/hello_dinosaur.sh                   | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
  +----------------------+
  | Stage: Running Test  |
  +----------------------+ 
@@ -47,11 +47,11 @@ Paths:
   bash_shell                 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/bash_shell.sh
   sh_shell                   | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/sh_shell.sh
   shell_options              | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/shell_options.sh
+  hello_dinosaur             | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/hello_dinosaur.sh
+  systemd_default_target     | local.bash   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/systemd_default_target.sh
+  circle_area                | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/circle_area.py
   slurm_down_nodes_reason    | local.bash   | FAIL     |          127 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/slurm_down_nodes_reason.sh
   slurm_not_responding_nodes | local.bash   | FAIL     |          127 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/slurm_not_responding_nodes.sh
-  circle_area                | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/circle_area.py
-  systemd_default_target     | local.bash   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/systemd_default_target.sh
-  hello_dinosaur             | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/hello_dinosaur.sh
  +----------------------+
  | Stage: Test Summary  |
  +----------------------+ 
