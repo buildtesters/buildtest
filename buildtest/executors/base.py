@@ -521,9 +521,6 @@ class SlurmExecutor(BaseExecutor):
             f"Running Test via command: {self.builder.metadata['command']}"
         )
 
-        self.builder.metadata["starttime"] = datetime.datetime.now()
-        self.result["starttime"] = self.get_formatted_time("starttime")
-
         command = BuildTestCommand(self.builder.metadata["command"])
         command.execute()
         out = command.get_output()
@@ -562,7 +559,6 @@ class SlurmExecutor(BaseExecutor):
         self.result["state"] = "N/A"
         self.result["runtime"] = "0"
         self.result["returncode"] = "0"
-        # self.write_testresults(out, err)
 
     def poll(self):
         """ This method will poll for job each interval specified by time interval
@@ -617,7 +613,9 @@ class SlurmExecutor(BaseExecutor):
         # about first number
         self.result["returncode"] = int(job_data["ExitCode"].split(":")[0])
 
+        self.result["starttime"] = job_data["Start"]
         self.result["endtime"] = job_data["End"]
+
         self.builder.metadata["outfile"] = os.path.join(
             job_data["WorkDir"].rstrip(), f"slurm-{job_data['JobID']}.out"
         )
@@ -755,7 +753,7 @@ class LSFExecutor(BaseExecutor):
         self.result["state"] = "N/A"
         self.result["runtime"] = "0"
         self.result["returncode"] = "0"
-        self.write_testresults(out, err)
+        # self.write_testresults(out, err)
 
     def poll(self):
         """ This method will poll for job by using bjobs and return state of job.
@@ -813,6 +811,7 @@ class LSFExecutor(BaseExecutor):
         else:
             self.result["returncode"] = int(job_data["EXIT_CODE"])
 
+        self.result["starttime"] = job_data["START_TIME"]
         self.result["endtime"] = job_data["FINISH_TIME"]
         self.builder.metadata["outfile"] = job_data["OUTPUT_FILE"]
         self.builder.metadata["errfile"] = job_data["ERROR_FILE"]
