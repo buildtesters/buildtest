@@ -4,7 +4,7 @@ import uuid
 from buildtest.config import load_settings
 from buildtest.defaults import BUILDTEST_SETTINGS_FILE
 from buildtest.menu.build import discover_buildspecs, func_build_subcmd
-
+from buildtest.menu.buildspec import func_buildspec_find
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)
@@ -77,6 +77,14 @@ def test_build_buildspecs():
 
 
 def test_build_by_tags():
+
+    # ensure we rebuild cache file before running by tags
+    # rerunning buildtest buildspec find without --clear option this will read from cache file
+    class args:
+        find = True
+        clear = False
+
+    func_buildspec_find(args)
 
     buildtest_configuration = load_settings()
 
