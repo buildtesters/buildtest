@@ -19,7 +19,7 @@ from buildtest.defaults import (
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import load_settings, check_settings
-from buildtest.executors.base import BuildExecutor
+from buildtest.executors.setup import BuildExecutor
 from buildtest.menu.report import update_report
 from buildtest.utils.file import walk_tree, resolve_path
 
