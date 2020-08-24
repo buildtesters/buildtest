@@ -200,6 +200,11 @@ class BuilderBase:
             for bsub_cmd in bsub:
                 lines.append(f"#BSUB {bsub_cmd}")
 
+            if self.executor.startswith("bsub"):
+                lines.append(f"#BSUB -J {self.name}")
+                lines.append(f"#BSUB -o {self.name}-%J.out")
+                lines.append(f"#BSUB -e {self.name}-%J.err")
+
         return lines
 
     def build(self):
