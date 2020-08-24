@@ -277,6 +277,7 @@ def func_build_subcmd(args, config_opts):
 +---------------------------+ 
 """
     )
+
     # build all the tests
     for buildspec in buildspecs:
 

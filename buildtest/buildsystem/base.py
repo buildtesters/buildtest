@@ -182,6 +182,12 @@ class BuilderBase:
             for sbatch_cmd in sbatch:
                 lines.append(f"#SBATCH {sbatch_cmd}")
 
+            # if buildspec using slurm executor define job name, output and error file in job script
+            if self.executor.startswith("slurm"):
+                lines.append(f"#SBATCH -J {self.name}")
+                lines.append(f"#SBATCH -o {self.name}-%j.out")
+                lines.append(f"#SBATCH -e {self.name}-%j.err")
+
         return lines
 
     def get_bsub(self):
