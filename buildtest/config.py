@@ -100,13 +100,13 @@ def validate_lsf_executors(lsf_executors):
                 )
 
             # check queue record for Status
-            for name in record.keys():
+            for name in record:
 
                 # skip record until we find matching queue
-                if record[name]["QUEUE_NAME"] != queue:
+                if name["QUEUE_NAME"] != queue:
                     continue
 
-                queue_state = record[name]["STATUS"]
+                queue_state = name["STATUS"]
                 # if state not Open:Active we raise error
                 if not queue_state == valid_queue_state:
                     sys.exit(

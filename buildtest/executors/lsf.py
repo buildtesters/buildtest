@@ -192,8 +192,12 @@ class LSFExecutor(BaseExecutor):
 
         self.result["starttime"] = job_data["START_TIME"]
         self.result["endtime"] = job_data["FINISH_TIME"]
-        self.builder.metadata["outfile"] = job_data["OUTPUT_FILE"]
-        self.builder.metadata["errfile"] = job_data["ERROR_FILE"]
+        self.builder.metadata["outfile"] = os.path.join(
+            self.builder.testdir, job_data["OUTPUT_FILE"]
+        )
+        self.builder.metadata["errfile"] = os.path.join(
+            self.builder.testdir, job_data["ERROR_FILE"]
+        )
 
         self.logger.debug(f"[{self.builder.name}] result: {self.result}")
         self.logger.debug(
