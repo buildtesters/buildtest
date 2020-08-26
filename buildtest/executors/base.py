@@ -116,7 +116,7 @@ class BaseExecutor:
 
         # Keep an output file
         run_output_file = os.path.join(
-            self.builder.metadata.get("rundir"), self.builder.metadata.get("build_id")
+            self.builder.metadata.get("testroot"), self.builder.metadata.get("build_id")
         )
         outfile = run_output_file + ".out"
         errfile = run_output_file + ".err"

@@ -78,6 +78,7 @@ class BuilderBase:
         self.executor = self.recipe.get("executor")
         self.metadata["executor"] = self.executor
         # The default shell will be bash
+
         self.shell = Shell(self.recipe.get("shell", "bash"))
 
         # set shebang to value defined in Buildspec, if not defined then get one from Shell class
@@ -90,17 +91,6 @@ class BuilderBase:
 
     def __repr__(self):
         return self.__str__()
-
-    def _create_test_folders(self):
-        """Create all needed test folders on init, and add their paths
-           to self.metadata.
-        """
-
-        create_dir(self.metadata["testroot"])
-        for folder in ["run"]:
-            name = "%sdir" % folder
-            self.metadata[name] = os.path.join(self.metadata["testroot"], folder)
-            create_dir(self.metadata[name])
 
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
@@ -209,12 +199,11 @@ class BuilderBase:
 
     def build(self):
         """ This method is responsible for invoking setup, creating test
-            directory and writing test.
-
-        :return:
+            directory and writing test. This method is called from an instance
+            object of this class that does ``builder.build()``.
         """
+
         self._build_setup()
-        self._create_test_folders()
         self._write_test()
 
     def _build_setup(self):
@@ -227,14 +216,6 @@ class BuilderBase:
         # Generate a unique id for the build based on key and unique string
         self.metadata["build_id"] = self._generate_build_id()
 
-        # History is returned at the end of a run
-        self.history = {}
-        self.history["TESTS"] = []
-
-        # Metadata includes known sections in a Buildspec
-        # These should all be validated for type, format, by the Buildspec schema
-        # self.metadata = {}
-
         # Derive the path to the test script
         self.metadata["generate_test"] = "%s.%s" % (
             os.path.join(self.testdir, "generate"),
@@ -244,6 +225,8 @@ class BuilderBase:
             self.metadata["generate_test"]
         )
         self.metadata["testroot"] = os.path.dirname(self.metadata["generate_test"])
+
+        create_dir(self.metadata["testroot"])
 
     def _generate_build_id(self):
         """Generate a build id based on the Buildspec name, and datetime."""
@@ -258,25 +241,6 @@ class BuilderBase:
            it has executable permission.
         """
 
-        # write before_script.sh in same directory as test and source the executor before_script.sh
-        before_script = os.path.join(self.testdir, "before_script.sh")
-        cmd = "source " + os.path.join(executor_root, self.executor, "before_script.sh")
-        write_file(before_script, cmd)
-
-        os.chmod(
-            before_script,
-            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
-        )
-
-        # write after_script.sh in same directory as test and source the executor after_script.sh
-        after_script = os.path.join(self.testdir, "after_script.sh")
-        cmd = "source " + os.path.join(executor_root, self.executor, "after_script.sh")
-        write_file(after_script, cmd)
-
-        os.chmod(
-            after_script,
-            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
-        )
         lines = self.generate_script()
         lines = "\n".join(lines)
 
@@ -296,11 +260,23 @@ class BuilderBase:
         )
 
         run_script = os.path.join(self.testdir, "run_script.sh")
+
         content = [self.shebang]
-        content.append(f"source {os.path.basename(before_script)}")
-        content.append(self.metadata["generate_test"])
-        content.append(f"source {os.path.basename(after_script)}")
-        print("run:", run_script)
+        content.append("set -e")
+        content.append(
+            f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
+        )
+        command = [
+            self.shell.path,
+            self.shell.opts,
+            "./" + os.path.basename(self.metadata["generate_test"]),
+        ]
+
+        content.append(" ".join(command))
+        content.append(
+            f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
+        )
+
         content = "\n".join(content)
         write_file(run_script, content)
 
