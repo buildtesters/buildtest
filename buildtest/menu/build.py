@@ -323,8 +323,6 @@ def func_build_subcmd(args, config_opts):
     )
     table = {"name": [], "schemafile": [], "testpath": [], "buildspec": []}
     for builder in builders:
-        # And builders parsed through for each
-        # for builder in bp.get_builders(testdir=test_directory):
 
         builder.build()
         table["name"].append(builder.metadata["name"])

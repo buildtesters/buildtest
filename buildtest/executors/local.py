@@ -19,7 +19,7 @@ class LocalExecutor(BaseExecutor):
 
     def load(self):
         self.shell = self._settings.get("shell")
-
+        self.shell = self.shell.split()[0]
         self.check()
 
     def check(self):
@@ -61,6 +61,8 @@ class LocalExecutor(BaseExecutor):
             self.builder.shell.opts,
             self.builder.metadata["testpath"],
         ]
+        cmd = ["bash", self.builder.metadata["testpath"]]
+
         self.builder.metadata["command"] = " ".join(cmd)
         self.logger.debug(
             f"Running Test via command: {self.builder.metadata['command']}"
