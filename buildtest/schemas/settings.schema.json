@@ -93,13 +93,22 @@
           }
         }
       },
+      "script": {
+        "type": "array",
+        "additionalProperties": false,
+        "items": {
+          "type": "string"
+        }
+      },
       "local": {
           "type": "object",
           "additionalProperties": false,
           "required": ["shell"],
           "properties": {
               "description": {"type": "string", "description":  "description field for documenting your executor"},
-              "shell":  {"type": "string",  "description": "Specify the shell launcher you want to use when running tests locally", "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*" }
+              "shell":  {"type": "string",  "description": "Specify the shell launcher you want to use when running tests locally", "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*" },
+              "before_script": { "#ref":  "#/definitions/script" },
+              "after_script": { "#ref":  "#/definitions/script" }
           }
        },
 
@@ -112,7 +121,9 @@
               "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any other options for ``sbatch`` used by this executor for running all jobs." },
               "cluster": {"type":  "string", "description": "Specify the slurm cluster you want to use ``-M <cluster>``"},
               "partition": {"type":  "string", "description": "Specify the slurm partition you want to use ``-p <partition>``"},
-              "qos": {"type":  "string", "description": "Specify the slurm qos you want to use ``-q <qos>``"}
+              "qos": {"type":  "string", "description": "Specify the slurm qos you want to use ``-q <qos>``"},
+              "before_script": { "#ref":  "#/definitions/script" },
+              "after_script": { "#ref":  "#/definitions/script" }
            }
        },
       "lsf": {
@@ -122,7 +133,9 @@
               "description": {"type": "string", "description": "description field for documenting your executor"},
               "launcher": { "type": "string", "enum": ["bsub"], "description": "Specify the lsf batch scheduler to use. This overrides the default ``launcher`` field. It must be ``bsub``. " },
               "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any options for ``bsub`` for this executor when running all jobs associated to this executor" },
-              "queue": {"type":  "string", "description": "Specify the lsf queue you want to use ``-q <queue>``"}
+              "queue": {"type":  "string", "description": "Specify the lsf queue you want to use ``-q <queue>``"},
+              "before_script": { "#ref":  "#/definitions/script" },
+              "after_script": { "#ref":  "#/definitions/script" }
           }
        },
       "ssh": {

@@ -15,7 +15,7 @@ import shutil
 import stat
 import sys
 
-
+from buildtest.defaults import executor_root
 from buildtest.schemas.defaults import schema_table
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import create_dir, resolve_path, write_file
@@ -236,12 +236,14 @@ class BuilderBase:
         # self.metadata = {}
 
         # Derive the path to the test script
-        self.metadata["testpath"] = "%s.%s" % (
-            os.path.join(self.testdir, self.name),
+        self.metadata["generate_test"] = "%s.%s" % (
+            os.path.join(self.testdir, "generate"),
             self.get_test_extension(),
         )
-        self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
-        self.metadata["testroot"] = os.path.dirname(self.metadata["testpath"])
+        self.metadata["generate_test"] = os.path.expandvars(
+            self.metadata["generate_test"]
+        )
+        self.metadata["testroot"] = os.path.dirname(self.metadata["generate_test"])
 
     def _generate_build_id(self):
         """Generate a build id based on the Buildspec name, and datetime."""
@@ -250,29 +252,65 @@ class BuilderBase:
         return "%s_%s" % (self.name, now)
 
     def _write_test(self):
-        """This method is responsible for invoking ``_build_testcontent`` that
+        """This method is responsible for invoking ``generate_script`` that
            formulates content of testscript which is implemented in each subclass.
            Next we write content to file and apply 755 permission on script so
            it has executable permission.
         """
 
-        lines = self._build_testcontent()
+        # write before_script.sh in same directory as test and source the executor before_script.sh
+        before_script = os.path.join(self.testdir, "before_script.sh")
+        cmd = "source " + os.path.join(executor_root, self.executor, "before_script.sh")
+        write_file(before_script, cmd)
+
+        os.chmod(
+            before_script,
+            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
+        )
+
+        # write after_script.sh in same directory as test and source the executor after_script.sh
+        after_script = os.path.join(self.testdir, "after_script.sh")
+        cmd = "source " + os.path.join(executor_root, self.executor, "after_script.sh")
+        write_file(after_script, cmd)
+
+        os.chmod(
+            after_script,
+            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
+        )
+        lines = self.generate_script()
         lines = "\n".join(lines)
 
-        self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
+        self.logger.info(
+            f"Opening Test File for Writing: {self.metadata['generate_test']}"
+        )
 
-        write_file(self.metadata["testpath"], lines)
+        write_file(self.metadata["generate_test"], lines)
 
         # Change permission of the file to executable
         os.chmod(
-            self.metadata["testpath"],
+            self.metadata["generate_test"],
             stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
         )
         self.logger.debug(
-            f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
+            f"Applying permission 755 to {self.metadata['generate_test']} so that test can be executed"
         )
 
-    def _build_testcontent(self):
+        run_script = os.path.join(self.testdir, "run_script.sh")
+        content = [self.shebang]
+        content.append(f"source {os.path.basename(before_script)}")
+        content.append(self.metadata["generate_test"])
+        content.append(f"source {os.path.basename(after_script)}")
+        print("run:", run_script)
+        content = "\n".join(content)
+        write_file(run_script, content)
+
+        os.chmod(
+            run_script,
+            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
+        )
+        self.metadata["testpath"] = run_script
+
+    def generate_script(self):
         """Build the testscript content implemented in each subclass"""
         pass
 
@@ -281,7 +319,7 @@ class ScriptBuilder(BuilderBase):
     type = "script"
     known_sections = ["type", "run"]
 
-    def _build_testcontent(self):
+    def generate_script(self):
         """This method builds the testscript content based on the builder type. For ScriptBuilder we
            need to add the shebang, environment variables and the run section. Environment variables are
            declared first followed by run section
@@ -487,7 +525,7 @@ class CompilerBuilder(BuilderBase):
 
         self.run_cmd = self.build_run_cmd()
 
-    def _build_testcontent(self):
+    def generate_script(self):
         """This method will build the test content from a Buildspec that uses compiler schema. We need a 'compiler'
            and 'source' key which specifies the source files to compile. We resolve the source file path which can
            be an absolute value or relative path with respect to Buildspec. The file extension of sourcefile is used
