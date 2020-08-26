@@ -79,19 +79,15 @@ def discover_buildspecs(buildspec):
     """
 
     buildspecs = []
-    search_path = []
-    # add default path to search path
-    search_path.append(BUILDSPEC_DEFAULT_PATH)
-    search_path.append(os.path.join(BUILDTEST_ROOT, "tutorials"))
-
-    # First try, the path is an absolute path to file or folder
-    # Second try, the path can be relative to the BUILDSPEC_DEFAULT_PATH
-    if not os.path.exists(buildspec):
-        # find the first valid buildspec path from the list of search paths
-        for path in search_path:
-            if os.path.exists(os.path.join(path, buildspec)):
-                buildspec = os.path.join(path, buildspec)
-                break
+    # if buildspec doesn't exist print message and log error and return
+    if not os.path.exists(os.path.abspath(buildspec)):
+        msg = (
+            f"Unable to find any buildspecs with name: {os.path.abspath(buildspec)} "
+            + "Please provide an absolute or relative path to a directory or file relative to current directory."
+        )
+        print(msg)
+        logger.error(msg)
+        return buildspecs
 
     # Now handle path based on being a directory or file path
     if os.path.isdir(buildspec):
@@ -107,14 +103,6 @@ def discover_buildspecs(buildspec):
 
         buildspecs = [buildspec]
         logger.debug(f"BuildSpec: {buildspec} is a file")
-    else:
-        msg = (
-            f"Unable to find any buildspecs with name: {buildspec} in search paths: {search_path} \n"
-            + "Please provide an absolute or relative path to a directory or file relative to current directory."
-        )
-
-        logger.error(msg)
-        sys.exit(msg)
 
     # If we don't have any files discovered
     if not buildspecs:
@@ -186,15 +174,8 @@ def func_build_subcmd(args, config_opts):
         or os.path.join(BUILDTEST_ROOT, "var", "tests")
     )
 
-    # returns a list of destination directories where repositories are cloned, if
-    # REPO_FILE is not found get_repo_paths will return None, in that case we
-    # set buildspec_searchpath to empty list
-    buildspec_searchpath = [BUILDSPEC_DEFAULT_PATH]
-
     print("Paths:")
     print("{:_<10}".format(""))
-    print(f"Prefix: {prefix}")
-    print(f"Buildspec Search Path: {buildspec_searchpath}")
     print(f"Test Directory: {test_directory}")
 
     ########## BEGIN BUILDSPEC DISCOVER STAGE ####################

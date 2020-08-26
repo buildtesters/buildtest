@@ -39,10 +39,8 @@ def test_discover_buildspecs():
         # searching for all Buildspecs in current directory
         discover_buildspecs(os.path.dirname(os.path.abspath(__file__)))
 
-    # when you pass invalid file it should fail
-    with pytest.raises(SystemExit):
-        invalid_file = str(uuid.uuid4())
-        discover_buildspecs(invalid_file)
+    invalid_file = str(uuid.uuid4())
+    assert not discover_buildspecs(invalid_file)
 
 
 def test_build_buildspecs():
