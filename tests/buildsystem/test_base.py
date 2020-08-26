@@ -46,6 +46,4 @@ def test_BuildspecParser(tmp_path):
             # Invoking build will setup test metadata by adding few more keys to metadata
             # and write test
             builder.build()
-
-            for k in ["testpath", "testroot", "rundir", "build_id"]:
-                assert k in builder.metadata
+            assert builder.metadata
