@@ -5,6 +5,12 @@ executors:
     normal:
       options: ["-C haswell"]
       qos: normal
+      before_script: |
+        time
+        echo "commands run before job"
+      after_script: |
+        time
+        echo "commands run after job"
 
 config:
   editor: vi

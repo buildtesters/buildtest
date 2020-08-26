@@ -6,13 +6,15 @@ on executor name.
 """
 
 import logging
+import os
 import sys
 
-from buildtest.defaults import BUILDTEST_SETTINGS_FILE
+from buildtest.defaults import BUILDTEST_SETTINGS_FILE, executor_root
 from buildtest.executors.base import SSHExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
 from buildtest.executors.slurm import SlurmExecutor
+from buildtest.utils.file import create_dir, write_file
 
 
 class BuildExecutor:
@@ -58,6 +60,8 @@ class BuildExecutor:
             self.executors[f"lsf.{name}"] = LSFExecutor(
                 name, config_opts["executors"]["lsf"][name], config_opts
             )
+
+        self.setup()
 
     def __str__(self):
         return "[buildtest-executor]"
@@ -107,6 +111,29 @@ class BuildExecutor:
         executor = self.executors.get(executor)
         executor.builder = builder
         return executor
+
+    def setup(self):
+        """
+        This method creates directory ``var/executors/<executor-name>`` for every
+        executor defined in buildtest configuration and write scripts before_script.sh
+        and after_script.sh if the fields ``before_script`` and ``after_script``
+        defined in executor. This method is called after executors are initialized
+        in the class __init__ method
+        """
+
+        for executor_name in self.executors.keys():
+            create_dir(os.path.join(executor_root, executor_name))
+            executor_settings = self.executors[executor_name]._settings
+            # if before_script field defined in executor section write content to var/executors/<executor>/before_script.sh
+
+            file = os.path.join(executor_root, executor_name, "before_script.sh")
+            content = executor_settings.get("before_script") or ""
+            write_file(file, content)
+
+            # after_script field defined in executor section write content to var/executors/<executor>/after_script.sh
+            file = os.path.join(executor_root, executor_name, "after_script.sh")
+            content = executor_settings.get("after_script") or ""
+            write_file(file, content)
 
     def run(self, builder):
         """Given a buildtest.buildsystem.BuildspecParser (subclass) go through the

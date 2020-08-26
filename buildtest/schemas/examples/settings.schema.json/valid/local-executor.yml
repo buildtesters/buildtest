@@ -3,6 +3,12 @@ executors:
     bash:
       description: submit jobs on local machine using bash shell
       shell: bash
+      before_script: |
+        time
+        echo "commands run before job"
+      after_script: |
+        time
+        echo "commands run after job"
 
     sh:
       description: submit jobs on local machine using sh shell

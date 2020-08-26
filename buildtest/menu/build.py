@@ -311,6 +311,8 @@ def func_build_subcmd(args, config_opts):
     if stage == "parse":
         return
 
+    executor = BuildExecutor(config_opts)
+
     ########## BEGIN BUILD STAGE ####################
     print(
         """
@@ -343,7 +345,6 @@ def func_build_subcmd(args, config_opts):
     ########## END BUILD STAGE ####################
 
     ########## BEGIN RUN STAGE ####################
-    executor = BuildExecutor(config_opts)
 
     # run all the tests
     passed_tests = 0

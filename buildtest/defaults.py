@@ -28,6 +28,7 @@ BUILDTEST_USER_HOME = os.path.join(userhome, ".buildtest")
 BUILDTEST_SETTINGS_FILE = os.path.join(BUILDTEST_USER_HOME, "config.yml")
 
 var_root = os.path.join(BUILDTEST_ROOT, "var")
+executor_root = os.path.join(var_root, "executors")
 
 BUILDSPEC_CACHE_FILE = os.path.join(var_root, "buildspec-cache.json")
 
