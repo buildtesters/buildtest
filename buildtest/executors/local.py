@@ -55,12 +55,6 @@ class LocalExecutor(BaseExecutor):
         os.chdir(self.builder.metadata["testroot"])
         self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
 
-        # build the run command that includes the shell path, shell options and path to test file
-        cmd = [
-            self.builder.shell.path,
-            self.builder.shell.opts,
-            self.builder.metadata["testpath"],
-        ]
         cmd = ["bash", self.builder.metadata["testpath"]]
 
         self.builder.metadata["command"] = " ".join(cmd)

@@ -4,6 +4,7 @@ buildspecs:
     executor: local.bash
     type: script
     description: check if default target is multi-user.target
+    tags: [tutorials]
     run: |
       if [ "multi-user.target" == `systemctl get-default` ]; then
         echo "multi-user is the default target";
