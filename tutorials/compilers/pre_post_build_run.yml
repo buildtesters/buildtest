@@ -1,6 +1,6 @@
 version: "1.0"
 buildspecs:
-  executable_arguments:
+  pre_post_build_run:
     type: compiler
     description: example using pre_build, post_build, pre_run, post_run example
     executor: local.bash
