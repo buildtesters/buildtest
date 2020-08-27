@@ -241,6 +241,8 @@ class BuilderBase:
            it has executable permission.
         """
 
+        # Implementation to write file generate.sh
+
         lines = self.generate_script()
         lines = "\n".join(lines)
 
@@ -259,7 +261,9 @@ class BuilderBase:
             f"Applying permission 755 to {self.metadata['generate_test']} so that test can be executed"
         )
 
-        run_script = os.path.join(self.testdir, "run_script.sh")
+        # Implementation to write file run_script.sh
+
+        run_script = os.path.join(self.testdir, "run.sh")
 
         content = [self.shebang]
         content.append("set -e")
@@ -277,7 +281,7 @@ class BuilderBase:
             f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
         )
 
-        content = "\n".join(content)
+        content = "\n".join(content) + "\n"
         write_file(run_script, content)
 
         os.chmod(
@@ -293,7 +297,6 @@ class BuilderBase:
 
 class ScriptBuilder(BuilderBase):
     type = "script"
-    known_sections = ["type", "run"]
 
     def generate_script(self):
         """This method builds the testscript content based on the builder type. For ScriptBuilder we
