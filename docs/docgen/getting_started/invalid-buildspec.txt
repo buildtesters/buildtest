@@ -1,29 +1,38 @@
 $ buildtest build -b tutorials/invalid_buildspec_section.yml 
 Paths:
- __________
- Prefix: None
- Buildspec Search Path: ['/Users/siddiq90/Documents/buildtest/tutorials']
- Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
- +-------------------------------+
- | Stage: Discovered Buildspecs  |
- +-------------------------------+ 
- /Users/siddiq90/Documents/buildtest/tutorials/invalid_buildspec_section.yml
- +---------------------------+
- | Stage: Parsing Buildspecs |
- +---------------------------+ 
-  schemafile   | validstate   | buildspec
- --------------+--------------+-------------
- Error Messages from Stage: Parse
- ________________________________________________________________________________
- Skipping /Users/siddiq90/Documents/buildtest/tutorials/invalid_buildspec_section.yml since it failed to validate
- +----------------------+
- | Stage: Building Test |
- +----------------------+ 
-  Name   | Schema File   | Test Path   | Buildspec
- --------+---------------+-------------+-------------
- +----------------------+
- | Stage: Running Test  |
- +----------------------+ 
-  name   | executor   | status   | returncode   | testpath
- --------+------------+----------+--------------+------------
- No tests were executed
+__________
+Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
+
++-------------------------------+
+| Stage: Discovered Buildspecs  |
++-------------------------------+ 
+
+/Users/siddiq90/Documents/buildtest/tutorials/invalid_buildspec_section.yml
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+
+ schemafile   | validstate   | buildspec
+--------------+--------------+-------------
+
+
+
+Error Messages from Stage: Parse
+________________________________________________________________________________
+Skipping /Users/siddiq90/Documents/buildtest/tutorials/invalid_buildspec_section.yml since it failed to validate
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ Name   | Schema File   | Test Path   | Buildspec
+--------+---------------+-------------+-------------
+
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+
+ name   | executor   | status   | returncode   | testpath
+--------+------------+----------+--------------+------------
+No tests were executed

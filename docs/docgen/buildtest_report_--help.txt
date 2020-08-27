@@ -1,7 +1,8 @@
 $ buildtest report --help
 usage: buildtest [options] [COMMANDS] report [-h] [--helpformat] [--format FORMAT]
- optional arguments:
-   -h, --help       show this help message and exit
-   --helpformat     List of available format fields
-   --format FORMAT  format field for printing purposes. For more details see --helpformat for list of available fields.
-                    Fields must be separated by comma (--format <field1>,<field2>,...)
+
+optional arguments:
+  -h, --help       show this help message and exit
+  --helpformat     List of available format fields
+  --format FORMAT  format field for printing purposes. For more details see --helpformat for list of available fields.
+                   Fields must be separated by comma (--format <field1>,<field2>,...)

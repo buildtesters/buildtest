@@ -1,0 +1,55 @@
+$ buildtest build -b tutorials/compilers/gnu_hello.yml 
+Paths:
+__________
+Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
+
++-------------------------------+
+| Stage: Discovered Buildspecs  |
++-------------------------------+ 
+
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+
+ schemafile                | validstate   | buildspec
+---------------------------+--------------+-----------------------------------------------------------------------
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ Name            | Schema File               | Test Path                                                                                        | Buildspec
+-----------------+---------------------------+--------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------
+ hello_f         | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/run_script.sh         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ hello_c         | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/run_script.sh         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ hello_cplusplus | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/run_script.sh | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ cc_example      | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/run_script.sh      | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ fc_example      | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/run_script.sh      | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ cxx_example     | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/run_script.sh     | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+
+ name            | executor   | status   |   returncode | testpath
+-----------------+------------+----------+--------------+--------------------------------------------------------------------------------------------------
+ hello_f         | local.bash | FAIL     |          127 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/run_script.sh
+ hello_c         | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/run_script.sh
+ hello_cplusplus | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/run_script.sh
+ cc_example      | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/run_script.sh
+ fc_example      | local.bash | FAIL     |          127 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/run_script.sh
+ cxx_example     | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/run_script.sh
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+
+Executed 6 tests
+Passed Tests: 4/6 Percentage: 66.667%
+Failed Tests: 2/6 Percentage: 33.333%
+
+
+

@@ -1,17 +1,22 @@
 $ buildtest --help
 usage: buildtest [options] [COMMANDS]
- buildtest is a HPC testing framework for building and executingtests. Buildtest comes with a set of json-schemas used to write test configuration (Buildspecs) in YAML to generate test scripts.
- optional arguments:
-   -h, --help            show this help message and exit
-   -V, --version         show program's version number and exit
-   -d {DEBUG,INFO,WARNING,ERROR,CRITICAL}, --debug {DEBUG,INFO,WARNING,ERROR,CRITICAL}
-                         Enable debugging messages.
- COMMANDS:
-   
-    build                          Options for building test scripts
-    buildspec                      Command options for buildspecs
-    report                         Show report for test results  
-    schema                         Commands for viewing buildtest schemas
-    config                         Buildtest Configuration Menu  
-   {build,buildspec,report,schema,config}
- Documentation: https://buildtest.readthedocs.io/en/latest/index.html
+
+buildtest is a HPC testing framework for building and executingtests. Buildtest comes with a set of json-schemas used to write test configuration (Buildspecs) in YAML to generate test scripts.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -V, --version         show program's version number and exit
+  -d {DEBUG,INFO,WARNING,ERROR,CRITICAL}, --debug {DEBUG,INFO,WARNING,ERROR,CRITICAL}
+                        Enable debugging messages.
+
+COMMANDS:
+  
+   build                          Options for building test scripts
+   buildspec                      Command options for buildspecs
+   report                         Show report for test results  
+   schema                         Commands for viewing buildtest schemas
+   config                         Buildtest Configuration Menu  
+
+  {build,buildspec,report,schema,config}
+
+Documentation: https://buildtest.readthedocs.io/en/latest/index.html

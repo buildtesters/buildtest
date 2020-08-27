@@ -256,5 +256,3 @@ or short option (``-e``), which will validate each example with schema file
 
 If you want to retrieve full json schema file run
 ``buildtest schema -n settings.schema.json --json`` or short option ``-j``
-
-.. program-output:: cat docgen/schemas/settings-json.txt

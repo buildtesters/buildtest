@@ -1,10 +1,13 @@
 $ buildtest buildspec --help
 usage: buildtest [options] [COMMANDS] buildspec [-h] {find,view,edit} ...
- optional arguments:
-   -h, --help        show this help message and exit
- subcommands:
-   Commands options for Buildspecs
-   {find,view,edit}
-     find            find all buildspecs
-     view            view a buildspec
-     edit            edit a buildspec
+
+optional arguments:
+  -h, --help        show this help message and exit
+
+subcommands:
+  Commands options for Buildspecs
+
+  {find,view,edit}
+    find            find all buildspecs
+    view            view a buildspec
+    edit            edit a buildspec

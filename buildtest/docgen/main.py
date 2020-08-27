@@ -2,9 +2,9 @@
 This file is used for generating documentation tests.
 """
 import os
+import subprocess
 from shutil import copy
 from buildtest.defaults import BUILDTEST_ROOT
-from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, write_file, walk_tree
 
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -30,11 +30,10 @@ def build_helper():
 
 def run(query):
     """The ``run()`` method will execute the command and retrieve the output as part of documentation examples """
+
     print(f"Executing Command: {query}")
-    cmd = BuildTestCommand(query)
-    cmd.execute()
-    out = cmd.get_output()
-    out = " ".join(out)
+    out = subprocess.check_output(query, shell=True, universal_newlines=True)
+    out = "".join(out)
     return out
 
 
@@ -72,31 +71,18 @@ def schemas():
     prefix = "schemas"
     cmd_dict = {
         f"{os.path.join(prefix, 'avail-schemas.txt')}": "buildtest schema",
-        f"{os.path.join(prefix, 'compiler-json.txt')}": "buildtest schema -n compiler-v1.0.schema.json -j",
         f"{os.path.join(prefix, 'compiler-examples.txt')}": "buildtest schema -n compiler-v1.0.schema.json -e",
-        f"{os.path.join(prefix,'script-json.txt')}": "buildtest schema -n script-v1.0.schema.json -j",
         f"{os.path.join(prefix,'script-examples.txt')}": "buildtest schema -n script-v1.0.schema.json -e",
         f"{os.path.join(prefix, 'global-json.txt')}": "buildtest schema -n global.schema.json -j",
         f"{os.path.join(prefix, 'global-examples.txt')}": "buildtest schema -n global.schema.json -e",
-        f"{os.path.join(prefix, 'settings-json.txt')}": "buildtest schema -n settings.schema.json -j",
         f"{os.path.join(prefix, 'settings-examples.txt')}": "buildtest schema -n settings.schema.json -e",
     }
     generate_tests(prefix, cmd_dict)
 
-
-def compiler_schema():
-
     path = os.path.join(BUILDTEST_ROOT, "tutorials")
-
-    prefix = "compiler_schema"
     dest = os.path.join(docgen, prefix)
-    create_dir(dest)
-
     # directory examples for compiler examples
-    directories = [
-        os.path.join(path, "examples", "serial"),
-        os.path.join(path, "examples", "openacc"),
-    ]
+    directories = [os.path.join(path, "compilers")]
 
     for src in directories:
         buildspecs = walk_tree(src, ".yml")
@@ -110,7 +96,10 @@ def compiler_schema():
     cmd_dict = {
         f"{os.path.join(prefix, 'gnu_hello.txt')}": "buildtest build -b tutorials/compilers/gnu_hello.yml",
         f"{os.path.join(prefix, 'vecadd.txt')}": "buildtest build -b tutorials/compilers/vecadd.yml",
+        f"{os.path.join(prefix, 'pass_returncode.txt')}": "buildtest build -b tutorials/pass_returncode.yml",
+        f"{os.path.join(prefix, 'skip_tests.txt')}": "buildtest build -b tutorials/skip_tests.yml",
     }
+
     generate_tests(prefix, cmd_dict)
 
 
@@ -144,7 +133,6 @@ def main():
     build_helper()
     tutorial()
     schemas()
-    compiler_schema()
     introspection_cmds()
 
 

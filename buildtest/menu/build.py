@@ -12,7 +12,6 @@ import time
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import (
-    BUILDSPEC_DEFAULT_PATH,
     BUILDTEST_ROOT,
     BUILDSPEC_CACHE_FILE,
 )

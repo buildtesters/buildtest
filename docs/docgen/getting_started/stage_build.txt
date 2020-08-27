@@ -1,22 +1,26 @@
 $ buildtest build -b tutorials/systemd.yml --stage=build 
 Paths:
- __________
- Prefix: None
- Buildspec Search Path: ['/Users/siddiq90/Documents/buildtest/tutorials']
- Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
- +-------------------------------+
- | Stage: Discovered Buildspecs  |
- +-------------------------------+ 
- /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
- +---------------------------+
- | Stage: Parsing Buildspecs |
- +---------------------------+ 
-  schemafile              | validstate   | buildspec
- -------------------------+--------------+-----------------------------------------------------------
-  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
- +----------------------+
- | Stage: Building Test |
- +----------------------+ 
-  Name                   | Schema File             | Test Path                                                                                                         | Buildspec
- ------------------------+-------------------------+-------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------
-  systemd_default_target | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/systemd_default_target.sh | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+__________
+Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
+
++-------------------------------+
+| Stage: Discovered Buildspecs  |
++-------------------------------+ 
+
+/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+-----------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ Name                   | Schema File             | Test Path                                                                                             | Buildspec
+------------------------+-------------------------+-------------------------------------------------------------------------------------------------------+-----------------------------------------------------------
+ systemd_default_target | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/run_script.sh | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
