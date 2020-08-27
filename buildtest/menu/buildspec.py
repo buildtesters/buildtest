@@ -136,7 +136,7 @@ def func_buildspec_find(args):
 
     paths = cache.keys()
 
-    table = {"Name": [], "Type": [], "Executor": [], "Description": []}
+    table = {"Name": [], "Type": [], "Executor": [], "Tags": [], "Description": []}
 
     for path in paths:
         for buildspecfile in cache[path].keys():
@@ -144,11 +144,13 @@ def func_buildspec_find(args):
 
                 type = cache[path][buildspecfile][test]["type"]
                 executor = cache[path][buildspecfile][test]["executor"]
+                tags = cache[path][buildspecfile][test].get("tags")
                 description = cache[path][buildspecfile][test].get("description")
 
                 table["Name"].append(test)
                 table["Type"].append(type)
                 table["Executor"].append(executor)
+                table["Tags"].append(tags)
                 table["Description"].append(description)
 
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
