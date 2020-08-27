@@ -20,8 +20,10 @@ Global Keys in buildspec
 The global keys required for buildspec are ``version`` and ``buildspecs``. The
 version key is required to validate with sub-schema when used with ``type`` field.
 The ``buildspecs`` is the start of test section. The ``maintainers`` is an optional
-field that is an array which can be used to identity maintainer of test. Shown below
-is an example buildspec::
+field that is an array which can be used to identity maintainer of test. To understand
+how buildtest validates the buildspec see :ref:`parse_stage`.
+
+Shown below is an example buildspec::
 
     version: "1.0"
     buildspecs:

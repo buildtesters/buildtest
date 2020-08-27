@@ -216,17 +216,21 @@ stage
 
 .. program-output:: cat docgen/schemas/skip_tests.txt
 
-Script Examples and Schema
----------------------------
+Script Schema and Examples
+---------------------------------------
 
 buildtest command line interface provides access to schemas and example buildspecs
-for each schemas. The example buildspecs are validated with the schema, so they are
+for each schemas.
+
+To retrieve the full json schema of script schema you can run the following::
+
+  buildtest schema -n script-v1.0.schema.json --json
+
+The example buildspecs are validated with the schema, so they are
 self-documentating examples. For example, you can retrieve the script examples using
 ``buildtest schema -n script-v1.0.schema.json -e``. Shown below we show valid and
 invalid examples. The examples are validated with the schema ``script-v1.0.schema.json``.
 
 .. program-output:: cat docgen/schemas/script-examples.txt
 
-To retrieve the full json schema of script schema you can run the following::
 
-  buildtest schema -n script-v1.0.schema.json --json

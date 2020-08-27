@@ -8,27 +8,6 @@ The parser will validate every buildspec using the `global.schema.json <https://
 which validates the top-level structure. This is performed using ``BuildspecParser._validate_global``
 method.
 
-A buildspec file may contain one or more test sections specified via ``buildspec``
-field. Each test is validated by a sub-schema specified by ``type`` field.
-The ``BuildspecParser._validate`` method will validate buildspec test section with
-the sub-schema.
-
-buildtest will invoke BuildspecParser against all discovered buildspecs and catch
-exceptions **ValidationError** and **SystemExit** and ignore those buildspecs. Next
-buildtest will build each test, this is implemented using base class `BuilderBase`.
-The subclass for **BuilderBase** such as **ScriptBuilder** and **CompilerBuilder**
-are responsible for generating the test script based on the ``type`` field.
-
-  -  ``type: script`` will invoke ScriptBuilder
-
-  - ``type: compiler`` will invoke CompilerBuilder
-
-
-This allows buildtest to extend **BuilderBase** class and each subclass is
-responsible for one schema type.
-
-.. image:: _static/BuildspecParser.jpg
-
 The build pipeline is comprised of 5 stages shown below. Every buildspec goes
 through this pipeline, if one stage fails, buildtest will skip the test. For instance,
 a buildspec that fails ``Parse`` stage will not be built. It is possible a
@@ -36,6 +15,37 @@ buildspec passes ``Parse`` stage but fails to build because we have an :ref:`inv
 for example an invalid executor name.
 
 .. image:: _static/GeneralPipeline.jpg
+
+.. _parse_stage:
+
+Parse Stage
+------------
+
+A buildspec file may contain one or more test sections specified via ``buildspec``
+field. Each test is validated by a sub-schema specified by ``type`` field.
+The ``BuildspecParser._validate`` method will validate buildspec test section with
+the sub-schema.
+
+In this diagram, a buildspec file is passed to the Parser and validated with global
+schema and a sub-schema.
+
+.. image:: _static/ParserSchemaValidationDiagram.png
+
+buildtest will invoke BuildspecParser against all discovered buildspecs and catch
+exceptions **ValidationError** and **SystemExit** and ignore those buildspecs. Next
+buildtest will build each test, this is implemented using base class `BuilderBase`.
+The subclass for **BuilderBase** such as **ScriptBuilder** and **CompilerBuilder**
+are responsible for generating the test script based on the ``type`` field.
+
+  -  ``type: script`` will invoke ScriptBuilder class
+
+  - ``type: compiler`` will invoke CompilerBuilder class
+
+
+This allows buildtest to extend **BuilderBase** class and each subclass is
+responsible for one schema type.
+
+.. image:: _static/BuildspecParser.jpg
 
 The **BuildExecutor** class is responsible for initializing the executors defined
 in your :ref:`configuring_buildtest`. The BuildExecutor class is invoked once and
