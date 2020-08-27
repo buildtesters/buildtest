@@ -1,16 +1,18 @@
 $ buildtest build -b tutorials/systemd.yml --stage=parse 
 Paths:
- __________
- Prefix: None
- Buildspec Search Path: ['/Users/siddiq90/Documents/buildtest/tutorials']
- Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
- +-------------------------------+
- | Stage: Discovered Buildspecs  |
- +-------------------------------+ 
- /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
- +---------------------------+
- | Stage: Parsing Buildspecs |
- +---------------------------+ 
-  schemafile              | validstate   | buildspec
- -------------------------+--------------+-----------------------------------------------------------
-  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+__________
+Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
+
++-------------------------------+
+| Stage: Discovered Buildspecs  |
++-------------------------------+ 
+
+/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+-----------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml

@@ -24,7 +24,7 @@ The **type**, **compiler**, and **executor** are required keys for the schema.
 Shown below are 6 test examples performing Hello World compilation with C, C++,
 and Fortran using GNU compiler
 
-.. program-output:: cat docgen/compiler_schema/gnu_hello.yml
+.. program-output:: cat docgen/schemas/gnu_hello.txt
 
 The tests ``hello_f``, ``hello_c`` and ``hello_cplusplus`` rely on buildtest to
 detect compiler wrappers while tests ``cc_example``, ``fc_example``, ``cxx_example``
@@ -53,7 +53,7 @@ selecting the correct compiler wrapper. You can use ``cflags``, ``cxxflags`` and
 
 Shown below is an example build for the buildspec example
 
-.. program-output:: cat docgen/compiler_schema/gnu_hello.txt
+.. program-output:: cat docgen/schemas/gnu_hello.txt
 
 The generated test for test name **hello_f** is the following::
 
@@ -90,7 +90,7 @@ Passing Arguments
 If you want to pass options to executable command use the ``args`` key. Shown
 below is an example test
 
-.. program-output:: cat docgen/compiler_schema/passing_args.yml
+.. program-output:: cat docgen/schemas/passing_args.yml
 
 The exec_args will pass options to the executable, use this if your binary
 requires input arguments. Shown below is a generated test::
@@ -252,7 +252,7 @@ OpenACC Examples
 Next, we will make use of an OpenACC vector addition example shown below is an
 example test
 
-.. program-output:: cat docgen/compiler_schema/vecadd.yml
+.. program-output:: cat docgen/schemas/vecadd.yml
 
 To compile OpenACC program with gnu compiler we must use ``-fopenacc`` flag, this
 program requires linking with math library so we can specify linker flags (ldflags)
@@ -266,7 +266,7 @@ The ``status`` field with ``regex`` is used for checking output stream using ``s
 and ``exp`` key to specify regular expression to use. If we are to build this test,
 you will notice the run section will have a Status of ``PASS``
 
-.. program-output:: cat docgen/compiler_schema/vecadd.txt
+.. program-output:: cat docgen/schemas/vecadd.txt
 
 The regular expression is performed using `re.search <https://docs.python.org/3/library/re.html#re.search>`_, for example if we can change
 the ``exp`` field as follows::
@@ -276,13 +276,14 @@ the ``exp`` field as follows::
 Next if we re-run test we will notice the Status is ``FAIL`` even though we
 have a Return Code of **0**::
 
+
     +----------------------+
     | Stage: Running Test  |
     +----------------------+
 
-    Name                 Executor             Status               Return Code          Buildspec Path
-    ________________________________________________________________________________________________________________________
-    vecadd_gnu           local.bash           FAIL                 0                    /global/u1/s/siddiq90/tutorials/examples/openacc/vecadd.yml
+     name       | executor   | status   |   returncode | testpath
+    ------------+------------+----------+--------------+------------------------------------------------------------------------------------------
+     vecadd_gnu | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/run_script.sh
 
 
 In the next example, we extend the previous buildspec test to run at Cori GPU
@@ -438,11 +439,5 @@ Each example is validated with schema ``compiler-v1.0.schema.json`` and error
 message from invalid examples are also shown in example output.
 
 .. program-output:: cat docgen/schemas/compiler-examples.txt
-
-compiler-v1.0.schema.json
--------------------------
-
-.. program-output:: cat docgen/schemas/compiler-json.txt
-
 
 

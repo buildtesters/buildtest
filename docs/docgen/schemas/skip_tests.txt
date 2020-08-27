@@ -1,0 +1,46 @@
+$ buildtest build -b tutorials/skip_tests.yml 
+Paths:
+__________
+Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
+
++-------------------------------+
+| Stage: Discovered Buildspecs  |
++-------------------------------+ 
+
+/Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+
+[skip] test is skipped.
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+--------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ Name      | Schema File             | Test Path                                                                                   | Buildspec
+-----------+-------------------------+---------------------------------------------------------------------------------------------+--------------------------------------------------------------
+ unskipped | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/run_script.sh | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+
+ name      | executor   | status   |   returncode | testpath
+-----------+------------+----------+--------------+---------------------------------------------------------------------------------------------
+ unskipped | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/run_script.sh
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+
+Executed 1 tests
+Passed Tests: 1/1 Percentage: 100.000%
+Failed Tests: 0/1 Percentage: 0.000%
+
+
+

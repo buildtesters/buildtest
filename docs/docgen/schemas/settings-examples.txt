@@ -1,144 +1,148 @@
 $ buildtest schema -n settings.schema.json -e 
+
+
+
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/local-executor.yml
- Valid State: True
- ________________________________________________________________________________
- executors:
-   local:
-     bash:
-       description: submit jobs on local machine using bash shell
-       shell: bash
-     sh:
-       description: submit jobs on local machine using sh shell
-       shell: sh
-     python:
-       description: submit jobs on local machine using python shell
-       shell: python
- config:
-   editor: vi
-   paths:
-     prefix: /tmp
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/ssh-executor.yml
- Valid State: True
- ________________________________________________________________________________
- executors:
-   ssh:
-     localhost:
-       host: localhost
-       user: siddiq90
-       identity_file: ~/.ssh/id_rsa
- config:
-   editor: vi
-   paths:
-     prefix: /tmp
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-executor.yml
- Valid State: True
- ________________________________________________________________________________
- executors:
-   defaults:
-     pollinterval: 10
-     launcher: bsub
-   lsf:
-     batch:
-       description: "LSF Executor name 'batch' that submits jobs to 'batch' queue"
-       queue: batch
-       options: ["-W 20"]
-     test:
-       description: "LSF Executor name 'test' that submits jobs to 'test' queue"
-       launcher: bsub
-       queue: test
-       options: ["-W 20"]
- config:
-   editor: vi
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
- Valid State: True
- ________________________________________________________________________________
- executors:
-   defaults:
-     pollinterval: 20
-   slurm:
-     normal:
-       options: ["-C haswell"]
-       qos: normal
- config:
-   editor: vi
-   paths:
-     prefix: /tmp
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/combined_executor.yml
- Valid State: True
- ________________________________________________________________________________
- executors:
-   local:
-     bash:
-       description: submit jobs on local machine
-       shell: bash -v
-   slurm:
-     haswell:
-       launcher: sbatch
-       options:
-         - "-p haswell"
-         - "-t 00:10"
-   lsf:
-     batch:
-       launcher: bsub
-       options:
-         - "-q batch"
-         - "-t 00:10"
-   ssh:
-      login:
-        host: cori
-        user: root
-        identity_file: ~/.ssh/nersc
- config:
-   editor: vi
-   paths:
-     prefix: /tmp
-     clonepath: /tmp/repo
-     logdir: /tmp/logs
-     testdir: /tmp/buildtest/tests
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-executor.yml
- Valid State: True
- ________________________________________________________________________________
- executors:
-   defaults:
-     pollinterval: 20
-     launcher: sbatch
-   slurm:
-     normal:
-       options: ["-C haswell"]
-       qos: normal
- config:
-   editor: vi
-   paths:
-     prefix: /tmp
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/ssh-executor-example.yml
- Valid State: True
- ________________________________________________________________________________
- executors:
-   ssh:
-     localhost:
-       host: localhost
-       user: siddiq90
-       identity_file: ~/.ssh/id_rsa
- config:
-   editor: vi
-   paths:
-     prefix: /tmp
- File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-example.yml
- Valid State: True
- ________________________________________________________________________________
- executors:
-   defaults:
-     pollinterval: 10
-     launcher: bsub
-   lsf:
-     batch:
-       description: "LSF Executor name 'batch' that submits jobs to 'batch' queue"
-       queue: batch
-       options: ["-W 20"]
-     test:
-       description: "LSF Executor name 'test' that submits jobs to 'test' queue"
-       launcher: bsub
-       queue: test
-       options: ["-W 20"]
- config:
-   editor: vi
+Valid State: True
+________________________________________________________________________________
+
+
+executors:
+  local:
+    bash:
+      description: submit jobs on local machine using bash shell
+      shell: bash
+      before_script: |
+        time
+        echo "commands run before job"
+      after_script: |
+        time
+        echo "commands run after job"
+
+    sh:
+      description: submit jobs on local machine using sh shell
+      shell: sh
+
+    python:
+      description: submit jobs on local machine using python shell
+      shell: python
+config:
+  editor: vi
+  paths:
+    prefix: /tmp
+
+
+
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/ssh-executor.yml
+Valid State: True
+________________________________________________________________________________
+
+
+executors:
+  ssh:
+    localhost:
+      host: localhost
+      user: siddiq90
+      identity_file: ~/.ssh/id_rsa
+config:
+  editor: vi
+  paths:
+    prefix: /tmp
+
+
+
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
+Valid State: True
+________________________________________________________________________________
+
+
+executors:
+  defaults:
+    pollinterval: 20
+  slurm:
+    normal:
+      options: ["-C haswell"]
+      qos: normal
+      before_script: |
+        time
+        echo "commands run before job"
+      after_script: |
+        time
+        echo "commands run after job"
+
+config:
+  editor: vi
+  paths:
+    prefix: /tmp
+
+
+
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/combined_executor.yml
+Valid State: True
+________________________________________________________________________________
+
+
+executors:
+  local:
+    bash:
+      description: submit jobs on local machine
+      shell: bash -v
+
+  slurm:
+    haswell:
+      launcher: sbatch
+      options:
+        - "-p haswell"
+        - "-t 00:10"
+
+  lsf:
+    batch:
+      launcher: bsub
+      options:
+        - "-q batch"
+        - "-t 00:10"
+  ssh:
+     login:
+       host: cori
+       user: root
+       identity_file: ~/.ssh/nersc
+
+config:
+  editor: vi
+  paths:
+    prefix: /tmp
+    clonepath: /tmp/repo
+    logdir: /tmp/logs
+    testdir: /tmp/buildtest/tests
+
+
+
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-example.yml
+Valid State: True
+________________________________________________________________________________
+
+
+executors:
+  defaults:
+    pollinterval: 10
+    launcher: bsub
+  lsf:
+    batch:
+      description: "LSF Executor name 'batch' that submits jobs to 'batch' queue"
+      queue: batch
+      options: ["-W 20"]
+      before_script: |
+        time
+        echo "commands run before job"
+      after_script: |
+        time
+        echo "commands run after job"
+    test:
+      description: "LSF Executor name 'test' that submits jobs to 'test' queue"
+      launcher: bsub
+      queue: test
+      options: ["-W 20"]
+
+
+config:
+  editor: vi

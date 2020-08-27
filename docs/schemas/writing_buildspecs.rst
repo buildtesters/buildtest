@@ -138,50 +138,9 @@ executor which is using ``sh`` to run the test. We expect **exit1_fail** and
           returncode: 1
 
 To demonstrate we will build this test and pay close attention to the Status field
-in output::
+in output
 
-    $ buildtest build -b pass_returncode.yml
-    Paths:
-    __________
-    Prefix: None
-    Buildspec Search Path: ['/Users/siddiq90/Documents/buildtest/tutorials']
-    Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
-
-    +-------------------------------+
-    | Stage: Discovered Buildspecs  |
-    +-------------------------------+
-
-    /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-     Name                | Schema File             | Test Path                                                                                     | Buildspec
-    ---------------------+-------------------------+-----------------------------------------------------------------------------------------------+-------------------------------------------------------------------
-     exit1_fail          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
-     exit1_pass          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
-     returncode_mismatch | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch.sh | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
-
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
-
-     name                | executor   | status   |   returncode | testpath
-    ---------------------+------------+----------+--------------+-----------------------------------------------------------------------------------------------
-     exit1_fail          | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail.sh
-     exit1_pass          | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass.sh
-     returncode_mismatch | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch.sh
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-    Executed 3 tests
-    Passed Tests: 1/3 Percentage: 33.333%
-    Failed Tests: 2/3 Percentage: 66.667%
-
-
+.. program-output:: cat docgen/schemas/pass_returncode.txt
 
 Python example
 ---------------
@@ -253,50 +212,9 @@ The first test `skip` will be skipped by buildtest because ``skip: true`` is def
 
 
 Here is an example build, notice message ``[skip] test is skipped`` during the build
-stage::
+stage
 
-    $ buildtest build -b examples/skip_tests.yml
-    Paths:
-    __________
-    Prefix: /private/tmp
-    Buildspec Search Path: ['/private/tmp/github.com/buildtesters/tutorials', '/Users/siddiq90/.buildtest/site']
-    Test Directory: /private/tmp/tests
-
-    Stage: Discovered Buildspecs
-
-
-    +-------------------------------+
-    | Stage: Discovered Buildspecs  |
-    +-------------------------------+
-
-    /Users/siddiq90/Documents/tutorials/examples/skip_tests.yml
-
-    Excluded Buildspecs:  []
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-    Name                      Schema Validation File    TestPath                                 Buildspec
-    ________________________________________________________________________________________________________________________________________________________________
-    [skip] test is skipped.
-    unskipped                 script-v1.0.schema.json   /private/tmp/tests/skip_tests/unskipped.sh /Users/siddiq90/Documents/tutorials/examples/skip_tests.yml
-
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
-
-    Name                 Executor             Status               Return Code          Buildspec Path
-    ________________________________________________________________________________________________________________________
-    unskipped            local.bash           PASS                 0                    /Users/siddiq90/Documents/tutorials/examples/skip_tests.yml
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-    Executed 1 tests
-    Passed Tests: 1/1 Percentage: 100.000%
-    Failed Tests: 0/1 Percentage: 0.000%
+.. program-output:: cat docgen/schemas/skip_tests.txt
 
 Script Examples and Schema
 ---------------------------
@@ -309,7 +227,6 @@ invalid examples. The examples are validated with the schema ``script-v1.0.schem
 
 .. program-output:: cat docgen/schemas/script-examples.txt
 
-Similarly, we can retrieve the json file using ``--json`` flag. For more help
-on schemas see :ref:`buildtest_schemas`.
+To retrieve the full json schema of script schema you can run the following::
 
-.. program-output:: cat docgen/schemas/script-json.txt
+  buildtest schema -n script-v1.0.schema.json --json
