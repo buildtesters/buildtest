@@ -3,16 +3,61 @@ CHANGELOG
 
 v0.8.0 (TBD)
 -----------------------
+ 
+This release includes major changes to framework, in particular we use `jsonschema <https://json-schema.org/>`_ to 
+validate schemas and add separate repository: https://github.com/buildtesters/schemas for development of schemas. The 
+schemas are hosted in Github pages at https://buildtesters.github.io/schemas/schemadocs/. There are four main schemas:
+**global.schema.json**, **script-v1.0.schema.json**, **compiler-v1.0.schema.json**, and **settings.schema.json**. The **settings.schema.json**
+is used for configuring buildtest. The global.schema.json is used for validating global section of buildspec and sub-schema
+script-v1.0.schema.json and compiler-v1.0.schema.json are used for validating test section. These are used when ``type: script``
+or ``type: compiler`` is set.
 
- - Add pre-commit hook to automate python format via ``black``. Add ``black --check`` as automated check see #172, #179
- - Remove CLI option ``buildtest build [run|log|test]`` see #163
- - Remove all module operations and cli menu ``buildtest module``. This is now moved to an API lmodule at https://github.com/buildtesters/lmodule
- - removing extra dependencies argcomplete and termcolor
- - removing dependency of Lmod, only needed if modules specified in configs
- - replace ``toolkit/suite`` with ``site`` directory  in code and documentation examples
- - removing bash script and sourcing in favor of Python module install
- - build test "root" replaced with user home ``$HOME/.buildtest``
- - addition of ``buildtest get`` command to clone repository into toolkit/suite
+All tests are run via exectors defined in buildtest configuration, currently we support LocalExecutor, LSFExecutor, and SlurmExecutor
+for submitting jobs to local host, LSF and Slurm scheduler. As part of this release, we removed all features related to buildtest modules
+and they are now part of a Python API called `lmodule <https://github.com/buildtesters/lmodule>`_ which is a separate project.
+
+At high level the following commands were introducted: ``buildtest build``, ``buildtest buildspec``, ``buildtest schema``, ``buildtest config``, 
+and ``buildtest report``. To build any buildspecs use the **buildtest build** command, main options are ``buildtest build --buildspec`` which 
+takes input file or directory. You can use ``buildtest build --exclude`` to exclude buildspec files. Both options can be specified multiple times.
+buildtest can search buildspecs by tags when building them using ``buildtest build --tags <TAGNAME>``. This feature assumes you a buildspec cache 
+which can be populated using ``buildtest buildspec find``. This command discovers and validates all buildspecs and invalid buildspecs are reported
+in file. The ``buildtest buildspec view`` and ``buildtest buildspec edit`` can view or edit a buildspec file provided you specify name of buildspec.
+
+The ``buildtest schema`` command provides access to schemas and examples, if you run ``buildtest schema`` it will display all schema names, you can
+select a schema using ``buildtest schema -n <schema>`` with option ``--examples`` or ``--json`` to view schema examples or json file. The 
+``buildtest config`` command is used showing buildtest configuration, you can view buildtest configuration using ``buildtest config view`` and 
+validate the configuration with schema using ``buildtest config validate``. The ``buildtest config edit`` can be used to open configuration using
+an editor and validate configuration upon closing file. If file is not valid, buildtest will print message exception from **jsonschema.validate**
+to stdout and open file again. This process happens in a while loop until user has validated the configuration. The ``buildtest report`` command is 
+used for showing test reports. The output can be filtered using ``buildtest report --format`` to select fields which alter the column outputs. 
+The available fields can be retrieved using ``buildtest report --helpformat``. 
+
+In this release, we added significant coverage to regression tests and organize tests such that source directory (`buildtest`) mirrors to test directory
+(`tests`) for instance testing module ``buildtest.menu.build`` will have a test in ``tests/menu/test_build.py``. buildtest comes with a set of example 
+tests meant to serve as a tutorial for buildtest. These tests are toy examples meant to augment documentation examples and serve as means to automate
+documentation examples or used in regression tests.
+
+- Add Github Issue Templates 
+- Remove workflow Issue Label Bot
+- Add pyflakes check in black workflow
+- Add TutorialsValidation workflow for validating buildspecs 
+- Change First Issue Greeting workflow to run only on first issue and not for pull request
+- Upgrade version of urlcheck workflow changed from ``SuperKogito/URLs-checker@0.1.2`` --> ``urlstechie/urlchecker-action@0.2.1``
+- Add pre-commit hook to automate python format via ``black``. Add ``black --check`` as automated check see #172, #179
+- Remove black pre-commit file ``.github/hooks/pre-commit`` in replacement for ``.pre-commit-config.yaml`` that installs the pre-commit file
+- Remove Lmod installation from Travis since buildtest doesn't depend on Lmod anymore
+- Rename GitHub Organization from ``HPC-buildtest`` to ``buildtesters`` and update links throughout documentation
+- Update License Copyright from ``2017-2019`` to ``2017-2020`` and add `Vanessa Sochat <https://github.com/vsoch>`_
+- Add more badges in README.rst and updates to file
+- Add logging support via python `logging <https://docs.python.org/3/library/logging.html>`_ library. Logs are written to file and they can be
+  streamed to stdout using **buildtest -d <DEBUGLEVEL>**
+- Use `sphinx-autoapi <https://sphinx-autoapi.readthedocs.io/en/latest/index.html>`_ to automate api docs instead of using `sphinx.ext.autodoc <https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html>`_
+- Add documentation for Contributing Guide, Maintainer guide, Github Integration, and Regression Testing
+- Add tox.ini file for automating python tests using `tox <https://tox.readthedocs.io/en/latest/>`_
+- Remove CLI option ``buildtest build [run|log|test]`` see #163
+- Remove all module operations and cli menu ``buildtest module``. This is now moved to an API lmodule at https://github.com/buildtesters/lmodule
+- removing extra dependencies argcomplete and termcolor
+- removing bash script and sourcing in favor of Python module install
 
 v0.7.6 (Feb 4th, 2020)
 -----------------------
