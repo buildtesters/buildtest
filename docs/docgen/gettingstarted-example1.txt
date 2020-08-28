@@ -1,6 +1,0 @@
-$ buildtest build -b /Users/siddiq90/.buildtest/site/github.com/buildtesters/tutorials/system/systemd.yml
-Paths:
- __________
- Prefix: /private/tmp
- Test Directory: /private/tmp
- Search Path: ['/tmp']
