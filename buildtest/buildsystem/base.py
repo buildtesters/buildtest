@@ -217,14 +217,12 @@ class BuilderBase:
         self.metadata["build_id"] = self._generate_build_id()
 
         # Derive the path to the test script
-        self.metadata["generate_test"] = "%s.%s" % (
+        self.metadata["testpath"] = "%s.%s" % (
             os.path.join(self.testdir, "generate"),
             self.get_test_extension(),
         )
-        self.metadata["generate_test"] = os.path.expandvars(
-            self.metadata["generate_test"]
-        )
-        self.metadata["testroot"] = os.path.dirname(self.metadata["generate_test"])
+        self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
+        self.metadata["testroot"] = os.path.dirname(self.metadata["testpath"])
 
         create_dir(self.metadata["testroot"])
 
@@ -242,53 +240,43 @@ class BuilderBase:
         """
 
         # Implementation to write file generate.sh
+        # start of each test should have the shebang
+        lines = [self.shebang]
 
-        lines = self.generate_script()
+        if self.recipe.get("sbatch"):
+
+            sbatch = self.get_sbatch()
+            if sbatch:
+                lines += sbatch
+        elif self.recipe.get("bsub"):
+
+            bsub = self.get_bsub()
+            if bsub:
+                lines += bsub
+
+        lines += [
+            f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
+        ]
+
+        lines += self.generate_script()
+        lines += [
+            f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
+        ]
+
         lines = "\n".join(lines)
 
-        self.logger.info(
-            f"Opening Test File for Writing: {self.metadata['generate_test']}"
-        )
+        self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
 
-        write_file(self.metadata["generate_test"], lines)
+        write_file(self.metadata["testpath"], lines)
 
         # Change permission of the file to executable
         os.chmod(
-            self.metadata["generate_test"],
+            self.metadata["testpath"],
             stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
         )
         self.logger.debug(
-            f"Applying permission 755 to {self.metadata['generate_test']} so that test can be executed"
+            f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
         )
-
-        # Implementation to write file run_script.sh
-
-        run_script = os.path.join(self.testdir, "run.sh")
-
-        content = [self.shebang]
-        content.append("set -e")
-        content.append(
-            f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
-        )
-        command = [
-            self.shell.path,
-            self.shell.opts,
-            "./" + os.path.basename(self.metadata["generate_test"]),
-        ]
-
-        content.append(" ".join(command))
-        content.append(
-            f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
-        )
-
-        content = "\n".join(content) + "\n"
-        write_file(run_script, content)
-
-        os.chmod(
-            run_script,
-            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
-        )
-        self.metadata["testpath"] = run_script
 
     def generate_script(self):
         """Build the testscript content implemented in each subclass"""
@@ -307,20 +295,7 @@ class ScriptBuilder(BuilderBase):
            :rtype: list
         """
 
-        # start of each test should have the shebang
-        lines = [self.shebang]
-
-        if self.recipe.get("sbatch"):
-
-            sbatch = self.get_sbatch()
-            if sbatch:
-                lines += sbatch
-        elif self.recipe.get("bsub"):
-
-            bsub = self.get_bsub()
-            if bsub:
-                lines += bsub
-
+        lines = []
         # Add environment variables
         lines += self.get_environment()
 
