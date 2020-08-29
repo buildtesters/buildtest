@@ -89,7 +89,7 @@ class SlurmExecutor(BaseExecutor):
 
         self.check()
 
-        self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
+        self.result["id"] = self.builder.metadata.get("id")
 
         os.chdir(self.builder.metadata["testroot"])
         self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")

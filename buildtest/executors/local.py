@@ -33,8 +33,10 @@ class LocalExecutor(BaseExecutor):
            and self.result keeps track of run result. The output and error file
            is written to filesystem. After test
         """
-        # Keep a result object
-        # self.result = {}
+
+        # self.result must be initialized to empty dict since this is shared by
+        # builders that use the Local Executor.
+        self.result = {}
 
         # check shell type mismatch between buildspec shell and executor shell. We can't support python with sh/bash.
         if (
@@ -48,8 +50,7 @@ class LocalExecutor(BaseExecutor):
                 f"[{self.name}]: shell mismatch, expecting {self.shell} while buildspec shell is {self.builder.shell.name}"
             )
 
-        self.result["LOGFILE"] = self.builder.metadata.get("logfile", "")
-        self.result["BUILD_ID"] = self.builder.metadata.get("build_id")
+        self.result["id"] = self.builder.metadata.get("id")
 
         # Change to the test directory
         os.chdir(self.builder.metadata["testroot"])
@@ -74,8 +75,6 @@ class LocalExecutor(BaseExecutor):
         self.builder.metadata["endtime"] = datetime.datetime.now()
         self.result["endtime"] = self.get_formatted_time("endtime")
 
-        self.write_testresults(out, err)
-
         self.logger.debug(
             f"Return code: {command.returncode} for test: {self.builder.metadata['testpath']}"
         )
@@ -83,3 +82,5 @@ class LocalExecutor(BaseExecutor):
 
         self.write_testresults(out, err)
         self.check_test_state()
+
+        self.builder.metadata["result"] = self.result

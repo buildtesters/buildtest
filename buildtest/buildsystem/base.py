@@ -61,6 +61,7 @@ class BuilderBase:
         self.metadata["name"] = self.name
         self.metadata["buildspec"] = buildspec
         self.metadata["recipe"] = recipe
+        self.metadata["tags"] = recipe.get("tags")
 
         # A builder is required to define the type attribute
         if not hasattr(self, "type"):
@@ -214,7 +215,7 @@ class BuilderBase:
         """
 
         # Generate a unique id for the build based on key and unique string
-        self.metadata["build_id"] = self._generate_build_id()
+        self.metadata["id"] = self._generate_build_id()
 
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (

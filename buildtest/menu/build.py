@@ -382,7 +382,6 @@ def func_build_subcmd(args, config_opts):
         print("\n")
 
     ########## END RUN STAGE ####################
-
     # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
     if poll:
         ########## BEGIN POLL STAGE ####################
