@@ -88,7 +88,9 @@ class SlurmExecutor(BaseExecutor):
         """This method is responsible for dispatching job to slurm scheduler."""
 
         self.check()
-
+        self.result = {}
+        # The job_id variable is used to store the JobID retrieved by sacct
+        self.job_id = 0
         self.result["id"] = self.builder.metadata.get("id")
 
         os.chdir(self.builder.metadata["testroot"])
@@ -128,7 +130,7 @@ class SlurmExecutor(BaseExecutor):
 
         print(f"[{self.builder.metadata['name']}] job dispatched to scheduler")
         print(
-            f"[{self.builder.metadata['name']}] acquiring job id in {interval} seconds"
+            f"[{self.builder.metadata['name']}] acquiring JobID in {interval} seconds"
         )
 
         # wait 5 seconds before querying slurm for jobID. It can take few seconds
@@ -145,9 +147,10 @@ class SlurmExecutor(BaseExecutor):
         self.logger.debug(f"[Acquire Job ID]: {cmd}")
         output = subprocess.check_output(cmd, shell=True, universal_newlines=True)
         self.job_id = int(output.strip())
-        self.logger.debug(
-            f"[{self.builder.metadata['name']}] JobID: {self.job_id} dispatched to scheduler"
-        )
+        msg = f"[{self.builder.metadata['name']}] JobID: {self.job_id} dispatched to scheduler"
+        print(msg)
+        self.logger.debug(msg)
+
         self.result["state"] = "N/A"
         self.result["runtime"] = "0"
         self.result["returncode"] = "0"
@@ -221,3 +224,4 @@ class SlurmExecutor(BaseExecutor):
             f"[{self.builder.name}] returncode: {self.result['returncode']}"
         )
         self.check_test_state()
+        self.builder.metadata["result"] = self.result
