@@ -162,8 +162,10 @@ def update_report(valid_builders):
         ]:
             entry[item] = builder.metadata[item]
 
-        # convert tags to string.
-        entry["tags"] = " ".join(builder.metadata["tags"])
+        entry["tags"] = ""
+        # convert tags to string if defined in buildspec
+        if builder.metadata["tags"]:
+            entry["tags"] = " ".join(builder.metadata["tags"])
 
         # query over result attributes, we only assign some keys of interest
         for item in ["starttime", "endtime", "runtime", "state", "returncode"]:
