@@ -28,7 +28,7 @@ def func_report(args=None):
     format_fields = [
         "buildspec",
         "name",
-        "build_id",
+        "id",
         "testroot",
         "testpath",
         "command",
@@ -36,6 +36,7 @@ def func_report(args=None):
         "errfile",
         "schemafile",
         "executor",
+        "tags",
         "starttime",
         "endtime",
         "runtime",
@@ -46,7 +47,7 @@ def func_report(args=None):
     format_table = [
         ["buildspec", "Buildspec file"],
         ["name", "Name of test defined in buildspec"],
-        ["build_id", "Unique Build Identifier"],
+        ["id", "Unique Build Identifier"],
         ["testroot", "Root of test directory"],
         ["testpath", "Path to test"],
         ["command", "Command executed"],
@@ -54,6 +55,7 @@ def func_report(args=None):
         ["errfile", "Error File"],
         ["schemafile", "Schema file used for validation"],
         ["executor", "Executor name"],
+        ["tags", "Tag name"],
         ["starttime", "Start Time of test in date format"],
         ["endtime", "End Time for Test in date format"],
         ["runtime", "Total runtime in seconds"],
@@ -70,13 +72,13 @@ def func_report(args=None):
 
     # default table format fields
     display_table = {
-        "name": [],
+        "id": [],
         "state": [],
         "returncode": [],
         "starttime": [],
         "endtime": [],
         "runtime": [],
-        "build_id": [],
+        "tags": [],
         "buildspec": [],
     }
 
@@ -149,7 +151,7 @@ def update_report(valid_builders):
         # query over attributes found in builder.metadata, we only assign
         # keys that we care obout for reporting
         for item in [
-            "build_id",
+            "id",
             "testroot",
             "testpath",
             "command",
@@ -159,6 +161,9 @@ def update_report(valid_builders):
             "executor",
         ]:
             entry[item] = builder.metadata[item]
+
+        # convert tags to string.
+        entry["tags"] = " ".join(builder.metadata["tags"])
 
         # query over result attributes, we only assign some keys of interest
         for item in ["starttime", "endtime", "runtime", "state", "returncode"]:
