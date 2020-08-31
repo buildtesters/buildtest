@@ -150,7 +150,7 @@ class SlurmExecutor(BaseExecutor):
 
         self.builder.metadata["jobid"] = self.job_id
 
-        msg = f"[{self.builder.metadata['name']}] JobID: {self.job_id} dispatched to scheduler"
+        msg = f"[{self.builder.metadata['name']}] JobID: {self.builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
         self.logger.debug(msg)
 
@@ -165,10 +165,8 @@ class SlurmExecutor(BaseExecutor):
             ``sacct -j <jobid> -o State -n -X -P``
         """
 
-        # self.logger.debug(f"Query Job: {self.job_id}")
         self.logger.debug(f"Query Job: {self.builder.metadata['jobid']}")
 
-        # slurm_query = f"{self.poll_cmd} -j {self.job_id} -o State -n -X -P"
         slurm_query = (
             f"{self.poll_cmd} -j {self.builder.metadata['jobid']} -o State -n -X -P"
         )
@@ -182,7 +180,7 @@ class SlurmExecutor(BaseExecutor):
         cmd.execute()
         self.job_state = cmd.get_output()
         self.job_state = "".join(self.job_state).rstrip()
-        # msg = f"[{self.builder.metadata['name']}]: JobID {self.job_id} in {self.job_state} state "
+
         msg = f"[{self.builder.metadata['name']}]: JobID {self.builder.metadata['jobid']} in {self.job_state} state "
         print(msg)
         self.logger.debug(msg)
@@ -191,7 +189,6 @@ class SlurmExecutor(BaseExecutor):
     def gather(self):
         """Gather Slurm detail after job completion"""
 
-        # gather_cmd = f"{self.poll_cmd} -j {self.job_id} -X -n -P -o {','.join(self.sacct_fields)}"
         gather_cmd = f"{self.poll_cmd} -j {self.builder.metadata['jobid']} -X -n -P -o {','.join(self.sacct_fields)}"
 
         # to query jobs from another cluster we must add -M <cluster> to sacct
