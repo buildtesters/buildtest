@@ -129,11 +129,12 @@ class LSFExecutor(BaseExecutor):
         self.logger.debug(f"[Acquire Job ID]: {cmd}")
         output = subprocess.check_output(cmd, shell=True, universal_newlines=True)
         self.job_id = int(output.strip())
-        msg = f"[{self.builder.metadata['name']}] JobID: {self.job_id} dispatched to scheduler"
-        self.logger.debug(msg)
-        print(msg)
 
         self.builder.metadata["jobid"] = self.job_id
+
+        msg = f"[{self.builder.metadata['name']}] JobID: {self.builder.metadata['jobid']} dispatched to scheduler"
+        self.logger.debug(msg)
+        print(msg)
 
         self.result["state"] = "N/A"
         self.result["runtime"] = "0"
@@ -145,16 +146,16 @@ class LSFExecutor(BaseExecutor):
              which returns job state.
         """
 
-        self.logger.debug(f"Query Job: {self.job_id}")
+        self.logger.debug(f"Query Job: {self.builder.metadata['jobid']}")
 
-        query = f"{self.poll_cmd} -noheader -o 'stat' {self.job_id}"
+        query = f"{self.poll_cmd} -noheader -o 'stat' {self.builder.metadata['jobid']}"
 
         self.logger.debug(query)
         cmd = BuildTestCommand(query)
         cmd.execute()
         self.job_state = cmd.get_output()
         self.job_state = "".join(self.job_state).rstrip()
-        msg = f"[{self.builder.metadata['name']}]: JobID {self.job_id} in {self.job_state} state "
+        msg = f"[{self.builder.metadata['name']}]: JobID {self.builder.metadata['jobid']} in {self.job_state} state "
         print(msg)
         self.logger.debug(msg)
         return self.job_state
@@ -165,9 +166,7 @@ class LSFExecutor(BaseExecutor):
            ``bjobs -o '<field1> ... <fieldN>' <JOBID> -json``.
         """
         # command
-        gather_cmd = (
-            f"{self.poll_cmd} -o '{' '.join(self.format_fields)}' {self.job_id} -json"
-        )
+        gather_cmd = f"{self.poll_cmd} -o '{' '.join(self.format_fields)}' {self.builder.metadata['jobid']} -json"
 
         self.logger.debug(f"Gather LSF job data by running: {gather_cmd}")
         cmd = BuildTestCommand(gather_cmd)
