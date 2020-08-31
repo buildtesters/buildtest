@@ -77,7 +77,9 @@ class LSFExecutor(BaseExecutor):
         """This method is responsible for dispatching job to slurm scheduler."""
 
         self.check()
-
+        self.result = {}
+        # The job_id variable is used to store the JobID retrieved by bjobs
+        self.job_id = 0
         self.result["id"] = self.builder.metadata.get("id")
 
         os.chdir(self.builder.metadata["testroot"])
@@ -127,13 +129,15 @@ class LSFExecutor(BaseExecutor):
         self.logger.debug(f"[Acquire Job ID]: {cmd}")
         output = subprocess.check_output(cmd, shell=True, universal_newlines=True)
         self.job_id = int(output.strip())
-        self.logger.debug(
-            f"[{self.builder.metadata['name']}] JobID: {self.job_id} dispatched to scheduler"
-        )
+        msg = f"[{self.builder.metadata['name']}] JobID: {self.job_id} dispatched to scheduler"
+        self.logger.debug(msg)
+        print(msg)
+
+        self.builder.metadata["jobid"] = self.job_id
+
         self.result["state"] = "N/A"
         self.result["runtime"] = "0"
         self.result["returncode"] = "0"
-        # self.write_testresults(out, err)
 
     def poll(self):
         """ This method will poll for job by using bjobs and return state of job.
@@ -204,3 +208,4 @@ class LSFExecutor(BaseExecutor):
             f"[{self.builder.name}] returncode: {self.result['returncode']}"
         )
         self.check_test_state()
+        self.builder.metadata["result"] = self.result
