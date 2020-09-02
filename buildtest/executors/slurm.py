@@ -128,36 +128,14 @@ class SlurmExecutor(BaseExecutor):
             sys.exit(err)
 
         parse_jobid = command.get_output()
-        # output of sbatch --parsable will be in format: JobID or JobID;cluster
+        parse_jobid = " ".join(parse_jobid)
+
+        self.job_id = int(parse_jobid)
+
+        # output of sbatch --parsable could be in format 'JobID;cluster' if so we split by colon to extract JobID
         if re.search(";", parse_jobid):
             self.job_id = int(parse_jobid.split(";")[0])
-        else:
-            self.job_id = int(parse_jobid)
-
-        """
-        interval = 5
-
-        print(f"[{self.builder.metadata['name']}] job dispatched to scheduler")
-        print(
-            f"[{self.builder.metadata['name']}] acquiring JobID in {interval} seconds"
-        )
-
-        # wait 5 seconds before querying slurm for jobID. It can take few seconds
-        # for output of job to show up from time of submission and running squeue.
-        time.sleep(interval)
-
-        cmd = ["sacct"]
-        if self.cluster:
-            cmd += [f"-M {self.cluster}"]
-        cmd += ["-X -n -P -u $USER --format=job | tail -n 1"]
-        cmd = " ".join(cmd)
-
-        # get last job ID
-        self.logger.debug(f"[Acquire Job ID]: {cmd}")
-        output = subprocess.check_output(cmd, shell=True, universal_newlines=True)
-        self.job_id = int(output.strip())
-        """
-
+        
         self.builder.metadata["jobid"] = self.job_id
 
         msg = f"[{self.builder.metadata['name']}] JobID: {self.builder.metadata['jobid']} dispatched to scheduler"
