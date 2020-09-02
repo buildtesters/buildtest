@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import time
+import re
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
 
@@ -96,7 +97,7 @@ class SlurmExecutor(BaseExecutor):
         os.chdir(self.builder.metadata["testroot"])
         self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
 
-        sbatch_cmd = [self.launcher]
+        sbatch_cmd = [self.launcher, "--parsable"]
 
         if self.partition:
             sbatch_cmd += [f"-p {self.partition}"]
@@ -126,6 +127,14 @@ class SlurmExecutor(BaseExecutor):
             err += f"[{self.builder.metadata['name']}] running command: {' '.join(sbatch_cmd)}"
             sys.exit(err)
 
+        parse_jobid = command.get_output()
+        # output of sbatch --parsable will be in format: JobID or JobID;cluster
+        if re.search(";", parse_jobid):
+            self.job_id = int(parse_jobid.split(";")[0])
+        else:
+            self.job_id = int(parse_jobid)
+
+        """
         interval = 5
 
         print(f"[{self.builder.metadata['name']}] job dispatched to scheduler")
@@ -147,6 +156,7 @@ class SlurmExecutor(BaseExecutor):
         self.logger.debug(f"[Acquire Job ID]: {cmd}")
         output = subprocess.check_output(cmd, shell=True, universal_newlines=True)
         self.job_id = int(output.strip())
+        """
 
         self.builder.metadata["jobid"] = self.job_id
 
