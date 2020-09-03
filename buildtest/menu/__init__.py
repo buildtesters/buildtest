@@ -194,6 +194,13 @@ class BuildTestParser:
             help="Get all buildspec files from cache",
             action="store_true",
         )
+        buildspec_find.add_argument(
+            "-le",
+            "--list-executors",
+            help="get all unique executors from buildspecs",
+            action="store_true",
+        )
+
         buildspec_view = subparsers_buildspec.add_parser(
             "view", help="view a buildspec"
         )

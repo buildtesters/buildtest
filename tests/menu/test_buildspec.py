@@ -9,6 +9,7 @@ def test_func_buildspec_find():
         find = True
         clear = True
         buildspec_files = False
+        list_executors = False
         tags = False
 
     func_buildspec_find(args)
@@ -18,6 +19,7 @@ def test_func_buildspec_find():
         find = True
         clear = False
         buildspec_files = False
+        list_executors = False
         tags = False
 
     func_buildspec_find(args)
@@ -43,6 +45,7 @@ def test_buildspec_tags():
         find = True
         clear = False
         buildspec_files = False
+        list_executors = False
         tags = True
 
     # testing buildtest buildspec find --tags
@@ -53,9 +56,21 @@ def test_buildspec_files():
     class args:
         find = True
         clear = False
-        buildspec_files = False
+        list_executors = False
         tags = False
         buildspec_files = True
 
     # testing buildtest buildspec find --buildspec-files
+    func_buildspec_find(args)
+
+
+def test_buildspec_executors():
+    class args:
+        find = True
+        clear = False
+        list_executors = True
+        tags = False
+        buildspec_files = False
+
+    # testing buildtest buildspec find --list-executors
     func_buildspec_find(args)

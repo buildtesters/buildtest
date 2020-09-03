@@ -67,6 +67,10 @@ def func_buildspec_find(args):
         get_buildspecfiles(cache)
         return
 
+    if args.list_executors:
+        get_executors(cache)
+        return
+
     paths = cache.keys()
 
     table = {"Name": [], "Type": [], "Executor": [], "Tags": [], "Description": []}
@@ -152,6 +156,14 @@ def func_buildspec_edit(args):
 
 
 def rebuild_buildspec_cache(paths):
+    """This method will rebuild the buildspec cache file by recursively searching
+    all .yml files specified by input argument ``paths`` which is a list of directory
+    roots. The buildspecs are validated and cache file is updated"
+
+    :param paths: A list of directory roots to process buildspecs files.
+    :type paths: list
+    :return: Rebuild cache file
+    """
     cache = {}
     buildspecs = []
     invalid_buildspecs = {}
@@ -229,6 +241,13 @@ def rebuild_buildspec_cache(paths):
 
 
 def get_all_tags(cache):
+    """ This method implements ``buildtest buildspec find --tags`` which
+        reports a list of unique tags from all buildspecs in cache file.
+
+        :param cache: content of cache as dictionary
+        :type cache: dict
+    """
+
     paths = cache.keys()
     table = {"Tags": []}
 
@@ -246,6 +265,12 @@ def get_all_tags(cache):
 
 
 def get_buildspecfiles(cache):
+    """ This method implements ``buildtest buildspec find --buildspec-files`` which
+        reports all buildspec files in cache.
+
+        :param cache: content of cache as dictionary
+        :type cache: dict
+    """
     table = {"buildspecs": []}
     paths = cache.keys()
     files = []
@@ -254,4 +279,25 @@ def get_buildspecfiles(cache):
         files += cache[path].keys()
 
     table["buildspecs"] = files
+    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+
+
+def get_executors(cache):
+    """ This method implements ``buildtest buildspec find --list-executors`` which
+        reports all executors from cache.
+
+        :param cache: content of cache as dictionary
+        :type cache: dict
+    """
+
+    table = {"executors": []}
+    paths = cache.keys()
+    executors = set()
+    for path in paths:
+        for buildspecfile in cache[path].keys():
+            for test in cache[path][buildspecfile].keys():
+                executor = cache[path][buildspecfile][test].get("executor")
+                executors.add(executor)
+
+    table["executors"] = list(executors)
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
