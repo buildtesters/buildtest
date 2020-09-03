@@ -19,6 +19,7 @@ def build_helper():
         "buildtest build --help",
         "buildtest config --help",
         "buildtest buildspec --help",
+        "buildtest buildspec find --help",
         "buildtest report --help",
     ]
     for cmd in help_cmds:
@@ -109,6 +110,8 @@ def introspection_cmds():
         "config-validate.txt": "buildtest config validate",
         "config-summary.txt": "buildtest config summary",
         "report.txt": "buildtest report",
+        "buildtest_buildspec_find_tags.txt": "buildtest buildspec find --tags",
+        "buildtest_buildspec_find_buildspecfiles.txt": "buildtest buildspec find --buildspec-files",
         "report-helpformat.txt": "buildtest report --helpformat",
         "report-format.txt": "buildtest report --format name,schemafile,executor,state,returncode",
     }

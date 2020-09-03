@@ -58,8 +58,8 @@ display information from several sources into one single command along.
 
 .. _buildtest_schemas:
 
-Schemas (``buildtest schema``)
--------------------------------
+Access to buildtest schemas
+-----------------------------
 
 The ``buildtest schema`` command can show you list of available schemas just run
 the command with no options and it will show all the json schemas buildtest supports.
@@ -75,6 +75,51 @@ buildtest provides a means to display the json schema from the buildtest interfa
 Note that buildtest will show the schemas provided in buildtest repo and not
 ones provided by `schemas <https://github.com/buildtesters/schemas>`_ repo. This
 is because, we let development of schema run independent of the framework.
+
+To select a JSON schema use the ``--name`` option to select a schema, for example
+to view a JSON Schema for **script-v1.0.schema.json** run the following::
+
+  $ buildtest schema --name script-v1.0.schema.json --json
+
+Similarly, if you want to view example buildspecs for a schema use the ``--example``
+option with a schema. For example to view all example schemas for
+**compiler-v1.0.schema.json** run the following::
+
+  $ buildtest schema --name compiler-v1.0.schema.json --example
+
+
+Buildspec Features
+---------------------
+
+.. program-output:: cat docgen/buildtest_buildspec_--help.txt
+
+The ``buildtest buildspec find`` loads all buildspecs specified in :ref:`buildspec_roots`
+from your configuration file. To build your cache just run::
+
+  $ buildtest buildspec find
+
+To rebuild your cache, which you may need to do if you add more directories to ``buildspec_roots``
+in your configuration or edit some buildspec run::
+
+    $ buildtest buildspec find --clear
+
+This will rebuild your cache and validate all buildspecs with updated files. Currently,
+we don't support automatic rebuild of cache.
+
+Shown below is a list of options for ``buildtest buildspec find`` command.
+
+.. program-output:: cat docgen/buildtest_buildspec_find_--help.txt
+
+If you want to retrieve all unique tags from all buildspecs you can run
+``buildtest buildspec find --tags``
+
+.. program-output:: cat docgen/buildtest_buildspec_find_tags.txt
+
+If you want to find all buildspec files in cache run ``buildtest buildspec find --buildspec-files``
+
+
+.. program-output:: cat docgen/buildtest_buildspec_find_buildspecfiles.txt
+
 
 .. _test_reports:
 

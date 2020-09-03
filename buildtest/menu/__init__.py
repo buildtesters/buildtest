@@ -186,7 +186,7 @@ class BuildTestParser:
             action="store_true",
         )
         buildspec_find.add_argument(
-            "--tags", help="List all available tags", action="store_true"
+            "-t", "--tags", help="List all available tags", action="store_true"
         )
         buildspec_find.add_argument(
             "-bf",

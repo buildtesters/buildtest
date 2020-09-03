@@ -1,0 +1,7 @@
+$ buildtest buildspec find --tags
+Searching buildspec in following directories:  /Users/siddiq90/Documents/buildtest/tutorials
++-----------+
+| Tags      |
++===========+
+| tutorials |
++-----------+
