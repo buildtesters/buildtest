@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-v0.8.0 (TBD)
+v0.8.0 (Sep 3rd 2020)
 -----------------------
  
 This release includes major changes to framework, in particular we use `jsonschema <https://json-schema.org/>`_ to 
@@ -12,11 +12,11 @@ is used for configuring buildtest. The global.schema.json is used for validating
 script-v1.0.schema.json and compiler-v1.0.schema.json are used for validating test section. These are used when ``type: script``
 or ``type: compiler`` is set.
 
-All tests are run via exectors defined in buildtest configuration, currently we support LocalExecutor, LSFExecutor, and SlurmExecutor
+All tests are run via executors defined in buildtest configuration, currently we support LocalExecutor, LSFExecutor, and SlurmExecutor
 for submitting jobs to local host, LSF and Slurm scheduler. As part of this release, we removed all features related to buildtest modules
 and they are now part of a Python API called `lmodule <https://github.com/buildtesters/lmodule>`_ which is a separate project.
 
-At high level the following commands were introducted: ``buildtest build``, ``buildtest buildspec``, ``buildtest schema``, ``buildtest config``, 
+At high level the following commands were introduced: ``buildtest build``, ``buildtest buildspec``, ``buildtest schema``, ``buildtest config``,
 and ``buildtest report``. To build any buildspecs use the **buildtest build** command, main options are ``buildtest build --buildspec`` which 
 takes input file or directory. You can use ``buildtest build --exclude`` to exclude buildspec files. Both options can be specified multiple times.
 buildtest can search buildspecs by tags when building them using ``buildtest build --tags <TAGNAME>``. This feature assumes you a buildspec cache 
@@ -49,6 +49,7 @@ documentation examples or used in regression tests.
 - Rename GitHub Organization from ``HPC-buildtest`` to ``buildtesters`` and update links throughout documentation
 - Update License Copyright from ``2017-2019`` to ``2017-2020`` and add `Vanessa Sochat <https://github.com/vsoch>`_
 - Add more badges in README.rst and updates to file
+- We can retrieve tags and buildspec files from cache using ``buildtest buildspec find --tags`` and ``buildtest buildspec find --buildspec-files`` see
 - Add logging support via python `logging <https://docs.python.org/3/library/logging.html>`_ library. Logs are written to file and they can be
   streamed to stdout using **buildtest -d <DEBUGLEVEL>**
 - Use `sphinx-autoapi <https://sphinx-autoapi.readthedocs.io/en/latest/index.html>`_ to automate api docs instead of using `sphinx.ext.autodoc <https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html>`_

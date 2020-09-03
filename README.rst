@@ -83,7 +83,7 @@ Source Code
 buildtest source code is under ``buildtest`` directory found in the root of this repository. The documentation  
 is under ``docs`` which consist of ``Makefile`` and ``conf.py`` to build the sphinx project along with documentation
 pages in ReStructuredText (rst). The regression test are found in top-level directory named ``tests`` and
-the test suite is run via pytest.
+the test suite is run via ``pytest``.
 
 Slack
 ------
@@ -106,4 +106,4 @@ LICENSE
 --------
 
 buildtest is released under the MIT License. See
-`LICENSE <https://github.com/buildtesters/buildtest/blob/master/LICENSE>`_ for more details
+`LICENSE <https://github.com/buildtesters/buildtest/blob/master/LICENSE>`_ for more details.
