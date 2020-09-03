@@ -21,6 +21,6 @@ Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
 | Stage: Building Test |
 +----------------------+ 
 
- Name                   | Schema File             | Test Path                                                                                             | Buildspec
-------------------------+-------------------------+-------------------------------------------------------------------------------------------------------+-----------------------------------------------------------
- systemd_default_target | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/run_script.sh | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+ Name                   | Schema File             | Test Path                                                                                           | Buildspec
+------------------------+-------------------------+-----------------------------------------------------------------------------------------------------+-----------------------------------------------------------
+ systemd_default_target | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/generate.sh | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml

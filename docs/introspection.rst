@@ -76,6 +76,7 @@ Note that buildtest will show the schemas provided in buildtest repo and not
 ones provided by `schemas <https://github.com/buildtesters/schemas>`_ repo. This
 is because, we let development of schema run independent of the framework.
 
+.. _test_reports:
 
 Test Reports (``buildtest report``)
 -------------------------------------

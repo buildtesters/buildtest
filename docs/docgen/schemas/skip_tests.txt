@@ -22,17 +22,17 @@ Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
 | Stage: Building Test |
 +----------------------+ 
 
- Name      | Schema File             | Test Path                                                                                   | Buildspec
------------+-------------------------+---------------------------------------------------------------------------------------------+--------------------------------------------------------------
- unskipped | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/run_script.sh | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+ Name      | Schema File             | Test Path                                                                                 | Buildspec
+-----------+-------------------------+-------------------------------------------------------------------------------------------+--------------------------------------------------------------
+ unskipped | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/generate.sh | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
 
  name      | executor   | status   |   returncode | testpath
------------+------------+----------+--------------+---------------------------------------------------------------------------------------------
- unskipped | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/run_script.sh
+-----------+------------+----------+--------------+-------------------------------------------------------------------------------------------
+ unskipped | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

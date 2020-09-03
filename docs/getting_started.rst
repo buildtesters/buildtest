@@ -17,6 +17,8 @@ If you don't see buildtest go back and review section :ref:`Setup`.
 Buildspecs
 ------------
 
+.. _find_buildspecs:
+
 Finding Buildspecs
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -37,8 +39,10 @@ buildtest will find all buildspecs and validate each file with the appropriate
 schema type. buildspecs that pass validation will be displayed on screen.
 buildtest will report all invalid buildspecs in a text file for you to review.
 
-buildtest will cache the results in **var/buildspec.cache** so subsequent
+buildtest will cache the results in **var/buildspec-cache.json** so subsequent
 runs to ``buildtest buildspec find`` will be much faster since we read from cache.
+If you make changes to buildspec you may want to rebuild cache using ``buildtest buildspec find --clear``.
+
 
 Viewing Buildspecs
 ~~~~~~~~~~~~~~~~~~~~
@@ -167,12 +171,15 @@ true if you were to specify files instead of directory.
 Building By Tags
 ~~~~~~~~~~~~~~~~~
 
-buildtest can perform builds by tags by using ``--tags`` option. To build all tutorials
-tests you can perform ``buildtest build --tags tutorials``. In the buildspec
-there is a field ``tags: [tutorials]`` to classify tests. buildtest will read the
-cache file ``var/buildspec-cache.json`` and see which buildspecs have a matching
-tag. You should run ``buildtest buildspec find`` atleast once, in order to detect
-cache file.
+buildtest can perform builds by tags by using ``--tags`` option. In order to use this
+feature, buildspecs must be in cache so you must run ``buildtest buildspec find``
+or see :ref:`find_buildspecs`.
+
+To build all tutorials tests you can perform ``buildtest build --tags tutorials``.
+In the buildspec there is a field ``tags: [tutorials]`` to classify tests.
+buildtest will read the cache file ``var/buildspec-cache.json`` and see which
+buildspecs have a matching tag. You should run ``buildtest buildspec find``
+atleast once, in order to detect cache file.
 
 .. program-output::  cat docgen/getting_started/tags.txt
 
@@ -218,44 +225,13 @@ Buildtest Report
 -----------------
 
 The ``buildtest report`` command will show result of all tests in a tabular
-form. Shown below is an example::
+form. Shown below is an example
 
-    $ buildtest report
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | name                  | state   |   returncode | starttime           | endtime   |    runtime | build_id                               | buildspec                                                                |
-    +=======================+=========+==============+=====================+===========+============+========================================+==========================================================================+
-    | _bin_sh_shell         | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | _bin_sh_shell_2020-08-11-10-17         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml         |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | _bin_bash_shell       | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | _bin_bash_shell_2020-08-11-10-17       | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml         |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | bash_shell            | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | bash_shell_2020-08-11-10-17            | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml         |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | sh_shell              | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | sh_shell_2020-08-11-10-17              | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml         |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | shell_options         | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | shell_options_2020-08-11-10-17         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml         |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | exit1_fail            | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | exit1_fail_2020-08-11-10-17            | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml        |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | exit1_pass            | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | exit1_pass_2020-08-11-10-17            | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml        |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | returncode_mismatch   | FAIL    |            2 | 2020/08/11 10:17:14 |           | 0.00391071 | returncode_mismatch_2020-08-11-10-17   | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml        |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | selinux_disable       | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | selinux_disable_2020-08-11-10-17       | /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml                |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | variables             | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | variables_2020-08-11-10-17             | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml                   |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | circle_area           | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0538504  | circle_area_2020-08-11-10-17           | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml           |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | executable_arguments  | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | executable_arguments_2020-08-11-10-17  | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | unskipped             | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | unskipped_2020-08-11-10-17             | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml             |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-    | environment_variables | PASS    |            0 | 2020/08/11 10:17:14 |           | 0.0846076  | environment_variables_2020-08-11-10-17 | /Users/siddiq90/Documents/buildtest/tutorials/environment.yml            |
-    +-----------------------+---------+--------------+---------------------+-----------+------------+----------------------------------------+--------------------------------------------------------------------------+
-
+.. program-output:: cat docgen/report.txt
 
 buildtest will store result metadata of each test in a file ``var/report.json`` which
 is found in root of buildtest. This file is updated upon every ``buildtest build`` command.
+For more information see :ref:`test_reports`.
 
 Debug Mode
 ------------
