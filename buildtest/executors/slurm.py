@@ -130,7 +130,6 @@ class SlurmExecutor(BaseExecutor):
         parse_jobid = command.get_output()
         parse_jobid = " ".join(parse_jobid)
 
-
         # output of sbatch --parsable could be in format 'JobID;cluster' if so we split by colon to extract JobID
         if re.search(";", parse_jobid):
             self.job_id = int(parse_jobid.split(";")[0])
