@@ -83,6 +83,7 @@ def test_build_by_tags():
         clear = False
         tags = False
         buildspec_files = False
+        list_executors = False
 
     func_buildspec_find(args)
 
