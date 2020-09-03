@@ -6,9 +6,7 @@ when initializing the executors.
 
 import os
 import shutil
-import subprocess
 import sys
-import time
 import re
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand

@@ -1,0 +1,9 @@
+$ buildtest buildspec find --help
+usage: buildtest [options] [COMMANDS] buildspec find [-h] [-c] [-t] [-bf]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c, --clear           Clear buildspec cache and find all buildspecs again
+  -t, --tags            List all available tags
+  -bf, --buildspec-files
+                        Get all buildspec files from cache
