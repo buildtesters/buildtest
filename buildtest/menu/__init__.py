@@ -185,6 +185,15 @@ class BuildTestParser:
             help="Clear buildspec cache and find all buildspecs again",
             action="store_true",
         )
+        buildspec_find.add_argument(
+            "--tags", help="List all available tags", action="store_true"
+        )
+        buildspec_find.add_argument(
+            "-bf",
+            "--buildspec-files",
+            help="Get all buildspec files from cache",
+            action="store_true",
+        )
         buildspec_view = subparsers_buildspec.add_parser(
             "view", help="view a buildspec"
         )

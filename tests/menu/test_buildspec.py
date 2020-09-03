@@ -8,6 +8,8 @@ def test_func_buildspec_find():
     class args:
         find = True
         clear = True
+        buildspec_files = False
+        tags = False
 
     func_buildspec_find(args)
 
@@ -15,6 +17,8 @@ def test_func_buildspec_find():
     class args:
         find = True
         clear = False
+        buildspec_files = False
+        tags = False
 
     func_buildspec_find(args)
 
@@ -32,3 +36,26 @@ def test_buildspec_view():
         edit = False
 
     func_buildspec_view(args)
+
+
+def test_buildspec_tags():
+    class args:
+        find = True
+        clear = False
+        buildspec_files = False
+        tags = True
+
+    # testing buildtest buildspec find --tags
+    func_buildspec_find(args)
+
+
+def test_buildspec_files():
+    class args:
+        find = True
+        clear = False
+        buildspec_files = False
+        tags = False
+        buildspec_files = True
+
+    # testing buildtest buildspec find --buildspec-files
+    func_buildspec_find(args)
