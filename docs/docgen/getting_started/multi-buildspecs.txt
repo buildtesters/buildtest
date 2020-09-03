@@ -7,11 +7,11 @@ Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
 | Stage: Discovered Buildspecs  |
 +-------------------------------+ 
 
+/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
 /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
 /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
 /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
-/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
-/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -19,53 +19,53 @@ Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
 
  schemafile              | validstate   | buildspec
 -------------------------+--------------+----------------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- Name                       | Schema File             | Test Path                                                                                               | Buildspec
-----------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------
- systemd_default_target     | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/run_script.sh   | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
- _bin_sh_shell              | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/run_script.sh       | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
- _bin_bash_shell            | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/run_script.sh   | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
- bash_shell                 | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/run_script.sh        | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
- sh_shell                   | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/run_script.sh            | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
- shell_options              | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/run_script.sh       | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
- slurm_down_nodes_reason    | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/run_script.sh    | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
- slurm_not_responding_nodes | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/run_script.sh | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
- hello_dinosaur             | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/run_script.sh       | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
- circle_area                | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/run_script.sh       | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
+ Name                       | Schema File             | Test Path                                                                                             | Buildspec
+----------------------------+-------------------------+-------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------
+ circle_area                | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/generate.py       | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
+ systemd_default_target     | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/generate.sh   | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+ hello_dinosaur             | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/generate.sh       | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
+ _bin_sh_shell              | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/generate.sh       | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ _bin_bash_shell            | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/generate.sh   | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ bash_shell                 | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/generate.sh        | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ sh_shell                   | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/generate.sh            | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ shell_options              | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/generate.sh       | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ slurm_down_nodes_reason    | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/generate.sh    | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+ slurm_not_responding_nodes | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/generate.sh | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
 
  name                       | executor     | status   |   returncode | testpath
-----------------------------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------
- systemd_default_target     | local.bash   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/run_script.sh
- _bin_sh_shell              | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/run_script.sh
- _bin_bash_shell            | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/run_script.sh
- bash_shell                 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/run_script.sh
- sh_shell                   | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/run_script.sh
- shell_options              | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/run_script.sh
- slurm_down_nodes_reason    | local.bash   | FAIL     |          127 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/run_script.sh
- slurm_not_responding_nodes | local.bash   | FAIL     |          127 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/run_script.sh
- hello_dinosaur             | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/run_script.sh
- circle_area                | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/run_script.sh
+----------------------------+--------------+----------+--------------+-------------------------------------------------------------------------------------------------------
+ circle_area                | local.python | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/generate.py
+ systemd_default_target     | local.bash   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/generate.sh
+ hello_dinosaur             | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/generate.sh
+ _bin_sh_shell              | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/generate.sh
+ _bin_bash_shell            | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/generate.sh
+ bash_shell                 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/generate.sh
+ sh_shell                   | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/generate.sh
+ shell_options              | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/generate.sh
+ slurm_down_nodes_reason    | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/generate.sh
+ slurm_not_responding_nodes | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
 
 Executed 10 tests
-Passed Tests: 7/10 Percentage: 70.000%
-Failed Tests: 3/10 Percentage: 30.000%
+Passed Tests: 8/10 Percentage: 80.000%
+Failed Tests: 2/10 Percentage: 20.000%
 
 
 

@@ -3,6 +3,7 @@ buildspecs:
   vecadd_gnu:
     type: compiler
     description: Vector Addition example with GNU compiler
+    tags: [tutorials]
     executor: local.bash
     build:
       name: gnu

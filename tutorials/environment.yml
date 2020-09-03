@@ -2,6 +2,7 @@ version: "1.0"
 buildspecs:
   environment_variables:
     executor: local.bash
+    description: Declare environment variables
     type: script
     env:
       FIRST_NAME: avocado

@@ -21,9 +21,9 @@ Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
 | Stage: Building Test |
 +----------------------+ 
 
- Name          | Schema File             | Test Path                                                                                              | Buildspec
----------------+-------------------------+--------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------
- wrongexecutor | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/badexecutor/invalid_executor/wrongexecutor/run_script.sh | /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+ Name          | Schema File             | Test Path                                                                                            | Buildspec
+---------------+-------------------------+------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------
+ wrongexecutor | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/badexecutor/invalid_executor/wrongexecutor/generate.sh | /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
 
 +----------------------+
 | Stage: Running Test  |

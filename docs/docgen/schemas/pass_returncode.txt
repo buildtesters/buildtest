@@ -21,21 +21,21 @@ Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
 | Stage: Building Test |
 +----------------------+ 
 
- Name                | Schema File             | Test Path                                                                                                | Buildspec
----------------------+-------------------------+----------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------
- exit1_fail          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/run_script.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
- exit1_pass          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/run_script.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
- returncode_mismatch | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/run_script.sh | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+ Name                | Schema File             | Test Path                                                                                              | Buildspec
+---------------------+-------------------------+--------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------
+ exit1_fail          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/generate.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+ exit1_pass          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/generate.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+ returncode_mismatch | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/generate.sh | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
 
  name                | executor   | status   |   returncode | testpath
----------------------+------------+----------+--------------+----------------------------------------------------------------------------------------------------------
- exit1_fail          | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/run_script.sh
- exit1_pass          | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/run_script.sh
- returncode_mismatch | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/run_script.sh
+---------------------+------------+----------+--------------+--------------------------------------------------------------------------------------------------------
+ exit1_fail          | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/generate.sh
+ exit1_pass          | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/generate.sh
+ returncode_mismatch | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

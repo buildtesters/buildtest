@@ -240,7 +240,7 @@ executor name ``batch`` defined in buildtest configuration.
       hostname:
         type: script
         executor: lsf.batch
-        bsub: [ "-W 10",  "-nnodes 1", "-P gen014ecpci"]
+        bsub: [ "-W 10",  "-nnodes 1"]
 
         run: jsrun hostname
 

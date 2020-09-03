@@ -24,7 +24,7 @@ The **type**, **compiler**, and **executor** are required keys for the schema.
 Shown below are 6 test examples performing Hello World compilation with C, C++,
 and Fortran using GNU compiler
 
-.. program-output:: cat docgen/schemas/gnu_hello.txt
+.. program-output:: cat docgen/schemas/gnu_hello.yml
 
 The tests ``hello_f``, ``hello_c`` and ``hello_cplusplus`` rely on buildtest to
 detect compiler wrappers while tests ``cc_example``, ``fc_example``, ``cxx_example``
