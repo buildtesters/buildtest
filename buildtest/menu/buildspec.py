@@ -54,85 +54,18 @@ def func_buildspec_find(args):
     # if cache file is not found, then we will build cache by searching
     # all buildspecs paths and traverse directory to find all .yml files
     if not is_file(BUILDSPEC_CACHE_FILE):
-
-        buildspecs = []
-        invalid_buildspecs = {}
-        parse = None
-        # add all buildspecs from each repo. walk_tree will find all .yml files
-        # recursively and add them to list
-        for path in paths:
-            cache[path] = {}
-            buildspec = walk_tree(path, ".yml")
-            buildspecs += buildspec
-
-        # remove any files in .buildtest directory of root of repo.
-        buildspecs = [
-            buildspec
-            for buildspec in buildspecs
-            if os.path.basename(os.path.dirname(buildspec)) != ".buildtest"
-        ]
-        print(f"Found {len(buildspecs)} buildspecs")
-
-        # process each buildspec by invoking BuildspecParser which will validate
-        # buildspec, if it fails it will raise SystemExit or ValidationError in
-        # this case we skip to next buildspec
-        count = 0
-        for buildspec in buildspecs:
-            count += 1
-
-            try:
-                parse = BuildspecParser(buildspec)
-            # any buildspec that raises SystemExit or ValidationError imply
-            # buildspec is not valid, we add this to invalid list along with
-            # error message and skip to next buildspec
-            except (SystemExit, ValidationError) as err:
-                invalid_buildspecs[buildspec] = err
-                continue
-
-            if count % 5 == 0:
-                print(f"Validated {count}/{len(buildspecs)} buildspecs")
-
-            recipe = parse.recipe["buildspecs"]
-
-            path_root = [
-                path
-                for path in paths
-                if os.path.commonprefix([buildspec, path]) == path
-            ]
-            path_root = path_root[0]
-
-            cache[path_root][buildspec] = {}
-
-            for name in recipe.keys():
-
-                if not isinstance(recipe[name], dict):
-                    continue
-
-                cache[path_root][buildspec][name] = recipe[name]
-
-        print(f"Validated {count}/{len(buildspecs)} buildspecs")
-
-        with open(BUILDSPEC_CACHE_FILE, "w") as fd:
-            json.dump(cache, fd, indent=2)
-
-        print(f"\nDetected {len(invalid_buildspecs)} invalid buildspecs \n")
-
-        # write invalid buildspecs to file if any found
-        if invalid_buildspecs:
-            buildspec_error_file = os.path.join(
-                os.path.dirname(BUILDSPEC_CACHE_FILE), "buildspec.error"
-            )
-
-            with open(buildspec_error_file, "w") as fd:
-                for file, msg in invalid_buildspecs.items():
-                    fd.write(f"buildspec:{file} \n\n")
-                    fd.write(f"{msg} \n")
-
-            print(f"Writing invalid buildspecs to file: {buildspec_error_file} ")
-            print("\n\n")
+        rebuild_buildspec_cache(paths)
 
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
         cache = json.loads(fd.read())
+
+    if args.tags:
+        get_all_tags(cache)
+        return
+
+    if args.buildspec_files:
+        get_buildspecfiles(cache)
+        return
 
     paths = cache.keys()
 
@@ -216,3 +149,109 @@ def func_buildspec_edit(args):
     """
 
     func_buildspec_view_edit(args.buildspec, view=False, edit=True)
+
+
+def rebuild_buildspec_cache(paths):
+    cache = {}
+    buildspecs = []
+    invalid_buildspecs = {}
+    parse = None
+    # add all buildspecs from each repo. walk_tree will find all .yml files
+    # recursively and add them to list
+    for path in paths:
+        cache[path] = {}
+        buildspec = walk_tree(path, ".yml")
+        buildspecs += buildspec
+
+    # remove any files in .buildtest directory of root of repo.
+    buildspecs = [
+        buildspec
+        for buildspec in buildspecs
+        if os.path.basename(os.path.dirname(buildspec)) != ".buildtest"
+    ]
+    print(f"Found {len(buildspecs)} buildspecs")
+
+    # process each buildspec by invoking BuildspecParser which will validate
+    # buildspec, if it fails it will raise SystemExit or ValidationError in
+    # this case we skip to next buildspec
+    count = 0
+    for buildspec in buildspecs:
+        count += 1
+
+        try:
+            parse = BuildspecParser(buildspec)
+        # any buildspec that raises SystemExit or ValidationError imply
+        # buildspec is not valid, we add this to invalid list along with
+        # error message and skip to next buildspec
+        except (SystemExit, ValidationError) as err:
+            invalid_buildspecs[buildspec] = err
+            continue
+
+        if count % 5 == 0:
+            print(f"Validated {count}/{len(buildspecs)} buildspecs")
+
+        recipe = parse.recipe["buildspecs"]
+
+        path_root = [
+            path for path in paths if os.path.commonprefix([buildspec, path]) == path
+        ]
+        path_root = path_root[0]
+
+        cache[path_root][buildspec] = {}
+
+        for name in recipe.keys():
+
+            if not isinstance(recipe[name], dict):
+                continue
+
+            cache[path_root][buildspec][name] = recipe[name]
+
+    print(f"Validated {count}/{len(buildspecs)} buildspecs")
+
+    with open(BUILDSPEC_CACHE_FILE, "w") as fd:
+        json.dump(cache, fd, indent=2)
+
+    print(f"\nDetected {len(invalid_buildspecs)} invalid buildspecs \n")
+
+    # write invalid buildspecs to file if any found
+    if invalid_buildspecs:
+        buildspec_error_file = os.path.join(
+            os.path.dirname(BUILDSPEC_CACHE_FILE), "buildspec.error"
+        )
+
+        with open(buildspec_error_file, "w") as fd:
+            for file, msg in invalid_buildspecs.items():
+                fd.write(f"buildspec:{file} \n\n")
+                fd.write(f"{msg} \n")
+
+        print(f"Writing invalid buildspecs to file: {buildspec_error_file} ")
+        print("\n\n")
+
+
+def get_all_tags(cache):
+    paths = cache.keys()
+    table = {"Tags": []}
+
+    unique_tag = set()
+    for path in paths:
+        for buildspecfile in cache[path].keys():
+            for test in cache[path][buildspecfile].keys():
+                tags = cache[path][buildspecfile][test].get("tags")
+                if tags:
+                    for name in tags:
+                        unique_tag.add(name)
+
+    table["Tags"] = list(unique_tag)
+    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+
+
+def get_buildspecfiles(cache):
+    table = {"buildspecs": []}
+    paths = cache.keys()
+    files = []
+
+    for path in paths:
+        files += cache[path].keys()
+
+    table["buildspecs"] = files
+    print(tabulate(table, headers=table.keys(), tablefmt="grid"))

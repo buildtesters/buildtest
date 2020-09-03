@@ -81,6 +81,8 @@ def test_build_by_tags():
     class args:
         find = True
         clear = False
+        tags = False
+        buildspec_files = False
 
     func_buildspec_find(args)
 
