@@ -1,8 +1,11 @@
 $ buildtest report --help
-usage: buildtest [options] [COMMANDS] report [-h] [--helpformat] [--format FORMAT]
+usage: buildtest [options] [COMMANDS] report [-h] [--helpformat] [--format FORMAT] [--filter FILTER] [--helpfilter]
 
 optional arguments:
   -h, --help       show this help message and exit
   --helpformat     List of available format fields
   --format FORMAT  format field for printing purposes. For more details see --helpformat for list of available fields.
                    Fields must be separated by comma (--format <field1>,<field2>,...)
+  --filter FILTER  Filter report by filter fields. The filter fields must be set in format: --filter
+                   key1=val1,key2=val2,...
+  --helpfilter     Report a list of filter fields to be used with --filter option
