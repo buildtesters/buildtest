@@ -94,17 +94,16 @@ def func_report(args=None):
 
     if args.filter:
 
-        # for name in args.filter:
-        #   filter_args[name[0]] = name[1]
-
         filter_args = args.filter
 
         raiseError = False
+        # check if filter keys are accepted filter fields, if not we raise error
         for key in filter_args.keys():
             if key not in filter_fields:
                 print(f"Invalid filter key: {key}")
                 raiseError = True
 
+        # raise error if any filter field is invalid
         if raiseError:
             sys.exit(1)
 
@@ -123,7 +122,7 @@ def func_report(args=None):
     fields = display_table.keys()
 
     # if buildtest report --format specified split field by "," and validate each
-    # format field and generate display_table
+    # format field and reassign display_table
     if args.format:
         fields = args.format.split(",")
 
@@ -132,6 +131,7 @@ def func_report(args=None):
             if field not in format_fields:
                 sys.exit(f"Invalid format field: {field}")
 
+        # reassign display_table to format fields
         display_table = {}
 
         for field in fields:
@@ -140,8 +140,7 @@ def func_report(args=None):
     filter_buildspecs = report.keys()
 
     # This section filters the buildspec, if its invalid file or not found in cache
-    # we raise error, otherwise we set filter_buildspecs to the filter argument
-    # 'buildspec'
+    # we raise error, otherwise we set filter_buildspecs to the filter argument 'buildspec'
     if filter_args.get("buildspec"):
         # resolve path for buildspec filter key, its possible if file doesn't exist method returns None
         resolved_buildspecs = resolve_path(filter_args["buildspec"])
@@ -153,6 +152,7 @@ def func_report(args=None):
             )
             sys.exit(0)
 
+        # if file not found in cache we exit
         if not resolved_buildspecs in report.keys():
             print(f"buildspec file: {resolved_buildspecs} not found in cache")
             sys.exit(0)
@@ -160,6 +160,7 @@ def func_report(args=None):
         # need to set as a list since we will loop over all tests
         filter_buildspecs = [resolved_buildspecs]
 
+    # ensure 'state' field in filter is either 'PASS' or 'FAIL', if not raise error
     if filter_args.get("state"):
         if filter_args["state"] not in ["PASS", "FAIL"]:
             print(
@@ -167,14 +168,21 @@ def func_report(args=None):
             )
             sys.exit(0)
 
+    # process all filtered buildspecs and add rows to display_table.
+    # filter_buildspec is either all buildspec or a single buildspec if
+    # 'buildspec' filter field was set
     for buildspec in filter_buildspecs:
+
+        # process each test in buildspec file
         for name in report[buildspec].keys():
 
             if filter_args.get("name"):
-                # skip tests that don't equal filter name field
+                # skip tests that don't equal filter 'name' field
                 if name != filter_args["name"]:
                     continue
 
+            # process all tests for an associated script. There can be multiple
+            # test runs for a single test depending on how many tests were run
             for test in report[buildspec][name]:
 
                 # filter by tags, if filter tag not found in test tag list we skip test
