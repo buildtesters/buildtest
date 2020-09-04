@@ -23,6 +23,41 @@ from buildtest.menu.report import func_report
 from buildtest.menu.schema import func_schema
 
 
+def handle_kv_string(val):
+    """This method is used as type field in --filter argument in ``buildtest buildspec find``.
+       This method returns a dict of key,value pair where input is in format
+       key1=val1,key2=val2,key3=val3
+
+       :param val: input value
+       :type val: str
+       :return: dictionary of key/value pairs
+       :rtype: dict
+    """
+
+    kv_dict = {}
+
+    if "," in val:
+        args = val.split(",")
+        for kv in args:
+            if "=" in kv:
+                key, value = kv.split("=")[0], kv.split("=")[1]
+                kv_dict[key] = value
+            else:
+                raise argparse.ArgumentTypeError("Must specify k=v")
+
+    else:
+        if "=" in val:
+            key, value = val.split("=")[0], val.split("=")[1]
+            kv_dict[key] = value
+
+    return kv_dict
+    # if '=' in split_args
+    # if '=' in val:
+    #    return val.split('=')
+    # else:
+    #    raise argparse.ArgumentTypeError('Must specify k=v')
+
+
 class BuildTestParser:
     def __init__(self):
         epilog_str = (
@@ -270,7 +305,16 @@ class BuildTestParser:
             "--format",
             help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (--format <field1>,<field2>,...)",
         )
-
+        parser_report.add_argument(
+            "--filter",
+            type=handle_kv_string,
+            help="Filter report by filter fields. The filter fields must be set in format: --filter key1=val1,key2=val2,...",
+        )
+        parser_report.add_argument(
+            "--helpfilter",
+            action="store_true",
+            help="Report a list of filter fields to be used with --filter option",
+        )
         ##################### buildtest report   ###########################
 
         parser_report.set_defaults(func=func_report)
