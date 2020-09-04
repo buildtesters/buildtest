@@ -1,5 +1,5 @@
 $ buildtest buildspec find --help
-usage: buildtest [options] [COMMANDS] buildspec find [-h] [-c] [-t] [-bf]
+usage: buildtest [options] [COMMANDS] buildspec find [-h] [-c] [-t] [-bf] [-le]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -7,3 +7,5 @@ optional arguments:
   -t, --tags            List all available tags
   -bf, --buildspec-files
                         Get all buildspec files from cache
+  -le, --list-executors
+                        get all unique executors from buildspecs

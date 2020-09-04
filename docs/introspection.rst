@@ -146,3 +146,43 @@ name separated by comma (i.e **--format <field1>,<field2>**). In this example
 we format by fields ``--format name,type,executor,state,returncode``
 
 .. program-output:: cat docgen/report-format.txt
+
+You can also filter reports using the ``--filter`` option, but first let's
+check the available filter fields. In order to see available filter fields
+run ``buildtest report --helpfilter``. Shown below are the available filter
+fields.
+
+.. program-output:: cat docgen/report-helpfilter.txt
+
+The ``--filter`` expects arguments in **key=value** format, you can
+specify multiple filter fields by a comma. buildtest will treat multiple
+filters as **LOGICAL AND** operation. The filter option can be used with
+``--format`` field. Let's see some examples to illustrate the point.
+
+To see all tests with returncode of 2 we set ``--filter returncode=2``.
+
+.. program-output:: cat docgen/report-returncode.txt
+
+If you want to filter by test name ``exit1_pass`` you can use the
+``name=exit1_pass`` field as shown below
+
+.. program-output:: cat docgen/report-filter-name.txt
+
+Likewise, we can filter tests by buildspec file using the ``--filter buildspec=<file>``.
+In example below we set ``buildspec=tutorials/pass_returncode.yml``. In this example,
+buildtest will resolve path and find the buildspec. If file doesn't exist or is
+not found in cache it will raise an error
+
+.. program-output:: cat docgen/report-filter-buildspec.txt
+
+We can also pass multiple filter fields for instance if we want to find all **FAIL**
+tests for executor **local.sh** we can do the following
+
+.. program-output:: cat docgen/report-multifilter.txt
+
+The state field expects value of ``PASS`` or ``FAIL`` so if you specify an
+invalid state you will get an error as follows::
+
+    $ buildtest report --filter state=UNKNOWN
+    filter argument 'state' must be 'PASS' or 'FAIL' got value UNKNOWN
+

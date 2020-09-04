@@ -113,7 +113,12 @@ def introspection_cmds():
         "buildtest_buildspec_find_tags.txt": "buildtest buildspec find --tags",
         "buildtest_buildspec_find_buildspecfiles.txt": "buildtest buildspec find --buildspec-files",
         "report-helpformat.txt": "buildtest report --helpformat",
+        "report-helpfilter.txt": "buildtest report --helpfilter",
         "report-format.txt": "buildtest report --format name,schemafile,executor,state,returncode",
+        "report-filter-name.txt": "buildtest report --filter name=exit1_pass --format=name,returncode,state",
+        "report-filter-buildspec.txt": "buildtest report --filter buildspec=tutorials/pass_returncode.yml --format=name,state,buildspec",
+        "report-multifilter.txt": "buildtest report --filter state=FAIL,executor=local.sh --format=name,state,executor",
+        "report-returncode.txt": "buildtest report --filter returncode=2 --format=name,returncode",
     }
 
     for k, v in cmd_dict.items():

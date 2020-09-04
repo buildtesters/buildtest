@@ -1,0 +1,12 @@
+$ buildtest report --filter state=FAIL,executor=local.sh --format=name,state,executor
++---------------------+---------+------------+
+| name                | state   | executor   |
++=====================+=========+============+
+| exit1_fail          | FAIL    | local.sh   |
++---------------------+---------+------------+
+| exit1_fail          | FAIL    | local.sh   |
++---------------------+---------+------------+
+| returncode_mismatch | FAIL    | local.sh   |
++---------------------+---------+------------+
+| returncode_mismatch | FAIL    | local.sh   |
++---------------------+---------+------------+
