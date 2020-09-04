@@ -24,13 +24,9 @@ Once your account is configured you can clone the repository as follows::
 
     $ git clone git@github.com:buildtesters/buildtest.git
 
-If you prefer the latest code release, please pull the **devel** branch::
+If you prefer the latest release use the **master** branch::
 
-    $ git clone -b devel git@github.com:buildtesters/buildtest.git
-
-Or you may switch to the **devel** branch if you already cloned it::
-
-    $ git checkout devel
+    $ git clone -b master git@github.com:buildtesters/buildtest.git
 
 Installing buildtest
 -----------------------

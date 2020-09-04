@@ -8,14 +8,16 @@ optional arguments:
   -V, --version         show program's version number and exit
   -d {DEBUG,INFO,WARNING,ERROR,CRITICAL}, --debug {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Enable debugging messages.
+  --docs                Open buildtest docs in browser
+  --schemadocs          Open buildtest schema docs in browser
 
 COMMANDS:
-  
+
    build                          Options for building test scripts
    buildspec                      Command options for buildspecs
-   report                         Show report for test results  
+   report                         Show report for test results
    schema                         Commands for viewing buildtest schemas
-   config                         Buildtest Configuration Menu  
+   config                         Buildtest Configuration Menu
 
   {build,buildspec,report,schema,config}
 

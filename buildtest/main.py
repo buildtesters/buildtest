@@ -1,5 +1,6 @@
 import os
 from buildtest.config import load_settings, check_settings
+from buildtest.docs import buildtestdocs, schemadocs
 from buildtest.defaults import var_root, BUILDTEST_USER_HOME
 from buildtest.menu import BuildTestParser
 from buildtest.menu.build import func_build_subcmd
@@ -32,6 +33,12 @@ def main():
 
     if args.debug:
         streamlog(args.debug)
+
+    if args.docs:
+        buildtestdocs()
+
+    if args.schemadocs:
+        schemadocs()
 
     # invoking load_settings will attempt to initialize buildtest settings and
     # load the schema
