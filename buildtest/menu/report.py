@@ -3,7 +3,7 @@ import os
 import sys
 from tabulate import tabulate
 from buildtest.defaults import BUILD_REPORT
-from buildtest.utils.file import is_file, create_dir
+from buildtest.utils.file import is_file, create_dir, resolve_path
 
 
 def func_report(args=None):
@@ -70,6 +70,43 @@ def func_report(args=None):
         )
         return
 
+    filter_field_table = [
+        ["buildspec", "Filter by buildspec file", "FILE"],
+        ["name", "Filter by test name", "STRING"],
+        ["executor", "Filter by executor name", "STRING"],
+        ["state", "Filter by test state ", "PASS/FAIL"],
+        ["tags", "Filter tests by tag name ", "STRING"],
+        ["returncode", "Filter tests by returncode ", "INT"],
+    ]
+    filter_fields = ["buildspec", "name", "executor", "state", "tags", "returncode"]
+    # filter_args contains a dict of filter field argument
+    filter_args = {}
+
+    if args.helpfilter:
+        print(
+            tabulate(
+                filter_field_table,
+                headers=["Filter Fields", "Description", "Expected Value"],
+                tablefmt="simple",
+            )
+        )
+        return
+
+    if args.filter:
+
+        filter_args = args.filter
+
+        raiseError = False
+        # check if filter keys are accepted filter fields, if not we raise error
+        for key in filter_args.keys():
+            if key not in filter_fields:
+                print(f"Invalid filter key: {key}")
+                raiseError = True
+
+        # raise error if any filter field is invalid
+        if raiseError:
+            sys.exit(1)
+
     # default table format fields
     display_table = {
         "id": [],
@@ -85,7 +122,7 @@ def func_report(args=None):
     fields = display_table.keys()
 
     # if buildtest report --format specified split field by "," and validate each
-    # format field and generate display_table
+    # format field and reassign display_table
     if args.format:
         fields = args.format.split(",")
 
@@ -94,14 +131,79 @@ def func_report(args=None):
             if field not in format_fields:
                 sys.exit(f"Invalid format field: {field}")
 
+        # reassign display_table to format fields
         display_table = {}
 
         for field in fields:
             display_table[field] = []
 
-    for buildspec in report.keys():
+    filter_buildspecs = report.keys()
+
+    # This section filters the buildspec, if its invalid file or not found in cache
+    # we raise error, otherwise we set filter_buildspecs to the filter argument 'buildspec'
+    if filter_args.get("buildspec"):
+        # resolve path for buildspec filter key, its possible if file doesn't exist method returns None
+        resolved_buildspecs = resolve_path(filter_args["buildspec"])
+
+        # if file doesn't exist we terminate with message
+        if not resolved_buildspecs:
+            print(
+                f"Invalid File Path for filter field 'buildspec': {filter_args['buildspec']}"
+            )
+            sys.exit(0)
+
+        # if file not found in cache we exit
+        if not resolved_buildspecs in report.keys():
+            print(f"buildspec file: {resolved_buildspecs} not found in cache")
+            sys.exit(0)
+
+        # need to set as a list since we will loop over all tests
+        filter_buildspecs = [resolved_buildspecs]
+
+    # ensure 'state' field in filter is either 'PASS' or 'FAIL', if not raise error
+    if filter_args.get("state"):
+        if filter_args["state"] not in ["PASS", "FAIL"]:
+            print(
+                f"filter argument 'state' must be 'PASS' or 'FAIL' got value {filter_args['state']}"
+            )
+            sys.exit(0)
+
+    # process all filtered buildspecs and add rows to display_table.
+    # filter_buildspec is either all buildspec or a single buildspec if
+    # 'buildspec' filter field was set
+    for buildspec in filter_buildspecs:
+
+        # process each test in buildspec file
         for name in report[buildspec].keys():
+
+            if filter_args.get("name"):
+                # skip tests that don't equal filter 'name' field
+                if name != filter_args["name"]:
+                    continue
+
+            # process all tests for an associated script. There can be multiple
+            # test runs for a single test depending on how many tests were run
             for test in report[buildspec][name]:
+
+                # filter by tags, if filter tag not found in test tag list we skip test
+                if filter_args.get("tags"):
+                    if filter_args["tags"] not in test.get("tags"):
+                        continue
+
+                # if 'executor' filter defined, skip test that don't match executor key
+                if filter_args.get("executor"):
+                    if filter_args.get("executor") != test.get("executor"):
+                        continue
+
+                # if state filter defined, skip any tests that don't match test state
+                if filter_args.get("state"):
+                    if filter_args["state"] != test.get("state"):
+                        continue
+
+                # if state filter defined, skip any tests that don't match test state
+                if filter_args.get("returncode"):
+                    if int(filter_args["returncode"]) != test.get("returncode"):
+                        continue
 
                 if "buildspec" in display_table.keys():
                     display_table["buildspec"].append(buildspec)
