@@ -1,0 +1,13 @@
+$ buildtest buildspec find --list-executors
+Searching buildspec in following directories:  /Users/siddiq90/Documents/buildtest/tutorials
++--------------+
+| executors    |
++==============+
+| local.python |
++--------------+
+| badexecutor  |
++--------------+
+| local.sh     |
++--------------+
+| local.bash   |
++--------------+

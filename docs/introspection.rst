@@ -120,6 +120,12 @@ If you want to find all buildspec files in cache run ``buildtest buildspec find 
 
 .. program-output:: cat docgen/buildtest_buildspec_find_buildspecfiles.txt
 
+To find all executors from cache you can run ``buildtest buildspec find --list-executors``.
+This will retrieve the `'executor'` field from all buildspec and any duplicates will
+be ignored.
+
+.. program-output:: cat docgen/buildtest_buildspec_find_executors.txt
+
 
 .. _test_reports:
 
