@@ -88,8 +88,8 @@ option with a schema. For example to view all example schemas for
   $ buildtest schema --name compiler-v1.0.schema.json --example
 
 
-Buildspec Features
----------------------
+Query buildspec features
+--------------------------
 
 .. program-output:: cat docgen/buildtest_buildspec_--help.txt
 
@@ -142,27 +142,32 @@ with default format fields.
 
 .. program-output:: cat docgen/report.txt
 
+Format Reports
+~~~~~~~~~~~~~~~
+
 There are more fields captured in the report, so if you want to see a
 list of available format fields run ``buildtest report --helpformat``.
 
 .. program-output:: cat docgen/report-helpformat.txt
 
-You can filter report using ``--format`` field which expects field
+You can format report using ``--format`` field which expects field
 name separated by comma (i.e **--format <field1>,<field2>**). In this example
 we format by fields ``--format name,type,executor,state,returncode``
 
 .. program-output:: cat docgen/report-format.txt
 
+Filter Reports
+~~~~~~~~~~~~~~~~
+
 You can also filter reports using the ``--filter`` option, but first let's
 check the available filter fields. In order to see available filter fields
-run ``buildtest report --helpfilter``. Shown below are the available filter
-fields.
+run ``buildtest report --helpfilter``.
 
 .. program-output:: cat docgen/report-helpfilter.txt
 
 The ``--filter`` expects arguments in **key=value** format, you can
 specify multiple filter fields by a comma. buildtest will treat multiple
-filters as **LOGICAL AND** operation. The filter option can be used with
+filters as logical **AND** operation. The filter option can be used with
 ``--format`` field. Let's see some examples to illustrate the point.
 
 To see all tests with returncode of 2 we set ``--filter returncode=2``.
@@ -192,3 +197,14 @@ invalid state you will get an error as follows::
     $ buildtest report --filter state=UNKNOWN
     filter argument 'state' must be 'PASS' or 'FAIL' got value UNKNOWN
 
+
+Access to docs
+---------------
+
+If you want to access buildtest docs from command line you can run::
+
+  $ buildtest --docs
+
+Similarly, we provide an option to view schemadocs if you run::
+
+  $ buildtest --schemadocs

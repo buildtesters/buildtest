@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+v0.8.1 (TBD)
+------------
+
+- Add support for filtering test report using ``--filter`` option and ``--helpfilter`` with list of filter fields. See https://github.com/buildtesters/buildtest/pull/449
+- Add option for ``--docs`` and ``--schemadocs`` to access documentation through CLI.
+- Retrieve a list of unique executors from buildspec cache see https://github.com/buildtesters/buildtest/pull/448
+- Query buildspec tags and buildspec files using ``--tags`` and ``--buildspec-files`` option see https://github.com/buildtesters/buildtest/pull/445
+
+
 v0.8.0 (Sep 3rd 2020)
 -----------------------
  

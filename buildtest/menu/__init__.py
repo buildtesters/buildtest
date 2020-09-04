@@ -114,6 +114,14 @@ class BuildTestParser:
             choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
             help="Enable debugging messages.",
         )
+        self.parser.add_argument(
+            "--docs", action="store_true", help="Open buildtest docs in browser"
+        )
+        self.parser.add_argument(
+            "--schemadocs",
+            action="store_true",
+            help="Open buildtest  schema docs in browser",
+        )
 
     def parse_options(self):
         """This method parses the argument from ArgumentParser class and returns
