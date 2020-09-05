@@ -75,7 +75,7 @@ jobs:
         buildtest schema -n global.schema.json --json
         buildtest schema -n script-v1.0.schema.json --json
         buildtest schema -n compiler-v1.0.schema.json --json
-        buildtest schema -n setting.schema.json --json
+        buildtest schema -n settings.schema.json --json
         buildtest schema -n global.schema.json --examples
         
         
