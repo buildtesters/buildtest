@@ -48,10 +48,8 @@ jobs:
         buildtest buildspec find
     
     - name: Running Tutorials Example
-      run: |
-        buildtest build -b tutorials/
-        buildtest build -b tutorials/ -x tutorials
-    
+      run: buildtest build -b tutorials/
+        
     - name: Checking Test Reports
       run: | 
         buildtest report
