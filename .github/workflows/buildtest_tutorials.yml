@@ -38,7 +38,7 @@ jobs:
         pip install -U pip
         git fetch -u origin devel:devel
         python --version
-        pip install .
+        pip install -e .
         which buildtest
         buildtest --version
         buildtest --help
@@ -49,3 +49,34 @@ jobs:
     
     - name: Running Tutorials Example
       run: buildtest build -b tutorials/
+        
+    - name: Checking Test Reports
+      run: | 
+        buildtest report
+        buildtest report --filter buildspec=tutorials/pass_returncode.yml --format name,state,buildspec
+        buildtest report --filter name=exit1_pass --format id,returncode,state,runtime
+        buildtest report --filter state=PASS,executor=local.bash --format id,state,executor
+      
+    - name: Buildspec Features
+      run: |
+        buildtest buildspec find --tags
+        buildtest buildspec find --list-executors
+        buildtest buildspec find --clear
+        
+    - name: Test Configuration 
+      run: |
+        buildtest config validate
+        buildtest config view
+        buildtest config summary
+        
+    - name: Test Schemas
+      run: |
+        buildtest schema
+        buildtest schema -n global.schema.json --json
+        buildtest schema -n script-v1.0.schema.json --json
+        buildtest schema -n compiler-v1.0.schema.json --json
+        buildtest schema -n settings.schema.json --json
+        buildtest schema -n global.schema.json --examples
+        
+        
+      
