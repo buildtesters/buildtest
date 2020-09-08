@@ -244,6 +244,66 @@ buildspec_roots. buildtest will find all `.yml` extension. By default buildtest 
 add the ``$BUILDTEST_ROOT/tutorials`` to search path, where $BUILDTEST_ROOT is root
 of buildtest repo.
 
+
+CLI to buildtest configuration
+-----------------------------------------------
+
+The ``buildtest config`` command provides access to buildtest configuration, shown
+below is the command usage.
+
+
+.. program-output:: cat docgen/buildtest_config_--help.txt
+
+If you want to view buildtest configuration you can run::
+
+    buildtest config view
+
+Shown below is an example output.
+
+.. program-output:: cat docgen/config-view.txt
+
+Likewise, you can edit the file by running::
+
+    buildtest config edit
+
+To check if your buildtest settings is valid, run ``buildtest config validate``.
+This will validate your ``settings.yml`` with the schema **settings.schema.json**.
+The output will be the following.
+
+.. program-output:: cat docgen/config-validate.txt
+
+If there is an error during validation, the output from **jsonschema.exceptions.ValidationError**
+will be displayed in terminal. For example the error below indicates there was an error
+on ``editor`` key in **config** object which expects the editor to be one of the
+enum types [``vi``, ``vim``, ``nano``, ``emacs``]::
+
+    $ buildtest config validate
+    Traceback (most recent call last):
+      File "/Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/buildtest", line 11, in <module>
+        load_entry_point('buildtest', 'console_scripts', 'buildtest')()
+      File "/Users/siddiq90/Documents/buildtest/buildtest/main.py", line 32, in main
+        check_settings()
+      File "/Users/siddiq90/Documents/buildtest/buildtest/config.py", line 71, in check_settings
+        validate(instance=user_schema, schema=config_schema)
+      File "/Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/lib/python3.7/site-packages/jsonschema/validators.py", line 899, in validate
+        raise error
+    jsonschema.exceptions.ValidationError: 'gedit' is not one of ['vi', 'vim', 'nano', 'emacs']
+
+    Failed validating 'enum' in schema['properties']['config']['properties']['editor']:
+        {'default': 'vim',
+         'enum': ['vi', 'vim', 'nano', 'emacs'],
+         'type': 'string'}
+
+    On instance['config']['editor']:
+        'gedit'
+
+
+You can get a summary of buildtest using ``buildtest config summary``, this will
+display information from several sources into one single command along.
+
+.. program-output:: cat docgen/config-summary.txt
+
+
 Example Configurations
 -------------------------
 

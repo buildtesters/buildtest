@@ -115,18 +115,16 @@ All schema files use the file extension **.schema.json** to distinguish itself
 as a json schema definition from an ordinary json file. All sub-schemas
 must be versioned, with the exception of ``global.schema.json``.
 
-If you have got this far you may proceed with :ref:`writing_buildspecs`
+If you have got this far you may proceed with :ref:`buildspec_overview`
 
-Examples
----------
+Global Schema and Examples
+-----------------------------
 
-You can see below a list of global schema examples that can be accessible
-via ``buildtest schema -n global.schema.json -e``
+You can see view the content of ``global.schema.json`` by running::
 
-.. program-output:: cat docgen/schemas/global-examples.txt
+    $ buildtest schema -n global.schema.json --json
 
-global.schema.json
--------------------
+If you want to review example buildspecs for this schema you can run::
 
-.. program-output:: cat docgen/schemas/global-json.txt
+    $ buildtest schema -n global.schema.json --example
 

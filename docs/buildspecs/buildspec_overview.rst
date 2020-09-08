@@ -1,7 +1,7 @@
-.. _writing_buildspecs:
+.. _buildspec_overview:
 
-Writing buildspecs
-===================
+Buildspecs Overview
+========================
 
 buildspec is your test recipe that buildtest processes to generate a test script.
 A buildspec can be composed of several test sections. The buildspec file is
@@ -224,13 +224,9 @@ for each schemas.
 
 To retrieve the full json schema of script schema you can run the following::
 
-  buildtest schema -n script-v1.0.schema.json --json
+  $ buildtest schema -n script-v1.0.schema.json --json
 
-The example buildspecs are validated with the schema, so they are
-self-documentating examples. For example, you can retrieve the script examples using
-``buildtest schema -n script-v1.0.schema.json -e``. Shown below we show valid and
-invalid examples. The examples are validated with the schema ``script-v1.0.schema.json``.
+To retrieve buildspec examples for **script-v1.0.schema.json** you can run the following::
 
-.. program-output:: cat docgen/schemas/script-examples.txt
-
+  $ buildtest schema -n script-v1.0.schema.json --example
 
