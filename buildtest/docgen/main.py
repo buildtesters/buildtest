@@ -72,10 +72,6 @@ def schemas():
     prefix = "schemas"
     cmd_dict = {
         f"{os.path.join(prefix, 'avail-schemas.txt')}": "buildtest schema",
-        f"{os.path.join(prefix, 'compiler-examples.txt')}": "buildtest schema -n compiler-v1.0.schema.json -e",
-        f"{os.path.join(prefix,'script-examples.txt')}": "buildtest schema -n script-v1.0.schema.json -e",
-        f"{os.path.join(prefix, 'global-json.txt')}": "buildtest schema -n global.schema.json -j",
-        f"{os.path.join(prefix, 'global-examples.txt')}": "buildtest schema -n global.schema.json -e",
         f"{os.path.join(prefix, 'settings-examples.txt')}": "buildtest schema -n settings.schema.json -e",
     }
     generate_tests(prefix, cmd_dict)

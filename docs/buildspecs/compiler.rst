@@ -433,11 +433,16 @@ The generated test for this buildspec is the following::
 Compiler Schema Examples
 -------------------------
 
-The compiler schema examples can be retrieved via ``buildtest schema -n compiler-v1.0.schema.json -e``
-which shows a list of valid/invalid buildspec examples using ``type: compiler``.
+The compiler schema examples can be retrieved by running::
+
+  $ buildtest schema -n compiler-v1.0.schema.json --example
+
+This shows a list of valid/invalid buildspec examples using ``type: compiler``.
 Each example is validated with schema ``compiler-v1.0.schema.json`` and error
 message from invalid examples are also shown in example output.
 
-.. program-output:: cat docgen/schemas/compiler-examples.txt
+You can view the json schema for compiler-v1.0.schema.json by running::
+
+  $ buildtest schema -n compiler-v1.0.schema.json --json
 
 

@@ -74,7 +74,7 @@ testing of an HPC system. buildtest utilizes `json schema <https://json-schema.o
 to define structure of test written in YAML called a  **Buildspec File**.
 The `schema docs <https://buildtesters.github.io/schemas/>`_ is a resource that
 hosts buildtest schemas and documents all field attributes for each schema, this will
-be useful when you are :ref:`writing_buildspecs`.
+be useful when you are :ref:`buildspec_overview`.
 
 A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_
 which is a Python API for `Lmod <https://lmod.readthedocs.io/en/latest/>`_. The buildtest
@@ -103,8 +103,7 @@ For additional reference, you can read :ref:`summary_of_buildtest` and
    getting_started.rst
    configuring_buildtest.rst
    builder.rst
-   schemas.rst
-   introspection.rst
+   writing_buildspecs.rst
    references.rst
 
 .. toctree::

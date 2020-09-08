@@ -14,61 +14,6 @@ After you install buildtest, you should find the client on your path::
 
 If you don't see buildtest go back and review section :ref:`Setup`.
 
-Buildspecs
-------------
-
-.. _find_buildspecs:
-
-Finding Buildspecs
-~~~~~~~~~~~~~~~~~~~~
-
-buildtest is able to find and validate all buildspecs in your repos. The
-command ``buildtest buildspec`` comes with the following options.
-
-.. program-output:: cat docgen/buildtest_buildspec_--help.txt
-
-To find all buildspecs run ``buildtest buildspec find`` which will discover
-all buildspecs in all repos. buildtest will recursively traverse all repos
-and seek out all `.yml` extensions so make sure your buildspecs conform to
-the file extension.
-
-
-.. program-output:: cat docgen/getting_started/buildspec-find.txt
-
-buildtest will find all buildspecs and validate each file with the appropriate
-schema type. buildspecs that pass validation will be displayed on screen.
-buildtest will report all invalid buildspecs in a text file for you to review.
-
-buildtest will cache the results in **var/buildspec-cache.json** so subsequent
-runs to ``buildtest buildspec find`` will be much faster since we read from cache.
-If you make changes to buildspec you may want to rebuild cache using ``buildtest buildspec find --clear``.
-
-
-Viewing Buildspecs
-~~~~~~~~~~~~~~~~~~~~
-If you want to view or edit a buildspec you can type the name of test. Since we
-can have more than one test in a buildspec, opening any of the `name` entry
-that map to same file will result in same operation.
-
-For example, we can view ``systemd_default_target`` as follows
-
-.. program-output:: cat docgen/getting_started/buildspec-view.txt
-
-Editing Buildspecs
-~~~~~~~~~~~~~~~~~~~~
-
-To edit a buildspec you can run ``buildtest buildspec edit <name>`` which
-will open file in editor. Once you make change, buildtest will validate the
-buildspec upon closure, if there is an issue buildtest will report an error
-during validation and you will be prompted to fix issue until it is resolved.
-
-For example we can see an output message after editing file, user will be prompted
-to press a key which will open the file in editor::
-
-    $ buildtest buildspec edit systemd_default_target
-    version 1.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest.
-    Press any key to continue
-
 Build Usage
 ------------
 
@@ -221,17 +166,184 @@ where test failed to run since we provided invalid executor.
 
 .. program-output:: cat docgen/getting_started/invalid-executor.txt
 
-Buildtest Report
------------------
 
-The ``buildtest report`` command will show result of all tests in a tabular
-form. Shown below is an example
+Buildspecs
+------------
+
+buildtest is able to find and validate all buildspecs in your repos. The
+command ``buildtest buildspec`` comes with the following options.
+
+.. program-output:: cat docgen/buildtest_buildspec_--help.txt
+
+.. _find_buildspecs:
+
+Finding Buildspecs
+~~~~~~~~~~~~~~~~~~~~
+
+To find all buildspecs run ``buildtest buildspec find`` which will discover
+all buildspecs in all repos. buildtest will recursively traverse all repos
+and seek out all `.yml` extensions so make sure your buildspecs conform to
+the file extension.
+
+
+.. program-output:: cat docgen/getting_started/buildspec-find.txt
+
+buildtest will find all buildspecs and validate each file with the appropriate
+schema type. buildspecs that pass validation will be displayed on screen.
+buildtest will report all invalid buildspecs in a text file for you to review.
+
+buildtest will cache the results in **var/buildspec-cache.json** so subsequent
+runs to ``buildtest buildspec find`` will be much faster because it is read from cache.
+If you make changes to buildspec you may want to rebuild the buildspec cache then
+run::
+
+  $ buildtest buildspec find --clear
+
+Shown below is a list of options for ``buildtest buildspec find`` command.
+
+.. program-output:: cat docgen/buildtest_buildspec_find_--help.txt
+
+If you want to retrieve all unique tags from all buildspecs you can run
+``buildtest buildspec find --tags``
+
+.. program-output:: cat docgen/buildtest_buildspec_find_tags.txt
+
+If you want to find all buildspec files in cache run ``buildtest buildspec find --buildspec-files``
+
+.. program-output:: cat docgen/buildtest_buildspec_find_buildspecfiles.txt
+
+To find all executors from cache you can run ``buildtest buildspec find --list-executors``.
+This will retrieve the `'executor'` field from all buildspec and any duplicates will
+be ignored.
+
+.. program-output:: cat docgen/buildtest_buildspec_find_executors.txt
+
+Viewing Buildspecs
+~~~~~~~~~~~~~~~~~~~~
+If you want to view or edit a buildspec you can type the name of test. Since we
+can have more than one test in a buildspec, opening any of the `name` entry
+that map to same file will result in same operation.
+
+For example, we can view ``systemd_default_target`` as follows
+
+.. program-output:: cat docgen/getting_started/buildspec-view.txt
+
+Editing Buildspecs
+~~~~~~~~~~~~~~~~~~~~
+
+To edit a buildspec you can run ``buildtest buildspec edit <name>`` which
+will open file in editor. Once you make change, buildtest will validate the
+buildspec upon closure, if there is an issue buildtest will report an error
+during validation and you will be prompted to fix issue until it is resolved.
+
+For example we can see an output message after editing file, user will be prompted
+to press a key which will open the file in editor::
+
+    $ buildtest buildspec edit systemd_default_target
+    version 1.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest.
+    Press any key to continue
+
+
+.. _test_reports:
+
+Test Reports (``buildtest report``)
+-------------------------------------
+
+buildtest keeps track of all test results which can be retrieved via
+**buildtest report**. Shown below is command usage.
+
+.. program-output:: cat docgen/buildtest_report_--help.txt
+
+You may run ``buildtest report`` and buildtest will display report
+with default format fields.
 
 .. program-output:: cat docgen/report.txt
 
-buildtest will store result metadata of each test in a file ``var/report.json`` which
-is found in root of buildtest. This file is updated upon every ``buildtest build`` command.
-For more information see :ref:`test_reports`.
+Format Reports
+~~~~~~~~~~~~~~~
+
+There are more fields captured in the report, so if you want to see a
+list of available format fields run ``buildtest report --helpformat``.
+
+.. program-output:: cat docgen/report-helpformat.txt
+
+You can format report using ``--format`` field which expects field
+name separated by comma (i.e **--format <field1>,<field2>**). In this example
+we format by fields ``--format name,type,executor,state,returncode``
+
+.. program-output:: cat docgen/report-format.txt
+
+Filter Reports
+~~~~~~~~~~~~~~~~
+
+You can also filter reports using the ``--filter`` option, but first let's
+check the available filter fields. In order to see available filter fields
+run ``buildtest report --helpfilter``.
+
+.. program-output:: cat docgen/report-helpfilter.txt
+
+The ``--filter`` expects arguments in **key=value** format, you can
+specify multiple filter fields by a comma. buildtest will treat multiple
+filters as logical **AND** operation. The filter option can be used with
+``--format`` field. Let's see some examples to illustrate the point.
+
+To see all tests with returncode of 2 we set ``--filter returncode=2``.
+
+.. program-output:: cat docgen/report-returncode.txt
+
+If you want to filter by test name ``exit1_pass`` you can use the
+``name=exit1_pass`` field as shown below
+
+.. program-output:: cat docgen/report-filter-name.txt
+
+Likewise, we can filter tests by buildspec file using the ``--filter buildspec=<file>``.
+In example below we set ``buildspec=tutorials/pass_returncode.yml``. In this example,
+buildtest will resolve path and find the buildspec. If file doesn't exist or is
+not found in cache it will raise an error
+
+.. program-output:: cat docgen/report-filter-buildspec.txt
+
+We can also pass multiple filter fields for instance if we want to find all **FAIL**
+tests for executor **local.sh** we can do the following
+
+.. program-output:: cat docgen/report-multifilter.txt
+
+The state field expects value of ``PASS`` or ``FAIL`` so if you specify an
+invalid state you will get an error as follows::
+
+    $ buildtest report --filter state=UNKNOWN
+    filter argument 'state' must be 'PASS' or 'FAIL' got value UNKNOWN
+
+.. _buildtest_schemas:
+
+buildtest schemas
+------------------
+
+The ``buildtest schema`` command can show you list of available schemas just run
+the command with no options and it will show all the json schemas supported by buildtest.
+
+.. program-output:: cat docgen/schemas/avail-schemas.txt
+
+Shown below is the command usage of ``buildtest schema``
+
+.. program-output:: cat docgen/buildtest_schema_--help.txt
+
+The json schemas are hosted on the web at https://buildtesters.github.io/schemas/.
+buildtest provides a means to display the json schema from the buildtest interface.
+Note that buildtest will show the schemas provided in buildtest repo and not
+ones provided by `schemas <https://github.com/buildtesters/schemas>`_ repo. This
+is because, we let development of schema run independent of the framework.
+
+To select a JSON schema use the ``--name`` option to select a schema, for example
+to view a JSON Schema for **script-v1.0.schema.json** run the following::
+
+  $ buildtest schema --name script-v1.0.schema.json --json
+
+Similarly, if you want to view example buildspecs for a schema use the ``--example``
+option with a schema. For example to view all example schemas for
+**compiler-v1.0.schema.json** run the following::
+
+  $ buildtest schema --name compiler-v1.0.schema.json --example
 
 Debug Mode
 ------------
