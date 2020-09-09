@@ -28,5 +28,5 @@ jobs:
       run: |
         pip install -e .
         buildtest buildspec find
-        for f in $PWD/scripts/*; do python $f; done
+        for f in $PWD/docs/scripts/*; do python $f; done
 
