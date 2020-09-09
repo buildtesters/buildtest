@@ -10,7 +10,7 @@ most up to date docs at https://buildtest.readthedocs.io/en/devel/.
 Status
 -----------
 
-|license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |core_infrastructure| |black|
+| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |checkurls| |blackformat| |tutorials| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -18,19 +18,42 @@ Status
     :target: https://buildtest.readthedocs.io/en/latest/?badge=latest
 
 .. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
+    :target: http://hpcbuildtest.slack.com
+
 .. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
+
 .. |core_infrastructure| image:: https://bestpractices.coreinfrastructure.org/projects/3469/badge
+
 .. |codecov| image:: https://codecov.io/gh/buildtesters/buildtest/branch/devel/graph/badge.svg
     :target: https://codecov.io/gh/buildtesters/buildtest
+
 .. |coveralls| image:: https://coveralls.io/repos/github/buildtesters/buildtest/badge.svg?branch=devel
     :target: https://coveralls.io/github/buildtesters/buildtest?branch=devel
+
 .. |codefactor| image:: https://www.codefactor.io/repository/github/buildtesters/buildtest/badge
-   :target: https://www.codefactor.io/repository/github/buildtesters/buildtest
-   :alt: CodeFactor
+    :target: https://www.codefactor.io/repository/github/buildtesters/buildtest
+    :alt: CodeFactor
+
 .. |travis| image:: https://travis-ci.com/buildtesters/buildtest.svg?branch=devel
     :target: https://travis-ci.com/buildtesters/buildtest
+
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
+
+.. |checkurls| image:: https://github.com/buildtesters/buildtest/workflows/Check%20URLs/badge.svg
+    :target: https://github.com/buildtesters/buildtest/actions
+
+.. |blackformat| image:: https://github.com/buildtesters/buildtest/workflows/Black%20Formatter/badge.svg
+    :target: https://github.com/buildtesters/buildtest/actions
+
+.. |tutorials| image:: https://github.com/buildtesters/buildtest/workflows/TutorialsValidation/badge.svg
+    :target: https://github.com/buildtesters/buildtest/actions
+
+.. |regressiontest| image:: https://github.com/buildtesters/buildtest/workflows/regressiontest/badge.svg
+    :target: https://github.com/buildtesters/buildtest/actions
+
+.. |buildtest_scripts| image:: https://github.com/buildtesters/buildtest/workflows/buildtest_scripts/badge.svg
+    :target: https://github.com/buildtesters/buildtest/actions
 
 Source Code
 ------------
@@ -104,6 +127,7 @@ For additional reference, you can read :ref:`summary_of_buildtest` and
    configuring_buildtest.rst
    builder.rst
    writing_buildspecs.rst
+   scripting_buildtest.rst
    references.rst
 
 .. toctree::

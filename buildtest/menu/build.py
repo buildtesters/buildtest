@@ -10,14 +10,12 @@ import re
 import sys
 import time
 from tabulate import tabulate
-from jsonschema.exceptions import ValidationError
 from buildtest.defaults import (
     BUILDTEST_ROOT,
     BUILDSPEC_CACHE_FILE,
 )
 
 
-from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import load_settings, check_settings
 from buildtest.executors.setup import BuildExecutor
 from buildtest.menu.buildspec import parse_buildspecs
