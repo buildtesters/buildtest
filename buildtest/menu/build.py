@@ -26,17 +26,17 @@ logger = logging.getLogger(__name__)
 
 
 def discover_buildspecs_by_tags(input_tag):
-    """This method discovers buildspecs by tags, using ``--tags`` option
-       from ``buildtest build`` command. This method will read BUILDSPEC_CACHE_FILE
-       and search for ``tags`` key in buildspec recipe and match with input
-       tag. Since ``tags`` field is a list, we check if input tag is in ``list``
-       and if so we add the entire buildspec into a list. The return is a list
-       of buildspec files to process.
+    """ This method discovers buildspecs by tags, using ``--tags`` option
+        from ``buildtest build`` command. This method will read BUILDSPEC_CACHE_FILE
+        and search for ``tags`` key in buildspec recipe and match with input
+        tag. Since ``tags`` field is a list, we check if input tag is in ``list``
+        and if so we add the entire buildspec into a list. The return is a list
+        of buildspec files to process.
 
-       :param input_tag: Input tags from command line argument ``buildtest build --tags <tags>``
-       :type input_tag: string
-       :return: a list of buildspec files that match tag name
-       :rtype: list
+        :param input_tag: Input tags from command line argument ``buildtest build --tags <tags>``
+        :type input_tag: string
+        :return: a list of buildspec files that match tag name
+        :rtype: list
     """
 
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
@@ -58,23 +58,24 @@ def discover_buildspecs_by_tags(input_tag):
     return buildspecs
 
 
-def discover_buildspecs(buildspec):
-    """Given a buildspec file specified by the user with ``buildtest build --buildspec``,
-       discover one or more files and return a list for buildtest to parse.
-       Examples of intended functionality are documented here. For all of
-       the below, test config root refers to $HOME/.buildtest/site
- 
-       # A relative path to a file in the PWD (outside of test config root, returns single)
-       buildtest build --buildspec relative-folder/hello.sh.yml
+def discover_by_buildspecs(buildspec):
+    """ Given a buildspec file specified by the user with ``buildtest build --buildspec``,
+        discover one or more files and return a list for buildtest to process.
+        This method is called once per argument of ``--buildspec`` or ``--exclude``
+        option. If its a directory path we recursively find all buildspecs with
+        .yml extension. If filepath doesn't exist or file extension is not .yml we
+        return None and log as an error.
 
-       # A relative path to a file in build test root (returns single)
-       buildtest build --buildspec github.com/buildtesters/tutorials/hello-world/hello.sh.yml
+        # file path
+        buildtest build --buildspec tutorials/hello.sh.yml
 
-       # relative directory path (returns multiple)
-       buildtest build --buildspec hello-world
+        # directory path
+        buildtest build --buildspec tutorials
 
-       # relative directory path in build test root (returns multiple)
-       buildtest build --buildspec github.com/buildtesters/tutorials/hello-world/
+        :param buildspec: Input argument from ``buildtest build --buildspec``
+        :type buildspec: str
+        :return: A list of discovered buildspec with resolved path, if its invalid we return None
+        :rtype: list or None
     """
 
     buildspecs = []
@@ -86,7 +87,7 @@ def discover_buildspecs(buildspec):
         )
         print(msg)
         logger.error(msg)
-        return buildspecs
+        return
 
     # Now handle path based on being a directory or file path
     if os.path.isdir(buildspec):
@@ -95,19 +96,22 @@ def discover_buildspecs(buildspec):
         )
         buildspecs = walk_tree(buildspec, ".yml")
     elif os.path.isfile(buildspec):
+        # if buildspec doesn't end in .yml extension we print message and return None
         if not re.search(".yml$", buildspec):
             msg = f"{buildspec} does not end in file extension .yml"
+            print(msg)
             logger.error(msg)
-            sys.exit(msg)
+            return
 
         buildspecs = [buildspec]
         logger.debug(f"BuildSpec: {buildspec} is a file")
 
     # If we don't have any files discovered
     if not buildspecs:
-        msg = "No Buildspec files found as %s." % buildspecs
+        msg = "No Buildspec files found with input: %s." % buildspec
+        print(msg)
         logger.error(msg)
-        sys.exit(msg)
+        return
 
     # return all buildspec by resolving path, this gets the real canonical path and address shell expansion and user expansion
     buildspecs = [resolve_path(file) for file in buildspecs]
@@ -116,9 +120,81 @@ def discover_buildspecs(buildspec):
     return buildspecs
 
 
+def discover_buildspecs(tags=None, buildspec=None, exclude_buildspec=None):
+    """ This method discovers all buildspecs and returns a list of discovered
+        excluded buildspecs. The input arguments ``tags``, ``buildspec``, ``exclude_buildspec``
+        map to ``--tags`` ``--buildspec`` and ``--exclude`` option in buildtest build.
+
+        :param tags: Input argument from ``buildtest build --tags``
+        :type tags: str
+        :param buildspec: Input argument from ``buildtest build --buildspec``
+        :type tags: str
+        :param exclude_buildspec: Input argument from ``buildtest build --exclude``
+        :type tags: str
+        :return: two lists of discovered and excluded buildspecs
+        :rtype: list, list
+    """
+
+    buildspecs = []
+    exclude_buildspecs = []
+
+    if tags:
+        assert isinstance(tags, str)
+        buildspecs += discover_buildspecs_by_tags(tags)
+
+    if buildspec:
+        # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
+        # times we need to invoke discover_buildspecs once per argument.
+
+        assert isinstance(buildspec, list)
+
+        for option in buildspec:
+            bp = discover_by_buildspecs(option)
+
+            # only add buildspecs if its not None
+            if bp:
+                buildspecs += bp
+
+    # remove any duplicate Buildspec from list by converting list to set and then back to list
+    buildspecs = list(set(buildspecs))
+
+    # if no files discovered let's stop now
+    if not buildspecs:
+        msg = "There are no config files to process."
+        sys.exit(msg)
+
+    logger.debug(
+        f"Based on input argument: --buildspec {buildspec} buildtest discovered the following Buildspecs: {buildspecs}"
+    )
+
+    if exclude_buildspec:
+        assert isinstance(exclude_buildspec, list)
+        excludes = []
+        for option in exclude_buildspec:
+            bp = discover_by_buildspecs(option)
+            if bp:
+                excludes += bp
+
+        exclude_buildspecs = list(set(excludes))
+
+        logger.debug(f"The exclude pattern is the following: -e {exclude_buildspec}")
+
+        # exclude files that are found in exclude_buildspecs list
+        buildspecs = [file for file in buildspecs if file not in exclude_buildspecs]
+
+        logger.debug(f"Buildspec list after applying exclusion: {buildspecs}")
+
+    # if no files remain after exclusion let's stop now.
+    if not buildspecs:
+        msg = "There are no Buildspec files to process."
+        sys.exit(msg)
+
+    return buildspecs, exclude_buildspecs
+
+
 def func_build_subcmd(args, config_opts):
     """Entry point for ``buildtest build`` sub-command. This method will discover
-       Buildspecs in method ``discover_buildspecs``. If there is an exclusion list
+       Buildspecs in method ``discover_by_buildspecs``. If there is an exclusion list
        this will be checked, once buildtest knows all Buildspecs to process it will
        begin validation by calling ``BuildspecParser`` and followed by an executor
        instance by invoking BuildExecutor that is responsible for executing the
@@ -173,57 +249,18 @@ def func_build_subcmd(args, config_opts):
         or os.path.join(BUILDTEST_ROOT, "var", "tests")
     )
 
-    print("Paths:")
-    print("{:_<10}".format(""))
-    print(f"Test Directory: {test_directory}")
-
     ########## BEGIN BUILDSPEC DISCOVER STAGE ####################
 
     # list to store all Buildspecs that are found using discover_buildspecs
     # followed by exclusion check
-    buildspecs = []
 
-    if args.tags:
-        buildspecs += discover_buildspecs_by_tags(args.tags)
-
-    if args.buildspec:
-        # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
-        # times we need to invoke discover_buildspecs once per argument.
-        for option in args.buildspec:
-            buildspecs += discover_buildspecs(option)
-
-    stage = args.stage
-
-    # remove any duplicate Buildspec from list by converting list to set and then back to list
-    buildspecs = list(set(buildspecs))
-
-    # if no files discovered let's stop now
-    if not buildspecs:
-        msg = "There are no config files to process."
-        sys.exit(msg)
-
-    logger.debug(
-        f"Based on input argument: --buildspec {args.buildspec} buildtest discovered the following Buildspecs: {buildspecs}"
+    buildspecs, exclude_buildspecs = discover_buildspecs(
+        args.tags, args.buildspec, args.exclude
     )
 
-    if args.exclude:
-        exclude_buildspecs = []
-        for option in args.exclude:
-            exclude_buildspecs += discover_buildspecs(option)
-
-        exclude_buildspecs = list(set(exclude_buildspecs))
-
-        logger.debug(f"The exclude pattern is the following: -e {args.exclude}")
-
-        # exclude files that are found in exclude_buildspecs list
-        buildspecs = [file for file in buildspecs if file not in exclude_buildspecs]
-
-        logger.debug(f"Buildspec list after applying exclusion: {buildspecs}")
-
-        # if no files remain after exclusion let's stop now.
-        if not buildspecs:
-            msg = "There are no Buildspec files to process."
-            sys.exit(msg)
+    print("Paths:")
+    print("{:_<10}".format(""))
+    print(f"Test Directory: {test_directory}")
 
     print(
         """
@@ -239,6 +276,7 @@ def func_build_subcmd(args, config_opts):
         print("\nExcluded Buildspecs: ", exclude_buildspecs)
 
     ########## END BUILDSPEC DISCOVER STAGE ####################
+    stage = args.stage
 
     table = {"schemafile": [], "validstate": [], "buildspec": []}
 
