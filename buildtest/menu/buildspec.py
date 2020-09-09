@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import subprocess
 
@@ -8,6 +9,8 @@ from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDSPEC_DEFAULT_PATH
 from buildtest.config import load_settings
 from buildtest.utils.file import is_file, walk_tree, resolve_path
 from buildtest.buildsystem.parser import BuildspecParser
+
+logger = logging.getLogger(__name__)
 
 
 def func_buildspec_find(args):
@@ -301,3 +304,51 @@ def get_executors(cache):
 
     table["executors"] = list(executors)
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+
+
+def parse_buildspecs(buildspecs, test_directory, printTable=False):
+    """ Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
+        fails validation we add it to ``skipped_tests`` list and print all skipped
+        tests at end. If buildspec passes validation we get all builders by invoking
+        ``get_builders`` method in BuildspecParser class which gets all tests in
+        buildspec file.
+
+        :param buildspecs: A list of input buildspecs to parse
+        :param test_directory: Test directory where buildspecs will be written
+        :return: A list of builder objects which are instances of ``BuilderBase`` class
+        :rtype: list
+    """
+
+    builders = []
+    table = {"schemafile": [], "validstate": [], "buildspec": []}
+    skipped_tests = []
+    # build all the tests
+    for buildspec in buildspecs:
+
+        valid_state = True
+        try:
+            # Read in Buildspec file here, loading each will validate the buildspec file
+            bp = BuildspecParser(buildspec)
+        except (SystemExit, ValidationError) as err:
+            skipped_tests.append(f"Skipping {buildspec} since it failed to validate")
+            logger.error(err)
+            continue
+
+        table["schemafile"].append(bp.schema_file)
+        table["validstate"].append(valid_state)
+        table["buildspec"].append(buildspec)
+
+        builders += bp.get_builders(testdir=test_directory)
+
+    if printTable:
+        print(tabulate(table, headers=table.keys(), tablefmt="presto"))
+
+        # print any skipped buildspecs if they failed to validate during build stage
+        if len(skipped_tests) > 0:
+            print("\n\n")
+            print("Error Messages from Stage: Parse")
+            print("{:_<80}".format(""))
+            for test in skipped_tests:
+                print(test)
+
+    return builders

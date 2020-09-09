@@ -16,9 +16,11 @@ from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
 )
 
+
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import load_settings, check_settings
 from buildtest.executors.setup import BuildExecutor
+from buildtest.menu.buildspec import parse_buildspecs
 from buildtest.menu.report import update_report
 from buildtest.utils.file import walk_tree, resolve_path
 
@@ -120,7 +122,7 @@ def discover_by_buildspecs(buildspec):
     return buildspecs
 
 
-def discover_buildspecs(tags=None, buildspec=None, exclude_buildspec=None):
+def discover_buildspecs(tags=None, buildspec=None, exclude_buildspec=None, debug=False):
     """ This method discovers all buildspecs and returns a list of discovered
         excluded buildspecs. The input arguments ``tags``, ``buildspec``, ``exclude_buildspec``
         map to ``--tags`` ``--buildspec`` and ``--exclude`` option in buildtest build.
@@ -189,12 +191,104 @@ def discover_buildspecs(tags=None, buildspec=None, exclude_buildspec=None):
         msg = "There are no Buildspec files to process."
         sys.exit(msg)
 
+    if debug:
+
+        print(
+            """
+    +-------------------------------+
+    | Stage: Discovered Buildspecs  |
+    +-------------------------------+ 
+    """
+        )
+
+        [print(buildspec) for buildspec in buildspecs]
+
+        if exclude_buildspecs:
+            print("\nExcluded Buildspecs: ", exclude_buildspecs)
+
     return buildspecs, exclude_buildspecs
+
+
+def resolve_testdirectory(config_opts, input_testdir=None):
+    """ This method resolves which test directory to select. For example, one
+        can specify test directory via command line ``buildtest build --testdir <path>``
+        or path in configuration file. The default is $BUILDTEST_ROOT/var/tests
+
+
+        :param config_opts: loaded buildtest configuration as a dict.
+        :type config_opts: dict
+        :param input_testdir: Input test directory from command line ``buildtest build --testdir``
+        :type input_testdir: str
+        :return: Path to test directory to use
+        :rtype: str
+    """
+
+    prefix = config_opts.get("config", {}).get("paths", {}).get("prefix")
+    # variable to set test directory if prefix is set
+    prefix_testdir = None
+    if prefix:
+        prefix = resolve_path(prefix)
+        if prefix:
+            prefix_testdir = os.path.join(prefix, "tests")
+
+    config_paths_testdir = config_opts.get("config", {}).get("paths", {}).get("testdir")
+
+    # if testdir defined in configuration file get realpath
+    if config_paths_testdir:
+        config_paths_testdir = resolve_path(config_paths_testdir)
+
+    # Order of precedence when detecting test directory
+    # 1. Command line option --testdir
+    # 2. Configuration option specified by 'testdir'
+    # 3. Configuration option specified by 'prefix'
+    # 4. Defaults to $BUILDTEST_ROOT/var/tests
+    test_directory = (
+        input_testdir
+        or config_paths_testdir
+        or prefix_testdir
+        or os.path.join(BUILDTEST_ROOT, "var", "tests")
+    )
+    return test_directory
+
+
+def build_phase(builders, printTable=False):
+    """ This method will build all tests by invoking class method ``build`` for
+        each builder that generates testscript in the test directory.
+
+        :param builders: A list of builders
+        :type builders: list
+        :param printTable: Print builder table
+        :type printTable: boolean
+
+    """
+    print(
+        """
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+"""
+    )
+    table = {"name": [], "schemafile": [], "testpath": [], "buildspec": []}
+    for builder in builders:
+        builder.build()
+        table["name"].append(builder.metadata["name"])
+        table["schemafile"].append(builder.metadata["schemafile"])
+        table["testpath"].append(builder.metadata["testpath"])
+        table["buildspec"].append(builder.buildspec)
+
+    if printTable:
+        print(
+            tabulate(
+                table,
+                headers=["Name", "Schema File", "Test Path", "Buildspec"],
+                tablefmt="presto",
+            )
+        )
 
 
 def func_build_subcmd(args, config_opts):
     """Entry point for ``buildtest build`` sub-command. This method will discover
-       Buildspecs in method ``discover_by_buildspecs``. If there is an exclusion list
+       Buildspecs in method ``discover_buildspecs``. If there is an exclusion list
        this will be checked, once buildtest knows all Buildspecs to process it will
        begin validation by calling ``BuildspecParser`` and followed by an executor
        instance by invoking BuildExecutor that is responsible for executing the
@@ -223,31 +317,7 @@ def func_build_subcmd(args, config_opts):
         # check user's buildtest setting for any errors by validating against settings schema
         check_settings(args.settings)
 
-    prefix = config_opts.get("config", {}).get("paths", {}).get("prefix")
-    # variable to set test directory if prefix is set
-    prefix_testdir = None
-    if prefix:
-        prefix = resolve_path(prefix)
-        if prefix:
-            prefix_testdir = os.path.join(prefix, "tests")
-
-    config_paths_testdir = config_opts.get("config", {}).get("paths", {}).get("testdir")
-
-    # if testdir defined in configuration file get realpath
-    if config_paths_testdir:
-        config_paths_testdir = resolve_path(config_paths_testdir)
-
-    # Order of precedence when detecting test directory
-    # 1. Command line option --testdir
-    # 2. Configuration option specified by 'testdir'
-    # 3. Configuration option specified by 'prefix'
-    # 4. Defaults to $BUILDTEST_ROOT/var/tests
-    test_directory = (
-        args.testdir
-        or config_paths_testdir
-        or prefix_testdir
-        or os.path.join(BUILDTEST_ROOT, "var", "tests")
-    )
+    test_directory = resolve_testdirectory(config_opts, args.testdir)
 
     ########## BEGIN BUILDSPEC DISCOVER STAGE ####################
 
@@ -255,36 +325,12 @@ def func_build_subcmd(args, config_opts):
     # followed by exclusion check
 
     buildspecs, exclude_buildspecs = discover_buildspecs(
-        args.tags, args.buildspec, args.exclude
+        args.tags, args.buildspec, args.exclude, debug=True
     )
-
-    print("Paths:")
-    print("{:_<10}".format(""))
-    print(f"Test Directory: {test_directory}")
-
-    print(
-        """
-+-------------------------------+
-| Stage: Discovered Buildspecs  |
-+-------------------------------+ 
-"""
-    )
-
-    [print(buildspec) for buildspec in buildspecs]
-
-    if args.exclude:
-        print("\nExcluded Buildspecs: ", exclude_buildspecs)
 
     ########## END BUILDSPEC DISCOVER STAGE ####################
     stage = args.stage
 
-    table = {"schemafile": [], "validstate": [], "buildspec": []}
-
-    # Process each Buildspec iteratively by parsing using BuildspecParser followed by
-    # getting the appropriate builder and invoking the executor instance of type BuildExecutor
-    # to run the test
-    builders = []
-    skipped_tests = []
     valid_builders = []
 
     ########## BEGIN PARSE STAGE ####################
@@ -295,66 +341,19 @@ def func_build_subcmd(args, config_opts):
 +---------------------------+ 
 """
     )
+    # Parse all buildspecs and skip any buildspecs that fail validation, return type
+    # is a builder object used for building test.
+    builders = parse_buildspecs(buildspecs, test_directory, printTable=True)
 
-    # build all the tests
-    for buildspec in buildspecs:
-
-        valid_state = True
-        try:
-            # Read in Buildspec file here, loading each will validate the buildspec file
-            bp = BuildspecParser(buildspec)
-        except (SystemExit, ValidationError) as err:
-            skipped_tests.append(f"Skipping {buildspec} since it failed to validate")
-            logger.error(err)
-            continue
-
-        table["schemafile"].append(bp.schema_file)
-        table["validstate"].append(valid_state)
-        table["buildspec"].append(buildspec)
-
-        builders += bp.get_builders(testdir=test_directory)
-
-    print(tabulate(table, headers=table.keys(), tablefmt="presto"))
-
-    # print any skipped buildspecs if they failed to validate during build stage
-    if len(skipped_tests) > 0:
-        print("\n\n")
-        print("Error Messages from Stage: Parse")
-        print("{:_<80}".format(""))
-        for test in skipped_tests:
-            print(test)
-
-    ########## END OF PARSE STAGE ####################
     # if --stage=parse we stop here
     if stage == "parse":
         return
+    ########## END OF PARSE STAGE ####################
 
     executor = BuildExecutor(config_opts)
 
     ########## BEGIN BUILD STAGE ####################
-    print(
-        """
-+----------------------+
-| Stage: Building Test |
-+----------------------+ 
-"""
-    )
-    table = {"name": [], "schemafile": [], "testpath": [], "buildspec": []}
-    for builder in builders:
-
-        builder.build()
-        table["name"].append(builder.metadata["name"])
-        table["schemafile"].append(builder.metadata["schemafile"])
-        table["testpath"].append(builder.metadata["testpath"])
-        table["buildspec"].append(builder.buildspec)
-
-    print(
-        tabulate(
-            table,
-            headers=["Name", "Schema File", "Test Path", "Buildspec"],
-            tablefmt="presto",
-        )
-    )
+    build_phase(builders, printTable=True)
 
     if stage == "build":
         return
