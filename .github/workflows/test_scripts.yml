@@ -27,5 +27,6 @@ jobs:
     - name: test all scripts
       run: |
         pip install -e .
+        buildtest buildspec find
         for f in $PWD/scripts/*; do python $f; done
 
