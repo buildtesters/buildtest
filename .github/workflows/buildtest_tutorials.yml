@@ -62,6 +62,7 @@ jobs:
         buildtest buildspec find --tags
         buildtest buildspec find --list-executors
         buildtest buildspec find --clear
+        buildtest buildspec view exit1_pass
         
     - name: Test Configuration 
       run: |
@@ -73,10 +74,14 @@ jobs:
       run: |
         buildtest schema
         buildtest schema -n global.schema.json --json
+        buildtest schema -n settings.schema.json --json
         buildtest schema -n script-v1.0.schema.json --json
         buildtest schema -n compiler-v1.0.schema.json --json
-        buildtest schema -n settings.schema.json --json
         buildtest schema -n global.schema.json --examples
+        buildtest schema -n settings.schema.json --examples
+        buildtest schema -n script-v1.0.schema.json --examples
+        buildtest schema -n compiler-v1.0.schema.json --examples
+        
         
         
       
