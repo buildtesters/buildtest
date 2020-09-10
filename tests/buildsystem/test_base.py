@@ -14,7 +14,6 @@ def test_BuildspecParser(tmp_path):
 
     # Examples folder
     examples_dir = os.path.join(testroot, "examples", "buildspecs")
-
     # An empty path evaluated to be a directory should exit
     with pytest.raises(SystemExit):
         BuildspecParser("")

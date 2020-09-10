@@ -522,6 +522,7 @@ def func_build_subcmd(args, config_opts):
 
     ########## END BUILDSPEC DISCOVER STAGE ####################
     stage = args.stage
+    executor = BuildExecutor(config_opts)
 
     # Parse all buildspecs and skip any buildspecs that fail validation, return type
     # is a builder object used for building test.
@@ -530,8 +531,6 @@ def func_build_subcmd(args, config_opts):
     # if --stage=parse we stop here
     if stage == "parse":
         return
-
-    executor = BuildExecutor(config_opts)
 
     build_phase(builders, printTable=True)
 

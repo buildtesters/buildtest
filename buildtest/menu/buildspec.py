@@ -5,10 +5,11 @@ import subprocess
 
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
-from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDSPEC_DEFAULT_PATH
-from buildtest.config import load_settings
-from buildtest.utils.file import is_file, walk_tree, resolve_path
 from buildtest.buildsystem.parser import BuildspecParser
+from buildtest.config import load_settings
+from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDSPEC_DEFAULT_PATH
+from buildtest.utils.file import is_file, walk_tree, resolve_path
+
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,6 @@ def func_buildspec_find(args):
 
     cache = {}
     config_opts = load_settings()
-
     buildspec_paths = (
         config_opts.get("config", {}).get("paths", {}).get("buildspec_roots")
     )
