@@ -24,6 +24,8 @@ def test_build_by_tags():
         tags = False
         buildspec_files = False
         list_executors = False
+        filter = None
+        helpfilter = False
 
     func_buildspec_find(args)
 

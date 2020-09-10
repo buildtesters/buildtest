@@ -1,5 +1,5 @@
 $ buildtest buildspec find --help
-usage: buildtest [options] [COMMANDS] buildspec find [-h] [-c] [-t] [-bf] [-le]
+usage: buildtest [options] [COMMANDS] buildspec find [-h] [-c] [-t] [-bf] [-le] [--filter FILTER] [--helpfilter]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -9,3 +9,5 @@ optional arguments:
                         Get all buildspec files from cache
   -le, --list-executors
                         get all unique executors from buildspecs
+  --filter FILTER       Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2
+  --helpfilter          Show Filter fields for --filter option for querying buildspec cache
