@@ -49,13 +49,12 @@ configuration.
 
 Next, we need to figure out our test directory in order to write tests. This
 can be achieved by passing the loaded configuration to method **resolve_testdirectory**.
-The return will be path to test directory.
+The return will be path to test directory. The test directory can be specified
+on command line ``buildtest build --testdir`` or path in configuration. If its not
+set in configuration we default to ``$BUILDTEST_ROOT/var/tests``
 
-The test directory can be specified on command line ``buildtest build --testdir`` or
-path in configuration. If its not set in configuration we default to ``$BUILDTEST_ROOT/var/tests``
-
-Next we invoke ``parse_buildspecs`` which expects a list of buildspecs and test directory. The
-``printTable=True`` will print parse table of buildspecs that are validated. The
+Next we invoke ``parse_buildspecs`` which expects a list of buildspecs, test directory
+and executor. The ``printTable=True`` will print parse table of buildspecs that are validated. The
 *parse_buildspecs* will validate each buildspec, and skip any buildspecs that fail validation.
 The parser is implemented in class ``BuildspecParser``. For all valid buildspecs
 we return a list of builders that is a list of tests for each buildspec that

@@ -9,6 +9,8 @@ import logging
 import os
 import sys
 from jsonschema import validate
+from buildtest.config import load_settings
+from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.utils import load_recipe
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.file import resolve_path, is_dir
@@ -20,6 +22,10 @@ from buildtest.buildsystem.base import (
     IntelCompiler,
     PGICompiler,
 )
+
+configuration = load_settings()
+master_executors = BuildExecutor(configuration)
+executors = master_executors.executors.keys()
 
 
 class BuildspecParser:
@@ -50,7 +56,7 @@ class BuildspecParser:
         """
 
         self.logger = logging.getLogger(__name__)
-
+        self.executors = executors
         # if invalid input for buildspec
         if not buildspec:
             sys.exit("Invalid input type for Buildspec, must be of type 'string'.")
@@ -132,6 +138,14 @@ class BuildspecParser:
             self.logger.info(
                 "Checking %s in supported type schemas: %s", type, schema_table["types"]
             )
+
+            # extract type field from test, if not found set to None
+            executor = self.recipe.get("buildspecs").get(name).get("executor") or None
+
+            if executor not in self.executors:
+                sys.exit(
+                    f"executor: {executor} not found in executor list: {self.executors}"
+                )
 
             # And that there is a version file
             if self.schema_version not in schema_table[type]["versions"]:
