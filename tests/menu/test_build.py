@@ -36,9 +36,21 @@ def test_build_by_tags():
         settings = BUILDTEST_SETTINGS_FILE
         testdir = None
         exclude = None
-        tags = "tutorials"
+        tags = ["tutorials"]
 
     #  testing buildtest build --tags tutorials
+    func_build_subcmd(args, buildtest_configuration)
+
+    class args:
+        buildspec = None
+        debug = False
+        stage = None
+        settings = BUILDTEST_SETTINGS_FILE
+        testdir = None
+        exclude = None
+        tags = ["compile", "python"]
+
+    #  testing buildtest build --tags tutorials --tags python
     func_build_subcmd(args, buildtest_configuration)
 
 
@@ -115,15 +127,15 @@ def test_discover_buildspec():
 
     # testing by tags and input buildspecs but not excluding any buildspecs
     discovered_bp, exclude_bps = discover_buildspecs(
-        tags="tutorials", buildspec=input_bps
+        tags=["tutorials"], buildspec=input_bps
     )
     # ensure that discovered buildspec is not None and exclude_bps should be empty list
     assert discovered_bp
     assert not exclude_bps
 
     # the tags field expect a string when searching in cache, passing a list will raise AssertionError
-    with pytest.raises(AssertionError):
-        discover_buildspecs(tags=["tutorials"])
+    # with pytest.raises(AssertionError):
+    #    discover_buildspecs(tags=["tutorials"])
 
 
 def test_build_buildspecs():
@@ -168,7 +180,7 @@ def test_build_by_stages():
         settings = BUILDTEST_SETTINGS_FILE
         testdir = None
         exclude = None
-        tags = "tutorials"
+        tags = ["tutorials"]
 
     # testing buildtest build --tags tutorials --stage=parse
     func_build_subcmd(args, buildtest_configuration)
@@ -180,7 +192,7 @@ def test_build_by_stages():
         settings = BUILDTEST_SETTINGS_FILE
         testdir = None
         exclude = None
-        tags = "tutorials"
+        tags = ["tutorials"]
 
     # testing buildtest build --tags tutorials --stage=build
     func_build_subcmd(args, buildtest_configuration)

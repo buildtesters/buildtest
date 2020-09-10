@@ -61,6 +61,8 @@ def tutorial():
         f"{os.path.join(prefix, 'invalid-buildspec.txt')}": "buildtest build -b tutorials/invalid_buildspec_section.yml",
         f"{os.path.join(prefix, 'invalid-executor.txt')}": "buildtest build -b tutorials/invalid_executor.yml",
         f"{os.path.join(prefix, 'tags.txt')}": "buildtest build --tags tutorials",
+        f"{os.path.join(prefix, 'multi-tags.txt')}": "buildtest build --tags compile --tags python",
+        f"{os.path.join(prefix, 'combine-tags-buildspec-exclude.txt')}": "buildtest build --tags python -b tutorials/compilers -x tutorials/compilers/vecadd.yml",
         f"{os.path.join(prefix, 'stage_parse.txt')}": "buildtest build -b tutorials/systemd.yml --stage=parse",
         f"{os.path.join(prefix, 'stage_build.txt')}": "buildtest build -b tutorials/systemd.yml --stage=build",
     }
