@@ -58,16 +58,16 @@ jobs:
       run: buildtest build -b tutorials/
     
     - name: build examples
-      run: | 
+      run: |
         buildtest build --tags fail
         buildtest build --tags fail --tags compile
         buildtest build --executor local.sh
         buildtest build --tags tutorials --executor local.sh
-        buildtest build -b tutorials/compilers -x tutorials/compilers/vecadd.yml --tags fail 
+        buildtest build -b tutorials/compilers -x tutorials/compilers/vecadd.yml --tags fail
         buildtest build -b tutorials --executor local.sh
         
     - name: Checking Test Reports
-      run: | 
+      run: |
         buildtest report
         buildtest report --filter buildspec=tutorials/pass_returncode.yml --format name,state,buildspec
         buildtest report --filter name=exit1_pass --format id,returncode,state,runtime
@@ -90,7 +90,3 @@ jobs:
         buildtest schema -n settings.schema.json --example
         buildtest schema -n script-v1.0.schema.json --example
         buildtest schema -n compiler-v1.0.schema.json --example
-        
-        
-        
-      
