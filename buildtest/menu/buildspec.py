@@ -46,7 +46,6 @@ def func_buildspec_find(args):
             if os.path.exists(path):
                 paths.append(path)
 
-    print("Searching buildspec in following directories: ", ",".join(paths))
     # implements buildtest buildspec find --clear which removes cache file before finding all buildspecs
     if args.clear:
         try:
@@ -75,6 +74,45 @@ def func_buildspec_find(args):
         get_executors(cache)
         return
 
+    filter_field_table = [
+        ["executor", "Filter by executor name", "STRING"],
+        ["tags", "Filter by tag name ", "STRING"],
+        ["type", "Filter by schema type ", "STRING"],
+    ]
+
+    if args.helpfilter:
+        print(
+            tabulate(
+                filter_field_table,
+                headers=["Field", "Description", "Type"],
+                tablefmt="simple",
+            )
+        )
+        return
+
+    filter_fields = ["type", "executor", "tags"]
+
+    executor_filter = None
+    tags_filter = None
+    type_filter = None
+
+    if args.filter:
+
+        raiseError = False
+        # check if filter keys are accepted filter fields, if not we raise error
+        for key in args.filter.keys():
+            if key not in filter_fields:
+                print(f"Invalid filter key: {key}")
+                raiseError = True
+
+        # raise error if any filter field is invalid
+        if raiseError:
+            sys.exit(1)
+
+        executor_filter = args.filter.get("executor")
+        tags_filter = args.filter.get("tags")
+        type_filter = args.filter.get("type")
+
     paths = cache.keys()
 
     table = {"Name": [], "Type": [], "Executor": [], "Tags": [], "Description": []}
@@ -87,6 +125,15 @@ def func_buildspec_find(args):
                 executor = cache[path][buildspecfile][test]["executor"]
                 tags = cache[path][buildspecfile][test].get("tags")
                 description = cache[path][buildspecfile][test].get("description")
+
+                if executor_filter and executor_filter != executor:
+                    continue
+
+                if tags_filter and tags_filter not in tags:
+                    continue
+
+                if type_filter and type_filter != type:
+                    continue
 
                 table["Name"].append(test)
                 table["Type"].append(type)

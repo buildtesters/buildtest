@@ -229,14 +229,11 @@ Finding Buildspecs
 ~~~~~~~~~~~~~~~~~~~~
 
 To find all buildspecs run ``buildtest buildspec find`` which will discover
-all buildspecs in all repos. buildtest will recursively traverse all repos
-and seek out all `.yml` extensions so make sure your buildspecs conform to
-the file extension.
-
+all buildspecs in all repos by recursively finding all `.yml` extensions.
 
 .. program-output:: cat docgen/getting_started/buildspec-find.txt
 
-buildtest will find all buildspecs and validate each file with the appropriate
+buildtest will validate each buildspec file with the appropriate
 schema type. buildspecs that pass validation will be displayed on screen.
 buildtest will report all invalid buildspecs in a text file for you to review.
 
@@ -253,7 +250,35 @@ Shown below is a list of options for ``buildtest buildspec find`` command.
 
 If you want to find all buildspec files in cache run ``buildtest buildspec find --buildspec-files``
 
-.. program-output:: cat docgen/buildtest_buildspec_find_buildspecfiles.txt
+.. program-output:: cat docgen/buildspec_find_buildspecfiles.txt
+
+Filtering buildspec
+~~~~~~~~~~~~~~~~~~~
+
+You can filter buildspec cache using the the ``--filter`` option. Let's take a look
+at the available filter fields that are acceptable with filter option.
+
+.. program-output:: cat docgen/buildspec-filter.txt
+
+The ``--filter`` option accepts arguments in key/value format as follows::
+
+    buildtest buildspec find --filter key1=value1,key2=value2,key3=value3
+
+We can filter buildspec cache by ``tags=fail`` which will query all tests with
+associated tag field in test.
+
+.. program-output:: cat docgen/buildspec_filter_tags.txt
+
+In addition, we can query buildspecs by schema type, in next example we query
+all tests using the `script` schema
+
+.. program-output:: cat docgen/buildspec_filter_type.txt
+
+Finally, we can combine multiple filter fields separated by comma, in next example
+we query all buildspecs with ``tags=tutorials``, ``executor=local.sh``, and ``type=script``
+
+.. program-output:: cat docgen/buildspec_multifield_filter.txt
+
 
 .. _buildspec_tags:
 
@@ -263,7 +288,7 @@ Querying buildspec tags
 If you want to retrieve all unique tags from all buildspecs you can run
 ``buildtest buildspec find --tags``
 
-.. program-output:: cat docgen/buildtest_buildspec_find_tags.txt
+.. program-output:: cat docgen/buildspec_find_tags.txt
 
 .. _buildspec_executor:
 
@@ -274,7 +299,7 @@ To find all executors from cache you can run ``buildtest buildspec find --list-e
 This will retrieve the `'executor'` field from all buildspec and any duplicates will
 be ignored.
 
-.. program-output:: cat docgen/buildtest_buildspec_find_executors.txt
+.. program-output:: cat docgen/buildspec_find_executors.txt
 
 Viewing Buildspecs
 ~~~~~~~~~~~~~~~~~~~~

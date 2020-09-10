@@ -11,6 +11,8 @@ def test_func_buildspec_find():
         buildspec_files = False
         list_executors = False
         tags = False
+        filter = None
+        helpfilter = False
 
     func_buildspec_find(args)
 
@@ -21,6 +23,8 @@ def test_func_buildspec_find():
         buildspec_files = False
         list_executors = False
         tags = False
+        filter = None
+        helpfilter = False
 
     func_buildspec_find(args)
 
@@ -43,10 +47,12 @@ def test_buildspec_view():
 def test_buildspec_tags():
     class args:
         find = True
+        tags = True
         clear = False
         buildspec_files = False
         list_executors = False
-        tags = True
+        filter = None
+        helpfilter = False
 
     # testing buildtest buildspec find --tags
     func_buildspec_find(args)
@@ -55,10 +61,12 @@ def test_buildspec_tags():
 def test_buildspec_files():
     class args:
         find = True
+        buildspec_files = True
         clear = False
         list_executors = False
         tags = False
-        buildspec_files = True
+        filter = None
+        helpfilter = False
 
     # testing buildtest buildspec find --buildspec-files
     func_buildspec_find(args)
@@ -67,10 +75,50 @@ def test_buildspec_files():
 def test_buildspec_executors():
     class args:
         find = True
-        clear = False
         list_executors = True
+        clear = False
+        tags = False
+        buildspec_files = False
+        filter = None
+        helpfilter = False
+
+    # testing buildtest buildspec find --list-executors
+    func_buildspec_find(args)
+
+
+def test_buildspec_find_filter():
+    class args:
+        find = True
+        helpfilter = True
+        list_executors = False
+        clear = False
+        tags = False
+        buildspec_files = False
+        filter = None
+
+    # testing buildtest buildspec find --helpfilter
+    func_buildspec_find(args)
+
+    class args:
+        find = True
+        filter = {"tags": "fail"}
+        helpfilter = False
+        list_executors = False
+        clear = False
         tags = False
         buildspec_files = False
 
-    # testing buildtest buildspec find --list-executors
+    # testing buildtest buildspec find --filter tags=fail
+    func_buildspec_find(args)
+
+    class args:
+        find = True
+        filter = {"type": "script", "executor": "local.sh", "tags": "tutorials"}
+        helpfilter = False
+        list_executors = False
+        clear = False
+        tags = False
+        buildspec_files = False
+
+    # testing buildtest buildspec find --filter type=script,executor=local.sh,tags=fail
     func_buildspec_find(args)

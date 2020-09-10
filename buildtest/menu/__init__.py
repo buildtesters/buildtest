@@ -51,11 +51,6 @@ def handle_kv_string(val):
             kv_dict[key] = value
 
     return kv_dict
-    # if '=' in split_args
-    # if '=' in val:
-    #    return val.split('=')
-    # else:
-    #    raise argparse.ArgumentTypeError('Must specify k=v')
 
 
 class BuildTestParser:
@@ -137,25 +132,7 @@ class BuildTestParser:
         return args
 
     def build_menu(self):
-        """This method implements the ``buildtest build`` command
-
-            # single buildspec file
-
-            ``buildtest build -b <file>``
-
-            # single buildspec directory (builds all buildspec in directory)
-
-            ``buildtest build -b <dir>``
-
-            # build a buildspec and exclude some buildspecs. The exclude (-x) accepts both file and directory
-
-            ``buildtest build -b <file> -x <file>``
-
-           # multiple buildspecs build and exclude
-
-           ``buildtest build -b <file> -b <dir> -x <file> -x <file>``
-
-        """
+        """This method implements the ``buildtest build`` command"""
 
         parser_build = self.subparsers.add_parser("build")
 
@@ -207,23 +184,8 @@ class BuildTestParser:
         )
 
     def buildspec_menu(self):
-        """This method implements ``buildtest buildspec`` command
+        """This method implements ``buildtest buildspec`` command"""
 
-            Command Usage
-
-            # find all buildspecs
-
-            ``buildtest buildspec find``
-
-            # view a buildspec file
-
-            ``buildtest buildspec view <name>``
-
-            # edit and validate a buildspec file
-
-            ``buildtest buildspec edit <name>``
-
-        """
         # ####################### buildtest buildspec  ########################
         parser_buildspec = self.subparsers.add_parser("buildspec")
 
@@ -254,6 +216,16 @@ class BuildTestParser:
             help="get all unique executors from buildspecs",
             action="store_true",
         )
+        buildspec_find.add_argument(
+            "--filter",
+            type=handle_kv_string,
+            help="Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2",
+        )
+        buildspec_find.add_argument(
+            "--helpfilter",
+            action="store_true",
+            help="Show Filter fields for --filter option for querying buildspec cache",
+        )
 
         buildspec_view = subparsers_buildspec.add_parser(
             "view", help="view a buildspec"
@@ -269,26 +241,7 @@ class BuildTestParser:
         buildspec_edit.set_defaults(func=func_buildspec_edit)
 
     def config_menu(self):
-        """This method adds argparse argument for ``buildtest config``
-
-           Command Usage
-
-            # view buildtest settings file
-
-            ``buildtest config view``
-
-           # open buildtest settings in editor and validate upon saving
-
-           ``buildtest config edit``
-
-           # validate buildtest settings
-
-           ``buildtest config validate``
-
-           # summary of buildtest
-
-           ``buildtest config summary``
-        """
+        """This method adds argparse argument for ``buildtest config``"""
 
         parser_config = self.subparsers.add_parser("config")
         # #################### buildtest config   ###############################
@@ -339,27 +292,7 @@ class BuildTestParser:
         parser_report.set_defaults(func=func_report)
 
     def schema_menu(self):
-        """This method adds argparse argument for ``buildtest show``
-
-            Command Usage
-
-            # list all schema names
-
-            -``buildtest schema``
-
-            # list all schema in json
-
-            -``buildtest schema -j``
-
-            # list schema global.schema.json in json
-
-            -``buildtest schema -n global.schema.json -j``
-
-            # list schema examples for global.schema.json
-
-            -``buildtest schema  -n global.schema.json -e``
-
-        """
+        """This method adds argparse argument for ``buildtest show``"""
 
         # ################### buildtest schema  ########################
         parser_schema = self.subparsers.add_parser("schema")
