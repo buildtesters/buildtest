@@ -307,7 +307,9 @@ def get_executors(cache):
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
 
-def parse_buildspecs(buildspecs, test_directory, printTable=False):
+def parse_buildspecs(
+    buildspecs, test_directory, tags=None, executors=None, printTable=False
+):
     """ Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
         fails validation we add it to ``skipped_tests`` list and print all skipped
         tests at end. If buildspec passes validation we get all builders by invoking
@@ -339,7 +341,9 @@ def parse_buildspecs(buildspecs, test_directory, printTable=False):
         table["validstate"].append(valid_state)
         table["buildspec"].append(buildspec)
 
-        builders += bp.get_builders(testdir=test_directory)
+        builders += bp.get_builders(
+            testdir=test_directory, tag_filter=tags, executor_filter=executors
+        )
 
     # print any skipped buildspecs if they failed to validate during build stage
     if len(skipped_tests) > 0:

@@ -169,16 +169,6 @@ class BuildTestParser:
         )
 
         parser_build.add_argument(
-            "-t",
-            "--testdir",
-            help="specify a custom test directory. By default, use .buildtest in $PWD.",
-        )
-
-        parser_build.add_argument(
-            "--settings", help="Specify an alternate buildtest settings file to use",
-        )
-
-        parser_build.add_argument(
             "-x",
             "--exclude",
             action="append",
@@ -186,13 +176,34 @@ class BuildTestParser:
         )
 
         parser_build.add_argument(
-            "--tags", action="append", type=str, help="Specify buildspecs by tags",
+            "--tags",
+            action="append",
+            type=str,
+            help="Specify buildspecs by tags found in buildspec cache",
+        )
+
+        parser_build.add_argument(
+            "-e",
+            "--executor",
+            action="append",
+            type=str,
+            help="Specify buildspecs by executor name found in buildspec cache",
         )
         parser_build.add_argument(
             "-s",
             "--stage",
             help="control behavior of buildtest build",
             choices=["parse", "build"],
+        )
+
+        parser_build.add_argument(
+            "-t",
+            "--testdir",
+            help="specify a custom test directory. By default, use .buildtest in $PWD.",
+        )
+
+        parser_build.add_argument(
+            "--settings", help="Specify an alternate buildtest settings file to use",
         )
 
     def buildspec_menu(self):

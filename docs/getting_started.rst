@@ -135,7 +135,7 @@ example we build all tests with tag name `compiler` and `python`.
 
 When multiple tags are specified, we search each tag independently and if it
 is found in the buildspec cache we retrieve the test. To see a list of available
-tags in your buildspec cache see :ref:`find_buildspecs`.
+tags in your buildspec cache see :ref:`buildspec_tags`.
 
 You can combine ``--tags`` with ``--buildspec`` and ``--exclude`` in a single command.
 buildtest will query tags and buildspecs independently and combine all discovered
@@ -148,6 +148,32 @@ but we exclude **tutorials/compilers/vecadd.yml**.
 
 .. program-output:: cat docgen/getting_started/combine-tags-buildspec-exclude.txt
 
+Building by Executors
+-----------------------
+
+buildtest can build tests by executor name using the ``--executor`` option. If you
+to build all test associated to an executor such as ``local.sh`` you can run::
+
+  $ buildtest build --executor local.sh
+
+buildtest will query buildspec cache for the executor name and retrieve a list of
+buildspecs with matching executor name. Later we process every buildspec and filter
+tests with executor name. In the first stage we retrieve the buildspec file which may
+contain one or more test and in second stage we process each test.
+
+To see a list of available executors in buildspec cache see :ref:`buildspec_executor`.
+
+.. Note:: By default all tests are run in buildspec file, the --executor is filtering by tests
+
+In this example we run all tests that are associated to `local.sh` executor
+
+.. program-output:: cat docgen/getting_started/single-executor.txt
+
+We can append arguments to ``--executor`` to search for multiple executors by
+specifying ``--executor <name1> --executor <name2>``. In next example we search
+all tests associated with ``local.sh`` and ``local.bash`` executor.
+
+.. program-output:: cat docgen/getting_started/multi-executor.txt
 
 
 Control builds by Stages
@@ -225,14 +251,24 @@ Shown below is a list of options for ``buildtest buildspec find`` command.
 
 .. program-output:: cat docgen/buildtest_buildspec_find_--help.txt
 
+If you want to find all buildspec files in cache run ``buildtest buildspec find --buildspec-files``
+
+.. program-output:: cat docgen/buildtest_buildspec_find_buildspecfiles.txt
+
+.. _buildspec_tags:
+
+Querying buildspec tags
+~~~~~~~~~~~~~~~~~~~~~~~~
+
 If you want to retrieve all unique tags from all buildspecs you can run
 ``buildtest buildspec find --tags``
 
 .. program-output:: cat docgen/buildtest_buildspec_find_tags.txt
 
-If you want to find all buildspec files in cache run ``buildtest buildspec find --buildspec-files``
+.. _buildspec_executor:
 
-.. program-output:: cat docgen/buildtest_buildspec_find_buildspecfiles.txt
+Querying buildspec executor
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To find all executors from cache you can run ``buildtest buildspec find --list-executors``.
 This will retrieve the `'executor'` field from all buildspec and any duplicates will

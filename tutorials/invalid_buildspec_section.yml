@@ -4,7 +4,7 @@ buildspecs:
     executor: local.bash
     type: badscript
     description: invalid type
-    tags: [tutorials]
+    tags: [tutorials, fail]
     env:
       Address: 65 Whale Drive
       City: Manchester
