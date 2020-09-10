@@ -58,6 +58,38 @@ def discover_buildspecs_by_tags(input_tag):
     return buildspecs
 
 
+def discover_buildspecs_by_executor_name(executor_name):
+    """ This method discovers buildspecs by executor name, using ``--executor-name``
+        option from ``buildtest build`` command. This method will read BUILDSPEC_CACHE_FILE
+        and search for ``executor`` key in buildspec recipe and match with input
+        executor name. The return is a list of matching buildspec with executor name
+        to process.
+
+        :param executor_name: Input executor name from command line argument ``buildtest build --executor-name <name>``
+        :type executor_name: string
+        :return: a list of buildspec files that match tag name
+        :rtype: list
+    """
+
+    with open(BUILDSPEC_CACHE_FILE, "r") as fd:
+        cache = json.loads(fd.read())
+
+    buildspecs = []
+    # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
+    # if it matches input_tag we add buildspec to list
+    for path in cache.keys():
+        for buildspecfile in cache[path].keys():
+            for test in cache[path][buildspecfile].keys():
+
+                # if tags is not declared we set to empty list
+                executor = cache[path][buildspecfile][test].get("executor") or []
+
+                if executor_name == executor:
+                    buildspecs.append(buildspecfile)
+
+    return buildspecs
+
+
 def discover_by_buildspecs(buildspec):
     """ Given a buildspec file specified by the user with ``buildtest build --buildspec``,
         discover one or more files and return a list for buildtest to process.
@@ -120,15 +152,19 @@ def discover_by_buildspecs(buildspec):
     return buildspecs
 
 
-def discover_buildspecs(tags=None, buildspec=None, exclude_buildspec=None, debug=False):
+def discover_buildspecs(
+    tags=None, executorname=None, buildspec=None, exclude_buildspec=None, debug=False
+):
     """ This method discovers all buildspecs and returns a list of discovered
         excluded buildspecs. The input arguments ``tags``, ``buildspec``, ``exclude_buildspec``
         map to ``--tags`` ``--buildspec`` and ``--exclude`` option in buildtest build.
 
         :param tags: Input argument from ``buildtest build --tags``
-        :type tags: str
+        :type tags: list
+        :param executorname: Input argument from ``buildtest build --executor-name``
+        :type executorname: list
         :param buildspec: Input argument from ``buildtest build --buildspec``
-        :type tags: str
+        :type buildspec: str
         :param exclude_buildspec: Input argument from ``buildtest build --exclude``
         :type tags: str
         :param debug: Boolean to control print messages to stdout
@@ -141,11 +177,16 @@ def discover_buildspecs(tags=None, buildspec=None, exclude_buildspec=None, debug
     exclude_buildspecs = []
 
     if tags:
-        # assert isinstance(tags, str)
+        assert isinstance(tags, list)
         for tagname in tags:
-            # assert  isinstance(tagname, str)
+            assert isinstance(tagname, str)
             buildspecs += discover_buildspecs_by_tags(tagname)
 
+    if executorname:
+        assert isinstance(executorname, list)
+        for name in executorname:
+            assert isinstance(name, str)
+            buildspecs += discover_buildspecs_by_executor_name(name)
     if buildspec:
         # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
         # times we need to invoke discover_buildspecs once per argument.
@@ -521,7 +562,7 @@ def func_build_subcmd(args, config_opts):
     # discover all buildspecs by tags, buildspecs, and exclude buildspecs. The return
     # is a list of buildspecs and excluded buildspecs
     buildspecs, exclude_buildspecs = discover_buildspecs(
-        args.tags, args.buildspec, args.exclude, debug=True
+        args.tags, args.executor, args.buildspec, args.exclude, debug=True
     )
 
     ########## END BUILDSPEC DISCOVER STAGE ####################
@@ -530,7 +571,9 @@ def func_build_subcmd(args, config_opts):
 
     # Parse all buildspecs and skip any buildspecs that fail validation, return type
     # is a builder object used for building test.
-    builders = parse_buildspecs(buildspecs, test_directory, printTable=True)
+    builders = parse_buildspecs(
+        buildspecs, test_directory, args.tags, args.executor, printTable=True
+    )
 
     # if --stage=parse we stop here
     if stage == "parse":

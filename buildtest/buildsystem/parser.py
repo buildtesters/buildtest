@@ -172,7 +172,7 @@ class BuildspecParser:
 
     # Builders
 
-    def get_builders(self, testdir):
+    def get_builders(self, testdir, tag_filter=None, executor_filter=None):
         """Based on a loaded Buildspec file, return the correct builder
            for each based on the type. Each type is associated with a known
            Builder class.
@@ -191,6 +191,26 @@ class BuildspecParser:
                 if recipe.get("skip"):
                     print(f"[{name}] test is skipped.")
                     continue
+
+                # if input 'buildtest build --executor' is set we filter test by
+                # executor name. For now we skip all test that don't belong in executor list.
+                if executor_filter and recipe.get("executor") not in executor_filter:
+                    print(
+                        f"[{name}] test is skipped because it is not in executor filter list: {executor_filter}"
+                    )
+                    continue
+
+                if tag_filter:
+                    found = False
+                    for tagname in tag_filter:
+                        if tagname in recipe.get("tags"):
+                            found = True
+
+                    if not found:
+                        print(
+                            f"[{name}] test is skipped because it is not in tag filter list: {tag_filter}"
+                        )
+                        continue
 
                 # Add the builder based on the type
                 if recipe["type"] == "script":

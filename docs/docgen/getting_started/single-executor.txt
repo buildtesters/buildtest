@@ -1,0 +1,59 @@
+$ buildtest build --executor local.sh 
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+    
+
+Discovered Buildspecs:
+ 
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+[_bin_bash_shell] test is skipped because it is not in executor filter list: ['local.sh']
+[bash_shell] test is skipped because it is not in executor filter list: ['local.sh']
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+    
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+-------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ Name                | Schema File             | Test Path                                                                                              | Buildspec
+---------------------+-------------------------+--------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------
+ exit1_fail          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/generate.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+ exit1_pass          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/generate.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+ returncode_mismatch | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/generate.sh | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+ _bin_sh_shell       | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/generate.sh        | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+ sh_shell            | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/generate.sh             | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+ shell_options       | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/generate.sh        | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+    
+ name                | executor   | status   |   returncode | testpath
+---------------------+------------+----------+--------------+--------------------------------------------------------------------------------------------------------
+ exit1_fail          | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/generate.sh
+ exit1_pass          | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/generate.sh
+ returncode_mismatch | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/generate.sh
+ _bin_sh_shell       | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/generate.sh
+ sh_shell            | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/generate.sh
+ shell_options       | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/generate.sh
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    
+Executed 6 tests
+Passed Tests: 4/6 Percentage: 66.667%
+Failed Tests: 2/6 Percentage: 33.333%
+
+
+

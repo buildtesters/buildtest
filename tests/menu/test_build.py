@@ -37,6 +37,7 @@ def test_build_by_tags():
         testdir = None
         exclude = None
         tags = ["tutorials"]
+        executor = None
 
     #  testing buildtest build --tags tutorials
     func_build_subcmd(args, buildtest_configuration)
@@ -49,6 +50,7 @@ def test_build_by_tags():
         testdir = None
         exclude = None
         tags = ["compile", "python"]
+        executor = None
 
     #  testing buildtest build --tags tutorials --tags python
     func_build_subcmd(args, buildtest_configuration)
@@ -133,9 +135,9 @@ def test_discover_buildspec():
     assert discovered_bp
     assert not exclude_bps
 
-    # the tags field expect a string when searching in cache, passing a list will raise AssertionError
-    # with pytest.raises(AssertionError):
-    #    discover_buildspecs(tags=["tutorials"])
+    # the tags field expect a list when searching in cache, passing a string will raise AssertionError
+    with pytest.raises(AssertionError):
+        discover_buildspecs(tags="tutorials")
 
 
 def test_build_buildspecs():
@@ -150,6 +152,7 @@ def test_build_buildspecs():
         testdir = None
         exclude = None
         tags = None
+        executor = None
 
     #  testing buildtest build --buildspec tests/examples/buildspecs
     func_build_subcmd(args, buildtest_configuration)
@@ -162,6 +165,7 @@ def test_build_buildspecs():
         testdir = "/tmp"
         exclude = [buildspec_paths]
         tags = None
+        executor = None
 
     #  testing buildtest build --buildspec tests/examples/buildspecs --exclude tests/examples/buildspecs
     # this results in no buildspecs built
@@ -181,6 +185,7 @@ def test_build_by_stages():
         testdir = None
         exclude = None
         tags = ["tutorials"]
+        executor = None
 
     # testing buildtest build --tags tutorials --stage=parse
     func_build_subcmd(args, buildtest_configuration)
@@ -193,6 +198,7 @@ def test_build_by_stages():
         testdir = None
         exclude = None
         tags = ["tutorials"]
+        executor = None
 
     # testing buildtest build --tags tutorials --stage=build
     func_build_subcmd(args, buildtest_configuration)
