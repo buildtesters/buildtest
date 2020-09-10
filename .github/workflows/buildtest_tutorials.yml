@@ -1,20 +1,13 @@
-# This is a basic workflow to help you get started with Actions
-
 name: TutorialsValidation
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the devel branch
 on:
-  push:
-    branches: [ devel ]
   pull_request:
     branches: [ devel ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+
+  buildtest-checks:
     runs-on: ubuntu-latest
 
     strategy:
@@ -43,12 +36,35 @@ jobs:
         buildtest --version
         buildtest --help
    
-    - name: Validate buildspecs in tutorials
+    - name: Find buildspecs
+      run: buildtest buildspec find
+    
+    - name: Buildspec Features
       run: |
-        buildtest buildspec find
+
+        buildtest buildspec find --tags
+        buildtest buildspec find --list-executors
+        buildtest buildspec find --clear
+        buildtest buildspec view exit1_pass
+    
+    - name: Filter buildspec cache
+      run: | 
+        buildtest buildspec find --helpfilter
+        buildtest buildspec find --filter tags=fail
+        buildtest buildspec find --filter tags=compiler,executor=local.bash
+        buildtest buildspec find --filter type=script,executor=local.bash,tags=tutorials
     
     - name: Running Tutorials Example
       run: buildtest build -b tutorials/
+    
+    - name: build examples
+      run: | 
+        buildtest build --tags fail
+        buildtest build --tags fail --tags compiler
+        buildtest build --executor local.sh
+        buildtest build --tags tutorials --executor local.sh
+        buildtest build -b tutorials/compilers -x tutorials/compilers/vecadd.yml --tags fail 
+        buildtest build -b tutorials --executor local.sh
         
     - name: Checking Test Reports
       run: | 
@@ -56,13 +72,6 @@ jobs:
         buildtest report --filter buildspec=tutorials/pass_returncode.yml --format name,state,buildspec
         buildtest report --filter name=exit1_pass --format id,returncode,state,runtime
         buildtest report --filter state=PASS,executor=local.bash --format id,state,executor
-      
-    - name: Buildspec Features
-      run: |
-        buildtest buildspec find --tags
-        buildtest buildspec find --list-executors
-        buildtest buildspec find --clear
-        buildtest buildspec view exit1_pass
         
     - name: Test Configuration 
       run: |
