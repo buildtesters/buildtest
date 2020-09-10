@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import sys
 import subprocess
 
 from tabulate import tabulate
@@ -340,6 +341,18 @@ def parse_buildspecs(buildspecs, test_directory, printTable=False):
 
         builders += bp.get_builders(testdir=test_directory)
 
+    # print any skipped buildspecs if they failed to validate during build stage
+    if len(skipped_tests) > 0:
+        print("\n\n")
+        print("Error Messages from Stage: Parse")
+        print("{:_<80}".format(""))
+        for test in skipped_tests:
+            print(test)
+
+    if not builders:
+        print("No buildspecs to process because there are no valid buildspecs")
+        sys.exit(0)
+
     if printTable:
         print(
             """
@@ -349,13 +362,5 @@ def parse_buildspecs(buildspecs, test_directory, printTable=False):
     """
         )
         print(tabulate(table, headers=table.keys(), tablefmt="presto"))
-
-        # print any skipped buildspecs if they failed to validate during build stage
-        if len(skipped_tests) > 0:
-            print("\n\n")
-            print("Error Messages from Stage: Parse")
-            print("{:_<80}".format(""))
-            for test in skipped_tests:
-                print(test)
 
     return builders

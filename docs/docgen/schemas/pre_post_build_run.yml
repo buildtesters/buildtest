@@ -4,7 +4,7 @@ buildspecs:
     type: compiler
     description: example using pre_build, post_build, pre_run, post_run example
     executor: local.bash
-    tags: [tutorials]
+    tags: [tutorials, compile]
     pre_build: |
       echo "This is a pre-build section"
       gcc --version

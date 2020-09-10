@@ -141,8 +141,10 @@ def discover_buildspecs(tags=None, buildspec=None, exclude_buildspec=None, debug
     exclude_buildspecs = []
 
     if tags:
-        assert isinstance(tags, str)
-        buildspecs += discover_buildspecs_by_tags(tags)
+        # assert isinstance(tags, str)
+        for tagname in tags:
+            # assert  isinstance(tagname, str)
+            buildspecs += discover_buildspecs_by_tags(tagname)
 
     if buildspec:
         # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
@@ -196,15 +198,17 @@ def discover_buildspecs(tags=None, buildspec=None, exclude_buildspec=None, debug
         print(
             """
 +-------------------------------+
-| Stage: Discovered Buildspecs  |
+| Stage: Discovering Buildspecs |
 +-------------------------------+ 
     """
         )
 
+        print("\nDiscovered Buildspecs:\n ")
         [print(buildspec) for buildspec in buildspecs]
 
         if exclude_buildspecs:
-            print("\nExcluded Buildspecs: ", exclude_buildspecs)
+            print("\nExcluded Buildspecs:\n")
+            [print(file) for file in exclude_buildspecs]
 
     return buildspecs, exclude_buildspecs
 

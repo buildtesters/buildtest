@@ -1,18 +1,18 @@
 $ buildtest build -b tutorials/compilers/gnu_hello.yml 
-Paths:
-__________
-Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
 
 +-------------------------------+
-| Stage: Discovered Buildspecs  |
+| Stage: Discovering Buildspecs |
 +-------------------------------+ 
+    
 
+Discovered Buildspecs:
+ 
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
-
+    
  schemafile                | validstate   | buildspec
 ---------------------------+--------------+-----------------------------------------------------------------------
  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
@@ -33,7 +33,7 @@ Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
-
+    
  name            | executor   | status   |   returncode | testpath
 -----------------+------------+----------+--------------+------------------------------------------------------------------------------------------------
  hello_f         | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/generate.sh
@@ -46,7 +46,7 @@ Test Directory: /Users/siddiq90/Documents/buildtest/var/tests
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-
+    
 Executed 6 tests
 Passed Tests: 6/6 Percentage: 100.000%
 Failed Tests: 0/6 Percentage: 0.000%

@@ -1,0 +1,71 @@
+$ buildtest build --tags python -b tutorials/compilers -x tutorials/compilers/vecadd.yml 
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+    
+
+Discovered Buildspecs:
+ 
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+
+Excluded Buildspecs:
+
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+    
+ schemafile                | validstate   | buildspec
+---------------------------+--------------+--------------------------------------------------------------------------------
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ Name                 | Schema File               | Test Path                                                                                                  | Buildspec
+----------------------+---------------------------+------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------
+ hello_f              | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/generate.sh                     | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ hello_c              | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/generate.sh                     | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ hello_cplusplus      | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/generate.sh             | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ cc_example           | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/generate.sh                  | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ fc_example           | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/generate.sh                  | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ cxx_example          | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/generate.sh                 | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ circle_area          | script-v1.0.schema.json   | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/generate.py            | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+ executable_arguments | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/generate.sh     | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+ pre_post_build_run   | compiler-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/generate.sh | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+    
+ name                 | executor     | status   |   returncode | testpath
+----------------------+--------------+----------+--------------+------------------------------------------------------------------------------------------------------------
+ hello_f              | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/generate.sh
+ hello_c              | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/generate.sh
+ hello_cplusplus      | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/generate.sh
+ cc_example           | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/generate.sh
+ fc_example           | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/generate.sh
+ cxx_example          | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/generate.sh
+ circle_area          | local.python | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/generate.py
+ executable_arguments | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/generate.sh
+ pre_post_build_run   | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/generate.sh
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    
+Executed 9 tests
+Passed Tests: 8/9 Percentage: 88.889%
+Failed Tests: 1/9 Percentage: 11.111%
+
+
+

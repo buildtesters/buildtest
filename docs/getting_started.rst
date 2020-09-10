@@ -128,7 +128,27 @@ atleast once, in order to detect cache file.
 
 .. program-output::  cat docgen/getting_started/tags.txt
 
-.. _invalid_buildspecs:
+You can build by multiple tags by specifying ``--tags`` multiple times. In next
+example we build all tests with tag name `compiler` and `python`.
+
+.. program-output:: cat docgen/getting_started/multi-tags.txt
+
+When multiple tags are specified, we search each tag independently and if it
+is found in the buildspec cache we retrieve the test. To see a list of available
+tags in your buildspec cache see :ref:`find_buildspecs`.
+
+You can combine ``--tags`` with ``--buildspec`` and ``--exclude`` in a single command.
+buildtest will query tags and buildspecs independently and combine all discovered
+buildspecs, any duplicates are ignored and finally we apply the exclusion list to
+remove buildspecs.
+
+In next example we combine all of these features together. This example builds
+all test with **python** tag, and build all buildspecs in directory - **tutorials/compilers**
+but we exclude **tutorials/compilers/vecadd.yml**.
+
+.. program-output:: cat docgen/getting_started/combine-tags-buildspec-exclude.txt
+
+
 
 Control builds by Stages
 -------------------------
@@ -149,6 +169,8 @@ be extremely useful when writing your buildspecs and not having to run your test
 In this next example, we stop our after the build stage using ``--stage=build``.
 
 .. program-output:: cat docgen/getting_started/stage_build.txt
+
+.. _invalid_buildspecs:
 
 Invalid Buildspecs
 ~~~~~~~~~~~~~~~~~~~~

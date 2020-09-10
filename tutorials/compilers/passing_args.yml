@@ -4,7 +4,7 @@ buildspecs:
     type: compiler
     description: Passing arguments example
     executor: local.bash
-    tags: [tutorials]
+    tags: [tutorials, compile]
     build:
       source: "src/argc.c"
       name: gnu

@@ -186,7 +186,7 @@ class BuildTestParser:
         )
 
         parser_build.add_argument(
-            "--tags", help="Specify buildspecs by tags",
+            "--tags", action="append", type=str, help="Specify buildspecs by tags",
         )
         parser_build.add_argument(
             "-s",

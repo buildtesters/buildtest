@@ -5,8 +5,6 @@ Searching buildspec in following directories:  /Users/siddiq90/Documents/buildte
 +==============+
 | local.python |
 +--------------+
-| badexecutor  |
-+--------------+
 | local.sh     |
 +--------------+
 | local.bash   |

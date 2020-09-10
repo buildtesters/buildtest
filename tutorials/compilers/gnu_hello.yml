@@ -4,7 +4,7 @@ buildspecs:
     type: compiler
     description: "Hello World Fortran Compilation"
     executor: local.bash
-    tags: [tutorials]
+    tags: [tutorials, compile]
     build:
       source: "src/hello.f90"
       name: gnu
@@ -14,7 +14,7 @@ buildspecs:
     type: compiler
     description: "Hello World C Compilation"
     executor: local.bash
-    tags: [tutorials]
+    tags: [tutorials, compile]
     build:
       source: "src/hello.c"
       name: gnu
@@ -24,7 +24,7 @@ buildspecs:
     type: compiler
     description: "Hello World C++ Compilation"
     executor: local.bash
-    tags: [tutorials]
+    tags: [tutorials, compile]
     build:
       source: "src/hello.cpp"
       name: gnu
@@ -34,7 +34,7 @@ buildspecs:
     type: compiler
     description: Example by using cc to set C compiler
     executor: local.bash
-    tags: [tutorials]
+    tags: [tutorials, compile]
     build: 
       source: "src/hello.c"
       name: gnu
@@ -44,7 +44,7 @@ buildspecs:
     type: compiler
     description: Example by using fc to set Fortran compiler
     executor: local.bash
-    tags: [tutorials]
+    tags: [tutorials, compile]
     build: 
       source: "src/hello.f90"
       name: gnu
@@ -54,7 +54,7 @@ buildspecs:
     type: compiler
     description: Example by using cxx to set C++ compiler
     executor: local.bash
-    tags: [tutorials]
+    tags: [tutorials, compile]
     build: 
       source: "src/hello.cpp"
       name: gnu
