@@ -4,8 +4,8 @@ buildtest
 This documentation was last rebuild on |today| and is intended for version |version|.
 
 Please refer to https://buildtest.readthedocs.io/en/latest/ for documentation
-on latest release. If you are working of `devel` branch then please refer to
-most up to date docs at https://buildtest.readthedocs.io/en/devel/.
+on latest release. If you are working off `devel` branch then please to *devel*
+docs at https://buildtest.readthedocs.io/en/devel/.
 
 Status
 -----------

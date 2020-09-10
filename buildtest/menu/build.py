@@ -131,6 +131,8 @@ def discover_buildspecs(tags=None, buildspec=None, exclude_buildspec=None, debug
         :type tags: str
         :param exclude_buildspec: Input argument from ``buildtest build --exclude``
         :type tags: str
+        :param debug: Boolean to control print messages to stdout
+        :type debug: boolean
         :return: two lists of discovered and excluded buildspecs
         :rtype: list, list
     """
@@ -193,9 +195,9 @@ def discover_buildspecs(tags=None, buildspec=None, exclude_buildspec=None, debug
 
         print(
             """
-    +-------------------------------+
-    | Stage: Discovered Buildspecs  |
-    +-------------------------------+ 
++-------------------------------+
+| Stage: Discovered Buildspecs  |
++-------------------------------+ 
     """
         )
 
@@ -284,6 +286,199 @@ def build_phase(builders, printTable=False):
         )
 
 
+def run_phase(builders, executor, config_dict, printTable=False):
+    """ This method will run all builders with the appropriate executor.
+        The executor argument is an instance of ``BuildExecutor`` that is responsible
+        for orchestrating builder execution to the appropriate executor class. The
+        executor contains a list of executors picked up from buildtest configuration.
+        For tests running locally, we get the test metadata and count PASS/FAIL test
+        state to tally number of pass and fail test which is printed at end in
+        Test Summary. For tests that need to run via scheduler (Slurm, LSF) the first
+        stage of run will dispatch job, and state will be `N/A`. We first dispatch all
+        jobs and later poll jobs until they are complete. The poll section is skipped
+        if all tests are run locally. In poll section we regenerate table with all
+        valid_builders and updated test state and returncode and calculate total
+        pass/fail tests. Finally we return a list of valid_builders which are tests
+        that ran through one of the executors. Any test that failed to run or be
+        dispatched will be skipped during run stage and not added in `valid_builders`.
+        The `valid_builders` contains the test meta-data that is used for updating
+        test report in next stage.
+
+        :param builders:  A list of builders that need to be run. These correspond to test names
+        :type: builders: list of objects of type `BuilderBase`
+        :param executor: The master executor class responsible for invoking appropriate executor class corresponding to builder.
+        :type executor: BuildExecutor
+        :param config_dict: loaded buildtest configuration
+        :type config_dict: dict
+        :param printTable: boolean to control print statement for run phase
+        :type printTable: bool
+        :return: A list of valid builders
+        :rtype: list
+    """
+
+    valid_builders = []
+    # run all the tests
+    passed_tests = 0
+    failed_tests = 0
+    total_tests = 0
+    errmsg = []
+
+    poll = False
+
+    if printTable:
+        print(
+            """
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+    """
+        )
+
+    table = {"name": [], "executor": [], "status": [], "returncode": [], "testpath": []}
+
+    poll_queue = []
+
+    for builder in builders:
+        try:
+            result = executor.run(builder)
+        except SystemExit as err:
+            print("[%s]: Failed to Run Test" % builder.metadata["name"])
+            errmsg.append(err)
+            logger.error(err)
+            continue
+
+        valid_builders.append(builder)
+
+        table["name"].append(builder.name)
+        table["executor"].append(builder.executor)
+        table["status"].append(result["state"])
+        table["returncode"].append(result["returncode"])
+        table["testpath"].append(builder.metadata["testpath"])
+
+        if result["state"] == "N/A":
+            poll_queue.append(builder)
+            poll = True
+            continue
+
+        if result["state"] == "PASS":
+            passed_tests += 1
+        else:
+            failed_tests += 1
+
+        total_tests += 1
+
+    if printTable:
+        print(tabulate(table, headers=table.keys(), tablefmt="presto"))
+
+    if errmsg:
+        print("\n\n")
+        print("Error Messages from Stage: Run")
+        print("{:_<80}".format(""))
+        for error in errmsg:
+            print(error)
+        print("\n")
+
+    ########## END RUN STAGE ####################
+    # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
+    if poll:
+        ########## BEGIN POLL STAGE ####################
+        interval = (
+            config_dict.get("executors", {}).get("defaults", {}).get("pollinterval")
+        )
+        # if no items in poll_queue terminate, this will happen as jobs complete polling
+        # and they are removed from queue.
+        while poll_queue:
+
+            print("\n")
+            print(f"Polling Jobs in {interval} seconds")
+            print("{:_<40}".format(""))
+
+            logger.debug(f"Sleeping for {interval} seconds")
+            time.sleep(interval)
+            logger.debug(f"Polling Jobs: {poll_queue}")
+
+            for builder in poll_queue:
+                state = executor.poll(builder)
+                # remove builder from poll_queue when state is True
+                if state:
+                    logger.debug(
+                        f"{builder} poll complete, removing test from poll queue"
+                    )
+                    poll_queue.remove(builder)
+
+        table = {
+            "name": [],
+            "executor": [],
+            "status": [],
+            "returncode": [],
+            "testpath": [],
+        }
+
+        if printTable:
+
+            print(
+                """
++---------------------------------------------+
+| Stage: Final Results after Polling all Jobs |
++---------------------------------------------+ 
+    """
+            )
+
+        # regenerate test results after poll
+        passed_tests = 0
+        failed_tests = 0
+        total_tests = 0
+        for builder in valid_builders:
+            result = builder.metadata["result"]
+            if result["state"] == "PASS":
+                passed_tests += 1
+            else:
+                failed_tests += 1
+
+            table["name"].append(builder.name)
+            table["executor"].append(builder.executor)
+            table["status"].append(result["state"])
+            table["returncode"].append(result["returncode"])
+            table["testpath"].append(builder.metadata["testpath"])
+
+            total_tests += 1
+
+        if printTable:
+            print(tabulate(table, headers=table.keys(), tablefmt="presto"))
+
+    ########## END POLL STAGE ####################
+
+    ########## TEST SUMMARY ####################
+    if total_tests == 0:
+        print("No tests were executed")
+        return
+
+    if printTable:
+        print(
+            """
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    """
+        )
+
+        print(f"Executed {total_tests} tests")
+
+        pass_rate = passed_tests * 100 / total_tests
+        fail_rate = failed_tests * 100 / total_tests
+
+        print(
+            f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%"
+        )
+
+        print(
+            f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%"
+        )
+        print("\n\n")
+
+    return valid_builders
+
+
 def func_build_subcmd(args, config_opts):
     """Entry point for ``buildtest build`` sub-command. This method will discover
        Buildspecs in method ``discover_buildspecs``. If there is an exclusion list
@@ -319,9 +514,8 @@ def func_build_subcmd(args, config_opts):
 
     ########## BEGIN BUILDSPEC DISCOVER STAGE ####################
 
-    # list to store all Buildspecs that are found using discover_buildspecs
-    # followed by exclusion check
-
+    # discover all buildspecs by tags, buildspecs, and exclude buildspecs. The return
+    # is a list of buildspecs and excluded buildspecs
     buildspecs, exclude_buildspecs = discover_buildspecs(
         args.tags, args.buildspec, args.exclude, debug=True
     )
@@ -329,16 +523,6 @@ def func_build_subcmd(args, config_opts):
     ########## END BUILDSPEC DISCOVER STAGE ####################
     stage = args.stage
 
-    valid_builders = []
-
-    ########## BEGIN PARSE STAGE ####################
-    print(
-        """
-+---------------------------+
-| Stage: Parsing Buildspecs |
-+---------------------------+ 
-"""
-    )
     # Parse all buildspecs and skip any buildspecs that fail validation, return type
     # is a builder object used for building test.
     builders = parse_buildspecs(buildspecs, test_directory, printTable=True)
@@ -346,162 +530,14 @@ def func_build_subcmd(args, config_opts):
     # if --stage=parse we stop here
     if stage == "parse":
         return
-    ########## END OF PARSE STAGE ####################
 
     executor = BuildExecutor(config_opts)
 
-    ########## BEGIN BUILD STAGE ####################
     build_phase(builders, printTable=True)
 
     if stage == "build":
         return
-    ########## END BUILD STAGE ####################
 
-    ########## BEGIN RUN STAGE ####################
-
-    # run all the tests
-    passed_tests = 0
-    failed_tests = 0
-    total_tests = 0
-    errmsg = []
-
-    poll = False
-    print(
-        """
-+----------------------+
-| Stage: Running Test  |
-+----------------------+ 
-"""
-    )
-    table = {"name": [], "executor": [], "status": [], "returncode": [], "testpath": []}
-
-    poll_queue = []
-
-    for builder in builders:
-        try:
-            result = executor.run(builder)
-        except SystemExit as err:
-            print("[%s]: Failed to Run Test" % builder.metadata["name"])
-            errmsg.append(err)
-            logger.error(err)
-            continue
-
-        valid_builders.append(builder)
-
-        table["name"].append(builder.name)
-        table["executor"].append(builder.executor)
-        table["status"].append(result["state"])
-        table["returncode"].append(result["returncode"])
-        table["testpath"].append(builder.metadata["testpath"])
-
-        if result["state"] == "N/A":
-            poll_queue.append(builder)
-            poll = True
-            continue
-
-        if result["state"] == "PASS":
-            passed_tests += 1
-        else:
-            failed_tests += 1
-
-        total_tests += 1
-
-    print(tabulate(table, headers=table.keys(), tablefmt="presto"))
-
-    if errmsg:
-        print("\n\n")
-        print("Error Messages from Stage: Run")
-        print("{:_<80}".format(""))
-        for error in errmsg:
-            print(error)
-        print("\n")
-
-    ########## END RUN STAGE ####################
-    # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
-    if poll:
-        ########## BEGIN POLL STAGE ####################
-        interval = (
-            config_opts.get("executors", {}).get("defaults", {}).get("pollinterval")
-        )
-        # if no items in poll_queue terminate, this will happen as jobs complete polling
-        # and they are removed from queue.
-        while poll_queue:
-
-            print("\n")
-            print(f"Polling Jobs in {interval} seconds")
-            print("{:_<40}".format(""))
-
-            logger.debug(f"Sleeping for {interval} seconds")
-            time.sleep(interval)
-            logger.debug(f"Polling Jobs: {poll_queue}")
-
-            for builder in poll_queue:
-                state = executor.poll(builder)
-                # remove builder from poll_queue when state is True
-                if state:
-                    logger.debug(
-                        f"{builder} poll complete, removing test from poll queue"
-                    )
-                    poll_queue.remove(builder)
-
-        table = {
-            "name": [],
-            "executor": [],
-            "status": [],
-            "returncode": [],
-            "testpath": [],
-        }
-        print(
-            """
-+---------------------------------------------+
-| Stage: Final Results after Polling all Jobs |
-+---------------------------------------------+ 
-    """
-        )
-        # regenerate test results after poll
-        passed_tests = 0
-        failed_tests = 0
-        total_tests = 0
-        for builder in valid_builders:
-            result = builder.metadata["result"]
-            if result["state"] == "PASS":
-                passed_tests += 1
-            else:
-                failed_tests += 1
-
-            table["name"].append(builder.name)
-            table["executor"].append(builder.executor)
-            table["status"].append(result["state"])
-            table["returncode"].append(result["returncode"])
-            table["testpath"].append(builder.metadata["testpath"])
-
-            total_tests += 1
-
-        print(tabulate(table, headers=table.keys(), tablefmt="presto"))
-
-        ########## END POLL STAGE ####################
-
-    ########## TEST SUMMARY ####################
-    if total_tests == 0:
-        print("No tests were executed")
-        return
-
-    print(
-        """
-+----------------------+
-| Stage: Test Summary  |
-+----------------------+ 
-"""
-    )
-
-    print(f"Executed {total_tests} tests")
-
-    pass_rate = passed_tests * 100 / total_tests
-    fail_rate = failed_tests * 100 / total_tests
-
-    print(f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%")
-
-    print(f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%")
-    print("\n\n")
+    valid_builders = run_phase(builders, executor, config_opts, printTable=True)
 
     update_report(valid_builders)

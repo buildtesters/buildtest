@@ -341,6 +341,13 @@ def parse_buildspecs(buildspecs, test_directory, printTable=False):
         builders += bp.get_builders(testdir=test_directory)
 
     if printTable:
+        print(
+            """
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+    """
+        )
         print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
         # print any skipped buildspecs if they failed to validate during build stage
