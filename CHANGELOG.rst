@@ -4,10 +4,14 @@ CHANGELOG
 v0.8.1 (TBD)
 ------------
 
-- Add support for filtering test report using ``--filter`` option and ``--helpfilter`` with list of filter fields. See https://github.com/buildtesters/buildtest/pull/449
-- Add option for ``--docs`` and ``--schemadocs`` to access documentation through CLI.
-- Retrieve a list of unique executors from buildspec cache see https://github.com/buildtesters/buildtest/pull/448
-- Query buildspec tags and buildspec files using ``--tags`` and ``--buildspec-files`` option see https://github.com/buildtesters/buildtest/pull/445
+- We now running regression test in github action see `#455 <https://github.com/buildtesters/buildtest/pull/455>`_
+- Add command to filter by executor names using ``buildtest build --executor``. `#463 <https://github.com/buildtesters/buildtest/pull/463>`_
+- Add option for filtering buildspec cache using ``buildtest buildspec find --filter`` and see list of available filter option using  ``buildtest buildspec find --helpfiler`` see `#464 <https://github.com/buildtesters/buildtest/pull/464>`_
+- Support for building with multiple tags `#462 <https://github.com/buildtesters/buildtest/pull/462>`_
+- Add option for filtering test report using ``buildtest report --filter`` option and ``buildtest report --helpfilter`` with list of filter fields. See `#449 <https://github.com/buildtesters/buildtest/pull/449>`_
+- Add option for ``buildtest --docs`` and ``buildtest --schemadocs`` to access documentation through CLI. See `#452 <https://github.com/buildtesters/buildtest/pull/452>`_
+- Retrieve a list of unique executors (``buildtest buildspec find --list-executors``) from buildspec cache see `#448 <https://github.com/buildtesters/buildtest/pull/448>`_
+- Query buildspec tags and buildspec files using ``buildtest buildspec find --tags`` and ``buildtest buildspec find --buildspec-files`` option see `#445 <https://github.com/buildtesters/buildtest/pull/445>`_
 
 
 v0.8.0 (Sep 3rd 2020)
@@ -52,7 +56,7 @@ documentation examples or used in regression tests.
 - Add TutorialsValidation workflow for validating buildspecs 
 - Change First Issue Greeting workflow to run only on first issue and not for pull request
 - Upgrade version of urlcheck workflow changed from ``SuperKogito/URLs-checker@0.1.2`` --> ``urlstechie/urlchecker-action@0.2.1``
-- Add pre-commit hook to automate python format via ``black``. Add ``black --check`` as automated check see #172, #179
+- Add pre-commit hook to automate python format via ``black``. Add ``black --check`` as automated check see `#172 <https://github.com/buildtesters/buildtest/pull/172>`_, `#179 <https://github.com/buildtesters/buildtest/pull/179>`_
 - Remove black pre-commit file ``.github/hooks/pre-commit`` in replacement for ``.pre-commit-config.yaml`` that installs the pre-commit file
 - Remove Lmod installation from Travis since buildtest doesn't depend on Lmod anymore
 - Rename GitHub Organization from ``HPC-buildtest`` to ``buildtesters`` and update links throughout documentation
@@ -64,7 +68,7 @@ documentation examples or used in regression tests.
 - Use `sphinx-autoapi <https://sphinx-autoapi.readthedocs.io/en/latest/index.html>`_ to automate api docs instead of using `sphinx.ext.autodoc <https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html>`_
 - Add documentation for Contributing Guide, Maintainer guide, Github Integration, and Regression Testing
 - Add tox.ini file for automating python tests using `tox <https://tox.readthedocs.io/en/latest/>`_
-- Remove CLI option ``buildtest build [run|log|test]`` see #163
+- Remove CLI option ``buildtest build [run|log|test]`` see `#163 <https://github.com/buildtesters/buildtest/pull/163>`_
 - Remove all module operations and cli menu ``buildtest module``. This is now moved to an API lmodule at https://github.com/buildtesters/lmodule
 - removing extra dependencies argcomplete and termcolor
 - removing bash script and sourcing in favor of Python module install
@@ -118,7 +122,7 @@ v0.7.4 (Dec 11th, 2019)
 - change path to output/error files in ``buildtest module loadtest`` and print actual ``module load`` command
 - adding github stalebot configuration see ``.github/stale.yml``
 - adding github sponsor page ``.github/FUNDING.yml``
-- add stream benchmark test see https://github.com/buildtesters/buildtest/commit/d2a2a4dc2e71c5921b211d4df4d68b7f52cbbf52
+- add stream benchmark test see `d2a2a4 <https://github.com/buildtesters/buildtest/commit/d2a2a4dc2e71c5921b211d4df4d68b7f52cbbf52>`_
 - adding github workflow ``black`` to format all python code base see ``.github/workflow/black.yml``
 - install lmod and its dependency in travis build
 
@@ -132,7 +136,7 @@ v0.7.3 (Nov 25th, 2019)
 - Fix Code Style issues reported by CodeFactor (https://www.codefactor.io/repository/github/buildtesters/buildtest)
 - Add , hust-19 slides, buildtest architecture and workflow diagram in documentation
 - Simplify output of ``buildtest module --easybuild`` and ``buildtest module --spack``
-- Add ``module purge`` or ``module --force purge`` in test (#122)
+- Add ``module purge`` or ``module --force purge`` in test (`#122 <https://github.com/buildtesters/buildtest/issues/122>`_)
 - automate documentation examples for building test examples
 - move all documentation examples to ``toolkit/suite/tutorial``
 - update CONTRIBUTING.rst guide to include section on building buildtest API docs, automating documentation examples and running regression test via pytest
@@ -203,7 +207,7 @@ v0.6.3 (Oct 26th, 2018)
 - buildtest will now ignore all .version* files as pose to .version file, this is due to Lmod 7 and how OpenHPC module files have hidden modules with format .versionX.Y.Z
 -
 
-v0.6.1 (Oct 18, 2018)
+v0.6.1 (Oct 18th, 2018)
 ---------------------------
 - Fix issue with pypi package dependency in version 0.6.0
 
@@ -252,25 +256,23 @@ v0.5.0 (Oct 8th, 2018)
    - ``--testname``
 - Added basic error handling support
 - Add ``description`` key in all yaml files
--  Tests have permission ``755`` so they can run automatically as any user see https://github.com/buildtesters/buildtest/pull/79/commits/6a2570e9d547b0fb3ab81a14770583a192092224
-- Options for ``--ebyaml`` now generates date-time stamp for ``command.yaml`` see https://github.com/buildtesters/buildtest/pull/79/commits/a5968263e4faeac0b65386b22d9b1d5cff604185
+-  Tests have permission ``755`` so they can run automatically as any user see `6a2570 <https://github.com/buildtesters/buildtest/pull/79/commits/6a2570e9d547b0fb3ab81a14770583a192092224>`_
+- Options for ``--ebyaml`` now generates date-time stamp for ``command.yaml`` see `a59682 <https://github.com/buildtesters/buildtest/pull/79/commits/a5968263e4faeac0b65386b22d9b1d5cff604185>`_
 - Add script ``check.sh`` to automate testing of buildtest features and package building for verification
-- **bug fix:** https://github.com/buildtesters/buildtest/pull/79/commits/8017d48c10cee706669ae5b56077640722442571
-- **bug fix:** https://github.com/buildtesters/buildtest/pull/79/commits/8dfe78bce930e23eb2242e4e4666f926bf60131f
 
 v0.4.0 (Sep 11th, 2018)
 --------------------------
 
 - Must use Python 3.6 or higher to use this version. All versions < 0.4.0 are supported by Python 2.6 or higher
 
-v0.3.0 () (Aug 7th, 2018)
+v0.3.0 (Aug 7th, 2018)
 ----------------------------------
 
 - Package buildtest as pypi package, now it can be installed via ``pip install buildtest``
 - Rename ``buildtest`` to ``_buildtest`` and all code is now under ``buildtest``
 - All buildtest repos are now packaged as pypi package and test are moved under `buildtest` directory
 - The option `--ebyaml` is now working with auto-complete feature and ability to create yaml files for software packages
-- Binary test are now created based on unique sha256sum see https://github.com/buildtesters/buildtest/commit/92c012431000ff338532a899e3b5f465f18786dd
+- Binary test are now created based on unique sha256sum see `92c012 <https://github.com/buildtesters/buildtest/commit/92c012431000ff338532a899e3b5f465f18786dd>`_
 - Output of `--scantest` has been fixed and added to documentation
 - Add singularity CDASH script, need some more work on getting server setup properly
 
@@ -289,8 +291,8 @@ Bug Fixes
 ~~~~~~~~~~~~~
 
 - Fix issue with `--runtest` option, it was broken at some point now it is working as expected
-- Add extra configuration option in `config_opts` to reuse variable that were needed throughout code and fix bug with `--sysyaml` see https://github.com/buildtesters/buildtest/commit/493b53e4cfdb5710b384409edc7c85ceb05395ba
-- Fix bug with directory not found in menu,py by moving function `check_configuration` and `override_configuration` from main.py to menu,py see https://github.com/buildtesters/buildtest/commit/d2c78076eb551683bf81a3a7d12ae10971460971
+- Add extra configuration option in `config_opts` to reuse variable that were needed throughout code and fix bug with `--sysyaml` see `493b53 <https://github.com/buildtesters/buildtest/commit/493b53e4cfdb5710b384409edc7c85ceb05395ba>`_.
+- Fix bug with directory not found in menu,py by moving function `check_configuration` and `override_configuration` from main.py to menu,py see `d2c780 <https://github.com/buildtesters/buildtest/commit/d2c78076eb551683bf81a3a7d12ae10971460971>`_
 
 v0.2.0 (May 18th, 2018)
 ---------------------------
@@ -331,28 +333,28 @@ v0.1.8 (Jan 8th, 2018)
 
 - Automate batch job submission from buildtest via **--submitjob**
 - Fix shell magic (#!/bin/sh, #!/bin/bash, #!/bin/csh) for binary test
-- Tab completion for buildtest argument using ``argcomplete`` module. See https://github.com/buildtesters/buildtest/pull/52/commits/ddb9e426f1b466d3e9b1957a009f0955c236f7a2
+- Tab completion for buildtest argument using ``argcomplete`` module. See `ddb9e4 <https://github.com/buildtesters/buildtest/pull/52/commits/ddb9e426f1b466d3e9b1957a009f0955c236f7a2>`_
 - autopopulate choice for ``--system``, ``--sysyaml``, and ``--software``
-- Fix output of ``-svr`` and resolve bug when 2 modules with same app/version found in different trees. Only in HMNS. See https://github.com/buildtesters/buildtest/pull/52/commits/7ddf91b761f88ddacf0548c7f259b2badd93bdfd for more details
+- Fix output of ``-svr`` and resolve bug when 2 modules with same app/version found in different trees. Only in HMNS. See ` 7ddf91 <https://github.com/buildtesters/buildtest/pull/52/commits/7ddf91b761f88ddacf0548c7f259b2badd93bdfd>`_ for more details
 - Group buildtest commands for ease of use.
-- Support for yaml keys **scheduler** and **jobslot** to enable jobscript creation from yaml files. See https://github.com/buildtesters/buildtest/pull/52/commits/0fe4189df0694bef586e9d8e4565ec4cc3e169c9
+- Support for yaml keys **scheduler** and **jobslot** to enable jobscript creation from yaml files. See `0fe418 <https://github.com/buildtesters/buildtest/pull/52/commits/0fe4189df0694bef586e9d8e4565ec4cc3e169c9>`_
 - Further support for scheduler and automatic detection. Currently supports LSF and SLURM.
 
 v0.1.7 (Nob 28th, 2017)
 ------------------------
 
-- Add support for creating LSF Job scripts via templates. Use **buildtest --job-template** see https://github.com/buildtesters/buildtest/commit/927dc09e347fdafa7020d7cfd3016fd8f430ac10
-- Add support for creating YAML config for system package binary testing  via **buildtest --sysyaml** see https://github.com/buildtesters/buildtest/commit/4ab8870eddb9da5177b6c414e98f1231d14b35ab
-- adding keys envvar, procrange, threadrange in YAML https://github.com/buildtesters/buildtest/commit/9a2152307dbf88943618a0b7ee8f6984de3a5340 https://github.com/buildtesters/buildtest/commit/1524238919be638edc831df6395425f92e46bc2c   https://github.com/buildtesters/buildtest/commit/3d43b8a68946c4a376e1645c4ad204c7498ae6c3
--  Add support for multiple shell (csh, bash, sh) see https://github.com/buildtesters/buildtest/commit/aea9d6ff06dcc207e84ba0953c53e2cbd67a49fe https://github.com/buildtesters/buildtest/commit/c154db87f876251cc6b2985e8bfb8c2265843216
+- Add support for creating LSF Job scripts via templates. Use **buildtest --job-template** see `927dc0 <https://github.com/buildtesters/buildtest/commit/927dc09e347fdafa7020d7cfd3016fd8f430ac10>`_
+- Add support for creating YAML config for system package binary testing  via **buildtest --sysyaml** see `4ab887 <https://github.com/buildtesters/buildtest/commit/4ab8870eddb9da5177b6c414e98f1231d14b35ab>`_
+- adding keys envvar, procrange, threadrange in YAML `9a2152 <https://github.com/buildtesters/buildtest/commit/9a2152307dbf88943618a0b7ee8f6984de3a5340>`_ `152423 <https://github.com/buildtesters/buildtest/commit/1524238919be638edc831df6395425f92e46bc2c>`_ `3d43b8 <https://github.com/buildtesters/buildtest/commit/3d43b8a68946c4a376e1645c4ad204c7498ae6c3>`_
+-  Add support for multiple shell (csh, bash, sh) see `aea9d6 <https://github.com/buildtesters/buildtest/commit/aea9d6ff06dcc207e84ba0953c53e2cbd67a49fe>`_ `c154db <https://github.com/buildtesters/buildtest/commit/c154db87f876251cc6b2985e8bfb8c2265843216>`_
 - remove verbose option from buildtest
-- major code refactor see https://github.com/buildtesters/buildtest/commit/fd8d466dc1f009f5822d2161eaf73e85f42a985e https://github.com/buildtesters/buildtest/commit/9d112c0e2e8c6800013eeda7968f568a749f2586
-- Fixed a bug during compiler detection when building GCC see https://github.com/buildtesters/buildtest/commit/f139756213a280301771214894c8f48e8bcee4e8
-- create a pretty menu for Interactive Testing via **buildtest --runtest** see https://github.com/buildtesters/buildtest/commit/231cfeb0cf88cbc70826a9e76697947d06f0a6e1
+- major code refactor see `fd8d46 <https://github.com/buildtesters/buildtest/commit/fd8d466dc1f009f5822d2161eaf73e85f42a985e>`_ `9d112c <https://github.com/buildtesters/buildtest/commit/9d112c0e2e8c6800013eeda7968f568a749f2586>`_
+- Fixed a bug during compiler detection when building GCC see `f1397 <https://github.com/buildtesters/buildtest/commit/f139756213a280301771214894c8f48e8bcee4e8`_
+- create a pretty menu for Interactive Testing via **buildtest --runtest** see `231cfe <https://github.com/buildtesters/buildtest/commit/231cfeb0cf88cbc70826a9e76697947d06f0a6e1>`_
 - replace shell commands **subprocess.Popen()** with python library equivalents
-- Add support for **--testset Tcl** see https://github.com/buildtesters/buildtest/commit/373cc1ea2fb2c5aedcf9ddadf105a94232cc1fa4
-- Add support for **--testset Ruby** see https://github.com/buildtesters/buildtest/commit/c6b7133b5fc4b0690b8040d0e437784567cc1963
-- Print software in alphabetical order for -svr option see https://github.com/buildtesters/buildtest/commit/fcf61019c644cd305e459234a85c5d39df06433f
+- Add support for **--testset Tcl** see `373cc1 <https://github.com/buildtesters/buildtest/commit/373cc1ea2fb2c5aedcf9ddadf105a94232cc1fa4>`_
+- Add support for **--testset Ruby** see `c6b7133 <https://github.com/buildtesters/buildtest/commit/c6b7133b5fc4b0690b8040d0e437784567cc1963>`_
+- Print software in alphabetical order for -svr option see `fcf610 <https://github.com/buildtesters/buildtest/commit/fcf61019c644cd305e459234a85c5d39df06433f>`_
 
 v0.1.6 (Sep 15th, 2017)
 -------------------------
@@ -460,25 +462,24 @@ The following system package tests have been added
 
 Compile from source YAML scripts can now be stored in subdirectories. buildtest can now generate tests in sub directory, this would be essential for building tests for R, Python, Ruby, Perl, etc...
 
-Tests for the following EB apps have been added:
-* Python
-    1. blist
-    2. cryptography
-    3. Cython
-    4. dateutil
-    5. deap
-    6. funcsigs
-    7. mpi4py
-    8. netaddr
-    9. netifaces
-    10. nose
-    11. numpy
-    12. os
-    13. paramiko
-    14. paycheck
-    15. pytz
-    16. scipy
-    17. setuptools
+Tests for the following python packages:
+ - blist
+ - cryptography
+ - Cython
+ - dateutil
+ - deap
+ - funcsigs
+ - mpi4py
+ - netaddr
+ - netifaces
+ - nose
+ - numpy
+ - os
+ - paramiko
+ - paycheck
+ - pytz
+ - scipy
+ - setuptools
 
 
 Added python documentation header for each function and GPL license section in all the files
