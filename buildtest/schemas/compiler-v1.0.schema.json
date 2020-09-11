@@ -14,7 +14,8 @@
     },
     "description": {
       "type": "string",
-      "description": "The ``description`` field is used to document what the test is doing"
+      "description": "The ``description`` field is used to document what the test is doing",
+      "maxLength": 80
     },
     "module": {
       "type": "array",
