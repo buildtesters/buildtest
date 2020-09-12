@@ -432,16 +432,34 @@ Debug Mode
 ------------
 
 buildtest can stream logs to ``stdout`` stream for debugging. You can use ``buildtest -d <DEBUGLEVEL>``
-or long option ``--debug`` with any buildtest commands. The DEBUGLEVEL are:
-``DEBUG``, ``INFO``, ``WARNING``, ``ERROR``,  ``CRITICAL`` which controls
-log level to be displayed in console. buildtest is using
-`logging.setLevel <https://docs.python.org/3/library/logging.html#logging.Logger.setLevel>`_
+or long option ``--debug`` with any buildtest commands. The DEBUGLEVEL are the following:
+
+- DEBUG
+- INFO
+- WARNING
+- ERROR
+- CRITICAL
+
+buildtest is using `logging.setLevel <https://docs.python.org/3/library/logging.html#logging.Logger.setLevel>`_
 to control log level.
 
-The same content is logged in **buildtest.log** with default log level of ``DEBUG``.
+The content is logged in **buildtest.log** with default log level of ``DEBUG``.
 If you want to get all logs use ``-d DEBUG`` with your buildtest command::
 
     buildtest -d DEBUG <command>
+
+Accessing buildtest documentation
+----------------------------------
+
+We provide two command line options to access buildtest and schema docs. To
+access buildtest docs you can run::
+
+  $ buildtest docs
+
+To access schema docs run::
+
+  $ buildtest schemadocs
+
 
 Logfile
 -------

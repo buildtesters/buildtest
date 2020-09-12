@@ -244,6 +244,50 @@ buildspec_roots. buildtest will find all `.yml` extension. By default buildtest 
 add the ``$BUILDTEST_ROOT/tutorials`` to search path, where $BUILDTEST_ROOT is root
 of buildtest repo.
 
+Before & After scripts for executors
+-------------------------------------
+
+Often times, you may want to run a set of commands before or after tests for more than
+one test. For this reason, we support ``before_script`` and ``after_script`` section
+per executor which is of string type where you can specify arbitrary commands.
+
+This can be demonstrated with this executor name **local.e4s** responsible for
+building `E4S Testsuite <https://github.com/E4S-Project/testsuite>`_::
+
+    e4s:
+      description: "E4S testsuite locally"
+      shell: bash
+      before_script: |
+        cd $SCRATCH
+        git clone https://github.com/E4S-Project/testsuite.git
+        cd testsuite
+        source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
+        source setup.sh
+
+buildtest will write a ``before_script.sh`` and ``after_script.sh`` for every executor.
+This can be found in ``var/executors`` directory as shown below::
+
+    $ tree var/executors/
+    var/executors/
+    |-- local.bash
+    |   |-- after_script.sh
+    |   `-- before_script.sh
+    |-- local.e4s
+    |   |-- after_script.sh
+    |   `-- before_script.sh
+    |-- local.python
+    |   |-- after_script.sh
+    |   `-- before_script.sh
+    |-- local.sh
+    |   |-- after_script.sh
+    |   `-- before_script.sh
+
+
+    4 directories, 8 files
+
+The ``before_script`` and ``after_script`` field is available for all executors and
+if its not specified the file will be empty. Every test will source the before
+and after script for the given executor.
 
 CLI to buildtest configuration
 -----------------------------------------------

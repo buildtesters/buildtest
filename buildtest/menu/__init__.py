@@ -7,6 +7,7 @@ import argparse
 
 from buildtest import BUILDTEST_VERSION
 from buildtest.defaults import supported_schemas
+from buildtest.docs import buildtestdocs, schemadocs
 from buildtest.menu.buildspec import (
     func_buildspec_find,
     func_buildspec_edit,
@@ -77,6 +78,8 @@ class BuildTestParser:
             "report": "Show report for test results",
             "schema": "Commands for viewing buildtest schemas",
             "config": "Buildtest Configuration Menu",
+            "docs": "Open buildtest docs in browser",
+            "schemadocs": "Open buildtest schema docs in browser",
         }
 
         self.main_menu()
@@ -109,14 +112,11 @@ class BuildTestParser:
             choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
             help="Enable debugging messages.",
         )
-        self.parser.add_argument(
-            "--docs", action="store_true", help="Open buildtest docs in browser"
-        )
-        self.parser.add_argument(
-            "--schemadocs",
-            action="store_true",
-            help="Open buildtest  schema docs in browser",
-        )
+        parser_docs = self.subparsers.add_parser("docs")
+        parser_docs.set_defaults(func=buildtestdocs)
+
+        parser_schemadocs = self.subparsers.add_parser("schemadocs")
+        parser_schemadocs.set_defaults(func=schemadocs)
 
     def parse_options(self):
         """This method parses the argument from ArgumentParser class and returns
