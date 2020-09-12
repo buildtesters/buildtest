@@ -5,11 +5,11 @@ requested from command line.
 import webbrowser
 
 
-def buildtestdocs():
+def buildtestdocs(args):
     """Open buildtest docs in web browser. This implements ``buildtest --docs``"""
     webbrowser.open("https://buildtest.readthedocs.io/")
 
 
-def schemadocs():
+def schemadocs(args):
     """Open buildtest schema docs in web browser. This implements ``buildtest --schemadocs``"""
     webbrowser.open("https://buildtesters.github.io/schemas/")
