@@ -19,18 +19,17 @@ class BaseExecutor:
 
     def __init__(self, name, settings, config_opts):
         """Initiate a base executor, meaning we provide a name (also held
-           by the BuildExecutor base that holds it) and the loaded dictionary
-           of config opts to parse.
+        by the BuildExecutor base that holds it) and the loaded dictionary
+        of config opts to parse.
 
-            Parameters:
-
-           :param name: a name for the base executor and key provided in the configuration file
-           :type name: string (required)
-           :param settings: the original config opts to extract variables from.
-           :type settings: dict (required)
-           :param builder: the builder object for the executor to control.
-           :type builder: buildtest.buildsystem.base.BuilderBase (or subclass).
+        :param name: a name for the base executor and key provided in the configuration file
+        :type name: string
+        :param settings: the original config opts to extract variables from.
+        :type settings: dict
+        :param config_opts: loaded buildtest configuration
+        :type config_opts: dict
         """
+
         self.logger = logging.getLogger(__name__)
         self.name = name
         self._settings = settings
@@ -41,15 +40,15 @@ class BaseExecutor:
 
     def load(self):
         """Load a particular configuration based on the name. This method
-           should set defaults for the executor, and will vary based on the
-           class.
+        should set defaults for the executor, and will vary based on the
+        class.
         """
         pass
 
     def run(self):
         """The run step basically runs the build. This is run after setup
-           so we are sure that the builder is defined. This is also where
-           we set the result to return.
+        so we are sure that the builder is defined. This is also where
+        we set the result to return.
         """
         pass
 
@@ -61,30 +60,30 @@ class BaseExecutor:
 
     def get_formatted_time(self, key, fmt="%Y/%m/%d %X"):
         """Given some timestamp key in self.metadata, return a pretty printed
-           version of it. This is intended to log in the console for the user.
+        version of it. This is intended to log in the console for the user.
 
-           Parameters:
-
-           key: The key to look up in the metadata
-           fmt: the format string to use
+        :param key: The key to look up in the metadata
+        :type key: str
+        :param fmt: The format string to use with datetime
+        :type fmt: string
         """
+
         timestamp = self.builder.metadata.get(key, "")
         if timestamp:
             timestamp = timestamp.strftime(fmt)
         return timestamp
 
     def check_regex(self, regex):
-        """ This method conducts a regular expression check using 're.search' with regular
-            expression defined in Buildspec. User must specify an output stream (stdout, stderr)
-            to select when performing regex. In buildtest, this would read the .out or .err file
-            based on stream and run the regular expression to see if there is a match.
+        """This method conducts a regular expression check using ``re.search``
+        with regular expression defined in Buildspec. User must specify an
+        output stream (stdout, stderr) to select when performing regex. In
+        buildtest, this would read the .out or .err file based on stream and run
+        the regular expression to see if there is a match.
 
-            Parameters:
-
-            :param regex: Regular expression object defined in Buildspec file
-            :type regex: str, required
-            :return:  A boolean return True/False based on if re.search is successful or not
-            :rtype: bool
+        :param regex: Regular expression object defined in Buildspec file
+        :type regex: str
+        :return: A boolean return True/False based on if re.search is successful or not
+        :rtype: bool
         """
 
         if regex["stream"] == "stdout":
@@ -107,11 +106,10 @@ class BaseExecutor:
     def write_testresults(self, out, err):
         """This method writes test results into output and error file.
 
-           Parameters
-           :param out: content of output stream
-           :type out: list
-           :param err: content of error stream
-           :type err: list
+        :param out: content of output stream
+        :type out: list
+        :param err: content of error stream
+        :type err: list
         """
 
         # Keep an output file
@@ -137,8 +135,9 @@ class BaseExecutor:
 
     def check_test_state(self):
         """This method is responsible for detecting state of test (PASS/FAIL)
-           based on returncode or regular expression.
+        based on returncode or regular expression.
         """
+
         status = self.builder.recipe.get("status")
 
         self.result["state"] = "FAIL"
@@ -191,8 +190,6 @@ class BaseExecutor:
 
         # Return to starting directory for next test
         os.chdir(self.builder.pwd)
-
-        # self.builder.metadata["result"] = self.result
 
 
 class SSHExecutor(BaseExecutor):

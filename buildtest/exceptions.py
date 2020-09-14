@@ -6,7 +6,7 @@ class BuildTestError(Exception):
         """Constructor Method.
 
         :param msg: message to print
-        :type msg: str, required
+        :type msg: str,
         :param args:
         :type args:
         """

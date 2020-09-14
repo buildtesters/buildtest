@@ -10,7 +10,11 @@ def init_logfile(logfile):
     """Initialize a log file intended for a builder. This requires
     passing the filename intended for the log (from the builder)
     and returns the logger.
+
+    :param logfile: logfile name
+    :type logfile: str
     """
+
     logger = logging.getLogger(logID)
     fh = logging.FileHandler(logfile)
     formatter = logging.Formatter(

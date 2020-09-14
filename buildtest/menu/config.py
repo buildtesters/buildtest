@@ -19,11 +19,12 @@ from buildtest.system import BuildTestSystem
 
 def func_config_validate(args=None):
     """This method implements ``buildtest config validate`` which attempts to
-       validate buildtest settings with schema. If it not validate an exception
-       an exception of type SystemError is raised. We invoke ``check_settings``
-       method which will validate the configuration, if it fails we except an exception
-       of type ValidationError which we catch and print message.
+    validate buildtest settings with schema. If it not validate an exception
+    an exception of type SystemError is raised. We invoke ``check_settings``
+    method which will validate the configuration, if it fails we except an exception
+    of type ValidationError which we catch and print message.
     """
+
     try:
         check_settings()
     except (ValidationError, SystemExit) as err:
@@ -66,8 +67,8 @@ def func_config_view(args=None):
 
 def func_config_summary(args=None):
     """This method implements ``buildtest config summary`` option. In this method
-       we will display a summary of System Details, Buildtest settings, Schemas,
-       Repository details, Buildspecs files and test names.
+    we will display a summary of System Details, Buildtest settings, Schemas,
+    Repository details, Buildspecs files and test names.
     """
 
     system = BuildTestSystem()

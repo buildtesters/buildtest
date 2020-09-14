@@ -11,25 +11,22 @@ from buildtest.config import load_settings
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDSPEC_DEFAULT_PATH
 from buildtest.utils.file import is_file, walk_tree, resolve_path
 
-
 logger = logging.getLogger(__name__)
 
 
 def func_buildspec_find(args):
     """Entry point for ``buildtest buildspec find``. This method
-       will attempt to read for buildspec cache file (BUILDSPEC_CACHE_FILE)
-       if found and print a list of all buildspecs. Otherwise, it will
-       read the repo file (REPO_FILE) and find all buildspecs and validate
-       them via BuildspecParser. BuildspecParser will raise SystemError or
-       ValidationError if a buildspec is invalid which will be added to list
-       of invalid buildspecs. Finally we print a list of all valid buildspecs
-       and any invalid buildspecs are written to file along with error
-       message.
+    will attempt to read for buildspec cache file (BUILDSPEC_CACHE_FILE)
+    if found and print a list of all buildspecs. Otherwise, it will
+    read the repo file (REPO_FILE) and find all buildspecs and validate
+    them via BuildspecParser. BuildspecParser will raise SystemError or
+    ValidationError if a buildspec is invalid which will be added to list
+    of invalid buildspecs. Finally we print a list of all valid buildspecs
+    and any invalid buildspecs are written to file along with error
+    message.
 
-       Parameters
-
-       :param args: Input argument from command line passed from argparse
-       :return: A list of valid buildspecs found in all repositories.
+    :param args: Input argument from command line passed from argparse
+    :return: A list of valid buildspecs found in all repositories.
     """
 
     cache = {}
@@ -148,10 +145,12 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
     """This is a shared method for ``buildtest buildspec view`` and
        ``buildtest buildspec edit``.
 
-       Parameters:
        :param buildspec: buildspec file section to view or edit.
+       :type buildspec: str (filepath)
        :param view: boolean to determine if we want to view buildspec file
+       :type view: bool
        :param edit: boolean to control if we want to edit buildspec file in editor.
+       :type edit: bool
        :return: Shows the content of buildspec or let's user interactively edit buildspec. An exception can be raised if it's unable to find buildspec
     """
 
@@ -192,15 +191,15 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
 
 def func_buildspec_view(args):
     """This method implements ``buildtest buildspec view`` which shows
-       content of a buildspec file
+    content of a buildspec file
     """
     func_buildspec_view_edit(args.buildspec, view=True, edit=False)
 
 
 def func_buildspec_edit(args):
     """This method implement ``buildtest buildspec edit`` which
-       allows one to edit a Buildspec file with one of the editors
-       set in buildtest settings.
+    allows one to edit a Buildspec file with one of the editors
+    set in buildtest settings.
     """
 
     func_buildspec_view_edit(args.buildspec, view=False, edit=True)
@@ -215,6 +214,7 @@ def rebuild_buildspec_cache(paths):
     :type paths: list
     :return: Rebuild cache file
     """
+
     cache = {}
     buildspecs = []
     invalid_buildspecs = {}
@@ -292,11 +292,11 @@ def rebuild_buildspec_cache(paths):
 
 
 def get_all_tags(cache):
-    """ This method implements ``buildtest buildspec find --tags`` which
-        reports a list of unique tags from all buildspecs in cache file.
+    """This method implements ``buildtest buildspec find --tags`` which
+    reports a list of unique tags from all buildspecs in cache file.
 
-        :param cache: content of cache as dictionary
-        :type cache: dict
+    :param cache: content of cache as dictionary
+    :type cache: dict
     """
 
     paths = cache.keys()
@@ -316,12 +316,13 @@ def get_all_tags(cache):
 
 
 def get_buildspecfiles(cache):
-    """ This method implements ``buildtest buildspec find --buildspec-files`` which
-        reports all buildspec files in cache.
+    """This method implements ``buildtest buildspec find --buildspec-files`` which
+    reports all buildspec files in cache.
 
-        :param cache: content of cache as dictionary
-        :type cache: dict
+    :param cache: content of cache as dictionary
+    :type cache: dict
     """
+
     table = {"buildspecs": []}
     paths = cache.keys()
     files = []
@@ -334,11 +335,11 @@ def get_buildspecfiles(cache):
 
 
 def get_executors(cache):
-    """ This method implements ``buildtest buildspec find --list-executors`` which
-        reports all executors from cache.
+    """This method implements ``buildtest buildspec find --list-executors`` which
+    reports all executors from cache.
 
-        :param cache: content of cache as dictionary
-        :type cache: dict
+    :param cache: content of cache as dictionary
+    :type cache: dict
     """
 
     table = {"executors": []}
@@ -357,16 +358,24 @@ def get_executors(cache):
 def parse_buildspecs(
     buildspecs, test_directory, tags=None, executors=None, printTable=False
 ):
-    """ Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
-        fails validation we add it to ``skipped_tests`` list and print all skipped
-        tests at end. If buildspec passes validation we get all builders by invoking
-        ``get_builders`` method in BuildspecParser class which gets all tests in
-        buildspec file.
+    """Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
+    fails validation we add it to ``skipped_tests`` list and print all skipped
+    tests at end. If buildspec passes validation we get all builders by invoking
+    ``get_builders`` method in BuildspecParser class which gets all tests in
+    buildspec file.
 
-        :param buildspecs: A list of input buildspecs to parse
-        :param test_directory: Test directory where buildspecs will be written
-        :return: A list of builder objects which are instances of ``BuilderBase`` class
-        :rtype: list
+    :param buildspecs: A list of input buildspecs to parse
+    :type buildspecs: list of filepaths
+    :param test_directory: Test directory where buildspecs will be written
+    :type test_directory: str (directory path)
+    :param tags: A list of input tags to filter tests
+    :type tags: list
+    :param executors: A list of input executors to filter tests
+    :type executors: list
+    :param printTable: a boolean to control if parse table is printed
+    :type printTable: bool, optional
+    :return: A list of builder objects which are instances of ``BuilderBase`` class
+    :rtype: list
     """
 
     builders = []
