@@ -16,13 +16,13 @@ from buildtest.utils.command import BuildTestCommand
 
 class LSFExecutor(BaseExecutor):
     """The LSFExecutor class is responsible for submitting jobs to LSF Scheduler.
-       The LSFExecutor performs the following steps
+    The LSFExecutor performs the following steps
 
-       check: check if lsf queue is available for accepting jobs.
-       load: load lsf configuration from buildtest configuration file
-       dispatch: dispatch job to scheduler and acquire job ID
-       poll: wait for LSF jobs to finish
-       gather: Once job is complete, gather job data
+    check: check if lsf queue is available for accepting jobs.
+    load: load lsf configuration from buildtest configuration file
+    dispatch: dispatch job to scheduler and acquire job ID
+    poll: wait for LSF jobs to finish
+    gather: Once job is complete, gather job data
     """
 
     type = "lsf"
@@ -74,7 +74,7 @@ class LSFExecutor(BaseExecutor):
         self.queue = self._settings.get("queue")
 
     def dispatch(self):
-        """This method is responsible for dispatching job to slurm scheduler."""
+        """This method is responsible for dispatching job to scheduler."""
 
         self.check()
         self.result = {}
@@ -116,14 +116,12 @@ class LSFExecutor(BaseExecutor):
             f"[{self.builder.metadata['name']}] acquiring job id in {interval} seconds"
         )
 
-        # wait 10 seconds before querying slurm for jobID. It can take some time for output
-        # of job to show up from time of submission and running squeue.
+        # wait a few seconds before querying for jobID. It can take a few seconds
+        # between job submission and running bjobs to get output.
         time.sleep(interval)
 
-        cmd = ["bjobs"]
-
-        cmd += ["-u $USER -o 'JobID' -noheader | tail -n 1"]
-        cmd = " ".join(cmd)
+        # get last jobid from bjobs
+        cmd = "bjobs -u $USER -o 'JobID' -noheader | tail -n 1"
 
         # get last job ID
         self.logger.debug(f"[Acquire Job ID]: {cmd}")
@@ -141,9 +139,9 @@ class LSFExecutor(BaseExecutor):
         self.result["returncode"] = "0"
 
     def poll(self):
-        """ This method will poll for job by using bjobs and return state of job.
-            The command to be run is ``bjobs -noheader -o 'stat' <JOBID>``
-             which returns job state.
+        """This method will poll for job by using bjobs and return state of job.
+        The command to be run is ``bjobs -noheader -o 'stat' <JOBID>`` which
+        returns job state.
         """
 
         self.logger.debug(f"Query Job: {self.builder.metadata['jobid']}")
@@ -162,10 +160,11 @@ class LSFExecutor(BaseExecutor):
 
     def gather(self):
         """Gather Job detail after completion of job. This method will retrieve output
-           fields defined for ``self.format_fields``. buildtest will run
-           ``bjobs -o '<field1> ... <fieldN>' <JOBID> -json``.
+        fields defined for ``self.format_fields``. buildtest will run
+        ``bjobs -o '<field1> ... <fieldN>' <JOBID> -json``.
         """
-        # command
+
+        # bjobs gather command to extract format fields and convert output to JSON
         gather_cmd = f"{self.poll_cmd} -o '{' '.join(self.format_fields)}' {self.builder.metadata['jobid']} -json"
 
         self.logger.debug(f"Gather LSF job data by running: {gather_cmd}")

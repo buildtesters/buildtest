@@ -227,9 +227,8 @@ def update_report(valid_builders):
        by ``buildtest build``. If BUILD_REPORT is not created, we will create
        file and update json file by extracting contents from builder.metadata
 
-       Parameters
-
        :param valid_builders: builder object that were successful during build and able to execute test
+       :type valid_builders: instance of BuilderBase (subclass)
     """
 
     if not is_file(os.path.dirname(BUILD_REPORT)):

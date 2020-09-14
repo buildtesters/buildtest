@@ -23,19 +23,16 @@ logger = logging.getLogger(__name__)
 
 def check_settings(settings_path=None, executor_check=True):
     """Checks all keys in configuration file (settings/config.yml) are valid
-       keys and ensure value of each key matches expected type . For some keys
-       special logic is taken to ensure values are correct and directory path
-       exists.       
+    keys and ensure value of each key matches expected type. For some keys
+    special logic is taken to ensure values are correct and directory path
+    exists. If any error is found buildtest will terminate immediately.
 
-       If any error is found buildtest will terminate immediately.
-
-       Parameters:
-
-       :param settings_path: Path to buildtest settings file
-       :type settings_path: str, optional
-
-       :return: returns gracefully if all checks passes otherwise terminate immediately
-       :rtype: exit code 1 if checks failed
+    :param settings_path: Path to buildtest settings file
+    :type settings_path: str, optional
+    :param executor_check: boolean to control if executor checks are performed
+    :type executor_check: bool
+    :return: returns gracefully if all checks passes otherwise terminate immediately
+    :rtype: exit code 1 if checks failed
     """
 
     user_schema = load_settings(settings_path)
@@ -64,10 +61,8 @@ def check_settings(settings_path=None, executor_check=True):
 def load_settings(settings_path=None):
     """Load the default settings file if no argument is specified.
 
-       Parameters:
-
-       :param settings_path: Path to buildtest settings file
-       :type settings_path: str, optional
+    :param settings_path: Path to buildtest settings file
+    :type settings_path: str, optional
     """
 
     settings_path = settings_path or BUILDTEST_SETTINGS_FILE
@@ -80,6 +75,11 @@ def load_settings(settings_path=None):
 
 
 def validate_lsf_executors(lsf_executors):
+    """This method validates all LSF executors. We check if queue is available
+    and in ``Open:Active`` state.
+    :param lsf_executors: A list of LSF executors to validate
+    :type lsf_executors: dict
+    """
     queue_dict = get_lsf_queues()
 
     queue_list = []
@@ -117,10 +117,11 @@ def validate_lsf_executors(lsf_executors):
 def validate_slurm_executors(slurm_executor):
     """This method will validate slurm executors, we check if partition, qos,
        and cluster fields are valid values by retrieving details from slurm configuration.
-       These checks are performed if ``partition``, ``qos`` or ``cluster`` field
-       is specified in slurm executor section.
+       These checks are performed on fields ``partition``, ``qos`` or ``cluster``
+       if specified in executor section.
 
-       :param slurm_executor: list of slurm executors defined in settings['executors]['slurm'] dictionary, where settings is loaded buildtest setting
+       :param slurm_executor: list of slurm executors defined in loaded buildtest configuration
+       :type slurm_executor: dict
     """
 
     slurm_partitions = get_slurm_partitions()

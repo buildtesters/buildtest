@@ -28,28 +28,31 @@ class BuilderBase:
     """
 
     def __init__(self, name, recipe, buildspec, testdir=None):
-        """Initiate a builder base. A recipe configuration (loaded) is required.
-           this can be handled easily with the BuildspecParser class:
+        """The BuilderBase provides common functions for any builder. The builder
+        is an instance of BuilderBase. In initializer we expect the testname that
+        is provided by argument ``name``. In initializer we get the test directory,
+        and build the metadata
 
-
-           Parameters:
-
-           :param name: a name for the Buildspec recipe
-           :type name: str, required
-           :param recipe: the loaded section from the buildspec for the user.
-           :type recipe: dict, required
-           :param buildspec: the pull path to the Buildspec file, must exist.
-           :type buildspec: str, required
-           :param testdir: Test Destination directory where to write test
-           :type testdir: str, optional
+        :param name: a name for the Buildspec recipe
+        :type name: str, required
+        :param recipe: the loaded section from the buildspec for the user.
+        :type recipe: dict, required
+        :param buildspec: the pull path to the Buildspec file, must exist.
+        :type buildspec: str, required
+        :param testdir: Test Destination directory where to write test
+        :type testdir: str, optional
         """
 
         self.name = name
         self.pwd = os.getcwd()
         self.result = {}
         self.metadata = {}
+
+        # ensure buildspec ends with .yml extension
+        assert os.path.basename(buildspec).endswith(".yml")
+
         self.buildspec = buildspec
-        self.config_name = re.sub("[.](yml|yaml)", "", os.path.basename(buildspec))
+        self.config_name = re.sub("[.](yml)", "", os.path.basename(buildspec))
         self.testdir = os.path.join(
             testdir, recipe.get("executor"), self.config_name, self.name
         )

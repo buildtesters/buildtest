@@ -15,6 +15,12 @@ from buildtest.utils.timer import Timer
 
 
 class LocalExecutor(BaseExecutor):
+    """The LocalExecutor class is responsible for running tests locally for
+    bash, sh and python shell. The LocalExecutor runs the tests and gathers
+    the output and error results and writes to file. This class implements
+    ``load``, ``check`` and ``run`` method.
+    """
+
     type = "local"
 
     def load(self):
@@ -23,15 +29,15 @@ class LocalExecutor(BaseExecutor):
         self.check()
 
     def check(self):
-
+        """Check if shell binary is available"""
         if not shutil.which(self.shell):
             sys.exit(f"Unable to find shell: {self.shell}")
 
     def run(self):
         """This method is responsible for running test for LocalExecutor which
-           runs test locally. We keep track of metadata in ``self.builder.metadata``
-           and self.result keeps track of run result. The output and error file
-           is written to filesystem. After test
+        runs test locally. We keep track of metadata in ``self.builder.metadata``
+        and ``self.result`` keeps track of run result. The output and error file
+        are written to filesystem.
         """
 
         # self.result must be initialized to empty dict since this is shared by

@@ -14,13 +14,13 @@ from buildtest.utils.command import BuildTestCommand
 
 class SlurmExecutor(BaseExecutor):
     """The SlurmExecutor class is responsible for submitting jobs to Slurm Scheduler.
-       The SlurmExecutor performs the following steps
+    The SlurmExecutor performs the following steps
 
-       check: check if slurm partition is available for accepting jobs.
-       load: load slurm configuration from buildtest configuration file
-       dispatch: dispatch job to scheduler and acquire job ID
-       poll: wait for Slurm jobs to finish
-       gather: Once job is complete, gather job data
+    check: check if slurm partition is available for accepting jobs.
+    load: load slurm configuration from buildtest configuration file
+    dispatch: dispatch job to scheduler and acquire job ID
+    poll: wait for Slurm jobs to finish
+    gather: Once job is complete, gather job data
     """
 
     type = "slurm"
@@ -54,11 +54,11 @@ class SlurmExecutor(BaseExecutor):
 
     def check(self):
         """Check slurm binary is available before running tests. This will check
-           the launcher (sbatch) and sacct are available. If qos, partition, and
-           cluster key defined we check if its a valid entity in slurm configuration.
-           For partition, we also check if its in the ``up`` state before dispatching
-           jobs. This method will raise an exception of type SystemExit if any
-           checks fail.
+        the launcher (sbatch) and sacct are available. If qos, partition, and
+        cluster key defined we check if its a valid entity in slurm configuration.
+        For partition, we also check if its in the ``up`` state before dispatching
+        jobs. This method will raise an exception of type SystemExit if any
+        checks fail.
         """
 
         if not shutil.which(self.launcher):
@@ -145,10 +145,10 @@ class SlurmExecutor(BaseExecutor):
         self.result["returncode"] = "0"
 
     def poll(self):
-        """ This method will poll for job each interval specified by time interval
-            until job finishes. We use `sacct` to poll for job id and sleep for given
-            time interval until trying again. The command to be run is
-            ``sacct -j <jobid> -o State -n -X -P``
+        """This method will poll for job each interval specified by time interval
+        until job finishes. We use `sacct` to poll for job id and sleep for given
+        time interval until trying again. The command to be run is
+        ``sacct -j <jobid> -o State -n -X -P``
         """
 
         self.logger.debug(f"Query Job: {self.builder.metadata['jobid']}")

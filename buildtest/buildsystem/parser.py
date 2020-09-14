@@ -42,17 +42,15 @@ class BuildspecParser:
 
     def __init__(self, buildspec):
         """The init method will run some checks against buildspec before loading
-           buildspec. We retrieve available schemas via method
-           ``get_schemas_available`` and check if ``type`` in buildspec
-           match available schema. We validate the entire buildspec with
-           global.schema.json and validate each test section with the designated
-           type schema. If there is any error during the init method, an
-           exception will be raised.
+        buildspec. We retrieve available schemas via method
+        ``get_schemas_available`` and check if ``type`` in buildspec
+        match available schema. We validate the entire buildspec with
+        global.schema.json and validate each test section with the designated
+        type schema. If there is any error during the init method, an
+        exception will be raised.
 
-           Parameters:
-
-           :param buildspec: the pull path to the Buildspec file, must exist.
-           :type buildspec: str, required
+        :param buildspec: the pull path to the Buildspec file, must exist.
+        :type buildspec: str, required
         """
 
         self.logger = logging.getLogger(__name__)
@@ -87,9 +85,9 @@ class BuildspecParser:
 
     def _validate_global(self):
         """The global validation ensures that the overall structure of the
-           file is sound for further parsing. We load in the global.schema.json
-           for this purpose. The function also allows a custom Buildspec to
-           extend the usage of the class.
+        file is sound for further parsing. We load in the global.schema.json
+        for this purpose. The function also allows a custom Buildspec to
+        extend the usage of the class.
         """
 
         self.logger.info(
@@ -102,8 +100,9 @@ class BuildspecParser:
 
     def _validate(self):
         """Given a loaded recipe, validate that the type is known in the lookup
-           to buildtest. If a version is provided, honor it. If not, use latest.
-           We also don't allow repeated keys in the same file.
+        to buildtest. We check that ``type`` is found in schema lookup table,
+        and ``executor`` field is a valid executor. Finally we validate loaded
+        recipe with sub-schema
         """
 
         self.schema_version = self.recipe.get("version", "latest")
@@ -174,13 +173,14 @@ class BuildspecParser:
 
     def get_builders(self, testdir, tag_filter=None, executor_filter=None):
         """Based on a loaded Buildspec file, return the correct builder
-           for each based on the type. Each type is associated with a known
-           Builder class.
+        for each based on the type. Each type is associated with a known
+        Builder class.
 
-           Parameters:
-
-           :param testdir: Test Destination directory, specified by --testdir
-           :type testdir: str, optional
+        :param testdir: Test Destination directory, specified by --testdir
+        :type testdir: str, optional
+        :param tag_filter: A list of input tags (``buildtest build --tags`` option) to filter builders
+        :type tag_filter: list, optional
+        :param executor_filter: A list of input executors (``buildtest build --executor`` option) to filter builders
         """
 
         builders = []
@@ -247,7 +247,7 @@ class BuildspecParser:
 
     def keys(self):
         """Return the list of keys for the loaded Buildspec recipe, not including
-           the metadata keys defined for any global recipe.
+        the metadata keys defined for any global recipe.
         """
 
         keys = []
@@ -257,8 +257,8 @@ class BuildspecParser:
 
     def get(self, name):
         """Given the name of a section (typically a build configuration name)
-           return the loaded section from self.recipe. If you need to parse
-           through just section names, use self.keys() to filter out metadata.
+        return the loaded section from self.recipe. If you need to parse
+        through just section names, use self.keys() to filter out metadata.
         """
 
         return self.recipe.get(name)

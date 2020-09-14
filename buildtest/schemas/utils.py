@@ -14,9 +14,8 @@ here = os.path.dirname(os.path.abspath(__file__))
 def load_schema(path):
     """Load a json schema file, the file extension must be '.schema.json'
 
-       Parameters:
-
-       path: the path to the schema file.
+    :param path: the path to the schema file.
+    :type path: str
     """
 
     logger = logging.getLogger(__name__)
@@ -38,11 +37,10 @@ def load_schema(path):
 
 def load_recipe(path):
     """Load a yaml recipe file. The file must be in .yml extension
-       for buildtest to load.
+    for buildtest to load.
 
-       Parameters:
-
-       path: the path to the recipe file.
+    :param path: the path to the recipe file.
+    :type path: str
     """
 
     if not os.path.exists(path):
@@ -57,12 +55,12 @@ def load_recipe(path):
 
 
 def get_schema_fullpath(schema_file, name=None):
-    """Return the full path of a schema file (expected to be under schemas
+    """Return the full path of a schema file
 
-       Parameters:
-
-       schema_file: the path to the schema file.
-       name: the schema type. If not provided, derived from filename.
+    :param schema_file: the path to the schema file.
+    :type schema_file: str
+    :param name: the schema type. If not provided, derived from filename.
+    :type name: str, optional
     """
     if not name:
         name = schema_file.split("-v", 1)[0]
