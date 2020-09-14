@@ -28,7 +28,7 @@ author = "Shahzeb Siddiqui, Vanessa Sochat"
 # The short X.Y version
 version = BUILDTEST_VERSION
 # The full version, including alpha/beta/rc tags
-release = "2019.04.02"
+release = BUILDTEST_VERSION
 
 
 # -- General configuration ---------------------------------------------------

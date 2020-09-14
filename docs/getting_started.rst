@@ -1,4 +1,4 @@
-.. _Getting Started:
+.. _Getting_Started:
 
 Getting Started with buildtest
 ==============================

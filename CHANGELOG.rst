@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v0.8.1 (TBD)
-------------
+v0.8.1 (Sep 14th 2020)
+-----------------------
 
 - We now running regression test in github action see `#455 <https://github.com/buildtesters/buildtest/pull/455>`_
 - Add command to filter by executor names using ``buildtest build --executor``. `#463 <https://github.com/buildtesters/buildtest/pull/463>`_

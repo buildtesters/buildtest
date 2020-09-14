@@ -69,4 +69,4 @@ on any subcommand run::
 
     $ buildtest <subcommand> --help
 
-If you have got this far, please go to the next section on :ref:`configuring_buildtest`
+If you have got this far, please go to the next section on :ref:`Getting_Started`
