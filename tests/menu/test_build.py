@@ -40,6 +40,7 @@ def test_build_by_tags():
         exclude = None
         tags = ["tutorials"]
         executor = None
+        rerun = None
 
     #  testing buildtest build --tags tutorials
     func_build_subcmd(args, buildtest_configuration)
@@ -53,6 +54,7 @@ def test_build_by_tags():
         exclude = None
         tags = ["compile", "python"]
         executor = None
+        rerun = None
 
     #  testing buildtest build --tags tutorials --tags python
     func_build_subcmd(args, buildtest_configuration)
@@ -155,6 +157,7 @@ def test_build_buildspecs():
         exclude = None
         tags = None
         executor = None
+        rerun = None
 
     #  testing buildtest build --buildspec tests/examples/buildspecs
     func_build_subcmd(args, buildtest_configuration)
@@ -168,11 +171,48 @@ def test_build_buildspecs():
         exclude = [buildspec_paths]
         tags = None
         executor = None
+        rerun = None
 
     #  testing buildtest build --buildspec tests/examples/buildspecs --exclude tests/examples/buildspecs
     # this results in no buildspecs built
     with pytest.raises(SystemExit):
         func_build_subcmd(args, buildtest_configuration)
+
+
+def test_buildspec_tag_executor():
+    buildtest_configuration = load_settings()
+
+    class args:
+        executor = ["local.sh"]
+        tags = ["fail"]
+        buildspec = None
+        debug = False
+        stage = None
+        settings = BUILDTEST_SETTINGS_FILE
+        testdir = None
+        exclude = None
+        rerun = None
+
+    # testing buildtest build --tags fail --executor local.sh
+    func_build_subcmd(args, buildtest_configuration)
+
+
+def test_build_multi_executors():
+    buildtest_configuration = load_settings()
+
+    class args:
+        executor = ["local.sh", "local.bash"]
+        buildspec = None
+        debug = False
+        stage = None
+        settings = BUILDTEST_SETTINGS_FILE
+        testdir = None
+        exclude = None
+        tags = None
+        rerun = None
+
+    # testing buildtest build --executor local.bash --executor local.sh
+    func_build_subcmd(args, buildtest_configuration)
 
 
 def test_build_by_stages():
@@ -188,6 +228,7 @@ def test_build_by_stages():
         exclude = None
         tags = ["tutorials"]
         executor = None
+        rerun = None
 
     # testing buildtest build --tags tutorials --stage=parse
     func_build_subcmd(args, buildtest_configuration)
@@ -201,6 +242,7 @@ def test_build_by_stages():
         exclude = None
         tags = ["tutorials"]
         executor = None
+        rerun = None
 
     # testing buildtest build --tags tutorials --stage=build
     func_build_subcmd(args, buildtest_configuration)

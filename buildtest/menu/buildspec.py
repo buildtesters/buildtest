@@ -118,8 +118,8 @@ def func_buildspec_find(args):
         for buildspecfile in cache[path].keys():
             for test in cache[path][buildspecfile].keys():
 
-                type = cache[path][buildspecfile][test]["type"]
-                executor = cache[path][buildspecfile][test]["executor"]
+                type = cache[path][buildspecfile][test].get("type")
+                executor = cache[path][buildspecfile][test].get("executor")
                 tags = cache[path][buildspecfile][test].get("tags")
                 description = cache[path][buildspecfile][test].get("description")
 
@@ -252,7 +252,7 @@ def rebuild_buildspec_cache(paths):
 
         if count % 5 == 0:
             print(f"Validated {count}/{len(buildspecs)} buildspecs")
-
+        print(buildspec)
         recipe = parse.recipe["buildspecs"]
 
         path_root = [

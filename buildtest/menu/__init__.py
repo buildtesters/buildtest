@@ -54,6 +54,12 @@ def handle_kv_string(val):
     return kv_dict
 
 
+def positive_number(value):
+    if int(value) <= 0:
+        raise argparse.ArgumentTypeError(f"{value} must be a positive number")
+    return value
+
+
 class BuildTestParser:
     def __init__(self):
         epilog_str = (
@@ -178,7 +184,11 @@ class BuildTestParser:
             "--testdir",
             help="specify a custom test directory. By default, use .buildtest in $PWD.",
         )
-
+        parser_build.add_argument(
+            "--rerun",
+            type=positive_number,
+            help="Rerun test X number of times. Must be a positive number",
+        )
         parser_build.add_argument(
             "--settings", help="Specify an alternate buildtest settings file to use",
         )

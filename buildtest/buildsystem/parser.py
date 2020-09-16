@@ -54,7 +54,7 @@ class BuildspecParser:
         """
 
         self.logger = logging.getLogger(__name__)
-        self.executors = executors
+        self.executors = list(executors)
         # if invalid input for buildspec
         if not buildspec:
             sys.exit("Invalid input type for Buildspec, must be of type 'string'.")

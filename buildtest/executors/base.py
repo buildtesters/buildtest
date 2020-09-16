@@ -58,21 +58,6 @@ class BaseExecutor:
     def __repr__(self):
         return self.__str__()
 
-    def get_formatted_time(self, key, fmt="%Y/%m/%d %X"):
-        """Given some timestamp key in self.metadata, return a pretty printed
-        version of it. This is intended to log in the console for the user.
-
-        :param key: The key to look up in the metadata
-        :type key: str
-        :param fmt: The format string to use with datetime
-        :type fmt: string
-        """
-
-        timestamp = self.builder.metadata.get(key, "")
-        if timestamp:
-            timestamp = timestamp.strftime(fmt)
-        return timestamp
-
     def check_regex(self, regex):
         """This method conducts a regular expression check using ``re.search``
         with regular expression defined in Buildspec. User must specify an
