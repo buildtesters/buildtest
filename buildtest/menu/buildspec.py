@@ -118,7 +118,7 @@ def func_buildspec_find(args):
         for buildspecfile in cache[path].keys():
             for test in cache[path][buildspecfile].keys():
 
-                type = cache[path][buildspecfile][test].get("type")
+                schema_type = cache[path][buildspecfile][test].get("type")
                 executor = cache[path][buildspecfile][test].get("executor")
                 tags = cache[path][buildspecfile][test].get("tags")
                 description = cache[path][buildspecfile][test].get("description")
@@ -129,11 +129,11 @@ def func_buildspec_find(args):
                 if tags_filter and tags_filter not in tags:
                     continue
 
-                if type_filter and type_filter != type:
+                if type_filter and type_filter != schema_type:
                     continue
 
                 table["Name"].append(test)
-                table["Type"].append(type)
+                table["Type"].append(schema_type)
                 table["Executor"].append(executor)
                 table["Tags"].append(tags)
                 table["Description"].append(description)
