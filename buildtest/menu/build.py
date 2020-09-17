@@ -331,7 +331,7 @@ def build_phase(builders, printTable=False):
         )
 
 
-def run_phase(builders, executor, config_dict, printTable=False):
+def run_phase(builders, executor, config_dict, rerun, printTable=False):
     """This method will run all builders with the appropriate executor.
     The executor argument is an instance of ``BuildExecutor`` that is responsible
     for orchestrating builder execution to the appropriate executor class. The
@@ -382,35 +382,40 @@ def run_phase(builders, executor, config_dict, printTable=False):
     table = {"name": [], "executor": [], "status": [], "returncode": [], "testpath": []}
 
     poll_queue = []
+    count = 0
+    rerun = rerun or 1
+    rerun = int(rerun)
 
-    for builder in builders:
-        try:
-            result = executor.run(builder)
-        except SystemExit as err:
-            print("[%s]: Failed to Run Test" % builder.metadata["name"])
-            errmsg.append(err)
-            logger.error(err)
-            continue
+    while count < rerun:
+        count += 1
+        for builder in builders:
+            try:
+                result = executor.run(builder)
+            except SystemExit as err:
+                print("[%s]: Failed to Run Test" % builder.metadata["name"])
+                errmsg.append(err)
+                logger.error(err)
+                continue
 
-        valid_builders.append(builder)
+            valid_builders.append(builder)
 
-        table["name"].append(builder.name)
-        table["executor"].append(builder.executor)
-        table["status"].append(result["state"])
-        table["returncode"].append(result["returncode"])
-        table["testpath"].append(builder.metadata["testpath"])
+            table["name"].append(builder.name)
+            table["executor"].append(builder.executor)
+            table["status"].append(result["state"])
+            table["returncode"].append(result["returncode"])
+            table["testpath"].append(builder.metadata["testpath"])
 
-        if result["state"] == "N/A":
-            poll_queue.append(builder)
-            poll = True
-            continue
+            if result["state"] == "N/A":
+                poll_queue.append(builder)
+                poll = True
+                continue
 
-        if result["state"] == "PASS":
-            passed_tests += 1
-        else:
-            failed_tests += 1
+            if result["state"] == "PASS":
+                passed_tests += 1
+            else:
+                failed_tests += 1
 
-        total_tests += 1
+            total_tests += 1
 
     if printTable:
         print(tabulate(table, headers=table.keys(), tablefmt="presto"))
@@ -581,6 +586,8 @@ def func_build_subcmd(args, config_opts):
     if stage == "build":
         return
 
-    valid_builders = run_phase(builders, executor, config_opts, printTable=True)
+    valid_builders = run_phase(
+        builders, executor, config_opts, args.rerun, printTable=True
+    )
 
     update_report(valid_builders)

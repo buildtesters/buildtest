@@ -70,16 +70,19 @@ class LocalExecutor(BaseExecutor):
         )
 
         command = BuildTestCommand(self.builder.metadata["command"])
-        self.builder.metadata["starttime"] = datetime.datetime.now()
-        self.result["starttime"] = self.get_formatted_time("starttime")
+        # self.builder.metadata["starttime"] = datetime.datetime.now()
+        # self.result["starttime"] = self.get_formatted_time("starttime")
+
+        self.result["starttime"] = datetime.datetime.now().strftime("%Y/%m/%d %X")
 
         t = Timer()
         t.start()
         out, err = command.execute()
         self.result["runtime"] = t.stop()
 
-        self.builder.metadata["endtime"] = datetime.datetime.now()
-        self.result["endtime"] = self.get_formatted_time("endtime")
+        # self.builder.metadata["endtime"] = datetime.datetime.now()
+        self.result["endtime"] = datetime.datetime.now().strftime("%Y/%m/%d %X")
+        # self.result["endtime"] = self.get_formatted_time("endtime")
 
         self.logger.debug(
             f"Return code: {command.returncode} for test: {self.builder.metadata['testpath']}"

@@ -1,0 +1,10 @@
+version: "1.0"
+buildspecs:
+  sleep:
+    type: script
+    executor: local.bash
+    description: sleep 2 seconds
+    tags: [tutorials]
+    vars:
+      SLEEP_TIME: 2
+    run: sleep $SLEEP_TIME
