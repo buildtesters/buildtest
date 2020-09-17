@@ -252,7 +252,6 @@ def rebuild_buildspec_cache(paths):
 
         if count % 5 == 0:
             print(f"Validated {count}/{len(buildspecs)} buildspecs")
-        print(buildspec)
         recipe = parse.recipe["buildspecs"]
 
         path_root = [

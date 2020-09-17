@@ -264,7 +264,7 @@ class BuilderBase:
 
         lines += self.generate_script()
         lines += [
-            f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
+            f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
         ]
 
         lines = "\n".join(lines)
