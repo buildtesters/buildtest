@@ -6,9 +6,21 @@ $ buildtest report --filter buildspec=tutorials/pass_returncode.yml --format=nam
 +---------------------+---------+-------------------------------------------------------------------+
 | exit1_fail          | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
 +---------------------+---------+-------------------------------------------------------------------+
+| exit1_fail          | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++---------------------+---------+-------------------------------------------------------------------+
+| exit1_fail          | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++---------------------+---------+-------------------------------------------------------------------+
 | exit1_pass          | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
 +---------------------+---------+-------------------------------------------------------------------+
 | exit1_pass          | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++---------------------+---------+-------------------------------------------------------------------+
+| exit1_pass          | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++---------------------+---------+-------------------------------------------------------------------+
+| exit1_pass          | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++---------------------+---------+-------------------------------------------------------------------+
+| returncode_mismatch | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++---------------------+---------+-------------------------------------------------------------------+
+| returncode_mismatch | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
 +---------------------+---------+-------------------------------------------------------------------+
 | returncode_mismatch | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
 +---------------------+---------+-------------------------------------------------------------------+

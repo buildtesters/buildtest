@@ -1,17 +1,16 @@
 $ buildtest config view
 executors:
-   local:
-     bash:
-       description: submit jobs on local machine using bash shell
-       shell: bash
-     sh:
-       description: submit jobs on local machine using sh shell
-       shell: sh
-     python:
-       description: submit jobs on local machine using python shell
-       shell: python
- config:
-   editor: vi
-   paths:
-     buildspec_roots:
-       - /Users/siddiq90/Documents/buildtest-cori
+  local:
+    bash:
+      description: submit jobs on local machine using bash shell
+      shell: bash
+
+    sh:
+      description: submit jobs on local machine using sh shell
+      shell: sh
+
+    python:
+      description: submit jobs on local machine using python shell
+      shell: python
+config:
+  editor: vi

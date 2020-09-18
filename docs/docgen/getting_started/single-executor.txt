@@ -7,8 +7,8 @@ $ buildtest build --executor local.sh
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 [_bin_bash_shell] test is skipped because it is not in executor filter list: ['local.sh']
 [bash_shell] test is skipped because it is not in executor filter list: ['local.sh']
 
@@ -18,34 +18,34 @@ Discovered Buildspecs:
     
  schemafile              | validstate   | buildspec
 -------------------------+--------------+-------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- Name                | Schema File             | Test Path                                                                                              | Buildspec
----------------------+-------------------------+--------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------
- exit1_fail          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/generate.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
- exit1_pass          | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/generate.sh          | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
- returncode_mismatch | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/generate.sh | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
- _bin_sh_shell       | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/generate.sh        | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
- sh_shell            | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/generate.sh             | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
- shell_options       | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/generate.sh        | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+ Name                | Type   | Executor   | Tags                  | Testpath
+---------------------+--------+------------+-----------------------+----------------------------------------------------------------------------------------------------------------
+ _bin_sh_shell       | script | local.sh   | ['tutorials']         | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/3/stage/generate.sh
+ sh_shell            | script | local.sh   | ['tutorials']         | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/3/stage/generate.sh
+ shell_options       | script | local.sh   | ['tutorials']         | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/3/stage/generate.sh
+ exit1_fail          | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/1/stage/generate.sh
+ exit1_pass          | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/1/stage/generate.sh
+ returncode_mismatch | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/1/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
     
- name                | executor   | status   |   returncode | testpath
----------------------+------------+----------+--------------+--------------------------------------------------------------------------------------------------------
- exit1_fail          | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/generate.sh
- exit1_pass          | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/generate.sh
- returncode_mismatch | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/generate.sh
- _bin_sh_shell       | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/generate.sh
- sh_shell            | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/generate.sh
- shell_options       | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/generate.sh
+ Name                | Executor   | Status   |   Returncode | TestPath
+---------------------+------------+----------+--------------+----------------------------------------------------------------------------------------------------------------
+ _bin_sh_shell       | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/3/stage/generate.sh
+ sh_shell            | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/3/stage/generate.sh
+ shell_options       | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/3/stage/generate.sh
+ exit1_fail          | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/1/stage/generate.sh
+ exit1_pass          | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/1/stage/generate.sh
+ returncode_mismatch | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_mismatch/1/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

@@ -313,22 +313,18 @@ def build_phase(builders, printTable=False):
 +----------------------+ 
 """
     )
-    table = {"name": [], "schemafile": [], "testpath": [], "buildspec": []}
+    table = {"Name": [], "Type": [], "Executor": [], "Tags": [], "Testpath": []}
     for builder in builders:
         builder.build()
-        table["name"].append(builder.metadata["name"])
-        table["schemafile"].append(builder.metadata["schemafile"])
-        table["testpath"].append(builder.metadata["testpath"])
-        table["buildspec"].append(builder.buildspec)
+        table["Name"].append(builder.metadata["name"])
+        table["Type"].append(builder.recipe["type"])
+        table["Executor"].append(builder.recipe["executor"])
+        table["Tags"].append(builder.recipe.get("tags"))
+        table["Testpath"].append(builder.metadata["testpath"])
+        # table["buildspec"].append(builder.buildspec)
 
     if printTable:
-        print(
-            tabulate(
-                table,
-                headers=["Name", "Schema File", "Test Path", "Buildspec"],
-                tablefmt="presto",
-            )
-        )
+        print(tabulate(table, headers=table.keys(), tablefmt="presto",))
 
 
 def run_phase(builders, executor, config_dict, rerun, printTable=False):
@@ -379,7 +375,7 @@ def run_phase(builders, executor, config_dict, rerun, printTable=False):
     """
         )
 
-    table = {"name": [], "executor": [], "status": [], "returncode": [], "testpath": []}
+    table = {"Name": [], "Executor": [], "Status": [], "Returncode": [], "TestPath": []}
 
     poll_queue = []
     count = 0
@@ -399,11 +395,11 @@ def run_phase(builders, executor, config_dict, rerun, printTable=False):
 
             valid_builders.append(builder)
 
-            table["name"].append(builder.name)
-            table["executor"].append(builder.executor)
-            table["status"].append(result["state"])
-            table["returncode"].append(result["returncode"])
-            table["testpath"].append(builder.metadata["testpath"])
+            table["Name"].append(builder.name)
+            table["Executor"].append(builder.executor)
+            table["Status"].append(result["state"])
+            table["Returncode"].append(result["returncode"])
+            table["TestPath"].append(builder.metadata["testpath"])
 
             if result["state"] == "N/A":
                 poll_queue.append(builder)

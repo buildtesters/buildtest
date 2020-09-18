@@ -1,35 +1,36 @@
 $ buildtest config summary
-buildtest version:  0.8.0
- buildtest Path: /Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/buildtest
- Machine Details
- ______________________________
- Operating System:  Darwin 19.5.0 
- Hostname:  DOE-7086392.local
- Machine:  x86_64
- Processor:  i386
- Python Path /Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/python
- Python Version: 3.7.3
- User: siddiq90
- Buildtest Settings
- ________________________________________________________________________________
- Buildtest Settings: /Users/siddiq90/.buildtest/config.yml
- Buildtest Settings is  VALID
- Executors:  ['local.bash', 'local.sh', 'local.python']
- Buildtest Repositories:
- ________________________________________________________________________________
- Repo File: /Users/siddiq90/.buildtest/repo.yaml
- Active Repos: ['buildtesters/tutorials']
- Repo Paths: ['/private/tmp/github.com/buildtesters/tutorials']
- Buildspec Cache File: /Users/siddiq90/Documents/buildtest/var/buildspec.cache
- Number of buildspecs:  13
- Number of Tests: 27
- Tests:  ['systemd_default_target', '_bin_sh_shell', '_bin_bash_shell', 'bash_shell', 'sh_shell', 'shell_options', 'environment_variables', 'variables', 'selinux_disable', 'exit1_fail', 'exit1_pass', 'returncode_mismatch', 'wrongexecutor', 'circle_area', 'skip', 'unskipped', 'vecadd_gnu', 'hello_f', 'hello_c', 'hello_cplusplus', 'hello_f', 'hello_c', 'hello_cplusplus', 'cc_example', 'fc_example', 'cxx_example', 'executable_arguments']
- Buildtest Schemas
- ________________________________________________________________________________
- Available Schemas: ['script-v1.0.schema.json', 'compiler-v1.0.schema.json', 'global.schema.json', 'settings.schema.json']
- Supported Sub-Schemas
- ________________________________________________________________________________
- script-v1.0.schema.json : /Users/siddiq90/Documents/buildtest/buildtest/schemas/script/script-v1.0.schema.json
- Examples Directory for schema:  /Users/siddiq90/Documents/buildtest/buildtest/schemas/script/examples
- compiler-v1.0.schema.json : /Users/siddiq90/Documents/buildtest/buildtest/schemas/compiler/compiler-v1.0.schema.json
- Examples Directory for schema:  /Users/siddiq90/Documents/buildtest/buildtest/schemas/compiler/examples
+buildtest version:  0.8.1
+buildtest Path: /Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/buildtest
+
+
+Machine Details
+______________________________
+Operating System:  Darwin 19.5.0 
+Hostname:  DOE-7086392.local.dhcp.lbl.gov
+Machine:  x86_64
+Processor:  i386
+Python Path /Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/python
+Python Version: 3.7.3
+User: siddiq90
+
+
+Buildtest Settings
+________________________________________________________________________________
+Buildtest Settings: /Users/siddiq90/.buildtest/config.yml
+Buildtest Settings is  VALID
+Executors:  ['local.bash', 'local.sh', 'local.python']
+Buildspec Cache File: /Users/siddiq90/Documents/buildtest/var/buildspec-cache.json
+Number of buildspecs:  1
+Number of Tests: 14
+Tests:  ['/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml', '/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml', '/Users/siddiq90/Documents/buildtest/tutorials/environment.yml', '/Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml', '/Users/siddiq90/Documents/buildtest/tutorials/vars.yml', '/Users/siddiq90/Documents/buildtest/tutorials/selinux.yml', '/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml', '/Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml', '/Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml', '/Users/siddiq90/Documents/buildtest/tutorials/sleep.yml', '/Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml', '/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml', '/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml', '/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml']
+
+
+Buildtest Schemas
+________________________________________________________________________________
+Available Schemas: ['script-v1.0.schema.json', 'compiler-v1.0.schema.json', 'global.schema.json', 'settings.schema.json']
+Supported Sub-Schemas
+________________________________________________________________________________
+script-v1.0.schema.json : /Users/siddiq90/Documents/buildtest/buildtest/schemas/script-v1.0.schema.json
+Examples Directory for schema:  /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples
+compiler-v1.0.schema.json : /Users/siddiq90/Documents/buildtest/buildtest/schemas/compiler-v1.0.schema.json
+Examples Directory for schema:  /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples

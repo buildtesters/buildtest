@@ -43,6 +43,8 @@ excluded buildspecs are removed from list if found and final list of buildspecs
 is processed.
 
 .. image:: _static/DiscoverBuildspecs.jpg
+   :scale: 75 %
+
 
 Building a Test
 ----------------
@@ -137,6 +139,15 @@ When multiple tags are specified, we search each tag independently and if it
 is found in the buildspec cache we retrieve the test. To see a list of available
 tags in your buildspec cache see :ref:`buildspec_tags`.
 
+.. Note:: The ``--tags`` is used for discovering buildspecs and filtering tests during build phase.
+  For example a buildspec file (``system.yml``) that contain three tests **hostname_check**, **timeout**, and **ping_test**
+  are generally all run by default if you run as ``buildtest build -b system.yml``, but if you
+  specify ``--tags`` buildtest will exclude tests that don't have a matching tagname. It is possible
+  ``buildtest build --tags system`` can discover buildspec file ``system.yml`` but only
+  tests **timeout** and **ping_test** are built because they have a **system** tag while
+  **hostname_check** is skipped because it's test doesn't have a **system** tag.
+
+
 You can combine ``--tags`` with ``--buildspec`` and ``--exclude`` in a single command.
 buildtest will query tags and buildspecs independently and combine all discovered
 buildspecs, any duplicates are ignored and finally we apply the exclusion list to
@@ -145,6 +156,8 @@ remove buildspecs.
 In next example we combine all of these features together. This example builds
 all test with **python** tag, and build all buildspecs in directory - **tutorials/compilers**
 but we exclude **tutorials/compilers/vecadd.yml**.
+
+
 
 .. program-output:: cat docgen/getting_started/combine-tags-buildspec-exclude.txt
 
@@ -163,15 +176,25 @@ contain one or more test and in second stage we process each test.
 
 To see a list of available executors in buildspec cache see :ref:`buildspec_executor`.
 
-.. Note:: By default all tests are run in buildspec file, the --executor is filtering by tests
+.. Note:: By default all tests are run in buildspec file, the --executor is filtering by tests. This option
+   behaves similar to tags, the **--executor** is used for discovering buildspecs and filtering
+   tests with corresponding executor name.
 
-In this example we run all tests that are associated to `local.sh` executor
+In this example we run all tests that are associated to `local.sh` executor. Notice how
+buildtest skips tests that don't match executor **local.sh** even though they were
+discovered in buildspec file.
 
 .. program-output:: cat docgen/getting_started/single-executor.txt
 
 We can append arguments to ``--executor`` to search for multiple executors by
 specifying ``--executor <name1> --executor <name2>``. In next example we search
 all tests associated with ``local.sh`` and ``local.bash`` executor.
+
+.. Note:: If you specify multiple executors, buildtest will combine the executors
+   into list, for example ``--executor local.bash --executor local.sh`` is converted
+   into a list (executor filter) - ``[local.bash, local.sh]``, and buildtest will
+   skip any test whose ``executor`` field in testname doesn't belong to executor
+   filter list are skipped.
 
 .. program-output:: cat docgen/getting_started/multi-executor.txt
 
@@ -352,7 +375,7 @@ list of available format fields run ``buildtest report --helpformat``.
 
 You can format report using ``--format`` field which expects field
 name separated by comma (i.e **--format <field1>,<field2>**). In this example
-we format by fields ``--format name,type,executor,state,returncode``
+we format by fields ``--format id,executor,state,returncode``
 
 .. program-output:: cat docgen/report-format.txt
 
