@@ -6,7 +6,6 @@ import webbrowser
 
 
 def buildtestdocs(args=None):
-    print(args)
     """Open buildtest docs in web browser. This implements ``buildtest docs``"""
     webbrowser.open("https://buildtest.readthedocs.io/")
 

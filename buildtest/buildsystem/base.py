@@ -124,8 +124,11 @@ class BuilderBase:
         self.metadata["id"] = self._generate_build_id()
 
         create_dir(self.testdir)
-        id = len(os.listdir(self.testdir))
-        self.test_id = os.path.join(self.testdir, str(id))
+        num_content = len(os.listdir(self.testdir))
+        # the testid is incremented for every run, this can be done by getting
+        # length of all files in testdir and creating a directory. Subsequent
+        # runs will increment this counter
+        self.test_id = os.path.join(self.testdir, str(num_content))
         create_dir(self.test_id)
 
         self.stage_dir = os.path.join(self.test_id, "stage")
