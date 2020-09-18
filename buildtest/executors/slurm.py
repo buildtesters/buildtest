@@ -92,8 +92,8 @@ class SlurmExecutor(BaseExecutor):
         self.job_id = 0
         self.result["id"] = self.builder.metadata.get("id")
 
-        os.chdir(self.builder.metadata["testroot"])
-        self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
+        os.chdir(self.builder.stage_dir)
+        self.logger.debug(f"Changing to directory {self.builder.stage_dir}")
 
         sbatch_cmd = [self.launcher, "--parsable"]
 
@@ -210,6 +210,18 @@ class SlurmExecutor(BaseExecutor):
         self.builder.metadata["errfile"] = os.path.join(
             job_data["WorkDir"].rstrip(),
             f"{job_data['JobName']}-{job_data['JobID']}.err",
+        )
+        shutil.copy2(
+            self.builder.metadata["outfile"],
+            os.path.join(
+                self.builder.run_dir, os.path.basename(self.builder.metadata["outfile"])
+            ),
+        )
+        shutil.copy2(
+            self.builder.metadata["errfile"],
+            os.path.join(
+                self.builder.run_dir, os.path.basename(self.builder.metadata["errfile"])
+            ),
         )
         self.logger.debug(f"[{self.builder.name}] result: {self.result}")
         self.logger.debug(

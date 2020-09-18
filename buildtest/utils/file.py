@@ -60,7 +60,7 @@ def is_dir(dirname):
     return os.path.isdir(dirname)
 
 
-def walk_tree(root_dir, ext):
+def walk_tree(root_dir, ext=None):
     """This method will traverse a directory tree and return list of files
        based on extension type. This method invokes is_dir() to check if directory
        exists before traversal.
@@ -70,7 +70,7 @@ def walk_tree(root_dir, ext):
        :param root_dir: directory path to traverse
        :type root_dir: str, required
        :param ext: file extensions to search in traversal
-       :type ext: str, required
+       :type ext: str, optional
 
        :return: returns a list of file paths
        :rtype: list
@@ -83,7 +83,12 @@ def walk_tree(root_dir, ext):
 
     for root, subdir, files in os.walk(root_dir):
         for fname in files:
-            if fname.endswith(ext):
+            # if ext is provided check if file ends with extension and add to list, otherwise
+            # add all files to list and return
+            if ext:
+                if fname.endswith(ext):
+                    list_files.append(os.path.join(root, fname))
+            else:
                 list_files.append(os.path.join(root, fname))
 
     return list_files

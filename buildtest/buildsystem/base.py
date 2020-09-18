@@ -90,12 +90,6 @@ class BuilderBase:
         self.logger.debug("Using shell %s", self.shell.name)
         self.logger.debug(f"Shebang used for test: {self.shebang}")
 
-    def __str__(self):
-        return "[builder-%s-%s]" % (self.type, self.name)
-
-    def __repr__(self):
-        return self.__str__()
-
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
            on the value of ``shell`` key we return the shell extension.
@@ -108,6 +102,123 @@ class BuilderBase:
 
         self.logger.debug("Setting test extension to 'sh'")
         return "sh"
+
+    def build(self):
+        """ This method is responsible for invoking setup, creating test
+            directory and writing test. This method is called from an instance
+            object of this class that does ``builder.build()``.
+        """
+
+        self._build_setup()
+        self._write_test()
+        self._create_symlinks()
+
+    def _build_setup(self):
+        """This method is the setup operation to get ready to build test which
+           includes getting unique build id, setting up metadata object to store
+           test details such as where test will be located and directory of test.
+           This section cannot be reached without a valid, loaded recipe.
+        """
+
+        # Generate a unique id for the build based on key and unique string
+        self.metadata["id"] = self._generate_build_id()
+
+        create_dir(self.testdir)
+        id = len(os.listdir(self.testdir))
+        self.test_id = os.path.join(self.testdir, str(id))
+        create_dir(self.test_id)
+
+        self.stage_dir = os.path.join(self.test_id, "stage")
+        self.run_dir = os.path.join(self.test_id, "run")
+        # create stage and run directories
+        create_dir(self.stage_dir)
+        create_dir(os.path.join(self.run_dir))
+
+        # Derive the path to the test script
+        self.metadata["testpath"] = "%s.%s" % (
+            os.path.join(self.stage_dir, "generate"),
+            self.get_test_extension(),
+        )
+        self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
+        self.metadata["testroot"] = self.test_id
+
+    def _write_test(self):
+        """This method is responsible for invoking ``generate_script`` that
+           formulates content of testscript which is implemented in each subclass.
+           Next we write content to file and apply 755 permission on script so
+           it has executable permission.
+        """
+
+        # Implementation to write file generate.sh
+        # start of each test should have the shebang
+        lines = [self.shebang]
+
+        if self.recipe.get("sbatch"):
+
+            sbatch = self.get_sbatch()
+            if sbatch:
+                lines += sbatch
+        elif self.recipe.get("bsub"):
+
+            bsub = self.get_bsub()
+            if bsub:
+                lines += bsub
+
+        lines += [
+            f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
+        ]
+        if self.shell.name == "python":
+            python_content = self.generate_script()
+            python_content = "\n".join(python_content)
+            script_path = "%s.py" % os.path.join(self.stage_dir, self.name)
+            write_file(script_path, python_content)
+            shutil.copy2(
+                script_path, os.path.join(self.run_dir, os.path.basename(script_path))
+            )
+            lines += [f"python {script_path}"]
+        else:
+            lines += self.generate_script()
+
+        lines += [
+            f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
+        ]
+
+        lines = "\n".join(lines)
+
+        self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
+
+        write_file(self.metadata["testpath"], lines)
+
+        # Change permission of the file to executable
+        os.chmod(
+            self.metadata["testpath"],
+            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
+        )
+        self.logger.debug(
+            f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
+        )
+        # copy testpath to run_dir
+        shutil.copy2(
+            self.metadata["testpath"],
+            os.path.join(self.run_dir, os.path.basename(self.metadata["testpath"])),
+        )
+
+    def _create_symlinks(self):
+        """This method will retrieve all files relative to buildspec file and
+        create symlinks in destination directory
+        """
+        buildspec_directory = os.path.dirname(self.buildspec)
+        # list all files in current directory where buildspec file resides
+        files = [
+            os.path.join(buildspec_directory, file)
+            for file in os.listdir(buildspec_directory)
+        ]
+
+        # create symlink for all files directory where buildspec file exists
+        for file in files:
+            os.symlink(
+                file, os.path.join(self.test_id, "stage", os.path.basename(file))
+            )
 
     def get_environment(self):
         """Retrieve a list of environment variables defined in buildspec and
@@ -196,97 +307,21 @@ class BuilderBase:
 
         return lines
 
-    def build(self):
-        """ This method is responsible for invoking setup, creating test
-            directory and writing test. This method is called from an instance
-            object of this class that does ``builder.build()``.
-        """
-
-        self._build_setup()
-        self._write_test()
-
-    def _build_setup(self):
-        """This method is the setup operation to get ready to build test which
-           includes getting unique build id, setting up metadata object to store
-           test details such as where test will be located and directory of test.
-           This section cannot be reached without a valid, loaded recipe.
-        """
-
-        # Generate a unique id for the build based on key and unique string
-        self.metadata["id"] = self._generate_build_id()
-
-        # Derive the path to the test script
-        self.metadata["testpath"] = "%s.%s" % (
-            os.path.join(self.testdir, "generate"),
-            self.get_test_extension(),
-        )
-        self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
-        self.metadata["testroot"] = os.path.dirname(self.metadata["testpath"])
-
-        create_dir(self.metadata["testroot"])
-
     def _generate_build_id(self):
         """Generate a build id based on the Buildspec name, and datetime."""
 
         now = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         return "%s_%s" % (self.name, now)
 
-    def _write_test(self):
-        """This method is responsible for invoking ``generate_script`` that
-           formulates content of testscript which is implemented in each subclass.
-           Next we write content to file and apply 755 permission on script so
-           it has executable permission.
-        """
-
-        # Implementation to write file generate.sh
-        # start of each test should have the shebang
-        lines = [self.shebang]
-
-        if self.recipe.get("sbatch"):
-
-            sbatch = self.get_sbatch()
-            if sbatch:
-                lines += sbatch
-        elif self.recipe.get("bsub"):
-
-            bsub = self.get_bsub()
-            if bsub:
-                lines += bsub
-
-        lines += [
-            f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
-        ]
-        if self.shell.name == "python":
-            python_content = self.generate_script()
-            python_content = "\n".join(python_content)
-            script_path = "%s.py" % os.path.join(self.metadata["testroot"], self.name)
-            write_file(script_path, python_content)
-            lines += [f"python {script_path}"]
-        else:
-            lines += self.generate_script()
-
-        lines += [
-            f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
-        ]
-
-        lines = "\n".join(lines)
-
-        self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
-
-        write_file(self.metadata["testpath"], lines)
-
-        # Change permission of the file to executable
-        os.chmod(
-            self.metadata["testpath"],
-            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
-        )
-        self.logger.debug(
-            f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
-        )
-
     def generate_script(self):
         """Build the testscript content implemented in each subclass"""
         pass
+
+    def __str__(self):
+        return "[builder-%s-%s]" % (self.type, self.name)
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class ScriptBuilder(BuilderBase):
@@ -463,7 +498,8 @@ class CompilerBuilder(BuilderBase):
     def setup(self):
 
         self.compiler_recipe = self.recipe.get("build")
-        self.sourcefile = self.resolve_source(self.compiler_recipe["source"])
+        self.sourcefile = self.compiler_recipe["source"]
+        # self.sourcefile = self.resolve_source(self.compiler_recipe["source"])
 
         self.cc = self.compiler_recipe.get("cc") or self.cc
         self.fc = self.compiler_recipe.get("fc") or self.fc
