@@ -1,6 +1,6 @@
 $ buildtest build --help
 usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-x EXCLUDE] [--tags TAGS] [-e EXECUTOR]
-                                            [-s {parse,build}] [-t TESTDIR] [--settings SETTINGS]
+                                            [-s {parse,build}] [-t TESTDIR] [--rerun RERUN] [--settings SETTINGS]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -15,4 +15,5 @@ optional arguments:
                         control behavior of buildtest build
   -t TESTDIR, --testdir TESTDIR
                         specify a custom test directory. By default, use .buildtest in $PWD.
+  --rerun RERUN         Rerun test X number of times. Must be a positive number
   --settings SETTINGS   Specify an alternate buildtest settings file to use

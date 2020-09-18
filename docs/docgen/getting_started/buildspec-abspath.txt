@@ -21,17 +21,17 @@ Discovered Buildspecs:
 | Stage: Building Test |
 +----------------------+ 
 
- Name                   | Schema File             | Test Path                                                                                           | Buildspec
-------------------------+-------------------------+-----------------------------------------------------------------------------------------------------+-----------------------------------------------------------
- systemd_default_target | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/generate.sh | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+ Name                   | Type   | Executor   | Tags          | Testpath
+------------------------+--------+------------+---------------+-------------------------------------------------------------------------------------------------------------
+ systemd_default_target | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/0/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
     
- name                   | executor   | status   |   returncode | testpath
-------------------------+------------+----------+--------------+-----------------------------------------------------------------------------------------------------
- systemd_default_target | local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/generate.sh
+ Name                   | Executor   | Status   |   Returncode | TestPath
+------------------------+------------+----------+--------------+-------------------------------------------------------------------------------------------------------------
+ systemd_default_target | local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/0/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

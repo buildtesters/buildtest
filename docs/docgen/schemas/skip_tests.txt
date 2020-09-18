@@ -22,17 +22,17 @@ Discovered Buildspecs:
 | Stage: Building Test |
 +----------------------+ 
 
- Name      | Schema File             | Test Path                                                                                 | Buildspec
------------+-------------------------+-------------------------------------------------------------------------------------------+--------------------------------------------------------------
- unskipped | script-v1.0.schema.json | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/generate.sh | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+ Name      | Type   | Executor   | Tags          | Testpath
+-----------+--------+------------+---------------+---------------------------------------------------------------------------------------------------
+ unskipped | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
     
- name      | executor   | status   |   returncode | testpath
------------+------------+----------+--------------+-------------------------------------------------------------------------------------------
- unskipped | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/generate.sh
+ Name      | Executor   | Status   |   Returncode | TestPath
+-----------+------------+----------+--------------+---------------------------------------------------------------------------------------------------
+ unskipped | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

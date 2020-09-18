@@ -1,9 +1,9 @@
 $ buildtest buildspec find 
-Searching buildspec in following directories:  /Users/siddiq90/Documents/buildtest/tutorials
-Found 14 buildspecs
-Validated 5/14 buildspecs
-Validated 10/14 buildspecs
-Validated 14/14 buildspecs
+Found 16 buildspecs
+Validated 5/16 buildspecs
+Validated 10/16 buildspecs
+Validated 15/16 buildspecs
+Validated 16/16 buildspecs
 
 Detected 2 invalid buildspecs 
 
@@ -28,21 +28,25 @@ Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/var/buil
 +------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
 | environment_variables  | script   | local.bash   | ['tutorials']            | Declare environment variables                                  |
 +------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
+| python_hello           | script   | local.bash   | []                       |                                                                |
++------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
 | variables              | script   | local.bash   | ['tutorials']            | Declare shell variables                                        |
 +------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
 | selinux_disable        | script   | local.bash   | ['tutorials']            | Check if SELinux is Disabled                                   |
 +------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
-| exit1_fail             | script   | local.sh     | ['tutorials']            | exit 1 by default is FAIL                                      |
+| exit1_fail             | script   | local.sh     | ['tutorials', 'fail']    | exit 1 by default is FAIL                                      |
 +------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
-| exit1_pass             | script   | local.sh     | ['tutorials']            | report exit 1 as PASS                                          |
+| exit1_pass             | script   | local.sh     | ['tutorials', 'pass']    | report exit 1 as PASS                                          |
 +------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
-| returncode_mismatch    | script   | local.sh     | ['tutorials']            | exit 2 failed since it failed to match returncode 1            |
+| returncode_mismatch    | script   | local.sh     | ['tutorials', 'fail']    | exit 2 failed since it failed to match returncode 1            |
 +------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
 | circle_area            | script   | local.python | ['tutorials', 'python']  | Calculate circle of area given a radius                        |
 +------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
 | skip                   | script   | local.bash   | ['tutorials']            |                                                                |
 +------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
 | unskipped              | script   | local.bash   | ['tutorials']            |                                                                |
++------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
+| sleep                  | script   | local.bash   | ['tutorials']            | sleep 2 seconds                                                |
 +------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+
 | vecadd_gnu             | compiler | local.bash   | ['tutorials', 'compile'] | Vector Addition example with GNU compiler                      |
 +------------------------+----------+--------------+--------------------------+----------------------------------------------------------------+

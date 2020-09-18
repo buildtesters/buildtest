@@ -1,0 +1,7 @@
+version: "1.0"
+buildspecs:
+  python_hello:
+    type: script
+    executor: local.bash
+    run: python hello.py  
+

@@ -2,13 +2,13 @@ $ buildtest buildspec find --tags
 +-----------+
 | Tags      |
 +===========+
-| compile   |
-+-----------+
-| tutorials |
+| fail      |
 +-----------+
 | python    |
 +-----------+
 | pass      |
 +-----------+
-| fail      |
+| compile   |
++-----------+
+| tutorials |
 +-----------+
