@@ -100,16 +100,11 @@ class BuilderBase:
         """Return the test extension, which depends on the shell used. Based
            on the value of ``shell`` key we return the shell extension.
 
-           shell: python --> py
            shell: bash --> sh (default)
 
            :return: returns test extension based on shell type
            :rtype: str
         """
-
-        if "python" in self.shell.name:
-            self.logger.debug("Setting test extension to 'py'")
-            return "py"
 
         self.logger.debug("Setting test extension to 'sh'")
         return "sh"
@@ -261,8 +256,15 @@ class BuilderBase:
         lines += [
             f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
         ]
+        if self.shell.name == "python":
+            python_content = self.generate_script()
+            python_content = "\n".join(python_content)
+            script_path = "%s.py" % os.path.join(self.metadata["testroot"], self.name)
+            write_file(script_path, python_content)
+            lines += [f"python {script_path}"]
+        else:
+            lines += self.generate_script()
 
-        lines += self.generate_script()
         lines += [
             f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
         ]
