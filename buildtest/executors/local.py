@@ -59,8 +59,8 @@ class LocalExecutor(BaseExecutor):
         self.result["id"] = self.builder.metadata.get("id")
 
         # Change to the test directory
-        os.chdir(self.builder.metadata["testroot"])
-        self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
+        os.chdir(self.builder.stage_dir)
+        self.logger.debug(f"Changing to directory {self.builder.stage_dir}")
 
         cmd = ["bash", self.builder.metadata["testpath"]]
 

@@ -120,14 +120,19 @@ def func_buildspec_find(args):
 
                 schema_type = cache[path][buildspecfile][test].get("type")
                 executor = cache[path][buildspecfile][test].get("executor")
-                tags = cache[path][buildspecfile][test].get("tags")
+                # if tags not defined in cache we set to empty list for comparison with tag_filter
+                tags = cache[path][buildspecfile][test].get("tags") or []
                 description = cache[path][buildspecfile][test].get("description")
 
+                # skip all entries that dont match filtered executor
                 if executor_filter and executor_filter != executor:
                     continue
 
-                if tags_filter and tags_filter not in tags:
-                    continue
+                # if skip all entries that dont match filtered tag. We only search if --filter tag=value is set
+                if tags_filter:
+                    # if tags is not set in buildspec cache we default to empty list which and this condition should always be true
+                    if tags_filter not in tags:
+                        continue
 
                 if type_filter and type_filter != schema_type:
                     continue
