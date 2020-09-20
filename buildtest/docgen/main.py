@@ -3,9 +3,7 @@ This file is used for generating documentation tests.
 """
 import os
 import subprocess
-from shutil import copy
-from buildtest.defaults import BUILDTEST_ROOT
-from buildtest.utils.file import create_dir, write_file, walk_tree
+from buildtest.utils.file import create_dir, write_file
 
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 docgen = os.path.join(root, "docs", "docgen")
@@ -79,20 +77,6 @@ def schemas():
         f"{os.path.join(prefix, 'settings-examples.txt')}": "buildtest schema -n settings.schema.json -e",
     }
     generate_tests(prefix, cmd_dict)
-
-    path = os.path.join(BUILDTEST_ROOT, "tutorials")
-    dest = os.path.join(docgen, prefix)
-    # directory examples for compiler examples
-    directories = [os.path.join(path, "compilers")]
-
-    for src in directories:
-        buildspecs = walk_tree(src, ".yml")
-
-        # copying files from tutorials/examples/serial to docgen/compiler_schema/
-        for file in buildspecs:
-            destfile = os.path.join(dest, os.path.basename(file))
-            print(f"Copying file: {file} to {destfile}")
-            copy(file, destfile)
 
     cmd_dict = {
         f"{os.path.join(prefix, 'gnu_hello.txt')}": "buildtest build -b tutorials/compilers/gnu_hello.yml",

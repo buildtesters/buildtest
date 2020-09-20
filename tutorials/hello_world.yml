@@ -1,0 +1,9 @@
+version: "1.0"
+buildspecs:
+  hello_world:
+    executor: local.bash
+    type: script
+    description: "hello world example"
+    run: echo "hello world!"
+maintainers:
+- "@shahzebsiddiqui"

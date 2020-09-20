@@ -146,7 +146,7 @@ class BaseExecutor:
                     % (status["returncode"], self.result["returncode"])
                 )
                 # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
-                returncode_match = status["returncode"] == self.result["returncode"]
+                returncode_match = self.result["returncode"] in status["returncode"]
 
             if status.get("regex"):
                 self.logger.debug("Conducting Regular Expression check")
@@ -156,10 +156,9 @@ class BaseExecutor:
 
             # if slurm_job_state_codes defined in buildspec.
             # self.builder.metadata["job"] only defined when job run through SlurmExecutor
-            if status.get("slurm_job_state_codes") and self.builder.metadata.get("job"):
+            if status.get("slurm_job_state") and self.builder.metadata.get("job"):
                 slurm_job_state_match = (
-                    status["slurm_job_state_codes"]
-                    == self.builder.metadata["job"]["State"]
+                    status["slurm_job_state"] == self.builder.metadata["job"]["State"]
                 )
 
             self.logger.info(

@@ -15,7 +15,7 @@ buildspecs:
     run: exit 1
     tags: [tutorials, pass]
     status:
-      returncode: 1
+      returncode: [1]
 
   returncode_mismatch:
     executor: local.sh
@@ -24,5 +24,5 @@ buildspecs:
     run: exit 2
     tags: [tutorials, fail]
     status:
-      returncode: 1
+      returncode: [1]
 
