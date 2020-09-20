@@ -23,17 +23,9 @@ The ``buildspecs`` is the start of test section. The ``maintainers`` is an optio
 field that is an array which can be used to identity maintainer of test. To understand
 how buildtest validates the buildspec see :ref:`parse_stage`.
 
-Shown below is an example buildspec::
+Shown below is an example buildspec.
 
-    version: "1.0"
-    buildspecs:
-      hello_world:
-        executor: local.bash
-        type: script
-        description: "hello world example"
-        run: echo "hello world!"
-    maintainers:
-       - "@shahzebsiddiqui"
+.. program-output:: cat ../tutorials/hello_world.yml
 
 
 In this example, the global schema validates the following section::
@@ -65,10 +57,14 @@ Test Names
 -----------
 
 The **buildspecs** is an object that defines one or more test, the
-test names take the following pattern ``"^[A-Za-z_][A-Za-z0-9_]*$"``.
-In the previous example the test name is **hello_world**. You must have unique test
-names in your **buildspecs** section, otherwise you will have an invalid buildspec
+test names take the following pattern ``"^[A-Za-z_][A-Za-z0-9_]*$"`` and limited
+to 32 characters.
+
+In the previous example the test name is **hello_world**. You must have unique
+testname in your **buildspecs** section, otherwise you will have an invalid buildspec
 file.
+
+The ``description`` field is used to document the test and limited to 80 characters.
 
 .. Note:: We refer to the entire YAML content as **buildspec file**, this is not to be confused with the **buildspecs** field.
 

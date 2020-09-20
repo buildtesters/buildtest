@@ -24,7 +24,7 @@ The **type**, **compiler**, and **executor** are required keys for the schema.
 Shown below are 6 test examples performing Hello World compilation with C, C++,
 and Fortran using GNU compiler
 
-.. program-output:: cat docgen/schemas/gnu_hello.yml
+.. program-output:: cat ../tutorials/compilers/gnu_hello.yml
 
 The tests ``hello_f``, ``hello_c`` and ``hello_cplusplus`` rely on buildtest to
 detect compiler wrappers while tests ``cc_example``, ``fc_example``, ``cxx_example``
@@ -90,7 +90,7 @@ Passing Arguments
 If you want to pass options to executable command use the ``args`` key. Shown
 below is an example test
 
-.. program-output:: cat docgen/schemas/passing_args.yml
+.. program-output:: cat ../tutorials/compilers/passing_args.yml
 
 The exec_args will pass options to the executable, use this if your binary
 requires input arguments. Shown below is a generated test::
@@ -252,7 +252,7 @@ OpenACC Examples
 Next, we will make use of an OpenACC vector addition example shown below is an
 example test
 
-.. program-output:: cat docgen/schemas/vecadd.yml
+.. program-output:: cat ../tutorials/compilers/vecadd.yml
 
 To compile OpenACC program with gnu compiler we must use ``-fopenacc`` flag, this
 program requires linking with math library so we can specify linker flags (ldflags)
@@ -322,7 +322,7 @@ This test will launch job via ``srun`` and check job state code is ``COMPLETED``
         run:
           launcher: srun
         status:
-          slurm_job_state_codes: COMPLETED
+          slurm_job_state: COMPLETED
 
 buildtest will generate the following test, buildtest will add the #SBATCH directives
 followed by module commands. The executable is run via ``srun`` because we specify the ``launcher`` field. ::
@@ -374,29 +374,9 @@ The compiler schema comes with ``pre_build``, ``post_build``, ``pre_run`` and
 ``run`` section. The **build** section is where we compile code, and **run**
 section is where compiled binary is executed.
 
-Shown below is an example to illustrate this behavior::
+Shown below is an example buildspec with pre/post section.
 
-    version: "1.0"
-    buildspecs:
-      executable_arguments:
-        type: compiler
-        description: example using pre_build, post_build, pre_run, post_run example
-        executor: local.bash
-        tags: [tutorials]
-        pre_build: |
-          echo "This is a pre-build section"
-          gcc --version
-        build:
-          source: "src/hello.c"
-          name: gnu
-          cflags: -Wall
-        post_build: |
-          echo "This is post-build section"
-        pre_run: |
-          echo "This is pre-run section"
-          export FOO=BAR
-        post_run: |
-          echo "This is post-run section"
+.. program-output:: cat ../tutorials/compilers/pre_post_build_run.yml
 
 
 The format of the test structure is the following::

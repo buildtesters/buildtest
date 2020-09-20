@@ -176,7 +176,7 @@ following format fields using ``sacct`` during ``gather`` stage once job is fini
 -    "WorkDir"
 
 buildtest can check status based on Slurm Job State, this is defined by ``State`` field
-in sacct. In next example, we introduce field ``slurm_job_state_codes`` which
+in sacct. In next example, we introduce field ``slurm_job_state`` which
 is part of ``status`` field. This field expects one of the following values: ``[COMPLETED, FAILED, OUT_OF_MEMORY, TIMEOUT ]``
 This is an example of simulating fail job by expecting a return code of 1 with job
 state of ``FAILED``.
@@ -191,7 +191,7 @@ state of ``FAILED``.
         sbatch: [ "-t 2", "-C haswell", "-n 1"]
         run: exit 1
         status:
-          slurm_job_state_codes: "FAILED"
+          slurm_job_state: "FAILED"
 
 
 If we run this test, buildtest will mark this test as ``PASS`` because the slurm job
@@ -213,9 +213,6 @@ results followed by list of field and value output::
     2020-07-22 18:20:48,170 [base.py:587 - gather() ] - [DEBUG] Gather slurm job data by running: sacct -j 32741040 -X -n -P -o Account,AllocNodes,AllocTRES,ConsumedEnergyRaw,CPUTimeRaw,End,ExitCode,JobID,JobName,NCPUS,NNodes,QOS,ReqGRES,ReqMem,ReqNodes,ReqTRES,Start,State,Submit,UID,User,WorkDir -M cori
     ...
     2020-07-22 18:20:48,405 [base.py:598 - gather() ] - [DEBUG] field: State   value: FAILED
-
-
-
 
 LSF Executor (Experimental)
 ----------------------------

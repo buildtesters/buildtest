@@ -104,41 +104,16 @@ by merge to **Production Schema**.
 Return Code Matching
 ---------------------
 
-In this next example we will illustrate the concept of returncode match with
-different exit codes. In this example we have three tests called ``exit1_fail``,
-``exit1_pass`` and ``returncode_mismatch``. All test are using the ``local.sh``
-executor which is using ``sh`` to run the test. We expect **exit1_fail** and
+buildtest can report PASS/FAIL based on returncode, by default a 0 exit code is PASS
+and everything else is FAIL. The returncode can be a list of exit codes to match.
+In this example we have three tests called ``exit1_fail``, ``exit1_pass`` and
+``returncode_mismatch``.  We expect **exit1_fail** and
 **returncode_mismatch** to FAIL while **exit1_pass** will PASS since returncode matches
 
-::
-
-    version: "1.0"
-    buildspecs:
-
-      exit1_fail:
-        executor: local.sh
-        type: script
-        description: exit 1 by default is FAIL
-        run: exit 1
-
-      exit1_pass:
-        executor: local.sh
-        type: script
-        description: report exit 1 as PASS
-        run: exit 1
-        status:
-          returncode: 1
-
-      returncode_mismatch:
-        executor: local.sh
-        type: script
-        description: exit 2 failed since it failed to match returncode 1
-        run: exit 2
-        status:
-          returncode: 1
+.. program-output:: cat ../tutorials/pass_returncode.yml
 
 To demonstrate we will build this test and pay close attention to the Status field
-in output
+in output.
 
 .. program-output:: cat docgen/schemas/pass_returncode.txt
 
@@ -149,22 +124,9 @@ You can use *script* schema to write python scripts using the run section. This
 can be achieved if you use the ``local.python`` executor assuming you have this
 defined in your buildtest configuration.
 
-Here is a python example calculating area of circle::
+Here is a python example calculating area of circle
 
-    version: "1.0"
-    buildspecs:
-      circle_area:
-        executor: local.python
-        type: script
-        shell: python
-        description: "Calculate circle of area given a radius"
-        tags: ["python"]
-        run: |
-          import math
-          radius = 2
-          area = math.pi * radius * radius
-          print("Circle Radius ", radius)
-          print("Area of circle ", area)
+.. program-output:: cat ../tutorials/python-shell.yml
 
 
 The ``shell: python`` will let us write python script in the ``run`` section.
@@ -184,21 +146,9 @@ Skipping test
 
 By default, buildtest will run all tests defined in ``buildspecs`` section, if you
 want to skip a test use the ``skip:`` field which expects a boolean value. Shown
-below is an example test::
+below is an example test.
 
-    version: "1.0"
-    buildspecs:
-      skip:
-        type: script
-        executor: local.bash
-        skip: true
-        run: hostname
-
-      unskipped:
-        type: script
-        executor: local.bash
-        skip: false
-        run: hostname
+.. program-output:: cat ../tutorials/skip_tests.yml
 
 The first test `skip` will be skipped by buildtest because ``skip: true`` is defined.
 
