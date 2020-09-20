@@ -3,9 +3,7 @@ This file is used for generating documentation tests.
 """
 import os
 import subprocess
-from shutil import copy
-from buildtest.defaults import BUILDTEST_ROOT
-from buildtest.utils.file import create_dir, write_file, walk_tree
+from buildtest.utils.file import create_dir, write_file
 
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 docgen = os.path.join(root, "docs", "docgen")
