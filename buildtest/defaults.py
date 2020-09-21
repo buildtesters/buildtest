@@ -21,6 +21,8 @@ supported_schemas = supported_type_schemas + [
 userhome = pwd.getpwuid(os.getuid())[5]
 BUILDTEST_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SCHEMA_ROOT = os.path.join(BUILDTEST_ROOT, "buildtest", "schemas")
+
 # root of buildtest user home, default shell
 BUILDTEST_USER_HOME = os.path.join(userhome, ".buildtest")
 

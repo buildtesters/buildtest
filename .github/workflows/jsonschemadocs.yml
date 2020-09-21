@@ -1,0 +1,88 @@
+name: jsonschema2md
+
+on:
+  push:
+    branches:
+      - devel
+
+
+jobs:
+  jsonschemadocs:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - name: jsonschema2md install
+      run: |
+        npm install -g @adobe/jsonschema2md
+        jsonschema2md -d buildtest/schemas/ -o schema_docs/
+    - name: Upload jsonschema docs
+      uses: actions/upload-artifact@v2
+      with:
+        name: schemadocs
+        path: schema_docs/
+
+    - name: Upload schema files
+      uses: actions/upload-artifact@v2
+      with:
+        name: schemafiles
+        path: buildtest/schemas/*.schema.json
+
+  DeployPages:
+    needs: jsonschemadocs
+    runs-on: ubuntu-latest
+    steps:
+
+     - name: Checkout 🛎️
+       uses: actions/checkout@v2.3.1 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+       with:
+          persist-credentials: false
+
+
+     - name: Install SSH Client 🔑
+       uses: webfactory/ssh-agent@v0.2.0
+       with:
+         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+     - name: Download schemafiles
+       uses: actions/download-artifact@v2
+       with:
+         name: schemafiles
+         path: downloads/schemas
+
+     - name: Download jsonschema docs
+       uses: actions/download-artifact@v2
+       with:
+          name: schemadocs
+          path: downloads/schema_docs
+
+     - name: Display content of downloaded directory
+       run: |
+         ls -l downloads/schema_docs
+         ls -R downloads/schemas
+
+
+     - name: Deploy Schema Docs 🚀
+       uses: JamesIves/github-pages-deploy-action@3.5.9
+       with:
+         SSH: true
+         BASE_BRANCH: devel
+         BRANCH: gh-pages # The branch the action should deploy to.
+         FOLDER: downloads/schema_docs # The folder the action should deploy.
+         TARGET_FOLDER: docs
+         CLEAN: true
+
+     - name: Deploy Schemas 🚀
+       uses: JamesIves/github-pages-deploy-action@3.5.9
+       with:
+         SSH: true
+         BASE_BRANCH: devel
+         BRANCH: gh-pages # The branch the action should deploy to.
+         FOLDER: downloads/schemas # The folder the action should deploy.
+         TARGET_FOLDER: schemas
+         CLEAN: true
