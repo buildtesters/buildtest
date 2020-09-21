@@ -1,37 +1,74 @@
-## Welcome to GitHub Pages
+# Buildtest Schema
 
-You can use the [editor on GitHub](https://github.com/buildtesters/buildtest/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+This repository contains the schemas used by buildtest. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+buildtest schema docs can be found at https://buildtesters.github.io/buildtest/
 
-### Markdown
+Currently, we support the following schemas:
+- [global](https://buildtesters.github.io/buildtest/docs/global.html): The global schema inherited by all sub-schemas
+- [compiler-v1.0](https://buildtesters.github.io/buildtest/docs/compiler-v1.html): Compiler sub-schema version 1.0 using ``type: compiler``
+- [script-v1.0](https://buildtesters.github.io/buildtest/docs/script-v1.html): Script sub-schema version 1.0 using ``type: script``
+- [settings](https://buildtesters.github.io/buildtest/docs/settings.html): This schema defines the content of buildtest settings file to configure buildtest.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+The schemas are published at https://github.com/buildtesters/buildtest/tree/gh-pages/schemas  
+## What is a schema?
 
-```markdown
-Syntax highlighted code block
+A schema defines the structure of how to write and validate a JSON file. Since,
+python can load YAML and JSON files we write our Buildspecs in YAML and validate
+them with a schema file that is in json. 
 
-# Header 1
-## Header 2
-### Header 3
+We make use of [python-jsonschema](https://python-jsonschema.readthedocs.io/en/stable/)
+to validate a Buildspec (YAML) with one of the schema file. 
+ 
+## Resources
 
-- Bulleted
-- List
+The following sites (along with the files here) can be useful to help with your development
+of a schema.
 
-1. Numbered
-2. List
+ - [json-schema.org](https://json-schema.org/)
+ - [json schema readthedocs](https://python-jsonschema.readthedocs.io/en/stable/)
+ 
+If you have issues with writing json schema please join the [JSON-SCHEMA Slack Channel](http://json-schema.slack.com)
+ 
+## How are schemas defined in buildtest?
 
-**Bold** and _Italic_ and `Code` text
+buildtest stores the schemas in top-level folder [buildtest/schemas](https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas).
+The schemas [examples](https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas/examples) are grouped into directories named by
+schemafile so you will see the following
 
-[Link](url) and ![Image](src)
+```
+  $ ls -1 buildtest/schemas/examples 
+
+  compiler-v1.0.schema.json
+  global.schema.json
+  script-v1.0.schema.json
+  settings.schema.json
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+The format for sub-schema is `<name>-vX.Y.schema.json`.  All schemas must end in **.schema.json**
 
-### Jekyll Themes
+For every schema including (global, script, compiler) will have a ``valid`` and ``invalid`` directory that
+contains a list of valid and invalid examples for each schema. These examples are run during regression test.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/buildtesters/buildtest/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+The schema tests can be run as follows 
 
-### Support or Contact
+```
+  $ pytest -vra tests/schema_tests
+```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## How to contribute
+
+### Adding a new schema
+
+If you want to add a new schema to buildtest you need to do the following:
+ 
+ 1. Add schema file in [buildtest/schemas](https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas) and schema file must end in **.schema.json**. If it's a sub-schema it must in format ``<name>-<version>.schema.json``. For example a schema name ``script-v2.0.schema.json`` will be sub-schema script and version 2.0.
+ 2. Their should be a folder that corresponds to name of schema in [examples](https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas/examples) directory.  
+ 3. There should be a list of invalid and valid examples for schema. 
+ 4. There should be regression testfile in [schema_tests](https://github.com/buildtesters/buildtest/tree/devel/tests/schema_tests) to test the schema.
+ 
+Be sure to update properties and take account for:
+  - a property being required or not
+  - Make use of `additionalProperties: false` when defining properties so that additional keys in properties are not passed in.
+  - requirements for the values provided (types, lengths, etc.) 
+  - If you need help, see [resources](#resources) or reach out to someone in Slack.
