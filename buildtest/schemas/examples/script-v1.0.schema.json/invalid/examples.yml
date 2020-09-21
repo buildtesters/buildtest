@@ -69,6 +69,23 @@ buildspecs:
     status:
       returncode: ["1"]
 
+  empty_returncode_list:
+    type: script
+    executor: local.bash
+    description: An empty returncode list will cause an error
+    run: hostname
+    status:
+      returncode: []
+
+
+  unique_returncodes:
+    type: script
+    executor: local.bash
+    description: The returncode list must be unique
+    run: exit 1
+    status:
+      returncode: [1, 2, 1]
+
   invalid_shell_usr_bin_bash:
     type: script
     executor: local.bash
@@ -110,3 +127,25 @@ buildspecs:
     description: additional properties are not allowed so any invalid key/value pair will result in error
     FOO: BAR
     run: hostname
+
+  additionalProperties_status:
+    type: script
+    executor: slurm.debug
+    description: test additional properties in status object. This is not allowed
+    sbatch: [ "-n 2", "-q normal", "-t 10"]
+    run: hostname
+    status:
+      slurm_job_state: "COMPLETED"
+      FOO: BAR
+
+  invalid_slurm_job_state:
+    type: script
+    executor: slurm.debug
+    description: invalid value for slurm_job_state, should raise error with enum values.
+    sbatch:
+      - "-n 2"
+      - "-q normal"
+      - "-t 10"
+    run: hostname
+    status:
+      slurm_job_state: "FINISH"

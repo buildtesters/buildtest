@@ -92,9 +92,9 @@ buildspecs:
     executor: local.bash
     type: script
     description: This test pass because using a valid return code
-    run: hostname
+    run: exit 0
     status:
-      returncode: 0
+      returncode: [0]
 
   status_regex:
     executor: local.bash
@@ -112,20 +112,29 @@ buildspecs:
     description: This test fails because returncode and regex specified
     run: hostname
     status:
-      returncode: 0
+      returncode: [0]
       regex:
         stream: stdout
         exp: "^hello"
 
   sbatch_example:
     type: script
-    executor: local.bash
+    executor: slurm.debug
     description: This test pass sbatch options in test.
     sbatch:
       - "-t 10:00:00"
       - "-p normal"
       - "-N 1"
       - "-n 8"
+    run: hostname
+
+  bsub_example:
+    type: script
+    executor: lsf.batch
+    description: This test pass bsub options in test.
+    bsub:
+      - "-W 00:30"
+      - "-N 1"
     run: hostname
 
   skip_example:
@@ -137,12 +146,13 @@ buildspecs:
 
   tag_example:
     type: script
-    executor: local.bash
+    executor: slurm.debug
     description: This is a tag example
     sbatch:
       - "-t 10:00:00"
       - "-p normal"
       - "-N 1"
       - "-n 8"
-    tags: [slurm]
+    tags:
+      - "slurm"
     run: hostname
