@@ -1,0 +1,58 @@
+{
+  "$id": "https://buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "script schema version 1.0",
+  "description": "The script schema is of ``type: script`` in sub-schema which is used for running shell scripts",
+  "type": "object",
+  "required": ["type", "run", "executor"],
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^script$",
+      "description": "Select schema type to use when validating buildspec. This must be of set to 'script'"
+    },
+    "description": {
+      "type": "string",
+      "description": "The ``description`` field is used to document what the test is doing",
+      "maxLength": 80
+    },
+    "sbatch": {
+      "$ref": "global.schema.json#/definitions/sbatch"
+    },
+    "bsub": {
+      "$ref": "global.schema.json#/definitions/bsub"
+    },
+    "env": {
+      "$ref": "global.schema.json#/definitions/env"
+    },
+    "vars": {
+      "$ref": "global.schema.json#/definitions/env"
+    },
+    "executor": {
+      "$ref": "global.schema.json#/definitions/executor"
+    },
+    "shell": {
+      "type": "string",
+      "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed",
+      "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*"
+    },
+    "shebang": {
+      "type": "string",
+      "description": "Specify a custom shebang line. If not specified buildtest will automatically add it in the test script."
+    },
+    "run": {
+      "type": "string",
+      "description": "A script to run using the default shell."
+    },
+    "status": {
+      "$ref": "global.schema.json#/definitions/status"
+    },
+    "skip": {
+      "$ref": "global.schema.json#/definitions/skip"
+    },
+    "tags": {
+      "$ref": "global.schema.json#/definitions/tags"
+    }
+  }
+}
