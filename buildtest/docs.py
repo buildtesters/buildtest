@@ -12,4 +12,4 @@ def buildtestdocs(args=None):
 
 def schemadocs(args=None):
     """Open buildtest schema docs in web browser. This implements ``buildtest schemadocs``"""
-    webbrowser.open("https://buildtesters.github.io/schemas/")
+    webbrowser.open("https://buildtesters.github.io/buildtest/")

@@ -1,4 +1,4 @@
-| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |checkurls| |blackformat| |tutorials| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
+| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |jsonschema2md| |checkurls| |blackformat| |tutorials| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -43,6 +43,9 @@
 .. |buildtest_scripts| image:: https://github.com/buildtesters/buildtest/workflows/buildtest_scripts/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
+.. |jsonschema2md| image:: https://github.com/buildtesters/buildtest/workflows/jsonschema2md/badge.svg
+    :target: https://github.com/buildtesters/buildtest/actions
+
 
 buildtest
 ---------
@@ -60,16 +63,18 @@ To get started with buildtest see `Installing buildtest <https://buildtest.readt
 Schema Development
 -------------------
 
-The schemas are maintained in https://github.com/buildtesters/schemas to drive development 
-of schema functionality indepdendent of buildtest. This prevents buildtest from breaking due to 
-schema change which is very important. For any issues with schema, please create issue in buildtest `issue tracker <https://github.com/buildtesters/buildtest/issues>`_.
+The schemas are found in top-level folder `buildtest/schemas/ <https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas>`_
+and published via Github Pages at https://buildtesters.github.io/buildtest/. Each schema has a unique URI defined
+by `$id <https://json-schema.org/understanding-json-schema/structuring.html#the-id-property>`_.
 
-The schema documentation is available at https://buildtesters.github.io/schemas/
+For any issues with schema, please create an `issue  <https://github.com/buildtesters/buildtest/issues>`_. in buildtest.
 
 References
 ------------
 
 - Documentation: http://buildtest.rtfd.io/
+
+- Schema Docs: https://buildtesters.github.io/buildtest/
 
 - ReadTheDocs: https://readthedocs.org/projects/buildtest/
 

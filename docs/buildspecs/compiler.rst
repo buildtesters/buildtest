@@ -2,21 +2,15 @@ Compiler Schema
 =================
 
 The compiler schema is used for compilation of programs, currently we support
-single source file compilation.
-
-
-Schema Files
--------------
-
-- `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/compiler-v1.0.schema.json>`_
-- `Development Schema <https://buildtesters.github.io/schemas/schemas/compiler-v1.0.schema.json>`_
+single source file compilation. In order to use the compiler schema you must set ``type: compiler`` in your
+sub-schema. See `compiler schema docs <https://buildtesters.github.io/buildtest/docs/compiler-v1.html>`_
+for more details.
 
 
 Compilation Examples
 ----------------------
 
-In order to use the compiler schema you must set ``type: compiler`` in your
-sub-schema. We assume the reader has basic understanding of :ref:`global_schema`
+We assume the reader has basic understanding of :ref:`global_schema`
 validation.
 
 The **type**, **compiler**, and **executor** are required keys for the schema.

@@ -10,7 +10,7 @@ docs at https://buildtest.readthedocs.io/en/devel/.
 Status
 -----------
 
-| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |checkurls| |blackformat| |tutorials| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
+| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |jsonschema2md| |checkurls| |blackformat| |tutorials| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -54,11 +54,13 @@ Status
 .. |buildtest_scripts| image:: https://github.com/buildtesters/buildtest/workflows/buildtest_scripts/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
+.. |jsonschema2md| image:: https://github.com/buildtesters/buildtest/workflows/jsonschema2md/badge.svg
+    :target: https://github.com/buildtesters/buildtest/actions
+
 Source Code
 ------------
 
 - buildtest framework: https://github.com/buildtesters/buildtest
-- buildtest schemas: https://github.com/buildtesters/schemas
 
 Test Repositories
 ------------------
@@ -71,7 +73,7 @@ Useful Links
 
 - Documentation: http://buildtest.rtfd.io/
 
-- Schema Docs: https://buildtesters.github.io/schemas/
+- Schema Docs: https://buildtesters.github.io/buildtest/
 
 - ReadTheDocs: https://readthedocs.org/projects/buildtest/
 

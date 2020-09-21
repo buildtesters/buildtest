@@ -96,10 +96,10 @@ Script Schema
 
 The script schema is used for writing simple scripts (bash, sh, python) in Buildspec.
 To use this schema you must set ``type: script``. The `run` field is responsible
-for writing the content of test. The `Production Schema <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/script-v1.0.schema.json>`_
-and `Development Schema <https://buildtesters.github.io/schemas/schemas/script-v1.0.schema.json>`_
-are kept in sync where any schema development is done in **Development Schema** followed
-by merge to **Production Schema**.
+for writing the content of test.
+
+For more details on script schema see schema docs at https://buildtesters.github.io/buildtest/
+
 
 Return Code Matching
 ---------------------
