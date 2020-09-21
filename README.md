@@ -17,16 +17,28 @@ The schemas are published at [https://github.com/buildtesters/buildtest/tree/gh-
 A [JSON-Schema](https://json-schema.org/) is used to annotate and validate JSON documents. We write schemas in JSON and validate our Buildspecs
 (YAML) with one of the JSON Schemas. We make use of [python-jsonschema](https://python-jsonschema.readthedocs.io/en/stable/)
 to validate a Buildspec (YAML). 
- 
-## Resources
 
-The following sites (along with the files here) can be useful to help with your development
-of a schema.
+## Schema Examples
 
- - [json-schema.org](https://json-schema.org/)
- - [json schema readthedocs](https://python-jsonschema.readthedocs.io/en/stable/)
- 
-If you have issues with writing json schema please join the [JSON-SCHEMA Slack Channel](http://json-schema.slack.com)
+The schema examples are used for testing each schema during regression test and serve as a documentation guide. The schemas
+and examples can be accessed via ``buildtest schema`` command. Shown below is a list of examples for each schema.
+
+### Examples for global.schema.json
+- [valid-examples](https://buildtesters.github.io/buildtest/examples/global.schema.json/valid/examples.yml)
+- [invalid-examples](https://github.com/buildtesters/buildtest/tree/gh-pages/examples/global.schema.json/invalid)
+
+### Examples for script-v1.0.schema.json
+
+- [valid-examples](https://buildtesters.github.io/buildtest/examples/script-v1.0.schema.json/valid/examples.yml)
+- [invalid-examples](https://buildtesters.github.io/buildtest/examples/script-v1.0.schema.json/invalid/examples.yml)
+
+### Examples for compiler-v1.0.schema.json
+- [valid-examples](https://buildtesters.github.io/buildtest/examples/compiler-v1.0.schema.json/valid/examples.yml)
+- [invalid-examples](https://buildtesters.github.io/buildtest/examples/compiler-v1.0.schema.json/invalid/examples.yml)
+
+### Examples for settings.schema.json
+- [valid-examples](https://github.com/buildtesters/buildtest/tree/gh-pages/examples/settings.schema.json/valid)
+
  
 ## How are schemas defined in buildtest?
 
@@ -70,3 +82,13 @@ Be sure to update properties and take account for:
   - Make use of `additionalProperties: false` when defining properties so that additional keys in properties are not passed in.
   - requirements for the values provided (types, lengths, etc.) 
   - If you need help, see [resources](#resources) or reach out to someone in Slack.
+
+## Resources
+
+The following sites (along with the files here) can be useful to help with your development
+of a schema.
+
+ - [json-schema.org](https://json-schema.org/)
+ - [json schema readthedocs](https://python-jsonschema.readthedocs.io/en/stable/)
+ 
+If you have issues with writing json schema please join the [JSON-SCHEMA Slack Channel](http://json-schema.slack.com)
