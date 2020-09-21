@@ -2,7 +2,7 @@
 
 This repository contains the schemas used by buildtest. 
 
-buildtest schema docs can be found at https://buildtesters.github.io/buildtest/
+buildtest schema docs can be found at [https://buildtesters.github.io/buildtest/](https://buildtesters.github.io/buildtest/)
 
 Currently, we support the following schemas:
 - [global](https://buildtesters.github.io/buildtest/docs/global.html): The global schema inherited by all sub-schemas
@@ -10,15 +10,13 @@ Currently, we support the following schemas:
 - [script-v1.0](https://buildtesters.github.io/buildtest/docs/script-v1.html): Script sub-schema version 1.0 using ``type: script``
 - [settings](https://buildtesters.github.io/buildtest/docs/settings.html): This schema defines the content of buildtest settings file to configure buildtest.
 
-The schemas are published at https://github.com/buildtesters/buildtest/tree/gh-pages/schemas  
+The schemas are published at [https://github.com/buildtesters/buildtest/tree/gh-pages/schemas](https://github.com/buildtesters/buildtest/tree/gh-pages/schemas)
+
 ## What is a schema?
 
-A schema defines the structure of how to write and validate a JSON file. Since,
-python can load YAML and JSON files we write our Buildspecs in YAML and validate
-them with a schema file that is in json. 
-
-We make use of [python-jsonschema](https://python-jsonschema.readthedocs.io/en/stable/)
-to validate a Buildspec (YAML) with one of the schema file. 
+A [JSON-Schema](https://json-schema.org/) is used to annotate and validate JSON documents. We write schemas in JSON and validate our Buildspecs
+(YAML) with one of the JSON Schemas. We make use of [python-jsonschema](https://python-jsonschema.readthedocs.io/en/stable/)
+to validate a Buildspec (YAML). 
  
 ## Resources
 
