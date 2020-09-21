@@ -1,5 +1,5 @@
 {
-  "$id": "https://buildtesters.github.io/schemas/schemas/settings.schema.json",
+  "$id": "https://buildtesters.github.io/buildtest/schemas/settings.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "buildtest configuration schema",
   "type": "object",

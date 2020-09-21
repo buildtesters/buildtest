@@ -1,5 +1,5 @@
 {
-  "$id": "https://buildtesters.github.io/schemas/schemas/compiler-v1.0.schema.json",
+  "$id": "https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "compiler schema version 1.0",
   "description": "The compiler schema is of ``type: compiler`` in sub-schema which is used for compiling and running programs",
@@ -23,28 +23,28 @@
       "description": "A list of modules to load into test script"
     },
     "executor": {
-      "$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/executor"
+      "$ref": "global.schema.json#/definitions/executor"
     },
     "sbatch": {
-      "$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/sbatch"
+      "$ref": "global.schema.json#/definitions/sbatch"
     },
     "bsub": {
-      "$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/bsub"
+      "$ref": "global.schema.json#/definitions/bsub"
     },
     "env": {
-      "$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/env"
+      "$ref": "global.schema.json#/definitions/env"
     },
     "vars": {
-      "$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/env"
+      "$ref": "global.schema.json#/definitions/env"
     },
     "status": {
-      "$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/status"
+      "$ref": "global.schema.json#/definitions/status"
     },
     "skip": {
-      "$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/skip"
+      "$ref": "global.schema.json#/definitions/skip"
     },
     "tags": {
-      "$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/tags"
+      "$ref": "global.schema.json#/definitions/tags"
     },
     "pre_build":{
       "type": "string",
