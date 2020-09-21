@@ -75,6 +75,32 @@ buildspecs:
       name: gnu
       cxx: g++
 
+  sbatch_example:
+    type: compiler
+    description: Slurm example using sbatch to submit job using executor slurm.debug
+    executor: slurm.debug
+    sbatch:
+      - "-t 10"
+      - "-n 2"
+    build:
+      source: "src/hello.cpp"
+      name: gnu
+      cxx: g++
+    status:
+      slurm_job_state: "COMPLETED"
+
+  bsub_example:
+    type: compiler
+    description: LSF example using bsub to submit job using executor lsf.batch
+    executor: lsf.batch
+    bsub:
+      - "-W 00:30"
+      - "-N 2"
+    build:
+      source: "src/hello.cpp"
+      name: gnu
+      cxx: g++
+
   args_example:
     type: compiler
     description: Launcher example
@@ -97,3 +123,20 @@ buildspecs:
     run:
       launcher: mpirun -np 2
 
+  pre_post_build_run_sections:
+    type: compiler
+    description: Run commands pre and post build and run section
+    executor: local.bash
+    pre_build: echo "pre-build section"
+
+    build:
+      source: "src/hello.cpp"
+      name: gnu
+      cxx: mpicxx
+      cxxflags: "-O3"
+
+    post_build: echo "post-build section"
+    pre_run: echo "pre-run section"
+    run:
+      launcher: mpirun -np 2
+    post_run: echo "post-run section"
