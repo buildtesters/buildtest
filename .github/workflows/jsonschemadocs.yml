@@ -35,10 +35,10 @@ jobs:
         path: buildtest/schemas/*.schema.json
 
     - name: Upload Schemas Examples
-        uses: actions/upload-artifact@v2
-        with:
-          name: schemaexamples
-          path: buildtest/schemas/examples
+      uses: actions/upload-artifact@v2
+      with:
+        name: schemaexamples
+        path: buildtest/schemas/examples
 
   DeployPages:
     needs: jsonschemadocs
