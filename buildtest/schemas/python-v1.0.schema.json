@@ -17,10 +17,10 @@
       "pattern": "^python$"
     },
     "description": {
-      "type": "string"
+      "$ref": "_definitions.schema.json#/definitions/description"
     },
     "executor": {
-      "$ref": "global.schema.json#/definitions/executor"
+      "$ref": "_definitions.schema.json#/definitions/executor"
     },
     "pyver": {
       "type": "array",
@@ -51,10 +51,7 @@
     },
 
     "sbatch": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
+      "$ref": "_definitions.schema.json#/definitions/sbatch"
     },
 
     "python": {
@@ -65,13 +62,13 @@
     "script": {"type": "string"},
 
     "status": {
-      "$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/status"
+      "$ref": "_definitions.schema.json#/definitions/status"
     },
     "skip": {
-      "$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/skip"
+      "$ref": "_definitions.schema.json#/definitions/skip"
     },
     "tags": {
-      "$ref": "https://buildtesters.github.io/schemas/schemas/global.schema.json#/definitions/tags"
+      "$ref": "_definitions.schema.json#/definitions/tags"
     }
   }
 }
