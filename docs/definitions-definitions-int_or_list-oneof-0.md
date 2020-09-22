@@ -1,7 +1,7 @@
-# Untitled string in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
+# Untitled integer in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/tags/items
+https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/int_or_list/oneOf/0
 ```
 
 
@@ -11,6 +11,6 @@ https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/defini
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [definitions.schema.json\*](../out/definitions.schema.json "open original schema") |
 
-## items Type
+## 0 Type
 
-`string`
+`integer`

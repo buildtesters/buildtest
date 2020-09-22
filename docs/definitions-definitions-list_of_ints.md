@@ -1,7 +1,7 @@
-# Untitled integer in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
+# Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/returncode/items
+https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/int_or_list/oneOf/1
 ```
 
 
@@ -11,6 +11,12 @@ https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/defini
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [definitions.schema.json\*](../out/definitions.schema.json "open original schema") |
 
-## items Type
+## 1 Type
 
-`integer`
+`integer[]`
+
+## 1 Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.

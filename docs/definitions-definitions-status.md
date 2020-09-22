@@ -17,11 +17,11 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 
 # undefined Properties
 
-| Property                            | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                                                                                                      |
-| :---------------------------------- | -------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [slurm_job_state](#slurm_job_state) | `string` | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-slurm_job_state.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/slurm_job_state") |
-| [returncode](#returncode)           | `array`  | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-returncode.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/returncode")           |
-| [regex](#regex)                     | `object` | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-regex.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/regex")                     |
+| Property                            | Type          | Required | Nullable       | Defined by                                                                                                                                                                                                                                                                                                      |
+| :---------------------------------- | ------------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [slurm_job_state](#slurm_job_state) | `string`      | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-slurm_job_state.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/slurm_job_state") |
+| [returncode](#returncode)           | Not specified | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-returncode.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/returncode")           |
+| [regex](#regex)                     | `object`      | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-regex.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/regex")                     |
 
 ## slurm_job_state
 
@@ -58,19 +58,13 @@ Specify a list of returncodes to match with script's exit code. buildtest will P
 `returncode`
 
 -   is optional
--   Type: `integer[]`
+-   Type: unknown
 -   cannot be null
 -   defined in: [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-returncode.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/returncode")
 
 ### returncode Type
 
-`integer[]`
-
-### returncode Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
+unknown
 
 ## regex
 
