@@ -140,13 +140,21 @@ class BaseExecutor:
 
             slurm_job_state_match = False
             if status.get("returncode"):
+                # returncode can be an integer or list of integers
+
+                buildspec_returncode = status["returncode"]
+
+                # if buildspec returncode field is integer we convert to list for check
+                if isinstance(buildspec_returncode, int):
+                    buildspec_returncode = list(buildspec_returncode)
+
                 self.logger.debug("Conducting Return Code check")
                 self.logger.debug(
                     "Status Return Code: %s   Result Return Code: %s"
-                    % (status["returncode"], self.result["returncode"])
+                    % (buildspec_returncode, self.result["returncode"])
                 )
                 # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
-                returncode_match = self.result["returncode"] in status["returncode"]
+                returncode_match = self.result["returncode"] in buildspec_returncode
 
             if status.get("regex"):
                 self.logger.debug("Conducting Regular Expression check")

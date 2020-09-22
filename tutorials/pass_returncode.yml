@@ -17,12 +17,20 @@ buildspecs:
     status:
       returncode: [1]
 
-  returncode_mismatch:
+  returncode_list_mismatch:
     executor: local.sh
     type: script
     description: exit 2 failed since it failed to match returncode 1
     run: exit 2
     tags: [tutorials, fail]
     status:
-      returncode: [1]
+      returncode: [1, 3]
 
+  returncode_match:
+    executor: local.sh
+    type: script
+    description: exit 128 matches returncode 128
+    run: exit 128
+    tags: [tutorials, pass]
+    status:
+      returncode: 128

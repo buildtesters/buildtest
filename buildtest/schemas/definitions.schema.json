@@ -3,6 +3,30 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas",
   "definitions": {
+    "string_or_list": {
+      "oneOf": [
+        {"type": "string"},
+        {"$ref": "#/definitions/list_of_strings"}
+      ]
+    },
+    "list_of_strings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "list_of_ints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "integer"},
+      "uniqueItems": true
+    },
+    "int_or_list": {
+      "oneOf": [
+        {"type": "integer"},
+        {"$ref": "#/definitions/list_of_ints"}
+      ]
+    },
     "env": {
       "type": "object",
       "description": "One or more key value pairs for an environment (key=value)",
@@ -21,12 +45,8 @@
       "maxLength": 80
     },
     "tags": {
-      "type": "array",
       "description": "Classify tests using a tag name, this can be used for categorizing test and building tests using ``--tags`` option",
-      "minItems": 1,
-      "items": {
-        "type": "string"
-      }
+      "$ref": "#definitions/string_or_list"
     },
     "skip": {
       "type": "boolean",
@@ -67,12 +87,7 @@
         },
         "returncode": {
           "description": "Specify a list of returncodes to match with script's exit code. buildtest will PASS test if script's exit code is found in list of returncodes. You must specify unique numbers as list and a minimum of 1 item in array",
-          "type": "array",
-          "uniqueItems": true,
-          "minItems": 1,
-          "items": {
-            "type": "integer"
-          }
+          "$ref": "#definitions/int_or_lists"
         },
         "regex": {
           "type": "object",
