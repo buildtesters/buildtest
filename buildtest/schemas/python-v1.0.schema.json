@@ -17,10 +17,10 @@
       "pattern": "^python$"
     },
     "description": {
-      "$ref": "_definitions.schema.json#/definitions/description"
+      "$ref": "definitions.schema.json#/definitions/description"
     },
     "executor": {
-      "$ref": "_definitions.schema.json#/definitions/executor"
+      "$ref": "definitions.schema.json#/definitions/executor"
     },
     "pyver": {
       "type": "array",
@@ -51,7 +51,7 @@
     },
 
     "sbatch": {
-      "$ref": "_definitions.schema.json#/definitions/sbatch"
+      "$ref": "definitions.schema.json#/definitions/sbatch"
     },
 
     "python": {
@@ -62,13 +62,13 @@
     "script": {"type": "string"},
 
     "status": {
-      "$ref": "_definitions.schema.json#/definitions/status"
+      "$ref": "definitions.schema.json#/definitions/status"
     },
     "skip": {
-      "$ref": "_definitions.schema.json#/definitions/skip"
+      "$ref": "definitions.schema.json#/definitions/skip"
     },
     "tags": {
-      "$ref": "_definitions.schema.json#/definitions/tags"
+      "$ref": "definitions.schema.json#/definitions/tags"
     }
   }
 }
