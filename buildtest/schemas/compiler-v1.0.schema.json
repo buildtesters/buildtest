@@ -13,7 +13,7 @@
       "description": "Select schema type to use when validating buildspec. This must be of set to ``compiler``"
     },
     "description": {
-      "$ref": "_definitions.schema.json#/definitions/description"
+      "$ref": "definitions.schema.json#/definitions/description"
     },
     "module": {
       "type": "array",

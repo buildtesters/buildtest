@@ -88,13 +88,21 @@ buildspecs:
     shebang: "#!/usr/bin/env bash"
     run: hostname
 
-  status_returncode:
+  status_returncode_list:
     executor: local.bash
     type: script
-    description: This test pass because using a valid return code
+    description: The returncode can be a list of integers
     run: exit 0
     status:
       returncode: [0]
+
+  status_returncode_int:
+    executor: local.bash
+    type: script
+    description: The returncode can be an integer to match with single returncode
+    run: exit 0
+    status:
+      returncode: 0
 
   status_regex:
     executor: local.bash
@@ -144,15 +152,21 @@ buildspecs:
     skip: true
     run: hostname
 
-  tag_example:
+  tag_str_example:
+    type: script
+    executor: local.bash
+    description: tags can be defined as string
+    tags: network
+    run: hostname
+
+  tag_list_example:
     type: script
     executor: slurm.debug
-    description: This is a tag example
+    description: This is a tag example using list
     sbatch:
       - "-t 10:00:00"
       - "-p normal"
       - "-N 1"
       - "-n 8"
-    tags:
-      - "slurm"
+    tags: ["slurm"]
     run: hostname
