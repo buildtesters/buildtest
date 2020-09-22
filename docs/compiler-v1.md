@@ -20,7 +20,7 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | Property                    | Type          | Required | Nullable       | Defined by                                                                                                                                                                     |
 | :-------------------------- | ------------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`      | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-type.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/type")               |
-| [description](#description) | `string`      | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/description") |
+| [description](#description) | Not specified | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/description") |
 | [module](#module)           | `array`       | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-module.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/module")           |
 | [executor](#executor)       | Not specified | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-executor.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/executor")       |
 | [sbatch](#sbatch)           | Not specified | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-sbatch.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/sbatch")           |
@@ -65,23 +65,19 @@ Select schema type to use when validating buildspec. This must be of set to `com
 
 ## description
 
-The `description` field is used to document what the test is doing
+
 
 
 `description`
 
 -   is optional
--   Type: `string`
+-   Type: unknown
 -   cannot be null
 -   defined in: [compiler schema version 1.0](compiler-v1-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/description")
 
 ### description Type
 
-`string`
-
-### description Constraints
-
-**maximum length**: the maximum number of characters for this string is: `80`
+unknown
 
 ## module
 

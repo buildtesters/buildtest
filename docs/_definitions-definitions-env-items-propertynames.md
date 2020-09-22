@@ -1,0 +1,26 @@
+# Untitled undefined type in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
+
+```txt
+https://buildtesters.github.io/buildtest/schemas/_definitions.schema.json#/definitions/env/items/propertyNames
+```
+
+
+
+
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                            |
+| :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ------------------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [\_definitions.schema.json\*](../out/_definitions.schema.json "open original schema") |
+
+## propertyNames Type
+
+unknown
+
+## propertyNames Constraints
+
+**pattern**: the string must match the following regular expression: 
+
+```regexp
+^[A-Za-z_][A-Za-z0-9_]*$
+```
+
+[try pattern](https://regexr.com/?expression=%5E%5BA-Za-z_%5D%5BA-Za-z0-9_%5D*%24 "try regular expression with regexr.com")

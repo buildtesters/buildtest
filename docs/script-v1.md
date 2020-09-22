@@ -20,7 +20,7 @@ The script schema is of `type: script` in sub-schema which is used for running s
 | Property                    | Type          | Required | Nullable       | Defined by                                                                                                                                                               |
 | :-------------------------- | ------------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`      | Required | cannot be null | [script schema version 1.0](script-v1-properties-type.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties/type")               |
-| [description](#description) | `string`      | Optional | cannot be null | [script schema version 1.0](script-v1-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties/description") |
+| [description](#description) | Not specified | Optional | cannot be null | [script schema version 1.0](script-v1-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties/description") |
 | [sbatch](#sbatch)           | Not specified | Optional | cannot be null | [script schema version 1.0](script-v1-properties-sbatch.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties/sbatch")           |
 | [bsub](#bsub)               | Not specified | Optional | cannot be null | [script schema version 1.0](script-v1-properties-bsub.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties/bsub")               |
 | [env](#env)                 | Not specified | Optional | cannot be null | [script schema version 1.0](script-v1-properties-env.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties/env")                 |
@@ -61,23 +61,19 @@ Select schema type to use when validating buildspec. This must be of set to 'scr
 
 ## description
 
-The `description` field is used to document what the test is doing
+
 
 
 `description`
 
 -   is optional
--   Type: `string`
+-   Type: unknown
 -   cannot be null
 -   defined in: [script schema version 1.0](script-v1-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties/description")
 
 ### description Type
 
-`string`
-
-### description Constraints
-
-**maximum length**: the maximum number of characters for this string is: `80`
+unknown
 
 ## sbatch
 

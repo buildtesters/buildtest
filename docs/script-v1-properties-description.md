@@ -1,10 +1,10 @@
-# Untitled string in script schema version 1.0 Schema
+# Untitled undefined type in script schema version 1.0 Schema
 
 ```txt
 https://buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties/description
 ```
 
-The `description` field is used to document what the test is doing
+
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                         |
@@ -13,8 +13,4 @@ The `description` field is used to document what the test is doing
 
 ## description Type
 
-`string`
-
-## description Constraints
-
-**maximum length**: the maximum number of characters for this string is: `80`
+unknown
