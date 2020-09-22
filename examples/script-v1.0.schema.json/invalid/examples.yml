@@ -77,7 +77,6 @@ buildspecs:
     status:
       returncode: []
 
-
   unique_returncodes:
     type: script
     executor: local.bash
@@ -85,6 +84,22 @@ buildspecs:
     run: exit 1
     status:
       returncode: [1, 2, 1]
+
+  non_int_returncodes:
+    type: script
+    executor: local.bash
+    description: The returncode must be an int and not a number
+    run: exit 1
+    status:
+      returncode:  1.0
+
+  non_int_returncodes_list:
+    type: script
+    executor: local.bash
+    description: The returncode must be a list of integers and no numbers
+    run: exit 1
+    status:
+      returncode:  [1, 2.0]
 
   invalid_shell_usr_bin_bash:
     type: script
@@ -114,11 +129,26 @@ buildspecs:
     skip: 1
     run: hostname
 
+  empty_tags:
+    type: script
+    executor: local.bash
+    description: tag list can't be empty, requires one item.
+    tags: []
+    run: hostname
+
+
+  non_unique_tags:
+    type: script
+    executor: local.bash
+    description: tag names must be unique
+    tags: ["network", "network"]
+    run: hostname
+
   invalid_tags_value:
     type: script
     executor: local.bash
     description: invalid tag value must be all string items
-    tags: ["compiler", 400 ]
+    tags: ["network", 400 ]
     run: hostname
 
   additionalProperties_test:
