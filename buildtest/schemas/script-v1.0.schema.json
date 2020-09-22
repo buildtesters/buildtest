@@ -13,22 +13,22 @@
       "description": "Select schema type to use when validating buildspec. This must be of set to 'script'"
     },
     "description": {
-      "$ref": "_definitions.schema.json#/definitions/description"
+      "$ref": "definitions.schema.json#/definitions/description"
     },
     "sbatch": {
-      "$ref": "_definitions.schema.json#/definitions/sbatch"
+      "$ref": "definitions.schema.json#/definitions/sbatch"
     },
     "bsub": {
-      "$ref": "_definitions.schema.json#/definitions/bsub"
+      "$ref": "definitions.schema.json#/definitions/bsub"
     },
     "env": {
-      "$ref": "_definitions.schema.json#/definitions/env"
+      "$ref": "definitions.schema.json#/definitions/env"
     },
     "vars": {
-      "$ref": "_definitions.schema.json#/definitions/env"
+      "$ref": "definitions.schema.json#/definitions/env"
     },
     "executor": {
-      "$ref": "_definitions.schema.json#/definitions/executor"
+      "$ref": "definitions.schema.json#/definitions/executor"
     },
     "shell": {
       "type": "string",
@@ -44,13 +44,13 @@
       "description": "A script to run using the default shell."
     },
     "status": {
-      "$ref": "_definitions.schema.json#/definitions/status"
+      "$ref": "definitions.schema.json#/definitions/status"
     },
     "skip": {
-      "$ref": "_definitions.schema.json#/definitions/skip"
+      "$ref": "definitions.schema.json#/definitions/skip"
     },
     "tags": {
-      "$ref": "_definitions.schema.json#/definitions/tags"
+      "$ref": "definitions.schema.json#/definitions/tags"
     }
   }
 }
