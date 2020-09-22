@@ -21,28 +21,28 @@
       "description": "A list of modules to load into test script"
     },
     "executor": {
-      "$ref": "_definitions.schema.json#/definitions/executor"
+      "$ref": "definitions.schema.json#/definitions/executor"
     },
     "sbatch": {
-      "$ref": "_definitions.schema.json#/definitions/sbatch"
+      "$ref": "definitions.schema.json#/definitions/sbatch"
     },
     "bsub": {
-      "$ref": "_definitions.schema.json#/definitions/bsub"
+      "$ref": "definitions.schema.json#/definitions/bsub"
     },
     "env": {
-      "$ref": "_definitions.schema.json#/definitions/env"
+      "$ref": "definitions.schema.json#/definitions/env"
     },
     "vars": {
-      "$ref": "_definitions.schema.json#/definitions/env"
+      "$ref": "definitions.schema.json#/definitions/env"
     },
     "status": {
-      "$ref": "_definitions.schema.json#/definitions/status"
+      "$ref": "definitions.schema.json#/definitions/status"
     },
     "skip": {
-      "$ref": "_definitions.schema.json#/definitions/skip"
+      "$ref": "definitions.schema.json#/definitions/skip"
     },
     "tags": {
-      "$ref": "_definitions.schema.json#/definitions/tags"
+      "$ref": "definitions.schema.json#/definitions/tags"
     },
     "pre_build":{
       "type": "string",
