@@ -13,9 +13,7 @@
       "description": "Select schema type to use when validating buildspec. This must be of set to ``compiler``"
     },
     "description": {
-      "type": "string",
-      "description": "The ``description`` field is used to document what the test is doing",
-      "maxLength": 80
+      "$ref": "_definitions.schema.json#/definitions/description"
     },
     "module": {
       "type": "array",
@@ -23,28 +21,28 @@
       "description": "A list of modules to load into test script"
     },
     "executor": {
-      "$ref": "global.schema.json#/definitions/executor"
+      "$ref": "_definitions.schema.json#/definitions/executor"
     },
     "sbatch": {
-      "$ref": "global.schema.json#/definitions/sbatch"
+      "$ref": "_definitions.schema.json#/definitions/sbatch"
     },
     "bsub": {
-      "$ref": "global.schema.json#/definitions/bsub"
+      "$ref": "_definitions.schema.json#/definitions/bsub"
     },
     "env": {
-      "$ref": "global.schema.json#/definitions/env"
+      "$ref": "_definitions.schema.json#/definitions/env"
     },
     "vars": {
-      "$ref": "global.schema.json#/definitions/env"
+      "$ref": "_definitions.schema.json#/definitions/env"
     },
     "status": {
-      "$ref": "global.schema.json#/definitions/status"
+      "$ref": "_definitions.schema.json#/definitions/status"
     },
     "skip": {
-      "$ref": "global.schema.json#/definitions/skip"
+      "$ref": "_definitions.schema.json#/definitions/skip"
     },
     "tags": {
-      "$ref": "global.schema.json#/definitions/tags"
+      "$ref": "_definitions.schema.json#/definitions/tags"
     },
     "pre_build":{
       "type": "string",
