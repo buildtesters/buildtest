@@ -3,12 +3,8 @@ import os
 from jsonschema.exceptions import ValidationError
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import check_settings
-from buildtest.schemas.utils import (
-    load_schema,
-    get_schema_fullpath,
-    here,
-)
-from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, supported_schemas
+from buildtest.schemas.utils import here
+from buildtest.schemas.defaults import schema_table
 from buildtest.utils.file import walk_tree, read_file
 
 
@@ -31,7 +27,7 @@ def func_schema(args):
     # the default behavior when "buildtest schema" is executed is to show list of all
     # schemas
     if not args.json and not args.example:
-        for schema in supported_schemas:
+        for schema in schema_table["names"]:
             print(schema)
         return
 
@@ -41,22 +37,15 @@ def func_schema(args):
             "Please specify a schema name with -n option when using -j or -e option"
         )
 
-    examples = None
-    # implements buildtest show schema --global
-    if args.name == "settings.schema.json":
-        schema = DEFAULT_SETTINGS_SCHEMA
-        examples = os.path.join(here, "examples", args.name)
-    elif args.name == "global.schema.json":
-        schema = os.path.join(here, "global.schema.json")
-        examples = os.path.join(here, "examples", args.name)
-    elif args.name in ["script-v1.0.schema.json", "compiler-v1.0.schema.json"]:
-        schema = get_schema_fullpath(args.name)
-        # the examples directory is found same location where schema file is located
-        examples = os.path.join(os.path.dirname(schema), "examples", args.name)
-
-    recipe = load_schema(schema)
     if args.json:
-        print(json.dumps(recipe, indent=2))
+        print(json.dumps(schema_table[args.name]["recipe"], indent=2))
+        return
+
+    # There are no examples for definitions schema
+    if args.name == "definitions.schema.json" and args.example:
+        raise SystemExit("There are no examples for definitions.schema.json")
+
+    examples = os.path.join(here, "examples", args.name)
 
     # get all examples for specified schema. We validate all examples and
     # and print content of all examples. If there is an error during validation

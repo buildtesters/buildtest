@@ -8,11 +8,10 @@ expose functions to run builds.
 import logging
 import os
 import sys
-from jsonschema import validate
 from buildtest.config import load_settings
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.utils import load_recipe
-from buildtest.schemas.defaults import schema_table
+from buildtest.schemas.defaults import schema_table, custom_validator
 from buildtest.utils.file import resolve_path, is_dir
 
 from buildtest.buildsystem.base import (
@@ -91,10 +90,12 @@ class BuildspecParser:
         """
 
         self.logger.info(
-            f"Validating {self.buildspec} with schema: {schema_table['global']['path']}"
+            f"Validating {self.buildspec} with schema: {schema_table['global.schema.json']['path']}"
         )
-
-        validate(instance=self.recipe, schema=schema_table["global"]["recipe"])
+        custom_validator(
+            recipe=self.recipe, schema=schema_table["global.schema.json"]["recipe"]
+        )
+        # validate(instance=self.recipe, schema=schema_table["global"]["recipe"])
 
     # Validation
 
@@ -147,27 +148,50 @@ class BuildspecParser:
                 )
 
             # And that there is a version file
-            if self.schema_version not in schema_table[type]["versions"]:
+            if (
+                self.schema_version
+                not in schema_table[f"{type}-v{self.schema_version}.schema.json"][
+                    "versions"
+                ]
+            ):
                 sys.exit(
                     "version %s is not known for schema type %s. Valid options are: %s"
-                    % (self.schema_version, type, schema_table[type]["versions"])
+                    % (
+                        self.schema_version,
+                        type,
+                        schema_table[f"{type}-v{self.schema_version}.schema.json"][
+                            "versions"
+                        ],
+                    )
                 )
             self.logger.info(
                 "Checking version '%s' in version list: %s",
                 self.schema_version,
-                schema_table[type]["versions"],
+                schema_table[f"{type}-v{self.schema_version}.schema.json"]["versions"],
             )
 
             self.logger.info(
                 "Validating test - '%s' with schemafile: %s"
-                % (name, os.path.basename(schema_table[type]["path"]))
+                % (
+                    name,
+                    os.path.basename(
+                        schema_table[f"{type}-v{self.schema_version}.schema.json"][
+                            "path"
+                        ]
+                    ),
+                )
             )
 
-            self.schema_file = os.path.basename(schema_table[type]["path"])
-            validate(
-                instance=self.recipe["buildspecs"][name],
-                schema=schema_table[type]["recipe"],
+            self.schema_file = os.path.basename(
+                schema_table[f"{type}-v{self.schema_version}.schema.json"]["path"]
             )
+            custom_validator(
+                recipe=self.recipe["buildspecs"][name],
+                schema=schema_table[f"{type}-v{self.schema_version}.schema.json"][
+                    "recipe"
+                ],
+            )
+            # validate(instance=self.recipe["buildspecs"][name],schema=schema_table[type]["recipe"])
 
     # Builders
 

@@ -3,9 +3,10 @@ import os
 import re
 import pytest
 import yaml
-from jsonschema import validate
+
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import SCHEMA_ROOT
+from buildtest.schemas.defaults import custom_validator
 
 schema_name = "global"
 schema_file = f"{schema_name}.schema.json"
@@ -41,7 +42,7 @@ def check_invalid_recipes(recipes, invalids, loaded):
         content = load_recipe(recipe_path)
 
         with pytest.raises(ValidationError) as excinfo:
-            validate(instance=content, schema=loaded)
+            custom_validator(recipe=content, schema=loaded)
         print(excinfo.type, excinfo.value)
         print("Recipe File: %s  should be invalid" % recipe_path)
 
@@ -55,7 +56,7 @@ def check_valid_recipes(recipes, valids, loaded):
         recipe_path = os.path.join(valids, recipe)
         content = load_recipe(recipe_path)
 
-        validate(instance=content, schema=loaded)
+        custom_validator(recipe=content, schema=loaded)
         print("Recipe File: %s should be valid" % recipe_path)
 
 

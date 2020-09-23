@@ -77,21 +77,13 @@ buildspecs:
     status:
       returncode: []
 
-  unique_returncodes:
-    type: script
-    executor: local.bash
-    description: The returncode list must be unique
-    run: exit 1
-    status:
-      returncode: [1, 2, 1]
-
   non_int_returncodes:
     type: script
     executor: local.bash
     description: The returncode must be an int and not a number
     run: exit 1
     status:
-      returncode:  1.0
+      returncode:  1.01
 
   non_int_returncodes_list:
     type: script
@@ -99,7 +91,7 @@ buildspecs:
     description: The returncode must be a list of integers and no numbers
     run: exit 1
     status:
-      returncode:  [1, 2.0]
+      returncode:  [1, 2.230]
 
   invalid_shell_usr_bin_bash:
     type: script
@@ -135,7 +127,6 @@ buildspecs:
     description: tag list can't be empty, requires one item.
     tags: []
     run: hostname
-
 
   non_unique_tags:
     type: script
