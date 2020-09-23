@@ -81,32 +81,12 @@ jobs:
          ls -R downloads/examples
 
 
-     - name: Deploy Schema Docs 🚀
+     - name: Deploy to GitHub Pages 🚀
        uses: JamesIves/github-pages-deploy-action@3.5.9
        with:
          SSH: true
          BASE_BRANCH: devel
-         BRANCH: gh-pages # The branch the action should deploy to.
-         FOLDER: downloads/schema_docs # The folder the action should deploy.
-         TARGET_FOLDER: docs
-         CLEAN: true
-
-     - name: Deploy Schemas 🚀
-       uses: JamesIves/github-pages-deploy-action@3.5.9
-       with:
-         SSH: true
-         BASE_BRANCH: devel
-         BRANCH: gh-pages # The branch the action should deploy to.
-         FOLDER: downloads/schemas # The folder the action should deploy.
-         TARGET_FOLDER: schemas
-         CLEAN: true
-
-     - name: Deploy Schema Examples 🚀
-       uses: JamesIves/github-pages-deploy-action@3.5.9
-       with:
-         SSH: true
-         BASE_BRANCH: devel
-         BRANCH: gh-pages # The branch the action should deploy to.
-         FOLDER: downloads/examples # The folder the action should deploy.
-         TARGET_FOLDER: examples
+         BRANCH: gh-pages 
+         FOLDER: downloads 
+         TARGET_FOLDER: .
          CLEAN: true
