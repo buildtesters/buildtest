@@ -1,7 +1,7 @@
 # Untitled undefined type in script schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties
+script-v1.0.schema.json#/properties
 ```
 
 

@@ -1,7 +1,7 @@
 # Untitled string in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/slurm_job_state
+definitions.schema.json#/definitions/status/properties/slurm_job_state
 ```
 
 This field can be used for checking Slurm Job State, if there is a match buildtest will report as `PASS` 

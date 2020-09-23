@@ -1,7 +1,7 @@
 # Untitled string in compiler schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/post_build
+compiler-v1.0.schema.json#/properties/post_build
 ```
 
 Run commands after building program

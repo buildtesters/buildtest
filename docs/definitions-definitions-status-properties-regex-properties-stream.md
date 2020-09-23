@@ -1,7 +1,7 @@
 # Untitled string in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/regex/properties/stream
+definitions.schema.json#/definitions/status/properties/regex/properties/stream
 ```
 
 The stream field can be stdout or stderr. buildtest will read the output or error stream after completion of test and check if regex matches in stream

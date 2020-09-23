@@ -1,7 +1,7 @@
 # Untitled string in compiler schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/type
+compiler-v1.0.schema.json#/properties/type
 ```
 
 Select schema type to use when validating buildspec. This must be of set to `compiler`

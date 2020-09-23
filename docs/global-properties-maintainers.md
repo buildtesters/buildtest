@@ -1,7 +1,7 @@
 # Untitled array in global schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/global.schema.json#/properties/maintainers
+global.schema.json#/properties/maintainers
 ```
 
 One or more maintainers or aliases

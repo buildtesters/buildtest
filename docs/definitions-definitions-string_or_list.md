@@ -1,7 +1,7 @@
 # Untitled undefined type in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/tags
+definitions.schema.json#/definitions/tags
 ```
 
 Classify tests using a tag name, this can be used for categorizing test and building tests using `--tags` option

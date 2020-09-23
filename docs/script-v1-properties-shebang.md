@@ -1,7 +1,7 @@
 # Untitled string in script schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties/shebang
+script-v1.0.schema.json#/properties/shebang
 ```
 
 Specify a custom shebang line. If not specified buildtest will automatically add it in the test script.

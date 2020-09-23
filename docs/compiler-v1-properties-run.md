@@ -1,7 +1,7 @@
 # Untitled object in compiler schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/run
+compiler-v1.0.schema.json#/properties/run
 ```
 
 The `run` section is used for specifying launch configuration of executable
@@ -17,10 +17,10 @@ The `run` section is used for specifying launch configuration of executable
 
 # undefined Properties
 
-| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                                                             |
-| :-------------------- | -------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [launcher](#launcher) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-run-properties-launcher.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/run/properties/launcher") |
-| [args](#args)         | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-run-properties-args.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/run/properties/args")         |
+| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                       |
+| :-------------------- | -------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [launcher](#launcher) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-run-properties-launcher.md "compiler-v1.0.schema.json#/properties/run/properties/launcher") |
+| [args](#args)         | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-run-properties-args.md "compiler-v1.0.schema.json#/properties/run/properties/args")         |
 
 ## launcher
 
@@ -32,7 +32,7 @@ The `launcher` field is inserted before the executable. This can be used when ru
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-run-properties-launcher.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/run/properties/launcher")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-run-properties-launcher.md "compiler-v1.0.schema.json#/properties/run/properties/launcher")
 
 ### launcher Type
 
@@ -48,7 +48,7 @@ The `args` field is used to specify arguments to executable.
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-run-properties-args.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/run/properties/args")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-run-properties-args.md "compiler-v1.0.schema.json#/properties/run/properties/args")
 
 ### args Type
 

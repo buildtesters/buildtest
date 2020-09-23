@@ -1,7 +1,7 @@
 # Untitled object in global schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/global.schema.json#/properties/buildspecs
+global.schema.json#/properties/buildspecs
 ```
 
 This section is used to define one or more tests (buildspecs). Each test must be unique name

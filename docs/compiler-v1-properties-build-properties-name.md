@@ -1,7 +1,7 @@
 # Untitled string in compiler schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/name
+compiler-v1.0.schema.json#/properties/build/properties/name
 ```
 
 Select the compiler class to use, buildtest will set cc, cxx, and fc compiler wrapper based on compiler name

@@ -1,7 +1,7 @@
 # JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/definitions.schema.json
+definitions.schema.json
 ```
 
 
@@ -17,23 +17,23 @@ unknown ([JSON Schema Definitions File. This file is used for declaring definiti
 
 # JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Definitions
 
-## Definitions group string_or_list
-
-Reference this group by using
-
-```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/string_or_list"}
-```
-
-| Property | Type | Required | Nullable | Defined by |
-| :------- | ---- | -------- | -------- | :--------- |
-
 ## Definitions group list_of_strings
 
 Reference this group by using
 
 ```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/list_of_strings"}
+{"$ref":"definitions.schema.json#/definitions/list_of_strings"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group string_or_list
+
+Reference this group by using
+
+```json
+{"$ref":"definitions.schema.json#/definitions/string_or_list"}
 ```
 
 | Property | Type | Required | Nullable | Defined by |
@@ -44,7 +44,7 @@ Reference this group by using
 Reference this group by using
 
 ```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/list_of_ints"}
+{"$ref":"definitions.schema.json#/definitions/list_of_ints"}
 ```
 
 | Property | Type | Required | Nullable | Defined by |
@@ -55,7 +55,7 @@ Reference this group by using
 Reference this group by using
 
 ```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/int_or_list"}
+{"$ref":"definitions.schema.json#/definitions/int_or_list"}
 ```
 
 | Property | Type | Required | Nullable | Defined by |
@@ -66,7 +66,7 @@ Reference this group by using
 Reference this group by using
 
 ```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/env"}
+{"$ref":"definitions.schema.json#/definitions/env"}
 ```
 
 | Property | Type | Required | Nullable | Defined by |
@@ -77,7 +77,7 @@ Reference this group by using
 Reference this group by using
 
 ```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/description"}
+{"$ref":"definitions.schema.json#/definitions/description"}
 ```
 
 | Property | Type | Required | Nullable | Defined by |
@@ -88,7 +88,7 @@ Reference this group by using
 Reference this group by using
 
 ```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/tags"}
+{"$ref":"definitions.schema.json#/definitions/tags"}
 ```
 
 | Property | Type | Required | Nullable | Defined by |
@@ -99,7 +99,7 @@ Reference this group by using
 Reference this group by using
 
 ```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/skip"}
+{"$ref":"definitions.schema.json#/definitions/skip"}
 ```
 
 | Property | Type | Required | Nullable | Defined by |
@@ -110,7 +110,7 @@ Reference this group by using
 Reference this group by using
 
 ```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/executor"}
+{"$ref":"definitions.schema.json#/definitions/executor"}
 ```
 
 | Property | Type | Required | Nullable | Defined by |
@@ -121,7 +121,7 @@ Reference this group by using
 Reference this group by using
 
 ```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/sbatch"}
+{"$ref":"definitions.schema.json#/definitions/sbatch"}
 ```
 
 | Property | Type | Required | Nullable | Defined by |
@@ -132,7 +132,7 @@ Reference this group by using
 Reference this group by using
 
 ```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/bsub"}
+{"$ref":"definitions.schema.json#/definitions/bsub"}
 ```
 
 | Property | Type | Required | Nullable | Defined by |
@@ -143,14 +143,14 @@ Reference this group by using
 Reference this group by using
 
 ```json
-{"$ref":"https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status"}
+{"$ref":"definitions.schema.json#/definitions/status"}
 ```
 
-| Property                            | Type          | Required | Nullable       | Defined by                                                                                                                                                                                                                                                                                                      |
-| :---------------------------------- | ------------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [slurm_job_state](#slurm_job_state) | `string`      | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-slurm_job_state.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/slurm_job_state") |
-| [returncode](#returncode)           | Not specified | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-returncode.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/returncode")           |
-| [regex](#regex)                     | `object`      | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-regex.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/regex")                     |
+| Property                            | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                                                |
+| :---------------------------------- | -------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [slurm_job_state](#slurm_job_state) | `string` | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-slurm_job_state.md "definitions.schema.json#/definitions/status/properties/slurm_job_state") |
+| [returncode](#returncode)           | Merged   | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-int_or_list.md "definitions.schema.json#/definitions/status/properties/returncode")                            |
+| [regex](#regex)                     | `object` | Optional | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-regex.md "definitions.schema.json#/definitions/status/properties/regex")                     |
 
 ### slurm_job_state
 
@@ -162,7 +162,7 @@ This field can be used for checking Slurm Job State, if there is a match buildte
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-slurm_job_state.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/slurm_job_state")
+-   defined in: [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-slurm_job_state.md "definitions.schema.json#/definitions/status/properties/slurm_job_state")
 
 #### slurm_job_state Type
 
@@ -187,13 +187,18 @@ Specify a list of returncodes to match with script's exit code. buildtest will P
 `returncode`
 
 -   is optional
--   Type: unknown
+-   Type: merged type ([Details](definitions-definitions-int_or_list.md))
 -   cannot be null
--   defined in: [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-returncode.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/returncode")
+-   defined in: [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-int_or_list.md "definitions.schema.json#/definitions/status/properties/returncode")
 
 #### returncode Type
 
-unknown
+merged type ([Details](definitions-definitions-int_or_list.md))
+
+one (and only one) of
+
+-   [Untitled integer in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-int_or_list-oneof-0.md "check type definition")
+-   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-list_of_ints.md "check type definition")
 
 ### regex
 
@@ -205,7 +210,7 @@ Perform regular expression search using `re.search` python module on stdout/stde
 -   is optional
 -   Type: `object` ([Details](definitions-definitions-status-properties-regex.md))
 -   cannot be null
--   defined in: [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-regex.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/status/properties/regex")
+-   defined in: [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-regex.md "definitions.schema.json#/definitions/status/properties/regex")
 
 #### regex Type
 

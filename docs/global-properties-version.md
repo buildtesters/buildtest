@@ -1,7 +1,7 @@
 # Untitled string in global schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/global.schema.json#/properties/version
+global.schema.json#/properties/version
 ```
 
 The semver version of the schema to use (x.x).

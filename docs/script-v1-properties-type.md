@@ -1,7 +1,7 @@
 # Untitled string in script schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties/type
+script-v1.0.schema.json#/properties/type
 ```
 
 Select schema type to use when validating buildspec. This must be of set to 'script'

@@ -1,7 +1,7 @@
 # Untitled integer in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/list_of_ints/items
+definitions.schema.json#/definitions/list_of_ints/items
 ```
 
 

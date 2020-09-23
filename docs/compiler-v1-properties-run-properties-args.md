@@ -1,7 +1,7 @@
 # Untitled string in compiler schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/run/properties/args
+compiler-v1.0.schema.json#/properties/run/properties/args
 ```
 
 The `args` field is used to specify arguments to executable.

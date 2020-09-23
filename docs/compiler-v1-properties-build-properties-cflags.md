@@ -1,7 +1,7 @@
 # Untitled string in compiler schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/cflags
+compiler-v1.0.schema.json#/properties/build/properties/cflags
 ```
 
 Set C compiler flags (**cflags**)

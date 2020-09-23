@@ -1,7 +1,7 @@
-# Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
+# Untitled object in script schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/definitions.schema.json#/definitions/env
+script-v1.0.schema.json#/properties/vars
 ```
 
 One or more key value pairs for an environment (key=value)
@@ -9,12 +9,12 @@ One or more key value pairs for an environment (key=value)
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                         |
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [definitions.schema.json\*](../out/definitions.schema.json "open original schema") |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [script-v1.0.schema.json\*](../out/script-v1.0.schema.json "open original schema") |
 
-## env Type
+## vars Type
 
 `object` ([Details](definitions-definitions-env.md))
 
-## env Constraints
+## vars Constraints
 
 **minimum number of items**: the minimum number of items for this array is: `1`

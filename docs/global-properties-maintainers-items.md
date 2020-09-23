@@ -1,7 +1,7 @@
 # Untitled string in global schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/global.schema.json#/properties/maintainers/items
+global.schema.json#/properties/maintainers/items
 ```
 
 

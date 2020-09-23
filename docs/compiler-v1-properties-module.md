@@ -1,7 +1,7 @@
 # Untitled array in compiler schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/module
+compiler-v1.0.schema.json#/properties/module
 ```
 
 A list of modules to load into test script

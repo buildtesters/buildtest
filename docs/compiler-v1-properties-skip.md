@@ -1,10 +1,10 @@
-# Untitled undefined type in compiler schema version 1.0 Schema
+# Untitled boolean in compiler schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/skip
+compiler-v1.0.schema.json#/properties/skip
 ```
 
-
+The `skip` is a boolean field that can be used to skip tests during builds. By default buildtest will build and run all tests in your buildspec file, if `skip: True` is set it will skip the buildspec.
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                             |
@@ -13,4 +13,4 @@ https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/prop
 
 ## skip Type
 
-unknown
+`boolean`

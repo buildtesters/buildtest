@@ -1,7 +1,7 @@
 # Untitled object in compiler schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build
+compiler-v1.0.schema.json#/properties/build
 ```
 
 The `build` section is used for compiling a single program, this section specifies fields for setting C, C++, Fortran compiler and flags including CPP flags and linker flags
@@ -17,18 +17,18 @@ The `build` section is used for compiling a single program, this section specifi
 
 # undefined Properties
 
-| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                 |
-| :-------------------- | -------- | -------- | -------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [name](#name)         | `string` | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-name.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/name")         |
-| [cc](#cc)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/cc")             |
-| [fc](#fc)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-fc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/fc")             |
-| [cxx](#cxx)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/cxx")           |
-| [source](#source)     | `string` | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-source.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/source")     |
-| [cflags](#cflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-cflags.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/cflags")     |
-| [cxxflags](#cxxflags) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-cxxflags.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/cxxflags") |
-| [fflags](#fflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-fflags.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/fflags")     |
-| [cppflags](#cppflags) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-cppflags.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/cppflags") |
-| [ldflags](#ldflags)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-ldflags.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/ldflags")   |
+| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                           |
+| :-------------------- | -------- | -------- | -------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [name](#name)         | `string` | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-name.md "compiler-v1.0.schema.json#/properties/build/properties/name")         |
+| [cc](#cc)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-cc.md "compiler-v1.0.schema.json#/properties/build/properties/cc")             |
+| [fc](#fc)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-fc.md "compiler-v1.0.schema.json#/properties/build/properties/fc")             |
+| [cxx](#cxx)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-cxx.md "compiler-v1.0.schema.json#/properties/build/properties/cxx")           |
+| [source](#source)     | `string` | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-source.md "compiler-v1.0.schema.json#/properties/build/properties/source")     |
+| [cflags](#cflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-cflags.md "compiler-v1.0.schema.json#/properties/build/properties/cflags")     |
+| [cxxflags](#cxxflags) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-cxxflags.md "compiler-v1.0.schema.json#/properties/build/properties/cxxflags") |
+| [fflags](#fflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-fflags.md "compiler-v1.0.schema.json#/properties/build/properties/fflags")     |
+| [cppflags](#cppflags) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-cppflags.md "compiler-v1.0.schema.json#/properties/build/properties/cppflags") |
+| [ldflags](#ldflags)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build-properties-ldflags.md "compiler-v1.0.schema.json#/properties/build/properties/ldflags")   |
 
 ## name
 
@@ -40,7 +40,7 @@ Select the compiler class to use, buildtest will set cc, cxx, and fc compiler wr
 -   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-name.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/name")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-name.md "compiler-v1.0.schema.json#/properties/build/properties/name")
 
 ### name Type
 
@@ -67,7 +67,7 @@ Set C compiler. Use this field to override buildtest selection for **cc**
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/cc")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-cc.md "compiler-v1.0.schema.json#/properties/build/properties/cc")
 
 ### cc Type
 
@@ -83,7 +83,7 @@ Set Fortran compiler. Use this field to override buildtest selection for **fc**
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-fc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/fc")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-fc.md "compiler-v1.0.schema.json#/properties/build/properties/fc")
 
 ### fc Type
 
@@ -99,7 +99,7 @@ Set C++ compiler. Use this field to override buildtest selection for **cxx**
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/cxx")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-cxx.md "compiler-v1.0.schema.json#/properties/build/properties/cxx")
 
 ### cxx Type
 
@@ -115,7 +115,7 @@ Specify a source file for compilation, the file can be relative path to buildspe
 -   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-source.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/source")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-source.md "compiler-v1.0.schema.json#/properties/build/properties/source")
 
 ### source Type
 
@@ -131,7 +131,7 @@ Set C compiler flags (**cflags**)
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-cflags.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/cflags")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-cflags.md "compiler-v1.0.schema.json#/properties/build/properties/cflags")
 
 ### cflags Type
 
@@ -147,7 +147,7 @@ Set C++ compiler flags (**cxxflags**)
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-cxxflags.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/cxxflags")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-cxxflags.md "compiler-v1.0.schema.json#/properties/build/properties/cxxflags")
 
 ### cxxflags Type
 
@@ -163,7 +163,7 @@ Set Fortran compiler flags (**fflags**)
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-fflags.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/fflags")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-fflags.md "compiler-v1.0.schema.json#/properties/build/properties/fflags")
 
 ### fflags Type
 
@@ -179,7 +179,7 @@ Set Pre Processor Flags (**cppflags**)
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-cppflags.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/cppflags")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-cppflags.md "compiler-v1.0.schema.json#/properties/build/properties/cppflags")
 
 ### cppflags Type
 
@@ -195,7 +195,7 @@ Set linker flags (**ldflags**)
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-ldflags.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/build/properties/ldflags")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-build-properties-ldflags.md "compiler-v1.0.schema.json#/properties/build/properties/ldflags")
 
 ### ldflags Type
 

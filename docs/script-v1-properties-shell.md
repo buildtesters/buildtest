@@ -1,7 +1,7 @@
 # Untitled string in script schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/script-v1.0.schema.json#/properties/shell
+script-v1.0.schema.json#/properties/shell
 ```
 
 Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The `shell` key can be used with `run` section to describe content of script and how its executed

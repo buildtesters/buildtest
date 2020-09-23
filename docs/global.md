@@ -1,7 +1,7 @@
 # global schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/global.schema.json
+global.schema.json
 ```
 
 buildtest global schema is validated for all buildspecs. The global schema defines top-level structure of buildspec and defintions that are inherited for sub-schemas
@@ -17,11 +17,11 @@ buildtest global schema is validated for all buildspecs. The global schema defin
 
 # global schema Properties
 
-| Property                    | Type     | Required | Nullable       | Defined by                                                                                                                                           |
-| :-------------------------- | -------- | -------- | -------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [version](#version)         | `string` | Required | cannot be null | [global schema](global-properties-version.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/global.schema.json#/properties/version")         |
-| [maintainers](#maintainers) | `array`  | Optional | cannot be null | [global schema](global-properties-maintainers.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/global.schema.json#/properties/maintainers") |
-| [buildspecs](#buildspecs)   | `object` | Required | cannot be null | [global schema](global-properties-buildspecs.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/global.schema.json#/properties/buildspecs")   |
+| Property                    | Type     | Required | Nullable       | Defined by                                                                                     |
+| :-------------------------- | -------- | -------- | -------------- | :--------------------------------------------------------------------------------------------- |
+| [version](#version)         | `string` | Required | cannot be null | [global schema](global-properties-version.md "global.schema.json#/properties/version")         |
+| [maintainers](#maintainers) | `array`  | Optional | cannot be null | [global schema](global-properties-maintainers.md "global.schema.json#/properties/maintainers") |
+| [buildspecs](#buildspecs)   | `object` | Required | cannot be null | [global schema](global-properties-buildspecs.md "global.schema.json#/properties/buildspecs")   |
 
 ## version
 
@@ -33,7 +33,7 @@ The semver version of the schema to use (x.x).
 -   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [global schema](global-properties-version.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/global.schema.json#/properties/version")
+-   defined in: [global schema](global-properties-version.md "global.schema.json#/properties/version")
 
 ### version Type
 
@@ -49,7 +49,7 @@ One or more maintainers or aliases
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [global schema](global-properties-maintainers.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/global.schema.json#/properties/maintainers")
+-   defined in: [global schema](global-properties-maintainers.md "global.schema.json#/properties/maintainers")
 
 ### maintainers Type
 
@@ -69,7 +69,7 @@ This section is used to define one or more tests (buildspecs). Each test must be
 -   is required
 -   Type: `object` ([Details](global-properties-buildspecs.md))
 -   cannot be null
--   defined in: [global schema](global-properties-buildspecs.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/global.schema.json#/properties/buildspecs")
+-   defined in: [global schema](global-properties-buildspecs.md "global.schema.json#/properties/buildspecs")
 
 ### buildspecs Type
 

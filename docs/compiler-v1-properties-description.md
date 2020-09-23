@@ -1,10 +1,10 @@
-# Untitled undefined type in compiler schema version 1.0 Schema
+# Untitled string in compiler schema version 1.0 Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/properties/description
+compiler-v1.0.schema.json#/properties/description
 ```
 
-
+The `description` field is used to document what the test is doing
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                             |
@@ -13,4 +13,8 @@ https://buildtesters.github.io/buildtest/schemas/compiler-v1.0.schema.json#/prop
 
 ## description Type
 
-unknown
+`string`
+
+## description Constraints
+
+**maximum length**: the maximum number of characters for this string is: `80`
