@@ -1,8 +1,9 @@
 import json
 import os
 import yaml
-from jsonschema import validate
+
 from buildtest.defaults import SCHEMA_ROOT
+from buildtest.schemas.defaults import custom_validator
 
 
 schema_file = "settings.schema.json"
@@ -43,4 +44,4 @@ def test_settings_examples():
         assert example_recipe
 
         print(f"Expecting Recipe File: {filepath} to be valid")
-        validate(instance=example_recipe, schema=recipe)
+        custom_validator(recipe=example_recipe, schema=recipe)

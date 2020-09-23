@@ -22,6 +22,7 @@ from buildtest.menu.config import (
 
 from buildtest.menu.report import func_report
 from buildtest.menu.schema import func_schema
+from buildtest.schemas.defaults import schema_table
 
 
 def handle_kv_string(val):
@@ -312,7 +313,7 @@ class BuildTestParser:
             "--name",
             help="show schema by name (e.g., script)",
             metavar="Schema Name",
-            choices=supported_schemas,
+            choices=schema_table["names"],
         )
         parser_schema.add_argument(
             "-e",

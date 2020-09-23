@@ -3,9 +3,10 @@ import os
 import pytest
 import re
 import yaml
-from jsonschema import validate
+
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import SCHEMA_ROOT
+from buildtest.schemas.defaults import custom_validator
 
 here = os.path.dirname(os.path.abspath(__file__))
 schemaroot = os.path.join(os.path.dirname(here), "schemas")
@@ -47,7 +48,7 @@ def check_invalid_recipes(recipes, invalids, loaded, version):
         # For each section, assume folder type and validate
         for name in content["buildspecs"].keys():
             with pytest.raises(ValidationError) as excinfo:
-                validate(instance=content["buildspecs"][name], schema=loaded)
+                custom_validator(recipe=content["buildspecs"][name], schema=loaded)
             print(excinfo.type, excinfo.value)
             print("Testing %s from recipe %s should be invalid" % (name, recipe))
 
@@ -65,7 +66,7 @@ def check_valid_recipes(recipes, valids, loaded, version):
 
         # For each section, assume folder type and validate
         for name in content["buildspecs"].keys():
-            validate(instance=content["buildspecs"][name], schema=loaded)
+            custom_validator(recipe=content["buildspecs"][name], schema=loaded)
             print("Testing %s from recipe %s should be valid" % (name, recipe))
 
 

@@ -146,7 +146,7 @@ class BaseExecutor:
 
                 # if buildspec returncode field is integer we convert to list for check
                 if isinstance(buildspec_returncode, int):
-                    buildspec_returncode = list(buildspec_returncode)
+                    buildspec_returncode = [buildspec_returncode]
 
                 self.logger.debug("Conducting Return Code check")
                 self.logger.debug(

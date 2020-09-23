@@ -106,16 +106,36 @@ Return Code Matching
 
 buildtest can report PASS/FAIL based on returncode, by default a 0 exit code is PASS
 and everything else is FAIL. The returncode can be a list of exit codes to match.
-In this example we have three tests called ``exit1_fail``, ``exit1_pass`` and
-``returncode_mismatch``.  We expect **exit1_fail** and
-**returncode_mismatch** to FAIL while **exit1_pass** will PASS since returncode matches
+In this example we have four tests called ``exit1_fail``, ``exit1_pass``,
+``returncode_list_mismatch`` and ``returncode_int_match``.  We expect **exit1_fail** and
+**returncode_mismatch** to FAIL while **exit1_pass** and **returncode_int_match**
+will PASS.
 
 .. program-output:: cat ../tutorials/pass_returncode.yml
 
-To demonstrate we will build this test and pay close attention to the Status field
-in output.
+To demonstrate we will build this test and pay close attention to the **Status**
+column in output.
 
 .. program-output:: cat docgen/schemas/pass_returncode.txt
+
+
+The ``returncode`` field can be an integer or list of integers. If you specify
+a list of exit codes, buildtest will ``PASS`` test if actual exit code is found in
+list.
+
+A floating point exit-code is invalid::
+
+  returncode: 1.5
+
+If **returncode** is a list, all items must be integers and unique items.
+The list must contain **atleast** one item. The following examples are invalid
+values for returncode::
+
+  returncode: []
+
+  returncode: [1, 1.5]
+
+  returncode: [1, 2, 5, 5]
 
 Python example
 ---------------
