@@ -3,12 +3,7 @@ import os
 from jsonschema.exceptions import ValidationError
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import check_settings
-from buildtest.schemas.utils import (
-    load_schema,
-    get_schema_fullpath,
-    here,
-)
-from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, supported_schemas
+from buildtest.schemas.utils import here
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.file import walk_tree, read_file
 

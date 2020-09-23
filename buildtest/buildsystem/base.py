@@ -75,10 +75,10 @@ class BuilderBase:
         # The type must match the type of the builder
         self.recipe = recipe
 
-        type = self.recipe["type"]
+        sub_schema_type = self.recipe["type"]
 
         self.metadata["schemafile"] = os.path.basename(
-            schema_table[f"{type}-v1.0.schema.json"]["path"]
+            schema_table[f"{sub_schema_type}-v1.0.schema.json"]["path"]
         )
 
         self.executor = self.recipe.get("executor")

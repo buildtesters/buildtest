@@ -6,7 +6,6 @@ interact with a global configuration for buildtest.
 import argparse
 
 from buildtest import BUILDTEST_VERSION
-from buildtest.defaults import supported_schemas
 from buildtest.docs import buildtestdocs, schemadocs
 from buildtest.menu.buildspec import (
     func_buildspec_find,

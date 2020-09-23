@@ -8,7 +8,6 @@ expose functions to run builds.
 import logging
 import os
 import sys
-from jsonschema import validate
 from buildtest.config import load_settings
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.utils import load_recipe
