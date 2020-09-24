@@ -32,9 +32,6 @@ executors:
 - slurm
 - lsf
 
-Their is a **ssh** executor is supported in schema but currently not implemented
-in buildtest.
-
 The local executor is responsible for submitting jobs locally. Currently, buildtest
 supports ``bash``, ``sh`` and ``python`` shell. The executors are referenced in
 your buildspec with the ``executor`` key as follows::

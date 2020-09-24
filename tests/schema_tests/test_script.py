@@ -4,7 +4,7 @@ import re
 import pytest
 import yaml
 
-from jsonschema import validate
+
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import SCHEMA_ROOT
 from buildtest.schemas.defaults import custom_validator

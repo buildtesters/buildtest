@@ -3,8 +3,7 @@ Compiler Schema
 
 The compiler schema is used for compilation of programs, currently we support
 single source file compilation. In order to use the compiler schema you must set ``type: compiler`` in your
-sub-schema. See `compiler schema docs <https://buildtesters.github.io/buildtest/docs/compiler-v1.html>`_
-for more details.
+sub-schema. See `compiler schema docs <https://buildtesters.github.io/buildtest/pages/schemadocs/compiler-v1.html>`_
 
 
 Compilation Examples
