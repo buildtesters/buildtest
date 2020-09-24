@@ -5,12 +5,14 @@ This repository contains the schemas used by buildtest.
 buildtest schema docs can be found at [https://buildtesters.github.io/buildtest/](https://buildtesters.github.io/buildtest/)
 
 Currently, we support the following schemas:
-- [global](https://buildtesters.github.io/buildtest/docs/global.html): The global schema inherited by all sub-schemas
-- [compiler-v1.0](https://buildtesters.github.io/buildtest/docs/compiler-v1.html): Compiler sub-schema version 1.0 using ``type: compiler``
-- [script-v1.0](https://buildtesters.github.io/buildtest/docs/script-v1.html): Script sub-schema version 1.0 using ``type: script``
-- [settings](https://buildtesters.github.io/buildtest/docs/settings.html): This schema defines the content of buildtest settings file to configure buildtest.
 
-The schemas are published at [https://github.com/buildtesters/buildtest/tree/gh-pages/schemas](https://github.com/buildtesters/buildtest/tree/gh-pages/schemas)
+- [definitions](https://buildtesters.github.io/buildtest/pages/schemadocs/definitions.html): This schema definitions JSON definitions that are referenced by other schemas.
+- [global](https://buildtesters.github.io/buildtest/pages/schemadocs/global.html): The global schema inherited by all sub-schemas
+- [compiler-v1.0](https://buildtesters.github.io/buildtest/pages/schemadocs/compiler-v1.html): Compiler sub-schema version 1.0 using ``type: compiler``
+- [script-v1.0](https://buildtesters.github.io/buildtest/pages/schemadocs/script-v1.html): Script sub-schema version 1.0 using ``type: script``
+- [settings](https://buildtesters.github.io/buildtest/pages/schemadocs/settings.html): This schema defines the content of buildtest settings file to configure buildtest.
+
+The schemas are published at [https://github.com/buildtesters/buildtest/tree/gh-pages/pages/schemas](https://github.com/buildtesters/buildtest/tree/gh-pages/pages/schemas)
 
 ## What is a schema?
 
@@ -24,20 +26,20 @@ The schema examples are used for testing each schema during regression test and 
 and examples can be accessed via ``buildtest schema`` command. Shown below is a list of examples for each schema.
 
 ### Examples for global.schema.json
-- [valid-examples](https://buildtesters.github.io/buildtest/examples/global.schema.json/valid/examples.yml)
-- [invalid-examples](https://github.com/buildtesters/buildtest/tree/gh-pages/examples/global.schema.json/invalid)
+- [valid-examples](https://buildtesters.github.io/buildtest/pages/examples/global.schema.json/valid/examples.yml)
+- [invalid-examples](https://github.com/buildtesters/buildtest/tree/gh-pages/pages/examples/global.schema.json/invalid)
 
 ### Examples for script-v1.0.schema.json
 
-- [valid-examples](https://buildtesters.github.io/buildtest/examples/script-v1.0.schema.json/valid/examples.yml)
-- [invalid-examples](https://buildtesters.github.io/buildtest/examples/script-v1.0.schema.json/invalid/examples.yml)
+- [valid-examples](https://buildtesters.github.io/buildtest/pages/examples/script-v1.0.schema.json/valid/examples.yml)
+- [invalid-examples](https://buildtesters.github.io/buildtest/pages/examples/script-v1.0.schema.json/invalid/examples.yml)
 
 ### Examples for compiler-v1.0.schema.json
-- [valid-examples](https://buildtesters.github.io/buildtest/examples/compiler-v1.0.schema.json/valid/examples.yml)
-- [invalid-examples](https://buildtesters.github.io/buildtest/examples/compiler-v1.0.schema.json/invalid/examples.yml)
+- [valid-examples](https://buildtesters.github.io/buildtest/pages/examples/compiler-v1.0.schema.json/valid/examples.yml)
+- [invalid-examples](https://buildtesters.github.io/buildtest/pages/examples/compiler-v1.0.schema.json/invalid/examples.yml)
 
 ### Examples for settings.schema.json
-- [valid-examples](https://github.com/buildtesters/buildtest/tree/gh-pages/examples/settings.schema.json/valid)
+- [valid-examples](https://github.com/buildtesters/buildtest/tree/gh-pages/pages/examples/settings.schema.json/valid)
 
  
 ## How are schemas defined in buildtest?
