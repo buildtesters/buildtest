@@ -58,4 +58,5 @@ Contributing Topics
    contributing/github_integration.rst
    contributing/build_documentation.rst
    contributing/regression_testing.rst
+   contributing/schema.rst
    contributing/maintainer_guide.rst

@@ -1,5 +1,6 @@
 $ buildtest schema 
-script-v1.0.schema.json
-compiler-v1.0.schema.json
 global.schema.json
+definitions.schema.json
 settings.schema.json
+compiler-v1.0.schema.json
+script-v1.0.schema.json

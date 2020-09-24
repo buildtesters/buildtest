@@ -33,24 +33,6 @@ config:
 
 
 
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/ssh-executor.yml
-Valid State: True
-________________________________________________________________________________
-
-
-executors:
-  ssh:
-    localhost:
-      host: localhost
-      user: siddiq90
-      identity_file: ~/.ssh/id_rsa
-config:
-  editor: vi
-  paths:
-    prefix: /tmp
-
-
-
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
 Valid State: True
 ________________________________________________________________________________
@@ -101,18 +83,11 @@ executors:
       options:
         - "-q batch"
         - "-t 00:10"
-  ssh:
-     login:
-       host: cori
-       user: root
-       identity_file: ~/.ssh/nersc
 
 config:
   editor: vi
   paths:
     prefix: /tmp
-    clonepath: /tmp/repo
-    logdir: /tmp/logs
     testdir: /tmp/buildtest/tests
 
 
