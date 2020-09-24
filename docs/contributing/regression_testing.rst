@@ -66,6 +66,13 @@ Some other options can be useful for troubleshooting such as::
     # print all except Pass tests
     pytest -ra tests
 
+If you want to run all schema tests you can run via ``schema`` marker as follows::
+
+   pytest -v -m schema
+
+To see a list of pytest markers see `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
+or run ``pytest --markers``
+
 For a complete list of options refer to pytest `documentation <https://docs.pytest.org/en/latest/contents.html>`_
 or run ``pytest --help``.
 
@@ -111,8 +118,9 @@ in report. For more details on coverage refer to
 Tox
 ----
 
-buildtest provides a `tox.ini` configuration to allow user to test regression test
-in isolated virtual environment. To get started install tox::
+buildtest provides a `tox.ini <https://github.com/buildtesters/buildtest/blob/devel/tox.ini>`_
+configuration to allow user to test regression test in isolated virtual environment.
+To get started install tox::
 
     pip install tox
 
