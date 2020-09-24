@@ -3,6 +3,7 @@ from buildtest.utils.command import BuildTestCommand
 from buildtest.exceptions import BuildTestError
 
 
+@pytest.mark.utility
 class TestBuildTestError:
     @pytest.mark.xfail(
         reason="Testing to see if exception of type BuildTestError is raised",

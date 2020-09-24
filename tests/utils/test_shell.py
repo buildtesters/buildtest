@@ -4,6 +4,7 @@ from buildtest.exceptions import BuildTestError
 from buildtest.utils.shell import Shell
 
 
+@pytest.mark.utility
 def test_default_shell():
     # creating a Shell object with no argument will result in bash shell
 
@@ -15,6 +16,7 @@ def test_default_shell():
     assert shell.shebang == f"#!{shutil.which('bash')}"
 
 
+@pytest.mark.utility
 def test_sh_shell():
     # create a sh shell
     shell = Shell("sh")
@@ -26,6 +28,7 @@ def test_sh_shell():
     assert shell.opts == "-x"
 
 
+@pytest.mark.utility
 def test_update_instance():
 
     # create a sh shell
@@ -48,6 +51,7 @@ def test_update_instance():
     assert shell.get()["opts"] == shell.opts
 
 
+@pytest.mark.utility
 def test_shell_exceptions(tmp_path):
     # Shell will raise an error if program is not found
     with pytest.raises(BuildTestError):

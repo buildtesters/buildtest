@@ -1,6 +1,8 @@
+import pytest
 from buildtest.utils.command import BuildTestCommand
 
 
+@pytest.mark.utility
 class TestBuildTestCommand:
     def test_command(self):
 

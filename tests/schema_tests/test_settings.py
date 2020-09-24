@@ -1,30 +1,16 @@
-import json
 import os
-import yaml
+import pytest
 
 from buildtest.defaults import SCHEMA_ROOT
 from buildtest.schemas.defaults import custom_validator
-
+from buildtest.schemas.utils import load_recipe, load_schema
 
 schema_file = "settings.schema.json"
 settings_schema = os.path.join(SCHEMA_ROOT, schema_file)
 settings_schema_examples = os.path.join(SCHEMA_ROOT, "examples", schema_file)
 
 
-def load_schema(path):
-    """load a schema from file. We assume a json file"""
-    with open(path, "r") as fd:
-        schema = json.loads(fd.read())
-    return schema
-
-
-def load_recipe(path):
-    """load a yaml recipe file"""
-    with open(path, "r") as fd:
-        content = yaml.load(fd.read(), Loader=yaml.SafeLoader)
-    return content
-
-
+@pytest.mark.schema
 def test_settings_examples():
 
     # load schema and ensure type is a dict

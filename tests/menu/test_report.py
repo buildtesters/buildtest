@@ -7,6 +7,7 @@ from buildtest.defaults import BUILD_REPORT, BUILDTEST_ROOT
 from buildtest.menu.report import func_report
 
 
+@pytest.mark.cli
 def test_report_format():
 
     assert os.path.exists(BUILD_REPORT)
@@ -40,6 +41,7 @@ def test_report_format():
         func_report(args)
 
 
+@pytest.mark.cli
 def test_report_helpformat():
     class args:
         helpformat = True
@@ -50,6 +52,7 @@ def test_report_helpformat():
     func_report(args)
 
 
+@pytest.mark.cli
 def test_report_filter():
     class args:
         helpformat = False
