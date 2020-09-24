@@ -31,7 +31,7 @@ jobs:
         pip install -U pip
         git fetch -u origin devel:devel
         python --version
-        pip install -e .
+        source setup.sh
         which buildtest
         buildtest --version
         buildtest --help
