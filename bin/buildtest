@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+
+buildtest_file = os.path.realpath(os.path.expanduser(__file__))
+prefix = os.path.dirname(os.path.dirname(buildtest_file))
+
+sys.path.insert(0, prefix)
+
+if sys.version_info[:2] < (3, 6):
+    v_info = sys.version_info[:3]
+    sys.exit("buildtest requires Python 3.6 or higher.")
+
+import buildtest.main
+
+buildtest.main.main()

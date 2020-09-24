@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6]
 
 
     steps:
@@ -26,7 +26,7 @@ jobs:
 
     - name: test all scripts
       run: |
-        pip install -e .
+        source setup.sh
         buildtest buildspec find
         for f in $PWD/docs/scripting_examples/*; do python $f; done
 
