@@ -1,0 +1,4 @@
+PyYAML>=5.2
+jsonschema
+tabulate
+distro
