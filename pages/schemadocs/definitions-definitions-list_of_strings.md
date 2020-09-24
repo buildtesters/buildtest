@@ -1,4 +1,4 @@
-# Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
+# Untitled array in JSON Schema Definitions File.  Schema
 
 ```txt
 definitions.schema.json#/definitions/string_or_list/oneOf/1

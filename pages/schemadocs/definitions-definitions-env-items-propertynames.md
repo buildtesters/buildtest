@@ -1,4 +1,4 @@
-# Untitled undefined type in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
+# Untitled undefined type in JSON Schema Definitions File.  Schema
 
 ```txt
 definitions.schema.json#/definitions/env/items/propertyNames

@@ -2,7 +2,7 @@
 
 ## Top-level Schemas
 
--   [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions.md) – `definitions.schema.json`
+-   [JSON Schema Definitions File. ](./definitions.md "This file is used for declaring definitions that are referenced from other schemas") – `definitions.schema.json`
 -   [buildtest configuration schema](./settings.md) – `https://buildtesters.github.io/buildtest/schemas/settings.schema.json`
 -   [compiler schema version 1.0](./compiler-v1.md "The compiler schema is of type: compiler in sub-schema which is used for compiling and running programs") – `compiler-v1.0.schema.json`
 -   [global schema](./global.md "buildtest global schema is validated for all buildspecs") – `global.schema.json`
@@ -13,17 +13,17 @@
 
 ### Objects
 
--   [Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
--   [Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
--   [Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
--   [Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-env.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/env`
--   [Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
--   [Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/status`
--   [Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
--   [Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
--   [Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
--   [Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
--   [Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/env`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/status`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 -   [Untitled object in buildtest configuration schema](./settings-properties-executors.md "The executor section is used for declaring your executors that are responsible for running jobs") – `https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors`
 -   [Untitled object in buildtest configuration schema](./settings-properties-executors-properties-defaults.md "Specify default executor settings for all executors") – `https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults`
 -   [Untitled object in buildtest configuration schema](./settings-properties-executors-properties-local.md "The local section is used for declaring local executors for running jobs on local machine") – `https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/local`
@@ -52,20 +52,20 @@
 
 ### Arrays
 
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-list_of_strings.md) – `definitions.schema.json#/definitions/list_of_strings`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-list_of_ints.md) – `definitions.schema.json#/definitions/list_of_ints`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-sbatch.md "This field is used for specifying #SBATCH options in test script") – `definitions.schema.json#/definitions/sbatch`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-bsub.md "This field is used for specifying #BSUB options in test script") – `definitions.schema.json#/definitions/bsub`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
--   [Untitled array in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-list_of_strings.md) – `definitions.schema.json#/definitions/list_of_strings`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-list_of_ints.md) – `definitions.schema.json#/definitions/list_of_ints`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-sbatch.md "This field is used for specifying #SBATCH options in test script") – `definitions.schema.json#/definitions/sbatch`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-bsub.md "This field is used for specifying #BSUB options in test script") – `definitions.schema.json#/definitions/bsub`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
 -   [Untitled array in buildtest configuration schema](./settings-definitions-lsf-properties-options.md "Specify any options for bsub for this executor when running all jobs associated to this executor") – `https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/options`
 -   [Untitled array in buildtest configuration schema](./settings-definitions-slurm-properties-options.md "Specify any other options for sbatch used by this executor for running all jobs") – `https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/options`
 -   [Untitled array in buildtest configuration schema](./settings-properties-config-properties-paths-properties-buildspec_roots.md "Specify a list of directory paths to search buildspecs") – `https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/config/properties/paths/properties/buildspec_roots`

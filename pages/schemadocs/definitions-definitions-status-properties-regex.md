@@ -1,4 +1,4 @@
-# Untitled object in JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas Schema
+# Untitled object in JSON Schema Definitions File.  Schema
 
 ```txt
 definitions.schema.json#/definitions/status/properties/regex
@@ -17,10 +17,10 @@ Perform regular expression search using `re.search` python module on stdout/stde
 
 # undefined Properties
 
-| Property          | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                                                                |
-| :---------------- | -------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [stream](#stream) | `string` | Required | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-regex-properties-stream.md "definitions.schema.json#/definitions/status/properties/regex/properties/stream") |
-| [exp](#exp)       | `string` | Required | cannot be null | [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-regex-properties-exp.md "definitions.schema.json#/definitions/status/properties/regex/properties/exp")       |
+| Property          | Type     | Required | Nullable       | Defined by                                                                                                                                                                              |
+| :---------------- | -------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [stream](#stream) | `string` | Required | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-regex-properties-stream.md "definitions.schema.json#/definitions/status/properties/regex/properties/stream") |
+| [exp](#exp)       | `string` | Required | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-regex-properties-exp.md "definitions.schema.json#/definitions/status/properties/regex/properties/exp")       |
 
 ## stream
 
@@ -32,7 +32,7 @@ The stream field can be stdout or stderr. buildtest will read the output or erro
 -   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-regex-properties-stream.md "definitions.schema.json#/definitions/status/properties/regex/properties/stream")
+-   defined in: [JSON Schema Definitions File. ](definitions-definitions-status-properties-regex-properties-stream.md "definitions.schema.json#/definitions/status/properties/regex/properties/stream")
 
 ### stream Type
 
@@ -57,7 +57,7 @@ Specify a regular expression to run with input stream specified by `stream` fiel
 -   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [JSON Schema Definitions File. This file is used for declaring definitions that are referenced from other schemas](definitions-definitions-status-properties-regex-properties-exp.md "definitions.schema.json#/definitions/status/properties/regex/properties/exp")
+-   defined in: [JSON Schema Definitions File. ](definitions-definitions-status-properties-regex-properties-exp.md "definitions.schema.json#/definitions/status/properties/regex/properties/exp")
 
 ### exp Type
 
