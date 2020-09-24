@@ -23,7 +23,6 @@ The executor section is used for declaring your executors that are responsible f
 | [local](#local)       | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-local.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/local")       |
 | [lsf](#lsf)           | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-lsf.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/lsf")           |
 | [slurm](#slurm)       | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-slurm.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/slurm")       |
-| [ssh](#ssh)           | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-ssh.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/ssh")           |
 
 ## defaults
 
@@ -88,19 +87,3 @@ The `slurm` section is used for declaring Slurm executors for running jobs using
 ### slurm Type
 
 `object` ([Details](settings-properties-executors-properties-slurm.md))
-
-## ssh
-
-The `ssh` section is used for declaring SSH executors for running jobs on remote node using ssh
-
-
-`ssh`
-
--   is optional
--   Type: `object` ([Details](settings-properties-executors-properties-ssh.md))
--   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-executors-properties-ssh.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/ssh")
-
-### ssh Type
-
-`object` ([Details](settings-properties-executors-properties-ssh.md))

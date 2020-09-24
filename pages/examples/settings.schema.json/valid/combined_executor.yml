@@ -17,16 +17,9 @@ executors:
       options:
         - "-q batch"
         - "-t 00:10"
-  ssh:
-     login:
-       host: cori
-       user: root
-       identity_file: ~/.ssh/nersc
 
 config:
   editor: vi
   paths:
     prefix: /tmp
-    clonepath: /tmp/repo
-    logdir: /tmp/logs
     testdir: /tmp/buildtest/tests
