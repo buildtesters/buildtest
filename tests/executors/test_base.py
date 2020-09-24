@@ -4,12 +4,13 @@ BuildExecutor: testing functions
 
 import os
 
-from jsonschema import validate
 from jsonschema.exceptions import ValidationError
-from buildtest.executors.setup import BuildExecutor
-from buildtest.schemas.utils import load_schema, load_recipe
-from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA
 from buildtest.buildsystem.parser import BuildspecParser
+from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA
+from buildtest.executors.setup import BuildExecutor
+from buildtest.schemas.defaults import custom_validator
+from buildtest.schemas.utils import load_schema, load_recipe
+
 
 pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,17 +21,16 @@ def test_build_executor(tmp_path):
     )
     settings_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
     example = load_recipe(example_schema)
-    validate(instance=example, schema=settings_schema)
+    custom_validator(recipe=example, schema=settings_schema)
 
     # Load BuildExecutor
     be = BuildExecutor(example)
-    # We should have a total of 5 executors, 3 local, 1 ssh, 1 slurm executor
-    assert len(be.executors) == 5
+    # We should have a total of 4 executors: 3 local and 1 slurm executor
+    assert len(be.executors) == 4
     assert list(be.executors.keys()) == [
         "local.bash",
         "local.sh",
         "local.python",
-        "ssh.localhost",
         "slurm.haswell",
     ]
 

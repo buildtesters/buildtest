@@ -11,11 +11,7 @@ executors:
     python:
       description: submit jobs on local machine using python shell
       shell: python
-  ssh:
-    localhost:
-      host: localhost
-      user: siddiq90
-      identity_file: ~/.ssh/id_rsa
+
   slurm:
     haswell:
       options: ["-C haswell"]
@@ -24,7 +20,4 @@ config:
   editor: vi
   paths:
     prefix: /tmp
-    clonepath: /tmp
-    searchpath: /tmp
-    logdir: /tmp
     testdir: /tmp

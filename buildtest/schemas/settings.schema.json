@@ -43,11 +43,6 @@
               "type": "object",
               "description": "The ``slurm`` section is used for declaring Slurm executors for running jobs using Slurm scheduler",
               "patternProperties": { "^.*$": { "$ref": "#/definitions/slurm" } }
-            },
-            "ssh": {
-              "type": "object",
-              "description": "The ``ssh`` section is used for declaring SSH executors for running jobs on remote node using ssh",
-              "patternProperties": { "^.*$": { "$ref": "#/definitions/ssh" } }
             }
           },
         "additionalProperties": false
@@ -70,7 +65,6 @@
                 "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
               },
               "prefix": { "type":  "string" },
-              "logdir": {"type":  "string" },
               "testdir": { "type": "string" }
             }
           }
@@ -137,18 +131,7 @@
               "before_script": { "#ref":  "#/definitions/script" },
               "after_script": { "#ref":  "#/definitions/script" }
           }
-       },
-      "ssh": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "description": {"type": "string"},
-          "host": {"type":  "string"},
-          "user": {"type":  "string"},
-          "identity_file": {"type": "string"}
-        },
-        "required": ["host","user","identity_file"]
-      }
+       }
     }
 }
 
