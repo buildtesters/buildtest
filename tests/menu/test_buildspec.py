@@ -1,7 +1,9 @@
+import pytest
 from buildtest.menu.buildspec import func_buildspec_find, func_buildspec_view
 from buildtest.defaults import BUILDSPEC_CACHE_FILE
 
 
+@pytest.mark.cli
 def test_func_buildspec_find():
 
     # testing buildtest buildspec find --clear
@@ -29,6 +31,7 @@ def test_func_buildspec_find():
     func_buildspec_find(args)
 
 
+@pytest.mark.cli
 def test_buildspec_view():
 
     assert BUILDSPEC_CACHE_FILE
@@ -44,6 +47,7 @@ def test_buildspec_view():
     func_buildspec_view(args)
 
 
+@pytest.mark.cli
 def test_buildspec_tags():
     class args:
         find = True
@@ -58,6 +62,7 @@ def test_buildspec_tags():
     func_buildspec_find(args)
 
 
+@pytest.mark.cli
 def test_buildspec_files():
     class args:
         find = True
@@ -72,6 +77,7 @@ def test_buildspec_files():
     func_buildspec_find(args)
 
 
+@pytest.mark.cli
 def test_buildspec_executors():
     class args:
         find = True
@@ -86,6 +92,7 @@ def test_buildspec_executors():
     func_buildspec_find(args)
 
 
+@pytest.mark.cli
 def test_buildspec_find_filter():
     class args:
         find = True

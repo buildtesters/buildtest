@@ -9,6 +9,7 @@ from buildtest.schemas.utils import load_schema, load_recipe
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
+@pytest.mark.utility
 @pytest.mark.xfail(
     reason="Invalid File Extension for loading schema", raises=SystemExit
 )
@@ -18,6 +19,7 @@ def test_load_schema_invalid_ext():
     load_schema(os.path.join(root, "README.rst"))
 
 
+@pytest.mark.utility
 @pytest.mark.xfail(reason="Invalid File Path when loading recipe", raises=SystemExit)
 def test_load_recipe_invalid_path():
 

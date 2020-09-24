@@ -1,35 +1,17 @@
-import json
 import os
 import re
 import pytest
-import yaml
-
 
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import SCHEMA_ROOT
 from buildtest.schemas.defaults import custom_validator
+from buildtest.schemas.utils import load_recipe, load_schema
 
 
 schema_name = "script"
 schema_file = f"{schema_name}-v1.0.schema.json"
 schema_path = os.path.join(SCHEMA_ROOT, schema_file)
 schema_examples = os.path.join(SCHEMA_ROOT, "examples", schema_file)
-
-
-def load_schema(path):
-    """load a schema from file. We assume a json file
-    """
-    with open(path, "r") as fd:
-        schema = json.loads(fd.read())
-    return schema
-
-
-def load_recipe(path):
-    """load a yaml recipe file
-    """
-    with open(path, "r") as fd:
-        content = yaml.load(fd.read(), Loader=yaml.SafeLoader)
-    return content
 
 
 def check_invalid_recipes(recipes, invalids, loaded, version):
@@ -70,6 +52,7 @@ def check_valid_recipes(recipes, valids, loaded, version):
             print("Testing %s from recipe %s should be valid" % (name, recipe))
 
 
+@pytest.mark.schema
 def test_script_examples(tmp_path):
     """the script test_organization is responsible for all the schemas
        in the root of the repository, under <schema>/examples.

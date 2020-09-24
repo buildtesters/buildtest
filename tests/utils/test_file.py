@@ -18,17 +18,20 @@ from buildtest.exceptions import BuildTestError
 here = os.path.dirname(os.path.abspath(__file__))
 
 
+@pytest.mark.utility
 def test_checking_directory():
     dirname = str(uuid.uuid4())
     assert not is_dir(dirname)
 
 
+@pytest.mark.utility
 def test_checking_file():
     file_name = str(uuid.uuid4())
     assert not is_file(file_name)
     assert is_file("/bin/bash")
 
 
+@pytest.mark.utility
 def test_directory_expansion():
     dir1 = "$HOME"
     dir2 = "~"
@@ -37,6 +40,7 @@ def test_directory_expansion():
     assert is_dir(dir2)
 
 
+@pytest.mark.utility
 def test_create_dir(tmp_path):
     # since tmp_path creates a directory we will create a subdirectory "test" in tmp_path using create_dir
     assert is_dir(tmp_path)
@@ -52,18 +56,21 @@ def test_create_dir(tmp_path):
         create_dir("/xyz")
 
 
+@pytest.mark.utility
 def test_walk_tree():
     list_of_files = walk_tree(here, ".py")
     print(f"Detected {len(list_of_files)} .py files found in directory: {here}")
     assert len(list_of_files) > 0
 
 
+@pytest.mark.utility
 def test_walk_tree_no_files(tmp_path):
     list_of_files = walk_tree(tmp_path, ".py")
     print(f"Detected {len(list_of_files)} .py files found in directory: {tmp_path}")
     assert 0 == len(list_of_files)
 
 
+@pytest.mark.utility
 def test_walk_tree_invalid_dir(tmp_path):
     # we want to test an invalid directory so we remove temporary directory created by tmp_path
     shutil.rmtree(tmp_path)
@@ -77,6 +84,7 @@ def test_walk_tree_invalid_dir(tmp_path):
     assert not list_of_files
 
 
+@pytest.mark.utility
 def test_write_file(tmp_path):
     input = """This is a 
     multi-line
@@ -98,6 +106,7 @@ def test_write_file(tmp_path):
     assert input == content
 
 
+@pytest.mark.utility
 def test_write_file_exceptions(tmp_path):
     input = "hi my name is Bob"
     file = os.path.join(tmp_path, "name.txt")
@@ -126,6 +135,7 @@ def test_write_file_exceptions(tmp_path):
     assert not write_file(os.path.join(tmp_path, "null.txt"), ["hi"])
 
 
+@pytest.mark.utility
 def test_read_file(tmp_path):
     # testing invalid type for read_file, expects of type string. Expected return is 'None'
     print("Reading file with invalid type, passing 'None'")
@@ -148,6 +158,7 @@ def test_read_file(tmp_path):
         read_file("/etc/shadow")
 
 
+@pytest.mark.utility
 def test_resolve_path():
     assert resolve_path("$HOME")
     assert resolve_path("~")

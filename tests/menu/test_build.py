@@ -14,6 +14,7 @@ test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)
 
 
+@pytest.mark.cli
 def test_build_by_tags():
 
     # ensure we rebuild cache file before running by tags
@@ -144,6 +145,7 @@ def test_discover_buildspec():
         discover_buildspecs(tags="tutorials")
 
 
+@pytest.mark.cli
 def test_build_buildspecs():
     buildspec_paths = os.path.join(test_root, "examples", "buildspecs")
     buildtest_configuration = load_settings()
@@ -179,6 +181,7 @@ def test_build_buildspecs():
         func_build_subcmd(args, buildtest_configuration)
 
 
+@pytest.mark.cli
 def test_buildspec_tag_executor():
     buildtest_configuration = load_settings()
 
@@ -197,6 +200,7 @@ def test_buildspec_tag_executor():
     func_build_subcmd(args, buildtest_configuration)
 
 
+@pytest.mark.cli
 def test_build_multi_executors():
     buildtest_configuration = load_settings()
 
@@ -215,6 +219,7 @@ def test_build_multi_executors():
     func_build_subcmd(args, buildtest_configuration)
 
 
+@pytest.mark.cli
 def test_build_by_stages():
 
     buildtest_configuration = load_settings()

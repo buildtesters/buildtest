@@ -1,34 +1,17 @@
-import json
 import os
 import re
 import pytest
-import yaml
 
 from jsonschema.exceptions import ValidationError
 from buildtest.defaults import SCHEMA_ROOT
 from buildtest.schemas.defaults import custom_validator
+from buildtest.schemas.utils import load_recipe, load_schema
 
 schema_name = "global"
 schema_file = f"{schema_name}.schema.json"
 schema_path = os.path.join(SCHEMA_ROOT, schema_file)
 
 global_schema_examples = os.path.join(SCHEMA_ROOT, "examples", schema_file)
-
-
-def load_schema(path):
-    """load a schema from file. We assume a json file
-    """
-    with open(path, "r") as fd:
-        schema = json.loads(fd.read())
-    return schema
-
-
-def load_recipe(path):
-    """load a yaml recipe file
-    """
-    with open(path, "r") as fd:
-        content = yaml.load(fd.read(), Loader=yaml.SafeLoader)
-    return content
 
 
 def check_invalid_recipes(recipes, invalids, loaded):
@@ -60,6 +43,7 @@ def check_valid_recipes(recipes, valids, loaded):
         print("Recipe File: %s should be valid" % recipe_path)
 
 
+@pytest.mark.schema
 def test_global_examples():
     """This validates all valid/invalid examples for global schema"""
 
