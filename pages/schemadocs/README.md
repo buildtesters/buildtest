@@ -18,6 +18,7 @@
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/env`
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `definitions.schema.json#/definitions/batch`
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/status`
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
@@ -38,6 +39,7 @@
 -   [Untitled object in buildtest configuration schema](./settings-definitions-local.md) – `https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local`
 -   [Untitled object in buildtest configuration schema](./settings-definitions-slurm.md) – `https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm`
 -   [Untitled object in buildtest configuration schema](./settings-definitions-lsf.md) – `https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/properties/batch`
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/properties/env`
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/properties/vars`
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/properties/status`
@@ -46,6 +48,7 @@
 -   [Untitled object in global schema](./global-properties-buildspecs.md "This section is used to define one or more tests (buildspecs)") – `global.schema.json#/properties/buildspecs`
 -   [Untitled object in python schema version 1.0](./python-v1-properties-package.md) – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/package`
 -   [Untitled object in python schema version 1.0](./python-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/status`
+-   [Untitled object in script schema version 1.0](./script-v1-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `script-v1.0.schema.json#/properties/batch`
 -   [Untitled object in script schema version 1.0](./script-v1-properties-env.md "One or more key value pairs for an environment (key=value)") – `script-v1.0.schema.json#/properties/env`
 -   [Untitled object in script schema version 1.0](./script-v1-properties-vars.md "One or more key value pairs for an environment (key=value)") – `script-v1.0.schema.json#/properties/vars`
 -   [Untitled object in script schema version 1.0](./script-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `script-v1.0.schema.json#/properties/status`

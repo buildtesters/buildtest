@@ -25,6 +25,7 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | [executor](#executor)       | `string`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-executor.md "compiler-v1.0.schema.json#/properties/executor")       |
 | [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-sbatch.md "compiler-v1.0.schema.json#/properties/sbatch")          |
 | [bsub](#bsub)               | `array`   | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-bsub.md "compiler-v1.0.schema.json#/properties/bsub")              |
+| [batch](#batch)             | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/properties/batch")            |
 | [env](#env)                 | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/env")                |
 | [vars](#vars)               | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/vars")               |
 | [status](#status)           | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/properties/status")          |
@@ -146,6 +147,22 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 ### bsub Type
 
 `string[]`
+
+## batch
+
+The `batch` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.
+
+
+`batch`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-batch.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/properties/batch")
+
+### batch Type
+
+`object` ([Details](definitions-definitions-batch.md))
 
 ## env
 

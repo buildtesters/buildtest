@@ -21,6 +21,9 @@
     "bsub": {
       "$ref": "definitions.schema.json#/definitions/bsub"
     },
+    "batch": {
+      "$ref": "definitions.schema.json#/definitions/batch"
+    },
     "env": {
       "$ref": "definitions.schema.json#/definitions/env"
     },
