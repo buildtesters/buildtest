@@ -57,40 +57,7 @@ schemafile so you will see the following
   settings.schema.json
 ```
 
-The format for sub-schema is `<name>-vX.Y.schema.json`.  All schemas must end in **.schema.json**
-
-For every schema including (global, script, compiler) will have a ``valid`` and ``invalid`` directory that
-contains a list of valid and invalid examples for each schema. These examples are run during regression test.
-
-The schema tests can be run as follows 
-
-```
-  $ pytest -vra tests/schema_tests
-```
-
-## How to contribute
-
-### Adding a new schema
-
-If you want to add a new schema to buildtest you need to do the following:
- 
- 1. Add schema file in [buildtest/schemas](https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas) and schema file must end in **.schema.json**. If it's a sub-schema it must in format ``<name>-<version>.schema.json``. For example a schema name ``script-v2.0.schema.json`` will be sub-schema script and version 2.0.
- 2. Their should be a folder that corresponds to name of schema in [examples](https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas/examples) directory.  
- 3. There should be a list of invalid and valid examples for schema. 
- 4. There should be regression testfile in [schema_tests](https://github.com/buildtesters/buildtest/tree/devel/tests/schema_tests) to test the schema.
- 
-Be sure to update properties and take account for:
-  - a property being required or not
-  - Make use of `additionalProperties: false` when defining properties so that additional keys in properties are not passed in.
-  - requirements for the values provided (types, lengths, etc.) 
-  - If you need help, see [resources](#resources) or reach out to someone in Slack.
-
-## Resources
-
-The following sites (along with the files here) can be useful to help with your development
-of a schema.
-
- - [json-schema.org](https://json-schema.org/)
- - [json schema readthedocs](https://python-jsonschema.readthedocs.io/en/stable/)
- 
-If you have issues with writing json schema please join the [JSON-SCHEMA Slack Channel](http://json-schema.slack.com)
+The format for sub-schema is `<name>-vX.Y.schema.json`.  All schemas must end in **.schema.json**. The schemas and documentation are published
+through this [workflow](https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/jsonschemadocs.yml). The pages are auto-generated and 
+pushed to top-level folder [pages](https://github.com/buildtesters/buildtest/tree/gh-pages/pages). **Please do not write any files to this directory as 
+your files will be removed as part of the workflow**. 
