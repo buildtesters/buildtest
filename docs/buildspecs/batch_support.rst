@@ -5,8 +5,8 @@ buildtest batch scheduler support is an experimental feature, currently buildtes
 supports Slurm and LSF Executor. In order for buildtest to submit jobs to scheduler,
 you must define a slurm or lsf executor.
 
-Slurm Executor (Experimental Feature)
---------------------------------------
+Slurm Executor
+---------------
 
 The ``SlurmExecutor`` class is responsible for managing slurm jobs which
 will perform the following action
@@ -214,6 +214,7 @@ results followed by list of field and value output::
     ...
     2020-07-22 18:20:48,405 [base.py:598 - gather() ] - [DEBUG] field: State   value: FAILED
 
+
 LSF Executor (Experimental)
 ----------------------------
 
@@ -269,4 +270,87 @@ The LSFExecutor ``gather`` method will retrieve the following format fields usin
 -    "output_file"
 -    "error_file"
 
+Scheduler Agnostic Configuration (Experimental)
+-------------------------------------------------
 
+
+The ``batch`` field can be used for specifying scheduler agnostic configuration
+based on your scheduler. buildtest will translate the input into the appropriate
+script directive supported by the scheduler. Shown below is a translation table
+for the **batch** field
+
+
+.. csv-table::
+   :header: "Field", "Slurm", "LSF"
+   :widths: 25 25 25
+
+   **queue**, --partition, -q
+   **nodecount**, --nodes, -nnodes
+   **cpucount**, --ntasks, -n
+   **timelimit**, --time, -W
+   **memory**, --mem, -M
+   **account**, --account, -P
+   **exclusive**, --nodes, -x
+
+In this example, we rewrite the LSF buildspec to use ``batch`` instead of ``bsub``
+field::
+
+    version: "1.0"
+    buildspecs:
+      hostname:
+        type: script
+        executor: lsf.batch
+        batch:
+          timelimit: "10"
+          nodecount: "1"
+        run: jsrun hostname
+
+buildtest will translate the batch field into #BSUB directive as you can see in
+the generated test::
+
+    #!/usr/bin/bash
+    #BSUB -W 10
+    #BSUB -nnodes 1
+    source /autofs/nccsopen-svm1_home/shahzebsiddiqui/buildtest/var/executors/lsf.batch/before_script.sh
+    jsrun hostname
+
+In next example we use ``batch`` field with on a Slurm cluster that submits a sleep
+job as follows::
+
+    version: "1.0"
+    buildspecs:
+      sleep:
+        type: script
+        executor: slurm.normal
+        description: sleep 2 seconds
+        tags: [tutorials]
+        batch:
+          nodecount: "1"
+          cpucount: "1"
+          timelimit: "5"
+          memory: "5MB"
+          exclusive: true
+
+        vars:
+          SLEEP_TIME: 2
+        run: sleep $SLEEP_TIME
+
+The ``exclusive`` field is used for getting exclusive node access, this is a boolean
+instead of string. You can instruct buildtest to stop after build phase by using
+``--stage=build`` which will build the script but not run it. If we inspect the
+generated script we see the following::
+
+    #!/bin/bash
+    #SBATCH --nodes=1
+    #SBATCH --ntasks=1
+    #SBATCH --time=5
+    #SBATCH --mem=5MB
+    #SBATCH --exclusive=user
+    source /home1/06908/sms1990/buildtest/var/executors/slurm.normal/before_script.sh
+    SLEEP_TIME=2
+    sleep $SLEEP_TIME
+
+
+You may leverage ``batch`` with ``sbatch`` or ``bsub`` field to specify your job
+directives. If a particular field is not available in batch field then utilize sbatch
+or bsub field to fill in all the arguments.
