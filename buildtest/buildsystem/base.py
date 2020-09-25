@@ -15,6 +15,7 @@ import shutil
 import stat
 import sys
 
+from buildtest.buildsystem.batch import SlurmBatchScript, LSFBatchScript
 from buildtest.defaults import executor_root
 from buildtest.schemas.defaults import schema_table
 from buildtest.exceptions import BuildTestError
@@ -82,6 +83,7 @@ class BuilderBase:
         )
 
         self.executor = self.recipe.get("executor")
+        self.executor_type = self.detect_executor()
         self.metadata["executor"] = self.executor
         # The default shell will be bash
 
@@ -91,6 +93,14 @@ class BuilderBase:
         self.shebang = self.recipe.get("shebang") or self.shell.shebang
         self.logger.debug("Using shell %s", self.shell.name)
         self.logger.debug(f"Shebang used for test: {self.shebang}")
+
+    def detect_executor(self):
+        if self.executor.startswith("local"):
+            return "local"
+        elif self.executor.startswith("slurm"):
+            return "slurm"
+        elif self.executor.startswith("lsf"):
+            return "lsf"
 
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
@@ -158,16 +168,17 @@ class BuilderBase:
         # start of each test should have the shebang
         lines = [self.shebang]
 
-        if self.recipe.get("sbatch"):
+        if self.executor_type == "lsf":
+            script = LSFBatchScript(self.recipe.get("batch"), self.recipe.get("bsub"))
 
-            sbatch = self.get_sbatch()
-            if sbatch:
-                lines += sbatch
-        elif self.recipe.get("bsub"):
+            lines += script.get_headers()
 
-            bsub = self.get_bsub()
-            if bsub:
-                lines += bsub
+        elif self.executor_type == "slurm":
+
+            script = SlurmBatchScript(
+                self.recipe.get("batch"), self.recipe.get("sbatch")
+            )
+            lines += script.get_headers()
 
         lines += [
             f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
@@ -276,41 +287,6 @@ class BuilderBase:
                 )
 
         return env
-
-    def get_sbatch(self):
-
-        lines = []
-        sbatch = self.recipe.get("sbatch")
-
-        if sbatch:
-
-            for sbatch_cmd in sbatch:
-                lines.append(f"#SBATCH {sbatch_cmd}")
-
-            # if buildspec using slurm executor define job name, output and error file in job script
-            if self.executor.startswith("slurm"):
-                lines.append(f"#SBATCH -J {self.name}")
-                lines.append(f"#SBATCH -o {self.name}-%j.out")
-                lines.append(f"#SBATCH -e {self.name}-%j.err")
-
-        return lines
-
-    def get_bsub(self):
-
-        lines = []
-        bsub = self.recipe.get("bsub")
-
-        if bsub:
-
-            for bsub_cmd in bsub:
-                lines.append(f"#BSUB {bsub_cmd}")
-
-            if self.executor.startswith("lsf"):
-                lines.append(f"#BSUB -J {self.name}")
-                lines.append(f"#BSUB -o {self.name}-%J.out")
-                lines.append(f"#BSUB -e {self.name}-%J.err")
-
-        return lines
 
     def _generate_build_id(self):
         """Generate a build id based on the Buildspec name, and datetime."""
@@ -542,8 +518,18 @@ class CompilerBuilder(BuilderBase):
         # every test starts with shebang line
         lines = [self.shebang]
 
-        # get sbatch commmands
-        lines += self.get_sbatch()
+        if self.executor_type == "lsf":
+            script = LSFBatchScript(self.recipe.get("batch"), self.recipe.get("bsub"))
+
+            lines += script.get_headers()
+
+        elif self.executor_type == "slurm":
+
+            script = SlurmBatchScript(
+                self.recipe.get("batch"), self.recipe.get("sbatch")
+            )
+            lines += script.get_headers()
+
         # get environment variables
         lines += self.get_environment()
         # get variables
