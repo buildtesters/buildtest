@@ -72,6 +72,40 @@
         "type": "string"
       }
     },
+    "batch": {
+      "type": "object",
+      "description": "The ``batch`` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.",
+      "properties": {
+        "queue": {
+          "type":  "string",
+          "description": "Specify Job Queue"
+          },
+        "nodecount": {
+          "type": "string",
+          "description": "Specify number of Nodes to allocate"
+        },
+        "cpucount": {
+          "type": "string",
+          "description": "Specify number of CPU to allocate"
+        },
+        "timelimit": {
+          "type": "string",
+          "description": "Specify Job timelimit"
+        },
+        "memory": {
+          "type": "string",
+          "description": "Specify Memory Size for Job"
+        },
+        "account": {
+          "type": "string",
+          "description": "Specify Account to charge job"
+        },
+        "exclusive": {
+          "type": "boolean",
+          "description": "Specify if job needs to run in exclusive mode"
+        }
+      }
+    },
     "status": {
       "type": "object",
       "description": "The status section describes how buildtest detects PASS/FAIL on test. By default returncode 0 is a PASS and anything else is a FAIL, however buildtest can support other types of PASS/FAIL conditions.",
