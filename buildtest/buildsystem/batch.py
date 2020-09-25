@@ -86,7 +86,6 @@ class SlurmBatchScript(BatchScript):
         # only process if batch field is specified
         if self.batch:
             for key, value in self.batch.items():
-                print(key, value)
                 if key == "exclusive" and self.batch[key] == True:
                     self.headers += [
                         f"{self.directive} {self.batch_translation['exclusive']}=user"
