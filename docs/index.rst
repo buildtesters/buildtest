@@ -10,7 +10,7 @@ docs at https://buildtest.readthedocs.io/en/devel/.
 Status
 -----------
 
-| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |jsonschema2md| |checkurls| |blackformat| |tutorials| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
+| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |jsonschema2md| |checkurls| |blackformat| |clichecks| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -45,7 +45,7 @@ Status
 .. |blackformat| image:: https://github.com/buildtesters/buildtest/workflows/Black%20Formatter/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
-.. |tutorials| image:: https://github.com/buildtesters/buildtest/workflows/TutorialsValidation/badge.svg
+.. |clichecks| image:: https://github.com/buildtesters/buildtest/workflows/buildtest%20cli%20checks/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
 .. |regressiontest| image:: https://github.com/buildtesters/buildtest/workflows/regressiontest/badge.svg
