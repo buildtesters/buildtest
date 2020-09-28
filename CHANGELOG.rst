@@ -1,6 +1,19 @@
 CHANGELOG
 =========
 
+v0.9.0 (TBD)
+-------------
+
+
+- Add a ``setup.sh`` script to install buildtest. This changes the way buildtest is installed as pose to using **pip** see `#491 <https://github.com/buildtesters/buildtest/pull/491>`_
+- Migrate schema development from https://github.com/buildtesters/schemas into main project.  see `#480 <https://github.com/buildtesters/buildtest/pull/480>`_
+- Add a custom RefResolver for resolving JSON schemas in filesystem as pose to using public URL, this was important for testing schema changes locally which was not present before. See `#487 <https://github.com/buildtesters/buildtest/pull/487>`_
+- Fix bug when when writing python scripts in ``run`` section, we add stage/run directory in test destination directory see `#477 <https://github.com/buildtesters/buildtest/pull/477/>`_.
+- The ``returncode`` field can be a string or a list for matching returncode status. The `tags` field can be a string or list of strings, before it could only be a list.  See `#486 <https://github.com/buildtesters/buildtest/pull/486/>`_
+- Add scheduler agnostic configuration via ``batch`` field see `#493 <https://github.com/buildtesters/buildtest/pull/493>`_ and `#494 <https://github.com/buildtesters/buildtest/pull/494>`_
+
+
+
 v0.8.1 (Sep 14th 2020)
 -----------------------
 
