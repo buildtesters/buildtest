@@ -123,6 +123,21 @@ buildspecs:
       cflags: "-O1"
       ldflags: "-lm"
 
+  additionalProperties_batch:
+    executor: local.bash
+    type: compiler
+    description: "test additionalProperties in batch field"
+    module:
+    - "module purge && module load gcc/4.0"
+    batch:
+      "nodecount": "2"
+      "EXPORT": "ALL"
+    build:
+      source: src/hello.c
+      name: gnu
+      cflags: "-O1"
+      ldflags: "-lm"
+
   type_mismatch_args:
     executor: local.bash
     type: compiler
