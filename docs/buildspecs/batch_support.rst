@@ -290,10 +290,13 @@ for the **batch** field
    **email-address**, --mail-user, -u
    **exclusive**, --exclusive=user, -x
    **memory**, --mem, -M
+   **network**, --network, -network
    **nodecount**, --nodes, -nnodes
    **qos**, --qos, N/A
    **queue**, --partition, -q
+   **tasks-per-core**, --ntasks-per-core, N/A
    **tasks-per-node**, --ntasks-per-node, N/A
+   **tasks-per-socket**, --ntasks-per-socket, N/A
    **timelimit**, --time, -W
 
 

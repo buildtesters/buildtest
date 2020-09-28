@@ -11,10 +11,13 @@ class LSFBatchScript(BatchScript):
         "email-address": "-u",
         "exclusive": "-x",
         "memory": "-M",
+        "network": "-network",
         "nodecount": "-nnodes",
         "qos": None,
         "queue": "-q",
+        "tasks-per-core": None,
         "tasks-per-node": None,
+        "tasks-per-socket": None,
         "timelimit": "-W",
     }
 
@@ -50,7 +53,7 @@ class LSFBatchScript(BatchScript):
                         f"{self.directive} {self.batch_translation['exclusive']}"
                     ]
                 # if batch key is None that means scheduler doesn't support the option
-                elif not self.batch[key]:
+                elif not self.batch_translation.get(key):
                     continue
                 else:
                     self.headers += [
@@ -66,10 +69,13 @@ class SlurmBatchScript(BatchScript):
         "email-address": "--mail-user",
         "exclusive": "--exclusive",
         "memory": "--mem",
+        "network": "--network",
         "nodecount": "--nodes",
         "qos": "--qos",
         "queue": "--partition",
+        "tasks-per-core": "--ntasks-per-core",
         "tasks-per-node": "--ntasks-per-node",
+        "tasks-per-socket": "--ntasks-per-socket",
         "timelimit": "--time",
     }
 
@@ -102,7 +108,7 @@ class SlurmBatchScript(BatchScript):
                         f"{self.directive} {self.batch_translation['exclusive']}=user"
                     ]
                 # if batch key is None that means scheduler doesn't support the option
-                elif not self.batch[key]:
+                elif not self.batch_translation.get(key):
                     continue
                 else:
                     self.headers += [
