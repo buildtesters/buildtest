@@ -75,34 +75,63 @@
     "batch": {
       "type": "object",
       "description": "The ``batch`` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.",
+      "additionalProperties": false,
       "properties": {
-        "queue": {
-          "type":  "string",
-          "description": "Specify Job Queue"
-          },
-        "nodecount": {
+        "account": {
           "type": "string",
-          "description": "Specify number of Nodes to allocate"
+          "description": "Specify Account to charge job"
+        },
+        "begintime": {
+          "type": "string",
+          "description": "Specify begin time when job will start allocation"
         },
         "cpucount": {
           "type": "string",
           "description": "Specify number of CPU to allocate"
         },
-        "timelimit": {
+        "email-address": {
           "type": "string",
-          "description": "Specify Job timelimit"
+          "description": "Email Address to notify on Job State Changes"
+        },
+        "exclusive": {
+          "type": "boolean",
+          "description": "Specify if job needs to run in exclusive mode"
         },
         "memory": {
           "type": "string",
           "description": "Specify Memory Size for Job"
         },
-        "account": {
+        "network": {
           "type": "string",
-          "description": "Specify Account to charge job"
+          "description": "Specify network resource requirement for job"
         },
-        "exclusive": {
-          "type": "boolean",
-          "description": "Specify if job needs to run in exclusive mode"
+        "nodecount": {
+          "type": "string",
+          "description": "Specify number of Nodes to allocate"
+        },
+        "qos": {
+          "type": "string",
+          "description": "Specify Quality of Service (QOS)"
+        },
+        "queue": {
+          "type":  "string",
+          "description": "Specify Job Queue"
+          },
+        "tasks-per-core": {
+          "type": "string",
+          "description": "Request number of tasks to be invoked on each core. "
+        },
+        "tasks-per-node": {
+          "type": "string",
+          "description": "Request number of tasks to be invoked on each node. "
+        },
+        "tasks-per-socket": {
+          "type": "string",
+          "description": "Request the maximum tasks to be invoked on each socket. "
+        },
+        "timelimit": {
+          "type": "string",
+          "description": "Specify Job timelimit"
         }
       }
     },
