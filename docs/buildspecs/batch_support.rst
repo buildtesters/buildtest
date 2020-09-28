@@ -280,17 +280,22 @@ script directive supported by the scheduler. Shown below is a translation table
 for the **batch** field
 
 
-.. csv-table::
+.. csv-table:: Batch Translation Table
    :header: "Field", "Slurm", "LSF"
    :widths: 25 25 25
 
-   **queue**, --partition, -q
-   **nodecount**, --nodes, -nnodes
-   **cpucount**, --ntasks, -n
-   **timelimit**, --time, -W
-   **memory**, --mem, -M
    **account**, --account, -P
-   **exclusive**, --nodes, -x
+   **begin**, --begin, -b
+   **cpucount**, --ntasks, -n
+   **email-address**, --mail-user, -u
+   **exclusive**, --exclusive=user, -x
+   **memory**, --mem, -M
+   **nodecount**, --nodes, -nnodes
+   **qos**, --qos, N/A
+   **queue**, --partition, -q
+   **tasks-per-node**, --ntasks-per-node, N/A
+   **timelimit**, --time, -W
+
 
 In this example, we rewrite the LSF buildspec to use ``batch`` instead of ``bsub``
 field::

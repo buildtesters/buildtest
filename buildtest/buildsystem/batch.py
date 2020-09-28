@@ -5,13 +5,17 @@ class BatchScript:
 
 class LSFBatchScript(BatchScript):
     batch_translation = {
-        "queue": "-q",
-        "nodecount": "-nnodes",
-        "cpucount": "-n",
-        "timelimit": "-W",
-        "memory": "-M",
         "account": "-P",
+        "begintime": "-b",
+        "cpucount": "-n",
+        "email-address": "-u",
         "exclusive": "-x",
+        "memory": "-M",
+        "nodecount": "-nnodes",
+        "qos": None,
+        "queue": "-q",
+        "tasks-per-node": None,
+        "timelimit": "-W",
     }
 
     def __init__(self, batch=None, bsub=None):
@@ -45,6 +49,9 @@ class LSFBatchScript(BatchScript):
                     self.headers += [
                         f"{self.directive} {self.batch_translation['exclusive']}"
                     ]
+                # if batch key is None that means scheduler doesn't support the option
+                elif not self.batch[key]:
+                    continue
                 else:
                     self.headers += [
                         f"{self.directive} {self.batch_translation[key]} {value}"
@@ -53,13 +60,17 @@ class LSFBatchScript(BatchScript):
 
 class SlurmBatchScript(BatchScript):
     batch_translation = {
-        "queue": "--partition",
-        "nodecount": "--nodes",
-        "cpucount": "--ntasks",
-        "timelimit": "--time",
-        "memory": "--mem",
         "account": "--account",
+        "begintime": "--begin",
+        "cpucount": "--ntasks",
+        "email-address": "--mail-user",
         "exclusive": "--exclusive",
+        "memory": "--mem",
+        "nodecount": "--nodes",
+        "qos": "--qos",
+        "queue": "--partition",
+        "tasks-per-node": "--ntasks-per-node",
+        "timelimit": "--time",
     }
 
     def __init__(self, batch=None, sbatch=None):
@@ -90,6 +101,9 @@ class SlurmBatchScript(BatchScript):
                     self.headers += [
                         f"{self.directive} {self.batch_translation['exclusive']}=user"
                     ]
+                # if batch key is None that means scheduler doesn't support the option
+                elif not self.batch[key]:
+                    continue
                 else:
                     self.headers += [
                         f"{self.directive} {self.batch_translation[key]}={value}"
