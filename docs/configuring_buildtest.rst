@@ -22,6 +22,8 @@ Shown below is the default configuration.
 
 .. program-output:: cat ../buildtest/settings/config.yml
 
+.. _configuring_executors:
+
 Executors
 ----------
 

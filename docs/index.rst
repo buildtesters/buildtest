@@ -105,7 +105,7 @@ which is a Python API for `Lmod <https://lmod.readthedocs.io/en/latest/>`_. The 
 module features were deprecated and moved to lmodule with the main object
 of automating module load testing. For more details on lmodule see https://github.com/buildtesters/lmodule
 
-To get started with buildtest, please review the :ref:`Terminology`
+To get started with buildtest, please review the :ref:`terminology`
 and proceed to :ref:`Setup`  followed by :ref:`Getting Started`.
 
 For additional reference, you can read :ref:`summary_of_buildtest` and

@@ -516,8 +516,8 @@ class CompilerBuilder(BuilderBase):
         self.setup()
 
         # every test starts with shebang line
-        lines = [self.shebang]
-
+        # lines = [self.shebang]
+        lines = []
         if self.executor_type == "lsf":
             script = LSFBatchScript(self.recipe.get("batch"), self.recipe.get("bsub"))
 

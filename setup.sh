@@ -20,7 +20,7 @@ pip install -r ${buildtest_root}/requirements.txt &> /dev/null
 bin=${buildtest_root}/bin
 export PATH=${bin}:$PATH
 # add PYTHONPATH for buildtest to persist in shell environment
-export PYTHONPATH=${buildtest_root}/buildtest:$PYTHONPATH
+export PYTHONPATH=${buildtest_root}:$PYTHONPATH
 
 buildtest_path=$(which buildtest)
 echo "Adding ${bin} to PATH variable"

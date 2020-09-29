@@ -4,8 +4,7 @@ from buildtest.menu.buildspec import parse_buildspecs
 
 tagname = ["tutorials"]
 print(f"Searching by tagname: {tagname}")
-included_bp, excluded_bp = discover_buildspecs(tags=tagname)
-print(f"discovered_buildspec: {included_bp} \n\n")
+included_bp, excluded_bp = discover_buildspecs(tags=tagname, debug=True)
 
 configuration = load_settings()
 testdir = resolve_testdirectory(configuration)

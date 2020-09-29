@@ -10,9 +10,19 @@ Compilation Examples
 ----------------------
 
 We assume the reader has basic understanding of :ref:`global_schema`
-validation.
+validation. Shown below is the schema definition for compiler schema::
 
-The **type**, **compiler**, and **executor** are required keys for the schema.
+      "$id": "compiler-v1.0.schema.json",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "compiler schema version 1.0",
+      "description": "The compiler schema is of ``type: compiler`` in sub-schema which is used for compiling and running programs",
+      "type": "object",
+      "required": ["type", "build", "executor"],
+      "additionalProperties": false,
+
+The required fields for compiler schema are **type**, **build**, and **executor**.
+The compiler schema is a JSON object defined by ``"type": "object"`` which is
+similar to the *script* schema.
 
 Shown below are 6 test examples performing Hello World compilation with C, C++,
 and Fortran using GNU compiler
@@ -51,8 +61,10 @@ Shown below is an example build for the buildspec example
 The generated test for test name **hello_f** is the following::
 
     #!/bin/bash
-    gfortran -Wall -o hello.f90.exe /global/u1/s/siddiq90/tutorials/examples/serial/src/hello.f90
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    gfortran -Wall -o hello.f90.exe src/hello.f90
     ./hello.f90.exe
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
 buildtest will fill in the compilation line based on compilation pattern. buildtest,
 will detect the file extensions and perform a lookup to find the programming language,
