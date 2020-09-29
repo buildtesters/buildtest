@@ -327,7 +327,7 @@ def build_phase(builders, printTable=False):
         print(tabulate(table, headers=table.keys(), tablefmt="presto",))
 
 
-def run_phase(builders, executor, config_dict, rerun, printTable=False):
+def run_phase(builders, executor, config_dict, rerun=None, printTable=False):
     """This method will run all builders with the appropriate executor.
     The executor argument is an instance of ``BuildExecutor`` that is responsible
     for orchestrating builder execution to the appropriate executor class. The

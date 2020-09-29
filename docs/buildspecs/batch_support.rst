@@ -270,8 +270,8 @@ The LSFExecutor ``gather`` method will retrieve the following format fields usin
 -    "output_file"
 -    "error_file"
 
-Scheduler Agnostic Configuration (Experimental)
--------------------------------------------------
+Scheduler Agnostic Configuration
+---------------------------------
 
 
 The ``batch`` field can be used for specifying scheduler agnostic configuration

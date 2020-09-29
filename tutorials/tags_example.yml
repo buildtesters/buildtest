@@ -1,0 +1,15 @@
+version: "1.0"
+buildspecs:
+  string_tag:
+    type: script
+    executor: local.bash
+    description: tags can be a string
+    tags: network
+    run: hostname
+
+  list_of_strings_tags:
+    type: script
+    executor: local.bash
+    description: tags can be a list of strings
+    tags: [network, ping]
+    run: ping -c 4 www.google.com

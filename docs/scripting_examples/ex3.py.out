@@ -1,0 +1,75 @@
+Searching by tagname: ['tutorials']
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+    
+
+Discovered Buildspecs:
+ 
+/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+/Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
+/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+/Users/siddiq90/Documents/buildtest/tutorials/environment.yml
+/Users/siddiq90/Documents/buildtest/tutorials/sleep.yml
+/Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+/Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+[skip] test is skipped.
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+    
+ schemafile                | validstate   | buildspec
+---------------------------+--------------+--------------------------------------------------------------------------------
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/environment.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/sleep.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ Name                     | Type     | Executor     | Tags                     | Testpath
+--------------------------+----------+--------------+--------------------------+----------------------------------------------------------------------------------------------------------------------
+ variables                | script   | local.bash   | ['tutorials']            | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables/10/stage/generate.sh
+ exit1_fail               | script   | local.sh     | ['tutorials', 'fail']    | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/14/stage/generate.sh
+ exit1_pass               | script   | local.sh     | ['tutorials', 'pass']    | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/12/stage/generate.sh
+ returncode_list_mismatch | script   | local.sh     | ['tutorials', 'fail']    | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/14/stage/generate.sh
+ returncode_int_match     | script   | local.sh     | ['tutorials', 'pass']    | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/12/stage/generate.sh
+ selinux_disable          | script   | local.bash   | ['tutorials']            | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable/10/stage/generate.sh
+ systemd_default_target   | script   | local.bash   | ['tutorials']            | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/10/stage/generate.sh
+ _bin_sh_shell            | script   | local.sh     | ['tutorials']            | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/12/stage/generate.sh
+ _bin_bash_shell          | script   | local.bash   | ['tutorials']            | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/12/stage/generate.sh
+ bash_shell               | script   | local.bash   | ['tutorials']            | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/12/stage/generate.sh
+ sh_shell                 | script   | local.sh     | ['tutorials']            | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/12/stage/generate.sh
+ shell_options            | script   | local.sh     | ['tutorials']            | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/12/stage/generate.sh
+ executable_arguments     | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/12/stage/generate.sh
+ environment_variables    | script   | local.bash   | ['tutorials']            | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/environment_variables/10/stage/generate.sh
+ sleep                    | script   | local.bash   | ['tutorials']            | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/sleep/sleep/13/stage/generate.sh
+ circle_area              | script   | local.python | ['tutorials', 'python']  | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/12/stage/generate.sh
+ vecadd_gnu               | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/12/stage/generate.sh
+ pre_post_build_run       | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/12/stage/generate.sh
+ unskipped                | script   | local.bash   | ['tutorials']            | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/10/stage/generate.sh
+ hello_f                  | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/14/stage/generate.sh
+ hello_c                  | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/14/stage/generate.sh
+ hello_cplusplus          | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/14/stage/generate.sh
+ cc_example               | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/14/stage/generate.sh
+ fc_example               | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/14/stage/generate.sh
+ cxx_example              | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/14/stage/generate.sh

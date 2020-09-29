@@ -29,10 +29,33 @@ when validating test section.
 
 Each subschema has a list of field attributes that are supported, for example the
 fields: **type**, **executor**, **vars** and **run** are all valid fields supported
-by the script schema. The **version** field informs which version of subschema to use.
+by the *script* schema. The **version** field informs which version of subschema to use.
 Currently all sub-schemas are at version ``1.0`` where buildtest will validate
 with a schema ``script-v1.0.schema.json``. In future, we can support multiple versions
 of subschema for backwards compatibility.
+
+
+Shown below is schema definition for script-v1.0.schema.json ::
+
+    {
+      "$id": "script-v1.0.schema.json",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "script schema version 1.0",
+      "description": "The script schema is of ``type: script`` in sub-schema which is used for running shell scripts",
+      "type": "object",
+      "required": ["type", "run", "executor"],
+      "additionalProperties": false,
+      ...
+    }
+
+The ``"type": "object"`` means sub-schema is a JSON `object <http://json-schema.org/understanding-json-schema/reference/object.html>`_
+where we define a list of key/value pair. The sub-schemas are of type ``object``
+and have a list of required fields that must be provided when using the schema.
+The ``"required"`` field specifies a list of fields that must be specified in
+order to validate the Buildspec. In this example, ``type``, ``run``, ``executor``
+are required fields. The ``additionProperties: false`` informs schema to reject
+any extra properties not defined in schema. In our previous example, the JSON
+object is ``variables``.
 
 The **executor** key is required for all sub-schemas which instructs buildtest
 which executor to use when running the test. The executors are defined in your
@@ -136,6 +159,37 @@ values for returncode::
   returncode: [1, 1.5]
 
   returncode: [1, 2, 5, 5]
+
+Classifying tests with tags
+----------------------------
+
+The ``tags`` field can be used to classify tests which can be used to organize tests
+or :ref:`build_by_tags` (``buildtest build --tags <TAGNAME>``).
+Tags can be defined as a string or list of strings. In this example, the test
+``string_tag`` defines a tag name **network** while test ``list_of_strings_tags``
+define a list of tags named ``network`` and ``ping``.
+
+.. program-output:: cat ../tutorials/tags_example.yml
+
+Each item in tags must be a string and no duplicates are allowed, for example in
+this test, we define a duplicate tag **network** which is not allowed.
+
+.. program-output:: cat ../tutorials/invalid_tags.yml
+
+If we run this test and inspect the logs we will see an error message in schema validation::
+
+    2020-09-29 10:56:43,175 [parser.py:179 - _validate() ] - [INFO] Validating test - 'duplicate_string_tags' with schemafile: script-v1.0.schema.json
+    2020-09-29 10:56:43,175 [buildspec.py:397 - parse_buildspecs() ] - [ERROR] ['network', 'network'] is not valid under any of the given schemas
+
+    Failed validating 'oneOf' in schema['properties']['tags']:
+        {'oneOf': [{'type': 'string'},
+                   {'$ref': '#/definitions/list_of_strings'}]}
+
+    On instance['tags']:
+        ['network', 'network']
+
+If tags is a list, it must contain one item, therefore an empty list (i.e ``tags: []``)
+is invalid.
 
 Python example
 ---------------
