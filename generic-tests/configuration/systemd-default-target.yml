@@ -12,4 +12,3 @@ buildspecs:
       fi
       echo "multi-user is not the default target";
       exit 1
-   

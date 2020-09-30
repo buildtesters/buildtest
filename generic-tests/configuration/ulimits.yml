@@ -10,7 +10,7 @@ buildspecs:
       regex:
         stream: stdout
         exp: "^unlimited$"
-  
+
   ulimit_cputime:
     executor: local.bash
     type: script
@@ -21,7 +21,7 @@ buildspecs:
       regex:
         stream: stdout
         exp: "^unlimited$"
- 
+
   ulimit_stacksize:
     executor: local.bash
     type: script
