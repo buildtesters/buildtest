@@ -1,0 +1,23 @@
+version: "1.0"
+buildspecs:
+  show_lsf_queues:
+    type: script
+    executor: local.bash
+    description: Show LSF queues
+    tags: lsf
+    run: bqueues
+
+  show_lsf_queues_formatted:
+    type: script
+    executor: local.bash
+    description: Show LSF queues with formatted columns
+    tags: lsf
+    run: bqueues -o 'queue_name description priority status'
+
+  show_lsf_queues_current_user:
+    type: script
+    executor: local.bash
+    description: Show LSF queues available for current user
+    tags: lsf
+    run: bqueues -u $USER
+

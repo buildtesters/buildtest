@@ -1,0 +1,22 @@
+version: "1.0"
+buildspecs:
+  display_lsf_hosts:
+    description: Show all hosts in LSF cluster
+    type: script
+    executor: local.bash
+    tags: lsf
+    run: bhosts
+
+  display_hosts_format:
+    description: Show all hosts with column hostname and status
+    type: script
+    executor: local.bash
+    tags: lsf
+    run: bhosts -o 'host_name status'
+
+  bhosts_version:
+    description: Display bhosts version
+    type: script
+    executor: local.bash
+    tags: lsf
+    run: bhosts -V
