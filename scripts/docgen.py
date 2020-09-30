@@ -128,9 +128,9 @@ def main():
 
     create_dir(docgen)
     build_helper()
-    # utorial()
-    # schemas()
-    # introspection_cmds()
+    tutorial()
+    schemas()
+    introspection_cmds()
 
 
 if __name__ == "__main__":
