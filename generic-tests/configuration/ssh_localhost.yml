@@ -1,0 +1,7 @@
+version: "1.0"
+buildspecs:
+  ssh_localhost_remotecommand:
+    type: script
+    description: Test if ssh on localhost works and if we can run remote command.
+    tags: [ssh]
+    run: ssh -q 127.0.0.1 hostname

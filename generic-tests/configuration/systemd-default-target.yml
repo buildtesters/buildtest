@@ -1,0 +1,15 @@
+version: "1.0"
+buildspecs:
+  systemd_default_target:
+    executor: local.bash
+    type: script
+    tags: [system]
+    description: check if default target is multi-user.target
+    run: |
+      if [ "multi-user.target" == `systemctl get-default` ]; then
+        echo "multi-user is the default target";
+        exit 0
+      fi
+      echo "multi-user is not the default target";
+      exit 1
+   

@@ -34,7 +34,7 @@ def func_buildspec_find(args):
     buildspec_paths = (
         config_opts.get("config", {}).get("paths", {}).get("buildspec_roots")
     )
-    paths = [BUILDSPEC_DEFAULT_PATH]
+    paths = BUILDSPEC_DEFAULT_PATH
 
     if buildspec_paths:
 
@@ -59,14 +59,17 @@ def func_buildspec_find(args):
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
         cache = json.loads(fd.read())
 
+    # implements buildtest buildspec find --tags
     if args.tags:
         get_all_tags(cache)
         return
 
+    # implements buildtest buildspec find --buildspec-files
     if args.buildspec_files:
         get_buildspecfiles(cache)
         return
 
+    # implements buildtest buildspec find --list-executors
     if args.list_executors:
         get_executors(cache)
         return
@@ -77,6 +80,7 @@ def func_buildspec_find(args):
         ["type", "Filter by schema type ", "STRING"],
     ]
 
+    # implements buildtest buildspec find --helpfilter
     if args.helpfilter:
         print(
             tabulate(

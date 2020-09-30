@@ -5,7 +5,7 @@ import os
 import subprocess
 from buildtest.utils.file import create_dir, write_file
 
-root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 docgen = os.path.join(root, "docs", "docgen")
 
 
@@ -128,9 +128,9 @@ def main():
 
     create_dir(docgen)
     build_helper()
-    tutorial()
-    schemas()
-    introspection_cmds()
+    # utorial()
+    # schemas()
+    # introspection_cmds()
 
 
 if __name__ == "__main__":

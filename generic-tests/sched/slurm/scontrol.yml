@@ -1,0 +1,16 @@
+version: "1.0"
+buildspecs:
+  slurm_config:
+    executor: local.bash
+    type: script
+    description: run scontrol show config
+    tags: [slurm]
+    run: scontrol show config
+
+  show_partition:
+    executor: local.bash
+    type: script
+    tags: [slurm]
+    description: run scontrol show partition
+    run: scontrol show partition
+

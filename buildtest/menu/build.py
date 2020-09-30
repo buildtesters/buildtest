@@ -212,9 +212,13 @@ def discover_buildspecs(
         f"Based on input argument: --buildspec {buildspec} buildtest discovered the following Buildspecs: {buildspecs}"
     )
 
+    # if user pass buildspecs to be excluded (buildtest build -x <buildspec>) then
+    # discover all excluded buildspecs and remove from discovered list
     if exclude_buildspec:
         assert isinstance(exclude_buildspec, list)
         excludes = []
+        # discover all excluded buildspecs, if its file add to list,
+        # if its directory traverse all .yml files
         for option in exclude_buildspec:
             bp = discover_by_buildspecs(option)
             if bp:

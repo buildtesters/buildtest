@@ -52,11 +52,10 @@ work properly. Refer to the ``Makefile`` to see all of the make tags or run
 Automate Documentation Examples
 --------------------------------
 
-buildtest has a script in ``$BUILDTEST_ROOT/buildtest/docgen/main.py`` to automate
+buildtest has a script in top-level folder ``script/docgen.py`` to automate
 documentation examples. This script can be run as follows::
 
-  cd $BUILDTEST_ROOT
-  python $BUILDTEST_ROOT/buildtest/docgen/main.py
+  python script/docgen.py
 
 This assumes your buildtest environment is setup, the script will write
 documentation test examples in ``docs/docgen``. Consider running this script

@@ -1,0 +1,17 @@
+version: "1.0"
+buildspecs:
+  root_disk_usage:
+    executor: local.bash
+    type: script
+    tags: [filesystem, storage]
+    description: Check root disk usage and report if it exceeds threshold
+    env:
+      threshold: 90
+    run: |
+      root_disk_usage=`df -a / | tail -n 1 |  awk '{print $5'} | sed 's/[^0-9]*//g'`
+      # if root exceeds threshold
+      if [ "$root_disk_usage" -gt "$threshold" ]; then
+        echo "[WARNING] Root Disk Usage: $root_disk_usage% exceeded threshold of $threshold%"
+        exit 1
+      fi
+      echo "[OK] Root disk is below threshold of $threshold%"
