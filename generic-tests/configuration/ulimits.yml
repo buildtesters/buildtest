@@ -1,0 +1,69 @@
+version: "1.0"
+buildspecs:
+  ulimit_filelock:
+    executor: local.bash
+    type: script
+    tags: [system]
+    description: Check if file lock is set to unlimited in ulimits
+    run: ulimit -f
+    status:
+      regex:
+        stream: stdout
+        exp: "^unlimited$"
+
+  ulimit_cputime:
+    executor: local.bash
+    type: script
+    tags: [system]
+    description: Check if cputime is set to unlimited in ulimits
+    run: ulimit -t
+    status:
+      regex:
+        stream: stdout
+        exp: "^unlimited$"
+
+  ulimit_stacksize:
+    executor: local.bash
+    type: script
+    tags: [system]
+    description: Check if stack size is set to unlimited in ulimits
+    run: ulimit -s
+    status:
+      regex:
+        stream: stdout
+        exp: "^unlimited$"
+
+  ulimit_vmsize:
+    executor: local.bash
+    type: script
+    tags: [system]
+    description: Check virtual memory size and check if its set to unlimited
+    run: ulimit -v
+    status:
+      regex:
+        stream: stdout
+        exp: "^unlimited$"
+
+  ulimit_filedescriptor:
+    executor: local.bash
+    type: script
+    tags: [system]
+    description: Check if open file descriptors limit is set to 4096
+    run: ulimit -n
+    status:
+      regex:
+        stream: stdout
+        exp: "^4096$"
+
+  ulimit_max_user_process:
+    executor: local.bash
+    type: script
+    tags: [system]
+    description: Check max number of user process limit is set to 2048
+    run: ulimit -u
+    status:
+      regex:
+        stream: stdout
+        exp: "^2048$"
+maintainers:
+  - "@shahzebsiddiqui"

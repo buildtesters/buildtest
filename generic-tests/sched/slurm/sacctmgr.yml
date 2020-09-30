@@ -1,0 +1,32 @@
+version: "1.0"
+buildspecs:
+  show_accounts:
+    executor: local.bash
+    type: script
+    description: run sacctmgr list accounts
+    tags: [slurm]
+    run: sacctmgr list accounts
+
+  show_users:
+    executor: local.bash
+    type: script
+    description: run sacctmgr list users
+    tags: [slurm]
+    run: |
+      sacctmgr list users
+      sacctmgr list users $USER
+
+  show_qos:
+    executor: local.bash
+    type: script
+    description: run sacctmgr list qos
+    tags: [slurm]
+    run: sacctmgr list qos
+
+  show_tres:
+    executor: local.bash
+    description: run sacctmgr list tres
+    type: script
+    tags: [slurm]
+    run: sacctmgr list tres
+

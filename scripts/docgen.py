@@ -5,7 +5,7 @@ import os
 import subprocess
 from buildtest.utils.file import create_dir, write_file
 
-root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 docgen = os.path.join(root, "docs", "docgen")
 
 
@@ -134,5 +134,4 @@ def main():
 
 
 if __name__ == "__main__":
-    """Entry Point, invoking main() method"""
     main()
