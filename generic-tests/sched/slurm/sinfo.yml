@@ -56,3 +56,10 @@ buildspecs:
     tags: [slurm]
     run: sinfo -a -h -O partitionname
 
+  sinfo_version:
+    executor: local.bash
+    type: script
+    description: get slurm version
+    tags: [slurm]
+    run: sinfo --version
+

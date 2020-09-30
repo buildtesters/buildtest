@@ -1,0 +1,8 @@
+version: "1.0"
+buildspecs:
+  show_host_groups:
+    type: script
+    executor: local.bash
+    description: Show information about host groups using bmgroup
+    tags: lsf
+    run: bmgroup
