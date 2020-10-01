@@ -8,10 +8,10 @@ $ buildtest build --tags compile --tags python
 Discovered Buildspecs:
  
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
 /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -20,10 +20,10 @@ Discovered Buildspecs:
  schemafile                | validstate   | buildspec
 ---------------------------+--------------+--------------------------------------------------------------------------------
  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
 
 +----------------------+
 | Stage: Building Test |
@@ -32,8 +32,6 @@ Discovered Buildspecs:
  Name                 | Type     | Executor     | Tags                     | Testpath
 ----------------------+----------+--------------+--------------------------+--------------------------------------------------------------------------------------------------------------------
  executable_arguments | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/1/stage/generate.sh
- vecadd_gnu           | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/1/stage/generate.sh
- pre_post_build_run   | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
  hello_f              | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/1/stage/generate.sh
  hello_c              | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/1/stage/generate.sh
  hello_cplusplus      | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/1/stage/generate.sh
@@ -41,6 +39,8 @@ Discovered Buildspecs:
  fc_example           | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/1/stage/generate.sh
  cxx_example          | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/1/stage/generate.sh
  circle_area          | script   | local.python | ['tutorials', 'python']  | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/3/stage/generate.sh
+ pre_post_build_run   | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
+ vecadd_gnu           | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/1/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -49,8 +49,6 @@ Discovered Buildspecs:
  Name                 | Executor     | Status   |   Returncode | TestPath
 ----------------------+--------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------
  executable_arguments | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/1/stage/generate.sh
- vecadd_gnu           | local.bash   | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/1/stage/generate.sh
- pre_post_build_run   | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
  hello_f              | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/1/stage/generate.sh
  hello_c              | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/1/stage/generate.sh
  hello_cplusplus      | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/1/stage/generate.sh
@@ -58,6 +56,8 @@ Discovered Buildspecs:
  fc_example           | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/1/stage/generate.sh
  cxx_example          | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/1/stage/generate.sh
  circle_area          | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/3/stage/generate.sh
+ pre_post_build_run   | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
+ vecadd_gnu           | local.bash   | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/1/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

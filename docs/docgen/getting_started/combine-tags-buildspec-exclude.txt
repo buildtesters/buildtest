@@ -8,8 +8,8 @@ $ buildtest build --tags python -b tutorials/compilers -x tutorials/compilers/ve
 Discovered Buildspecs:
  
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
-/Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+/Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
 
 Excluded Buildspecs:
@@ -31,8 +31,8 @@ Excluded Buildspecs:
  schemafile                | validstate   | buildspec
 ---------------------------+--------------+--------------------------------------------------------------------------------
  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
 
 +----------------------+

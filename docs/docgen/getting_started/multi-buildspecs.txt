@@ -7,11 +7,11 @@ $ buildtest build -b tests/examples/buildspecs/ -b tutorials/systemd.yml
 
 Discovered Buildspecs:
  
+/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
 /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
 /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
-/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
-/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
 /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -19,11 +19,11 @@ Discovered Buildspecs:
     
  schemafile              | validstate   | buildspec
 -------------------------+--------------+----------------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
 
 +----------------------+
 | Stage: Building Test |
@@ -31,16 +31,16 @@ Discovered Buildspecs:
 
  Name                       | Type   | Executor     | Tags          | Testpath
 ----------------------------+--------+--------------+---------------+---------------------------------------------------------------------------------------------------------------
+ hello_dinosaur             | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/1/stage/generate.sh
  circle_area                | script | local.python |               | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/1/stage/generate.sh
  slurm_down_nodes_reason    | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/1/stage/generate.sh
  slurm_not_responding_nodes | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/1/stage/generate.sh
- hello_dinosaur             | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/1/stage/generate.sh
- systemd_default_target     | script | local.bash   | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/1/stage/generate.sh
  _bin_sh_shell              | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/1/stage/generate.sh
  _bin_bash_shell            | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/1/stage/generate.sh
  bash_shell                 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/1/stage/generate.sh
  sh_shell                   | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/1/stage/generate.sh
  shell_options              | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/1/stage/generate.sh
+ systemd_default_target     | script | local.bash   | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/1/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -48,16 +48,16 @@ Discovered Buildspecs:
     
  Name                       | Executor     | Status   |   Returncode | TestPath
 ----------------------------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------------
+ hello_dinosaur             | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/1/stage/generate.sh
  circle_area                | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/1/stage/generate.sh
  slurm_down_nodes_reason    | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/1/stage/generate.sh
  slurm_not_responding_nodes | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/1/stage/generate.sh
- hello_dinosaur             | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/1/stage/generate.sh
- systemd_default_target     | local.bash   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/1/stage/generate.sh
  _bin_sh_shell              | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/1/stage/generate.sh
  _bin_bash_shell            | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/1/stage/generate.sh
  bash_shell                 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/1/stage/generate.sh
  sh_shell                   | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/1/stage/generate.sh
  shell_options              | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/1/stage/generate.sh
+ systemd_default_target     | local.bash   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/1/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
