@@ -1,0 +1,23 @@
+version: "1.0"
+buildspecs:
+  bash_login_shebang:
+    type: script
+    executor: local.bash
+    shebang: "#!/bin/bash -l"
+    description: customize shebang line with bash login shell
+    run: shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
+    status:
+      regex:
+        exp: "^Login Shell$"
+        stream: stdout
+
+  bash_nonlogin_shebang:
+    type: script
+    executor: local.bash
+    shebang: "#!/bin/bash"
+    description: customize shebang line with default bash (nonlogin) shell
+    run: shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
+    status:
+      regex:
+        exp: "^Not Login Shell$"
+        stream: stdout

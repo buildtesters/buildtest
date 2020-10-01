@@ -62,7 +62,7 @@ class LocalExecutor(BaseExecutor):
         os.chdir(self.builder.stage_dir)
         self.logger.debug(f"Changing to directory {self.builder.stage_dir}")
 
-        cmd = ["bash", self.builder.metadata["testpath"]]
+        cmd = [self.builder.metadata["testpath"]]
 
         self.builder.metadata["command"] = " ".join(cmd)
         self.logger.debug(

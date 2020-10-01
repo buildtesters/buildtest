@@ -61,8 +61,8 @@ The **executor** key is required for all sub-schemas which instructs buildtest
 which executor to use when running the test. The executors are defined in your
 buildtest settings in :ref:`configuring_buildtest`.
 
-In this example we define variables using the `vars` section which is a Key/Value
-pair for variable assignment. The `run` section is required for script schema which
+In this example we define variables using the ``vars`` property which is a Key/Value
+pair for variable assignment. The **run** section is required for script schema which
 defines the content of the test script.
 
 Let's look at a more interesting example, shown below is a multi line run
@@ -190,6 +190,74 @@ If we run this test and inspect the logs we will see an error message in schema 
 
 If tags is a list, it must contain one item, therefore an empty list (i.e ``tags: []``)
 is invalid.
+
+Customize Shell
+-----------------
+
+By default buildtest will default to ``bash``, but we can configure shell
+option using the ``shell`` field. The shell field is defined in schema as follows::
+
+    "shell": {
+          "type": "string",
+          "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed",
+          "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*"
+        },
+
+The shell pattern is a regular expression where one can specify a shell name along
+with shell options. The shell will configure the `Shebang Line <https://en.wikipedia.org/wiki/Shebang_(Unix)>`_
+in the test-script. In this example, we illustrate a few tests using different shell
+field.
+
+.. program-output:: cat tutorials/shell_examples.yml
+
+The generated test-script for buildspec *_bin_sh_shell* will specify shebang
+**/bin/sh** because we specified ``shell: /bin/sh``::
+
+    #!/bin/sh
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.sh/before_script.sh
+    bzip2 --help
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.sh/after_script.sh
+
+If you don't specify a shell path such as ``shell: sh``, then buildtest will resolve
+path by looking in $PATH and build the shebang line.
+
+In test *shell_options* we specify ``shell: "sh -x"``, buildtest will tack on the
+shell options into the shebang line. The generated test for this script is the following::
+
+    #!/bin/sh -x
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.sh/before_script.sh
+    echo $SHELL
+    hostname
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.sh/after_script.sh
+
+Customize Shebang
+-----------------
+
+You may customize the shebang line in testscript using ``shebang`` field. This
+takes precedence over the `shell` option which automatically detects the shebang
+based on shell path.
+
+In next example we have two tests **bash_login_shebang** and **bash_nonlogin_shebang**
+which tests if shell is Login or Non-Login. The ``#!/bin/bash -l`` indicates we
+want to run in login shell and expects an output of **Login Shell** while
+test **bash_nonlogin_shebang** should run in default behavior which is non-login
+shell and expects output **Not Login Shell**. We match this with regular expression
+with stdout stream.
+
+.. program-output:: cat tutorials/shebang.yml
+
+Now let's run this test as we see the following.
+
+.. program-output:: cat docgen/getting_started/shebang.txt
+
+If we look at the generated test for **bash_login_shebang** we see the shebang line
+is passed into the script::
+
+    #!/bin/bash -l
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+
 
 Python example
 ---------------

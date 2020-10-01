@@ -63,6 +63,7 @@ def tutorial():
         f"{os.path.join(prefix, 'combine-tags-buildspec-exclude.txt')}": "buildtest build --tags python -b tutorials/compilers -x tutorials/compilers/vecadd.yml",
         f"{os.path.join(prefix, 'single-executor.txt')}": "buildtest build --executor local.sh",
         f"{os.path.join(prefix, 'multi-executor.txt')}": "buildtest build --executor local.sh --executor local.bash",
+        f"{os.path.join(prefix, 'shebang.txt')}": "buildtest build -b tutorials/shebang.yml",
         f"{os.path.join(prefix, 'stage_parse.txt')}": "buildtest build -b tutorials/systemd.yml --stage=parse",
         f"{os.path.join(prefix, 'stage_build.txt')}": "buildtest build -b tutorials/systemd.yml --stage=build",
     }

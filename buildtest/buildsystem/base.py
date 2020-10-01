@@ -87,10 +87,14 @@ class BuilderBase:
         self.metadata["executor"] = self.executor
         # The default shell will be bash
 
+        self.default_shell = Shell()
+
         self.shell = Shell(self.recipe.get("shell", "bash"))
 
         # set shebang to value defined in Buildspec, if not defined then get one from Shell class
-        self.shebang = self.recipe.get("shebang") or self.shell.shebang
+        self.shebang = (
+            self.recipe.get("shebang") or f"{self.shell.shebang} {self.shell.opts}"
+        )
         self.logger.debug("Using shell %s", self.shell.name)
         self.logger.debug(f"Shebang used for test: {self.shebang}")
 
@@ -167,6 +171,11 @@ class BuilderBase:
         # Implementation to write file generate.sh
         # start of each test should have the shebang
         lines = [self.shebang]
+
+        # if shell is python the generated testscript will be run via bash, we invoke
+        # python script in bash script.
+        if self.shell.name == "python":
+            lines = [self.default_shell.shebang]
 
         if self.executor_type == "lsf":
             script = LSFBatchScript(self.recipe.get("batch"), self.recipe.get("bsub"))
