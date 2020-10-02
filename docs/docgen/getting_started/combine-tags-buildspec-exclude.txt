@@ -7,16 +7,17 @@ $ buildtest build --tags python -b tutorials/compilers -x tutorials/compilers/ve
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
 /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+/Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
 
 Excluded Buildspecs:
 
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
-[executable_arguments] test is skipped because it is not in tag filter list: ['python']
 [pre_post_build_run] test is skipped because it is not in tag filter list: ['python']
+[executable_arguments] test is skipped because it is not in tag filter list: ['python']
 [hello_f] test is skipped because it is not in tag filter list: ['python']
 [hello_c] test is skipped because it is not in tag filter list: ['python']
 [hello_cplusplus] test is skipped because it is not in tag filter list: ['python']
@@ -30,34 +31,37 @@ Excluded Buildspecs:
     
  schemafile                | validstate   | buildspec
 ---------------------------+--------------+--------------------------------------------------------------------------------
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- Name        | Type   | Executor     | Tags                    | Testpath
--------------+--------+--------------+-------------------------+---------------------------------------------------------------------------------------------------------
- circle_area | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
+ Name         | Type   | Executor     | Tags                    | Testpath
+--------------+--------+--------------+-------------------------+---------------------------------------------------------------------------------------------------------
+ circle_area  | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
+ python_hello | script | local.bash   | python                  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
     
- Name        | Executor     | Status   |   Returncode | TestPath
--------------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------
- circle_area | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
+ Name         | Executor     | Status   |   Returncode | TestPath
+--------------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------
+ circle_area  | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
+ python_hello | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
     
-Executed 1 tests
-Passed Tests: 1/1 Percentage: 100.000%
-Failed Tests: 0/1 Percentage: 0.000%
+Executed 2 tests
+Passed Tests: 2/2 Percentage: 100.000%
+Failed Tests: 0/2 Percentage: 0.000%
 
 
 

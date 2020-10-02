@@ -3,6 +3,7 @@ buildspecs:
   hello_world:
     executor: local.bash
     type: script
+    tags: tutorials
     description: "hello world example"
     run: echo "hello world!"
 maintainers:

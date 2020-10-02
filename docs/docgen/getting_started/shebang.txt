@@ -21,10 +21,10 @@ Discovered Buildspecs:
 | Stage: Building Test |
 +----------------------+ 
 
- Name                  | Type   | Executor   | Tags   | Testpath
------------------------+--------+------------+--------+------------------------------------------------------------------------------------------------------------
- bash_login_shebang    | script | local.bash |        | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/1/stage/generate.sh
- bash_nonlogin_shebang | script | local.bash |        | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/1/stage/generate.sh
+ Name                  | Type   | Executor   | Tags      | Testpath
+-----------------------+--------+------------+-----------+------------------------------------------------------------------------------------------------------------
+ bash_login_shebang    | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
+ bash_nonlogin_shebang | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -32,8 +32,8 @@ Discovered Buildspecs:
     
  Name                  | Executor   | Status   |   Returncode | TestPath
 -----------------------+------------+----------+--------------+------------------------------------------------------------------------------------------------------------
- bash_login_shebang    | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/1/stage/generate.sh
- bash_nonlogin_shebang | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/1/stage/generate.sh
+ bash_login_shebang    | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
+ bash_nonlogin_shebang | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

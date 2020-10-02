@@ -2,9 +2,9 @@ $ buildtest buildspec find --list-executors
 +--------------+
 | executors    |
 +==============+
-| local.sh     |
-+--------------+
 | local.python |
 +--------------+
 | local.bash   |
++--------------+
+| local.sh     |
 +--------------+
