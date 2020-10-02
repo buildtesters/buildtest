@@ -97,10 +97,10 @@ buildspecs:
       ldflags: "-lm"
 
 
-  test_additionalProperties_compiler:
+  additionalProperties_build:
     executor: local.bash
     type: compiler
-    description: "test additionalProperties in compiler object. Schema does not allow for additional keys"
+    description: "test additionalProperties in build object. Schema does not allow for additional keys"
     module:
     - "module purge && module load gcc/4.0"
     build:
@@ -110,7 +110,7 @@ buildspecs:
       cflags: "-O1"
       ldflags: "-lm"
 
-  test_additionalProperties_main_schema:
+  additionalProperties_main:
     executor: local.bash
     type: compiler
     description: "test additionalProperties in main schema"
