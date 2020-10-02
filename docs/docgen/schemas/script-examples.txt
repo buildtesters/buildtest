@@ -1,12 +1,6 @@
-$ buildtest schema -n script-v1.0.schema.json -e 
-
-
-
+$ buildtest schema -n script-v1.0.schema.json --example 
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/script-v1.0.schema.json/valid/examples.yml
-Valid State: True
 ________________________________________________________________________________
-
-
 version: "1.0"
 buildspecs:
   multiline_run:
@@ -76,7 +70,7 @@ buildspecs:
     run: hostname
 
   declare_shell_name_bin_sh:
-    executor: local.script
+    executor: local.sh
     type: script
     description: declare shell name to /bin/sh
     shell: "/bin/sh -e"
@@ -97,11 +91,19 @@ buildspecs:
     shebang: "#!/usr/bin/env bash"
     run: hostname
 
-  status_returncode:
+  status_returncode_list:
     executor: local.bash
     type: script
-    description: This test pass because using a valid return code
-    run: hostname
+    description: The returncode can be a list of integers
+    run: exit 0
+    status:
+      returncode: [0]
+
+  status_returncode_int:
+    executor: local.bash
+    type: script
+    description: The returncode can be an integer to match with single returncode
+    run: exit 0
     status:
       returncode: 0
 
@@ -121,7 +123,7 @@ buildspecs:
     description: This test fails because returncode and regex specified
     run: hostname
     status:
-      returncode: 0
+      returncode: [0]
       regex:
         stream: stdout
         exp: "^hello"
@@ -137,6 +139,15 @@ buildspecs:
       - "-n 8"
     run: hostname
 
+  bsub_example:
+    type: script
+    executor: local.bash
+    description: This test pass bsub options in test.
+    bsub:
+      - "-W 00:30"
+      - "-N 1"
+    run: hostname
+
   skip_example:
     type: script
     executor: local.bash
@@ -144,26 +155,26 @@ buildspecs:
     skip: true
     run: hostname
 
-  tag_example:
+  tag_str_example:
     type: script
     executor: local.bash
-    description: This is a tag example
+    description: tags can be defined as string
+    tags: network
+    run: hostname
+
+  tag_list_example:
+    type: script
+    executor: local.bash
+    description: This is a tag example using list
     sbatch:
       - "-t 10:00:00"
       - "-p normal"
       - "-N 1"
       - "-n 8"
-    tags: [slurm]
+    tags: ["slurm"]
     run: hostname
-
-
-
-
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/script-v1.0.schema.json/invalid/examples.yml
-Valid State: FAIL
 ________________________________________________________________________________
-
-
 version: "1.0"
 buildspecs:
   invalid_test_name_&!@#$%:
@@ -235,6 +246,30 @@ buildspecs:
     status:
       returncode: ["1"]
 
+  empty_returncode_list:
+    type: script
+    executor: local.bash
+    description: An empty returncode list will cause an error
+    run: hostname
+    status:
+      returncode: []
+
+  non_int_returncodes:
+    type: script
+    executor: local.bash
+    description: The returncode must be an int and not a number
+    run: exit 1
+    status:
+      returncode:  1.01
+
+  non_int_returncodes_list:
+    type: script
+    executor: local.bash
+    description: The returncode must be a list of integers and no numbers
+    run: exit 1
+    status:
+      returncode:  [1, 2.230]
+
   invalid_shell_usr_bin_bash:
     type: script
     executor: local.bash
@@ -263,11 +298,25 @@ buildspecs:
     skip: 1
     run: hostname
 
+  empty_tags:
+    type: script
+    executor: local.bash
+    description: tag list can't be empty, requires one item.
+    tags: []
+    run: hostname
+
+  non_unique_tags:
+    type: script
+    executor: local.bash
+    description: tag names must be unique
+    tags: ["network", "network"]
+    run: hostname
+
   invalid_tags_value:
     type: script
     executor: local.bash
     description: invalid tag value must be all string items
-    tags: ["compiler", 400 ]
+    tags: ["network", 400 ]
     run: hostname
 
   additionalProperties_test:
@@ -277,11 +326,25 @@ buildspecs:
     FOO: BAR
     run: hostname
 
-________________________________________ Validation Error ________________________________________
-'invalid_test_name_&!@#$%' does not match '^[A-Za-z_][A-Za-z0-9_]*$'
+  additionalProperties_status:
+    type: script
+    executor: slurm.debug
+    description: test additional properties in status object. This is not allowed
+    sbatch: [ "-n 2", "-q normal", "-t 10"]
+    run: hostname
+    status:
+      slurm_job_state: "COMPLETED"
+      FOO: BAR
 
-Failed validating 'pattern' in schema['properties']['buildspecs']['propertyNames']:
-    {'pattern': '^[A-Za-z_][A-Za-z0-9_]*$'}
+  invalid_slurm_job_state:
+    type: script
+    executor: slurm.debug
+    description: invalid value for slurm_job_state, should raise error with enum values.
+    sbatch:
+      - "-n 2"
+      - "-q normal"
+      - "-t 10"
+    run: hostname
+    status:
+      slurm_job_state: "FINISH"
 
-On instance['buildspecs']:
-    'invalid_test_name_&!@#$%'

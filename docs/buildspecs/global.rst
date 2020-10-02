@@ -127,14 +127,3 @@ must be versioned, with the exception of ``global.schema.json``.
 
 If you have got this far you may proceed with :ref:`buildspec_overview`
 
-Global Schema and Examples
------------------------------
-
-You can see view the content of ``global.schema.json`` by running::
-
-    $ buildtest schema -n global.schema.json --json
-
-If you want to review example buildspecs for this schema you can run::
-
-    $ buildtest schema -n global.schema.json --example
-

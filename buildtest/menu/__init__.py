@@ -315,13 +315,15 @@ class BuildTestParser:
             choices=schema_table["names"],
         )
         parser_schema.add_argument(
-            "-e",
-            "--example",
-            action="store_true",
-            help="Show schema examples that are validated by corresponding schemafile",
+            "-e", "--example", action="store_true", help="Show schema examples",
         )
         parser_schema.add_argument(
             "-j", "--json", action="store_true", help="Display json schema file"
         )
-
+        parser_schema.add_argument(
+            "-v",
+            "--validate",
+            action="store_true",
+            help="Validate all schema examples with corresponding schemafile",
+        )
         parser_schema.set_defaults(func=func_schema)

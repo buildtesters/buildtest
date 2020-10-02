@@ -8,3 +8,4 @@ Writing buildspecs
    buildspecs/buildspec_overview.rst
    buildspecs/compiler.rst
    buildspecs/batch_support.rst
+   buildspecs/schema_examples.rst

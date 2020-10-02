@@ -307,18 +307,3 @@ Here is an example build, notice message ``[skip] test is skipped`` during the b
 stage
 
 .. program-output:: cat docgen/schemas/skip_tests.txt
-
-Script Schema and Examples
----------------------------------------
-
-buildtest command line interface provides access to schemas and example buildspecs
-for each schemas.
-
-To retrieve the full json schema of script schema you can run the following::
-
-  $ buildtest schema -n script-v1.0.schema.json --json
-
-To retrieve buildspec examples for **script-v1.0.schema.json** you can run the following::
-
-  $ buildtest schema -n script-v1.0.schema.json --example
-
