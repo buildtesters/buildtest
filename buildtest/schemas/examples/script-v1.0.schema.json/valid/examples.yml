@@ -67,7 +67,7 @@ buildspecs:
     run: hostname
 
   declare_shell_name_bin_sh:
-    executor: local.script
+    executor: local.sh
     type: script
     description: declare shell name to /bin/sh
     shell: "/bin/sh -e"
@@ -127,7 +127,7 @@ buildspecs:
 
   sbatch_example:
     type: script
-    executor: slurm.debug
+    executor: local.bash
     description: This test pass sbatch options in test.
     sbatch:
       - "-t 10:00:00"
@@ -138,7 +138,7 @@ buildspecs:
 
   bsub_example:
     type: script
-    executor: lsf.batch
+    executor: local.bash
     description: This test pass bsub options in test.
     bsub:
       - "-W 00:30"
@@ -161,7 +161,7 @@ buildspecs:
 
   tag_list_example:
     type: script
-    executor: slurm.debug
+    executor: local.bash
     description: This is a tag example using list
     sbatch:
       - "-t 10:00:00"

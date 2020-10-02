@@ -225,6 +225,10 @@ class BuildspecParser:
                     continue
 
                 if tag_filter:
+                    # if tags field in buildspec is empty, then we skip test only if user filters by tags
+                    if not recipe.get("tags"):
+                        continue
+
                     found = False
                     for tagname in tag_filter:
                         if tagname in recipe.get("tags"):

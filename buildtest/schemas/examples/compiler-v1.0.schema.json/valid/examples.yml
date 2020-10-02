@@ -77,8 +77,8 @@ buildspecs:
 
   sbatch_example:
     type: compiler
-    description: Slurm example using sbatch to submit job using executor slurm.debug
-    executor: slurm.debug
+    description: sbatch example to configure #SBATCH options
+    executor: local.bash
     sbatch:
       - "-t 10"
       - "-n 2"
@@ -91,8 +91,8 @@ buildspecs:
 
   bsub_example:
     type: compiler
-    description: LSF example using bsub to submit job using executor lsf.batch
-    executor: lsf.batch
+    description: bsub example to configure #BSUB options
+    executor: local.bash
     bsub:
       - "-W 00:30"
       - "-N 2"
@@ -104,7 +104,7 @@ buildspecs:
   batch_example:
     type: compiler
     description: example using batch field
-    executor: lsf.batch
+    executor: local.bash
     batch:
       "timelimit": "30"
       "nodecount": "2"
@@ -119,7 +119,7 @@ buildspecs:
   batch_bsub_example:
     type: compiler
     description: example using batch with bsub key
-    executor: lsf.batch
+    executor: local.bash
     batch:
       "timelimit": "30"
       "nodecount": "2"
@@ -135,7 +135,7 @@ buildspecs:
   batch_sbatch_example:
     type: compiler
     description: example using batch with sbatch key
-    executor: lsf.batch
+    executor: local.bash
     batch:
       "timelimit": "30"
       "nodecount": "2"

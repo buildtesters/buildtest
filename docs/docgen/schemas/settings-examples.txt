@@ -1,12 +1,6 @@
 $ buildtest schema -n settings.schema.json -e 
-
-
-
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/local-executor.yml
-Valid State: True
 ________________________________________________________________________________
-
-
 executors:
   local:
     bash:
@@ -30,14 +24,8 @@ config:
   editor: vi
   paths:
     prefix: /tmp
-
-
-
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
-Valid State: True
 ________________________________________________________________________________
-
-
 executors:
   defaults:
     pollinterval: 20
@@ -56,14 +44,8 @@ config:
   editor: vi
   paths:
     prefix: /tmp
-
-
-
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/combined_executor.yml
-Valid State: True
 ________________________________________________________________________________
-
-
 executors:
   local:
     bash:
@@ -89,14 +71,8 @@ config:
   paths:
     prefix: /tmp
     testdir: /tmp/buildtest/tests
-
-
-
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-example.yml
-Valid State: True
 ________________________________________________________________________________
-
-
 executors:
   defaults:
     pollinterval: 10

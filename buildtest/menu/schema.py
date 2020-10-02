@@ -26,58 +26,65 @@ def func_schema(args):
 
     # the default behavior when "buildtest schema" is executed is to show list of all
     # schemas
-    if not args.json and not args.example:
+    if not args.json and not args.example and not args.validate:
         for schema in schema_table["names"]:
             print(schema)
         return
 
-    # -n option is required when using -j or -e option
+    # -n option is required when using schema options
     if not args.name:
-        raise SystemExit(
-            "Please specify a schema name with -n option when using -j or -e option"
-        )
+        raise SystemExit("Please specify a schema name with -n option")
 
     if args.json:
         print(json.dumps(schema_table[args.name]["recipe"], indent=2))
         return
 
     # There are no examples for definitions schema
-    if args.name == "definitions.schema.json" and args.example:
-        raise SystemExit("There are no examples for definitions.schema.json")
+    if args.name == "definitions.schema.json":
+        if args.example or args.validate:
+            raise SystemExit("There are no examples for definitions.schema.json")
 
     examples = os.path.join(here, "examples", args.name)
 
     # get all examples for specified schema. We validate all examples and
     # and print content of all examples. If there is an error during validation
     # we show the error message.
-    if args.example:
-        schema_examples = walk_tree(examples, ".yml")
-        for example in schema_examples:
-            valid_state = True
-            err_msg = None
+
+    schema_examples = walk_tree(examples, ".yml")
+    for example in schema_examples:
+
+        if args.example:
+            content = read_file(example)
+            print(f"File: {example}")
+            print("{:_<80}".format(""))
+            print(content)
+
+        err_msg = None
+        valid_state = True
+        # if --validate option is specified print validation message
+        if args.validate:
             # for settings.schema.json we validate each test by running check_settings
             if args.name == "settings.schema.json":
                 try:
                     check_settings(example, executor_check=False)
                 except ValidationError as err:
-                    valid_state = "FAIL"
+                    valid_state = False
                     err_msg = err
             # the rest of schemas are validated using BuildspecParser
             else:
                 try:
                     BuildspecParser(example)
                 except (SystemExit, ValidationError) as err:
-                    valid_state = "FAIL"
                     err_msg = err
+                    valid_state = False
 
-            content = read_file(example)
-            print("\n\n")
-            print(f"File: {example}")
-            print(f"Valid State: {valid_state}")
             print("{:_<80}".format(""))
-            print("\n")
-            print(content)
+            if valid_state:
+                print(f"File: {example} is valid! ")
+            else:
+                print(f"File: {example} is invalid! ")
 
             if err_msg:
+
                 print("{:_<40} Validation Error {:_<40}".format("", ""))
                 print(err_msg)
