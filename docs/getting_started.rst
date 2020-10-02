@@ -6,11 +6,10 @@ Getting Started with buildtest
 Interacting with the client
 ---------------------------
 
-After you install buildtest, you should find the client on your path::
-
+Once you install buildtest, you should find the client on your $PATH, you can
+run the following to see path to buildtest::
 
       $ which buildtest
-      ~/.local/bin/buildtest
 
 If you don't see buildtest go back and review section :ref:`Setup`.
 
@@ -255,6 +254,7 @@ To find all buildspecs run ``buildtest buildspec find`` which will discover
 all buildspecs in all repos by recursively finding all `.yml` extensions.
 
 .. program-output:: cat docgen/getting_started/buildspec-find.txt
+   :ellipsis: 50
 
 buildtest will validate each buildspec file with the appropriate
 schema type. buildspecs that pass validation will be displayed on screen.
@@ -364,6 +364,7 @@ You may run ``buildtest report`` and buildtest will display report
 with default format fields.
 
 .. program-output:: cat docgen/report.txt
+   :ellipsis: 20
 
 Format Reports
 ~~~~~~~~~~~~~~~
@@ -373,11 +374,13 @@ list of available format fields run ``buildtest report --helpformat``.
 
 .. program-output:: cat docgen/report-helpformat.txt
 
+
 You can format report using ``--format`` field which expects field
 name separated by comma (i.e **--format <field1>,<field2>**). In this example
 we format by fields ``--format id,executor,state,returncode``
 
 .. program-output:: cat docgen/report-format.txt
+   :ellipsis: 20
 
 Filter Reports
 ~~~~~~~~~~~~~~~~

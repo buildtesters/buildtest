@@ -315,7 +315,9 @@ def get_all_tags(cache):
         for buildspecfile in cache[path].keys():
             for test in cache[path][buildspecfile].keys():
                 tags = cache[path][buildspecfile][test].get("tags")
-                if tags:
+                if isinstance(tags, str):
+                    unique_tag.add(tags)
+                elif isinstance(tags, list):
                     for name in tags:
                         unique_tag.add(name)
 

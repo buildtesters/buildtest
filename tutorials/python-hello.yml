@@ -4,5 +4,6 @@ buildspecs:
     type: script
     description: Hello World python
     executor: local.bash
+    tags: python
     run: python hello.py
 

@@ -50,3 +50,13 @@ $ buildtest buildspec find --buildspec-files
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/generic-tests/sched/slurm/sinfo.yml                    |
 +--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/generic-tests/sched/lsf/bmgroups.yml                   |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/generic-tests/sched/lsf/lsinfo.yml                     |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/generic-tests/sched/lsf/bugroup.yml                    |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/generic-tests/sched/lsf/bqueues.yml                    |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/generic-tests/sched/lsf/bhosts.yml                     |
++--------------------------------------------------------------------------------------------+
