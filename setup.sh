@@ -1,3 +1,4 @@
+#!/bin/bash
 # MIT License
 
 # Copyright (c) 2017-2020, Shahzeb Siddiqui and Vanessa Sochat
@@ -19,8 +20,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-#!/bin/bash
 
 buildtest_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
 echo "buildtest root is ${buildtest_root}"

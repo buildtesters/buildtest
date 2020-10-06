@@ -1,3 +1,4 @@
+#!/bin/csh
 # MIT License
 
 # Copyright (c) 2017-2020, Shahzeb Siddiqui and Vanessa Sochat
@@ -19,8 +20,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-#!/bin/csh
 
 set command=($_)
 set sourced_file=`readlink -f $command[2]`
