@@ -371,7 +371,7 @@ def parse_buildspecs(
     """Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
     fails validation we add it to ``skipped_tests`` list and print all skipped
     tests at end. If buildspec passes validation we get all builders by invoking
-    ``get_builders`` method in BuildspecParser class which gets all tests in
+    ``get_builders`` method in BuildspecParser class which gets all tests from
     buildspec file.
 
     :param buildspecs: A list of input buildspecs to parse
