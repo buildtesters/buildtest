@@ -20,19 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#!/bin/bash
+#!/bin/csh
 
-buildtest_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
+set command=($_)
+set sourced_file=`readlink -f $command[2]`
+set buildtest_root=`dirname "$sourced_file"`
 echo "buildtest root is ${buildtest_root}"
 
 echo "Installing buildtest dependencies"
 pip install -r ${buildtest_root}/requirements.txt &> /dev/null
 
-bin=${buildtest_root}/bin
-export PATH=${bin}:$PATH
-# add PYTHONPATH for buildtest to persist in shell environment
-export PYTHONPATH=${buildtest_root}:$PYTHONPATH
+set bin=${buildtest_root}/bin
+set path=($path $bin)
 
-buildtest_path=$(which buildtest)
+# add PYTHONPATH for buildtest to persist in shell environment
+set PYTHONPATH=($PYTHONPATH $buildtest_root)
+
+set buildtest_path=`which buildtest`
 echo "Adding ${bin} to PATH variable"
 echo "buildtest command: ${buildtest_path}"

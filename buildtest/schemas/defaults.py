@@ -2,9 +2,7 @@ import os
 from jsonschema import RefResolver, Draft7Validator
 from buildtest.schemas.utils import load_schema
 
-
 here = os.path.dirname(os.path.abspath(__file__))
-
 
 schema_table = {}
 schema_table["types"] = ["script", "compiler"]
