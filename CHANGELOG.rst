@@ -4,16 +4,15 @@ CHANGELOG
 v0.9.0 (TBD)
 -------------
 
-The major changes in v0.9.0 are the following:
+The major changes in v0.9.0 are the following
 
-  1. Move schema development from https://github.com/buildtesters/schemas into buildtest and
+First we moved schema development from https://github.com/buildtesters/schemas into buildtest and
 add custom RefResolver for validating schemas on local filesystem as pose to fully qualified URI.
-We host schema, examples, and schema docs on Github pages at https://buildtesters.github.io/buildtest/. We move
-JSON definitions to separate file `definitions.schema.json`.
+We host schema, examples, and schema docs on Github pages at https://buildtesters.github.io/buildtest/ by adding a `jsonschemadocs <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/jsonschemadocs.yml>`_ workflow. We move JSON definitions to separate file `definitions.schema.json`. 
 
-  2. Add `setup.sh` script to install buildtest, this now changes the way we install buildtest as pose to using **pip**.
-  3. Add scheduler agnostic configuration using ``batch`` field. This property currently translates a subset of options for Slurm and LSF.
-  4. We have added generic tests to buildtest in top-level folder `generic-tests` which is an attempt to provide buildspecs that anyone can use. Currently, these tests are run locally.
+We add `setup.sh`, `setup.csh` script to install buildtest for bash/csh shells, this now changes the way we install buildtest as pose to using **pip**.
+We introduced scheduler agnostic configuration using ``batch`` field. This property currently translates a subset of options for Slurm and LSF.
+We have added generic tests to buildtest in top-level folder `generic-tests` which is an attempt to provide buildspecs that anyone can use. Currently, these tests are run using Local Executors.
 
 - Disable Travis CI checks since tests are performed via Github workflow see `#503 <https://github.com/buildtesters/buildtest/pull/503>`_
 - Add option ``buildtest schema --validate`` to validate example schemas. The option ``buildtest schema --example`` shows content of schema examples see `#502 <https://github.com/buildtesters/buildtest/pull/502>`_
