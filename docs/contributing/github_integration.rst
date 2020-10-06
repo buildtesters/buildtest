@@ -19,8 +19,6 @@ GitHub Apps
 
 The following apps are configured with buildtest.
 
-- `Travis CI <https://travis-ci.com/buildtesters/buildtest>`_ - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted continuous integration system.
-
 - `CodeCov <https://codecov.io/gh/buildtesters/buildtest>`_ - Codecov provides highly integrated tools to group, merge, archive and compare coverage reports
 
 - `Coveralls <https://coveralls.io/github/buildtesters/buildtest>`_ - Coveralls is a web service to help you track your code coverage over time, and ensure that all your new code is fully covered.
@@ -29,6 +27,32 @@ The following apps are configured with buildtest.
 
 - `Snyk <https://app.snyk.io/org/buildtesters/>`_  - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
 
+Coverage
+---------
+
+We use `coverage <https://coverage.readthedocs.io/en/latest/>`_ to measure code
+coverage of buildtest when running regression test. We use CodeCov and Coveralls
+for displaying coverage reports through web interface. The coverage configuration
+is managed by *.coveragerc* file found in the root of the repo.
+
+Whenever you add new feature to buildtest, please add regression test with test
+coverage to help maintainers review new feature request. For more details on running
+coverage tests see :ref:`coverage_test`.
+
+CodeCov and Coveralls
+----------------------
+
+`Codecov <https://docs.codecov.io/docs>`_  report coverage details in web-browser.
+CodeCov can perform `pull request comments <https://docs.codecov.io/docs/pull-request-comments>`_
+after coverage report is uploaded to Codecov which is useful for reviewer and assignee
+to see status of coverage report during PR review process. The codecov file
+`.codecov.yml <https://github.com/buildtesters/buildtest/blob/devel/.codecov.yml>`_
+is used for configuration codecov. For more details on codecov yaml file see https://docs.codecov.io/docs/codecov-yaml.
+
+`Coveralls <https://docs.coveralls.io/>`_ is a web service that tracks code coverage
+similar to Codecov. We use `Coveralls GitHub Action <https://github.com/marketplace/actions/coveralls-github-action>`_
+to publish coverage report to coveralls from GitHub workflows.
+
 GitHub Actions
 --------------
 
@@ -36,7 +60,7 @@ buildtest runs a few automated checks via GitHub Actions that can be found in ``
 
 - `Black  <https://github.com/psf/black>`_ - Black auto-formats Python code, so we let **black** take care of formatting the entire project so you can focus more time in development. The workflow is defined in `black.yml <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/black.yml>`_.
 
-- `urlchecker-action <https://github.com/marketplace/actions/urlchecker-action>`_ - is a GitHub action to collect and check URLs in project code and documentation. There is an automated check for every issued PR and the workflow is defined in `urlchecker.yml <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/urlchecker.yml>`_
+- `urlchecker-action <https://github.com/urlstechie/urlchecker-action>`_ - is a GitHub action to collect and check URLs in project code and documentation. There is an automated check for every issued PR and the workflow is defined in `urlchecker.yml <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/urlchecker.yml>`_
 
 .. _black_hook:
 
@@ -90,6 +114,8 @@ you can do the following::
     +    x = 0 + 1 * 3
 
 The changes will be shown with lines removed or added via ``-`` and ``+``. For more details refer to `black documentation <https://github.com/psf/black>`_.
+
+.. _pyflakes:
 
 pyflakes
 ----------

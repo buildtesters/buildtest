@@ -71,12 +71,19 @@ If you want to run all schema tests you can run via ``schema`` marker as follows
    pytest -v -m schema
 
 To see a list of pytest markers see `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
-or run ``pytest --markers``
+or run::
+
+  pytest --markers
 
 For a complete list of options refer to pytest `documentation <https://docs.pytest.org/en/latest/contents.html>`_
 or run ``pytest --help``.
 
-You may want to run coverage against your test, this can be done by running::
+.. _coverage_test:
+
+Running test via coverage
+--------------------------
+
+You may want to run coverage report against your test, this can be done by running::
 
     coverage run -m pytest tests
 
