@@ -14,7 +14,6 @@ We add `setup.sh`, `setup.csh` script to install buildtest for bash/csh shells, 
 We introduced scheduler agnostic configuration using ``batch`` field. This property currently translates a subset of options for Slurm and LSF.
 We have added generic tests to buildtest in top-level folder `generic-tests` which is an attempt to provide buildspecs that anyone can use. Currently, these tests are run using Local Executors.
 
-- Disable Travis CI checks since tests are performed via Github workflow see `#503 <https://github.com/buildtesters/buildtest/pull/503>`_
 - Add option ``buildtest schema --validate`` to validate example schemas. The option ``buildtest schema --example`` shows content of schema examples see `#502 <https://github.com/buildtesters/buildtest/pull/502>`_
 - Fix bug when retrieving tags with command ``buildtest buildspec find --tags`` see `#501 <https://github.com/buildtesters/buildtest/pull/501>`_
 - Add scheduler agnostic configuration via ``batch`` field see `#493 <https://github.com/buildtesters/buildtest/pull/493>`_ and `#494 <https://github.com/buildtesters/buildtest/pull/494>`_

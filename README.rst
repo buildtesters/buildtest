@@ -1,4 +1,4 @@
-| |license| |docs| |codecov| |coveralls| |slack| |codefactor| |jsonschema2md| |checkurls| |blackformat| |clichecks| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
+| |license| |docs| |codecov| |travis| |coveralls| |slack| |codefactor| |jsonschema2md| |checkurls| |blackformat| |clichecks| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -21,6 +21,9 @@
 .. |codefactor| image:: https://www.codefactor.io/repository/github/buildtesters/buildtest/badge
     :target: https://www.codefactor.io/repository/github/buildtesters/buildtest
     :alt: CodeFactor
+
+.. |travis| image:: https://travis-ci.com/buildtesters/buildtest.svg?branch=devel
+    :target: https://travis-ci.com/buildtesters/buildtest
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
