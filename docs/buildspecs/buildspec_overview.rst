@@ -259,7 +259,7 @@ is passed into the script::
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
 
-Python example
+Python Shell
 ---------------
 
 You can use *script* schema to write python scripts using the run section. This
@@ -307,3 +307,82 @@ Here is an example build, notice message ``[skip] test is skipped`` during the b
 stage
 
 .. program-output:: cat docgen/schemas/skip_tests.txt
+
+run_only
+---------
+
+The ``run_only`` property is used for running test given a specific condition has met.
+For example, you may want a test to run only if its particular system (Linux, Darwin),
+operating system, scheduler, etc...
+
+run_only -  user
+~~~~~~~~~~~~~~~~~~~~~~
+
+buildtest will skip test if any of the conditions are not met. Let's take an example
+in this buildspec we define a test name **run_only_as_root** that requires **root** user
+to run test. The *run_only* is a property of key/value pairs and **user** is one
+of the field. buildtest will only build & run test if current user matches ``user`` field.
+We detect current user using ``$USER`` and match with input field ``user``.
+buildtest will skip test if there is no match.
+
+
+.. program-output:: cat ../tutorials/root_user.yml
+
+Now if we run this test we see buildtest will skip test **run_only_as_root** because
+current user is not root.
+
+.. program-output:: cat docgen/schemas/root_user.txt
+
+run_only - platform
+~~~~~~~~~~~~~~~~~~~~
+
+Similarly, we can run test if it matches target platform. In this example we have
+two tests **run_only_platform_darwin** and **run_only_platform_linux** that are
+run if target platform is Darwin or Linux. This is configured using ``platform``
+field which is a property of ``run_only`` object. buildtest will match
+target platform using `platform.system() <https://docs.python.org/3/library/platform.html#platform.system>`_
+with field **platform**, if there is no match buildtest will skip test. In this test,
+we define a python shell using ``shell: python`` and run ``platform.system()``. We
+expect the output of each test to have **Darwin** and **Linux** which we match
+with stdout using regular expression.
+
+.. program-output:: cat ../tutorials/run_only_platform.yml
+
+This test was run on a Mac OS (Darwin) so we expect **run_only_platform_linux**
+to be skipped.
+
+.. program-output:: cat docgen/schemas/run_only_platform.txt
+
+run_only - scheduler
+~~~~~~~~~~~~~~~~~~~~~
+
+buildtest can run test if a particular scheduler is available. In this example,
+we introduce a new field ``scheduler`` that is part of ``run_only`` property. This
+field expects ``lsf`` or ``slurm`` as valid values and buildtest will check if target
+system supports the scheduler. In this example we require **lsf** scheduler because
+this test runs **bmgroup** which is a LSF binary.
+
+.. note:: buildtest assumes scheduler binaries are available in $PATH, if no scheduler is found buildtest sets this to an empty list
+
+.. program-output:: cat ../general_tests/sched/lsf/bmgroups.yml
+
+If we build this test on a target system without LSF notice that buildtest skips
+test **show_host_groups**.
+
+.. program-output:: cat docgen/schemas/bmgroups.txt
+
+
+run_only - linux_distro
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+buildtest can run test if it matches a Linux distro, this is configured using
+``linux_distro`` field that is a list of Linux distros that is returned via
+`distro.id() <https://distro.readthedocs.io/en/latest/#distro.id>`_. In this example,
+we run test only if host distro is ``darwin``.
+
+.. program-output:: cat ../tutorials/run_only_distro.yml
+
+This test will run successfully because this was ran on a Mac OS (darwin) system.
+
+.. program-output:: cat docgen/schemas/run_only_distro.txt
+

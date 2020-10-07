@@ -91,6 +91,10 @@ def schemas():
         f"{os.path.join(prefix, 'vecadd.txt')}": "buildtest build -b tutorials/compilers/vecadd.yml",
         f"{os.path.join(prefix, 'pass_returncode.txt')}": "buildtest build -b tutorials/pass_returncode.yml",
         f"{os.path.join(prefix, 'skip_tests.txt')}": "buildtest build -b tutorials/skip_tests.yml",
+        f"{os.path.join(prefix, 'root_user.txt')}": "buildtest build -b tutorials/root_user.yml",
+        f"{os.path.join(prefix, 'run_only_platform.txt')}": "buildtest build -b tutorials/run_only_platform.yml",
+        f"{os.path.join(prefix, 'bmgroups.txt')}": "buildtest build -b general_tests/sched/lsf/bmgroups.yml",
+        f"{os.path.join(prefix, 'run_only_distro.txt')}": "buildtest build -b tutorials/run_only_distro.yml",
     }
 
     generate_tests(prefix, cmd_dict)

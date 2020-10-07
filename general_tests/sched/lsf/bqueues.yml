@@ -5,6 +5,8 @@ buildspecs:
     executor: local.bash
     description: Show LSF queues
     tags: lsf
+    run_only:
+      scheduler: lsf
     run: bqueues
 
   show_lsf_queues_formatted:
@@ -12,6 +14,8 @@ buildspecs:
     executor: local.bash
     description: Show LSF queues with formatted columns
     tags: lsf
+    run_only:
+      scheduler: lsf
     run: bqueues -o 'queue_name description priority status'
 
   show_lsf_queues_current_user:
@@ -19,5 +23,7 @@ buildspecs:
     executor: local.bash
     description: Show LSF queues available for current user
     tags: lsf
+    run_only:
+      scheduler: lsf
     run: bqueues -u $USER
 

@@ -13,6 +13,7 @@ from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.utils import load_recipe
 from buildtest.schemas.defaults import schema_table, custom_validator
 from buildtest.utils.file import resolve_path, is_dir
+from buildtest.system import BuildTestSystem
 
 from buildtest.buildsystem.base import (
     ScriptBuilder,
@@ -207,6 +208,8 @@ class BuildspecParser:
         :param executor_filter: A list of input executors (``buildtest build --executor`` option) to filter builders
         """
 
+        system = BuildTestSystem()
+
         builders = []
         if self.recipe:
             for name in self.keys():
@@ -239,6 +242,48 @@ class BuildspecParser:
                             f"[{name}] test is skipped because it is not in tag filter list: {tag_filter}"
                         )
                         continue
+
+                # if run_only field set, check if all conditions match before proceeding with test
+                if recipe.get("run_only"):
+
+                    # skip test if host scheduler is not one specified via 'scheduler' field
+                    if recipe["run_only"].get("scheduler") and (
+                        recipe["run_only"].get("scheduler")
+                        not in system.system["scheduler"]
+                    ):
+                        msg = f"[{name}] test is skipped because ['run_only']['scheduler'] got value: {recipe['run_only']['scheduler']} but detected scheduler: {system.system['scheduler']}."
+                        print(msg)
+                        self.logger.info(msg)
+                        continue
+
+                    # skip test if current user is not one specified in 'user' field
+                    if recipe["run_only"].get("user") and (
+                        recipe["run_only"].get("user") != os.getenv("USER")
+                    ):
+                        msg = f"[{name}] test is skipped because ['run_only']['user'] got value: {recipe['run_only']['user']} but detected user: {os.getenv('USER')}."
+                        print(msg)
+                        self.logger.info(msg)
+                        continue
+
+                    # skip test if host platform is not equal to value specified by 'platform' field
+                    if recipe["run_only"].get("platform") and (
+                        recipe["run_only"].get("platform") != system.system["platform"]
+                    ):
+                        msg = f"[{name}] test is skipped because ['run_only']['platform'] got value: {recipe['run_only']['platform']} but detected platform: {system.system['platform']}."
+                        print(msg)
+                        self.logger.info(msg)
+                        continue
+
+                    # skip test if host platform is not equal to value specified by 'platform' field
+                    if recipe["run_only"].get("linux_distro"):
+                        if (
+                            system.system["os"]
+                            not in recipe["run_only"]["linux_distro"]
+                        ):
+                            msg = f"[{name}] test is skipped because ['run_only']['linux_distro'] got value: {recipe['run_only']['linux_distro']} but detected platform: {system.system['os']}."
+                            print(msg)
+                            self.logger.info(msg)
+                            continue
 
                 # Add the builder based on the type
                 if recipe["type"] == "script":

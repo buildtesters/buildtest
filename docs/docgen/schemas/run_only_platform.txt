@@ -1,0 +1,46 @@
+$ buildtest build -b tutorials/run_only_platform.yml 
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+    
+
+Discovered Buildspecs:
+ 
+/Users/siddiq90/Documents/buildtest/tutorials/run_only_platform.yml
+[run_only_platform_linux] test is skipped because ['run_only']['platform'] got value: Linux but detected platform: Darwin.
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+    
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+---------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/run_only_platform.yml
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ Name                     | Type   | Executor     | Tags          | Testpath
+--------------------------+--------+--------------+---------------+---------------------------------------------------------------------------------------------------------------------------
+ run_only_platform_darwin | script | local.python | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/run_only_platform/run_only_platform_darwin/1/stage/generate.sh
+
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+    
+ Name                     | Executor     | Status   |   Returncode | TestPath
+--------------------------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------------------------
+ run_only_platform_darwin | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/run_only_platform/run_only_platform_darwin/1/stage/generate.sh
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    
+Executed 1 tests
+Passed Tests: 1/1 Percentage: 100.000%
+Failed Tests: 0/1 Percentage: 0.000%
+
+
+

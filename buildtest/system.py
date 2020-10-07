@@ -29,7 +29,7 @@ class BuildTestSystem:
         self.logger.debug("Starting System Compatibility Check")
         self.init_system()
         self.system["platform"] = platform.system()
-        self.scheduler = self.check_scheduler()
+        self.system["scheduler"] = self.check_scheduler() or []
 
         if self.system["platform"] not in ["Linux", "Darwin"]:
             print("System must be Linux")
@@ -42,8 +42,7 @@ class BuildTestSystem:
         processor, hostname, machine name.
         """
 
-        self.system["os"] = " ".join(distro.linux_distribution())
-
+        self.system["os"] = distro.id()
         self.system["env"] = dict(os.environ)
         self.system["python"] = shutil.which("python")
         self.system["pyver"] = platform.python_version()
@@ -77,9 +76,9 @@ class BuildTestSystem:
             slurm_ec_code = slurm_cmd.returncode
 
         if slurm_ec_code == 0:
-            return "SLURM"
+            return "slurm"
         if lsf_ec_code == 0:
-            return "LSF"
+            return "lsf"
 
 
 def get_slurm_partitions():

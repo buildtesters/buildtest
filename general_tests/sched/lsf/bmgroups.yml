@@ -5,4 +5,6 @@ buildspecs:
     executor: local.bash
     description: Show information about host groups using bmgroup
     tags: lsf
+    run_only:
+      scheduler: lsf
     run: bmgroup

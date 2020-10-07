@@ -1,0 +1,33 @@
+version: "1.0"
+buildspecs:
+  run_only_platform_darwin:
+    description: "This test will only run if target platform is Darwin"
+    executor: local.python
+    type: script
+    tags: ["tutorials"]
+    run_only:
+      platform: Darwin
+    shell: python
+    run: |
+      import platform
+      print(platform.system())
+    status:
+      regex:
+        stream: stdout
+        exp: "^Darwin$"
+
+  run_only_platform_linux:
+    description: "This test will only run if target platform is Linux"
+    executor: local.python
+    type: script
+    tags: ["tutorials"]
+    run_only:
+      platform: Linux
+    shell: python
+    run: |
+      import platform
+      print(platform.system())
+    status:
+      regex:
+        stream: stdout
+        exp: "^Linux"

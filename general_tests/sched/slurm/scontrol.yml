@@ -5,12 +5,16 @@ buildspecs:
     type: script
     description: run scontrol show config
     tags: [slurm]
+    run_only:
+      scheduler: slurm
     run: scontrol show config
 
   show_partition:
     executor: local.bash
     type: script
     tags: [slurm]
+    run_only:
+      scheduler: slurm
     description: run scontrol show partition
     run: scontrol show partition
 
