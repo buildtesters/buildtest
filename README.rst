@@ -1,4 +1,4 @@
-| |license| |docs| |travis| |codecov| |coveralls| |slack| |codefactor| |jsonschema2md| |checkurls| |blackformat| |clichecks| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
+| |license| |docs| |codecov| |travis| |coveralls| |slack| |codefactor| |jsonschema2md| |checkurls| |blackformat| |clichecks| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status

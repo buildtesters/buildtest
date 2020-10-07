@@ -8,7 +8,9 @@ Requirements
 
 You need the following packages to get started.
 
+- git
 - Python >= 3.6
+- pip
 
 Cloning buildtest
 ------------------
@@ -31,9 +33,13 @@ If you prefer the latest release use the **master** branch::
 Installing buildtest
 -----------------------
 
-To install buildtest run the following::
+To install buildtest run the following depending on your shell::
 
+    # BASH users
     $ source setup.sh
+
+    # CSH users
+    $ source setup.csh
 
 You may want to create an isolated python environment of choice depending on your preference you can use any of the following
 

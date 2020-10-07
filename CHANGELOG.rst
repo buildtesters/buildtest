@@ -4,21 +4,20 @@ CHANGELOG
 v0.9.0 (TBD)
 -------------
 
-The major changes in v0.9.0 are the following:
+The major changes in v0.9.0 are the following
 
-  1. Move schema development from https://github.com/buildtesters/schemas into buildtest and
+First we moved schema development from https://github.com/buildtesters/schemas into buildtest and
 add custom RefResolver for validating schemas on local filesystem as pose to fully qualified URI.
-We host schema, examples, and schema docs on Github pages at https://buildtesters.github.io/buildtest/. We move
-JSON definitions to separate file `definitions.schema.json`.
+We host schema, examples, and schema docs on Github pages at https://buildtesters.github.io/buildtest/ by adding a `jsonschemadocs <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/jsonschemadocs.yml>`_ workflow. We move JSON definitions to separate file `definitions.schema.json`. 
 
-  2. Add `setup.sh` script to install buildtest, this now changes the way we install buildtest as pose to using **pip**.
-  3. Add scheduler agnostic configuration using ``batch`` field. This property currently translates a subset of options for Slurm and LSF.
-  4. We have added generic tests to buildtest in top-level folder `generic-tests` which is an attempt to provide buildspecs that anyone can use. Currently, these tests are run locally.
+We add `setup.sh`, `setup.csh` script to install buildtest for bash/csh shells, this now changes the way we install buildtest as pose to using **pip**.
+We introduced scheduler agnostic configuration using ``batch`` field. This property currently translates a subset of options for Slurm and LSF.
+We have added generic tests to buildtest in top-level folder `generic-tests` which is an attempt to provide buildspecs that anyone can use. Currently, these tests are run using Local Executors.
 
 - Add option ``buildtest schema --validate`` to validate example schemas. The option ``buildtest schema --example`` shows content of schema examples see `#502 <https://github.com/buildtesters/buildtest/pull/502>`_
 - Fix bug when retrieving tags with command ``buildtest buildspec find --tags`` see `#501 <https://github.com/buildtesters/buildtest/pull/501>`_
 - Add scheduler agnostic configuration via ``batch`` field see `#493 <https://github.com/buildtesters/buildtest/pull/493>`_ and `#494 <https://github.com/buildtesters/buildtest/pull/494>`_
-- Add a ``setup.sh`` script to install buildtest. This changes the way buildtest is installed as pose to using **pip** see `#491 <https://github.com/buildtesters/buildtest/pull/491>`_
+- Add a ``setup.sh``, ``setup.csh`` script to install buildtest. This changes the way buildtest is installed as pose to using **pip** see `#491 <https://github.com/buildtesters/buildtest/pull/491>`_ `#503 <https://github.com/buildtesters/buildtest/pull/503>`_
 - Add a custom RefResolver for resolving JSON schemas in filesystem as pose to using public URL, this was important for testing schema changes locally which was not present before. See `#487 <https://github.com/buildtesters/buildtest/pull/487>`_
 - The ``returncode`` field can be a string or a list for matching returncode status. The `tags` field can be a string or list of strings, before it could only be a list.  See `#486 <https://github.com/buildtesters/buildtest/pull/486/>`_
 - Migrate schema development from https://github.com/buildtesters/schemas into main project.  see `#480 <https://github.com/buildtesters/buildtest/pull/480>`_
