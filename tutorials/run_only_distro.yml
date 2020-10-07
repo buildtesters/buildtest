@@ -1,0 +1,14 @@
+version: "1.0"
+buildspecs:
+  run_only_macos_distro:
+    type: script
+    executor: local.bash
+    description: "Run test only if linux distro is darwin."
+    run_only:
+      linux_distro:
+        - darwin
+    run: uname
+    status:
+      regex:
+        stream: stdout
+        exp: "^Darwin$"

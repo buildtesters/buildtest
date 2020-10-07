@@ -45,6 +45,9 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
     "vars": {
       "$ref": "definitions.schema.json#/definitions/env"
     },
+    "run_only": {
+      "$ref": "definitions.schema.json#/definitions/run_only"
+    },
     "status": {
       "$ref": "definitions.schema.json#/definitions/status"
     },

@@ -1,0 +1,10 @@
+version: "1.0"
+buildspecs:
+  run_only_as_root:
+    description: "This test will only run if current user is root"
+    executor: local.bash
+    type: script
+    tags: ["tutorials"]
+    run_only:
+      user: root
+    run: echo $USER

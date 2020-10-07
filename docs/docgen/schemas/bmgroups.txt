@@ -1,0 +1,12 @@
+$ buildtest build -b general_tests/sched/lsf/bmgroups.yml 
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+    
+
+Discovered Buildspecs:
+ 
+/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bmgroups.yml
+[show_host_groups] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+No buildspecs to process because there are no valid buildspecs

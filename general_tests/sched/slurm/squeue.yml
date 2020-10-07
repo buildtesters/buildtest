@@ -5,6 +5,8 @@ buildspecs:
     type: script
     description: show all current pending jobs for current user (squeue -u $USER)
     tags: [slurm]
+    run_only:
+      scheduler: slurm
     run: squeue -u $USER
 
   show_all_jobs:
@@ -12,4 +14,6 @@ buildspecs:
     type: script
     description: show all pending + running jobs (squeue -a)
     tags: [slurm]
+    run_only:
+      scheduler: slurm
     run: squeue --all
