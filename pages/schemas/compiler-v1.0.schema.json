@@ -38,6 +38,9 @@
     "vars": {
       "$ref": "definitions.schema.json#/definitions/env"
     },
+    "run_only": {
+      "$ref": "definitions.schema.json#/definitions/run_only"
+    },
     "status": {
       "$ref": "definitions.schema.json#/definitions/status"
     },

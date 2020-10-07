@@ -27,6 +27,7 @@ The script schema is of `type: script` in sub-schema which is used for running s
 | [env](#env)                 | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-env.md "script-v1.0.schema.json#/properties/env")                 |
 | [vars](#vars)               | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-env.md "script-v1.0.schema.json#/properties/vars")                |
 | [executor](#executor)       | `string`  | Required | cannot be null | [script schema version 1.0](definitions-definitions-executor.md "script-v1.0.schema.json#/properties/executor")       |
+| [run_only](#run_only)       | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-run_only.md "script-v1.0.schema.json#/properties/run_only")       |
 | [shell](#shell)             | `string`  | Optional | cannot be null | [script schema version 1.0](script-v1-properties-shell.md "script-v1.0.schema.json#/properties/shell")                |
 | [shebang](#shebang)         | `string`  | Optional | cannot be null | [script schema version 1.0](script-v1-properties-shebang.md "script-v1.0.schema.json#/properties/shebang")            |
 | [run](#run)                 | `string`  | Required | cannot be null | [script schema version 1.0](script-v1-properties-run.md "script-v1.0.schema.json#/properties/run")                    |
@@ -183,6 +184,22 @@ Select one of the executor name defined in your configuration file (`config.yml`
 ### executor Type
 
 `string`
+
+## run_only
+
+A set of conditions to specify when running tests. All conditions must pass in order to process test.
+
+
+`run_only`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-run_only.md))
+-   cannot be null
+-   defined in: [script schema version 1.0](definitions-definitions-run_only.md "script-v1.0.schema.json#/properties/run_only")
+
+### run_only Type
+
+`object` ([Details](definitions-definitions-run_only.md))
 
 ## shell
 

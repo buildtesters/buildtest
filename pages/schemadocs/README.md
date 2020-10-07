@@ -18,6 +18,7 @@
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/env`
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+-   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-run_only.md "A set of conditions to specify when running tests") – `definitions.schema.json#/definitions/run_only`
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `definitions.schema.json#/definitions/batch`
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/status`
 -   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
@@ -42,6 +43,7 @@
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/properties/batch`
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/properties/env`
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/properties/vars`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-run_only.md "A set of conditions to specify when running tests") – `compiler-v1.0.schema.json#/properties/run_only`
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/properties/status`
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-build.md "The build section is used for compiling a single program, this section specifies fields for setting C, C++, Fortran compiler and flags including CPP flags and linker flags") – `compiler-v1.0.schema.json#/properties/build`
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-run.md "The run section is used for specifying launch configuration of executable") – `compiler-v1.0.schema.json#/properties/run`
@@ -51,10 +53,12 @@
 -   [Untitled object in script schema version 1.0](./script-v1-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `script-v1.0.schema.json#/properties/batch`
 -   [Untitled object in script schema version 1.0](./script-v1-properties-env.md "One or more key value pairs for an environment (key=value)") – `script-v1.0.schema.json#/properties/env`
 -   [Untitled object in script schema version 1.0](./script-v1-properties-vars.md "One or more key value pairs for an environment (key=value)") – `script-v1.0.schema.json#/properties/vars`
+-   [Untitled object in script schema version 1.0](./script-v1-properties-run_only.md "A set of conditions to specify when running tests") – `script-v1.0.schema.json#/properties/run_only`
 -   [Untitled object in script schema version 1.0](./script-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `script-v1.0.schema.json#/properties/status`
 
 ### Arrays
 
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-list_of_strings.md) – `definitions.schema.json#/definitions/list_of_strings`
@@ -64,9 +68,11 @@
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-sbatch.md "This field is used for specifying #SBATCH options in test script") – `definitions.schema.json#/definitions/sbatch`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-bsub.md "This field is used for specifying #BSUB options in test script") – `definitions.schema.json#/definitions/bsub`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
 -   [Untitled array in buildtest configuration schema](./settings-definitions-lsf-properties-options.md "Specify any options for bsub for this executor when running all jobs associated to this executor") – `https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/options`

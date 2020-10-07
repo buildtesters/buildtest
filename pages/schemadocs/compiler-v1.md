@@ -28,6 +28,7 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | [batch](#batch)             | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/properties/batch")            |
 | [env](#env)                 | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/env")                |
 | [vars](#vars)               | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/vars")               |
+| [run_only](#run_only)       | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-run_only.md "compiler-v1.0.schema.json#/properties/run_only")      |
 | [status](#status)           | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/properties/status")          |
 | [skip](#skip)               | `boolean` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-skip.md "compiler-v1.0.schema.json#/properties/skip")               |
 | [tags](#tags)               | Merged    | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-tags.md "compiler-v1.0.schema.json#/properties/tags")               |
@@ -203,6 +204,22 @@ One or more key value pairs for an environment (key=value)
 ### vars Constraints
 
 **minimum number of items**: the minimum number of items for this array is: `1`
+
+## run_only
+
+A set of conditions to specify when running tests. All conditions must pass in order to process test.
+
+
+`run_only`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-run_only.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-run_only.md "compiler-v1.0.schema.json#/properties/run_only")
+
+### run_only Type
+
+`object` ([Details](definitions-definitions-run_only.md))
 
 ## status
 
