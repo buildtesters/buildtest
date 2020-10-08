@@ -55,8 +55,10 @@ def handle_kv_string(val):
 
 
 def positive_number(value):
-    if int(value) <= 0:
-        raise argparse.ArgumentTypeError(f"{value} must be a positive number")
+    if int(value) <= 0 or int(value) > 50:
+        raise argparse.ArgumentTypeError(
+            f"{value} must be a positive number between [1-50]"
+        )
     return value
 
 
@@ -185,9 +187,9 @@ class BuildTestParser:
             help="specify a custom test directory. By default, use .buildtest in $PWD.",
         )
         parser_build.add_argument(
-            "--rerun",
+            "--rebuild",
             type=positive_number,
-            help="Rerun test X number of times. Must be a positive number",
+            help="Rebuild test X number of times. Must be a positive number between [1-50]",
         )
         parser_build.add_argument(
             "--settings", help="Specify an alternate buildtest settings file to use",

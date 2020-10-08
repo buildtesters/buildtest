@@ -21,17 +21,17 @@ Discovered Buildspecs:
 | Stage: Building Test |
 +----------------------+ 
 
- Name                   | Type   | Executor   | Tags          | Testpath
-------------------------+--------+------------+---------------+-------------------------------------------------------------------------------------------------------------
- systemd_default_target | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/0/stage/generate.sh
+ name                   | id       | type   | executor   | tags          | testpath
+------------------------+----------+--------+------------+---------------+-------------------------------------------------------------------------------------------------------------
+ systemd_default_target | 862136a5 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/0/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
     
- Name                   | Executor   | Status   |   Returncode | TestPath
-------------------------+------------+----------+--------------+-------------------------------------------------------------------------------------------------------------
- systemd_default_target | local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/0/stage/generate.sh
+ name                   | id       | executor   | status   |   returncode | testpath
+------------------------+----------+------------+----------+--------------+-------------------------------------------------------------------------------------------------------------
+ systemd_default_target | 862136a5 | local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/0/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

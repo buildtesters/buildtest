@@ -66,6 +66,9 @@ def tutorial():
         f"{os.path.join(prefix, 'shebang.txt')}": "buildtest build -b tutorials/shebang.yml",
         f"{os.path.join(prefix, 'stage_parse.txt')}": "buildtest build -b tutorials/systemd.yml --stage=parse",
         f"{os.path.join(prefix, 'stage_build.txt')}": "buildtest build -b tutorials/systemd.yml --stage=build",
+        f"{os.path.join(prefix, 'rebuild.txt')}": "buildtest build -b tutorials/python-shell.yml --rebuild=3",
+        f"{os.path.join(prefix, 'rebuild-tags.txt')}": "buildtest build --tags fail --rebuild=2",
+        f"{os.path.join(prefix, 'debug-mode.txt')}": "buildtest -d DEBUG build -b tutorials/invalid_executor.yml",
     }
 
     generate_tests(prefix, cmd_dict)
@@ -115,11 +118,11 @@ def introspection_cmds():
         "buildspec_multifield_filter.txt": "buildtest buildspec find --filter tags=tutorials,executor=local.sh,type=script",
         "report-helpformat.txt": "buildtest report --helpformat",
         "report-helpfilter.txt": "buildtest report --helpfilter",
-        "report-format.txt": "buildtest report --format id,executor,state,returncode",
-        "report-filter-name.txt": "buildtest report --filter name=exit1_pass --format=id,returncode,state",
-        "report-filter-buildspec.txt": "buildtest report --filter buildspec=tutorials/pass_returncode.yml --format=name,state,buildspec",
-        "report-multifilter.txt": "buildtest report --filter state=FAIL,executor=local.sh --format=id,state,executor",
-        "report-returncode.txt": "buildtest report --filter returncode=2 --format=id,returncode",
+        "report-format.txt": "buildtest report --format name,id,executor,state,returncode",
+        "report-filter-name.txt": "buildtest report --filter name=exit1_pass --format=name,id,returncode,state",
+        "report-filter-buildspec.txt": "buildtest report --filter buildspec=tutorials/pass_returncode.yml --format=name,id,state,buildspec",
+        "report-multifilter.txt": "buildtest report --filter state=FAIL,executor=local.sh --format=name,id,state,executor",
+        "report-returncode.txt": "buildtest report --filter returncode=2 --format=name,id,returncode",
     }
 
     for k, v in cmd_dict.items():

@@ -196,7 +196,7 @@ class BuildspecParser:
 
     # Builders
 
-    def get_builders(self, testdir, tag_filter=None, executor_filter=None):
+    def get_builders(self, testdir, rebuild=1, tag_filter=None, executor_filter=None):
         """Based on a loaded Buildspec file, return the correct builder
         for each based on the type. Each type is associated with a known
         Builder class.
@@ -209,113 +209,127 @@ class BuildspecParser:
         """
 
         system = BuildTestSystem()
-
         builders = []
         if self.recipe:
-            for name in self.keys():
-                recipe = self.recipe["buildspecs"][name]
+            for count in range(rebuild):
 
-                if recipe.get("skip"):
-                    print(f"[{name}] test is skipped.")
-                    continue
+                for name in self.keys():
+                    recipe = self.recipe["buildspecs"][name]
 
-                # if input 'buildtest build --executor' is set we filter test by
-                # executor name. For now we skip all test that don't belong in executor list.
-                if executor_filter and recipe.get("executor") not in executor_filter:
-                    print(
-                        f"[{name}] test is skipped because it is not in executor filter list: {executor_filter}"
-                    )
-                    continue
-
-                if tag_filter:
-                    # if tags field in buildspec is empty, then we skip test only if user filters by tags
-                    if not recipe.get("tags"):
+                    if recipe.get("skip"):
+                        print(f"[{name}] test is skipped.")
                         continue
 
-                    found = False
-                    for tagname in tag_filter:
-                        if tagname in recipe.get("tags"):
-                            found = True
-
-                    if not found:
+                    # if input 'buildtest build --executor' is set we filter test by
+                    # executor name. For now we skip all test that don't belong in executor list.
+                    if (
+                        executor_filter
+                        and recipe.get("executor") not in executor_filter
+                    ):
                         print(
-                            f"[{name}] test is skipped because it is not in tag filter list: {tag_filter}"
+                            f"[{name}] test is skipped because it is not in executor filter list: {executor_filter}"
                         )
                         continue
 
-                # if run_only field set, check if all conditions match before proceeding with test
-                if recipe.get("run_only"):
+                    if tag_filter:
+                        # if tags field in buildspec is empty, then we skip test only if user filters by tags
+                        if not recipe.get("tags"):
+                            continue
 
-                    # skip test if host scheduler is not one specified via 'scheduler' field
-                    if recipe["run_only"].get("scheduler") and (
-                        recipe["run_only"].get("scheduler")
-                        not in system.system["scheduler"]
-                    ):
-                        msg = f"[{name}] test is skipped because ['run_only']['scheduler'] got value: {recipe['run_only']['scheduler']} but detected scheduler: {system.system['scheduler']}."
-                        print(msg)
-                        self.logger.info(msg)
-                        continue
+                        found = False
+                        for tagname in tag_filter:
+                            if tagname in recipe.get("tags"):
+                                found = True
 
-                    # skip test if current user is not one specified in 'user' field
-                    if recipe["run_only"].get("user") and (
-                        recipe["run_only"].get("user") != os.getenv("USER")
-                    ):
-                        msg = f"[{name}] test is skipped because ['run_only']['user'] got value: {recipe['run_only']['user']} but detected user: {os.getenv('USER')}."
-                        print(msg)
-                        self.logger.info(msg)
-                        continue
+                        if not found:
+                            print(
+                                f"[{name}] test is skipped because it is not in tag filter list: {tag_filter}"
+                            )
+                            continue
 
-                    # skip test if host platform is not equal to value specified by 'platform' field
-                    if recipe["run_only"].get("platform") and (
-                        recipe["run_only"].get("platform") != system.system["platform"]
-                    ):
-                        msg = f"[{name}] test is skipped because ['run_only']['platform'] got value: {recipe['run_only']['platform']} but detected platform: {system.system['platform']}."
-                        print(msg)
-                        self.logger.info(msg)
-                        continue
+                    # if run_only field set, check if all conditions match before proceeding with test
+                    if recipe.get("run_only"):
 
-                    # skip test if host platform is not equal to value specified by 'platform' field
-                    if recipe["run_only"].get("linux_distro"):
-                        if (
-                            system.system["os"]
-                            not in recipe["run_only"]["linux_distro"]
+                        # skip test if host scheduler is not one specified via 'scheduler' field
+                        if recipe["run_only"].get("scheduler") and (
+                            recipe["run_only"].get("scheduler")
+                            not in system.system["scheduler"]
                         ):
-                            msg = f"[{name}] test is skipped because ['run_only']['linux_distro'] got value: {recipe['run_only']['linux_distro']} but detected platform: {system.system['os']}."
+                            msg = f"[{name}] test is skipped because ['run_only']['scheduler'] got value: {recipe['run_only']['scheduler']} but detected scheduler: {system.system['scheduler']}."
                             print(msg)
                             self.logger.info(msg)
                             continue
 
-                # Add the builder based on the type
-                if recipe["type"] == "script":
-                    builders.append(
-                        ScriptBuilder(name, recipe, self.buildspec, testdir=testdir,)
-                    )
-                elif recipe["type"] == "compiler":
-                    if recipe["build"].get("name") == "gnu":
+                        # skip test if current user is not one specified in 'user' field
+                        if recipe["run_only"].get("user") and (
+                            recipe["run_only"].get("user") != os.getenv("USER")
+                        ):
+                            msg = f"[{name}] test is skipped because ['run_only']['user'] got value: {recipe['run_only']['user']} but detected user: {os.getenv('USER')}."
+                            print(msg)
+                            self.logger.info(msg)
+                            continue
+
+                        # skip test if host platform is not equal to value specified by 'platform' field
+                        if recipe["run_only"].get("platform") and (
+                            recipe["run_only"].get("platform")
+                            != system.system["platform"]
+                        ):
+                            msg = f"[{name}] test is skipped because ['run_only']['platform'] got value: {recipe['run_only']['platform']} but detected platform: {system.system['platform']}."
+                            print(msg)
+                            self.logger.info(msg)
+                            continue
+
+                        # skip test if host platform is not equal to value specified by 'platform' field
+                        if recipe["run_only"].get("linux_distro"):
+                            if (
+                                system.system["os"]
+                                not in recipe["run_only"]["linux_distro"]
+                            ):
+                                msg = f"[{name}] test is skipped because ['run_only']['linux_distro'] got value: {recipe['run_only']['linux_distro']} but detected platform: {system.system['os']}."
+                                print(msg)
+                                self.logger.info(msg)
+                                continue
+
+                    # Add the builder based on the type
+                    if recipe["type"] == "script":
                         builders.append(
-                            GNUCompiler(name, recipe, self.buildspec, testdir=testdir,)
-                        )
-                    elif recipe["build"].get("name") == "intel":
-                        builders.append(
-                            IntelCompiler(
+                            ScriptBuilder(
                                 name, recipe, self.buildspec, testdir=testdir,
                             )
                         )
-                    elif recipe["build"].get("name") == "pgi":
-                        builders.append(
-                            PGICompiler(name, recipe, self.buildspec, testdir=testdir,)
-                        )
-                    elif recipe["build"].get("name") == "cray":
-                        builders.append(
-                            CrayCompiler(name, recipe, self.buildspec, testdir=testdir,)
-                        )
-                    else:
-                        continue
+                    elif recipe["type"] == "compiler":
+                        if recipe["build"].get("name") == "gnu":
+                            builders.append(
+                                GNUCompiler(
+                                    name, recipe, self.buildspec, testdir=testdir,
+                                )
+                            )
+                        elif recipe["build"].get("name") == "intel":
+                            builders.append(
+                                IntelCompiler(
+                                    name, recipe, self.buildspec, testdir=testdir,
+                                )
+                            )
+                        elif recipe["build"].get("name") == "pgi":
+                            builders.append(
+                                PGICompiler(
+                                    name, recipe, self.buildspec, testdir=testdir,
+                                )
+                            )
+                        elif recipe["build"].get("name") == "cray":
+                            builders.append(
+                                CrayCompiler(
+                                    name, recipe, self.buildspec, testdir=testdir,
+                                )
+                            )
+                        else:
+                            continue
 
-                else:
-                    print(
-                        "%s is not recognized by buildtest, skipping." % recipe["type"]
-                    )
+                    else:
+                        print(
+                            "%s is not recognized by buildtest, skipping."
+                            % recipe["type"]
+                        )
         return builders
 
     def keys(self):

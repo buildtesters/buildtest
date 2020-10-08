@@ -7,13 +7,14 @@ ScriptBuilder class implements 'type: script'
 CompilerBuilder class implements 'type: compiler'
 """
 
-import datetime
+
 import logging
 import os
 import re
 import shutil
 import stat
 import sys
+import uuid
 
 from buildtest.buildsystem.batch import SlurmBatchScript, LSFBatchScript
 from buildtest.defaults import executor_root
@@ -137,7 +138,8 @@ class BuilderBase:
         """
 
         # Generate a unique id for the build based on key and unique string
-        self.metadata["id"] = self._generate_build_id()
+        self.metadata["full_id"] = self._generate_unique_id()
+        self.metadata["id"] = self.metadata["full_id"][:8]
 
         create_dir(self.testdir)
         num_content = len(os.listdir(self.testdir))
@@ -297,11 +299,11 @@ class BuilderBase:
 
         return env
 
-    def _generate_build_id(self):
+    def _generate_unique_id(self):
         """Generate a build id based on the Buildspec name, and datetime."""
-
-        now = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        return "%s_%s" % (self.name, now)
+        unique_id = str(uuid.uuid4())
+        return unique_id
+        # return "%s_%s" % (self.name, now)
 
     def generate_script(self):
         """Build the testscript content implemented in each subclass"""

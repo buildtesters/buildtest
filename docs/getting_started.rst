@@ -51,7 +51,6 @@ Building a Test
 To build a test, we use the ``--buildspec`` or short option ``-b`` to specify the
 path to Buildspec file.
 
-
 Let's see some examples, first we specify a full path to buildspec file
 
 .. program-output:: cat docgen/getting_started/buildspec-abspath.txt
@@ -59,13 +58,10 @@ Let's see some examples, first we specify a full path to buildspec file
 buildtest won't accept ``.yaml`` file extension for file, this can be demonstrated as
 follows::
 
-    $ buildtest build -b tests/examples/buildspecs/os.yaml
-    Paths:
-    __________
-    Prefix: /private/tmp
-    Buildspec Search Path: ['/Users/siddiq90/.buildtest/site']
-    Test Directory: /private/tmp/tests
-    tests/examples/buildspecs/os.yaml does not end in file extension .yml
+    $ buildtest build -b invalid_ext.yaml
+    invalid_ext.yaml does not end in file extension .yml
+    There are no config files to process.
+
 
 buildtest can perform a directory build for instance let's build
 for directory ``tests/examples/buildspecs`` where buildtest will recursively
@@ -156,8 +152,6 @@ In next example we combine all of these features together. This example builds
 all test with **python** tag, and build all buildspecs in directory - **tutorials/compilers**
 but we exclude **tutorials/compilers/vecadd.yml**.
 
-
-
 .. program-output:: cat docgen/getting_started/combine-tags-buildspec-exclude.txt
 
 Building by Executors
@@ -236,9 +230,38 @@ where test failed to run since we provided invalid executor.
 
 .. program-output:: cat docgen/getting_started/invalid-executor.txt
 
+Rebuild Tests
+--------------
 
-Buildspecs
-------------
+buildtest can rebuild tests using the ``--rebuild`` option which can be useful if
+you want to test a particular test multiple times. The rebuild option works across
+all discovered buildspecs and create a new test instance (unique id) and test directory
+path. To demonstrate we will build ``tutorials/python-shell.yml`` three times using
+``--rebuild=3``.
+
+.. program-output:: cat docgen/getting_started/rebuild.txt
+
+
+The rebuild works with all options including: ``--buildspec``, ``--exclude``, ``--tags``
+and ``--executors``.
+
+In the next example we rebuild tests by discovering all tags that contain **fail**.
+
+.. program-output:: cat docgen/getting_started/rebuild-tags.txt
+
+The rebuild option expects a range between **1-50**, the ``--rebuild=1`` is equivalent
+to running without ``--rebuild`` option. We set a max limit for rebuild option to
+avoid system degredation due to high workload.
+
+If you try to exceed this bound you will get an error such as::
+
+    $ buildtest build -b tutorials/pass_returncode.yml --rebuild 51
+    usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-x EXCLUDE] [--tags TAGS] [-e EXECUTOR]
+                                                [-s {parse,build}] [-t TESTDIR] [--rebuild REBUILD] [--settings SETTINGS]
+    buildtest [options] [COMMANDS] build: error: argument --rebuild: 51 must be a positive number between [1-50]
+
+Buildspecs Interface
+----------------------
 
 buildtest is able to find and validate all buildspecs in your repos. The
 command ``buildtest buildspec`` comes with the following options.
@@ -274,6 +297,7 @@ Shown below is a list of options for ``buildtest buildspec find`` command.
 If you want to find all buildspec files in cache run ``buildtest buildspec find --buildspec-files``
 
 .. program-output:: cat docgen/buildspec_find_buildspecfiles.txt
+     :ellipsis: 30
 
 Filtering buildspec
 ~~~~~~~~~~~~~~~~~~~
@@ -400,6 +424,8 @@ To see all tests with returncode of 2 we set ``--filter returncode=2``.
 
 .. program-output:: cat docgen/report-returncode.txt
 
+.. Note:: buildtest automatically converts returncode to integer when matching returncode, so ``--filter returncode="2"`` will work too
+
 If you want to filter by test name ``exit1_pass`` you can use the
 ``name=exit1_pass`` field as shown below
 
@@ -417,11 +443,42 @@ tests for executor **local.sh** we can do the following
 
 .. program-output:: cat docgen/report-multifilter.txt
 
-The state field expects value of ``PASS`` or ``FAIL`` so if you specify an
+Filter Exception Cases
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``returncode`` filter field expects an integer value, so if you try a non-integer
+returncode you will get the following message::
+
+    $ buildtest report --filter returncode=1.5
+    Traceback (most recent call last):
+      File "/Users/siddiq90/Documents/buildtest/bin/buildtest", line 17, in <module>
+        buildtest.main.main()
+      File "/Users/siddiq90/Documents/buildtest/buildtest/main.py", line 45, in main
+        args.func(args)
+      File "/Users/siddiq90/Documents/buildtest/buildtest/menu/report.py", line 128, in func_report
+        raise BuildTestError(f"Invalid returncode:{filter_args[key]} must be an integer")
+    buildtest.exceptions.BuildTestError: 'Invalid returncode:1.5 must be an integer'
+
+The ``state`` filter field expects value of ``PASS`` or ``FAIL`` so if you specify an
 invalid state you will get an error as follows::
 
     $ buildtest report --filter state=UNKNOWN
     filter argument 'state' must be 'PASS' or 'FAIL' got value UNKNOWN
+
+The ``buildspec`` field expects a valid file path, it can be an absolute or relative
+path, buildtest will resolve absolute path and check if file exist and is in the report
+file. If it's an invalid file we get an error such as::
+
+    $ buildtest report --filter buildspec=/path/to/invalid.yml
+    Invalid File Path for filter field 'buildspec': /path/to/invalid.yml
+
+You may have a valid filepath for buildspec filter field such as
+``tutorials/invalid_executor.yml``, but there is no record in the report cache
+because this test can't be run. In this case you will get the following message::
+
+    $ buildtest report --filter buildspec=tutorials/invalid_executor.yml
+    buildspec file: /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml not found in cache
+
 
 .. _buildtest_schemas:
 
@@ -467,12 +524,16 @@ or long option ``--debug`` with any buildtest commands. The DEBUGLEVEL are the f
 - CRITICAL
 
 buildtest is using `logging.setLevel <https://docs.python.org/3/library/logging.html#logging.Logger.setLevel>`_
-to control log level.
-
-The content is logged in **buildtest.log** with default log level of ``DEBUG``.
-If you want to get all logs use ``-d DEBUG`` with your buildtest command::
+to control log level. The content is logged in file **buildtest.log** in your current
+directory with default log level of ``DEBUG``. If you want to get all logs use
+``-d DEBUG`` with your buildtest command::
 
     buildtest -d DEBUG <command>
+
+The debug mode can be useful when troubleshooting builds, in this example we
+set debug level to ``DEBUG`` for an invalid buildspec.
+
+.. program-output:: cat docgen/getting_started/debug-mode.txt
 
 Accessing buildtest documentation
 ----------------------------------
@@ -485,7 +546,6 @@ access buildtest docs you can run::
 To access schema docs run::
 
   $ buildtest schemadocs
-
 
 Logfile
 -------

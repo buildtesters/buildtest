@@ -21,23 +21,23 @@ List of executors:  {'local.bash': local.bash, 'local.sh': local.sh, 'local.pyth
 | Stage: Building Test |
 +----------------------+ 
 
- Name                     | Type   | Executor   | Tags                  | Testpath
---------------------------+--------+------------+-----------------------+----------------------------------------------------------------------------------------------------------------------
- exit1_fail               | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/15/stage/generate.sh
- exit1_pass               | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/13/stage/generate.sh
- returncode_list_mismatch | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/15/stage/generate.sh
- returncode_int_match     | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/13/stage/generate.sh
+ name                     | id       | type   | executor   | tags                  | testpath
+--------------------------+----------+--------+------------+-----------------------+---------------------------------------------------------------------------------------------------------------------
+ exit1_fail               | 98a2e55c | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/9/stage/generate.sh
+ exit1_pass               | 73b4fd50 | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/7/stage/generate.sh
+ returncode_list_mismatch | 87285388 | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/9/stage/generate.sh
+ returncode_int_match     | 88197672 | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/7/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
     
- Name                     | Executor   | Status   |   Returncode | TestPath
---------------------------+------------+----------+--------------+----------------------------------------------------------------------------------------------------------------------
- exit1_fail               | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/15/stage/generate.sh
- exit1_pass               | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/13/stage/generate.sh
- returncode_list_mismatch | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/15/stage/generate.sh
- returncode_int_match     | local.sh   | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/13/stage/generate.sh
+ name                     | id       | executor   | status   |   returncode | testpath
+--------------------------+----------+------------+----------+--------------+---------------------------------------------------------------------------------------------------------------------
+ exit1_fail               | 98a2e55c | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/9/stage/generate.sh
+ exit1_pass               | 73b4fd50 | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/7/stage/generate.sh
+ returncode_list_mismatch | 87285388 | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/9/stage/generate.sh
+ returncode_int_match     | 88197672 | local.sh   | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/7/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

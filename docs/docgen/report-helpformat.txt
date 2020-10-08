@@ -3,7 +3,8 @@ Fields      Description
 ----------  --------------------------------------------
 buildspec   Buildspec file
 name        Name of test defined in buildspec
-id          Unique Build Identifier
+id          Unique Build Identifier (abbreviated)
+full_id     Full qualified unique build identifier
 testroot    Root of test directory
 testpath    Path to test
 command     Command executed
