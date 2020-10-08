@@ -173,6 +173,21 @@ buildspecs:
       - "-n 8"
     tags: ["slurm"]
     run: hostname
+
+  run_only_example:
+    type: script
+    executor: local.bash
+    description: run_only example that runs with user1 on Linux system (rhel, centos) with LSF
+    run_only:
+      user: user1
+      scheduler: lsf
+      platform: Linux
+      linux_distro:
+        - rhel
+        - centos
+    run: |
+      uname -av
+      lsinfo
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/script-v1.0.schema.json/invalid/examples.yml
 ________________________________________________________________________________
 version: "1.0"
@@ -348,3 +363,29 @@ buildspecs:
     status:
       slurm_job_state: "FINISH"
 
+  duplicate_linux_distro:
+    type: script
+    executor: local.bash
+    description: Duplicate items in linux_distro is not allowed
+    run_only:
+      linux_distro:
+        - rhel
+        - rhel
+    run: uname -av
+
+  empty_list_linux_distro:
+    type: script
+    executor: local.bash
+    description: Empty List in linux_distro is not allowed. Requires atleast 1 item
+    run_only:
+      linux_distro: []
+    run: uname -av
+
+  additionalProperties_run_only:
+    type: script
+    executor: local.bash
+    description: additional Properties not allowed in run_only field. Invalid field python
+    run_only:
+      user: root
+      python: 3.5
+    run: hostname

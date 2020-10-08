@@ -41,7 +41,7 @@ def test_build_by_tags():
         exclude = None
         tags = ["tutorials"]
         executor = None
-        rerun = None
+        rebuild = None
 
     #  testing buildtest build --tags tutorials
     func_build_subcmd(args, buildtest_configuration)
@@ -55,7 +55,7 @@ def test_build_by_tags():
         exclude = None
         tags = ["compile", "python"]
         executor = None
-        rerun = None
+        rebuild = None
 
     #  testing buildtest build --tags tutorials --tags python
     func_build_subcmd(args, buildtest_configuration)
@@ -159,7 +159,7 @@ def test_build_buildspecs():
         exclude = None
         tags = None
         executor = None
-        rerun = None
+        rebuild = None
 
     #  testing buildtest build --buildspec tests/examples/buildspecs
     func_build_subcmd(args, buildtest_configuration)
@@ -173,7 +173,7 @@ def test_build_buildspecs():
         exclude = [buildspec_paths]
         tags = None
         executor = None
-        rerun = None
+        rebuild = None
 
     #  testing buildtest build --buildspec tests/examples/buildspecs --exclude tests/examples/buildspecs
     # this results in no buildspecs built
@@ -194,7 +194,7 @@ def test_buildspec_tag_executor():
         settings = BUILDTEST_SETTINGS_FILE
         testdir = None
         exclude = None
-        rerun = None
+        rebuild = None
 
     # testing buildtest build --tags fail --executor local.sh
     func_build_subcmd(args, buildtest_configuration)
@@ -213,7 +213,7 @@ def test_build_multi_executors():
         testdir = None
         exclude = None
         tags = None
-        rerun = None
+        rebuild = None
 
     # testing buildtest build --executor local.bash --executor local.sh
     func_build_subcmd(args, buildtest_configuration)
@@ -233,7 +233,7 @@ def test_build_by_stages():
         exclude = None
         tags = ["tutorials"]
         executor = None
-        rerun = None
+        rebuild = None
 
     # testing buildtest build --tags tutorials --stage=parse
     func_build_subcmd(args, buildtest_configuration)
@@ -247,7 +247,28 @@ def test_build_by_stages():
         exclude = None
         tags = ["tutorials"]
         executor = None
-        rerun = None
+        rebuild = None
 
     # testing buildtest build --tags tutorials --stage=build
+    func_build_subcmd(args, buildtest_configuration)
+
+
+@pytest.mark.cli
+def test_build_rebuild():
+
+    buildtest_configuration = load_settings()
+    buildspec_file = os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")
+
+    class args:
+        buildspec = [buildspec_file]
+        debug = False
+        stage = None
+        settings = BUILDTEST_SETTINGS_FILE
+        testdir = None
+        exclude = None
+        tags = None
+        executor = None
+        rebuild = 5
+
+    # rebuild 5 times (buildtest build -b tutorials/python-shell.yml --rebuild=5
     func_build_subcmd(args, buildtest_configuration)

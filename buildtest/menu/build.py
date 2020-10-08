@@ -317,21 +317,28 @@ def build_phase(builders, printTable=False):
 +----------------------+ 
 """
     )
-    table = {"Name": [], "Type": [], "Executor": [], "Tags": [], "Testpath": []}
+    table = {
+        "name": [],
+        "id": [],
+        "type": [],
+        "executor": [],
+        "tags": [],
+        "testpath": [],
+    }
     for builder in builders:
         builder.build()
-        table["Name"].append(builder.metadata["name"])
-        table["Type"].append(builder.recipe["type"])
-        table["Executor"].append(builder.recipe["executor"])
-        table["Tags"].append(builder.recipe.get("tags"))
-        table["Testpath"].append(builder.metadata["testpath"])
-        # table["buildspec"].append(builder.buildspec)
+        table["name"].append(builder.metadata["name"])
+        table["id"].append(builder.metadata["id"])
+        table["type"].append(builder.recipe["type"])
+        table["executor"].append(builder.recipe["executor"])
+        table["tags"].append(builder.recipe.get("tags"))
+        table["testpath"].append(builder.metadata["testpath"])
 
     if printTable:
         print(tabulate(table, headers=table.keys(), tablefmt="presto",))
 
 
-def run_phase(builders, executor, config_dict, rerun=None, printTable=False):
+def run_phase(builders, executor, config_dict, printTable=False):
     """This method will run all builders with the appropriate executor.
     The executor argument is an instance of ``BuildExecutor`` that is responsible
     for orchestrating builder execution to the appropriate executor class. The
@@ -379,43 +386,46 @@ def run_phase(builders, executor, config_dict, rerun=None, printTable=False):
     """
         )
 
-    table = {"Name": [], "Executor": [], "Status": [], "Returncode": [], "TestPath": []}
+    table = {
+        "name": [],
+        "id": [],
+        "executor": [],
+        "status": [],
+        "returncode": [],
+        "testpath": [],
+    }
 
     poll_queue = []
-    count = 0
-    rerun = rerun or 1
-    rerun = int(rerun)
 
-    while count < rerun:
-        count += 1
-        for builder in builders:
-            try:
-                result = executor.run(builder)
-            except SystemExit as err:
-                print("[%s]: Failed to Run Test" % builder.metadata["name"])
-                errmsg.append(err)
-                logger.error(err)
-                continue
+    for builder in builders:
+        try:
+            result = executor.run(builder)
+        except SystemExit as err:
+            print("[%s]: Failed to Run Test" % builder.metadata["name"])
+            errmsg.append(err)
+            logger.error(err)
+            continue
 
-            valid_builders.append(builder)
+        valid_builders.append(builder)
 
-            table["Name"].append(builder.name)
-            table["Executor"].append(builder.executor)
-            table["Status"].append(result["state"])
-            table["Returncode"].append(result["returncode"])
-            table["TestPath"].append(builder.metadata["testpath"])
+        table["name"].append(builder.name)
+        table["id"].append(builder.metadata["id"])
+        table["executor"].append(builder.executor)
+        table["status"].append(result["state"])
+        table["returncode"].append(result["returncode"])
+        table["testpath"].append(builder.metadata["testpath"])
 
-            if result["state"] == "N/A":
-                poll_queue.append(builder)
-                poll = True
-                continue
+        if result["state"] == "N/A":
+            poll_queue.append(builder)
+            poll = True
+            continue
 
-            if result["state"] == "PASS":
-                passed_tests += 1
-            else:
-                failed_tests += 1
+        if result["state"] == "PASS":
+            passed_tests += 1
+        else:
+            failed_tests += 1
 
-            total_tests += 1
+        total_tests += 1
 
     if printTable:
         print(tabulate(table, headers=table.keys(), tablefmt="presto"))
@@ -458,6 +468,7 @@ def run_phase(builders, executor, config_dict, rerun=None, printTable=False):
 
         table = {
             "name": [],
+            "id": [],
             "executor": [],
             "status": [],
             "returncode": [],
@@ -486,6 +497,7 @@ def run_phase(builders, executor, config_dict, rerun=None, printTable=False):
                 failed_tests += 1
 
             table["name"].append(builder.name)
+            table["id"].append(builder.metadata["id"])
             table["executor"].append(builder.executor)
             table["status"].append(result["state"])
             table["returncode"].append(result["returncode"])
@@ -571,10 +583,12 @@ def func_build_subcmd(args, config_opts):
     stage = args.stage
     executor = BuildExecutor(config_opts)
 
+    rebuild = args.rebuild or 1
+    rebuild = int(rebuild)
     # Parse all buildspecs and skip any buildspecs that fail validation, return type
     # is a builder object used for building test.
     builders = parse_buildspecs(
-        buildspecs, test_directory, args.tags, args.executor, printTable=True
+        buildspecs, test_directory, rebuild, args.tags, args.executor, printTable=True
     )
 
     # if --stage=parse we stop here
@@ -586,8 +600,6 @@ def func_build_subcmd(args, config_opts):
     if stage == "build":
         return
 
-    valid_builders = run_phase(
-        builders, executor, config_opts, args.rerun, printTable=True
-    )
+    valid_builders = run_phase(builders, executor, config_opts, printTable=True)
 
     update_report(valid_builders)

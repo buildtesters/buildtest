@@ -38,7 +38,7 @@ BUILD_REPORT = os.path.join(var_root, "report.json")
 
 BUILDSPEC_DEFAULT_PATH = [
     os.path.join(BUILDTEST_ROOT, "tutorials"),
-    os.path.join(BUILDTEST_ROOT, "generic-tests"),
+    os.path.join(BUILDTEST_ROOT, "general_tests"),
 ]
 
 DEFAULT_SETTINGS_FILE = os.path.join(

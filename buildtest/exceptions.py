@@ -10,9 +10,12 @@ class BuildTestError(Exception):
         :param args:
         :type args:
         """
+        self.msg = [msg]
         if args:
-            msg = msg % args
-        self.msg = msg
+            for arg in args:
+                self.msg.append(str(arg))
+
+        self.msg = "\n".join(self.msg)
 
     def __str__(self):
         return repr(self.msg)

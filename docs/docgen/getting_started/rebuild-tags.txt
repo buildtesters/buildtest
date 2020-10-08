@@ -1,0 +1,55 @@
+$ buildtest build --tags fail --rebuild=2 
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+    
+
+Discovered Buildspecs:
+ 
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+[exit1_pass] test is skipped because it is not in tag filter list: ['fail']
+[returncode_int_match] test is skipped because it is not in tag filter list: ['fail']
+[exit1_pass] test is skipped because it is not in tag filter list: ['fail']
+[returncode_int_match] test is skipped because it is not in tag filter list: ['fail']
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+    
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+-------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ name                     | id       | type   | executor   | tags                  | testpath
+--------------------------+----------+--------+------------+-----------------------+---------------------------------------------------------------------------------------------------------------------
+ exit1_fail               | 4acbbb41 | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/3/stage/generate.sh
+ returncode_list_mismatch | 6222b488 | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/3/stage/generate.sh
+ exit1_fail               | d551071e | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/4/stage/generate.sh
+ returncode_list_mismatch | c5d00af1 | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/4/stage/generate.sh
+
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+    
+ name                     | id       | executor   | status   |   returncode | testpath
+--------------------------+----------+------------+----------+--------------+---------------------------------------------------------------------------------------------------------------------
+ exit1_fail               | 4acbbb41 | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/3/stage/generate.sh
+ returncode_list_mismatch | 6222b488 | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/3/stage/generate.sh
+ exit1_fail               | d551071e | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/4/stage/generate.sh
+ returncode_list_mismatch | c5d00af1 | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/4/stage/generate.sh
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    
+Executed 4 tests
+Passed Tests: 0/4 Percentage: 0.000%
+Failed Tests: 4/4 Percentage: 100.000%
+
+
+

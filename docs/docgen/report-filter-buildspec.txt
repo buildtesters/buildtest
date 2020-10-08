@@ -1,36 +1,44 @@
-$ buildtest report --filter buildspec=tutorials/pass_returncode.yml --format=name,state,buildspec
-+--------------------------+---------+-------------------------------------------------------------------+
-| name                     | state   | buildspec                                                         |
-+==========================+=========+===================================================================+
-| exit1_fail               | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| exit1_fail               | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| exit1_fail               | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| exit1_fail               | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| exit1_pass               | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| exit1_pass               | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| exit1_pass               | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| exit1_pass               | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| returncode_list_mismatch | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| returncode_list_mismatch | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| returncode_list_mismatch | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| returncode_list_mismatch | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| returncode_int_match     | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| returncode_int_match     | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| returncode_int_match     | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
-| returncode_int_match     | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
-+--------------------------+---------+-------------------------------------------------------------------+
+$ buildtest report --filter buildspec=tutorials/pass_returncode.yml --format=name,id,state,buildspec
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| name                     | id       | state   | buildspec                                                         |
++==========================+==========+=========+===================================================================+
+| exit1_fail               | bff47f17 | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| exit1_fail               | 527880f9 | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| exit1_fail               | dce0c689 | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| exit1_fail               | 4acbbb41 | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| exit1_fail               | d551071e | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| exit1_fail               | 1b7337d4 | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| exit1_pass               | b25ede10 | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| exit1_pass               | 13c3cde8 | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| exit1_pass               | 725f66de | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| exit1_pass               | c4d22774 | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| returncode_list_mismatch | 30a6c390 | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| returncode_list_mismatch | 3c781f83 | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| returncode_list_mismatch | 701c31ab | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| returncode_list_mismatch | 6222b488 | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| returncode_list_mismatch | c5d00af1 | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| returncode_list_mismatch | dfc4ad0f | FAIL    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| returncode_int_match     | 8dd1794c | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| returncode_int_match     | 4ca574d7 | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| returncode_int_match     | a7118348 | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+
+| returncode_int_match     | 0a6555c3 | PASS    | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml |
++--------------------------+----------+---------+-------------------------------------------------------------------+

@@ -21,17 +21,17 @@ Discovered Buildspecs:
 | Stage: Building Test |
 +----------------------+ 
 
- Name       | Type     | Executor   | Tags                     | Testpath
-------------+----------+------------+--------------------------+------------------------------------------------------------------------------------------------
- vecadd_gnu | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
+ name       | id       | type     | executor   | tags                     | testpath
+------------+----------+----------+------------+--------------------------+------------------------------------------------------------------------------------------------
+ vecadd_gnu | edff363b | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
     
- Name       | Executor   | Status   |   Returncode | TestPath
-------------+------------+----------+--------------+------------------------------------------------------------------------------------------------
- vecadd_gnu | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
+ name       | id       | executor   | status   |   returncode | testpath
+------------+----------+------------+----------+--------------+------------------------------------------------------------------------------------------------
+ vecadd_gnu | edff363b | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

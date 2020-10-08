@@ -3,7 +3,16 @@ import os
 import sys
 from tabulate import tabulate
 from buildtest.defaults import BUILD_REPORT
+from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, create_dir, resolve_path
+
+
+def is_int(val):
+    try:
+        num = int(val)
+    except ValueError:
+        return False
+    return True
 
 
 def func_report(args=None):
@@ -29,6 +38,7 @@ def func_report(args=None):
         "buildspec",
         "name",
         "id",
+        "full_id",
         "testroot",
         "testpath",
         "command",
@@ -47,7 +57,8 @@ def func_report(args=None):
     format_table = [
         ["buildspec", "Buildspec file"],
         ["name", "Name of test defined in buildspec"],
-        ["id", "Unique Build Identifier"],
+        ["id", "Unique Build Identifier (abbreviated)"],
+        ["full_id", "Full qualified unique build identifier"],
         ["testroot", "Root of test directory"],
         ["testpath", "Path to test"],
         ["command", "Command executed"],
@@ -82,6 +93,7 @@ def func_report(args=None):
     # filter_args contains a dict of filter field argument
     filter_args = {}
 
+    # implements buildtest report --helpfilter
     if args.helpfilter:
         print(
             tabulate(
@@ -92,10 +104,10 @@ def func_report(args=None):
         )
         return
 
+    # check if filter arguments (--filter) are valid fields
     if args.filter:
 
         filter_args = args.filter
-
         raiseError = False
         # check if filter keys are accepted filter fields, if not we raise error
         for key in filter_args.keys():
@@ -103,12 +115,21 @@ def func_report(args=None):
                 print(f"Invalid filter key: {key}")
                 raiseError = True
 
+            if key == "returncode":
+                valid_returncode = is_int(filter_args[key])
+
+                if not valid_returncode:
+                    raise BuildTestError(
+                        f"Invalid returncode:{filter_args[key]} must be an integer"
+                    )
+
         # raise error if any filter field is invalid
         if raiseError:
             sys.exit(1)
 
     # default table format fields
     display_table = {
+        "name": [],
         "id": [],
         "state": [],
         "returncode": [],
@@ -200,7 +221,7 @@ def func_report(args=None):
                     if filter_args["state"] != test.get("state"):
                         continue
 
-                # if state filter defined, skip any tests that don't match test state
+                # if returncode filter defined, skip any tests that don't match returncode
                 if filter_args.get("returncode"):
                     if int(filter_args["returncode"]) != test.get("returncode"):
                         continue
@@ -253,6 +274,7 @@ def update_report(valid_builders):
         # keys that we care obout for reporting
         for item in [
             "id",
+            "full_id",
             "testroot",
             "testpath",
             "command",
@@ -266,7 +288,10 @@ def update_report(valid_builders):
         entry["tags"] = ""
         # convert tags to string if defined in buildspec
         if builder.metadata["tags"]:
-            entry["tags"] = " ".join(builder.metadata["tags"])
+            if isinstance(builder.metadata["tags"], list):
+                entry["tags"] = " ".join(builder.metadata["tags"])
+            else:
+                entry["tags"] = builder.metadata["tags"]
 
         # query over result attributes, we only assign some keys of interest
         for item in ["starttime", "endtime", "runtime", "state", "returncode"]:

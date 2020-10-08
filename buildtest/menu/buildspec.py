@@ -366,7 +366,7 @@ def get_executors(cache):
 
 
 def parse_buildspecs(
-    buildspecs, test_directory, tags=None, executors=None, printTable=False
+    buildspecs, test_directory, rebuild, tags=None, executors=None, printTable=False
 ):
     """Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
     fails validation we add it to ``skipped_tests`` list and print all skipped
@@ -390,7 +390,7 @@ def parse_buildspecs(
 
     builders = []
     table = {"schemafile": [], "validstate": [], "buildspec": []}
-    skipped_tests = []
+    invalid_buildspecs = []
     # build all the tests
     for buildspec in buildspecs:
 
@@ -399,7 +399,9 @@ def parse_buildspecs(
             # Read in Buildspec file here, loading each will validate the buildspec file
             bp = BuildspecParser(buildspec)
         except (SystemExit, ValidationError) as err:
-            skipped_tests.append(f"Skipping {buildspec} since it failed to validate")
+            invalid_buildspecs.append(
+                f"Skipping {buildspec} since it failed to validate"
+            )
             logger.error(err)
             continue
 
@@ -408,15 +410,18 @@ def parse_buildspecs(
         table["buildspec"].append(buildspec)
 
         builders += bp.get_builders(
-            testdir=test_directory, tag_filter=tags, executor_filter=executors
+            testdir=test_directory,
+            rebuild=rebuild,
+            tag_filter=tags,
+            executor_filter=executors,
         )
 
     # print any skipped buildspecs if they failed to validate during build stage
-    if len(skipped_tests) > 0:
+    if len(invalid_buildspecs) > 0:
         print("\n\n")
         print("Error Messages from Stage: Parse")
         print("{:_<80}".format(""))
-        for test in skipped_tests:
+        for test in invalid_buildspecs:
             print(test)
 
     if not builders:
