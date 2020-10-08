@@ -7,7 +7,7 @@ ScriptBuilder class implements 'type: script'
 CompilerBuilder class implements 'type: compiler'
 """
 
-import datetime
+
 import logging
 import os
 import re

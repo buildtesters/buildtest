@@ -8,6 +8,6 @@ included_bp, excluded_bp = discover_buildspecs(tags=tagname, debug=True)
 
 configuration = load_settings()
 testdir = resolve_testdirectory(configuration)
-builders = parse_buildspecs(included_bp, testdir, printTable=True)
+builders = parse_buildspecs(included_bp, testdir, rebuild=1, printTable=True)
 
 build_phase(builders, printTable=True)

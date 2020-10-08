@@ -1,25 +1,29 @@
 
  Discovered buildspecs: 
 
-/Users/siddiq90/Documents/buildtest/tutorials/invalid_buildspec_section.yml
-/Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
-/Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
-/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
-/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
 /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/run_only_platform.yml
+/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+/Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+/Users/siddiq90/Documents/buildtest/tutorials/shebang.yml
 /Users/siddiq90/Documents/buildtest/tutorials/environment.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/root_user.yml
+/Users/siddiq90/Documents/buildtest/tutorials/run_only_distro.yml
+/Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+/Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
+/Users/siddiq90/Documents/buildtest/tutorials/invalid_tags.yml
 /Users/siddiq90/Documents/buildtest/tutorials/hello_world.yml
 /Users/siddiq90/Documents/buildtest/tutorials/sleep.yml
-/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
-/Users/siddiq90/Documents/buildtest/tutorials/tags_example.yml
-/Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
-/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
 /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
-/Users/siddiq90/Documents/buildtest/tutorials/invalid_tags.yml
+/Users/siddiq90/Documents/buildtest/tutorials/tags_example.yml
+/Users/siddiq90/Documents/buildtest/tutorials/invalid_buildspec_section.yml
+/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
 
  Excluded buildspecs: 
 

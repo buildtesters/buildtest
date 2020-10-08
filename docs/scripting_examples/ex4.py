@@ -20,7 +20,7 @@ executor = BuildExecutor(configuration)
 
 print("List of executors: ", executor.executors)
 
-builders = parse_buildspecs(included_bp, testdir, printTable=True)
+builders = parse_buildspecs(included_bp, testdir, rebuild=1, printTable=True)
 
 build_phase(builders, printTable=True)
 run_phase(builders, executor, configuration, printTable=True)

@@ -8,8 +8,9 @@ from buildtest.utils.file import is_file, create_dir, resolve_path
 
 
 def is_int(val):
+    num = val
     try:
-        num = int(val)
+        num = int(num)
     except ValueError:
         return False
     return True
