@@ -82,6 +82,11 @@ class SlurmExecutor(BaseExecutor):
         self.cluster = self._settings.get("cluster")
         self.partition = self._settings.get("partition")
         self.qos = self._settings.get("qos")
+        self.max_pend_time = self._settings.get(
+            "max_pend_time"
+        ) or self._buildtestsettings["executors"].get("defaults", {}).get(
+            "max_pend_time"
+        )
 
     def dispatch(self):
         """This method is responsible for dispatching job to slurm scheduler."""
@@ -118,6 +123,7 @@ class SlurmExecutor(BaseExecutor):
 
         command = BuildTestCommand(self.builder.metadata["command"])
         command.execute()
+        self.builder.start()
 
         # if sbatch job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
@@ -170,6 +176,17 @@ class SlurmExecutor(BaseExecutor):
         msg = f"[{self.builder.metadata['name']}]: JobID {self.builder.metadata['jobid']} in {self.job_state} state "
         print(msg)
         self.logger.debug(msg)
+
+        # if job state in PENDING check if we need to cancel job by checking internal timer
+        if self.job_state == "PENDING":
+            self.builder.stop()
+            print(f"Time Duration: {self.builder.duration}")
+            print(f"Max Pend Time: {self.max_pend_time}")
+
+            # if timer time is more than requested pend time then cancel job
+            if int(self.builder.duration) > self.max_pend_time:
+                self.cancel()
+
         return self.job_state
 
     def gather(self):
@@ -229,3 +246,14 @@ class SlurmExecutor(BaseExecutor):
         )
         self.check_test_state()
         self.builder.metadata["result"] = self.result
+
+    def cancel(self):
+        """Cancel slurm job, this operation is performed if job exceeds pending or runtime."""
+        query = f"scancel {self.builder.metadata['jobid']}"
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        msg = (
+            f"Cancelling Job: {self.builder.metadata['name']} running command: {query}"
+        )
+        print(msg)
+        self.logger.debug(msg)

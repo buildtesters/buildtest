@@ -26,8 +26,9 @@
                    "type": "string",
                    "enum": ["sbatch", "bsub"],
                    "description": "Specify batch launcher to use when submitting jobs, this is applicable for LSF and Slurm Executors."
-                 }
-              }
+                 },
+                  "cancel_pend_time": {"$ref":  "#/definitions/cancel_pend_time"}
+               }
             },
             "local": {
               "type": "object",
@@ -94,6 +95,12 @@
           "type": "string"
         }
       },
+      "cancel_pend_time": {
+         "type":  "integer",
+         "description": "Cancel job if it is still pending in queue",
+         "minimum": 10,
+         "default": 90
+      },
       "local": {
           "type": "object",
           "additionalProperties": false,
@@ -117,7 +124,8 @@
               "partition": {"type":  "string", "description": "Specify the slurm partition you want to use ``-p <partition>``"},
               "qos": {"type":  "string", "description": "Specify the slurm qos you want to use ``-q <qos>``"},
               "before_script": { "#ref":  "#/definitions/script" },
-              "after_script": { "#ref":  "#/definitions/script" }
+              "after_script": { "#ref":  "#/definitions/script" },
+              "cancel_pend_time": {"$ref":  "#/definitions/cancel_pend_time"}
            }
        },
       "lsf": {
@@ -129,7 +137,8 @@
               "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any options for ``bsub`` for this executor when running all jobs associated to this executor" },
               "queue": {"type":  "string", "description": "Specify the lsf queue you want to use ``-q <queue>``"},
               "before_script": { "#ref":  "#/definitions/script" },
-              "after_script": { "#ref":  "#/definitions/script" }
+              "after_script": { "#ref":  "#/definitions/script" },
+              "cancel_pend_time": {"$ref":  "#/definitions/cancel_pend_time"}
           }
        }
     }

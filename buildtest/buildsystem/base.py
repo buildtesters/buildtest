@@ -21,6 +21,7 @@ from buildtest.defaults import executor_root
 from buildtest.schemas.defaults import schema_table
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import create_dir, resolve_path, write_file
+from buildtest.utils.timer import Timer
 from buildtest.utils.shell import Shell
 
 
@@ -120,6 +121,14 @@ class BuilderBase:
         self.logger.debug("Setting test extension to 'sh'")
         return "sh"
 
+    def start(self):
+        """Keep internal time for start of test"""
+        self.timer = Timer()
+        self.timer.start()
+
+    def stop(self):
+        self.duration = self.timer.stop()
+
     def build(self):
         """ This method is responsible for invoking setup, creating test
             directory and writing test. This method is called from an instance
@@ -153,7 +162,7 @@ class BuilderBase:
         self.run_dir = os.path.join(self.test_id, "run")
         # create stage and run directories
         create_dir(self.stage_dir)
-        create_dir(os.path.join(self.run_dir))
+        create_dir(self.run_dir)
 
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
