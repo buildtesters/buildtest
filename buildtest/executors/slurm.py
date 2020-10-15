@@ -187,7 +187,11 @@ class SlurmExecutor(BaseExecutor):
             if int(self.builder.duration) > self.max_pend_time:
                 self.cancel()
                 self.job_state = "CANCELLED"
-                print("Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(self.builder.duration,self.max_pend_time))
+                print(
+                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
+                        self.builder.duration, self.max_pend_time
+                    )
+                )
                 self.builder.job_state = self.job_state
                 return self.job_state
 
@@ -231,14 +235,12 @@ class SlurmExecutor(BaseExecutor):
             return
 
         self.builder.metadata["outfile"] = os.path.join(
-            job_data["WorkDir"].rstrip(),
-            f"{self.builder.metadata['name']}.out",
+            job_data["WorkDir"].rstrip(), f"{self.builder.metadata['name']}.out",
         )
         self.builder.metadata["errfile"] = os.path.join(
-            job_data["WorkDir"].rstrip(),
-            f"{self.builder.metadata['name']}.err",
+            job_data["WorkDir"].rstrip(), f"{self.builder.metadata['name']}.err",
         )
-        
+
         shutil.copy2(
             self.builder.metadata["outfile"],
             os.path.join(

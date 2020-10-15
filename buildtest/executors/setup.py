@@ -170,12 +170,12 @@ class BuildExecutor:
         # poll slurm job
         if executor.type == "slurm":
             # only poll job if its in PENDING or RUNNING state
-            #if executor.job_state in ["PENDING", "RUNNING"] or not executor.job_state:
+            # if executor.job_state in ["PENDING", "RUNNING"] or not executor.job_state:
             if builder.job_state in ["PENDING", "RUNNING"] or not builder.job_state:
                 executor.poll()
             elif builder.job_state == "CANCELLED":
                 return True
-            elif builder.job_state in ["FAILED", "COMPLETED", "OUT_OF_MEMORY"] :
+            elif builder.job_state in ["FAILED", "COMPLETED", "OUT_OF_MEMORY"]:
                 executor.gather()
                 return True
 

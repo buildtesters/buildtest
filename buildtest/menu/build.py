@@ -479,8 +479,8 @@ def run_phase(builders, executor, config_dict, printTable=False):
             for builder in cancelled_jobs:
                 valid_builders.remove(builder)
 
-            print(f"Cancelled Tests:")
-            [ print(builder.metadata['name']) for builder in cancelled_jobs ]
+            print("Cancelled Tests:")
+            [print(builder.metadata["name"]) for builder in cancelled_jobs]
 
         table = {
             "name": [],
@@ -500,7 +500,7 @@ def run_phase(builders, executor, config_dict, printTable=False):
 +---------------------------------------------+ 
     """
             )
-        
+
         # regenerate test results after poll
         passed_tests = 0
         failed_tests = 0
