@@ -181,8 +181,10 @@ class BuildExecutor:
 
         elif executor.type == "lsf":
             # only poll job if its in PENDING or RUNNING state
-            if executor.job_state in ["PEND", "RUN"] or not executor.job_state:
+            if builder.job_state in ["PEND", "RUN"] or not executor.job_state:
                 executor.poll()
+            elif builder.job_state == "CANCELLED":
+                return True
             else:
                 executor.gather()
                 return True

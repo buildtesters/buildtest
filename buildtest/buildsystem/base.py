@@ -194,6 +194,9 @@ class BuilderBase:
             script = LSFBatchScript(self.recipe.get("batch"), self.recipe.get("bsub"))
 
             lines += script.get_headers()
+            lines += [f"#BSUB -J {self.name}"]
+            lines += [f"#BSUB -o {self.name}.out"]
+            lines += [f"#BSUB -e {self.name}.err"]
 
         elif self.executor_type == "slurm":
 
