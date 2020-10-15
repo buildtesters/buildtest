@@ -70,7 +70,11 @@ class LSFExecutor(BaseExecutor):
             "executors"
         ].get("defaults", {}).get("launcher")
         self.launcher_opts = self._settings.get("options")
-
+        self.max_pend_time = self._settings.get(
+            "max_pend_time"
+        ) or self._buildtestsettings["executors"].get("defaults", {}).get(
+            "max_pend_time"
+        )
         self.queue = self._settings.get("queue")
 
     def dispatch(self):
@@ -102,6 +106,7 @@ class LSFExecutor(BaseExecutor):
 
         command = BuildTestCommand(self.builder.metadata["command"])
         command.execute()
+        self.builder.start()
 
         # if job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
@@ -156,6 +161,29 @@ class LSFExecutor(BaseExecutor):
         msg = f"[{self.builder.metadata['name']}]: JobID {self.builder.metadata['jobid']} in {self.job_state} state "
         print(msg)
         self.logger.debug(msg)
+
+        # if job state in PENDING check if we need to cancel job by checking internal timer
+        if self.job_state == "PENDING":
+            self.builder.stop()
+            self.logger.debug(f"Time Duration: {self.builder.duration}")
+            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
+
+            # if timer time is more than requested pend time then cancel job
+            if int(self.builder.duration) > self.max_pend_time:
+                self.cancel()
+                self.job_state = "CANCELLED"
+                print(
+                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
+                        self.builder.duration, self.max_pend_time
+                    )
+                )
+                self.builder.job_state = self.job_state
+                return self.job_state
+
+            self.builder.start()
+
+        self.builder.job_state = self.job_state
+
         return self.job_state
 
     def gather(self):
@@ -207,3 +235,16 @@ class LSFExecutor(BaseExecutor):
         )
         self.check_test_state()
         self.builder.metadata["result"] = self.result
+
+    def cancel(self):
+        """Cancel LSF job, this is required if job exceeds max pending time in queue"""
+
+        query = f"bkill {self.builder.metadata['jobid']}"
+
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        msg = (
+            f"Cancelling Job: {self.builder.metadata['name']} running command: {query}"
+        )
+        print(msg)
+        self.logger.debug(msg)
