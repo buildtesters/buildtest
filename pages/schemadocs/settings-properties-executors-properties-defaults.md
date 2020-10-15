@@ -17,10 +17,11 @@ Specify default executor settings for all executors
 
 # undefined Properties
 
-| Property                      | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                                                                    |
-| :---------------------------- | --------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [pollinterval](#pollinterval) | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-pollinterval.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/pollinterval") |
-| [launcher](#launcher)         | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-launcher.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/launcher")         |
+| Property                        | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                                                                      |
+| :------------------------------ | --------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [pollinterval](#pollinterval)   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-pollinterval.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/pollinterval")   |
+| [launcher](#launcher)           | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-launcher.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/launcher")           |
+| [max_pend_time](#max_pend_time) | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/max_pend_time") |
 
 ## pollinterval
 
@@ -76,3 +77,31 @@ Specify batch launcher to use when submitting jobs, this is applicable for LSF a
 | :--------- | ----------- |
 | `"sbatch"` |             |
 | `"bsub"`   |             |
+
+## max_pend_time
+
+Cancel job if it is still pending in queue beyond max_pend_time
+
+
+`max_pend_time`
+
+-   is optional
+-   Type: `integer`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/max_pend_time")
+
+### max_pend_time Type
+
+`integer`
+
+### max_pend_time Constraints
+
+**minimum**: the value of this number must greater than or equal to: `10`
+
+### max_pend_time Default Value
+
+The default value is:
+
+```json
+90
+```

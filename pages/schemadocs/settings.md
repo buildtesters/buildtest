@@ -128,6 +128,17 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | ---- | -------- | -------- | :--------- |
 
+## Definitions group max_pend_time
+
+Reference this group by using
+
+```json
+{"$ref":"https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/max_pend_time"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
 ## Definitions group local
 
 Reference this group by using
@@ -235,6 +246,7 @@ Reference this group by using
 | [qos](#qos)                     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-qos.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/qos")                     |
 | [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-before_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/before_script") |
 | [after_script](#after_script)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-after_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/after_script")   |
+| [max_pend_time](#max_pend_time) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/max_pend_time") |
 
 ### description
 
@@ -372,6 +384,34 @@ unknown
 
 unknown
 
+### max_pend_time
+
+Cancel job if it is still pending in queue beyond max_pend_time
+
+
+`max_pend_time`
+
+-   is optional
+-   Type: `integer`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/max_pend_time")
+
+#### max_pend_time Type
+
+`integer`
+
+#### max_pend_time Constraints
+
+**minimum**: the value of this number must greater than or equal to: `10`
+
+#### max_pend_time Default Value
+
+The default value is:
+
+```json
+90
+```
+
 ## Definitions group lsf
 
 Reference this group by using
@@ -388,6 +428,7 @@ Reference this group by using
 | [queue](#queue)                 | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-queue.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/queue")                 |
 | [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-before_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/before_script") |
 | [after_script](#after_script)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-after_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/after_script")   |
+| [max_pend_time](#max_pend_time) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/max_pend_time") |
 
 ### description
 
@@ -492,3 +533,31 @@ unknown
 #### after_script Type
 
 unknown
+
+### max_pend_time
+
+Cancel job if it is still pending in queue beyond max_pend_time
+
+
+`max_pend_time`
+
+-   is optional
+-   Type: `integer`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/max_pend_time")
+
+#### max_pend_time Type
+
+`integer`
+
+#### max_pend_time Constraints
+
+**minimum**: the value of this number must greater than or equal to: `10`
+
+#### max_pend_time Default Value
+
+The default value is:
+
+```json
+90
+```

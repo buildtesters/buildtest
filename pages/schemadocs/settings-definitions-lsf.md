@@ -25,6 +25,7 @@ https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitio
 | [queue](#queue)                 | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-queue.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/queue")                 |
 | [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-before_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/before_script") |
 | [after_script](#after_script)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-after_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/after_script")   |
+| [max_pend_time](#max_pend_time) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/max_pend_time")                |
 
 ## description
 
@@ -129,3 +130,31 @@ unknown
 ### after_script Type
 
 unknown
+
+## max_pend_time
+
+Cancel job if it is still pending in queue beyond max_pend_time
+
+
+`max_pend_time`
+
+-   is optional
+-   Type: `integer`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/max_pend_time")
+
+### max_pend_time Type
+
+`integer`
+
+### max_pend_time Constraints
+
+**minimum**: the value of this number must greater than or equal to: `10`
+
+### max_pend_time Default Value
+
+The default value is:
+
+```json
+90
+```
