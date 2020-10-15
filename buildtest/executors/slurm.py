@@ -180,13 +180,20 @@ class SlurmExecutor(BaseExecutor):
         # if job state in PENDING check if we need to cancel job by checking internal timer
         if self.job_state == "PENDING":
             self.builder.stop()
-            print(f"Time Duration: {self.builder.duration}")
-            print(f"Max Pend Time: {self.max_pend_time}")
+            self.logger.debug(f"Time Duration: {self.builder.duration}")
+            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
 
             # if timer time is more than requested pend time then cancel job
             if int(self.builder.duration) > self.max_pend_time:
                 self.cancel()
+                self.job_state = "CANCELLED"
+                print("Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(self.builder.duration,self.max_pend_time))
+                self.builder.job_state = self.job_state
+                return self.job_state
 
+            self.builder.start()
+
+        self.builder.job_state = self.job_state
         return self.job_state
 
     def gather(self):
@@ -220,14 +227,18 @@ class SlurmExecutor(BaseExecutor):
         self.result["starttime"] = job_data["Start"]
         self.result["endtime"] = job_data["End"]
 
+        if self.builder.job_state == "CANCELLED":
+            return
+
         self.builder.metadata["outfile"] = os.path.join(
             job_data["WorkDir"].rstrip(),
-            f"{job_data['JobName']}-{job_data['JobID']}.out",
+            f"{self.builder.metadata['name']}.out",
         )
         self.builder.metadata["errfile"] = os.path.join(
             job_data["WorkDir"].rstrip(),
-            f"{job_data['JobName']}-{job_data['JobID']}.err",
+            f"{self.builder.metadata['name']}.err",
         )
+        
         shutil.copy2(
             self.builder.metadata["outfile"],
             os.path.join(
@@ -249,7 +260,12 @@ class SlurmExecutor(BaseExecutor):
 
     def cancel(self):
         """Cancel slurm job, this operation is performed if job exceeds pending or runtime."""
+
         query = f"scancel {self.builder.metadata['jobid']}"
+        # cancel by slurm cluster if required to cancel job from remote slurm cluster
+        if self.cluster:
+            query += f" -M {self.cluster}"
+
         cmd = BuildTestCommand(query)
         cmd.execute()
         msg = (

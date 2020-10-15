@@ -447,6 +447,9 @@ def run_phase(builders, executor, config_dict, printTable=False):
         )
         # if no items in poll_queue terminate, this will happen as jobs complete polling
         # and they are removed from queue.
+
+        # keep track of tests that are cancelled by job scheduler
+        cancelled_jobs = set()
         while poll_queue:
 
             print("\n")
@@ -466,6 +469,19 @@ def run_phase(builders, executor, config_dict, printTable=False):
                     )
                     poll_queue.remove(builder)
 
+                if builder.job_state == "CANCELLED":
+                    cancelled_jobs.add(builder)
+
+        # remove any cancelled builders from output since these jobs were CANCELLED and there is no output
+        if cancelled_jobs:
+            # convert set to list
+            cancelled_jobs = list(cancelled_jobs)
+            for builder in cancelled_jobs:
+                valid_builders.remove(builder)
+
+            print(f"Cancelled Tests:")
+            [ print(builder.metadata['name']) for builder in cancelled_jobs ]
+
         table = {
             "name": [],
             "id": [],
@@ -484,7 +500,7 @@ def run_phase(builders, executor, config_dict, printTable=False):
 +---------------------------------------------+ 
     """
             )
-
+        
         # regenerate test results after poll
         passed_tests = 0
         failed_tests = 0

@@ -50,6 +50,8 @@ class BuilderBase:
         self.pwd = os.getcwd()
         self.result = {}
         self.metadata = {}
+        self.duration = 0
+        self.job_state = None
 
         # ensure buildspec ends with .yml extension
         assert os.path.basename(buildspec).endswith(".yml")
@@ -127,7 +129,7 @@ class BuilderBase:
         self.timer.start()
 
     def stop(self):
-        self.duration = self.timer.stop()
+        self.duration += self.timer.stop()
 
     def build(self):
         """ This method is responsible for invoking setup, creating test
@@ -199,6 +201,9 @@ class BuilderBase:
                 self.recipe.get("batch"), self.recipe.get("sbatch")
             )
             lines += script.get_headers()
+            lines += [f"#SBATCH --job-name={self.name}"]
+            lines += [f"#SBATCH --output={self.name}.out"]
+            lines += [f"#SBATCH --error={self.name}.err"]
 
         lines += [
             f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
