@@ -162,8 +162,8 @@ class LSFExecutor(BaseExecutor):
         print(msg)
         self.logger.debug(msg)
 
-        # if job state in PENDING check if we need to cancel job by checking internal timer
-        if self.job_state == "PENDING":
+        # if job state in PEND check if we need to cancel job by checking internal timer
+        if self.job_state == "PEND":
             self.builder.stop()
             self.logger.debug(f"Time Duration: {self.builder.duration}")
             self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
