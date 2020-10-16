@@ -27,13 +27,16 @@ set buildtest_root=`dirname "$sourced_file"`
 echo "buildtest root is ${buildtest_root}"
 
 echo "Installing buildtest dependencies"
-pip install -r ${buildtest_root}/requirements.txt &> /dev/null
-
+pip install -r ${buildtest_root}/requirements.txt > /dev/null
 set bin=${buildtest_root}/bin
 set path=($path $bin)
 
 # add PYTHONPATH for buildtest to persist in shell environment
-set PYTHONPATH=($PYTHONPATH $buildtest_root)
+if (! $?PYTHONPATH ) then
+	setenv PYTHONPATH $buildtest_root
+else
+        setenv PYTHONPATH ${PYTHONPATH}:$buildtest_root
+endif
 
 set buildtest_path=`which buildtest`
 echo "Adding ${bin} to PATH variable"
