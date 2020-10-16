@@ -358,6 +358,8 @@ For example, we can view ``systemd_default_target`` as follows
 
 .. program-output:: cat docgen/getting_started/buildspec-view.txt
 
+.. _editing_buildspecs:
+
 Editing Buildspecs
 ~~~~~~~~~~~~~~~~~~~~
 

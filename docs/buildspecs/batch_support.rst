@@ -1,3 +1,5 @@
+.. _batch_support:
+
 Batch Scheduler Support
 ========================
 
@@ -362,3 +364,93 @@ generated script we see the following::
 You may leverage ``batch`` with ``sbatch`` or ``bsub`` field to specify your job
 directives. If a particular field is not available in batch field then utilize sbatch
 or bsub field to fill in all the arguments.
+
+Jobs exceeds `max_pend_time`
+-----------------------------
+
+Recall from :ref:`configuring_buildtest` that `max_pend_time` will cancel jobs if
+job exceed timelimit. buildtest will start a timer for each job right after job
+submission and keep track of time duration, if job is pending then job will be cancelled.
+To demonstrate, here is an example of two buildspecs submitted to scheduler and notice
+job ``shared_qos_haswell_hostname`` was cancelled during after `max_pend_time` of 10
+sec. Note that cancelled job is not reported in final output nor updated in report hence
+it won't be present in ``buildtest report``.
+
+.. code-block::
+    :emphasize-lines: 51-52
+    :linenos:
+
+    $ buildtest build -b queues/shared.yml -b queues/xfer.yml
+
+    +-------------------------------+
+    | Stage: Discovering Buildspecs |
+    +-------------------------------+
+
+
+    Discovered Buildspecs:
+
+    /global/u1/s/siddiq90/buildtest-cori/queues/xfer.yml
+    /global/u1/s/siddiq90/buildtest-cori/queues/shared.yml
+
+    +---------------------------+
+    | Stage: Parsing Buildspecs |
+    +---------------------------+
+
+     schemafile              | validstate   | buildspec
+    -------------------------+--------------+--------------------------------------------------------
+     script-v1.0.schema.json | True         | /global/u1/s/siddiq90/buildtest-cori/queues/xfer.yml
+     script-v1.0.schema.json | True         | /global/u1/s/siddiq90/buildtest-cori/queues/shared.yml
+
+    +----------------------+
+    | Stage: Building Test |
+    +----------------------+
+
+     name                        | id       | type   | executor     | tags                  | testpath
+    -----------------------------+----------+--------+--------------+-----------------------+---------------------------------------------------------------------------------------------------------------
+     xfer_qos_hostname           | d0043be3 | script | slurm.xfer   | ['queues']            | /global/u1/s/siddiq90/buildtest/var/tests/slurm.xfer/xfer/xfer_qos_hostname/1/stage/generate.sh
+     shared_qos_haswell_hostname | 9d3723ac | script | slurm.shared | ['queues', 'reframe'] | /global/u1/s/siddiq90/buildtest/var/tests/slurm.shared/shared/shared_qos_haswell_hostname/1/stage/generate.sh
+
+    +----------------------+
+    | Stage: Running Test  |
+    +----------------------+
+
+    [xfer_qos_hostname] JobID: 1089664 dispatched to scheduler
+    [shared_qos_haswell_hostname] JobID: 35189528 dispatched to scheduler
+     name                        | id       | executor     | status   |   returncode | testpath
+    -----------------------------+----------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------------
+     xfer_qos_hostname           | d0043be3 | slurm.xfer   | N/A      |            0 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.xfer/xfer/xfer_qos_hostname/1/stage/generate.sh
+     shared_qos_haswell_hostname | 9d3723ac | slurm.shared | N/A      |            0 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.shared/shared/shared_qos_haswell_hostname/1/stage/generate.sh
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    [xfer_qos_hostname]: JobID 1089664 in COMPLETED state
+    [shared_qos_haswell_hostname]: JobID 35189528 in PENDING state
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    [shared_qos_haswell_hostname]: JobID 35189528 in PENDING state
+    Cancelling Job: shared_qos_haswell_hostname running command: scancel 35189528
+    Cancelling Job because duration time: 20.573901 sec exceeds max pend time: 10 sec
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    Cancelled Tests:
+    shared_qos_haswell_hostname
+
+    +---------------------------------------------+
+    | Stage: Final Results after Polling all Jobs |
+    +---------------------------------------------+
+
+     name              | id       | executor   | status   |   returncode | testpath
+    -------------------+----------+------------+----------+--------------+-------------------------------------------------------------------------------------------------
+     xfer_qos_hostname | d0043be3 | slurm.xfer | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.xfer/xfer/xfer_qos_hostname/1/stage/generate.sh
+
+    +----------------------+
+    | Stage: Test Summary  |
+    +----------------------+
+
+    Executed 1 tests
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%

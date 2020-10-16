@@ -5,64 +5,84 @@ Configuring buildtest
 
 The buildtest configuration file is used for configuring behavior of buildtest.
 There is a json schema file `settings.schema.json <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/settings.schema.json>`_
-that defines structure on how to write your configuration file.
-
-For more details on schema attributes see `Settings Schema Documentation <https://buildtesters.github.io/schemas/schemadocs/settings.html>`_
+that defines structure on how to write your configuration file. For more details
+see `Settings Schema Documentation <https://buildtesters.github.io/buildtest/pages/schemadocs/settings.html>`_.
 
 
 Default Configuration
 -----------------------
 
-The default configuration for buildtest can be found in the git repo relative
-to root of buildtest at ``buildtest/settings/config.yml``.
-User may override the default configuration by creating their custom file in
-``$HOME/.buildtest/config.yml``.
+The default buildtest configuration  is located at `buildtest/settings/config.yml <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/settings/config.yml>`_
+relative to root of repo. User may override the default configuration by creating
+their own buildtest configuration at ``$HOME/.buildtest/config.yml`` and buildtest
+will read the user configuration instead.
 
-Shown below is the default configuration.
+Shown below is the default configuration provided by buildtest.
 
 .. program-output:: cat ../buildtest/settings/config.yml
 
 .. _configuring_executors:
 
-Executors
-----------
+What is an executors?
+----------------------
 
-Executors are responsible for running jobs, currently buildtest supports the following
-executors:
+An executor is responsible for running the test and capture output/error file and
+return code. An executor can be local executor which runs tests on local machine or
+batch executor that can be modelled as partition/queue. If its a batch executor, the
+executor is responsible for **dispatch** job, **poll** job until its finish, and
+**gather** metrics from job. The executors are used by buildspec to specify how
+test should be be run.
 
-- local
-- slurm
-- lsf
+Defining Executor
+--------------------
 
-The local executor is responsible for submitting jobs locally. Currently, buildtest
-supports ``bash``, ``sh`` and ``python`` shell. The executors are referenced in
-your buildspec with the ``executor`` key as follows::
+`executors` is a top-level property, the structure looks as follows::
+
+  executors:
+    local:
+      <local1>:
+      <local2>:
+      <local3>:
+    slurm:
+      <slurm1>:
+      <slurm2>:
+      <slurm3>:
+   lsf:
+     <lsf1>:
+     <lsf2>:
+     <lsf3>:
+
+The **LocalExecutors** are defined in section `local` where each executor must be
+unique name::
+
+  executors:
+    local:
+
+The *LocalExecutors* can be ``bash``, ``sh`` and ``python`` shell and they are
+referenced in buildspec using ``executor`` field as follows::
 
     executor: local.bash
 
-The ``executor`` key in buildtest settings is of type ``object``, the sub-fields
-are ``local``, ``ssh``, and ``slurm``.
-
-Local Executors
-~~~~~~~~~~~~~~~~
+The executor is referenced in buildspec in the format: ``<type>.<name>`` where
+**type** is **local**, **slurm**, **lsf** defined in the executor section and **name**
+is an attribute of each executor. In example above `local.bash` refers to the LocalExecutor
+using bash shell. Similarly, **SlurmExecutors** and **LSFExecutors** are defined
+in similar structure.
 
 In this example below we define a local executor named `bash` that is referenced
-in buildspec ``executor: local.bash``::
+in buildspec as ``executor: local.bash``::
 
     executors:
       local:
         bash:
           shell: bash
 
-Each local executor requires the ``shell`` key which takes the pattern
-``^(/bin/bash|/bin/sh|sh|bash|python).*``
-
-Any buildspec that references the executor ``local.bash`` will submit job
-as ``bash /path/to/test.sh``.
+The local executors requires the ``shell`` key which takes the pattern
+``^(/bin/bash|/bin/sh|sh|bash|python).*`` Any buildspec that references ``local.bash``
+executor will submit job using ``bash`` shell.
 
 You can pass options to shell which will get passed into each job submission.
-For instance if you want bash executor to submit jobs by login mode you can do
-the following::
+For instance if you want bash login executor you can do the following::
 
     executors:
       local:
@@ -74,44 +94,18 @@ tests will be submitted via ``bash --login /path/to/test.sh``.
 
 .. _slurm_executors:
 
-Slurm Executors
-~~~~~~~~~~~~~~~~~
-
-The slurm executors are defined in the following section::
-
-    executors:
-      slurm:
-        <slurm-executor1>:
-        <slurm-executor2>:
-
-Slurm executors are responsible for submitting jobs to slurm resource manager.
-You can define as many slurm executors as you wish, so long as you have a unique
-name to reference each executor. Generally, you will need one slurm executor
-per partition or qos that you have at your site. Let's take a look at an example
-slurm executor called ``normal``::
-
-    executors:
-      slurm:
-        normal:
-          options: ["-C haswell"]
-          qos: normal
-
-This executor can be referenced in buildspec as ``executor: slurm.normal``. This
-executor defines the following:
-
-- ``qos: normal`` will add ``-q normal`` to the launcher command. buildtest will check if qos is found in slurm configuration. If not found, buildtest will reject job submission.
-- ``options`` key is used to pass any options to launcher command. In this example we add ``-C haswell``.
-
 buildtest configuration for Cori @ NERSC
 ------------------------------------------
 
 Let's take a look at Cori buildtest configuration::
+
 
     executors:
 
       defaults:
         pollinterval: 10
         launcher: sbatch
+        max_pend_time: 90
 
       local:
         bash:
@@ -126,6 +120,16 @@ Let's take a look at Cori buildtest configuration::
           description: submit jobs on local machine using python shell
           shell: python
 
+        e4s:
+          description: "E4S testsuite locally"
+          shell: bash
+          before_script: |
+            cd $SCRATCH
+            git clone https://github.com/E4S-Project/testsuite.git
+            cd testsuite
+            source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
+            source setup.sh
+
       slurm:
         debug:
           description: jobs for debug qos
@@ -135,48 +139,176 @@ Let's take a look at Cori buildtest configuration::
         shared:
           description: jobs for shared qos
           qos: shared
+          max_pend_time: 180
 
         bigmem:
           description: bigmem jobs
           cluster: escori
           qos: bigmem
+          max_pend_time: 300
 
         xfer:
           description: xfer qos jobs
           qos: xfer
+          cluster: escori
 
         gpu:
           description: submit jobs to GPU partition
           options: ["-C gpu"]
           cluster: escori
+          max_pend_time: 300
+
+        premium:
+          description: submit jobs to premium queue
+          qos: premium
+
+        e4s:
+          description: "E4S runner"
+          qos: debug
+          cluster: cori
+          options:
+            - "-C haswell"
+          before_script: |
+            source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
+            source $HOME/buildtest-cori/e4s/setup.sh
 
     config:
       editor: vi
       paths:
-        prefix: $HOME/cache/
+        buildspec_roots:
+          - $HOME/buildtest-cori
 
-In this setting, we define 3 LocalExecutors: ``local.bash``, ``local.sh`` and ``local.python``
-and 5 SlurmExecutors: ``slurm.debug``, ``slurm.shared``, ``slurm.bigmem``, ``slurm.xfer``, and ``slurm.gpu``.
-We also introduce section ``defaults`` section to default configuration for executors.
 
-At the moment, the ``launcher`` and ``pollinterval`` are available
-fields in default which only apply for SlurmExecutor and LSFExecutor. Currently, buildtest supports
-batch submission via ``sbatch`` so all SlurmExecutors will inherit ``sbatch`` as launcher.
-The ``pollinterval`` field is used with SlurmExecutor to poll jobs at set interval in seconds
-when job active in queue (``PENDING``, ``RUNNING``).
+In this setting, we define the following executors
 
-At Cori, jobs are submitted via qos instead of partition so each slurm executor
-has the `qos` key. The ``description`` key is a brief description of the executor
-which you can use to document the behavior of the executor. The ``cluster`` field
-specifies which slurm cluster to use, at Cori in order to use ``bigmem`` qos we
-need to specify ``-M escori`` where escori is the slurm cluster. buildtest will
-detect slurm configuration and check if cluster is a valid cluster name.
-In addition, `sacct` will poll job against the cluster name (``sacct -M <cluster>``).
+- LocalExecutors: ``local.bash``, ``local.sh``, ``local.python``, ``local.e4s``
+- SlurmExecutors: ``slurm.debug``, ``slurm.shared``, ``slurm.bigmem``, ``slurm.xfer``, ``slurm.gpu``, ``slurm.premium``, ``slurm.e4s``
+
+
+We introduce section ``defaults`` which defines configuration for all executors
+as follows::
+
+      defaults:
+        pollinterval: 10
+        launcher: sbatch
+        max_pend_time: 90
+
+The `launcher` field is applicable for **SlurmExecutor** and **LSFExecutor** in this
+case, ``launcher: sbatch`` inherits **sbatch** as the job launcher for all executors.
+The ``pollinterval`` field is used  to poll jobs at set interval in seconds
+when job is active in queue. The ``max_pend_time`` is **maximum** time job can be pending
+in executor, if it exceeds the limit buildtest will cancel the job. buildtest will
+invoke ``scancel`` or ``bkill`` to cancel Slurm or LSF job. All of these fields have
+no effect for LocalExecutors.
+
+At Cori, jobs are submitted via qos instead of partition so we model a slurm executor
+named by qos. The `qos` field instructs which Slurm QOS to use when submitting job.
+The ``description`` key is a brief description of the executor only served for
+documentation purpose. The ``cluster`` field specifies which slurm cluster to use
+(i.e ``sbatch --clusters=<string>``). At Cori in-order to use ``bigmem``, ``xfer``,
+or ``gpu`` qos we need to use the **escori** cluster by specifying
+``sbatch --clusters=escori``.
+
+buildtest will detect slurm configuration and check qos, partition, cluster
+match with buildtest specification. In addition, buildtest supports multi-cluster
+job submission and monitoring from remote cluster. This means if you specify
+``cluster`` field buildtest will poll jobs using `sacct` with the
+cluster name as follows: ``sacct -M <cluster>``.
 
 The ``options`` field is use to specify any additional options to launcher (``sbatch``)
-on command line. For ``slurm.gpu`` executor, we use this executor for submit to CoriGPU
-which requires ``sbatch -M escori -C gpu``. Any additional #SBATCH options are defined
-in buildspec using ``sbatch`` key.
+on command line. For ``slurm.gpu`` executor, we use the ``options: -C gpu``
+in order to submit to Cori GPU cluster which requires ``sbatch -M escori -C gpu``.
+Any additional **#SBATCH** options are
+defined in buildspec for more details see :ref:`batch_support`
+
+The ``max_pend_time`` option can be overridden per executor level for example the
+section below overrides the default to 300 seconds::
+
+        bigmem:
+          description: bigmem jobs
+          cluster: escori
+          qos: bigmem
+          max_pend_time: 300
+
+The ``max_pend_time`` is used to cancel job only if job is pending in queue, not if it
+is in run state. buildtest starts a timer at job submission to every ``pollinterval``
+seconds check if job has exceeded **max_pend_time** only if job is in **PENDING** (SLURM)
+or **PEND** (LSF). If job exceeds this limit buildtest will cancel job using ``scancel``
+or ``bkill`` depending on the scheduler. Buildtest will remove cancel jobs and remove
+from poll queue, in addition cancelled jobs won't be reported in test report.
+
+.. _buildspec_roots:
+
+buildspec roots
+-----------------
+
+buildtest can discover buildspec using ``buildspec_roots`` keyword. This field is a list
+of directory paths to search for buildspecs. For example we clone the repo
+https://github.com/buildtesters/buildtest-cori at **$HOME/buildtest-cori**
+
+::
+    config:
+      editor: vi
+      paths:
+        buildspec_roots:
+          - $HOME/buildtest-cori
+
+If you run ``buildtest buildspec find --clear`` it will detect all buildspecs in
+buildspec_roots. buildtest will find all `.yml` extension. By default buildtest will
+add the ``$BUILDTEST_ROOT/tutorials`` to search path, where $BUILDTEST_ROOT is root
+of buildtest repo.
+
+before_script and after_script for executors
+---------------------------------------------
+
+Often times, you may want to run a set of commands before or after tests for more than
+one test. For this reason, we support ``before_script`` and ``after_script`` section
+per executor which is of string type where you can specify multi-line commands.
+
+This can be demonstrated with this executor name **local.e4s** responsible for
+building `E4S Testsuite <https://github.com/E4S-Project/testsuite>`_::
+
+    e4s:
+      description: "E4S testsuite locally"
+      shell: bash
+      before_script: |
+        cd $SCRATCH
+        git clone https://github.com/E4S-Project/testsuite.git
+        cd testsuite
+        source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
+        source setup.sh
+
+For the `e4s` executor we attempt to clone E4S Testsuite in $SCRATCH and activate
+a spack environment and initialize E4S Testsuite.  buildtest will write a
+``before_script.sh`` and ``after_script.sh`` for every executor.
+This can be found in ``var/executors`` directory as shown below::
+
+    $ tree var/executors/
+    var/executors/
+    |-- local.bash
+    |   |-- after_script.sh
+    |   `-- before_script.sh
+    |-- local.e4s
+    |   |-- after_script.sh
+    |   `-- before_script.sh
+    |-- local.python
+    |   |-- after_script.sh
+    |   `-- before_script.sh
+    |-- local.sh
+    |   |-- after_script.sh
+    |   `-- before_script.sh
+
+
+    4 directories, 8 files
+
+The ``before_script`` and ``after_script`` field is available for all executors and
+if its not specified the file will be empty. Every test will source the before
+and after script for the given executor.
+
+The ``editor: vi`` is used to open buildspecs in editor, this is used by commands like
+``buildtest buildspec edit`` see :ref:`editing_buildspecs`. The `editor` field can
+be `vi`, `vim`, `nano`, or `emacs`. Similarly, this command works if you want to :ref:`edit_buildtest_configuration`.
+(``buildtest config edit``).
 
 buildtest configuration for Ascent @ OLCF
 ------------------------------------------
@@ -221,73 +353,6 @@ suitable for your site.
       paths:
         prefix: /tmp
 
-.. _buildspec_roots:
-
-buildspec roots
------------------
-
-buildtest can detect buildspec using ``buildspec_roots`` keyword.  For example we
-clone the repo https://github.com/buildtesters/buildtest-cori at **/Users/siddiq90/Documents/buildtest-cori**
-
-::
-
-    config:
-      editor: vi
-      paths:
-        buildspec_roots:
-          - /Users/siddiq90/Documents/buildtest-cori
-
-
-If you run ``buildtest buildspec find --clear`` it will detect all buildspecs in
-buildspec_roots. buildtest will find all `.yml` extension. By default buildtest will
-add the ``$BUILDTEST_ROOT/tutorials`` to search path, where $BUILDTEST_ROOT is root
-of buildtest repo.
-
-Before & After scripts for executors
--------------------------------------
-
-Often times, you may want to run a set of commands before or after tests for more than
-one test. For this reason, we support ``before_script`` and ``after_script`` section
-per executor which is of string type where you can specify arbitrary commands.
-
-This can be demonstrated with this executor name **local.e4s** responsible for
-building `E4S Testsuite <https://github.com/E4S-Project/testsuite>`_::
-
-    e4s:
-      description: "E4S testsuite locally"
-      shell: bash
-      before_script: |
-        cd $SCRATCH
-        git clone https://github.com/E4S-Project/testsuite.git
-        cd testsuite
-        source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
-        source setup.sh
-
-buildtest will write a ``before_script.sh`` and ``after_script.sh`` for every executor.
-This can be found in ``var/executors`` directory as shown below::
-
-    $ tree var/executors/
-    var/executors/
-    |-- local.bash
-    |   |-- after_script.sh
-    |   `-- before_script.sh
-    |-- local.e4s
-    |   |-- after_script.sh
-    |   `-- before_script.sh
-    |-- local.python
-    |   |-- after_script.sh
-    |   `-- before_script.sh
-    |-- local.sh
-    |   |-- after_script.sh
-    |   `-- before_script.sh
-
-
-    4 directories, 8 files
-
-The ``before_script`` and ``after_script`` field is available for all executors and
-if its not specified the file will be empty. Every test will source the before
-and after script for the given executor.
-
 CLI to buildtest configuration
 -----------------------------------------------
 
@@ -297,6 +362,10 @@ below is the command usage.
 
 .. program-output:: cat docgen/buildtest_config_--help.txt
 
+
+View buildtest configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 If you want to view buildtest configuration you can run::
 
     buildtest config view
@@ -305,9 +374,18 @@ Shown below is an example output.
 
 .. program-output:: cat docgen/config-view.txt
 
+.. _edit_buildtest_configuration:
+
+Edit buildtest configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Likewise, you can edit the file by running::
 
     buildtest config edit
+
+This will open the buildtest configuration in editor specified by `editor` field.
+
+Validate buildtest configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To check if your buildtest settings is valid, run ``buildtest config validate``.
 This will validate your ``settings.yml`` with the schema **settings.schema.json**.
@@ -340,6 +418,9 @@ enum types [``vi``, ``vim``, ``nano``, ``emacs``]::
     On instance['config']['editor']:
         'gedit'
 
+
+Configuration Summary
+~~~~~~~~~~~~~~~~~~~~~~
 
 You can get a summary of buildtest using ``buildtest config summary``, this will
 display information from several sources into one single command along.
