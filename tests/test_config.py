@@ -7,5 +7,5 @@ from buildtest.config import (
 def test_check_settings():
     settings = load_settings()
     check_settings(executor_check=False)
-    assert "config" in settings.keys()
+    assert "editor" in settings.keys()
     assert "executors" in settings.keys()

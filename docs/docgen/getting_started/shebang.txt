@@ -23,8 +23,8 @@ Discovered Buildspecs:
 
  name                  | id       | type   | executor   | tags      | testpath
 -----------------------+----------+--------+------------+-----------+------------------------------------------------------------------------------------------------------------
- bash_login_shebang    | d8fc40a6 | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
- bash_nonlogin_shebang | 47dca5d4 | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
+ bash_login_shebang    | c99deb8a | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
+ bash_nonlogin_shebang | 512a55d5 | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -32,8 +32,8 @@ Discovered Buildspecs:
     
  name                  | id       | executor   | status   |   returncode | testpath
 -----------------------+----------+------------+----------+--------------+------------------------------------------------------------------------------------------------------------
- bash_login_shebang    | d8fc40a6 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
- bash_nonlogin_shebang | 47dca5d4 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
+ bash_login_shebang    | c99deb8a | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
+ bash_nonlogin_shebang | 512a55d5 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

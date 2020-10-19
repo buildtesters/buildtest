@@ -15,8 +15,6 @@ from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
 )
 
-
-from buildtest.config import load_settings, check_settings
 from buildtest.executors.setup import BuildExecutor
 from buildtest.menu.buildspec import parse_buildspecs
 from buildtest.menu.report import update_report
@@ -570,20 +568,6 @@ def func_build_subcmd(args, config_opts):
     :type args: dict, required
     :rtype: None
     """
-
-    # if buildtest settings specified on CLI, it would be in args.settings otherwise set
-    # to default configuration (BUILDTEST_SETTINGS_FILE)
-
-    if args.settings:
-        logger.debug(
-            "Detected --settings from command line so override default settings file."
-        )
-
-        # load the user's buildtest settings file
-        config_opts = load_settings(args.settings)
-
-        # check user's buildtest setting for any errors by validating against settings schema
-        check_settings(args.settings)
 
     test_directory = resolve_testdirectory(config_opts, args.testdir)
 

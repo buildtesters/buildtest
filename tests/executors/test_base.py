@@ -6,7 +6,7 @@ import os
 
 from jsonschema.exceptions import ValidationError
 from buildtest.buildsystem.parser import BuildspecParser
-from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA
+from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, DEFAULT_SETTINGS_FILE
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_schema, load_recipe
@@ -16,23 +16,17 @@ pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def test_build_executor(tmp_path):
-    example_schema = os.path.join(
-        pytest_root, "examples", "config_schemas", "valid", "combined-example.yml"
-    )
+    schema_file = "settings.schema.json"
+
     settings_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
-    example = load_recipe(example_schema)
+    example = load_recipe(DEFAULT_SETTINGS_FILE)
     custom_validator(recipe=example, schema=settings_schema)
 
     # Load BuildExecutor
     be = BuildExecutor(example)
-    # We should have a total of 4 executors: 3 local and 1 slurm executor
-    assert len(be.executors) == 4
-    assert list(be.executors.keys()) == [
-        "local.bash",
-        "local.sh",
-        "local.python",
-        "slurm.haswell",
-    ]
+    # We should have a total of 3 executors (local.bash, local.sh, local.python)
+    assert len(be.executors) == 3
+    assert list(be.executors.keys()) == ["local.bash", "local.sh", "local.python"]
 
     # Each should have
     for name, executor in be.executors.items():

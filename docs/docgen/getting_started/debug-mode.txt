@@ -1,11 +1,11 @@
 $ buildtest -d DEBUG build -b tutorials/invalid_executor.yml 
-2020-10-08 15:26:04,153 [config.py:40 - check_settings() ] - [DEBUG] Loading default settings schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2020-10-08 15:26:04,154 [utils.py:34 - load_schema() ] - [DEBUG] Successfully loaded schema file: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2020-10-08 15:26:04,154 [config.py:43 - check_settings() ] - [DEBUG] Validating user schema with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2020-10-08 15:26:04,161 [config.py:45 - check_settings() ] - [DEBUG] Validation was successful
-2020-10-08 15:26:04,162 [build.py:139 - discover_by_buildspecs() ] - [DEBUG] BuildSpec: tutorials/invalid_executor.yml is a file
-2020-10-08 15:26:04,162 [build.py:151 - discover_by_buildspecs() ] - [INFO] Found the following config files: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
-2020-10-08 15:26:04,162 [build.py:212 - discover_buildspecs() ] - [DEBUG] Based on input argument: --buildspec ['tutorials/invalid_executor.yml'] buildtest discovered the following Buildspecs: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
+2020-10-19 15:54:47,065 [config.py:42 - check_settings() ] - [DEBUG] Loading default settings schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
+2020-10-19 15:54:47,065 [utils.py:34 - load_schema() ] - [DEBUG] Successfully loaded schema file: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
+2020-10-19 15:54:47,065 [config.py:45 - check_settings() ] - [DEBUG] Validating user schema with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
+2020-10-19 15:54:47,067 [config.py:47 - check_settings() ] - [DEBUG] Validation was successful
+2020-10-19 15:54:47,067 [build.py:139 - discover_by_buildspecs() ] - [DEBUG] BuildSpec: tutorials/invalid_executor.yml is a file
+2020-10-19 15:54:47,067 [build.py:151 - discover_by_buildspecs() ] - [INFO] Found the following config files: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
+2020-10-19 15:54:47,068 [build.py:212 - discover_buildspecs() ] - [DEBUG] Based on input argument: --buildspec ['tutorials/invalid_executor.yml'] buildtest discovered the following Buildspecs: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
@@ -15,13 +15,13 @@ $ buildtest -d DEBUG build -b tutorials/invalid_executor.yml
 Discovered Buildspecs:
  
 /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
-2020-10-08 15:26:04,162 [setup.py:40 - __init__() ] - [DEBUG] Getting Executors from buildtest settings
-2020-10-08 15:26:04,166 [parser.py:94 - _validate_global() ] - [INFO] Validating /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global.schema.json
-2020-10-08 15:26:04,167 [parser.py:115 - _validate() ] - [INFO] Validating test - 'wrongexecutor' in recipe: /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
-2020-10-08 15:26:04,167 [parser.py:123 - _validate() ] - [INFO] wrongexecutor is a dictionary
-2020-10-08 15:26:04,167 [parser.py:133 - _validate() ] - [INFO] Detected field 'type: script'
-2020-10-08 15:26:04,167 [parser.py:140 - _validate() ] - [INFO] Checking script in supported type schemas: ['script', 'compiler']
-2020-10-08 15:26:04,167 [buildspec.py:403 - parse_buildspecs() ] - [ERROR] executor: badexecutor not found in executor list: ['local.bash', 'local.sh', 'local.python']
+2020-10-19 15:54:47,068 [setup.py:40 - __init__() ] - [DEBUG] Getting Executors from buildtest settings
+2020-10-19 15:54:47,070 [parser.py:94 - _validate_global() ] - [INFO] Validating /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global.schema.json
+2020-10-19 15:54:47,070 [parser.py:115 - _validate() ] - [INFO] Validating test - 'wrongexecutor' in recipe: /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+2020-10-19 15:54:47,070 [parser.py:123 - _validate() ] - [INFO] wrongexecutor is a dictionary
+2020-10-19 15:54:47,070 [parser.py:133 - _validate() ] - [INFO] Detected field 'type: script'
+2020-10-19 15:54:47,070 [parser.py:140 - _validate() ] - [INFO] Checking script in supported type schemas: ['script', 'compiler']
+2020-10-19 15:54:47,071 [buildspec.py:406 - parse_buildspecs() ] - [ERROR] executor: badexecutor not found in executor list: ['local.bash', 'local.sh', 'local.python']
 
 
 

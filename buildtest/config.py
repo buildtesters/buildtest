@@ -21,7 +21,7 @@ from buildtest.utils.command import BuildTestCommand
 logger = logging.getLogger(__name__)
 
 
-def check_settings(settings_path=None, executor_check=True):
+def check_settings(settings_path=None, executor_check=True, retrieve_settings=False):
     """Checks all keys in configuration file (settings/config.yml) are valid
     keys and ensure value of each key matches expected type. For some keys
     special logic is taken to ensure values are correct and directory path
@@ -31,6 +31,8 @@ def check_settings(settings_path=None, executor_check=True):
     :type settings_path: str, optional
     :param executor_check: boolean to control if executor checks are performed
     :type executor_check: bool
+    :param retrieve_settings: return loaded buildtest settings that is validated by schema. By default, this method doesn't return anything other than validating buildtest settings
+    :type retrieve_settings: bool
     :return: returns gracefully if all checks passes otherwise terminate immediately
     :rtype: exit code 1 if checks failed
     """
@@ -57,6 +59,9 @@ def check_settings(settings_path=None, executor_check=True):
         if lsf_executors:
             validate_lsf_executors(lsf_executors)
 
+    if retrieve_settings:
+        return user_schema
+
 
 def load_settings(settings_path=None):
     """Load the default settings file if no argument is specified.
@@ -65,13 +70,25 @@ def load_settings(settings_path=None):
     :type settings_path: str, optional
     """
 
-    settings_path = settings_path or BUILDTEST_SETTINGS_FILE
+    settings_path = settings_path
 
-    if not os.path.exists(settings_path):
-        settings_path = DEFAULT_SETTINGS_FILE
+    if not settings_path:
+        settings_path = resolve_settings_file()
 
     # load the settings file into a schema object
     return load_recipe(settings_path)
+
+
+def resolve_settings_file():
+    """Returns path to buildtest settings file that should be used. If there
+       is a user defined buildtest settings ($HOME/.buildtest/config.yml) it will
+       be honored, otherwise default settings from buildtest will be used.
+    """
+    # if buildtest settings file exist return it otherwise return default file
+    if os.path.exists(BUILDTEST_SETTINGS_FILE):
+        return BUILDTEST_SETTINGS_FILE
+
+    return DEFAULT_SETTINGS_FILE
 
 
 def validate_lsf_executors(lsf_executors):

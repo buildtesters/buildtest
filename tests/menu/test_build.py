@@ -36,7 +36,6 @@ def test_build_by_tags():
         buildspec = None
         debug = False
         stage = None
-        settings = BUILDTEST_SETTINGS_FILE
         testdir = None
         exclude = None
         tags = ["tutorials"]
@@ -50,7 +49,6 @@ def test_build_by_tags():
         buildspec = None
         debug = False
         stage = None
-        settings = BUILDTEST_SETTINGS_FILE
         testdir = None
         exclude = None
         tags = ["compile", "python"]
@@ -154,7 +152,6 @@ def test_build_buildspecs():
         buildspec = [buildspec_paths]
         debug = False
         stage = None
-        settings = None
         testdir = None
         exclude = None
         tags = None
@@ -168,7 +165,6 @@ def test_build_buildspecs():
         buildspec = [buildspec_paths]
         debug = False
         stage = None
-        settings = BUILDTEST_SETTINGS_FILE
         testdir = "/tmp"
         exclude = [buildspec_paths]
         tags = None
@@ -191,7 +187,6 @@ def test_buildspec_tag_executor():
         buildspec = None
         debug = False
         stage = None
-        settings = BUILDTEST_SETTINGS_FILE
         testdir = None
         exclude = None
         rebuild = None
@@ -209,7 +204,6 @@ def test_build_multi_executors():
         buildspec = None
         debug = False
         stage = None
-        settings = BUILDTEST_SETTINGS_FILE
         testdir = None
         exclude = None
         tags = None
@@ -228,7 +222,6 @@ def test_build_by_stages():
         buildspec = None
         debug = False
         stage = "parse"
-        settings = BUILDTEST_SETTINGS_FILE
         testdir = None
         exclude = None
         tags = ["tutorials"]
@@ -242,7 +235,6 @@ def test_build_by_stages():
         buildspec = None
         debug = False
         stage = "build"
-        settings = BUILDTEST_SETTINGS_FILE
         testdir = None
         exclude = None
         tags = ["tutorials"]
@@ -263,7 +255,6 @@ def test_build_rebuild():
         buildspec = [buildspec_file]
         debug = False
         stage = None
-        settings = BUILDTEST_SETTINGS_FILE
         testdir = None
         exclude = None
         tags = None

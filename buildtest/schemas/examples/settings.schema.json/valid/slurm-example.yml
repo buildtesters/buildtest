@@ -1,6 +1,12 @@
+editor: emacs
+buildspec_roots:
+  - $HOME/buildtest-cori
+testdir: /tmp/buildtest
 executors:
   defaults:
     pollinterval: 20
+    launcher: sbatch
+    max_pend_time: 30
   slurm:
     normal:
       options: ["-C haswell"]
@@ -11,8 +17,3 @@ executors:
       after_script: |
         time
         echo "commands run after job"
-
-config:
-  editor: vi
-  paths:
-    prefix: /tmp

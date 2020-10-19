@@ -31,11 +31,12 @@ def func_buildspec_find(args):
 
     cache = {}
     config_opts = load_settings()
-    buildspec_paths = (
-        config_opts.get("config", {}).get("paths", {}).get("buildspec_roots")
-    )
+    buildspec_paths = config_opts.get("buildspec_roots")
+
     paths = BUILDSPEC_DEFAULT_PATH
 
+    # if buildspec_roots defined in configuration, resolve path and if path exist add
+    # to list of paths to search for buildspecs
     if buildspec_paths:
 
         for root in buildspec_paths:
@@ -181,7 +182,7 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
                     while True:
                         success = True
                         config_opts = load_settings()
-                        os.system(f"{config_opts['config']['editor']} {buildspecfile}")
+                        os.system(f"{config_opts['editor']} {buildspecfile}")
                         try:
                             BuildspecParser(buildspecfile)
                         except (SystemExit, ValidationError) as err:

@@ -100,6 +100,9 @@ buildtest configuration for Cori @ NERSC
 Let's take a look at Cori buildtest configuration::
 
 
+    editor: vi
+    buildspec_roots:
+      - $HOME/buildtest-cori
     executors:
 
       defaults:
@@ -172,13 +175,6 @@ Let's take a look at Cori buildtest configuration::
             source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
             source $HOME/buildtest-cori/e4s/setup.sh
 
-    config:
-      editor: vi
-      paths:
-        buildspec_roots:
-          - $HOME/buildtest-cori
-
-
 In this setting, we define the following executors
 
 - LocalExecutors: ``local.bash``, ``local.sh``, ``local.python``, ``local.e4s``
@@ -244,14 +240,11 @@ buildspec roots
 
 buildtest can discover buildspec using ``buildspec_roots`` keyword. This field is a list
 of directory paths to search for buildspecs. For example we clone the repo
-https://github.com/buildtesters/buildtest-cori at **$HOME/buildtest-cori**
+https://github.com/buildtesters/buildtest-cori at **$HOME/buildtest-cori** and assign
+this to `buildspec_roots`::
 
-::
-    config:
-      editor: vi
-      paths:
-        buildspec_roots:
-          - $HOME/buildtest-cori
+    buildspec_roots:
+      - $HOME/buildtest-cori
 
 If you run ``buildtest buildspec find --clear`` it will detect all buildspecs in
 buildspec_roots. buildtest will find all `.yml` extension. By default buildtest will
@@ -305,10 +298,9 @@ The ``before_script`` and ``after_script`` field is available for all executors 
 if its not specified the file will be empty. Every test will source the before
 and after script for the given executor.
 
-The ``editor: vi`` is used to open buildspecs in editor, this is used by commands like
+The ``editor: vi`` is used to open buildspecs in `vi` editor, this is used by commands like
 ``buildtest buildspec edit`` see :ref:`editing_buildspecs`. The `editor` field can
-be `vi`, `vim`, `nano`, or `emacs`. Similarly, this command works if you want to :ref:`edit_buildtest_configuration`.
-(``buildtest config edit``).
+be `vi`, `vim`, `nano`, or `emacs`.
 
 buildtest configuration for Ascent @ OLCF
 ------------------------------------------
@@ -323,10 +315,9 @@ The default launcher is `bsub` which can be defined under ``defaults``. The
 ``pollinterval`` will poll LSF jobs every 10 seconds using ``bjobs``. The
 ``pollinterval`` accepts a range between `10` - `300` seconds as defined in
 schema. In order to avoid polling scheduler excessively pick a number that is best
-suitable for your site.
+suitable for your site::
 
-::
-
+    editor: vi
     executors:
       defaults:
         launcher: bsub
@@ -348,10 +339,7 @@ suitable for your site.
           queue: batch
         test:
           queue: test
-    config:
-      editor: vi
-      paths:
-        prefix: /tmp
+
 
 CLI to buildtest configuration
 -----------------------------------------------
@@ -374,15 +362,6 @@ Shown below is an example output.
 
 .. program-output:: cat docgen/config-view.txt
 
-.. _edit_buildtest_configuration:
-
-Edit buildtest configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Likewise, you can edit the file by running::
-
-    buildtest config edit
-
-This will open the buildtest configuration in editor specified by `editor` field.
 
 Validate buildtest configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

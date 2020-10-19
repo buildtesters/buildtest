@@ -13,7 +13,6 @@ from buildtest.menu.buildspec import (
     func_buildspec_view,
 )
 from buildtest.menu.config import (
-    func_config_edit,
     func_config_summary,
     func_config_validate,
     func_config_view,
@@ -191,9 +190,6 @@ class BuildTestParser:
             type=positive_number,
             help="Rebuild test X number of times. Must be a positive number between [1-50]",
         )
-        parser_build.add_argument(
-            "--settings", help="Specify an alternate buildtest settings file to use",
-        )
 
     def buildspec_menu(self):
         """This method implements ``buildtest buildspec`` command"""
@@ -263,9 +259,6 @@ class BuildTestParser:
         parser_config_view = subparsers_config.add_parser(
             "view", help="View Buildtest Configuration File"
         )
-        parser_config_edit = subparsers_config.add_parser(
-            "edit", help="Edit Buildtest Configuration File"
-        )
         parser_config_validate = subparsers_config.add_parser(
             "validate", help="Validate buildtest settings file with schema."
         )
@@ -274,7 +267,6 @@ class BuildTestParser:
         )
 
         parser_config_view.set_defaults(func=func_config_view)
-        parser_config_edit.set_defaults(func=func_config_edit)
         parser_config_validate.set_defaults(func=func_config_validate)
         parser_config_summary.set_defaults(func=func_config_summary)
 

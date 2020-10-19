@@ -1,5 +1,5 @@
 import os
-from buildtest.config import load_settings, check_settings
+from buildtest.config import check_settings, resolve_settings_file
 from buildtest.defaults import var_root, BUILDTEST_USER_HOME
 from buildtest.menu import BuildTestParser
 from buildtest.menu.build import func_build_subcmd
@@ -35,8 +35,8 @@ def main():
 
     # invoking load_settings will attempt to initialize buildtest settings and
     # load the schema
-    buildtest_configuration = load_settings()
-    check_settings()
+    settings_file = resolve_settings_file()
+    buildtest_configuration = check_settings(settings_file, retrieve_settings=True)
 
     if args.subcommands == "build":
         func_build_subcmd(args, buildtest_configuration)
