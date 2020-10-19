@@ -3,9 +3,24 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "buildtest configuration schema",
   "type": "object",
-  "required": ["config", "executors"],
+  "required": ["executors", "editor"],
   "additionalProperties": false,
   "properties": {
+      "editor": {
+        "type": "string",
+        "description": "The editor field is used for opening buildspecs in an editor. The default editor is ``vim``.",
+        "enum": ["vi", "vim", "nano", "emacs"],
+        "default": "vim"
+      },
+      "buildspec_roots": {
+        "type": "array",
+        "items": { "type": "string"},
+        "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
+      },
+      "testdir": {
+        "type": "string",
+        "description": "Specify full path to test directory where buildtest will write tests."
+      },
       "executors": {
           "type": "object",
           "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``ssh``. The executors are referenced in buildspec using ``executor`` field.",
@@ -46,30 +61,6 @@
               "patternProperties": { "^.*$": { "$ref": "#/definitions/slurm" } }
             }
           },
-        "additionalProperties": false
-      },
-      "config": {
-        "type": "object",
-        "properties": {
-          "editor": {
-            "type": "string",
-            "description": "The editor field is used for opening buildspecs in an editor. The default editor is ``vim``.",
-            "enum": ["vi", "vim", "nano", "emacs"],
-            "default": "vim"
-          },
-          "paths": {
-            "type": "object",
-            "properties": {
-              "buildspec_roots": {
-                "type": "array",
-                "items": { "type": "string"},
-                "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
-              },
-              "prefix": { "type":  "string" },
-              "testdir": { "type": "string" }
-            }
-          }
-        },
         "additionalProperties": false
       },
       "additionalProperties": false

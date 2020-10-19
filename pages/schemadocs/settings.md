@@ -17,11 +17,80 @@ https://buildtesters.github.io/buildtest/schemas/settings.schema.json
 
 # buildtest configuration schema Properties
 
-| Property                                      | Type          | Required | Nullable       | Defined by                                                                                                                                                            |
-| :-------------------------------------------- | ------------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [executors](#executors)                       | `object`      | Required | cannot be null | [buildtest configuration schema](settings-properties-executors.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors") |
-| [config](#config)                             | `object`      | Required | cannot be null | [buildtest configuration schema](settings-properties-config.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/config")       |
-| [additionalProperties](#additionalProperties) | Not specified | Optional | cannot be null | [Untitled schema](undefined.md "undefined#undefined")                                                                                                                 |
+| Property                                      | Type          | Required | Nullable       | Defined by                                                                                                                                                                        |
+| :-------------------------------------------- | ------------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [editor](#editor)                             | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-editor.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/editor")                   |
+| [buildspec_roots](#buildspec_roots)           | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-properties-buildspec_roots.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/buildspec_roots") |
+| [testdir](#testdir)                           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-testdir.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/testdir")                 |
+| [executors](#executors)                       | `object`      | Required | cannot be null | [buildtest configuration schema](settings-properties-executors.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors")             |
+| [additionalProperties](#additionalProperties) | Not specified | Optional | cannot be null | [Untitled schema](undefined.md "undefined#undefined")                                                                                                                             |
+
+## editor
+
+The editor field is used for opening buildspecs in an editor. The default editor is `vim`.
+
+
+`editor`
+
+-   is required
+-   Type: `string`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-properties-editor.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/editor")
+
+### editor Type
+
+`string`
+
+### editor Constraints
+
+**enum**: the value of this property must be equal to one of the following values:
+
+| Value     | Explanation |
+| :-------- | ----------- |
+| `"vi"`    |             |
+| `"vim"`   |             |
+| `"nano"`  |             |
+| `"emacs"` |             |
+
+### editor Default Value
+
+The default value is:
+
+```json
+"vim"
+```
+
+## buildspec_roots
+
+Specify a list of directory paths to search buildspecs. This field can be used with `buildtest buildspec find` to rebuild buildspec cache or build tests using `buildtest build` command
+
+
+`buildspec_roots`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-properties-buildspec_roots.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/buildspec_roots")
+
+### buildspec_roots Type
+
+`string[]`
+
+## testdir
+
+Specify full path to test directory where buildtest will write tests.
+
+
+`testdir`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-properties-testdir.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/testdir")
+
+### testdir Type
+
+`string`
 
 ## executors
 
@@ -38,22 +107,6 @@ The executor section is used for declaring your executors that are responsible f
 ### executors Type
 
 `object` ([Details](settings-properties-executors.md))
-
-## config
-
-
-
-
-`config`
-
--   is required
--   Type: `object` ([Details](settings-properties-config.md))
--   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-config.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/config")
-
-### config Type
-
-`object` ([Details](settings-properties-config.md))
 
 ## additionalProperties
 
