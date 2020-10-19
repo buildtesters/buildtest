@@ -6,11 +6,10 @@ import sys
 from jsonschema import ValidationError
 from buildtest import BUILDTEST_VERSION
 from buildtest.schemas.utils import get_schema_fullpath
-from buildtest.config import check_settings, load_settings
+from buildtest.config import check_settings, load_settings, resolve_settings_file
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
     BUILDSPEC_CACHE_FILE,
-    DEFAULT_SETTINGS_FILE,
 )
 from buildtest.utils.file import is_file
 from buildtest.defaults import supported_type_schemas, supported_schemas
@@ -25,42 +24,19 @@ def func_config_validate(args=None):
     of type ValidationError which we catch and print message.
     """
 
+    settings_file = resolve_settings_file()
     try:
-        check_settings()
+        check_settings(settings_file)
     except (ValidationError, SystemExit) as err:
         print(err)
-        raise sys.exit(f"{BUILDTEST_SETTINGS_FILE} is not valid")
+        raise sys.exit(f"{settings_file} is not valid")
 
-    print(f"{BUILDTEST_SETTINGS_FILE} is valid")
-
-
-def func_config_edit(args=None):
-    """Edit buildtest configuration in editor. This implements ``buildtest config edit``"""
-
-    config_opts = load_settings()
-
-    while True:
-        success = True
-        settings_file = os.path.exists(BUILDTEST_SETTINGS_FILE) or DEFAULT_SETTINGS_FILE
-        os.system(f"{config_opts['config']['editor']} {settings_file}")
-        try:
-            check_settings()
-        except ValidationError as err:
-            print(err)
-            input("Press any key to continue")
-            success = False
-
-        if success:
-            break
+    print(f"{settings_file} is valid")
 
 
 def func_config_view(args=None):
     """View buildtest configuration file. This implements ``buildtest config view``"""
-    settings_file = BUILDTEST_SETTINGS_FILE
-
-    # if file doesn't exist use DEFAULT_SETTINGS_FILE
-    if not os.path.exists(settings_file):
-        settings_file = DEFAULT_SETTINGS_FILE
+    settings_file = resolve_settings_file()
 
     os.system(f"cat {settings_file}")
 
@@ -100,7 +76,8 @@ def func_config_summary(args=None):
 
     print("Buildtest Settings is ", validstate)
 
-    settings = load_settings()
+    settings_file = resolve_settings_file()
+    settings = load_settings(settings_file)
 
     executors = []
     for executor_type in settings.get("executors").keys():

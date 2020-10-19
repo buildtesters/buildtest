@@ -1,3 +1,4 @@
+editor: vi
 executors:
   local:
     bash:
@@ -17,9 +18,3 @@ executors:
       options:
         - "-q batch"
         - "-t 00:10"
-
-config:
-  editor: vi
-  paths:
-    prefix: /tmp
-    testdir: /tmp/buildtest/tests

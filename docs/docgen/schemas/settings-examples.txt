@@ -1,6 +1,7 @@
 $ buildtest schema -n settings.schema.json -e 
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/local-executor.yml
 ________________________________________________________________________________
+editor: vi
 executors:
   local:
     bash:
@@ -20,15 +21,17 @@ executors:
     python:
       description: submit jobs on local machine using python shell
       shell: python
-config:
-  editor: vi
-  paths:
-    prefix: /tmp
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
 ________________________________________________________________________________
+editor: emacs
+buildspec_roots:
+  - $HOME/buildtest-cori
+testdir: /tmp/buildtest
 executors:
   defaults:
     pollinterval: 20
+    launcher: sbatch
+    max_pend_time: 30
   slurm:
     normal:
       options: ["-C haswell"]
@@ -39,13 +42,9 @@ executors:
       after_script: |
         time
         echo "commands run after job"
-
-config:
-  editor: vi
-  paths:
-    prefix: /tmp
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/combined_executor.yml
 ________________________________________________________________________________
+editor: vi
 executors:
   local:
     bash:
@@ -65,18 +64,14 @@ executors:
       options:
         - "-q batch"
         - "-t 00:10"
-
-config:
-  editor: vi
-  paths:
-    prefix: /tmp
-    testdir: /tmp/buildtest/tests
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-example.yml
 ________________________________________________________________________________
+editor: vi
 executors:
   defaults:
     pollinterval: 10
     launcher: bsub
+    max_pend_time: 45
   lsf:
     batch:
       description: "LSF Executor name 'batch' that submits jobs to 'batch' queue"
@@ -94,6 +89,3 @@ executors:
       queue: test
       options: ["-W 20"]
 
-
-config:
-  editor: vi

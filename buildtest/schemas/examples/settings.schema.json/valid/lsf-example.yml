@@ -1,7 +1,9 @@
+editor: vi
 executors:
   defaults:
     pollinterval: 10
     launcher: bsub
+    max_pend_time: 45
   lsf:
     batch:
       description: "LSF Executor name 'batch' that submits jobs to 'batch' queue"
@@ -18,7 +20,3 @@ executors:
       launcher: bsub
       queue: test
       options: ["-W 20"]
-
-
-config:
-  editor: vi

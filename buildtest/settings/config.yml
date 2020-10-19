@@ -1,3 +1,4 @@
+editor: vi
 executors:
   local:
     bash:
@@ -11,5 +12,3 @@ executors:
     python:
       description: submit jobs on local machine using python shell
       shell: python
-config:
-  editor: vi
