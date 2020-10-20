@@ -42,7 +42,8 @@
                    "enum": ["sbatch", "bsub"],
                    "description": "Specify batch launcher to use when submitting jobs, this is applicable for LSF and Slurm Executors."
                  },
-                  "max_pend_time": {"$ref":  "#/definitions/max_pend_time"}
+                 "max_pend_time": {"$ref":  "#/definitions/max_pend_time"},
+                 "account": {"$ref":  "#/definitions/account"}
                }
             },
             "local": {
@@ -92,6 +93,10 @@
          "minimum": 10,
          "default": 90
       },
+      "account": {
+        "type": "string",
+        "description": "Specify Job Account for charging resources"
+      },
       "local": {
           "type": "object",
           "additionalProperties": false,
@@ -116,7 +121,8 @@
               "qos": {"type":  "string", "description": "Specify the slurm qos you want to use ``-q <qos>``"},
               "before_script": { "#ref":  "#/definitions/script" },
               "after_script": { "#ref":  "#/definitions/script" },
-              "max_pend_time": {"$ref":  "#/definitions/max_pend_time"}
+              "max_pend_time": {"$ref":  "#/definitions/max_pend_time"},
+              "account": {"$ref":  "#/definitions/account"}
            }
        },
       "lsf": {
@@ -129,7 +135,8 @@
               "queue": {"type":  "string", "description": "Specify the lsf queue you want to use ``-q <queue>``"},
               "before_script": { "#ref":  "#/definitions/script" },
               "after_script": { "#ref":  "#/definitions/script" },
-              "max_pend_time": {"$ref":  "#/definitions/max_pend_time"}
+              "max_pend_time": {"$ref":  "#/definitions/max_pend_time"},
+              "account": {"$ref":  "#/definitions/account"}
           }
        }
     }

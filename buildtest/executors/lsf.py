@@ -70,6 +70,9 @@ class LSFExecutor(BaseExecutor):
             "executors"
         ].get("defaults", {}).get("launcher")
         self.launcher_opts = self._settings.get("options")
+        self.account = self._settings.get("account") or self._buildtestsettings[
+            "executors"
+        ].get("defaults", {}).get("account")
         self.max_pend_time = self._settings.get(
             "max_pend_time"
         ) or self._buildtestsettings["executors"].get("defaults", {}).get(
@@ -93,6 +96,9 @@ class LSFExecutor(BaseExecutor):
 
         if self.queue:
             bsub_cmd += [f"-q {self.queue}"]
+
+        if self.account:
+            bsub_cmd += [f"-P {self.account}"]
 
         if self.launcher_opts:
             bsub_cmd += [" ".join(self.launcher_opts)]

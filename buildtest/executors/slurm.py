@@ -82,6 +82,9 @@ class SlurmExecutor(BaseExecutor):
         self.cluster = self._settings.get("cluster")
         self.partition = self._settings.get("partition")
         self.qos = self._settings.get("qos")
+        self.account = self._settings.get("account") or self._buildtestsettings[
+            "executors"
+        ].get("defaults", {}).get("account")
         self.max_pend_time = self._settings.get(
             "max_pend_time"
         ) or self._buildtestsettings["executors"].get("defaults", {}).get(
@@ -109,7 +112,10 @@ class SlurmExecutor(BaseExecutor):
             sbatch_cmd += [f"-q {self.qos}"]
 
         if self.cluster:
-            sbatch_cmd += [f"-M {self.cluster}"]
+            sbatch_cmd += [f"--clusters={self.cluster}"]
+
+        if self.account:
+            sbatch_cmd += [f"--account={self.account}"]
 
         if self.launcher_opts:
             sbatch_cmd += [" ".join(self.launcher_opts)]
@@ -165,7 +171,7 @@ class SlurmExecutor(BaseExecutor):
 
         # to query jobs from another cluster we must add -M <cluster> to sacct
         if self.cluster:
-            slurm_query += f" -M {self.cluster}"
+            slurm_query += f" --clusters={self.cluster}"
 
         self.logger.debug(slurm_query)
         cmd = BuildTestCommand(slurm_query)
@@ -207,7 +213,7 @@ class SlurmExecutor(BaseExecutor):
 
         # to query jobs from another cluster we must add -M <cluster> to sacct
         if self.cluster:
-            gather_cmd += f" -M {self.cluster}"
+            gather_cmd += f" --clusters={self.cluster}"
 
         self.logger.debug(f"Gather slurm job data by running: {gather_cmd}")
         cmd = BuildTestCommand(gather_cmd)
@@ -266,7 +272,7 @@ class SlurmExecutor(BaseExecutor):
         query = f"scancel {self.builder.metadata['jobid']}"
         # cancel by slurm cluster if required to cancel job from remote slurm cluster
         if self.cluster:
-            query += f" -M {self.cluster}"
+            query += f" --clusters={self.cluster}"
 
         cmd = BuildTestCommand(query)
         cmd.execute()
