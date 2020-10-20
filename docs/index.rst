@@ -98,12 +98,12 @@ testing of an HPC system. buildtest utilizes `json schema <https://json-schema.o
 to define structure of test written in YAML called a  **Buildspec File**.
 The `schema docs <https://buildtesters.github.io/schemas/>`_ is a resource that
 hosts buildtest schemas and documents all field attributes for each schema, this will
-be useful when you are :ref:`buildspec_overview`.
+be useful when you are writting buildspecs.
 
 A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_
-which is a Python API for `Lmod <https://lmod.readthedocs.io/en/latest/>`_. The buildtest
-module features were deprecated and moved to lmodule with the main object
-of automating module load testing. For more details on lmodule see https://github.com/buildtesters/lmodule
+is a Python API for `Lmod <https://lmod.readthedocs.io/en/latest/>`_. The buildtest
+module features were deprecated and moved to lmodule with the main objective is to
+automate module load testing. For more details on lmodule see https://github.com/buildtesters/lmodule
 
 To get started with buildtest, please review the :ref:`terminology`
 and proceed to :ref:`Setup`  followed by :ref:`Getting Started`.

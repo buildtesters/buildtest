@@ -52,14 +52,13 @@ The ``"type": "object"`` means sub-schema is a JSON `object <http://json-schema.
 where we define a list of key/value pair. The sub-schemas are of type ``object``
 and have a list of required fields that must be provided when using the schema.
 The ``"required"`` field specifies a list of fields that must be specified in
-order to validate the Buildspec. In this example, ``type``, ``run``, ``executor``
-are required fields. The ``additionProperties: false`` informs schema to reject
-any extra properties not defined in schema. In our previous example, the JSON
+order to validate the Buildspec. In this example, ``type``, ``run``, and ``executor``
+are required fields. The ``additionalProperties: false`` informs schema to reject
+any extra properties not defined in the schema. In our previous example, the JSON
 object is ``variables``.
 
 The **executor** key is required for all sub-schemas which instructs buildtest
-which executor to use when running the test. The executors are defined in your
-buildtest settings in :ref:`configuring_buildtest`.
+which executor to use when running the test. The executors are defined in :ref:`configuring_buildtest`.
 
 In this example we define variables using the ``vars`` property which is a Key/Value
 pair for variable assignment. The **run** section is required for script schema which
@@ -67,7 +66,7 @@ defines the content of the test script.
 
 Let's look at a more interesting example, shown below is a multi line run
 example using the `script` schema with test name called
-`systemd_default_target`, shown below is the content of test::
+**systemd_default_target**, shown below is the content of test::
 
     version: "1.0"
     buildspecs:
@@ -106,11 +105,11 @@ summary of the test. In this example we can a full multi-line run section, this
 is achieved in YAML using ``run: |`` followed by content of run section tab indented
 2 spaces.
 
-In this example we introduce a new field `status` that is used for controlling how
-buildtest will mark test state. By default, a returncode of **0** is PASS and non-zero
-is a **FAIL**. Currently buildtest reports only two states: ``PASS``, ``FAIL``.
+In this example we introduce a new field ``status`` that is used for controlling how
+buildtest will mark test state. By default, a returncode of **0** is **PASS** and
+non-zero is a **FAIL**. Currently buildtest reports only two states: ``PASS``, ``FAIL``.
 In this example, buildtest will match the actual returncode with one defined
-in key `returncode` in the status section.
+in key ``returncode`` in the status section.
 
 .. _script_schema:
 
@@ -118,7 +117,7 @@ Script Schema
 ---------------
 
 The script schema is used for writing simple scripts (bash, sh, python) in Buildspec.
-To use this schema you must set ``type: script``. The `run` field is responsible
+To use this schema you must set ``type: script``. The ``run`` field is responsible
 for writing the content of test.
 
 For more details on script schema see schema docs at https://buildtesters.github.io/buildtest/
@@ -136,7 +135,7 @@ will PASS.
 
 .. program-output:: cat ../tutorials/pass_returncode.yml
 
-To demonstrate we will build this test and pay close attention to the **Status**
+To demonstrate we will build this test and pay close attention to the **status**
 column in output.
 
 .. program-output:: cat docgen/schemas/pass_returncode.txt
@@ -164,7 +163,7 @@ Classifying tests with tags
 ----------------------------
 
 The ``tags`` field can be used to classify tests which can be used to organize tests
-or :ref:`build_by_tags` (``buildtest build --tags <TAGNAME>``).
+or if you want to :ref:`build_by_tags` (``buildtest build --tags <TAGNAME>``).
 Tags can be defined as a string or list of strings. In this example, the test
 ``string_tag`` defines a tag name **network** while test ``list_of_strings_tags``
 define a list of tags named ``network`` and ``ping``.
@@ -194,7 +193,7 @@ is invalid.
 Customize Shell
 -----------------
 
-By default buildtest will default to ``bash``, but we can configure shell
+buildtest will default to ``bash`` shell when running test, but we can configure shell
 option using the ``shell`` field. The shell field is defined in schema as follows::
 
     "shell": {
@@ -210,7 +209,7 @@ field.
 
 .. program-output:: cat tutorials/shell_examples.yml
 
-The generated test-script for buildspec *_bin_sh_shell* will specify shebang
+The generated test-script for buildspec **_bin_sh_shell** will specify shebang
 **/bin/sh** because we specified ``shell: /bin/sh``::
 
     #!/bin/sh
@@ -221,7 +220,7 @@ The generated test-script for buildspec *_bin_sh_shell* will specify shebang
 If you don't specify a shell path such as ``shell: sh``, then buildtest will resolve
 path by looking in $PATH and build the shebang line.
 
-In test *shell_options* we specify ``shell: "sh -x"``, buildtest will tack on the
+In test **shell_options** we specify ``shell: "sh -x"``, buildtest will tack on the
 shell options into the shebang line. The generated test for this script is the following::
 
     #!/bin/sh -x
@@ -234,7 +233,7 @@ Customize Shebang
 -----------------
 
 You may customize the shebang line in testscript using ``shebang`` field. This
-takes precedence over the `shell` option which automatically detects the shebang
+takes precedence over the ``shell`` property which automatically detects the shebang
 based on shell path.
 
 In next example we have two tests **bash_login_shebang** and **bash_nonlogin_shebang**
@@ -280,7 +279,7 @@ string items.
     if you are defining multiline python script you must remember to use 2 space indent
     to register multiline string. buildtest will extract the content from run section
     and inject in your test script. To ensure proper formatting for a more complex python
-    script you may be better of writing a python script in separate file and call it
+    script you may be better off writing a python script in separate file and call it
     in ``run`` section.
 
 Skipping test
@@ -292,9 +291,12 @@ below is an example test.
 
 .. program-output:: cat ../tutorials/skip_tests.yml
 
-The first test `skip` will be skipped by buildtest because ``skip: true`` is defined.
+The first test **skip** will be ignored by buildtest because ``skip: true`` is defined
+while **unskipped** will be processed as usual.
 
-.. note::
+.. Note:: Ommitting line ``skip: No`` from test **unskipped** will result in same behavior
+
+.. Note::
 
     YAML and JSON have different representation for boolean. For json schema
     valid values are ``true`` and ``false`` see https://json-schema.org/understanding-json-schema/reference/boolean.html
@@ -348,7 +350,7 @@ with stdout using regular expression.
 
 .. program-output:: cat ../tutorials/run_only_platform.yml
 
-This test was run on a Mac OS (Darwin) so we expect **run_only_platform_linux**
+This test was ran on a MacOS (Darwin) so we expect test **run_only_platform_linux**
 to be skipped.
 
 .. program-output:: cat docgen/schemas/run_only_platform.txt

@@ -102,10 +102,8 @@ run all the tests which led to buildtest.
 Target Audience & Use Case
 ---------------------------
 
-buildtest target audience is the following:
-
-  - `HPC Staff`:  that wants to perform acceptance & regression testing of their HPC system.
-  - `Research Software Engineers`: that want to test software installed in HPC system
+buildtest target audience is `HPC Staff` that wants to perform acceptance &
+regression testing of their HPC system.
 
 buildtest is not
 

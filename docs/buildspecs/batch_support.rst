@@ -24,8 +24,8 @@ keep polling at a set interval. Once job is not in **PENDING**
 or **RUNNING** stage, buildtest will gather job results and wait until all jobs have
 finished.
 
-In order to use a slurm scheduler, you must define a :ref:`slurm_executors` and reference
-it via ``executor``. In this example we have a slurm executor ``slurm.debug``,
+In order to use a slurm scheduler, you must define some slurm executors and reference
+them via ``executor`` property. In this example we have a slurm executor ``slurm.debug``,
 in addition we can specify **#SBATCH** directives using ``sbatch`` field.
 The sbatch field is a list of string types, buildtest will
 insert **#SBATCH** directive in front of each value.
@@ -75,12 +75,13 @@ The slurm.debug executor in our ``settings.yml`` is defined as follows::
         cluster: cori
 
 With this setting, any buildspec test that use ``slurm.debug`` executor will result
-in the following launch option: ``sbatch --qos debug --cluster cori </path/to/script.sh>``.
+in the following launch option: ``sbatch --qos debug --clusters=cori </path/to/script.sh>``.
 
-Unlike the LocalExecutor, the **Run stage**, will dispatch the slurm job and poll
+Unlike the LocalExecutor, the **Run Stage**, will dispatch the slurm job and poll
 until job is completed. Once job is complete, it will gather the results and terminate.
-In Run stage, buildtest will mark status as ``N/A`` for jobs submitted to scheduler, this
-is because we don't have result until we finish polling and gather results. buildtest
+In Run Stage, buildtest will mark test status as ``N/A`` because job is submitted
+to scheduler and pending in queue. In order to get job result, we need to wait
+until job is complete then we gather results and determine test state. buildtest
 keeps track of all buildspecs, testscripts to be run and their results. A test
 using LocalExecutor will run test in **Run Stage** and returncode will be retrieved
 and status can be calculated immediately. For Slurm Jobs, buildtest dispatches
@@ -151,31 +152,35 @@ Shown below is an example build for this test ::
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
 
-The **SlurmExecutor** class responsible for managing slurm job will retrieve the
-following format fields using ``sacct`` during ``gather`` stage once job is finished:
+The **SlurmExecutor** class is responsible for processing slurm job that may include:
+dispatch, poll, gather, or cancel job. The SlurmExecutor will gather job metrics
+via ``sacct`` using the following format fields:
 
--    "Account"
--    "AllocNodes"
--    "AllocTRES"
--    "ConsumedEnergyRaw"
--    "CPUTimeRaw"
--    "End"
--    "ExitCode"
--    "JobID"
--    "JobName"
--    "NCPUS"
--    "NNodes"
--    "QOS"
--    "ReqGRES"
--    "ReqMem"
--    "ReqNodes"
--    "ReqTRES"
--    "Start"
--    "State"
--    "Submit"
--    "UID"
--    "User"
--    "WorkDir"
+-    Account
+-    AllocNodes
+-    AllocTRES
+-    ConsumedEnergyRaw
+-    CPUTimeRaw
+-    End
+-    ExitCode
+-    "JobID
+-    JobName
+-    NCPUS
+-    NNodes
+-    QOS
+-    ReqGRES
+-    ReqMem
+-    ReqNodes
+-    ReqTRES
+-    Start
+-    State
+-    Submit
+-    UID
+-    User
+-    WorkDir
+
+For a complete list of format fields see ``sacct -e``. For now, we support only these fields of interest
+for reporting purpose.
 
 buildtest can check status based on Slurm Job State, this is defined by ``State`` field
 in sacct. In next example, we introduce field ``slurm_job_state`` which
@@ -253,24 +258,24 @@ job results.
 The LSFExecutor ``gather`` method will retrieve the following format fields using
 ``bjobs``
 
--    "job_name"
--    "stat"
--    "user"
--    "user_group"
--    "queue"
--    "proj_name"
--    "pids"
--    "exit_code"
--    "from_host"
--    "exec_host"
--    "submit_time"
--    "start_time"
--    "finish_time"
--    "nthreads"
--    "exec_home"
--    "exec_cwd"
--    "output_file"
--    "error_file"
+-    job_name
+-    stat
+-    user
+-    user_group
+-    queue
+-    proj_name
+-    pids
+-    exit_code
+-    from_host
+-    exec_host
+-    submit_time
+-    start_time
+-    finish_time
+-    nthreads
+-    exec_home
+-    exec_cwd
+-    output_file
+-    error_file
 
 Scheduler Agnostic Configuration
 ---------------------------------
@@ -362,8 +367,8 @@ generated script we see the following::
 
 
 You may leverage ``batch`` with ``sbatch`` or ``bsub`` field to specify your job
-directives. If a particular field is not available in batch field then utilize sbatch
-or bsub field to fill in all the arguments.
+directives. If a particular field is not available in ``batch`` property then utilize ``sbatch``
+or ``bsub`` field to fill in rest of the arguments.
 
 Jobs exceeds `max_pend_time`
 -----------------------------
@@ -374,7 +379,7 @@ submission and keep track of time duration, if job is pending then job will be c
 To demonstrate, here is an example of two buildspecs submitted to scheduler and notice
 job ``shared_qos_haswell_hostname`` was cancelled during after `max_pend_time` of 10
 sec. Note that cancelled job is not reported in final output nor updated in report hence
-it won't be present in ``buildtest report``.
+it won't be present in the report (``buildtest report``).
 
 .. code-block::
     :emphasize-lines: 51-52

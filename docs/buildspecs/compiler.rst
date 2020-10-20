@@ -342,7 +342,7 @@ followed by module commands. The executable is run via ``srun`` because we speci
     srun ./vecAdd.c.exe
 
 In this next example, we build same test using `hpcsdk <https://docs.nvidia.com/hpc-sdk/index.html>`_
-compiler by NVIDIA that acquired PGI compiler. At cori, we must load ``hpcsdk``
+compiler by NVIDIA that recently acquired PGI compiler. At Cori, we must load ``hpcsdk``
 and ``cuda`` module in order to use the hpcsdk compiler. The ``name`` is a
 required field however buildtest will ignore since we specify
 ``cc`` field. NVIDIA changed their compiler names instead of ``pgcc`` we must use
