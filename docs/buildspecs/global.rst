@@ -4,7 +4,7 @@ Global Schema
 ==============
 
 The global schema is validated with for all schema types and is the top-level
-schema when defining a Buildspec.
+schema when defining a buildspec file.
 
 For more details see `Global Schema Documentation <https://buildtesters.github.io/buildtest/pages/schemadocs/global.html>`_.
 
@@ -20,10 +20,10 @@ Shown below is the start of the global.schema.json::
   "type": "object",
   "required": ["version","buildspecs"],
 
-The global keys required for buildspec are ``version`` and ``buildspecs``. The
-version key is required to validate with sub-schema when used with ``type`` field.
-The ``buildspecs`` is the start of test section. The ``maintainers`` is an optional
-field that is an array which can be used to identity maintainer of test. To understand
+The global keys required for any buildspec are ``version`` and ``buildspecs``. The
+version key is required to lookup an a sub-schema using the ``type`` field.
+The ``buildspecs`` is the start of test declaration. The ``maintainers`` is an optional
+field that is an array test maintainers. To understand
 how buildtest validates the buildspec see :ref:`parse_stage`.
 
 Shown below is an example buildspec.
@@ -42,8 +42,8 @@ In this example, the global schema validates the following section::
 
 The field ``version`` ``buildspecs`` and ``maintainers`` are validated with **global.schema.json**
 using `jsonschema.validate <https://python-jsonschema.readthedocs.io/en/stable/_modules/jsonschema/validators/#validate>`_
-method. The sub-schema is the following section which is validated with the sub-schema specified by
-``type`` field::
+method. The test section within ``hello_world`` is validated by sub-schema by looking up schema based
+on ``type`` field::
 
     hello_world:
       executor: local.bash
@@ -54,14 +54,14 @@ method. The sub-schema is the following section which is validated with the sub-
 Every sub-schema requires **type** field in this case, ``type: script`` directs
 buildtest to validate with the script schema. All type schemas have a version,
 currently buildtest supports **1.0** version for all type schemas. The
-``version: "1.0"`` is used to select the version of the type schema,
+``version: "1.0"`` is used to select the version of the sub-schema,
 in this example we validate with the schema `script-v1.0.schema.json <https://buildtesters.github.io/buildtest/pages/schemas/script-v1.0.schema.json>`_.
 
 Test Names
 -----------
 
-The **buildspecs** is an object that defines one or more test. The buildspecs section
-is defined as follows::
+The **buildspecs** property is a JSON object that defines one or more test. This
+is defined in JSON as follows::
 
     "buildspecs": {
          "type": "object",
@@ -72,13 +72,9 @@ is defined as follows::
     }
 
 The test names take the following pattern ``"^[A-Za-z_][A-Za-z0-9_]*$"`` and limited
-to 32 characters.
-
-In the previous example the test name is **hello_world**. You must have unique
+to 32 characters. In previous example, the test name is **hello_world**. You must have unique
 testname in your **buildspecs** section, otherwise you will have an invalid buildspec
-file.
-
-The ``description`` field is used to document the test and limited to 80 characters.
+file. The ``description`` field is used to document the test and limited to 80 characters.
 
 .. Note:: We refer to the entire YAML content as **buildspec file**, this is not to be confused with the **buildspecs** field.
 

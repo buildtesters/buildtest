@@ -31,7 +31,7 @@ Discovered Buildspecs:
     
  name       | id       | executor   | status   |   returncode | testpath
 ------------+----------+------------+----------+--------------+------------------------------------------------------------------------------------------------
- vecadd_gnu | 1a0f6265 | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
+ vecadd_gnu | 1a0f6265 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
