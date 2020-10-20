@@ -14,7 +14,10 @@ We add `setup.sh`, `setup.csh` script to install buildtest for bash/csh shells, 
 We introduced scheduler agnostic configuration using ``batch`` field. This property currently translates a subset of options for Slurm and LSF.
 We have added generic tests to buildtest in top-level folder `generic-tests` which is an attempt to provide buildspecs that anyone can use. Currently, these tests are run using Local Executors.
 
+- Add `account` field in buildtest setting to specify job account, this can be set default on all batch executors or set within executor scope which overrides default. See `#514 <https://github.com/buildtesters/buildtest/pull/514>`_
+- Add `max_pend_time` in buildtest settings to cancel job if its in pending state. This was tested for Slurm and LSF scheduler.  See `#509 <https://github.com/buildtesters/buildtest/pull/509>`_, `#510 <https://github.com/buildtesters/buildtest/pull/510>`_
 - Add option ``buildtest schema --validate`` to validate example schemas. The option ``buildtest schema --example`` shows content of schema examples see `#502 <https://github.com/buildtesters/buildtest/pull/502>`_
+- Deprecate command ``buildtest config edit`` see `#512 <https://github.com/buildtesters/buildtest/pull/512>`_
 - Fix bug when retrieving tags with command ``buildtest buildspec find --tags`` see `#501 <https://github.com/buildtesters/buildtest/pull/501>`_
 - Add scheduler agnostic configuration via ``batch`` field see `#493 <https://github.com/buildtesters/buildtest/pull/493>`_ and `#494 <https://github.com/buildtesters/buildtest/pull/494>`_
 - Add a ``setup.sh``, ``setup.csh`` script to install buildtest. This changes the way buildtest is installed as pose to using **pip** see `#491 <https://github.com/buildtesters/buildtest/pull/491>`_ `#503 <https://github.com/buildtesters/buildtest/pull/503>`_
