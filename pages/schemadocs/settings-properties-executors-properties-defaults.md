@@ -22,6 +22,7 @@ Specify default executor settings for all executors
 | [pollinterval](#pollinterval)   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-pollinterval.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/pollinterval")   |
 | [launcher](#launcher)           | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-launcher.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/launcher")           |
 | [max_pend_time](#max_pend_time) | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/max_pend_time") |
+| [account](#account)             | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-account.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/account")             |
 
 ## pollinterval
 
@@ -105,3 +106,19 @@ The default value is:
 ```json
 90
 ```
+
+## account
+
+Specify Job Account for charging resources
+
+
+`account`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-account.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/account")
+
+### account Type
+
+`string`
