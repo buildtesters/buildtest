@@ -8,6 +8,7 @@ executors:
     batch:
       description: "LSF Executor name 'batch' that submits jobs to 'batch' queue"
       queue: batch
+      account: developer
       options: ["-W 20"]
       before_script: |
         time
@@ -19,4 +20,5 @@ executors:
       description: "LSF Executor name 'test' that submits jobs to 'test' queue"
       launcher: bsub
       queue: test
+      account: qa
       options: ["-W 20"]
