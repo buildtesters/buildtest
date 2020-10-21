@@ -19,6 +19,7 @@ def build_helper():
         "buildtest buildspec --help",
         "buildtest buildspec find --help",
         "buildtest report --help",
+        "buildtest inspect --help",
     ]
     for cmd in help_cmds:
         out = run(cmd)

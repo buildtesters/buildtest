@@ -101,7 +101,7 @@ class BaseExecutor:
         run_output_file = os.path.join(
             self.builder.metadata.get("testroot"),
             "run",
-            self.builder.metadata.get("id"),
+            self.builder.metadata.get("name"),
         )
         outfile = run_output_file + ".out"
         errfile = run_output_file + ".err"
@@ -184,7 +184,3 @@ class BaseExecutor:
 
         # Return to starting directory for next test
         os.chdir(self.builder.pwd)
-
-
-class SSHExecutor(BaseExecutor):
-    type = "ssh"
