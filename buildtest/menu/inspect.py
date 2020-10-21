@@ -11,7 +11,7 @@ def get_all_ids():
        :rtype: list
     """
 
-    id = []
+    test_id = []
     with open(BUILD_REPORT, "r") as fd:
         report = json.loads(fd.read())
 
@@ -20,9 +20,9 @@ def get_all_ids():
         for name in report[buildspec].keys():
             # loop over each test entry for given test
             for test in report[buildspec][name]:
-                id.append(test["full_id"])
+                test_id.append(test["full_id"])
 
-    return id
+    return test_id
 
 
 def func_inspect(args):
@@ -32,9 +32,9 @@ def func_inspect(args):
 
     discovered_tests = []
     # discover all tests based on all unique ids from report cache
-    for id in test_ids:
-        if id.startswith(args.test):
-            discovered_tests.append(id)
+    for identifier in test_ids:
+        if identifier.startswith(args.test):
+            discovered_tests.append(identifier)
 
     # if no test discovered exit with message
     if not discovered_tests:
@@ -45,7 +45,9 @@ def func_inspect(args):
         print(
             f"Detected {len(discovered_tests)} test records, please specify a unique test id"
         )
-        [print(test) for test in discovered_tests]
+
+        for test in discovered_tests:
+            print(test)
         sys.exit(0)
 
     with open(BUILD_REPORT, "r") as fd:
