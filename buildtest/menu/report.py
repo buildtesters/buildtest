@@ -298,6 +298,7 @@ def update_report(valid_builders):
         for item in ["starttime", "endtime", "runtime", "state", "returncode"]:
             entry[item] = builder.metadata["result"][item]
 
+        entry["job"] = builder.metadata.get("job") or None
         report[buildspec][name].append(entry)
 
     with open(BUILD_REPORT, "w") as fd:

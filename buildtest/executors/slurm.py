@@ -263,6 +263,15 @@ class SlurmExecutor(BaseExecutor):
         self.logger.debug(
             f"[{self.builder.name}] returncode: {self.result['returncode']}"
         )
+
+        slurm_cmd = f"scontrol show job {self.builder.metadata['jobid']}"
+        if self.cluster:
+            slurm_cmd += f" -M {self.cluster}"
+
+        cmd = BuildTestCommand(slurm_cmd)
+        cmd.execute()
+        self.builder.metadata["job"]["scontrol"] = "".join(cmd.get_output())
+
         self.check_test_state()
         self.builder.metadata["result"] = self.result
 

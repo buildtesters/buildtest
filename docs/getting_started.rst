@@ -489,7 +489,7 @@ test is recorded in ``var/report.json``. The command usage is the following.
 
 .. program-output:: cat docgen/buildtest_inspect_--help.txt
 
-The `buildtest inspect` expects a **unique** test id this can be
+The ``buildtest inspect`` expects a **unique** test id this can be
 retrieve using the ``full_id`` format field if you are not sure::
 
   $ buildtest report --format name, full_id
@@ -529,9 +529,9 @@ For example, let's assume we have the following tests in our report::
     | systemd_default_target  | 7cfc9057-6338-403c-a7af-b1301d04d817 |
     +-------------------------+--------------------------------------+
 
-Let's assume we are interested in viewing test `bash_login_shebang`, since we
-have multiple instance for same test we must specify a unique id. Let's assume we
-want the first entry we can do the following ::
+Let's assume we are interested in viewing test ``bash_login_shebang``, since we
+have multiple instance for same test we must specify a unique id. In example below
+we query the the test id **eb6e26b2-938b-4913-8b98-e21528c82778**::
 
     $ buildtest inspect eb6e26b2-938b-4913-8b98-e21528c82778
     {
@@ -606,13 +606,13 @@ want the first entry we can do the following ::
 
 
 
-builldtest will present the test record from JSON record including contents of
+buildtest will present the test record from JSON record including contents of
 output file, error file, testscript and buildspec file.
 
 User can can specify first few characters of the id and buildtest will detect if
 its a unique test id. If buildtest discovers more than one test id, then buildtest
 will report all the ids where there is a conflict. In example below we find
-two tests with id **7c**:
+two tests with id **7c**::
 
     $ buildtest inspect 7c
     Detected 2 test records, please specify a unique test id
