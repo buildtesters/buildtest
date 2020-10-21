@@ -1,5 +1,8 @@
 language: python
 dist: xenial
+addons:
+  ssh_known_hosts:
+  - 127.0.0.1  
 arch:
   - amd64
 python:
