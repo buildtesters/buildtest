@@ -481,6 +481,145 @@ because this test can't be run. In this case you will get the following message:
     $ buildtest report --filter buildspec=tutorials/invalid_executor.yml
     buildspec file: /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml not found in cache
 
+Test Inspection
+-----------------
+
+buildtest provides an interface via ``buildtest inspect`` to query test details once
+test is recorded in ``var/report.json``. The command usage is the following.
+
+.. program-output:: cat docgen/buildtest_inspect_--help.txt
+
+The `buildtest inspect` expects a **unique** test id this can be
+retrieve using the ``full_id`` format field if you are not sure::
+
+  $ buildtest report --format name, full_id
+
+For example, let's assume we have the following tests in our report::
+
+    $ buildtest report --format name,full_id
+    +-------------------------+--------------------------------------+
+    | name                    | full_id                              |
+    +=========================+======================================+
+    | bash_login_shebang      | eb6e26b2-938b-4913-8b98-e21528c82778 |
+    +-------------------------+--------------------------------------+
+    | bash_login_shebang      | d7937a9a-d3fb-4d3f-95e1-465488757820 |
+    +-------------------------+--------------------------------------+
+    | bash_login_shebang      | dea6c6fd-b9a6-4b07-a3fc-b483d02d7ff9 |
+    +-------------------------+--------------------------------------+
+    | bash_nonlogin_shebang   | bbf94b94-949d-4f97-987a-9a93309f1dc2 |
+    +-------------------------+--------------------------------------+
+    | bash_nonlogin_shebang   | 7ca9db2f-1e2b-4739-b9a2-71c8cc00249e |
+    +-------------------------+--------------------------------------+
+    | bash_nonlogin_shebang   | 4c5caf85-6ba0-4ca0-90b0-c769a2fcf501 |
+    +-------------------------+--------------------------------------+
+    | root_disk_usage         | e78071ef-6444-4228-b7f9-b4eb39071fdd |
+    +-------------------------+--------------------------------------+
+    | ulimit_filelock         | c6294cfa-c559-493b-b44f-b17b54ec276d |
+    +-------------------------+--------------------------------------+
+    | ulimit_cputime          | aa5530e2-be09-4d49-b8c0-0e818f855a40 |
+    +-------------------------+--------------------------------------+
+    | ulimit_stacksize        | 3591925d-7dfa-4bc7-a3b1-fb9dfadf956e |
+    +-------------------------+--------------------------------------+
+    | ulimit_vmsize           | 4a01f26b-9c8a-4870-8e33-51923c8c46ad |
+    +-------------------------+--------------------------------------+
+    | ulimit_filedescriptor   | 565b85ac-e51f-46f9-8c6f-c2899a370609 |
+    +-------------------------+--------------------------------------+
+    | ulimit_max_user_process | 0486c11c-5733-4d8e-822e-c0adddbb2af7 |
+    +-------------------------+--------------------------------------+
+    | systemd_default_target  | 7cfc9057-6338-403c-a7af-b1301d04d817 |
+    +-------------------------+--------------------------------------+
+
+Let's assume we are interested in viewing test `bash_login_shebang`, since we
+have multiple instance for same test we must specify a unique id. Let's assume we
+want the first entry we can do the following ::
+
+    $ buildtest inspect eb6e26b2-938b-4913-8b98-e21528c82778
+    {
+      "id": "eb6e26b2",
+      "full_id": "eb6e26b2-938b-4913-8b98-e21528c82778",
+      "testroot": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/0",
+      "testpath": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/0/stage/generate.sh",
+      "command": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/0/stage/generate.sh",
+      "outfile": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/0/run/bash_login_shebang.out",
+      "errfile": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/0/run/bash_login_shebang.err",
+      "schemafile": "script-v1.0.schema.json",
+      "executor": "local.bash",
+      "tags": "tutorials",
+      "starttime": "2020/10/21 16:27:18",
+      "endtime": "2020/10/21 16:27:18",
+      "runtime": 0.26172968399999996,
+      "state": "PASS",
+      "returncode": 0
+    }
+
+
+
+    Output File
+    ______________________________
+    Login Shell
+
+
+
+
+    Error File
+    ______________________________
+
+
+
+
+    Test Content
+    ______________________________
+    #!/bin/bash -l
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+
+
+
+    buildspec:  /Users/siddiq90/Documents/buildtest/tutorials/shebang.yml
+    ______________________________
+    version: "1.0"
+    buildspecs:
+      bash_login_shebang:
+        type: script
+        executor: local.bash
+        shebang: "#!/bin/bash -l"
+        description: customize shebang line with bash login shell
+        tags: tutorials
+        run: shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
+        status:
+          regex:
+            exp: "^Login Shell$"
+            stream: stdout
+
+      bash_nonlogin_shebang:
+        type: script
+        executor: local.bash
+        shebang: "#!/bin/bash"
+        description: customize shebang line with default bash (nonlogin) shell
+        tags: tutorials
+        run: shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
+        status:
+          regex:
+            exp: "^Not Login Shell$"
+            stream: stdout
+
+
+
+builldtest will present the test record from JSON record including contents of
+output file, error file, testscript and buildspec file.
+
+User can can specify first few characters of the id and buildtest will detect if
+its a unique test id. If buildtest discovers more than one test id, then buildtest
+will report all the ids where there is a conflict. In example below we find
+two tests with id **7c**:
+
+    $ buildtest inspect 7c
+    Detected 2 test records, please specify a unique test id
+    7ca9db2f-1e2b-4739-b9a2-71c8cc00249e
+    7cfc9057-6338-403c-a7af-b1301d04d817
+
+.. note:: This feature is in development and may change in future
 
 .. _buildtest_schemas:
 

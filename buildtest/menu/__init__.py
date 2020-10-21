@@ -20,6 +20,7 @@ from buildtest.menu.config import (
 
 from buildtest.menu.report import func_report
 from buildtest.menu.schema import func_schema
+from buildtest.menu.inspect import func_inspect
 from buildtest.schemas.defaults import schema_table
 
 
@@ -85,6 +86,7 @@ class BuildTestParser:
             "report": "Show report for test results",
             "schema": "Commands for viewing buildtest schemas",
             "config": "Buildtest Configuration Menu",
+            "inspect": "Inspect details for test from test report",
             "docs": "Open buildtest docs in browser",
             "schemadocs": "Open buildtest schema docs in browser",
         }
@@ -93,6 +95,7 @@ class BuildTestParser:
         self.build_menu()
         self.buildspec_menu()
         self.report_menu()
+        self.inspect_menu()
         self.schema_menu()
         self.config_menu()
 
@@ -294,6 +297,13 @@ class BuildTestParser:
         ##################### buildtest report   ###########################
 
         parser_report.set_defaults(func=func_report)
+
+    def inspect_menu(self):
+        """This method builds menu for `buildtest inspect` """
+
+        parser_inspect = self.subparsers.add_parser("inspect")
+        parser_inspect.add_argument("test", help="select unique test")
+        parser_inspect.set_defaults(func=func_inspect)
 
     def schema_menu(self):
         """This method adds argparse argument for ``buildtest show``"""

@@ -10,7 +10,7 @@ class TestBuildTestError:
     )
     def test_exception(self,):
         """This test will check if we can raise Exception of type BuildTestError"""
-        error = BuildTestError(f"Failed to run command")
+        error = BuildTestError("Failed to run command")
         assert hasattr(error, "msg")
         assert isinstance(error.msg, str)
         raise error
@@ -22,6 +22,6 @@ class TestBuildTestError:
     )
     def test_multi_args(self):
         """This test will check if we can raise Exception of type BuildTestError"""
-        error = BuildTestError(f"This is", "an", "exception")
+        error = BuildTestError("This is", "an", "exception")
         assert isinstance(error.msg, str)
         raise error

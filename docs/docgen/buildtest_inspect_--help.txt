@@ -1,0 +1,8 @@
+$ buildtest inspect --help
+usage: buildtest [options] [COMMANDS] inspect [-h] test
+
+positional arguments:
+  test        select unique test
+
+optional arguments:
+  -h, --help  show this help message and exit

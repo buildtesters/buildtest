@@ -16,7 +16,6 @@ pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def test_build_executor(tmp_path):
-    schema_file = "settings.schema.json"
 
     settings_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
     example = load_recipe(DEFAULT_SETTINGS_FILE)

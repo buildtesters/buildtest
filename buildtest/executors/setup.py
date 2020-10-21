@@ -10,7 +10,6 @@ import os
 import sys
 
 from buildtest.defaults import BUILDTEST_SETTINGS_FILE, executor_root
-from buildtest.executors.base import SSHExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
 from buildtest.executors.slurm import SlurmExecutor
@@ -42,11 +41,6 @@ class BuildExecutor:
         for name in config_opts["executors"].get("local", {}).keys():
             self.executors[f"local.{name}"] = LocalExecutor(
                 name, config_opts["executors"]["local"][name], config_opts
-            )
-
-        for name in config_opts["executors"].get("ssh", {}).keys():
-            self.executors[f"ssh.{name}"] = SSHExecutor(
-                name, config_opts["executors"]["ssh"][name], config_opts
             )
 
         for name in config_opts["executors"].get("slurm", {}).keys():
