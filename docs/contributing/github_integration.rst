@@ -5,9 +5,6 @@ buildtest has several github integration, including automated checks during PR t
 during the PR review. You should check results from the `buildtest actions <https://github.com/buildtesters/buildtest/actions>`_
 that are also typically linked as part of the pull request testing suite.
 
-It's good practice to check Travis `builds <https://travis-ci.com/buildtesters/buildtest>`_ since we use Travis
-to run regression test and Codecov and Coveralls depend on Travis to pass all checks.
-
 You will want to make sure code is formatted via black as we have automated checks for python formatting. If you have not
 setup the black hook check out :ref:`black_hook`
 
