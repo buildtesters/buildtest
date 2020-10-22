@@ -1,10 +1,12 @@
 codecov:
-  ci:
-    - "travis.org"
   require_ci_to_pass: yes
   notify:
     after_n_builds: 2
     wait_for_ci: yes
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: true
 coverage:
   precision: 3
   round: nearest
