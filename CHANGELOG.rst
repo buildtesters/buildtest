@@ -1,19 +1,34 @@
 CHANGELOG
 =========
 
-v0.9.0 (TBD)
--------------
+v0.9.0 (Oct 21st, 2020)
+------------------------
 
 The major changes in v0.9.0 are the following
 
-First we moved schema development from https://github.com/buildtesters/schemas into buildtest and
-add custom RefResolver for validating schemas on local filesystem as pose to fully qualified URI.
-We host schema, examples, and schema docs on Github pages at https://buildtesters.github.io/buildtest/ by adding a `jsonschemadocs <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/jsonschemadocs.yml>`_ workflow. We move JSON definitions to separate file `definitions.schema.json`. 
+First we moved schema development from https://github.com/buildtesters/schemas
+into buildtest and add custom RefResolver for validating schemas on local
+filesystem as pose to fully qualified URI.
 
-We add `setup.sh`, `setup.csh` script to install buildtest for bash/csh shells, this now changes the way we install buildtest as pose to using **pip**.
-We introduced scheduler agnostic configuration using ``batch`` field. This property currently translates a subset of options for Slurm and LSF.
-We have added generic tests to buildtest in top-level folder `generic-tests` which is an attempt to provide buildspecs that anyone can use. Currently, these tests are run using Local Executors.
+We host schema, examples, and schema docs on Github pages at
+https://buildtesters.github.io/buildtest/ by adding a`jsonschemadocs <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/jsonschemadocs.yml>`_ workflow.
+We moved JSON definitions to separate file called `definitions.schema.json`.
 
+We added `setup.sh`, `setup.csh` script to install buildtest for bash/csh shells,
+this now changes the way we install buildtest as pose to using **pip**.
+We introduced scheduler agnostic configuration using ``batch`` field.
+This property currently translates a subset of options for Slurm and LSF.
+We have added generic tests to buildtest in top-level folder `generic-tests`
+which is an attempt to provide buildspecs that anyone can use. Currently, these
+tests are run using Local Executors. We added the properties ``account``
+and ``max_pend_time`` in executor configuration. The ``account`` field is used for
+sites to specify a project account to charge resource, this can be set default on
+all executors or defined per executor setting. The ``max_pend_time`` is
+**maximum time limit job can stay pending in executor queue**, this was an enhancement
+from previous model where jobs can run indefinitely without any cancellation option.
+
+- Add new command ``buildtest inspect`` to view test details see `#516 <https://github.com/buildtesters/buildtest/pull/516>`_
+- Disable Travis and enable codecov comments see `#519 <https://github.com/buildtesters/buildtest/pull/519>`_
 - Add `account` field in buildtest setting to specify job account, this can be set default on all batch executors or set within executor scope which overrides default. See `#514 <https://github.com/buildtesters/buildtest/pull/514>`_
 - Add `max_pend_time` in buildtest settings to cancel job if its in pending state. This was tested for Slurm and LSF scheduler.  See `#509 <https://github.com/buildtesters/buildtest/pull/509>`_, `#510 <https://github.com/buildtesters/buildtest/pull/510>`_
 - Add option ``buildtest schema --validate`` to validate example schemas. The option ``buildtest schema --example`` shows content of schema examples see `#502 <https://github.com/buildtesters/buildtest/pull/502>`_
@@ -27,7 +42,7 @@ We have added generic tests to buildtest in top-level folder `generic-tests` whi
 - Fix bug when when writing python scripts in ``run`` section, we add stage/run directory in test destination directory see `#477 <https://github.com/buildtesters/buildtest/pull/477/>`_.
 
 
-v0.8.1 (Sep 14th 2020)
+v0.8.1 (Sep 14th, 2020)
 -----------------------
 
 - We now running regression test in github action see `#455 <https://github.com/buildtesters/buildtest/pull/455>`_
@@ -40,7 +55,7 @@ v0.8.1 (Sep 14th 2020)
 - Query buildspec tags and buildspec files using ``buildtest buildspec find --tags`` and ``buildtest buildspec find --buildspec-files`` option see `#445 <https://github.com/buildtesters/buildtest/pull/445>`_
 
 
-v0.8.0 (Sep 3rd 2020)
+v0.8.0 (Sep 3rd, 2020)
 -----------------------
  
 This release includes major changes to framework, in particular we use `jsonschema <https://json-schema.org/>`_ to 

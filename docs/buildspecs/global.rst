@@ -78,48 +78,16 @@ file. The ``description`` field is used to document the test and limited to 80 c
 
 .. Note:: We refer to the entire YAML content as **buildspec file**, this is not to be confused with the **buildspecs** field.
 
+Buildspec Structure
+--------------------
 
-You may define multiple tests in a single buildspec file, shown below is an example
-using both script and compiler schema::
+Shown below is an overview of buildspec structure. In this test we define two test
+named ``hello_f`` and ``environment_variables``. Recall that tests are defined
+within the ``buildspecs`` scope and each test is validated with a sub-schema defined
+by ``type`` field. Every buildspec must be tied to an executor which defines how
+test is to be executed.
 
-    version: "1.0"
-    buildspecs:
-      hello_f:
-        type: compiler
-        description: "Hello World Fortran Compilation"
-        executor: local.bash
-        module:
-          - "module purge && module load gcc"
-        build:
-          source: "src/hello.f90"
-          name: gnu
-          fflags: -Wall
+.. image:: ../_static/buildspec-structure.png
 
-      environment_variables:
-        executor: local.bash
-        type: script
-        env:
-          FIRST_NAME: avocado
-          LAST_NAME: dinosaur
-        run: |
-          hostname
-          whoami
-          echo $USER
-          printf "${FIRST_NAME} ${LAST_NAME}\n"
-
-In this example we have two tests **hello_f** and **environment_variables**. The
-test ``hello_f`` is using the `compiler-v1.0.schema.json <https://buildtesters.github.io/buildtest/pages/schemas/compiler-v1.0.schema.json>`_
-for validation because ``type: compiler`` is set in sub-schema while ``environment_variables`` test
-is using `script-v1.0.schema.json <https://buildtesters.github.io/buildtest/pages/schemas/script-v1.0.schema.json>`_
-for validation because ``type: script`` is set.
-
-
-Schema Naming Convention
-------------------------
-
-All schema files use the file extension **.schema.json** to distinguish itself
-as a json schema definition from an ordinary json file. All sub-schemas
-must be versioned, with the exception of ``global.schema.json``.
-
-If you have got this far you may proceed with :ref:`buildspec_overview`
+Proceed to :ref:`buildspec_overview` to learn more about buildspecs.
 

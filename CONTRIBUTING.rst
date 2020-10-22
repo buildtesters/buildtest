@@ -199,16 +199,12 @@ The following apps are configured with buildtest.
 
   - Link: https://dashboard.guardrails.io/default/gh/buildtesters
 
-- **Travis CI** - Test and deploy with confidence. Trusted by over 800,000 users, Travis CI is the leading hosted continuous integration system.
-
-  - Link: https://travis-ci.com/buildtesters/buildtest
-
 - **Snyk** - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
 
   - Link: https://app.snyk.io/org/buildtesters/
 
-When contributing back to buildtest, please consider checking the following GitHub apps, most important being **Travis-CI**
-as it will test your pull request before merging to ``devel`` branch.
+When contributing back to buildtest, please consider check results from the automated
+CI tests as it will help test your pull request before merging to ``devel`` branch.
 
 - **Stale**  - buildtest is using this app to close outdated issues. This is configured in ``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
 

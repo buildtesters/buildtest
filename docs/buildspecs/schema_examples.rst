@@ -1,8 +1,18 @@
-Buildspec Schema Examples
+Buildtest Schemas
 ==========================
 
+Schema Naming Convention
+------------------------
+
+All schema files use the file extension **.schema.json** to distinguish itself
+as a json schema definition from an ordinary json file. All sub-schemas
+must be versioned, with the exception of ``global.schema.json``.
+
+Schema Examples
+------------------
+
 The schema examples are great way to help write your buildspecs and
-help you understand the edgecases that can lead to an invalid buildspec. The
+help you understand the edge cases that can lead to an invalid buildspec. The
 schema examples are used in buildtest regression test for validating the schemas.
 We expose the examples through buildtest client so its accessible for everyone.
 
