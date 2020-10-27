@@ -26,7 +26,10 @@ jobs:
    
     - name: test-buildtest
       run: |
-        sudo apt-get install csh
+        sudo apt-get install csh tcsh
+        which csh
+        which tcsh
+        which zsh
         source setup.sh
         pip install pytest
         pip install coverage 
