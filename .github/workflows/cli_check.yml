@@ -27,7 +27,7 @@ jobs:
    
     - name: Buildtest Checks
       run: |
-        sudo apt-get install tcsh
+        sudo apt-get install -y tcsh
         which csh
         which tcsh
         which zsh
