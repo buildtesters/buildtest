@@ -303,7 +303,7 @@ class BuilderBase:
            :rtype: list
         """
 
-        env = []
+        vars = []
         pairs = self.recipe.get("vars", [])
         shell = self.shell.name
         # Parse environment depending on expected shell
@@ -311,15 +311,20 @@ class BuilderBase:
 
             # bash, sh, zsh variable declaration is KEY=VALUE
             if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
-                [env.append("%s=%s" % (k, v)) for k, v in pairs.items()]
+                for k, v in pairs.items():
+                    vars.append("%s=$s" % (k, v))
+
+
             # tcsh, csh variable declaration is set KEY=VALUE
             elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
-                [env.append("set %s=%s" % (k, v)) for k, v in pairs.items()]
+                for k, v in pairs.items():
+                    vars.append("set %s=$s" % (k, v))
+
             else:
                 self.logger.warning(
                     f"{shell} is not supported, skipping environment variables."
                 )
-        return env
+        return vars
 
     def _generate_unique_id(self):
         """Generate a build id based on the Buildspec name, and datetime."""
