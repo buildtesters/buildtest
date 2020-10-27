@@ -3,7 +3,20 @@ from buildtest.exceptions import BuildTestError
 
 
 class Shell:
-    valid_shells = ["bash", "sh", "zsh", "csh", "tcsh", "/bin/bash", "/bin/csh","/bin/sh","/bin/tcsh", "/bin/zsh", "python"]
+    valid_shells = [
+        "bash",
+        "sh",
+        "zsh",
+        "csh",
+        "tcsh",
+        "/bin/bash",
+        "/bin/csh",
+        "/bin/sh",
+        "/bin/tcsh",
+        "/bin/zsh",
+        "python",
+    ]
+
     def __init__(self, shell="bash"):
         """ The Shell initializer takes an input shell and shell options and split
             string by shell name and options.
@@ -24,7 +37,9 @@ class Shell:
 
         # if input shell is not in list of valid shells we raise error.
         if self.name not in self.valid_shells:
-            raise BuildTestError(f"Invalid shell: {self.name} select from one of the following shells: {self.valid_shells}")
+            raise BuildTestError(
+                f"Invalid shell: {self.name} select from one of the following shells: {self.valid_shells}"
+            )
 
         self._opts = " ".join(shell.split()[1:])
         self.path = self.name
@@ -86,7 +101,8 @@ class Shell:
         # if input shell is not in list of valid shells we raise error.
         if self.name not in self.valid_shells:
             raise BuildTestError(
-                f"Invalid shell: {self.name} select from one of the following shells: {self.valid_shells}")
+                f"Invalid shell: {self.name} select from one of the following shells: {self.valid_shells}"
+            )
 
         self._path = path
 

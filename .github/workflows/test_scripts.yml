@@ -26,6 +26,7 @@ jobs:
 
     - name: test all scripts
       run: |
+        sudo apt-get install csh
         source setup.sh
         buildtest buildspec find
         for f in $PWD/docs/scripting_examples/*.py; do python $f; done

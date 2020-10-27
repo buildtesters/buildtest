@@ -3,8 +3,8 @@ import shutil
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.shell import Shell
 
-class TestShell:
 
+class TestShell:
     @pytest.mark.utility
     def test_default_shell(self):
         # creating a Shell object with no argument will result in bash shell
@@ -15,7 +15,6 @@ class TestShell:
         # check shell.path and shebang is full path to bash reported by shutil.which
         assert shell.path == shutil.which("bash")
         assert shell.shebang == f"#!{shutil.which('bash')}"
-
 
     @pytest.mark.utility
     def test_sh_shell(self):
@@ -108,9 +107,8 @@ class TestShell:
         shell.opts = ["-v"]
         assert shell.get()["opts"] == shell.opts
 
-
     @pytest.mark.utility
-    def test_shell_exceptions(self,tmp_path):
+    def test_shell_exceptions(self, tmp_path):
         # Shell will raise an error if program is not found
         with pytest.raises(BuildTestError):
             Shell("xyz")
