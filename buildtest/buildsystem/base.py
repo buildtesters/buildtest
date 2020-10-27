@@ -280,10 +280,14 @@ class BuilderBase:
 
             # bash, sh, zsh environment variable declaration is export KEY=VALUE
             if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
-                [env.append("export %s=%s" % (k, v)) for k, v in pairs.items()]
+                for k, v in pairs.items():
+                    env.append("export %s=%s" % (k, v))
+
             # tcsh, csh,  environment variable declaration is setenv KEY VALUE
             elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
-                [env.append("setenv %s %s" % (k, v)) for k, v in pairs.items()]
+                for k, v in pairs.items():
+                    env.append("setemv %s %s" % (k, v))
+
             else:
                 self.logger.warning(
                     f"{shell} is not supported, skipping environment variables."
