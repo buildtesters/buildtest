@@ -8,14 +8,15 @@ $ buildtest build --tags python -b tutorials/compilers -x tutorials/compilers/ve
 Discovered Buildspecs:
  
 /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
 /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
 
 Excluded Buildspecs:
 
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+[pre_post_build_run] test is skipped because it is not in tag filter list: ['python']
 [hello_f] test is skipped because it is not in tag filter list: ['python']
 [hello_c] test is skipped because it is not in tag filter list: ['python']
 [hello_cplusplus] test is skipped because it is not in tag filter list: ['python']
@@ -23,7 +24,6 @@ Excluded Buildspecs:
 [fc_example] test is skipped because it is not in tag filter list: ['python']
 [cxx_example] test is skipped because it is not in tag filter list: ['python']
 [executable_arguments] test is skipped because it is not in tag filter list: ['python']
-[pre_post_build_run] test is skipped because it is not in tag filter list: ['python']
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -32,10 +32,10 @@ Excluded Buildspecs:
  schemafile                | validstate   | buildspec
 ---------------------------+--------------+--------------------------------------------------------------------------------
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
 
 +----------------------+
 | Stage: Building Test |
@@ -43,8 +43,8 @@ Excluded Buildspecs:
 
  name         | id       | type   | executor     | tags                    | testpath
 --------------+----------+--------+--------------+-------------------------+---------------------------------------------------------------------------------------------------------
- circle_area  | 888d6562 | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
- python_hello | bbc55590 | script | local.bash   | python                  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
+ circle_area  | a6979080 | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
+ python_hello | 2836fd73 | script | local.bash   | python                  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -52,8 +52,8 @@ Excluded Buildspecs:
     
  name         | id       | executor     | status   |   returncode | testpath
 --------------+----------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------
- circle_area  | 888d6562 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
- python_hello | bbc55590 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
+ circle_area  | a6979080 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
+ python_hello | 2836fd73 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

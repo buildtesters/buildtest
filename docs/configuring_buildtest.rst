@@ -76,8 +76,8 @@ in buildspec as ``executor: local.bash``::
           shell: bash
 
 The local executors requires the ``shell`` key which takes the pattern
-``^(/bin/bash|/bin/sh|sh|bash|python).*`` Any buildspec that references ``local.bash``
-executor will submit job using ``bash`` shell.
+``"^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|sh|bash|csh|tcsh|zsh|python).*"``.
+Any buildspec that references ``local.bash`` executor will submit job using ``bash`` shell.
 
 You can pass options to shell which will get passed into each job submission.
 For instance if you want bash login executor you can do the following::
@@ -117,6 +117,10 @@ Let's take a look at Cori buildtest configuration::
         sh:
           description: submit jobs on local machine using sh shell
           shell: sh
+
+        csh:
+          description: submit jobs on local machine using csh shell
+          shell: csh
 
         python:
           description: submit jobs on local machine using python shell
@@ -176,7 +180,7 @@ Let's take a look at Cori buildtest configuration::
 
 In this setting, we define the following executors
 
-- LocalExecutors: ``local.bash``, ``local.sh``, ``local.python``, ``local.e4s``
+- LocalExecutors: ``local.bash``, ``local.sh``, ``local.csh``, ``local.python``, ``local.e4s``
 - SlurmExecutors: ``slurm.debug``, ``slurm.shared``, ``slurm.bigmem``, ``slurm.xfer``, ``slurm.gpu``, ``slurm.premium``, ``slurm.e4s``
 
 
@@ -335,6 +339,10 @@ suitable for your site::
         sh:
           description: submit jobs on local machine using sh shell
           shell: sh
+
+        csh:
+          description: submit jobs on local machine using csh shell
+          shell: csh
 
         python:
           description: submit jobs on local machine using python shell

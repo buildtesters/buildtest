@@ -275,14 +275,15 @@ class BuilderBase:
         env = []
         pairs = self.recipe.get("env", [])
         shell = self.shell.name
-
         # Parse environment depending on expected shell
         if pairs:
 
-            # Handles bash and sh
-            if re.search("(bash|sh)$", shell):
+            # bash, sh, zsh environment variable declaration is export KEY=VALUE
+            if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
                 [env.append("export %s=%s" % (k, v)) for k, v in pairs.items()]
-
+            # tcsh, csh,  environment variable declaration is setenv KEY VALUE
+            elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
+                [env.append("setenv %s %s" % (k, v)) for k, v in pairs.items()]
             else:
                 self.logger.warning(
                     f"{shell} is not supported, skipping environment variables."
@@ -301,19 +302,19 @@ class BuilderBase:
         env = []
         pairs = self.recipe.get("vars", [])
         shell = self.shell.name
-
         # Parse environment depending on expected shell
         if pairs:
 
-            # Handles bash and sh
-            if re.search("(bash|sh)$", shell):
+            # bash, sh, zsh variable declaration is KEY=VALUE
+            if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
                 [env.append("%s=%s" % (k, v)) for k, v in pairs.items()]
-
+            # tcsh, csh variable declaration is set KEY=VALUE
+            elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
+                [env.append("set %s=%s" % (k, v)) for k, v in pairs.items()]
             else:
                 self.logger.warning(
                     f"{shell} is not supported, skipping environment variables."
                 )
-
         return env
 
     def _generate_unique_id(self):

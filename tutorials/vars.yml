@@ -1,12 +1,26 @@
 version: "1.0"
 buildspecs:
-  variables:
+  variables_bash:
     type: script
     executor: local.bash
-    description: Declare shell variables
+    description: Declare shell variables in bash
     tags: [tutorials]
     vars:
       X: 1
       Y: 2
     run: echo "$X+$Y=" $(($X+$Y))
-    
+
+  variables_csh:
+    type: script
+    executor: local.csh
+    shell: "/bin/csh"
+    description: Declare shell variables in csh
+    tags: [tutorials]
+    vars:
+      FILE: "\"/etc/csh.cshrc\""
+    run: |
+      if ( -e $FILE ) then
+        echo "$FILE is found"
+      else
+        echo "$FILE not found"
+      endif 

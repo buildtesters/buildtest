@@ -281,15 +281,9 @@ the ``exp`` field as follows::
 Next if we re-run test we will notice the Status is ``FAIL`` even though we
 have a Return Code of **0**::
 
-
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
-
-     name       | executor   | status   |   returncode | testpath
-    ------------+------------+----------+--------------+------------------------------------------------------------------------------------------
-     vecadd_gnu | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/run_script.sh
-
+    name       | id       | executor   | status   |   returncode | testpath
+    ------------+----------+------------+----------+--------------+------------------------------------------------------------------------------------------------
+     vecadd_gnu | 6a7d6b67 | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
 
 In the next example, we extend the previous buildspec test to run at Cori GPU
 machine using Slurm scheduler. We use the executor ``slurm.gpu`` where our executor

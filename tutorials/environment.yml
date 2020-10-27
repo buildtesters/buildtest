@@ -1,8 +1,8 @@
 version: "1.0"
 buildspecs:
-  environment_variables:
+  bash_env_variables:
     executor: local.bash
-    description: Declare environment variables
+    description: Declare environment variables in default shell (bash)
     type: script
     env:
       FIRST_NAME: avocado
@@ -13,3 +13,23 @@ buildspecs:
       whoami
       echo $USER
       printf "${FIRST_NAME} ${LAST_NAME}\n"
+
+  csh_env_declaration:
+    executor: local.csh
+    type: script
+    description: "csh shell example to declare environment variables"
+    shell: /bin/csh
+    tags: [tutorials]
+    env:
+      SHELL_NAME: "csh"
+    run: echo "This is running $SHELL_NAME"
+
+  tcsh_env_declaration:
+    executor: local.csh
+    type: script
+    description: "tcsh shell example to declare environment variables"
+    shell: /bin/tcsh
+    tags: [tutorials]
+    env:
+      path: "/usr/local/bin:$PATH"
+    run: echo $path

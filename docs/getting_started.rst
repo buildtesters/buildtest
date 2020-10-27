@@ -169,7 +169,7 @@ contain one or more test and in second stage we process each test.
 
 To see a list of available executors in buildspec cache see :ref:`buildspec_executor`.
 
-.. Note:: By default all tests are run in buildspec file, the --executor is filtering by tests. This option
+.. Note:: By default all tests are run in buildspec file, the ``--executor`` is filtering by tests. This option
    behaves similar to tags, the **--executor** is used for discovering buildspecs and filtering
    tests with corresponding executor name.
 

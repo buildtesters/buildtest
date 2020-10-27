@@ -1,13 +1,13 @@
 $ buildtest buildspec find 
-Found 36 buildspecs
-Validated 5/36 buildspecs
-Validated 10/36 buildspecs
-Validated 15/36 buildspecs
-Validated 20/36 buildspecs
-Validated 25/36 buildspecs
-Validated 30/36 buildspecs
-Validated 35/36 buildspecs
-Validated 36/36 buildspecs
+Found 37 buildspecs
+Validated 5/37 buildspecs
+Validated 10/37 buildspecs
+Validated 15/37 buildspecs
+Validated 20/37 buildspecs
+Validated 25/37 buildspecs
+Validated 30/37 buildspecs
+Validated 35/37 buildspecs
+Validated 37/37 buildspecs
 
 Detected 3 invalid buildspecs 
 
@@ -32,11 +32,17 @@ Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/var/buil
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | shell_options                | script   | local.sh     | ['tutorials']             | shell options                                                    |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
-| environment_variables        | script   | local.bash   | ['tutorials']             | Declare environment variables                                    |
+| bash_env_variables           | script   | local.bash   | ['tutorials']             | Declare environment variables in default shell (bash)            |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| csh_env_declaration          | script   | local.csh    | ['tutorials']             | csh shell example to declare environment variables               |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| tcsh_env_declaration         | script   | local.csh    | ['tutorials']             | tcsh shell example to declare environment variables              |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | python_hello                 | script   | local.bash   | python                    | Hello World python                                               |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
-| variables                    | script   | local.bash   | ['tutorials']             | Declare shell variables                                          |
+| variables_bash               | script   | local.bash   | ['tutorials']             | Declare shell variables in bash                                  |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| variables_csh                | script   | local.csh    | ['tutorials']             | Declare shell variables in csh                                   |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | selinux_disable              | script   | local.bash   | ['tutorials']             | Check if SELinux is Disabled                                     |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
@@ -51,6 +57,10 @@ Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/var/buil
 | returncode_list_mismatch     | script   | local.sh     | ['tutorials', 'fail']     | exit 2 failed since it failed to match returncode 1              |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | returncode_int_match         | script   | local.sh     | ['tutorials', 'pass']     | exit 128 matches returncode 128                                  |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| csh_shell                    | script   | local.csh    | ['tutorials']             | csh shell example                                                |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| tcsh_env_declaration         | script   | local.csh    | ['tutorials']             | tsh shell example to declare environment variables               |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | hello_world                  | script   | local.bash   | tutorials                 | hello world example                                              |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
