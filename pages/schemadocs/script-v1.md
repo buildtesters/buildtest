@@ -222,10 +222,10 @@ Specify a shell launcher to use when running jobs. This sets the shebang line in
 **pattern**: the string must match the following regular expression: 
 
 ```regexp
-^(/bin/bash|/bin/sh|sh|bash|python).*
+^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|bash|sh|csh|tcsh|zsh|python).*
 ```
 
-[try pattern](https://regexr.com/?expression=%5E(%2Fbin%2Fbash%7C%2Fbin%2Fsh%7Csh%7Cbash%7Cpython).* "try regular expression with regexr.com")
+[try pattern](https://regexr.com/?expression=%5E(%2Fbin%2Fbash%7C%2Fbin%2Fsh%7C%2Fbin%2Fcsh%7C%2Fbin%2Ftcsh%7C%2Fbin%2Fzsh%7Cbash%7Csh%7Ccsh%7Ctcsh%7Czsh%7Cpython).* "try regular expression with regexr.com")
 
 ## shebang
 
