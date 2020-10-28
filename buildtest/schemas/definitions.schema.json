@@ -72,6 +72,20 @@
         "type": "string"
       }
     },
+    "BB": {
+      "type": "array",
+      "description": "Create burst buffer space, this specifies #BB options in your test.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "DW": {
+      "type": "array",
+      "description": "Specify Data Warp option (#DW) when using burst buffer.",
+      "items": {
+        "type": "string"
+      }
+    },
     "run_only": {
       "type": "object",
       "description": "A set of conditions to specify when running tests. All conditions must pass in order to process test.",

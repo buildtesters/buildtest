@@ -208,6 +208,16 @@ class BuilderBase:
             lines += [f"#SBATCH --output={self.name}.out"]
             lines += [f"#SBATCH --error={self.name}.err"]
 
+        if self.recipe.get("BB"):
+            burst_buffer = self.recipe.get("BB")
+            for arg in burst_buffer:
+                lines += ["#BB " + arg]
+
+        if self.recipe.get("DW"):
+            datawarp = self.recipe.get("DW")
+            for arg in datawarp:
+                lines += ["#DW " + arg]
+
         lines += [
             f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
         ]
