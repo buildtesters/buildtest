@@ -286,7 +286,7 @@ class BuilderBase:
             # tcsh, csh,  environment variable declaration is setenv KEY VALUE
             elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
                 for k, v in pairs.items():
-                    env.append("setemv %s %s" % (k, v))
+                    env.append("setenv %s %s" % (k, v))
 
             else:
                 self.logger.warning(
@@ -312,12 +312,12 @@ class BuilderBase:
             # bash, sh, zsh variable declaration is KEY=VALUE
             if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
                 for k, v in pairs.items():
-                    variables.append("%s=$s" % (k, v))
+                    variables.append("%s=%s" % (k, v))
 
             # tcsh, csh variable declaration is set KEY=VALUE
             elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
                 for k, v in pairs.items():
-                    variables.append("set %s=$s" % (k, v))
+                    variables.append("set %s=%s" % (k, v))
 
             else:
                 self.logger.warning(
