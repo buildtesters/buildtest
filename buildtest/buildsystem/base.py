@@ -314,7 +314,6 @@ class BuilderBase:
                 for k, v in pairs.items():
                     variables.append("%s=$s" % (k, v))
 
-
             # tcsh, csh variable declaration is set KEY=VALUE
             elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
                 for k, v in pairs.items():
