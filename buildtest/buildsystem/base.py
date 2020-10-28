@@ -555,17 +555,6 @@ class CompilerBuilder(BuilderBase):
         # every test starts with shebang line
         # lines = [self.shebang]
         lines = []
-        if self.executor_type == "lsf":
-            script = LSFBatchScript(self.recipe.get("batch"), self.recipe.get("bsub"))
-
-            lines += script.get_headers()
-
-        elif self.executor_type == "slurm":
-
-            script = SlurmBatchScript(
-                self.recipe.get("batch"), self.recipe.get("sbatch")
-            )
-            lines += script.get_headers()
 
         # get environment variables
         lines += self.get_environment()
