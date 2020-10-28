@@ -23,7 +23,7 @@ Discovered Buildspecs:
 
  name                   | id       | type   | executor   | tags          | testpath
 ------------------------+----------+--------+------------+---------------+-------------------------------------------------------------------------------------------------------------
- systemd_default_target | 1770533b | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/0/stage/generate.sh
+ systemd_default_target | 86eee3dc | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/0/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -31,7 +31,7 @@ Discovered Buildspecs:
     
  name                   | id       | executor   | status   |   returncode | testpath
 ------------------------+----------+------------+----------+--------------+-------------------------------------------------------------------------------------------------------------
- systemd_default_target | 1770533b | local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/0/stage/generate.sh
+ systemd_default_target | 86eee3dc | local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/0/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

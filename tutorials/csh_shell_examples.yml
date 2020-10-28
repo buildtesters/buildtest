@@ -1,0 +1,18 @@
+version: "1.0"
+buildspecs:
+  csh_shell:
+    executor: local.csh
+    type: script
+    description: "csh shell example"
+    shell: csh
+    tags: [tutorials]
+    vars:
+      file: "\"/etc/csh.cshrc\""
+      path: "/usr/local/bin:$PATH"
+    run: |
+      if (-e $file) then
+        echo "$file file found"
+      else
+        echo "$file file not found"
+      endif
+      echo $PATH

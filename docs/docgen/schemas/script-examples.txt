@@ -76,12 +76,54 @@ buildspecs:
     shell: "/bin/sh -e"
     run: hostname
 
-
   declare_shell_opts:
     executor: local.sh
     type: script
     description: declare shell name to sh
     shell: "sh -e"
+    run: hostname
+
+  declare_shell_bin_zsh:
+    executor: local.zsh
+    type: script
+    description: declare shell zsh
+    shell: "zsh"
+    run: hostname
+
+  declare_shell_zsh:
+    executor: local.zsh
+    type: script
+    description: declare shell /bin/zsh
+    shell: "zsh"
+    run: hostname
+
+  declare_shell_bin_csh:
+    executor: local.csh
+    type: script
+    description: declare shell /bin/csh
+    shell: "/bin/csh"
+    run: hostname
+
+  declare_shell_csh:
+    executor: local.csh
+    type: script
+    description: declare shell /bin/tcsh
+    shell: "csh"
+    run: hostname
+
+  declare_shell_bin_tcsh:
+    executor: local.csh
+    type: script
+    description: declare shell /bin/tcsh
+    shell: "/bin/tcsh"
+    run: hostname
+
+
+  declare_shell_tcsh:
+    executor: local.csh
+    type: script
+    description: declare shell tcsh
+    shell: "tcsh"
     run: hostname
 
   declare_shebang:
@@ -288,7 +330,7 @@ buildspecs:
   invalid_shell_usr_bin_bash:
     type: script
     executor: local.bash
-    description: invalid shell name, since we only support 'sh', 'bash', 'python' '/bin/bash' /bin/sh
+    description: invalid shell name '/usr/bin/bash'
     shell: /usr/bin/bash
     run: hostname
 

@@ -44,7 +44,7 @@ $ buildtest schema -n script-v1.0.schema.json --json
     "shell": {
       "type": "string",
       "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed",
-      "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*"
+      "pattern": "^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|bash|sh|csh|tcsh|zsh|python).*"
     },
     "shebang": {
       "type": "string",

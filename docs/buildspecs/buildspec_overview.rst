@@ -199,7 +199,7 @@ option using the ``shell`` field. The shell field is defined in schema as follow
     "shell": {
           "type": "string",
           "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed",
-          "pattern": "^(/bin/bash|/bin/sh|sh|bash|python).*"
+          "pattern": "^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|bash|sh|csh|tcsh|zsh|python).*"
         },
 
 The shell pattern is a regular expression where one can specify a shell name along
@@ -229,6 +229,14 @@ shell options into the shebang line. The generated test for this script is the f
     hostname
     source /Users/siddiq90/Documents/buildtest/var/executors/local.sh/after_script.sh
 
+
+If you prefer to use `csh` or `tcsh` for writing scripts just set ``shell: csh`` or
+``shell: tcsh``, note you will need to match this with appropriate executor. For now
+use ``executor: local.csh`` to run your csh/tcsh scripts. In this example below
+we define a script using csh, take note of ``run`` section we can write csh style.
+
+.. program-output:: cat tutorials/csh_shell_examples.yml
+
 Customize Shebang
 -----------------
 
@@ -256,6 +264,36 @@ is passed into the script::
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
     shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+
+Setting environment variables
+------------------------------
+
+You can define environment variables using the ``env`` property, this is compatible
+with shells: ``bash``, ``sh``, ``zsh``, ``csh`` and ``tcsh``. It does not work with
+``shell: python``. In example below we declare three tests using environment
+variable with default shell (bash), csh, and tcsh
+
+.. program-output:: cat tutorials/environment.yml
+
+Environment variables are defined using ``export`` in bash, sh, zsh while csh and
+tcsh use ``setenv``. Shown below is a generated test script for csh test::
+
+    #!/bin/csh
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.csh/before_script.sh
+    setenv SHELL_NAME csh
+    echo "This is running $SHELL_NAME"
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.csh/after_script.sh
+
+Setting variables
+------------------
+
+Variables can be defined using ``vars`` property, this is compatible with all shells
+except for ``python``. The variables are defined slightly different in csh,tcsh as pose
+to bash, sh, and zsh. In example below we define tests with bash and csh.
+
+.. Note:: You can use the escape character ``\`` to set special character, for instance you can declare a variable in string with quotes by using ``\"``.
+
+.. program-output:: cat tutorials/vars.yml
 
 
 Python Shell

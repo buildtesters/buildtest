@@ -23,9 +23,14 @@ def test_build_executor(tmp_path):
 
     # Load BuildExecutor
     be = BuildExecutor(example)
-    # We should have a total of 3 executors (local.bash, local.sh, local.python)
-    assert len(be.executors) == 3
-    assert list(be.executors.keys()) == ["local.bash", "local.sh", "local.python"]
+    # We should have a total of 4 executors (local.bash, local.sh, local.csh, local.python)
+    assert len(be.executors) == 4
+    assert list(be.executors.keys()) == [
+        "local.bash",
+        "local.sh",
+        "local.csh",
+        "local.python",
+    ]
 
     # Each should have
     for name, executor in be.executors.items():

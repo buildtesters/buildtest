@@ -96,7 +96,7 @@ buildspecs:
   invalid_shell_usr_bin_bash:
     type: script
     executor: local.bash
-    description: invalid shell name, since we only support 'sh', 'bash', 'python' '/bin/bash' /bin/sh
+    description: invalid shell name '/usr/bin/bash'
     shell: /usr/bin/bash
     run: hostname
 

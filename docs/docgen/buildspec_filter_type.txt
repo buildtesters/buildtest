@@ -16,11 +16,17 @@ $ buildtest buildspec find --filter type=script
 +------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
 | shell_options                | script | local.sh     | ['tutorials']             | shell options                                                    |
 +------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
-| environment_variables        | script | local.bash   | ['tutorials']             | Declare environment variables                                    |
+| bash_env_variables           | script | local.bash   | ['tutorials']             | Declare environment variables in default shell (bash)            |
++------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
+| csh_env_declaration          | script | local.csh    | ['tutorials']             | csh shell example to declare environment variables               |
++------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
+| tcsh_env_declaration         | script | local.csh    | ['tutorials']             | tcsh shell example to declare environment variables              |
 +------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
 | python_hello                 | script | local.bash   | python                    | Hello World python                                               |
 +------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
-| variables                    | script | local.bash   | ['tutorials']             | Declare shell variables                                          |
+| variables_bash               | script | local.bash   | ['tutorials']             | Declare shell variables in bash                                  |
++------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
+| variables_csh                | script | local.csh    | ['tutorials']             | Declare shell variables in csh                                   |
 +------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
 | selinux_disable              | script | local.bash   | ['tutorials']             | Check if SELinux is Disabled                                     |
 +------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
@@ -35,6 +41,10 @@ $ buildtest buildspec find --filter type=script
 | returncode_list_mismatch     | script | local.sh     | ['tutorials', 'fail']     | exit 2 failed since it failed to match returncode 1              |
 +------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
 | returncode_int_match         | script | local.sh     | ['tutorials', 'pass']     | exit 128 matches returncode 128                                  |
++------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
+| csh_shell                    | script | local.csh    | ['tutorials']             | csh shell example                                                |
++------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
+| tcsh_env_declaration         | script | local.csh    | ['tutorials']             | tsh shell example to declare environment variables               |
 +------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+
 | hello_world                  | script | local.bash   | tutorials                 | hello world example                                              |
 +------------------------------+--------+--------------+---------------------------+------------------------------------------------------------------+

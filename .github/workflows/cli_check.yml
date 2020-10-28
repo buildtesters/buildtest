@@ -27,6 +27,7 @@ jobs:
    
     - name: Buildtest Checks
       run: |
+        sudo apt-get install -y tcsh
         git --version
         pip install -U pip
         git fetch -u origin devel:devel

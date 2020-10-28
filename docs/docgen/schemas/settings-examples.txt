@@ -18,6 +18,18 @@ executors:
       description: submit jobs on local machine using sh shell
       shell: sh
 
+    csh:
+      description: submit jobs on local machine using csh shell
+      shell: csh -x
+
+    tcsh:
+      description: submit jobs on local machine using tcsh shell
+      shell: /bin/tcsh
+
+    zsh:
+      description: submit jobs on local machine using zsh shell
+      shell: /bin/zsh
+
     python:
       description: submit jobs on local machine using python shell
       shell: python
@@ -32,6 +44,7 @@ executors:
     pollinterval: 20
     launcher: sbatch
     max_pend_time: 30
+    account: admin
   slurm:
     normal:
       options: ["-C haswell"]
@@ -76,6 +89,7 @@ executors:
     batch:
       description: "LSF Executor name 'batch' that submits jobs to 'batch' queue"
       queue: batch
+      account: developer
       options: ["-W 20"]
       before_script: |
         time
@@ -87,5 +101,6 @@ executors:
       description: "LSF Executor name 'test' that submits jobs to 'test' queue"
       launcher: bsub
       queue: test
+      account: qa
       options: ["-W 20"]
 
