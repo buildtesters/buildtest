@@ -459,3 +459,226 @@ it won't be present in the report (``buildtest report``).
     Executed 1 tests
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
+
+Cray Burst Buffer & Data Warp
+-------------------------------
+
+For Cray systems, you may want to stage-in or stage-out into your burst buffer this
+can be configured using the ``#DW`` directive. For a list of data warp examples see
+section on `DataWarp Job Script Commands <https://pubs.cray.com/bundle/XC_Series_DataWarp_User_Guide_CLE60UP01_S-2558_include_only_UP01/page/DataWarp_Job_Script_Commands.html>`_
+
+In buildtest we support properties ``BB`` and ``DW`` which is a list of job directives
+that get inserted as **#BW** and **#DW** into the test script. To demonstrate let's start
+off with an example where we create a persistent burst buffer named ``databuffer`` of size
+10GB striped. We access the burst buffer using the `DW` directive. Finally we
+cd into the databuffer and write a 5GB random file.
+
+.. Note:: BB and DW directives are generated after scheduler directives. The ``#BB``
+   comes before ``#DW``. buildtest will automatically add the directive **#BB**
+   and **#DW** when using properties BB and DW
+
+::
+
+    version: "1.0"
+    buildspecs:
+      create_burst_buffer:
+        type: script
+        executor: slurm.debug
+        batch:
+          nodecount: "1"
+          timelimit: "5"
+          cpucount: "1"
+        sbatch: ["-C knl"]
+        description: Create a burst buffer
+        tags: [jobs]
+        BB:
+          - create_persistent name=databuffer capacity=10GB access_mode=striped type=scratch
+        DW:
+          - persistentdw name=databuffer
+        run: |
+          cd $DW_PERSISTENT_STRIPED_databuffer
+          pwd
+          dd if=/dev/urandom of=random.txt bs=1G count=5 iflags=fullblock
+          ls -lh $DW_PERSISTENT_STRIPED_databuffer/
+
+Next we run this test and once its complete we will inspect the test using
+``buildtest inspect``. Take note of the generated script and output file, we can see
+there is a 5GB ``random.txt`` file that was generated in the burst buffer::
+
+    (buildtest) siddiq90@cori06:~/buildtest-cori/jobs> buildtest inspect 26b1459c
+    {
+      "id": "26b1459c",
+      "full_id": "26b1459c-2a25-4f4f-8461-d96eec58d254",
+      "testroot": "/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8",
+      "testpath": "/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/generate.sh",
+      "command": "sbatch --parsable -q debug --clusters=cori --account=nstaff /global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/generate.sh",
+      "outfile": "/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/create_burst_buffer.out",
+      "errfile": "/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/create_burst_buffer.err",
+      "schemafile": "script-v1.0.schema.json",
+      "executor": "slurm.debug",
+      "tags": "jobs",
+      "starttime": "2020-10-29T13:06:31",
+      "endtime": "2020-10-29T13:08:09",
+      "runtime": "0",
+      "state": "PASS",
+      "returncode": 0,
+      "job": {
+        "Account": "nstaff",
+        "AllocNodes": "1",
+        "AllocTRES": "billing=272,cpu=272,energy=11972,mem=87G,node=1",
+        "ConsumedEnergyRaw": "11972",
+        "CPUTimeRaw": "26656",
+        "End": "2020-10-29T13:08:09",
+        "ExitCode": "0:0",
+        "JobID": "35693664",
+        "JobName": "create_burst_buffer",
+        "NCPUS": "272",
+        "NNodes": "1",
+        "QOS": "debug_knl",
+        "ReqGRES": "craynetwork:4",
+        "ReqMem": "87Gn",
+        "ReqNodes": "1",
+        "ReqTRES": "bb/datawarp=20624M,billing=1,cpu=1,node=1",
+        "Start": "2020-10-29T13:06:31",
+        "State": "COMPLETED",
+        "Submit": "2020-10-29T13:06:18",
+        "UID": "92503",
+        "User": "siddiq90",
+        "WorkDir": "/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage\n",
+        "scontrol": {
+          "command": "scontrol show job 35693664 --clusters=cori",
+          "output": "JobId=35693664 JobName=create_burst_buffer\n   UserId=siddiq90(92503) GroupId=siddiq90(92503) MCS_label=N/A\n   Priority=73380 Nice=0 Account=nstaff QOS=debug_knl\n   JobState=COMPLETED Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:01:38 TimeLimit=00:05:00 TimeMin=N/A\n   SubmitTime=2020-10-29T13:06:18 EligibleTime=2020-10-29T13:06:18\n   AccrueTime=2020-10-29T13:06:21\n   StartTime=2020-10-29T13:06:31 EndTime=2020-10-29T13:08:09 Deadline=N/A\n   PreemptEligibleTime=2020-10-29T13:06:31 PreemptTime=None\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2020-10-29T13:06:31\n   Partition=debug_knl AllocNode:Sid=cori06:62431\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=nid03546\n   BatchHost=nid03546\n   NumNodes=1 NumCPUs=272 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   TRES=cpu=272,mem=87G,energy=11972,node=1,billing=272\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryNode=87G MinTmpDiskNode=0\n   Features=knl&quad&cache DelayBoot=2-00:00:00\n   OverSubscribe=NO Contiguous=0 Licenses=(null) Network=(null)\n   Command=/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/generate.sh\n   WorkDir=/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage\n   AdminComment={\"stdinPath\":\"\\/dev\\/null\",\"packJobId\":0,\"submitTime\":1604001978,\"burstBuffer\":\"#BB create_persistent name=databuffer capacity=10GB access_mode=striped type=scratch\\n#DW persistentdw name=databuffer\",\"cluster\":\"cori\",\"resizing\":0,\"partition\":\"debug_knl\",\"jobExitCode\":0,\"uid\":92503,\"nodes\":\"nid03546\",\"priority\":73380,\"name\":\"create_burst_buffer\",\"endTime\":1604002089,\"jobId\":35693664,\"stdoutPath\":\"\\/global\\/u1\\/s\\/siddiq90\\/buildtest\\/var\\/tests\\/slurm.debug\\/create_buffer\\/create_burst_buffer\\/8\\/stage\\/create_burst_buffer.out\",\"stderrPath\":\"\\/global\\/u1\\/s\\/siddiq90\\/buildtest\\/var\\/tests\\/slurm.debug\\/create_buffer\\/create_burst_buffer\\/8\\/stage\\/create_burst_buffer.err\",\"restartCnt\":0,\"allocNodes\":1,\"startTime\":1604001991,\"jobAccount\":\"nstaff\",\"batchHost\":\"nid03546\",\"features\":\"knl&quad&cache\",\"argv\":[\"\\/global\\/u1\\/s\\/siddiq90\\/buildtest\\/var\\/tests\\/slurm.debug\\/create_buffer\\/create_burst_buffer\\/8\\/stage\\/generate.sh\"],\"gresRequest\":\"craynetwork:4\",\"arrayJobId\":0,\"qos\":\"debug_knl\",\"reboot\":0,\"workingDirectory\":\"\\/global\\/u1\\/s\\/siddiq90\\/buildtest\\/var\\/tests\\/slurm.debug\\/create_buffer\\/create_burst_buffer\\/8\\/stage\",\"timeLimit\":5,\"tresRequest\":\"1=272,2=89088,3=18446744073709551614,4=1,5=272\",\"allocCpus\":272,\"jobDerivedExitCode\":0,\"arrayTaskId\":4294967294,\"gresUsed\":\"craynetwork:4\",\"packJobOffset\":0} \n   StdErr=/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/create_burst_buffer.err\n   StdIn=/dev/null\n   StdOut=/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/create_burst_buffer.out\n   BurstBuffer=#BB create_persistent name=databuffer capacity=10GB access_mode=striped type=scratch\n#DW persistentdw name=databuffer\n   Power=\n   TresPerNode=craynetwork:1\n   MailUser=(null) MailType=NONE\n"
+        }
+      }
+    }
+
+
+
+    Output File
+    ______________________________
+    /var/opt/cray/dws/mounts/batch/databuffer_35693664_striped_scratch
+    total 5.0G
+    -rw-rw---- 1 siddiq90 siddiq90 5.0G Oct 29 13:06 random.txt
+
+
+
+
+    Error File
+    ______________________________
+    5+0 records in
+    5+0 records out
+    5368709120 bytes (5.4 GB, 5.0 GiB) copied, 90.6671 s, 59.2 MB/s
+
+
+
+
+    Test Content
+    ______________________________
+    #!/bin/bash
+    #SBATCH -C knl
+    #SBATCH --nodes=1
+    #SBATCH --time=5
+    #SBATCH --ntasks=1
+    #SBATCH --job-name=create_burst_buffer
+    #SBATCH --output=create_burst_buffer.out
+    #SBATCH --error=create_burst_buffer.err
+    #BB create_persistent name=databuffer capacity=10GB access_mode=striped type=scratch
+    #DW persistentdw name=databuffer
+    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/before_script.sh
+    cd $DW_PERSISTENT_STRIPED_databuffer
+    pwd
+    dd if=/dev/urandom of=random.txt bs=1G count=5 iflag=fullblock
+    ls -lh $DW_PERSISTENT_STRIPED_databuffer/
+
+    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/after_script.sh
+
+
+
+    buildspec:  /global/u1/s/siddiq90/buildtest-cori/jobs/create_buffer.yml
+    ______________________________
+    version: "1.0"
+    buildspecs:
+      create_burst_buffer:
+        type: script
+        executor: slurm.debug
+        batch:
+          nodecount: "1"
+          timelimit: "5"
+          cpucount: "1"
+        sbatch: ["-C knl"]
+        description: Create a burst buffer
+        tags: [jobs]
+        BB:
+          - create_persistent name=databuffer capacity=10GB access_mode=striped type=scratch
+        DW:
+          - persistentdw name=databuffer
+        run: |
+          cd $DW_PERSISTENT_STRIPED_databuffer
+          pwd
+          dd if=/dev/urandom of=random.txt bs=1G count=5 iflag=fullblock
+          ls -lh $DW_PERSISTENT_STRIPED_databuffer/
+
+
+
+We can confirm their is an active burst buffer by running the following::
+
+    $ scontrol show burst | grep databuffer
+        Name=databuffer CreateTime=2020-10-29T13:06:21 Pool=wlm_pool Size=20624MiB State=allocated UserID=siddiq90(92503)
+
+A persistent burst buffer is accessible across jobs, for now we will delete the burst
+buffer with this test::
+
+    version: "1.0"
+    buildspecs:
+      delete_burst_buffer:
+        type: script
+        executor: slurm.debug
+        batch:
+          nodecount: "1"
+          timelimit: "5"
+          cpucount: "1"
+        sbatch: ["-C knl"]
+        description: Delete a burst buffer
+        tags: [jobs]
+        BB:
+          - destroy_persistent name=databuffer
+        run: |
+          cd $DW_PERSISTENT_STRIPED_databuffer/
+          pwd
+          ls -l
+
+The directive ``#BB destroy_persistent name=databuffer`` is responsible for deleting
+the burst buffer, once this job we shouldn't see any burst buffer which can be
+confirmed using::
+
+    $ scontrol show burst | grep databuffer | wc -l
+    0
+
+
+In next example, we will pre-create a 1GB file and stage in data using ``#DW stage_in``
+option. First we create a 1GB random file in $SCRATCH and move this into burst buffer
+by specifying the `source` and `destination` field.
+
+::
+
+    version: "1.0"
+    buildspecs:
+      stage_in_out_burst_buffer:
+        type: script
+        executor: slurm.debug
+        tags: [datawarp, jobs]
+        description: Stage in data to Burst Buffer
+        batch:
+          timelimit: "10"
+          nodecount: "1"
+          cpucount: "4"
+        sbatch: ["-C knl"]
+        DW:
+          - jobdw capacity=1GB access_mode=striped type=scratch
+          - stage_in source=$SCRATCH/stage_in.txt destination=$DW_JOB_STRIPED/stage_in.txt type=file
+        run: |
+          cd $SCRATCH
+          dd if=/dev/urandom of=stage_in.txt bs=1G count=1 iflag=fullblock
+          ls -lh ${DW_JOB_STRIPED}/stage_in.txt
+          rm  $SCRATCH/stage_in.txt
+
