@@ -66,6 +66,8 @@
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-sbatch.md "This field is used for specifying #SBATCH options in test script") – `definitions.schema.json#/definitions/sbatch`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-bsub.md "This field is used for specifying #BSUB options in test script") – `definitions.schema.json#/definitions/bsub`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-bb.md "Create burst buffer space, this specifies #BB options in your test") – `definitions.schema.json#/definitions/BB`
+-   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `definitions.schema.json#/definitions/DW`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
 -   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
@@ -83,6 +85,8 @@
 -   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-module.md "A list of modules to load into test script") – `compiler-v1.0.schema.json#/properties/module`
 -   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/properties/sbatch`
 -   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/properties/bsub`
+-   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/properties/BB`
+-   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/properties/DW`
 -   [Untitled array in global schema](./global-properties-maintainers.md "One or more maintainers or aliases") – `global.schema.json#/properties/maintainers`
 -   [Untitled array in python schema version 1.0](./python-v1-properties-pyver.md) – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/pyver`
 -   [Untitled array in python schema version 1.0](./python-v1-properties-package-properties-pypi.md) – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/package/properties/pypi`
@@ -90,6 +94,8 @@
 -   [Untitled array in python schema version 1.0](./python-v1-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/sbatch`
 -   [Untitled array in script schema version 1.0](./script-v1-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `script-v1.0.schema.json#/properties/sbatch`
 -   [Untitled array in script schema version 1.0](./script-v1-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `script-v1.0.schema.json#/properties/bsub`
+-   [Untitled array in script schema version 1.0](./script-v1-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `script-v1.0.schema.json#/properties/BB`
+-   [Untitled array in script schema version 1.0](./script-v1-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `script-v1.0.schema.json#/properties/DW`
 
 ## Version Note
 

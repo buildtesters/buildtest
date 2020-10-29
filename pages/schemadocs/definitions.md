@@ -138,6 +138,28 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | ---- | -------- | -------- | :--------- |
 
+## Definitions group BB
+
+Reference this group by using
+
+```json
+{"$ref":"definitions.schema.json#/definitions/BB"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group DW
+
+Reference this group by using
+
+```json
+{"$ref":"definitions.schema.json#/definitions/DW"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
 ## Definitions group run_only
 
 Reference this group by using

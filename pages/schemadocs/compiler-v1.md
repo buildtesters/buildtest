@@ -26,6 +26,8 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-sbatch.md "compiler-v1.0.schema.json#/properties/sbatch")          |
 | [bsub](#bsub)               | `array`   | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-bsub.md "compiler-v1.0.schema.json#/properties/bsub")              |
 | [batch](#batch)             | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/properties/batch")            |
+| [BB](#bb)                   | `array`   | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-bb.md "compiler-v1.0.schema.json#/properties/BB")                  |
+| [DW](#dw)                   | `array`   | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-dw.md "compiler-v1.0.schema.json#/properties/DW")                  |
 | [env](#env)                 | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/env")                |
 | [vars](#vars)               | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/vars")               |
 | [run_only](#run_only)       | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-run_only.md "compiler-v1.0.schema.json#/properties/run_only")      |
@@ -164,6 +166,38 @@ The `batch` field is used to specify scheduler agnostic directives that are tran
 ### batch Type
 
 `object` ([Details](definitions-definitions-batch.md))
+
+## BB
+
+Create burst buffer space, this specifies #BB options in your test.
+
+
+`BB`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-bb.md "compiler-v1.0.schema.json#/properties/BB")
+
+### BB Type
+
+`string[]`
+
+## DW
+
+Specify Data Warp option (#DW) when using burst buffer.
+
+
+`DW`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-dw.md "compiler-v1.0.schema.json#/properties/DW")
+
+### DW Type
+
+`string[]`
 
 ## env
 

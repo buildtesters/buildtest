@@ -24,6 +24,8 @@ The script schema is of `type: script` in sub-schema which is used for running s
 | [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [script schema version 1.0](definitions-definitions-sbatch.md "script-v1.0.schema.json#/properties/sbatch")           |
 | [bsub](#bsub)               | `array`   | Optional | cannot be null | [script schema version 1.0](definitions-definitions-bsub.md "script-v1.0.schema.json#/properties/bsub")               |
 | [batch](#batch)             | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-batch.md "script-v1.0.schema.json#/properties/batch")             |
+| [BB](#bb)                   | `array`   | Optional | cannot be null | [script schema version 1.0](definitions-definitions-bb.md "script-v1.0.schema.json#/properties/BB")                   |
+| [DW](#dw)                   | `array`   | Optional | cannot be null | [script schema version 1.0](definitions-definitions-dw.md "script-v1.0.schema.json#/properties/DW")                   |
 | [env](#env)                 | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-env.md "script-v1.0.schema.json#/properties/env")                 |
 | [vars](#vars)               | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-env.md "script-v1.0.schema.json#/properties/vars")                |
 | [executor](#executor)       | `string`  | Required | cannot be null | [script schema version 1.0](definitions-definitions-executor.md "script-v1.0.schema.json#/properties/executor")       |
@@ -128,6 +130,38 @@ The `batch` field is used to specify scheduler agnostic directives that are tran
 ### batch Type
 
 `object` ([Details](definitions-definitions-batch.md))
+
+## BB
+
+Create burst buffer space, this specifies #BB options in your test.
+
+
+`BB`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [script schema version 1.0](definitions-definitions-bb.md "script-v1.0.schema.json#/properties/BB")
+
+### BB Type
+
+`string[]`
+
+## DW
+
+Specify Data Warp option (#DW) when using burst buffer.
+
+
+`DW`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [script schema version 1.0](definitions-definitions-dw.md "script-v1.0.schema.json#/properties/DW")
+
+### DW Type
+
+`string[]`
 
 ## env
 
