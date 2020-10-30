@@ -16,6 +16,7 @@ from buildtest.menu.config import (
     func_config_summary,
     func_config_validate,
     func_config_view,
+    func_config_compiler,
 )
 
 from buildtest.menu.report import func_report
@@ -268,10 +269,14 @@ class BuildTestParser:
         parser_config_summary = subparsers_config.add_parser(
             "summary", help="Provide summary of buildtest settings."
         )
+        parser_config_compiler = subparsers_config.add_parser(
+            "compilers", help="List compiler details"
+        )
 
         parser_config_view.set_defaults(func=func_config_view)
         parser_config_validate.set_defaults(func=func_config_validate)
         parser_config_summary.set_defaults(func=func_config_summary)
+        parser_config_compiler.set_defaults(func=func_config_compiler)
 
     def report_menu(self):
         """This method implements the ``buildtest report`` command options"""
