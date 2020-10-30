@@ -22,6 +22,7 @@ https://buildtesters.github.io/buildtest/schemas/settings.schema.json
 | [editor](#editor)                             | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-editor.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/editor")                   |
 | [buildspec_roots](#buildspec_roots)           | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-properties-buildspec_roots.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/buildspec_roots") |
 | [testdir](#testdir)                           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-testdir.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/testdir")                 |
+| [compilers](#compilers)                       | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers")             |
 | [executors](#executors)                       | `object`      | Required | cannot be null | [buildtest configuration schema](settings-properties-executors.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors")             |
 | [additionalProperties](#additionalproperties) | Not specified | Optional | cannot be null | [Untitled schema](undefined.md "undefined#undefined")                                                                                                                             |
 
@@ -92,6 +93,22 @@ Specify full path to test directory where buildtest will write tests.
 
 `string`
 
+## compilers
+
+Specify compiler configuration with respect to modules 
+
+
+`compilers`
+
+-   is optional
+-   Type: `object` ([Details](settings-properties-compilers.md))
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-properties-compilers.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers")
+
+### compilers Type
+
+`object` ([Details](settings-properties-compilers.md))
+
 ## executors
 
 The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be `local`, `lsf`, `slurm`, `ssh`. The executors are referenced in buildspec using `executor` field.
@@ -124,6 +141,89 @@ no description
 unknown
 
 # buildtest configuration schema Definitions
+
+## Definitions group compiler_section
+
+Reference this group by using
+
+```json
+{"$ref":"https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section"}
+```
+
+| Property            | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                  |
+| :------------------ | -------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cc")           |
+| [cxx](#cxx)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cxx")         |
+| [fc](#fc)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-fc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/fc")           |
+| [modules](#modules) | `array`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-modules.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/modules") |
+
+### cc
+
+
+
+
+`cc`
+
+-   is required
+-   Type: `string`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-compiler_section-properties-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cc")
+
+#### cc Type
+
+`string`
+
+### cxx
+
+
+
+
+`cxx`
+
+-   is required
+-   Type: `string`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-compiler_section-properties-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cxx")
+
+#### cxx Type
+
+`string`
+
+### fc
+
+
+
+
+`fc`
+
+-   is required
+-   Type: `string`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-compiler_section-properties-fc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/fc")
+
+#### fc Type
+
+`string`
+
+### modules
+
+
+
+
+`modules`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-compiler_section-properties-modules.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/modules")
+
+#### modules Type
+
+`string[]`
+
+#### modules Constraints
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## Definitions group modules
 
