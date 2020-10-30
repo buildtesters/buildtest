@@ -16,6 +16,17 @@ from buildtest.defaults import supported_type_schemas, supported_schemas
 from buildtest.system import BuildTestSystem
 
 
+def func_config_compiler(args=None):
+    """This method implements ``buildtest config compiler`` which shows compiler
+       section from buildtest configuration in JSON format
+    """
+
+    settings_file = resolve_settings_file()
+    configuration = load_settings(settings_file)
+    compilers = configuration.get("compilers") or {}
+    print(json.dumps(compilers, indent=2))
+
+
 def func_config_validate(args=None):
     """This method implements ``buildtest config validate`` which attempts to
     validate buildtest settings with schema. If it not validate an exception

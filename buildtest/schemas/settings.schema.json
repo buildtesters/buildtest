@@ -21,6 +21,29 @@
         "type": "string",
         "description": "Specify full path to test directory where buildtest will write tests."
       },
+      "compilers": {
+        "type": "object",
+        "description": "Specify compiler configuration with respect to modules ",
+        "additionalProperties": false,
+        "properties": {
+          "gcc": {
+            "type": "object",
+            "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
+            },
+          "intel": {
+            "type": "object",
+            "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
+          },
+          "cray": {
+            "type": "object",
+            "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
+          },
+          "pgi": {
+            "type": "object",
+            "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
+          }
+        }
+      },
       "executors": {
           "type": "object",
           "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``ssh``. The executors are referenced in buildspec using ``executor`` field.",
@@ -67,6 +90,23 @@
       "additionalProperties": false
   },
   "definitions": {
+      "compiler_section": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cc", "cxx", "fc"],
+        "properties": {
+          "cc": { "type": "string" },
+          "cxx": { "type": "string" },
+          "fc": { "type": "string" },
+          "modules": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "modules": {
         "type": "object",
         "additionalProperties": false,
