@@ -21,26 +21,58 @@
         "type": "string",
         "description": "Specify full path to test directory where buildtest will write tests."
       },
+      "modules_tool": {
+        "type": "string",
+        "description": "Specify modules tool used for interacting with ``module`` command. ",
+        "enum": ["environment-modules", "lmod"]
+      },
       "compilers": {
         "type": "object",
-        "description": "Specify compiler configuration with respect to modules ",
+        "description": "Declare compiler section for defining system compilers that can be referenced in buildspec.",
         "additionalProperties": false,
         "properties": {
+          "find": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Find compilers based on module names",
+            "properties": {
+              "gcc": { "$ref": "#/definitions/unique_string_array" },
+              "intel": { "$ref": "#/definitions/unique_string_array" },
+              "cray": { "$ref": "#/definitions/unique_string_array" },
+              "clang": { "$ref": "#/definitions/unique_string_array" },
+              "cuda": {"$ref":  "#definitions/unique_string_array" },
+              "pgi": { "$ref": "#/definitions/unique_string_array" }
+            }
+          },
           "gcc": {
+            "description": "Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler. The GNU compiler wrapper are ``gcc``, ``g++`` and ``gfortran``. ",
             "type": "object",
             "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
             },
           "intel": {
+            "description": "Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler. The Intel compiler wrapper are ``icc``, ``icpc`` and ``ifort``. ",
             "type": "object",
             "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
           },
           "cray": {
+            "description": "Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler. The Cray compiler wrapper are ``cc``, ``CC`` and ``ftn``.",
             "type": "object",
             "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
           },
           "pgi": {
+            "description": "Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler. The PGI compiler wrapper are ``pgcc``, ``pgc++`` and ``pgfortran``.",
             "type": "object",
             "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
+          },
+          "clang": {
+            "description": "Declaration of one or more Clang compilers where we define C, C++ compiler. The Clang compiler wrapper are ``clang``, ``clang++``.",
+            "type": "object",
+            "patternProperties": { "^.*$": { "$ref": "#/definitions/clang" } }
+          },
+          "cuda": {
+            "description": "Declaration of one or more Cuda compilers where we define C compiler. The Cuda compiler wrapper is ``nvcc``. ",
+            "type": "object",
+            "patternProperties": { "^.*$": { "$ref": "#/definitions/cuda" } }
           }
         }
       },
@@ -90,35 +122,61 @@
       "additionalProperties": false
   },
   "definitions": {
+      "cc": {
+        "description": "Specify path to C compiler wrapper. You may specify a compiler wrapper such as ``gcc`` assuming its in $PATH or you can use ``modules`` property to resolve path to compiler wrapper.",
+        "type": "string"
+      },
+      "cxx": {
+        "type": "string",
+        "description": "Specify path to C++ compiler wrapper. You may specify a compiler wrapper such as ``g++`` assuming its in $PATH or you can use ``modules`` property to resolve path to compiler wrapper."
+      },
+      "fc": {
+        "type": "string",
+        "description": "Specify path to Fortran compiler wrapper. You may specify a compiler wrapper such as ``gfortran`` assuming its in $PATH or you can use ``modules`` property to resolve path to compiler wrapper."
+      },
+      "clang": {
+        "description": "The clang compiler section consist of ``cc`` and ``cxx`` wrapper to specify C and C++ wrapper which are generally ``clang`` and ``clang++``",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cc", "cxx" ],
+        "properties": {
+          "cc": {"$ref":  "#/definitions/cc" },
+          "cxx": {"$ref":  "#/definitions/cxx" },
+          "modules": { "$ref": "#/definitions/modules" }
+        }
+      },
+      "cuda": {
+        "description": "The cuda compiler section consist of ``cc``  where you generally specify path to ``nvcc``",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cc"],
+        "properties": {
+          "cc": {"$ref":  "#/definitions/cc" },
+          "modules": { "$ref": "#/definitions/modules" }
+        }
+      },
       "compiler_section": {
+        "description": "A compiler section is composed of ``cc``, ``cxx`` and ``fc`` wrapper these are required when you need to specify compiler wrapper.",
         "type": "object",
         "additionalProperties": false,
         "required": ["cc", "cxx", "fc"],
         "properties": {
-          "cc": { "type": "string" },
-          "cxx": { "type": "string" },
-          "fc": { "type": "string" },
-          "modules": {
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-              "type": "string"
-            }
-          }
+          "cc": {"$ref":  "#/definitions/cc" },
+          "cxx": {"$ref":  "#/definitions/cxx" },
+          "fc": {"$ref":  "#/definitions/fc" },
+          "modules": { "$ref": "#/definitions/modules" }
+        }
+      },
+      "unique_string_array": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string"
         }
       },
       "modules": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "purge": { "type": "boolean" },
-          "load": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
+        "description": "Specify list of modules to load when resolving compiler. The modules will be inserted into test script when using the compiler",
+        "$ref": "#/definitions/unique_string_array"
       },
       "script": {
         "type": "array",
