@@ -1,7 +1,7 @@
-# Untitled array in buildtest configuration schema Schema
+# Untitled undefined type in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/modules
+https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cuda/properties
 ```
 
 
@@ -11,10 +11,6 @@ https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitio
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
-## modules Type
+## properties Type
 
-`string[]`
-
-## modules Constraints
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
+unknown

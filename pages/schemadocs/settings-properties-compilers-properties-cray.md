@@ -4,7 +4,7 @@
 https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/cray
 ```
 
-
+Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler. The Cray compiler wrapper are `cc`, `CC` and `ftn`.
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
@@ -23,7 +23,7 @@ https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/propertie
 
 ## Pattern: `^.*$`
 
-
+A compiler section is composed of `cc`, `cxx` and `fc` wrapper these are required when you need to specify compiler wrapper.
 
 
 `^.*$`

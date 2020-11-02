@@ -22,6 +22,7 @@ https://buildtesters.github.io/buildtest/schemas/settings.schema.json
 | [editor](#editor)                             | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-editor.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/editor")                   |
 | [buildspec_roots](#buildspec_roots)           | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-properties-buildspec_roots.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/buildspec_roots") |
 | [testdir](#testdir)                           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-testdir.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/testdir")                 |
+| [modules_tool](#modules_tool)                 | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-modules_tool.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/modules_tool")       |
 | [compilers](#compilers)                       | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers")             |
 | [executors](#executors)                       | `object`      | Required | cannot be null | [buildtest configuration schema](settings-properties-executors.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors")             |
 | [additionalProperties](#additionalproperties) | Not specified | Optional | cannot be null | [Untitled schema](undefined.md "undefined#undefined")                                                                                                                             |
@@ -93,9 +94,34 @@ Specify full path to test directory where buildtest will write tests.
 
 `string`
 
+## modules_tool
+
+Specify modules tool used for interacting with `module` command. 
+
+
+`modules_tool`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-properties-modules_tool.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/modules_tool")
+
+### modules_tool Type
+
+`string`
+
+### modules_tool Constraints
+
+**enum**: the value of this property must be equal to one of the following values:
+
+| Value                   | Explanation |
+| :---------------------- | ----------- |
+| `"environment-modules"` |             |
+| `"lmod"`                |             |
+
 ## compilers
 
-Specify compiler configuration with respect to modules 
+Declare compiler section for defining system compilers that can be referenced in buildspec.
 
 
 `compilers`
@@ -142,6 +168,154 @@ unknown
 
 # buildtest configuration schema Definitions
 
+## Definitions group cc
+
+Reference this group by using
+
+```json
+{"$ref":"https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cc"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group cxx
+
+Reference this group by using
+
+```json
+{"$ref":"https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cxx"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group fc
+
+Reference this group by using
+
+```json
+{"$ref":"https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/fc"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group clang
+
+Reference this group by using
+
+```json
+{"$ref":"https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang"}
+```
+
+| Property            | Type     | Required | Nullable       | Defined by                                                                                                                                                                                       |
+| :------------------ | -------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-clang-properties-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/cc")      |
+| [cxx](#cxx)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-clang-properties-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/cxx")    |
+| [modules](#modules) | `array`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/modules") |
+
+### cc
+
+Specify path to C compiler wrapper. You may specify a compiler wrapper such as `gcc` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
+
+
+`cc`
+
+-   is required
+-   Type: `string`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-clang-properties-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/cc")
+
+#### cc Type
+
+`string`
+
+### cxx
+
+Specify path to C++ compiler wrapper. You may specify a compiler wrapper such as `g++` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
+
+
+`cxx`
+
+-   is required
+-   Type: `string`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-clang-properties-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/cxx")
+
+#### cxx Type
+
+`string`
+
+### modules
+
+Specify list of modules to load when resolving compiler. The modules will be inserted into test script when using the compiler
+
+
+`modules`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/modules")
+
+#### modules Type
+
+`string[]`
+
+#### modules Constraints
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+## Definitions group cuda
+
+Reference this group by using
+
+```json
+{"$ref":"https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cuda"}
+```
+
+| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                                                      |
+| :-------------------- | -------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc-1)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cuda-properties-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cuda/properties/cc")       |
+| [modules](#modules-1) | `array`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cuda/properties/modules") |
+
+### cc
+
+Specify path to C compiler wrapper. You may specify a compiler wrapper such as `gcc` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
+
+
+`cc`
+
+-   is required
+-   Type: `string`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-cuda-properties-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cuda/properties/cc")
+
+#### cc Type
+
+`string`
+
+### modules
+
+Specify list of modules to load when resolving compiler. The modules will be inserted into test script when using the compiler
+
+
+`modules`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cuda/properties/modules")
+
+#### modules Type
+
+`string[]`
+
+#### modules Constraints
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
 ## Definitions group compiler_section
 
 Reference this group by using
@@ -150,16 +324,16 @@ Reference this group by using
 {"$ref":"https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section"}
 ```
 
-| Property            | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                  |
-| :------------------ | -------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [cc](#cc)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cc")           |
-| [cxx](#cxx)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cxx")         |
-| [fc](#fc)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-fc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/fc")           |
-| [modules](#modules) | `array`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-modules.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/modules") |
+| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                          |
+| :-------------------- | -------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [cc](#cc-2)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cc")   |
+| [cxx](#cxx-1)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cxx") |
+| [fc](#fc)             | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-fc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/fc")   |
+| [modules](#modules-2) | `array`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/modules")         |
 
 ### cc
 
-
+Specify path to C compiler wrapper. You may specify a compiler wrapper such as `gcc` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
 
 
 `cc`
@@ -175,7 +349,7 @@ Reference this group by using
 
 ### cxx
 
-
+Specify path to C++ compiler wrapper. You may specify a compiler wrapper such as `g++` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
 
 
 `cxx`
@@ -191,7 +365,7 @@ Reference this group by using
 
 ### fc
 
-
+Specify path to Fortran compiler wrapper. You may specify a compiler wrapper such as `gfortran` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
 
 
 `fc`
@@ -207,7 +381,7 @@ Reference this group by using
 
 ### modules
 
-
+Specify list of modules to load when resolving compiler. The modules will be inserted into test script when using the compiler
 
 
 `modules`
@@ -215,7 +389,7 @@ Reference this group by using
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-compiler_section-properties-modules.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/modules")
+-   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/modules")
 
 #### modules Type
 
@@ -225,6 +399,17 @@ Reference this group by using
 
 **unique items**: all items in this array must be unique. Duplicates are not allowed.
 
+## Definitions group unique_string_array
+
+Reference this group by using
+
+```json
+{"$ref":"https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/unique_string_array"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
 ## Definitions group modules
 
 Reference this group by using
@@ -233,42 +418,8 @@ Reference this group by using
 {"$ref":"https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/modules"}
 ```
 
-| Property        | Type      | Required | Nullable       | Defined by                                                                                                                                                                                            |
-| :-------------- | --------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [purge](#purge) | `boolean` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-modules-properties-purge.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/modules/properties/purge") |
-| [load](#load)   | `array`   | Optional | cannot be null | [buildtest configuration schema](settings-definitions-modules-properties-load.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/modules/properties/load")   |
-
-### purge
-
-
-
-
-`purge`
-
--   is optional
--   Type: `boolean`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-modules-properties-purge.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/modules/properties/purge")
-
-#### purge Type
-
-`boolean`
-
-### load
-
-
-
-
-`load`
-
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-modules-properties-load.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/modules/properties/load")
-
-#### load Type
-
-`string[]`
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
 
 ## Definitions group script
 

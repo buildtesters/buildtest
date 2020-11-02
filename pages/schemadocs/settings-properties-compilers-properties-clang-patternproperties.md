@@ -1,7 +1,7 @@
-# Untitled string in buildtest configuration schema Schema
+# Untitled undefined type in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/modules/items
+https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/clang/patternProperties
 ```
 
 
@@ -11,6 +11,6 @@ https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitio
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
-## items Type
+## patternProperties Type
 
-`string`
+unknown

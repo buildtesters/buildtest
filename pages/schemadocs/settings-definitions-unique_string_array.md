@@ -1,16 +1,20 @@
-# Untitled string in buildtest configuration schema Schema
+# Untitled array in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/fc
+https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/modules
 ```
 
-Specify path to Fortran compiler wrapper. You may specify a compiler wrapper such as `gfortran` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
+Specify list of modules to load when resolving compiler. The modules will be inserted into test script when using the compiler
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
-## fc Type
+## modules Type
 
-`string`
+`string[]`
+
+## modules Constraints
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
