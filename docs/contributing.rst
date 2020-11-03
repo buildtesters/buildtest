@@ -1,24 +1,20 @@
 Contributing Guide
 ==================
 
-There are many ways you can help contribute to buildtest that may include
+There are many ways you can help contribute to buildtest that may include:
 
 - File an `issue <https://github.com/buildtesters/buildtest/issues>`_ with the framework
-- Proofread documentation and report or fix issues
+- Proofread documentation and report or fix issues.
 - Participate in discussions and join the slack `channel <http://hpcbuildtest.slack.com>`_
 - Increase test coverage of buildtest regression tests.
-- Provide feedback on buildtest options.
 
-Maintainers
--------------
+Shown below is a list of maintainers for buildtest.
 
-If you need to get hold of a buildtest maintainer, please contact one of the maintainers.
+.. csv-table::
+    :header: "Name", "GitHub Handle", "Email", "Affiliation"
+    :widths: 25, 25, 25, 25
 
-Maintainers are listed in alphabetical order by last name:
-
-- Shahzeb Siddiqui (**@shahzebsiddiqui**)
-
-- Vanessa Sochat (**@vsoch**)
+    "Shahzeb Siddiqui","@shahzebsiddiqui","shahzebsiddiqui@lbl.gov","Lawrence Berkeley National Laboratory (LBNL)"
 
 Contributing Topics
 --------------------
@@ -31,3 +27,4 @@ Contributing Topics
    contributing/regression_testing.rst
    contributing/schema.rst
    contributing/maintainer_guide.rst
+   contributing/new_maintainer_checklist.rst
