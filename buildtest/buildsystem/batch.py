@@ -114,3 +114,53 @@ class SlurmBatchScript(BatchScript):
                     self.headers += [
                         f"{self.directive} {self.batch_translation[key]}={value}"
                     ]
+
+
+class CobaltBatchScript(BatchScript):
+    batch_translation = {
+        "account": "--project",
+        "begintime": None,
+        "cpucount": "--proccount",
+        "email-address": "--notify",
+        "exclusive": None,
+        "memory": None,
+        "network": None,
+        "nodecount": "--nodecount",
+        "qos": None,
+        "queue": "--queue",
+        "tasks-per-core": None,
+        "tasks-per-node": None,
+        "tasks-per-socket": None,
+        "timelimit": "--time",
+    }
+
+    def __init__(self, batch=None, cobalt=None):
+        """
+        :param batch: The batch commands specified by batch field. These are scheduler agnostic fields
+        :param sbatch: sbatch commands that are inserted with #SBATCH directive
+        """
+        self.headers = []
+        self.directive = "#COBALT"
+
+        self.batch = batch
+        self.cobalt = cobalt
+
+        self.build_header()
+
+    def build_header(self):
+        # only process if sbatch field is specified
+        if self.cobalt:
+            for cmd in self.cobalt:
+                self.headers += [f"{self.directive} {cmd}"]
+
+        # only process if batch field is specified
+        if self.batch:
+            for key, value in self.batch.items():
+
+                # if batch key is None that means scheduler doesn't support the option
+                if self.batch_translation.get(key):
+                    self.headers += [
+                        f"{self.directive} {self.batch_translation[key]} {value}"
+                    ]
+                else:
+                    continue

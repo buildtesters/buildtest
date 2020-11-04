@@ -16,7 +16,11 @@ import stat
 import sys
 import uuid
 
-from buildtest.buildsystem.batch import SlurmBatchScript, LSFBatchScript
+from buildtest.buildsystem.batch import (
+    SlurmBatchScript,
+    LSFBatchScript,
+    CobaltBatchScript,
+)
 from buildtest.defaults import executor_root
 from buildtest.schemas.defaults import schema_table
 from buildtest.exceptions import BuildTestError
@@ -109,6 +113,8 @@ class BuilderBase:
             return "slurm"
         elif self.executor.startswith("lsf"):
             return "lsf"
+        elif self.executor.startswith("cobalt"):
+            return "cobalt"
 
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
@@ -207,6 +213,15 @@ class BuilderBase:
             lines += [f"#SBATCH --job-name={self.name}"]
             lines += [f"#SBATCH --output={self.name}.out"]
             lines += [f"#SBATCH --error={self.name}.err"]
+
+        elif self.executor.type == "cobalt":
+            script = CobaltBatchScript(
+                self.recipe.get("batch"), self.recipe.get("cobalt")
+            )
+            lines += script.get_headers()
+            lines += [f"#COBALT --jobname {self.name}"]
+            lines += [f"#COBALT --output {self.name}.out"]
+            lines += [f"#COBALT --error {self.name}.err"]
 
         if self.recipe.get("BB"):
             burst_buffer = self.recipe.get("BB")
