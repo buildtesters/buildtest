@@ -29,6 +29,9 @@
     "bsub": {
       "$ref": "definitions.schema.json#/definitions/bsub"
     },
+    "cobalt": {
+      "$ref": "definitions.schema.json#/definitions/cobalt"
+    },
     "batch": {
       "$ref": "definitions.schema.json#/definitions/batch"
     },

@@ -60,7 +60,7 @@
     },
     "sbatch": {
       "$ref": "#/definitions/list_of_strings",
-      "description": "This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value",
+      "description": "This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value"
     },
     "bsub": {
       "$ref": "#/definitions/list_of_strings",
@@ -68,15 +68,15 @@
     },
     "cobalt": {
       "$ref": "#/definitions/list_of_strings",
-      "description": "This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value",
+      "description": "This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value"
     },
     "BB": {
       "$ref": "#/definitions/list_of_strings",
-      "description": "Create burst buffer space, this specifies #BB options in your test.",
+      "description": "Create burst buffer space, this specifies #BB options in your test."
     },
     "DW": {
       "$ref": "#/definitions/list_of_strings",
-      "description": "Specify Data Warp option (#DW) when using burst buffer.",
+      "description": "Specify Data Warp option (#DW) when using burst buffer."
     },
     "run_only": {
       "type": "object",
