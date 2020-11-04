@@ -459,15 +459,17 @@ def run_phase(builders, executor, config_dict, printTable=False):
             logger.debug(f"Polling Jobs: {poll_queue}")
 
             for builder in poll_queue:
-                state = executor.poll(builder)
+                poll_info = executor.poll(builder)
                 # remove builder from poll_queue when state is True
-                if state:
+                if poll_info["job_complete"]:
                     logger.debug(
                         f"{builder} poll complete, removing test from poll queue"
                     )
                     poll_queue.remove(builder)
 
-                if builder.job_state == "CANCELLED":
+                # add invalid jobs to cancelled_jobs list which are ignored from output
+                # and not updated in report
+                if poll_info["ignore_job"]:
                     cancelled_jobs.add(builder)
 
         # remove any cancelled builders from output since these jobs were CANCELLED and there is no output

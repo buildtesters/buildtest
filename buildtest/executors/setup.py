@@ -147,40 +147,58 @@ class BuildExecutor:
 
     def poll(self, builder):
         """Poll all jobs for batch executors (LSF, Slurm). For slurm we poll
-        until job is in ``PENDING`` or ``RUNNING`` state. If it is not in
-        these states, we assume job is complete and gather results. For LSF
-        jobs we poll job if its in job-state ``PEND`` and ``RUN``. The method
-        returns ``True`` or ``False`` depending on the input builder.
+        until job is in ``PENDING`` or ``RUNNING`` state. If Slurm job is in
+        ``FAILED`` or ``COMPLETED`` state we assume job is finished and we gather
+        results. If its in any other state we ignore job and return out of method.
+
+        For LSF jobs we poll job if it's in ``PEND`` or ``RUN`` state, if its in
+        ``DONE`` state we gather results, otherwise we assume job is incomplete
+        and return with ``ignore_job`` set to ``True``. This informs buildtest
+        to ignore job when showing report.
 
         :param builder: an instance of BuilderBase (subclass)
         :type builder: BuilderBase (subclass)
-        :return: Return a boolean to indicate if builder needs further polling
-        :rtype: bool
+        :return: Return a dictionary containing poll information
+        :rtype: dict
         """
+        poll_info = {
+            "job_complete": False,  # indicate job is not complete and requires polling
+            "ignore_job": False,  # indicate job should be ignored
+        }
         executor = self._choose_executor(builder)
-        if executor.type == "type":
-            return True
+        # if builder is local executor we shouldn't be polling so we set job to
+        # complete and return
+        if executor.type == "local":
+            poll_info["job_complete"] = True
+            return poll_info
 
-        # poll slurm job
+        # poll Slurm job
         if executor.type == "slurm":
             # only poll job if its in PENDING or RUNNING state
             # if executor.job_state in ["PENDING", "RUNNING"] or not executor.job_state:
             if builder.job_state in ["PENDING", "RUNNING"] or not builder.job_state:
                 executor.poll()
-            elif builder.job_state == "CANCELLED":
-                return True
-            elif builder.job_state in ["FAILED", "COMPLETED", "OUT_OF_MEMORY"]:
+            elif builder.job_state in ["FAILED", "COMPLETED"]:
                 executor.gather()
-                return True
+                poll_info["job_complete"] = True
 
+            else:
+                poll_info["job_complete"] = True
+                poll_info["ignore_job"] = True
+
+        # poll LSF job
         elif executor.type == "lsf":
             # only poll job if its in PENDING or RUNNING state
             if builder.job_state in ["PEND", "RUN"] or not executor.job_state:
                 executor.poll()
-            elif builder.job_state == "CANCELLED":
-                return True
-            else:
+            # only gather result when job state in DONE. This implies job is complete
+            elif builder.job_state == "DONE":
                 executor.gather()
-                return True
+                poll_info["job_complete"] = True
+            # any other job state (PSUSP, EXIT, USUSP, SSUSP) implies job failed
+            # abnormally so we consider job complete but set this to cancelled job so its ignored
+            else:
+                poll_info["job_complete"] = True
+                poll_info["ignore_job"] = True
 
-        return False
+        return poll_info
