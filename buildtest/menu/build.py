@@ -333,7 +333,13 @@ def build_phase(builders, printTable=False):
         table["testpath"].append(builder.metadata["testpath"])
 
     if printTable:
-        print(tabulate(table, headers=table.keys(), tablefmt="presto",))
+        print(
+            tabulate(
+                table,
+                headers=table.keys(),
+                tablefmt="presto",
+            )
+        )
 
 
 def run_phase(builders, executor, config_dict, printTable=False):
@@ -446,8 +452,8 @@ def run_phase(builders, executor, config_dict, printTable=False):
         # if no items in poll_queue terminate, this will happen as jobs complete polling
         # and they are removed from queue.
 
-        # keep track of tests that are cancelled by job scheduler
-        cancelled_jobs = set()
+        # keep track of ignored jobs by job scheduler these include jobs that failed abnormally or cancelled by scheduler
+        ignore_jobs = set()
         while poll_queue:
 
             print("\n")
@@ -459,26 +465,34 @@ def run_phase(builders, executor, config_dict, printTable=False):
             logger.debug(f"Polling Jobs: {poll_queue}")
 
             for builder in poll_queue:
-                state = executor.poll(builder)
+                poll_info = executor.poll(builder)
                 # remove builder from poll_queue when state is True
-                if state:
+                if poll_info["job_complete"]:
                     logger.debug(
                         f"{builder} poll complete, removing test from poll queue"
                     )
                     poll_queue.remove(builder)
 
-                if builder.job_state == "CANCELLED":
-                    cancelled_jobs.add(builder)
+                # add invalid jobs to ignore_jobs list which are ignored from output
+                # and not updated in report
+                if poll_info["ignore_job"]:
+                    ignore_jobs.add(builder)
 
-        # remove any cancelled builders from output since these jobs were CANCELLED and there is no output
-        if cancelled_jobs:
+        # remove any builders where for jobs that need to be ignored
+        if ignore_jobs:
             # convert set to list
-            cancelled_jobs = list(cancelled_jobs)
-            for builder in cancelled_jobs:
+            ignore_jobs = list(ignore_jobs)
+            for builder in ignore_jobs:
                 valid_builders.remove(builder)
 
             print("Cancelled Tests:")
-            [print(builder.metadata["name"]) for builder in cancelled_jobs]
+            [print(builder.metadata["name"]) for builder in ignore_jobs]
+
+        # after removing jobs from valid_builders list there is chance we have no jobs to report
+        # in that case we return from method
+        if not valid_builders:
+            print("After polling all jobs we found no valid builders to process")
+            return
 
         table = {
             "name": [],
@@ -601,5 +615,6 @@ def func_build_subcmd(args, config_opts):
         return
 
     valid_builders = run_phase(builders, executor, config_opts, printTable=True)
-
-    update_report(valid_builders)
+    # only update report if we have a list of valid builders returned from run_phase
+    if valid_builders:
+        update_report(valid_builders)

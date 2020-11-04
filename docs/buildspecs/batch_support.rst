@@ -161,9 +161,10 @@ via ``sacct`` using the following format fields:
 -    AllocTRES
 -    ConsumedEnergyRaw
 -    CPUTimeRaw
+-    Elapsed
 -    End
 -    ExitCode
--    "JobID
+-    JobID
 -    JobName
 -    NCPUS
 -    NNodes

@@ -33,6 +33,7 @@ class SlurmExecutor(BaseExecutor):
         "AllocTRES",
         "ConsumedEnergyRaw",
         "CPUTimeRaw",
+        "Elapsed",
         "End",
         "ExitCode",
         "JobID",
@@ -236,15 +237,18 @@ class SlurmExecutor(BaseExecutor):
 
         self.result["starttime"] = job_data["Start"]
         self.result["endtime"] = job_data["End"]
+        self.result["runtime"] = job_data["Elapsed"]
 
         if self.builder.job_state == "CANCELLED":
             return
 
         self.builder.metadata["outfile"] = os.path.join(
-            job_data["WorkDir"].rstrip(), f"{self.builder.metadata['name']}.out",
+            job_data["WorkDir"].rstrip(),
+            f"{self.builder.metadata['name']}.out",
         )
         self.builder.metadata["errfile"] = os.path.join(
-            job_data["WorkDir"].rstrip(), f"{self.builder.metadata['name']}.err",
+            job_data["WorkDir"].rstrip(),
+            f"{self.builder.metadata['name']}.err",
         )
 
         shutil.copy2(
