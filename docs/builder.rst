@@ -1,12 +1,14 @@
-Builder Process
-=================
+Build and Test Process
+======================
+
+Pipeline
+---------
 
 buildtest will process all buildspecs that are discovered see diagram :ref:`discover_buildspecs`.
 The **BuildspecParser** class is responsible for validating the buildspec. The
 validation is performed using `jsonschema.validate <https://python-jsonschema.readthedocs.io/en/stable/validate/#jsonschema.validate>`_.
-The parser will validate every buildspec using the `global.schema.json <https://buildtesters.github.io/schemas/schemadocs/global>`_
-which validates the top-level structure. This is performed using ``BuildspecParser._validate_global``
-method.
+The parser will validate every buildspec with the global schema named `global.schema.json <https://github.com/buildtesters/buildtest/blob/gh-pages/pages/schemas/global.schema.json>`_
+which validates the top-level structure.
 
 The build pipeline is comprised of 5 stages shown below. Every buildspec goes
 through this pipeline, if one stage fails, buildtest will skip the test. For instance,
@@ -23,38 +25,9 @@ Parse Stage
 
 A buildspec file may contain one or more test sections specified via ``buildspec``
 field. Each test is validated by a sub-schema specified by ``type`` field.
-The ``BuildspecParser._validate`` method will validate buildspec test section with
-the sub-schema.
-
-In this diagram, a buildspec file is passed to the Parser and validated with global
-schema and a sub-schema.
+buildtest will validate the buildspec with global schema first followed by sub-schema
+by using the ``version`` field to look up the schema version for sub-schema. buildtest
+will look up the schema from its schema library and validate the test section ``hello_world``
+with schema ``script-v1.0.schema.json``.
 
 .. image:: _static/ParserSchemaValidationDiagram.png
-
-buildtest will invoke BuildspecParser against all discovered buildspecs and catch
-exceptions **ValidationError** and **SystemExit** and ignore those buildspecs. Next
-buildtest will build each test, this is implemented using base class `BuilderBase`.
-The subclass for **BuilderBase** such as **ScriptBuilder** and **CompilerBuilder**
-are responsible for generating the test script based on the ``type`` field.
-
-  -  ``type: script`` will invoke ScriptBuilder class
-
-  - ``type: compiler`` will invoke CompilerBuilder class
-
-
-This allows buildtest to extend **BuilderBase** class and each subclass is
-responsible for one schema type.
-
-.. image:: _static/BuildspecParser.jpg
-
-The **BuildExecutor** class is responsible for initializing the executors defined
-in your :ref:`configuring_buildtest`. The BuildExecutor class is invoked once and
-buildtest configuration is passed to this class. buildtest will process all executors defined in `executors` field by invoking the appropriate sub-class.
-The `local`, `slurm`, `lsf` executors are implemented in class
-**LocalExecutor**, **SlurmExecutor**, **LSFExecutor** that are sub-class of
-of **BaseExecutor**. The BaseExecutor class is responsible for implementing common
-methods for all executors. Each executor class is responsible for running test that is performed in the **Run** stage of the
-general pipeline.
-
-
-.. image:: _static/BuildExecutor.jpg

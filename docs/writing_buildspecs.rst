@@ -1,3 +1,5 @@
+.. _writing_buildspecs:
+
 Writing buildspecs
 ====================
 

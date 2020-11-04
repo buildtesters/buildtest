@@ -1,7 +1,12 @@
 .. _Getting_Started:
 
-Getting Started with buildtest
-==============================
+Getting Started
+================
+
+This guide will get you familiar with buildtest command line interface. Once
+you complete this section, you should be comfortable navigating through buildtest
+features. Next you can proceed to :ref:`writing_buildspecs`
+section which will go over how to write your tests.
 
 Interacting with the client
 ---------------------------
