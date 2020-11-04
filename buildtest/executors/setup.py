@@ -10,6 +10,7 @@ import os
 import sys
 
 from buildtest.defaults import BUILDTEST_SETTINGS_FILE, executor_root
+from buildtest.executors.cobalt import CobaltExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
 from buildtest.executors.slurm import SlurmExecutor
@@ -53,6 +54,10 @@ class BuildExecutor:
                 name, config_opts["executors"]["lsf"][name], config_opts
             )
 
+        for name in config_opts["executors"].get("cobalt", {}).keys():
+            self.executors[f"cobalt.{name}"] = CobaltExecutor(
+                name, config_opts["executors"]["cobalt"][name], config_opts
+            )
         self.setup()
 
     def __str__(self):
@@ -140,7 +145,7 @@ class BuildExecutor:
         if executor.type == "local":
             executor.run()
         # The run stage for Slurm and LSF executor is to invoke dispatch method
-        elif executor.type in ["slurm", "lsf"]:
+        elif executor.type in ["slurm", "lsf", "cobalt"]:
             executor.dispatch()
 
         return executor.result
