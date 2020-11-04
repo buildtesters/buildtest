@@ -201,4 +201,17 @@ class BuildExecutor:
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True
 
+        elif executor.type == "cobalt":
+
+            if builder.job_state in ["queued", "running"] or not executor.job_state:
+                executor.poll()
+            # cobalt doesn't report a COMPLETE job state but we will assign this value
+            # outself when marking job complete
+            elif builder.job_state == "COMPLETE":
+                executor.gather()
+                poll_info["job_complete"] = True
+            else:
+                poll_info["job_complete"] = True
+                poll_info["ignore_job"] = True
+
         return poll_info
