@@ -1,3 +1,5 @@
+import shutil
+import sys
 from buildtest.utils.command import BuildTestCommand
 from buildtest.executors.base import BaseExecutor
 
@@ -11,6 +13,7 @@ class CobaltExecutor(BaseExecutor):
 
     job_state = None
     poll_cmd = "qstat"
+    
     qstat_fields = "-lf"
 
     def check(self):
@@ -88,29 +91,95 @@ class CobaltExecutor(BaseExecutor):
         self.result["runtime"] = "0"
         self.result["returncode"] = "0"
 
-    def poll(self):
-
         self.logger.debug(f"Query Job: {self.builder.metadata['jobid']}")
 
         qstat_cmd = (
-            f"{self.poll_cmd} {self.qstat_fields} {self.builder.metadata['jobid']}"
+            f"{self.poll_cmd} -l --header OutputPath:ErrorPath {self.builder.metadata['jobid']}"
         )
-
-        self.logger.debug(qstat_cmd)
         cmd = BuildTestCommand(qstat_cmd)
         cmd.execute()
-        poll_content = cmd.get_output()
-        print(poll_content, type(poll_content))
-
-        job_data = {}
-        for line in poll_content:
+        content = cmd.get_output()
+        for line in content:
             key, sep, value = line.partition(":")
-            job_data[key] = value
+            key = key.strip()
+            value = value.strip()
+            
+            if key == "OutputPath":
+              self.builder.metadata["outfile"] = value
 
+            if key == "ErrorPath":
+              self.builder.metadata["errfile"] = value
+
+        self.logger.debug(f"Output file will be written to: {self.builder.metadata['outfile']}")
+        self.logger.debug(f"Error file will be written to: {self.builder.metadata['errfile']}")
+
+        qstat_cmd = f"{self.poll_cmd} -lf {self.builder.metadata['jobid']}"
+        self.logger.debug(f"Executing command: {qstat_cmd}")
+        cmd = BuildTestCommand(qstat_cmd)
+        cmd.execute()
+        job_data = cmd.get_output()
         print(job_data)
-        self.builder.job_state = job_data["State"]
-        print(self.builder.job_state)
 
-    def gather(self):
+    def poll(self):
+     
+        self.logger.debug(f"Query Job: {self.builder.metadata['jobid']}")
 
-        self.builder.metadata["job"] = job_data
+        qstat_cmd = (
+            f"{self.poll_cmd} -l --header State {self.builder.metadata['jobid']}"
+        )
+        self.logger.debug(f"Executing command: {qstat_cmd}")
+        cmd = BuildTestCommand(qstat_cmd)
+        cmd.execute()
+        job_state = cmd.get_output()
+        job_state = " ".join(job_state).strip()
+        # Output in format State: <state> so we need to get value of state
+        job_state = job_state.partition(":")[2]
+        job_state = job_state.strip()
+ 
+        self.builder.job_state = job_state
+         # store initial poll output in builder metadata
+        # self.builder.metadata["job"] = job_data
+
+        msg = f"[{self.builder.metadata['name']}]: JobID {self.builder.metadata['jobid']} in {self.builder.job_state} state "
+        print(msg)
+        self.logger.debug(msg)
+      
+        shutil.which(self.builder.metadata['outfile'])
+
+	# additional check to see if job outputfile is written to file system, since 
+        # qstat will remove completed job and it can't be polled. 
+        if shutil.which(self.builder.metadata['outfile']):
+           self.builder.job_state = 'done'
+           return
+
+        if self.builder.job_state == "pending":
+            self.builder.stop()
+            self.logger.debug(f"Time Duration: {self.builder.duration}")
+            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
+
+            # if timer time is more than requested pend time then cancel job
+            if int(self.builder.duration) > self.max_pend_time:
+                self.cancel()
+                job_state = "CANCELLED"
+                print(
+                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
+                        self.builder.duration, self.max_pend_time
+                    )
+                )
+                self.builder.job_state = self.job_state
+                return self.job_state
+
+            self.builder.start()
+            self.builder.job_state = job.state
+
+    def cancel(self):
+       """Cancel Cobalt job using qdel, this operation is performed if job exceeds its max_pend_time"""
+
+       query = f"qdel {self.builder.metadata['jobid']}"
+       
+       cmd = BuildTestCommand(query)
+       cmd.execute()
+       msg = f"Cancelling Job: {self.builder.metadata['name']} running command: {query}"
+       print(msg)
+       self.logger.debug(msg)
+     

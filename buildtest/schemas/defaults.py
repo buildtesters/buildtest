@@ -1,4 +1,4 @@
-import os, json
+import os
 from jsonschema import RefResolver, Draft7Validator
 from buildtest.schemas.utils import load_schema
 
