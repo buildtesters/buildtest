@@ -94,7 +94,7 @@
                  },
                  "launcher": {
                    "type": "string",
-                   "enum": ["sbatch", "bsub"],
+                   "enum": ["sbatch", "bsub", "qsub"],
                    "description": "Specify batch launcher to use when submitting jobs, this is applicable for LSF and Slurm Executors."
                  },
                  "max_pend_time": {"$ref":  "#/definitions/max_pend_time"},
@@ -115,6 +115,11 @@
               "type": "object",
               "description": "The ``slurm`` section is used for declaring Slurm executors for running jobs using Slurm scheduler",
               "patternProperties": { "^.*$": { "$ref": "#/definitions/slurm" } }
+            },
+            "cobalt": {
+              "type": "object",
+              "description": "The ``cobalt`` section is used for declaring Cobalt executors for running jobs using Cobalt scheduler",
+              "patternProperties": { "^.*$": { "$ref": "#/definitions/cobalt" } }
             }
           },
         "additionalProperties": false
@@ -230,6 +235,20 @@
               "description": {"type": "string", "description": "description field for documenting your executor"},
               "launcher": { "type": "string", "enum": ["bsub"], "description": "Specify the lsf batch scheduler to use. This overrides the default ``launcher`` field. It must be ``bsub``. " },
               "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any options for ``bsub`` for this executor when running all jobs associated to this executor" },
+              "queue": {"type":  "string", "description": "Specify the lsf queue you want to use ``-q <queue>``"},
+              "before_script": { "#ref":  "#/definitions/script" },
+              "after_script": { "#ref":  "#/definitions/script" },
+              "max_pend_time": {"$ref":  "#/definitions/max_pend_time"},
+              "account": {"$ref":  "#/definitions/account"}
+          }
+       },
+      "cobalt": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+              "description": {"type": "string", "description": "description field for documenting your executor"},
+              "launcher": { "type": "string", "enum": ["qsub"], "description": "Specify the cobalt batch scheduler to use. This overrides the default ``launcher`` field. It must be ``qsub``. " },
+              "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any options for ``qsub`` for this executor when running all jobs associated to this executor" },
               "queue": {"type":  "string", "description": "Specify the lsf queue you want to use ``-q <queue>``"},
               "before_script": { "#ref":  "#/definitions/script" },
               "after_script": { "#ref":  "#/definitions/script" },
