@@ -1,4 +1,4 @@
-import os
+import os, json
 from jsonschema import RefResolver, Draft7Validator
 from buildtest.schemas.utils import load_schema
 
@@ -39,8 +39,9 @@ schema_table["definitions.schema.json"] = {}
 schema_table["definitions.schema.json"]["path"] = os.path.join(
     here, "definitions.schema.json"
 )
+
 schema_table["definitions.schema.json"]["recipe"] = load_schema(
-    schema_table["definitions.schema.json"]["path"]
+    os.path.join(here, "definitions.schema.json")
 )
 
 schema_table["settings.schema.json"] = {}
@@ -48,7 +49,7 @@ schema_table["settings.schema.json"]["path"] = os.path.join(
     here, "settings.schema.json"
 )
 schema_table["settings.schema.json"]["recipe"] = load_schema(
-    schema_table["settings.schema.json"]["path"]
+    os.path.join(here, "settings.schema.json")
 )
 
 

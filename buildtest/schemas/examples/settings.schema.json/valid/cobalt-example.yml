@@ -1,0 +1,12 @@
+editor: vi
+executors:
+  defaults:
+     launcher: qsub
+     max_pend_time: 30
+
+  cobalt:
+    knl:
+      queue: knl
+
+    haswell:
+      queue: haswell

@@ -214,7 +214,7 @@ class BuilderBase:
             lines += [f"#SBATCH --output={self.name}.out"]
             lines += [f"#SBATCH --error={self.name}.err"]
 
-        elif self.executor.type == "cobalt":
+        elif self.executor_type == "cobalt":
             script = CobaltBatchScript(
                 self.recipe.get("batch"), self.recipe.get("cobalt")
             )
