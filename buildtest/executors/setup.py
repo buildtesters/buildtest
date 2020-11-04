@@ -194,7 +194,7 @@ class BuildExecutor:
         # poll LSF job
         elif executor.type == "lsf":
             # only poll job if its in PENDING or RUNNING state
-            if builder.job_state in ["PEND", "RUN"] or not executor.job_state:
+            if builder.job_state in ["PEND", "RUN"] or not builder.job_state:
                 executor.poll()
             # only gather result when job state in DONE. This implies job is complete
             elif builder.job_state == "DONE":
@@ -207,15 +207,12 @@ class BuildExecutor:
                 poll_info["ignore_job"] = True
 
         elif executor.type == "cobalt":
-
-            if builder.job_state in ["queued", "running"] or not executor.job_state:
+            print(f"builder: {builder.metadata['name']} in {builder.job_state}")
+            if builder.job_state in ["started", "queued", "running"] or not builder.job_state:
                 executor.poll()
-            # cobalt doesn't report a COMPLETE job state but we will assign this value
-            # outself when marking job complete
-            elif builder.job_state == "COMPLETE":
-                executor.gather()
-                poll_info["job_complete"] = True
-            else:
+            elif builder.job_state == "done":
+              poll_info["job_complete"] = True
+            elif builder.job_state in ["CANCELLED", "killing"]:
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True
 
