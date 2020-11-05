@@ -208,9 +208,9 @@ class BuildExecutor:
 
         elif executor.type == "cobalt":
             print(f"builder: {builder.metadata['name']} in {builder.job_state}")
-            if builder.job_state in ["started", "queued", "running"] or not builder.job_state:
+            if builder.job_state in ["starting", "queued", "running"] or not builder.job_state:
                 executor.poll()
-            elif builder.job_state == "done":
+            elif builder.job_state in ["done","exiting"]:
               poll_info["job_complete"] = True
             elif builder.job_state in ["CANCELLED", "killing"]:
                 poll_info["job_complete"] = True

@@ -466,6 +466,10 @@ def run_phase(builders, executor, config_dict, printTable=False):
 
             for builder in poll_queue:
                 poll_info = executor.poll(builder)
+
+                print(json.dumps(poll_info,indent=2))
+                print("poll queue - ", poll_queue)
+                print("ignore queue - ", ignore_jobs)
                 # remove builder from poll_queue when state is True
                 if poll_info["job_complete"]:
                     logger.debug(
