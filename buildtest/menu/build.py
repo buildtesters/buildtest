@@ -333,13 +333,7 @@ def build_phase(builders, printTable=False):
         table["testpath"].append(builder.metadata["testpath"])
 
     if printTable:
-        print(
-            tabulate(
-                table,
-                headers=table.keys(),
-                tablefmt="presto",
-            )
-        )
+        print(tabulate(table, headers=table.keys(), tablefmt="presto",))
 
 
 def run_phase(builders, executor, config_dict, printTable=False):
@@ -403,7 +397,7 @@ def run_phase(builders, executor, config_dict, printTable=False):
 
     for builder in builders:
         try:
-            result = executor.run(builder)
+            executor.run(builder)
         except SystemExit as err:
             print("[%s]: Failed to Run Test" % builder.metadata["name"])
             errmsg.append(err)
@@ -415,16 +409,16 @@ def run_phase(builders, executor, config_dict, printTable=False):
         table["name"].append(builder.name)
         table["id"].append(builder.metadata["id"])
         table["executor"].append(builder.executor)
-        table["status"].append(result["state"])
-        table["returncode"].append(result["returncode"])
+        table["status"].append(builder.metadata["result"]["state"])
+        table["returncode"].append(builder.metadata["result"]["returncode"])
         table["testpath"].append(builder.metadata["testpath"])
 
-        if result["state"] == "N/A":
+        if builder.metadata["result"]["state"] == "N/A":
             poll_queue.append(builder)
             poll = True
             continue
 
-        if result["state"] == "PASS":
+        if builder.metadata["result"]["state"] == "PASS":
             passed_tests += 1
         else:
             failed_tests += 1
@@ -467,7 +461,7 @@ def run_phase(builders, executor, config_dict, printTable=False):
             for builder in poll_queue:
                 poll_info = executor.poll(builder)
 
-                print(json.dumps(poll_info,indent=2))
+                print(json.dumps(poll_info, indent=2))
                 print("poll queue - ", poll_queue)
                 print("ignore queue - ", ignore_jobs)
                 # remove builder from poll_queue when state is True

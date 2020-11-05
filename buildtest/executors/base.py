@@ -151,10 +151,16 @@ class BaseExecutor:
                 self.logger.debug("Conducting Return Code check")
                 self.logger.debug(
                     "Status Return Code: %s   Result Return Code: %s"
-                    % (buildspec_returncode, self.result["returncode"])
+                    % (
+                        buildspec_returncode,
+                        self.builder.metadata["result"]["returncode"],
+                    )
                 )
                 # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
-                returncode_match = self.result["returncode"] in buildspec_returncode
+                returncode_match = (
+                    self.builder.metadata["result"]["returncode"]
+                    in buildspec_returncode
+                )
 
             if status.get("regex"):
                 self.logger.debug("Conducting Regular Expression check")
@@ -182,5 +188,6 @@ class BaseExecutor:
             if self.result["returncode"] == 0:
                 self.result["state"] = "PASS"
 
+        self.builder.metadata["result"]["state"] = self.result["state"]
         # Return to starting directory for next test
         os.chdir(self.builder.pwd)
