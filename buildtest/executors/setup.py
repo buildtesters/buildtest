@@ -144,11 +144,9 @@ class BuildExecutor:
         # The run stage for LocalExecutor is to invoke run method
         if executor.type == "local":
             executor.run()
-        # The run stage for Slurm and LSF executor is to invoke dispatch method
+        # The run stage for batch executor (Slurm, LSF, Cobalt) executor is to invoke dispatch method
         elif executor.type in ["slurm", "lsf", "cobalt"]:
             executor.dispatch()
-
-        return executor.result
 
     def poll(self, builder):
         """Poll all jobs for batch executors (LSF, Slurm). For slurm we poll
@@ -208,10 +206,13 @@ class BuildExecutor:
 
         elif executor.type == "cobalt":
             print(f"builder: {builder.metadata['name']} in {builder.job_state}")
-            if builder.job_state in ["starting", "queued", "running"] or not builder.job_state:
+            if (
+                builder.job_state in ["starting", "queued", "running"]
+                or not builder.job_state
+            ):
                 executor.poll()
-            elif builder.job_state in ["done","exiting"]:
-              poll_info["job_complete"] = True
+            elif builder.job_state in ["done", "exiting"]:
+                poll_info["job_complete"] = True
             elif builder.job_state in ["CANCELLED", "killing"]:
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True

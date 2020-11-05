@@ -90,6 +90,5 @@ class LocalExecutor(BaseExecutor):
         self.result["returncode"] = command.returncode
 
         self.write_testresults(out, err)
-        self.check_test_state()
-
         self.builder.metadata["result"] = self.result
+        self.check_test_state()
