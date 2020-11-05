@@ -220,8 +220,8 @@ class BuilderBase:
             )
             lines += script.get_headers()
             lines += [f"#COBALT --jobname {self.name}"]
-            lines += [f"#COBALT --output {self.name}.out"]
-            lines += [f"#COBALT --error {self.name}.err"]
+            lines += [f"#COBALT --output {self.run_dir}/{self.name}.out"]
+            lines += [f"#COBALT --error {self.run_dir}/{self.name}.err"]
 
         if self.recipe.get("BB"):
             burst_buffer = self.recipe.get("BB")
