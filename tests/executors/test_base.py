@@ -49,5 +49,5 @@ def test_build_executor(tmp_path):
         # build each test and then run it
         for builder in builders:
             builder.build()
-            result = be.run(builder)
-            assert result
+            be.run(builder)
+            assert builder.metadata["result"]

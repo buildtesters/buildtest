@@ -127,7 +127,7 @@ class BaseExecutor:
 
         status = self.builder.recipe.get("status")
 
-        self.result["state"] = "FAIL"
+        self.builder.metadata["result"]["state"] = "FAIL"
         # if status is defined in Buildspec, then check for returncode and regex
         if status:
 
@@ -181,13 +181,12 @@ class BaseExecutor:
             )
 
             if returncode_match or regex_match or slurm_job_state_match:
-                self.result["state"] = "PASS"
+                self.builder.metadata["result"]["state"] = "PASS"
 
         # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
         else:
-            if self.result["returncode"] == 0:
-                self.result["state"] = "PASS"
+            if self.builder.metadata["result"]["returncode"] == 0:
+                self.builder.metadata["result"]["state"] = "PASS"
 
-        self.builder.metadata["result"]["state"] = self.result["state"]
         # Return to starting directory for next test
         os.chdir(self.builder.pwd)

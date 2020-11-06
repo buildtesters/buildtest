@@ -63,7 +63,7 @@ class TestShell:
         assert shell.shebang == f"#!{shutil.which('zsh')}"
 
     @pytest.mark.utility()
-    def test_zsh_shell(self):
+    def test_csh_shell(self):
         shell = Shell("/bin/csh")
         assert shell.name == "/bin/csh"
         assert shell.path == shutil.which("/bin/csh")
