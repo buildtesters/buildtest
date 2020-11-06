@@ -23,11 +23,12 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | [description](#description) | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-description.md "compiler-v1.0.schema.json#/properties/description") |
 | [module](#module)           | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-module.md "compiler-v1.0.schema.json#/properties/module")           |
 | [executor](#executor)       | `string`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-executor.md "compiler-v1.0.schema.json#/properties/executor")       |
-| [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-sbatch.md "compiler-v1.0.schema.json#/properties/sbatch")          |
-| [bsub](#bsub)               | `array`   | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-bsub.md "compiler-v1.0.schema.json#/properties/bsub")              |
+| [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-sbatch.md "compiler-v1.0.schema.json#/properties/sbatch")           |
+| [bsub](#bsub)               | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-bsub.md "compiler-v1.0.schema.json#/properties/bsub")               |
+| [cobalt](#cobalt)           | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-cobalt.md "compiler-v1.0.schema.json#/properties/cobalt")           |
 | [batch](#batch)             | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/properties/batch")            |
-| [BB](#bb)                   | `array`   | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-bb.md "compiler-v1.0.schema.json#/properties/BB")                  |
-| [DW](#dw)                   | `array`   | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-dw.md "compiler-v1.0.schema.json#/properties/DW")                  |
+| [BB](#bb)                   | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-bb.md "compiler-v1.0.schema.json#/properties/BB")                   |
+| [DW](#dw)                   | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-dw.md "compiler-v1.0.schema.json#/properties/DW")                   |
 | [env](#env)                 | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/env")                |
 | [vars](#vars)               | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/vars")               |
 | [run_only](#run_only)       | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-run_only.md "compiler-v1.0.schema.json#/properties/run_only")      |
@@ -129,11 +130,17 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [compiler schema version 1.0](definitions-definitions-sbatch.md "compiler-v1.0.schema.json#/properties/sbatch")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-sbatch.md "compiler-v1.0.schema.json#/properties/sbatch")
 
 ### sbatch Type
 
 `string[]`
+
+### sbatch Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## bsub
 
@@ -145,11 +152,39 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [compiler schema version 1.0](definitions-definitions-bsub.md "compiler-v1.0.schema.json#/properties/bsub")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-bsub.md "compiler-v1.0.schema.json#/properties/bsub")
 
 ### bsub Type
 
 `string[]`
+
+### bsub Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+## cobalt
+
+This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value
+
+
+`cobalt`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-cobalt.md "compiler-v1.0.schema.json#/properties/cobalt")
+
+### cobalt Type
+
+`string[]`
+
+### cobalt Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## batch
 
@@ -177,11 +212,17 @@ Create burst buffer space, this specifies #BB options in your test.
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [compiler schema version 1.0](definitions-definitions-bb.md "compiler-v1.0.schema.json#/properties/BB")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-bb.md "compiler-v1.0.schema.json#/properties/BB")
 
 ### BB Type
 
 `string[]`
+
+### BB Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## DW
 
@@ -193,11 +234,17 @@ Specify Data Warp option (#DW) when using burst buffer.
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [compiler schema version 1.0](definitions-definitions-dw.md "compiler-v1.0.schema.json#/properties/DW")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-dw.md "compiler-v1.0.schema.json#/properties/DW")
 
 ### DW Type
 
 `string[]`
+
+### DW Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## env
 

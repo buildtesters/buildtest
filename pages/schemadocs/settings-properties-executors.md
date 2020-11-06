@@ -23,6 +23,7 @@ The executor section is used for declaring your executors that are responsible f
 | [local](#local)       | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-local.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/local")       |
 | [lsf](#lsf)           | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-lsf.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/lsf")           |
 | [slurm](#slurm)       | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-slurm.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/slurm")       |
+| [cobalt](#cobalt)     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-cobalt.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/cobalt")     |
 
 ## defaults
 
@@ -87,3 +88,19 @@ The `slurm` section is used for declaring Slurm executors for running jobs using
 ### slurm Type
 
 `object` ([Details](settings-properties-executors-properties-slurm.md))
+
+## cobalt
+
+The `cobalt` section is used for declaring Cobalt executors for running jobs using Cobalt scheduler
+
+
+`cobalt`
+
+-   is optional
+-   Type: `object` ([Details](settings-properties-executors-properties-cobalt.md))
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-cobalt.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/cobalt")
+
+### cobalt Type
+
+`object` ([Details](settings-properties-executors-properties-cobalt.md))

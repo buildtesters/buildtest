@@ -138,6 +138,17 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | ---- | -------- | -------- | :--------- |
 
+## Definitions group cobalt
+
+Reference this group by using
+
+```json
+{"$ref":"definitions.schema.json#/definitions/cobalt"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
 ## Definitions group BB
 
 Reference this group by using

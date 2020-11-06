@@ -21,11 +21,12 @@ The script schema is of `type: script` in sub-schema which is used for running s
 | :-------------------------- | --------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`  | Required | cannot be null | [script schema version 1.0](script-v1-properties-type.md "script-v1.0.schema.json#/properties/type")                  |
 | [description](#description) | `string`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-description.md "script-v1.0.schema.json#/properties/description") |
-| [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [script schema version 1.0](definitions-definitions-sbatch.md "script-v1.0.schema.json#/properties/sbatch")           |
-| [bsub](#bsub)               | `array`   | Optional | cannot be null | [script schema version 1.0](definitions-definitions-bsub.md "script-v1.0.schema.json#/properties/bsub")               |
+| [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-sbatch.md "script-v1.0.schema.json#/properties/sbatch")              |
+| [bsub](#bsub)               | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-bsub.md "script-v1.0.schema.json#/properties/bsub")                  |
+| [cobalt](#cobalt)           | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-cobalt.md "script-v1.0.schema.json#/properties/cobalt")              |
 | [batch](#batch)             | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-batch.md "script-v1.0.schema.json#/properties/batch")             |
-| [BB](#bb)                   | `array`   | Optional | cannot be null | [script schema version 1.0](definitions-definitions-bb.md "script-v1.0.schema.json#/properties/BB")                   |
-| [DW](#dw)                   | `array`   | Optional | cannot be null | [script schema version 1.0](definitions-definitions-dw.md "script-v1.0.schema.json#/properties/DW")                   |
+| [BB](#bb)                   | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-bb.md "script-v1.0.schema.json#/properties/BB")                      |
+| [DW](#dw)                   | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-dw.md "script-v1.0.schema.json#/properties/DW")                      |
 | [env](#env)                 | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-env.md "script-v1.0.schema.json#/properties/env")                 |
 | [vars](#vars)               | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-env.md "script-v1.0.schema.json#/properties/vars")                |
 | [executor](#executor)       | `string`  | Required | cannot be null | [script schema version 1.0](definitions-definitions-executor.md "script-v1.0.schema.json#/properties/executor")       |
@@ -93,11 +94,17 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-sbatch.md "script-v1.0.schema.json#/properties/sbatch")
+-   defined in: [script schema version 1.0](script-v1-properties-sbatch.md "script-v1.0.schema.json#/properties/sbatch")
 
 ### sbatch Type
 
 `string[]`
+
+### sbatch Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## bsub
 
@@ -109,11 +116,39 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-bsub.md "script-v1.0.schema.json#/properties/bsub")
+-   defined in: [script schema version 1.0](script-v1-properties-bsub.md "script-v1.0.schema.json#/properties/bsub")
 
 ### bsub Type
 
 `string[]`
+
+### bsub Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+## cobalt
+
+This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value
+
+
+`cobalt`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [script schema version 1.0](script-v1-properties-cobalt.md "script-v1.0.schema.json#/properties/cobalt")
+
+### cobalt Type
+
+`string[]`
+
+### cobalt Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## batch
 
@@ -141,11 +176,17 @@ Create burst buffer space, this specifies #BB options in your test.
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-bb.md "script-v1.0.schema.json#/properties/BB")
+-   defined in: [script schema version 1.0](script-v1-properties-bb.md "script-v1.0.schema.json#/properties/BB")
 
 ### BB Type
 
 `string[]`
+
+### BB Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## DW
 
@@ -157,11 +198,17 @@ Specify Data Warp option (#DW) when using burst buffer.
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-dw.md "script-v1.0.schema.json#/properties/DW")
+-   defined in: [script schema version 1.0](script-v1-properties-dw.md "script-v1.0.schema.json#/properties/DW")
 
 ### DW Type
 
 `string[]`
+
+### DW Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## env
 

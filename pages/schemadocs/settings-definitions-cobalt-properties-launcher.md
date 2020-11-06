@@ -1,10 +1,10 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/launcher
+https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cobalt/properties/launcher
 ```
 
-Specify batch launcher to use when submitting jobs, this is applicable for LSF and Slurm Executors.
+Specify the cobalt batch scheduler to use. This overrides the default `launcher` field. It must be `qsub`. 
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
@@ -19,8 +19,6 @@ Specify batch launcher to use when submitting jobs, this is applicable for LSF a
 
 **enum**: the value of this property must be equal to one of the following values:
 
-| Value      | Explanation |
-| :--------- | ----------- |
-| `"sbatch"` |             |
-| `"bsub"`   |             |
-| `"qsub"`   |             |
+| Value    | Explanation |
+| :------- | ----------- |
+| `"qsub"` |             |

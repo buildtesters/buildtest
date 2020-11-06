@@ -25,7 +25,7 @@ The script schema is of `type: python` in sub-schema which is used for running p
 | [pyver](#pyver)             | `array`   | Required | cannot be null | [python schema version 1.0](python-v1-properties-pyver.md "https&#x3A;//buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/pyver")                |
 | [package](#package)         | `object`  | Optional | cannot be null | [python schema version 1.0](python-v1-properties-package.md "https&#x3A;//buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/package")            |
 | [module](#module)           | `array`   | Optional | cannot be null | [python schema version 1.0](python-v1-properties-module.md "https&#x3A;//buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/module")              |
-| [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [python schema version 1.0](definitions-definitions-sbatch.md "https&#x3A;//buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/sbatch")           |
+| [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [python schema version 1.0](python-v1-properties-sbatch.md "https&#x3A;//buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/sbatch")              |
 | [python](#python)           | `string`  | Required | cannot be null | [python schema version 1.0](python-v1-properties-python.md "https&#x3A;//buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/python")              |
 | [script](#script)           | `string`  | Optional | cannot be null | [python schema version 1.0](python-v1-properties-script.md "https&#x3A;//buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/script")              |
 | [status](#status)           | `object`  | Optional | cannot be null | [python schema version 1.0](definitions-definitions-status.md "https&#x3A;//buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/status")           |
@@ -152,11 +152,17 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [python schema version 1.0](definitions-definitions-sbatch.md "https&#x3A;//buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/sbatch")
+-   defined in: [python schema version 1.0](python-v1-properties-sbatch.md "https&#x3A;//buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/sbatch")
 
 ### sbatch Type
 
 `string[]`
+
+### sbatch Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## python
 

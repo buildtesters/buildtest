@@ -78,6 +78,7 @@ Specify batch launcher to use when submitting jobs, this is applicable for LSF a
 | :--------- | ----------- |
 | `"sbatch"` |             |
 | `"bsub"`   |             |
+| `"qsub"`   |             |
 
 ## max_pend_time
 
