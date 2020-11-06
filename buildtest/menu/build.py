@@ -405,7 +405,6 @@ def run_phase(builders, executor, config_dict, printTable=False):
             continue
 
         valid_builders.append(builder)
-
         table["name"].append(builder.name)
         table["id"].append(builder.metadata["id"])
         table["executor"].append(builder.executor)
@@ -461,9 +460,6 @@ def run_phase(builders, executor, config_dict, printTable=False):
             for builder in poll_queue:
                 poll_info = executor.poll(builder)
 
-                print(json.dumps(poll_info, indent=2))
-                print("poll queue - ", poll_queue)
-                print("ignore queue - ", ignore_jobs)
                 # remove builder from poll_queue when state is True
                 if poll_info["job_complete"]:
                     logger.debug(
@@ -516,8 +512,7 @@ def run_phase(builders, executor, config_dict, printTable=False):
         failed_tests = 0
         total_tests = 0
         for builder in valid_builders:
-            result = builder.metadata["result"]
-            if result["state"] == "PASS":
+            if builder.metadata["result"]["state"] == "PASS":
                 passed_tests += 1
             else:
                 failed_tests += 1
@@ -525,8 +520,8 @@ def run_phase(builders, executor, config_dict, printTable=False):
             table["name"].append(builder.name)
             table["id"].append(builder.metadata["id"])
             table["executor"].append(builder.executor)
-            table["status"].append(result["state"])
-            table["returncode"].append(result["returncode"])
+            table["status"].append(builder.metadata["result"]["state"])
+            table["returncode"].append(builder.metadata["result"]["returncode"])
             table["testpath"].append(builder.metadata["testpath"])
 
             total_tests += 1

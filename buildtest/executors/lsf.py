@@ -84,10 +84,13 @@ class LSFExecutor(BaseExecutor):
         """This method is responsible for dispatching job to scheduler."""
 
         self.check()
-        self.result = {}
+
+        self.builder.metadata["result"]["state"] = "N/A"
+        self.builder.metadata["result"]["runtime"] = "0"
+        self.builder.metadata["result"]["returncode"] = "-1"
+
         # The job_id variable is used to store the JobID retrieved by bjobs
         self.job_id = 0
-        self.result["id"] = self.builder.metadata.get("id")
 
         os.chdir(self.builder.metadata["testroot"])
         self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
@@ -144,10 +147,6 @@ class LSFExecutor(BaseExecutor):
         msg = f"[{self.builder.metadata['name']}] JobID: {self.builder.metadata['jobid']} dispatched to scheduler"
         self.logger.debug(msg)
         print(msg)
-
-        self.result["state"] = "N/A"
-        self.result["runtime"] = "0"
-        self.result["returncode"] = "0"
 
     def poll(self):
         """This method will poll for job by using bjobs and return state of job.
@@ -222,12 +221,12 @@ class LSFExecutor(BaseExecutor):
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only
         # about first number
         if job_data["EXIT_CODE"] == "":
-            self.result["returncode"] = 0
+            self.builder.metadata["result"]["returncode"] = 0
         else:
-            self.result["returncode"] = int(job_data["EXIT_CODE"])
+            self.builder.metadata["result"]["returncode"] = int(job_data["EXIT_CODE"])
 
-        self.result["starttime"] = job_data["START_TIME"]
-        self.result["endtime"] = job_data["FINISH_TIME"]
+        self.builder.metadata["result"]["starttime"] = job_data["START_TIME"]
+        self.builder.metadata["result"]["endtime"] = job_data["FINISH_TIME"]
         self.builder.metadata["outfile"] = os.path.join(
             self.builder.testdir, job_data["OUTPUT_FILE"]
         )
@@ -235,12 +234,10 @@ class LSFExecutor(BaseExecutor):
             self.builder.testdir, job_data["ERROR_FILE"]
         )
 
-        self.logger.debug(f"[{self.builder.name}] result: {self.result}")
         self.logger.debug(
-            f"[{self.builder.name}] returncode: {self.result['returncode']}"
+            f"[{self.builder.name}] returncode: {self.builder.metadata['result']['returncode']}"
         )
         self.check_test_state()
-        self.builder.metadata["result"] = self.result
 
     def cancel(self):
         """Cancel LSF job, this is required if job exceeds max pending time in queue"""

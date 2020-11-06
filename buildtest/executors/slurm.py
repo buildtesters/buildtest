@@ -97,9 +97,13 @@ class SlurmExecutor(BaseExecutor):
 
         self.check()
         self.result = {}
+
+        self.builder.metadata["result"]["state"] = "N/A"
+        self.builder.metadata["result"]["runtime"] = "0"
+        self.builder.metadata["result"]["returncode"] = "-1"
+
         # The job_id variable is used to store the JobID retrieved by sacct
         self.job_id = 0
-        self.result["id"] = self.builder.metadata.get("id")
 
         os.chdir(self.builder.stage_dir)
         self.logger.debug(f"Changing to directory {self.builder.stage_dir}")
@@ -152,10 +156,6 @@ class SlurmExecutor(BaseExecutor):
         msg = f"[{self.builder.metadata['name']}] JobID: {self.builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
         self.logger.debug(msg)
-
-        self.result["state"] = "N/A"
-        self.result["runtime"] = "0"
-        self.result["returncode"] = "0"
 
     def poll(self):
         """This method will poll for job each interval specified by time interval
@@ -233,22 +233,22 @@ class SlurmExecutor(BaseExecutor):
 
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only
         # about first number
-        self.result["returncode"] = int(job_data["ExitCode"].split(":")[0])
+        self.builder.metadata["result"]["returncode"] = int(
+            job_data["ExitCode"].split(":")[0]
+        )
 
-        self.result["starttime"] = job_data["Start"]
-        self.result["endtime"] = job_data["End"]
-        self.result["runtime"] = job_data["Elapsed"]
+        self.builder.metadata["result"]["starttime"] = job_data["Start"]
+        self.builder.metadata["result"]["endtime"] = job_data["End"]
+        self.builder.metadata["result"]["runtime"] = job_data["Elapsed"]
 
         if self.builder.job_state == "CANCELLED":
             return
 
         self.builder.metadata["outfile"] = os.path.join(
-            job_data["WorkDir"].rstrip(),
-            f"{self.builder.metadata['name']}.out",
+            job_data["WorkDir"].rstrip(), f"{self.builder.metadata['name']}.out",
         )
         self.builder.metadata["errfile"] = os.path.join(
-            job_data["WorkDir"].rstrip(),
-            f"{self.builder.metadata['name']}.err",
+            job_data["WorkDir"].rstrip(), f"{self.builder.metadata['name']}.err",
         )
 
         shutil.copy2(
@@ -263,9 +263,8 @@ class SlurmExecutor(BaseExecutor):
                 self.builder.run_dir, os.path.basename(self.builder.metadata["errfile"])
             ),
         )
-        self.logger.debug(f"[{self.builder.name}] result: {self.result}")
         self.logger.debug(
-            f"[{self.builder.name}] returncode: {self.result['returncode']}"
+            f"[{self.builder.name}] returncode: {self.builder.metadata['result']['returncode']}"
         )
 
         slurm_cmd = f"scontrol show job {self.builder.metadata['jobid']}"
@@ -279,7 +278,6 @@ class SlurmExecutor(BaseExecutor):
         self.builder.metadata["job"]["scontrol"]["output"] = "".join(cmd.get_output())
         self.logger.debug(f"Executing slurm command: {slurm_cmd}")
         self.check_test_state()
-        self.builder.metadata["result"] = self.result
 
     def cancel(self):
         """Cancel slurm job, this operation is performed if job exceeds pending or runtime."""
