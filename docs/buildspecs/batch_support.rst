@@ -3,9 +3,6 @@
 Batch Scheduler Support
 ========================
 
-buildtest batch scheduler support is an experimental feature, currently buildtest
-supports Slurm and LSF Executor. In order for buildtest to submit jobs to scheduler,
-you must define a slurm or lsf executor.
 
 Slurm Executor
 ---------------
@@ -223,8 +220,8 @@ results followed by list of field and value output::
     2020-07-22 18:20:48,405 [base.py:598 - gather() ] - [DEBUG] field: State   value: FAILED
 
 
-LSF Executor (Experimental)
-----------------------------
+LSF Executor
+-------------
 
 The **LSFExecutor** is responsible for submitting jobs to LSF scheduler. The LSFExecutor
 behaves similar to SlurmExecutor with the five stages implemented as class methods:
@@ -278,6 +275,149 @@ The LSFExecutor ``gather`` method will retrieve the following format fields usin
 -    output_file
 -    error_file
 
+Cobalt Executor
+----------------
+
+`Cobalt <https://trac.mcs.anl.gov/projects/cobalt>`_ is a job scheduler developed
+by `Argonne National Laboratory <https://www.anl.gov/>`_ that runs on compute
+resources and IBM BlueGene series. Cobalt resembles `PBS <https://www.altair.com/pbs-works-documentation/>`_
+in terms of command line interface such as ``qsub``, ``qacct`` however they
+slightly differ in their behavior.
+
+Cobalt support has been tested on JLSE and `Theta <https://www.alcf.anl.gov/support-center/theta>`_
+system. Cobalt directives are specified using ``#COBALT`` this can be specified
+using ``cobalt`` property which accepts a list of strings. Shown below is an example
+using cobalt property.
+
+::
+
+    version: "1.0"
+    buildspecs:
+      yarrow_hostname:
+        executor: cobalt.yarrow
+        type: script
+        cobalt: ["-n 1", "--proccount 1", "-t 10"]
+        run: hostname
+
+In this example, we allocate 1 node with 1 processor for 10min. This is translated into
+the following job script::
+
+    #!/usr/bin/bash
+    #COBALT -n 1
+    #COBALT --proccount 1
+    #COBALT -t 10
+    #COBALT --jobname yarrow_hostname
+    source /home/shahzebsiddiqui/buildtest/var/executors/cobalt.yarrow/before_script.sh
+    hostname
+    source /home/shahzebsiddiqui/buildtest/var/executors/cobalt.yarrow/after_script.sh
+
+
+Let's run this test and notice the job states::
+
+    $ buildtest build -b yarrow_hostname.yml
+
+    +-------------------------------+
+    | Stage: Discovering Buildspecs |
+    +-------------------------------+
+
+
+    Discovered Buildspecs:
+
+    /home/shahzebsiddiqui/jlse_tests/yarrow_hostname.yml
+
+    +---------------------------+
+    | Stage: Parsing Buildspecs |
+    +---------------------------+
+
+     schemafile              | validstate   | buildspec
+    -------------------------+--------------+------------------------------------------------------
+     script-v1.0.schema.json | True         | /home/shahzebsiddiqui/jlse_tests/yarrow_hostname.yml
+
+    +----------------------+
+    | Stage: Building Test |
+    +----------------------+
+
+     name            | id       | type   | executor      | tags   | testpath
+    -----------------+----------+--------+---------------+--------+-------------------------------------------------------------------------------------------------------------
+     yarrow_hostname | f86b93f6 | script | cobalt.yarrow |        | /home/shahzebsiddiqui/buildtest/var/tests/cobalt.yarrow/yarrow_hostname/yarrow_hostname/3/stage/generate.sh
+
+    +----------------------+
+    | Stage: Running Test  |
+    +----------------------+
+
+    [yarrow_hostname] JobID: 284752 dispatched to scheduler
+     name            | id       | executor      | status   |   returncode | testpath
+    -----------------+----------+---------------+----------+--------------+-------------------------------------------------------------------------------------------------------------
+     yarrow_hostname | f86b93f6 | cobalt.yarrow | N/A      |           -1 | /home/shahzebsiddiqui/buildtest/var/tests/cobalt.yarrow/yarrow_hostname/yarrow_hostname/3/stage/generate.sh
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    builder: yarrow_hostname in None
+    [yarrow_hostname]: JobID 284752 in starting state
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    builder: yarrow_hostname in starting
+    [yarrow_hostname]: JobID 284752 in starting state
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    builder: yarrow_hostname in starting
+    [yarrow_hostname]: JobID 284752 in running state
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    builder: yarrow_hostname in running
+    [yarrow_hostname]: JobID 284752 in exiting state
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    builder: yarrow_hostname in done
+
+    +---------------------------------------------+
+    | Stage: Final Results after Polling all Jobs |
+    +---------------------------------------------+
+
+     name            | id       | executor      | status   |   returncode | testpath
+    -----------------+----------+---------------+----------+--------------+-------------------------------------------------------------------------------------------------------------
+     yarrow_hostname | f86b93f6 | cobalt.yarrow | PASS     |          0   | /home/shahzebsiddiqui/buildtest/var/tests/cobalt.yarrow/yarrow_hostname/yarrow_hostname/3/stage/generate.sh
+
+    +----------------------+
+    | Stage: Test Summary  |
+    +----------------------+
+
+    Executed 1 tests
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%
+
+When job starts, Cobalt will write a cobalt log file ``<JOBID>.cobaltlog`` which
+is provided by scheduler for troubleshooting. The output and error file are generated
+once job finishes. Cobalt job progresses through job state ``starting`` --> ``pending`` --> ``running`` --> ``exiting``.
+buildtest will capture Cobalt job details using ``qstat -lf <JOBID>`` and this
+is updated in the report file.
+
+buildtest will poll job at set interval, where we run ``qstat --header State <JobID>`` to
+check state of job, if job is finished then we gather results. Once job is finished,
+qstat will not be able to poll job this causes an issue where buildtest can't poll
+job since qstat will not return anything. This is a transient issue depending on when
+you poll job, generally at ALCF qstat will not report existing job within 30sec after
+job is terminated. buildtest will assume if it's able to poll job and is in `exiting`
+stage that job is complete, if its unable to retrieve this state we check for
+output and error file. If file exists we assume job is complete and buildtest will
+gather the results.
+
+buildtest will determine exit code by parsing cobalt log file, the file contains a line
+such as ::
+
+    Thu Nov 05 17:29:30 2020 +0000 (UTC) Info: task completed normally with an exit code of 0; initiating job cleanup and removal
+
+qstat has no job record for capturing returncode so buildtest must rely on Cobalt Log file.:
+
 Scheduler Agnostic Configuration
 ---------------------------------
 
@@ -289,23 +429,23 @@ for the **batch** field
 
 
 .. csv-table:: Batch Translation Table
-   :header: "Field", "Slurm", "LSF"
-   :widths: 25 25 25
+   :header: "Field", "Slurm", "LSF", "Cobalt"
+   :widths: 25 25 25 25
 
-   **account**, --account, -P
-   **begin**, --begin, -b
-   **cpucount**, --ntasks, -n
-   **email-address**, --mail-user, -u
-   **exclusive**, --exclusive=user, -x
-   **memory**, --mem, -M
-   **network**, --network, -network
-   **nodecount**, --nodes, -nnodes
-   **qos**, --qos, N/A
-   **queue**, --partition, -q
-   **tasks-per-core**, --ntasks-per-core, N/A
-   **tasks-per-node**, --ntasks-per-node, N/A
-   **tasks-per-socket**, --ntasks-per-socket, N/A
-   **timelimit**, --time, -W
+   **account**, --account, -P, --project
+   **begin**, --begin, -b, N/A
+   **cpucount**, --ntasks, -n, --proccount
+   **email-address**, --mail-user, -u, --notify
+   **exclusive**, --exclusive=user, -x, N/A
+   **memory**, --mem, -M, N/A
+   **network**, --network, -network, N/A
+   **nodecount**, --nodes, -nnodes, --nodecount
+   **qos**, --qos, N/A, N/A
+   **queue**, --partition, -q, --queue
+   **tasks-per-core**, --ntasks-per-core, N/A, N/A
+   **tasks-per-node**, --ntasks-per-node, N/A, N/A
+   **tasks-per-socket**, --ntasks-per-socket, N/A, N/A
+   **timelimit**, --time, -W, --time
 
 
 In this example, we rewrite the LSF buildspec to use ``batch`` instead of ``bsub``
@@ -367,9 +507,39 @@ generated script we see the following::
     sleep $SLEEP_TIME
 
 
-You may leverage ``batch`` with ``sbatch`` or ``bsub`` field to specify your job
-directives. If a particular field is not available in ``batch`` property then utilize ``sbatch``
-or ``bsub`` field to fill in rest of the arguments.
+The ``batch`` property can translate some fields into #COBALT directives. buildtest
+will support fields that are applicable with scheduler. Shown below is an example
+with 1 node using 10min that runs hostname using executor `cobalt.iris`::
+
+    version: "1.0"
+    buildspecs:
+      iris_hostname:
+        executor: cobalt.iris
+        type: script
+        batch:
+          nodecount: "1"
+          timelimit: "10"
+        run: hostname
+
+
+If we build the buildspec and inspect the testscript we see the following::
+
+    #!/usr/bin/bash
+    #COBALT --nodecount 1
+    #COBALT --time 10
+    #COBALT --jobname iris_hostname
+    source /home/shahzebsiddiqui/buildtest/var/executors/cobalt.iris/before_script.sh
+    hostname
+    source /home/shahzebsiddiqui/buildtest/var/executors/cobalt.iris/after_script.sh
+
+The first two lines ``#COBALT --nodecount 1`` and ``#COBALT --time 10`` are translated
+based on input from `batch` field. buildtest will automatically add ``#COBALT --jobname``
+based on the name of the test.
+
+You may leverage ``batch`` with ``sbatch``, ``bsub``,  or ``cobalt`` field to specify
+your job directives. If a particular field is not available in ``batch`` property
+then utilize ``sbatch``, ``bsub``, ``cobalt`` field to fill in rest of the arguments.
+
 
 Jobs exceeds `max_pend_time`
 -----------------------------
