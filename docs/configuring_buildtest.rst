@@ -97,7 +97,6 @@ buildtest configuration for Cori @ NERSC
 
 Let's take a look at Cori buildtest configuration::
 
-
     editor: vi
     buildspec_roots:
       - $HOME/buildtest-cori
@@ -108,6 +107,7 @@ Let's take a look at Cori buildtest configuration::
         pollinterval: 10
         launcher: sbatch
         max_pend_time: 90
+        account: nstaff
 
       local:
         bash:
@@ -130,10 +130,8 @@ Let's take a look at Cori buildtest configuration::
           description: "E4S testsuite locally"
           shell: bash
           before_script: |
-            cd $SCRATCH
-            git clone https://github.com/E4S-Project/testsuite.git
-            cd testsuite
             source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
+            cd $SCRATCH/testsuite
             source setup.sh
 
       slurm:
@@ -141,11 +139,12 @@ Let's take a look at Cori buildtest configuration::
           description: jobs for debug qos
           qos: debug
           cluster: cori
+          max_pend_time: 500
 
         shared:
           description: jobs for shared qos
           qos: shared
-          max_pend_time: 180
+          max_pend_time: 10
 
         bigmem:
           description: bigmem jobs
@@ -170,13 +169,27 @@ Let's take a look at Cori buildtest configuration::
 
         e4s:
           description: "E4S runner"
-          qos: debug
           cluster: cori
+          max_pend_time: 20000
           options:
-            - "-C haswell"
+            - "-q regular"
+            - "-C knl"
+            - "-t 10"
+            - "-n 4"
           before_script: |
+
             source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
-            source $HOME/buildtest-cori/e4s/setup.sh
+            cd $SCRATCH/testsuite
+            source setup.sh
+    compilers:
+      gcc:
+       builtin:
+         cc: "/usr/bin/gcc"
+         cxx: "/usr/bin/g++"
+         fc: "/usr/bin/gfortran"
+
+
+
 
 In this setting, we define the following executors
 
@@ -356,6 +369,59 @@ suitable for your site::
           queue: test
           description: Submit job to test queue
 
+
+buildtest configuration for JLSE @ ANL
+---------------------------------------
+
+`Joint Laboratory for System Evaluation (JLSE) <https://www.jlse.anl.gov/>`_ provides
+a testbed of emerging HPC systems, the default scheduler is Cobalt, this is
+defined in the ``cobalt`` section defined in the executor field.
+
+We set default launcher to qsub defined with ``launcher: qsub``. This is inherited
+for all batch executors. In each cobalt executor the ``queue`` property will specify
+the queue name to submit job, for instance the executor ``yarrow`` with ``queue: yarrow``
+will submit job using ``qsub -q yarrow`` when using this executor.
+
+::
+
+    editor: vi
+    buildspec_roots:
+      - $HOME/jlse_tests
+    executors:
+      defaults:
+         launcher: qsub
+         pollinterval: 10
+         max_pend_time: 10
+
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
+
+        csh:
+          description: submit jobs on local machine using csh shell
+          shell: csh
+
+        python:
+          description: submit jobs on local machine using python shell
+          shell: python
+
+      cobalt:
+        yarrow:
+          queue: yarrow
+
+        yarrow_debug:
+          queue: yarrow_debug
+
+        iris:
+          queue: iris
+
+        iris_debug:
+          queue: iris_debug
 
 CLI to buildtest configuration
 -----------------------------------------------
