@@ -81,7 +81,7 @@ generate test scripts. There are several ways to discover buildspecs that may in
   $ buildtest build --executor local.sh
 
   # combine all options together
-  # buildtest build -b example.yml -b system --tags network -x system/kernel.yml
+  $ buildtest build -b example.yml -b system --tags network -x system/kernel.yml
 
 buildtest will keep track of all test that can be queried using::
 
