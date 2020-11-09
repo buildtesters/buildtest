@@ -63,7 +63,7 @@ class CobaltExecutor(BaseExecutor):
         os.chdir(self.builder.stage_dir)
 
         batch_cmd = [self.launcher]
-        self.builder.metadata["result"] = {}
+
         self.builder.metadata["result"]["state"] = "N/A"
         self.builder.metadata["result"]["returncode"] = -1
         self.builder.metadata["result"]["runtime"] = 0
