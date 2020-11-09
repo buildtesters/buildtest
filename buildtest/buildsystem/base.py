@@ -74,6 +74,7 @@ class BuilderBase:
         self.metadata["buildspec"] = buildspec
         self.metadata["recipe"] = recipe
         self.metadata["tags"] = recipe.get("tags")
+        self.metadata["result"] = {}
 
         # A builder is required to define the type attribute
         if not hasattr(self, "type"):
