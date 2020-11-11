@@ -89,8 +89,8 @@ def load_settings(settings_path=None):
 
 def resolve_settings_file():
     """Returns path to buildtest settings file that should be used. If there
-       is a user defined buildtest settings ($HOME/.buildtest/config.yml) it will
-       be honored, otherwise default settings from buildtest will be used.
+    is a user defined buildtest settings ($HOME/.buildtest/config.yml) it will
+    be honored, otherwise default settings from buildtest will be used.
     """
     # if buildtest settings file exist return it otherwise return default file
     if os.path.exists(BUILDTEST_SETTINGS_FILE):
@@ -142,12 +142,12 @@ def validate_lsf_executors(lsf_executors):
 
 def validate_slurm_executors(slurm_executor):
     """This method will validate slurm executors, we check if partition, qos,
-       and cluster fields are valid values by retrieving details from slurm configuration.
-       These checks are performed on fields ``partition``, ``qos`` or ``cluster``
-       if specified in executor section.
+    and cluster fields are valid values by retrieving details from slurm configuration.
+    These checks are performed on fields ``partition``, ``qos`` or ``cluster``
+    if specified in executor section.
 
-       :param slurm_executor: list of slurm executors defined in loaded buildtest configuration
-       :type slurm_executor: dict
+    :param slurm_executor: list of slurm executors defined in loaded buildtest configuration
+    :type slurm_executor: dict
     """
     slurm_object = Slurm()
 
@@ -189,15 +189,15 @@ def validate_slurm_executors(slurm_executor):
 
 def validate_cobalt_executors(cobalt_executor):
     """Validate cobalt queue property by running ```qstat -Q <queue>``. If
-       its a non-zero exit code then queue doesn't exist otherwise it is a valid
-       queue.
+    its a non-zero exit code then queue doesn't exist otherwise it is a valid
+    queue.
     """
     cobalt = Cobalt()
 
     for executor in cobalt_executor:
         queue = cobalt_executor[executor].get("queue")
         # if queue property defined in cobalt executor name check if it exists
-        if queue not in cobalt.queues():
+        if queue not in cobalt.queues:
             raise BuildTestError(
                 f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'"
             )

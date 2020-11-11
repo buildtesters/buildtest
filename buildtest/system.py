@@ -24,7 +24,7 @@ class BuildTestSystem:
 
     def __init__(self):
         """Constructor method for BuildTestSystem(). Defines all system configuration using
-       class variable **system** which is a dictionary
+        class variable **system** which is a dictionary
         """
         self.logger = logging.getLogger(__name__)
         self.logger.debug("Starting System Compatibility Check")
@@ -57,8 +57,8 @@ class BuildTestSystem:
 
     def check_scheduler(self):
         """Check existence of batch scheduler and if so determine which scheduler it is.
-           Currently we support Slurm, LSF, and Cobalt we invoke each class and see if its
-           valid state. The checks determine if scheduler binaries exist in $PATH.
+        Currently we support Slurm, LSF, and Cobalt we invoke each class and see if its
+        valid state. The checks determine if scheduler binaries exist in $PATH.
         """
 
         slurm = Slurm()
@@ -79,11 +79,11 @@ class BuildTestSystem:
 
     def detect_module_tool(self):
         """Check if module tool exists, we check for Lmod or environment-modules by
-           checking if environment variable ``LMOD_VERSION``, ``MODULE_VERSION`` or
-           ``MODULES_CMD`` exist. We check this with input specification in buildtest
-           configuration. If user specifies lmod as the module tool but detected
-           environment-modules, buildtest should pick this up and report this as part
-           of configuration check
+        checking if environment variable ``LMOD_VERSION``, ``MODULE_VERSION`` or
+        ``MODULES_CMD`` exist. We check this with input specification in buildtest
+        configuration. If user specifies lmod as the module tool but detected
+        environment-modules, buildtest should pick this up and report this as part
+        of configuration check
         """
 
         self.system["modules_tool"] = None
@@ -97,9 +97,9 @@ class BuildTestSystem:
 
 class Scheduler:
     """This is a base Scheduler class used for implementing common methods for
-       detecting Scheduler details. The subclass implement specific queries that
-       are scheduler specific. The ``Slurm``, ``LSF`` and ``Cobalt`` class inherit
-       from Base Class ``Scheduler``.
+    detecting Scheduler details. The subclass implement specific queries that
+    are scheduler specific. The ``Slurm``, ``LSF`` and ``Cobalt`` class inherit
+    from Base Class ``Scheduler``.
     """
 
     state = True
@@ -114,15 +114,15 @@ class Scheduler:
 
     def get_state(self):
         """Return state of cluster, the return is a boolean to indicate scheduler
-           is valid or not.
+        is valid or not.
         """
         return self.state
 
 
 class Slurm(Scheduler):
     """The Slurm class implements common functions to query Slurm cluster including
-       partitions, qos, cluster. We check slurm binaries for existence and return
-       if slurm cluster is in valid state
+    partitions, qos, cluster. We check slurm binaries for existence and return
+    if slurm cluster is in valid state
     """
 
     # all of these commands are used later when submitting, polling or cancelling job
@@ -199,8 +199,11 @@ class Cobalt(Scheduler):
 
     def __init__(self):
         self.check()
+        self.get_queues()
 
     def get_queues(self):
+        """Get all Cobalt queues by running ``qstat -Ql`` and parsing output"""
+
         query = "qstat -Ql"
         cmd = BuildTestCommand(query)
         cmd.execute()
@@ -208,8 +211,8 @@ class Cobalt(Scheduler):
 
         # remove all None from list
         content = [line for line in content if line is not None]
-        self.queue = []
+        self.queues = []
         for line in content:
             if line.startswith("Name"):
                 name = line.partition(":")[2].strip()
-                self.queue += name
+                self.queues.append(name)
