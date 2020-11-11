@@ -1,7 +1,7 @@
 # Untitled undefined type in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/pgi/patternProperties
+https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/pgi/patternProperties
 ```
 
 
