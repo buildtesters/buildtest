@@ -26,7 +26,6 @@ class LSFExecutor(BaseExecutor):
     """
 
     type = "lsf"
-    steps = ["check", "dispatch", "poll", "gather", "close"]
     job_state = None
     poll_cmd = "bjobs"
     # format fields we retrieve in gather step
@@ -51,18 +50,6 @@ class LSFExecutor(BaseExecutor):
         "error_file",
     ]
 
-    def check(self):
-        """Checking binary for lsf launcher and poll command. If not found we raise error"""
-        if not shutil.which(self.launcher):
-            sys.exit(
-                f"[{self.builder.metadata['name']}]: Cannot find launcher program: {self.launcher}"
-            )
-
-        if not shutil.which(self.poll_cmd):
-            sys.exit(
-                f"[{self.builder.metadata['name']}]: Cannot find poll command: {self.poll_cmd}"
-            )
-
     def load(self):
         """Load the a LSF executor configuration from buildtest settings."""
 
@@ -82,8 +69,6 @@ class LSFExecutor(BaseExecutor):
 
     def dispatch(self):
         """This method is responsible for dispatching job to scheduler."""
-
-        self.check()
 
         self.builder.metadata["result"]["state"] = "N/A"
         self.builder.metadata["result"]["runtime"] = "0"

@@ -42,34 +42,35 @@ compilers:
     cuda: [cuda, CUDA]
     pgi: [pgi, PGI, PrgEnv-pgi]
 
-  gcc:
-    default:
-      cc: /usr/bin/gcc
-      cxx: /usr/bin/g++
-      fc: /usr/bin/gfortran
-    gcc@7.2.0:
-      cc: 'cc'
-      cxx: 'cxx'
-      fc: 'fc'
-      modules: [gcc/7.2.0]
-  intel:
-    intel@2019:
-      cc: 'icc'
-      cxx: 'icpc'
-      fc: 'ifort'
-      modules: [gcc/7.2.0, intel/2019]
-  cray:
-    craype@2.6.2:
-      cc: 'cc'
-      cxx: 'CC'
-      fc: 'fc'
-      modules: [craype/2.6.2]
-  clang:
-    clang@12.0.0:
-      cc: 'clang'
-      cxx: 'clang++'
-      modules: [clang/12.0]
-  cuda:
-    cuda@11.0:
-      cc: 'nvcc'
-      modules: [cuda/11.0]
+  compiler:
+    gcc:
+      default:
+        cc: /usr/bin/gcc
+        cxx: /usr/bin/g++
+        fc: /usr/bin/gfortran
+      gcc@7.2.0:
+        cc: 'cc'
+        cxx: 'cxx'
+        fc: 'fc'
+        modules: [gcc/7.2.0]
+    intel:
+      intel@2019:
+        cc: 'icc'
+        cxx: 'icpc'
+        fc: 'ifort'
+        modules: [gcc/7.2.0, intel/2019]
+    cray:
+      craype@2.6.2:
+        cc: 'cc'
+        cxx: 'CC'
+        fc: 'fc'
+        modules: [craype/2.6.2]
+    clang:
+      clang@12.0.0:
+        cc: 'clang'
+        cxx: 'clang++'
+        modules: [clang/12.0]
+    cuda:
+      cuda@11.0:
+        cc: 'nvcc'
+        modules: [cuda/11.0]
