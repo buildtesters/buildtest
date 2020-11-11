@@ -170,7 +170,7 @@ buildspecs:
   sbatch_example:
     type: script
     executor: local.bash
-    description: This test pass sbatch options in test.
+    description: This test runs hostname using sbatch directives
     sbatch:
       - "-t 10:00:00"
       - "-p normal"
@@ -181,10 +181,19 @@ buildspecs:
   bsub_example:
     type: script
     executor: local.bash
-    description: This test pass bsub options in test.
+    description: This test runs hostname using bsub directives
     bsub:
       - "-W 00:30"
       - "-N 1"
+    run: hostname
+
+  cobalt_example:
+    type: script
+    executor: local.bash
+    description: This test runs hostname using cobalt directives
+    cobalt:
+      - "-t 30"
+      - "-n 1"
     run: hostname
 
   skip_example:

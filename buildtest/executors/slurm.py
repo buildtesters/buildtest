@@ -53,25 +53,6 @@ class SlurmExecutor(BaseExecutor):
         "WorkDir",
     ]
 
-    def check(self):
-        """Check slurm binary is available before running tests. This will check
-        the launcher (sbatch) and sacct are available. If qos, partition, and
-        cluster key defined we check if its a valid entity in slurm configuration.
-        For partition, we also check if its in the ``up`` state before dispatching
-        jobs. This method will raise an exception of type SystemExit if any
-        checks fail.
-        """
-
-        if not shutil.which(self.launcher):
-            sys.exit(
-                f"[{self.builder.metadata['name']}]: Cannot find launcher program: {self.launcher}"
-            )
-
-        if not shutil.which(self.poll_cmd):
-            sys.exit(
-                f"[{self.builder.metadata['name']}]: Cannot find slurm poll command: {self.poll_cmd}"
-            )
-
     def load(self):
         """Load the a slurm executor configuration from buildtest settings."""
 
@@ -95,7 +76,6 @@ class SlurmExecutor(BaseExecutor):
     def dispatch(self):
         """This method is responsible for dispatching job to slurm scheduler."""
 
-        self.check()
         self.result = {}
 
         self.builder.metadata["result"]["state"] = "N/A"

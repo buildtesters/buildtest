@@ -45,35 +45,66 @@
               "pgi": { "$ref": "#/definitions/unique_string_array" }
             }
           },
-          "gcc": {
-            "description": "Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler. The GNU compiler wrapper are ``gcc``, ``g++`` and ``gfortran``. ",
+          "compiler": {
             "type": "object",
-            "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
-            },
-          "intel": {
-            "description": "Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler. The Intel compiler wrapper are ``icc``, ``icpc`` and ``ifort``. ",
-            "type": "object",
-            "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
-          },
-          "cray": {
-            "description": "Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler. The Cray compiler wrapper are ``cc``, ``CC`` and ``ftn``.",
-            "type": "object",
-            "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
-          },
-          "pgi": {
-            "description": "Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler. The PGI compiler wrapper are ``pgcc``, ``pgc++`` and ``pgfortran``.",
-            "type": "object",
-            "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
-          },
-          "clang": {
-            "description": "Declaration of one or more Clang compilers where we define C, C++ compiler. The Clang compiler wrapper are ``clang``, ``clang++``.",
-            "type": "object",
-            "patternProperties": { "^.*$": { "$ref": "#/definitions/clang" } }
-          },
-          "cuda": {
-            "description": "Declaration of one or more Cuda compilers where we define C compiler. The Cuda compiler wrapper is ``nvcc``. ",
-            "type": "object",
-            "patternProperties": { "^.*$": { "$ref": "#/definitions/cuda" } }
+            "additionalProperties": false,
+            "description": "Start of compiler declaration",
+            "properties": {
+              "gcc": {
+                "description": "Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler. The GNU compiler wrapper are ``gcc``, ``g++`` and ``gfortran``. ",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/compiler_section"
+                  }
+                }
+              },
+              "intel": {
+                "description": "Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler. The Intel compiler wrapper are ``icc``, ``icpc`` and ``ifort``. ",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/compiler_section"
+                  }
+                }
+              },
+              "cray": {
+                "description": "Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler. The Cray compiler wrapper are ``cc``, ``CC`` and ``ftn``.",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/compiler_section"
+                  }
+                }
+              },
+              "pgi": {
+                "description": "Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler. The PGI compiler wrapper are ``pgcc``, ``pgc++`` and ``pgfortran``.",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/compiler_section"
+                  }
+                }
+              },
+              "clang": {
+                "description": "Declaration of one or more Clang compilers where we define C, C++ compiler. The Clang compiler wrapper are ``clang``, ``clang++``.",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/clang"
+                  }
+                }
+              },
+              "cuda": {
+                "description": "Declaration of one or more Cuda compilers where we define C compiler. The Cuda compiler wrapper is ``nvcc``. ",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/cuda"
+                  }
+                }
+              }
+            }
           }
         }
       },

@@ -3,6 +3,7 @@ import json
 import os
 import shutil
 import sys
+import yaml
 from jsonschema import ValidationError
 from buildtest import BUILDTEST_VERSION
 from buildtest.schemas.utils import get_schema_fullpath
@@ -18,13 +19,28 @@ from buildtest.system import BuildTestSystem
 
 def func_config_compiler(args=None):
     """This method implements ``buildtest config compiler`` which shows compiler
-       section from buildtest configuration in JSON format
+       section from buildtest configuration.
     """
 
     settings_file = resolve_settings_file()
     configuration = load_settings(settings_file)
     compilers = configuration.get("compilers") or {}
-    print(json.dumps(compilers, indent=2))
+    compiler_dict = compilers.get("compiler")
+
+    if not compiler_dict:
+        sys.exit("No compilers defined")
+
+    if args.json:
+        print(json.dumps(compiler_dict, indent=2))
+    if args.yaml:
+        print(yaml.dump(compiler_dict, default_flow_style=False))
+    if args.list:
+        compiler_names = []
+        for name in compiler_dict:
+            if isinstance(compiler_dict[name], dict):
+                compiler_names += compiler_dict[name].keys()
+
+        [print(name) for name in compiler_names]
 
 
 def func_config_validate(args=None):

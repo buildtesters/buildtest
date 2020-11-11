@@ -9,13 +9,9 @@ from buildtest.defaults import (
     DEFAULT_SETTINGS_FILE,
     DEFAULT_SETTINGS_SCHEMA,
 )
-from buildtest.system import (
-    get_slurm_partitions,
-    get_slurm_qos,
-    get_slurm_clusters,
-    get_lsf_queues,
-)
+from buildtest.system import BuildTestSystem, Slurm, LSF, Cobalt
 from buildtest.utils.command import BuildTestCommand
+from buildtest.exceptions import BuildTestError
 
 
 logger = logging.getLogger(__name__)
@@ -50,14 +46,26 @@ def check_settings(settings_path=None, executor_check=True, retrieve_settings=Fa
     # behavior, this can be disabled only for regression test where executor check
     # such as slurm check are not applicable.
     if executor_check:
+
+        system = BuildTestSystem()
+
         slurm_executors = user_schema.get("executors", {}).get("slurm")
         lsf_executors = user_schema.get("executors", {}).get("lsf")
+        cobalt_executors = user_schema.get("executors", {}).get("cobalt")
 
         if slurm_executors:
             validate_slurm_executors(slurm_executors)
 
         if lsf_executors:
             validate_lsf_executors(lsf_executors)
+
+        if cobalt_executors:
+            validate_cobalt_executors(cobalt_executors)
+
+        if user_schema.get("modules_tool") != system.system["modules_tool"]:
+            raise BuildTestError(
+                f"Cannot find modules_tool: {user_schema.get('modules_tool')} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool."
+            )
 
     if retrieve_settings:
         return user_schema
@@ -81,8 +89,8 @@ def load_settings(settings_path=None):
 
 def resolve_settings_file():
     """Returns path to buildtest settings file that should be used. If there
-       is a user defined buildtest settings ($HOME/.buildtest/config.yml) it will
-       be honored, otherwise default settings from buildtest will be used.
+    is a user defined buildtest settings ($HOME/.buildtest/config.yml) it will
+    be honored, otherwise default settings from buildtest will be used.
     """
     # if buildtest settings file exist return it otherwise return default file
     if os.path.exists(BUILDTEST_SETTINGS_FILE):
@@ -97,7 +105,8 @@ def validate_lsf_executors(lsf_executors):
     :param lsf_executors: A list of LSF executors to validate
     :type lsf_executors: dict
     """
-    queue_dict = get_lsf_queues()
+    lsf = LSF()
+    queue_dict = lsf.get_queues()
 
     queue_list = []
     valid_queue_state = "Open:Active"
@@ -112,7 +121,7 @@ def validate_lsf_executors(lsf_executors):
         # if queue field is defined check if its valid queue
         if queue:
             if queue not in queue_list:
-                sys.exit(
+                raise BuildTestError(
                     f"{lsf_executors[executor]['queue']} not a valid partition!. Please select one of the following partitions: {queue_list}"
                 )
 
@@ -126,33 +135,30 @@ def validate_lsf_executors(lsf_executors):
                 queue_state = name["STATUS"]
                 # if state not Open:Active we raise error
                 if not queue_state == valid_queue_state:
-                    sys.exit(
+                    raise BuildTestError(
                         f"{lsf_executors[executor]['queue']} is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs"
                     )
 
 
 def validate_slurm_executors(slurm_executor):
     """This method will validate slurm executors, we check if partition, qos,
-       and cluster fields are valid values by retrieving details from slurm configuration.
-       These checks are performed on fields ``partition``, ``qos`` or ``cluster``
-       if specified in executor section.
+    and cluster fields are valid values by retrieving details from slurm configuration.
+    These checks are performed on fields ``partition``, ``qos`` or ``cluster``
+    if specified in executor section.
 
-       :param slurm_executor: list of slurm executors defined in loaded buildtest configuration
-       :type slurm_executor: dict
+    :param slurm_executor: list of slurm executors defined in loaded buildtest configuration
+    :type slurm_executor: dict
     """
-
-    slurm_partitions = get_slurm_partitions()
-    slurm_qos = get_slurm_qos()
-    slurm_cluster = get_slurm_clusters()
+    slurm_object = Slurm()
 
     for executor in slurm_executor:
 
         # if 'partition' key defined check if its valid partition
         if slurm_executor[executor].get("partition"):
 
-            if slurm_executor[executor]["partition"] not in slurm_partitions:
-                sys.exit(
-                    f"{slurm_executor[executor]['partition']} not a valid partition!. Please select one of the following partitions: {slurm_partitions}"
+            if slurm_executor[executor]["partition"] not in slurm_object.partitions:
+                raise BuildTestError(
+                    f"{slurm_executor[executor]['partition']} not a valid partition!. Please select one of the following partitions: {slurm_object.partitions}"
                 )
 
             query = f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
@@ -162,20 +168,36 @@ def validate_slurm_executors(slurm_executor):
             part_state = part_state.rstrip()
             # check if partition is in 'up' state. If not we raise an error.
             if part_state != "up":
-                sys.exit(
+                raise BuildTestError(
                     f"{slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
                 )
         # check if 'qos' key is valid qos
         if slurm_executor[executor].get("qos"):
 
-            if slurm_executor[executor]["qos"] not in slurm_qos:
-                sys.exit(
-                    f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm_qos}"
+            if slurm_executor[executor]["qos"] not in slurm_object.qos:
+                raise BuildTestError(
+                    f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm_object.qos}"
                 )
         # check if 'cluster' key is valid slurm cluster
         if slurm_executor[executor].get("cluster"):
 
-            if slurm_executor[executor]["cluster"] not in slurm_cluster:
-                sys.exit(
-                    f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_cluster}"
+            if slurm_executor[executor]["cluster"] not in slurm_object.clusters:
+                raise BuildTestError(
+                    f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_object.clusters}"
                 )
+
+
+def validate_cobalt_executors(cobalt_executor):
+    """Validate cobalt queue property by running ```qstat -Q <queue>``. If
+    its a non-zero exit code then queue doesn't exist otherwise it is a valid
+    queue.
+    """
+    cobalt = Cobalt()
+
+    for executor in cobalt_executor:
+        queue = cobalt_executor[executor].get("queue")
+        # if queue property defined in cobalt executor name check if it exists
+        if queue not in cobalt.queues:
+            raise BuildTestError(
+                f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'"
+            )

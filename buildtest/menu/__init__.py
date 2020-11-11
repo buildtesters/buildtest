@@ -256,10 +256,14 @@ class BuildTestParser:
         """This method adds argparse argument for ``buildtest config``"""
 
         parser_config = self.subparsers.add_parser("config")
-        # #################### buildtest config   ###############################
+
         subparsers_config = parser_config.add_subparsers(
             description="buildtest configuration"
         )
+        compiler_config = subparsers_config.add_parser(
+            "compilers", help="search or find compilers "
+        )
+
         parser_config_view = subparsers_config.add_parser(
             "view", help="View Buildtest Configuration File"
         )
@@ -269,14 +273,27 @@ class BuildTestParser:
         parser_config_summary = subparsers_config.add_parser(
             "summary", help="Provide summary of buildtest settings."
         )
-        parser_config_compiler = subparsers_config.add_parser(
-            "compilers", help="List compiler details"
-        )
 
+        compiler_config.add_argument(
+            "-j",
+            "--json",
+            action="store_true",
+            help="List compiler details in JSON format",
+        )
+        compiler_config.add_argument(
+            "-y",
+            "--yaml",
+            action="store_true",
+            help="List compiler details in YAML format",
+        )
+        compiler_config.add_argument(
+            "-l", "--list", action="store_true", help="List all compilers "
+        )
         parser_config_view.set_defaults(func=func_config_view)
         parser_config_validate.set_defaults(func=func_config_validate)
         parser_config_summary.set_defaults(func=func_config_summary)
-        parser_config_compiler.set_defaults(func=func_config_compiler)
+
+        compiler_config.set_defaults(func=func_config_compiler)
 
     def report_menu(self):
         """This method implements the ``buildtest report`` command options"""
