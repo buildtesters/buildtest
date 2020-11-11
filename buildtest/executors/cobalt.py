@@ -250,8 +250,9 @@ class CobaltExecutor(BaseExecutor):
         )
         """
 
-        cobaltlog = str(self.builder.metadata["jobid"]) + ".cobaltlog"
-        if not shutil.which(cobaltlog):
+        cobaltlog = os.path.join(self.builder.stage_dir, str(self.builder.metadata["jobid"]) + ".cobaltlog")
+        self.logger.debug(f"Cobalt Log File written to {cobaltlog}")
+        if os.path.exists(cobaltlog):
             content = read_file(cobaltlog)
             pattern = r"(exit code of.)(\d+)(\;)"
             m = re.search(pattern, content)
