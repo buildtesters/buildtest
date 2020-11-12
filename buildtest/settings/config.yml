@@ -1,4 +1,5 @@
 editor: vi
+moduletool: N/A
 executors:
   local:
     bash:
