@@ -22,7 +22,6 @@
 # SOFTWARE.
 
 buildtest_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
-echo "buildtest root is ${buildtest_root}"
 
 echo "Installing buildtest dependencies"
 pip install -r ${buildtest_root}/requirements.txt &> /dev/null
@@ -33,5 +32,4 @@ export PATH=${bin}:$PATH
 export PYTHONPATH=${buildtest_root}:$PYTHONPATH
 
 buildtest_path=$(which buildtest)
-echo "Adding ${bin} to PATH variable"
 echo "buildtest command: ${buildtest_path}"

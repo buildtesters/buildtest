@@ -62,9 +62,10 @@ def check_settings(settings_path=None, executor_check=True, retrieve_settings=Fa
         if cobalt_executors:
             validate_cobalt_executors(cobalt_executors)
 
-        if user_schema.get("modules_tool") != system.system["modules_tool"]:
+        if user_schema.get("moduletool") != "N/A" and user_schema.get("moduletool") != system.system["moduletool"]:
+
             raise BuildTestError(
-                f"Cannot find modules_tool: {user_schema.get('modules_tool')} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool."
+                f"Cannot find modules_tool: {user_schema.get('moduletool')} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool."
             )
 
     if retrieve_settings:

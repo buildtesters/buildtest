@@ -3,7 +3,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "buildtest configuration schema",
   "type": "object",
-  "required": ["executors", "editor"],
+  "required": ["executors", "editor", "moduletool"],
   "additionalProperties": false,
   "properties": {
       "additionalProperties": false,
@@ -22,10 +22,10 @@
         "type": "string",
         "description": "Specify full path to test directory where buildtest will write tests."
       },
-      "modules_tool": {
+      "moduletool": {
         "type": "string",
         "description": "Specify modules tool used for interacting with ``module`` command. ",
-        "enum": ["environment-modules", "lmod"]
+        "enum": ["environment-modules", "lmod", "N/A"]
       },
       "compilers": {
         "type": "object",
@@ -111,7 +111,7 @@
       "executors": {
         "type": "object",
         "additionalProperties": false,
-        "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``ssh``. The executors are referenced in buildspec using ``executor`` field.",
+        "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``cobalt``. The executors are referenced in buildspec using ``executor`` field.",
         "properties": {
            "defaults": {
             "type": "object",
@@ -234,6 +234,7 @@
       },
       "local": {
           "type": "object",
+          "description": "An instance object of local executor",
           "additionalProperties": false,
           "required": ["shell"],
           "properties": {
@@ -247,6 +248,7 @@
       "slurm": {
           "type": "object",
           "additionalProperties": false,
+          "description": "An instance object of slurm executor",
           "properties": {
               "description": {"type": "string", "description": "description field for documenting your executor"},
               "launcher": { "type": "string", "enum": ["sbatch"], "description": "Specify the slurm batch scheduler to use. This overrides the default ``launcher`` field. This must be ``sbatch``. " },
@@ -254,38 +256,40 @@
               "cluster": {"type":  "string", "description": "Specify the slurm cluster you want to use ``-M <cluster>``"},
               "partition": {"type":  "string", "description": "Specify the slurm partition you want to use ``-p <partition>``"},
               "qos": {"type":  "string", "description": "Specify the slurm qos you want to use ``-q <qos>``"},
-              "before_script": { "#ref":  "#/definitions/script" },
-              "after_script": { "#ref":  "#/definitions/script" },
-              "max_pend_time": {"$ref":  "#/definitions/max_pend_time"},
-              "account": {"$ref":  "#/definitions/account"}
+              "before_script": { "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.", "#ref":  "#/definitions/script" },
+              "after_script": { "description": "The ``after_script`` section can be used to specify commands at end of test. The script will be sourced in active shell.","#ref":  "#/definitions/script" },
+              "max_pend_time": {"description": "overrides default ``max_pend_time`` value", "$ref":  "#/definitions/max_pend_time"},
+              "account": {"description": "overrides default ``account`` value", "$ref":  "#/definitions/account"}
            }
        },
       "lsf": {
           "type": "object",
+          "description": "An instance object of lsf executor",
           "additionalProperties": false,
           "properties": {
               "description": {"type": "string", "description": "description field for documenting your executor"},
               "launcher": { "type": "string", "enum": ["bsub"], "description": "Specify the lsf batch scheduler to use. This overrides the default ``launcher`` field. It must be ``bsub``. " },
               "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any options for ``bsub`` for this executor when running all jobs associated to this executor" },
               "queue": {"type":  "string", "description": "Specify the lsf queue you want to use ``-q <queue>``"},
-              "before_script": { "#ref":  "#/definitions/script" },
-              "after_script": { "#ref":  "#/definitions/script" },
-              "max_pend_time": {"$ref":  "#/definitions/max_pend_time"},
-              "account": {"$ref":  "#/definitions/account"}
+              "before_script": { "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.", "#ref":  "#/definitions/script" },
+              "after_script": { "description": "The ``after_script`` section can be used to specify commands at end of test. The script will be sourced in active shell.","#ref":  "#/definitions/script" },
+              "max_pend_time": {"description": "overrides default ``max_pend_time`` value", "$ref":  "#/definitions/max_pend_time"},
+              "account": {"description": "overrides default ``account`` value", "$ref":  "#/definitions/account"}
           }
        },
       "cobalt": {
           "type": "object",
+          "description": "An instance object of cobalt executor",
           "additionalProperties": false,
           "properties": {
               "description": {"type": "string", "description": "description field for documenting your executor"},
               "launcher": { "type": "string", "enum": ["qsub"], "description": "Specify the cobalt batch scheduler to use. This overrides the default ``launcher`` field. It must be ``qsub``. " },
               "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any options for ``qsub`` for this executor when running all jobs associated to this executor" },
               "queue": {"type":  "string", "description": "Specify the lsf queue you want to use ``-q <queue>``"},
-              "before_script": { "#ref":  "#/definitions/script" },
-              "after_script": { "#ref":  "#/definitions/script" },
-              "max_pend_time": {"$ref":  "#/definitions/max_pend_time"},
-              "account": {"$ref":  "#/definitions/account"}
+              "before_script": { "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.", "#ref":  "#/definitions/script" },
+              "after_script": { "description": "The ``after_script`` section can be used to specify commands at end of test. The script will be sourced in active shell.","#ref":  "#/definitions/script" },
+              "max_pend_time": {"description": "overrides default ``max_pend_time`` value", "$ref":  "#/definitions/max_pend_time"},
+              "account": {"description": "overrides default ``account`` value", "$ref":  "#/definitions/account"}
           }
        }
     }

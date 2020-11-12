@@ -86,13 +86,13 @@ class BuildTestSystem:
         of configuration check
         """
 
-        self.system["modules_tool"] = None
+        self.system["moduletool"] = None
 
         if os.getenv("LMOD_VERSION"):
-            self.system["modules_tool"] = "lmod"
+            self.system["moduletool"] = "lmod"
         # 3.x module versions define MODULE_VERSION while 4.5 version has MODULES_CMD, it doesn't have MODULE_VERSION set
         elif os.getenv("MODULE_VERSION") or os.getenv("MODULES_CMD"):
-            self.system["modules_tool"] = "environment-modules"
+            self.system["moduletool"] = "environment-modules"
 
 
 class Scheduler:

@@ -17,6 +17,7 @@ from buildtest.menu.config import (
     func_config_validate,
     func_config_view,
     func_config_compiler,
+    func_compiler_find
 )
 
 from buildtest.menu.report import func_report
@@ -263,6 +264,8 @@ class BuildTestParser:
         compiler_config = subparsers_config.add_parser(
             "compilers", help="search or find compilers "
         )
+        subparsers_compiler_find = compiler_config.add_subparsers(description="Find new compilers and add them to detected compiler section")
+        compiler_find = subparsers_compiler_find.add_parser("find", help = "Find compilers")
 
         parser_config_view = subparsers_config.add_parser(
             "view", help="View Buildtest Configuration File"
@@ -270,6 +273,7 @@ class BuildTestParser:
         parser_config_validate = subparsers_config.add_parser(
             "validate", help="Validate buildtest settings file with schema."
         )
+
         parser_config_summary = subparsers_config.add_parser(
             "summary", help="Provide summary of buildtest settings."
         )
@@ -289,11 +293,13 @@ class BuildTestParser:
         compiler_config.add_argument(
             "-l", "--list", action="store_true", help="List all compilers "
         )
+
         parser_config_view.set_defaults(func=func_config_view)
         parser_config_validate.set_defaults(func=func_config_validate)
         parser_config_summary.set_defaults(func=func_config_summary)
 
         compiler_config.set_defaults(func=func_config_compiler)
+        compiler_find.set_defaults(func=func_compiler_find)
 
     def report_menu(self):
         """This method implements the ``buildtest report`` command options"""

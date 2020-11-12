@@ -24,7 +24,6 @@
 set command=($_)
 set sourced_file=`readlink -f $command[2]`
 set buildtest_root=`dirname "$sourced_file"`
-echo "buildtest root is ${buildtest_root}"
 
 echo "Installing buildtest dependencies"
 pip install -r ${buildtest_root}/requirements.txt > /dev/null
@@ -39,5 +38,4 @@ else
 endif
 
 set buildtest_path=`which buildtest`
-echo "Adding ${bin} to PATH variable"
 echo "buildtest command: ${buildtest_path}"
