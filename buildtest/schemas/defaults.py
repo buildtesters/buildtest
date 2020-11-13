@@ -13,13 +13,16 @@ schema_table["names"] = [
     "compiler-v1.0.schema.json",
     "script-v1.0.schema.json",
 ]
+schema_table["versions"] = {}
+schema_table["versions"]["script"] = ["1.0"]
+schema_table["versions"]["compiler"] = ["1.0"]
+
 schema_table["global.schema.json"] = {}
 schema_table["global.schema.json"]["path"] = os.path.join(here, "global.schema.json")
 schema_table["global.schema.json"]["recipe"] = load_schema(
     schema_table["global.schema.json"]["path"]
 )
 schema_table["script-v1.0.schema.json"] = {}
-schema_table["script-v1.0.schema.json"]["versions"] = ["1.0"]
 schema_table["script-v1.0.schema.json"]["path"] = os.path.join(
     here, "script-v1.0.schema.json"
 )
@@ -27,7 +30,6 @@ schema_table["script-v1.0.schema.json"]["recipe"] = load_schema(
     schema_table["script-v1.0.schema.json"]["path"]
 )
 schema_table["compiler-v1.0.schema.json"] = {}
-schema_table["compiler-v1.0.schema.json"]["versions"] = ["1.0"]
 schema_table["compiler-v1.0.schema.json"]["path"] = os.path.join(
     here, "compiler-v1.0.schema.json"
 )

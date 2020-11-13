@@ -1,0 +1,38 @@
+version: "1.0"
+buildspecs:
+  _bin_sh_shell:
+    executor: local.sh
+    type: script
+    description: "/bin/sh shell example"
+    shell: /bin/sh
+    run: "bzip2 --help"
+
+  _bin_bash_shell:
+    executor: local.bash
+    type: script
+    description: "/bin/bash shell example"
+    shell: /bin/bash
+    run: "bzip2 -h"
+
+  bash_shell:
+    executor: local.bash
+    type: script
+    description: "bash shell example"
+    shell: bash
+    run: "echo $SHELL"
+
+  sh_shell:
+    executor: local.sh
+    type: script
+    description: "sh shell example"
+    shell: sh
+    run: "echo $SHELL"
+
+  shell_options:
+    executor: local.sh
+    type: script
+    description: "shell options"
+    shell: "sh -x"
+    run: |
+      echo $SHELL
+      hostname

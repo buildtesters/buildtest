@@ -1,0 +1,6 @@
+version: "1.0"
+buildspecs:
+  type_mismatch:
+    executor: local.sh
+    type: badvalue
+    run: hostname
