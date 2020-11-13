@@ -1,4 +1,5 @@
 editor: vi
+moduletool: N/A
 executors:
   local:
     bash:
@@ -18,3 +19,9 @@ executors:
       options:
         - "-q batch"
         - "-t 00:10"
+  cobalt:
+    normal:
+      launcher: qsub
+      options:
+        - "-n 1"
+        - "-t 10"

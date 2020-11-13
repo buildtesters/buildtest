@@ -1,4 +1,5 @@
 editor: emacs
+moduletool: lmod
 buildspec_roots:
   - $HOME/buildtest-cori
 testdir: /tmp/buildtest

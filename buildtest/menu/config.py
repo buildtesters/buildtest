@@ -1,18 +1,19 @@
 import getpass
 import json
 import os
-import re
 import shutil
 import subprocess
 import sys
 import yaml
-from jsonschema import ValidationError
+from jsonschema import ValidationError, validate
 from buildtest import BUILDTEST_VERSION
-from buildtest.schemas.utils import get_schema_fullpath
-from buildtest.config import check_settings, load_settings, resolve_settings_file
+from buildtest.schemas.utils import get_schema_fullpath, load_schema
+from buildtest.config import check_settings, load_settings, \
+    resolve_settings_file
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
     BUILDSPEC_CACHE_FILE,
+    DEFAULT_SETTINGS_SCHEMA
 )
 from buildtest.utils.file import is_file
 from buildtest.defaults import supported_type_schemas, supported_schemas
@@ -34,141 +35,129 @@ def func_compiler_find(args=None):
     moduletool = configuration.get("moduletool")
 
     if moduletool == "N/A":
-        sys.exit("You must have environment-modules or Lmod to use this tool. Please specify 'moduletool' in your configuration")
+        sys.exit(
+            "You must have environment-modules or Lmod to use this tool. Please specify 'moduletool' in your configuration")
 
     compilers = configuration.get("compilers")
-    # update_compilers will update compilers section
-    update_compilers = compilers
     if not compilers:
         sys.exit("Compiler section not detected")
 
+    # update_compilers will update compiler section in configuration file by detecting new compilers based on modules
+    update_compilers = compilers
 
+    if not update_compilers.get("compiler"):
+        update_compilers["compiler"] = {}
+
+    discovered_modules = {}
     if moduletool == "lmod":
         spider = Spider()
-        for compiler,module_names in compilers.get("find").items():
 
-                if not isinstance(update_compilers["compiler"].get(compiler),dict):
-                    update_compilers["compiler"][compiler] = {}
-
-                discovered_modules = spider.get_modules(module_names)
-
-                for module_fname in discovered_modules.values():
-
-                    # replace first / with @ in format <compiler>@<version>
-                    new_compiler_entry = module_fname.replace("/","@",1)
-                    # if its a new compiler entry let's add new entry to dict
-                    if new_compiler_entry not in compilers.get("compiler")[compiler].keys():
-                        update_compilers[new_compiler_entry] = { }
-
-                        if compiler == "gcc":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "gcc",
-                                "cxx": "g++",
-                                "fc": "gfortran",
-                            }
-                        elif compiler == "intel":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "icc",
-                                "cxx": "icpc",
-                                "fc": "ifort",
-                            }
-                        elif compiler == "cray":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "cc",
-                                "cxx": "CC",
-                                "fc": "ftn",
-                            }
-                        elif compiler == "pgi":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "pgcc",
-                                "cxx": "pgc++",
-                                "fc": "pgfortran",
-                            }
-                        elif compiler == "clang":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "clang",
-                                "cxx": "clang++",
-                            }
-                        elif compiler == "cuda":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "nvcc",
-                            }
-                    update_compilers["compiler"][new_compiler_entry]["module"] = module_fname
+        # retrieve all modules from Lmod spider and add them to dictionary
+        for name,module_list in compilers.get("find").items():
+            spider_modules  = spider.get_modules(module_list).values()
+            discovered_modules[name] = list(spider_modules)
 
     elif moduletool == "environment-modules":
         modules = subprocess.getoutput("module av -t")
         modules = modules.split()
+
+        # discover all modules based with list of module names specified in find field, we add all
+        # modules that start with the key name
         for compiler, module_names in compilers.get("find").items():
-            discovered_modules = []
-
+            discovered_modules[compiler] = []
             for name in module_names:
-                discovered_modules += [ module for module in modules if module.startswith(name) ]
+                discovered_modules[compiler] += [module.replace('(default)', '')
+                                                 for module in modules if
+                                                 module.startswith(name)]
+    print(discovered_modules)
+    print("Discovered Modules:")
+    print(json.dumps(discovered_modules, indent=2))
 
-            print(discovered_modules)
-            for module in discovered_modules:
+    # create a duplicate dictionary and delete all entry of empty list
+    duplicate = discovered_modules.copy()
 
-                if re.search("(\(default\))$", module):
-                    module = module.replace('(default)', '')
+    for key,value in duplicate.items():
+        if not duplicate[key]:
+            del discovered_modules[key]
 
-                cmd = Module(module)
-                ret = cmd.test_modules(login=True)
-                # if module load test passed we add entry to list
-                if ret == 0:
+    print("\n\n")
+    print("Testing Modules:")
+    valid_modules = {}
+    # test all modules via 'module load' and add only modules that passed (ret: 0)
+    for name,module_list in discovered_modules.items():
+        valid_modules[name] = []
+        for module in module_list:
+            cmd = Module(module, debug=True)
+            ret = cmd.test_modules(login=True)
+            # if module load test passed we add entry to list
+            if ret == 0:
+                valid_modules[name].append(module)
 
-                    # replace first / with @ in format <compiler>@<version>
-                    new_compiler_entry = module.replace("/", "@", 1)
-                    # if its a new compiler entry let's add new entry to dict
-                    if new_compiler_entry not in compilers.get("compiler")[
-                        compiler].keys():
 
-                        update_compilers[new_compiler_entry] = {}
+    for name, module_list in valid_modules.items():
+        if not isinstance(update_compilers["compiler"].get(name), dict):
+            update_compilers["compiler"][name] = {}
 
-                        if compiler == "gcc":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "gcc",
-                                "cxx": "g++",
-                                "fc": "gfortran",
-                            }
-                        elif compiler == "intel":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "icc",
-                                "cxx": "icpc",
-                                "fc": "ifort",
-                            }
-                        elif compiler == "cray":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "cc",
-                                "cxx": "CC",
-                                "fc": "ftn",
-                            }
-                        elif compiler == "pgi":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "pgcc",
-                                "cxx": "pgc++",
-                                "fc": "pgfortran",
-                            }
-                        elif compiler == "clang":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "clang",
-                                "cxx": "clang++",
-                            }
-                        elif compiler == "cuda":
-                            update_compilers["compiler"][new_compiler_entry] = {
-                                "cc": "nvcc",
-                            }
-                    update_compilers["compiler"][new_compiler_entry][
-                        "module"] = module
+        for module in module_list:
 
-    print(yaml.dump(update_compilers,default_flow_style=False))
+            # replace first / with @ in format <compiler>@<version>
+            new_compiler_entry = module.replace("/", "@", 1)
+            # if its a new compiler entry let's add new entry to dict
+            if new_compiler_entry not in compilers.get("compiler")[
+                name].keys():
+                update_compilers["compiler"][name][new_compiler_entry] = {}
+
+                if name == "gcc":
+                    update_compilers["compiler"][name][new_compiler_entry] = {
+                        "cc": "gcc",
+                        "cxx": "g++",
+                        "fc": "gfortran",
+                    }
+                elif name == "intel":
+                    update_compilers["compiler"][name][new_compiler_entry] = {
+                        "cc": "icc",
+                        "cxx": "icpc",
+                        "fc": "ifort",
+                    }
+                elif name == "cray":
+                    update_compilers["compiler"][name][new_compiler_entry] = {
+                        "cc": "cc",
+                        "cxx": "CC",
+                        "fc": "ftn",
+                    }
+                elif name == "pgi":
+                    update_compilers["compiler"][name][new_compiler_entry] = {
+                        "cc": "pgcc",
+                        "cxx": "pgc++",
+                        "fc": "pgfortran",
+                    }
+                elif name == "clang":
+                    update_compilers["compiler"][name][new_compiler_entry] = {
+                        "cc": "clang",
+                        "cxx": "clang++",
+                    }
+                elif name == "cuda":
+                    update_compilers["compiler"][name][new_compiler_entry] = {
+                        "cc": "nvcc",
+                    }
+            update_compilers["compiler"][name][new_compiler_entry][
+                "modules"] = [module]
+
     configuration["compilers"] = update_compilers
-    print(yaml.dump(configuration, default_flow_style=False))
 
+    config_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
+
+    validate(instance=configuration, schema=config_schema)
+    print(yaml.safe_dump(configuration, default_flow_style=False, sort_keys=False))
+    print(f"Updating settings file:  {settings_file}")
+
+    with open(settings_file,"w") as fd:
+        yaml.safe_dump(configuration, fd ,default_flow_style=False, sort_keys=False)
 
 def func_config_compiler(args=None):
     """This method implements ``buildtest config compilers`` which shows compiler
        section from buildtest configuration.
     """
-    print(args)
 
     settings_file = resolve_settings_file()
     configuration = load_settings(settings_file)
