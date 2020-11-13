@@ -1,0 +1,6 @@
+version: "0"
+buildspecs:
+  invalid_executor:
+    executor: local.bash
+    type: script
+    run: hostname

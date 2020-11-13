@@ -1,0 +1,5 @@
+version: "1.0"
+buildspecs:
+  missing_executor:
+    type: script
+    run: hostname

@@ -8,12 +8,12 @@ import os
 from buildtest.buildsystem.parser import BuildspecParser
 
 testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+here = os.path.dirname(os.path.abspath(__file__))
 
 def test_BuildspecParser(tmp_path):
 
     # Examples folder
-    examples_dir = os.path.join(testroot, "examples", "buildspecs")
+    valid_buildspecs_directory = os.path.join(here, "valid_buildspecs")
     # Invalid path to buildspec file should exit
     with pytest.raises(SystemExit):
         BuildspecParser("")
@@ -24,11 +24,18 @@ def test_BuildspecParser(tmp_path):
 
     # A directory is not allowed either, this will raise an error.
     with pytest.raises(SystemExit):
-        BuildspecParser(examples_dir)
+        BuildspecParser(valid_buildspecs_directory)
+
+    invalid_buildspecs_directory = os.path.join(here, "invalid_buildspecs")
+    for buildspec in os.listdir(invalid_buildspecs_directory):
+        buildspec = os.path.join(invalid_buildspecs_directory, buildspec)
+        print ("Processing buildspec: ", buildspec)
+        with pytest.raises(SystemExit):
+            BuildspecParser(buildspec)
 
     # Test loading Buildspec files
-    for buildspec in os.listdir(examples_dir):
-        buildspec = os.path.join(examples_dir, buildspec)
+    for buildspec in os.listdir(valid_buildspecs_directory):
+        buildspec = os.path.join(valid_buildspecs_directory, buildspec)
         bp = BuildspecParser(buildspec)
 
         builders = bp.get_builders(tmp_path)
