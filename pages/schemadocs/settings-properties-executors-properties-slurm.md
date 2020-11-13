@@ -23,7 +23,7 @@ The `slurm` section is used for declaring Slurm executors for running jobs using
 
 ## Pattern: `^.*$`
 
-
+An instance object of slurm executor
 
 
 `^.*$`

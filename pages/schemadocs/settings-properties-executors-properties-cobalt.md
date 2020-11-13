@@ -23,7 +23,7 @@ The `cobalt` section is used for declaring Cobalt executors for running jobs usi
 
 ## Pattern: `^.*$`
 
-
+An instance object of cobalt executor
 
 
 `^.*$`

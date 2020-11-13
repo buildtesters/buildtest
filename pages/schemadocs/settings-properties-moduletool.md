@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/modules_tool
+https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/moduletool
 ```
 
 Specify modules tool used for interacting with `module` command. 
@@ -11,11 +11,11 @@ Specify modules tool used for interacting with `module` command.
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
-## modules_tool Type
+## moduletool Type
 
 `string`
 
-## modules_tool Constraints
+## moduletool Constraints
 
 **enum**: the value of this property must be equal to one of the following values:
 
@@ -23,3 +23,4 @@ Specify modules tool used for interacting with `module` command.
 | :---------------------- | ----------- |
 | `"environment-modules"` |             |
 | `"lmod"`                |             |
+| `"N/A"`                 |             |

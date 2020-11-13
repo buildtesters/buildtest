@@ -23,7 +23,7 @@ The `local` section is used for declaring local executors for running jobs on lo
 
 ## Pattern: `^.*$`
 
-
+An instance object of local executor
 
 
 `^.*$`

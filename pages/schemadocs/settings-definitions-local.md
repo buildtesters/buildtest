@@ -4,7 +4,7 @@
 https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local
 ```
 
-
+An instance object of local executor
 
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |

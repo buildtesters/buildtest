@@ -1,4 +1,5 @@
 editor: vi
+moduletool: lmod
 executors:
   defaults:
      launcher: qsub

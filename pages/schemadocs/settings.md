@@ -23,7 +23,7 @@ https://buildtesters.github.io/buildtest/schemas/settings.schema.json
 | [editor](#editor)                             | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-editor.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/editor")                   |
 | [buildspec_roots](#buildspec_roots)           | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-properties-buildspec_roots.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/buildspec_roots") |
 | [testdir](#testdir)                           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-testdir.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/testdir")                 |
-| [modules_tool](#modules_tool)                 | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-modules_tool.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/modules_tool")       |
+| [moduletool](#moduletool)                     | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-moduletool.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/moduletool")           |
 | [compilers](#compilers)                       | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers")             |
 | [executors](#executors)                       | `object`      | Required | cannot be null | [buildtest configuration schema](settings-properties-executors.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors")             |
 
@@ -109,23 +109,23 @@ Specify full path to test directory where buildtest will write tests.
 
 `string`
 
-## modules_tool
+## moduletool
 
 Specify modules tool used for interacting with `module` command. 
 
 
-`modules_tool`
+`moduletool`
 
--   is optional
+-   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-modules_tool.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/modules_tool")
+-   defined in: [buildtest configuration schema](settings-properties-moduletool.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/moduletool")
 
-### modules_tool Type
+### moduletool Type
 
 `string`
 
-### modules_tool Constraints
+### moduletool Constraints
 
 **enum**: the value of this property must be equal to one of the following values:
 
@@ -133,6 +133,7 @@ Specify modules tool used for interacting with `module` command.
 | :---------------------- | ----------- |
 | `"environment-modules"` |             |
 | `"lmod"`                |             |
+| `"N/A"`                 |             |
 
 ## compilers
 
@@ -152,7 +153,7 @@ Declare compiler section for defining system compilers that can be referenced in
 
 ## executors
 
-The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be `local`, `lsf`, `slurm`, `ssh`. The executors are referenced in buildspec using `executor` field.
+The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be `local`, `lsf`, `slurm`, `cobalt`. The executors are referenced in buildspec using `executor` field.
 
 
 `executors`
@@ -670,7 +671,7 @@ Specify the slurm qos you want to use `-q <qos>`
 
 ### before_script
 
-
+The `before_script` section can be used to specify commands before start of test. The script will be sourced in active shell.
 
 
 `before_script`
@@ -686,7 +687,7 @@ unknown
 
 ### after_script
 
-
+The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
 
 
 `after_script`
@@ -837,7 +838,7 @@ Specify the lsf queue you want to use `-q <queue>`
 
 ### before_script
 
-
+The `before_script` section can be used to specify commands before start of test. The script will be sourced in active shell.
 
 
 `before_script`
@@ -853,7 +854,7 @@ unknown
 
 ### after_script
 
-
+The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
 
 
 `after_script`
@@ -1004,7 +1005,7 @@ Specify the lsf queue you want to use `-q <queue>`
 
 ### before_script
 
-
+The `before_script` section can be used to specify commands before start of test. The script will be sourced in active shell.
 
 
 `before_script`
@@ -1020,7 +1021,7 @@ unknown
 
 ### after_script
 
-
+The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
 
 
 `after_script`

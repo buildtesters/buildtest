@@ -23,7 +23,7 @@ The `lsf` section is used for declaring LSF executors for running jobs using LSF
 
 ## Pattern: `^.*$`
 
-
+An instance object of lsf executor
 
 
 `^.*$`

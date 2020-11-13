@@ -4,7 +4,7 @@
 https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm
 ```
 
-
+An instance object of slurm executor
 
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
@@ -136,7 +136,7 @@ Specify the slurm qos you want to use `-q <qos>`
 
 ## before_script
 
-
+The `before_script` section can be used to specify commands before start of test. The script will be sourced in active shell.
 
 
 `before_script`
@@ -152,7 +152,7 @@ unknown
 
 ## after_script
 
-
+The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
 
 
 `after_script`

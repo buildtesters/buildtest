@@ -4,7 +4,7 @@
 https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf
 ```
 
-
+An instance object of lsf executor
 
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
@@ -102,7 +102,7 @@ Specify the lsf queue you want to use `-q <queue>`
 
 ## before_script
 
-
+The `before_script` section can be used to specify commands before start of test. The script will be sourced in active shell.
 
 
 `before_script`
@@ -118,7 +118,7 @@ unknown
 
 ## after_script
 
-
+The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
 
 
 `after_script`
