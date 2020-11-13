@@ -1,6 +1,5 @@
 import logging
 import os
-import sys
 from jsonschema import validate
 
 from buildtest.schemas.utils import load_schema, load_recipe
