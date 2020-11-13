@@ -7,13 +7,12 @@ import sys
 import yaml
 from jsonschema import ValidationError, validate
 from buildtest import BUILDTEST_VERSION
-from buildtest.schemas.utils import get_schema_fullpath, load_schema
-from buildtest.config import check_settings, load_settings, \
-    resolve_settings_file
+from buildtest.schemas.utils import get_schema_fullpath, load_schema, load_recipe
+from buildtest.config import check_settings, load_settings, resolve_settings_file
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
     BUILDSPEC_CACHE_FILE,
-    DEFAULT_SETTINGS_SCHEMA
+    DEFAULT_SETTINGS_SCHEMA,
 )
 from buildtest.utils.file import is_file
 from buildtest.defaults import supported_type_schemas, supported_schemas
@@ -36,7 +35,8 @@ def func_compiler_find(args=None):
 
     if moduletool == "N/A":
         sys.exit(
-            "You must have environment-modules or Lmod to use this tool. Please specify 'moduletool' in your configuration")
+            "You must have environment-modules or Lmod to use this tool. Please specify 'moduletool' in your configuration"
+        )
 
     compilers = configuration.get("compilers")
     if not compilers:
@@ -53,8 +53,8 @@ def func_compiler_find(args=None):
         spider = Spider()
 
         # retrieve all modules from Lmod spider and add them to dictionary
-        for name,module_list in compilers.get("find").items():
-            spider_modules  = spider.get_modules(module_list).values()
+        for name, module_list in compilers.get("find").items():
+            spider_modules = spider.get_modules(module_list).values()
             discovered_modules[name] = list(spider_modules)
 
     elif moduletool == "environment-modules":
@@ -66,9 +66,11 @@ def func_compiler_find(args=None):
         for compiler, module_names in compilers.get("find").items():
             discovered_modules[compiler] = []
             for name in module_names:
-                discovered_modules[compiler] += [module.replace('(default)', '')
-                                                 for module in modules if
-                                                 module.startswith(name)]
+                discovered_modules[compiler] += [
+                    module.replace("(default)", "")
+                    for module in modules
+                    if module.startswith(name)
+                ]
     print(discovered_modules)
     print("Discovered Modules:")
     print(json.dumps(discovered_modules, indent=2))
@@ -76,7 +78,7 @@ def func_compiler_find(args=None):
     # create a duplicate dictionary and delete all entry of empty list
     duplicate = discovered_modules.copy()
 
-    for key,value in duplicate.items():
+    for key, value in duplicate.items():
         if not duplicate[key]:
             del discovered_modules[key]
 
@@ -84,7 +86,7 @@ def func_compiler_find(args=None):
     print("Testing Modules:")
     valid_modules = {}
     # test all modules via 'module load' and add only modules that passed (ret: 0)
-    for name,module_list in discovered_modules.items():
+    for name, module_list in discovered_modules.items():
         valid_modules[name] = []
         for module in module_list:
             cmd = Module(module, debug=True)
@@ -92,7 +94,6 @@ def func_compiler_find(args=None):
             # if module load test passed we add entry to list
             if ret == 0:
                 valid_modules[name].append(module)
-
 
     for name, module_list in valid_modules.items():
         if not isinstance(update_compilers["compiler"].get(name), dict):
@@ -103,8 +104,7 @@ def func_compiler_find(args=None):
             # replace first / with @ in format <compiler>@<version>
             new_compiler_entry = module.replace("/", "@", 1)
             # if its a new compiler entry let's add new entry to dict
-            if new_compiler_entry not in compilers.get("compiler")[
-                name].keys():
+            if new_compiler_entry not in compilers.get("compiler")[name].keys():
                 update_compilers["compiler"][name][new_compiler_entry] = {}
 
                 if name == "gcc":
@@ -140,8 +140,7 @@ def func_compiler_find(args=None):
                     update_compilers["compiler"][name][new_compiler_entry] = {
                         "cc": "nvcc",
                     }
-            update_compilers["compiler"][name][new_compiler_entry][
-                "modules"] = [module]
+            update_compilers["compiler"][name][new_compiler_entry]["modules"] = [module]
 
     configuration["compilers"] = update_compilers
 
@@ -151,8 +150,9 @@ def func_compiler_find(args=None):
     print(yaml.safe_dump(configuration, default_flow_style=False, sort_keys=False))
     print(f"Updating settings file:  {settings_file}")
 
-    with open(settings_file,"w") as fd:
-        yaml.safe_dump(configuration, fd ,default_flow_style=False, sort_keys=False)
+    with open(settings_file, "w") as fd:
+        yaml.safe_dump(configuration, fd, default_flow_style=False, sort_keys=False)
+
 
 def func_config_compiler(args=None):
     """This method implements ``buildtest config compilers`` which shows compiler
@@ -201,8 +201,9 @@ def func_config_validate(args=None):
 def func_config_view(args=None):
     """View buildtest configuration file. This implements ``buildtest config view``"""
     settings_file = resolve_settings_file()
+    content = load_recipe(settings_file)
 
-    os.system(f"cat {settings_file}")
+    print(yaml.safe_dump(content, sys.stdout, sort_keys=False))
 
 
 def func_config_summary(args=None):

@@ -33,7 +33,7 @@ class BuildspecParser:
        The type (e.g., script) and version are derived from reading in
        the file, and then matching to a Buildspec schema, each of which is
        developed at https://github.com/buildtesters/schemas and added to
-       subfolders named accordingly under buildtest/buildsystem/schemas.
+       sub-folders named accordingly under buildtest/buildsystem/schemas.
        The schema object can load in a general Buildspec file
        to validate it, and then match it to a Buildspec Schema available.
        If the version of a schema is not specified, we use the latest.
@@ -96,7 +96,6 @@ class BuildspecParser:
         custom_validator(
             recipe=self.recipe, schema=schema_table["global.schema.json"]["recipe"]
         )
-        # validate(instance=self.recipe, schema=schema_table["global"]["recipe"])
 
     # Validation
 
@@ -109,6 +108,8 @@ class BuildspecParser:
 
         self.schema_version = self.recipe.get("version", "latest")
 
+        assert isinstance(self.recipe.get("buildspecs"), dict)
+
         for name in self.recipe["buildspecs"].keys():
 
             self.logger.info(
@@ -117,31 +118,30 @@ class BuildspecParser:
 
             # the buildspec section must be an dict where test is defined. If
             # it's not a dict then we should raise an error.
-            if not isinstance(self.recipe["buildspecs"][name], dict):
-                sys.exit(f"Section: {self.recipe[name]} must be a dictionary")
-
-            self.logger.info("%s is a dictionary", name)
+            assert isinstance(self.recipe["buildspecs"].get(name), dict)
 
             # extract type field from test, if not found set to None
-            type = self.recipe.get("buildspecs").get(name).get("type") or None
+            schema_type = self.recipe["buildspecs"][name].get("type") or None
 
-            # if type not found in section, raise an error since we every test
+            # if type not found in section, raise an error since every test
             # must be associated to a schema which is controlled by 'type' key
-            if not type:
+            if not schema_type:
                 sys.exit(f"Did not find 'type' key in test section: {name}")
 
-            self.logger.info("Detected field 'type: %s'", type)
+            self.logger.info("Detected field 'type: %s'", schema_type)
 
             # Ensure we have a Buildspec recipe with a valid type
-            if type not in schema_table["types"]:
-                sys.exit("type %s is not known to buildtest." % type)
+            if schema_type not in schema_table["types"]:
+                sys.exit("type %s is not known to buildtest." % schema_type)
 
             self.logger.info(
-                "Checking %s in supported type schemas: %s", type, schema_table["types"]
+                "Checking %s in supported type schemas: %s",
+                schema_type,
+                schema_table["types"],
             )
 
             # extract type field from test, if not found set to None
-            executor = self.recipe.get("buildspecs").get(name).get("executor") or None
+            executor = self.recipe["buildspecs"][name].get("executor") or None
 
             if executor not in self.executors:
                 sys.exit(
@@ -151,24 +151,26 @@ class BuildspecParser:
             # And that there is a version file
             if (
                 self.schema_version
-                not in schema_table[f"{type}-v{self.schema_version}.schema.json"][
-                    "versions"
-                ]
+                not in schema_table[
+                    f"{schema_type}-v{self.schema_version}.schema.json"
+                ]["versions"]
             ):
                 sys.exit(
                     "version %s is not known for schema type %s. Valid options are: %s"
                     % (
                         self.schema_version,
-                        type,
-                        schema_table[f"{type}-v{self.schema_version}.schema.json"][
-                            "versions"
-                        ],
+                        schema_type,
+                        schema_table[
+                            f"{schema_type}-v{self.schema_version}.schema.json"
+                        ]["versions"],
                     )
                 )
             self.logger.info(
                 "Checking version '%s' in version list: %s",
                 self.schema_version,
-                schema_table[f"{type}-v{self.schema_version}.schema.json"]["versions"],
+                schema_table[f"{schema_type}-v{self.schema_version}.schema.json"][
+                    "versions"
+                ],
             )
 
             self.logger.info(
@@ -176,23 +178,24 @@ class BuildspecParser:
                 % (
                     name,
                     os.path.basename(
-                        schema_table[f"{type}-v{self.schema_version}.schema.json"][
-                            "path"
-                        ]
+                        schema_table[
+                            f"{schema_type}-v{self.schema_version}.schema.json"
+                        ]["path"]
                     ),
                 )
             )
 
             self.schema_file = os.path.basename(
-                schema_table[f"{type}-v{self.schema_version}.schema.json"]["path"]
+                schema_table[f"{schema_type}-v{self.schema_version}.schema.json"][
+                    "path"
+                ]
             )
             custom_validator(
                 recipe=self.recipe["buildspecs"][name],
-                schema=schema_table[f"{type}-v{self.schema_version}.schema.json"][
-                    "recipe"
-                ],
+                schema=schema_table[
+                    f"{schema_type}-v{self.schema_version}.schema.json"
+                ]["recipe"],
             )
-            # validate(instance=self.recipe["buildspecs"][name],schema=schema_table[type]["recipe"])
 
     # Builders
 

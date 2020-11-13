@@ -9,8 +9,6 @@ import os
 import platform
 import shutil
 import sys
-
-from buildtest.exceptions import BuildTestError
 from buildtest.utils.command import BuildTestCommand
 
 
