@@ -172,7 +172,7 @@ def discover_buildspecs(
     """
 
     buildspecs = []
-    exclude_buildspecs = []
+    excluded_buildspecs = []
 
     if tags:
         assert isinstance(tags, list)
@@ -217,17 +217,17 @@ def discover_buildspecs(
         excludes = []
         # discover all excluded buildspecs, if its file add to list,
         # if its directory traverse all .yml files
-        for option in exclude_buildspec:
-            bp = discover_by_buildspecs(option)
+        for exclude_buildspec_arg in exclude_buildspec:
+            bp = discover_by_buildspecs(exclude_buildspec_arg)
             if bp:
                 excludes += bp
 
-        exclude_buildspecs = list(set(excludes))
+        excluded_buildspecs = list(set(excludes))
 
         logger.debug(f"The exclude pattern is the following: -e {exclude_buildspec}")
 
-        # exclude files that are found in exclude_buildspecs list
-        buildspecs = [file for file in buildspecs if file not in exclude_buildspecs]
+        # exclude files that are found in excluded_buildspecs list
+        buildspecs = [file for file in buildspecs if file not in excluded_buildspecs]
 
         logger.debug(f"Buildspec list after applying exclusion: {buildspecs}")
 
@@ -249,11 +249,11 @@ def discover_buildspecs(
         print("\nDiscovered Buildspecs:\n ")
         [print(buildspec) for buildspec in buildspecs]
 
-        if exclude_buildspecs:
+        if excluded_buildspecs:
             print("\nExcluded Buildspecs:\n")
-            [print(file) for file in exclude_buildspecs]
+            [print(file) for file in excluded_buildspecs]
 
-    return buildspecs, exclude_buildspecs
+    return buildspecs, excluded_buildspecs
 
 
 def resolve_testdirectory(config_opts, input_testdir=None):

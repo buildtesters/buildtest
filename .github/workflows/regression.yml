@@ -12,12 +12,12 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8]
-        
- 
+
+
     steps:
-  
+
     - uses: actions/checkout@v2
-      
+
     - name: Setup Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:

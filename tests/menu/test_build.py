@@ -13,6 +13,7 @@ from buildtest.menu.buildspec import func_buildspec_find
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)
 
+valid_buildspecs = os.path.join(test_root, "buildsystem", "valid_buildspecs")
 
 @pytest.mark.cli
 def test_build_by_tags():
@@ -61,11 +62,9 @@ def test_build_by_tags():
 
 def test_discover_by_buildspecs():
 
-    # testing single file
-    buildspec_dir = os.path.join(test_root, "examples", "buildspecs")
 
     # test single buildspec file
-    buildspec = os.path.join(buildspec_dir, "environment.yml")
+    buildspec = os.path.join(valid_buildspecs, "environment.yml")
     # check file exists before sending to discover_buildspecs
     assert buildspec
     buildspec_files = discover_by_buildspecs(buildspec)
@@ -74,8 +73,9 @@ def test_discover_by_buildspecs():
     assert buildspec in buildspec_files
 
     # testing with directory
-    buildspec_files = discover_by_buildspecs(buildspec_dir)
+    buildspec_files = discover_by_buildspecs(valid_buildspecs)
 
+    # check if return is a list and environment.yml exists in list
     assert isinstance(buildspec_files, list)
     assert buildspec in buildspec_files
 
@@ -104,18 +104,16 @@ def test_discover_buildspec():
     with pytest.raises(AssertionError):
         discover_buildspecs(buildspec=bp[0])
 
-    input_buildspec = [os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml")]
+    input_buildspec = [os.path.join(valid_buildspecs, "environment.yml")]
     # this should raise AssertionError if we pass a string for exclude_buildspec it expects a list
     with pytest.raises(AssertionError):
         discover_buildspecs(
             buildspec=input_buildspec, exclude_buildspec=input_buildspec[0]
         )
 
-    tutorials = [os.path.join(BUILDTEST_ROOT), "tutorials"]
-
-    # running buildtest build -b tutorials -x tutorials. This results in no buildspecs
+    # The test below will discover and negate all buildspecs which raises an exception of type SystemExit
     with pytest.raises(SystemExit):
-        discover_buildspecs(buildspec=tutorials, exclude_buildspec=tutorials)
+        discover_buildspecs(buildspec=[valid_buildspecs], exclude_buildspec=[valid_buildspecs])
 
     input_bps = [
         os.path.join(BUILDTEST_ROOT, "setup.py"),
@@ -126,6 +124,8 @@ def test_discover_buildspec():
     discovered_bp, excluded_bp = discover_buildspecs(
         buildspec=input_bps, exclude_buildspec=exclude_bps
     )
+    print ("discovered:", discovered_bp)
+    print("excluded:", exclude_bps)
     # assert both discovered_bp and excluded_bp are not None
     assert discovered_bp
     assert excluded_bp
@@ -145,7 +145,7 @@ def test_discover_buildspec():
 
 @pytest.mark.cli
 def test_build_buildspecs():
-    buildspec_paths = os.path.join(test_root, "examples", "buildspecs")
+    buildspec_paths = os.path.join(test_root, "buildsystem", "valid_buildspecs")
     buildtest_configuration = load_settings()
 
     class args:
@@ -165,7 +165,7 @@ def test_build_buildspecs():
         buildspec = [buildspec_paths]
         debug = False
         stage = None
-        testdir = "/tmp"
+        testdir = None
         exclude = [buildspec_paths]
         tags = None
         executor = None

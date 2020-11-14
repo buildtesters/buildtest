@@ -86,14 +86,14 @@ def test_walk_tree_invalid_dir(tmp_path):
 
 @pytest.mark.utility
 def test_write_file(tmp_path):
-    input = """This is a 
+    msg = """This is a 
     multi-line
     string"""
 
     file = os.path.join(tmp_path, "test_write.txt")
 
     print(f"Writing content to file: {file}")
-    write_file(file, input)
+    write_file(file, msg)
 
     print(f"Reading content from file: {file}")
     content = read_file(file)
@@ -103,15 +103,15 @@ def test_write_file(tmp_path):
     # split origin input by newline to create a list
 
     # perform a string equality between input content and result of read_file
-    assert input == content
+    assert msg == content
 
 
 @pytest.mark.utility
 def test_write_file_exceptions(tmp_path):
-    input = "hi my name is Bob"
+    msg = "hi my name is Bob"
     file = os.path.join(tmp_path, "name.txt")
-    print(f"Writing content: {input} to file {file}")
-    write_file(file, input)
+    print(f"Writing content: {msg} to file {file}")
+    write_file(file, msg)
 
     # testing invalid type for file stream
     with pytest.raises(SystemExit):

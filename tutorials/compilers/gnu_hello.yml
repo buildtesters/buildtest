@@ -35,7 +35,7 @@ buildspecs:
     description: Example by using cc to set C compiler
     executor: local.bash
     tags: [tutorials, compile]
-    build: 
+    build:
       source: "src/hello.c"
       name: gnu
       cc: gcc
@@ -55,7 +55,7 @@ buildspecs:
     description: Example by using cxx to set C++ compiler
     executor: local.bash
     tags: [tutorials, compile]
-    build: 
+    build:
       source: "src/hello.cpp"
       name: gnu
       cxx: g++
