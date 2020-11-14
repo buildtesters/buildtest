@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8]
-    
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -23,8 +23,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-   
-   
+
     - name: Buildtest Checks
       run: |
         sudo apt-get install -y tcsh
@@ -36,36 +35,29 @@ jobs:
         which buildtest
         buildtest --version
         buildtest --help
-       
         buildtest buildspec find
         buildtest buildspec find --tags
         buildtest buildspec find --list-executors
         buildtest buildspec find --clear
         buildtest buildspec view exit1_pass
-    
         buildtest buildspec find --helpfilter
         buildtest buildspec find --filter tags=fail
         buildtest buildspec find --filter tags=compile,executor=local.bash
         buildtest buildspec find --filter type=script,executor=local.bash,tags=tutorials
-    
         buildtest build -b tutorials/
-    
         buildtest build --tags fail
         buildtest build --tags fail --tags compile
         buildtest build --executor local.sh
         buildtest build --tags tutorials --executor local.sh
         buildtest build -b tutorials/compilers -x tutorials/compilers/vecadd.yml --tags fail
         buildtest build -b tutorials --executor local.sh
-        
         buildtest report
         buildtest report --filter buildspec=tutorials/pass_returncode.yml --format name,state,buildspec
         buildtest report --filter name=exit1_pass --format id,returncode,state,runtime
         buildtest report --filter state=PASS,executor=local.bash --format id,state,executor
-        
         buildtest config validate
         buildtest config view
         buildtest config summary
-        
         buildtest schema
         buildtest schema -n global.schema.json --json
         buildtest schema -n settings.schema.json --json

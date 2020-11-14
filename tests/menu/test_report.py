@@ -174,9 +174,7 @@ def test_func_report_when_BUILD_REPORT_missing():
 
     with pytest.raises(SystemExit):
         func_report()
-    try:
-        shutil.move(backupfile, BUILD_REPORT)
-    except:
-        pass
+
+    shutil.move(backupfile, BUILD_REPORT)
 
     assert BUILD_REPORT
