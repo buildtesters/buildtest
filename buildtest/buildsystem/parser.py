@@ -15,13 +15,7 @@ from buildtest.schemas.defaults import schema_table, custom_validator
 from buildtest.utils.file import resolve_path, is_dir
 from buildtest.system import BuildTestSystem
 
-from buildtest.buildsystem.base import (
-    ScriptBuilder,
-    GNUCompiler,
-    CrayCompiler,
-    IntelCompiler,
-    PGICompiler,
-)
+from buildtest.buildsystem.base import ScriptBuilder, CompilerBuilder
 
 configuration = load_settings()
 master_executors = BuildExecutor(configuration)
@@ -109,7 +103,7 @@ class BuildspecParser:
         )
 
         # And that there is a version file
-        if (self.schema_version not in schema_table["versions"][self.schema_type]):
+        if self.schema_version not in schema_table["versions"][self.schema_type]:
             sys.exit(
                 "version %s is not known for schema type %s. Valid options are: %s"
                 % (
@@ -121,10 +115,10 @@ class BuildspecParser:
         self.logger.info(
             "Checking version '%s' in version list: %s",
             self.schema_version,
-            schema_table["versions"][self.schema_type]
+            schema_table["versions"][self.schema_type],
         )
 
-    def _check_executor(self,test):
+    def _check_executor(self, test):
 
         # extract type field from test, if not found set to None
         executor = self.recipe["buildspecs"][test].get("executor") or None
@@ -200,8 +194,10 @@ class BuildspecParser:
 
         # if input 'buildtest build --executor' is set we filter test by
         # executor name. For now we skip all test that don't belong in executor list.
-        if (executor_filter and recipe.get("executor") not in executor_filter):
-            print(f"[{testname}] test is skipped because it is not in executor filter list: {executor_filter}")
+        if executor_filter and recipe.get("executor") not in executor_filter:
+            print(
+                f"[{testname}] test is skipped because it is not in executor filter list: {executor_filter}"
+            )
             return True
 
         return False
@@ -252,8 +248,7 @@ class BuildspecParser:
 
             # skip test if host scheduler is not one specified via 'scheduler' field
             if recipe["run_only"].get("scheduler") and (
-                    recipe["run_only"].get("scheduler")
-                    not in system.system["scheduler"]
+                recipe["run_only"].get("scheduler") not in system.system["scheduler"]
             ):
                 msg = f"[{name}] test is skipped because ['run_only']['scheduler'] got value: {recipe['run_only']['scheduler']} but detected scheduler: {system.system['scheduler']}."
                 print(msg)
@@ -262,7 +257,7 @@ class BuildspecParser:
 
             # skip test if current user is not one specified in 'user' field
             if recipe["run_only"].get("user") and (
-                    recipe["run_only"].get("user") != os.getenv("USER")
+                recipe["run_only"].get("user") != os.getenv("USER")
             ):
                 msg = f"[{name}] test is skipped because ['run_only']['user'] got value: {recipe['run_only']['user']} but detected user: {os.getenv('USER')}."
                 print(msg)
@@ -271,8 +266,7 @@ class BuildspecParser:
 
             # skip test if host platform is not equal to value specified by 'platform' field
             if recipe["run_only"].get("platform") and (
-                    recipe["run_only"].get("platform")
-                    != system.system["platform"]
+                recipe["run_only"].get("platform") != system.system["platform"]
             ):
                 msg = f"[{name}] test is skipped because ['run_only']['platform'] got value: {recipe['run_only']['platform']} but detected platform: {system.system['platform']}."
                 print(msg)
@@ -281,10 +275,7 @@ class BuildspecParser:
 
             # skip test if host platform is not equal to value specified by 'platform' field
             if recipe["run_only"].get("linux_distro"):
-                if (
-                        system.system["os"]
-                        not in recipe["run_only"]["linux_distro"]
-                ):
+                if system.system["os"] not in recipe["run_only"]["linux_distro"]:
                     msg = f"[{name}] test is skipped because ['run_only']['linux_distro'] got value: {recipe['run_only']['linux_distro']} but detected platform: {system.system['os']}."
                     print(msg)
                     self.logger.info(msg)
@@ -293,17 +284,17 @@ class BuildspecParser:
         return False
 
     def get_builders(self, testdir, rebuild=1, tag_filter=None, executor_filter=None):
-        """Based on a loaded Buildspec file, return the correct builder
-        for each based on the type. Each type is associated with a known
-        Builder class.
+        """ Based on a loaded Buildspec file, return the correct builder
+            for each based on the type. Each type is associated with a known
+            Builder class.
 
-        :param testdir: Test Destination directory, specified by --testdir
-        :type testdir: str
-        :param rebuild: Number of rebuilds for a tesst this is specified by ``buildtest build --rebuild``. Defaults to 1
-        :type rebuild: int, optional
-        :param tag_filter: A list of input tags (``buildtest build --tags`` option) to filter builders
-        :type tag_filter: list, optional
-        :param executor_filter: A list of input executors (``buildtest build --executor`` option) to filter builders
+            :param testdir: Test Destination directory, specified by --testdir
+            :type testdir: str
+            :param rebuild: Number of rebuilds for a tesst this is specified by ``buildtest build --rebuild``. Defaults to 1
+            :type rebuild: int, optional
+            :param tag_filter: A list of input tags (``buildtest build --tags`` option) to filter builders
+            :type tag_filter: list, optional
+            :param executor_filter: A list of input executors (``buildtest build --executor`` option) to filter builders
         """
 
         system = BuildTestSystem()
@@ -318,9 +309,8 @@ class BuildspecParser:
                     print(f"[{name}] test is skipped.")
                     continue
 
-                if self._skip_tests_by_executor(recipe,name,executor_filter):
+                if self._skip_tests_by_executor(recipe, name, executor_filter):
                     continue
-
 
                 if self._skip_tests_by_tags(recipe, name, tag_filter):
                     continue
@@ -331,42 +321,16 @@ class BuildspecParser:
                 # Add the builder based on the type
                 if recipe["type"] == "script":
                     builders.append(
-                        ScriptBuilder(
-                            name, recipe, self.buildspec, testdir=testdir,
-                        )
+                        ScriptBuilder(name, recipe, self.buildspec, testdir=testdir,)
                     )
                 elif recipe["type"] == "compiler":
-                    if recipe["build"].get("name") == "gnu":
-                        builders.append(
-                            GNUCompiler(
-                                name, recipe, self.buildspec, testdir=testdir,
-                            )
-                        )
-                    elif recipe["build"].get("name") == "intel":
-                        builders.append(
-                            IntelCompiler(
-                                name, recipe, self.buildspec, testdir=testdir,
-                            )
-                        )
-                    elif recipe["build"].get("name") == "pgi":
-                        builders.append(
-                            PGICompiler(
-                                name, recipe, self.buildspec, testdir=testdir,
-                            )
-                        )
-                    elif recipe["build"].get("name") == "cray":
-                        builders.append(
-                            CrayCompiler(
-                                name, recipe, self.buildspec, testdir=testdir,
-                            )
-                        )
-                    else:
-                        continue
+                    builders.append(
+                        CompilerBuilder(name, recipe, self.buildspec, testdir=testdir)
+                    )
 
                 else:
                     print(
-                        "%s is not recognized by buildtest, skipping."
-                        % recipe["type"]
+                        "%s is not recognized by buildtest, skipping." % recipe["type"]
                     )
         return builders
 

@@ -36,11 +36,10 @@ class BuilderBase:
 
     def __init__(self, name, recipe, buildspec, testdir=None):
         """The BuilderBase provides common functions for any builder. The builder
-        is an instance of BuilderBase. In initializer we expect the testname that
-        is provided by argument ``name``. In initializer we get the test directory,
-        and build the metadata
+        is an instance of BuilderBase. The initializer method will setup the builder
+        attributes based on input test by ``name`` parameter.
 
-        :param name: a name for the Buildspec recipe
+        :param name: Name of test in Buildspec recipe
         :type name: str, required
         :param recipe: the loaded section from the buildspec for the user.
         :type recipe: dict, required
@@ -61,9 +60,9 @@ class BuilderBase:
         assert os.path.basename(buildspec).endswith(".yml")
 
         self.buildspec = buildspec
-        self.config_name = re.sub("[.](yml)", "", os.path.basename(buildspec))
+        file_name = re.sub("[.](yml)", "", os.path.basename(buildspec))
         self.testdir = os.path.join(
-            testdir, recipe.get("executor"), self.config_name, self.name
+            testdir, recipe.get("executor"), file_name, self.name
         )
 
         self.logger = logging.getLogger(__name__)
@@ -85,10 +84,8 @@ class BuilderBase:
         # The type must match the type of the builder
         self.recipe = recipe
 
-        sub_schema_type = self.recipe["type"]
-
         self.metadata["schemafile"] = os.path.basename(
-            schema_table[f"{sub_schema_type}-v1.0.schema.json"]["path"]
+            schema_table[f"{self.recipe['type']}-v1.0.schema.json"]["path"]
         )
 
         self.executor = self.recipe.get("executor")
@@ -108,14 +105,14 @@ class BuilderBase:
         self.logger.debug(f"Shebang used for test: {self.shebang}")
 
     def detect_executor(self):
-        if self.executor.startswith("local"):
-            return "local"
-        elif self.executor.startswith("slurm"):
-            return "slurm"
-        elif self.executor.startswith("lsf"):
-            return "lsf"
-        elif self.executor.startswith("cobalt"):
-            return "cobalt"
+        """Return executor type based on executor property. The executor is in
+           format <type>.<name> so we check for keywords that start with known executor
+           types ``local``, ``slurm``, ``lsf``, ``cobalt``
+        """
+        executor_types = ["local", "slurm", "lsf", "cobalt"]
+        for name in executor_types:
+            if self.executor.startswith(name):
+                return name
 
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
@@ -131,11 +128,14 @@ class BuilderBase:
         return "sh"
 
     def start(self):
-        """Keep internal time for start of test"""
+        """Keep internal time for start of test. We start timer by calling Timer class"""
+
         self.timer = Timer()
         self.timer.start()
 
     def stop(self):
+        """Stop  timer of test and calculate duration."""
+
         self.duration += self.timer.stop()
 
     def build(self):
@@ -181,21 +181,15 @@ class BuilderBase:
         self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
         self.metadata["testroot"] = self.test_id
 
-    def _write_test(self):
-        """This method is responsible for invoking ``generate_script`` that
-           formulates content of testscript which is implemented in each subclass.
-           Next we write content to file and apply 755 permission on script so
-           it has executable permission.
-        """
+    def _get_scheduler_directives(self):
+        """Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
+           test with one of the executor types. This method will return a list
+           of string containing scheduler directives generally found at top of script.
+           If test is local executor we return an empty list """
 
-        # Implementation to write file generate.sh
-        # start of each test should have the shebang
-        lines = [self.shebang]
-
-        # if shell is python the generated testscript will be run via bash, we invoke
-        # python script in bash script.
-        if self.shell.name == "python":
-            lines = [self.default_shell.shebang]
+        lines = []
+        if self.executor_type == "local":
+            return
 
         if self.executor_type == "lsf":
             script = LSFBatchScript(self.recipe.get("batch"), self.recipe.get("bsub"))
@@ -224,15 +218,71 @@ class BuilderBase:
             # lines += [f"#COBALT --output {self.name}.out"]
             # lines += [f"#COBALT --error {self.name}.err"]
 
-        if self.recipe.get("BB"):
-            burst_buffer = self.recipe.get("BB")
-            for arg in burst_buffer:
-                lines += ["#BB " + arg]
+        return lines
 
-        if self.recipe.get("DW"):
-            datawarp = self.recipe.get("DW")
-            for arg in datawarp:
-                lines += ["#DW " + arg]
+    def _get_burst_buffer(self):
+        """Get Burst Buffer directives (#BB) lines"""
+
+        lines = []
+        if not self.recipe.get("BB"):
+            return
+
+        for arg in self.recipe.get("BB"):
+            lines += ["#BB " + arg]
+
+        return lines
+
+    def _get_data_warp(self):
+        """Get Cray Data Warp directives (#DW) lines"""
+
+        lines = []
+        if not self.recipe.get("DW"):
+            return
+
+        for arg in self.recipe.get("DW"):
+            lines += ["#DW " + arg]
+
+        return lines
+
+    def _set_execute_perm(self):
+        """Set permission 755 on executable"""
+
+        # Change permission of the file to executable
+        os.chmod(
+            self.metadata["testpath"],
+            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
+        )
+        self.logger.debug(
+            f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
+        )
+
+    def _write_test(self):
+        """This method is responsible for invoking ``generate_script`` that
+           formulates content of testscript which is implemented in each subclass.
+           Next we write content to file and apply 755 permission on script so
+           it has executable permission.
+        """
+
+        # Implementation to write file generate.sh
+        # start of each test should have the shebang
+        lines = [self.shebang]
+
+        # if shell is python the generated testscript will be run via bash, we invoke
+        # python script in bash script.
+        if self.shell.name == "python":
+            lines = [self.default_shell.shebang]
+
+        batch_directives_lines = self._get_scheduler_directives()
+        if batch_directives_lines:
+            lines += batch_directives_lines
+
+        burst_buffer_lines = self._get_burst_buffer()
+        if burst_buffer_lines:
+            lines += burst_buffer_lines
+
+        data_warp_lines = self._get_data_warp()
+        if data_warp_lines:
+            lines += data_warp_lines
 
         lines += [
             f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
@@ -259,14 +309,7 @@ class BuilderBase:
 
         write_file(self.metadata["testpath"], lines)
 
-        # Change permission of the file to executable
-        os.chmod(
-            self.metadata["testpath"],
-            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
-        )
-        self.logger.debug(
-            f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
-        )
+        self._set_execute_perm()
         # copy testpath to run_dir
         shutil.copy2(
             self.metadata["testpath"],
@@ -352,10 +395,10 @@ class BuilderBase:
         return variables
 
     def _generate_unique_id(self):
-        """Generate a build id based on the Buildspec name, and datetime."""
+        """Generate a unique build id using ``uuid.uuid4()``."""
+
         unique_id = str(uuid.uuid4())
         return unique_id
-        # return "%s_%s" % (self.name, now)
 
     def generate_script(self):
         """Build the testscript content implemented in each subclass"""
@@ -526,7 +569,6 @@ class CompilerBuilder(BuilderBase):
         run = [cmd for cmd in run if cmd]
 
         return run
-        # return self.simple_run()
 
     def set_executable_name(self, name=None):
         """This method set the executable name. One may specify a custom name to executable via ``name``
@@ -539,15 +581,33 @@ class CompilerBuilder(BuilderBase):
 
         return "%s.exe" % os.path.basename(self.sourcefile)
 
+    def lookup_compilers(self, compiler):
+        """ Return compiler wrapper based on compiler name
+
+        :param compiler: name of compiler
+        :return: return a dictionary that has list of compiler wrappers for C, C++, and Fortran
+        """
+
+        self.compiler_lookup = {
+            "gnu": {"cc": "gcc", "cxx": "g++", "fc": "gfortran"},
+            "intel": {"cc": "icc", "cxx": "icpc", "fc": "ifort"},
+            "pgi": {"cc": "pgcc", "cxx": "pgc++", "fc": "pgfortran"},
+            "cray": {"cc": "cc", "cxx": "CC", "fc": "ftn"},
+            "clang": {"cc": "clang", "cxx": "clang++", "fc": None},
+            "cuda": {"cc": "nvcc", "cxx": "nvcc", "fc": None},
+        }
+        return self.compiler_lookup.get(compiler)
+
     def setup(self):
 
         self.compiler_recipe = self.recipe.get("build")
         self.sourcefile = self.compiler_recipe["source"]
-        # self.sourcefile = self.resolve_source(self.compiler_recipe["source"])
 
-        self.cc = self.compiler_recipe.get("cc") or self.cc
-        self.fc = self.compiler_recipe.get("fc") or self.fc
-        self.cxx = self.compiler_recipe.get("cxx") or self.cxx
+        detected_compilers = self.lookup_compilers(self.compiler_recipe.get("name"))
+        self.cc = self.compiler_recipe.get("cc") or detected_compilers["cc"]
+        self.cxx = self.compiler_recipe.get("cxx") or detected_compilers["cxx"]
+        self.fc = self.compiler_recipe.get("fc") or detected_compilers["fc"]
+
         self.cflags = self.compiler_recipe.get("cflags")
         self.fflags = self.compiler_recipe.get("fflags")
         self.cxxflags = self.compiler_recipe.get("cxxflags")
@@ -627,6 +687,7 @@ class CompilerBuilder(BuilderBase):
         """This method generates the compilation line and returns the output as a list. The compilation line depends
            on the the language detected that is stored in variable ``self.lang``.
         """
+
         cmd = []
         # Generate C compilation line
         if self.lang == "C":
@@ -665,31 +726,3 @@ class CompilerBuilder(BuilderBase):
             ]
         # remove any None from list
         return list(filter(None, cmd))
-
-
-class GNUCompiler(CompilerBuilder):
-
-    cc = "gcc"
-    cxx = "g++"
-    fc = "gfortran"
-
-
-class IntelCompiler(CompilerBuilder):
-
-    cc = "icc"
-    cxx = "icpc"
-    fc = "ifort"
-
-
-class PGICompiler(CompilerBuilder):
-
-    cc = "pgcc"
-    cxx = "pgc++"
-    fc = "pgfortran"
-
-
-class CrayCompiler(CompilerBuilder):
-
-    cc = "cc"
-    cxx = "CC"
-    fc = "ftn"
