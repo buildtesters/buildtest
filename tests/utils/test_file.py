@@ -116,20 +116,20 @@ def test_write_file_exceptions(tmp_path):
     # testing invalid type for file stream
     with pytest.raises(BuildTestError):
         print("Passing 'None' as input filestream to write_file")
-        write_file(None, input)
+        write_file(None, msg)
 
     assert is_dir(tmp_path)
     # testing if directory is passed as filepath, this is also not allowed and expected to raise error
     with pytest.raises(BuildTestError):
         print(f"Passing directory: {tmp_path} as input filestream to method write_file")
-        write_file(tmp_path, input)
+        write_file(tmp_path, msg)
 
     filename = "".join(random.choice(string.ascii_letters) for i in range(10))
     path = os.path.join("/", filename)
     print(f"Can't write to path: {path} due to permissions")
 
     with pytest.raises(BuildTestError):
-        write_file(path, input)
+        write_file(path, msg)
 
     # input content must be a string, will return None upon
     assert not write_file(os.path.join(tmp_path, "null.txt"), ["hi"])
