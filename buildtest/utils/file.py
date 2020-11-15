@@ -168,7 +168,7 @@ def read_file(filepath):
 
     # ensure filepath is a string, if not, we raise an error.
     if not isinstance(filepath, str):
-        sys.exit(f"Invalid type for file: {filepath} must be of type 'str' ")
+        raise BuildTestError(f"Invalid type for file: {filepath} must be of type 'str' ")
 
     input_file = filepath
     # resolve_path will handle shell and user expansion and account for any symlinks and check for file existence.
@@ -177,7 +177,7 @@ def read_file(filepath):
 
     # if it's invalid file let's raise an error
     if not filepath:
-        sys.exit(
+        raise BuildTestError(
             f"Unable to find input file: {input_file}. Please specify a valid file"
         )
     try:
@@ -211,11 +211,11 @@ def write_file(filepath, content):
 
     # ensure filepath is a string, if not we raise an error
     if not isinstance(filepath, str):
-        sys.exit(f"Invalid type for file: {filepath} must be of type 'str' ")
+        raise BuildTestError(f"Invalid type for file: {filepath} must be of type 'str' ")
 
     #  if filepath is a directory, we raise an exception noting that user must specify a filepath
     if is_dir(filepath):
-        sys.exit(f"Detected {filepath} is a directory, please specify a file path.")
+        raise BuildTestError(f"Detected {filepath} is a directory, please specify a file path.")
 
     # ensure content is of type string
     if not isinstance(content, str):

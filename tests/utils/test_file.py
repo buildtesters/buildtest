@@ -114,13 +114,13 @@ def test_write_file_exceptions(tmp_path):
     write_file(file, msg)
 
     # testing invalid type for file stream
-    with pytest.raises(SystemExit):
+    with pytest.raises(BuildTestError):
         print("Passing 'None' as input filestream to write_file")
         write_file(None, input)
 
     assert is_dir(tmp_path)
     # testing if directory is passed as filepath, this is also not allowed and expected to raise error
-    with pytest.raises(SystemExit):
+    with pytest.raises(BuildTestError):
         print(f"Passing directory: {tmp_path} as input filestream to method write_file")
         write_file(tmp_path, input)
 
@@ -139,7 +139,7 @@ def test_write_file_exceptions(tmp_path):
 def test_read_file(tmp_path):
     # testing invalid type for read_file, expects of type string. Expected return is 'None'
     print("Reading file with invalid type, passing 'None'")
-    with pytest.raises(SystemExit):
+    with pytest.raises(BuildTestError):
         read_file(None)
 
     file = os.path.join(tmp_path, "hello.txt")
@@ -149,7 +149,7 @@ def test_read_file(tmp_path):
 
     print(f"Now reading an invalid file: {file}, expecting read_file to return 'None'")
     # checking invalid file should report an error
-    with pytest.raises(SystemExit):
+    with pytest.raises(BuildTestError):
         read_file(file)
 
     print("Reading '/etc/shadow' will raise an exception BuildTestError")
