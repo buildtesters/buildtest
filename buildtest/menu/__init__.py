@@ -16,10 +16,8 @@ from buildtest.menu.config import (
     func_config_summary,
     func_config_validate,
     func_config_view,
-    func_config_compiler,
-    func_compiler_find,
 )
-
+from buildtest.menu.compilers import func_compiler_find, func_config_compiler
 from buildtest.menu.report import func_report
 from buildtest.menu.schema import func_schema
 from buildtest.menu.inspect import func_inspect

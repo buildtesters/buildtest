@@ -10,20 +10,19 @@ include the following:
 
 import os
 import logging
-import sys
 from buildtest.exceptions import BuildTestError
 
 logger = logging.getLogger(__name__)
 
 
 def is_file(fname):
-    """This method will check if file exist and if not found throws an exception.
+    """ This method will check if file exist, if so returns True otherwise returns
+        False
 
-    :param file: file path
-    :type file: str, required
-
-    :return: returns a boolean True/False depending on if input is a valid file.
-    :rtype: bool
+        :param file: file path
+        :type file: str, required
+        :return: returns a boolean True/False depending on if input is a valid file.
+        :rtype: bool
     """
 
     # resolve_path will return the full canonical filename or return None if file doesn't exist
@@ -38,13 +37,11 @@ def is_file(fname):
 
 
 def is_dir(dirname):
-    """This method will check if a directory exist and if not found throws an exception.
-
-       Parameters:
+    """This method will check if a directory exist. If directory found we return
+       True otherwise False.
 
        :param dir: directory path
        :type dir: str, required
-
        :return: returns a boolean True/False depending on if input is a valid directory.
        :rtype: bool
     """
@@ -95,15 +92,12 @@ def walk_tree(root_dir, ext=None):
 
 
 def create_dir(dirname):
-    """Create directory if it doesn't exist. Runs a "try" block
-       to run os.makedirs() which creates all sub-directories if they
-       dont exist. Catches exception of type OSError and prints message
-
-       Parameters:
+    """Create a directory if it doesn't exist. If directory contains variable
+       expansion ($HOME), user expansion (~) we resolve this before creating directory.
+       If there is an error creating directory we raise an exception
 
        :param dirname: directory path to create
-       :type dirname: string, required
-
+       :type dirname: str, required
        :return: creates the directory or print an exception message upon failure
        :rtype: Catches exception of type OSError
     """
@@ -127,8 +121,6 @@ def resolve_path(path, exist=True):
     """This method will resolve a file path to account for shell expansion and resolve paths in
        when a symlink is provided in the file. This method assumes file already exists.
 
-       Parameters:
-
        :param path: file path to resolve
        :type path: str, required
        :return: return realpath to file if found otherwise return None
@@ -150,12 +142,14 @@ def resolve_path(path, exist=True):
 
 
 def read_file(filepath):
-    """ This method is used to read a file specified by argument ``filepath``. If filepath is not a string we raise
-        an error. We also run ``resolve_path`` to get realpath to file and account for shell or user expansion. The
-        return from ``resolve_path`` will be a valid file or ``None`` so  we check if input is an invalid file.
-        Finally we read the file and return the content of the file as a string.
+    """ This method is used to read a file specified by argument ``filepath``.
+        If filepath is not a string we raise an error. We also run ``resolve_path``
+        to get realpath to file and account for shell or user expansion. The
+        return from ``resolve_path`` will be a valid file or ``None`` so  we
+        check if input is an invalid file. Finally we read the file and return
+        the content of the file as a string.
 
-        Parameters:
+
 
         :param filepath: file name to read
         :type filepath: str, required
@@ -192,13 +186,13 @@ def read_file(filepath):
 
 
 def write_file(filepath, content):
-    """ This method is used to write an input ``content`` to a file specified by ``filepath. Both filepath
-        and content must be a str. An error is raised if filepath is not a string or a directory. If ``content``
-        is not a str, we return ``None`` since we can't process the content for writing. Finally, we write the content
-        to file and return. A successful write will return nothing otherwise an exception will occur during the write
+    """ This method is used to write an input ``content`` to a file specified by
+        ``filepath. Both filepath and content must be a str. An error is raised
+        if filepath is not a string or a directory. If ``content`` is not a str,
+        we return ``None`` since we can't process the content for writing.
+        Finally, we write the content to file and return. A successful write
+        will return nothing otherwise an exception will occur during the write
         process.
-
-        Parameters:
 
         :param filepath: file name to write
         :type filepath: str, required
@@ -225,7 +219,9 @@ def write_file(filepath, content):
 
     # ensure content is of type string
     if not isinstance(content, str):
-        return
+        raise BuildTestError(
+            f"Expecting type str but got type: {type(content)} when writing file"
+        )
 
     try:
         with open(filepath, "w") as fd:

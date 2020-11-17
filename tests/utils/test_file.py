@@ -132,7 +132,8 @@ def test_write_file_exceptions(tmp_path):
         write_file(path, msg)
 
     # input content must be a string, will return None upon
-    assert not write_file(os.path.join(tmp_path, "null.txt"), ["hi"])
+    with pytest.raises(BuildTestError):
+        write_file(os.path.join(tmp_path, "null.txt"), ["hi"])
 
 
 @pytest.mark.utility
