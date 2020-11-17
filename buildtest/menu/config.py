@@ -1,19 +1,15 @@
 import getpass
-import json
 import os
 import shutil
-import subprocess
 import sys
 import yaml
-from jsonschema import ValidationError, validate
+from jsonschema import ValidationError
 from buildtest import BUILDTEST_VERSION
-from buildtest.exceptions import BuildTestError
-from buildtest.schemas.utils import get_schema_fullpath, load_schema, load_recipe
+from buildtest.schemas.utils import get_schema_fullpath, load_recipe
 from buildtest.config import check_settings, load_settings, resolve_settings_file
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
     BUILDSPEC_CACHE_FILE,
-    DEFAULT_SETTINGS_SCHEMA,
 )
 from buildtest.defaults import supported_type_schemas, supported_schemas
 from buildtest.system import BuildTestSystem
