@@ -1,0 +1,14 @@
+$ buildtest config compilers --help
+usage: buildtest [options] [COMMANDS] config compilers [-h] [-j] [-y] [-l] {find} ...
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -j, --json  List compiler details in JSON format
+  -y, --yaml  List compiler details in YAML format
+  -l, --list  List all compilers
+
+subcommands:
+  Find new compilers and add them to detected compiler section
+
+  {find}
+    find      Find compilers

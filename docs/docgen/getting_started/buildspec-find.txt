@@ -1,22 +1,26 @@
 $ buildtest buildspec find 
-Found 37 buildspecs
-Validated 5/37 buildspecs
-Validated 10/37 buildspecs
-Validated 15/37 buildspecs
-Validated 20/37 buildspecs
-Validated 25/37 buildspecs
-Validated 30/37 buildspecs
-Validated 35/37 buildspecs
-Validated 37/37 buildspecs
 
-Detected 3 invalid buildspecs 
+Buildspec Paths: ['/Users/siddiq90/Documents/buildtest/tutorials', '/Users/siddiq90/Documents/buildtest/general_tests', '/Users/siddiq90/Documents/buildtest/tests/buildsystem'] 
+
+Found 46 buildspecs 
+Validated 5/46 buildspecs
+Validated 10/46 buildspecs
+Validated 15/46 buildspecs
+Validated 20/46 buildspecs
+Validated 25/46 buildspecs
+Validated 30/46 buildspecs
+Validated 35/46 buildspecs
+Validated 45/46 buildspecs
+Validated 46/46 buildspecs
+
+Detected 8 invalid buildspecs 
 
 Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/var/buildspec.error 
 
 
 
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
-| Name                         | Type     | Executor     | Tags                      | Description                                                      |
+| name                         | type     | executor     | tags                      | description                                                      |
 +==============================+==========+==============+===========================+==================================================================+
 | systemd_default_target       | script   | local.bash   | ['tutorials']             | check if default target is multi-user.target                     |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
@@ -59,8 +63,6 @@ Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/var/buil
 | returncode_int_match         | script   | local.sh     | ['tutorials', 'pass']     | exit 128 matches returncode 128                                  |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | csh_shell                    | script   | local.csh    | ['tutorials']             | csh shell example                                                |
-+------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
-| tcsh_env_declaration         | script   | local.csh    | ['tutorials']             | tsh shell example to declare environment variables               |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | hello_world                  | script   | local.bash   | tutorials                 | hello world example                                              |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
@@ -175,4 +177,22 @@ Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/var/buil
 | display_hosts_format         | script   | local.bash   | lsf                       | Show all hosts with column hostname and status                   |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | bhosts_version               | script   | local.bash   | lsf                       | Display bhosts version                                           |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| _bin_sh_shell                | script   | local.sh     | []                        | /bin/sh shell example                                            |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| _bin_bash_shell              | script   | local.bash   | []                        | /bin/bash shell example                                          |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| bash_shell                   | script   | local.bash   | []                        | bash shell example                                               |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| sh_shell                     | script   | local.sh     | []                        | sh shell example                                                 |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| shell_options                | script   | local.sh     | []                        | shell options                                                    |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| hello_dinosaur               | script   | local.bash   | []                        |                                                                  |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| slurm_down_nodes_reason      | script   | local.bash   | []                        | Show SLURM nodes that are down or drain with a reason            |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| slurm_not_responding_nodes   | script   | local.bash   | []                        | Show a list of slurm nodes not responding                        |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| circle_area                  | script   | local.python | []                        | Calculate circle of area given a radius                          |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+

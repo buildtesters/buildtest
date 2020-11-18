@@ -36,8 +36,17 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
     "bsub": {
       "$ref": "definitions.schema.json#/definitions/bsub"
     },
+    "cobalt": {
+      "$ref": "definitions.schema.json#/definitions/cobalt"
+    },
     "batch": {
       "$ref": "definitions.schema.json#/definitions/batch"
+    },
+    "BB": {
+      "$ref": "definitions.schema.json#/definitions/BB"
+    },
+    "DW": {
+      "$ref": "definitions.schema.json#/definitions/DW"
     },
     "env": {
       "$ref": "definitions.schema.json#/definitions/env"

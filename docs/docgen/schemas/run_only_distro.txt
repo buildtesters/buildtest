@@ -23,7 +23,7 @@ Discovered Buildspecs:
 
  name                  | id       | type   | executor   | tags   | testpath
 -----------------------+----------+--------+------------+--------+--------------------------------------------------------------------------------------------------------------------
- run_only_macos_distro | d0bfc966 | script | local.bash |        | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/run_only_distro/run_only_macos_distro/1/stage/generate.sh
+ run_only_macos_distro | 5198642a | script | local.bash |        | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/run_only_distro/run_only_macos_distro/1/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -31,7 +31,7 @@ Discovered Buildspecs:
     
  name                  | id       | executor   | status   |   returncode | testpath
 -----------------------+----------+------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------
- run_only_macos_distro | d0bfc966 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/run_only_distro/run_only_macos_distro/1/stage/generate.sh
+ run_only_macos_distro | 5198642a | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/run_only_distro/run_only_macos_distro/1/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

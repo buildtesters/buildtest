@@ -293,7 +293,7 @@ runs to ``buildtest buildspec find`` will be much faster because it is read from
 If you make changes to buildspec you may want to rebuild the buildspec cache then
 run::
 
-  $ buildtest buildspec find --clear
+  $ buildtest buildspec find --rebuild
 
 Shown below is a list of options for ``buildtest buildspec find`` command.
 
@@ -331,6 +331,28 @@ we query all buildspecs with ``tags=tutorials``, ``executor=local.sh``, and ``ty
 
 .. program-output:: cat docgen/buildspec_multifield_filter.txt
 
+
+Format buildspec cache
+-----------------------
+
+buildtest has a few format fields to alter columns in the output of
+``buildtest buildspec find``. The format fields are specified comma separated using
+format: ``--format <key1>,<key2>,...``
+
+To see a list of format fields use the ``--helpformat`` option as shown below
+
+.. program-output:: cat docgen/buildspec-format.txt
+
+
+In next example, we utilize ``--format`` field with ``--filter`` option to show
+how format fields affect table columns. buildtest will display output of columns
+format fields in order they were specified in command line.
+
+.. program-output:: cat docgen/buildspec_format_example.txt
+
+buildtest makes use of python library named `tabulate <https://pypi.org/project/tabulate/>`_
+to generate these tables which are found in commands line ``buildtest buildspec find``
+and ``buildtest report``.
 
 .. _buildspec_tags:
 

@@ -1,13 +1,16 @@
 $ buildtest buildspec find --help
-usage: buildtest [options] [COMMANDS] buildspec find [-h] [-c] [-t] [-bf] [-le] [--filter FILTER] [--helpfilter]
+usage: buildtest [options] [COMMANDS] buildspec find [-h] [-r] [-t] [-bf] [-e] [-p] [--filter FILTER]
+                                                     [--format FORMAT] [--helpfilter] [--helpformat]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -c, --clear           Clear buildspec cache and find all buildspecs again
+  -r, --rebuild         Rebuild buildspec cache and find all buildspecs again
   -t, --tags            List all available tags
   -bf, --buildspec-files
                         Get all buildspec files from cache
-  -le, --list-executors
-                        get all unique executors from buildspecs
+  -e, --executors       get all unique executors from buildspecs
+  -p, --paths           print all root buildspec paths
   --filter FILTER       Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2
-  --helpfilter          Show Filter fields for --filter option for querying buildspec cache
+  --format FORMAT       Format buildspec cache with format fields in format --format field1,field2,...
+  --helpfilter          Show Filter fields for --filter option for filtering buildspec cache output
+  --helpformat          Show Format fields for --format option for formatting buildspec cache output

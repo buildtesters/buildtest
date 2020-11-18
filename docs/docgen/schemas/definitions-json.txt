@@ -71,18 +71,24 @@ $ buildtest schema -n definitions.schema.json --json
       "description": "Select one of the executor name defined in your configuration file (``config.yml``). Every buildspec must have an executor which is responsible for running job. "
     },
     "sbatch": {
-      "type": "array",
-      "description": "This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value",
-      "items": {
-        "type": "string"
-      }
+      "$ref": "#/definitions/list_of_strings",
+      "description": "This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value"
     },
     "bsub": {
-      "type": "array",
-      "description": "This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value",
-      "items": {
-        "type": "string"
-      }
+      "$ref": "#/definitions/list_of_strings",
+      "description": "This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value"
+    },
+    "cobalt": {
+      "$ref": "#/definitions/list_of_strings",
+      "description": "This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value"
+    },
+    "BB": {
+      "$ref": "#/definitions/list_of_strings",
+      "description": "Create burst buffer space, this specifies #BB options in your test."
+    },
+    "DW": {
+      "$ref": "#/definitions/list_of_strings",
+      "description": "Specify Data Warp option (#DW) when using burst buffer."
     },
     "run_only": {
       "type": "object",
