@@ -77,9 +77,9 @@ class BuildspecCache:
            exists, we simply load from cache
         """
 
-        # implements buildtest buildspec find --clear which removes cache file
-        # before finding all buildspecs
-        if self.rebuild:
+        # implements buildtest buildspec find --rebuild which removes cache file
+        # before finding all buildspecs. We only remove file if file exists
+        if self.rebuild and is_file(BUILDSPEC_CACHE_FILE):
             try:
                 os.remove(BUILDSPEC_CACHE_FILE)
                 print(f"Clearing cache file: {BUILDSPEC_CACHE_FILE}")
