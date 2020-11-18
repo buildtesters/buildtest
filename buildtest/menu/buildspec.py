@@ -95,28 +95,13 @@ class BuildspecCache:
         with open(BUILDSPEC_CACHE_FILE, "r") as fd:
             self.cache = json.loads(fd.read())
 
-    def build_cache(self):
-        """This method will rebuild the buildspec cache file by recursively searching
-        all .yml files specified by input argument ``paths`` which is a list of directory
-        roots. The buildspecs are validated and cache file is updated"
-
-        :param paths: A list of directory roots to process buildspecs files.
-        :type paths: list
-        :return: Rebuild cache file
-        """
-
-        cache = {}
-        cache["unique_tags"] = []
-        cache["unique_executors"] = []
-        cache["buildspecs"] = {}
+    def _find_buildspecs(self):
 
         buildspecs = []
-        invalid_buildspecs = {}
-        parse = None
         # add all buildspecs from each repo. walk_tree will find all .yml files
         # recursively and add them to list
         for path in self.paths:
-            cache["buildspecs"][path] = {}
+
             buildspec = walk_tree(path, ".yml")
             buildspecs += buildspec
 
@@ -128,15 +113,38 @@ class BuildspecCache:
             for buildspec in buildspecs
             if os.path.basename(os.path.dirname(buildspec)) != ".buildtest"
         ]
+        return buildspecs
 
-        print(f"Found {len(buildspecs)} buildspecs ")
+    def _write_buildcache(self):
 
-        # process each buildspec by invoking BuildspecParser which will validate
-        # buildspec, if it fails it will raise SystemExit or ValidationError in
-        # this case we skip to next buildspec
-        count = 0
+        with open(BUILDSPEC_CACHE_FILE, "w") as fd:
+            json.dump(self.update_cache, fd, indent=2)
+
+        print(f"\nDetected {len(self.invalid_buildspecs)} invalid buildspecs \n")
+
+        # write invalid buildspecs to file if any found
+        if self.invalid_buildspecs:
+            buildspec_error_file = os.path.join(
+                os.path.dirname(BUILDSPEC_CACHE_FILE), "buildspec.error"
+            )
+
+            with open(buildspec_error_file, "w") as fd:
+                for file, msg in self.invalid_buildspecs.items():
+                    fd.write(f"buildspec:{file} \n\n")
+                    fd.write(f"{msg} \n")
+
+            print(f"Writing invalid buildspecs to file: {buildspec_error_file} ")
+            print("\n\n")
+
+    def _validate_buildspecs(self, buildspecs):
+        """Given a list of buildspec files, validate each buildspec using BuildspecParser
+           and return a list of valid buildspecs. Any invalid buildspecs are added to
+           separate list
+        """
+        valid_buildspecs = []
+        self.count = 0
         for buildspec in buildspecs:
-            count += 1
+            self.count += 1
 
             try:
                 parse = BuildspecParser(buildspec)
@@ -144,61 +152,85 @@ class BuildspecCache:
             # buildspec is not valid, we add this to invalid list along with
             # error message and skip to next buildspec
             except (SystemExit, ValidationError) as err:
-                invalid_buildspecs[buildspec] = err
+                self.invalid_buildspecs[buildspec] = err
                 continue
 
-            if count % 5 == 0:
-                print(f"Validated {count}/{len(buildspecs)} buildspecs")
-            recipe = parse.recipe["buildspecs"]
+            valid_buildspecs.append(parse)
+
+            if self.count % 5 == 0:
+                print(f"Validated {self.count}/{len(buildspecs)} buildspecs")
+
+        print(f"Validated {self.count}/{len(buildspecs)} buildspecs")
+        return valid_buildspecs
+
+    def build_cache(self):
+        """This method will rebuild the buildspec cache file by recursively searching
+        all .yml files specified by input argument ``paths`` which is a list of directory
+        roots. The buildspecs are validated and cache file is updated"
+
+        :param paths: A list of directory roots to process buildspecs files.
+        :type paths: list
+        :return: Rebuild cache file
+        """
+
+        self.update_cache = {}
+        self.update_cache["unique_tags"] = []
+        self.update_cache["unique_executors"] = []
+        self.update_cache["buildspecs"] = {}
+        self.invalid_buildspecs = {}
+
+        for path in self.paths:
+            self.update_cache[path] = {}
+
+        buildspecs = self._find_buildspecs()
+        print(f"Found {len(buildspecs)} buildspecs ")
+
+        # validate each buildspec and return a list of valid buildspec parsers that
+        # is an instance of BuildspecParser class
+        parsers = self._validate_buildspecs(buildspecs)
+
+        # for every parsers (valid buildspecs) we update cache to build an index
+        for parser in parsers:
+
+            recipe = parser.recipe["buildspecs"]
 
             path_root = [
                 path
                 for path in self.paths
-                if os.path.commonprefix([buildspec, path]) == path
+                if os.path.commonprefix([parser.buildspec, path]) == path
             ]
             path_root = path_root[0]
 
-            cache["buildspecs"][path_root][buildspec] = {}
+            if not self.update_cache["buildspecs"].get(path_root):
+                self.update_cache["buildspecs"][path_root] = {}
+
+            if not self.update_cache["buildspecs"][path_root].get(parser.buildspec):
+                self.update_cache["buildspecs"][path_root][parser.buildspec] = {}
 
             for name in recipe.keys():
 
-                cache["buildspecs"][path_root][buildspec][name] = recipe[name]
+                self.update_cache["buildspecs"][path_root][parser.buildspec][
+                    name
+                ] = recipe[name]
                 tags = recipe[name].get("tags")
                 executor = recipe[name].get("executor")
 
                 if tags:
 
                     if isinstance(tags, str):
-                        cache["unique_tags"].append(tags)
+                        self.update_cache["unique_tags"].append(tags)
                     elif isinstance(tags, list):
-                        cache["unique_tags"] += tags
+                        self.update_cache["unique_tags"] += tags
 
                 if executor:
-                    cache["unique_executors"].append(executor)
+                    self.update_cache["unique_executors"].append(executor)
 
-        cache["unique_tags"] = list(set(cache["unique_tags"]))
-        cache["unique_executors"] = list(set(cache["unique_executors"]))
+        self.update_cache["unique_tags"] = list(set(self.update_cache["unique_tags"]))
+        self.update_cache["unique_executors"] = list(
+            set(self.update_cache["unique_executors"])
+        )
 
-        print(f"Validated {count}/{len(buildspecs)} buildspecs")
-
-        with open(BUILDSPEC_CACHE_FILE, "w") as fd:
-            json.dump(cache, fd, indent=2)
-
-        print(f"\nDetected {len(invalid_buildspecs)} invalid buildspecs \n")
-
-        # write invalid buildspecs to file if any found
-        if invalid_buildspecs:
-            buildspec_error_file = os.path.join(
-                os.path.dirname(BUILDSPEC_CACHE_FILE), "buildspec.error"
-            )
-
-            with open(buildspec_error_file, "w") as fd:
-                for file, msg in invalid_buildspecs.items():
-                    fd.write(f"buildspec:{file} \n\n")
-                    fd.write(f"{msg} \n")
-
-            print(f"Writing invalid buildspecs to file: {buildspec_error_file} ")
-            print("\n\n")
+        self._write_buildcache()
 
     def check_filter_fields(self):
         """ This method checks filter fields are valid. The filter fields are specified
@@ -251,6 +283,37 @@ class BuildspecCache:
             for field in self.format.split(","):
                 self.table[field] = []
 
+    def _filter_buildspecs(self, executor, tags, schema_type):
+        """ This method will return a boolean True/False that determines if
+            buildspec test entry is skipped as part of filter process. The filter
+            are done based on executor, tags, type field. ``True`` indicates test
+            needs to be skipped.
+
+            :param executor:  'executor; field from buildspec recipe
+            :type executor: str, required
+            :param tags: 'tags' field from buildspec recipe
+            :type tags: str or list, required
+            :param schema_type: 'type' field from buildspec recipe
+            :type schema_type: str, required
+            :return: boolean to determine if we need to skip buildspec
+            :rtype: bool
+        """
+
+        # skip all entries that dont match filtered executor
+        if self.executor_filter and self.executor_filter != executor:
+            return True
+
+        # if skip all entries that dont match filtered tag. We only search if --filter tag=value is set
+        if self.tags_filter:
+            # if tags is not set in buildspec cache we default to empty list which and this condition should always be true
+            if self.tags_filter not in tags:
+                return True
+
+        if self.type_filter and self.type_filter != schema_type:
+            return True
+
+        return False
+
     def find_buildspecs(self):
         """ This method will find buildspecs based on cache content. We skip any
             tests based on executor filter, tag filter or type filter and build
@@ -268,17 +331,9 @@ class BuildspecCache:
                     tags = test_recipe.get("tags") or []
                     description = test_recipe.get("description")
 
-                    # skip all entries that dont match filtered executor
-                    if self.executor_filter and self.executor_filter != executor:
-                        continue
-
-                    # if skip all entries that dont match filtered tag. We only search if --filter tag=value is set
-                    if self.tags_filter:
-                        # if tags is not set in buildspec cache we default to empty list which and this condition should always be true
-                        if self.tags_filter not in tags:
-                            continue
-
-                    if self.type_filter and self.type_filter != schema_type:
+                    # filters buildspecs by executor, tags, type field. The return
+                    # is a boolean, if its True we skip the test
+                    if self._filter_buildspecs(executor, tags, schema_type):
                         continue
 
                     if self.format:
