@@ -43,12 +43,12 @@ def discover_buildspecs_by_tags(input_tag):
     buildspecs = []
     # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
     # if it matches input_tag we add buildspec to list
-    for path in cache.keys():
-        for buildspecfile in cache[path].keys():
-            for test in cache[path][buildspecfile].keys():
+    for path in cache["buildspecs"].keys():
+        for buildspecfile in cache["buildspecs"][path].keys():
+            for test in cache["buildspecs"][path][buildspecfile].keys():
 
                 # if tags is not declared we set to empty list
-                tag = cache[path][buildspecfile][test].get("tags") or []
+                tag = cache["buildspecs"][path][buildspecfile][test].get("tags") or []
 
                 if input_tag in tag:
                     buildspecs.append(buildspecfile)
@@ -75,12 +75,14 @@ def discover_buildspecs_by_executor_name(executor_name):
     buildspecs = []
     # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
     # if it matches input_tag we add buildspec to list
-    for path in cache.keys():
-        for buildspecfile in cache[path].keys():
-            for test in cache[path][buildspecfile].keys():
+    for path in cache["buildspecs"].keys():
+        for buildspecfile in cache["buildspecs"][path].keys():
+            for test in cache["buildspecs"][path][buildspecfile].keys():
 
                 # if tags is not declared we set to empty list
-                executor = cache[path][buildspecfile][test].get("executor") or []
+                executor = (
+                    cache["buildspecs"][path][buildspecfile][test].get("executor") or []
+                )
 
                 if executor_name == executor:
                     buildspecs.append(buildspecfile)
