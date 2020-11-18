@@ -15,6 +15,7 @@ root = os.path.dirname(test_root)
 
 valid_buildspecs = os.path.join(test_root, "buildsystem", "valid_buildspecs")
 
+
 @pytest.mark.cli
 def test_build_by_tags():
 
@@ -22,12 +23,15 @@ def test_build_by_tags():
     # rerunning buildtest buildspec find without --clear option this will read from cache file
     class args:
         find = True
-        clear = False
-        tags = False
+        rebuild = True
         buildspec_files = False
-        list_executors = False
+        executors = False
+        tags = False
+        paths = False
         filter = None
+        format = None
         helpfilter = False
+        helpformat = True
 
     func_buildspec_find(args)
 
@@ -61,7 +65,6 @@ def test_build_by_tags():
 
 
 def test_discover_by_buildspecs():
-
 
     # test single buildspec file
     buildspec = os.path.join(valid_buildspecs, "environment.yml")
@@ -113,7 +116,9 @@ def test_discover_buildspec():
 
     # The test below will discover and negate all buildspecs which raises an exception of type SystemExit
     with pytest.raises(SystemExit):
-        discover_buildspecs(buildspec=[valid_buildspecs], exclude_buildspec=[valid_buildspecs])
+        discover_buildspecs(
+            buildspec=[valid_buildspecs], exclude_buildspec=[valid_buildspecs]
+        )
 
     input_bps = [
         os.path.join(BUILDTEST_ROOT, "setup.py"),
@@ -124,7 +129,7 @@ def test_discover_buildspec():
     discovered_bp, excluded_bp = discover_buildspecs(
         buildspec=input_bps, exclude_buildspec=exclude_bps
     )
-    print ("discovered:", discovered_bp)
+    print("discovered:", discovered_bp)
     print("excluded:", exclude_bps)
     # assert both discovered_bp and excluded_bp are not None
     assert discovered_bp

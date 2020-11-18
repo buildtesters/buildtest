@@ -17,12 +17,15 @@ logger = logging.getLogger(__name__)
 
 class BuildspecCache:
 
-    table = {"Name": [], "Type": [], "Executor": [], "Tags": [], "Description": []}
+    # table = {"Name": [], "Type": [], "Executor": [], "Tags": [], "Description": []}
+    table = {}
     filter_fields = ["type", "executor", "tags"]
+    default_format_fields = ["name", "type", "executor", "tags", "description"]
+    format_fields = default_format_fields + ["buildspecs"]
 
-    def __init__(self, rebuild, filter):
+    def __init__(self, rebuild, filter, format):
         self.filter = filter
-
+        self.format = format
         self.paths = []
         self.rebuild = rebuild
         self.cache = {}
@@ -31,6 +34,7 @@ class BuildspecCache:
         self.build()
 
         self.check_filter_fields()
+        self.check_format_fields()
         self.find_buildspecs()
 
     def get_paths(self):
@@ -116,13 +120,16 @@ class BuildspecCache:
             buildspec = walk_tree(path, ".yml")
             buildspecs += buildspec
 
+        print(f"\nBuildspec Paths: {self.paths} \n")
+
         # remove any files in .buildtest directory of root of repo.
         buildspecs = [
             buildspec
             for buildspec in buildspecs
             if os.path.basename(os.path.dirname(buildspec)) != ".buildtest"
         ]
-        print(f"Found {len(buildspecs)} buildspecs")
+
+        print(f"Found {len(buildspecs)} buildspecs ")
 
         # process each buildspec by invoking BuildspecParser which will validate
         # buildspec, if it fails it will raise SystemExit or ValidationError in
@@ -219,6 +226,31 @@ class BuildspecCache:
             self.tags_filter = self.filter.get("tags")
             self.type_filter = self.filter.get("type")
 
+    def check_format_fields(self):
+        """ This method will check if all format fields are valid. Format fields
+            are passed comma separated as --format field1,field2,field3,...
+        """
+
+        for field in self.default_format_fields:
+            self.table[field] = []
+
+        if self.format:
+
+            format_error = False
+            for key in self.format.split(","):
+                if key not in self.format_fields:
+                    print(f"Invalid format field: {key}")
+                    format_error = True
+
+                if format_error:
+                    raise BuildTestError(f"Invalid format fields format {self.format}")
+
+            # if --format option specified we setup cache dictionary based on format
+            # fields that are added to list
+            self.table = {}
+            for field in self.format.split(","):
+                self.table[field] = []
+
     def find_buildspecs(self):
         """ This method will find buildspecs based on cache content. We skip any
             tests based on executor filter, tag filter or type filter and build
@@ -229,20 +261,12 @@ class BuildspecCache:
             for buildspecfile in self.cache["buildspecs"][path].keys():
                 for test in self.cache["buildspecs"][path][buildspecfile].keys():
 
-                    schema_type = self.cache["buildspecs"][path][buildspecfile][
-                        test
-                    ].get("type")
-                    executor = self.cache["buildspecs"][path][buildspecfile][test].get(
-                        "executor"
-                    )
+                    test_recipe = self.cache["buildspecs"][path][buildspecfile][test]
+                    schema_type = test_recipe.get("type")
+                    executor = test_recipe.get("executor")
                     # if tags not defined in cache we set to empty list for comparison with tag_filter
-                    tags = (
-                        self.cache["buildspecs"][path][buildspecfile][test].get("tags")
-                        or []
-                    )
-                    description = self.cache["buildspecs"][path][buildspecfile][
-                        test
-                    ].get("description")
+                    tags = test_recipe.get("tags") or []
+                    description = test_recipe.get("description")
 
                     # skip all entries that dont match filtered executor
                     if self.executor_filter and self.executor_filter != executor:
@@ -257,11 +281,25 @@ class BuildspecCache:
                     if self.type_filter and self.type_filter != schema_type:
                         continue
 
-                    self.table["Name"].append(test)
-                    self.table["Type"].append(schema_type)
-                    self.table["Executor"].append(executor)
-                    self.table["Tags"].append(tags)
-                    self.table["Description"].append(description)
+                    if self.format:
+                        for field in self.table.keys():
+                            if field == "type":
+                                self.table[field].append(schema_type)
+
+                            elif field == "buildspecs":
+                                self.table[field].append(buildspecfile)
+                            elif field == "name":
+                                self.table[field].append(test)
+                            # description, tags, executor have matching format fields with buildspec properties
+                            else:
+                                self.table[field].append(test_recipe.get(field))
+
+                    else:
+                        self.table["name"].append(test)
+                        self.table["type"].append(schema_type)
+                        self.table["executor"].append(executor)
+                        self.table["tags"].append(tags)
+                        self.table["description"].append(description)
 
     def get_buildspecfiles(self):
         """ This method implements ``buildtest buildspec find --buildspec-files``
@@ -306,7 +344,7 @@ class BuildspecCache:
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def print_buildspecs(self):
-        """Print buildspec table from """
+        """Print buildspec table"""
 
         print(tabulate(self.table, headers=self.table.keys(), tablefmt="grid"))
 
@@ -329,6 +367,34 @@ class BuildspecCache:
             )
         )
 
+    @staticmethod
+    def print_format_fields():
+        """This method prints format fields available for buildspec cache. This
+           method implements command ``buildtest buildspec find --helpformat``"""
+
+        format_fields = [
+            ["name", "Format by test name"],
+            ["tags", "Format by tag name "],
+            ["type", "Format by schema type"],
+            ["executor", "Format by executor type"],
+            ["description", "Format by description"],
+            ["file", "Format by file"],
+        ]
+
+        print(
+            tabulate(
+                format_fields, headers=["Field", "Description"], tablefmt="simple",
+            )
+        )
+
+    def print_paths(self):
+        """ This method print buildspec paths, this implements command
+            ``buildtest buildspec find --paths``
+        """
+
+        for path in self.get_paths():
+            print(path)
+
 
 def func_buildspec_find(args):
     """ Entry point for ``buildtest buildspec find``. This method
@@ -344,7 +410,7 @@ def func_buildspec_find(args):
         :return: A list of valid buildspecs found in all repositories.
     """
 
-    bp_cache = BuildspecCache(args.clear, args.filter)
+    bp_cache = BuildspecCache(args.rebuild, args.filter, args.format)
 
     # implements buildtest buildspec find --tags
     if args.tags:
@@ -356,14 +422,22 @@ def func_buildspec_find(args):
         bp_cache.get_buildspecfiles()
         return
 
-    # implements buildtest buildspec find --list-executors
-    if args.list_executors:
+    if args.paths:
+        bp_cache.print_paths()
+        return
+    # implements buildtest buildspec find --executors
+    if args.executors:
         bp_cache.get_executors()
         return
 
     # implements buildtest buildspec find --helpfilter
     if args.helpfilter:
         bp_cache.print_filter_fields()
+        return
+
+    # implements buildtest buildspec find --helpformat
+    if args.helpformat:
+        bp_cache.print_format_fields()
         return
 
     bp_cache.print_buildspecs()
