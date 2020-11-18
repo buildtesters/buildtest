@@ -1,4 +1,5 @@
 import pytest
+from buildtest.exceptions import BuildTestError
 from buildtest.menu.buildspec import func_buildspec_find, func_buildspec_view
 from buildtest.defaults import BUILDSPEC_CACHE_FILE
 
@@ -6,29 +7,228 @@ from buildtest.defaults import BUILDSPEC_CACHE_FILE
 @pytest.mark.cli
 def test_func_buildspec_find():
 
-    # testing buildtest buildspec find --clear
+    # testing buildtest buildspec find --rebuild
     class args:
         find = True
-        clear = True
+        rebuild = True
         buildspec_files = False
-        list_executors = False
+        executors = False
         tags = False
+        paths = False
         filter = None
+        format = None
         helpfilter = False
+        helpformat = False
 
     func_buildspec_find(args)
 
-    # rerunning buildtest buildspec find without --clear option this will read from cache file
+    # rerunning buildtest buildspec find without --rebuild option this will read from cache file
     class args:
         find = True
-        clear = False
+        rebuild = False
         buildspec_files = False
-        list_executors = False
+        executors = False
         tags = False
+        paths = False
         filter = None
+        format = None
         helpfilter = False
+        helpformat = False
 
     func_buildspec_find(args)
+
+
+@pytest.mark.cli
+def test_buildspec_tags():
+    class args:
+        find = True
+        rebuild = False
+        buildspec_files = False
+        executors = False
+        tags = True
+        paths = False
+        filter = None
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # testing buildtest buildspec find --tags
+    func_buildspec_find(args)
+
+
+@pytest.mark.cli
+def test_buildspec_files():
+    class args:
+        find = True
+        rebuild = False
+        buildspec_files = True
+        executors = False
+        tags = False
+        paths = False
+        filter = None
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # testing buildtest buildspec find --buildspec-files
+    func_buildspec_find(args)
+
+
+@pytest.mark.cli
+def test_buildspec_executors():
+    class args:
+        find = True
+        rebuild = False
+        buildspec_files = False
+        executors = True
+        tags = False
+        paths = False
+        filter = None
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # testing buildtest buildspec find --executors
+    func_buildspec_find(args)
+
+
+@pytest.mark.cli
+def test_buildspec_paths():
+    class args:
+        find = True
+        rebuild = False
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = True
+        filter = None
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # testing buildtest buildspec find --paths
+    func_buildspec_find(args)
+
+
+@pytest.mark.cli
+def test_buildspec_find_filter():
+    class args:
+        find = True
+        rebuild = False
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = False
+        filter = None
+        format = None
+        helpfilter = True
+        helpformat = False
+
+    # testing buildtest buildspec find --helpfilter
+    func_buildspec_find(args)
+
+    class args:
+        find = True
+        rebuild = False
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = False
+        filter = {"tags": "fail"}
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # testing buildtest buildspec find --filter tags=fail
+    func_buildspec_find(args)
+
+    class args:
+        find = True
+        rebuild = False
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = False
+        filter = {
+            "type": "script",
+            "executor": "local.sh",
+            "tags": "tutorials",
+            "type": "script",
+        }
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # testing buildtest buildspec find --filter type=script,executor=local.sh,tags=fail
+    func_buildspec_find(args)
+
+    # testing buildtest buildspec find --filter key1=val1,key2=val2
+    with pytest.raises(BuildTestError):
+
+        class args:
+            find = True
+            rebuild = False
+            buildspec_files = False
+            executors = False
+            tags = False
+            paths = False
+            filter = {"key1": "val1", "key2": "val2"}
+            format = None
+            helpfilter = False
+            helpformat = False
+
+        func_buildspec_find(args)
+
+
+@pytest.mark.cli
+def test_buildspec_find_format():
+    class args:
+        find = True
+        rebuild = False
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = False
+        filter = None
+        format = None
+        helpfilter = False
+        helpformat = True
+
+    # testing buildtest buildspec find --helpformat
+    func_buildspec_find(args)
+
+    class args:
+        find = True
+        rebuild = False
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = False
+        filter = None
+        format = "name,type,executor,description,buildspecs"
+        helpfilter = False
+        helpformat = False
+
+    # testing buildtest buildspec find --helpformat
+    func_buildspec_find(args)
+
+    # testing buildtest buildspec find --format field1 should raise error. Any
+    # invalid format fields will raise an exception of type BuildTestError
+    with pytest.raises(BuildTestError):
+
+        class args:
+            find = True
+            rebuild = False
+            buildspec_files = False
+            executors = False
+            tags = False
+            paths = False
+            filter = None
+            format = "field1"
+            helpfilter = False
+            helpformat = False
+
+        func_buildspec_find(args)
 
 
 @pytest.mark.cli
@@ -45,87 +245,3 @@ def test_buildspec_view():
         edit = False
 
     func_buildspec_view(args)
-
-
-@pytest.mark.cli
-def test_buildspec_tags():
-    class args:
-        find = True
-        tags = True
-        clear = False
-        buildspec_files = False
-        list_executors = False
-        filter = None
-        helpfilter = False
-
-    # testing buildtest buildspec find --tags
-    func_buildspec_find(args)
-
-
-@pytest.mark.cli
-def test_buildspec_files():
-    class args:
-        find = True
-        buildspec_files = True
-        clear = False
-        list_executors = False
-        tags = False
-        filter = None
-        helpfilter = False
-
-    # testing buildtest buildspec find --buildspec-files
-    func_buildspec_find(args)
-
-
-@pytest.mark.cli
-def test_buildspec_executors():
-    class args:
-        find = True
-        list_executors = True
-        clear = False
-        tags = False
-        buildspec_files = False
-        filter = None
-        helpfilter = False
-
-    # testing buildtest buildspec find --list-executors
-    func_buildspec_find(args)
-
-
-@pytest.mark.cli
-def test_buildspec_find_filter():
-    class args:
-        find = True
-        helpfilter = True
-        list_executors = False
-        clear = False
-        tags = False
-        buildspec_files = False
-        filter = None
-
-    # testing buildtest buildspec find --helpfilter
-    func_buildspec_find(args)
-
-    class args:
-        find = True
-        filter = {"tags": "fail"}
-        helpfilter = False
-        list_executors = False
-        clear = False
-        tags = False
-        buildspec_files = False
-
-    # testing buildtest buildspec find --filter tags=fail
-    func_buildspec_find(args)
-
-    class args:
-        find = True
-        filter = {"type": "script", "executor": "local.sh", "tags": "tutorials"}
-        helpfilter = False
-        list_executors = False
-        clear = False
-        tags = False
-        buildspec_files = False
-
-    # testing buildtest buildspec find --filter type=script,executor=local.sh,tags=fail
-    func_buildspec_find(args)

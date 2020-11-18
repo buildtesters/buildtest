@@ -207,9 +207,9 @@ class BuildTestParser:
             "find", help="find all buildspecs"
         )
         buildspec_find.add_argument(
-            "-c",
-            "--clear",
-            help="Clear buildspec cache and find all buildspecs again",
+            "-r",
+            "--rebuild",
+            help="Rebuild buildspec cache and find all buildspecs again",
             action="store_true",
         )
         buildspec_find.add_argument(
@@ -222,22 +222,34 @@ class BuildTestParser:
             action="store_true",
         )
         buildspec_find.add_argument(
-            "-le",
-            "--list-executors",
+            "-e",
+            "--executors",
             help="get all unique executors from buildspecs",
             action="store_true",
         )
+        buildspec_find.add_argument(
+            "-p", "--paths", help="print all root buildspec paths", action="store_true"
+        )
+
         buildspec_find.add_argument(
             "--filter",
             type=handle_kv_string,
             help="Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2",
         )
         buildspec_find.add_argument(
+            "--format",
+            help="Format buildspec cache with format fields in format --format field1,field2,...",
+        )
+        buildspec_find.add_argument(
             "--helpfilter",
             action="store_true",
-            help="Show Filter fields for --filter option for querying buildspec cache",
+            help="Show Filter fields for --filter option for filtering buildspec cache output",
         )
-
+        buildspec_find.add_argument(
+            "--helpformat",
+            action="store_true",
+            help="Show Format fields for --format option for formatting buildspec cache output",
+        )
         buildspec_view = subparsers_buildspec.add_parser(
             "view", help="view a buildspec"
         )
