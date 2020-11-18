@@ -86,12 +86,12 @@ class BuildspecCache:
         # all buildspecs paths and traverse directory to find all .yml files
 
         if not is_file(BUILDSPEC_CACHE_FILE):
-            self.rebuild_buildspec_cache()
+            self.build_cache()
 
         with open(BUILDSPEC_CACHE_FILE, "r") as fd:
             self.cache = json.loads(fd.read())
 
-    def rebuild_buildspec_cache(self):
+    def build_cache(self):
         """This method will rebuild the buildspec cache file by recursively searching
         all .yml files specified by input argument ``paths`` which is a list of directory
         roots. The buildspecs are validated and cache file is updated"
@@ -102,13 +102,17 @@ class BuildspecCache:
         """
 
         cache = {}
+        cache["unique_tags"] = []
+        cache["unique_executors"] = []
+        cache["buildspecs"] = {}
+
         buildspecs = []
         invalid_buildspecs = {}
         parse = None
         # add all buildspecs from each repo. walk_tree will find all .yml files
         # recursively and add them to list
         for path in self.paths:
-            cache[path] = {}
+            cache["buildspecs"][path] = {}
             buildspec = walk_tree(path, ".yml")
             buildspecs += buildspec
 
@@ -147,14 +151,26 @@ class BuildspecCache:
             ]
             path_root = path_root[0]
 
-            cache[path_root][buildspec] = {}
+            cache["buildspecs"][path_root][buildspec] = {}
 
             for name in recipe.keys():
 
-                if not isinstance(recipe[name], dict):
-                    continue
+                cache["buildspecs"][path_root][buildspec][name] = recipe[name]
+                tags = recipe[name].get("tags")
+                executor = recipe[name].get("executor")
 
-                cache[path_root][buildspec][name] = recipe[name]
+                if tags:
+
+                    if isinstance(tags, str):
+                        cache["unique_tags"].append(tags)
+                    elif isinstance(tags, list):
+                        cache["unique_tags"] += tags
+
+                if executor:
+                    cache["unique_executors"].append(executor)
+
+        cache["unique_tags"] = list(set(cache["unique_tags"]))
+        cache["unique_executors"] = list(set(cache["unique_executors"]))
 
         print(f"Validated {count}/{len(buildspecs)} buildspecs")
 
@@ -209,17 +225,24 @@ class BuildspecCache:
             a table of tests that will be printed using print_buildspecs method.
         """
 
-        for path in self.cache.keys():
-            for buildspecfile in self.cache[path].keys():
-                for test in self.cache[path][buildspecfile].keys():
+        for path in self.cache["buildspecs"].keys():
+            for buildspecfile in self.cache["buildspecs"][path].keys():
+                for test in self.cache["buildspecs"][path][buildspecfile].keys():
 
-                    schema_type = self.cache[path][buildspecfile][test].get("type")
-                    executor = self.cache[path][buildspecfile][test].get("executor")
-                    # if tags not defined in cache we set to empty list for comparison with tag_filter
-                    tags = self.cache[path][buildspecfile][test].get("tags") or []
-                    description = self.cache[path][buildspecfile][test].get(
-                        "description"
+                    schema_type = self.cache["buildspecs"][path][buildspecfile][
+                        test
+                    ].get("type")
+                    executor = self.cache["buildspecs"][path][buildspecfile][test].get(
+                        "executor"
                     )
+                    # if tags not defined in cache we set to empty list for comparison with tag_filter
+                    tags = (
+                        self.cache["buildspecs"][path][buildspecfile][test].get("tags")
+                        or []
+                    )
+                    description = self.cache["buildspecs"][path][buildspecfile][
+                        test
+                    ].get("description")
 
                     # skip all entries that dont match filtered executor
                     if self.executor_filter and self.executor_filter != executor:
@@ -251,8 +274,8 @@ class BuildspecCache:
         table = {"buildspecs": []}
         files = []
 
-        for path in self.cache.keys():
-            files += self.cache[path].keys()
+        for path in self.cache["buildspecs"].keys():
+            files += self.cache["buildspecs"][path].keys()
 
         table["buildspecs"] = files
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
@@ -267,18 +290,7 @@ class BuildspecCache:
 
         table = {"Tags": []}
 
-        unique_tag = set()
-        for path in self.cache.keys():
-            for buildspecfile in self.cache[path].keys():
-                for test in self.cache[path][buildspecfile].keys():
-                    tags = self.cache[path][buildspecfile][test].get("tags")
-                    if isinstance(tags, str):
-                        unique_tag.add(tags)
-                    elif isinstance(tags, list):
-                        for name in tags:
-                            unique_tag.add(name)
-
-        table["Tags"] = list(unique_tag)
+        table["Tags"] = self.cache["unique_tags"]
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def get_executors(self):
@@ -290,14 +302,7 @@ class BuildspecCache:
         """
 
         table = {"executors": []}
-        executors = set()
-        for path in self.cache.keys():
-            for buildspecfile in self.cache[path].keys():
-                for test in self.cache[path][buildspecfile].keys():
-                    executor = self.cache[path][buildspecfile][test].get("executor")
-                    executors.add(executor)
-
-        table["executors"] = list(executors)
+        table["executors"] = self.cache["unique_executors"]
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def print_buildspecs(self):
@@ -380,9 +385,9 @@ def func_buildspec_view_edit(buildspec, view=False, edit=False):
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
         cache = json.loads(fd.read())
 
-    for path in cache.keys():
-        for buildspecfile in cache[path].keys():
-            if buildspec in list(cache[path][buildspecfile].keys()):
+    for path in cache["buildspecs"].keys():
+        for buildspecfile in cache["buildspecs"][path].keys():
+            if buildspec in list(cache["buildspecs"][path][buildspecfile].keys()):
                 if view:
                     cmd = f"cat {buildspecfile}"
                     output = subprocess.check_output(cmd, shell=True).decode("utf-8")
