@@ -20,7 +20,7 @@ valid_buildspecs = os.path.join(test_root, "buildsystem", "valid_buildspecs")
 def test_build_by_tags():
 
     # ensure we rebuild cache file before running by tags
-    # rerunning buildtest buildspec find without --clear option this will read from cache file
+    # rerunning buildtest buildspec find without --rebuild option this will read from cache file
     class args:
         find = True
         rebuild = True
@@ -31,7 +31,7 @@ def test_build_by_tags():
         filter = None
         format = None
         helpfilter = False
-        helpformat = True
+        helpformat = False
 
     func_buildspec_find(args)
 
