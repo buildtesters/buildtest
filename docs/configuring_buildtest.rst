@@ -99,40 +99,33 @@ Let's take a look at Cori buildtest configuration::
 
     editor: vi
     buildspec_roots:
-      - $HOME/buildtest-cori
-
+    - $HOME/buildtest-cori
+    moduletool: environment-modules
     executors:
-
       defaults:
         pollinterval: 10
         launcher: sbatch
         max_pend_time: 90
         account: nstaff
-
       local:
         bash:
           description: submit jobs on local machine using bash shell
           shell: bash
-
         sh:
           description: submit jobs on local machine using sh shell
           shell: sh
-
         csh:
           description: submit jobs on local machine using csh shell
           shell: csh
-
         python:
           description: submit jobs on local machine using python shell
           shell: python
-
         e4s:
-          description: "E4S testsuite locally"
+          description: E4S testsuite locally
           shell: bash
           before_script: |
             source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
-            cd $SCRATCH/testsuite
-            source setup.sh
+            cd $SCRATCH/testsuite source setup.sh
 
       slurm:
         debug:
@@ -140,54 +133,308 @@ Let's take a look at Cori buildtest configuration::
           qos: debug
           cluster: cori
           max_pend_time: 500
-
         shared:
           description: jobs for shared qos
           qos: shared
           max_pend_time: 10
-
         bigmem:
           description: bigmem jobs
           cluster: escori
           qos: bigmem
           max_pend_time: 300
-
         xfer:
           description: xfer qos jobs
           qos: xfer
           cluster: escori
-
         gpu:
           description: submit jobs to GPU partition
-          options: ["-C gpu"]
+          options:
+          - -C gpu
           cluster: escori
           max_pend_time: 300
-
         premium:
           description: submit jobs to premium queue
           qos: premium
-
         e4s:
-          description: "E4S runner"
+          description: E4S runner
           cluster: cori
           max_pend_time: 20000
           options:
-            - "-q regular"
-            - "-C knl"
-            - "-t 10"
-            - "-n 4"
+          - -q regular
+          - -C knl
+          - -t 10
+          - -n 4
           before_script: |
-
             source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
-            cd $SCRATCH/testsuite
-            source setup.sh
-    compilers:
-      gcc:
-       builtin:
-         cc: "/usr/bin/gcc"
-         cxx: "/usr/bin/g++"
-         fc: "/usr/bin/gfortran"
+            cd $SCRATCH/testsuite source setup.sh
 
+    compilers:
+      find:
+        gcc:
+        - gcc
+        - PrgEnv-gnu
+        cray:
+        - PrgEnv-cray
+        intel:
+        - intel
+        - PrgEnv-intel
+        pgi:
+        - pgi
+      compiler:
+        gcc:
+          builtin:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
+          gcc@6.1.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/6.1.0
+          gcc@7.3.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/7.3.0
+          gcc@8.1.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/8.1.0
+          gcc@8.2.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/8.2.0
+          gcc@8.3.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/8.3.0
+          gcc@9.2.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/9.2.0
+          gcc@9.3.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/9.3.0
+          gcc@6.3.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/6.3.0
+          gcc@8.1.1-openacc-gcc-8-branch-20190215:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/8.1.1-openacc-gcc-8-branch-20190215
+          PrgEnv-gnu@6.0.5:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - PrgEnv-gnu/6.0.5
+          PrgEnv-gnu@6.0.6:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - PrgEnv-gnu/6.0.6
+          PrgEnv-gnu@6.0.7:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - PrgEnv-gnu/6.0.7
+        cray:
+          PrgEnv-cray@6.0.5:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            modules:
+            - PrgEnv-cray/6.0.5
+          PrgEnv-cray@6.0.6:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            modules:
+            - PrgEnv-cray/6.0.6
+          PrgEnv-cray@6.0.7:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            modules:
+            - PrgEnv-cray/6.0.7
+        intel:
+          intel@18.0.1.163:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/18.0.1.163
+          intel@18.0.3.222:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/18.0.3.222
+          intel@19.0.3.199:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/19.0.3.199
+          intel@16.0.3.210:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/16.0.3.210
+          intel@17.0.1.132:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/17.0.1.132
+          intel@17.0.2.174:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/17.0.2.174
+          intel@19.0.0.117:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/19.0.0.117
+          intel@19.0.8.324:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/19.0.8.324
+          intel@19.1.0.166:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/19.1.0.166
+          intel@19.1.1.217:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/19.1.1.217
+          intel@19.1.2.254:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/19.1.2.254
+          intel@19.1.2.275:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/19.1.2.275
+          intel@19.1.3.304:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - intel/19.1.3.304
+          PrgEnv-intel@6.0.5:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - PrgEnv-intel/6.0.5
+          PrgEnv-intel@6.0.6:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - PrgEnv-intel/6.0.6
+          PrgEnv-intel@6.0.7:
+            cc: icc
+            cxx: icpc
+            fc: ifort
+            modules:
+            - PrgEnv-intel/6.0.7
+        pgi:
+          pgi@18.10:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/18.10
+          pgi@19.1:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.1
+          pgi@19.3:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.3
+          pgi@19.4:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.4
+          pgi@19.5:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.5
+          pgi@19.7:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.7
+          pgi@19.9:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.9
+          pgi@19.10:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.10
+          pgi@20.1:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/20.1
+          pgi@20.4:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/20.4
 
 
 
@@ -211,7 +458,10 @@ The ``pollinterval`` field is used  to poll jobs at set interval in seconds
 when job is active in queue. The ``max_pend_time`` is **maximum** time job can be pending
 within an executor, if it exceeds the limit buildtest will cancel the job. buildtest will
 invoke ``scancel`` or ``bkill`` to cancel Slurm or LSF job. The `pollinterval`, `launcher`
-and `max_pend_time` have no effect on **LocalExecutors**.
+and `max_pend_time` have no effect on **LocalExecutors**. The ``account: nstaff``
+will instruct buildtest to charge all jobs to account ``nstaff`` from Slurm Executors.
+The ``account`` option can be set in ``defaults`` global to all executors or set
+per executor instance which overrides the default value.
 
 At Cori, jobs are submitted via qos instead of partition so we model a slurm executor
 named by qos. The ``qos`` field instructs which Slurm QOS to use when submitting job.
@@ -270,6 +520,25 @@ find all **.yml** extension and validate each buildspec with appropriate schema.
 By default buildtest will add the ``$BUILDTEST_ROOT/tutorials`` and ``$BUILDTEST_ROOT/general_tests``
 to search path, where $BUILDTEST_ROOT is root of repo.
 
+Configuring Module Tool
+------------------------
+
+You should configure the ``moduletool`` property to the module-system installed
+at your site. Valid options are the following::
+
+    # environment-modules
+    moduletool: environment-modules
+
+    # for lmod
+    moduletool: lmod
+
+    # specify N/A if you don't have modules
+    moduletool: N/A
+
+If your site has Lmod and you set ``moduletool: lmod``, we will make use of
+`Lmodule API <https://lmodule.readthedocs.io/en/latest/>`_ to test modules.
+
+
 before_script and after_script for executors
 ---------------------------------------------
 
@@ -321,6 +590,298 @@ The ``editor: vi`` is used to open buildspecs in `vi` editor, this is used by co
 ``buildtest buildspec edit``. For more details see :ref:`editing_buildspecs`.
 The `editor` field can be `vi`, `vim`, `nano`, or `emacs` depending on your editor
 preference.
+
+Compiler Declaration
+--------------------
+
+buildtest provides a mechanism to declare compilers in your configuration file, this
+is defined in ``compilers`` top-level section. Shown below is an example section::
+
+    compilers:
+      compiler:
+        gcc:
+          builtin:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
+
+The compiler declaration is defined in section ``compiler`` followed by name
+of compiler in this case ``gcc``. In the gcc section one can define all gnu compilers,
+which includes the name of the compiler in this example we call ``builtin`` as
+system compiler that defines C, C++ and Fortran compilers using ``cc``, ``cxx`` and
+``fc``.
+
+One can retrieve all compilers using ``buildtest config compilers``, there are few
+options for this command.
+
+.. program-output:: cat docgen/buildtest_config_compilers_--help.txt
+
+buildtest can represent compiler output in JSON, YAML or list using the ``--json``,
+``--yaml``, and ``--list`` option. Depending on your preference one can view
+compiler section with any of these options. Shown below is an example output with
+these options::
+
+    $ buildtest config compilers --json
+    {
+      "gcc": {
+        "builtin": {
+          "cc": "/usr/bin/gcc",
+          "cxx": "/usr/bin/g++",
+          "fc": "/usr/bin/gfortran"
+        }
+      }
+    }
+
+    $ buildtest config compilers --yaml
+    gcc:
+      builtin:
+        cc: /usr/bin/gcc
+        cxx: /usr/bin/g++
+        fc: /usr/bin/gfortran
+
+    $ buildtest config compilers --list
+    builtin
+
+Detect Compilers (Experimental Feature)
+----------------------------------------
+
+buildtest can detect compilers based on modulefiles and generate compiler section
+with compiler instance. This can be done via ``buildtest config compilers find``
+option. First we declare a compiler ``find`` section that expects a dictionary
+of key/value mapping between compiler names and their module names.
+
+Shown below is an example where we expect to find gcc and pgi modules with name
+``gcc`` and ``pgi``. We can specify a list of module names, currently buildtest will
+add a compiler if modulename starts with the corresponding string.
+
+.. Note:: This feature will be updated to allow regular expression in near future
+
+::
+
+    compilers:
+      find:
+        gcc: [gcc]
+        pgi: [pgi]
+      compiler:
+        gcc:
+          builtin:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
+
+Next we find all compiler modules using ``buildtest config compilers find`` which
+will detect and test all modules. Any modules with non-zero exit code will be ignored,
+and buildtest will generate a compiler instance per module found assuming there
+is no compiler instance defined. buildtest will define a compiler instance for
+``gcc/4.8.5`` --> ``gcc@4.8.5`` by renaming leading **/** with a **@**.
+
+Shown below is an example output::
+
+    $ buildtest config compilers find
+    Discovered Modules:
+    {
+      "gcc": [
+        "gcc/4.8.5",
+        "gcc/6.4.0",
+        "gcc/8.1.0",
+        "gcc/10.1.0",
+        "gcc/7.4.0",
+        "gcc/8.1.1",
+        "gcc/5.4.0"
+      ],
+      "pgi": [
+        "pgi/20.1",
+        "pgi/19.10",
+        "pgi/18.7",
+        "pgi/18.10",
+        "pgi/19.9",
+        "pgi/.18.5",
+        "pgi/19.4",
+        "pgi/19.5",
+        "pgi/19.1"
+      ]
+    }
+
+
+
+    Testing Modules:
+    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/4.8.5  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/6.4.0  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/8.1.0  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/10.1.0  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/7.4.0  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/8.1.1  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/5.4.0  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/20.1  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/19.10  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/18.7  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/18.10  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/19.9  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/.18.5  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/19.4  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/19.5  "
+    [DEBUG] Return Code: 0
+    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/19.1  "
+    [DEBUG] Return Code: 0
+    editor: vi
+    buildspec_roots:
+    - $HOME/buildtest-ascent
+    moduletool: lmod
+    executors:
+      defaults:
+        launcher: bsub
+        pollinterval: 10
+        max_pend_time: 60
+        account: gen014ecpci
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
+        csh:
+          description: submit jobs on local machine using csh shell
+          shell: csh
+        python:
+          description: submit jobs on local machine using python shell
+          shell: python
+      lsf:
+        batch:
+          queue: batch
+        test:
+          queue: test
+    compilers:
+      find:
+        gcc:
+        - gcc
+        pgi:
+        - pgi
+      compiler:
+        gcc:
+          builtin:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
+          gcc@4.8.5:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/4.8.5
+          gcc@6.4.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/6.4.0
+          gcc@8.1.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/8.1.0
+          gcc@10.1.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/10.1.0
+          gcc@7.4.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/7.4.0
+          gcc@8.1.1:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/8.1.1
+          gcc@5.4.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            modules:
+            - gcc/5.4.0
+        pgi:
+          pgi@20.1:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/20.1
+          pgi@19.10:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.10
+          pgi@18.7:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/18.7
+          pgi@18.10:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/18.10
+          pgi@19.9:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.9
+          pgi@.18.5:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/.18.5
+          pgi@19.4:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.4
+          pgi@19.5:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.5
+          pgi@19.1:
+            cc: pgcc
+            cxx: pgc++
+            fc: pgfortran
+            modules:
+            - pgi/19.1
+
+    Updating settings file:  /ccsopen/home/shahzebsiddiqui/.buildtest/config.yml
+
+buildtest will update the configuration file after running ``buildtest config compilers find``.
+There will a be a unique compiler entry organized by compiler group (``gcc``, ``pgi``). The
+``modules`` property is a list of modules to load per compiler group. This can be
+tweaked as needed.
+
 
 buildtest configuration for Ascent @ OLCF
 ------------------------------------------

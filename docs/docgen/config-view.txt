@@ -1,19 +1,31 @@
 $ buildtest config view
 editor: vi
+moduletool: lmod
+buildspec_roots:
+- $HOME/Documents/buildtest/tests/buildsystem
 executors:
   local:
     bash:
       description: submit jobs on local machine using bash shell
       shell: bash
-
     sh:
       description: submit jobs on local machine using sh shell
       shell: sh
-
     csh:
       description: submit jobs on local machine using csh shell
       shell: csh
-
     python:
       description: submit jobs on local machine using python shell
       shell: python
+compilers:
+  find:
+    gcc:
+    - gcc
+    cray:
+    - PrgEnv-cray
+    intel:
+    - intel
+    pgi:
+    - pgi
+    clang:
+    - clang

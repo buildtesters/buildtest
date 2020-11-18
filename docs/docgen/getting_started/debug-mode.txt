@@ -1,11 +1,27 @@
 $ buildtest -d DEBUG build -b tutorials/invalid_executor.yml 
-2020-10-27 18:11:31,530 [config.py:42 - check_settings() ] - [DEBUG] Loading default settings schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2020-10-27 18:11:31,530 [utils.py:34 - load_schema() ] - [DEBUG] Successfully loaded schema file: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2020-10-27 18:11:31,530 [config.py:45 - check_settings() ] - [DEBUG] Validating user schema with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2020-10-27 18:11:31,533 [config.py:47 - check_settings() ] - [DEBUG] Validation was successful
-2020-10-27 18:11:31,533 [build.py:137 - discover_by_buildspecs() ] - [DEBUG] BuildSpec: tutorials/invalid_executor.yml is a file
-2020-10-27 18:11:31,533 [build.py:149 - discover_by_buildspecs() ] - [INFO] Found the following config files: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
-2020-10-27 18:11:31,533 [build.py:210 - discover_buildspecs() ] - [DEBUG] Based on input argument: --buildspec ['tutorials/invalid_executor.yml'] buildtest discovered the following Buildspecs: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
+2020-11-18 13:51:38,424 [config.py:37 - check_settings() ] - [DEBUG] Loading default settings schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
+2020-11-18 13:51:38,424 [utils.py:34 - load_schema() ] - [DEBUG] Successfully loaded schema file: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
+2020-11-18 13:51:38,424 [config.py:40 - check_settings() ] - [DEBUG] Validating user schema with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
+2020-11-18 13:51:38,428 [config.py:42 - check_settings() ] - [DEBUG] Validation was successful
+2020-11-18 13:51:38,429 [system.py:28 - __init__() ] - [DEBUG] Starting System Compatibility Check
+2020-11-18 13:51:38,429 [system.py:48 - init_system() ] - [DEBUG] Operating System: darwin
+2020-11-18 13:51:38,429 [system.py:49 - init_system() ] - [DEBUG] Python Path: /Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/python
+2020-11-18 13:51:38,429 [system.py:110 - check() ] - [DEBUG] Cannot find sbatch command in $PATH
+2020-11-18 13:51:38,429 [system.py:110 - check() ] - [DEBUG] Cannot find sacct command in $PATH
+2020-11-18 13:51:38,429 [system.py:110 - check() ] - [DEBUG] Cannot find sacctmgr command in $PATH
+2020-11-18 13:51:38,429 [system.py:110 - check() ] - [DEBUG] Cannot find sinfo command in $PATH
+2020-11-18 13:51:38,430 [system.py:110 - check() ] - [DEBUG] Cannot find scancel command in $PATH
+2020-11-18 13:51:38,430 [system.py:110 - check() ] - [DEBUG] Cannot find bsub command in $PATH
+2020-11-18 13:51:38,430 [system.py:110 - check() ] - [DEBUG] Cannot find bqueues command in $PATH
+2020-11-18 13:51:38,430 [system.py:110 - check() ] - [DEBUG] Cannot find bkill command in $PATH
+2020-11-18 13:51:38,430 [system.py:110 - check() ] - [DEBUG] Cannot find bjobs command in $PATH
+2020-11-18 13:51:38,431 [system.py:110 - check() ] - [DEBUG] Cannot find qsub command in $PATH
+2020-11-18 13:51:38,431 [system.py:110 - check() ] - [DEBUG] Cannot find qstat command in $PATH
+2020-11-18 13:51:38,431 [system.py:110 - check() ] - [DEBUG] Cannot find qdel command in $PATH
+2020-11-18 13:51:38,431 [system.py:34 - __init__() ] - [DEBUG] Finished System Compatibility Check
+2020-11-18 13:51:38,431 [build.py:139 - discover_by_buildspecs() ] - [DEBUG] BuildSpec: tutorials/invalid_executor.yml is a file
+2020-11-18 13:51:38,431 [build.py:151 - discover_by_buildspecs() ] - [INFO] Found the following config files: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
+2020-11-18 13:51:38,432 [build.py:212 - discover_buildspecs() ] - [DEBUG] Based on input argument: --buildspec ['tutorials/invalid_executor.yml'] buildtest discovered the following Buildspecs: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
@@ -15,13 +31,13 @@ $ buildtest -d DEBUG build -b tutorials/invalid_executor.yml
 Discovered Buildspecs:
  
 /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
-2020-10-27 18:11:31,533 [setup.py:39 - __init__() ] - [DEBUG] Getting Executors from buildtest settings
-2020-10-27 18:11:31,536 [parser.py:94 - _validate_global() ] - [INFO] Validating /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global.schema.json
-2020-10-27 18:11:31,536 [parser.py:115 - _validate() ] - [INFO] Validating test - 'wrongexecutor' in recipe: /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
-2020-10-27 18:11:31,536 [parser.py:123 - _validate() ] - [INFO] wrongexecutor is a dictionary
-2020-10-27 18:11:31,536 [parser.py:133 - _validate() ] - [INFO] Detected field 'type: script'
-2020-10-27 18:11:31,537 [parser.py:140 - _validate() ] - [INFO] Checking script in supported type schemas: ['script', 'compiler']
-2020-10-27 18:11:31,537 [buildspec.py:406 - parse_buildspecs() ] - [ERROR] executor: badexecutor not found in executor list: ['local.bash', 'local.sh', 'local.csh', 'local.python']
+2020-11-18 13:51:38,432 [setup.py:40 - __init__() ] - [DEBUG] Getting Executors from buildtest settings
+2020-11-18 13:51:38,434 [parser.py:143 - _validate() ] - [INFO] Validating /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global.schema.json
+2020-11-18 13:51:38,435 [parser.py:156 - _validate() ] - [INFO] Validating test - 'wrongexecutor' in recipe: /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+2020-11-18 13:51:38,435 [parser.py:93 - _check_schema_type() ] - [INFO] Detected field 'type: script'
+2020-11-18 13:51:38,435 [parser.py:102 - _check_schema_type() ] - [INFO] Checking script in supported type schemas: ['script', 'compiler']
+2020-11-18 13:51:38,435 [parser.py:118 - _check_schema_type() ] - [INFO] Checking version '1.0' in version list: ['1.0']
+2020-11-18 13:51:38,435 [buildspec.py:602 - parse_buildspecs() ] - [ERROR] executor: badexecutor not found in executor list: ['local.bash', 'local.sh', 'local.csh', 'local.python']
 
 
 
