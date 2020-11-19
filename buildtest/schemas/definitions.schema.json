@@ -86,7 +86,7 @@
         "scheduler": {
           "type": "string",
           "description": "Test will run only if scheduler is available. We assume binaries are available in $PATH",
-          "enum": ["lsf", "slurm"]
+          "enum": ["lsf", "slurm", "cobalt"]
         },
         "user": {
           "type": "string",
