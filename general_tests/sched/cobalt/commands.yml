@@ -1,0 +1,59 @@
+version: "1.0"
+buildspecs:
+  qsub_version:
+    type: script
+    executor: local.sh
+    description: Run qsub version
+    run_only:
+      scheduler: cobalt
+    run: qsub --version
+
+  qselect_version:
+    type: script
+    executor: local.sh
+    description: Run qselect version
+    run_only:
+      scheduler: cobalt
+    run: qselect --version
+
+  cqsub_version:
+    type: script
+    executor: local.sh
+    description: Run cqsub version
+    run_only:
+      scheduler: cobalt
+    run: cqsub --version
+
+  qdel_version:
+    type: script
+    executor: local.sh
+    description: Run qdel version
+    run_only:
+      scheduler: cobalt
+
+    run: qdel --version
+
+  qmove_version:
+    type: script
+    executor: local.sh
+    description: Run qmove version
+    run_only:
+      scheduler: cobalt
+
+    run: qmove --version
+
+  show_jobs:
+    type: script
+    executor: local.sh
+    run_only:
+      scheduler: cobalt
+    description: Show all jobs in queue
+    run: qstat
+
+  show_queues:
+    type: script
+    executor: local.sh
+    run_only:
+      scheduler: cobalt
+    description: Show queues
+    run: qstat -Qf
