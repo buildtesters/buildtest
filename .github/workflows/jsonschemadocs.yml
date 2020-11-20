@@ -1,4 +1,4 @@
-name: Upload JSON Schema to gh-pages devel
+name: Upload JSON Schema to gh-pages on devel
 
 on:
   push:
@@ -52,7 +52,7 @@ jobs:
 
 
      - name: Install SSH Client 🔑
-       uses: webfactory/ssh-agent@v0.2.0
+       uses: webfactory/ssh-agent@v0.4.1
        with:
          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -80,7 +80,7 @@ jobs:
 
 
      - name: Deploy to GitHub Pages 🚀
-       uses: JamesIves/github-pages-deploy-action@3.5.9
+       uses: JamesIves/github-pages-deploy-action@3.7.1
        with:
          SSH: true
          BASE_BRANCH: devel
