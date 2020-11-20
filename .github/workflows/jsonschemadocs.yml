@@ -1,4 +1,4 @@
-name: jsonschema2md
+name: Upload JSON Schema to gh-pages devel
 
 on:
   push:
@@ -86,5 +86,5 @@ jobs:
          BASE_BRANCH: devel
          BRANCH: gh-pages 
          FOLDER: downloads 
-         TARGET_FOLDER: pages
+         TARGET_FOLDER: pages/devel
          CLEAN: true
