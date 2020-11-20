@@ -10,10 +10,11 @@ docs at https://buildtest.readthedocs.io/en/devel/.
 Status
 -----------
 
-| |license| |docs| |codecov| |coveralls| |slack| |codefactor| |jsonschema2md| |checkurls| |blackformat| |clichecks| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
+| |license| |docs| |codecov| |coveralls| |slack| |codefactor| |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |blackformat| |clichecks| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
+    :scale: 100%
     :target: https://buildtest.readthedocs.io/en/latest/?badge=latest
 
 .. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
@@ -51,8 +52,14 @@ Status
 .. |buildtest_scripts| image:: https://github.com/buildtesters/buildtest/workflows/buildtest_scripts/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
-.. |jsonschema2md| image:: https://github.com/buildtesters/buildtest/workflows/jsonschema2md/badge.svg
+.. |gh_pages_devel| image:: https://github.com/buildtesters/buildtest/workflows/Upload%20JSON%20Schema%20to%20gh-pages%20on%20devel/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
+
+.. |gh_pages_master| image:: https://github.com/buildtesters/buildtest/workflows/Upload%20JSON%20Schema%20to%20gh-pages%20for%20master%20branch/badge.svg
+    :target: https://github.com/buildtesters/buildtest/actions    
+
+.. |dailyurlcheck| image:: https://github.com/buildtesters/buildtest/workflows/Daily%20Check%20URLs/badge.svg
+   :target: https://github.com/buildtesters/buildtest/actions
 
 Source Code
 ------------
