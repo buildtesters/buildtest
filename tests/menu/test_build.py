@@ -24,6 +24,7 @@ def test_build_by_tags():
     class args:
         find = True
         rebuild = True
+        root = None
         buildspec_files = False
         executors = False
         tags = False
