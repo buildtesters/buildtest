@@ -17,15 +17,15 @@ logger = logging.getLogger(__name__)
 
 class BuildspecCache:
 
-    # table = {"Name": [], "Type": [], "Executor": [], "Tags": [], "Description": []}
     table = {}
     filter_fields = ["type", "executor", "tags"]
     default_format_fields = ["name", "type", "executor", "tags", "description"]
     format_fields = default_format_fields + ["buildspecs"]
 
-    def __init__(self, rebuild, filter, format):
+    def __init__(self, rebuild, filter, format, roots):
         self.filter = filter
         self.format = format
+        self.roots = roots
         self.paths = []
         self.rebuild = rebuild
         self.cache = {}
@@ -56,9 +56,17 @@ class BuildspecCache:
         """
 
         config_opts = load_settings()
-        buildspec_paths = config_opts.get("buildspec_roots")
+        buildspec_paths = config_opts.get("buildspec_roots") or []
 
-        self.paths += BUILDSPEC_DEFAULT_PATH
+        # self.file_roots will store files specified by --roots option
+        self.file_roots = []
+
+        if self.roots:
+            buildspec_paths += self.roots
+
+        # only load default buildspecs if 'load_default_buildspecs' set to True
+        if config_opts.get("load_default_buildspecs"):
+            self.paths += BUILDSPEC_DEFAULT_PATH
 
         # if buildspec_roots defined in configuration, resolve path and if path exist add
         # to list of paths to search for buildspecs
@@ -68,6 +76,9 @@ class BuildspecCache:
                 path = resolve_path(root, exist=False)
                 if not os.path.exists(path):
                     print(f"Path: {path} does not exist!")
+
+                if is_file(path):
+                    self.file_roots.append(path)
 
                 self.paths.append(path)
 
@@ -101,9 +112,18 @@ class BuildspecCache:
         # add all buildspecs from each repo. walk_tree will find all .yml files
         # recursively and add them to list
         for path in self.paths:
-
             buildspec = walk_tree(path, ".yml")
             buildspecs += buildspec
+
+        # if --root specifies a file we add buildspecs only if they end in .yml extension
+        if self.file_roots:
+            for filename in self.file_roots:
+                if filename.endswith(".yml"):
+                    buildspecs += filename
+                else:
+                    print(
+                        f"File: {filename} does not end in .yml extension, skipping file"
+                    )
 
         print(f"\nBuildspec Paths: {self.paths} \n")
 
@@ -115,7 +135,8 @@ class BuildspecCache:
         ]
         return buildspecs
 
-    def _write_buildcache(self):
+    def _write_buildspec_cache(self):
+        """This method is responsible for writing buildspec cache to file"""
 
         with open(BUILDSPEC_CACHE_FILE, "w") as fd:
             json.dump(self.update_cache, fd, indent=2)
@@ -230,7 +251,7 @@ class BuildspecCache:
             set(self.update_cache["unique_executors"])
         )
 
-        self._write_buildcache()
+        self._write_buildspec_cache()
 
     def check_filter_fields(self):
         """ This method checks filter fields are valid. The filter fields are specified
@@ -465,7 +486,7 @@ def func_buildspec_find(args):
         :return: A list of valid buildspecs found in all repositories.
     """
 
-    bp_cache = BuildspecCache(args.rebuild, args.filter, args.format)
+    bp_cache = BuildspecCache(args.rebuild, args.filter, args.format, args.root)
 
     # implements buildtest buildspec find --tags
     if args.tags:

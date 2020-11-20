@@ -1,3 +1,4 @@
+import os
 import pytest
 from buildtest.exceptions import BuildTestError
 from buildtest.menu.buildspec import func_buildspec_find, func_buildspec_view
@@ -11,6 +12,7 @@ def test_func_buildspec_find():
     class args:
         find = True
         rebuild = True
+        root = None
         buildspec_files = False
         executors = False
         tags = False
@@ -26,6 +28,7 @@ def test_func_buildspec_find():
     class args:
         find = True
         rebuild = False
+        root = None
         buildspec_files = False
         executors = False
         tags = False
@@ -43,6 +46,7 @@ def test_buildspec_tags():
     class args:
         find = True
         rebuild = False
+        root = None
         buildspec_files = False
         executors = False
         tags = True
@@ -61,6 +65,7 @@ def test_buildspec_files():
     class args:
         find = True
         rebuild = False
+        root = None
         buildspec_files = True
         executors = False
         tags = False
@@ -79,6 +84,7 @@ def test_buildspec_executors():
     class args:
         find = True
         rebuild = False
+        root = None
         buildspec_files = False
         executors = True
         tags = False
@@ -97,6 +103,7 @@ def test_buildspec_paths():
     class args:
         find = True
         rebuild = False
+        root = None
         buildspec_files = False
         executors = False
         tags = False
@@ -115,6 +122,7 @@ def test_buildspec_find_filter():
     class args:
         find = True
         rebuild = False
+        root = None
         buildspec_files = False
         executors = False
         tags = False
@@ -130,6 +138,7 @@ def test_buildspec_find_filter():
     class args:
         find = True
         rebuild = False
+        root = None
         buildspec_files = False
         executors = False
         tags = False
@@ -145,6 +154,7 @@ def test_buildspec_find_filter():
     class args:
         find = True
         rebuild = False
+        root = None
         buildspec_files = False
         executors = False
         tags = False
@@ -152,8 +162,7 @@ def test_buildspec_find_filter():
         filter = {
             "type": "script",
             "executor": "local.sh",
-            "tags": "tutorials",
-            "type": "script",
+            "tags": "fail",
         }
         format = None
         helpfilter = False
@@ -168,6 +177,7 @@ def test_buildspec_find_filter():
         class args:
             find = True
             rebuild = False
+            root = None
             buildspec_files = False
             executors = False
             tags = False
@@ -185,6 +195,7 @@ def test_buildspec_find_format():
     class args:
         find = True
         rebuild = False
+        root = None
         buildspec_files = False
         executors = False
         tags = False
@@ -200,6 +211,7 @@ def test_buildspec_find_format():
     class args:
         find = True
         rebuild = False
+        root = None
         buildspec_files = False
         executors = False
         tags = False
@@ -219,6 +231,7 @@ def test_buildspec_find_format():
         class args:
             find = True
             rebuild = False
+            root = None
             buildspec_files = False
             executors = False
             tags = False
@@ -229,6 +242,51 @@ def test_buildspec_find_format():
             helpformat = False
 
         func_buildspec_find(args)
+
+
+@pytest.mark.cli
+def test_buildspec_find_roots():
+
+    repo_root = os.path.dirname(os.path.dirname(__file__))
+    root_buildspecs = [
+        os.path.join(repo_root, "tests", "buildsystem"),
+        os.path.join(repo_root, "tutorials"),
+    ]
+
+    class args:
+        find = True
+        rebuild = False
+        root = root_buildspecs
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = False
+        filter = None
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # running buildtest buildspec find --root /path/to/buildtest/tests/buildsystem --root /path/to/buildtest/tutorials/
+    func_buildspec_find(args)
+
+    class args:
+        find = True
+        rebuild = False
+        root = [
+            os.path.join(repo_root, "README.rst"),
+            os.path.join(repo_root, "tutorials", "environment.yml"),
+        ]
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = False
+        filter = None
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # running buildtest buildspec find --root /path/to/buildtest/README.rst --root /path/to/buildtest/tutorials/environment.yml
+    func_buildspec_find(args)
 
 
 @pytest.mark.cli
