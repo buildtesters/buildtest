@@ -14,6 +14,7 @@
     "maintainers": {
       "type": "array",
       "description": "One or more maintainers or aliases",
+      "uniqueItems": true,
       "minItems": 1,
       "items": {
         "type": "string"
