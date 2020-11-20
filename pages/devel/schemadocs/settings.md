@@ -17,15 +17,16 @@ https://buildtesters.github.io/buildtest/schemas/settings.schema.json
 
 # buildtest configuration schema Properties
 
-| Property                                      | Type          | Required | Nullable       | Defined by                                                                                                                                                                        |
-| :-------------------------------------------- | ------------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [additionalProperties](#additionalproperties) | Not specified | Optional | cannot be null | [Untitled schema](undefined.md "undefined#undefined")                                                                                                                             |
-| [editor](#editor)                             | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-editor.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/editor")                   |
-| [buildspec_roots](#buildspec_roots)           | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-properties-buildspec_roots.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/buildspec_roots") |
-| [testdir](#testdir)                           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-testdir.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/testdir")                 |
-| [moduletool](#moduletool)                     | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-moduletool.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/moduletool")           |
-| [compilers](#compilers)                       | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers")             |
-| [executors](#executors)                       | `object`      | Required | cannot be null | [buildtest configuration schema](settings-properties-executors.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors")             |
+| Property                                            | Type          | Required | Nullable       | Defined by                                                                                                                                                                                        |
+| :-------------------------------------------------- | ------------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [additionalProperties](#additionalproperties)       | Not specified | Optional | cannot be null | [Untitled schema](undefined.md "undefined#undefined")                                                                                                                                             |
+| [editor](#editor)                                   | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-editor.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/editor")                                   |
+| [buildspec_roots](#buildspec_roots)                 | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-properties-buildspec_roots.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/buildspec_roots")                 |
+| [load_default_buildspecs](#load_default_buildspecs) | `boolean`     | Required | cannot be null | [buildtest configuration schema](settings-properties-load_default_buildspecs.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/load_default_buildspecs") |
+| [testdir](#testdir)                                 | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-testdir.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/testdir")                                 |
+| [moduletool](#moduletool)                           | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-moduletool.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/moduletool")                           |
+| [compilers](#compilers)                             | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers")                             |
+| [executors](#executors)                             | `object`      | Required | cannot be null | [buildtest configuration schema](settings-properties-executors.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors")                             |
 
 ## additionalProperties
 
@@ -92,6 +93,22 @@ Specify a list of directory paths to search buildspecs. This field can be used w
 ### buildspec_roots Type
 
 `string[]`
+
+## load_default_buildspecs
+
+Specify whether buildtest should automatically load  uildspecs provided in buildtest repo into buildspec cache
+
+
+`load_default_buildspecs`
+
+-   is required
+-   Type: `boolean`
+-   cannot be null
+-   defined in: [buildtest configuration schema](settings-properties-load_default_buildspecs.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/load_default_buildspecs")
+
+### load_default_buildspecs Type
+
+`boolean`
 
 ## testdir
 

@@ -1,5 +1,6 @@
 editor: vi
 moduletool: lmod
+load_default_buildspecs: True
 executors:
   defaults:
      launcher: qsub
