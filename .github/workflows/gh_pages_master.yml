@@ -1,0 +1,87 @@
+name: Upload JSON Schema to gh-pages for master branch
+
+on:
+  push:
+    branches:
+      - branch
+
+
+jobs:
+  jsonschemadocs:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - name: jsonschema2md install
+      run: |
+        npm install -g @adobe/jsonschema2md
+        jsonschema2md -d buildtest/schemas/ -o schema_docs/
+    - name: Upload Schema Docs
+      uses: actions/upload-artifact@v2
+      with:
+        name: schemadocs
+        path: schema_docs/
+
+    - name: Upload Schemas
+      uses: actions/upload-artifact@v2
+      with:
+        name: schemafiles
+        path: buildtest/schemas/*.schema.json
+
+    - name: Upload Schemas Examples
+      uses: actions/upload-artifact@v2
+      with:
+        name: schemaexamples
+        path: buildtest/schemas/examples
+
+  DeployPages:
+    needs: jsonschemadocs
+    runs-on: ubuntu-latest
+    steps:
+
+     - name: Checkout 🛎️
+       uses: actions/checkout@v2.3.1 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+       with:
+          persist-credentials: false
+
+
+     - name: Install SSH Client 🔑
+       uses: webfactory/ssh-agent@v0.4.1
+       with:
+         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+     - name: Download Schemas
+       uses: actions/download-artifact@v2
+       with:
+         name: schemafiles
+         path: downloads/schemas
+
+     - name: Download Schema Examples
+       uses: actions/download-artifact@v2
+       with:
+         name: schemaexamples
+         path: downloads/examples
+
+     - name: Download Schema Docs
+       uses: actions/download-artifact@v2
+       with:
+          name: schemadocs
+          path: downloads/schemadocs
+
+     - name: Display content of downloaded directory
+       run: |
+         ls -R downloads
+     - name: Deploy to GitHub Pages 🚀
+       uses: JamesIves/github-pages-deploy-action@3.7.1
+       with:
+         SSH: true
+         BASE_BRANCH: master
+         BRANCH: gh-pages 
+         FOLDER: downloads 
+         TARGET_FOLDER: pages/master
+         CLEAN: true
