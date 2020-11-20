@@ -1,0 +1,32 @@
+{
+  "$id": "global.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "global schema",
+  "description": "buildtest global schema is validated for all buildspecs. The global schema defines top-level structure of buildspec and defintions that are inherited for sub-schemas",
+  "type": "object",
+  "required": ["version","buildspecs"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The semver version of the schema to use (x.x)."
+      },
+    "maintainers": {
+      "type": "array",
+      "description": "One or more maintainers or aliases",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+   "buildspecs": {
+     "type": "object",
+     "description": "This section is used to define one or more tests (buildspecs). Each test must be unique name",
+     "propertyNames": {
+       "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+       "maxLength": 32
+     }
+   }
+  }
+}

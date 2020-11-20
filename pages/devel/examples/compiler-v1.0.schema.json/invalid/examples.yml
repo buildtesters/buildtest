@@ -1,0 +1,154 @@
+version: "1.0"
+buildspecs:
+  missing_type:
+    executor: local.bash
+    description: "type key is missing, this is a required field"
+    module:
+     -  "module purge &&  module load intel/17"
+     -  "module purge &&  module load intel/18"
+    build:
+      source: src/hello.c
+      name: intel
+      cflags: "-O1"
+
+  missing_build:
+    executor: local.bash
+    type: compiler
+    description: "build key is missing, this is a required field"
+    module:
+     -  "module purge &&  module load intel/17"
+     -  "module purge &&  module load intel/18"
+
+  invalid_type_value:
+    executor: local.bash
+    type: script
+    description: "invalid value for type field must be 'compiler' "
+    module:
+       - "module purge && module load gcc/4.0"
+       - "module purge && module load gcc/6.0"
+    build:
+      source: src/hello.c
+      name: gnu
+      cflags: "-O1"
+
+  invalid_description_value:
+    executor: local.bash
+    type: compiler
+    description: 1
+    module:
+       - "module purge && module load gcc/4.0"
+       - "module purge && module load gcc/6.0"
+    build:
+      source: src/hello.c
+      name: gnu
+      cflags: "-O1"
+
+  invalid_type_module:
+    executor: local.bash
+    type: compiler
+    description: "type for 'module' key, expecting type 'array' but received 'string' "
+    module: "module purge && module load gcc/4.0"
+    build:
+      source: src/hello.c
+      name: gnu
+      cflags: "-O1"
+
+  module_mismatch_array_items:
+    executor: local.bash
+    type: compiler
+    description: "The module is an array of string items, this test as a mix of numbers and string"
+    module:
+      - 1
+      - "module purge && module load intel"
+    build:
+      source: src/hello.c
+      name: intel
+      cflags: "-O1"
+
+  missing_source_in_compiler:
+    executor: local.bash
+    type: compiler
+    description: "missing source key in compiler object"
+    module:
+    - "module purge && module load gcc/4.0"
+    build:
+      name: gnu
+      cflags: "-O1"
+
+  missing_name_in_build:
+    executor: local.bash
+    type: compiler
+    description: "missing name key in build object"
+    module:
+    - "module purge && module load gcc/4.0"
+    build:
+      source: src/hello.c
+
+  name_type_mismatch:
+    executor: local.bash
+    type: compiler
+    description: "compiler 'name' expects a string but received a list"
+    module:
+    - "module purge && module load gcc/4.0"
+    build:
+      source: src/hello.c
+      name: ["gnu", "intel"]
+      cflags: "-O1"
+      ldflags: "-lm"
+
+
+  additionalProperties_build:
+    executor: local.bash
+    type: compiler
+    description: "test additionalProperties in build object. Schema does not allow for additional keys"
+    module:
+    - "module purge && module load gcc/4.0"
+    build:
+      source: src/hello.c
+      foo: bar
+      name: gnu
+      cflags: "-O1"
+      ldflags: "-lm"
+
+  additionalProperties_main:
+    executor: local.bash
+    type: compiler
+    description: "test additionalProperties in main schema"
+    foo: bar
+    module:
+    - "module purge && module load gcc/4.0"
+    build:
+      source: src/hello.c
+      name: gnu
+      cflags: "-O1"
+      ldflags: "-lm"
+
+  additionalProperties_batch:
+    executor: local.bash
+    type: compiler
+    description: "test additionalProperties in batch field"
+    module:
+    - "module purge && module load gcc/4.0"
+    batch:
+      "nodecount": "2"
+      "EXPORT": "ALL"
+    build:
+      source: src/hello.c
+      name: gnu
+      cflags: "-O1"
+      ldflags: "-lm"
+
+  type_mismatch_args:
+    executor: local.bash
+    type: compiler
+    description: "type mismatch on args key"
+    module:
+    - "module purge && module load gcc/4.0"
+    build:
+      source: src/hello.c
+      name: gnu
+      cflags: "-O1"
+      ldflags: "-lm"
+
+    run:
+      args: 1

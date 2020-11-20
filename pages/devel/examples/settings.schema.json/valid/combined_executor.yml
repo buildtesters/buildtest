@@ -1,0 +1,27 @@
+editor: vi
+moduletool: N/A
+executors:
+  local:
+    bash:
+      description: submit jobs on local machine
+      shell: bash -v
+
+  slurm:
+    haswell:
+      launcher: sbatch
+      options:
+        - "-p haswell"
+        - "-t 00:10"
+
+  lsf:
+    batch:
+      launcher: bsub
+      options:
+        - "-q batch"
+        - "-t 00:10"
+  cobalt:
+    normal:
+      launcher: qsub
+      options:
+        - "-n 1"
+        - "-t 10"
