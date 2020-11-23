@@ -20,7 +20,6 @@ https://buildtesters.github.io/buildtest/schemas/settings.schema.json
 | Property                                            | Type          | Required | Nullable       | Defined by                                                                                                                                                                                        |
 | :-------------------------------------------------- | ------------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | [additionalProperties](#additionalproperties)       | Not specified | Optional | cannot be null | [Untitled schema](undefined.md "undefined#undefined")                                                                                                                                             |
-| [editor](#editor)                                   | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-editor.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/editor")                                   |
 | [buildspec_roots](#buildspec_roots)                 | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-properties-buildspec_roots.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/buildspec_roots")                 |
 | [load_default_buildspecs](#load_default_buildspecs) | `boolean`     | Required | cannot be null | [buildtest configuration schema](settings-properties-load_default_buildspecs.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/load_default_buildspecs") |
 | [testdir](#testdir)                                 | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-testdir.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/testdir")                                 |
@@ -42,41 +41,6 @@ no description
 ### Untitled schema Type
 
 unknown
-
-## editor
-
-The editor field is used for opening buildspecs in an editor. The default editor is `vim`.
-
-
-`editor`
-
--   is required
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-editor.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/editor")
-
-### editor Type
-
-`string`
-
-### editor Constraints
-
-**enum**: the value of this property must be equal to one of the following values:
-
-| Value     | Explanation |
-| :-------- | ----------- |
-| `"vi"`    |             |
-| `"vim"`   |             |
-| `"nano"`  |             |
-| `"emacs"` |             |
-
-### editor Default Value
-
-The default value is:
-
-```json
-"vim"
-```
 
 ## buildspec_roots
 
