@@ -375,34 +375,6 @@ be ignored.
 
 .. program-output:: cat docgen/buildspec_find_executors.txt
 
-Viewing Buildspecs
-~~~~~~~~~~~~~~~~~~~~
-If you want to view or edit a buildspec you can type the name of test. Since we
-can have more than one test in a buildspec, opening any of the `name` entry
-that map to same file will result in same operation.
-
-For example, we can view ``systemd_default_target`` as follows
-
-.. program-output:: cat docgen/getting_started/buildspec-view.txt
-
-.. _editing_buildspecs:
-
-Editing Buildspecs
-~~~~~~~~~~~~~~~~~~~~
-
-To edit a buildspec you can run ``buildtest buildspec edit <name>`` which
-will open file in editor. Once you make change, buildtest will validate the
-buildspec upon closure, if there is an issue buildtest will report an error
-during validation and you will be prompted to fix issue until it is resolved.
-
-For example we can see an output message after editing file, user will be prompted
-to press a key which will open the file in editor::
-
-    $ buildtest buildspec edit systemd_default_target
-    version 1.1 is not known for type {'1.0': 'script-v1.0.schema.json', 'latest': 'script-v1.0.schema.json'}. Try using latest.
-    Press any key to continue
-
-
 .. _test_reports:
 
 Test Reports (``buildtest report``)

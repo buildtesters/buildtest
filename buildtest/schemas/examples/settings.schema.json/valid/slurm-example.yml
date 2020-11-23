@@ -1,4 +1,3 @@
-editor: emacs
 moduletool: lmod
 load_default_buildspecs: True
 buildspec_roots:

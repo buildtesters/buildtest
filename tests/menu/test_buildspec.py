@@ -1,8 +1,7 @@
 import os
 import pytest
 from buildtest.exceptions import BuildTestError
-from buildtest.menu.buildspec import func_buildspec_find, func_buildspec_view
-from buildtest.defaults import BUILDSPEC_CACHE_FILE
+from buildtest.menu.buildspec import func_buildspec_find
 
 
 @pytest.mark.cli
@@ -287,19 +286,3 @@ def test_buildspec_find_roots():
 
     # running buildtest buildspec find --root /path/to/buildtest/README.rst --root /path/to/buildtest/tutorials/environment.yml
     func_buildspec_find(args)
-
-
-@pytest.mark.cli
-def test_buildspec_view():
-
-    assert BUILDSPEC_CACHE_FILE
-
-    test_name = "cc_example"
-    print(f"Viewing buildspec test: {test_name}")
-
-    class args:
-        buildspec = test_name
-        view = True
-        edit = False
-
-    func_buildspec_view(args)
