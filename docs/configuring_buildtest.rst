@@ -586,11 +586,6 @@ The ``before_script`` and ``after_script`` field is available for all executors 
 if its not specified the file will be empty. Every test will source the before
 and after script for the given executor.
 
-The ``editor: vi`` is used to open buildspecs in `vi` editor, this is used by commands like
-``buildtest buildspec edit``. For more details see :ref:`editing_buildspecs`.
-The `editor` field can be `vi`, `vim`, `nano`, or `emacs` depending on your editor
-preference.
-
 Compiler Declaration
 --------------------
 

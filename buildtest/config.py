@@ -81,8 +81,6 @@ def load_settings(settings_path=None):
     :type settings_path: str, optional
     """
 
-    settings_path = settings_path
-
     if not settings_path:
         settings_path = resolve_settings_file()
 

@@ -7,11 +7,7 @@ import argparse
 
 from buildtest import BUILDTEST_VERSION
 from buildtest.docs import buildtestdocs, schemadocs
-from buildtest.menu.buildspec import (
-    func_buildspec_find,
-    func_buildspec_edit,
-    func_buildspec_view,
-)
+from buildtest.menu.buildspec import func_buildspec_find
 from buildtest.menu.config import (
     func_config_summary,
     func_config_validate,
@@ -257,18 +253,7 @@ class BuildTestParser:
             action="store_true",
             help="Show Format fields for --format option for formatting buildspec cache output",
         )
-        buildspec_view = subparsers_buildspec.add_parser(
-            "view", help="view a buildspec"
-        )
-        buildspec_view.add_argument("buildspec", help="name of buildspec")
-        buildspec_edit = subparsers_buildspec.add_parser(
-            "edit", help="edit a buildspec"
-        )
-        buildspec_edit.add_argument("buildspec", help="name of buildspec")
-
         buildspec_find.set_defaults(func=func_buildspec_find)
-        buildspec_view.set_defaults(func=func_buildspec_view)
-        buildspec_edit.set_defaults(func=func_buildspec_edit)
 
     def config_menu(self):
         """This method adds argparse argument for ``buildtest config``"""

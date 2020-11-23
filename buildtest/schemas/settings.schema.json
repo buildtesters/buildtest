@@ -3,16 +3,10 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "buildtest configuration schema",
   "type": "object",
-  "required": ["executors", "editor", "moduletool", "load_default_buildspecs"],
+  "required": ["executors", "moduletool", "load_default_buildspecs"],
   "additionalProperties": false,
   "properties": {
       "additionalProperties": false,
-      "editor": {
-        "type": "string",
-        "description": "The editor field is used for opening buildspecs in an editor. The default editor is ``vim``.",
-        "enum": ["vi", "vim", "nano", "emacs"],
-        "default": "vim"
-      },
       "buildspec_roots": {
         "type": "array",
         "items": { "type": "string"},

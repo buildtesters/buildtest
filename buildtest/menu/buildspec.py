@@ -2,7 +2,6 @@ import json
 import logging
 import os
 import sys
-import subprocess
 
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
@@ -517,70 +516,6 @@ def func_buildspec_find(args):
         return
 
     bp_cache.print_buildspecs()
-
-
-def func_buildspec_view_edit(buildspec, view=False, edit=False):
-    """This is a shared method for ``buildtest buildspec view`` and
-       ``buildtest buildspec edit``.
-
-       :param buildspec: buildspec file section to view or edit.
-       :type buildspec: str (filepath)
-       :param view: boolean to determine if we want to view buildspec file
-       :type view: bool
-       :param edit: boolean to control if we want to edit buildspec file in editor.
-       :type edit: bool
-       :return: Shows the content of buildspec or let's user interactively edit buildspec. An exception can be raised if it's unable to find buildspec
-    """
-
-    with open(BUILDSPEC_CACHE_FILE, "r") as fd:
-        cache = json.loads(fd.read())
-
-    for path in cache["buildspecs"].keys():
-        for buildspecfile in cache["buildspecs"][path].keys():
-            if buildspec in list(cache["buildspecs"][path][buildspecfile].keys()):
-                if view:
-                    cmd = f"cat {buildspecfile}"
-                    output = subprocess.check_output(cmd, shell=True).decode("utf-8")
-                    print(output)
-                if edit:
-                    # this loop will terminate once user has edited file, and we parse
-                    # the file for any errors. If one of the exceptions is raised, we
-                    # print error message and set 'success' to False and user is requested
-                    # to fix buildspec until it is valid.
-                    while True:
-                        success = True
-                        config_opts = load_settings()
-                        os.system(f"{config_opts['editor']} {buildspecfile}")
-                        try:
-                            BuildspecParser(buildspecfile)
-                        except (SystemExit, ValidationError) as err:
-                            print(err)
-                            input("Press any key to continue")
-                            success = False
-                        # break out of while loop once user has successfully validated
-                        # buildspec.
-                        if success:
-                            break
-
-                return
-
-    raise SystemExit(f"Unable to find buildspec {buildspec}")
-
-
-def func_buildspec_view(args):
-    """This method implements ``buildtest buildspec view`` which shows
-    content of a buildspec file
-    """
-    func_buildspec_view_edit(args.buildspec, view=True, edit=False)
-
-
-def func_buildspec_edit(args):
-    """This method implement ``buildtest buildspec edit`` which
-    allows one to edit a Buildspec file with one of the editors
-    set in buildtest settings.
-    """
-
-    func_buildspec_view_edit(args.buildspec, view=False, edit=True)
 
 
 def parse_buildspecs(
