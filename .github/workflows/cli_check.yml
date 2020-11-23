@@ -39,7 +39,6 @@ jobs:
         buildtest buildspec find --tags
         buildtest buildspec find --list-executors
         buildtest buildspec find --clear
-        buildtest buildspec view exit1_pass
         buildtest buildspec find --helpfilter
         buildtest buildspec find --filter tags=fail
         buildtest buildspec find --filter tags=compile,executor=local.bash
