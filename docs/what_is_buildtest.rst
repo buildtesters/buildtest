@@ -116,7 +116,16 @@ all buildspecs you need to use ``buildtest buildspec find``::
     $ buildtest buildspec find
 
     # rebuild buildspec cache and discover new buildspecs
-    $ buildtest buildspec find --clear
+    $ buildtest buildspec find --rebuild
+
+    # view all tags
+    $ buildtest buildspec find --tags
+
+    # view all executors
+    $ buildtest buildspec find --executors
+
+    # filter and format buildspec cache
+    $ buildtest buildspec find --filter KEY1=VALUE1,KEY2=VALUE2 --format <field1>,<field2>
 
 buildtest has a command line interface to buildtest schemas. We provide a list of
 available schemas, including schema content and schema examples validated for

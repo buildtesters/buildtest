@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v0.9.1
---------
+v0.9.1 (Nov 24th, 2020)
+------------------------
 
 In this version, we added support for `Cobalt scheduler <https://trac.mcs.anl.gov/projects/cobalt>`_ provided by
 Argonne National Laboratory. We can define cobalt executors in buildtest settings which can be
