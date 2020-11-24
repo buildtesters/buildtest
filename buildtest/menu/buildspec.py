@@ -251,7 +251,7 @@ class BuildspecCache:
                         if not self.update_cache["tags"].get(tags):
                             self.update_cache["tags"][tags] = {}
 
-                        self.update_cache["tags"][tag][name] = description
+                        self.update_cache["tags"][tags][name] = description
 
                     elif isinstance(tags, list):
                         self.update_cache["unique_tags"] += tags
