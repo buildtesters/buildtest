@@ -19,7 +19,7 @@ class BuildspecCache:
     table = {}
     filter_fields = ["type", "executor", "tags"]
     default_format_fields = ["name", "type", "executor", "tags", "description"]
-    format_fields = default_format_fields + ["buildspecs"]
+    format_fields = default_format_fields + ["file"]
 
     def __init__(self, rebuild, filter, format, roots):
         self.filter = filter
@@ -386,7 +386,7 @@ class BuildspecCache:
                             if field == "type":
                                 self.table[field].append(schema_type)
 
-                            elif field == "buildspecs":
+                            elif field == "file":
                                 self.table[field].append(buildspecfile)
                             elif field == "name":
                                 self.table[field].append(test)

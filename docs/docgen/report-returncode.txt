@@ -2,15 +2,15 @@ $ buildtest report --filter returncode=2 --format=name,id,returncode
 +--------------------------+----------+--------------+
 | name                     | id       |   returncode |
 +==========================+==========+==============+
-| returncode_list_mismatch | 17a16f93 |            2 |
+| returncode_list_mismatch | 44be0772 |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 00f80185 |            2 |
+| returncode_list_mismatch | 94f2e372 |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 6ec14e84 |            2 |
+| returncode_list_mismatch | b09de24e |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 03bcccf0 |            2 |
+| returncode_list_mismatch | 6311f51b |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 9546c69a |            2 |
+| returncode_list_mismatch | 592a51b7 |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | ffece878 |            2 |
+| returncode_list_mismatch | 5c534637 |            2 |
 +--------------------------+----------+--------------+

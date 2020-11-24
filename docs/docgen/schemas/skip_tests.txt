@@ -24,7 +24,7 @@ Discovered Buildspecs:
 
  name      | id       | type   | executor   | tags          | testpath
 -----------+----------+--------+------------+---------------+---------------------------------------------------------------------------------------------------
- unskipped | d704b122 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
+ unskipped | 02e35347 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -32,7 +32,7 @@ Discovered Buildspecs:
     
  name      | id       | executor   | status   |   returncode | testpath
 -----------+----------+------------+----------+--------------+---------------------------------------------------------------------------------------------------
- unskipped | d704b122 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
+ unskipped | 02e35347 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

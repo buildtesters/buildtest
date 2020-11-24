@@ -2,11 +2,11 @@ $ buildtest report --filter name=exit1_pass --format=name,id,returncode,state
 +------------+----------+--------------+---------+
 | name       | id       |   returncode | state   |
 +============+==========+==============+=========+
-| exit1_pass | 472fdd40 |            1 | PASS    |
+| exit1_pass | 23fac394 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | 068eb74d |            1 | PASS    |
+| exit1_pass | 51dc548b |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | d103406f |            1 | PASS    |
+| exit1_pass | cd5ec985 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | e36e21ac |            1 | PASS    |
+| exit1_pass | 06af7cb2 |            1 | PASS    |
 +------------+----------+--------------+---------+

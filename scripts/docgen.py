@@ -118,7 +118,7 @@ def introspection_cmds():
         "buildspec_filter_type.txt": "buildtest buildspec find --filter type=script",
         "buildspec_filter_tags.txt": "buildtest buildspec find --filter tags=fail",
         "buildspec_multifield_filter.txt": "buildtest buildspec find --filter tags=tutorials,executor=local.sh,type=script",
-        "buildspec_format_example.txt": "buildtest buildspec find --format name,description,buildspecs --filter tags=tutorials,executor=local.sh",
+        "buildspec_format_example.txt": "buildtest buildspec find --format name,description,file --filter tags=tutorials,executor=local.sh",
         "buildspec_find_group_by_tags.txt": "buildtest buildspec find --group-by-tags",
         "buildspec_find_group_by_executor.txt": "buildtest buildspec find --group-by-executor",
         "report-helpformat.txt": "buildtest report --helpformat",

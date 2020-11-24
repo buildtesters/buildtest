@@ -29,7 +29,8 @@ def test_build_by_tags():
         executors = False
         tags = False
         paths = False
-
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = None
         helpfilter = False

@@ -20,8 +20,6 @@ $ buildtest buildspec find --group-by-tags
 +------------+------------------------------+------------------------------------------------------------------+
 | tutorials  | tcsh_env_declaration         | tcsh shell example to declare environment variables              |
 +------------+------------------------------+------------------------------------------------------------------+
-| tutorials  | python_hello                 | Hello World python                                               |
-+------------+------------------------------+------------------------------------------------------------------+
 | tutorials  | variables_bash               | Declare shell variables in bash                                  |
 +------------+------------------------------+------------------------------------------------------------------+
 | tutorials  | variables_csh                | Declare shell variables in csh                                   |
@@ -45,8 +43,6 @@ $ buildtest buildspec find --group-by-tags
 | tutorials  | hello_world                  | hello world example                                              |
 +------------+------------------------------+------------------------------------------------------------------+
 | tutorials  | run_only_as_root             | This test will only run if current user is root                  |
-+------------+------------------------------+------------------------------------------------------------------+
-| tutorials  | string_tag                   | tags can be a string                                             |
 +------------+------------------------------+------------------------------------------------------------------+
 | tutorials  | run_only_platform_darwin     | This test will only run if target platform is Darwin             |
 +------------+------------------------------+------------------------------------------------------------------+
@@ -80,6 +76,8 @@ $ buildtest buildspec find --group-by-tags
 +------------+------------------------------+------------------------------------------------------------------+
 | mac        | run_only_macos_distro        | Run test only if linux distro is darwin.                         |
 +------------+------------------------------+------------------------------------------------------------------+
+| python     | python_hello                 | Hello World python                                               |
++------------+------------------------------+------------------------------------------------------------------+
 | python     | circle_area                  | Calculate circle of area given a radius                          |
 +------------+------------------------------+------------------------------------------------------------------+
 | fail       | exit1_fail                   | exit 1 by default is FAIL                                        |
@@ -89,6 +87,8 @@ $ buildtest buildspec find --group-by-tags
 | pass       | exit1_pass                   | report exit 1 as PASS                                            |
 +------------+------------------------------+------------------------------------------------------------------+
 | pass       | returncode_int_match         | exit 128 matches returncode 128                                  |
++------------+------------------------------+------------------------------------------------------------------+
+| network    | string_tag                   | tags can be a string                                             |
 +------------+------------------------------+------------------------------------------------------------------+
 | network    | list_of_strings_tags         | tags can be a list of strings                                    |
 +------------+------------------------------+------------------------------------------------------------------+
@@ -180,27 +180,27 @@ $ buildtest buildspec find --group-by-tags
 +------------+------------------------------+------------------------------------------------------------------+
 | cobalt     | show_queues                  | Show queues                                                      |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | show_host_groups             | Show information about host groups using bmgroup                 |
+| lsf        | show_host_groups             | Show information about host groups using bmgroup                 |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | show_lsf_configuration       | Show LSF configuration using lsinfo                              |
+| lsf        | show_lsf_configuration       | Show LSF configuration using lsinfo                              |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | show_lsf_models              | Show information about host models in LSF cluster                |
+| lsf        | show_lsf_models              | Show information about host models in LSF cluster                |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | show_lsf_resources           | Show information about LSF resources                             |
+| lsf        | show_lsf_resources           | Show information about LSF resources                             |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | lsf_version                  | Display lsf version using lsinfo                                 |
+| lsf        | lsf_version                  | Display lsf version using lsinfo                                 |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | show_lsf_user_groups         | Show information about all LSF user groups                       |
+| lsf        | show_lsf_user_groups         | Show information about all LSF user groups                       |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | show_lsf_queues              | Show LSF queues                                                  |
+| lsf        | show_lsf_queues              | Show LSF queues                                                  |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | show_lsf_queues_formatted    | Show LSF queues with formatted columns                           |
+| lsf        | show_lsf_queues_formatted    | Show LSF queues with formatted columns                           |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | show_lsf_queues_current_user | Show LSF queues available for current user                       |
+| lsf        | show_lsf_queues_current_user | Show LSF queues available for current user                       |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | display_lsf_hosts            | Show all hosts in LSF cluster                                    |
+| lsf        | display_lsf_hosts            | Show all hosts in LSF cluster                                    |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | display_hosts_format         | Show all hosts with column hostname and status                   |
+| lsf        | display_hosts_format         | Show all hosts with column hostname and status                   |
 +------------+------------------------------+------------------------------------------------------------------+
-| cobalt     | bhosts_version               | Display bhosts version                                           |
+| lsf        | bhosts_version               | Display bhosts version                                           |
 +------------+------------------------------+------------------------------------------------------------------+

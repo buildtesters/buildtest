@@ -1,27 +1,27 @@
 $ buildtest -d DEBUG build -b tutorials/invalid_executor.yml 
-2020-11-23 20:37:24,671 [config.py:37 - check_settings() ] - [DEBUG] Loading default settings schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2020-11-23 20:37:24,671 [utils.py:34 - load_schema() ] - [DEBUG] Successfully loaded schema file: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2020-11-23 20:37:24,671 [config.py:40 - check_settings() ] - [DEBUG] Validating user schema with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2020-11-23 20:37:24,675 [config.py:42 - check_settings() ] - [DEBUG] Validation was successful
-2020-11-23 20:37:24,675 [system.py:28 - __init__() ] - [DEBUG] Starting System Compatibility Check
-2020-11-23 20:37:24,675 [system.py:48 - init_system() ] - [DEBUG] Operating System: darwin
-2020-11-23 20:37:24,675 [system.py:49 - init_system() ] - [DEBUG] Python Path: /Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/python
-2020-11-23 20:37:24,676 [system.py:110 - check() ] - [DEBUG] Cannot find sbatch command in $PATH
-2020-11-23 20:37:24,676 [system.py:110 - check() ] - [DEBUG] Cannot find sacct command in $PATH
-2020-11-23 20:37:24,676 [system.py:110 - check() ] - [DEBUG] Cannot find sacctmgr command in $PATH
-2020-11-23 20:37:24,676 [system.py:110 - check() ] - [DEBUG] Cannot find sinfo command in $PATH
-2020-11-23 20:37:24,676 [system.py:110 - check() ] - [DEBUG] Cannot find scancel command in $PATH
-2020-11-23 20:37:24,677 [system.py:110 - check() ] - [DEBUG] Cannot find bsub command in $PATH
-2020-11-23 20:37:24,677 [system.py:110 - check() ] - [DEBUG] Cannot find bqueues command in $PATH
-2020-11-23 20:37:24,677 [system.py:110 - check() ] - [DEBUG] Cannot find bkill command in $PATH
-2020-11-23 20:37:24,677 [system.py:110 - check() ] - [DEBUG] Cannot find bjobs command in $PATH
-2020-11-23 20:37:24,677 [system.py:110 - check() ] - [DEBUG] Cannot find qsub command in $PATH
-2020-11-23 20:37:24,677 [system.py:110 - check() ] - [DEBUG] Cannot find qstat command in $PATH
-2020-11-23 20:37:24,677 [system.py:110 - check() ] - [DEBUG] Cannot find qdel command in $PATH
-2020-11-23 20:37:24,678 [system.py:34 - __init__() ] - [DEBUG] Finished System Compatibility Check
-2020-11-23 20:37:24,678 [build.py:139 - discover_by_buildspecs() ] - [DEBUG] BuildSpec: tutorials/invalid_executor.yml is a file
-2020-11-23 20:37:24,678 [build.py:151 - discover_by_buildspecs() ] - [INFO] Found the following config files: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
-2020-11-23 20:37:24,678 [build.py:212 - discover_buildspecs() ] - [DEBUG] Based on input argument: --buildspec ['tutorials/invalid_executor.yml'] buildtest discovered the following Buildspecs: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
+2020-11-23 21:19:37,397 [config.py:37 - check_settings() ] - [DEBUG] Loading default settings schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
+2020-11-23 21:19:37,397 [utils.py:34 - load_schema() ] - [DEBUG] Successfully loaded schema file: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
+2020-11-23 21:19:37,398 [config.py:40 - check_settings() ] - [DEBUG] Validating user schema with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
+2020-11-23 21:19:37,401 [config.py:42 - check_settings() ] - [DEBUG] Validation was successful
+2020-11-23 21:19:37,401 [system.py:28 - __init__() ] - [DEBUG] Starting System Compatibility Check
+2020-11-23 21:19:37,402 [system.py:48 - init_system() ] - [DEBUG] Operating System: darwin
+2020-11-23 21:19:37,402 [system.py:49 - init_system() ] - [DEBUG] Python Path: /Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/python
+2020-11-23 21:19:37,402 [system.py:110 - check() ] - [DEBUG] Cannot find sbatch command in $PATH
+2020-11-23 21:19:37,402 [system.py:110 - check() ] - [DEBUG] Cannot find sacct command in $PATH
+2020-11-23 21:19:37,402 [system.py:110 - check() ] - [DEBUG] Cannot find sacctmgr command in $PATH
+2020-11-23 21:19:37,402 [system.py:110 - check() ] - [DEBUG] Cannot find sinfo command in $PATH
+2020-11-23 21:19:37,402 [system.py:110 - check() ] - [DEBUG] Cannot find scancel command in $PATH
+2020-11-23 21:19:37,403 [system.py:110 - check() ] - [DEBUG] Cannot find bsub command in $PATH
+2020-11-23 21:19:37,403 [system.py:110 - check() ] - [DEBUG] Cannot find bqueues command in $PATH
+2020-11-23 21:19:37,403 [system.py:110 - check() ] - [DEBUG] Cannot find bkill command in $PATH
+2020-11-23 21:19:37,403 [system.py:110 - check() ] - [DEBUG] Cannot find bjobs command in $PATH
+2020-11-23 21:19:37,403 [system.py:110 - check() ] - [DEBUG] Cannot find qsub command in $PATH
+2020-11-23 21:19:37,403 [system.py:110 - check() ] - [DEBUG] Cannot find qstat command in $PATH
+2020-11-23 21:19:37,404 [system.py:110 - check() ] - [DEBUG] Cannot find qdel command in $PATH
+2020-11-23 21:19:37,404 [system.py:34 - __init__() ] - [DEBUG] Finished System Compatibility Check
+2020-11-23 21:19:37,404 [build.py:139 - discover_by_buildspecs() ] - [DEBUG] BuildSpec: tutorials/invalid_executor.yml is a file
+2020-11-23 21:19:37,404 [build.py:151 - discover_by_buildspecs() ] - [INFO] Found the following config files: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
+2020-11-23 21:19:37,404 [build.py:212 - discover_buildspecs() ] - [DEBUG] Based on input argument: --buildspec ['tutorials/invalid_executor.yml'] buildtest discovered the following Buildspecs: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
@@ -31,13 +31,13 @@ $ buildtest -d DEBUG build -b tutorials/invalid_executor.yml
 Discovered Buildspecs:
  
 /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
-2020-11-23 20:37:24,678 [setup.py:40 - __init__() ] - [DEBUG] Getting Executors from buildtest settings
-2020-11-23 20:37:24,681 [parser.py:143 - _validate() ] - [INFO] Validating /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global.schema.json
-2020-11-23 20:37:24,681 [parser.py:156 - _validate() ] - [INFO] Validating test - 'wrongexecutor' in recipe: /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
-2020-11-23 20:37:24,681 [parser.py:93 - _check_schema_type() ] - [INFO] Detected field 'type: script'
-2020-11-23 20:37:24,681 [parser.py:102 - _check_schema_type() ] - [INFO] Checking script in supported type schemas: ['script', 'compiler']
-2020-11-23 20:37:24,681 [parser.py:118 - _check_schema_type() ] - [INFO] Checking version '1.0' in version list: ['1.0']
-2020-11-23 20:37:24,682 [buildspec.py:622 - parse_buildspecs() ] - [ERROR] executor: badexecutor not found in executor list: ['local.bash', 'local.sh', 'local.csh', 'local.python']
+2020-11-23 21:19:37,404 [setup.py:40 - __init__() ] - [DEBUG] Getting Executors from buildtest settings
+2020-11-23 21:19:37,407 [parser.py:143 - _validate() ] - [INFO] Validating /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global.schema.json
+2020-11-23 21:19:37,407 [parser.py:156 - _validate() ] - [INFO] Validating test - 'wrongexecutor' in recipe: /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+2020-11-23 21:19:37,407 [parser.py:93 - _check_schema_type() ] - [INFO] Detected field 'type: script'
+2020-11-23 21:19:37,407 [parser.py:102 - _check_schema_type() ] - [INFO] Checking script in supported type schemas: ['script', 'compiler']
+2020-11-23 21:19:37,407 [parser.py:118 - _check_schema_type() ] - [INFO] Checking version '1.0' in version list: ['1.0']
+2020-11-23 21:19:37,407 [buildspec.py:622 - parse_buildspecs() ] - [ERROR] executor: badexecutor not found in executor list: ['local.bash', 'local.sh', 'local.csh', 'local.python']
 
 
 
