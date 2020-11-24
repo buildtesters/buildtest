@@ -14,21 +14,21 @@ In this version we added support for compiler query and detection using ``buildt
 We make use of `lmodule <http://lmodule.rtfd.io/>`_ API for querying modules if system
 is using Lmod.
 
-We made significant changes to buildspec cache file (`var/buildspec-cache.json`) that allowed
-us to add several options to ``buildtest buildspec find`` including ``--group-by-tags``,
+We made significant changes to buildspec cache file (``var/buildspec-cache.json``) that allowed
+us to add several options to ``buildtest buildspec find`` including: ``--group-by-tags``,
 ``--group-by-executor``, ``--paths``, ``--helpformat``, ``--format``, ``--helpfilter``, ``--filter``, ``--root``.
 
 There was significant code refactor to several class and issues reported by CodeFactor. In addition we added
-CI checks for daily url check see `eb601b <https://github.com/buildtesters/buildtest/commit/eb601b4610a32b8f41cf919f5e6877584247d869>`_,
+CI checks such as **Daily Check URL** see `eb601b <https://github.com/buildtesters/buildtest/commit/eb601b4610a32b8f41cf919f5e6877584247d869>`_,
 gh-pages for master branch see `267f7f <https://github.com/buildtesters/buildtest/commit/267f7f913cd8e1b5303b1af42aa307bfe76ee3bf>`_. The gh-pages
 for JSON schema push documentation for `devel` and `master` in separate sub-directories. This allows user to view schema examples and markdown
 pages for schema for devel and master branch.
 
 - Add new maintainers checklist guide see `#529 <https://github.com/buildtesters/buildtest/pull/529>`_
-- Rename ``--clear`` --> ``--rebuild``, ``--list-executors`` --> ``--executors`` in *buildtest buildspec find* see `e7ec37 <https://github.com/buildtesters/buildtest/commit/e7ec378389dfa9b9e07e98eaf4c0990b958a2177>`_
-- Added property `moduletool` in settings schema for configuring module system
-- Add property `load_default_buildspecs` in settings schema for configuring buildtest to load default buildspecs in buildspec cache. See commit `dac444 <https://github.com/buildtesters/buildtest/commit/dac4444b42a07b5c8f281dd0458df09e08e75383>`_
-- Remove property `editor` from settings schema and ``buildtest buildspec view`` and ``buildtest buildspec edit`` were deprecated see `b8479b <https://github.com/buildtesters/buildtest/commit/b8479b4b0b3da9eaeae95ba06c2b4458986e57cf>`_
+- Rename ``--clear`` --> ``--rebuild``, ``--list-executors`` --> ``--executors`` in **buildtest buildspec find** see `e7ec37 <https://github.com/buildtesters/buildtest/commit/e7ec378389dfa9b9e07e98eaf4c0990b958a2177>`_
+- Added property ``moduletool`` in settings schema for configuring module system
+- Add property ``load_default_buildspecs`` in settings schema for configuring buildtest to load default buildspecs in buildspec cache. See commit `dac444 <https://github.com/buildtesters/buildtest/commit/dac4444b42a07b5c8f281dd0458df09e08e75383>`_
+- Remove property ``editor`` from settings schema and ``buildtest buildspec view`` and ``buildtest buildspec edit`` were deprecated see `b8479b <https://github.com/buildtesters/buildtest/commit/b8479b4b0b3da9eaeae95ba06c2b4458986e57cf>`_
 - Fix bug during job timeout in poll stage. Buildtest will ignore cancelled jobs, but there no check if no builders were returned after poll stage. See `#532 <https://github.com/buildtesters/buildtest/pull/532>`_
 - Add Burst Buffer (``BB``) and Data Warp (``DW``) directives for Cray support. See `#525 <https://github.com/buildtesters/buildtest/pull/525>`_ and `#526 <https://github.com/buildtesters/buildtest/pull/526/>`_
 - Add csh, tcsh, zsh shell support in script-v1.0.schema.json `#523 <https://github.com/buildtesters/buildtest/pull/523>`_
