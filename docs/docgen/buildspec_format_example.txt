@@ -1,6 +1,6 @@
-$ buildtest buildspec find --format name,description,buildspecs --filter tags=tutorials,executor=local.sh
+$ buildtest buildspec find --format name,description,file --filter tags=tutorials,executor=local.sh
 +--------------------------+-----------------------------------------------------+-------------------------------------------------------------------+
-| name                     | description                                         | buildspecs                                                        |
+| name                     | description                                         | file                                                              |
 +==========================+=====================================================+===================================================================+
 | _bin_sh_shell            | /bin/sh shell example                               | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml  |
 +--------------------------+-----------------------------------------------------+-------------------------------------------------------------------+

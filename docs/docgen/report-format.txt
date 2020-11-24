@@ -2,269 +2,269 @@ $ buildtest report --format name,id,executor,state,returncode
 +----------------------------+----------+--------------+---------+--------------+
 | name                       | id       | executor     | state   |   returncode |
 +============================+==========+==============+=========+==============+
-| systemd_default_target     | 8a979b93 | local.bash   | FAIL    |            1 |
+| systemd_default_target     | ba7b8643 | local.bash   | FAIL    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| systemd_default_target     | 45be0d22 | local.bash   | FAIL    |            1 |
+| systemd_default_target     | 2675d4c6 | local.bash   | FAIL    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| systemd_default_target     | 2e240d1d | local.bash   | FAIL    |            1 |
+| systemd_default_target     | 5fcfea9a | local.bash   | FAIL    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| systemd_default_target     | 5a4f8c15 | local.bash   | FAIL    |            1 |
+| systemd_default_target     | c34c8020 | local.bash   | FAIL    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_dinosaur             | 342af364 | local.bash   | PASS    |            0 |
+| _bin_sh_shell              | 3c083874 | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_dinosaur             | 339d8158 | local.bash   | PASS    |            0 |
+| _bin_sh_shell              | 81ca28de | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| _bin_sh_shell              | eb5be881 | local.sh     | PASS    |            0 |
+| _bin_bash_shell            | 34feca7f | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| _bin_sh_shell              | bd50e0c4 | local.sh     | PASS    |            0 |
+| _bin_bash_shell            | 02945125 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| _bin_bash_shell            | 8267e9d6 | local.bash   | PASS    |            0 |
+| bash_shell                 | dc248865 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| _bin_bash_shell            | 2e862a25 | local.bash   | PASS    |            0 |
+| bash_shell                 | 1346d215 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_shell                 | d2a2dc42 | local.bash   | PASS    |            0 |
+| sh_shell                   | f6e60cfb | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_shell                 | 7005f7e0 | local.bash   | PASS    |            0 |
+| sh_shell                   | 1de811ef | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| sh_shell                   | 8fb444f2 | local.sh     | PASS    |            0 |
+| shell_options              | 9c0a90b3 | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| sh_shell                   | 24b2350e | local.sh     | PASS    |            0 |
+| shell_options              | 8e169559 | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| shell_options              | 76b8cc9f | local.sh     | PASS    |            0 |
+| hello_dinosaur             | 4534ded1 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| shell_options              | 18b30034 | local.sh     | PASS    |            0 |
+| hello_dinosaur             | 8d8e6138 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| slurm_down_nodes_reason    | e9102c86 | local.bash   | PASS    |            0 |
+| circle_area                | a52f9ebd | local.python | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| slurm_down_nodes_reason    | 4d93defc | local.bash   | PASS    |            0 |
+| circle_area                | a136cad4 | local.python | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| slurm_not_responding_nodes | b99de6c2 | local.bash   | PASS    |            0 |
+| slurm_down_nodes_reason    | 74b66930 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| slurm_not_responding_nodes | 806735ee | local.bash   | PASS    |            0 |
+| slurm_down_nodes_reason    | b75a5c56 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| circle_area                | 575e11b4 | local.python | PASS    |            0 |
+| slurm_not_responding_nodes | bfbd2574 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| circle_area                | 94a46df9 | local.python | PASS    |            0 |
+| slurm_not_responding_nodes | 813e4cea | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| vecadd_gnu                 | 182a9295 | local.bash   | FAIL    |            0 |
+| pre_post_build_run         | b481949f | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| vecadd_gnu                 | 548eafc7 | local.bash   | FAIL    |            0 |
+| pre_post_build_run         | 2c75519d | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| vecadd_gnu                 | ceb43aff | local.bash   | FAIL    |            0 |
+| pre_post_build_run         | c4d8432e | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| vecadd_gnu                 | 81eca136 | local.bash   | FAIL    |            0 |
+| executable_arguments       | 65c3b0b1 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| exit1_fail                 | 6d645592 | local.sh     | FAIL    |            1 |
+| executable_arguments       | 9f20211f | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| exit1_fail                 | 7458d912 | local.sh     | FAIL    |            1 |
+| executable_arguments       | dabff3cf | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| exit1_fail                 | c0945021 | local.sh     | FAIL    |            1 |
+| hello_f                    | 6a5a3502 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| exit1_fail                 | c10d3df8 | local.sh     | FAIL    |            1 |
+| hello_f                    | 3eda454c | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| exit1_fail                 | 4933851a | local.sh     | FAIL    |            1 |
+| hello_f                    | c92948b7 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| exit1_fail                 | 4d4104d5 | local.sh     | FAIL    |            1 |
+| hello_f                    | 67e0dfb0 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| exit1_pass                 | 472fdd40 | local.sh     | PASS    |            1 |
+| hello_c                    | 5996af63 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| exit1_pass                 | 068eb74d | local.sh     | PASS    |            1 |
+| hello_c                    | 6bca69ea | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| exit1_pass                 | d103406f | local.sh     | PASS    |            1 |
+| hello_c                    | f39a75cc | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| exit1_pass                 | e36e21ac | local.sh     | PASS    |            1 |
+| hello_c                    | e88b30bb | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| returncode_list_mismatch   | 17a16f93 | local.sh     | FAIL    |            2 |
+| hello_cplusplus            | f5fe1f6b | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| returncode_list_mismatch   | 00f80185 | local.sh     | FAIL    |            2 |
+| hello_cplusplus            | 1596a4c3 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| returncode_list_mismatch   | 6ec14e84 | local.sh     | FAIL    |            2 |
+| hello_cplusplus            | dce9bf42 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| returncode_list_mismatch   | 03bcccf0 | local.sh     | FAIL    |            2 |
+| hello_cplusplus            | 10caf5b4 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| returncode_list_mismatch   | 9546c69a | local.sh     | FAIL    |            2 |
+| cc_example                 | 84f094bf | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| returncode_list_mismatch   | ffece878 | local.sh     | FAIL    |            2 |
+| cc_example                 | c1855a0c | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| returncode_int_match       | b00835ae | local.sh     | PASS    |          128 |
+| cc_example                 | d04f2d28 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| returncode_int_match       | 3369056e | local.sh     | PASS    |          128 |
+| cc_example                 | 561ec658 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| returncode_int_match       | 37934b2e | local.sh     | PASS    |          128 |
+| fc_example                 | 4a4644c6 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| returncode_int_match       | 274af489 | local.sh     | PASS    |          128 |
+| fc_example                 | 47779576 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_login_shebang         | 4ea84c51 | local.bash   | PASS    |            0 |
+| fc_example                 | f36bb569 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_login_shebang         | f5a6df70 | local.bash   | PASS    |            0 |
+| fc_example                 | 57ac92c4 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_login_shebang         | 2d6d64f9 | local.bash   | PASS    |            0 |
+| cxx_example                | db4c721d | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_nonlogin_shebang      | eae8273f | local.bash   | PASS    |            0 |
+| cxx_example                | 1d9b4aba | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_nonlogin_shebang      | f4c14c4b | local.bash   | PASS    |            0 |
+| cxx_example                | 3c83232b | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_nonlogin_shebang      | 52075185 | local.bash   | PASS    |            0 |
+| cxx_example                | b4d7e31d | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| variables_bash             | cdc07269 | local.bash   | PASS    |            0 |
+| run_only_platform_darwin   | 37dda3ca | local.python | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| variables_bash             | e4645a2a | local.bash   | PASS    |            0 |
+| run_only_platform_darwin   | 249ed98f | local.python | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| variables_csh              | 01918e34 | local.csh    | PASS    |            0 |
+| vecadd_gnu                 | b59e4234 | local.bash   | FAIL    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| csh_shell                  | d2b70d04 | local.csh    | PASS    |            0 |
+| vecadd_gnu                 | 7691af0a | local.bash   | FAIL    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| unskipped                  | 6838f8a7 | local.bash   | PASS    |            0 |
+| vecadd_gnu                 | a6676800 | local.bash   | FAIL    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| unskipped                  | 28ab8eb8 | local.bash   | PASS    |            0 |
+| vecadd_gnu                 | 9dc70948 | local.bash   | FAIL    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| unskipped                  | d704b122 | local.bash   | PASS    |            0 |
+| exit1_fail                 | c3c17f45 | local.sh     | FAIL    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_world                | 26fa484b | local.bash   | PASS    |            0 |
+| exit1_fail                 | d42beb78 | local.sh     | FAIL    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_world                | 95bc1389 | local.bash   | PASS    |            0 |
+| exit1_fail                 | d8d49fa8 | local.sh     | FAIL    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| _bin_sh_shell              | 47d16244 | local.sh     | PASS    |            0 |
+| exit1_fail                 | 41cc447b | local.sh     | FAIL    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| _bin_sh_shell              | 201f0c38 | local.sh     | PASS    |            0 |
+| exit1_fail                 | 9b84247d | local.sh     | FAIL    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| _bin_sh_shell              | fbb9cb24 | local.sh     | PASS    |            0 |
+| exit1_fail                 | b2ddf5e9 | local.sh     | FAIL    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| _bin_bash_shell            | a17f0f24 | local.bash   | PASS    |            0 |
+| exit1_pass                 | 23fac394 | local.sh     | PASS    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| _bin_bash_shell            | 9b765e4d | local.bash   | PASS    |            0 |
+| exit1_pass                 | 51dc548b | local.sh     | PASS    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_shell                 | f93df60a | local.bash   | PASS    |            0 |
+| exit1_pass                 | cd5ec985 | local.sh     | PASS    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_shell                 | 5e1c2b33 | local.bash   | PASS    |            0 |
+| exit1_pass                 | 06af7cb2 | local.sh     | PASS    |            1 |
 +----------------------------+----------+--------------+---------+--------------+
-| sh_shell                   | 11578a7b | local.sh     | PASS    |            0 |
+| returncode_list_mismatch   | 44be0772 | local.sh     | FAIL    |            2 |
 +----------------------------+----------+--------------+---------+--------------+
-| sh_shell                   | 27c0ab95 | local.sh     | PASS    |            0 |
+| returncode_list_mismatch   | 94f2e372 | local.sh     | FAIL    |            2 |
 +----------------------------+----------+--------------+---------+--------------+
-| sh_shell                   | 8dd121f7 | local.sh     | PASS    |            0 |
+| returncode_list_mismatch   | b09de24e | local.sh     | FAIL    |            2 |
 +----------------------------+----------+--------------+---------+--------------+
-| shell_options              | 47159804 | local.sh     | PASS    |            0 |
+| returncode_list_mismatch   | 6311f51b | local.sh     | FAIL    |            2 |
 +----------------------------+----------+--------------+---------+--------------+
-| shell_options              | 571fda93 | local.sh     | PASS    |            0 |
+| returncode_list_mismatch   | 592a51b7 | local.sh     | FAIL    |            2 |
 +----------------------------+----------+--------------+---------+--------------+
-| shell_options              | 7d207084 | local.sh     | PASS    |            0 |
+| returncode_list_mismatch   | 5c534637 | local.sh     | FAIL    |            2 |
 +----------------------------+----------+--------------+---------+--------------+
-| run_only_platform_darwin   | bfd8bc85 | local.python | PASS    |            0 |
+| returncode_int_match       | f33e5b16 | local.sh     | PASS    |          128 |
 +----------------------------+----------+--------------+---------+--------------+
-| run_only_platform_darwin   | 41eccf01 | local.python | PASS    |            0 |
+| returncode_int_match       | ca713ed7 | local.sh     | PASS    |          128 |
 +----------------------------+----------+--------------+---------+--------------+
-| circle_area                | 0b0deb34 | local.python | PASS    |            0 |
+| returncode_int_match       | 13b4e620 | local.sh     | PASS    |          128 |
 +----------------------------+----------+--------------+---------+--------------+
-| circle_area                | fceda6b7 | local.python | PASS    |            0 |
+| returncode_int_match       | b2936831 | local.sh     | PASS    |          128 |
 +----------------------------+----------+--------------+---------+--------------+
-| circle_area                | 75eed6bc | local.python | PASS    |            0 |
+| _bin_sh_shell              | e7209a70 | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| circle_area                | 91db7de8 | local.python | PASS    |            0 |
+| _bin_sh_shell              | 5518b02a | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| circle_area                | 630cfbdc | local.python | PASS    |            0 |
+| _bin_sh_shell              | 6b94a5ac | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| sleep                      | 903ed52e | local.bash   | PASS    |            0 |
+| _bin_bash_shell            | 1da02f95 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| sleep                      | cdf0449c | local.bash   | PASS    |            0 |
+| _bin_bash_shell            | b717b1dd | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_f                    | c1b81499 | local.bash   | PASS    |            0 |
+| bash_shell                 | 946097fa | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_f                    | 148631bb | local.bash   | PASS    |            0 |
+| bash_shell                 | 6fc6e63c | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_f                    | 8721eca5 | local.bash   | PASS    |            0 |
+| sh_shell                   | e9462925 | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_f                    | ffa2cbcc | local.bash   | PASS    |            0 |
+| sh_shell                   | 22771f07 | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_c                    | bbab0da5 | local.bash   | PASS    |            0 |
+| sh_shell                   | 7ddf11d4 | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_c                    | d2fcacdb | local.bash   | PASS    |            0 |
+| shell_options              | 593379e9 | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_c                    | 51e34867 | local.bash   | PASS    |            0 |
+| shell_options              | 24f9813a | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_c                    | a248f487 | local.bash   | PASS    |            0 |
+| shell_options              | a9f10a18 | local.sh     | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_cplusplus            | 1975553e | local.bash   | PASS    |            0 |
+| bash_login_shebang         | c1cbb39f | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_cplusplus            | 61b9e393 | local.bash   | PASS    |            0 |
+| bash_login_shebang         | 94b01a87 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_cplusplus            | b2e3739e | local.bash   | PASS    |            0 |
+| bash_login_shebang         | 8d6d815d | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| hello_cplusplus            | d8696f7d | local.bash   | PASS    |            0 |
+| bash_nonlogin_shebang      | 1a084cc8 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| cc_example                 | 36536aa3 | local.bash   | PASS    |            0 |
+| bash_nonlogin_shebang      | 60f300cd | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| cc_example                 | a67aff04 | local.bash   | PASS    |            0 |
+| bash_nonlogin_shebang      | 3ae03744 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| cc_example                 | 8932383c | local.bash   | PASS    |            0 |
+| circle_area                | 5d7cca03 | local.python | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| cc_example                 | ad3909b0 | local.bash   | PASS    |            0 |
+| circle_area                | 257b2413 | local.python | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| fc_example                 | 152fed4d | local.bash   | PASS    |            0 |
+| circle_area                | 8d5e78dc | local.python | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| fc_example                 | c57a6f59 | local.bash   | PASS    |            0 |
+| circle_area                | 00b6f34e | local.python | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| fc_example                 | e68c2b27 | local.bash   | PASS    |            0 |
+| circle_area                | 4a5e17af | local.python | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| fc_example                 | 8500ef76 | local.bash   | PASS    |            0 |
+| selinux_disable            | ea5aecd3 | local.bash   | FAIL    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| cxx_example                | 6d1ae337 | local.bash   | PASS    |            0 |
+| selinux_disable            | 3368c176 | local.bash   | FAIL    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| cxx_example                | 2e06c61d | local.bash   | PASS    |            0 |
+| csh_shell                  | 6423f570 | local.csh    | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| cxx_example                | 477f67ae | local.bash   | PASS    |            0 |
+| unskipped                  | 65c96213 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| cxx_example                | 848496ba | local.bash   | PASS    |            0 |
+| unskipped                  | 6e3d679d | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| pre_post_build_run         | ac06d133 | local.bash   | PASS    |            0 |
+| unskipped                  | 02e35347 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| pre_post_build_run         | b4c5678a | local.bash   | PASS    |            0 |
+| variables_bash             | eebd342c | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| pre_post_build_run         | 43de54f7 | local.bash   | PASS    |            0 |
+| variables_bash             | b44c87fb | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| executable_arguments       | fde3df11 | local.bash   | PASS    |            0 |
+| variables_csh              | 61ef103d | local.csh    | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| executable_arguments       | d08a8e1c | local.bash   | PASS    |            0 |
+| bash_env_variables         | a9ac8f98 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| executable_arguments       | 9b9885e3 | local.bash   | PASS    |            0 |
+| bash_env_variables         | 1a122833 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_env_variables         | db4e13c8 | local.bash   | PASS    |            0 |
+| csh_env_declaration        | 3ec02143 | local.csh    | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| bash_env_variables         | ddd5d514 | local.bash   | PASS    |            0 |
+| tcsh_env_declaration       | b544c019 | local.csh    | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| csh_env_declaration        | 31d8dd24 | local.csh    | PASS    |            0 |
+| hello_world                | b64c13de | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| tcsh_env_declaration       | 19d11f4c | local.csh    | PASS    |            0 |
+| hello_world                | 51551791 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| selinux_disable            | b9a6d1ef | local.bash   | FAIL    |            0 |
+| sleep                      | bdf61664 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| selinux_disable            | 62bc7ceb | local.bash   | FAIL    |            0 |
+| sleep                      | 32a86753 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| python_hello               | 55b6f4ca | local.bash   | PASS    |            0 |
+| python_hello               | 90a12597 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| python_hello               | cd0f4e07 | local.bash   | PASS    |            0 |
+| python_hello               | 83d91f33 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| ulimit_filelock            | 6de8b532 | local.bash   | PASS    |            0 |
+| string_tag                 | 05fbd471 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| ulimit_cputime             | d171d7c6 | local.bash   | PASS    |            0 |
+| list_of_strings_tags       | c36b55d9 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| ulimit_stacksize           | d7003a7f | local.bash   | FAIL    |            0 |
+| root_disk_usage            | 5c1cdde8 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| ulimit_vmsize              | f71489d1 | local.bash   | PASS    |            0 |
+| ulimit_filelock            | 9afbad11 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| ulimit_filedescriptor      | 6571be26 | local.bash   | FAIL    |            0 |
+| ulimit_cputime             | 0f11cfae | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| ulimit_max_user_process    | ae9f3555 | local.bash   | FAIL    |            0 |
+| ulimit_stacksize           | 5822132d | local.bash   | FAIL    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| root_disk_usage            | 52582b09 | local.bash   | PASS    |            0 |
+| ulimit_vmsize              | 0a1da473 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| systemd_default_target     | 4509abf4 | local.bash   | FAIL    |            1 |
+| ulimit_filedescriptor      | 55f146ad | local.bash   | FAIL    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| string_tag                 | 9caf2a8b | local.bash   | PASS    |            0 |
+| ulimit_max_user_process    | 2e6fae58 | local.bash   | FAIL    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| list_of_strings_tags       | c236e5a6 | local.bash   | PASS    |            0 |
+| run_only_macos_distro      | 4d71ba33 | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| run_only_macos_distro      | b9483e6b | local.bash   | PASS    |            0 |
+| run_only_macos_distro      | d6ef760f | local.bash   | PASS    |            0 |
 +----------------------------+----------+--------------+---------+--------------+
-| run_only_macos_distro      | 8126b2cf | local.bash   | PASS    |            0 |
+| systemd_default_target     | 182bc442 | local.bash   | FAIL    |            1 |
 +----------------------------+----------+--------------+---------+--------------+

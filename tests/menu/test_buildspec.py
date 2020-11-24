@@ -276,7 +276,7 @@ def test_buildspec_find_format():
         group_by_tags = False
         group_by_executor = False
         filter = None
-        format = "name,type,executor,description,buildspecs"
+        format = "name,type,executor,description,file"
         helpfilter = False
         helpformat = False
 
