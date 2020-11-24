@@ -105,7 +105,12 @@ class BuildspecCache:
         with open(BUILDSPEC_CACHE_FILE, "r") as fd:
             self.cache = json.loads(fd.read())
 
-    def _find_buildspecs(self):
+    def _discover_buildspecs(self):
+        """This method retrieves buildspecs based on ``self.paths`` which is a
+           list of directory paths to search. If --root is specified for specifying
+           buildspec roots we process each argument, if its a file we add file,
+           if its a directory we recursively find all .yml files
+        """
 
         buildspecs = []
         # add all buildspecs from each repo. walk_tree will find all .yml files
@@ -197,12 +202,14 @@ class BuildspecCache:
         self.update_cache["unique_tags"] = []
         self.update_cache["unique_executors"] = []
         self.update_cache["buildspecs"] = {}
+        self.update_cache["executor"] = {}
+        self.update_cache["tags"] = {}
         self.invalid_buildspecs = {}
 
         for path in self.paths:
             self.update_cache[path] = {}
 
-        buildspecs = self._find_buildspecs()
+        buildspecs = self._discover_buildspecs()
         print(f"Found {len(buildspecs)} buildspecs ")
 
         # validate each buildspec and return a list of valid buildspec parsers that
@@ -234,22 +241,40 @@ class BuildspecCache:
                 ] = recipe[name]
                 tags = recipe[name].get("tags")
                 executor = recipe[name].get("executor")
+                description = recipe[name].get("description")
 
                 if tags:
 
                     if isinstance(tags, str):
                         self.update_cache["unique_tags"].append(tags)
+
+                        if not self.update_cache["tags"].get(tags):
+                            self.update_cache["tags"][tags] = {}
+
+                        self.update_cache["tags"][tag][name] = description
+
                     elif isinstance(tags, list):
                         self.update_cache["unique_tags"] += tags
 
+                        # for every tagname, build a tags to testname association
+                        for tag in tags:
+                            if not self.update_cache["tags"].get(tag):
+                                self.update_cache["tags"][tag] = {}
+
+                            self.update_cache["tags"][tag][name] = description
+
                 if executor:
                     self.update_cache["unique_executors"].append(executor)
+
+                    if not self.update_cache["executor"].get(executor):
+                        self.update_cache["executor"][executor] = {}
+
+                    self.update_cache["executor"][executor][name] = description
 
         self.update_cache["unique_tags"] = list(set(self.update_cache["unique_tags"]))
         self.update_cache["unique_executors"] = list(
             set(self.update_cache["unique_executors"])
         )
-
         self._write_buildspec_cache()
 
     def check_filter_fields(self):
@@ -418,6 +443,36 @@ class BuildspecCache:
         table["executors"] = self.cache["unique_executors"]
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
+    def print_by_executors(self):
+        """ This method prints executors by tests and implements
+            ``buildtest buildspec find --test-by-tags`` command
+        """
+
+        table = {"executor": [], "name": [], "description": []}
+
+        for executor_name in self.cache["executor"].keys():
+            for test_name, description in self.cache["executor"][executor_name].items():
+                table["executor"].append(executor_name)
+                table["name"].append(test_name)
+                table["description"].append(description)
+
+        print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+
+    def print_by_tags(self):
+        """ This method prints tags by tests and implements
+            ``buildtest buildspec find --test-by-tags`` command
+        """
+
+        table = {"tags": [], "name": [], "description": []}
+
+        for tagname in self.cache["tags"].keys():
+            for test_name, description in self.cache["tags"][tagname].items():
+                table["tags"].append(tagname)
+                table["name"].append(test_name)
+                table["description"].append(description)
+
+        print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+
     def print_buildspecs(self):
         """Print buildspec table"""
 
@@ -500,9 +555,18 @@ def func_buildspec_find(args):
     if args.paths:
         bp_cache.print_paths()
         return
+
     # implements buildtest buildspec find --executors
     if args.executors:
         bp_cache.get_executors()
+        return
+
+    if args.group_by_executor:
+        bp_cache.print_by_executors()
+        return
+
+    if args.group_by_tags:
+        bp_cache.print_by_tags()
         return
 
     # implements buildtest buildspec find --helpfilter

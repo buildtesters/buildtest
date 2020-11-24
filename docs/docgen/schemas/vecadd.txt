@@ -23,7 +23,7 @@ Discovered Buildspecs:
 
  name       | id       | type     | executor   | tags                     | testpath
 ------------+----------+----------+------------+--------------------------+------------------------------------------------------------------------------------------------
- vecadd_gnu | db54483a | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
+ vecadd_gnu | 81eca136 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -31,15 +31,15 @@ Discovered Buildspecs:
     
  name       | id       | executor   | status   |   returncode | testpath
 ------------+----------+------------+----------+--------------+------------------------------------------------------------------------------------------------
- vecadd_gnu | db54483a | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
+ vecadd_gnu | 81eca136 | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
     
 Executed 1 tests
-Passed Tests: 1/1 Percentage: 100.000%
-Failed Tests: 0/1 Percentage: 0.000%
+Passed Tests: 0/1 Percentage: 0.000%
+Failed Tests: 1/1 Percentage: 100.000%
 
 
 

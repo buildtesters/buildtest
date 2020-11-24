@@ -7,23 +7,28 @@ $ buildtest build --executor local.sh
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
-/Users/siddiq90/Documents/buildtest/tests/buildsystem/valid_buildspecs/shell_examples.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/cobalt/commands.yml
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 [_bin_bash_shell] test is skipped because it is not in executor filter list: ['local.sh']
 [bash_shell] test is skipped because it is not in executor filter list: ['local.sh']
-[_bin_bash_shell] test is skipped because it is not in executor filter list: ['local.sh']
-[bash_shell] test is skipped because it is not in executor filter list: ['local.sh']
+[qsub_version] test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[qselect_version] test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[cqsub_version] test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[qdel_version] test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[qmove_version] test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[show_jobs] test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[show_queues] test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
     
  schemafile              | validstate   | buildspec
--------------------------+--------------+-------------------------------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+-------------------------+--------------+-----------------------------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/buildsystem/valid_buildspecs/shell_examples.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/cobalt/commands.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 
 +----------------------+
 | Stage: Building Test |
@@ -31,16 +36,13 @@ Discovered Buildspecs:
 
  name                     | id       | type   | executor   | tags                  | testpath
 --------------------------+----------+--------+------------+-----------------------+---------------------------------------------------------------------------------------------------------------------
- exit1_fail               | 2ac3b580 | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/1/stage/generate.sh
- exit1_pass               | 6e7f55db | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/1/stage/generate.sh
- returncode_list_mismatch | c9bd860c | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/1/stage/generate.sh
- returncode_int_match     | eeb2fdf7 | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/1/stage/generate.sh
- _bin_sh_shell            | 7361be5f | script | local.sh   | ['tutorials']         | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/3/stage/generate.sh
- sh_shell                 | 3ed1059a | script | local.sh   | ['tutorials']         | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/3/stage/generate.sh
- shell_options            | ac1330c8 | script | local.sh   | ['tutorials']         | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/3/stage/generate.sh
- _bin_sh_shell            | 058513e1 | script | local.sh   |                       | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/4/stage/generate.sh
- sh_shell                 | 25653b27 | script | local.sh   |                       | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/4/stage/generate.sh
- shell_options            | 6590fcad | script | local.sh   |                       | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/4/stage/generate.sh
+ _bin_sh_shell            | 201f0c38 | script | local.sh   | ['tutorials']         | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/3/stage/generate.sh
+ sh_shell                 | 27c0ab95 | script | local.sh   | ['tutorials']         | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/3/stage/generate.sh
+ shell_options            | 571fda93 | script | local.sh   | ['tutorials']         | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/3/stage/generate.sh
+ exit1_fail               | 7458d912 | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/1/stage/generate.sh
+ exit1_pass               | 068eb74d | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/1/stage/generate.sh
+ returncode_list_mismatch | 00f80185 | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/1/stage/generate.sh
+ returncode_int_match     | 3369056e | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/1/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -48,24 +50,21 @@ Discovered Buildspecs:
     
  name                     | id       | executor   | status   |   returncode | testpath
 --------------------------+----------+------------+----------+--------------+---------------------------------------------------------------------------------------------------------------------
- exit1_fail               | 2ac3b580 | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/1/stage/generate.sh
- exit1_pass               | 6e7f55db | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/1/stage/generate.sh
- returncode_list_mismatch | c9bd860c | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/1/stage/generate.sh
- returncode_int_match     | eeb2fdf7 | local.sh   | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/1/stage/generate.sh
- _bin_sh_shell            | 7361be5f | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/3/stage/generate.sh
- sh_shell                 | 3ed1059a | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/3/stage/generate.sh
- shell_options            | ac1330c8 | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/3/stage/generate.sh
- _bin_sh_shell            | 058513e1 | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/4/stage/generate.sh
- sh_shell                 | 25653b27 | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/4/stage/generate.sh
- shell_options            | 6590fcad | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/4/stage/generate.sh
+ _bin_sh_shell            | 201f0c38 | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/3/stage/generate.sh
+ sh_shell                 | 27c0ab95 | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/3/stage/generate.sh
+ shell_options            | 571fda93 | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/3/stage/generate.sh
+ exit1_fail               | 7458d912 | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/1/stage/generate.sh
+ exit1_pass               | 068eb74d | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/1/stage/generate.sh
+ returncode_list_mismatch | 00f80185 | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/1/stage/generate.sh
+ returncode_int_match     | 3369056e | local.sh   | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/1/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
     
-Executed 10 tests
-Passed Tests: 8/10 Percentage: 80.000%
-Failed Tests: 2/10 Percentage: 20.000%
+Executed 7 tests
+Passed Tests: 5/7 Percentage: 71.429%
+Failed Tests: 2/7 Percentage: 28.571%
 
 
 

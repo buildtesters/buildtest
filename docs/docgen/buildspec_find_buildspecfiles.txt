@@ -60,6 +60,8 @@ $ buildtest buildspec find --buildspec-files
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/sinfo.yml                    |
 +--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/general_tests/sched/cobalt/commands.yml                |
++--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bmgroups.yml                   |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/lsinfo.yml                     |
@@ -69,12 +71,4 @@ $ buildtest buildspec find --buildspec-files
 | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bqueues.yml                    |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bhosts.yml                     |
-+--------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/buildtest/tests/buildsystem/valid_buildspecs/shell_examples.yml  |
-+--------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/buildtest/tests/buildsystem/valid_buildspecs/environment.yml     |
-+--------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/buildtest/tests/buildsystem/valid_buildspecs/slurm.yml           |
-+--------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/buildtest/tests/buildsystem/valid_buildspecs/python-shell.yml    |
 +--------------------------------------------------------------------------------------------+

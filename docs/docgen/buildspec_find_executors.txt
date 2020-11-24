@@ -2,11 +2,11 @@ $ buildtest buildspec find --executors
 +--------------+
 | executors    |
 +==============+
-| local.csh    |
-+--------------+
 | local.sh     |
 +--------------+
-| local.python |
+| local.csh    |
 +--------------+
 | local.bash   |
++--------------+
+| local.python |
 +--------------+

@@ -3,6 +3,7 @@ buildspecs:
   qsub_version:
     type: script
     executor: local.sh
+    tags: [cobalt]
     description: Run qsub version
     run_only:
       scheduler: cobalt
@@ -11,6 +12,7 @@ buildspecs:
   qselect_version:
     type: script
     executor: local.sh
+    tags: [cobalt]
     description: Run qselect version
     run_only:
       scheduler: cobalt
@@ -20,6 +22,8 @@ buildspecs:
     type: script
     executor: local.sh
     description: Run cqsub version
+    tags: [cobalt]
+
     run_only:
       scheduler: cobalt
     run: cqsub --version
@@ -28,6 +32,7 @@ buildspecs:
     type: script
     executor: local.sh
     description: Run qdel version
+    tags: [cobalt]
     run_only:
       scheduler: cobalt
 
@@ -37,6 +42,7 @@ buildspecs:
     type: script
     executor: local.sh
     description: Run qmove version
+    tags: [cobalt]
     run_only:
       scheduler: cobalt
 
@@ -45,15 +51,18 @@ buildspecs:
   show_jobs:
     type: script
     executor: local.sh
+    description: Show all jobs in queue
+    tags: [cobalt]
     run_only:
       scheduler: cobalt
-    description: Show all jobs in queue
+
     run: qstat
 
   show_queues:
     type: script
     executor: local.sh
+    tags: [cobalt]
+    description: Show queues
     run_only:
       scheduler: cobalt
-    description: Show queues
     run: qstat -Qf

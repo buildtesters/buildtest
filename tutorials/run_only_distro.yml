@@ -4,6 +4,7 @@ buildspecs:
     type: script
     executor: local.bash
     description: "Run test only if linux distro is darwin."
+    tags: [mac]
     run_only:
       linux_distro:
         - darwin

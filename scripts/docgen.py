@@ -54,7 +54,6 @@ def tutorial():
     prefix = "getting_started"
     cmd_dict = {
         f"{os.path.join(prefix, 'buildspec-find.txt')}": "buildtest buildspec find",
-        f"{os.path.join(prefix, 'buildspec-view.txt')}": "buildtest buildspec view systemd_default_target",
         f"{os.path.join(prefix,'buildspec-abspath.txt')}": "buildtest build -b $HOME/Documents/buildtest/tutorials/systemd.yml",
         f"{os.path.join(prefix, 'buildspec-directory.txt')}": "buildtest build -b tests/examples/buildspecs/",
         f"{os.path.join(prefix, 'multi-buildspecs.txt')}": "buildtest build -b tests/examples/buildspecs/ -b tutorials/systemd.yml",
@@ -120,6 +119,8 @@ def introspection_cmds():
         "buildspec_filter_tags.txt": "buildtest buildspec find --filter tags=fail",
         "buildspec_multifield_filter.txt": "buildtest buildspec find --filter tags=tutorials,executor=local.sh,type=script",
         "buildspec_format_example.txt": "buildtest buildspec find --format name,description,buildspecs --filter tags=tutorials,executor=local.sh",
+        "buildspec_find_group_by_tags.txt": "buildtest buildspec find --group-by-tags",
+        "buildspec_find_group_by_executor.txt": "buildtest buildspec find --group-by-executor",
         "report-helpformat.txt": "buildtest report --helpformat",
         "report-helpfilter.txt": "buildtest report --helpfilter",
         "report-format.txt": "buildtest report --format name,id,executor,state,returncode",

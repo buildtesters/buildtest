@@ -1,8 +1,8 @@
 $ buildtest schema -n settings.schema.json -e 
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/local-executor.yml
 ________________________________________________________________________________
-editor: vi
 moduletool: N/A
+load_default_buildspecs: False
 executors:
   local:
     bash:
@@ -78,8 +78,8 @@ compilers:
         modules: [cuda/11.0]
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/cobalt-example.yml
 ________________________________________________________________________________
-editor: vi
 moduletool: lmod
+load_default_buildspecs: True
 executors:
   defaults:
      launcher: qsub
@@ -94,8 +94,8 @@ executors:
 
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
 ________________________________________________________________________________
-editor: emacs
 moduletool: lmod
+load_default_buildspecs: True
 buildspec_roots:
   - $HOME/buildtest-cori
 testdir: /tmp/buildtest
@@ -117,8 +117,8 @@ executors:
         echo "commands run after job"
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/combined_executor.yml
 ________________________________________________________________________________
-editor: vi
 moduletool: N/A
+load_default_buildspecs: True
 executors:
   local:
     bash:
@@ -147,8 +147,8 @@ executors:
 
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-example.yml
 ________________________________________________________________________________
-editor: vi
 moduletool: lmod
+load_default_buildspecs: False
 executors:
   defaults:
     pollinterval: 10

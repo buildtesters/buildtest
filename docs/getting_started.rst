@@ -337,9 +337,9 @@ Format buildspec cache
 
 buildtest has a few format fields to alter columns in the output of
 ``buildtest buildspec find``. The format fields are specified comma separated using
-format: ``--format <key1>,<key2>,...``
+format: ``--format <field1>,<field2>,...``
 
-To see a list of format fields use the ``--helpformat`` option as shown below
+To see a list of all format fields use the ``--helpformat`` option as shown below
 
 .. program-output:: cat docgen/buildspec-format.txt
 
@@ -360,20 +360,35 @@ Querying buildspec tags
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to retrieve all unique tags from all buildspecs you can run
-``buildtest buildspec find --tags``
+``buildtest buildspec find --tags``. This can be useful if you want to know available
+tags in your buildspec cache.
 
 .. program-output:: cat docgen/buildspec_find_tags.txt
+
+In addition, buildtest can group tests by tags via ``buildtest buildspec find --group-by-tags``
+which can be useful if you want to know which tests get executed when running ``buildtest build --tags``.
+The output is grouped by tag names, followed by name of test and description.
+
+.. program-output:: cat docgen/buildspec_find_group_by_tags.txt
+
 
 .. _buildspec_executor:
 
 Querying buildspec executor
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To find all executors from cache you can run ``buildtest buildspec find --list-executors``.
-This will retrieve the `'executor'` field from all buildspec and any duplicates will
-be ignored.
+If you want to know all executors in your buildspec cache use the
+``buildtest buildspec find --list-executors`` command. This can be useful when
+you want to build by executors (``buildtest build --executor``).
 
 .. program-output:: cat docgen/buildspec_find_executors.txt
+
+Similar to ``--group-by-tags``, buildtest has an option to group tests by executor
+using ``--group-by-executor`` option. This will show tests grouped by executor,
+name of test and test description. Shown below is an example output.
+
+.. program-output:: cat docgen/buildspec_find_group_by_executor.txt
+
 
 .. _test_reports:
 
