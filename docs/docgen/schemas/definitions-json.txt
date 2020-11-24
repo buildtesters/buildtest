@@ -100,7 +100,8 @@ $ buildtest schema -n definitions.schema.json --json
           "description": "Test will run only if scheduler is available. We assume binaries are available in $PATH",
           "enum": [
             "lsf",
-            "slurm"
+            "slurm",
+            "cobalt"
           ]
         },
         "user": {

@@ -3,6 +3,7 @@ buildspecs:
   skip:
     type: script
     executor: local.bash
+    description: This test is skipped
     skip: Yes
     tags: [tutorials]
     run: hostname
@@ -10,6 +11,7 @@ buildspecs:
   unskipped:
     type: script
     executor: local.bash
+    description: This test is not skipped
     skip: No
     tags: [tutorials]
     run: hostname

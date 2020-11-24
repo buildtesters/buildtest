@@ -2,27 +2,27 @@ $ buildtest report --filter state=FAIL,executor=local.sh --format=name,id,state,
 +--------------------------+----------+---------+------------+
 | name                     | id       | state   | executor   |
 +==========================+==========+=========+============+
-| exit1_fail               | f6680c66 | FAIL    | local.sh   |
+| exit1_fail               | 6d645592 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| exit1_fail               | 2ac3b580 | FAIL    | local.sh   |
+| exit1_fail               | 7458d912 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| exit1_fail               | c8f114b5 | FAIL    | local.sh   |
+| exit1_fail               | c0945021 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| exit1_fail               | cb58bff1 | FAIL    | local.sh   |
+| exit1_fail               | c10d3df8 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| exit1_fail               | 9c081d94 | FAIL    | local.sh   |
+| exit1_fail               | 4933851a | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| exit1_fail               | 546fd964 | FAIL    | local.sh   |
+| exit1_fail               | 4d4104d5 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 92531e47 | FAIL    | local.sh   |
+| returncode_list_mismatch | 17a16f93 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | c9bd860c | FAIL    | local.sh   |
+| returncode_list_mismatch | 00f80185 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 0cb56f83 | FAIL    | local.sh   |
+| returncode_list_mismatch | 6ec14e84 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | cfd1dc76 | FAIL    | local.sh   |
+| returncode_list_mismatch | 03bcccf0 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 409cc9a2 | FAIL    | local.sh   |
+| returncode_list_mismatch | 9546c69a | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | ea6cab54 | FAIL    | local.sh   |
+| returncode_list_mismatch | ffece878 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+

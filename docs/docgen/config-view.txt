@@ -1,8 +1,6 @@
 $ buildtest config view
-editor: vi
 moduletool: lmod
-buildspec_roots:
-- $HOME/Documents/buildtest/tests/buildsystem
+load_default_buildspecs: true
 executors:
   local:
     bash:
@@ -29,3 +27,4 @@ compilers:
     - pgi
     clang:
     - clang
+None

@@ -233,6 +233,14 @@ class BuildTestParser:
         buildspec_find.add_argument(
             "-p", "--paths", help="print all root buildspec paths", action="store_true"
         )
+        buildspec_find.add_argument(
+            "--group-by-tags", action="store_true", help="Group tests by tag name"
+        )
+        buildspec_find.add_argument(
+            "--group-by-executor",
+            action="store_true",
+            help="Group tests by executor name",
+        )
 
         buildspec_find.add_argument(
             "--filter",

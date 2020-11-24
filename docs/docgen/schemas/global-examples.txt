@@ -28,6 +28,14 @@ buildspecs:
   abcdefghijklmnopqrstuvwxyz_:
     type: script
     run: "hostname"
+File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/unique_maintainers.yml
+________________________________________________________________________________
+version: "1.0"
+maintainers: [shahzebsiddiqui, shahzebsiddiqui]
+buildspecs:
+  hostname:
+    type: script
+    run: "hostname"
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/maintainers_type_mismatch.yml
 ________________________________________________________________________________
 version: "1.0"

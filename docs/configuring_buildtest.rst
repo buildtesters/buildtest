@@ -893,7 +893,6 @@ The default launcher is `bsub` which can be defined under ``defaults``. The
 schema. In order to avoid polling scheduler excessively pick a number that is best
 suitable for your site::
 
-    editor: vi
     executors:
       defaults:
         launcher: bsub
@@ -940,7 +939,6 @@ will submit job using ``qsub -q yarrow`` when using this executor.
 
 ::
 
-    editor: vi
     buildspec_roots:
       - $HOME/jlse_tests
     executors:
@@ -1011,30 +1009,30 @@ The output will be the following.
 .. Note:: If you defined a user setting (``~/.buildtest/config.yml``) buildtest will validate this file instead of default one.
 
 If there is an error during validation, the output from **jsonschema.exceptions.ValidationError**
-will be displayed in terminal. For example the error below indicates there was an error
-on ``editor`` key in **config** object which expects the editor to be one of the
-enum types [``vi``, ``vim``, ``nano``, ``emacs``]::
+will be displayed in terminal. For example the error below indicates that
+``moduletool`` property was expecting one of the values
+[`environment-modules`, `lmod`, `N/A`] but it recieved a value of ``none``::
 
     $ buildtest config validate
     Traceback (most recent call last):
-      File "/Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/buildtest", line 11, in <module>
-        load_entry_point('buildtest', 'console_scripts', 'buildtest')()
-      File "/Users/siddiq90/Documents/buildtest/buildtest/main.py", line 32, in main
-        check_settings()
-      File "/Users/siddiq90/Documents/buildtest/buildtest/config.py", line 71, in check_settings
+      File "/Users/siddiq90/Documents/buildtest/bin/buildtest", line 17, in <module>
+        buildtest.main.main()
+      File "/Users/siddiq90/Documents/buildtest/buildtest/main.py", line 39, in main
+        buildtest_configuration = check_settings(settings_file, retrieve_settings=True)
+      File "/Users/siddiq90/Documents/buildtest/buildtest/config.py", line 41, in check_settings
         validate(instance=user_schema, schema=config_schema)
-      File "/Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/lib/python3.7/site-packages/jsonschema/validators.py", line 899, in validate
+      File "/Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/lib/python3.7/site-packages/jsonschema/validators.py", line 934, in validate
         raise error
-    jsonschema.exceptions.ValidationError: 'gedit' is not one of ['vi', 'vim', 'nano', 'emacs']
+    jsonschema.exceptions.ValidationError: 'none' is not one of ['environment-modules', 'lmod', 'N/A']
 
-    Failed validating 'enum' in schema['properties']['config']['properties']['editor']:
-        {'default': 'vim',
-         'enum': ['vi', 'vim', 'nano', 'emacs'],
+    Failed validating 'enum' in schema['properties']['moduletool']:
+        {'description': 'Specify modules tool used for interacting with '
+                        '``module`` command. ',
+         'enum': ['environment-modules', 'lmod', 'N/A'],
          'type': 'string'}
 
-    On instance['config']['editor']:
-        'gedit'
-
+    On instance['moduletool']:
+        'none'
 
 Configuration Summary
 ~~~~~~~~~~~~~~~~~~~~~~
