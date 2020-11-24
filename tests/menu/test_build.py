@@ -101,7 +101,7 @@ def test_discover_buildspec():
     with pytest.raises(SystemExit):
         discover_buildspecs()
 
-    bp = [os.path.join(BUILDTEST_ROOT, "setup.py")]
+    bp = [os.path.join(BUILDTEST_ROOT, "README.rst")]
 
     with pytest.raises(SystemExit):
         discover_buildspecs(buildspec=bp)
@@ -124,7 +124,7 @@ def test_discover_buildspec():
         )
 
     input_bps = [
-        os.path.join(BUILDTEST_ROOT, "setup.py"),
+        os.path.join(BUILDTEST_ROOT, "README.rst"),
         os.path.join(BUILDTEST_ROOT, "tutorials"),
     ]
     exclude_bps = [os.path.join(BUILDTEST_ROOT, "tutorials", "compilers")]
