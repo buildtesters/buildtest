@@ -10,6 +10,7 @@ from buildtest.buildsystem.parser import BuildspecParser
 testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 here = os.path.dirname(os.path.abspath(__file__))
 
+
 def test_BuildspecParser(tmp_path):
 
     # Examples folder
@@ -29,7 +30,7 @@ def test_BuildspecParser(tmp_path):
     invalid_buildspecs_directory = os.path.join(here, "invalid_buildspecs")
     for buildspec in os.listdir(invalid_buildspecs_directory):
         buildspec = os.path.join(invalid_buildspecs_directory, buildspec)
-        print ("Processing buildspec: ", buildspec)
+        print("Processing buildspec: ", buildspec)
         with pytest.raises(SystemExit):
             BuildspecParser(buildspec)
 

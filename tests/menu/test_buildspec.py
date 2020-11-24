@@ -16,8 +16,8 @@ def test_func_buildspec_find():
         executors = False
         tags = False
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = None
         helpfilter = False
@@ -34,8 +34,8 @@ def test_func_buildspec_find():
         executors = False
         tags = False
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = None
         helpfilter = False
@@ -54,14 +54,32 @@ def test_buildspec_tags():
         executors = False
         tags = True
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = None
         helpfilter = False
         helpformat = False
 
     # testing buildtest buildspec find --tags
+    func_buildspec_find(args)
+
+    class args:
+        find = True
+        rebuild = False
+        root = None
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = False
+        group_by_tags = True
+        group_by_executor = False
+        filter = None
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # testing buildtest buildspec find --group-by-tags
     func_buildspec_find(args)
 
 
@@ -75,8 +93,8 @@ def test_buildspec_files():
         executors = False
         tags = False
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = None
         helpfilter = False
@@ -96,14 +114,32 @@ def test_buildspec_executors():
         executors = True
         tags = False
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = None
         helpfilter = False
         helpformat = False
 
     # testing buildtest buildspec find --executors
+    func_buildspec_find(args)
+
+    class args:
+        find = True
+        rebuild = False
+        root = None
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = False
+        group_by_tags = False
+        group_by_executor = True
+        filter = None
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # testing buildtest buildspec find --group-by-executor
     func_buildspec_find(args)
 
 
@@ -117,8 +153,8 @@ def test_buildspec_paths():
         executors = False
         tags = False
         paths = True
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = None
         helpfilter = False
@@ -138,8 +174,8 @@ def test_buildspec_find_filter():
         executors = False
         tags = False
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = None
         helpfilter = True
@@ -156,8 +192,8 @@ def test_buildspec_find_filter():
         executors = False
         tags = False
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = {"tags": "fail"}
         format = None
         helpfilter = False
@@ -174,8 +210,8 @@ def test_buildspec_find_filter():
         executors = False
         tags = False
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = {
             "type": "script",
             "executor": "local.sh",
@@ -199,8 +235,8 @@ def test_buildspec_find_filter():
             executors = False
             tags = False
             paths = False
-            test_by_tags = False
-            test_by_executor = False
+            group_by_tags = False
+            group_by_executor = False
             filter = {"key1": "val1", "key2": "val2"}
             format = None
             helpfilter = False
@@ -219,8 +255,8 @@ def test_buildspec_find_format():
         executors = False
         tags = False
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = None
         helpfilter = False
@@ -237,8 +273,8 @@ def test_buildspec_find_format():
         executors = False
         tags = False
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = "name,type,executor,description,buildspecs"
         helpfilter = False
@@ -259,8 +295,8 @@ def test_buildspec_find_format():
             executors = False
             tags = False
             paths = False
-            test_by_tags = False
-            test_by_executor = False
+            group_by_tags = False
+            group_by_executor = False
             filter = None
             format = "field1"
             helpfilter = False
@@ -286,8 +322,8 @@ def test_buildspec_find_roots():
         executors = False
         tags = False
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = None
         helpfilter = False
@@ -307,8 +343,8 @@ def test_buildspec_find_roots():
         executors = False
         tags = False
         paths = False
-        test_by_tags = False
-        test_by_executor = False
+        group_by_tags = False
+        group_by_executor = False
         filter = None
         format = None
         helpfilter = False
