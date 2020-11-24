@@ -37,12 +37,17 @@ jobs:
         buildtest --help
         buildtest buildspec find
         buildtest buildspec find --tags
-        buildtest buildspec find --list-executors
-        buildtest buildspec find --clear
+        buildtest buildspec find --executors
+        buildtest buildspec find --rebuild
+        buildtest buildspec find --group-by-tags
+        buildtest buildspec find --group-by-executor
         buildtest buildspec find --helpfilter
+        buildtest buildspec find --paths
+        buildtest buildspec find --helpformat
         buildtest buildspec find --filter tags=fail
         buildtest buildspec find --filter tags=compile,executor=local.bash
         buildtest buildspec find --filter type=script,executor=local.bash,tags=tutorials
+        buildtest buildspec find --filter type=script,executor=local.bash --format name,type,executor,file
         buildtest build -b tutorials/
         buildtest build --tags fail
         buildtest build --tags fail --tags compile
