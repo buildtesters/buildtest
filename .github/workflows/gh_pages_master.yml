@@ -3,7 +3,7 @@ name: Upload JSON Schema to gh-pages for master branch
 on:
   push:
     branches:
-      - branch
+      - master
 
 
 jobs:
