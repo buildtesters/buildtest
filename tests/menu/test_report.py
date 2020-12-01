@@ -172,8 +172,14 @@ def test_func_report_when_BUILD_REPORT_missing():
     except OSError:
         pass
 
+    class args:
+        helpformat = False
+        helpfilter = False
+        filter = None
+        format = None
+
     with pytest.raises(SystemExit):
-        func_report()
+        func_report(args)
 
     shutil.move(backupfile, BUILD_REPORT)
 
