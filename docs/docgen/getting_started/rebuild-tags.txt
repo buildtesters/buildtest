@@ -27,10 +27,10 @@ Discovered Buildspecs:
 
  name                     | id       | type   | executor   | tags                  | testpath
 --------------------------+----------+--------+------------+-----------------------+---------------------------------------------------------------------------------------------------------------------
- exit1_fail               | 41cc447b | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/3/stage/generate.sh
- returncode_list_mismatch | 6311f51b | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/3/stage/generate.sh
- exit1_fail               | 9b84247d | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/4/stage/generate.sh
- returncode_list_mismatch | 592a51b7 | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/4/stage/generate.sh
+ exit1_fail               | 37d0ccfe | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/3/stage/generate.sh
+ returncode_list_mismatch | 44ffb756 | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/3/stage/generate.sh
+ exit1_fail               | 39db8532 | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/4/stage/generate.sh
+ returncode_list_mismatch | 22b1039d | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/4/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -38,10 +38,10 @@ Discovered Buildspecs:
     
  name                     | id       | executor   | status   |   returncode | testpath
 --------------------------+----------+------------+----------+--------------+---------------------------------------------------------------------------------------------------------------------
- exit1_fail               | 41cc447b | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/3/stage/generate.sh
- returncode_list_mismatch | 6311f51b | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/3/stage/generate.sh
- exit1_fail               | 9b84247d | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/4/stage/generate.sh
- returncode_list_mismatch | 592a51b7 | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/4/stage/generate.sh
+ exit1_fail               | 37d0ccfe | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/3/stage/generate.sh
+ returncode_list_mismatch | 44ffb756 | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/3/stage/generate.sh
+ exit1_fail               | 39db8532 | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/4/stage/generate.sh
+ returncode_list_mismatch | 22b1039d | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/4/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

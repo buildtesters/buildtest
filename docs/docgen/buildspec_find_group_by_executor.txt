@@ -160,8 +160,6 @@ $ buildtest buildspec find --group-by-executor
 +--------------+------------------------------+------------------------------------------------------------------+
 | local.csh    | tcsh_env_declaration         | tcsh shell example to declare environment variables              |
 +--------------+------------------------------+------------------------------------------------------------------+
-| local.csh    | variables_csh                | Declare shell variables in csh                                   |
-+--------------+------------------------------+------------------------------------------------------------------+
 | local.csh    | csh_shell                    | csh shell example                                                |
 +--------------+------------------------------+------------------------------------------------------------------+
 | local.python | run_only_platform_darwin     | This test will only run if target platform is Darwin             |

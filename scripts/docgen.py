@@ -91,6 +91,7 @@ def schemas():
     generate_tests(prefix, cmd_dict)
 
     cmd_dict = {
+        f"{os.path.join(prefix, 'vars.txt')}": "buildtest build -b tutorials/vars.yml",
         f"{os.path.join(prefix, 'gnu_hello.txt')}": "buildtest build -b tutorials/compilers/gnu_hello.yml",
         f"{os.path.join(prefix, 'vecadd.txt')}": "buildtest build -b tutorials/compilers/vecadd.yml",
         f"{os.path.join(prefix, 'pass_returncode.txt')}": "buildtest build -b tutorials/pass_returncode.yml",

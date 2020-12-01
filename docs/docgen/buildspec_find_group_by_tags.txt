@@ -22,8 +22,6 @@ $ buildtest buildspec find --group-by-tags
 +------------+------------------------------+------------------------------------------------------------------+
 | tutorials  | variables_bash               | Declare shell variables in bash                                  |
 +------------+------------------------------+------------------------------------------------------------------+
-| tutorials  | variables_csh                | Declare shell variables in csh                                   |
-+------------+------------------------------+------------------------------------------------------------------+
 | tutorials  | selinux_disable              | Check if SELinux is Disabled                                     |
 +------------+------------------------------+------------------------------------------------------------------+
 | tutorials  | bash_login_shebang           | customize shebang line with bash login shell                     |

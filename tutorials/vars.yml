@@ -8,19 +8,22 @@ buildspecs:
     vars:
       X: 1
       Y: 2
-    run: echo "$X+$Y=" $(($X+$Y))
+      literalstring: |
+        "this is a literal string ':' \t \n"
+      singlequote: |
+        "'singlequote'"
+      doublequote: |
+        "\"doublequote\""
+      multistring: |
+        "\"This is a multi string\""
+      current_user: "$(whoami)"
+      files_homedir: "`find $HOME -type f -maxdepth 1`"
 
-  variables_csh:
-    type: script
-    executor: local.csh
-    shell: "/bin/csh"
-    description: Declare shell variables in csh
-    tags: [tutorials]
-    vars:
-      FILE: "\"/etc/csh.cshrc\""
     run: |
-      if ( -e $FILE ) then
-        echo "$FILE is found"
-      else
-        echo "$FILE not found"
-      endif
+      echo "$X+$Y=" $(($X+$Y))
+      echo $literalstring
+      echo $singlequote
+      echo $doublequote
+      echo $multistring
+      echo $current_user
+      echo $files_homedir

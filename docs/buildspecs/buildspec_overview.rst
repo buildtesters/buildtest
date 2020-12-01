@@ -8,7 +8,7 @@ A buildspec can be composed of several test sections. The buildspec file is
 validated with the :ref:`global_schema` and each test section is validated with
 a sub-schema defined by the ``type`` field.
 
-Let's start off with an example::
+Let's start off with a simple example declaring variables::
 
     version: "1.0"
     buildspecs:
@@ -110,6 +110,67 @@ buildtest will mark test state. By default, a returncode of **0** is **PASS** an
 non-zero is a **FAIL**. Currently buildtest reports only two states: ``PASS``, ``FAIL``.
 In this example, buildtest will match the actual returncode with one defined
 in key ``returncode`` in the status section.
+
+Variable Declaration
+----------------------
+
+In YAML strings can be specified with or without quotes however in bash, variables
+need to be enclosed in quotes ``"`` if you are defining a multi word string (``name="First Last"``).
+
+If you need define a literal string it is recommended
+to use the literal block ``|`` that is a special character in YAML.
+If you want to specify ``"`` or ``'`` in string you can use the escape character
+``\`` followed by any of the special character. In example below we define
+several variables such as `X`, `Y` that contain numbers, variable `literalstring`
+is a literal string processed by YAML. The variable `singlequote` and `doublequote`
+defines a variable with the special character ``'`` and ``"``. The variables
+`current_user` and `files_homedir` store result of a shell command. This can
+be done using ``var=$(<command>)`` or ``var=`<command>``` where ``<command>`` is
+a Linux command.
+
+.. program-output:: cat ../tutorials/vars.yml
+
+Next we build this test by running ``buildtest build -b tutorials/vars.yml``.
+
+
+.. program-output:: cat docgen/schemas/vars.txt
+
+If we inspect the output file we see the following result::
+
+    1+2= 3
+    this is a literal string ':' \t \n
+    'singlequote'
+    "doublequote"
+    "This is a multi string"
+    siddiq90
+    /Users/siddiq90/.anyconnect /Users/siddiq90/.DS_Store /Users/siddiq90/.serverauth.555 /Users/siddiq90/.CFUserTextEncoding /Users/siddiq90/.bashrc /Users/siddiq90/.zshrc /Users/siddiq90/.coverage /Users/siddiq90/.serverauth.87055 /Users/siddiq90/gitlab-tokens /Users/siddiq90/.zsh_history /Users/siddiq90/.lesshst /Users/siddiq90/.git-completion.bash /Users/siddiq90/buildtest.log /Users/siddiq90/darhan.log /Users/siddiq90/ascent.yml /Users/siddiq90/.zcompdump /Users/siddiq90/.serverauth.543 /Users/siddiq90/.bash_profile /Users/siddiq90/.Xauthority /Users/siddiq90/.python_history /Users/siddiq90/.gitconfig /Users/siddiq90/output.txt /Users/siddiq90/.bash_history /Users/siddiq90/.viminfo
+
+Shown below is the generated testscript::
+
+
+    #!/bin/bash
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    X=1
+    Y=2
+    literalstring="this is a literal string ':' \t \n"
+
+    singlequote="'singlequote'"
+
+    doublequote="\"doublequote\""
+
+    multistring="\"This is a multi string\""
+
+    current_user=$(whoami)
+    files_homedir=`find $HOME -type f -maxdepth 1`
+    echo "$X+$Y=" $(($X+$Y))
+    echo $literalstring
+    echo $singlequote
+    echo $doublequote
+    echo $multistring
+    echo $current_user
+    echo $files_homedir
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+
 
 .. _script_schema:
 
