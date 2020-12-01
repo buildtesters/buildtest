@@ -1,5 +1,5 @@
 $ buildtest config summary
-buildtest version:  0.9.0
+buildtest version:  0.9.1
 buildtest Path: /Users/siddiq90/Documents/buildtest/bin/buildtest
 
 

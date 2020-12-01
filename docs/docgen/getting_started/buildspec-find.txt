@@ -45,8 +45,6 @@ Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/var/buil
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | variables_bash               | script   | local.bash   | ['tutorials']             | Declare shell variables in bash                                  |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
-| variables_csh                | script   | local.csh    | ['tutorials']             | Declare shell variables in csh                                   |
-+------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | selinux_disable              | script   | local.bash   | ['tutorials']             | Check if SELinux is Disabled                                     |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | bash_login_shebang           | script   | local.bash   | tutorials                 | customize shebang line with bash login shell                     |

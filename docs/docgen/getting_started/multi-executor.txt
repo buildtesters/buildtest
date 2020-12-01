@@ -7,40 +7,38 @@ $ buildtest build --executor local.sh --executor local.bash
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/sleep.yml
-/Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
-/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
 /Users/siddiq90/Documents/buildtest/tutorials/tags_example.yml
-/Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml
-/Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
-/Users/siddiq90/Documents/buildtest/general_tests/sched/cobalt/commands.yml
-/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/lsinfo.yml
-/Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
-/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bugroup.yml
-/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
-/Users/siddiq90/Documents/buildtest/tutorials/root_user.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
-/Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/scontrol.yml
-/Users/siddiq90/Documents/buildtest/general_tests/configuration/ulimits.yml
-/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bhosts.yml
-/Users/siddiq90/Documents/buildtest/tutorials/run_only_distro.yml
-/Users/siddiq90/Documents/buildtest/tutorials/shebang.yml
-/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
-/Users/siddiq90/Documents/buildtest/general_tests/configuration/ssh_localhost.yml
-/Users/siddiq90/Documents/buildtest/tutorials/environment.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
-/Users/siddiq90/Documents/buildtest/general_tests/configuration/systemd-default-target.yml
-/Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/sacctmgr.yml
 /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/cobalt/commands.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/ulimits.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/lsinfo.yml
+/Users/siddiq90/Documents/buildtest/tutorials/hello_world.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bhosts.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bmgroups.yml
+/Users/siddiq90/Documents/buildtest/tutorials/root_user.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/systemd-default-target.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bugroup.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+/Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
 /Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/squeue.yml
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
-/Users/siddiq90/Documents/buildtest/tutorials/hello_world.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+/Users/siddiq90/Documents/buildtest/tutorials/run_only_distro.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/sacctmgr.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/scontrol.yml
+/Users/siddiq90/Documents/buildtest/tutorials/sleep.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml
 /Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/sinfo.yml
-/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bmgroups.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/ssh_localhost.yml
 /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bqueues.yml
-[variables_csh] test is skipped because it is not in executor filter list: ['local.sh', 'local.bash']
-[skip] test is skipped.
+/Users/siddiq90/Documents/buildtest/tutorials/shebang.yml
+/Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+/Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/environment.yml
 [qsub_version] test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
 [qselect_version] test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
 [cqsub_version] test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
@@ -52,22 +50,20 @@ Discovered Buildspecs:
 [show_lsf_models] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
 [show_lsf_resources] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
 [lsf_version] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[show_lsf_user_groups] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[run_only_as_root] test is skipped because ['run_only']['user'] got value: root but detected user: siddiq90.
-[slurm_config] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[show_partition] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
 [display_lsf_hosts] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
 [display_hosts_format] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
 [bhosts_version] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[ssh_localhost_remotecommand] test is skipped because ['run_only']['platform'] got value: Linux but detected platform: Darwin.
-[csh_env_declaration] test is skipped because it is not in executor filter list: ['local.sh', 'local.bash']
-[tcsh_env_declaration] test is skipped because it is not in executor filter list: ['local.sh', 'local.bash']
+[show_host_groups] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[run_only_as_root] test is skipped because ['run_only']['user'] got value: root but detected user: siddiq90.
+[show_lsf_user_groups] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[current_user_queue] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[show_all_jobs] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
 [show_accounts] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
 [show_users] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
 [show_qos] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
 [show_tres] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[current_user_queue] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[show_all_jobs] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[slurm_config] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[show_partition] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
 [nodes_state_down] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
 [nodes_state_reboot] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
 [nodes_state_allocated] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
@@ -77,10 +73,13 @@ Discovered Buildspecs:
 [dead_nodes] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
 [get_partitions] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
 [sinfo_version] test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[show_host_groups] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[ssh_localhost_remotecommand] test is skipped because ['run_only']['platform'] got value: Linux but detected platform: Darwin.
 [show_lsf_queues] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
 [show_lsf_queues_formatted] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
 [show_lsf_queues_current_user] test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[skip] test is skipped.
+[csh_env_declaration] test is skipped because it is not in executor filter list: ['local.sh', 'local.bash']
+[tcsh_env_declaration] test is skipped because it is not in executor filter list: ['local.sh', 'local.bash']
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -88,38 +87,38 @@ Discovered Buildspecs:
     
  schemafile                | validstate   | buildspec
 ---------------------------+--------------+--------------------------------------------------------------------------------------------
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/sleep.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/tags_example.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/cobalt/commands.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/lsinfo.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bugroup.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/root_user.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/scontrol.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/ulimits.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bhosts.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/run_only_distro.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/shebang.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/ssh_localhost.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/environment.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/systemd-default-target.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/sacctmgr.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/cobalt/commands.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/ulimits.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/lsinfo.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/hello_world.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bhosts.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bmgroups.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/root_user.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/systemd-default-target.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bugroup.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/squeue.yml
  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/hello_world.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/run_only_distro.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/sacctmgr.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/scontrol.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/sleep.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/sinfo.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bmgroups.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/ssh_localhost.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bqueues.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/shebang.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/environment.yml
 
 +----------------------+
 | Stage: Building Test |
@@ -127,45 +126,45 @@ Discovered Buildspecs:
 
  name                     | id       | type     | executor   | tags                      | testpath
 --------------------------+----------+----------+------------+---------------------------+----------------------------------------------------------------------------------------------------------------------------
- sleep                    | 32a86753 | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/sleep/sleep/1/stage/generate.sh
- selinux_disable          | 3368c176 | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable/1/stage/generate.sh
- variables_bash           | b44c87fb | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
- string_tag               | 05fbd471 | script   | local.bash | network                   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/tags_example/string_tag/0/stage/generate.sh
- list_of_strings_tags     | c36b55d9 | script   | local.bash | ['network', 'ping']       | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/tags_example/list_of_strings_tags/0/stage/generate.sh
- root_disk_usage          | 5c1cdde8 | script   | local.bash | ['filesystem', 'storage'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/disk_usage/root_disk_usage/0/stage/generate.sh
- unskipped                | 6e3d679d | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/1/stage/generate.sh
- python_hello             | 83d91f33 | script   | local.bash | python                    | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
- hello_f                  | c92948b7 | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/2/stage/generate.sh
- hello_c                  | f39a75cc | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/2/stage/generate.sh
- hello_cplusplus          | dce9bf42 | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/2/stage/generate.sh
- cc_example               | d04f2d28 | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/2/stage/generate.sh
- fc_example               | f36bb569 | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/2/stage/generate.sh
- cxx_example              | 3c83232b | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/2/stage/generate.sh
- exit1_fail               | d8d49fa8 | script   | local.sh   | ['tutorials', 'fail']     | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/2/stage/generate.sh
- exit1_pass               | cd5ec985 | script   | local.sh   | ['tutorials', 'pass']     | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/2/stage/generate.sh
- returncode_list_mismatch | b09de24e | script   | local.sh   | ['tutorials', 'fail']     | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/2/stage/generate.sh
- returncode_int_match     | 13b4e620 | script   | local.sh   | ['tutorials', 'pass']     | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/2/stage/generate.sh
- pre_post_build_run       | c4d8432e | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/2/stage/generate.sh
- ulimit_filelock          | 9afbad11 | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_filelock/0/stage/generate.sh
- ulimit_cputime           | 0f11cfae | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_cputime/0/stage/generate.sh
- ulimit_stacksize         | 5822132d | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_stacksize/0/stage/generate.sh
- ulimit_vmsize            | 0a1da473 | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_vmsize/0/stage/generate.sh
- ulimit_filedescriptor    | 55f146ad | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_filedescriptor/0/stage/generate.sh
- ulimit_max_user_process  | 2e6fae58 | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_max_user_process/0/stage/generate.sh
- run_only_macos_distro    | 4d71ba33 | script   | local.bash | ['mac']                   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/run_only_distro/run_only_macos_distro/0/stage/generate.sh
- bash_login_shebang       | 94b01a87 | script   | local.bash | tutorials                 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/1/stage/generate.sh
- bash_nonlogin_shebang    | 60f300cd | script   | local.bash | tutorials                 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/1/stage/generate.sh
- systemd_default_target   | c34c8020 | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/3/stage/generate.sh
- bash_env_variables       | 1a122833 | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/bash_env_variables/1/stage/generate.sh
- executable_arguments     | dabff3cf | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/2/stage/generate.sh
- systemd_default_target   | 182bc442 | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd-default-target/systemd_default_target/0/stage/generate.sh
- _bin_sh_shell            | 6b94a5ac | script   | local.sh   | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/4/stage/generate.sh
- _bin_bash_shell          | b717b1dd | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/3/stage/generate.sh
- bash_shell               | 6fc6e63c | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/3/stage/generate.sh
- sh_shell                 | 7ddf11d4 | script   | local.sh   | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/4/stage/generate.sh
- shell_options            | a9f10a18 | script   | local.sh   | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/4/stage/generate.sh
- vecadd_gnu               | a6676800 | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/2/stage/generate.sh
- hello_world              | 51551791 | script   | local.bash | tutorials                 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/hello_world/hello_world/1/stage/generate.sh
+ string_tag               | f1a3e7ba | script   | local.bash | network                   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/tags_example/string_tag/0/stage/generate.sh
+ list_of_strings_tags     | 5db87d4b | script   | local.bash | ['network', 'ping']       | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/tags_example/list_of_strings_tags/0/stage/generate.sh
+ _bin_sh_shell            | 4af624ec | script   | local.sh   | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/4/stage/generate.sh
+ _bin_bash_shell          | 42463c53 | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/3/stage/generate.sh
+ bash_shell               | 91f19f77 | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/3/stage/generate.sh
+ sh_shell                 | f9272c34 | script   | local.sh   | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/4/stage/generate.sh
+ shell_options            | 4c5989e3 | script   | local.sh   | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/4/stage/generate.sh
+ exit1_fail               | 66374cad | script   | local.sh   | ['tutorials', 'fail']     | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/2/stage/generate.sh
+ exit1_pass               | 189ef0ed | script   | local.sh   | ['tutorials', 'pass']     | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/2/stage/generate.sh
+ returncode_list_mismatch | 9ec152d9 | script   | local.sh   | ['tutorials', 'fail']     | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/2/stage/generate.sh
+ returncode_int_match     | 009b30a5 | script   | local.sh   | ['tutorials', 'pass']     | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/2/stage/generate.sh
+ pre_post_build_run       | 87edf8e7 | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/2/stage/generate.sh
+ ulimit_filelock          | 1676578f | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_filelock/0/stage/generate.sh
+ ulimit_cputime           | 582fac58 | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_cputime/0/stage/generate.sh
+ ulimit_stacksize         | c0d6094b | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_stacksize/0/stage/generate.sh
+ ulimit_vmsize            | 9b8020fe | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_vmsize/0/stage/generate.sh
+ ulimit_filedescriptor    | 69509bc3 | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_filedescriptor/0/stage/generate.sh
+ ulimit_max_user_process  | fc9cbdf4 | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_max_user_process/0/stage/generate.sh
+ hello_world              | 6f7a29a7 | script   | local.bash | tutorials                 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/hello_world/hello_world/1/stage/generate.sh
+ systemd_default_target   | 06a903be | script   | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd-default-target/systemd_default_target/0/stage/generate.sh
+ hello_f                  | 82b1c037 | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/2/stage/generate.sh
+ hello_c                  | 32b2c956 | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/2/stage/generate.sh
+ hello_cplusplus          | b233bd99 | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/2/stage/generate.sh
+ cc_example               | 9d71341c | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/2/stage/generate.sh
+ fc_example               | aa60b9f6 | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/2/stage/generate.sh
+ cxx_example              | 90883f0b | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/2/stage/generate.sh
+ systemd_default_target   | 7780ff6d | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/3/stage/generate.sh
+ selinux_disable          | 3a168f79 | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable/1/stage/generate.sh
+ vecadd_gnu               | d69c262e | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/2/stage/generate.sh
+ executable_arguments     | 784af92d | compiler | local.bash | ['tutorials', 'compile']  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/2/stage/generate.sh
+ variables_bash           | 8c7a1d10 | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
+ run_only_macos_distro    | d4ce2635 | script   | local.bash | ['mac']                   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/run_only_distro/run_only_macos_distro/0/stage/generate.sh
+ sleep                    | 87bea9b6 | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/sleep/sleep/1/stage/generate.sh
+ root_disk_usage          | 515fa94b | script   | local.bash | ['filesystem', 'storage'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/disk_usage/root_disk_usage/0/stage/generate.sh
+ bash_login_shebang       | bb18e657 | script   | local.bash | tutorials                 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/1/stage/generate.sh
+ bash_nonlogin_shebang    | 0f0e5867 | script   | local.bash | tutorials                 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/1/stage/generate.sh
+ unskipped                | bf004395 | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/1/stage/generate.sh
+ python_hello             | 6c007e64 | script   | local.bash | python                    | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
+ bash_env_variables       | a594268f | script   | local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/bash_env_variables/1/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -173,45 +172,45 @@ Discovered Buildspecs:
     
  name                     | id       | executor   | status   |   returncode | testpath
 --------------------------+----------+------------+----------+--------------+----------------------------------------------------------------------------------------------------------------------------
- sleep                    | 32a86753 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/sleep/sleep/1/stage/generate.sh
- selinux_disable          | 3368c176 | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable/1/stage/generate.sh
- variables_bash           | b44c87fb | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
- string_tag               | 05fbd471 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/tags_example/string_tag/0/stage/generate.sh
- list_of_strings_tags     | c36b55d9 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/tags_example/list_of_strings_tags/0/stage/generate.sh
- root_disk_usage          | 5c1cdde8 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/disk_usage/root_disk_usage/0/stage/generate.sh
- unskipped                | 6e3d679d | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/1/stage/generate.sh
- python_hello             | 83d91f33 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
- hello_f                  | c92948b7 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/2/stage/generate.sh
- hello_c                  | f39a75cc | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/2/stage/generate.sh
- hello_cplusplus          | dce9bf42 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/2/stage/generate.sh
- cc_example               | d04f2d28 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/2/stage/generate.sh
- fc_example               | f36bb569 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/2/stage/generate.sh
- cxx_example              | 3c83232b | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/2/stage/generate.sh
- exit1_fail               | d8d49fa8 | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/2/stage/generate.sh
- exit1_pass               | cd5ec985 | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/2/stage/generate.sh
- returncode_list_mismatch | b09de24e | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/2/stage/generate.sh
- returncode_int_match     | 13b4e620 | local.sh   | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/2/stage/generate.sh
- pre_post_build_run       | c4d8432e | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/2/stage/generate.sh
- ulimit_filelock          | 9afbad11 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_filelock/0/stage/generate.sh
- ulimit_cputime           | 0f11cfae | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_cputime/0/stage/generate.sh
- ulimit_stacksize         | 5822132d | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_stacksize/0/stage/generate.sh
- ulimit_vmsize            | 0a1da473 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_vmsize/0/stage/generate.sh
- ulimit_filedescriptor    | 55f146ad | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_filedescriptor/0/stage/generate.sh
- ulimit_max_user_process  | 2e6fae58 | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_max_user_process/0/stage/generate.sh
- run_only_macos_distro    | 4d71ba33 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/run_only_distro/run_only_macos_distro/0/stage/generate.sh
- bash_login_shebang       | 94b01a87 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/1/stage/generate.sh
- bash_nonlogin_shebang    | 60f300cd | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/1/stage/generate.sh
- systemd_default_target   | c34c8020 | local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/3/stage/generate.sh
- bash_env_variables       | 1a122833 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/bash_env_variables/1/stage/generate.sh
- executable_arguments     | dabff3cf | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/2/stage/generate.sh
- systemd_default_target   | 182bc442 | local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd-default-target/systemd_default_target/0/stage/generate.sh
- _bin_sh_shell            | 6b94a5ac | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/4/stage/generate.sh
- _bin_bash_shell          | b717b1dd | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/3/stage/generate.sh
- bash_shell               | 6fc6e63c | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/3/stage/generate.sh
- sh_shell                 | 7ddf11d4 | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/4/stage/generate.sh
- shell_options            | a9f10a18 | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/4/stage/generate.sh
- vecadd_gnu               | a6676800 | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/2/stage/generate.sh
- hello_world              | 51551791 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/hello_world/hello_world/1/stage/generate.sh
+ string_tag               | f1a3e7ba | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/tags_example/string_tag/0/stage/generate.sh
+ list_of_strings_tags     | 5db87d4b | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/tags_example/list_of_strings_tags/0/stage/generate.sh
+ _bin_sh_shell            | 4af624ec | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/4/stage/generate.sh
+ _bin_bash_shell          | 42463c53 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/3/stage/generate.sh
+ bash_shell               | 91f19f77 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/3/stage/generate.sh
+ sh_shell                 | f9272c34 | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/4/stage/generate.sh
+ shell_options            | 4c5989e3 | local.sh   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/4/stage/generate.sh
+ exit1_fail               | 66374cad | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/2/stage/generate.sh
+ exit1_pass               | 189ef0ed | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/2/stage/generate.sh
+ returncode_list_mismatch | 9ec152d9 | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/2/stage/generate.sh
+ returncode_int_match     | 009b30a5 | local.sh   | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/2/stage/generate.sh
+ pre_post_build_run       | 87edf8e7 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/2/stage/generate.sh
+ ulimit_filelock          | 1676578f | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_filelock/0/stage/generate.sh
+ ulimit_cputime           | 582fac58 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_cputime/0/stage/generate.sh
+ ulimit_stacksize         | c0d6094b | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_stacksize/0/stage/generate.sh
+ ulimit_vmsize            | 9b8020fe | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_vmsize/0/stage/generate.sh
+ ulimit_filedescriptor    | 69509bc3 | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_filedescriptor/0/stage/generate.sh
+ ulimit_max_user_process  | fc9cbdf4 | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/ulimits/ulimit_max_user_process/0/stage/generate.sh
+ hello_world              | 6f7a29a7 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/hello_world/hello_world/1/stage/generate.sh
+ systemd_default_target   | 06a903be | local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd-default-target/systemd_default_target/0/stage/generate.sh
+ hello_f                  | 82b1c037 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/2/stage/generate.sh
+ hello_c                  | 32b2c956 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/2/stage/generate.sh
+ hello_cplusplus          | b233bd99 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/2/stage/generate.sh
+ cc_example               | 9d71341c | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/2/stage/generate.sh
+ fc_example               | aa60b9f6 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/2/stage/generate.sh
+ cxx_example              | 90883f0b | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/2/stage/generate.sh
+ systemd_default_target   | 7780ff6d | local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/3/stage/generate.sh
+ selinux_disable          | 3a168f79 | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/selinux/selinux_disable/1/stage/generate.sh
+ vecadd_gnu               | d69c262e | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/2/stage/generate.sh
+ executable_arguments     | 784af92d | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/2/stage/generate.sh
+ variables_bash           | 8c7a1d10 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
+ run_only_macos_distro    | d4ce2635 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/run_only_distro/run_only_macos_distro/0/stage/generate.sh
+ sleep                    | 87bea9b6 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/sleep/sleep/1/stage/generate.sh
+ root_disk_usage          | 515fa94b | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/disk_usage/root_disk_usage/0/stage/generate.sh
+ bash_login_shebang       | bb18e657 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/1/stage/generate.sh
+ bash_nonlogin_shebang    | 0f0e5867 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/1/stage/generate.sh
+ unskipped                | bf004395 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/1/stage/generate.sh
+ python_hello             | 6c007e64 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
+ bash_env_variables       | a594268f | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/bash_env_variables/1/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

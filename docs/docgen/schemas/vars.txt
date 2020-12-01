@@ -1,0 +1,45 @@
+$ buildtest build -b tutorials/vars.yml 
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+    
+
+Discovered Buildspecs:
+ 
+/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+    
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+--------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ name           | id       | type   | executor   | tags          | testpath
+----------------+----------+--------+------------+---------------+--------------------------------------------------------------------------------------------------
+ variables_bash | 8f6c7f77 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/2/stage/generate.sh
+
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+    
+ name           | id       | executor   | status   |   returncode | testpath
+----------------+----------+------------+----------+--------------+--------------------------------------------------------------------------------------------------
+ variables_bash | 8f6c7f77 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/2/stage/generate.sh
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    
+Executed 1 tests
+Passed Tests: 1/1 Percentage: 100.000%
+Failed Tests: 0/1 Percentage: 0.000%
+
+
+

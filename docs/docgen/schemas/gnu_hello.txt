@@ -23,12 +23,12 @@ Discovered Buildspecs:
 
  name            | id       | type     | executor   | tags                     | testpath
 -----------------+----------+----------+------------+--------------------------+--------------------------------------------------------------------------------------------------------
- hello_f         | 67e0dfb0 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/3/stage/generate.sh
- hello_c         | e88b30bb | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/3/stage/generate.sh
- hello_cplusplus | 10caf5b4 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/3/stage/generate.sh
- cc_example      | 561ec658 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/3/stage/generate.sh
- fc_example      | 57ac92c4 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/3/stage/generate.sh
- cxx_example     | b4d7e31d | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/3/stage/generate.sh
+ hello_f         | c3e1c20b | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/3/stage/generate.sh
+ hello_c         | 6575f038 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/3/stage/generate.sh
+ hello_cplusplus | c0ec683b | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/3/stage/generate.sh
+ cc_example      | 7ac27fe5 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/3/stage/generate.sh
+ fc_example      | 2eaaa0a8 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/3/stage/generate.sh
+ cxx_example     | 453e7064 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/3/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -36,12 +36,12 @@ Discovered Buildspecs:
     
  name            | id       | executor   | status   |   returncode | testpath
 -----------------+----------+------------+----------+--------------+--------------------------------------------------------------------------------------------------------
- hello_f         | 67e0dfb0 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/3/stage/generate.sh
- hello_c         | e88b30bb | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/3/stage/generate.sh
- hello_cplusplus | 10caf5b4 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/3/stage/generate.sh
- cc_example      | 561ec658 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/3/stage/generate.sh
- fc_example      | 57ac92c4 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/3/stage/generate.sh
- cxx_example     | b4d7e31d | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/3/stage/generate.sh
+ hello_f         | c3e1c20b | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/3/stage/generate.sh
+ hello_c         | 6575f038 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/3/stage/generate.sh
+ hello_cplusplus | c0ec683b | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/3/stage/generate.sh
+ cc_example      | 7ac27fe5 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/3/stage/generate.sh
+ fc_example      | 2eaaa0a8 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/3/stage/generate.sh
+ cxx_example     | 453e7064 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/3/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
