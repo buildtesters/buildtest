@@ -52,9 +52,9 @@ class Report:
         "buildspec": [],
     }
 
-    def __init__(self, filter, format):
-        self.filter = filter
-        self.format = format
+    def __init__(self, filter_args, format_args):
+        self.filter = filter_args
+        self.format = format_args
         self.report = self.load()
         self._check_filter_fields()
         self._check_format_fields()
