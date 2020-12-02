@@ -23,7 +23,7 @@ Discovered Buildspecs:
 
  name       | id       | type     | executor   | tags                     | testpath
 ------------+----------+----------+------------+--------------------------+------------------------------------------------------------------------------------------------
- vecadd_gnu | 94b5b5e6 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
+ vecadd_gnu | eeb49ae6 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -31,7 +31,7 @@ Discovered Buildspecs:
     
  name       | id       | executor   | status   |   returncode | testpath
 ------------+----------+------------+----------+--------------+------------------------------------------------------------------------------------------------
- vecadd_gnu | 94b5b5e6 | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
+ vecadd_gnu | eeb49ae6 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
