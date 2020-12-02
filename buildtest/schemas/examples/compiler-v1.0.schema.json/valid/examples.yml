@@ -5,8 +5,9 @@ buildspecs:
     type: compiler
     description: "gnu example with modules, and cflags example"
     module:
-       - "module purge && module load gcc/4.0"
-       - "module purge && module load gcc/6.0"
+      purge: False
+      load: [gcc/6.4.0]
+
     build:
       name: gnu
       source: src/hello.c
@@ -17,8 +18,8 @@ buildspecs:
     type: compiler
     description: "intel example using cflags"
     module:
-      -  "module purge &&  module load intel/17"
-      -  "module purge &&  module load intel/18"
+      purge: True
+      load: [intel/17]
     build:
       name: intel
       source: src/hello.c
@@ -29,7 +30,8 @@ buildspecs:
     type: compiler
     description: "pgi example using cxxflags, ldflags key"
     module:
-      -  "module purge &&  module load pgi"
+      swap: [PrgEnv-gnu, PrgEnv-pgi]
+      load: [pgi/19.7]
     build:
       source: src/hello.cpp
       name: pgi

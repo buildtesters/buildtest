@@ -16,9 +16,28 @@
       "$ref": "definitions.schema.json#/definitions/description"
     },
     "module": {
-      "type": "array",
-      "items": { "type": "string" },
-      "description": "A list of modules to load into test script"
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+         "purge": {
+           "type": "boolean",
+            "description": "Run ``module purge`` if purge is set"
+         },
+         "load": {
+           "$ref": "definitions.schema.json#/definitions/list_of_strings",
+           "description": "Load one or more modules via ``module load``"
+         },
+         "swap": {
+           "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
+           "type": "array",
+           "uniqueItems": true,
+           "minItems": 2,
+           "maxItems": 2,
+           "items": {
+             "type": "string"
+           }
+         }
+       }
     },
     "executor": {
       "$ref": "definitions.schema.json#/definitions/executor"
