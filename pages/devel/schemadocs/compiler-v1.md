@@ -21,7 +21,7 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | :-------------------------- | --------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-type.md "compiler-v1.0.schema.json#/properties/type")               |
 | [description](#description) | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-description.md "compiler-v1.0.schema.json#/properties/description") |
-| [module](#module)           | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-module.md "compiler-v1.0.schema.json#/properties/module")           |
+| [module](#module)           | `object`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-module.md "compiler-v1.0.schema.json#/properties/module")           |
 | [executor](#executor)       | `string`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-executor.md "compiler-v1.0.schema.json#/properties/executor")       |
 | [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-sbatch.md "compiler-v1.0.schema.json#/properties/sbatch")           |
 | [bsub](#bsub)               | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-bsub.md "compiler-v1.0.schema.json#/properties/bsub")               |
@@ -90,19 +90,19 @@ The `description` field is used to document what the test is doing
 
 ## module
 
-A list of modules to load into test script
+
 
 
 `module`
 
 -   is optional
--   Type: `string[]`
+-   Type: `object` ([Details](compiler-v1-properties-module.md))
 -   cannot be null
 -   defined in: [compiler schema version 1.0](compiler-v1-properties-module.md "compiler-v1.0.schema.json#/properties/module")
 
 ### module Type
 
-`string[]`
+`object` ([Details](compiler-v1-properties-module.md))
 
 ## executor
 
