@@ -46,25 +46,78 @@ buildspecs:
   invalid_type_module:
     executor: local.bash
     type: compiler
-    description: "type for 'module' key, expecting type 'array' but received 'string' "
+    description: "type for 'module' key, expecting a property but received 'string' "
     module: "module purge && module load gcc/4.0"
     build:
       source: src/hello.c
       name: gnu
       cflags: "-O1"
 
-  module_mismatch_array_items:
+  module_purge_invalid_type:
     executor: local.bash
     type: compiler
-    description: "The module is an array of string items, this test as a mix of numbers and string"
+    description: "The purge property is a boolean"
     module:
-      - 1
-      - "module purge && module load intel"
+      purge: 1
     build:
       source: src/hello.c
       name: intel
       cflags: "-O1"
 
+  module_swap_duplicate_check:
+    executor: local.bash
+    type: compiler
+    description: "The swap property expects two unique items"
+    module:
+      swap: [gcc/8.0, gcc/8.0]
+    build:
+      source: src/hello.c
+      name: intel
+      cflags: "-O1"
+
+  module_swap_min_items:
+    executor: local.bash
+    type: compiler
+    description: "The swap property expects a minimum of 2 items"
+    module:
+      swap: [gcc/8.0]
+    build:
+      source: src/hello.c
+      name: intel
+      cflags: "-O1"
+
+  module_swap_max_items:
+    executor: local.bash
+    type: compiler
+    description: "The swap property expects a maximum of 2 items"
+    module:
+      swap: [gcc/8.0, gcc/9.0, gcc/10.0]
+    build:
+      source: src/hello.c
+      name: intel
+      cflags: "-O1"
+
+  module_load_duplicate_items:
+    executor: local.bash
+    type: compiler
+    description: "The load property expects unique items"
+    module:
+      load: [gcc/8.0, gcc/8.0]
+    build:
+      source: src/hello.c
+      name: intel
+      cflags: "-O1"
+
+  module_load_min_items:
+    executor: local.bash
+    type: compiler
+    description: "The load property expects a minimum of 1 item"
+    module:
+      load: []
+    build:
+      source: src/hello.c
+      name: intel
+      cflags: "-O1"
   missing_source_in_compiler:
     executor: local.bash
     type: compiler
