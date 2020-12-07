@@ -117,7 +117,7 @@ haswell node::
         executor: slurm.debug
         sbatch: ["-N 1", "--ntasks-per-node 32", "-C haswell", "-t 1"]
         module:
-          - "module load PrgEnv-gnu"
+          swap: [PrgEnv-intel, PrgEnv-gnu]
         env:
           OMP_NUM_THREADS: 32
           OMP_PROC_BIND: spread
@@ -131,8 +131,9 @@ haswell node::
 In this example, we use the SlurmExecutor ``slurm.debug``, the source file is
 ``src/reduction.c`` that is relative to buildspec file. The environment variables
 are defined using ``env`` section. To enable openmp flag, for GNU compilers we
-pass ``-fopenmp`` to C compiler. Finally we classify this test using ``tags``
-key which is set to `openmp`.
+pass ``-fopenmp`` to C compiler. By default, `PrgEnv-intel` module is loaded at startup
+on Cori system so we can use ``swap`` property to swap **PrgEnv-intel** with **PrgEnv-gnu**.
+Finally we classify this test using ``tags`` key which is set to `openmp`.
 
 The generated test looks as follows::
 
@@ -141,20 +142,26 @@ The generated test looks as follows::
     #SBATCH --ntasks-per-node 32
     #SBATCH -C haswell
     #SBATCH -t 1
+    #SBATCH --job-name=reduction
+    #SBATCH --output=reduction.out
+    #SBATCH --error=reduction.err
+    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/before_script.sh
     export OMP_NUM_THREADS=32
     export OMP_PROC_BIND=spread
     export OMP_PLACES=cores
-    module load PrgEnv-gnu
-    gcc -fopenmp -o reduction.c.exe /global/u1/s/siddiq90/buildtest-cori/apps/openmp/src/reduction.c
+    module swap PrgEnv-intel PrgEnv-gnu
+    gcc -fopenmp -o reduction.c.exe src/reduction.c
     ./reduction.c.exe
+    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/after_script.sh
 
 MPI Example
 ------------
 
 In this example we run a MPI Laplace code using 4 process on a KNL node using
-the module ``PrgEnv-intel``. The executable is launched using ``srun``, that
-is set via ``launcher`` field. The source code ``src/laplace_mpi.c`` must be run
-with 4 process, for this test we allocate 1 node with 4 tasks.
+the module ``PrgEnv-intel`` and ``intel/19.1.2.254``. The executable is launched
+using ``srun``, that is set via ``launcher`` field. The source code
+``src/laplace_mpi.c`` must be run with 4 process, for this test we allocate 1
+node with 4 tasks.
 
 The ``name`` field is a required field, buildtest uses this field to select the
 appropriate subclass, when you set ``name: intel`` buildtest will select the IntelCompiler
@@ -173,7 +180,7 @@ and buildtest will honor your options.
         executor: slurm.debug
         tags: ["mpi"]
         module:
-          - "module load PrgEnv-intel"
+          load: [PrgEnv-intel, intel/19.1.2.254]
         build:
           name: intel
           source: src/laplace_mpi.c
@@ -187,47 +194,59 @@ The generated test is as follows::
     #SBATCH -C knl
     #SBATCH -N 1
     #SBATCH -n 4
+    #SBATCH --job-name=laplace_mpi
+    #SBATCH --output=laplace_mpi.out
+    #SBATCH --error=laplace_mpi.err
+    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/before_script.sh
     module load PrgEnv-intel
-    icc -O3 -o laplace_mpi.c.exe /global/u1/s/siddiq90/buildtest-cori/apps/mpi/src/laplace_mpi.c
+    module load intel/19.1.2.254
+    icc -O3 -o laplace_mpi.c.exe src/laplace_mpi.c
     srun -n 4 ./laplace_mpi.c.exe
+    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/after_script.sh
+
 
 Shown below is a sample build for this buildspec::
 
-    $ buildtest build -b mpi/laplace_mpi.yml
-    Paths:
-    __________
-    Prefix: /global/u1/s/siddiq90/cache
-    Buildspec Search Path: ['/global/u1/s/siddiq90/buildtest/tutorials']
-    Test Directory: /global/u1/s/siddiq90/cache/tests
+    $ buildtest build -b apps/mpi/laplace_mpi.yml
 
     +-------------------------------+
-    | Stage: Discovered Buildspecs  |
+    | Stage: Discovering Buildspecs |
     +-------------------------------+
+
+
+    Discovered Buildspecs:
 
     /global/u1/s/siddiq90/buildtest-cori/apps/mpi/laplace_mpi.yml
+
+    +---------------------------+
+    | Stage: Parsing Buildspecs |
+    +---------------------------+
+
+     schemafile                | validstate   | buildspec
+    ---------------------------+--------------+---------------------------------------------------------------
+     compiler-v1.0.schema.json | True         | /global/u1/s/siddiq90/buildtest-cori/apps/mpi/laplace_mpi.yml
 
     +----------------------+
     | Stage: Building Test |
     +----------------------+
 
-     Name        | Schema File               | Test Path                                                    | Buildspec
-    -------------+---------------------------+--------------------------------------------------------------+---------------------------------------------------------------
-     laplace_mpi | compiler-v1.0.schema.json | /global/u1/s/siddiq90/cache/tests/laplace_mpi/laplace_mpi.sh | /global/u1/s/siddiq90/buildtest-cori/apps/mpi/laplace_mpi.yml
+     name        | id       | type     | executor    | tags    | testpath
+    -------------+----------+----------+-------------+---------+---------------------------------------------------------------------------------------------------
+     laplace_mpi | fdad3653 | compiler | slurm.debug | ['mpi'] | /global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/laplace_mpi/laplace_mpi/0/stage/generate.sh
 
     +----------------------+
     | Stage: Running Test  |
     +----------------------+
 
-    [laplace_mpi] job dispatched to scheduler
-    [laplace_mpi] acquiring job id in 2 seconds
-     name        | executor    | status   |   returncode | testpath
-    -------------+-------------+----------+--------------+--------------------------------------------------------------
-     laplace_mpi | slurm.debug | N/A      |            0 | /global/u1/s/siddiq90/cache/tests/laplace_mpi/laplace_mpi.sh
+    [laplace_mpi] JobID: 36779045 dispatched to scheduler
+     name        | id       | executor    | status   |   returncode | testpath
+    -------------+----------+-------------+----------+--------------+---------------------------------------------------------------------------------------------------
+     laplace_mpi | fdad3653 | slurm.debug | N/A      |           -1 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/laplace_mpi/laplace_mpi/0/stage/generate.sh
 
 
     Polling Jobs in 10 seconds
     ________________________________________
-    [laplace_mpi]: JobID 33306420 in COMPLETED state
+    [laplace_mpi]: JobID 36779045 in COMPLETED state
 
 
     Polling Jobs in 10 seconds
@@ -237,9 +256,9 @@ Shown below is a sample build for this buildspec::
     | Stage: Final Results after Polling all Jobs |
     +---------------------------------------------+
 
-     name        | executor    | status   |   returncode | testpath
-    -------------+-------------+----------+--------------+--------------------------------------------------------------
-     laplace_mpi | slurm.debug | PASS     |            0 | /global/u1/s/siddiq90/cache/tests/laplace_mpi/laplace_mpi.sh
+     name        | id       | executor    | status   |   returncode | testpath
+    -------------+----------+-------------+----------+--------------+---------------------------------------------------------------------------------------------------
+     laplace_mpi | fdad3653 | slurm.debug | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/laplace_mpi/laplace_mpi/0/stage/generate.sh
 
     +----------------------+
     | Stage: Test Summary  |
@@ -248,7 +267,6 @@ Shown below is a sample build for this buildspec::
     Executed 1 tests
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
-
 
 
 OpenACC Examples
@@ -311,8 +329,7 @@ This test will launch job via ``srun`` and check job state code is ``COMPLETED``
         executor: slurm.gpu
         sbatch: ["-G 1", "-t 5", "-N 1"]
         module:
-          - "module load cuda"
-          - "module load gcc/8.1.1-openacc-gcc-8-branch-20190215"
+          load: [cuda, gcc/8.1.1-openacc-gcc-8-branch-20190215]
         build:
           name: gnu
           source: src/vecAdd.c
@@ -330,10 +347,15 @@ followed by module commands. The executable is run via ``srun`` because we speci
     #SBATCH -G 1
     #SBATCH -t 5
     #SBATCH -N 1
+    #SBATCH --job-name=vecadd_openacc_gnu
+    #SBATCH --output=vecadd_openacc_gnu.out
+    #SBATCH --error=vecadd_openacc_gnu.err
+    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.gpu/before_script.sh
     module load cuda
     module load gcc/8.1.1-openacc-gcc-8-branch-20190215
-    gcc -fopenacc -o vecAdd.c.exe /global/u1/s/siddiq90/buildtest-cori/apps/openacc/src/vecAdd.c -lm
+    gcc -fopenacc -o vecAdd.c.exe src/vecAdd.c -lm
     srun ./vecAdd.c.exe
+    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.gpu/after_script.sh
 
 In this next example, we build same test using `hpcsdk <https://docs.nvidia.com/hpc-sdk/index.html>`_
 compiler by NVIDIA that recently acquired PGI compiler. At Cori, we must load ``hpcsdk``
@@ -353,8 +375,7 @@ required field however buildtest will ignore since we specify
         executor: slurm.gpu
         sbatch: ["-G 1", "-t 5", "-N 1"]
         module:
-          - "module load hpcsdk"
-          - "module load cuda"
+          load: [hpcsdk, cuda]
         build:
           name: pgi
           cc: nvc

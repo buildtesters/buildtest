@@ -546,8 +546,20 @@ class CompilerBuilder(BuilderBase):
         return source_relpath
 
     def get_modules(self, modules):
-        """Return a list"""
-        return [module for module in modules]
+        """Return a list of modules as a list"""
+        assert isinstance(modules, dict)
+        module_cmd = []
+        # if purge is True and defined add module purge
+        if modules.get("purge"):
+            module_cmd += ["module purge"]
+        #
+        if modules.get("load"):
+            for name in modules.get("load"):
+                module_cmd += [f"module load {name}"]
+
+        if modules.get("swap"):
+            module_cmd += ["module swap " + " ".join(modules.get("swap"))]
+        return module_cmd
 
     def build_run_cmd(self):
         """This method builds the run command which refers to how to run the generated binary after compilation."""
