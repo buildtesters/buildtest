@@ -47,10 +47,6 @@ class CobaltExecutor(BaseExecutor):
 
         batch_cmd = [self.launcher]
 
-        self.builder.metadata["result"]["state"] = "N/A"
-        self.builder.metadata["result"]["returncode"] = -1
-        self.builder.metadata["result"]["runtime"] = 0
-
         if self.queue:
             batch_cmd += [f"-q {self.queue}"]
 

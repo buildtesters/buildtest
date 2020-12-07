@@ -69,10 +69,6 @@ class LSFExecutor(BaseExecutor):
     def dispatch(self):
         """This method is responsible for dispatching job to scheduler."""
 
-        self.builder.metadata["result"]["state"] = "N/A"
-        self.builder.metadata["result"]["runtime"] = "0"
-        self.builder.metadata["result"]["returncode"] = "-1"
-
         # The job_id variable is used to store the JobID retrieved by bjobs
         self.job_id = 0
 

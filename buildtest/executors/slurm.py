@@ -78,10 +78,6 @@ class SlurmExecutor(BaseExecutor):
 
         self.result = {}
 
-        self.builder.metadata["result"]["state"] = "N/A"
-        self.builder.metadata["result"]["runtime"] = "0"
-        self.builder.metadata["result"]["returncode"] = "-1"
-
         # The job_id variable is used to store the JobID retrieved by sacct
         self.job_id = 0
 

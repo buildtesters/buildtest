@@ -438,57 +438,10 @@ def run_phase(builders, executor, config_dict, printTable=False):
         print("\n")
 
     ########## END RUN STAGE ####################
+
     # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
     if poll:
-        ########## BEGIN POLL STAGE ####################
-        interval = (
-            config_dict.get("executors", {}).get("defaults", {}).get("pollinterval")
-        )
-        # if no items in poll_queue terminate, this will happen as jobs complete polling
-        # and they are removed from queue.
-
-        # keep track of ignored jobs by job scheduler these include jobs that failed abnormally or cancelled by scheduler
-        ignore_jobs = set()
-        while poll_queue:
-
-            print("\n")
-            print(f"Polling Jobs in {interval} seconds")
-            print("{:_<40}".format(""))
-
-            logger.debug(f"Sleeping for {interval} seconds")
-            time.sleep(interval)
-            logger.debug(f"Polling Jobs: {poll_queue}")
-
-            for builder in poll_queue:
-                poll_info = executor.poll(builder)
-
-                # remove builder from poll_queue when state is True
-                if poll_info["job_complete"]:
-                    logger.debug(
-                        f"{builder} poll complete, removing test from poll queue"
-                    )
-                    poll_queue.remove(builder)
-
-                # add invalid jobs to ignore_jobs list which are ignored from output
-                # and not updated in report
-                if poll_info["ignore_job"]:
-                    ignore_jobs.add(builder)
-
-        # remove any builders where for jobs that need to be ignored
-        if ignore_jobs:
-            # convert set to list
-            ignore_jobs = list(ignore_jobs)
-            for builder in ignore_jobs:
-                valid_builders.remove(builder)
-
-            print("Cancelled Tests:")
-            [print(builder.metadata["name"]) for builder in ignore_jobs]
-
-        # after removing jobs from valid_builders list there is chance we have no jobs to report
-        # in that case we return from method
-        if not valid_builders:
-            print("After polling all jobs we found no valid builders to process")
-            return
+        valid_builders = poll_jobs(config_dict, poll_queue, executor, valid_builders)
 
         table = {
             "name": [],
@@ -503,9 +456,9 @@ def run_phase(builders, executor, config_dict, printTable=False):
 
             print(
                 """
-+---------------------------------------------+
-| Stage: Final Results after Polling all Jobs |
-+---------------------------------------------+ 
+    +---------------------------------------------+
+    | Stage: Final Results after Polling all Jobs |
+    +---------------------------------------------+ 
     """
             )
 
@@ -531,37 +484,99 @@ def run_phase(builders, executor, config_dict, printTable=False):
         if printTable:
             print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
-    ########## END POLL STAGE ####################
-
     ########## TEST SUMMARY ####################
     if total_tests == 0:
         print("No tests were executed")
         return
 
     if printTable:
-        print(
-            """
+        print_test_summary(total_tests, passed_tests, failed_tests)
+
+    return valid_builders
+
+
+def poll_jobs(config_dict, poll_queue, executor, valid_builders):
+    """ This method will poll jobs by processing all jobs in ``poll_queue``. If
+        job is cancelled by scheduler, we remove this from valid_builders list.
+        This method will return a list of valid_builders after polling. If there
+        are no valid_builders after polling, the method will return None
+
+        :param config_dict: loaded buildtest configuration
+        :type config_dict: dict, required
+        :param poll_queue: a list of jobs that need to be polled. The jobs will poll using poll method from executor
+        :type poll_queue: list, required
+        :param executor: an instance of BuildExecutor class
+        :type executor: BuildExecutor, required
+        :param valid_builders: list of valid builders
+        :type valid_builders: list, required
+     """
+    ########## BEGIN POLL STAGE ####################
+    interval = config_dict.get("executors", {}).get("defaults", {}).get("pollinterval")
+    # if no items in poll_queue terminate, this will happen as jobs complete polling
+    # and they are removed from queue.
+
+    # keep track of ignored jobs by job scheduler these include jobs that failed abnormally or cancelled by scheduler
+    ignore_jobs = set()
+    while poll_queue:
+
+        print("\n")
+        print(f"Polling Jobs in {interval} seconds")
+        print("{:_<40}".format(""))
+
+        logger.debug(f"Sleeping for {interval} seconds")
+        time.sleep(interval)
+        logger.debug(f"Polling Jobs: {poll_queue}")
+
+        for builder in poll_queue:
+            poll_info = executor.poll(builder)
+
+            # remove builder from poll_queue when state is True
+            if poll_info["job_complete"]:
+                logger.debug(f"{builder} poll complete, removing test from poll queue")
+                poll_queue.remove(builder)
+
+            # add invalid jobs to ignore_jobs list which are ignored from output
+            # and not updated in report
+            if poll_info["ignore_job"]:
+                ignore_jobs.add(builder)
+
+    # remove any builders where for jobs that need to be ignored
+    if ignore_jobs:
+        # convert set to list
+        ignore_jobs = list(ignore_jobs)
+        for builder in ignore_jobs:
+            valid_builders.remove(builder)
+
+        print("Cancelled Tests:")
+        [print(builder.metadata["name"]) for builder in ignore_jobs]
+
+    # after removing jobs from valid_builders list there is chance we have no jobs to report
+    # in that case we return from method
+    if not valid_builders:
+        print("After polling all jobs we found no valid builders to process")
+        return
+
+    return valid_builders
+
+
+def print_test_summary(total_tests, passed_tests, failed_tests):
+    print(
+        """
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-    """
-        )
+"""
+    )
 
-        print(f"Executed {total_tests} tests")
+    print(f"Executed {total_tests} tests")
 
-        pass_rate = passed_tests * 100 / total_tests
-        fail_rate = failed_tests * 100 / total_tests
+    pass_rate = passed_tests * 100 / total_tests
+    fail_rate = failed_tests * 100 / total_tests
 
-        print(
-            f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%"
-        )
+    print(f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%")
 
-        print(
-            f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%"
-        )
-        print("\n\n")
-
-    return valid_builders
+    print(f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%")
+    print("\n\n")
 
 
 def func_build_subcmd(args, config_opts):
