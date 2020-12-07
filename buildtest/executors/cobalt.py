@@ -17,21 +17,6 @@ class CobaltExecutor(BaseExecutor):
     job_state = None
     poll_cmd = "qstat"
 
-    def check(self):
-        """Check cobalt binary is available before running tests. This will check
-        the launcher (``qsub``) and ``qstat`` are available.
-        """
-
-        if not shutil.which(self.launcher):
-            sys.exit(
-                f"[{self.builder.metadata['name']}]: Cannot find launcher program: {self.launcher}"
-            )
-
-        if not shutil.which(self.poll_cmd):
-            sys.exit(
-                f"[{self.builder.metadata['name']}]: Cannot find cobalt poll command: {self.poll_cmd}"
-            )
-
     def load(self):
         """Load the a Cobalt executor configuration from buildtest settings."""
 
@@ -51,14 +36,12 @@ class CobaltExecutor(BaseExecutor):
         )
 
     def dispatch(self):
-        """This method is responsible for dispatching Cobalt job, get JobID 
-        and start record metadata in builder object. If job failed to submit
-        we check returncode and exit with failure. After we submit job, we 
-        start timer and record when job was submitted and poll job once to get
-        job details and store them in builder object. 
+        """ This method is responsible for dispatching Cobalt job, get JobID
+            and start record metadata in builder object. If job failed to submit
+            we check returncode and exit with failure. After we submit job, we
+            start timer and record when job was submitted and poll job once to get
+            job details and store them in builder object.
         """
-
-        self.check()
 
         os.chdir(self.builder.stage_dir)
 
@@ -230,24 +213,11 @@ class CobaltExecutor(BaseExecutor):
             self.builder.job_state = self.job_state
 
     def gather(self):
-        """This method is responsible for moving output and error file in the run directory. We
-           need to read <JOBID>.cobaltlog file which contains output of exit code. Cobalt doesn't
-           provide any method to retrieve exit code using account command (qstat) so we need to 
-           perform regular expression.
-        """
-        """
-        shutil.copy2(
-            self.builder.metadata["outfile"],
-            os.path.join(
-                self.builder.run_dir, os.path.basename(self.builder.metadata["outfile"])
-            ),
-        )
-        shutil.copy2(
-            self.builder.metadata["errfile"],
-            os.path.join(
-                self.builder.run_dir, os.path.basename(self.builder.metadata["errfile"])
-            ),
-        )
+        """ This method is responsible for moving output and error file in the run
+            directory. We need to read <JOBID>.cobaltlog file which contains
+            output of exit code. Cobalt doesn't provide any method to retrieve
+            exit code using account command (``qstat``) so we need to perform
+            regular expression.
         """
 
         cobaltlog = os.path.join(
@@ -257,6 +227,7 @@ class CobaltExecutor(BaseExecutor):
         if os.path.exists(cobaltlog):
             content = read_file(cobaltlog)
             pattern = r"(exit code of.)(\d+)(\;)"
+            # pattern to check in cobalt log file is 'exit code of <CODE>;'
             m = re.search(pattern, content)
             if m:
                 self.builder.metadata["result"]["returncode"] = int(m.group(2))

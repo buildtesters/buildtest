@@ -13,14 +13,14 @@ from buildtest.utils.command import BuildTestCommand
 
 
 class SlurmExecutor(BaseExecutor):
-    """The SlurmExecutor class is responsible for submitting jobs to Slurm Scheduler.
-    The SlurmExecutor performs the following steps
+    """ The SlurmExecutor class is responsible for submitting jobs to Slurm Scheduler.
+        The SlurmExecutor performs the following steps
 
-    check: check if slurm partition is available for accepting jobs.
-    load: load slurm configuration from buildtest configuration file
-    dispatch: dispatch job to scheduler and acquire job ID
-    poll: wait for Slurm jobs to finish
-    gather: Once job is complete, gather job data
+        check: check if slurm partition is available for accepting jobs.
+        load: load slurm configuration from buildtest configuration file
+        dispatch: dispatch job to scheduler and acquire job ID
+        poll: wait for Slurm jobs to finish
+        gather: Once job is complete, gather job data
     """
 
     type = "slurm"
@@ -138,10 +138,10 @@ class SlurmExecutor(BaseExecutor):
         self.logger.debug(msg)
 
     def poll(self):
-        """This method will poll for job each interval specified by time interval
-        until job finishes. We use `sacct` to poll for job id and sleep for given
-        time interval until trying again. The command to be run is
-        ``sacct -j <jobid> -o State -n -X -P``
+        """ This method will poll for job each interval specified by time interval
+            until job finishes. We use `sacct` to poll for job id and sleep for given
+            time interval until trying again. The command to be run is
+            ``sacct -j <jobid> -o State -n -X -P``
         """
 
         self.logger.debug(f"Query Job: {self.builder.metadata['jobid']}")

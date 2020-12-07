@@ -546,7 +546,7 @@ class CompilerBuilder(BuilderBase):
         return source_relpath
 
     def get_modules(self, modules):
-        """Return a list of modules as a list"""
+        """Return a list"""
         return [module for module in modules]
 
     def build_run_cmd(self):
