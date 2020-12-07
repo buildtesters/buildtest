@@ -101,27 +101,7 @@ class CobaltExecutor(BaseExecutor):
         self.builder.metadata[
             "errfile"
         ] = f"{os.path.join(self.builder.stage_dir,errfile)}"
-        """
 
-        qstat_cmd = (
-            f"{self.poll_cmd} -l --header OutputPath:ErrorPath {self.builder.metadata['jobid']}"
-        )
-        cmd = BuildTestCommand(qstat_cmd)
-        cmd.execute()
-        content = cmd.get_output()
-
-        # retrieve Output and Error file and store them in builder object
-        for line in content:
-            key, sep, value = line.partition(":")
-            key = key.strip()
-            value = value.strip()
-            
-            if key == "OutputPath":
-              self.builder.metadata["outfile"] = value
-
-            if key == "ErrorPath":
-              self.builder.metadata["errfile"] = value
-        """
         self.logger.debug(
             f"Output file will be written to: {self.builder.metadata['outfile']}"
         )

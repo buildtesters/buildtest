@@ -5,11 +5,11 @@ BuildExecutor: manager for test executors
 import logging
 import os
 import re
-
+from abc import ABCMeta, abstractmethod
 from buildtest.utils.file import write_file, read_file
 
 
-class BaseExecutor:
+class BaseExecutor(metaclass=ABCMeta):
     """The BaseExecutor is an abstract base class for all executors.
     """
 
@@ -36,19 +36,19 @@ class BaseExecutor:
         self.builder = None
         self.result = {}
 
+    @abstractmethod
     def load(self):
         """Load a particular configuration based on the name. This method
         should set defaults for the executor, and will vary based on the
         class.
         """
-        pass
 
+    @abstractmethod
     def run(self):
         """The run step basically runs the build. This is run after setup
         so we are sure that the builder is defined. This is also where
         we set the result to return.
         """
-        pass
 
     def __str__(self):
         return "%s.%s" % (self.type, self.name)
@@ -91,7 +91,7 @@ class BaseExecutor:
         self.logger.debug(f"Applying re.search with exp: {status['regex']['exp']}")
 
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
-        return re.search(status["regex"]["exp"], content) != None
+        return re.search(status["regex"]["exp"], content) is not None
 
     def write_testresults(self, out, err):
         """ This method writes test results into output and error file.
