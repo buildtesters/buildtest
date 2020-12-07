@@ -15,7 +15,7 @@ import shutil
 import stat
 import sys
 import uuid
-
+from abc import ABCMeta, abstractmethod
 from buildtest.buildsystem.batch import (
     SlurmBatchScript,
     LSFBatchScript,
@@ -29,7 +29,7 @@ from buildtest.utils.timer import Timer
 from buildtest.utils.shell import Shell
 
 
-class BuilderBase:
+class BuilderBase(metaclass=ABCMeta):
     """The BuilderBase is an abstract class that implements common functions for
        any kind of builder.
     """
@@ -400,9 +400,9 @@ class BuilderBase:
         unique_id = str(uuid.uuid4())
         return unique_id
 
+    @abstractmethod
     def generate_script(self):
         """Build the testscript content implemented in each subclass"""
-        pass
 
     def __str__(self):
         return "[builder-%s-%s]" % (self.type, self.name)

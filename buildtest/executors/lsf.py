@@ -14,14 +14,14 @@ from buildtest.utils.command import BuildTestCommand
 
 
 class LSFExecutor(BaseExecutor):
-    """The LSFExecutor class is responsible for submitting jobs to LSF Scheduler.
-    The LSFExecutor performs the following steps
+    """ The LSFExecutor class is responsible for submitting jobs to LSF Scheduler.
+        The LSFExecutor performs the following steps
 
-    check: check if lsf queue is available for accepting jobs.
-    load: load lsf configuration from buildtest configuration file
-    dispatch: dispatch job to scheduler and acquire job ID
-    poll: wait for LSF jobs to finish
-    gather: Once job is complete, gather job data
+        check: check if lsf queue is available for accepting jobs.
+        load: load lsf configuration from buildtest configuration file
+        dispatch: dispatch job to scheduler and acquire job ID
+        poll: wait for LSF jobs to finish
+        gather: Once job is complete, gather job data
     """
 
     type = "lsf"
@@ -133,9 +133,9 @@ class LSFExecutor(BaseExecutor):
         print(msg)
 
     def poll(self):
-        """This method will poll for job by using bjobs and return state of job.
-        The command to be run is ``bjobs -noheader -o 'stat' <JOBID>`` which
-        returns job state.
+        """ This method will poll for job by using bjobs and return state of job.
+            The command to be run is ``bjobs -noheader -o 'stat' <JOBID>`` which
+            returns job state.
         """
 
         self.logger.debug(f"Query Job: {self.builder.metadata['jobid']}")
@@ -176,9 +176,9 @@ class LSFExecutor(BaseExecutor):
         return self.job_state
 
     def gather(self):
-        """Gather Job detail after completion of job. This method will retrieve output
-        fields defined for ``self.format_fields``. buildtest will run
-        ``bjobs -o '<field1> ... <fieldN>' <JOBID> -json``.
+        """ Gather Job detail after completion of job. This method will retrieve output
+            fields defined for ``self.format_fields``. buildtest will run
+            ``bjobs -o '<field1> ... <fieldN>' <JOBID> -json``.
         """
 
         # bjobs gather command to extract format fields and convert output to JSON
