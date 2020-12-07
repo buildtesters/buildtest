@@ -52,6 +52,9 @@ class BuilderBase(ABC):
         self.name = name
         self.pwd = os.getcwd()
         self.result = {}
+        self.result["state"] = "N/A"
+        self.result["returncode"] = "-1"
+        self.result["runtime"] = 0
         self.metadata = {}
         self.duration = 0
         self.job_state = None
