@@ -15,7 +15,7 @@ import shutil
 import stat
 import sys
 import uuid
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from buildtest.buildsystem.batch import (
     SlurmBatchScript,
     LSFBatchScript,
@@ -29,7 +29,7 @@ from buildtest.utils.timer import Timer
 from buildtest.utils.shell import Shell
 
 
-class BuilderBase(metaclass=ABCMeta):
+class BuilderBase(ABC):
     """The BuilderBase is an abstract class that implements common functions for
        any kind of builder.
     """

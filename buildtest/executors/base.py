@@ -5,11 +5,10 @@ BuildExecutor: manager for test executors
 import logging
 import os
 import re
-from abc import ABCMeta, abstractmethod
 from buildtest.utils.file import write_file, read_file
 
 
-class BaseExecutor(metaclass=ABCMeta):
+class BaseExecutor:
     """The BaseExecutor is an abstract base class for all executors.
     """
 
@@ -36,14 +35,12 @@ class BaseExecutor(metaclass=ABCMeta):
         self.builder = None
         self.result = {}
 
-    @abstractmethod
     def load(self):
         """Load a particular configuration based on the name. This method
         should set defaults for the executor, and will vary based on the
         class.
         """
 
-    @abstractmethod
     def run(self):
         """The run step basically runs the build. This is run after setup
         so we are sure that the builder is defined. This is also where
