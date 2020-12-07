@@ -5,13 +5,11 @@ BuildExecutor: manager for test executors
 import logging
 import os
 import re
-from abc import ABCMeta, abstractmethod
 from buildtest.utils.file import write_file, read_file
 
 
-class BaseExecutor(metaclass=ABCMeta):
-    """The BaseExecutor is an abstract base class for all executors.
-    """
+class BaseExecutor:
+    """The BaseExecutor is an abstract base class for all executors."""
 
     type = "base"
 
@@ -27,7 +25,6 @@ class BaseExecutor(metaclass=ABCMeta):
         :param config_opts: loaded buildtest configuration
         :type config_opts: dict
         """
-
         self.logger = logging.getLogger(__name__)
         self.name = name
         self._settings = settings
@@ -36,14 +33,12 @@ class BaseExecutor(metaclass=ABCMeta):
         self.builder = None
         self.result = {}
 
-    @abstractmethod
     def load(self):
         """Load a particular configuration based on the name. This method
         should set defaults for the executor, and will vary based on the
         class.
         """
 
-    @abstractmethod
     def run(self):
         """The run step basically runs the build. This is run after setup
         so we are sure that the builder is defined. This is also where
@@ -57,18 +52,18 @@ class BaseExecutor(metaclass=ABCMeta):
         return self.__str__()
 
     def _check_regex(self, status):
-        """ This method conducts a regular expression check using ``re.search``
-            with regular expression defined in Buildspec. User must specify an
-            output stream (stdout, stderr) to select when performing regex. In
-            buildtest, this would read the .out or .err file based on stream and
-            run the regular expression to see if there is a match. This method
-            will return a boolean True indicates there is a match otherwise False
-            if ``regex`` object not defined or ``re.search`` doesn't find a match.
+        """This method conducts a regular expression check using ``re.search``
+        with regular expression defined in Buildspec. User must specify an
+        output stream (stdout, stderr) to select when performing regex. In
+        buildtest, this would read the .out or .err file based on stream and
+        run the regular expression to see if there is a match. This method
+        will return a boolean True indicates there is a match otherwise False
+        if ``regex`` object not defined or ``re.search`` doesn't find a match.
 
-            :param status: status property defined in Buildspec file
-            :type status: dict, required
-            :return: A boolean return True/False based on if re.search is successful or not
-            :rtype: bool
+        :param status: status property defined in Buildspec file
+        :type status: dict, required
+        :return: A boolean return True/False based on if re.search is successful or not
+        :rtype: bool
         """
 
         regex_match = False
@@ -94,12 +89,12 @@ class BaseExecutor(metaclass=ABCMeta):
         return re.search(status["regex"]["exp"], content) is not None
 
     def write_testresults(self, out, err):
-        """ This method writes test results into output and error file.
+        """This method writes test results into output and error file.
 
-            :param out: content of output stream
-            :type out: list, required
-            :param err: content of error stream
-            :type err: list, required
+        :param out: content of output stream
+        :type out: list, required
+        :param err: content of error stream
+        :type err: list, required
         """
 
         # Keep an output file
@@ -127,7 +122,7 @@ class BaseExecutor(metaclass=ABCMeta):
 
     def _returncode_check(self, status):
         """Check status check of ``returncode`` field if specified in status
-           property.
+        property.
         """
 
         returncode_match = False
@@ -144,7 +139,10 @@ class BaseExecutor(metaclass=ABCMeta):
             self.logger.debug("Conducting Return Code check")
             self.logger.debug(
                 "Status Return Code: %s   Result Return Code: %s"
-                % (buildspec_returncode, self.builder.metadata["result"]["returncode"],)
+                % (
+                    buildspec_returncode,
+                    self.builder.metadata["result"]["returncode"],
+                )
             )
             # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
             returncode_match = (
@@ -154,8 +152,8 @@ class BaseExecutor(metaclass=ABCMeta):
         return returncode_match
 
     def check_test_state(self):
-        """ This method is responsible for detecting state of test (PASS/FAIL)
-            based on returncode or regular expression.
+        """This method is responsible for detecting state of test (PASS/FAIL)
+        based on returncode or regular expression.
         """
 
         status = self.builder.recipe.get("status")
