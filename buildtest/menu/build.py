@@ -155,22 +155,22 @@ def discover_by_buildspecs(buildspec):
 def discover_buildspecs(
     tags=None, executorname=None, buildspec=None, exclude_buildspec=None, debug=False
 ):
-    """ This method discovers all buildspecs and returns a list of discovered
-        excluded buildspecs. The input arguments ``tags``, ``buildspec``, ``exclude_buildspec``
-        map to ``--tags`` ``--buildspec`` and ``--exclude`` option in buildtest build.
+    """This method discovers all buildspecs and returns a list of discovered
+    excluded buildspecs. The input arguments ``tags``, ``buildspec``, ``exclude_buildspec``
+    map to ``--tags`` ``--buildspec`` and ``--exclude`` option in buildtest build.
 
-        :param tags: Input argument from ``buildtest build --tags``
-        :type tags: list
-        :param executorname: Input argument from ``buildtest build --executor-name``
-        :type executorname: list
-        :param buildspec: Input argument from ``buildtest build --buildspec``
-        :type buildspec: str
-        :param exclude_buildspec: Input argument from ``buildtest build --exclude``
-        :type tags: str
-        :param debug: Boolean to control print messages to stdout
-        :type debug: boolean
-        :return: two lists of discovered and excluded buildspecs
-        :rtype: list, list
+    :param tags: Input argument from ``buildtest build --tags``
+    :type tags: list
+    :param executorname: Input argument from ``buildtest build --executor-name``
+    :type executorname: list
+    :param buildspec: Input argument from ``buildtest build --buildspec``
+    :type buildspec: str
+    :param exclude_buildspec: Input argument from ``buildtest build --exclude``
+    :type tags: str
+    :param debug: Boolean to control print messages to stdout
+    :type debug: boolean
+    :return: two lists of discovered and excluded buildspecs
+    :rtype: list, list
     """
 
     buildspecs = []
@@ -335,7 +335,7 @@ def build_phase(builders, printTable=False):
         table["testpath"].append(builder.metadata["testpath"])
 
     if printTable:
-        print(tabulate(table, headers=table.keys(), tablefmt="presto",))
+        print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
 
 def run_phase(builders, executor, config_dict, printTable=False):
@@ -496,21 +496,21 @@ def run_phase(builders, executor, config_dict, printTable=False):
 
 
 def poll_jobs(config_dict, poll_queue, executor, valid_builders):
-    """ This method will poll jobs by processing all jobs in ``poll_queue``. If
-        job is cancelled by scheduler, we remove this from valid_builders list.
-        This method will return a list of valid_builders after polling. If there
-        are no valid_builders after polling, the method will return None
+    """This method will poll jobs by processing all jobs in ``poll_queue``. If
+    job is cancelled by scheduler, we remove this from valid_builders list.
+    This method will return a list of valid_builders after polling. If there
+    are no valid_builders after polling, the method will return None
 
-        :param config_dict: loaded buildtest configuration
-        :type config_dict: dict, required
-        :param poll_queue: a list of jobs that need to be polled. The jobs will poll using poll method from executor
-        :type poll_queue: list, required
-        :param executor: an instance of BuildExecutor class
-        :type executor: BuildExecutor, required
-        :param valid_builders: list of valid builders
-        :type valid_builders: list, required
-     """
-    ########## BEGIN POLL STAGE ####################
+    :param config_dict: loaded buildtest configuration
+    :type config_dict: dict, required
+    :param poll_queue: a list of jobs that need to be polled. The jobs will poll using poll method from executor
+    :type poll_queue: list, required
+    :param executor: an instance of BuildExecutor class
+    :type executor: BuildExecutor, required
+    :param valid_builders: list of valid builders
+    :type valid_builders: list, required
+    """
+
     interval = config_dict.get("executors", {}).get("defaults", {}).get("pollinterval")
     # if no items in poll_queue terminate, this will happen as jobs complete polling
     # and they are removed from queue.
@@ -553,8 +553,7 @@ def poll_jobs(config_dict, poll_queue, executor, valid_builders):
     # after removing jobs from valid_builders list there is chance we have no jobs to report
     # in that case we return from method
     if not valid_builders:
-        print("After polling all jobs we found no valid builders to process")
-        return
+        sys.exit("After polling all jobs we found no valid builders to process")
 
     return valid_builders
 
