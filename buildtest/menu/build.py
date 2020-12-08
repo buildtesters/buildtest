@@ -335,13 +335,7 @@ def build_phase(builders, printTable=False):
         table["testpath"].append(builder.metadata["testpath"])
 
     if printTable:
-        print(
-            tabulate(
-                table,
-                headers=table.keys(),
-                tablefmt="presto",
-            )
-        )
+        print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
 
 def run_phase(builders, executor, config_dict, printTable=False):
