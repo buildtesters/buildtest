@@ -1,5 +1,5 @@
 {
-  "$id": "https://buildtesters.github.io/buildtest/schemas/settings.schema.json",
+  "$id": "settings.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "buildtest configuration schema",
   "type": "object",
@@ -177,7 +177,7 @@
         "properties": {
           "cc": {"$ref":  "#/definitions/cc" },
           "cxx": {"$ref":  "#/definitions/cxx" },
-          "modules": { "$ref": "#/definitions/modules" }
+          "module": { "$ref": "#/definitions/module" }
         }
       },
       "cuda": {
@@ -187,7 +187,7 @@
         "required": ["cc"],
         "properties": {
           "cc": {"$ref":  "#/definitions/cc" },
-          "modules": { "$ref": "#/definitions/modules" }
+          "module": { "$ref": "#/definitions/module" }
         }
       },
       "compiler_section": {
@@ -199,7 +199,7 @@
           "cc": {"$ref":  "#/definitions/cc" },
           "cxx": {"$ref":  "#/definitions/cxx" },
           "fc": {"$ref":  "#/definitions/fc" },
-          "modules": { "$ref": "#/definitions/modules" }
+          "module": { "$ref": "#/definitions/module" }
         }
       },
       "unique_string_array": {
@@ -209,9 +209,29 @@
           "type": "string"
         }
       },
-      "modules": {
-        "description": "Specify list of modules to load when resolving compiler. The modules will be inserted into test script when using the compiler",
-        "$ref": "#/definitions/unique_string_array"
+      "module": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+           "purge": {
+             "type": "boolean",
+              "description": "Run ``module purge`` if purge is set"
+           },
+           "load": {
+             "$ref": "definitions.schema.json#/definitions/list_of_strings",
+             "description": "Load one or more modules via ``module load``"
+           },
+           "swap": {
+             "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
+             "type": "array",
+             "uniqueItems": true,
+             "minItems": 2,
+             "maxItems": 2,
+             "items": {
+               "type": "string"
+             }
+           }
+         }
       },
       "script": {
         "type": "array",

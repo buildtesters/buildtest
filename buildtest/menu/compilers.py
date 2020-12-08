@@ -48,12 +48,8 @@ def find_compiler_modules(moduletool, compilers):
                     if module.startswith(name)
                 ]
 
-    # create a duplicate dictionary and delete all entry of empty list
-    duplicate = discovered.copy()
-
-    for key, value in duplicate.items():
-        if not duplicate[key]:
-            del discovered[key]
+    # ignore entry where value is empty list
+    discovered = {k: v for k, v in discovered.items() if v}
 
     return discovered
 
@@ -65,6 +61,7 @@ def validate_modules(discovered_modules):
         list. A module test pass if we get a returncode 0.
 
         :param discovered_modules:  A list of discovered modules specified as dictionary organized by compiler groups.
+        :type discovered_modules: dict
         :return: Return a list of valid modules
         :rtype: dict
     """
@@ -143,7 +140,13 @@ def update_compiler_section(valid_modules, compilers):
                     update_compilers["compiler"][name][new_compiler_entry] = {
                         "cc": "nvcc",
                     }
-            update_compilers["compiler"][name][new_compiler_entry]["modules"] = [module]
+            update_compilers["compiler"][name][new_compiler_entry]["module"] = {}
+            update_compilers["compiler"][name][new_compiler_entry]["module"]["load"] = [
+                module
+            ]
+            update_compilers["compiler"][name][new_compiler_entry]["module"][
+                "purge"
+            ] = False
 
     return update_compilers
 
@@ -179,6 +182,7 @@ def func_compiler_find(args=None):
     print("Testing Modules:")
 
     valid_modules = validate_modules(discovered_modules)
+
     update_compilers = update_compiler_section(valid_modules, compilers)
 
     configuration["compilers"] = update_compilers
