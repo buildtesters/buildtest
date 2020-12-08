@@ -155,22 +155,22 @@ def discover_by_buildspecs(buildspec):
 def discover_buildspecs(
     tags=None, executorname=None, buildspec=None, exclude_buildspec=None, debug=False
 ):
-    """This method discovers all buildspecs and returns a list of discovered
-    excluded buildspecs. The input arguments ``tags``, ``buildspec``, ``exclude_buildspec``
-    map to ``--tags`` ``--buildspec`` and ``--exclude`` option in buildtest build.
+    """ This method discovers all buildspecs and returns a list of discovered
+        excluded buildspecs. The input arguments ``tags``, ``buildspec``, ``exclude_buildspec``
+        map to ``--tags`` ``--buildspec`` and ``--exclude`` option in buildtest build.
 
-    :param tags: Input argument from ``buildtest build --tags``
-    :type tags: list
-    :param executorname: Input argument from ``buildtest build --executor-name``
-    :type executorname: list
-    :param buildspec: Input argument from ``buildtest build --buildspec``
-    :type buildspec: str
-    :param exclude_buildspec: Input argument from ``buildtest build --exclude``
-    :type tags: str
-    :param debug: Boolean to control print messages to stdout
-    :type debug: boolean
-    :return: two lists of discovered and excluded buildspecs
-    :rtype: list, list
+        :param tags: Input argument from ``buildtest build --tags``
+        :type tags: list
+        :param executorname: Input argument from ``buildtest build --executor-name``
+        :type executorname: list
+        :param buildspec: Input argument from ``buildtest build --buildspec``
+        :type buildspec: str
+        :param exclude_buildspec: Input argument from ``buildtest build --exclude``
+        :type tags: str
+        :param debug: Boolean to control print messages to stdout
+        :type debug: boolean
+        :return: two lists of discovered and excluded buildspecs
+        :rtype: list, list
     """
 
     buildspecs = []
