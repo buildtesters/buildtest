@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/account
+settings.schema.json#/definitions/slurm/properties/account
 ```
 
 Specify Job Account for charging resources

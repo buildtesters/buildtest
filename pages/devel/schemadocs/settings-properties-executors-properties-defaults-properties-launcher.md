@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/launcher
+settings.schema.json#/properties/executors/properties/defaults/properties/launcher
 ```
 
 Specify batch launcher to use when submitting jobs, this is applicable for LSF and Slurm Executors.

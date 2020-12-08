@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang
+settings.schema.json#/definitions/clang
 ```
 
 The clang compiler section consist of `cc` and `cxx` wrapper to specify C and C++ wrapper which are generally `clang` and `clang++`
@@ -17,11 +17,11 @@ The clang compiler section consist of `cc` and `cxx` wrapper to specify C and C+
 
 # undefined Properties
 
-| Property            | Type     | Required | Nullable       | Defined by                                                                                                                                                                                       |
-| :------------------ | -------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [cc](#cc)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/cc")                       |
-| [cxx](#cxx)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/cxx")                     |
-| [modules](#modules) | `array`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/modules") |
+| Property          | Type     | Required | Nullable       | Defined by                                                                                                                   |
+| :---------------- | -------- | -------- | -------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cc.md "settings.schema.json#/definitions/clang/properties/cc")         |
+| [cxx](#cxx)       | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cxx.md "settings.schema.json#/definitions/clang/properties/cxx")       |
+| [module](#module) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/clang/properties/module") |
 
 ## cc
 
@@ -33,7 +33,7 @@ Specify path to C compiler wrapper. You may specify a compiler wrapper such as `
 -   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/cc")
+-   defined in: [buildtest configuration schema](settings-definitions-cc.md "settings.schema.json#/definitions/clang/properties/cc")
 
 ### cc Type
 
@@ -49,28 +49,24 @@ Specify path to C++ compiler wrapper. You may specify a compiler wrapper such as
 -   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/cxx")
+-   defined in: [buildtest configuration schema](settings-definitions-cxx.md "settings.schema.json#/definitions/clang/properties/cxx")
 
 ### cxx Type
 
 `string`
 
-## modules
-
-Specify list of modules to load when resolving compiler. The modules will be inserted into test script when using the compiler
+## module
 
 
-`modules`
+
+
+`module`
 
 -   is optional
--   Type: `string[]`
+-   Type: `object` ([Details](settings-definitions-module.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/clang/properties/modules")
+-   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/clang/properties/module")
 
-### modules Type
+### module Type
 
-`string[]`
-
-### modules Constraints
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
+`object` ([Details](settings-definitions-module.md))

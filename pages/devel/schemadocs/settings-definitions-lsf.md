@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf
+settings.schema.json#/definitions/lsf
 ```
 
 An instance object of lsf executor
@@ -17,16 +17,16 @@ An instance object of lsf executor
 
 # undefined Properties
 
-| Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                                                                    |
-| :------------------------------ | ------------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [description](#description)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/description")     |
-| [launcher](#launcher)           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-launcher.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/launcher")           |
-| [options](#options)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-options.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/options")             |
-| [queue](#queue)                 | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-queue.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/queue")                 |
-| [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-before_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/before_script") |
-| [after_script](#after_script)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-after_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/after_script")   |
-| [max_pend_time](#max_pend_time) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/max_pend_time")                |
-| [account](#account)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-account.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/account")                            |
+| Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                              |
+| :------------------------------ | ------------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [description](#description)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-description.md "settings.schema.json#/definitions/lsf/properties/description")     |
+| [launcher](#launcher)           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-launcher.md "settings.schema.json#/definitions/lsf/properties/launcher")           |
+| [options](#options)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-options.md "settings.schema.json#/definitions/lsf/properties/options")             |
+| [queue](#queue)                 | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-queue.md "settings.schema.json#/definitions/lsf/properties/queue")                 |
+| [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-before_script.md "settings.schema.json#/definitions/lsf/properties/before_script") |
+| [after_script](#after_script)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-after_script.md "settings.schema.json#/definitions/lsf/properties/after_script")   |
+| [max_pend_time](#max_pend_time) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_pend_time.md "settings.schema.json#/definitions/lsf/properties/max_pend_time")                |
+| [account](#account)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/lsf/properties/account")                            |
 
 ## description
 
@@ -38,7 +38,7 @@ description field for documenting your executor
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/description")
+-   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-description.md "settings.schema.json#/definitions/lsf/properties/description")
 
 ### description Type
 
@@ -54,7 +54,7 @@ Specify the lsf batch scheduler to use. This overrides the default `launcher` fi
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-launcher.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/launcher")
+-   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-launcher.md "settings.schema.json#/definitions/lsf/properties/launcher")
 
 ### launcher Type
 
@@ -78,7 +78,7 @@ Specify any options for `bsub` for this executor when running all jobs associate
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-options.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/options")
+-   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-options.md "settings.schema.json#/definitions/lsf/properties/options")
 
 ### options Type
 
@@ -94,7 +94,7 @@ Specify the lsf queue you want to use `-q <queue>`
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-queue.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/queue")
+-   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-queue.md "settings.schema.json#/definitions/lsf/properties/queue")
 
 ### queue Type
 
@@ -110,7 +110,7 @@ The `before_script` section can be used to specify commands before start of test
 -   is optional
 -   Type: unknown
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-before_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/before_script")
+-   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-before_script.md "settings.schema.json#/definitions/lsf/properties/before_script")
 
 ### before_script Type
 
@@ -126,7 +126,7 @@ The `after_script` section can be used to specify commands at end of test. The s
 -   is optional
 -   Type: unknown
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-after_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/after_script")
+-   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-after_script.md "settings.schema.json#/definitions/lsf/properties/after_script")
 
 ### after_script Type
 
@@ -142,7 +142,7 @@ Cancel job if it is still pending in queue beyond max_pend_time
 -   is optional
 -   Type: `integer`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/max_pend_time")
+-   defined in: [buildtest configuration schema](settings-definitions-max_pend_time.md "settings.schema.json#/definitions/lsf/properties/max_pend_time")
 
 ### max_pend_time Type
 
@@ -170,7 +170,7 @@ Specify Job Account for charging resources
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-account.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/account")
+-   defined in: [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/lsf/properties/account")
 
 ### account Type
 

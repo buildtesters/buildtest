@@ -1,7 +1,7 @@
 # Untitled undefined type in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cuda/properties
+settings.schema.json#/definitions/cuda/properties
 ```
 
 

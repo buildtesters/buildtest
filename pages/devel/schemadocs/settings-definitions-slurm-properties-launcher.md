@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/launcher
+settings.schema.json#/definitions/slurm/properties/launcher
 ```
 
 Specify the slurm batch scheduler to use. This overrides the default `launcher` field. This must be `sbatch`. 

@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cc
+settings.schema.json#/definitions/compiler_section/properties/cc
 ```
 
 Specify path to C compiler wrapper. You may specify a compiler wrapper such as `gcc` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.

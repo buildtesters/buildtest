@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/cluster
+settings.schema.json#/definitions/slurm/properties/cluster
 ```
 
 Specify the slurm cluster you want to use `-M <cluster>`

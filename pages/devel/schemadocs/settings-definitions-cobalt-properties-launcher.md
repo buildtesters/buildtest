@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cobalt/properties/launcher
+settings.schema.json#/definitions/cobalt/properties/launcher
 ```
 
 Specify the cobalt batch scheduler to use. This overrides the default `launcher` field. It must be `qsub`. 

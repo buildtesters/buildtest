@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local
+settings.schema.json#/definitions/local
 ```
 
 An instance object of local executor
@@ -17,12 +17,12 @@ An instance object of local executor
 
 # undefined Properties
 
-| Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                                                                        |
-| :------------------------------ | ------------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [description](#description)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local/properties/description")     |
-| [shell](#shell)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-shell.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local/properties/shell")                 |
-| [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-before_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local/properties/before_script") |
-| [after_script](#after_script)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-after_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local/properties/after_script")   |
+| Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                  |
+| :------------------------------ | ------------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [description](#description)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-description.md "settings.schema.json#/definitions/local/properties/description")     |
+| [shell](#shell)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-shell.md "settings.schema.json#/definitions/local/properties/shell")                 |
+| [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-before_script.md "settings.schema.json#/definitions/local/properties/before_script") |
+| [after_script](#after_script)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-after_script.md "settings.schema.json#/definitions/local/properties/after_script")   |
 
 ## description
 
@@ -34,7 +34,7 @@ description field for documenting your executor
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-local-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local/properties/description")
+-   defined in: [buildtest configuration schema](settings-definitions-local-properties-description.md "settings.schema.json#/definitions/local/properties/description")
 
 ### description Type
 
@@ -50,7 +50,7 @@ Specify the shell launcher you want to use when running tests locally
 -   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-local-properties-shell.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local/properties/shell")
+-   defined in: [buildtest configuration schema](settings-definitions-local-properties-shell.md "settings.schema.json#/definitions/local/properties/shell")
 
 ### shell Type
 
@@ -76,7 +76,7 @@ Specify the shell launcher you want to use when running tests locally
 -   is optional
 -   Type: unknown
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-local-properties-before_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local/properties/before_script")
+-   defined in: [buildtest configuration schema](settings-definitions-local-properties-before_script.md "settings.schema.json#/definitions/local/properties/before_script")
 
 ### before_script Type
 
@@ -92,7 +92,7 @@ unknown
 -   is optional
 -   Type: unknown
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-local-properties-after_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local/properties/after_script")
+-   defined in: [buildtest configuration schema](settings-definitions-local-properties-after_script.md "settings.schema.json#/definitions/local/properties/after_script")
 
 ### after_script Type
 

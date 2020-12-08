@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults
+settings.schema.json#/properties/executors/properties/defaults
 ```
 
 Specify default executor settings for all executors
@@ -17,12 +17,12 @@ Specify default executor settings for all executors
 
 # undefined Properties
 
-| Property                        | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                                                                      |
-| :------------------------------ | --------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [pollinterval](#pollinterval)   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-pollinterval.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/pollinterval")   |
-| [launcher](#launcher)           | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-launcher.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/launcher")           |
-| [max_pend_time](#max_pend_time) | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/max_pend_time") |
-| [account](#account)             | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-account.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/account")             |
+| Property                        | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                |
+| :------------------------------ | --------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [pollinterval](#pollinterval)   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-pollinterval.md "settings.schema.json#/properties/executors/properties/defaults/properties/pollinterval")   |
+| [launcher](#launcher)           | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-launcher.md "settings.schema.json#/properties/executors/properties/defaults/properties/launcher")           |
+| [max_pend_time](#max_pend_time) | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-max_pend_time.md "settings.schema.json#/properties/executors/properties/defaults/properties/max_pend_time") |
+| [account](#account)             | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-account.md "settings.schema.json#/properties/executors/properties/defaults/properties/account")             |
 
 ## pollinterval
 
@@ -34,7 +34,7 @@ Specify poll interval in seconds after job submission, where buildtest will slee
 -   is optional
 -   Type: `integer`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-pollinterval.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/pollinterval")
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-pollinterval.md "settings.schema.json#/properties/executors/properties/defaults/properties/pollinterval")
 
 ### pollinterval Type
 
@@ -64,7 +64,7 @@ Specify batch launcher to use when submitting jobs, this is applicable for LSF a
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-launcher.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/launcher")
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-launcher.md "settings.schema.json#/properties/executors/properties/defaults/properties/launcher")
 
 ### launcher Type
 
@@ -90,7 +90,7 @@ Cancel job if it is still pending in queue beyond max_pend_time
 -   is optional
 -   Type: `integer`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/max_pend_time")
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-max_pend_time.md "settings.schema.json#/properties/executors/properties/defaults/properties/max_pend_time")
 
 ### max_pend_time Type
 
@@ -118,7 +118,7 @@ Specify Job Account for charging resources
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-account.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/account")
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults-properties-account.md "settings.schema.json#/properties/executors/properties/defaults/properties/account")
 
 ### account Type
 

@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find
+settings.schema.json#/properties/compilers/properties/find
 ```
 
 Find compilers based on module names
@@ -17,14 +17,14 @@ Find compilers based on module names
 
 # undefined Properties
 
-| Property        | Type    | Required | Nullable       | Defined by                                                                                                                                                                                                        |
-| :-------------- | ------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [gcc](#gcc)     | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/gcc")   |
-| [intel](#intel) | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/intel") |
-| [cray](#cray)   | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/cray")  |
-| [clang](#clang) | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/clang") |
-| [cuda](#cuda)   | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/cuda")  |
-| [pgi](#pgi)     | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/pgi")   |
+| Property        | Type    | Required | Nullable       | Defined by                                                                                                                                                  |
+| :-------------- | ------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [gcc](#gcc)     | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/gcc")   |
+| [intel](#intel) | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/intel") |
+| [cray](#cray)   | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/cray")  |
+| [clang](#clang) | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/clang") |
+| [cuda](#cuda)   | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/cuda")  |
+| [pgi](#pgi)     | `array` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/pgi")   |
 
 ## gcc
 
@@ -36,7 +36,7 @@ Find compilers based on module names
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/gcc")
+-   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/gcc")
 
 ### gcc Type
 
@@ -56,7 +56,7 @@ Find compilers based on module names
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/intel")
+-   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/intel")
 
 ### intel Type
 
@@ -76,7 +76,7 @@ Find compilers based on module names
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/cray")
+-   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/cray")
 
 ### cray Type
 
@@ -96,7 +96,7 @@ Find compilers based on module names
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/clang")
+-   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/clang")
 
 ### clang Type
 
@@ -116,7 +116,7 @@ Find compilers based on module names
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/cuda")
+-   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/cuda")
 
 ### cuda Type
 
@@ -136,7 +136,7 @@ Find compilers based on module names
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find/properties/pgi")
+-   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "settings.schema.json#/properties/compilers/properties/find/properties/pgi")
 
 ### pgi Type
 

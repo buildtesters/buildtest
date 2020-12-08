@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section
+settings.schema.json#/definitions/compiler_section
 ```
 
 A compiler section is composed of `cc`, `cxx` and `fc` wrapper these are required when you need to specify compiler wrapper.
@@ -17,12 +17,12 @@ A compiler section is composed of `cc`, `cxx` and `fc` wrapper these are require
 
 # undefined Properties
 
-| Property            | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                  |
-| :------------------ | -------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [cc](#cc)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cc")                       |
-| [cxx](#cxx)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cxx")                     |
-| [fc](#fc)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-fc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/fc")                       |
-| [modules](#modules) | `array`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/modules") |
+| Property          | Type     | Required | Nullable       | Defined by                                                                                                                              |
+| :---------------- | -------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cc.md "settings.schema.json#/definitions/compiler_section/properties/cc")         |
+| [cxx](#cxx)       | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cxx.md "settings.schema.json#/definitions/compiler_section/properties/cxx")       |
+| [fc](#fc)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-fc.md "settings.schema.json#/definitions/compiler_section/properties/fc")         |
+| [module](#module) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/compiler_section/properties/module") |
 
 ## cc
 
@@ -34,7 +34,7 @@ Specify path to C compiler wrapper. You may specify a compiler wrapper such as `
 -   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-cc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cc")
+-   defined in: [buildtest configuration schema](settings-definitions-cc.md "settings.schema.json#/definitions/compiler_section/properties/cc")
 
 ### cc Type
 
@@ -50,7 +50,7 @@ Specify path to C++ compiler wrapper. You may specify a compiler wrapper such as
 -   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-cxx.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/cxx")
+-   defined in: [buildtest configuration schema](settings-definitions-cxx.md "settings.schema.json#/definitions/compiler_section/properties/cxx")
 
 ### cxx Type
 
@@ -66,28 +66,24 @@ Specify path to Fortran compiler wrapper. You may specify a compiler wrapper suc
 -   is required
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-fc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/fc")
+-   defined in: [buildtest configuration schema](settings-definitions-fc.md "settings.schema.json#/definitions/compiler_section/properties/fc")
 
 ### fc Type
 
 `string`
 
-## modules
-
-Specify list of modules to load when resolving compiler. The modules will be inserted into test script when using the compiler
+## module
 
 
-`modules`
+
+
+`module`
 
 -   is optional
--   Type: `string[]`
+-   Type: `object` ([Details](settings-definitions-module.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-unique_string_array.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/compiler_section/properties/modules")
+-   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/compiler_section/properties/module")
 
-### modules Type
+### module Type
 
-`string[]`
-
-### modules Constraints
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
+`object` ([Details](settings-definitions-module.md))

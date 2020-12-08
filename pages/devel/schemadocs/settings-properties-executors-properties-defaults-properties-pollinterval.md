@@ -1,7 +1,7 @@
 # Untitled integer in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults/properties/pollinterval
+settings.schema.json#/properties/executors/properties/defaults/properties/pollinterval
 ```
 
 Specify poll interval in seconds after job submission, where buildtest will sleep and poll all jobs for job states. This field can be configured based on your preference. Excessive polling every few seconds can result in system degradation. 

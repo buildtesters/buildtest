@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/clang
+settings.schema.json#/properties/compilers/properties/compiler/properties/clang
 ```
 
 Declaration of one or more Clang compilers where we define C, C++ compiler. The Clang compiler wrapper are `clang`, `clang++`.
@@ -17,9 +17,9 @@ Declaration of one or more Clang compilers where we define C, C++ compiler. The 
 
 # undefined Properties
 
-| Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                      |
-| :------- | -------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-clang.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/clang/patternProperties/^.\*$") |
+| Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                |
+| :------- | -------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-clang.md "settings.schema.json#/properties/compilers/properties/compiler/properties/clang/patternProperties/^.\*$") |
 
 ## Pattern: `^.*$`
 
@@ -31,7 +31,7 @@ The clang compiler section consist of `cc` and `cxx` wrapper to specify C and C+
 -   is optional
 -   Type: `object` ([Details](settings-definitions-clang.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-clang.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/clang/patternProperties/^.\*$")
+-   defined in: [buildtest configuration schema](settings-definitions-clang.md "settings.schema.json#/properties/compilers/properties/compiler/properties/clang/patternProperties/^.\*$")
 
 ### ^.\*$ Type
 

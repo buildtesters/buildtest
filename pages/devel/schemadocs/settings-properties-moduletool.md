@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/moduletool
+settings.schema.json#/properties/moduletool
 ```
 
 Specify modules tool used for interacting with `module` command. 

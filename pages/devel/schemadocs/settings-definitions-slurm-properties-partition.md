@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/partition
+settings.schema.json#/definitions/slurm/properties/partition
 ```
 
 Specify the slurm partition you want to use `-p <partition>`

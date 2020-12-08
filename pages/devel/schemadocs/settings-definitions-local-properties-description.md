@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/local/properties/description
+settings.schema.json#/definitions/local/properties/description
 ```
 
 description field for documenting your executor

@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/intel
+settings.schema.json#/properties/compilers/properties/compiler/properties/intel
 ```
 
 Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler. The Intel compiler wrapper are `icc`, `icpc` and `ifort`. 
@@ -17,9 +17,9 @@ Declaration of one or more Intel compilers where we define C, C++ and Fortran co
 
 # undefined Properties
 
-| Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                                 |
-| :------- | -------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/intel/patternProperties/^.\*$") |
+| Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                           |
+| :------- | -------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section.md "settings.schema.json#/properties/compilers/properties/compiler/properties/intel/patternProperties/^.\*$") |
 
 ## Pattern: `^.*$`
 
@@ -31,7 +31,7 @@ A compiler section is composed of `cc`, `cxx` and `fc` wrapper these are require
 -   is optional
 -   Type: `object` ([Details](settings-definitions-compiler_section.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-compiler_section.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/intel/patternProperties/^.\*$")
+-   defined in: [buildtest configuration schema](settings-definitions-compiler_section.md "settings.schema.json#/properties/compilers/properties/compiler/properties/intel/patternProperties/^.\*$")
 
 ### ^.\*$ Type
 

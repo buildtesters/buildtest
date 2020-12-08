@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm
+settings.schema.json#/definitions/slurm
 ```
 
 An instance object of slurm executor
@@ -17,18 +17,18 @@ An instance object of slurm executor
 
 # undefined Properties
 
-| Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                                                                        |
-| :------------------------------ | ------------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [description](#description)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/description")     |
-| [launcher](#launcher)           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-launcher.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/launcher")           |
-| [options](#options)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-options.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/options")             |
-| [cluster](#cluster)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-cluster.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/cluster")             |
-| [partition](#partition)         | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-partition.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/partition")         |
-| [qos](#qos)                     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-qos.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/qos")                     |
-| [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-before_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/before_script") |
-| [after_script](#after_script)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-after_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/after_script")   |
-| [max_pend_time](#max_pend_time) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/max_pend_time")                  |
-| [account](#account)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-account.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/account")                              |
+| Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                  |
+| :------------------------------ | ------------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [description](#description)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-description.md "settings.schema.json#/definitions/slurm/properties/description")     |
+| [launcher](#launcher)           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-launcher.md "settings.schema.json#/definitions/slurm/properties/launcher")           |
+| [options](#options)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-options.md "settings.schema.json#/definitions/slurm/properties/options")             |
+| [cluster](#cluster)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-cluster.md "settings.schema.json#/definitions/slurm/properties/cluster")             |
+| [partition](#partition)         | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-partition.md "settings.schema.json#/definitions/slurm/properties/partition")         |
+| [qos](#qos)                     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-qos.md "settings.schema.json#/definitions/slurm/properties/qos")                     |
+| [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-before_script.md "settings.schema.json#/definitions/slurm/properties/before_script") |
+| [after_script](#after_script)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-after_script.md "settings.schema.json#/definitions/slurm/properties/after_script")   |
+| [max_pend_time](#max_pend_time) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_pend_time.md "settings.schema.json#/definitions/slurm/properties/max_pend_time")                  |
+| [account](#account)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/slurm/properties/account")                              |
 
 ## description
 
@@ -40,7 +40,7 @@ description field for documenting your executor
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-description.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/description")
+-   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-description.md "settings.schema.json#/definitions/slurm/properties/description")
 
 ### description Type
 
@@ -56,7 +56,7 @@ Specify the slurm batch scheduler to use. This overrides the default `launcher` 
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-launcher.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/launcher")
+-   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-launcher.md "settings.schema.json#/definitions/slurm/properties/launcher")
 
 ### launcher Type
 
@@ -80,7 +80,7 @@ Specify any other options for `sbatch` used by this executor for running all job
 -   is optional
 -   Type: `string[]`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-options.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/options")
+-   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-options.md "settings.schema.json#/definitions/slurm/properties/options")
 
 ### options Type
 
@@ -96,7 +96,7 @@ Specify the slurm cluster you want to use `-M <cluster>`
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-cluster.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/cluster")
+-   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-cluster.md "settings.schema.json#/definitions/slurm/properties/cluster")
 
 ### cluster Type
 
@@ -112,7 +112,7 @@ Specify the slurm partition you want to use `-p <partition>`
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-partition.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/partition")
+-   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-partition.md "settings.schema.json#/definitions/slurm/properties/partition")
 
 ### partition Type
 
@@ -128,7 +128,7 @@ Specify the slurm qos you want to use `-q <qos>`
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-qos.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/qos")
+-   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-qos.md "settings.schema.json#/definitions/slurm/properties/qos")
 
 ### qos Type
 
@@ -144,7 +144,7 @@ The `before_script` section can be used to specify commands before start of test
 -   is optional
 -   Type: unknown
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-before_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/before_script")
+-   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-before_script.md "settings.schema.json#/definitions/slurm/properties/before_script")
 
 ### before_script Type
 
@@ -160,7 +160,7 @@ The `after_script` section can be used to specify commands at end of test. The s
 -   is optional
 -   Type: unknown
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-after_script.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/after_script")
+-   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-after_script.md "settings.schema.json#/definitions/slurm/properties/after_script")
 
 ### after_script Type
 
@@ -176,7 +176,7 @@ Cancel job if it is still pending in queue beyond max_pend_time
 -   is optional
 -   Type: `integer`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-max_pend_time.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/max_pend_time")
+-   defined in: [buildtest configuration schema](settings-definitions-max_pend_time.md "settings.schema.json#/definitions/slurm/properties/max_pend_time")
 
 ### max_pend_time Type
 
@@ -204,7 +204,7 @@ Specify Job Account for charging resources
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-account.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/account")
+-   defined in: [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/slurm/properties/account")
 
 ### account Type
 

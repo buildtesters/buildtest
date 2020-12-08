@@ -1,7 +1,7 @@
 # Untitled undefined type in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/before_script
+settings.schema.json#/definitions/slurm/properties/before_script
 ```
 
 The `before_script` section can be used to specify commands before start of test. The script will be sourced in active shell.

@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/cobalt
+settings.schema.json#/properties/executors/properties/cobalt
 ```
 
 The `cobalt` section is used for declaring Cobalt executors for running jobs using Cobalt scheduler
@@ -17,9 +17,9 @@ The `cobalt` section is used for declaring Cobalt executors for running jobs usi
 
 # undefined Properties
 
-| Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                    |
-| :------- | -------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/cobalt/patternProperties/^.\*$") |
+| Property | Type     | Required | Nullable       | Defined by                                                                                                                                              |
+| :------- | -------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt.md "settings.schema.json#/properties/executors/properties/cobalt/patternProperties/^.\*$") |
 
 ## Pattern: `^.*$`
 
@@ -31,7 +31,7 @@ An instance object of cobalt executor
 -   is optional
 -   Type: `object` ([Details](settings-definitions-cobalt.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-cobalt.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/cobalt/patternProperties/^.\*$")
+-   defined in: [buildtest configuration schema](settings-definitions-cobalt.md "settings.schema.json#/properties/executors/properties/cobalt/patternProperties/^.\*$")
 
 ### ^.\*$ Type
 

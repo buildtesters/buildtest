@@ -1,7 +1,7 @@
 # Untitled boolean in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/load_default_buildspecs
+settings.schema.json#/properties/load_default_buildspecs
 ```
 
 Specify whether buildtest should automatically load  uildspecs provided in buildtest repo into buildspec cache

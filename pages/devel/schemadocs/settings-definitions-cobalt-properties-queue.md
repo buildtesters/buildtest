@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/cobalt/properties/queue
+settings.schema.json#/definitions/cobalt/properties/queue
 ```
 
 Specify the lsf queue you want to use `-q <queue>`

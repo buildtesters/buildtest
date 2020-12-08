@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler
+settings.schema.json#/properties/compilers/properties/compiler
 ```
 
 Start of compiler declaration
@@ -17,14 +17,14 @@ Start of compiler declaration
 
 # undefined Properties
 
-| Property        | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                                      |
-| :-------------- | -------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [gcc](#gcc)     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-gcc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/gcc")     |
-| [intel](#intel) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-intel.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/intel") |
-| [cray](#cray)   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-cray.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/cray")   |
-| [pgi](#pgi)     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-pgi.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/pgi")     |
-| [clang](#clang) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-clang.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/clang") |
-| [cuda](#cuda)   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-cuda.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/cuda")   |
+| Property        | Type     | Required | Nullable       | Defined by                                                                                                                                                                                |
+| :-------------- | -------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [gcc](#gcc)     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-gcc.md "settings.schema.json#/properties/compilers/properties/compiler/properties/gcc")     |
+| [intel](#intel) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-intel.md "settings.schema.json#/properties/compilers/properties/compiler/properties/intel") |
+| [cray](#cray)   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-cray.md "settings.schema.json#/properties/compilers/properties/compiler/properties/cray")   |
+| [pgi](#pgi)     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-pgi.md "settings.schema.json#/properties/compilers/properties/compiler/properties/pgi")     |
+| [clang](#clang) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-clang.md "settings.schema.json#/properties/compilers/properties/compiler/properties/clang") |
+| [cuda](#cuda)   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-cuda.md "settings.schema.json#/properties/compilers/properties/compiler/properties/cuda")   |
 
 ## gcc
 
@@ -36,7 +36,7 @@ Declaration of one or more GNU compilers where we define C, C++ and Fortran comp
 -   is optional
 -   Type: `object` ([Details](settings-properties-compilers-properties-compiler-properties-gcc.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-gcc.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/gcc")
+-   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-gcc.md "settings.schema.json#/properties/compilers/properties/compiler/properties/gcc")
 
 ### gcc Type
 
@@ -52,7 +52,7 @@ Declaration of one or more Intel compilers where we define C, C++ and Fortran co
 -   is optional
 -   Type: `object` ([Details](settings-properties-compilers-properties-compiler-properties-intel.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-intel.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/intel")
+-   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-intel.md "settings.schema.json#/properties/compilers/properties/compiler/properties/intel")
 
 ### intel Type
 
@@ -68,7 +68,7 @@ Declaration of one or more Cray compilers where we define C, C++ and Fortran com
 -   is optional
 -   Type: `object` ([Details](settings-properties-compilers-properties-compiler-properties-cray.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-cray.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/cray")
+-   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-cray.md "settings.schema.json#/properties/compilers/properties/compiler/properties/cray")
 
 ### cray Type
 
@@ -84,7 +84,7 @@ Declaration of one or more PGI compilers where we define C, C++ and Fortran comp
 -   is optional
 -   Type: `object` ([Details](settings-properties-compilers-properties-compiler-properties-pgi.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-pgi.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/pgi")
+-   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-pgi.md "settings.schema.json#/properties/compilers/properties/compiler/properties/pgi")
 
 ### pgi Type
 
@@ -100,7 +100,7 @@ Declaration of one or more Clang compilers where we define C, C++ compiler. The 
 -   is optional
 -   Type: `object` ([Details](settings-properties-compilers-properties-compiler-properties-clang.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-clang.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/clang")
+-   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-clang.md "settings.schema.json#/properties/compilers/properties/compiler/properties/clang")
 
 ### clang Type
 
@@ -116,7 +116,7 @@ Declaration of one or more Cuda compilers where we define C compiler. The Cuda c
 -   is optional
 -   Type: `object` ([Details](settings-properties-compilers-properties-compiler-properties-cuda.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-cuda.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler/properties/cuda")
+-   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler-properties-cuda.md "settings.schema.json#/properties/compilers/properties/compiler/properties/cuda")
 
 ### cuda Type
 

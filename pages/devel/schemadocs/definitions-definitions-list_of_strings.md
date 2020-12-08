@@ -1,21 +1,21 @@
-# Untitled array in JSON Schema Definitions File.  Schema
+# Untitled array in buildtest configuration schema Schema
 
 ```txt
-definitions.schema.json#/definitions/string_or_list/oneOf/1
+settings.schema.json#/definitions/module/properties/load
 ```
 
+Load one or more modules via `module load`
 
 
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
+| :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                         |
-| :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [definitions.schema.json\*](../out/definitions.schema.json "open original schema") |
-
-## 1 Type
+## load Type
 
 `string[]`
 
-## 1 Constraints
+## load Constraints
 
 **minimum number of items**: the minimum number of items for this array is: `1`
 

@@ -1,7 +1,7 @@
 # Untitled array in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/options
+settings.schema.json#/definitions/lsf/properties/options
 ```
 
 Specify any options for `bsub` for this executor when running all jobs associated to this executor

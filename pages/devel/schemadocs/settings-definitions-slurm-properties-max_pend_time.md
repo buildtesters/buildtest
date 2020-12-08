@@ -1,7 +1,7 @@
 # Untitled integer in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/max_pend_time
+settings.schema.json#/definitions/slurm/properties/max_pend_time
 ```
 
 Cancel job if it is still pending in queue beyond max_pend_time

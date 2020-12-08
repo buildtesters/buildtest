@@ -1,7 +1,7 @@
 # Untitled array in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/options
+settings.schema.json#/definitions/slurm/properties/options
 ```
 
 Specify any other options for `sbatch` used by this executor for running all jobs.

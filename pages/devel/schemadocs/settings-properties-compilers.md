@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers
+settings.schema.json#/properties/compilers
 ```
 
 Declare compiler section for defining system compilers that can be referenced in buildspec.
@@ -17,10 +17,10 @@ Declare compiler section for defining system compilers that can be referenced in
 
 # undefined Properties
 
-| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                    |
-| :-------------------- | -------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [find](#find)         | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-find.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find")         |
-| [compiler](#compiler) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler") |
+| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                              |
+| :-------------------- | -------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [find](#find)         | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-find.md "settings.schema.json#/properties/compilers/properties/find")         |
+| [compiler](#compiler) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-compiler.md "settings.schema.json#/properties/compilers/properties/compiler") |
 
 ## find
 
@@ -32,7 +32,7 @@ Find compilers based on module names
 -   is optional
 -   Type: `object` ([Details](settings-properties-compilers-properties-find.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/find")
+-   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find.md "settings.schema.json#/properties/compilers/properties/find")
 
 ### find Type
 
@@ -48,7 +48,7 @@ Start of compiler declaration
 -   is optional
 -   Type: `object` ([Details](settings-properties-compilers-properties-compiler.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/compilers/properties/compiler")
+-   defined in: [buildtest configuration schema](settings-properties-compilers-properties-compiler.md "settings.schema.json#/properties/compilers/properties/compiler")
 
 ### compiler Type
 

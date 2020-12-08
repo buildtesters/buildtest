@@ -1,7 +1,7 @@
 # Untitled undefined type in buildtest configuration schema Schema
 
 ```txt
-settings.schema.json#/properties/executors/properties/slurm/patternProperties
+settings.schema.json#/definitions/module/properties
 ```
 
 
@@ -11,6 +11,6 @@ settings.schema.json#/properties/executors/properties/slurm/patternProperties
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
-## patternProperties Type
+## properties Type
 
 unknown

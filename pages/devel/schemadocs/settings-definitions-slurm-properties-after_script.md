@@ -1,7 +1,7 @@
 # Untitled undefined type in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/slurm/properties/after_script
+settings.schema.json#/definitions/slurm/properties/after_script
 ```
 
 The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.

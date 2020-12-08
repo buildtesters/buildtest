@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/slurm
+settings.schema.json#/properties/executors/properties/slurm
 ```
 
 The `slurm` section is used for declaring Slurm executors for running jobs using Slurm scheduler
@@ -17,9 +17,9 @@ The `slurm` section is used for declaring Slurm executors for running jobs using
 
 # undefined Properties
 
-| Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                  |
-| :------- | -------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/slurm/patternProperties/^.\*$") |
+| Property | Type     | Required | Nullable       | Defined by                                                                                                                                            |
+| :------- | -------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm.md "settings.schema.json#/properties/executors/properties/slurm/patternProperties/^.\*$") |
 
 ## Pattern: `^.*$`
 
@@ -31,7 +31,7 @@ An instance object of slurm executor
 -   is optional
 -   Type: `object` ([Details](settings-definitions-slurm.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/slurm/patternProperties/^.\*$")
+-   defined in: [buildtest configuration schema](settings-definitions-slurm.md "settings.schema.json#/properties/executors/properties/slurm/patternProperties/^.\*$")
 
 ### ^.\*$ Type
 

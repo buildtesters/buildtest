@@ -1,7 +1,7 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/definitions/lsf/properties/launcher
+settings.schema.json#/definitions/lsf/properties/launcher
 ```
 
 Specify the lsf batch scheduler to use. This overrides the default `launcher` field. It must be `bsub`. 

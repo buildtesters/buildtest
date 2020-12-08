@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-https://buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors
+settings.schema.json#/properties/executors
 ```
 
 The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be `local`, `lsf`, `slurm`, `cobalt`. The executors are referenced in buildspec using `executor` field.
@@ -17,13 +17,13 @@ The executor section is used for declaring your executors that are responsible f
 
 # undefined Properties
 
-| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                    |
-| :-------------------- | -------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [defaults](#defaults) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults") |
-| [local](#local)       | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-local.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/local")       |
-| [lsf](#lsf)           | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-lsf.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/lsf")           |
-| [slurm](#slurm)       | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-slurm.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/slurm")       |
-| [cobalt](#cobalt)     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-cobalt.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/cobalt")     |
+| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                              |
+| :-------------------- | -------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [defaults](#defaults) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-defaults.md "settings.schema.json#/properties/executors/properties/defaults") |
+| [local](#local)       | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-local.md "settings.schema.json#/properties/executors/properties/local")       |
+| [lsf](#lsf)           | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-lsf.md "settings.schema.json#/properties/executors/properties/lsf")           |
+| [slurm](#slurm)       | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-slurm.md "settings.schema.json#/properties/executors/properties/slurm")       |
+| [cobalt](#cobalt)     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-properties-executors-properties-cobalt.md "settings.schema.json#/properties/executors/properties/cobalt")     |
 
 ## defaults
 
@@ -35,7 +35,7 @@ Specify default executor settings for all executors
 -   is optional
 -   Type: `object` ([Details](settings-properties-executors-properties-defaults.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/defaults")
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-defaults.md "settings.schema.json#/properties/executors/properties/defaults")
 
 ### defaults Type
 
@@ -51,7 +51,7 @@ The `local` section is used for declaring local executors for running jobs on lo
 -   is optional
 -   Type: `object` ([Details](settings-properties-executors-properties-local.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-executors-properties-local.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/local")
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-local.md "settings.schema.json#/properties/executors/properties/local")
 
 ### local Type
 
@@ -67,7 +67,7 @@ The `lsf` section is used for declaring LSF executors for running jobs using LSF
 -   is optional
 -   Type: `object` ([Details](settings-properties-executors-properties-lsf.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-executors-properties-lsf.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/lsf")
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-lsf.md "settings.schema.json#/properties/executors/properties/lsf")
 
 ### lsf Type
 
@@ -83,7 +83,7 @@ The `slurm` section is used for declaring Slurm executors for running jobs using
 -   is optional
 -   Type: `object` ([Details](settings-properties-executors-properties-slurm.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-executors-properties-slurm.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/slurm")
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-slurm.md "settings.schema.json#/properties/executors/properties/slurm")
 
 ### slurm Type
 
@@ -99,7 +99,7 @@ The `cobalt` section is used for declaring Cobalt executors for running jobs usi
 -   is optional
 -   Type: `object` ([Details](settings-properties-executors-properties-cobalt.md))
 -   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-executors-properties-cobalt.md "https&#x3A;//buildtesters.github.io/buildtest/schemas/settings.schema.json#/properties/executors/properties/cobalt")
+-   defined in: [buildtest configuration schema](settings-properties-executors-properties-cobalt.md "settings.schema.json#/properties/executors/properties/cobalt")
 
 ### cobalt Type
 
