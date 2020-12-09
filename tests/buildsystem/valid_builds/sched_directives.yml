@@ -1,0 +1,22 @@
+version: "1.0"
+buildspecs:
+  slurm_hostname:
+    type: script
+    executor: local.bash
+    description: Slurm batch generation check
+    sbatch: ["-n 1", "-N 1", "-t 10"]
+    run: hostname
+
+  lsf_hostname:
+    type: script
+    executor: local.bash
+    description: LSF batch generation check
+    bsub: ["-n 1", "-W 10"]
+    run: hostname
+
+  cobalt_hostname:
+    type: script
+    executor: local.bash
+    description: Cobalt batch generation check
+    cobalt: ["-n 1", "-t 10"]
+    run: hostname

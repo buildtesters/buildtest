@@ -1,0 +1,10 @@
+version: "1.0"
+buildspecs:
+  invalid_file:
+    type: compiler
+    executor: local.bash
+    description: Can't find source file name
+    build:
+      name: gnu
+      source: /path/to/random/file
+      cflags: -O3

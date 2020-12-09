@@ -30,8 +30,8 @@ from buildtest.utils.shell import Shell
 
 
 class BuilderBase(ABC):
-    """The BuilderBase is an abstract class that implements common functions for
-    any kind of builder.
+    """ The BuilderBase is an abstract class that implements common functions for
+        any kind of builder.
     """
 
     def __init__(self, name, recipe, buildspec, testdir=None):
@@ -112,9 +112,9 @@ class BuilderBase(ABC):
         self.metadata["executor"] = self.executor
 
     def detect_executor(self):
-        """Return executor type based on executor property. The executor is in
-        format <type>.<name> so we check for keywords that start with known executor
-        types ``local``, ``slurm``, ``lsf``, ``cobalt``
+        """ Return executor type based on executor property. The executor is in
+            format <type>.<name> so we check for keywords that start with known executor
+            types ``local``, ``slurm``, ``lsf``, ``cobalt``
         """
         executor_types = ["local", "slurm", "lsf", "cobalt"]
         for name in executor_types:
@@ -122,20 +122,22 @@ class BuilderBase(ABC):
                 return name
 
     def get_test_extension(self):
-        """Return the test extension, which depends on the shell used. Based
-        on the value of ``shell`` key we return the shell extension.
+        """ Return the test extension, which depends on the shell used. Based
+            on the value of ``shell`` key we return the shell extension.
 
-        shell: bash --> sh (default)
+            shell: bash --> sh (default)
 
-        :return: returns test extension based on shell type
-        :rtype: str
+            :return: returns test extension based on shell type
+            :rtype: str
         """
 
         self.logger.debug("Setting test extension to 'sh'")
         return "sh"
 
     def start(self):
-        """Keep internal time for start of test. We start timer by calling Timer class"""
+        """ Keep internal time for start of test. We start timer by calling
+            Timer class
+        """
 
         self.timer = Timer()
         self.timer.start()
@@ -146,9 +148,9 @@ class BuilderBase(ABC):
         self.duration += self.timer.stop()
 
     def build(self):
-        """This method is responsible for invoking setup, creating test
-        directory and writing test. This method is called from an instance
-        object of this class that does ``builder.build()``.
+        """ This method is responsible for invoking setup, creating test
+            directory and writing test. This method is called from an instance
+            object of this class that does ``builder.build()``.
         """
 
         self._build_setup()
@@ -156,10 +158,10 @@ class BuilderBase(ABC):
         self._create_symlinks()
 
     def _build_setup(self):
-        """This method is the setup operation to get ready to build test which
-        includes getting unique build id, setting up metadata object to store
-        test details such as where test will be located and directory of test.
-        This section cannot be reached without a valid, loaded recipe.
+        """ This method is the setup operation to get ready to build test which
+            includes getting unique build id, setting up metadata object to store
+            test details such as where test will be located and directory of test.
+            This section cannot be reached without a valid, loaded recipe.
         """
 
         # Generate a unique id for the build based on key and unique string
@@ -189,10 +191,11 @@ class BuilderBase(ABC):
         self.metadata["testroot"] = self.test_id
 
     def _get_scheduler_directives(self):
-        """Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
-        test with one of the executor types. This method will return a list
-        of string containing scheduler directives generally found at top of script.
-        If test is local executor we return an empty list"""
+        """ Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
+            test with one of the executor types. This method will return a list
+            of string containing scheduler directives generally found at top of script.
+            If test is local executor we return an empty list
+        """
 
         lines = []
         if self.executor_type == "local":
@@ -222,8 +225,6 @@ class BuilderBase(ABC):
             )
             lines += script.get_headers()
             lines += [f"#COBALT --jobname {self.name}"]
-            # lines += [f"#COBALT --output {self.name}.out"]
-            # lines += [f"#COBALT --error {self.name}.err"]
 
         return lines
 
@@ -252,7 +253,7 @@ class BuilderBase(ABC):
         return lines
 
     def _set_execute_perm(self):
-        """Set permission 755 on executable"""
+        """Set permission to 755 on executable"""
 
         # Change permission of the file to executable
         os.chmod(
@@ -263,14 +264,10 @@ class BuilderBase(ABC):
             f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
         )
 
-    def _write_test(self):
-        """This method is responsible for invoking ``generate_script`` that
-        formulates content of testscript which is implemented in each subclass.
-        Next we write content to file and apply 755 permission on script so
-        it has executable permission.
-        """
+    def _get_test_heading(self):
+        """Returns the declaration of test content which is includes the shebang, scheduler
+           directives and source executor before script """
 
-        # Implementation to write file generate.sh
         # start of each test should have the shebang
         lines = [self.shebang]
 
@@ -294,17 +291,20 @@ class BuilderBase(ABC):
         lines += [
             f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
         ]
-        if self.shell.name == "python":
-            python_content = self.generate_script()
-            python_content = "\n".join(python_content)
-            script_path = "%s.py" % os.path.join(self.stage_dir, self.name)
-            write_file(script_path, python_content)
-            shutil.copy2(
-                script_path, os.path.join(self.run_dir, os.path.basename(script_path))
-            )
-            lines += [f"python {script_path}"]
-        else:
-            lines += self.generate_script()
+        return lines
+
+    def _write_test(self):
+        """ This method is responsible for invoking ``generate_script`` that
+            formulates content of testscript which is implemented in each subclass.
+            Next we write content to file and apply 755 permission on script so
+            it has executable permission.
+        """
+
+        # Implementation to write file generate.sh
+        # start of each test should have the shebang
+        lines = self._get_test_heading()
+
+        lines += self.generate_script()
 
         lines += [
             f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
@@ -421,16 +421,41 @@ class BuilderBase(ABC):
 class ScriptBuilder(BuilderBase):
     type = "script"
 
-    def generate_script(self):
-        """This method builds the testscript content based on the builder type. For ScriptBuilder we
-        need to add the shebang, environment variables and the run section. Environment variables are
-        declared first followed by run section
+    def write_python_script(self):
+        """ This method is used for writing python script when ``shell: python``
+            is set. The content from ``run`` section is added into a python
+            script. The file is written to run directory and we simply invoke
+            python script by running ``python script.py``
+       """
 
-        :return: return content of test script
-        :rtype: list
+        python_content = self.recipe.get("run")
+        script_path = "%s.py" % os.path.join(self.stage_dir, self.name)
+        write_file(script_path, python_content)
+        shutil.copy2(
+            script_path, os.path.join(self.run_dir, os.path.basename(script_path))
+        )
+        lines = [f"python {script_path}"]
+        return lines
+
+    def generate_script(self):
+        """ This method builds the testscript content based on the builder type.
+            For ScriptBuilder we need to add the shebang, environment variables
+            and the run section. If shell is python we write a python script and
+            return immediately. The variables, environment section are not applicable
+            for python scripts
+
+            :return: return content of test script
+            :rtype: list
         """
 
+        # for python scripts we generate python script and return lines
+        if self.shell.name == "python":
+            lines = self.write_python_script()
+            return lines
+
+        # section below is for shell script content (bash, sh, csh, tcsh, zsh)
         lines = []
+
         # Add environment variables
         lines += self.get_environment()
 
@@ -526,7 +551,8 @@ class CompilerBuilder(BuilderBase):
         return self.ldflags
 
     def get_path(self):
-        """This method returns the full path for GNU Compilers: ``gcc``, ``g++``, ``gfortran``"""
+        """ This method returns the full path for C, C++, Fortran compilers"""
+
         path = {
             self.cc: shutil.which(self.cc),
             self.cxx: shutil.which(self.cxx),
@@ -535,8 +561,9 @@ class CompilerBuilder(BuilderBase):
         return path
 
     def resolve_source(self, source):
-        """This method resolves full path to source file, it checks for absolute path first before checking relative
-        path that is relative to Buildspec recipe.
+        """ This method resolves full path to source file, it checks for absolute
+            path first before checking relative path that is relative to
+            Buildspec recipe.
         """
 
         source_relpath = resolve_path(source) or resolve_path(
@@ -554,6 +581,7 @@ class CompilerBuilder(BuilderBase):
 
     def get_modules(self, modules):
         """Return a list of modules as a list"""
+
         assert isinstance(modules, dict)
         module_cmd = []
         # if purge is True and defined add module purge
@@ -569,23 +597,27 @@ class CompilerBuilder(BuilderBase):
         return module_cmd
 
     def build_run_cmd(self):
-        """This method builds the run command which refers to how to run the generated binary after compilation."""
+        """This method builds the run command which refers to how to run the
+           generated binary after compilation.
+        """
+
         self.run_dict = self.recipe.get("run")
+
+        if not self.run_dict:
+            return [f"./{self.executable}"]
 
         run = []
 
-        if self.run_dict:
-            # add launcher in front of execution if defined
-            run.append(self.run_dict.get("launcher"))
+        # add launcher in front of execution if defined
+        if self.run_dict.get("launcher"):
+            run += [self.run_dict.get("launcher")]
 
-        run.append(f"./{self.executable}")
+        run += [f"./{self.executable}"]
 
-        if self.run_dict:
-            # add args after executable if defined
-            run.append(self.run_dict.get("args"))
+        # add args after executable if defined
+        run += [self.run_dict.get("args")]
 
-        # remove None object if found in list this would be present if launcher and args key are not defined
-        run = [cmd for cmd in run if cmd]
+        run = [" ".join(run)]
 
         return run
 
@@ -673,15 +705,18 @@ class CompilerBuilder(BuilderBase):
         if self.pre_build:
             lines.append(self.pre_build)
         # add compile command
-        lines.append(" ".join(self.compile_cmd))
+        # lines.append(" ".join(self.compile_cmd))
+
+        lines += self.compile_cmd
 
         if self.post_build:
             lines.append(self.post_build)
 
         if self.pre_run:
             lines.append(self.pre_run)
+
         # add run command
-        lines.append(" ".join(self.run_cmd))
+        lines += self.run_cmd
 
         if self.post_run:
             lines.append(self.post_run)
@@ -711,37 +746,21 @@ class CompilerBuilder(BuilderBase):
         # Generate C compilation line
         if self.lang == "C":
             cmd = [
-                self.cc,
-                self.cppflags,
-                self.cflags,
-                "-o",
-                self.executable,
-                self.sourcefile,
-                self.ldflags,
+                f"{self.cc} {self.cppflags} {self.cflags} -o {self.executable} {self.sourcefile} {self.ldflags}"
             ]
 
         # Generate C++ compilation line
         elif self.lang == "C++":
             cmd = [
-                self.cxx,
-                self.cppflags,
-                self.cxxflags,
-                "-o",
-                self.executable,
-                self.sourcefile,
-                self.ldflags,
+                f"{self.cxx} {self.cppflags} {self.cxxflags} -o {self.executable} {self.sourcefile} {self.ldflags}"
             ]
 
         # Generate Fortran compilation line
         elif self.lang == "Fortran":
             cmd = [
-                self.fc,
-                self.cppflags,
-                self.fflags,
-                "-o",
-                self.executable,
-                self.sourcefile,
-                self.ldflags,
+                f"{self.fc} {self.cppflags} {self.fflags} -o {self.executable} {self.sourcefile} {self.ldflags}"
             ]
+
         # remove any None from list
-        return list(filter(None, cmd))
+        cmd = list(filter(None, cmd))
+        return cmd

@@ -1,0 +1,13 @@
+version: "1.0"
+buildspecs:
+  invalid_file_ext:
+    type: compiler
+    executor: local.bash
+    description: Invalid file extension XYZ when detecting compiler language
+    build:
+      name: gnu
+      source: src/file.XYZ
+      cflags: -O3
+    module:
+      purge: True
+      load: [gcc]

@@ -118,12 +118,14 @@ buildspecs:
       source: src/hello.c
       name: intel
       cflags: "-O1"
+
   missing_source_in_compiler:
     executor: local.bash
     type: compiler
     description: "missing source key in compiler object"
     module:
-    - "module purge && module load gcc/4.0"
+      purge: True
+      load: [gcc/4.0]
     build:
       name: gnu
       cflags: "-O1"
@@ -133,7 +135,8 @@ buildspecs:
     type: compiler
     description: "missing name key in build object"
     module:
-    - "module purge && module load gcc/4.0"
+      purge: True
+      load: [gcc/4.0]
     build:
       source: src/hello.c
 
@@ -142,20 +145,21 @@ buildspecs:
     type: compiler
     description: "compiler 'name' expects a string but received a list"
     module:
-    - "module purge && module load gcc/4.0"
+      purge: True
+      load: [gcc/4.0]
     build:
       source: src/hello.c
       name: ["gnu", "intel"]
       cflags: "-O1"
       ldflags: "-lm"
 
-
   additionalProperties_build:
     executor: local.bash
     type: compiler
     description: "test additionalProperties in build object. Schema does not allow for additional keys"
     module:
-    - "module purge && module load gcc/4.0"
+      purge: True
+      load: [gcc/4.0]
     build:
       source: src/hello.c
       foo: bar
@@ -169,7 +173,8 @@ buildspecs:
     description: "test additionalProperties in main schema"
     foo: bar
     module:
-    - "module purge && module load gcc/4.0"
+      purge: True
+      load: [gcc/4.0]
     build:
       source: src/hello.c
       name: gnu
@@ -181,7 +186,8 @@ buildspecs:
     type: compiler
     description: "test additionalProperties in batch field"
     module:
-    - "module purge && module load gcc/4.0"
+      purge: True
+      load: [gcc/4.0]
     batch:
       "nodecount": "2"
       "EXPORT": "ALL"
@@ -196,12 +202,12 @@ buildspecs:
     type: compiler
     description: "type mismatch on args key"
     module:
-    - "module purge && module load gcc/4.0"
+      purge: True
+      load: [gcc/4.0]
     build:
       source: src/hello.c
       name: gnu
       cflags: "-O1"
       ldflags: "-lm"
-
     run:
       args: 1

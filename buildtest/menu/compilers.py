@@ -219,4 +219,5 @@ def func_config_compiler(args=None):
             if isinstance(compiler_dict[name], dict):
                 compiler_names += compiler_dict[name].keys()
 
-        [print(name) for name in compiler_names]
+        for name in compiler_names:
+            print(name)

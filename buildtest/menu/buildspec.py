@@ -22,8 +22,8 @@ class BuildspecCache:
     default_format_fields = ["name", "type", "executor", "tags", "description"]
     format_fields = default_format_fields + ["file"]
 
-    def __init__(self, rebuild, filter, format, roots):
-        self.filter = filter
+    def __init__(self, rebuild, filters, format, roots):
+        self.filter = filters
         self.format = format
         self.roots = roots
         self.paths = []
