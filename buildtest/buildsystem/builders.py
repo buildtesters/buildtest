@@ -2,7 +2,6 @@
 from a buildspec file. The Builder class is invoked once buildspec file has
 parsed validation via BuildspecParser.
 """
-import copy
 import logging
 import os
 from buildtest.buildsystem.base import ScriptBuilder, CompilerBuilder
@@ -30,6 +29,7 @@ class Builder:
         if not rebuild:
             self.rebuild = 1
         else:
+            self.rebuild = rebuild or 1
             self.rebuild = int(rebuild)
 
         self.bp = bp
@@ -37,42 +37,39 @@ class Builder:
         system = BuildTestSystem()
         self.builders = []
 
-        for name in self.get_test_names():
-            recipe = self.bp.recipe["buildspecs"][name]
-
-            if recipe.get("skip"):
-                print(f"[{name}] test is skipped.")
-                continue
-
-            if self._skip_tests_by_executor(recipe, name):
-                continue
-
-            if self._skip_tests_by_tags(recipe, name):
-                continue
-
-            if self._skip_tests_run_only(recipe, name, system):
-                continue
-
-            # Add the builder based on the type
-            if recipe["type"] == "script":
-                self.builders.append(
-                    ScriptBuilder(name, recipe, self.bp.buildspec, testdir=testdir,)
-                )
-            elif recipe["type"] == "compiler":
-                self.builders.append(
-                    CompilerBuilder(name, recipe, self.bp.buildspec, testdir=testdir)
-                )
-
-            else:
-                print("%s is not recognized by buildtest, skipping." % recipe["type"])
-
-        builders = []
-        # deep copy all builders by number of rebuild. This creates a new
-        # instance of each builder object since buildtest process builders when
-        # running test.
         for count in range(self.rebuild):
-            builders += copy.deepcopy(self.builders)
-        self.builders = builders
+            for name in self.get_test_names():
+                recipe = self.bp.recipe["buildspecs"][name]
+
+                if recipe.get("skip"):
+                    print(f"[{name}] test is skipped.")
+                    continue
+
+                if self._skip_tests_by_executor(recipe, name):
+                    continue
+
+                if self._skip_tests_by_tags(recipe, name):
+                    continue
+
+                if self._skip_tests_run_only(recipe, name, system):
+                    continue
+
+                # Add the builder based on the type
+                if recipe["type"] == "script":
+                    self.builders.append(
+                        ScriptBuilder(name, recipe, self.bp.buildspec, testdir=testdir,)
+                    )
+                elif recipe["type"] == "compiler":
+                    self.builders.append(
+                        CompilerBuilder(
+                            name, recipe, self.bp.buildspec, testdir=testdir
+                        )
+                    )
+
+                else:
+                    print(
+                        "%s is not recognized by buildtest, skipping." % recipe["type"]
+                    )
 
     # Builders
     def _skip_tests_by_executor(self, recipe, testname):
