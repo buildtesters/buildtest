@@ -22,9 +22,9 @@ class BuildspecCache:
     default_format_fields = ["name", "type", "executor", "tags", "description"]
     format_fields = default_format_fields + ["file"]
 
-    def __init__(self, rebuild, filters, format, roots):
-        self.filter = filters
-        self.format = format
+    def __init__(self, rebuild, filterfields, formatfields, roots):
+        self.filter = filterfields
+        self.format = formatfields
         self.roots = roots
         self.paths = []
         self.rebuild = rebuild
@@ -541,7 +541,12 @@ def func_buildspec_find(args):
         :return: A list of valid buildspecs found in all repositories.
     """
 
-    bp_cache = BuildspecCache(args.rebuild, args.filter, args.format, args.root)
+    bp_cache = BuildspecCache(
+        rebuild=args.rebuild,
+        filterfields=args.filter,
+        formatfields=args.format,
+        roots=args.root,
+    )
 
     # implements buildtest buildspec find --tags
     if args.tags:
