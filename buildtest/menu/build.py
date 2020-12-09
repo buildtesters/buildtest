@@ -606,12 +606,16 @@ def func_build_subcmd(args, config_opts):
     stage = args.stage
     executor = BuildExecutor(config_opts)
 
-    rebuild = args.rebuild or 1
-    rebuild = int(rebuild)
+    buildspec_filters = {"tags": args.tags, "executors": args.executor}
+
     # Parse all buildspecs and skip any buildspecs that fail validation, return type
     # is a builder object used for building test.
     builders = parse_buildspecs(
-        buildspecs, test_directory, rebuild, args.tags, args.executor, printTable=True
+        buildspecs=buildspecs,
+        filters=buildspec_filters,
+        test_directory=test_directory,
+        rebuild=args.rebuild,
+        printTable=True,
     )
 
     # if --stage=parse we stop here

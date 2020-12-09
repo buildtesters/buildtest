@@ -5,6 +5,7 @@ import sys
 
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
+from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import load_settings
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDSPEC_DEFAULT_PATH
@@ -582,9 +583,8 @@ def func_buildspec_find(args):
     bp_cache.print_buildspecs()
 
 
-def parse_buildspecs(
-    buildspecs, test_directory, rebuild, tags=None, executors=None, printTable=False
-):
+def parse_buildspecs(buildspecs, test_directory, filters, rebuild, printTable=False):
+
     """Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
     fails validation we add it to ``skipped_tests`` list and print all skipped
     tests at end. If buildspec passes validation we get all builders by invoking
@@ -595,10 +595,10 @@ def parse_buildspecs(
     :type buildspecs: list of filepaths
     :param test_directory: Test directory where buildspecs will be written
     :type test_directory: str (directory path)
-    :param tags: A list of input tags to filter tests
-    :type tags: list
-    :param executors: A list of input executors to filter tests
-    :type executors: list
+    :param filters: A dictionary containing filters on builders based on tags and executors
+    :type filters: dict
+    :param rebuild: Input argument from command line --rebuild
+    :type rebuild: int or None
     :param printTable: a boolean to control if parse table is printed
     :type printTable: bool, optional
     :return: A list of builder objects which are instances of ``BuilderBase`` class
@@ -626,12 +626,10 @@ def parse_buildspecs(
         table["validstate"].append(valid_state)
         table["buildspec"].append(buildspec)
 
-        builders += bp.get_builders(
-            testdir=test_directory,
-            rebuild=rebuild,
-            tag_filter=tags,
-            executor_filter=executors,
+        builder = Builder(
+            bp=bp, filters=filters, testdir=test_directory, rebuild=rebuild
         )
+        builders += builder.get_builders()
 
     # print any skipped buildspecs if they failed to validate during build stage
     if len(invalid_buildspecs) > 0:
