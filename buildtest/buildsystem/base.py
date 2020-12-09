@@ -31,7 +31,7 @@ from buildtest.utils.shell import Shell
 
 class BuilderBase(ABC):
     """The BuilderBase is an abstract class that implements common functions for
-       any kind of builder.
+    any kind of builder.
     """
 
     def __init__(self, name, recipe, buildspec, testdir=None):
@@ -52,10 +52,8 @@ class BuilderBase(ABC):
         self.name = name
         self.pwd = os.getcwd()
         self.result = {}
-        self.result["state"] = "N/A"
-        self.result["returncode"] = "-1"
-        self.result["runtime"] = 0
         self.metadata = {}
+
         self.duration = 0
         self.job_state = None
 
@@ -72,12 +70,6 @@ class BuilderBase(ABC):
         self.logger.debug(f"Processing Buildspec: {self.buildspec}")
         self.logger.debug(f"Processing Buildspec section: {self.name}")
 
-        self.metadata["name"] = self.name
-        self.metadata["buildspec"] = buildspec
-        self.metadata["recipe"] = recipe
-        self.metadata["tags"] = recipe.get("tags")
-        self.metadata["result"] = {}
-
         # A builder is required to define the type attribute
         if not hasattr(self, "type"):
             sys.exit(
@@ -87,15 +79,12 @@ class BuilderBase(ABC):
         # The type must match the type of the builder
         self.recipe = recipe
 
-        self.metadata["schemafile"] = os.path.basename(
-            schema_table[f"{self.recipe['type']}-v1.0.schema.json"]["path"]
-        )
-
         self.executor = self.recipe.get("executor")
         self.executor_type = self.detect_executor()
-        self.metadata["executor"] = self.executor
-        # The default shell will be bash
 
+        self._set_metadata_values()
+
+        # The default shell will be bash
         self.default_shell = Shell()
 
         self.shell = Shell(self.recipe.get("shell", "bash"))
@@ -107,10 +96,25 @@ class BuilderBase(ABC):
         self.logger.debug("Using shell %s", self.shell.name)
         self.logger.debug(f"Shebang used for test: {self.shebang}")
 
+    def _set_metadata_values(self):
+        """This method sets self.metadata that contains metadata for each builder object."""
+        self.metadata["name"] = self.name
+        self.metadata["buildspec"] = self.buildspec
+        self.metadata["recipe"] = self.recipe
+        self.metadata["tags"] = self.recipe.get("tags")
+        self.metadata["result"] = {}
+        self.metadata["result"]["state"] = "N/A"
+        self.metadata["result"]["returncode"] = "-1"
+        self.metadata["result"]["runtime"] = 0
+        self.metadata["schemafile"] = os.path.basename(
+            schema_table[f"{self.recipe['type']}-v1.0.schema.json"]["path"]
+        )
+        self.metadata["executor"] = self.executor
+
     def detect_executor(self):
         """Return executor type based on executor property. The executor is in
-           format <type>.<name> so we check for keywords that start with known executor
-           types ``local``, ``slurm``, ``lsf``, ``cobalt``
+        format <type>.<name> so we check for keywords that start with known executor
+        types ``local``, ``slurm``, ``lsf``, ``cobalt``
         """
         executor_types = ["local", "slurm", "lsf", "cobalt"]
         for name in executor_types:
@@ -119,12 +123,12 @@ class BuilderBase(ABC):
 
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
-           on the value of ``shell`` key we return the shell extension.
+        on the value of ``shell`` key we return the shell extension.
 
-           shell: bash --> sh (default)
+        shell: bash --> sh (default)
 
-           :return: returns test extension based on shell type
-           :rtype: str
+        :return: returns test extension based on shell type
+        :rtype: str
         """
 
         self.logger.debug("Setting test extension to 'sh'")
@@ -142,9 +146,9 @@ class BuilderBase(ABC):
         self.duration += self.timer.stop()
 
     def build(self):
-        """ This method is responsible for invoking setup, creating test
-            directory and writing test. This method is called from an instance
-            object of this class that does ``builder.build()``.
+        """This method is responsible for invoking setup, creating test
+        directory and writing test. This method is called from an instance
+        object of this class that does ``builder.build()``.
         """
 
         self._build_setup()
@@ -153,9 +157,9 @@ class BuilderBase(ABC):
 
     def _build_setup(self):
         """This method is the setup operation to get ready to build test which
-           includes getting unique build id, setting up metadata object to store
-           test details such as where test will be located and directory of test.
-           This section cannot be reached without a valid, loaded recipe.
+        includes getting unique build id, setting up metadata object to store
+        test details such as where test will be located and directory of test.
+        This section cannot be reached without a valid, loaded recipe.
         """
 
         # Generate a unique id for the build based on key and unique string
@@ -186,9 +190,9 @@ class BuilderBase(ABC):
 
     def _get_scheduler_directives(self):
         """Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
-           test with one of the executor types. This method will return a list
-           of string containing scheduler directives generally found at top of script.
-           If test is local executor we return an empty list """
+        test with one of the executor types. This method will return a list
+        of string containing scheduler directives generally found at top of script.
+        If test is local executor we return an empty list"""
 
         lines = []
         if self.executor_type == "local":
@@ -261,9 +265,9 @@ class BuilderBase(ABC):
 
     def _write_test(self):
         """This method is responsible for invoking ``generate_script`` that
-           formulates content of testscript which is implemented in each subclass.
-           Next we write content to file and apply 755 permission on script so
-           it has executable permission.
+        formulates content of testscript which is implemented in each subclass.
+        Next we write content to file and apply 755 permission on script so
+        it has executable permission.
         """
 
         # Implementation to write file generate.sh
@@ -338,10 +342,10 @@ class BuilderBase(ABC):
 
     def get_environment(self):
         """Retrieve a list of environment variables defined in buildspec and
-           return them as list with the shell equivalent command
+        return them as list with the shell equivalent command
 
-           :return: list of environment variable lines to add to test script.
-           :rtype: list
+        :return: list of environment variable lines to add to test script.
+        :rtype: list
         """
 
         env = []
@@ -369,10 +373,10 @@ class BuilderBase(ABC):
 
     def get_variables(self):
         """Retrieve a list of  variables defined in buildspec and
-           return them as list with the shell equivalent command.
+        return them as list with the shell equivalent command.
 
-           :return: list of variables variable lines to add to test script.
-           :rtype: list
+        :return: list of variables variable lines to add to test script.
+        :rtype: list
         """
 
         variables = []
@@ -419,11 +423,11 @@ class ScriptBuilder(BuilderBase):
 
     def generate_script(self):
         """This method builds the testscript content based on the builder type. For ScriptBuilder we
-           need to add the shebang, environment variables and the run section. Environment variables are
-           declared first followed by run section
+        need to add the shebang, environment variables and the run section. Environment variables are
+        declared first followed by run section
 
-           :return: return content of test script
-           :rtype: list
+        :return: return content of test script
+        :rtype: list
         """
 
         lines = []
@@ -532,7 +536,7 @@ class CompilerBuilder(BuilderBase):
 
     def resolve_source(self, source):
         """This method resolves full path to source file, it checks for absolute path first before checking relative
-           path that is relative to Buildspec recipe.
+        path that is relative to Buildspec recipe.
         """
 
         source_relpath = resolve_path(source) or resolve_path(
@@ -587,8 +591,8 @@ class CompilerBuilder(BuilderBase):
 
     def set_executable_name(self, name=None):
         """This method set the executable name. One may specify a custom name to executable via ``name``
-           argument. Otherwise the executable is using the filename of ``self.sourcefile`` and adding ``.exe``
-           extension at end.
+        argument. Otherwise the executable is using the filename of ``self.sourcefile`` and adding ``.exe``
+        extension at end.
         """
 
         if name:
@@ -597,7 +601,7 @@ class CompilerBuilder(BuilderBase):
         return "%s.exe" % os.path.basename(self.sourcefile)
 
     def lookup_compilers(self, compiler):
-        """ Return compiler wrapper based on compiler name
+        """Return compiler wrapper based on compiler name
 
         :param compiler: name of compiler
         :return: return a dictionary that has list of compiler wrappers for C, C++, and Fortran
@@ -642,13 +646,13 @@ class CompilerBuilder(BuilderBase):
 
     def generate_script(self):
         """This method will build the test content from a Buildspec that uses compiler schema. We need a 'compiler'
-           and 'source' key which specifies the source files to compile. We resolve the source file path which can
-           be an absolute value or relative path with respect to Buildspec. The file extension of sourcefile is used
-           to detect the Programming Language which is used to lookup the compiler wrapper based on Language + Compiler.
-           During compiler detection, we set class variables ``self.cc``, ``self.cxx``. ``self.fc``, ``self.cflags``,
-           ``self.cxxflags``, ``self.fflags``, ``self.cppflags``. ``self.ldflags``. Finally we generate the compile
-           command and add each instruction to ``lines`` which contains content of test. Upon completion, we return
-           a list that contains content of the test.
+        and 'source' key which specifies the source files to compile. We resolve the source file path which can
+        be an absolute value or relative path with respect to Buildspec. The file extension of sourcefile is used
+        to detect the Programming Language which is used to lookup the compiler wrapper based on Language + Compiler.
+        During compiler detection, we set class variables ``self.cc``, ``self.cxx``. ``self.fc``, ``self.cflags``,
+        ``self.cxxflags``, ``self.fflags``, ``self.cppflags``. ``self.ldflags``. Finally we generate the compile
+        command and add each instruction to ``lines`` which contains content of test. Upon completion, we return
+        a list that contains content of the test.
         """
 
         self.setup()
@@ -700,7 +704,7 @@ class CompilerBuilder(BuilderBase):
 
     def generate_compile_cmd(self):
         """This method generates the compilation line and returns the output as a list. The compilation line depends
-           on the the language detected that is stored in variable ``self.lang``.
+        on the the language detected that is stored in variable ``self.lang``.
         """
 
         cmd = []
