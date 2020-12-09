@@ -6,6 +6,7 @@ import pytest
 import os
 
 from buildtest.buildsystem.parser import BuildspecParser
+from buildtest.buildsystem.builders import Builder
 
 testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 here = os.path.dirname(os.path.abspath(__file__))
@@ -38,8 +39,15 @@ def test_BuildspecParser(tmp_path):
     for buildspec in os.listdir(valid_buildspecs_directory):
         buildspec = os.path.join(valid_buildspecs_directory, buildspec)
         bp = BuildspecParser(buildspec)
+        assert bp.recipe
+        assert bp.buildspec
+        assert bp.executors
 
-        builders = bp.get_builders(tmp_path)
+        filters = {"tags": None, "executors": None}
+
+        builders = Builder(bp, filters=filters, testdir=tmp_path)
+        builders = builders.get_builders()
+        assert builders
 
         for builder in builders:
 

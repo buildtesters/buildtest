@@ -5,6 +5,7 @@ BuildExecutor: testing functions
 import os
 
 from jsonschema.exceptions import ValidationError
+from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, DEFAULT_SETTINGS_FILE
 from buildtest.executors.setup import BuildExecutor
@@ -44,10 +45,12 @@ def test_build_executor(tmp_path):
         except (SystemExit, ValidationError):
             continue
 
-        builders = bp.get_builders(tmp_path)
-        print(builders)
+        bp_filters = {"tags": None, "executors": None}
+        builders = Builder(bp=bp, filters=bp_filters, testdir=tmp_path)
+        valid_builders = builders.get_builders()
+
         # build each test and then run it
-        for builder in builders:
+        for builder in valid_builders:
             builder.build()
             be.run(builder)
             assert builder.metadata["result"]
