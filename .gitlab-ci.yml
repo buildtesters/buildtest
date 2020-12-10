@@ -1,12 +1,27 @@
-always-run:
-  script: echo 'this should always run'
+always-run: 
+  tags: [cori-login]
+  script: 
+    - echo 'this should run on pull requests'
+    - whoami
+    - cd buildtest
+    - git remote -v
+    - git branch
+    - source setup.sh
+    - pip install -r docs/requirement.txt
+    - coverage run -m pytest -vra tests
+    - coverage report -mecho 'this should always run'
 
 on-pull-requests:
-  script: echo 'this should run on pull requests'
+  tags: [cori-login]
   only:
     - external_pull_requests
-
-except-pull-requests:
-  script: echo 'this should not run on pull requests'
-  except:
-    - external_pull_requests
+  script: 
+    - echo 'this should run on pull requests'
+    - whoami
+    - cd buildtest
+    - git remote -v
+    - git branch
+    - source setup.sh
+    - pip install -r docs/requirement.txt
+    - coverage run -m pytest -vra tests
+    - coverage report -m
