@@ -9,7 +9,3 @@ pr_cori_test:
   script:
     - pwd && ls -l
     - hostname
-    - cd buildtest
-    - git rev-parse HEAD
-    - source setup.sh
-    - buildtest --version
