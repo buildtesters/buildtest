@@ -8,15 +8,17 @@ always-run:
     - git branch
     - ls -l
     - source setup.sh
+    - python --version
     - pip install -r docs/requirement.txt
     - coverage run -m pytest -vra tests
-    - coverage report -mecho 'this should always run'
+    - coverage report -m
 
 on-pull-requests:
   tags: [cori-login]
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "web"'
       when: always
+    
   script: 
     - echo 'this should run on pull requests'
     - whoami
