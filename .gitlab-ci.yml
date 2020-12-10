@@ -3,12 +3,13 @@ stages:
 pr_cori_test:
   tags:
     - cori-login
-  only:
-  - external_pull_requests
   stage: test
   script:
     - pwd && ls -l
     - hostname
     - cd buildtest
     - git rev-parse HEAD
+    - source setup.sh
+    - buildtest --version
+    
     
