@@ -1,0 +1,8 @@
+pr_cori_test:
+  only:
+  - /^github\/pr[\d]+_.*$/
+  script:
+    - pwd && ls -l 
+    - cd buildtest
+    - git rev-parse HEAD
+    
