@@ -1,4 +1,6 @@
+
 always-run:
+  tags: [cori-login]
   script: 
     - echo 'this should always run'
     - pwd && ls -l
@@ -7,6 +9,7 @@ always-run:
     - git remote -v
     - git branch
 on-pull-requests:
+  tags: [cori-login]
   script: 
     - echo 'this should run on pull requests'
     - pwd && ls -l
