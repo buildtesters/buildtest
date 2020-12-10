@@ -3,7 +3,7 @@ always-run:
     - echo 'this should always run'
     - pwd && ls -l
     - cd buildtest
-    - git rev-parse HEAD
+    - /usr/bin/git rev-parse HEAD
     - git remote -v
     - git branch
 on-pull-requests:
