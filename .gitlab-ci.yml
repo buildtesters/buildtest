@@ -1,13 +1,18 @@
 always-run:
-  script: echo 'this should always run'
-
+  script: 
+    - echo 'this should always run'
+    - pwd && ls -l
+    - cd buildtest
+    - git rev-parse HEAD
+    - git remote -v
+    - git branch
 on-pull-requests:
-  script: echo 'this should run on pull requests'
+  script: 
+    - echo 'this should run on pull requests'
+    - pwd && ls -l
+    - cd buildtest
+    - git rev-parse HEAD
+    - git remote -v
+    - git branch
   only:
     - external_pull_requests
-
-except-pull-requests:
-  script: echo 'this should not run on pull requests'
-  except:
-    - external_pull_requests
-
