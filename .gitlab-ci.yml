@@ -10,3 +10,4 @@ except-pull-requests:
   script: echo 'this should not run on pull requests'
   except:
     - external_pull_requests
+
