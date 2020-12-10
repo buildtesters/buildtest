@@ -11,4 +11,7 @@ pr_cori_test:
     - hostname
     - cd buildtest
     - git rev-parse HEAD
+    - source setup.sh
+    - buildtest --version
+    
     
