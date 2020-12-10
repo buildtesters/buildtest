@@ -3,9 +3,10 @@ always-run:
   script: 
     - echo 'this should run on pull requests'
     - whoami
-    - cd buildtest
-    - git remote -v
+    - hostname -f
+    - git remote -v    
     - git branch
+    - ls -l
     - source setup.sh
     - pip install -r docs/requirement.txt
     - coverage run -m pytest -vra tests
@@ -15,13 +16,13 @@ on-pull-requests:
   tags: [cori-login]
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event"'
-      when: 'always'
+      when: always
   script: 
     - echo 'this should run on pull requests'
     - whoami
-    - cd buildtest
     - git remote -v
     - git branch
+    - ls -l 
     - source setup.sh
     - pip install -r docs/requirement.txt
     - coverage run -m pytest -vra tests
