@@ -1,3 +1,17 @@
+run_always:
+  tags: [cori-login]   
+  script: 
+    - echo "$CI_PIPELINE_SOURCE"
+    - whoami
+    - git remote -v
+    - git branch
+    - ls -l 
+    - source setup.sh
+    - pip install -r docs/requirement.txt
+    - coverage run -m pytest -vra tests
+    - coverage report -m
+
+
 on-pull-requests:
   tags: [cori-login]
   rules:
