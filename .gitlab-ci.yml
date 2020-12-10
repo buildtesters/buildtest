@@ -1,8 +1,11 @@
 pr_cori_test:
+  tags:
+    - cori-login
   only:
   - /^github\/pr[\d]+_.*$/
   script:
-    - pwd && ls -l 
+    - pwd && ls -l
+    - hostname
     - cd buildtest
     - git rev-parse HEAD
     
