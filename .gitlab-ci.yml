@@ -4,6 +4,8 @@ pr_cori_test:
   tags:
     - cori-login
   stage: test
+  only:
+    - external_pull_requests
   script:
     - pwd && ls -l
     - hostname
@@ -11,5 +13,3 @@ pr_cori_test:
     - git rev-parse HEAD
     - source setup.sh
     - buildtest --version
-    
-    
