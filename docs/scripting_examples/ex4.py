@@ -19,8 +19,10 @@ testdir = resolve_testdirectory(configuration)
 executor = BuildExecutor(configuration)
 
 print("List of executors: ", executor.executors)
-
-builders = parse_buildspecs(included_bp, testdir, rebuild=1, printTable=True)
+bp_filters = {"tags": None, "executors": None}
+builders = parse_buildspecs(
+    included_bp, test_directory=testdir, filters=bp_filters, rebuild=1, printTable=True
+)
 
 build_phase(builders, printTable=True)
 run_phase(builders, executor, configuration, printTable=True)

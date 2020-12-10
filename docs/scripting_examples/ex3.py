@@ -8,6 +8,13 @@ included_bp, excluded_bp = discover_buildspecs(tags=tagname, debug=True)
 
 configuration = load_settings()
 testdir = resolve_testdirectory(configuration)
-builders = parse_buildspecs(included_bp, testdir, rebuild=1, printTable=True)
+buildspec_filters = {"tags": None, "executors": ["local.bash"]}
+builders = parse_buildspecs(
+    buildspecs=included_bp,
+    test_directory=testdir,
+    filters=buildspec_filters,
+    rebuild=1,
+    printTable=True,
+)
 
 build_phase(builders, printTable=True)

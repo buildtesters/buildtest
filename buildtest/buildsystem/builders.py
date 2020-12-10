@@ -19,7 +19,7 @@ class Builder:
             :param filter: A dictionary container filter fields for tags and executors passed from command line
             :type tag_filter: dict, required
             :param testdir: Test Destination directory, specified by --testdir
-            :type testdir: str
+            :type testdir: str, required
             :param rebuild: Number of rebuilds for a tesst this is specified by ``buildtest build --rebuild``. Defaults to 1
             :type rebuild: int, optional
         """
