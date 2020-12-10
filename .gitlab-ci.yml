@@ -13,8 +13,9 @@ always-run:
 
 on-pull-requests:
   tags: [cori-login]
-  only:
-    - external_pull_requests
+  when:
+    if: '$CI_PIPELINE_SOURCE == "external_pull_request_event"'
+    when: always
   script: 
     - echo 'this should run on pull requests'
     - whoami
