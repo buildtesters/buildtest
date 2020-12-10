@@ -1,18 +1,3 @@
-always-run: 
-  tags: [cori-login]
-  script: 
-    - echo 'this should run on pull requests'
-    - whoami
-    - hostname -f
-    - git remote -v    
-    - git branch
-    - ls -l
-    - source setup.sh
-    - python --version
-    - pip install -r docs/requirement.txt
-    - coverage run -m pytest -vra tests
-    - coverage report -m
-
 on-pull-requests:
   tags: [cori-login]
   rules:
@@ -20,6 +5,7 @@ on-pull-requests:
       when: always
     
   script: 
+    - echo "$CI_PIPELINE_SOURCE"
     - echo 'this should run on pull requests'
     - whoami
     - git remote -v
