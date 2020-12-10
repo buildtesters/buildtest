@@ -1,8 +1,11 @@
+stages:
+  - test
 pr_cori_test:
   tags:
     - cori-login
   only:
-  - /^github\/pr[\d]+_.*$/
+  - external_pull_requests
+  stage: test
   script:
     - pwd && ls -l
     - hostname
