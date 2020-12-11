@@ -7,6 +7,8 @@ run_always:
     - git branch
     - ls -l 
     - source setup.sh
+    - buildtest --help 
+    - which buildtest
     - pip install -r docs/requirement.txt
     - coverage run -m pytest -vra tests
     - coverage report -m
@@ -26,6 +28,7 @@ on-pull-requests:
     - git branch
     - ls -l 
     - source setup.sh
+    - buildtest --help 
     - pip install -r docs/requirement.txt
     - coverage run -m pytest -vra tests
     - coverage report -m
