@@ -209,15 +209,44 @@ def func_config_compiler(args=None):
     if not compiler_dict:
         raise BuildTestError("No compilers defined")
 
-    if args.json:
-        print(json.dumps(compiler_dict, indent=2))
-    if args.yaml:
-        print(yaml.dump(compiler_dict, default_flow_style=False))
-    if args.list:
-        compiler_names = []
-        for name in compiler_dict:
-            if isinstance(compiler_dict[name], dict):
-                compiler_names += compiler_dict[name].keys()
+    bc = BuildtestCompilers()
 
-        for name in compiler_names:
+    if args.json:
+        bc.print_json()
+    if args.yaml:
+        bc.print_yaml()
+    if args.list:
+        names = bc.list()
+        for name in names:
             print(name)
+
+
+class BuildtestCompilers:
+    def __init__(self):
+        """
+            :param compilers: compiler section from buildtest configuration.
+            :type compilers: dict
+        """
+
+        configuration = load_settings()
+        self.compilers = configuration["compilers"]["compiler"]
+
+        self.names = []
+        self.compiler_name_to_group = {}
+        for name in self.compilers:
+            if isinstance(self.compilers[name], dict):
+                self.names += self.compilers[name].keys()
+                for compiler in self.compilers[name].keys():
+                    self.compiler_name_to_group[compiler] = name
+
+    def print_json(self):
+        """Prints compiler section in JSON, this implements ``buildtest config compilers --json``"""
+        print(json.dumps(self.compilers, indent=2))
+
+    def print_yaml(self):
+        """Prints compiler section in YAML, this implements ``buildtest config compilers --yaml``"""
+        print(yaml.dump(self.compilers, default_flow_style=False))
+
+    def list(self):
+        """Return all compilers defined in buildtest configuration"""
+        return self.names

@@ -92,7 +92,7 @@ def schemas():
 
     cmd_dict = {
         f"{os.path.join(prefix, 'vars.txt')}": "buildtest build -b tutorials/vars.yml",
-        f"{os.path.join(prefix, 'gnu_hello.txt')}": "buildtest build -b tutorials/compilers/gnu_hello.yml",
+        f"{os.path.join(prefix, 'gnu_hello.txt')}": "buildtest build -b tutorials/compilers/gnu_hello_fortran.yml",
         f"{os.path.join(prefix, 'vecadd.txt')}": "buildtest build -b tutorials/compilers/vecadd.yml",
         f"{os.path.join(prefix, 'pass_returncode.txt')}": "buildtest build -b tutorials/pass_returncode.yml",
         f"{os.path.join(prefix, 'skip_tests.txt')}": "buildtest build -b tutorials/skip_tests.yml",

@@ -1,12 +1,13 @@
 version: "1.0"
 buildspecs:
-  executable_arguments:
+  hello_f:
     type: compiler
-    description: Passing arguments example
+    description: "Hello World Fortran Compilation"
     executor: local.bash
     tags: [tutorials, compile]
-    source: "src/argc.c"
+    source: "src/hello.f90"
     compilers:
       name: ["^(builtin_gcc)$"]
-    run:
-      args: "1 2 3"
+      default:
+        gcc:
+          fflags: -Wall

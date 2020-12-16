@@ -4,7 +4,11 @@ parsed validation via BuildspecParser.
 """
 import logging
 import os
-from buildtest.buildsystem.base import ScriptBuilder, CompilerBuilder
+import re
+
+from buildtest.buildsystem.scriptbuilder import ScriptBuilder
+from buildtest.buildsystem.compilerbuilder import CompilerBuilder
+from buildtest.menu.compilers import BuildtestCompilers
 from buildtest.system import BuildTestSystem
 
 
@@ -25,7 +29,7 @@ class Builder:
         """
 
         self.logger = logging.getLogger(__name__)
-
+        self.testdir = testdir
         if not rebuild:
             self.rebuild = 1
         else:
@@ -57,18 +61,63 @@ class Builder:
                 # Add the builder based on the type
                 if recipe["type"] == "script":
                     self.builders.append(
-                        ScriptBuilder(name, recipe, self.bp.buildspec, testdir=testdir,)
-                    )
-                elif recipe["type"] == "compiler":
-                    self.builders.append(
-                        CompilerBuilder(
-                            name, recipe, self.bp.buildspec, testdir=testdir
+                        ScriptBuilder(
+                            name, recipe, self.bp.buildspec, testdir=self.testdir
                         )
                     )
+                elif recipe["type"] == "compiler":
 
+                    self._build_compilers(name, recipe)
+                    """
+                    compiler_builders = self._build_compilers(name, recipe)
+                    if not compiler_builders:
+                        print("if")
+                        self.builders += compiler_builders
+                    else:
+                        print("else")
+                        self.builders.append(
+                            CompilerBuilder(
+                                name, recipe, self.bp.buildspec, testdir=testdir
+                            )
+                    )
+                    """
                 else:
                     print(
                         "%s is not recognized by buildtest, skipping." % recipe["type"]
+                    )
+
+    def _build_compilers(self, name, recipe):
+        """This method will perform regular expression with 'name' field in compilers
+           section and retrieve one or more compiler that were defined in buildtest
+           configuration. If any compilers were retrieved we return one or more
+           builder objects that call CompilerBuilder
+
+           :param name: name of test from buildspec file
+        """
+        self.compilers = {}
+
+        bc = BuildtestCompilers()
+
+        discovered_compilers = bc.list()
+
+        # exclude compiler from search if 'exclude' specified in buildspec
+        if recipe["compilers"].get("exclude"):
+            for exclude in recipe["compilers"]["exclude"]:
+                discovered_compilers.remove(exclude)
+
+        # apply regular expression specified by 'name' field against all discovered compilers
+        for compiler_pattern in recipe["compilers"]["name"]:
+            for bc_name in discovered_compilers:
+
+                if re.match(compiler_pattern, bc_name):
+                    self.builders.append(
+                        CompilerBuilder(
+                            name,
+                            recipe,
+                            self.bp.buildspec,
+                            compiler=bc_name,
+                            testdir=self.testdir,
+                        )
                     )
 
     # Builders

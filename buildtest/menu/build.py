@@ -9,14 +9,17 @@ import os
 import re
 import sys
 import time
+from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
 from buildtest.defaults import (
     BUILDTEST_ROOT,
     BUILDSPEC_CACHE_FILE,
 )
-
+from buildtest.buildsystem.builders import Builder
+from buildtest.buildsystem.parser import BuildspecParser
+from buildtest.exceptions import BuildTestError
 from buildtest.executors.setup import BuildExecutor
-from buildtest.menu.buildspec import parse_buildspecs
+
 from buildtest.menu.report import update_report
 from buildtest.utils.file import walk_tree, resolve_path
 
@@ -24,17 +27,17 @@ logger = logging.getLogger(__name__)
 
 
 def discover_buildspecs_by_tags(input_tag):
-    """This method discovers buildspecs by tags, using ``--tags`` option
-    from ``buildtest build`` command. This method will read BUILDSPEC_CACHE_FILE
-    and search for ``tags`` key in buildspec recipe and match with input
-    tag. Since ``tags`` field is a list, we check if input tag is in ``list``
-    and if so we add the entire buildspec into a list. The return is a list
-    of buildspec files to process.
+    """ This method discovers buildspecs by tags, using ``--tags`` option
+        from ``buildtest build`` command. This method will read BUILDSPEC_CACHE_FILE
+        and search for ``tags`` key in buildspec recipe and match with input
+        tag. Since ``tags`` field is a list, we check if input tag is in ``list``
+        and if so we add the entire buildspec into a list. The return is a list
+        of buildspec files to process.
 
-    :param input_tag: Input tags from command line argument ``buildtest build --tags <tags>``
-    :type input_tag: string
-    :return: a list of buildspec files that match tag name
-    :rtype: list
+        :param input_tag: Input tags from command line argument ``buildtest build --tags <tags>``
+        :type input_tag: string
+        :return: a list of buildspec files that match tag name
+        :rtype: list
     """
 
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
@@ -91,23 +94,23 @@ def discover_buildspecs_by_executor_name(executor_name):
 
 
 def discover_by_buildspecs(buildspec):
-    """Given a buildspec file specified by the user with ``buildtest build --buildspec``,
-    discover one or more files and return a list for buildtest to process.
-    This method is called once per argument of ``--buildspec`` or ``--exclude``
-    option. If its a directory path we recursively find all buildspecs with
-    .yml extension. If filepath doesn't exist or file extension is not .yml we
-    return None and log as an error.
+    """ Given a buildspec file specified by the user with ``buildtest build --buildspec``,
+        discover one or more files and return a list for buildtest to process.
+        This method is called once per argument of ``--buildspec`` or ``--exclude``
+        option. If its a directory path we recursively find all buildspecs with
+        .yml extension. If filepath doesn't exist or file extension is not .yml we
+        return None and capture error in log.
 
-    # file path
-    buildtest build --buildspec tutorials/hello.sh.yml
+        # file path
+        buildtest build --buildspec tutorials/hello.sh.yml
 
-    # directory path
-    buildtest build --buildspec tutorials
+        # directory path
+        buildtest build --buildspec tutorials
 
-    :param buildspec: Input argument from ``buildtest build --buildspec``
-    :type buildspec: str
-    :return: A list of discovered buildspec with resolved path, if its invalid we return None
-    :rtype: list or None
+        :param buildspec: Input argument from ``buildtest build --buildspec``
+        :type buildspec: str
+        :return: A list of discovered buildspec with resolved path, if its invalid we return None
+        :rtype: list or None
     """
 
     buildspecs = []
@@ -300,6 +303,79 @@ def resolve_testdirectory(config_opts, input_testdir=None):
     return test_directory
 
 
+def parse_buildspecs(buildspecs, test_directory, filters, rebuild, printTable=False):
+
+    """ Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
+        fails validation we add it to ``skipped_tests`` list and print all skipped
+        tests at end. If buildspec passes validation we get all builders by invoking
+        ``get_builders`` method in BuildspecParser class which gets all tests from
+        buildspec file.
+
+        :param buildspecs: A list of input buildspecs to parse
+        :type buildspecs: list of filepaths
+        :param test_directory: Test directory where buildspecs will be written
+        :type test_directory: str (directory path)
+        :param filters: A dictionary containing filters on builders based on tags and executors
+        :type filters: dict
+        :param rebuild: Input argument from command line --rebuild
+        :type rebuild: int or None
+        :param printTable: a boolean to control if parse table is printed
+        :type printTable: bool, optional
+        :return: A list of builder objects which are instances of ``BuilderBase`` class
+        :rtype: list
+    """
+
+    builders = []
+    table = {"schemafile": [], "validstate": [], "buildspec": []}
+    invalid_buildspecs = []
+    # build all the tests
+    for buildspec in buildspecs:
+
+        valid_state = True
+        try:
+            # Read in Buildspec file here, loading each will validate the buildspec file
+            bp = BuildspecParser(buildspec)
+        except (BuildTestError, ValidationError) as err:
+            invalid_buildspecs.append(
+                f"Skipping {buildspec} since it failed to validate"
+            )
+            logger.error(err)
+            continue
+
+        table["schemafile"].append(bp.schema_file)
+        table["validstate"].append(valid_state)
+        table["buildspec"].append(buildspec)
+
+        builder = Builder(
+            bp=bp, filters=filters, testdir=test_directory, rebuild=rebuild
+        )
+        builders += builder.get_builders()
+
+    # print any skipped buildspecs if they failed to validate during build stage
+    if len(invalid_buildspecs) > 0:
+        print("\n\n")
+        print("Error Messages from Stage: Parse")
+        print("{:_<80}".format(""))
+        for test in invalid_buildspecs:
+            print(test)
+
+    if not builders:
+        print("No buildspecs to process because there are no valid buildspecs")
+        sys.exit(0)
+
+    if printTable:
+        print(
+            """
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+    """
+        )
+        print(tabulate(table, headers=table.keys(), tablefmt="presto"))
+
+    return builders
+
+
 def build_phase(builders, printTable=False):
     """This method will build all tests by invoking class method ``build`` for
     each builder that generates testscript in the test directory.
@@ -309,7 +385,7 @@ def build_phase(builders, printTable=False):
     :param printTable: Print builder table
     :type printTable: boolean
     """
-
+    invalid_builders = []
     print(
         """
 +----------------------+
@@ -326,7 +402,14 @@ def build_phase(builders, printTable=False):
         "testpath": [],
     }
     for builder in builders:
-        builder.build()
+        try:
+            builder.build()
+        except BuildTestError as err:
+            print(err)
+            invalid_builders.append(builder)
+            logger.error(err)
+            continue
+
         table["name"].append(builder.metadata["name"])
         table["id"].append(builder.metadata["id"])
         table["type"].append(builder.recipe["type"])
@@ -335,37 +418,52 @@ def build_phase(builders, printTable=False):
         table["testpath"].append(builder.metadata["testpath"])
 
     if printTable:
+        # print any skipped buildspecs if they failed to validate during build stage
+        if invalid_builders:
+            print("\n\n")
+            print("Error Messages from Stage: Build")
+            print("{:_<80}".format(""))
+            for test in invalid_builders:
+                print(test)
+
         print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
+    # remove builders if any invalid builders detected in build phase
+    if invalid_builders:
+        for test in invalid_builders:
+            builders.remove(test)
 
-def run_phase(builders, executor, config_dict, printTable=False):
-    """This method will run all builders with the appropriate executor.
-    The executor argument is an instance of ``BuildExecutor`` that is responsible
-    for orchestrating builder execution to the appropriate executor class. The
-    executor contains a list of executors picked up from buildtest configuration.
-    For tests running locally, we get the test metadata and count PASS/FAIL test
-    state to tally number of pass and fail test which is printed at end in
-    Test Summary. For tests that need to run via scheduler (Slurm, LSF) the first
-    stage of run will dispatch job, and state will be `N/A`. We first dispatch all
-    jobs and later poll jobs until they are complete. The poll section is skipped
-    if all tests are run locally. In poll section we regenerate table with all
-    valid_builders and updated test state and returncode and calculate total
-    pass/fail tests. Finally we return a list of valid_builders which are tests
-    that ran through one of the executors. Any test that failed to run or be
-    dispatched will be skipped during run stage and not added in `valid_builders`.
-    The `valid_builders` contains the test meta-data that is used for updating
-    test report in next stage.
+    return builders
 
-    :param builders:  A list of builders that need to be run. These correspond to test names
-    :type: builders: list of objects of type `BuilderBase`
-    :param executor: The master executor class responsible for invoking appropriate executor class corresponding to builder.
-    :type executor: BuildExecutor
-    :param config_dict: loaded buildtest configuration
-    :type config_dict: dict
-    :param printTable: boolean to control print statement for run phase
-    :type printTable: bool
-    :return: A list of valid builders
-    :rtype: list
+
+def run_phase(builders, executor, buildtest_config, printTable=False):
+    """ This method will run all builders with the appropriate executor.
+        The executor argument is an instance of ``BuildExecutor`` that is responsible
+        for orchestrating builder execution to the appropriate executor class. The
+        executor contains a list of executors picked up from buildtest configuration.
+        For tests running locally, we get the test metadata and count PASS/FAIL test
+        state to tally number of pass and fail test which is printed at end in
+        Test Summary. For tests that need to run via scheduler (Slurm, LSF) the first
+        stage of run will dispatch job, and state will be `N/A`. We first dispatch all
+        jobs and later poll jobs until they are complete. The poll section is skipped
+        if all tests are run locally. In poll section we regenerate table with all
+        valid_builders and updated test state and returncode and calculate total
+        pass/fail tests. Finally we return a list of valid_builders which are tests
+        that ran through one of the executors. Any test that failed to run or be
+        dispatched will be skipped during run stage and not added in `valid_builders`.
+        The `valid_builders` contains the test meta-data that is used for updating
+        test report in next stage.
+
+        :param builders:  A list of builders that need to be run. These correspond to test names
+        :type: builders: list of objects of type `BuilderBase`
+        :param executor: The master executor class responsible for invoking appropriate executor class corresponding to builder.
+        :type executor: BuildExecutor
+        :param buildtest_config: loaded buildtest configuration
+        :type buildtest_config: dict
+        :param printTable: boolean to control print statement for run phase
+        :type printTable: bool
+        :return: A list of valid builders
+        :rtype: list
     """
 
     valid_builders = []
@@ -441,7 +539,9 @@ def run_phase(builders, executor, config_dict, printTable=False):
 
     # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
     if poll:
-        valid_builders = poll_jobs(config_dict, poll_queue, executor, valid_builders)
+        valid_builders = poll_jobs(
+            buildtest_config, poll_queue, executor, valid_builders
+        )
 
         table = {
             "name": [],
@@ -496,19 +596,19 @@ def run_phase(builders, executor, config_dict, printTable=False):
 
 
 def poll_jobs(config_dict, poll_queue, executor, valid_builders):
-    """This method will poll jobs by processing all jobs in ``poll_queue``. If
-    job is cancelled by scheduler, we remove this from valid_builders list.
-    This method will return a list of valid_builders after polling. If there
-    are no valid_builders after polling, the method will return None
+    """ This method will poll jobs by processing all jobs in ``poll_queue``. If
+        job is cancelled by scheduler, we remove this from valid_builders list.
+        This method will return a list of valid_builders after polling. If there
+        are no valid_builders after polling, the method will return None
 
-    :param config_dict: loaded buildtest configuration
-    :type config_dict: dict, required
-    :param poll_queue: a list of jobs that need to be polled. The jobs will poll using poll method from executor
-    :type poll_queue: list, required
-    :param executor: an instance of BuildExecutor class
-    :type executor: BuildExecutor, required
-    :param valid_builders: list of valid builders
-    :type valid_builders: list, required
+        :param config_dict: loaded buildtest configuration
+        :type config_dict: dict, required
+        :param poll_queue: a list of jobs that need to be polled. The jobs will poll using poll method from executor
+        :type poll_queue: list, required
+        :param executor: an instance of BuildExecutor class
+        :type executor: BuildExecutor, required
+        :param valid_builders: list of valid builders
+        :type valid_builders: list, required
     """
 
     interval = config_dict.get("executors", {}).get("defaults", {}).get("pollinterval")
@@ -578,23 +678,23 @@ def print_test_summary(total_tests, passed_tests, failed_tests):
     print("\n\n")
 
 
-def func_build_subcmd(args, config_opts):
-    """Entry point for ``buildtest build`` sub-command. This method will discover
-    Buildspecs in method ``discover_buildspecs``. If there is an exclusion list
-    this will be checked, once buildtest knows all Buildspecs to process it will
-    begin validation by calling ``BuildspecParser`` and followed by an executor
-    instance by invoking BuildExecutor that is responsible for executing the
-    test based on the executor type. A report of all builds, along with test summary
-    will be displayed to screen.
+def func_build_subcmd(args, buildtest_config):
+    """ Entry point for ``buildtest build`` sub-command. This method will discover
+        Buildspecs in method ``discover_buildspecs``. If there is an exclusion list
+        this will be checked, once buildtest knows all Buildspecs to process it will
+        begin validation by calling ``BuildspecParser`` and followed by an executor
+        instance by invoking BuildExecutor that is responsible for executing the
+        test based on the executor type. A report of all builds, along with test summary
+        will be displayed to screen.
 
-    :param args: arguments passed from command line
-    :type args: dict, required
-    :rtype: None
+        :param args: arguments passed from command line
+        :type args: dict, required
+        :param buildtest_config: loaded buildtest settings
+        :type buildtest_config: dict, required
+        :rtype: None
     """
 
-    test_directory = resolve_testdirectory(config_opts, args.testdir)
-
-    ########## BEGIN BUILDSPEC DISCOVER STAGE ####################
+    test_directory = resolve_testdirectory(buildtest_config, args.testdir)
 
     # discover all buildspecs by tags, buildspecs, and exclude buildspecs. The return
     # is a list of buildspecs and excluded buildspecs
@@ -602,9 +702,8 @@ def func_build_subcmd(args, config_opts):
         args.tags, args.executor, args.buildspec, args.exclude, debug=True
     )
 
-    ########## END BUILDSPEC DISCOVER STAGE ####################
     stage = args.stage
-    executor = BuildExecutor(config_opts)
+    executor = BuildExecutor(buildtest_config)
 
     buildspec_filters = {"tags": args.tags, "executors": args.executor}
 
@@ -622,12 +721,15 @@ def func_build_subcmd(args, config_opts):
     if stage == "parse":
         return
 
-    build_phase(builders, printTable=True)
+    buildphase_builders = build_phase(builders, printTable=True)
 
     if stage == "build":
         return
 
-    valid_builders = run_phase(builders, executor, config_opts, printTable=True)
+    runphase_builders = run_phase(
+        buildphase_builders, executor, buildtest_config, printTable=True
+    )
+
     # only update report if we have a list of valid builders returned from run_phase
-    if valid_builders:
-        update_report(valid_builders)
+    if runphase_builders:
+        update_report(runphase_builders)

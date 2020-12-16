@@ -16,11 +16,11 @@ from buildtest.system import BuildTestSystem
 
 
 def func_config_validate(args=None):
-    """This method implements ``buildtest config validate`` which attempts to
-    validate buildtest settings with schema. If it not validate an exception
-    an exception of type SystemError is raised. We invoke ``check_settings``
-    method which will validate the configuration, if it fails we except an exception
-    of type ValidationError which we catch and print message.
+    """ This method implements ``buildtest config validate`` which attempts to
+        validate buildtest settings with schema. If it not validate an exception
+        an exception of type SystemError is raised. We invoke ``check_settings``
+        method which will validate the configuration, if it fails we except an exception
+        of type ValidationError which we catch and print message.
     """
 
     settings_file = resolve_settings_file()
@@ -35,6 +35,7 @@ def func_config_validate(args=None):
 
 def func_config_view(args=None):
     """View buildtest configuration file. This implements ``buildtest config view``"""
+
     settings_file = resolve_settings_file()
     content = load_recipe(settings_file)
 
@@ -42,9 +43,9 @@ def func_config_view(args=None):
 
 
 def func_config_summary(args=None):
-    """This method implements ``buildtest config summary`` option. In this method
-    we will display a summary of System Details, Buildtest settings, Schemas,
-    Repository details, Buildspecs files and test names.
+    """ This method implements ``buildtest config summary`` option. In this method
+        we will display a summary of System Details, Buildtest settings, Schemas,
+        Repository details, Buildspecs files and test names.
     """
 
     system = BuildTestSystem()

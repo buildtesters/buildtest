@@ -8,10 +8,12 @@ buildspecs:
     pre_build: |
       echo "This is a pre-build section"
       gcc --version
-    build:
-      source: "src/hello.c"
-      name: gnu
-      cflags: -Wall
+    source: "src/hello.c"
+    compilers:
+      name: ["^(builtin_gcc)$"]
+      default:
+        gcc:
+          cflags: -Wall
     post_build: |
       echo "This is post-build section"
     pre_run: |

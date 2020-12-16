@@ -4,7 +4,10 @@ buildspecs:
     type: compiler
     executor: local.bash
     description: Can't find source file name
-    build:
-      name: gnu
-      source: /path/to/random/file
-      cflags: -O3
+    source: /path/to/invalidfile
+    compilers:
+      name: ["gcc"]
+      default:
+        gcc:
+          cflags: -O3
+

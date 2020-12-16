@@ -3,55 +3,47 @@ buildspecs:
   missing_type:
     executor: local.bash
     description: "type key is missing, this is a required field"
-    module:
-     -  "module purge &&  module load intel/17"
-     -  "module purge &&  module load intel/18"
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    source: "src/hello.c"
+    compilers:
+      name: [intel]
 
-  missing_build:
+  missing_required_compilers:
     executor: local.bash
     type: compiler
-    description: "build key is missing, this is a required field"
-    module:
-     -  "module purge &&  module load intel/17"
-     -  "module purge &&  module load intel/18"
+    description: "missing required field compilers "
+    source: "src/hello.c"
+
+  missing_required_source:
+    executor: local.bash
+    type: compiler
+    description: "missing required field 'source' "
+    compilers:
+      name: [gcc]
 
   invalid_type_value:
     executor: local.bash
     type: script
     description: "invalid value for type field must be 'compiler' "
-    module:
-       - "module purge && module load gcc/4.0"
-       - "module purge && module load gcc/6.0"
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   invalid_description_value:
     executor: local.bash
     type: compiler
     description: 1
-    module:
-       - "module purge && module load gcc/4.0"
-       - "module purge && module load gcc/6.0"
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   invalid_type_module:
     executor: local.bash
     type: compiler
     description: "type for 'module' key, expecting a property but received 'string' "
     module: "module purge && module load gcc/4.0"
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   module_purge_invalid_type:
     executor: local.bash
@@ -59,10 +51,9 @@ buildspecs:
     description: "The purge property is a boolean"
     module:
       purge: 1
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   module_swap_duplicate_check:
     executor: local.bash
@@ -70,10 +61,9 @@ buildspecs:
     description: "The swap property expects two unique items"
     module:
       swap: [gcc/8.0, gcc/8.0]
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   module_swap_min_items:
     executor: local.bash
@@ -81,10 +71,9 @@ buildspecs:
     description: "The swap property expects a minimum of 2 items"
     module:
       swap: [gcc/8.0]
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   module_swap_max_items:
     executor: local.bash
@@ -92,10 +81,9 @@ buildspecs:
     description: "The swap property expects a maximum of 2 items"
     module:
       swap: [gcc/8.0, gcc/9.0, gcc/10.0]
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   module_load_duplicate_items:
     executor: local.bash
@@ -103,10 +91,9 @@ buildspecs:
     description: "The load property expects unique items"
     module:
       load: [gcc/8.0, gcc/8.0]
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   module_load_min_items:
     executor: local.bash
@@ -114,58 +101,9 @@ buildspecs:
     description: "The load property expects a minimum of 1 item"
     module:
       load: []
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
-
-  missing_source_in_compiler:
-    executor: local.bash
-    type: compiler
-    description: "missing source key in compiler object"
-    module:
-      purge: True
-      load: [gcc/4.0]
-    build:
-      name: gnu
-      cflags: "-O1"
-
-  missing_name_in_build:
-    executor: local.bash
-    type: compiler
-    description: "missing name key in build object"
-    module:
-      purge: True
-      load: [gcc/4.0]
-    build:
-      source: src/hello.c
-
-  name_type_mismatch:
-    executor: local.bash
-    type: compiler
-    description: "compiler 'name' expects a string but received a list"
-    module:
-      purge: True
-      load: [gcc/4.0]
-    build:
-      source: src/hello.c
-      name: ["gnu", "intel"]
-      cflags: "-O1"
-      ldflags: "-lm"
-
-  additionalProperties_build:
-    executor: local.bash
-    type: compiler
-    description: "test additionalProperties in build object. Schema does not allow for additional keys"
-    module:
-      purge: True
-      load: [gcc/4.0]
-    build:
-      source: src/hello.c
-      foo: bar
-      name: gnu
-      cflags: "-O1"
-      ldflags: "-lm"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   additionalProperties_main:
     executor: local.bash
@@ -175,11 +113,9 @@ buildspecs:
     module:
       purge: True
       load: [gcc/4.0]
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
-      ldflags: "-lm"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   additionalProperties_batch:
     executor: local.bash
@@ -191,11 +127,9 @@ buildspecs:
     batch:
       "nodecount": "2"
       "EXPORT": "ALL"
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
-      ldflags: "-lm"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   type_mismatch_args:
     executor: local.bash
@@ -204,10 +138,49 @@ buildspecs:
     module:
       purge: True
       load: [gcc/4.0]
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
-      ldflags: "-lm"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
     run:
       args: 1
+
+  missing_required_compiler_name:
+    executor: local.bash
+    type: compiler
+    description: "'name' field in compilers section is required field"
+    source: src/hello.f90
+    compilers:
+      default:
+        cray:
+          fflags: "-O1"
+      config:
+        PrgEnv-cray@2.6.2:
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+
+  uniqueItems_compiler_name:
+    executor: local.bash
+    type: compiler
+    description: "Test unique items in 'name' field in compilers section"
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray", "PrgEnv-cray"]
+      config:
+        PrgEnv-cray@2.6.2:
+          fflags: "-O1"
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+
+  additionalProperties_compiler:
+    executor: local.bash
+    type: compiler
+    description: "Test additionalProperies in compiler section, FOO: BAR"
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray"]
+      config:
+        PrgEnv-cray@2.6.2:
+          FOO: BAR
+          fflags: "-O1"
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]

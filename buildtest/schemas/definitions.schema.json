@@ -4,29 +4,40 @@
   "title": "JSON Schema Definitions File. ",
   "description": "This file is used for declaring definitions that are referenced from other schemas",
   "definitions": {
-
     "list_of_strings": {
       "type": "array",
       "uniqueItems": true,
       "minItems": 1,
-      "items": {"type": "string"}
+      "items": {
+        "type": "string"
+      }
     },
     "string_or_list": {
       "oneOf": [
-        {"type": "string"},
-        {"$ref": "#/definitions/list_of_strings"}
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/list_of_strings"
+        }
       ]
     },
     "list_of_ints": {
       "type": "array",
       "uniqueItems": true,
       "minItems": 1,
-      "items": {"type": "integer"}
+      "items": {
+        "type": "integer"
+      }
     },
     "int_or_list": {
       "oneOf": [
-        {"type": "integer"},
-        {"$ref": "#/definitions/list_of_ints"}
+        {
+          "type": "integer"
+        },
+        {
+          "$ref": "#/definitions/list_of_ints"
+        }
       ]
     },
     "env": {
@@ -86,7 +97,11 @@
         "scheduler": {
           "type": "string",
           "description": "Test will run only if scheduler is available. We assume binaries are available in $PATH",
-          "enum": ["lsf", "slurm", "cobalt"]
+          "enum": [
+            "lsf",
+            "slurm",
+            "cobalt"
+          ]
         },
         "user": {
           "type": "string",
@@ -95,7 +110,10 @@
         "platform": {
           "type": "string",
           "description": "This test will run if target system is Linux or Darwin. We check target system using ``platform.system()`` and match with input field",
-          "enum": ["Linux", "Darwin"]
+          "enum": [
+            "Linux",
+            "Darwin"
+          ]
         },
         "linux_distro": {
           "type": "array",
@@ -103,8 +121,19 @@
           "uniqueItems": true,
           "minItems": 1,
           "items": {
-             "type": "string",
-             "enum": ["darwin", "ubuntu", "debian", "rhel", "centos", "fedora", "sles", "opensuse", "amazon", "arch"]
+            "type": "string",
+            "enum": [
+              "darwin",
+              "ubuntu",
+              "debian",
+              "rhel",
+              "centos",
+              "fedora",
+              "sles",
+              "opensuse",
+              "amazon",
+              "arch"
+            ]
           }
         }
       }
@@ -151,9 +180,9 @@
           "description": "Specify Quality of Service (QOS)"
         },
         "queue": {
-          "type":  "string",
+          "type": "string",
           "description": "Specify Job Queue"
-          },
+        },
         "tasks-per-core": {
           "type": "string",
           "description": "Request number of tasks to be invoked on each core. "

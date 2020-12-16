@@ -4,10 +4,9 @@ buildspecs:
     type: compiler
     executor: local.bash
     description: Invalid file extension XYZ when detecting compiler language
-    build:
-      name: gnu
-      source: src/file.XYZ
-      cflags: -O3
-    module:
-      purge: True
-      load: [gcc]
+    source: src/file.XYZ
+    compilers:
+      name: ["gcc"]
+      default:
+        gcc:
+          cflags: -O3

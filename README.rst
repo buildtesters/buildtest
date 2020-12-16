@@ -52,13 +52,12 @@
 buildtest
 ---------
 
-buildtest is a HPC testing framework that automates test build and execution to help 
-HPC facilities validate their system. buildtest makes use of `YAML <https://yaml.org/>`_ configuration
-called *Buildspecs* to write test configuration. Buildtest makes use `jsonschema <https://json-schema.org/>`_ 
-to specify schema which is the core structure of how Buildspecs are written. Once you learn buildtest,
-you can start writing tests in your own repository with 
-`Buildtest schema library <https://buildtesters.github.io/schemas/>`_.
-
+buildtest is a HPC testing framework that helps facilities write acceptance test
+more efficiently. Buildtest provides a framework for facility to write tests in `YAML <https://yaml.org/>`_
+called *Buildspecs* and buildtest handles how to create testscript and run the test on your system.
+Buildtest makes use of `jsonschema <https://json-schema.org/>`_
+to specify schema how Buildspecs are written and validated. Once you learn buildtest,
+you can start writing tests.
 
 To get started with buildtest see `Installing buildtest <https://buildtest.readthedocs.io/en/latest/installing_buildtest.html>`_.
 
@@ -69,7 +68,7 @@ The schemas are found in top-level folder `buildtest/schemas/ <https://github.co
 and published via Github Pages at https://buildtesters.github.io/buildtest/. Each schema has a unique URI defined
 by `$id <https://json-schema.org/understanding-json-schema/structuring.html#the-id-property>`_.
 
-For any issues with schema, please create an `issue  <https://github.com/buildtesters/buildtest/issues>`_ in buildtest.
+For any issues with schema, please create an `issue <https://github.com/buildtesters/buildtest/issues>`_ in buildtest.
 
 References
 ------------
@@ -91,29 +90,32 @@ References
 Why buildtest?
 ---------------
 
-Read https://buildtest.readthedocs.io/en/latest/what_is_buildtest.html to understand why we need buildtest and what we
-are trying to solve.
+Read https://buildtest.readthedocs.io/en/latest/what_is_buildtest.html to
+understand why we need buildtest and what we are trying to solve.
 
 Documentation
 -------------
 
-buildtest `documentation <http://buildtest.readthedocs.io/en/latest/>`_  is your source for getting help with buildtest.
-If you get stuck check out the `current issues <https://github.com/buildtesters/buildtest/issues>`_ to see
+buildtest `documentation <http://buildtest.readthedocs.io/en/latest/>`_  is your
+source for getting help with buildtest. If you get stuck check out the
+`current issues <https://github.com/buildtesters/buildtest/issues>`_ to see
 if you face similar issue. If all else fails please create a ticket.
 
 Source Code
 ------------
 
-buildtest source code is under ``buildtest`` directory found in the root of this repository. The documentation  
-is under ``docs`` which consist of ``Makefile`` and ``conf.py`` to build the sphinx project along with documentation
-pages in ReStructuredText (rst). The regression test are found in top-level directory named ``tests`` and
-the test suite is run via ``pytest``.
+buildtest source code is under ``buildtest`` directory found in the root of this
+repository. The documentation is under ``docs`` which consist of ``Makefile``
+and ``conf.py`` to build the sphinx project along with documentation pages in
+ReStructuredText (rst). The regression test are found in top-level directory
+named ``tests`` and the test suite is run via ``pytest``.
 
 Slack
 ------
 
-Click the `Join Slack Channel <https://hpcbuildtest.herokuapp.com/>`_ to get in touch with the buildtest community.
-If you already have an account then access the Slack Channel `here  <https://hpcbuildtest.slack.com>`_
+Click the `Join Slack Channel <https://hpcbuildtest.herokuapp.com/>`_ to get in
+touch with the buildtest community. If you already have an account then access
+the Slack Channel `here  <https://hpcbuildtest.slack.com>`_.
 
 Contributing Back
 -------------------
