@@ -3,12 +3,12 @@ class BuildTestError(Exception):
     of Exception class."""
 
     def __init__(self, msg, *args):
-        """Constructor Method.
+        """ This class is used for printing error message when exception is raised.
 
-        :param msg: message to print
-        :type msg: str,
-        :param args:
-        :type args:
+            :param msg: message to print
+            :type msg: str, required
+            :param args: extra arguments to class
+            :type args: list
         """
         self.msg = [msg]
         if args:

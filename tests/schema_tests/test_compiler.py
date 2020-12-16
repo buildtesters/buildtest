@@ -84,5 +84,5 @@ def test_compiler_examples():
     assert invalid_recipes
     assert valid_recipes
 
-    check_invalid_recipes(invalid_recipes, invalids, loaded, version)
     check_valid_recipes(valid_recipes, valids, loaded, version)
+    check_invalid_recipes(invalid_recipes, invalids, loaded, version)

@@ -17,3 +17,10 @@ executors:
     python:
       description: submit jobs on local machine using python shell
       shell: python
+compilers:
+  compiler:
+    gcc:
+      builtin_gcc:
+        cc: /usr/bin/gcc
+        fc: /usr/bin/gfortran
+        cxx: /usr/bin/g++

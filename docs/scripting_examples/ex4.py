@@ -3,13 +3,12 @@ from buildtest.config import load_settings
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.executors.setup import BuildExecutor
 from buildtest.menu.build import (
-    discover_buildspecs,
-    resolve_testdirectory,
     build_phase,
+    discover_buildspecs,
+    parse_buildspecs,
+    resolve_testdirectory,
     run_phase,
 )
-from buildtest.menu.buildspec import parse_buildspecs
-
 
 input_buildspecs = [os.path.join(BUILDTEST_ROOT, "tutorials", "pass_returncode.yml")]
 included_bp, excluded_bp = discover_buildspecs(buildspec=input_buildspecs, debug=True)

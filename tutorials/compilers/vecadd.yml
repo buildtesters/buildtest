@@ -5,11 +5,13 @@ buildspecs:
     description: Vector Addition example with GNU compiler
     tags: [tutorials, compile]
     executor: local.bash
-    build:
-      name: gnu
-      source: src/vecAdd.c
-      cflags: -fopenacc
-      ldflags: -lm
+    source: src/vecAdd.c
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        gcc:
+          cflags: -fopenacc
+          ldflags: -lm
     status:
       regex:
         stream: stdout

@@ -7,8 +7,8 @@ expose functions to run builds.
 
 import logging
 import os
-import sys
 from buildtest.config import load_settings
+from buildtest.exceptions import BuildTestError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.utils import load_recipe
 from buildtest.schemas.defaults import schema_table, custom_validator
@@ -44,20 +44,22 @@ class BuildspecParser:
            :param buildspec: the pull path to the Buildspec file, must exist.
            :type buildspec: str, required
         """
-
+        print("buildspec:", buildspec)
         self.logger = logging.getLogger(__name__)
         self.executors = list(executors)
         # if invalid input for buildspec
         if not buildspec:
-            sys.exit("Invalid input type for Buildspec, must be of type 'string'.")
+            raise BuildTestError(
+                "Invalid input type for Buildspec, must be of type 'string'."
+            )
 
         self.buildspec = resolve_path(buildspec)
 
         if not self.buildspec:
-            sys.exit("There is no file named: %s " % buildspec)
+            raise BuildTestError("There is no file named: %s " % buildspec)
 
         if is_dir(self.buildspec):
-            sys.exit(
+            raise BuildTestError(
                 f"Detected {self.buildspec} is a directory, please provide a file path (not a directory path) to BuildspecParser."
             )
 
@@ -85,13 +87,15 @@ class BuildspecParser:
         # if type not found in section, raise an error since every test
         # must be associated to a schema which is controlled by 'type' key
         if not self.schema_type:
-            sys.exit(f"Did not find 'type' key in test section: {test}")
+            raise BuildTestError(f"Did not find 'type' key in test section: {test}")
 
         self.logger.info("Detected field 'type: %s'", self.schema_type)
 
         # Ensure we have a Buildspec recipe with a valid type
         if self.schema_type not in schema_table["types"]:
-            sys.exit("type %s is not known to buildtest." % self.schema_type)
+            raise BuildTestError(
+                "type %s is not known to buildtest." % self.schema_type
+            )
 
         self.logger.info(
             "Checking %s in supported type schemas: %s",
@@ -101,7 +105,7 @@ class BuildspecParser:
 
         # And that there is a version file
         if self.schema_version not in schema_table["versions"][self.schema_type]:
-            sys.exit(
+            raise BuildTestError(
                 "version %s is not known for schema type %s. Valid options are: %s"
                 % (
                     self.schema_version,
@@ -121,7 +125,7 @@ class BuildspecParser:
         executor = self.recipe["buildspecs"][test].get("executor") or None
 
         if executor not in self.executors:
-            sys.exit(
+            raise BuildTestError(
                 f"executor: {executor} not found in executor list: {self.executors}"
             )
 

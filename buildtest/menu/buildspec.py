@@ -1,11 +1,9 @@
 import json
 import logging
 import os
-import sys
 
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
-from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import load_settings
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDSPEC_DEFAULT_PATH
@@ -177,7 +175,7 @@ class BuildspecCache:
             # any buildspec that raises SystemExit or ValidationError imply
             # buildspec is not valid, we add this to invalid list along with
             # error message and skip to next buildspec
-            except (SystemExit, ValidationError) as err:
+            except (BuildTestError, ValidationError) as err:
                 self.invalid_buildspecs[buildspec] = err
                 continue
 
@@ -586,76 +584,3 @@ def func_buildspec_find(args):
         return
 
     bp_cache.print_buildspecs()
-
-
-def parse_buildspecs(buildspecs, test_directory, filters, rebuild, printTable=False):
-
-    """Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
-    fails validation we add it to ``skipped_tests`` list and print all skipped
-    tests at end. If buildspec passes validation we get all builders by invoking
-    ``get_builders`` method in BuildspecParser class which gets all tests from
-    buildspec file.
-
-    :param buildspecs: A list of input buildspecs to parse
-    :type buildspecs: list of filepaths
-    :param test_directory: Test directory where buildspecs will be written
-    :type test_directory: str (directory path)
-    :param filters: A dictionary containing filters on builders based on tags and executors
-    :type filters: dict
-    :param rebuild: Input argument from command line --rebuild
-    :type rebuild: int or None
-    :param printTable: a boolean to control if parse table is printed
-    :type printTable: bool, optional
-    :return: A list of builder objects which are instances of ``BuilderBase`` class
-    :rtype: list
-    """
-
-    builders = []
-    table = {"schemafile": [], "validstate": [], "buildspec": []}
-    invalid_buildspecs = []
-    # build all the tests
-    for buildspec in buildspecs:
-
-        valid_state = True
-        try:
-            # Read in Buildspec file here, loading each will validate the buildspec file
-            bp = BuildspecParser(buildspec)
-        except (SystemExit, ValidationError) as err:
-            invalid_buildspecs.append(
-                f"Skipping {buildspec} since it failed to validate"
-            )
-            logger.error(err)
-            continue
-
-        table["schemafile"].append(bp.schema_file)
-        table["validstate"].append(valid_state)
-        table["buildspec"].append(buildspec)
-
-        builder = Builder(
-            bp=bp, filters=filters, testdir=test_directory, rebuild=rebuild
-        )
-        builders += builder.get_builders()
-
-    # print any skipped buildspecs if they failed to validate during build stage
-    if len(invalid_buildspecs) > 0:
-        print("\n\n")
-        print("Error Messages from Stage: Parse")
-        print("{:_<80}".format(""))
-        for test in invalid_buildspecs:
-            print(test)
-
-    if not builders:
-        print("No buildspecs to process because there are no valid buildspecs")
-        sys.exit(0)
-
-    if printTable:
-        print(
-            """
-+---------------------------+
-| Stage: Parsing Buildspecs |
-+---------------------------+ 
-    """
-        )
-        print(tabulate(table, headers=table.keys(), tablefmt="presto"))
-
-    return builders
