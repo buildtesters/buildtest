@@ -274,10 +274,6 @@ class CompilerBuilder(BuilderBase):
 
     def _process_compiler_config(self):
 
-        # TODO figure out what to do with this statement
-        # if not self.bp_compiler["config"]:
-        #    return
-
         # get default compiler definition
         if self.bp_compiler["default"]:
             for compiler in self.default_compiler_settings.keys():

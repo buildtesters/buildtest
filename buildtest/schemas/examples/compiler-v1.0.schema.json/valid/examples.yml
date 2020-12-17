@@ -4,9 +4,6 @@ buildspecs:
     executor: local.bash
     type: compiler
     description: "gnu example with modules, and cflags example"
-    module:
-      purge: False
-      load: [gcc/6.4.0]
     source: src/hello.c
     compilers:
       name: [gcc]
@@ -163,14 +160,17 @@ buildspecs:
     executor: local.bash
     source: "src/hello.cpp"
     compilers:
-      name: [gcc, intel]
-      include: [gcc@7.5.0]
+      name: ["^(gcc|intel|pgi|cray)"]
       exclude: [intel@18]
       default:
         gcc:
-          cflags: "-O3"
+          cflags: "-fopenmp"
         intel:
-          cflags: "-O2"
+          cflags: "-qopenmp"
+        pgi:
+          cflags: "-fopenmp"
+        cray:
+          cflags: "-h omp"
       config:
         gcc@7.5.0:
           cflags: "-O3"
@@ -183,3 +183,10 @@ buildspecs:
         intel@18:
           module:
             load: [intel/2018]
+        pgi/18.0:
+          module:
+            load: [pgi/18.0]
+        craype/2.6.2:
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray]
+            load: [craype/2.6.2]

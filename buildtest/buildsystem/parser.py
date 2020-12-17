@@ -44,7 +44,7 @@ class BuildspecParser:
            :param buildspec: the pull path to the Buildspec file, must exist.
            :type buildspec: str, required
         """
-        print("buildspec:", buildspec)
+
         self.logger = logging.getLogger(__name__)
         self.executors = list(executors)
         # if invalid input for buildspec

@@ -90,30 +90,6 @@
     "description": {
       "$ref": "definitions.schema.json#/definitions/description"
     },
-    "module": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "purge": {
-          "type": "boolean",
-          "description": "Run ``module purge`` if purge is set"
-        },
-        "load": {
-          "$ref": "definitions.schema.json#/definitions/list_of_strings",
-          "description": "Load one or more modules via ``module load``"
-        },
-        "swap": {
-          "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
-          "type": "array",
-          "uniqueItems": true,
-          "minItems": 2,
-          "maxItems": 2,
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "compilers": {
       "type": "object",
       "required": ["name"],
