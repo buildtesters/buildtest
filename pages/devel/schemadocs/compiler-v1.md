@@ -9,7 +9,7 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                           |
 | :------------------ | ---------- | -------------- | ------------ | :---------------- | --------------------- | ------------------- | ------------------------------------------------------------------------------------ |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [compiler-v1.0.schema.json](../out/compiler-v1.0.schema.json "open original schema") |
+| Can be instantiated | Yes        | Unknown status | No           | Forbidden         | Forbidden             | none                | [compiler-v1.0.schema.json](../out/compiler-v1.0.schema.json "open original schema") |
 
 ## compiler schema version 1.0 Type
 
@@ -21,7 +21,8 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | :-------------------------- | --------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-type.md "compiler-v1.0.schema.json#/properties/type")               |
 | [description](#description) | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-description.md "compiler-v1.0.schema.json#/properties/description") |
-| [module](#module)           | `object`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-module.md "compiler-v1.0.schema.json#/properties/module")           |
+| [compilers](#compilers)     | `object`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-compilers.md "compiler-v1.0.schema.json#/properties/compilers")     |
+| [source](#source)           | `string`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-source.md "compiler-v1.0.schema.json#/properties/source")           |
 | [executor](#executor)       | `string`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-executor.md "compiler-v1.0.schema.json#/properties/executor")       |
 | [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-sbatch.md "compiler-v1.0.schema.json#/properties/sbatch")           |
 | [bsub](#bsub)               | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-bsub.md "compiler-v1.0.schema.json#/properties/bsub")               |
@@ -37,7 +38,7 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | [tags](#tags)               | Merged    | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-tags.md "compiler-v1.0.schema.json#/properties/tags")               |
 | [pre_build](#pre_build)     | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-pre_build.md "compiler-v1.0.schema.json#/properties/pre_build")     |
 | [post_build](#post_build)   | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-post_build.md "compiler-v1.0.schema.json#/properties/post_build")   |
-| [build](#build)             | `object`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build.md "compiler-v1.0.schema.json#/properties/build")             |
+| [build](#build)             | `object`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build.md "compiler-v1.0.schema.json#/properties/build")             |
 | [pre_run](#pre_run)         | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-pre_run.md "compiler-v1.0.schema.json#/properties/pre_run")         |
 | [post_run](#post_run)       | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-post_run.md "compiler-v1.0.schema.json#/properties/post_run")       |
 | [run](#run)                 | `object`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-run.md "compiler-v1.0.schema.json#/properties/run")                 |
@@ -88,21 +89,37 @@ The `description` field is used to document what the test is doing
 
 **maximum length**: the maximum number of characters for this string is: `80`
 
-## module
+## compilers
 
 
 
 
-`module`
+`compilers`
 
--   is optional
--   Type: `object` ([Details](compiler-v1-properties-module.md))
+-   is required
+-   Type: `object` ([Details](compiler-v1-properties-compilers.md))
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-module.md "compiler-v1.0.schema.json#/properties/module")
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-compilers.md "compiler-v1.0.schema.json#/properties/compilers")
 
-### module Type
+### compilers Type
 
-`object` ([Details](compiler-v1-properties-module.md))
+`object` ([Details](compiler-v1-properties-compilers.md))
+
+## source
+
+Specify a source file for compilation, the file can be relative path to buildspec or an absolute path
+
+
+`source`
+
+-   is required
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-properties-source.md "compiler-v1.0.schema.json#/properties/source")
+
+### source Type
+
+`string`
 
 ## executor
 
@@ -394,7 +411,7 @@ The `build` section is used for compiling a single program, this section specifi
 
 `build`
 
--   is required
+-   is optional
 -   Type: `object` ([Details](compiler-v1-properties-build.md))
 -   cannot be null
 -   defined in: [compiler schema version 1.0](compiler-v1-properties-build.md "compiler-v1.0.schema.json#/properties/build")
@@ -450,3 +467,299 @@ The `run` section is used for specifying launch configuration of executable
 ### run Type
 
 `object` ([Details](compiler-v1-properties-run.md))
+
+# compiler schema version 1.0 Definitions
+
+## Definitions group default_compiler_config
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/default_compiler_config"}
+```
+
+| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                                                 |
+| :-------------------- | -------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cc")             |
+| [fc](#fc)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-fc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fc")             |
+| [cxx](#cxx)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cxx.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxx")           |
+| [cflags](#cflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cflags")     |
+| [fflags](#fflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-fflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fflags")     |
+| [ldflags](#ldflags)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/ldflags")   |
+| [cppflags](#cppflags) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cppflags") |
+
+### cc
+
+
+
+
+`cc`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cc")
+
+#### cc Type
+
+`string`
+
+### fc
+
+
+
+
+`fc`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-fc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fc")
+
+#### fc Type
+
+`string`
+
+### cxx
+
+
+
+
+`cxx`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cxx.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxx")
+
+#### cxx Type
+
+`string`
+
+### cflags
+
+
+
+
+`cflags`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cflags")
+
+#### cflags Type
+
+`string`
+
+### fflags
+
+
+
+
+`fflags`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-fflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fflags")
+
+#### fflags Type
+
+`string`
+
+### ldflags
+
+
+
+
+`ldflags`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/ldflags")
+
+#### ldflags Type
+
+`string`
+
+### cppflags
+
+
+
+
+`cppflags`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cppflags")
+
+#### cppflags Type
+
+`string`
+
+## Definitions group compiler_declaration
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/compiler_declaration"}
+```
+
+| Property                | Type     | Required | Nullable       | Defined by                                                                                                                                                                           |
+| :---------------------- | -------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc-1)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cc.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cc")             |
+| [fc](#fc-1)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-fc.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/fc")             |
+| [cxx](#cxx-1)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cxx.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cxx")           |
+| [cflags](#cflags-1)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cflags")     |
+| [cxxflags](#cxxflags)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cxxflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cxxflags") |
+| [fflags](#fflags-1)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-fflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/fflags")     |
+| [ldflags](#ldflags-1)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/ldflags")   |
+| [cppflags](#cppflags-1) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cppflags") |
+| [module](#module)       | `object` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module")     |
+
+### cc
+
+
+
+
+`cc`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cc.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cc")
+
+#### cc Type
+
+`string`
+
+### fc
+
+
+
+
+`fc`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-fc.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/fc")
+
+#### fc Type
+
+`string`
+
+### cxx
+
+
+
+
+`cxx`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cxx.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cxx")
+
+#### cxx Type
+
+`string`
+
+### cflags
+
+
+
+
+`cflags`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cflags")
+
+#### cflags Type
+
+`string`
+
+### cxxflags
+
+
+
+
+`cxxflags`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cxxflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cxxflags")
+
+#### cxxflags Type
+
+`string`
+
+### fflags
+
+
+
+
+`fflags`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-fflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/fflags")
+
+#### fflags Type
+
+`string`
+
+### ldflags
+
+
+
+
+`ldflags`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/ldflags")
+
+#### ldflags Type
+
+`string`
+
+### cppflags
+
+
+
+
+`cppflags`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cppflags")
+
+#### cppflags Type
+
+`string`
+
+### module
+
+
+
+
+`module`
+
+-   is optional
+-   Type: `object` ([Details](compiler-v1-definitions-compiler_declaration-properties-module.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module")
+
+#### module Type
+
+`object` ([Details](compiler-v1-definitions-compiler_declaration-properties-module.md))

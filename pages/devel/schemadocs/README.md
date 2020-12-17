@@ -68,7 +68,18 @@
 -   [Untitled object in buildtest configuration schema](./settings-definitions-slurm.md "An instance object of slurm executor") – `settings.schema.json#/definitions/slurm`
 -   [Untitled object in buildtest configuration schema](./settings-definitions-lsf.md "An instance object of lsf executor") – `settings.schema.json#/definitions/lsf`
 -   [Untitled object in buildtest configuration schema](./settings-definitions-cobalt.md "An instance object of cobalt executor") – `settings.schema.json#/definitions/cobalt`
--   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-module.md) – `compiler-v1.0.schema.json#/properties/module`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config.md) – `compiler-v1.0.schema.json#/definitions/default_compiler_config`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration.md) – `compiler-v1.0.schema.json#/definitions/compiler_declaration`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module.md) – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers.md) – `compiler-v1.0.schema.json#/properties/compilers`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default.md) – `compiler-v1.0.schema.json#/properties/compilers/properties/default`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-gcc.md) – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/gcc`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-intel.md) – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/intel`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-pgi.md) – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/pgi`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-cray.md) – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/cray`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-config.md) – `compiler-v1.0.schema.json#/properties/compilers/properties/config`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-config-patternproperties-.md) – `compiler-v1.0.schema.json#/properties/compilers/properties/config/patternProperties/^.*$`
+-   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module.md) – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module`
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/properties/batch`
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/properties/env`
 -   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/properties/vars`
@@ -142,8 +153,12 @@
 -   [Untitled array in buildtest configuration schema](./settings-definitions-slurm-properties-options.md "Specify any other options for sbatch used by this executor for running all jobs") – `settings.schema.json#/definitions/slurm/properties/options`
 -   [Untitled array in buildtest configuration schema](./settings-definitions-lsf-properties-options.md "Specify any options for bsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/lsf/properties/options`
 -   [Untitled array in buildtest configuration schema](./settings-definitions-cobalt-properties-options.md "Specify any options for qsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/cobalt/properties/options`
--   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-module-properties-load.md "Load one or more modules via module load") – `compiler-v1.0.schema.json#/properties/module/properties/load`
--   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-module-properties-swap.md "Swap modules using module swap") – `compiler-v1.0.schema.json#/properties/module/properties/swap`
+-   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-load.md "Load one or more modules via module load") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/load`
+-   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
+-   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-name.md) – `compiler-v1.0.schema.json#/properties/compilers/properties/name`
+-   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-exclude.md) – `compiler-v1.0.schema.json#/properties/compilers/properties/exclude`
+-   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-load.md "Load one or more modules via module load") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/load`
+-   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
 -   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/properties/sbatch`
 -   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/properties/bsub`
 -   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/properties/cobalt`
