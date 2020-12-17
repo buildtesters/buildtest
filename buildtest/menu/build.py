@@ -22,6 +22,7 @@ from buildtest.executors.setup import BuildExecutor
 
 from buildtest.menu.report import update_report
 from buildtest.utils.file import walk_tree, resolve_path
+from buildtest.utils.tools import Hasher
 
 logger = logging.getLogger(__name__)
 
@@ -393,14 +394,13 @@ def build_phase(builders, printTable=False):
 +----------------------+ 
 """
     )
-    table = {
-        "name": [],
-        "id": [],
-        "type": [],
-        "executor": [],
-        "tags": [],
-        "testpath": [],
-    }
+    table = Hasher()
+    for field in ["name", "id", "type", "executor", "tags", "compiler", "testpath"]:
+        table["script"][field] = []
+        table["compiler"][field] = []
+
+    del table["script"]["compiler"]
+
     for builder in builders:
         try:
             builder.build()
@@ -410,12 +410,15 @@ def build_phase(builders, printTable=False):
             logger.error(err)
             continue
 
-        table["name"].append(builder.metadata["name"])
-        table["id"].append(builder.metadata["id"])
-        table["type"].append(builder.recipe["type"])
-        table["executor"].append(builder.recipe["executor"])
-        table["tags"].append(builder.recipe.get("tags"))
-        table["testpath"].append(builder.metadata["testpath"])
+        table[builder.type]["name"].append(builder.metadata["name"])
+        table[builder.type]["id"].append(builder.metadata["id"])
+        table[builder.type]["type"].append(builder.recipe["type"])
+        table[builder.type]["executor"].append(builder.recipe["executor"])
+        table[builder.type]["tags"].append(builder.recipe.get("tags"))
+        table[builder.type]["testpath"].append(builder.metadata["testpath"])
+
+        if builder.type == "compiler":
+            table[builder.type]["compiler"].append(builder.compiler)
 
     if printTable:
         # print any skipped buildspecs if they failed to validate during build stage
@@ -426,7 +429,22 @@ def build_phase(builders, printTable=False):
             for test in invalid_builders:
                 print(test)
 
-        print(tabulate(table, headers=table.keys(), tablefmt="presto"))
+        if len(table["script"]["name"]) > 0:
+            print(
+                tabulate(
+                    table["script"], headers=table["script"].keys(), tablefmt="presto"
+                )
+            )
+
+        print("\n")
+        if len(table["compiler"]["name"]) > 0:
+            print(
+                tabulate(
+                    table["compiler"],
+                    headers=table["compiler"].keys(),
+                    tablefmt="presto",
+                )
+            )
 
     # remove builders if any invalid builders detected in build phase
     if invalid_builders:

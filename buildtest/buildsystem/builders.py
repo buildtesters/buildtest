@@ -68,19 +68,7 @@ class Builder:
                 elif recipe["type"] == "compiler":
 
                     self._build_compilers(name, recipe)
-                    """
-                    compiler_builders = self._build_compilers(name, recipe)
-                    if not compiler_builders:
-                        print("if")
-                        self.builders += compiler_builders
-                    else:
-                        print("else")
-                        self.builders.append(
-                            CompilerBuilder(
-                                name, recipe, self.bp.buildspec, testdir=testdir
-                            )
-                    )
-                    """
+
                 else:
                     print(
                         "%s is not recognized by buildtest, skipping." % recipe["type"]
