@@ -9,7 +9,7 @@ from lmod.spider import Spider
 from buildtest.config import resolve_settings_file, load_settings
 from buildtest.exceptions import BuildTestError
 from buildtest.schemas.defaults import custom_validator, schema_table
-from buildtest.utils.tools import Hasher
+from buildtest.utils.tools import deep_get
 
 
 def func_compiler_find(args=None):
@@ -72,9 +72,11 @@ class BuildtestCompilers:
             :type compilers: dict
         """
 
-        configuration = load_settings()
-        self.configuration = Hasher(configuration)
+        self.configuration = load_settings()
         self.debug = debug
+
+        if not deep_get(self.configuration, "compilers", "compiler"):
+            raise BuildTestError("compiler section not defined")
 
         self.compilers = self.configuration["compilers"]["compiler"]
 
@@ -96,7 +98,7 @@ class BuildtestCompilers:
             :rtype: dict
         """
 
-        self.moduletool = self.configuration["moduletool"]
+        self.moduletool = self.configuration.get("moduletool")
 
         if self.moduletool == "N/A" or not self.moduletool:
             raise BuildTestError(
@@ -104,10 +106,7 @@ class BuildtestCompilers:
             )
 
         # The 'find' section is required for discovering new compilers
-        if (
-            not self.configuration["compilers"]
-            or not self.configuration["compilers"]["find"]
-        ):
+        if not self.configuration["compilers"].get("find"):
             raise BuildTestError("Compiler section not detected")
 
         module_dict = {}
@@ -124,8 +123,15 @@ class BuildtestCompilers:
                 "find"
             ].items():
                 module_dict[name] = []
+                raw_string = r"{}".format(module_regex_patttern)
+
                 for module_fname in spider_modules:
-                    if re.match(module_regex_patttern, module_fname):
+                    if self.debug:
+                        print(
+                            f"Applying regex {raw_string} with module: {module_fname}"
+                        )
+
+                    if re.match(raw_string, module_fname):
                         module_dict[name].append(module_fname)
 
         # for environment-modules we retrieve modules by parsing output of 'module av -t'
@@ -134,21 +140,24 @@ class BuildtestCompilers:
             if self.debug:
                 print(f"Searching modules by parsing content of command: {module_av}")
 
-            modules = subprocess.getoutput("module av -t")
-            modules = modules.split()
+            cmd = subprocess.getoutput("module av -t")
+            modules = cmd.split()
 
             # discover all modules based with list of module names specified in find field, we add all
             # modules that start with the key name
-            for compiler, module_names in self.compilers.get("find").items():
+            for compiler, module_regex_pattern in self.compilers.get("find").items():
                 module_dict[compiler] = []
-                for name in module_names:
-                    # apply regex against all modules, some modules have output with
-                    # (default) in that case we replace with empty string
-                    module_dict[compiler] += [
-                        module.replace("(default)", "")
-                        for module in modules
-                        if re.match(name, module)
-                    ]
+
+                raw_string = r"{}".format(module_regex_pattern)
+
+                # apply regex against all modules, some modules have output with
+                # (default) in that case we replace with empty string
+
+                module_dict[compiler] += [
+                    module.replace("(default)", "")
+                    for module in modules
+                    if re.match(raw_string, module)
+                ]
 
         # ignore entry where value is empty list
         module_dict = {k: v for k, v in module_dict.items() if v}
@@ -157,7 +166,7 @@ class BuildtestCompilers:
             raise BuildTestError("No modules discovered")
 
         self._validate_modules(module_dict)
-        self.update_compiler_section()
+        self._update_compiler_section()
 
     def _validate_modules(self, module_dict):
         """ This method will validate modules by running ``module load`` test for all
@@ -181,23 +190,22 @@ class BuildtestCompilers:
                 if ret == 0:
                     self.compiler_modules_lookup[name].append(module)
 
-    def update_compiler_section(self):
+    def _update_compiler_section(self):
         """ This method will update the compiler section by adding new compilers if
-            neccessary and return a new compiler section that will be written back to
-            disk as the new configuration file.
+            found
 
             :return: Updated compiler section for buildtest configuration
             :rtype: dict
         """
 
         for name, module_list in self.compiler_modules_lookup.items():
-            if not isinstance(self.compilers[name], dict):
+            if not self.compilers[name]:
                 self.compilers[name] = {}
 
             for module in module_list:
                 # if its a new compiler entry let's add new entry to dict
                 if module not in self.compilers.get(name).keys():
-                    self.compilers[name][module] = self.compiler_table[name]
+                    self.compilers[name][module] = self.compiler_table[name].copy()
 
                 # define module section for each compiler. This setting is automatically
                 # set by buildtest but user may want to tweak this later.

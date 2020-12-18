@@ -82,7 +82,7 @@ Building Multiple Buildspecs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Buildtest supports building multiple buildspecs, just specify the ``-b`` option
-for every Buildspec you want to build. In this example, we specify a file and
+for every buildspec you want to build. In this example, we specify a file and
 directory path. The search resolution is performed for every argument (``-b``)
 independently, and accumulated into list.
 
@@ -131,7 +131,7 @@ atleast once, in order to detect cache file.
 .. program-output::  cat docgen/getting_started/tags.txt
 
 You can build by multiple tags by specifying ``--tags`` multiple times. In next
-example we build all tests with tag name `compiler` and `python`.
+example we build all tests with tag name ``compiler`` and ``python``.
 
 .. program-output:: cat docgen/getting_started/multi-tags.txt
 
@@ -142,10 +142,10 @@ tags in your buildspec cache see :ref:`buildspec_tags`.
 .. Note:: The ``--tags`` is used for discovering buildspecs and filtering tests during build phase.
   For example a buildspec file (``system.yml``) that contain three tests **hostname_check**, **timeout**, and **ping_test**
   are generally all run by default if you run as ``buildtest build -b system.yml``, but if you
-  specify ``--tags`` buildtest will exclude tests that don't have a matching tagname. It is possible
+  specify ``--tags``, buildtest will exclude tests that don't have a matching tagname. It is possible
   ``buildtest build --tags system`` can discover buildspec file ``system.yml`` but only
-  tests **timeout** and **ping_test** are built because they have a **system** tag while
-  **hostname_check** is skipped because it's test doesn't have a **system** tag.
+  tests **timeout** and **ping_test** are built which have taa **system**  while
+  **hostname_check** is skipped because it's test doesn't have the **system** tag.
 
 
 You can combine ``--tags`` with ``--buildspec`` and ``--exclude`` in a single command.
@@ -303,6 +303,23 @@ If you want to find all buildspec files in cache run ``buildtest buildspec find 
 
 .. program-output:: cat docgen/buildspec_find_buildspecfiles.txt
      :ellipsis: 30
+
+If you want to find root directories of buildspecs loaded in buildspec cache use the
+``buildtest buildspec find --paths`` option.
+
+::
+
+    $ buildtest buildspec find --paths
+    /Users/siddiq90/Documents/buildtest/tutorials
+    /Users/siddiq90/Documents/buildtest/general_tests
+
+
+buildtest will search buildspecs if :ref:`buildspec_roots` is defined in your configuration, it
+is a list of directory paths to search for buildspecs when you run ``buildtest buildspec find``.
+If you want to load buildspecs from a directory path, one can run
+``buildtest buildspec find --root <path> --rebuild`` and it will recursively find all
+`.yml` files and validate them. buildtest will load all valid buildspecs into cache and ignore
+the rest. It's important to add ``--rebuild`` if you want to regenerate buildspec cache.
 
 Filtering buildspec
 ~~~~~~~~~~~~~~~~~~~
@@ -649,11 +666,8 @@ Shown below is the command usage of ``buildtest schema``
 
 .. program-output:: cat docgen/buildtest_schema_--help.txt
 
-The json schemas are hosted on the web at https://buildtesters.github.io/schemas/.
+The json schemas are hosted on the web at https://buildtesters.github.io/buildtest/.
 buildtest provides a means to display the json schema from the buildtest interface.
-Note that buildtest will show the schemas provided in buildtest repo and not
-ones provided by `schemas <https://github.com/buildtesters/schemas>`_ repo. This
-is because, we let development of schema run independent of the framework.
 
 To select a JSON schema use the ``--name`` option to select a schema, for example
 to view a JSON Schema for **script-v1.0.schema.json** run the following::
@@ -693,8 +707,10 @@ set debug level to ``DEBUG`` for an invalid buildspec.
 Accessing buildtest documentation
 ----------------------------------
 
-We provide two command line options to access buildtest and schema docs. To
-access buildtest docs you can run::
+We provide two command line options to access main documentation and schema docs. This
+will open a browser on your machine.
+
+To access buildtest docs you can run::
 
   $ buildtest docs
 

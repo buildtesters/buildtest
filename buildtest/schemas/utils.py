@@ -10,6 +10,8 @@ import yaml
 
 here = os.path.dirname(os.path.abspath(__file__))
 
+from buildtest.exceptions import BuildTestError
+
 
 def load_schema(path):
     """Load a json schema file, the file extension must be '.schema.json'

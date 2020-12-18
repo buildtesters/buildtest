@@ -2,15 +2,15 @@ $ buildtest buildspec find
 
 Buildspec Paths: ['/Users/siddiq90/Documents/buildtest/tutorials', '/Users/siddiq90/Documents/buildtest/general_tests'] 
 
-Found 38 buildspecs 
-Validated 5/38 buildspecs
-Validated 10/38 buildspecs
-Validated 15/38 buildspecs
-Validated 20/38 buildspecs
-Validated 25/38 buildspecs
-Validated 30/38 buildspecs
-Validated 35/38 buildspecs
-Validated 38/38 buildspecs
+Found 39 buildspecs 
+Validated 5/39 buildspecs
+Validated 10/39 buildspecs
+Validated 15/39 buildspecs
+Validated 20/39 buildspecs
+Validated 25/39 buildspecs
+Validated 30/39 buildspecs
+Validated 35/39 buildspecs
+Validated 39/39 buildspecs
 
 Detected 3 invalid buildspecs 
 
@@ -83,21 +83,13 @@ Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/var/buil
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | vecadd_gnu                   | compiler | local.bash   | ['tutorials', 'compile']  | Vector Addition example with GNU compiler                        |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
-| hello_f                      | compiler | local.bash   | ['tutorials', 'compile']  | Hello World Fortran Compilation                                  |
-+------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | hello_c                      | compiler | local.bash   | ['tutorials', 'compile']  | Hello World C Compilation                                        |
-+------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
-| hello_cplusplus              | compiler | local.bash   | ['tutorials', 'compile']  | Hello World C++ Compilation                                      |
-+------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
-| cc_example                   | compiler | local.bash   | ['tutorials', 'compile']  | Example by using cc to set C compiler                            |
-+------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
-| fc_example                   | compiler | local.bash   | ['tutorials', 'compile']  | Example by using fc to set Fortran compiler                      |
-+------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
-| cxx_example                  | compiler | local.bash   | ['tutorials', 'compile']  | Example by using cxx to set C++ compiler                         |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | pre_post_build_run           | compiler | local.bash   | ['tutorials', 'compile']  | example using pre_build, post_build, pre_run, post_run example   |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | executable_arguments         | compiler | local.bash   | ['tutorials', 'compile']  | Passing arguments example                                        |
++------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
+| hello_f                      | compiler | local.bash   | ['tutorials', 'compile']  | Hello World Fortran Compilation                                  |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+
 | root_disk_usage              | script   | local.bash   | ['filesystem', 'storage'] | Check root disk usage and report if it exceeds threshold         |
 +------------------------------+----------+--------------+---------------------------+------------------------------------------------------------------+

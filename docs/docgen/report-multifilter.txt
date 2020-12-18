@@ -2,27 +2,27 @@ $ buildtest report --filter state=FAIL,executor=local.sh --format=name,id,state,
 +--------------------------+----------+---------+------------+
 | name                     | id       | state   | executor   |
 +==========================+==========+=========+============+
-| exit1_fail               | 11151268 | FAIL    | local.sh   |
+| exit1_fail               | 374fc6a6 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| exit1_fail               | 63082ea7 | FAIL    | local.sh   |
+| exit1_fail               | a7eed486 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| exit1_fail               | 2a0cdc40 | FAIL    | local.sh   |
+| exit1_fail               | 365c8743 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| exit1_fail               | 34cc2e2f | FAIL    | local.sh   |
+| exit1_fail               | 51332dbb | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| exit1_fail               | 76851921 | FAIL    | local.sh   |
+| exit1_fail               | 6e04ff39 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| exit1_fail               | 05392910 | FAIL    | local.sh   |
+| exit1_fail               | b54c7d62 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 1d4f47b3 | FAIL    | local.sh   |
+| returncode_list_mismatch | ed7bf25e | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 01d24ff5 | FAIL    | local.sh   |
+| returncode_list_mismatch | fbf8735f | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | faa6397e | FAIL    | local.sh   |
+| returncode_list_mismatch | 4a1ea0d3 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | d602c5bd | FAIL    | local.sh   |
+| returncode_list_mismatch | 140861cf | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 07b2a563 | FAIL    | local.sh   |
+| returncode_list_mismatch | 7c551736 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 82e17c63 | FAIL    | local.sh   |
+| returncode_list_mismatch | c5aaca52 | FAIL    | local.sh   |
 +--------------------------+----------+---------+------------+

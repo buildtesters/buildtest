@@ -38,11 +38,13 @@ $ buildtest buildspec find --buildspec-files
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml                         |
 +--------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml                      |
+| /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_c.yml                    |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml             |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml                   |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_fortran.yml              |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml             |
 +--------------------------------------------------------------------------------------------+

@@ -90,7 +90,6 @@ class Report:
         # format field and reassign display_table
         if self.format:
             self.display_format_fields = self.format.split(",")
-            print("Format Fields: ", self.display_format_fields)
             # check all input format fields are valid fields
             for field in self.display_format_fields:
                 if field not in self.format_fields:

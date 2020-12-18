@@ -12,47 +12,34 @@ Compilation Examples
 We assume the reader has basic understanding of :ref:`global_schema`
 validation. Shown below is the schema definition for compiler schema::
 
-      "$id": "compiler-v1.0.schema.json",
+       "$id": "compiler-v1.0.schema.json",
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "compiler schema version 1.0",
       "description": "The compiler schema is of ``type: compiler`` in sub-schema which is used for compiling and running programs",
       "type": "object",
-      "required": ["type", "build", "executor"],
-      "additionalProperties": false,
+      "required": [
+        "type",
+        "source",
+        "compilers",
+        "executor"
+      ],
 
-The required fields for compiler schema are **type**, **build**, and **executor**.
-The compiler schema is a JSON object defined by ``"type": "object"`` which is
-similar to the *script* schema.
+The required fields for compiler schema are **type**, **compilers**, **source**
+and **executor**.
 
-Shown below are 6 test examples performing Hello World compilation with C, C++,
-and Fortran using GNU compiler
+Shown below is a test name ``hello_f`` that compiles Fortran code with GNU compiler.
 
-.. program-output:: cat ../tutorials/compilers/gnu_hello.yml
+.. program-output:: cat ../tutorials/compilers/gnu_hello_fortran.yml
 
-The tests ``hello_f``, ``hello_c`` and ``hello_cplusplus`` rely on buildtest to
-detect compiler wrappers while tests ``cc_example``, ``fc_example``, ``cxx_example``
-rely on user to specify compiler wrappers manually.
-
-The ``compiler`` object is start of compilation section, the required
-keys are ``source`` and ``name``. The **source** key requires an input program for
+The ``source`` property is used to specify input program for
 compilation, this can be a file relative to buildspec file or an absolute path.
-In this example our source examples are in ``src`` directory. The ``name`` field
-informs buildtest to auto-detect compiler wrappers (``cc``, ``fc``, ``cxx``).
-
-The compilation pattern buildtest utilizes is the following::
-
-    # C example
-    $cc $cppflags $cflags -o <executable> $SOURCE $ldflags
-
-    # Fortran example
-    $cxx $cppflags $cxxflags -o <executable> $SOURCE $ldflags
-
-    # Fortran example
-    $fc $cppflags $fflags -o <executable> $SOURCE $ldflags
-
-If you specify ``cc``, ``fc`` and ``cxx`` field attributes you are responsible for
-selecting the correct compiler wrapper. You can use ``cflags``, ``cxxflags`` and
-``fflags`` field to pass compiler options to C, C++ and Fortran compilers.
+In this example the source file ``src/hello.f90`` is relative to buildspec file.
+The ``compilers`` section specifies compiler configuration, the ``name``
+field is required property which is used to search compilers based on regular expression.
+In this example we use the **builtin_gcc** compiler as regular expression which is the system
+gcc compiler provided by buildtest. The ``default`` section specifies default compiler
+flags (cflags, cxxflags, cppflags, ldflags, fflags) that are used for all compilers when
+building test. This section is organized by compiler groups.
 
 Shown below is an example build for the buildspec example
 
@@ -62,14 +49,29 @@ The generated test for test name **hello_f** is the following::
 
     #!/bin/bash
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
-    gfortran -Wall -o hello.f90.exe src/hello.f90
+    /usr/bin/gfortran -Wall -o hello.f90.exe /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.f90
     ./hello.f90.exe
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
-buildtest will fill in the compilation line based on compilation pattern. buildtest,
-will detect the file extensions and perform a lookup to find the programming language,
-and finally generate the appropriate C, C++, or Fortran compilation based on language
-detected.
+
+The compiler `builtin_gcc` is defined in buildtest compiler configuration which is used
+for running the test. buildtest will use compiler wrappers specified in your settings
+to build the test, however these values can be overridden in buildspec file which
+will be discussed later.
+
+::
+
+    $ buildtest config compilers -y
+    gcc:
+      builtin_gcc:
+        cc: /usr/bin/gcc
+        cxx: /usr/bin/g++
+        fc: /usr/bin/gfortran
+
+buildtest will compile and run the code depending on the compiler flags. buildtest,
+will detect the file extension of source file (`source` property) to detect
+programming language and finally generate the appropriate C, C++, or Fortran
+compilation based on language detected.
 
 buildtest detects the programming language and it finds **.f90** file extension
 and infers it must be Fortran program, hence ``gfortran`` was selected. The
