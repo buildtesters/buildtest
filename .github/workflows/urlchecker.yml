@@ -26,7 +26,7 @@ jobs:
         timeout: 10
 
         # How many times to retry a failed request (defaults to 1)
-        retry_count: 3
+        retry_count: 5
 
         # Cannot check private GitHub settings
-        white_listed_patterns: https://github.com/buildtesters/buildtest/settings,https://hpckp.org/past-edition/hpckp-17/,https://hpckp.org/past-edition/hpckp-18
+        white_listed_patterns: https://github.com/buildtesters/buildtest/settings,https://hpckp.org/past-edition/hpckp-17/,https://hpckp.org/past-edition/hpckp-18,https://sc19.supercomputing.org/presentation/?id=bof195&sess=sess324
