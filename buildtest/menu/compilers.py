@@ -1,13 +1,15 @@
 import json
+import os
+import re
 import subprocess
 import yaml
 from lmod.module import Module
 from lmod.spider import Spider
 
-
 from buildtest.config import resolve_settings_file, load_settings
 from buildtest.exceptions import BuildTestError
 from buildtest.schemas.defaults import custom_validator, schema_table
+from buildtest.utils.tools import Hasher
 
 
 def find_compiler_modules(moduletool, compilers):
@@ -54,103 +56,6 @@ def find_compiler_modules(moduletool, compilers):
     return discovered
 
 
-def validate_modules(discovered_modules):
-    """ This method will validate modules by running ``module load`` test for all
-        discovered modules specified in parameter ``discovered_modules``. This method
-        returns a list of modules that were valid, if all tests pass we return the same
-        list. A module test pass if we get a returncode 0.
-
-        :param discovered_modules:  A list of discovered modules specified as dictionary organized by compiler groups.
-        :type discovered_modules: dict
-        :return: Return a list of valid modules
-        :rtype: dict
-    """
-
-    valid_modules = {}
-    # test all modules via 'module load' and add only modules that passed (ret: 0)
-    for name, module_list in discovered_modules.items():
-        valid_modules[name] = []
-        for module in module_list:
-            cmd = Module(module, debug=True)
-            ret = cmd.test_modules(login=True)
-            # if module load test passed we add entry to list
-            if ret == 0:
-                valid_modules[name].append(module)
-
-    return valid_modules
-
-
-def update_compiler_section(valid_modules, compilers):
-    """ This method will update the compiler section by adding new compilers if
-        neccessary and return a new compiler section that will be written back to
-        disk as the new configuration file.
-
-        :param valid_modules: A list of valid modules
-        :param compilers: compiler section loaded as dictionary
-        :return: Updated compiler section for buildtest configuration
-        :rtype: dict
-    """
-
-    update_compilers = compilers
-    if not update_compilers.get("compiler"):
-        update_compilers["compiler"] = {}
-
-    for name, module_list in valid_modules.items():
-        if not isinstance(update_compilers["compiler"].get(name), dict):
-            update_compilers["compiler"][name] = {}
-
-        for module in module_list:
-
-            # replace first / with @ in format <compiler>@<version>
-            new_compiler_entry = module.replace("/", "@", 1)
-            # if its a new compiler entry let's add new entry to dict
-            if new_compiler_entry not in compilers.get("compiler")[name].keys():
-                update_compilers["compiler"][name][new_compiler_entry] = {}
-
-                if name == "gcc":
-                    update_compilers["compiler"][name][new_compiler_entry] = {
-                        "cc": "gcc",
-                        "cxx": "g++",
-                        "fc": "gfortran",
-                    }
-                elif name == "intel":
-                    update_compilers["compiler"][name][new_compiler_entry] = {
-                        "cc": "icc",
-                        "cxx": "icpc",
-                        "fc": "ifort",
-                    }
-                elif name == "cray":
-                    update_compilers["compiler"][name][new_compiler_entry] = {
-                        "cc": "cc",
-                        "cxx": "CC",
-                        "fc": "ftn",
-                    }
-                elif name == "pgi":
-                    update_compilers["compiler"][name][new_compiler_entry] = {
-                        "cc": "pgcc",
-                        "cxx": "pgc++",
-                        "fc": "pgfortran",
-                    }
-                elif name == "clang":
-                    update_compilers["compiler"][name][new_compiler_entry] = {
-                        "cc": "clang",
-                        "cxx": "clang++",
-                    }
-                elif name == "cuda":
-                    update_compilers["compiler"][name][new_compiler_entry] = {
-                        "cc": "nvcc",
-                    }
-            update_compilers["compiler"][name][new_compiler_entry]["module"] = {}
-            update_compilers["compiler"][name][new_compiler_entry]["module"]["load"] = [
-                module
-            ]
-            update_compilers["compiler"][name][new_compiler_entry]["module"][
-                "purge"
-            ] = False
-
-    return update_compilers
-
-
 def func_compiler_find(args=None):
     """This method implements ``buildtest config compilers find`` which detects
        new compilers based on module names defined in configuration. If system has
@@ -160,36 +65,18 @@ def func_compiler_find(args=None):
 
     settings_file = resolve_settings_file()
     configuration = load_settings(settings_file)
-    moduletool = configuration.get("moduletool")
 
-    if moduletool == "N/A":
-        raise BuildTestError(
-            "You must have environment-modules or Lmod to use this tool. Please specify 'moduletool' in your configuration"
-        )
+    bc = BuildtestCompilers(configuration, debug=args.debug)
+    bc.find_compilers()
+    configuration["compilers"]["compiler"] = bc.compilers
 
-    compilers = configuration.get("compilers")
-    if not compilers:
-        raise BuildTestError("Compiler section not detected")
-
-    discovered_modules = find_compiler_modules(moduletool, compilers)
-
-    if not discovered_modules:
-        raise BuildTestError("No modules discovered")
-
-    print("Discovered Modules:")
-    print(json.dumps(discovered_modules, indent=2))
-    print("\n\n")
-    print("Testing Modules:")
-
-    valid_modules = validate_modules(discovered_modules)
-
-    update_compilers = update_compiler_section(valid_modules, compilers)
-
-    configuration["compilers"] = update_compilers
-
+    # raise BuildTestError("ERROR")
     custom_validator(configuration, schema_table["settings.schema.json"]["recipe"])
     # validate(instance=configuration, schema=config_schema)
+    print(f"Configuration File: {settings_file}")
+    print("{:_<80}".format(""))
     print(yaml.safe_dump(configuration, default_flow_style=False, sort_keys=False))
+    print("{:_<80}".format(""))
     print(f"Updating settings file:  {settings_file}")
 
     with open(settings_file, "w") as fd:
@@ -203,33 +90,50 @@ def func_config_compiler(args=None):
 
     settings_file = resolve_settings_file()
     configuration = load_settings(settings_file)
-    compilers = configuration.get("compilers") or {}
-    compiler_dict = compilers.get("compiler")
 
-    if not compiler_dict:
-        raise BuildTestError("No compilers defined")
-
-    bc = BuildtestCompilers()
+    bc = BuildtestCompilers(configuration)
 
     if args.json:
         bc.print_json()
     if args.yaml:
         bc.print_yaml()
     if args.list:
-        names = bc.list()
-        for name in names:
-            print(name)
+        bc.print_compilers()
 
 
 class BuildtestCompilers:
-    def __init__(self):
+    compiler_table = {
+        "gcc": {"cc": "gcc", "cxx": "g++", "fc": "gfortran",},
+        "intel": {"cc": "icc", "cxx": "icpc", "fc": "ifort",},
+        "pgi": {"cc": "pgcc", "cxx": "pgc++", "fc": "pgfortran",},
+        "cray": {"cc": "cc", "cxx": "CC", "fc": "ftn",},
+        "clang": {"cc": "clang", "cxx": "clang++", "fc": None},
+        "cuda": {"cc": "nvcc", "cxx": "nvcc", "fc": None,},
+    }
+
+    def __init__(self, configuration, debug=False):
         """
             :param compilers: compiler section from buildtest configuration.
             :type compilers: dict
         """
+        self.configuration = Hasher(configuration)
+        self.debug = debug
 
-        configuration = load_settings()
-        self.compilers = configuration["compilers"]["compiler"]
+        self.moduletool = self.configuration["moduletool"]
+
+        if self.moduletool == "N/A" or not self.moduletool:
+            raise BuildTestError(
+                "You must have environment-modules or Lmod to use this tool. Please specify 'moduletool' in your configuration"
+            )
+
+        # The 'find' section is required for discovering new compilers
+        if (
+            not self.configuration["compilers"]
+            or not self.configuration["compilers"]["find"]
+        ):
+            raise BuildTestError("Compiler section not detected")
+
+        self.compilers = self.configuration["compilers"]["compiler"]
 
         self.names = []
         self.compiler_name_to_group = {}
@@ -238,6 +142,114 @@ class BuildtestCompilers:
                 self.names += self.compilers[name].keys()
                 for compiler in self.compilers[name].keys():
                     self.compiler_name_to_group[compiler] = name
+
+    def find_compilers(self):
+        """ This method returns compiler modules discovered depending on your module system.
+            If you have Lmod system we use spider utility to detect modules, this is leveraging
+            Lmodule API. If you have environment-modules we parse output of ``module av -t``.
+
+
+            :return: return a list of compiler modules detected based on module key name.
+            :rtype: dict
+        """
+
+        module_dict = {}
+        print(f"MODULEPATH: {os.getenv('MODULEPATH')}")
+
+        # First we discover modules, if its Lmod we use Lmodule API class Spider to retrieve modules
+        if self.moduletool == "lmod":
+            if self.debug:
+                print("Searching modules via Lmod Spider")
+            spider = Spider()
+
+            spider_modules = list(spider.get_modules().values())
+            for name, module_regex_patttern in self.configuration["compilers"][
+                "find"
+            ].items():
+                module_dict[name] = []
+                for module_fname in spider_modules:
+                    if re.match(module_regex_patttern, module_fname):
+                        module_dict[name].append(module_fname)
+
+        # for environment-modules we retrieve modules by parsing output of 'module av -t'
+        elif self.moduletool == "environment-modules":
+            module_av = "module av -t"
+            if self.debug:
+                print(f"Searching modules by parsing content of command: {module_av}")
+
+            modules = subprocess.getoutput("module av -t")
+            modules = modules.split()
+
+            # discover all modules based with list of module names specified in find field, we add all
+            # modules that start with the key name
+            for compiler, module_names in self.compilers.get("find").items():
+                module_dict[compiler] = []
+                for name in module_names:
+                    # apply regex against all modules, some modules have output with
+                    # (default) in that case we replace with empty string
+                    module_dict[compiler] += [
+                        module.replace("(default)", "")
+                        for module in modules
+                        if re.match(name, module)
+                    ]
+
+        # ignore entry where value is empty list
+        module_dict = {k: v for k, v in module_dict.items() if v}
+
+        if not module_dict:
+            raise BuildTestError("No modules discovered")
+
+        # print (json.dumps(self.discovered, indent=2))
+        self._validate_modules(module_dict)
+        self.update_compiler_section()
+
+    def _validate_modules(self, module_dict):
+        """ This method will validate modules by running ``module load`` test for all
+            discovered modules specified in parameter ``discovered_modules``. This method
+            returns a list of modules that were valid, if all tests pass we return the same
+            list. A module test pass if we get a returncode 0.
+
+        """
+
+        if self.debug:
+            print(f"Testing all discovered modules: {list(module_dict.values())}")
+
+        self.compiler_modules_lookup = {}
+        # test all modules via 'module load' and add only modules that passed (ret: 0)
+        for name, module_list in module_dict.items():
+            self.compiler_modules_lookup[name] = []
+            for module in module_list:
+                cmd = Module(module, debug=self.debug)
+                ret = cmd.test_modules(login=True)
+                # if module load test passed we add entry to list
+                if ret == 0:
+                    self.compiler_modules_lookup[name].append(module)
+
+    def update_compiler_section(self):
+        """ This method will update the compiler section by adding new compilers if
+            neccessary and return a new compiler section that will be written back to
+            disk as the new configuration file.
+
+            :return: Updated compiler section for buildtest configuration
+            :rtype: dict
+        """
+
+        for name, module_list in self.compiler_modules_lookup.items():
+            if not isinstance(self.compilers[name], dict):
+                self.compilers[name] = {}
+
+            for module in module_list:
+
+                # replace first / with @ in format <compiler>@<version>
+                # new_compiler_entry = module.replace("/", "@", 1)
+                # if its a new compiler entry let's add new entry to dict
+                if module not in self.compilers.get(name).keys():
+
+                    self.compilers[name][module] = self.compiler_table[name]
+
+                self.compilers[name][module]["module"] = {}
+                self.compilers[name][module]["module"]["load"] = [module]
+                self.compilers[name][module]["module"]["purge"] = False
 
     def print_json(self):
         """Prints compiler section in JSON, this implements ``buildtest config compilers --json``"""
@@ -250,3 +262,11 @@ class BuildtestCompilers:
     def list(self):
         """Return all compilers defined in buildtest configuration"""
         return self.names
+
+    def print_compilers(self):
+        """This method print detected compilers from buildtest setting. This method is invoked by
+           command ``buidltest config compilers --list
+        """
+        print(self.names)
+        for name in self.names:
+            print(name)

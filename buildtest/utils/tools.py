@@ -31,3 +31,6 @@ class Hasher(dict):
                 break
 
         return val
+
+    def __str__(self):
+        return str(dict(self))

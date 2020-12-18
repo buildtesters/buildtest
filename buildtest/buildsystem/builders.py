@@ -6,8 +6,10 @@ import logging
 import os
 import re
 
+
 from buildtest.buildsystem.scriptbuilder import ScriptBuilder
 from buildtest.buildsystem.compilerbuilder import CompilerBuilder
+from buildtest.config import load_settings
 from buildtest.menu.compilers import BuildtestCompilers
 from buildtest.system import BuildTestSystem
 
@@ -81,10 +83,13 @@ class Builder:
            builder objects that call CompilerBuilder
 
            :param name: name of test from buildspec file
+           :type name: str
+           :param recipe: loaded test recipe
+           :type recipe: dict
         """
         self.compilers = {}
-
-        bc = BuildtestCompilers()
+        configuration = load_settings()
+        bc = BuildtestCompilers(configuration)
 
         discovered_compilers = bc.list()
 

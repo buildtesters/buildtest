@@ -34,12 +34,12 @@ executors:
 
 compilers:
   find:
-    gcc: [gcc, GCC, PrgEnv-gnu]
-    intel: [intel, Intel, PrgEnv-intel]
-    cray: [craype, PrgEnv-cray]
-    clang: [clang, Clang]
-    cuda: [cuda, CUDA]
-    pgi: [pgi, PGI, PrgEnv-pgi]
+    gcc: "^(gcc|GCC|PrgEnv-gnu)"
+    intel: "^(intel|Intel|PrgEnv-intel)"
+    cray: "^(cray|PrgEnv-cray)"
+    clang: "^(clang|Clang)"
+    cuda: "^(cuda|CUDA)"
+    pgi: "^(pgi|PGI|PrgEnv-pgi)"
 
   compiler:
     gcc:
@@ -84,3 +84,10 @@ compilers:
         cc: 'nvcc'
         module:
           load: [cuda/11.0]
+    pgi:
+      pgi@18.0:
+        cc: 'pgcc'
+        cxx: 'pgc++'
+        fc: 'pgfortran'
+        module:
+          load: [pgi/18.0]
