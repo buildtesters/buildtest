@@ -8,38 +8,4 @@ $ buildtest build -b tutorials/compilers/vecadd.yml
 Discovered Buildspecs:
  
 /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
-
-+---------------------------+
-| Stage: Parsing Buildspecs |
-+---------------------------+ 
-    
- schemafile                | validstate   | buildspec
----------------------------+--------------+--------------------------------------------------------------------
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
-
-+----------------------+
-| Stage: Building Test |
-+----------------------+ 
-
- name       | id       | type     | executor   | tags                     | testpath
-------------+----------+----------+------------+--------------------------+------------------------------------------------------------------------------------------------
- vecadd_gnu | eeb49ae6 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
-
-+----------------------+
-| Stage: Running Test  |
-+----------------------+ 
-    
- name       | id       | executor   | status   |   returncode | testpath
-------------+----------+------------+----------+--------------+------------------------------------------------------------------------------------------------
- vecadd_gnu | eeb49ae6 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
-
-+----------------------+
-| Stage: Test Summary  |
-+----------------------+ 
-    
-Executed 1 tests
-Passed Tests: 0/1 Percentage: 0.000%
-Failed Tests: 1/1 Percentage: 100.000%
-
-
-
+No buildspecs to process because there are no valid buildspecs

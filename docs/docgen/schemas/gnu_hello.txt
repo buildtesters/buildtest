@@ -1,4 +1,4 @@
-$ buildtest build -b tutorials/compilers/gnu_hello.yml 
+$ buildtest build -b tutorials/compilers/gnu_hello_fortran.yml 
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
@@ -7,49 +7,41 @@ $ buildtest build -b tutorials/compilers/gnu_hello.yml
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_fortran.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
     
  schemafile                | validstate   | buildspec
----------------------------+--------------+-----------------------------------------------------------------------
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
+---------------------------+--------------+-------------------------------------------------------------------------------
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_fortran.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- name            | id       | type     | executor   | tags                     | testpath
------------------+----------+----------+------------+--------------------------+--------------------------------------------------------------------------------------------------------
- hello_f         | 97a9e711 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/3/stage/generate.sh
- hello_c         | 84cb6edd | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/3/stage/generate.sh
- hello_cplusplus | 08bcdc07 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/3/stage/generate.sh
- cc_example      | 0308e070 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/3/stage/generate.sh
- fc_example      | cec25dd1 | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/3/stage/generate.sh
- cxx_example     | d248122f | compiler | local.bash | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/3/stage/generate.sh
+
+
+ name    | id       | type     | executor   | tags                     | compiler    | testpath
+---------+----------+----------+------------+--------------------------+-------------+--------------------------------------------------------------------------------------------------------
+ hello_f | d5727ded | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/3/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
     
- name            | id       | executor   | status   |   returncode | testpath
------------------+----------+------------+----------+--------------+--------------------------------------------------------------------------------------------------------
- hello_f         | 97a9e711 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/3/stage/generate.sh
- hello_c         | 84cb6edd | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/3/stage/generate.sh
- hello_cplusplus | 08bcdc07 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/3/stage/generate.sh
- cc_example      | 0308e070 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/3/stage/generate.sh
- fc_example      | cec25dd1 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/3/stage/generate.sh
- cxx_example     | d248122f | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/3/stage/generate.sh
+ name    | id       | executor   | status   |   returncode | testpath
+---------+----------+------------+----------+--------------+--------------------------------------------------------------------------------------------------------
+ hello_f | d5727ded | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/3/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-    
-Executed 6 tests
-Passed Tests: 6/6 Percentage: 100.000%
-Failed Tests: 0/6 Percentage: 0.000%
+
+Executed 1 tests
+Passed Tests: 1/1 Percentage: 100.000%
+Failed Tests: 0/1 Percentage: 0.000%
 
 
 

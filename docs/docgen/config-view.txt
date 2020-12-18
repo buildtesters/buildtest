@@ -1,5 +1,5 @@
 $ buildtest config view
-moduletool: lmod
+moduletool: N/A
 load_default_buildspecs: true
 executors:
   local:
@@ -16,15 +16,10 @@ executors:
       description: submit jobs on local machine using python shell
       shell: python
 compilers:
-  find:
+  compiler:
     gcc:
-    - gcc
-    cray:
-    - PrgEnv-cray
-    intel:
-    - intel
-    pgi:
-    - pgi
-    clang:
-    - clang
+      builtin_gcc:
+        cc: /usr/bin/gcc
+        fc: /usr/bin/gfortran
+        cxx: /usr/bin/g++
 None

@@ -58,11 +58,11 @@ any extra properties not defined in the schema. In our previous example, the JSO
 object is ``variables``.
 
 The **executor** key is required for all sub-schemas which instructs buildtest
-which executor to use when running the test. The executors are defined in :ref:`configuring_buildtest`.
-
-In this example we define variables using the ``vars`` property which is a Key/Value
-pair for variable assignment. The **run** section is required for script schema which
-defines the content of the test script.
+which executor to use when running the test. The executors are defined in
+:ref:`configuring_buildtest`. In this example we define variables using the
+``vars`` property which is a Key/Value pair for variable assignment.
+The **run** section is required for script schema which defines the content of
+the test script.
 
 Let's look at a more interesting example, shown below is a multi line run
 example using the `script` schema with test name called
@@ -111,8 +111,113 @@ non-zero is a **FAIL**. Currently buildtest reports only two states: ``PASS``, `
 In this example, buildtest will match the actual returncode with one defined
 in key ``returncode`` in the status section.
 
+
+
+.. _script_schema:
+
+Script Schema
+---------------
+
+The script schema is used for writing simple scripts (bash, sh, python) in Buildspec.
+To use this schema you must set ``type: script``. The ``run`` field is responsible
+for writing the content of test.
+
+For more details on script schema see schema docs at https://buildtesters.github.io/buildtest/
+
+
+Return Code Matching
+---------------------
+
+buildtest can report PASS/FAIL based on returncode, by default a 0 exit code is PASS
+and everything else is FAIL. The returncode can be a list of exit codes to match.
+In this example we have four tests called ``exit1_fail``, ``exit1_pass``,
+``returncode_list_mismatch`` and ``returncode_int_match``.  We expect **exit1_fail** and
+**returncode_mismatch** to FAIL while **exit1_pass** and **returncode_int_match**
+will PASS.
+
+.. program-output:: cat ../tutorials/pass_returncode.yml
+
+To demonstrate we will build this test and pay close attention to the **status**
+column in output.
+
+.. program-output:: cat docgen/schemas/pass_returncode.txt
+
+
+The ``returncode`` field can be an integer or list of integers but it may not accept
+duplicate values. If you specify a list of exit codes, buildtest will check actual returncode
+with list of expected returncodes specified by `returncode` field.
+
+Shown below are examples of invalid returncodes::
+
+  # empty list is not allowed
+  returncode: []
+
+  # floating point is not accepted in list
+  returncode: [1, 1.5]
+
+  # floating point not accepted
+  returncode: 1.5
+
+  # duplicates are not allowed
+  returncode: [1, 2, 5, 5]
+
+
+Classifying tests with tags
+----------------------------
+
+The ``tags`` field can be used to classify tests which can be used to organize tests
+or if you want to :ref:`build_by_tags` (``buildtest build --tags <TAGNAME>``).
+Tags can be defined as a string or list of strings. In this example, the test
+``string_tag`` defines a tag name **network** while test ``list_of_strings_tags``
+define a list of tags named ``network`` and ``ping``.
+
+.. program-output:: cat ../tutorials/tags_example.yml
+
+Each item in tags must be a string and no duplicates are allowed, for example in
+this test, we define a duplicate tag **network** which is not allowed.
+
+.. program-output:: cat ../tutorials/invalid_tags.yml
+
+If we run this test and inspect the logs we will see an error message in schema validation::
+
+    2020-09-29 10:56:43,175 [parser.py:179 - _validate() ] - [INFO] Validating test - 'duplicate_string_tags' with schemafile: script-v1.0.schema.json
+    2020-09-29 10:56:43,175 [buildspec.py:397 - parse_buildspecs() ] - [ERROR] ['network', 'network'] is not valid under any of the given schemas
+
+    Failed validating 'oneOf' in schema['properties']['tags']:
+        {'oneOf': [{'type': 'string'},
+                   {'$ref': '#/definitions/list_of_strings'}]}
+
+    On instance['tags']:
+        ['network', 'network']
+
+If tags is a list, it must contain one item, therefore an empty list (i.e ``tags: []``)
+is invalid.
+
+Setting environment variables
+------------------------------
+
+You can define environment variables using the ``env`` property, this is compatible
+with shells: ``bash``, ``sh``, ``zsh``, ``csh`` and ``tcsh``. It does not work with
+``shell: python``. In example below we declare three tests using environment
+variable with default shell (bash), csh, and tcsh
+
+.. program-output:: cat tutorials/environment.yml
+
+Environment variables are defined using ``export`` in bash, sh, zsh while csh and
+tcsh use ``setenv``. Shown below is a generated test script for csh test::
+
+    #!/bin/csh
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.csh/before_script.sh
+    setenv SHELL_NAME csh
+    echo "This is running $SHELL_NAME"
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.csh/after_script.sh
+
 Variable Declaration
 ----------------------
+
+Variables can be defined using ``vars`` property, this is compatible with all shells
+except for ``python``. The variables are defined slightly different in csh,tcsh as pose
+to bash, sh, and zsh. In example below we define tests with bash and csh.
 
 In YAML strings can be specified with or without quotes however in bash, variables
 need to be enclosed in quotes ``"`` if you are defining a multi word string (``name="First Last"``).
@@ -128,10 +233,12 @@ defines a variable with the special character ``'`` and ``"``. The variables
 be done using ``var=$(<command>)`` or ``var=`<command>``` where ``<command>`` is
 a Linux command.
 
+.. Note:: You can use the escape character ``\`` to set special character, for instance you can declare a variable in string with quotes by using ``\"``.
+
+
 .. program-output:: cat ../tutorials/vars.yml
 
 Next we build this test by running ``buildtest build -b tutorials/vars.yml``.
-
 
 .. program-output:: cat docgen/schemas/vars.txt
 
@@ -170,86 +277,6 @@ Shown below is the generated testscript::
     echo $current_user
     echo $files_homedir
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
-
-
-.. _script_schema:
-
-Script Schema
----------------
-
-The script schema is used for writing simple scripts (bash, sh, python) in Buildspec.
-To use this schema you must set ``type: script``. The ``run`` field is responsible
-for writing the content of test.
-
-For more details on script schema see schema docs at https://buildtesters.github.io/buildtest/
-
-
-Return Code Matching
----------------------
-
-buildtest can report PASS/FAIL based on returncode, by default a 0 exit code is PASS
-and everything else is FAIL. The returncode can be a list of exit codes to match.
-In this example we have four tests called ``exit1_fail``, ``exit1_pass``,
-``returncode_list_mismatch`` and ``returncode_int_match``.  We expect **exit1_fail** and
-**returncode_mismatch** to FAIL while **exit1_pass** and **returncode_int_match**
-will PASS.
-
-.. program-output:: cat ../tutorials/pass_returncode.yml
-
-To demonstrate we will build this test and pay close attention to the **status**
-column in output.
-
-.. program-output:: cat docgen/schemas/pass_returncode.txt
-
-
-The ``returncode`` field can be an integer or list of integers. If you specify
-a list of exit codes, buildtest will ``PASS`` test if actual exit code is found in
-list.
-
-A floating point exit-code is invalid::
-
-  returncode: 1.5
-
-If **returncode** is a list, all items must be integers and unique items.
-The list must contain **atleast** one item. The following examples are invalid
-values for returncode::
-
-  returncode: []
-
-  returncode: [1, 1.5]
-
-  returncode: [1, 2, 5, 5]
-
-Classifying tests with tags
-----------------------------
-
-The ``tags`` field can be used to classify tests which can be used to organize tests
-or if you want to :ref:`build_by_tags` (``buildtest build --tags <TAGNAME>``).
-Tags can be defined as a string or list of strings. In this example, the test
-``string_tag`` defines a tag name **network** while test ``list_of_strings_tags``
-define a list of tags named ``network`` and ``ping``.
-
-.. program-output:: cat ../tutorials/tags_example.yml
-
-Each item in tags must be a string and no duplicates are allowed, for example in
-this test, we define a duplicate tag **network** which is not allowed.
-
-.. program-output:: cat ../tutorials/invalid_tags.yml
-
-If we run this test and inspect the logs we will see an error message in schema validation::
-
-    2020-09-29 10:56:43,175 [parser.py:179 - _validate() ] - [INFO] Validating test - 'duplicate_string_tags' with schemafile: script-v1.0.schema.json
-    2020-09-29 10:56:43,175 [buildspec.py:397 - parse_buildspecs() ] - [ERROR] ['network', 'network'] is not valid under any of the given schemas
-
-    Failed validating 'oneOf' in schema['properties']['tags']:
-        {'oneOf': [{'type': 'string'},
-                   {'$ref': '#/definitions/list_of_strings'}]}
-
-    On instance['tags']:
-        ['network', 'network']
-
-If tags is a list, it must contain one item, therefore an empty list (i.e ``tags: []``)
-is invalid.
 
 Customize Shell
 -----------------
@@ -307,9 +334,9 @@ based on shell path.
 
 In next example we have two tests **bash_login_shebang** and **bash_nonlogin_shebang**
 which tests if shell is Login or Non-Login. The ``#!/bin/bash -l`` indicates we
-want to run in login shell and expects an output of **Login Shell** while
+want to run in login shell and expects an output of ``Login Shell`` while
 test **bash_nonlogin_shebang** should run in default behavior which is non-login
-shell and expects output **Not Login Shell**. We match this with regular expression
+shell and expects output ``Not Login Shell``. We match this with regular expression
 with stdout stream.
 
 .. program-output:: cat tutorials/shebang.yml
@@ -325,37 +352,6 @@ is passed into the script::
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
     shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
-
-Setting environment variables
-------------------------------
-
-You can define environment variables using the ``env`` property, this is compatible
-with shells: ``bash``, ``sh``, ``zsh``, ``csh`` and ``tcsh``. It does not work with
-``shell: python``. In example below we declare three tests using environment
-variable with default shell (bash), csh, and tcsh
-
-.. program-output:: cat tutorials/environment.yml
-
-Environment variables are defined using ``export`` in bash, sh, zsh while csh and
-tcsh use ``setenv``. Shown below is a generated test script for csh test::
-
-    #!/bin/csh
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.csh/before_script.sh
-    setenv SHELL_NAME csh
-    echo "This is running $SHELL_NAME"
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.csh/after_script.sh
-
-Setting variables
-------------------
-
-Variables can be defined using ``vars`` property, this is compatible with all shells
-except for ``python``. The variables are defined slightly different in csh,tcsh as pose
-to bash, sh, and zsh. In example below we define tests with bash and csh.
-
-.. Note:: You can use the escape character ``\`` to set special character, for instance you can declare a variable in string with quotes by using ``\"``.
-
-.. program-output:: cat tutorials/vars.yml
-
 
 Python Shell
 ---------------
@@ -459,7 +455,7 @@ run_only - scheduler
 
 buildtest can run test if a particular scheduler is available. In this example,
 we introduce a new field ``scheduler`` that is part of ``run_only`` property. This
-field expects ``lsf`` or ``slurm`` as valid values and buildtest will check if target
+field expects ``lsf``, ``slurm``, ``cobalt`` as valid values and buildtest will check if target
 system supports the scheduler. In this example we require **lsf** scheduler because
 this test runs **bmgroup** which is a LSF binary.
 

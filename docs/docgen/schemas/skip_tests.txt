@@ -24,7 +24,9 @@ Discovered Buildspecs:
 
  name      | id       | type   | executor   | tags          | testpath
 -----------+----------+--------+------------+---------------+---------------------------------------------------------------------------------------------------
- unskipped | 34428cc8 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
+ unskipped | 702f464e | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
+
+
 
 +----------------------+
 | Stage: Running Test  |
@@ -32,12 +34,12 @@ Discovered Buildspecs:
     
  name      | id       | executor   | status   |   returncode | testpath
 -----------+----------+------------+----------+--------------+---------------------------------------------------------------------------------------------------
- unskipped | 34428cc8 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
+ unskipped | 702f464e | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-    
+
 Executed 1 tests
 Passed Tests: 1/1 Percentage: 100.000%
 Failed Tests: 0/1 Percentage: 0.000%

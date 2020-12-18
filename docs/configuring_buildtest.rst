@@ -34,7 +34,7 @@ responsible for **dispatching** job, then **poll** job until its finish, and
 Executor Declaration
 --------------------
 
-`executors` is a JSON object, the structure looks as follows::
+`executors` is a JSON `object`, the structure looks as follows::
 
   executors:
     local:
@@ -45,10 +45,10 @@ Executor Declaration
       <slurm1>:
       <slurm2>:
       <slurm3>:
-   lsf:
-     <lsf1>:
-     <lsf2>:
-     <lsf3>:
+    lsf:
+      <lsf1>:
+      <lsf2>:
+      <lsf3>:
 
 The **LocalExecutors** are defined in section `local` where each executor must be
 unique name::
@@ -62,12 +62,12 @@ referenced in buildspec using ``executor`` field as follows::
     executor: local.bash
 
 The executor is referenced in buildspec in the format: ``<type>.<name>`` where
-**type** is **local**, **slurm**, **lsf** defined in the **executors** section and **name**
-is the executor name. In example above `local.bash` refers to the LocalExecutor
+**type** is **local**, **slurm**, **lsf**, **cobalt** defined in the **executors** section
+and **name** is the executor name. In example above `local.bash` refers to the LocalExecutor
 using bash shell. Similarly, **SlurmExecutors** and **LSFExecutors** are defined
 in similar structure.
 
-In this example below we define a local executor named `bash` that is referenced
+Shown below is the declaration of a bash executor named `bash` that is referenced
 in buildspec as ``executor: local.bash``::
 
     executors:
@@ -80,7 +80,7 @@ The local executors requires the ``shell`` key which takes the pattern
 Any buildspec that references ``local.bash`` executor will submit job using ``bash`` shell.
 
 You can pass options to shell which will get passed into each job submission.
-For instance if you want bash login executor you can do the following::
+For instance if you want all bash scripts to run in login shell you can specify ``bash --login``.::
 
     executors:
       local:
@@ -170,273 +170,16 @@ Let's take a look at Cori buildtest configuration::
 
     compilers:
       find:
-        gcc:
-        - gcc
-        - PrgEnv-gnu
-        cray:
-        - PrgEnv-cray
-        intel:
-        - intel
-        - PrgEnv-intel
-        pgi:
-        - pgi
+        gcc: "^(gcc|PrgEnv-gnu)"
+        cray: "^(PrgEnv-cray)"
+        intel: "^(intel|PrgEnv-intel)"
+        pgi: "^(pgi)"
       compiler:
         gcc:
-          builtin:
+          builtin_gcc:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-          gcc@6.1.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/6.1.0
-          gcc@7.3.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/7.3.0
-          gcc@8.1.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/8.1.0
-          gcc@8.2.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/8.2.0
-          gcc@8.3.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/8.3.0
-          gcc@9.2.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/9.2.0
-          gcc@9.3.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/9.3.0
-          gcc@6.3.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/6.3.0
-          gcc@8.1.1-openacc-gcc-8-branch-20190215:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/8.1.1-openacc-gcc-8-branch-20190215
-          PrgEnv-gnu@6.0.5:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - PrgEnv-gnu/6.0.5
-          PrgEnv-gnu@6.0.6:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - PrgEnv-gnu/6.0.6
-          PrgEnv-gnu@6.0.7:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - PrgEnv-gnu/6.0.7
-        cray:
-          PrgEnv-cray@6.0.5:
-            cc: cc
-            cxx: CC
-            fc: ftn
-            modules:
-            - PrgEnv-cray/6.0.5
-          PrgEnv-cray@6.0.6:
-            cc: cc
-            cxx: CC
-            fc: ftn
-            modules:
-            - PrgEnv-cray/6.0.6
-          PrgEnv-cray@6.0.7:
-            cc: cc
-            cxx: CC
-            fc: ftn
-            modules:
-            - PrgEnv-cray/6.0.7
-        intel:
-          intel@18.0.1.163:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/18.0.1.163
-          intel@18.0.3.222:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/18.0.3.222
-          intel@19.0.3.199:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/19.0.3.199
-          intel@16.0.3.210:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/16.0.3.210
-          intel@17.0.1.132:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/17.0.1.132
-          intel@17.0.2.174:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/17.0.2.174
-          intel@19.0.0.117:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/19.0.0.117
-          intel@19.0.8.324:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/19.0.8.324
-          intel@19.1.0.166:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/19.1.0.166
-          intel@19.1.1.217:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/19.1.1.217
-          intel@19.1.2.254:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/19.1.2.254
-          intel@19.1.2.275:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/19.1.2.275
-          intel@19.1.3.304:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - intel/19.1.3.304
-          PrgEnv-intel@6.0.5:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - PrgEnv-intel/6.0.5
-          PrgEnv-intel@6.0.6:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - PrgEnv-intel/6.0.6
-          PrgEnv-intel@6.0.7:
-            cc: icc
-            cxx: icpc
-            fc: ifort
-            modules:
-            - PrgEnv-intel/6.0.7
-        pgi:
-          pgi@18.10:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/18.10
-          pgi@19.1:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.1
-          pgi@19.3:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.3
-          pgi@19.4:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.4
-          pgi@19.5:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.5
-          pgi@19.7:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.7
-          pgi@19.9:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.9
-          pgi@19.10:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.10
-          pgi@20.1:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/20.1
-          pgi@20.4:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/20.4
-
-
 
 In this setting, we define the following executors
 
@@ -452,16 +195,15 @@ as follows::
         launcher: sbatch
         max_pend_time: 90
 
-The `launcher` field is applicable for **SlurmExecutor** and **LSFExecutor** in this
+The `launcher` field is applicable for batch executors in this
 case, ``launcher: sbatch`` inherits **sbatch** as the job launcher for all executors.
 The ``pollinterval`` field is used  to poll jobs at set interval in seconds
 when job is active in queue. The ``max_pend_time`` is **maximum** time job can be pending
-within an executor, if it exceeds the limit buildtest will cancel the job. buildtest will
-invoke ``scancel`` or ``bkill`` to cancel Slurm or LSF job. The `pollinterval`, `launcher`
-and `max_pend_time` have no effect on **LocalExecutors**. The ``account: nstaff``
-will instruct buildtest to charge all jobs to account ``nstaff`` from Slurm Executors.
-The ``account`` option can be set in ``defaults`` global to all executors or set
-per executor instance which overrides the default value.
+within an executor, if it exceeds the limit buildtest will cancel the job. The
+`pollinterval`, `launcher` and `max_pend_time` have no effect on local executors.
+The ``account: nstaff`` will instruct buildtest to charge all jobs to account
+``nstaff`` from Slurm Executors. The ``account`` option can be set in ``defaults``
+global to all executors or set per executor instance which overrides the default value.
 
 At Cori, jobs are submitted via qos instead of partition so we model a slurm executor
 named by qos. The ``qos`` field instructs which Slurm QOS to use when submitting job.
@@ -492,8 +234,8 @@ section below overrides the default to 300 seconds::
           qos: bigmem
           max_pend_time: 300
 
-The ``max_pend_time`` is used to cancel job only if job is pending in queue, not if it
-is in run state. buildtest starts a timer at job submission and every poll interval (``pollinterval`` field)
+The ``max_pend_time`` is used to cancel job only if job is pending in queue, it has
+no impact if job is running. buildtest starts a timer at job submission and every poll interval (``pollinterval`` field)
 checks if job has exceeded **max_pend_time** only if job is in **PENDING** (SLURM)
 or **PEND** (LSF) state. If job pendtime exceeds `max_pend_time` limit, buildtest will
 cancel job using ``scancel`` or ``bkill`` depending on the scheduler. Buildtest
@@ -514,11 +256,16 @@ this to **buildspec_roots** as follows::
       - $HOME/buildtest-cori
 
 This field is used with the ``buildtest buildspec find`` command. If you rebuild
-your buildspec cache using ``--clear`` option it will detect all buildspecs in defined
+your buildspec cache use ``--rebuild`` option it will detect all buildspecs in defined
 in all directories specified by **buildspec_roots**. buildtest will recursively
 find all **.yml** extension and validate each buildspec with appropriate schema.
 By default buildtest will add the ``$BUILDTEST_ROOT/tutorials`` and ``$BUILDTEST_ROOT/general_tests``
 to search path, where $BUILDTEST_ROOT is root of repo.
+
+The `load_default_buildspecs` property can be used to control if you want buildtest to
+load default buildspecs into cache when you run ``buildtest buildspec find`` or with
+``--rebuild`` option. It can be useful to set ``load_default_buildspecs: False`` if you
+only care about running your facility tests. .
 
 Configuring Module Tool
 ------------------------
@@ -590,19 +337,20 @@ Compiler Declaration
 --------------------
 
 buildtest provides a mechanism to declare compilers in your configuration file, this
-is defined in ``compilers`` top-level section. Shown below is an example section::
+is defined in ``compilers`` top-level section. Shown below is a declaration of builtin
+gcc provided by default::
 
     compilers:
       compiler:
         gcc:
-          builtin:
+          builtin_gcc:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
 
 The compiler declaration is defined in section ``compiler`` followed by name
 of compiler in this case ``gcc``. In the gcc section one can define all gnu compilers,
-which includes the name of the compiler in this example we call ``builtin`` as
+which includes the name of the compiler in this example we call ``builtin_gcc`` as
 system compiler that defines C, C++ and Fortran compilers using ``cc``, ``cxx`` and
 ``fc``.
 
@@ -619,7 +367,7 @@ these options::
     $ buildtest config compilers --json
     {
       "gcc": {
-        "builtin": {
+        "builtin_gcc": {
           "cc": "/usr/bin/gcc",
           "cxx": "/usr/bin/g++",
           "fc": "/usr/bin/gfortran"
@@ -629,34 +377,35 @@ these options::
 
     $ buildtest config compilers --yaml
     gcc:
-      builtin:
+      builtin_gcc:
         cc: /usr/bin/gcc
         cxx: /usr/bin/g++
         fc: /usr/bin/gfortran
 
     $ buildtest config compilers --list
-    builtin
+    builtin_gcc
 
 Detect Compilers (Experimental Feature)
 ----------------------------------------
 
 buildtest can detect compilers based on modulefiles and generate compiler section
-with compiler instance. This can be done via ``buildtest config compilers find``
-option. First we declare a compiler ``find`` section that expects a dictionary
-of key/value mapping between compiler names and their module names.
+that way you don't have to specify each compiler manually.
+This can be done via ``buildtest config compilers find`` command. Buildtest expects
+a key/value mapping when searching compiler names and regular expression (``re.match``)
+is used for discovering compiler modules.
 
-Shown below is an example where we expect to find gcc and pgi modules with name
-``gcc`` and ``pgi``. We can specify a list of module names, currently buildtest will
-add a compiler if modulename starts with the corresponding string.
 
-.. Note:: This feature will be updated to allow regular expression in near future
+This can be demonstrated, by defining search pattern in the ``find`` section
+that expects a dictionary of key/value mapping between compiler names and their module names.
+
+In example, below we define a pattern for gcc modules as ``^(gcc)`` which will
+find all modules that start with name `gcc`.
 
 ::
 
     compilers:
       find:
-        gcc: [gcc]
-        pgi: [pgi]
+        gcc: "^(gcc)"
       compiler:
         gcc:
           builtin:
@@ -664,84 +413,34 @@ add a compiler if modulename starts with the corresponding string.
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
 
-Next we find all compiler modules using ``buildtest config compilers find`` which
-will detect and test all modules. Any modules with non-zero exit code will be ignored,
-and buildtest will generate a compiler instance per module found assuming there
-is no compiler instance defined. buildtest will define a compiler instance for
-``gcc/4.8.5`` --> ``gcc@4.8.5`` by renaming leading **/** with a **@**.
 
-Shown below is an example output::
+In this system, we have two gcc modules installed via `spack <https://spack.readthedocs.io/en/latest/>`_
+package manager, we will attempt to add both modules as compiler instance in buildtest.
 
-    $ buildtest config compilers find
-    Discovered Modules:
-    {
-      "gcc": [
-        "gcc/4.8.5",
-        "gcc/6.4.0",
-        "gcc/8.1.0",
-        "gcc/10.1.0",
-        "gcc/7.4.0",
-        "gcc/8.1.1",
-        "gcc/5.4.0"
-      ],
-      "pgi": [
-        "pgi/20.1",
-        "pgi/19.10",
-        "pgi/18.7",
-        "pgi/18.10",
-        "pgi/19.9",
-        "pgi/.18.5",
-        "pgi/19.4",
-        "pgi/19.5",
-        "pgi/19.1"
-      ]
-    }
+::
+    (buildtest) bash-3.2$ module -t av gcc
+    /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:
+    gcc/9.3.0-n7p74fd
+    gcc/10.2.0-37fmsw7
 
 
+Next we run ``buildtest config compilers find`` which will search all modules based on
+regular expression and add compilers in their respective group. In this example, buildtest
+automatically add `gcc/9.2.0-n7p74fd` and `gcc/10.2.0-37fmsw7` modules as compiler
+instance. Depending on the compiler group, buildtest will apply the compiler wrapper
+``cc``, ``cxx``, ``fc`` however these can be updated manually. The module section
+is generated with the module to load. One can further tweak the module behavior
+along with purging or swap modules.
 
-    Testing Modules:
-    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/4.8.5  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/6.4.0  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/8.1.0  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/10.1.0  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/7.4.0  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/8.1.1  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/5.4.0  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/20.1  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/19.10  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/18.7  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/18.10  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/19.9  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/.18.5  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/19.4  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/19.5  "
-    [DEBUG] Return Code: 0
-    [DEBUG] Executing module command: bash -l -c "module purge && module load pgi/19.1  "
-    [DEBUG] Return Code: 0
-    editor: vi
-    buildspec_roots:
-    - $HOME/buildtest-ascent
+::
+
+    (buildtest) bash-3.2$ buildtest config compilers find
+    MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.4.12/modulefiles/Darwin:/usr/local/Cellar/lmod/8.4.12/modulefiles/Core
+    Configuration File: /Users/siddiq90/.buildtest/config.yml
+    ________________________________________________________________________________
     moduletool: lmod
+    load_default_buildspecs: true
     executors:
-      defaults:
-        launcher: bsub
-        pollinterval: 10
-        max_pend_time: 60
-        account: gen014ecpci
       local:
         bash:
           description: submit jobs on local machine using bash shell
@@ -755,127 +454,42 @@ Shown below is an example output::
         python:
           description: submit jobs on local machine using python shell
           shell: python
-      lsf:
-        batch:
-          queue: batch
-        test:
-          queue: test
     compilers:
       find:
-        gcc:
-        - gcc
-        pgi:
-        - pgi
+        gcc: ^(gcc)
+        pgi: ^(pgi)
       compiler:
         gcc:
-          builtin:
+          builtin_gcc:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
-            fc: /usr/bin/gfortran
-          gcc@4.8.5:
+            fc: /usr/local/bin/gfortran
+          gcc/9.3.0-n7p74fd:
             cc: gcc
             cxx: g++
             fc: gfortran
-            modules:
-            - gcc/4.8.5
-          gcc@6.4.0:
+            module:
+              load:
+              - gcc/9.3.0-n7p74fd
+              purge: false
+          gcc/10.2.0-37fmsw7:
             cc: gcc
             cxx: g++
             fc: gfortran
-            modules:
-            - gcc/6.4.0
-          gcc@8.1.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/8.1.0
-          gcc@10.1.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/10.1.0
-          gcc@7.4.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/7.4.0
-          gcc@8.1.1:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/8.1.1
-          gcc@5.4.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            modules:
-            - gcc/5.4.0
-        pgi:
-          pgi@20.1:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/20.1
-          pgi@19.10:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.10
-          pgi@18.7:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/18.7
-          pgi@18.10:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/18.10
-          pgi@19.9:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.9
-          pgi@.18.5:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/.18.5
-          pgi@19.4:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.4
-          pgi@19.5:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.5
-          pgi@19.1:
-            cc: pgcc
-            cxx: pgc++
-            fc: pgfortran
-            modules:
-            - pgi/19.1
+            module:
+              load:
+              - gcc/10.2.0-37fmsw7
+              purge: false
 
-    Updating settings file:  /ccsopen/home/shahzebsiddiqui/.buildtest/config.yml
+    ________________________________________________________________________________
+    Updating settings file:  /Users/siddiq90/.buildtest/config.yml
 
-buildtest will update the configuration file after running ``buildtest config compilers find``.
-There will a be a unique compiler entry organized by compiler group (``gcc``, ``pgi``). The
-``modules`` property is a list of modules to load per compiler group. This can be
-tweaked as needed.
+
+This feature relies on module system (Lmod, environment-modules) to search modulefiles
+and one must specify `moduletool` property to indicate how buildtest will search modules.
+If `moduletool: lmod` is set, buildtest will rely on Lmod spider using `Lmodule  <http://lmodule.readthedocs.io/>`_
+API to detect and test all modules. If `moduletool: environment-modules` is set, buildtest
+will retrieve modules using output of `module -t av `.
 
 
 buildtest configuration for Ascent @ OLCF
@@ -893,6 +507,8 @@ The default launcher is `bsub` which can be defined under ``defaults``. The
 schema. In order to avoid polling scheduler excessively pick a number that is best
 suitable for your site::
 
+    moduletool: lmod
+    load_default_buildspecs: true
     executors:
       defaults:
         launcher: bsub

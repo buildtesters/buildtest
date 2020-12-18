@@ -7,12 +7,13 @@ $ buildtest build --tags compile --tags python
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
 /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_c.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
 /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_fortran.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -20,30 +21,30 @@ Discovered Buildspecs:
     
  schemafile                | validstate   | buildspec
 ---------------------------+--------------+--------------------------------------------------------------------------------
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_c.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_fortran.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- name                 | id       | type     | executor     | tags                     | testpath
-----------------------+----------+----------+--------------+--------------------------+--------------------------------------------------------------------------------------------------------------------
- executable_arguments | 972498c8 | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/1/stage/generate.sh
- hello_f              | 37e5a9db | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/1/stage/generate.sh
- hello_c              | 39967b36 | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/1/stage/generate.sh
- hello_cplusplus      | 1b4a15a1 | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/1/stage/generate.sh
- cc_example           | fc6e6094 | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/1/stage/generate.sh
- fc_example           | 392823b6 | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/1/stage/generate.sh
- cxx_example          | c866e58f | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/1/stage/generate.sh
- pre_post_build_run   | 79258893 | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
- circle_area          | bf18a76c | script   | local.python | ['tutorials', 'python']  | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/3/stage/generate.sh
- vecadd_gnu           | dd1f2fbb | compiler | local.bash   | ['tutorials', 'compile'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/1/stage/generate.sh
- python_hello         | d0cb5df0 | script   | local.bash   | python                   | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/0/stage/generate.sh
+ name         | id       | type   | executor     | tags                    | testpath
+--------------+----------+--------+--------------+-------------------------+---------------------------------------------------------------------------------------------------------
+ circle_area  | ed7c83ce | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/3/stage/generate.sh
+ python_hello | 8b5a3b63 | script | local.bash   | python                  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/0/stage/generate.sh
+
+
+ name                 | id       | type     | executor   | tags                     | compiler    | testpath
+----------------------+----------+----------+------------+--------------------------+-------------+--------------------------------------------------------------------------------------------------------------------
+ hello_c              | ba962682 | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_c/hello_c/1/stage/generate.sh
+ pre_post_build_run   | 8e2b538b | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
+ hello_f              | 0479e7dd | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/1/stage/generate.sh
+ executable_arguments | cace7ed8 | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/1/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -51,25 +52,20 @@ Discovered Buildspecs:
     
  name                 | id       | executor     | status   |   returncode | testpath
 ----------------------+----------+--------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------
- executable_arguments | 972498c8 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/1/stage/generate.sh
- hello_f              | 37e5a9db | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_f/1/stage/generate.sh
- hello_c              | 39967b36 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_c/1/stage/generate.sh
- hello_cplusplus      | 1b4a15a1 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/hello_cplusplus/1/stage/generate.sh
- cc_example           | fc6e6094 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cc_example/1/stage/generate.sh
- fc_example           | 392823b6 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/fc_example/1/stage/generate.sh
- cxx_example          | c866e58f | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello/cxx_example/1/stage/generate.sh
- pre_post_build_run   | 79258893 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
- circle_area          | bf18a76c | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/3/stage/generate.sh
- vecadd_gnu           | dd1f2fbb | local.bash   | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/1/stage/generate.sh
- python_hello         | d0cb5df0 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/0/stage/generate.sh
+ circle_area          | ed7c83ce | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/3/stage/generate.sh
+ hello_c              | ba962682 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_c/hello_c/1/stage/generate.sh
+ pre_post_build_run   | 8e2b538b | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
+ python_hello         | 8b5a3b63 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/0/stage/generate.sh
+ hello_f              | 0479e7dd | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/1/stage/generate.sh
+ executable_arguments | cace7ed8 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/1/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-    
-Executed 11 tests
-Passed Tests: 10/11 Percentage: 90.909%
-Failed Tests: 1/11 Percentage: 9.091%
+
+Executed 6 tests
+Passed Tests: 6/6 Percentage: 100.000%
+Failed Tests: 0/6 Percentage: 0.000%
 
 
 

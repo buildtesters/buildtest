@@ -37,12 +37,12 @@ executors:
 
 compilers:
   find:
-    gcc: [gcc, GCC, PrgEnv-gnu]
-    intel: [intel, Intel, PrgEnv-intel]
-    cray: [craype, PrgEnv-cray]
-    clang: [clang, Clang]
-    cuda: [cuda, CUDA]
-    pgi: [pgi, PGI, PrgEnv-pgi]
+    gcc: "^(gcc|GCC|PrgEnv-gnu)"
+    intel: "^(intel|Intel|PrgEnv-intel)"
+    cray: "^(cray|PrgEnv-cray)"
+    clang: "^(clang|Clang)"
+    cuda: "^(cuda|CUDA)"
+    pgi: "^(pgi|PGI|PrgEnv-pgi)"
 
   compiler:
     gcc:
@@ -54,28 +54,47 @@ compilers:
         cc: 'cc'
         cxx: 'cxx'
         fc: 'fc'
-        modules: [gcc/7.2.0]
+        module:
+          load:
+          - gcc/7.2.0
     intel:
       intel@2019:
         cc: 'icc'
         cxx: 'icpc'
         fc: 'ifort'
-        modules: [gcc/7.2.0, intel/2019]
+        module:
+          purge: True
+          load:
+          - gcc/7.2.0
+          - intel/2019
     cray:
       craype@2.6.2:
         cc: 'cc'
         cxx: 'CC'
         fc: 'fc'
-        modules: [craype/2.6.2]
+        module:
+          load: [craype/2.6.2]
+          swap: [PrgEnv-gnu, PrgEnv-cray]
+
     clang:
       clang@12.0.0:
         cc: 'clang'
         cxx: 'clang++'
-        modules: [clang/12.0]
+        module:
+          load: [clang/12.0]
     cuda:
       cuda@11.0:
         cc: 'nvcc'
-        modules: [cuda/11.0]
+        module:
+          load: [cuda/11.0]
+    pgi:
+      pgi@18.0:
+        cc: 'pgcc'
+        cxx: 'pgc++'
+        fc: 'pgfortran'
+        module:
+          load: [pgi/18.0]
+
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/cobalt-example.yml
 ________________________________________________________________________________
 moduletool: lmod

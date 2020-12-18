@@ -7,78 +7,60 @@ buildspecs:
     executor: local.bash
     type: compiler
     description: "gnu example with modules, and cflags example"
-    module:
-      purge: False
-      load: [gcc/6.4.0]
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc@8.4.0:
+          cflags: "-O3"
 
-    build:
-      name: gnu
-      source: src/hello.c
-      cflags: "-O1"
 
   intel_example:
     executor: local.bash
     type: compiler
     description: "intel example using cflags"
-    module:
-      purge: True
-      load: [intel/17]
-    build:
-      name: intel
-      source: src/hello.c
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [intel]
+      config:
+        intel@2018:
+          cflags: "-O1"
 
   pgi_example:
     executor: local.bash
     type: compiler
     description: "pgi example using cxxflags, ldflags key"
-    module:
-      swap: [PrgEnv-gnu, PrgEnv-pgi]
-      load: [pgi/19.7]
-    build:
-      source: src/hello.cpp
-      name: pgi
-      cxxflags: "-O1"
-      ldflags: "-lm"
-
+    source: src/hello.cpp
+    compilers:
+      name: ["^(pgi|PrgEnv)"]
+      default:
+        pgi:
+          cxxflags: "-O1"
+          ldflags: "-lm"
+      config:
+        pgi@18.1:
+          module:
+            swap: [PrgEnv-gnu, PrgEnv-pgi]
+            load: [pgi/18.1]
+        pgi@18.2:
+          module:
+            swap: [PrgEnv-gnu, PrgEnv-pgi]
+            load: [pgi/18.2]
 
   cray_example:
     executor: local.bash
     type: compiler
     description: "cray example using fflags and cppflags"
-    sbatch: ["-C knl", "-q normal", "-t 01:00"]
-    build:
-      name: cray
-      source: src/hello.f90
-      fflags: "-O1"
-      cppflags: "-DFOO"
-
-  cc_example:
-    type: compiler
-    description: Example by using cc to set C compiler
-    executor: local.bash
-    build:
-      source: "src/hello.c"
-      name: gnu
-      cc: gcc
-
-  fc_example:
-    type: compiler
-    description: Example by using fc to set Fortran compiler
-    executor: local.bash
-    build:
-      source: "src/hello.f90"
-      name: gnu
-      fc: gfortran
-
-  cxx_example:
-    type: compiler
-    description: Example by using cxx to set C++ compiler
-    executor: local.bash
-    build:
-      source: "src/hello.cpp"
-      name: gnu
-      cxx: g++
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray"]
+      default:
+        cray:
+          fflags: "-O1"
+      config:
+        PrgEnv-cray@2.6.2:
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
 
   sbatch_example:
     type: compiler
@@ -87,10 +69,16 @@ buildspecs:
     sbatch:
       - "-t 10"
       - "-n 2"
-    build:
-      source: "src/hello.cpp"
-      name: gnu
-      cxx: g++
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray"]
+      default:
+        cray:
+          fflags: "-O1"
+      config:
+        PrgEnv-cray@2.6.2:
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
     status:
       slurm_job_state: "COMPLETED"
 
@@ -101,10 +89,12 @@ buildspecs:
     bsub:
       - "-W 00:30"
       - "-N 2"
-    build:
-      source: "src/hello.cpp"
-      name: gnu
-      cxx: g++
+    source: "src/hello.cpp"
+    compilers:
+      name: [intel]
+      config:
+        intel@2019:
+          cxxflags: "-O1"
 
   batch_example:
     type: compiler
@@ -115,63 +105,37 @@ buildspecs:
       "nodecount": "2"
       "queue": "batch"
       "account": "biology"
-    build:
-      source: "src/hello.cpp"
-      name: gnu
-      cxx: g++
-
-
-  batch_bsub_example:
-    type: compiler
-    description: example using batch with bsub key
-    executor: local.bash
-    batch:
-      "timelimit": "30"
-      "nodecount": "2"
-      "queue": "batch"
-      "account": "biology"
-    bsub: ["-n 4"]
-    build:
-      source: "src/hello.cpp"
-      name: gnu
-      cxx: g++
-
-
-  batch_sbatch_example:
-    type: compiler
-    description: example using batch with sbatch key
-    executor: local.bash
-    batch:
-      "timelimit": "30"
-      "nodecount": "2"
-      "queue": "batch"
-      "account": "biology"
-    sbatch: ["--ntasks=4"]
-    build:
-      source: "src/hello.cpp"
-      name: gnu
-      cxx: g++
-
+    source: "src/hello.cpp"
+    compilers:
+      name: [intel]
+      config:
+        intel@2019:
+          cxxflags: "-O1"
 
   args_example:
     type: compiler
     description: Launcher example
     executor: local.bash
-    build:
-      source: "src/hello.cpp"
-      name: gnu
+    source: "src/hello.cpp"
+    compilers:
+      name: [intel]
+      config:
+        intel@2019:
+          cxxflags: "-O1"
     run:
       args: "1 2 4"
 
   mpi_launcher_example:
     type: compiler
-    description: Launcher example
+    description: mpi launcher example
     executor: local.bash
-    build:
-      source: "src/hello.cpp"
-      name: gnu
-      cxx: mpicxx
-      cxxflags: "-O3"
+    source: "src/hello.cpp"
+    compilers:
+      name: [gcc]
+      config:
+        gcc@7.3.0:
+          cflags: "-O3"
+          cxx: mpicxx
     run:
       launcher: mpirun -np 2
 
@@ -180,12 +144,12 @@ buildspecs:
     description: Run commands pre and post build and run section
     executor: local.bash
     pre_build: echo "pre-build section"
-
-    build:
-      source: "src/hello.cpp"
-      name: gnu
-      cxx: mpicxx
-      cxxflags: "-O3"
+    source: "src/hello.cpp"
+    compilers:
+      name: [gcc]
+      config:
+        gcc@7.3.0:
+          cflags: "-O3"
 
     post_build: echo "post-build section"
     pre_run: echo "pre-run section"
@@ -193,6 +157,42 @@ buildspecs:
       launcher: mpirun -np 2
     post_run: echo "post-run section"
 
+  multi_compilers:
+    type: compiler
+    description: Select one or more compilers to run test
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: ["^(gcc|intel|pgi|cray)"]
+      exclude: [intel@18]
+      default:
+        gcc:
+          cflags: "-fopenmp"
+        intel:
+          cflags: "-qopenmp"
+        pgi:
+          cflags: "-fopenmp"
+        cray:
+          cflags: "-h omp"
+      config:
+        gcc@7.5.0:
+          cflags: "-O3"
+          cc: gcc
+          module:
+            load: [gcc/7.5.0]
+        intel@17:
+          module:
+            load: [intel/2017]
+        intel@18:
+          module:
+            load: [intel/2018]
+        pgi/18.0:
+          module:
+            load: [pgi/18.0]
+        craype/2.6.2:
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray]
+            load: [craype/2.6.2]
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/compiler-v1.0.schema.json/invalid/examples.yml
 ________________________________________________________________________________
 version: "1.0"
@@ -200,206 +200,189 @@ buildspecs:
   missing_type:
     executor: local.bash
     description: "type key is missing, this is a required field"
-    module:
-     -  "module purge &&  module load intel/17"
-     -  "module purge &&  module load intel/18"
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    source: "src/hello.c"
+    compilers:
+      name: [intel]
 
-  missing_build:
+  missing_required_compilers:
     executor: local.bash
     type: compiler
-    description: "build key is missing, this is a required field"
-    module:
-     -  "module purge &&  module load intel/17"
-     -  "module purge &&  module load intel/18"
+    description: "missing required field compilers "
+    source: "src/hello.c"
+
+  missing_required_source:
+    executor: local.bash
+    type: compiler
+    description: "missing required field 'source' "
+    compilers:
+      name: [gcc]
 
   invalid_type_value:
     executor: local.bash
     type: script
     description: "invalid value for type field must be 'compiler' "
-    module:
-       - "module purge && module load gcc/4.0"
-       - "module purge && module load gcc/6.0"
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   invalid_description_value:
     executor: local.bash
     type: compiler
     description: 1
-    module:
-       - "module purge && module load gcc/4.0"
-       - "module purge && module load gcc/6.0"
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   invalid_type_module:
     executor: local.bash
     type: compiler
     description: "type for 'module' key, expecting a property but received 'string' "
-    module: "module purge && module load gcc/4.0"
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module: "module load gcc/9.2.0"
 
   module_purge_invalid_type:
     executor: local.bash
     type: compiler
-    description: "The purge property is a boolean"
-    module:
-      purge: 1
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    description: "The purge property module is invalid. Expects bool got an int"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module:
+            purge: 1
 
   module_swap_duplicate_check:
     executor: local.bash
     type: compiler
     description: "The swap property expects two unique items"
-    module:
-      swap: [gcc/8.0, gcc/8.0]
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module:
+            swap: [gcc/8.0, gcc/8.0]
 
   module_swap_min_items:
     executor: local.bash
     type: compiler
     description: "The swap property expects a minimum of 2 items"
-    module:
-      swap: [gcc/8.0]
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module:
+            swap: [gcc/8.0]
 
   module_swap_max_items:
     executor: local.bash
     type: compiler
     description: "The swap property expects a maximum of 2 items"
-    module:
-      swap: [gcc/8.0, gcc/9.0, gcc/10.0]
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module:
+            swap: [gcc/8.0, gcc/9.0, gcc/10.0]
 
   module_load_duplicate_items:
     executor: local.bash
     type: compiler
     description: "The load property expects unique items"
-    module:
-      load: [gcc/8.0, gcc/8.0]
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module:
+            load: [gcc/9.2.0, gcc/9.2.0]
 
   module_load_min_items:
     executor: local.bash
     type: compiler
     description: "The load property expects a minimum of 1 item"
-    module:
-      load: []
-    build:
-      source: src/hello.c
-      name: intel
-      cflags: "-O1"
-  missing_source_in_compiler:
-    executor: local.bash
-    type: compiler
-    description: "missing source key in compiler object"
-    module:
-    - "module purge && module load gcc/4.0"
-    build:
-      name: gnu
-      cflags: "-O1"
-
-  missing_name_in_build:
-    executor: local.bash
-    type: compiler
-    description: "missing name key in build object"
-    module:
-    - "module purge && module load gcc/4.0"
-    build:
-      source: src/hello.c
-
-  name_type_mismatch:
-    executor: local.bash
-    type: compiler
-    description: "compiler 'name' expects a string but received a list"
-    module:
-    - "module purge && module load gcc/4.0"
-    build:
-      source: src/hello.c
-      name: ["gnu", "intel"]
-      cflags: "-O1"
-      ldflags: "-lm"
-
-
-  additionalProperties_build:
-    executor: local.bash
-    type: compiler
-    description: "test additionalProperties in build object. Schema does not allow for additional keys"
-    module:
-    - "module purge && module load gcc/4.0"
-    build:
-      source: src/hello.c
-      foo: bar
-      name: gnu
-      cflags: "-O1"
-      ldflags: "-lm"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module:
+            load: []
 
   additionalProperties_main:
     executor: local.bash
     type: compiler
     description: "test additionalProperties in main schema"
     foo: bar
-    module:
-    - "module purge && module load gcc/4.0"
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
-      ldflags: "-lm"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   additionalProperties_batch:
     executor: local.bash
     type: compiler
     description: "test additionalProperties in batch field"
-    module:
-    - "module purge && module load gcc/4.0"
     batch:
       "nodecount": "2"
       "EXPORT": "ALL"
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
-      ldflags: "-lm"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
 
   type_mismatch_args:
     executor: local.bash
     type: compiler
     description: "type mismatch on args key"
-    module:
-    - "module purge && module load gcc/4.0"
-    build:
-      source: src/hello.c
-      name: gnu
-      cflags: "-O1"
-      ldflags: "-lm"
-
+    source: src/hello.c
+    compilers:
+      name: [gcc]
     run:
       args: 1
 
+    missing_required_compiler_name:
+      executor: local.bash
+      type: compiler
+      description: "'name' field in compilers section is required field"
+      source: src/hello.f90
+      compilers:
+      default:
+        cray:
+          fflags: "-O1"
+      config:
+        PrgEnv-cray@2.6.2:
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+
+  uniqueItems_compiler_name:
+    executor: local.bash
+    type: compiler
+    description: "Test unique items in 'name' field in compilers section"
+    source: src/hello.f90
+    compilers:
+      name: ["^(PrgEnv-cray)", "^(PrgEnv-cray)"]
+      config:
+        PrgEnv-cray@2.6.2:
+          fflags: "-O1"
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+
+  additionalProperties_compiler:
+    executor: local.bash
+    type: compiler
+    description: "Test additionalProperies in compiler section, FOO: BAR"
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray"]
+      config:
+        PrgEnv-cray@2.6.2:
+          FOO: BAR
+          fflags: "-O1"
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]

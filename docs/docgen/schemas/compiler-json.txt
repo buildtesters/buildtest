@@ -7,9 +7,96 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
   "type": "object",
   "required": [
     "type",
-    "build",
+    "source",
+    "compilers",
     "executor"
   ],
+  "definitions": {
+    "default_compiler_config": {
+      "type": "object",
+      "properties": {
+        "cc": {
+          "type": "string"
+        },
+        "fc": {
+          "type": "string"
+        },
+        "cxx": {
+          "type": "string"
+        },
+        "cflags": {
+          "type": "string"
+        },
+        "fflags": {
+          "type": "string"
+        },
+        "ldflags": {
+          "type": "string"
+        },
+        "cppflags": {
+          "type": "string"
+        }
+      }
+    },
+    "compiler_declaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cc": {
+          "type": "string"
+        },
+        "fc": {
+          "type": "string"
+        },
+        "cxx": {
+          "type": "string"
+        },
+        "cflags": {
+          "type": "string"
+        },
+        "cxxflags": {
+          "type": "string"
+        },
+        "fflags": {
+          "type": "string"
+        },
+        "ldflags": {
+          "type": "string"
+        },
+        "cppflags": {
+          "type": "string"
+        },
+        "module": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "purge": {
+              "type": "boolean",
+              "description": "Run ``module purge`` if purge is set"
+            },
+            "load": {
+              "$ref": "definitions.schema.json#/definitions/list_of_strings",
+              "description": "Load one or more modules via ``module load``"
+            },
+            "restore": {
+              "description": "Load a collection name via ``module restore``",
+              "type": "string"
+            },
+            "swap": {
+              "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
+              "type": "array",
+              "uniqueItems": true,
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "additionalProperties": false,
   "properties": {
     "type": {
@@ -20,29 +107,49 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
     "description": {
       "$ref": "definitions.schema.json#/definitions/description"
     },
-    "module": {
+    "compilers": {
       "type": "object",
-      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
       "properties": {
-        "purge": {
-          "type": "boolean",
-          "description": "Run ``module purge`` if purge is set"
+        "name": {
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
-        "load": {
-          "$ref": "definitions.schema.json#/definitions/list_of_strings",
-          "description": "Load one or more modules via ``module load``"
+        "exclude": {
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
-        "swap": {
-          "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
-          "type": "array",
-          "uniqueItems": true,
-          "minItems": 2,
-          "maxItems": 2,
-          "items": {
-            "type": "string"
+        "default": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "gcc": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "intel": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "pgi": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "cray": {
+              "$ref": "#definitions/default_compiler_config"
+            }
+          }
+        },
+        "config": {
+          "type": "object",
+          "patternProperties": {
+            "^.*$": {
+              "$ref": "#definitions/compiler_declaration"
+            }
           }
         }
       }
+    },
+    "source": {
+      "type": "string",
+      "description": "Specify a source file for compilation, the file can be relative path to buildspec or an absolute path"
     },
     "executor": {
       "$ref": "definitions.schema.json#/definitions/executor"
