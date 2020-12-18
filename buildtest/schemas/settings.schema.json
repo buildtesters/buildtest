@@ -35,12 +35,12 @@
             "additionalProperties": false,
             "description": "Find compilers based on module names",
             "properties": {
-              "gcc": { "$ref": "#/definitions/unique_string_array" },
-              "intel": { "$ref": "#/definitions/unique_string_array" },
-              "cray": { "$ref": "#/definitions/unique_string_array" },
-              "clang": { "$ref": "#/definitions/unique_string_array" },
-              "cuda": {"$ref":  "#definitions/unique_string_array" },
-              "pgi": { "$ref": "#/definitions/unique_string_array" }
+              "gcc": { "type": "string" },
+              "intel": { "type": "string" },
+              "cray": { "type": "string" },
+              "clang": { "type": "string" },
+              "cuda": { "type": "string" },
+              "pgi": { "type": "string" }
             }
           },
           "compiler": {

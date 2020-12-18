@@ -284,7 +284,9 @@ class CompilerBuilder(BuilderBase):
                 for k, v in self.recipe["compilers"]["default"][compiler].items():
                     self.default_compiler_settings[compiler][k] = v
 
-        bc = BuildtestCompilers()
+        config = load_settings()
+
+        bc = BuildtestCompilers(config)
 
         group = bc.compiler_name_to_group[self.compiler]
 

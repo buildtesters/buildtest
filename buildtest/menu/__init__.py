@@ -280,6 +280,12 @@ class BuildTestParser:
         compiler_find = subparsers_compiler_find.add_parser(
             "find", help="Find compilers"
         )
+        compiler_find.add_argument(
+            "-d",
+            "--debug",
+            help="Display Debugging output when finding compilers",
+            action="store_true",
+        )
 
         parser_config_view = subparsers_config.add_parser(
             "view", help="View Buildtest Configuration File"
