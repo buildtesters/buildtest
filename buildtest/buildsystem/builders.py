@@ -9,7 +9,6 @@ import re
 
 from buildtest.buildsystem.scriptbuilder import ScriptBuilder
 from buildtest.buildsystem.compilerbuilder import CompilerBuilder
-from buildtest.config import load_settings
 from buildtest.menu.compilers import BuildtestCompilers
 from buildtest.system import BuildTestSystem
 
@@ -88,10 +87,9 @@ class Builder:
            :type recipe: dict
         """
         self.compilers = {}
-        configuration = load_settings()
-        bc = BuildtestCompilers(configuration)
-
+        bc = BuildtestCompilers()
         discovered_compilers = bc.list()
+        # discovered_compilers = buildtest_compilers()
 
         # exclude compiler from search if 'exclude' specified in buildspec
         if recipe["compilers"].get("exclude"):
