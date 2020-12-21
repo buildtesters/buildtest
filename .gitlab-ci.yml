@@ -1,34 +1,40 @@
 run_always:
   tags: [cori-login]   
   script: 
+    - echo 'this always run'
     - echo "$CI_PIPELINE_SOURCE"
     - whoami
     - git remote -v
     - git branch
     - ls -l 
-    - source setup.sh
-    - buildtest --help 
-    - which buildtest
-    - pip install -r docs/requirement.txt
-    - coverage run -m pytest -vra tests
-    - coverage report -m
-
 
 on-pull-requests:
+  script: echo 'this should run on pull requests'
+  only:
+    - external_pull_requests
+    
+on-pull-requests_rules:
   tags: [cori-login]
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "web"'
       when: always
     
   script: 
+    - echo 'this should run on external pull requests or job run manually '
     - echo "$CI_PIPELINE_SOURCE"
-    - echo 'this should run on pull requests'
     - whoami
     - git remote -v
     - git branch
     - ls -l 
-    - source setup.sh
-    - buildtest --help 
-    - pip install -r docs/requirement.txt
-    - coverage run -m pytest -vra tests
-    - coverage report -m
+
+pr_pipeline:
+  only:
+  - /^github\/pr[\d]+_.*$/
+  script:
+    - echo 'this should run on external pull requests'
+    - echo "$CI_PIPELINE_SOURCE"
+    - whoami
+    - git remote -v
+    - git branch
+    - ls -l 
+    
