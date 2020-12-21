@@ -1,5 +1,7 @@
-run_always:
-  tags: [cori-login]   
+tags:
+ - runner:shell
+ 
+run_always:  
   script: 
     - echo 'this always run'
     - echo "$CI_PIPELINE_SOURCE"
