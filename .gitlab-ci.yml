@@ -1,12 +1,13 @@
 on-pull-requests:
   script: echo 'this should run on pull requests'
-  tags: ["runner:shell"]
+  tags: ["cori-login"]
+  # tags: ["runner:shell"]
   only:
     - external_pull_requests
     
 on-pull-requests_rules:
-  # tags: [cori-login]
-  tags: ["runner:shell"]
+  tags: ["cori-login"]
+  # tags: ["runner:shell"]
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "web"'
       when: manual
