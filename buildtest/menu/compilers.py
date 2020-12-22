@@ -14,9 +14,9 @@ from buildtest.utils.tools import deep_get
 
 def func_compiler_find(args=None):
     """This method implements ``buildtest config compilers find`` which detects
-       new compilers based on module names defined in configuration. If system has
-       Lmod we use Lmodule API to detect the compilers. For environment-modules we
-       search for all modules in current ``$MODULEPATH``.
+    new compilers based on module names defined in configuration. If system has
+    Lmod we use Lmodule API to detect the compilers. For environment-modules we
+    search for all modules in current ``$MODULEPATH``.
     """
 
     settings_file = resolve_settings_file()
@@ -40,7 +40,7 @@ def func_compiler_find(args=None):
 
 def func_config_compiler(args=None):
     """This method implements ``buildtest config compilers`` which shows compiler
-       section from buildtest configuration.
+    section from buildtest configuration.
     """
 
     settings_file = resolve_settings_file()
@@ -58,18 +58,38 @@ def func_config_compiler(args=None):
 
 class BuildtestCompilers:
     compiler_table = {
-        "gcc": {"cc": "gcc", "cxx": "g++", "fc": "gfortran",},
-        "intel": {"cc": "icc", "cxx": "icpc", "fc": "ifort",},
-        "pgi": {"cc": "pgcc", "cxx": "pgc++", "fc": "pgfortran",},
-        "cray": {"cc": "cc", "cxx": "CC", "fc": "ftn",},
+        "gcc": {
+            "cc": "gcc",
+            "cxx": "g++",
+            "fc": "gfortran",
+        },
+        "intel": {
+            "cc": "icc",
+            "cxx": "icpc",
+            "fc": "ifort",
+        },
+        "pgi": {
+            "cc": "pgcc",
+            "cxx": "pgc++",
+            "fc": "pgfortran",
+        },
+        "cray": {
+            "cc": "cc",
+            "cxx": "CC",
+            "fc": "ftn",
+        },
         "clang": {"cc": "clang", "cxx": "clang++", "fc": None},
-        "cuda": {"cc": "nvcc", "cxx": "nvcc", "fc": None,},
+        "cuda": {
+            "cc": "nvcc",
+            "cxx": "nvcc",
+            "fc": None,
+        },
     }
 
     def __init__(self, debug=False):
         """
-            :param compilers: compiler section from buildtest configuration.
-            :type compilers: dict
+        :param compilers: compiler section from buildtest configuration.
+        :type compilers: dict
         """
 
         self.configuration = load_settings()
@@ -89,13 +109,13 @@ class BuildtestCompilers:
                     self.compiler_name_to_group[compiler] = name
 
     def find_compilers(self):
-        """ This method returns compiler modules discovered depending on your module system.
-            If you have Lmod system we use spider utility to detect modules, this is leveraging
-            Lmodule API. If you have environment-modules we parse output of ``module av -t``.
+        """This method returns compiler modules discovered depending on your module system.
+        If you have Lmod system we use spider utility to detect modules, this is leveraging
+        Lmodule API. If you have environment-modules we parse output of ``module av -t``.
 
 
-            :return: return a list of compiler modules detected based on module key name.
-            :rtype: dict
+        :return: return a list of compiler modules detected based on module key name.
+        :rtype: dict
         """
 
         self.moduletool = self.configuration.get("moduletool")
@@ -145,7 +165,9 @@ class BuildtestCompilers:
 
             # discover all modules based with list of module names specified in find field, we add all
             # modules that start with the key name
-            for compiler, module_regex_pattern in self.compilers.get("find").items():
+            for compiler, module_regex_pattern in self.configuration["compilers"][
+                "find"
+            ].items():
                 module_dict[compiler] = []
 
                 raw_string = r"{}".format(module_regex_pattern)
@@ -169,10 +191,10 @@ class BuildtestCompilers:
         self._update_compiler_section()
 
     def _validate_modules(self, module_dict):
-        """ This method will validate modules by running ``module load`` test for all
-            discovered modules specified in parameter ``discovered_modules``. This method
-            returns a list of modules that were valid, if all tests pass we return the same
-            list. A module test pass if we get a returncode 0.
+        """This method will validate modules by running ``module load`` test for all
+        discovered modules specified in parameter ``discovered_modules``. This method
+        returns a list of modules that were valid, if all tests pass we return the same
+        list. A module test pass if we get a returncode 0.
 
         """
 
@@ -191,15 +213,15 @@ class BuildtestCompilers:
                     self.compiler_modules_lookup[name].append(module)
 
     def _update_compiler_section(self):
-        """ This method will update the compiler section by adding new compilers if
-            found
+        """This method will update the compiler section by adding new compilers if
+        found
 
-            :return: Updated compiler section for buildtest configuration
-            :rtype: dict
+        :return: Updated compiler section for buildtest configuration
+        :rtype: dict
         """
 
         for name, module_list in self.compiler_modules_lookup.items():
-            if not self.compilers[name]:
+            if not self.compilers.get(name):
                 self.compilers[name] = {}
 
             for module in module_list:
@@ -227,7 +249,7 @@ class BuildtestCompilers:
 
     def print_compilers(self):
         """This method implements ``buildtest config compilers --list`` which
-           prints all compilers from buildtest configuration
+        prints all compilers from buildtest configuration
         """
         for name in self.names:
             print(name)
