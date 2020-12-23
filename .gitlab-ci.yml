@@ -1,15 +1,14 @@
-stages:
-  - test
-pr_cori_test:
-  tags:
-    - cori-login
-  stage: test
-  script:
-    - pwd && ls -l
-    - hostname
-    - cd buildtest
-    - git rev-parse HEAD
-    - source setup.sh
-    - buildtest --version
+on-pull-requests_rules:
+  tags: ["cori-login"]
+  # tags: ["runner:shell"]
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "web"'
+      when: manual
     
-    
+  script: 
+    - echo 'this should run on external pull requests or job run manually '
+    - echo "$CI_PIPELINE_SOURCE"
+    - whoami
+    - git remote -v
+    - git branch
+    - ls -l 
