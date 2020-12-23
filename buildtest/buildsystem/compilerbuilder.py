@@ -32,8 +32,6 @@ class CompilerBuilder(BuilderBase):
         ".ftn": "Fortran",
     }
 
-    default_compiler_settings = {"gcc": {}, "intel": {}, "pgi": {}, "cray": {}}
-
     cc = None
     cxx = None
     fc = None
@@ -271,6 +269,7 @@ class CompilerBuilder(BuilderBase):
     def _process_compiler_config(self):
 
         # get default compiler definition
+        """
         if self.compiler_section.get("default"):
             for compiler in self.default_compiler_settings.keys():
                 # if default section not defined for compiler we skip to next one
@@ -279,12 +278,15 @@ class CompilerBuilder(BuilderBase):
 
                 for k, v in self.recipe["compilers"]["default"][compiler].items():
                     self.default_compiler_settings[compiler][k] = v
+        """
         bc = BuildtestCompilers()
 
-        group = bc.compiler_name_to_group[self.compiler]
+        self.compiler_group = bc.compiler_name_to_group[self.compiler]
 
         # compiler from buildtest settings
-        self.bc_compiler = self.settings["compilers"]["compiler"][group][self.compiler]
+        self.bc_compiler = self.settings["compilers"]["compiler"][self.compiler_group][
+            self.compiler
+        ]
         # set compiler values based on 'default' property in buildspec. This can override
         # compiler setting defined in configuration file. If default is not set we load from buildtest settings for appropriate compiler.
 
@@ -294,20 +296,38 @@ class CompilerBuilder(BuilderBase):
         self.fc = self.bc_compiler["fc"]
 
         # if default compiler setting provided in buildspec let's assign it.
-        if self.default_compiler_settings.get(group):
+        if deep_get(self.compiler_section, "defaults", self.compiler_group):
 
-            self.cc = self.default_compiler_settings[group].get("cc") or self.cc
+            self.cc = (
+                self.compiler_section["defaults"][self.compiler_group].get("cc")
+                or self.cc
+            )
 
-            self.fc = self.default_compiler_settings[group].get("fc") or self.fc
+            self.fc = (
+                self.compiler_section["defaults"][self.compiler_group].get("fc")
+                or self.fc
+            )
 
-            self.cxx = self.default_compiler_settings[group].get("cxx") or self.fc
+            self.cxx = (
+                self.compiler_section["defaults"][self.compiler_group].get("cxx")
+                or self.fc
+            )
 
-            self.cflags = self.default_compiler_settings[group].get("cflags")
-            self.cxxflags = self.default_compiler_settings[group].get("cxxflags")
-            self.fflags = self.default_compiler_settings[group].get("fflags")
-            self.ldflags = self.default_compiler_settings[group].get("ldflags")
-            self.cppflags = self.default_compiler_settings[group].get("cppflags")
-
+            self.cflags = self.compiler_section["defaults"][self.compiler_group].get(
+                "cflags"
+            )
+            self.cxxflags = self.compiler_section["defaults"][self.compiler_group].get(
+                "cxxflags"
+            )
+            self.fflags = self.compiler_section["defaults"][self.compiler_group].get(
+                "fflags"
+            )
+            self.ldflags = self.compiler_section["defaults"][self.compiler_group].get(
+                "ldflags"
+            )
+            self.cppflags = self.compiler_section["defaults"][self.compiler_group].get(
+                "cppflags"
+            )
         # if compiler instance defined in config section read from buildspec. This overrides default section if specified
         if deep_get(self.compiler_section, "config", self.compiler):
             self.cc = (
@@ -335,7 +355,14 @@ class CompilerBuilder(BuilderBase):
                 self.compiler_section["config"][self.compiler].get("cppflags")
                 or self.cppflags
             )
+            self.ldflags = (
+                self.compiler_section["config"][self.compiler].get("ldflags")
+                or self.ldflags
+            )
 
+        self.logger.debug(
+            f"cc: {self.cc}, cxx: {self.cxx} fc: {self.fc} cppflags: {self.cppflags} cflags: {self.cflags} fflags: {self.fflags} ldflags: {self.ldflags}"
+        )
         # this condition is a safety check before compiling code to ensure if all C, C++, Fortran compiler not set we raise error
         if not self.cc and not self.cxx and not self.fc:
             raise BuildTestError(

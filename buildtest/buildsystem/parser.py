@@ -98,7 +98,7 @@ class BuildspecParser:
             )
 
         self.logger.info(
-            "Checking %s in supported type schemas: %s",
+            "Checking '%s' in supported type schemas: %s",
             self.schema_type,
             schema_table["types"],
         )
@@ -128,6 +128,9 @@ class BuildspecParser:
             raise BuildTestError(
                 f"executor: {executor} not found in executor list: {self.executors}"
             )
+        self.logger.debug(
+            f"Executor: {executor} found in executor list: {self.executors}"
+        )
 
     def _validate(self):
         """This method will validate the entire buildspec file with global schema

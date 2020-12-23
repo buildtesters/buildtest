@@ -109,6 +109,9 @@ class BuilderBase(ABC):
             schema_table[f"{self.recipe['type']}-v1.0.schema.json"]["path"]
         )
         self.metadata["executor"] = self.executor
+        # Generate a unique id for the build based on key and unique string
+        self.metadata["full_id"] = self._generate_unique_id()
+        self.metadata["id"] = self.metadata["full_id"][:8]
 
     def detect_executor(self):
         """ Return executor type based on executor property. The executor is in
@@ -162,10 +165,6 @@ class BuilderBase(ABC):
             test details such as where test will be located and directory of test.
             This section cannot be reached without a valid, loaded recipe.
         """
-
-        # Generate a unique id for the build based on key and unique string
-        self.metadata["full_id"] = self._generate_unique_id()
-        self.metadata["id"] = self.metadata["full_id"][:8]
 
         create_dir(self.testdir)
         num_content = len(os.listdir(self.testdir))
@@ -411,7 +410,7 @@ class BuilderBase(ABC):
         """Build the testscript content implemented in each subclass"""
 
     def __str__(self):
-        return "[builder-%s-%s]" % (self.type, self.name)
+        return f"builder object created with test name: {self.name} for schema type: {self.type} with ID: {self.metadata['full_id']}"
 
     def __repr__(self):
         return self.__str__()

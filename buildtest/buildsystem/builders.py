@@ -75,6 +75,9 @@ class Builder:
                         "%s is not recognized by buildtest, skipping." % recipe["type"]
                     )
 
+        for builder in self.builders:
+            self.logger.debug(builder)
+
     def _build_compilers(self, name, recipe):
         """This method will perform regular expression with 'name' field in compilers
            section and retrieve one or more compiler that were defined in buildtest
@@ -94,6 +97,9 @@ class Builder:
         # exclude compiler from search if 'exclude' specified in buildspec
         if recipe["compilers"].get("exclude"):
             for exclude in recipe["compilers"]["exclude"]:
+                msg = f"Excluding compiler: {exclude} from test generation"
+                print(msg)
+                self.logger.debug(msg)
                 discovered_compilers.remove(exclude)
 
         # apply regular expression specified by 'name' field against all discovered compilers
@@ -101,15 +107,14 @@ class Builder:
             for bc_name in discovered_compilers:
 
                 if re.match(compiler_pattern, bc_name):
-                    self.builders.append(
-                        CompilerBuilder(
-                            name,
-                            recipe,
-                            self.bp.buildspec,
-                            compiler=bc_name,
-                            testdir=self.testdir,
-                        )
+                    builder = CompilerBuilder(
+                        name,
+                        recipe,
+                        self.bp.buildspec,
+                        compiler=bc_name,
+                        testdir=self.testdir,
                     )
+                    self.builders.append(builder)
 
     # Builders
     def _skip_tests_by_executor(self, recipe, testname):
