@@ -5,7 +5,7 @@ from buildtest.menu.compilers import BuildtestCompilers
 from buildtest.config import load_settings
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import resolve_path
-from buildtest.utils.tools import deep_get, Hasher
+from buildtest.utils.tools import deep_get
 
 
 class CompilerBuilder(BuilderBase):
