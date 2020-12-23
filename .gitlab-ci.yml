@@ -1,10 +1,3 @@
-on-pull-requests:
-  script: echo 'this should run on pull requests'
-  tags: ["cori-login"]
-  # tags: ["runner:shell"]
-  only:
-    - external_pull_requests
-    
 on-pull-requests_rules:
   tags: ["cori-login"]
   # tags: ["runner:shell"]
@@ -14,18 +7,6 @@ on-pull-requests_rules:
     
   script: 
     - echo 'this should run on external pull requests or job run manually '
-    - echo "$CI_PIPELINE_SOURCE"
-    - whoami
-    - git remote -v
-    - git branch
-    - ls -l 
-
-pr_pipeline:
-  tags: ["runner:shell"]
-  only:
-  - /^github\/pr[\d]+_.*$/
-  script:
-    - echo 'this should run on external pull requests'
     - echo "$CI_PIPELINE_SOURCE"
     - whoami
     - git remote -v
