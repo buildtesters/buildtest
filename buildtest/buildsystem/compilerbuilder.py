@@ -47,17 +47,17 @@ class CompilerBuilder(BuilderBase):
     def __init__(self, name, recipe, buildspec, compiler=None, testdir=None):
         super().__init__(name, recipe, buildspec, testdir)
         self.compiler = compiler
-        self.bp_compiler = Hasher(self.recipe["compilers"])
 
+        self.compiler_section = self.recipe["compilers"]
         self.settings = load_settings()
 
         self.sourcefile = self.recipe["source"]
 
     def setup(self):
         """The setup method is responsible for process compiler section, getting modules
-           pre_build, post_build, pre_run, post_run section and generate compilation
-           and run command. This method invokes other methods and set values in class
-           variables. This method is called by self.generate_script method.
+        pre_build, post_build, pre_run, post_run section and generate compilation
+        and run command. This method invokes other methods and set values in class
+        variables. This method is called by self.generate_script method.
         """
 
         self._resolve_source()
@@ -69,9 +69,9 @@ class CompilerBuilder(BuilderBase):
         self.modules = []
 
         # compiler set in compilers 'config' section, we try to get module lines using self._get_modules
-        if self.bp_compiler.get(f"config.{self.compiler}"):
+        if deep_get(self.compiler_section, "config", self.compiler, "module"):
             self.modules = self._get_modules(
-                self.bp_compiler.get(f"config.{self.compiler}module")
+                self.compiler_section["config"][self.compiler]["module"]
             )
 
         if not self.modules:
@@ -131,9 +131,9 @@ class CompilerBuilder(BuilderBase):
         return lines
 
     def _resolve_source(self):
-        """ This method resolves full path to source file, it checks for absolute
-            path first before checking relative path that is relative to
-            Buildspec recipe.
+        """This method resolves full path to source file, it checks for absolute
+        path first before checking relative path that is relative to
+        Buildspec recipe.
         """
 
         # attempt to resolve path based on 'source' field. One can specify an absolute path if specified we honor it
@@ -152,7 +152,7 @@ class CompilerBuilder(BuilderBase):
 
     def _detect_lang(self, sourcefile):
         """This method will return the Programming Language based by looking up
-           file extension of source file.
+        file extension of source file.
         """
 
         ext = os.path.splitext(sourcefile)[1]
@@ -238,25 +238,21 @@ class CompilerBuilder(BuilderBase):
 
     def _run_cmd(self):
         """This method builds the run command which refers to how to run the
-           generated binary after compilation.
+        generated binary after compilation.
         """
 
-        self.run_dict = self.recipe.get("run")
-
-        if not self.run_dict:
+        if not self.recipe.get("run"):
             return [f"./{self.executable}"]
 
         run = []
 
-        # add launcher in front of execution if defined
-        if self.run_dict.get("launcher"):
-            run += [self.run_dict.get("launcher")]
-
+        run += [self.recipe["run"].get("launcher")]
         run += [f"./{self.executable}"]
 
         # add args after executable if defined
-        run += [self.run_dict.get("args")]
-
+        run += [self.recipe["run"].get("args")]
+        # remove any None from list, in case launcher or args not defined we still run program with executable
+        run = list(filter(None, run))
         run = [" ".join(run)]
 
         return run
@@ -275,65 +271,75 @@ class CompilerBuilder(BuilderBase):
     def _process_compiler_config(self):
 
         # get default compiler definition
-        if self.bp_compiler["default"]:
+        if self.compiler_section.get("default"):
             for compiler in self.default_compiler_settings.keys():
                 # if default section not defined for compiler we skip to next one
-                if not deep_get(self.bp_compiler, "default", compiler):
+                if not deep_get(self.compiler_section, "default", compiler):
                     continue
 
                 for k, v in self.recipe["compilers"]["default"][compiler].items():
                     self.default_compiler_settings[compiler][k] = v
-
-        config = load_settings()
-
-        bc = BuildtestCompilers(config)
+        bc = BuildtestCompilers()
 
         group = bc.compiler_name_to_group[self.compiler]
 
         # compiler from buildtest settings
         self.bc_compiler = self.settings["compilers"]["compiler"][group][self.compiler]
-
         # set compiler values based on 'default' property in buildspec. This can override
         # compiler setting defined in configuration file. If default is not set we load from buildtest settings for appropriate compiler.
 
+        # set compiler variables to ones defined in buildtest configuration
+        self.cc = self.bc_compiler["cc"]
+        self.cxx = self.bc_compiler["cxx"]
+        self.fc = self.bc_compiler["fc"]
+
+        # if default compiler setting provided in buildspec let's assign it.
         if self.default_compiler_settings.get(group):
 
-            self.cc = (
-                self.default_compiler_settings[group].get("cc")
-                or self.bc_compiler["cc"]
-            )
-            self.fc = (
-                self.default_compiler_settings[group].get("fc")
-                or self.bc_compiler["fc"]
-            )
-            self.cxx = (
-                self.default_compiler_settings[group].get("cxx")
-                or self.bc_compiler["cxx"]
-            )
+            self.cc = self.default_compiler_settings[group].get("cc") or self.cc
+
+            self.fc = self.default_compiler_settings[group].get("fc") or self.fc
+
+            self.cxx = self.default_compiler_settings[group].get("cxx") or self.fc
+
             self.cflags = self.default_compiler_settings[group].get("cflags")
             self.cxxflags = self.default_compiler_settings[group].get("cxxflags")
             self.fflags = self.default_compiler_settings[group].get("fflags")
             self.ldflags = self.default_compiler_settings[group].get("ldflags")
             self.cppflags = self.default_compiler_settings[group].get("cppflags")
 
-        # if compiler instance defined in config section read from buildspec
-        if deep_get(self.bp_compiler, "config", self.compiler):
-            self.cc = self.bp_compiler["config"][self.compiler].get("cc") or self.cc
-            self.fc = self.bp_compiler["config"][self.compiler].get("fc") or self.fc
-            self.cxx = self.bp_compiler["config"][self.compiler].get("cxx") or self.cxx
+        # if compiler instance defined in config section read from buildspec. This overrides default section if specified
+        if deep_get(self.compiler_section, "config", self.compiler):
+            self.cc = (
+                self.compiler_section["config"][self.compiler].get("cc") or self.cc
+            )
+            self.fc = (
+                self.compiler_section["config"][self.compiler].get("fc") or self.fc
+            )
+            self.cxx = (
+                self.compiler_section["config"][self.compiler].get("cxx") or self.cxx
+            )
             self.cflags = (
-                self.bp_compiler["config"][self.compiler].get("cflags") or self.cflags
+                self.compiler_section["config"][self.compiler].get("cflags")
+                or self.cflags
             )
             self.cxxflags = (
-                self.bp_compiler["config"][self.compiler].get("cxxflags")
+                self.compiler_section["config"][self.compiler].get("cxxflags")
                 or self.cxxflags
             )
             self.fflags = (
-                self.bp_compiler["config"][self.compiler].get("fflags") or self.fflags
+                self.compiler_section["config"][self.compiler].get("fflags")
+                or self.fflags
             )
             self.cppflags = (
-                self.bp_compiler["config"][self.compiler].get("cppflags")
+                self.compiler_section["config"][self.compiler].get("cppflags")
                 or self.cppflags
+            )
+
+        # this condition is a safety check before compiling code to ensure if all C, C++, Fortran compiler not set we raise error
+        if not self.cc and not self.cxx and not self.fc:
+            raise BuildTestError(
+                "Unable to set C, C++, and Fortran compiler wrapper, please specify 'cc', 'cxx','fc' in your compiler settings in buildtest configuration or specify in buildspec file. "
             )
 
     def set_cc(self, cc):
