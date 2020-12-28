@@ -58,32 +58,12 @@ def func_config_compiler(args=None):
 
 class BuildtestCompilers:
     compiler_table = {
-        "gcc": {
-            "cc": "gcc",
-            "cxx": "g++",
-            "fc": "gfortran",
-        },
-        "intel": {
-            "cc": "icc",
-            "cxx": "icpc",
-            "fc": "ifort",
-        },
-        "pgi": {
-            "cc": "pgcc",
-            "cxx": "pgc++",
-            "fc": "pgfortran",
-        },
-        "cray": {
-            "cc": "cc",
-            "cxx": "CC",
-            "fc": "ftn",
-        },
+        "gcc": {"cc": "gcc", "cxx": "g++", "fc": "gfortran",},
+        "intel": {"cc": "icc", "cxx": "icpc", "fc": "ifort",},
+        "pgi": {"cc": "pgcc", "cxx": "pgc++", "fc": "pgfortran",},
+        "cray": {"cc": "cc", "cxx": "CC", "fc": "ftn",},
         "clang": {"cc": "clang", "cxx": "clang++", "fc": None},
-        "cuda": {
-            "cc": "nvcc",
-            "cxx": "nvcc",
-            "fc": None,
-        },
+        "cuda": {"cc": "nvcc", "cxx": "nvcc", "fc": None,},
     }
 
     def __init__(self, debug=False):
