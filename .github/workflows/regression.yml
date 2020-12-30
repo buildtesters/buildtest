@@ -32,11 +32,16 @@ jobs:
         pip install coverage 
         coverage run -m pytest -vra tests
         coverage report -m
+        ls -l .coverage htmlcov
+
         
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
+      with:
+        verbose: true 
     
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.COVERALLS_TOKEN }}
+
