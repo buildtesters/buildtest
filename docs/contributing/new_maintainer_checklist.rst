@@ -76,8 +76,8 @@ buildtest has a regression test that is run via `pytest <https://docs.pytest.org
 should be familiar with pytest and it's usage and documentation as it will help you write
 regression test. The regression test makes use of `coverage <https://coverage.readthedocs.io/>`_
 to measure code coverage of buildtest source code. This is configured using `.coveragerc` file located
-in top of repo. The coverage data is pushed to services like `codecov <https://docs.codecov.io/docs>`_
-and `coveralls <https://docs.coveralls.io/>`_.
+in top of repo. The coverage data to `codecov <https://codecov.io/gh/buildtesters/buildtest/>`_
+
 
 buildtest has several CI checks written in GitHub workflows. These are found in ``.github/workflows``
 directory of buildtest. You should familiarize yourself with `Worflow Syntax <https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions>`_.

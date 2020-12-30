@@ -19,9 +19,8 @@ Writing Regression Tests
 -------------------------
 
 If you want to write a new regression test, you should get familiar with the
-coverage report gather in `codecov <https://codecov.io/gh/buildtesters/buildtest>`_
-and `coveralls <https://coveralls.io/github/buildtesters/buildtest>`_ . The
-coverage report will give a detailed line-line coverage of source
+coverage report gather in `codecov <https://codecov.io/gh/buildtesters/buildtest>`_.
+The coverage report will give a detailed line-line coverage of source
 code HIT/MISS when running the regression test. Increasing coverage report would
 be great way to write a new regression test.
 

@@ -10,7 +10,7 @@ docs at https://buildtest.readthedocs.io/en/devel/.
 Status
 -----------
 
-| |license| |docs| |codecov| |coveralls| |slack| |codefactor| |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |blackformat| |clichecks| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
+| |license| |docs| |codecov| |slack| |codefactor| |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |blackformat| |clichecks| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -26,9 +26,6 @@ Status
 
 .. |codecov| image:: https://codecov.io/gh/buildtesters/buildtest/branch/devel/graph/badge.svg
     :target: https://codecov.io/gh/buildtesters/buildtest
-
-.. |coveralls| image:: https://coveralls.io/repos/github/buildtesters/buildtest/badge.svg?branch=devel
-    :target: https://coveralls.io/github/buildtesters/buildtest?branch=devel
 
 .. |codefactor| image:: https://www.codefactor.io/repository/github/buildtesters/buildtest/badge
     :target: https://www.codefactor.io/repository/github/buildtesters/buildtest
@@ -82,8 +79,6 @@ Useful Links
 - ReadTheDocs: https://readthedocs.org/projects/buildtest/
 
 - CodeCov: https://codecov.io/gh/buildtesters/buildtest
-
-- Coveralls: https://coveralls.io/github/buildtesters/buildtest
 
 - CodeFactor: https://www.codefactor.io/repository/github/buildtesters/buildtest
 

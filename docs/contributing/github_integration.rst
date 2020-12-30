@@ -18,8 +18,6 @@ The following apps are configured with buildtest.
 
 - `CodeCov <https://codecov.io/gh/buildtesters/buildtest>`_ - Codecov provides highly integrated tools to group, merge, archive and compare coverage reports
 
-- `Coveralls <https://coveralls.io/github/buildtesters/buildtest>`_ - Coveralls is a web service to help you track your code coverage over time, and ensure that all your new code is fully covered.
-
 - `CodeFactor <https://www.codefactor.io/repository/github/buildtesters/buildtest>`_ - CodeFactor instantly performs Code Review with every GitHub Commit or PR. Zero setup time. Get actionable feedback within seconds. Customize rules, get refactoring tips and ignore irrelevant issues.
 
 - `Snyk <https://app.snyk.io/org/buildtesters/>`_  - Snyk tracks vulnerabilities in over 800,000 open source packages, and helps protect over 25,000 applications.
@@ -28,16 +26,16 @@ Coverage
 ---------
 
 We use `coverage <https://coverage.readthedocs.io/en/latest/>`_ to measure code
-coverage of buildtest when running regression test. We use CodeCov and Coveralls
-for displaying coverage reports through web interface. The coverage configuration
+coverage of buildtest when running regression test. We use CodeCov to display
+coverage reports through web interface. The coverage configuration
 is managed by *.coveragerc* file found in the root of the repo.
 
 Whenever you add new feature to buildtest, please add regression test with test
 coverage to help maintainers review new feature request. For more details on running
 coverage tests see :ref:`coverage_test`.
 
-CodeCov and Coveralls
-----------------------
+CodeCov
+-------
 
 `Codecov <https://docs.codecov.io/docs>`_  report coverage details in web-browser.
 CodeCov can perform `pull request comments <https://docs.codecov.io/docs/pull-request-comments>`_
@@ -45,10 +43,6 @@ after coverage report is uploaded to Codecov which is useful for reviewer and as
 to see status of coverage report during PR review process. The codecov file
 `.codecov.yml <https://github.com/buildtesters/buildtest/blob/devel/.codecov.yml>`_
 is used for configuration codecov. For more details on codecov yaml file see https://docs.codecov.io/docs/codecov-yaml.
-
-`Coveralls <https://docs.coveralls.io/>`_ is a web service that tracks code coverage
-similar to Codecov. We use `Coveralls GitHub Action <https://github.com/marketplace/actions/coveralls-github-action>`_
-to publish coverage report to coveralls from GitHub workflows.
 
 GitHub Actions
 --------------
