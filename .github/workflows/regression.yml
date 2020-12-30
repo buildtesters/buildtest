@@ -35,11 +35,10 @@ jobs:
 
         
     - name: Upload coverage to Codecov
+      uses: actions/checkout@v2
       uses: codecov/codecov-action@v1
-      with:
-        verbose: true 
     
-    - name: Coveralls
+    - name: Upload coverage to Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
