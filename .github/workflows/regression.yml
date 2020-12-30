@@ -32,7 +32,6 @@ jobs:
         pip install coverage 
         coverage run -m pytest -vra tests
         coverage report -m
-        ls -l .coverage htmlcov
 
         
     - name: Upload coverage to Codecov
