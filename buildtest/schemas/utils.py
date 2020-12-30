@@ -52,17 +52,3 @@ def load_recipe(path):
     with open(path, "r") as fd:
         content = yaml.load(fd.read(), Loader=yaml.SafeLoader)
     return content
-
-
-def get_schema_fullpath(schema_file, name=None):
-    """Return the full path of a schema file
-
-    :param schema_file: the path to the schema file.
-    :type schema_file: str
-    :param name: the schema type. If not provided, derived from filename.
-    :type name: str, optional
-    """
-    if not name:
-        name = schema_file.split("-v", 1)[0]
-    schema_file = os.path.join(here, schema_file)
-    return schema_file
