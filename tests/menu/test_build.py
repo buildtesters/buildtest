@@ -67,7 +67,7 @@ def test_build_by_tags():
     func_build_subcmd(args, buildtest_configuration)
 
 
-def test_discover_by_buildspecs():
+def test_discover_by_buildspecs(tmpdir):
 
     # test single buildspec file
     buildspec = os.path.join(valid_buildspecs, "environment.yml")
@@ -88,9 +88,11 @@ def test_discover_by_buildspecs():
     # invalid file extension must be of type .yml
     assert not discover_by_buildspecs(os.path.join(root, "README.rst"))
 
+    print(
+        f"Searching for buildspecs in directory: {tmpdir} which should have no .yml files"
+    )
     # when no Buildspec files found in a valid directory
-    # searching for all Buildspecs in current directory
-    assert not discover_by_buildspecs(os.path.dirname(os.path.abspath(__file__)))
+    assert not discover_by_buildspecs(tmpdir)
 
     invalid_file = str(uuid.uuid4())
     assert not discover_by_buildspecs(invalid_file)

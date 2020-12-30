@@ -66,13 +66,13 @@ class BuildtestCompilers:
         "cuda": {"cc": "nvcc", "cxx": "nvcc", "fc": None,},
     }
 
-    def __init__(self, debug=False):
+    def __init__(self, debug=False, settings_file=None):
         """
         :param compilers: compiler section from buildtest configuration.
         :type compilers: dict
         """
 
-        self.configuration = load_settings()
+        self.configuration = load_settings(settings_file)
         self.debug = debug
 
         if not deep_get(self.configuration, "compilers", "compiler"):

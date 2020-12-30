@@ -5,13 +5,13 @@ import sys
 import yaml
 from jsonschema import ValidationError
 from buildtest import BUILDTEST_VERSION
-from buildtest.schemas.utils import get_schema_fullpath, load_recipe
+from buildtest.schemas.utils import load_recipe
 from buildtest.config import check_settings, load_settings, resolve_settings_file
 from buildtest.defaults import (
     BUILDTEST_SETTINGS_FILE,
     BUILDSPEC_CACHE_FILE,
 )
-from buildtest.defaults import supported_type_schemas, supported_schemas
+from buildtest.defaults import supported_schemas
 from buildtest.system import BuildTestSystem
 
 
@@ -37,9 +37,11 @@ def func_config_view(args=None):
     """View buildtest configuration file. This implements ``buildtest config view``"""
 
     settings_file = resolve_settings_file()
+    print(f"Settings File: {settings_file}")
+    print("{:_<80}".format(""))
     content = load_recipe(settings_file)
 
-    print(yaml.safe_dump(content, sys.stdout, sort_keys=False))
+    print(yaml.dump(content, default_flow_style=False, sort_keys=False))
 
 
 def func_config_summary(args=None):
@@ -93,10 +95,3 @@ def func_config_summary(args=None):
     print("Buildtest Schemas")
     print("{:_<80}".format(""))
     print("Available Schemas:", supported_schemas)
-    print("Supported Sub-Schemas")
-    print("{:_<80}".format(""))
-    for schema in supported_type_schemas:
-        path = get_schema_fullpath(schema)
-        print(schema, ":", path)
-        examples_dir = os.path.join(os.path.dirname(path), "examples")
-        print("Examples Directory for schema: ", examples_dir)
