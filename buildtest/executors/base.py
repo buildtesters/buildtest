@@ -155,11 +155,9 @@ class BaseExecutor:
             based on returncode or regular expression.
         """
 
-        status = self.builder.recipe.get("status")
-
         self.builder.metadata["result"]["state"] = "FAIL"
         # if status is defined in Buildspec, then check for returncode and regex
-        if status:
+        if self.builder.status:
 
             # regex_match is boolean to check if output/error stream matches regex defined in Buildspec,
             # if no regex is defined we set this to True since we do a logical AND
@@ -168,17 +166,20 @@ class BaseExecutor:
             slurm_job_state_match = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
-            returncode_match = self._returncode_check(status)
+            returncode_match = self._returncode_check(self.builder.status)
 
             # check regex against output or error stream based on regular expression
             # defined in status property. Return value is a boolean
-            regex_match = self._check_regex(status)
+            regex_match = self._check_regex(self.builder.status)
 
             # if slurm_job_state_codes defined in buildspec.
             # self.builder.metadata["job"] only defined when job run through SlurmExecutor
-            if status.get("slurm_job_state") and self.builder.metadata.get("job"):
+            if self.builder.status.get("slurm_job_state") and self.builder.metadata.get(
+                "job"
+            ):
                 slurm_job_state_match = (
-                    status["slurm_job_state"] == self.builder.metadata["job"]["State"]
+                    self.builder.status["slurm_job_state"]
+                    == self.builder.metadata["job"]["State"]
                 )
 
             self.logger.info(

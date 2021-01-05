@@ -1,0 +1,41 @@
+version: "1.0"
+buildspecs:
+  default_status_regex:
+    type: compiler
+    description: Regular expression check in stdout for gcc group
+    tags: [tutorials, compile]
+    executor: local.bash
+    source: src/vecAdd.c
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        gcc:
+          cflags: -fopenacc
+          ldflags: -lm
+          status:
+            regex:
+              stream: stdout
+              exp: "^final result: 1.000000$"
+
+  override_status_regex:
+    type: compiler
+    description: Override regular expression for compiler gcc@10.2.0
+    tags: [tutorials, compile]
+    executor: local.bash
+    source: src/vecAdd.c
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        gcc:
+          cflags: -fopenacc
+          ldflags: -lm
+          status:
+            regex:
+              stream: stdout
+              exp: "^final result: 1.000000$"
+      config:
+        gcc@10.2.0:
+          status:
+            regex:
+              stream: stdout
+              exp: "^final result: 0.99$"

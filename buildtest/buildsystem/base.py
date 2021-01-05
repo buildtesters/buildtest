@@ -188,11 +188,16 @@ class BuilderBase(ABC):
         self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
         self.metadata["testroot"] = self.test_id
 
-    def _get_scheduler_directives(self):
+    def _get_scheduler_directives(self, bsub, sbatch, cobalt, batch):
         """ Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
             test with one of the executor types. This method will return a list
             of string containing scheduler directives generally found at top of script.
             If test is local executor we return an empty list
+
+            :param bsub: bsub property from buildspec
+            :param sbatch: sbatch property from buildspec
+            :param cobalt: cobalt property  from buildspec
+            :param batch: batch property from buildspec
         """
 
         lines = []
@@ -200,7 +205,7 @@ class BuilderBase(ABC):
             return
 
         if self.executor_type == "lsf":
-            script = LSFBatchScript(self.recipe.get("batch"), self.recipe.get("bsub"))
+            script = LSFBatchScript(batch, bsub)
 
             lines += script.get_headers()
             lines += [f"#BSUB -J {self.name}"]
@@ -209,44 +214,52 @@ class BuilderBase(ABC):
 
         elif self.executor_type == "slurm":
 
-            script = SlurmBatchScript(
-                self.recipe.get("batch"), self.recipe.get("sbatch")
-            )
+            script = SlurmBatchScript(batch, sbatch)
             lines += script.get_headers()
             lines += [f"#SBATCH --job-name={self.name}"]
             lines += [f"#SBATCH --output={self.name}.out"]
             lines += [f"#SBATCH --error={self.name}.err"]
 
         elif self.executor_type == "cobalt":
-            script = CobaltBatchScript(
-                self.recipe.get("batch"), self.recipe.get("cobalt")
-            )
+            script = CobaltBatchScript(batch, cobalt)
             lines += script.get_headers()
             lines += [f"#COBALT --jobname {self.name}"]
 
         return lines
 
-    def _get_burst_buffer(self):
-        """Get Burst Buffer directives (#BB) lines"""
+    def _get_burst_buffer(self, burstbuffer):
+        """ Get Burst Buffer directives (#BB) lines specified by BB property
 
-        lines = []
-        if not self.recipe.get("BB"):
+            :param burstbuffer: Burst Buffer configuration specified by BB property
+            :type burstbuffer: dict, required
+            :return: list of burst buffer directives
+            :rtype: list
+        """
+
+        if not burstbuffer:
             return
 
-        for arg in self.recipe.get("BB"):
-            lines += ["#BB " + arg]
+        lines = []
+        for arg in burstbuffer:
+            lines += [f"#BB {arg} "]
 
         return lines
 
-    def _get_data_warp(self):
-        """Get Cray Data Warp directives (#DW) lines"""
+    def _get_data_warp(self, datawarp):
+        """Get Cray Data Warp directives (#DW) lines specified by DW property.
 
-        lines = []
-        if not self.recipe.get("DW"):
+           :param datawarp: Data Warp configuration specified by DW property
+           :type datawarp: dict, required
+           :return: list of data warp directives
+           :rtype: list
+        """
+
+        if not datawarp:
             return
 
-        for arg in self.recipe.get("DW"):
-            lines += ["#DW " + arg]
+        lines = []
+        for arg in datawarp:
+            lines += [f"#DW {arg}"]
 
         return lines
 
@@ -262,35 +275,6 @@ class BuilderBase(ABC):
             f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
         )
 
-    def _get_test_heading(self):
-        """Returns the declaration of test content which is includes the shebang, scheduler
-           directives and source executor before script """
-
-        # start of each test should have the shebang
-        lines = [self.shebang]
-
-        # if shell is python the generated testscript will be run via bash, we invoke
-        # python script in bash script.
-        if self.shell.name == "python":
-            lines = [self.default_shell.shebang]
-
-        batch_directives_lines = self._get_scheduler_directives()
-        if batch_directives_lines:
-            lines += batch_directives_lines
-
-        burst_buffer_lines = self._get_burst_buffer()
-        if burst_buffer_lines:
-            lines += burst_buffer_lines
-
-        data_warp_lines = self._get_data_warp()
-        if data_warp_lines:
-            lines += data_warp_lines
-
-        lines += [
-            f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
-        ]
-        return lines
-
     def _write_test(self):
         """ This method is responsible for invoking ``generate_script`` that
             formulates content of testscript which is implemented in each subclass.
@@ -299,14 +283,9 @@ class BuilderBase(ABC):
         """
 
         # Implementation to write file generate.sh
-        # start of each test should have the shebang
-        lines = self._get_test_heading()
+        lines = []
 
         lines += self.generate_script()
-
-        lines += [
-            f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
-        ]
 
         lines = "\n".join(lines)
 
@@ -338,7 +317,7 @@ class BuilderBase(ABC):
                 file, os.path.join(self.test_id, "stage", os.path.basename(file))
             )
 
-    def get_environment(self):
+    def get_environment(self, env):
         """Retrieve a list of environment variables defined in buildspec and
         return them as list with the shell equivalent command
 
@@ -346,30 +325,30 @@ class BuilderBase(ABC):
         :rtype: list
         """
 
-        env = []
-        pairs = self.recipe.get("env", [])
+        lines = []
+
         shell = self.shell.name
         # Parse environment depending on expected shell
-        if pairs:
+        if env:
 
             # bash, sh, zsh environment variable declaration is export KEY=VALUE
             if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
-                for k, v in pairs.items():
-                    env.append("export %s=%s" % (k, v))
+                for k, v in env.items():
+                    lines.append("export %s=%s" % (k, v))
 
             # tcsh, csh,  environment variable declaration is setenv KEY VALUE
             elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
-                for k, v in pairs.items():
-                    env.append("setenv %s %s" % (k, v))
+                for k, v in env.items():
+                    lines.append("setenv %s %s" % (k, v))
 
             else:
                 self.logger.warning(
                     f"{shell} is not supported, skipping environment variables."
                 )
 
-        return env
+        return lines
 
-    def get_variables(self):
+    def get_variables(self, vars):
         """Retrieve a list of  variables defined in buildspec and
         return them as list with the shell equivalent command.
 
@@ -377,27 +356,27 @@ class BuilderBase(ABC):
         :rtype: list
         """
 
-        variables = []
-        pairs = self.recipe.get("vars", [])
+        lines = []
+
         shell = self.shell.name
         # Parse environment depending on expected shell
-        if pairs:
+        if vars:
 
             # bash, sh, zsh variable declaration is KEY=VALUE
             if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
-                for k, v in pairs.items():
-                    variables.append("%s=%s" % (k, v))
+                for k, v in vars.items():
+                    lines.append("%s=%s" % (k, v))
 
             # tcsh, csh variable declaration is set KEY=VALUE
             elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
-                for k, v in pairs.items():
-                    variables.append("set %s=%s" % (k, v))
+                for k, v in vars.items():
+                    lines.append("set %s=%s" % (k, v))
 
             else:
                 self.logger.warning(
                     f"{shell} is not supported, skipping environment variables."
                 )
-        return variables
+        return lines
 
     def _generate_unique_id(self):
         """Generate a unique build id using ``uuid.uuid4()``."""
