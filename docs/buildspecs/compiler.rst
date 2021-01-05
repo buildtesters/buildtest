@@ -38,8 +38,7 @@ The ``compilers`` section specifies compiler configuration, the ``name``
 field is required property which is used to search compilers based on regular expression.
 In this example we use the **builtin_gcc** compiler as regular expression which is the system
 gcc compiler provided by buildtest. The ``default`` section specifies default compiler
-flags (cflags, cxxflags, cppflags, ldflags, fflags) that are used for all compilers when
-building test. This section is organized by compiler groups.
+configuration applicable to a specific compiler group.
 
 Shown below is an example build for the buildspec example
 
@@ -49,13 +48,13 @@ The generated test for test name **hello_f** is the following::
 
     #!/bin/bash
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
-    /usr/bin/gfortran -Wall -o hello.f90.exe /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.f90
-    ./hello.f90.exe
+    _EXEC=hello.f90.exe
+    /usr/local/bin/gfortran -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.f90
+    ./$_EXEC
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
 
-The compiler `builtin_gcc` is defined in buildtest compiler configuration which is used
-for running the test. buildtest will use compiler wrappers specified in your settings
+buildtest will use compiler wrappers specified in your settings
 to build the test, however these values can be overridden in buildspec file which
 will be discussed later.
 
@@ -74,12 +73,8 @@ The ``builtin_gcc`` compiler is defined below this can be retrieved by running
 buildtest will compile and run the code depending on the compiler flags. buildtest,
 will detect the file extension of source file (`source` property) to detect
 programming language and finally generate the appropriate C, C++, or Fortran
-compilation based on language detected. buildtest detects the programming language
-and it finds **.f90** file extension and infers it must be Fortran program, hence
-``gfortran`` was selected.
-
-File Extension Language Table
------------------------------
+compilation based on language detected. In this example, buildtest detects a
+**.f90** file extension and buildtest infers this is a Fortran program.
 
 Shown below is the file extension table for your reference
 
@@ -96,7 +91,7 @@ Compiler Selection
 
 buildtest selects compiler based on ``name`` property which is a list of regular expression
 applied for available compilers defined in buildtest configuration. In example below
-we select all compilers that starts with string ``gcc`` that is specified by command ``name: ["^(gcc)"]``
+we select all compilers that starts with string ``gcc`` that is specified in line ``name: ["^(gcc)"]``
 
 .. program-output:: cat ../tutorials/compilers/vecadd.yml
 
@@ -161,14 +156,14 @@ build, notice we have two tests for ``vecadd_gnu`` one for each compiler::
 
 buildtest will use compiler settings including module configuration from buildtest
 settings (``config.yml``). The module configuration for ``gcc@9.3.0`` and ``gcc@10.2.0``
-is shown below. The ``module`` section is the declaration of module to load, by default
+is shown below. The ``module`` section is the declaration of modules to load, by default
 we disable purge (``purge: False``) which instructs buildtest to not insert ``module purge``.
 The ``load`` is a list of modules to load via ``module load``.
 
 Shown below is the compiler configuration.
 
 .. code-block::
-    :emphasize-lines: 11-14,19-23
+    :emphasize-lines: 11-14,19-22
     :linenos:
 
     buildtest config compilers -y
@@ -200,24 +195,25 @@ If we take a closer look at the generated test we see the modules are loaded int
     :emphasize-lines: 4
     :linenos:
 
-    $ cat /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/16/stage/generate.sh
     #!/bin/bash
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=vecAdd.c.exe
     module load gcc/10.2.0-37fmsw7
-    gcc -fopenacc -o vecAdd.c.exe /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/vecAdd.c -lm
-    ./vecAdd.c.exe
+    gcc -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/vecAdd.c
+    ./$_EXEC
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+
 
 .. code-block::
     :emphasize-lines: 4
     :linenos:
 
-    $ cat /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/17/sh
-    #!/bin/bash .sh
+    #!/bin/bash
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=vecAdd.c.exe
     module load gcc/9.3.0-n7p74fd
-    gcc -fopenacc -o vecAdd.c.exe /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/vecAdd.c -lm
-    ./vecAdd.c.exe
+    gcc -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/vecAdd.c
+    ./$_EXEC
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
 Excluding Compilers
@@ -225,17 +221,19 @@ Excluding Compilers
 
 The ``exclude`` property is part of compilers section which allows one to exclude compilers
 upon discovery by ``name`` field. The exclude property is a list of compiler names that
-will be removed from test generation which is done prior to build phase. buildtest will ignore
-any compilers in ``exclude`` list for compilers that weren't picked up based on the regular
-expression specified in ``name`` field. In example below, we slightly modified previous example
-by excluding compiler ``gcc@10.2.0``. This is specified by ``exclude: [gcc@10.2.0]``.
+will be removed from test generation which is done prior to build phase. buildtest will exclude
+any compilers specified in ``exclude`` if they were found based on regular
+expression in ``name`` field. In this example, we slightly modified previous example
+by excluding ``gcc@10.2.0`` compiler. This is specified by ``exclude: [gcc@10.2.0]``.
 
 .. program-output:: cat ../tutorials/compilers/compiler_exclude.yml
 
-Next if we build this test, we see `gcc@10.2.0` is excluded and we only build test with
-`gcc@9.3.0` compiler.
+Notice when we build this test, buildtest will exclude ``gcc@10.2.0`` compiler
+and test is not created during build phase.
 
-::
+.. code-block::
+    :linenos:
+    :emphasize-lines: 12
 
     $ buildtest build -b tutorials/compilers/compiler_exclude.yml
 
@@ -289,7 +287,7 @@ Compiler Defaults and Override Default Settings
 
 Sometimes you may want to set default compiler flags (cflags, fflags, cxxflags) including
 preprocessor (cppflags) or linker flags (ldflags) for compiler group (gcc, intel, pgi, etc...).
-This can be achieved using the ``default`` property that is part of `compilers` section.
+This can be achieved using the ``default`` property that is part of **compilers** section.
 
 In the next example, we will use the three compilers: ``builtin_gcc``, ``gcc@9.3.0`` and ``gcc@10.2.0``
 based on regular expression ``name: ["^(builtin_gcc|gcc)"]``. The ``default`` is
@@ -361,33 +359,284 @@ is for `builtin_gcc` which use the default ``-O1`` compiler flag as shown below.
     :emphasize-lines: 4
     :linenos:
 
-    $ cat  /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_c/hello_c/0/stage/generate.sh
     #!/bin/bash
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
-    /usr/bin/gcc -O1 -o hello.c.exe /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
-    ./hello.c.exe
+    _EXEC=hello.c.exe
+    /usr/bin/gcc -O1 -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
+    ./$_EXEC
 
 The test for `gcc@10.3.0` and `gcc@9.3.0` have cflags `-O3` and `-O2` set in their respective tests.
 
 .. code-block::
-    :emphasize-lines: 5, 13
+    :emphasize-lines: 5
     :linenos:
 
-    $ cat  /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_c/hello_c/1/stage/generate.sh
     #!/bin/bash
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=hello.c.exe
     module load gcc/10.2.0-37fmsw7
-    gcc -O3 -o hello.c.exe /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
-    ./hello.c.exe
+    gcc -O3 -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
+    ./$_EXEC
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
-    $ cat /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_c/hello_c/2/stage/generate.sh
+.. code-block::
+    :emphasize-lines: 5
+    :linenos:
+
     #!/bin/bash
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=hello.c.exe
     module load gcc/9.3.0-n7p74fd
-    gcc -O2 -o hello.c.exe /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
-    ./hello.c.exe
+    gcc -O2 -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
+    ./$_EXEC
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+
+Setting environment variables
+------------------------------
+
+Environment variables can be set using ``env`` property which is a list of
+key/value pair to assign environment variables. This property can be used in ``default``
+section within a compiler group. In example below we have an OpenMP Hello World example in C
+where we define `OMP_NUM_THREADS` environment variable which controls number of OpenMP
+threads to use when running program. In this example we use 2 threads for all gcc
+compiler group
+
+.. program-output:: cat ../tutorials/compilers/openmp_hello.yml
+
+Shown below is one of the generated test. Notice on line 4 buildtest will set OMP_NUM_THREADS
+environment variable.
+
+.. code-block::
+    :emphasize-lines: 4
+    :linenos:
+
+    #!/bin/bash
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=hello_omp.c.exe
+    export OMP_NUM_THREADS=2
+    module load gcc/10.2.0-37fmsw7
+    gcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello_omp.c
+    ./$_EXEC
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+
+
+Similarly, one can define environment variables at the compiler level in ``config`` section.
+buildtest will override value defined in ``default`` section. In this example, we
+make slight modification to the test, so that ``gcc@10.2.0`` will use 4 threads
+when running program. This will override the default value of 2.
+
+.. program-output:: cat ../tutorials/compilers/envvar_override.yml
+
+Next we build this test as follows::
+
+
+    $ buildtest build -b tutorials/compilers/envvar_override.yml
+
+    +-------------------------------+
+    | Stage: Discovering Buildspecs |
+    +-------------------------------+
+
+
+    Discovered Buildspecs:
+
+    /Users/siddiq90/Documents/buildtest/tutorials/compilers/envvar_override.yml
+
+    +---------------------------+
+    | Stage: Parsing Buildspecs |
+    +---------------------------+
+
+     schemafile                | validstate   | buildspec
+    ---------------------------+--------------+-----------------------------------------------------------------------------
+     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/envvar_override.yml
+
+    +----------------------+
+    | Stage: Building Test |
+    +----------------------+
+
+
+
+     name                     | id       | type     | executor   | tags                     | compiler   | testpath
+    --------------------------+----------+----------+------------+--------------------------+------------+-----------------------------------------------------------------------------------------------------------------------
+     override_environmentvars | 87d53c7f | compiler | local.bash | ['tutorials', 'compile'] | gcc@10.2.0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/envvar_override/override_environmentvars/0/stage/generate.sh
+     override_environmentvars | 9a59ea35 | compiler | local.bash | ['tutorials', 'compile'] | gcc@9.3.0  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/envvar_override/override_environmentvars/1/stage/generate.sh
+
+    +----------------------+
+    | Stage: Running Test  |
+    +----------------------+
+
+     name                     | id       | executor   | status   |   returncode | testpath
+    --------------------------+----------+------------+----------+--------------+-----------------------------------------------------------------------------------------------------------------------
+     override_environmentvars | 87d53c7f | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/envvar_override/override_environmentvars/0/stage/generate.sh
+     override_environmentvars | 9a59ea35 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/envvar_override/override_environmentvars/1/stage/generate.sh
+
+    +----------------------+
+    | Stage: Test Summary  |
+    +----------------------+
+
+    Executed 2 tests
+    Passed Tests: 2/2 Percentage: 100.000%
+    Failed Tests: 0/2 Percentage: 0.000%
+
+
+Now let's inspect the test for **gcc@10.2.0** and notice buildtest is using 4 threads for running OpenMP example
+
+.. code-block::
+    :linenos:
+    :emphasize-lines: 25-28, 44
+
+    $ buildtest inspect 87d53c7f
+    {
+      "id": "87d53c7f",
+      "full_id": "87d53c7f-bee7-4d7b-8aa5-0e86e7a52998",
+      "testroot": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/envvar_override/override_environmentvars/0",
+      "testpath": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/envvar_override/override_environmentvars/0/stage/generate.sh",
+      "command": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/envvar_override/override_environmentvars/0/stage/generate.sh",
+      "outfile": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/envvar_override/override_environmentvars/0/run/override_environmentvars.out",
+      "errfile": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/envvar_override/override_environmentvars/0/run/override_environmentvars.err",
+      "schemafile": "compiler-v1.0.schema.json",
+      "executor": "local.bash",
+      "tags": "tutorials compile",
+      "starttime": "2021/01/04 23:28:12",
+      "endtime": "2021/01/04 23:28:13",
+      "runtime": 0.6284978139999999,
+      "state": "PASS",
+      "returncode": 0,
+      "job": null
+    }
+
+
+
+    Output File
+    ______________________________
+    Hello World from thread = 0
+    Hello World from thread = 3
+    Hello World from thread = 1
+    Hello World from thread = 2
+
+
+
+
+    Error File
+    ______________________________
+
+
+
+
+    Test Content
+    ______________________________
+    #!/bin/bash
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=hello_omp.c.exe
+    export OMP_NUM_THREADS=4
+    module load gcc/10.2.0-37fmsw7
+    gcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello_omp.c
+    ./$_EXEC
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+
+
+
+    buildspec:  /Users/siddiq90/Documents/buildtest/tutorials/compilers/envvar_override.yml
+    ______________________________
+    version: "1.0"
+    buildspecs:
+      override_environmentvars:
+        type: compiler
+        description: override default environment variables
+        executor: local.bash
+        tags: [tutorials, compile]
+        source: "src/hello_omp.c"
+        compilers:
+          name: ["^(gcc)"]
+          default:
+            gcc:
+              cflags: -fopenmp
+              env:
+                OMP_NUM_THREADS: 2
+          config:
+            gcc@10.2.0:
+              env:
+                OMP_NUM_THREADS: 4
+
+
+Tweak how test are passed
+--------------------------
+
+The ``status`` property can be used to determine how buildtest will pass the test. By
+default, buildtest will use returncode to determine if test ``PASS`` or ``FAIL`` with
+exitcode 0 as PASS and anything else is FAIL.
+
+Sometimes, it may be useful check output of test to determine using regular expression. This
+can be done via ``status`` property. In this example, we define two tests, the first one defines ``status``
+property in the default **gcc** group. This means all compilers that belong to gcc
+group will be matched with the regular expression.
+
+In second example we override the status ``regex`` property for **gcc@10.2.0**. We expect
+the test to produce an output of ``final result: 1.000000`` so we expect one failure from
+**gcc@10.2.0**.
+
+.. program-output:: cat ../tutorials/compilers/compiler_status_regex.yml
+
+
+If we build this test, notice that test id **e5426d1f** failed which corresponds to
+``gcc@10.2.0`` compiler test. The test fails because it fails to pass on
+regular expression even though we have a returncode of 0.
+
+.. code-block::
+    :linenos:
+    :emphasize-lines: 30,41
+
+    $ buildtest build -b tutorials/compilers/compiler_status_regex.yml
+
+    +-------------------------------+
+    | Stage: Discovering Buildspecs |
+    +-------------------------------+
+
+
+    Discovered Buildspecs:
+
+    /Users/siddiq90/Documents/buildtest/tutorials/compilers/compiler_status_regex.yml
+
+    +---------------------------+
+    | Stage: Parsing Buildspecs |
+    +---------------------------+
+
+     schemafile                | validstate   | buildspec
+    ---------------------------+--------------+-----------------------------------------------------------------------------------
+     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/compiler_status_regex.yml
+
+    +----------------------+
+    | Stage: Building Test |
+    +----------------------+
+
+
+
+     name                  | id       | type     | executor   | tags                     | compiler   | testpath
+    -----------------------+----------+----------+------------+--------------------------+------------+--------------------------------------------------------------------------------------------------------------------------
+     default_status_regex  | 2b63294c | compiler | local.bash | ['tutorials', 'compile'] | gcc@10.2.0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/compiler_status_regex/default_status_regex/0/stage/generate.sh
+     default_status_regex  | 7be847e8 | compiler | local.bash | ['tutorials', 'compile'] | gcc@9.3.0  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/compiler_status_regex/default_status_regex/1/stage/generate.sh
+     override_status_regex | e5426d1f | compiler | local.bash | ['tutorials', 'compile'] | gcc@10.2.0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/compiler_status_regex/override_status_regex/0/stage/generate.sh
+     override_status_regex | 1bcc7942 | compiler | local.bash | ['tutorials', 'compile'] | gcc@9.3.0  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/compiler_status_regex/override_status_regex/1/stage/generate.sh
+
+    +----------------------+
+    | Stage: Running Test  |
+    +----------------------+
+
+     name                  | id       | executor   | status   |   returncode | testpath
+    -----------------------+----------+------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------------
+     default_status_regex  | 2b63294c | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/compiler_status_regex/default_status_regex/0/stage/generate.sh
+     default_status_regex  | 7be847e8 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/compiler_status_regex/default_status_regex/1/stage/generate.sh
+     override_status_regex | e5426d1f | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/compiler_status_regex/override_status_regex/0/stage/generate.sh
+     override_status_regex | 1bcc7942 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/compiler_status_regex/override_status_regex/1/stage/generate.sh
+
+    +----------------------+
+    | Stage: Test Summary  |
+    +----------------------+
+
+    Executed 4 tests
+    Passed Tests: 3/4 Percentage: 75.000%
+    Failed Tests: 1/4 Percentage: 25.000%
+
+
 
 Passing Arguments
 -------------------
@@ -718,14 +967,18 @@ The format of the test structure is the following::
 The generated test for this buildspec is the following::
 
     #!/bin/bash
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=hello.c.exe
     echo "This is a pre-build section"
     gcc --version
 
-    gcc -Wall -o hello.c.exe /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
+    /usr/bin/gcc -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
     echo "This is post-build section"
 
     echo "This is pre-run section"
     export FOO=BAR
 
-    ./hello.c.exe
+    ./$_EXEC
     echo "This is post-run section"
+
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh

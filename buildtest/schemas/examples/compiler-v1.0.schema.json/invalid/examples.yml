@@ -128,40 +128,19 @@ buildspecs:
     compilers:
       name: [gcc]
 
-  additionalProperties_batch:
+  missing_required_compiler_name:
     executor: local.bash
     type: compiler
-    description: "test additionalProperties in batch field"
-    batch:
-      "nodecount": "2"
-      "EXPORT": "ALL"
-    source: src/hello.c
+    description: "'name' field in compilers section is required field"
+    source: src/hello.f90
     compilers:
-      name: [gcc]
-
-  type_mismatch_args:
-    executor: local.bash
-    type: compiler
-    description: "type mismatch on args key"
-    source: src/hello.c
-    compilers:
-      name: [gcc]
-    run:
-      args: 1
-
-    missing_required_compiler_name:
-      executor: local.bash
-      type: compiler
-      description: "'name' field in compilers section is required field"
-      source: src/hello.f90
-      compilers:
-      default:
-        cray:
-          fflags: "-O1"
-      config:
-        PrgEnv-cray@2.6.2:
-          module:
-            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+    default:
+      cray:
+        fflags: "-O1"
+    config:
+      PrgEnv-cray@2.6.2:
+        module:
+          swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
 
   uniqueItems_compiler_name:
     executor: local.bash
@@ -179,7 +158,41 @@ buildspecs:
   additionalProperties_compiler:
     executor: local.bash
     type: compiler
-    description: "Test additionalProperies in compiler section, FOO: BAR"
+    description: "Test additionalProperies in compiler section"
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray"]
+      FOO: BAR
+      default:
+        all:
+          env:
+            X: 1
+      config:
+        PrgEnv-cray@2.6.2:
+          fflags: "-O1"
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+
+  additionalProperties_compiler_default_all:
+    executor: local.bash
+    type: compiler
+    description: "Test additionalProperies in compiler default all section"
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray"]
+      default:
+        all:
+          XYZ: 123
+      config:
+        PrgEnv-cray@2.6.2:
+          fflags: "-O1"
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+
+  additionalProperties_compiler_config:
+    executor: local.bash
+    type: compiler
+    description: "Test additionalProperies in compiler config section, FOO: BAR"
     source: src/hello.f90
     compilers:
       name: ["PrgEnv-cray"]

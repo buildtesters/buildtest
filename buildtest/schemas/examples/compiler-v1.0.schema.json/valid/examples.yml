@@ -63,32 +63,33 @@ buildspecs:
     type: compiler
     description: sbatch example to configure #SBATCH options
     executor: local.bash
-    sbatch:
-      - "-t 10"
-      - "-n 2"
     source: src/hello.f90
     compilers:
       name: ["PrgEnv-cray"]
       default:
         cray:
           fflags: "-O1"
+        all:
+          sbatch:
+            - "-t 10"
+            - "-n 2"
       config:
         PrgEnv-cray@2.6.2:
           module:
             swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
-    status:
-      slurm_job_state: "COMPLETED"
 
   bsub_example:
     type: compiler
     description: bsub example to configure #BSUB options
     executor: local.bash
-    bsub:
-      - "-W 00:30"
-      - "-N 2"
     source: "src/hello.cpp"
     compilers:
       name: [intel]
+      default:
+        all:
+          bsub:
+            - "-W 00:30"
+            - "-N 2"
       config:
         intel@2019:
           cxxflags: "-O1"
@@ -97,30 +98,65 @@ buildspecs:
     type: compiler
     description: example using batch field
     executor: local.bash
-    batch:
-      "timelimit": "30"
-      "nodecount": "2"
-      "queue": "batch"
-      "account": "biology"
     source: "src/hello.cpp"
     compilers:
       name: [intel]
+      default:
+        all:
+          batch:
+            "timelimit": "30"
+            "nodecount": "2"
+            "queue": "batch"
+            "account": "biology"
       config:
         intel@2019:
           cxxflags: "-O1"
+  env_example:
+    type: compiler
+    description: Setting environment variables
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [gnu]
+      default:
+        all:
+          env:
+            OMP_NUM_THREADS: 2
+          run: $_EXEC 1 2 4
+      config:
+        gcc@10.2.0:
+          cxxflags: "-fopenmp"
+
+  vars_example:
+    type: compiler
+    description: Setting shell variables
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [gnu]
+      default:
+        all:
+          vars:
+            OUTFILE: /tmp/file1.txt
+          run: $_EXEC > $OUTFILE
+      config:
+        gcc@10.2.0:
+          cxxflags: "-fopenmp"
+
 
   args_example:
     type: compiler
-    description: Launcher example
+    description: Passing arguments to executable in run section
     executor: local.bash
     source: "src/hello.cpp"
     compilers:
       name: [intel]
+      default:
+        all:
+          run: $_EXEC 1 2 4
       config:
         intel@2019:
           cxxflags: "-O1"
-    run:
-      args: "1 2 4"
 
   mpi_launcher_example:
     type: compiler
@@ -129,30 +165,61 @@ buildspecs:
     source: "src/hello.cpp"
     compilers:
       name: [gcc]
+      default:
+        all:
+          run: mpirun -np 2 $_EXEC
       config:
         gcc@7.3.0:
           cflags: "-O3"
           cxx: mpicxx
-    run:
-      launcher: mpirun -np 2
 
-  pre_post_build_run_sections:
+  status_returncode_example:
     type: compiler
-    description: Run commands pre and post build and run section
+    description: Status returncode match example
     executor: local.bash
-    pre_build: echo "pre-build section"
+    source: "src/hello.cpp"
+    compilers:
+      name: [gnu]
+      default:
+        all:
+          vars:
+            OUTFILE: /tmp/file1.txt
+          run: $_EXEC > $OUTFILE
+          status:
+            returncode: 1
+      config:
+        gcc@10.2.0:
+          cxxflags: "-fopenmp"
+
+  pre_post_build_sections:
+    type: compiler
+    description: Run commands pre and post build section
+    executor: local.bash
     source: "src/hello.cpp"
     compilers:
       name: [gcc]
+      default:
+        all:
+          pre_build: echo "pre-build section"
+          post_build: echo "post-build section"
       config:
         gcc@7.3.0:
           cflags: "-O3"
 
-    post_build: echo "post-build section"
-    pre_run: echo "pre-run section"
-    run:
-      launcher: mpirun -np 2
-    post_run: echo "post-run section"
+  pre_post_run_sections:
+    type: compiler
+    description: Run commands pre and post run section
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [gcc]
+      default:
+        all:
+          pre_run: echo "pre-run section"
+          post_run: echo "post-run section"
+      config:
+        gcc@7.3.0:
+          cflags: "-O3"
 
   multi_compilers:
     type: compiler

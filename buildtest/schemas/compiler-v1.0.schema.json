@@ -11,6 +11,59 @@
     "executor"
   ],
   "definitions": {
+    "default_compiler_all": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sbatch": {
+          "$ref": "definitions.schema.json#/definitions/sbatch"
+        },
+        "bsub": {
+          "$ref": "definitions.schema.json#/definitions/bsub"
+        },
+        "cobalt": {
+          "$ref": "definitions.schema.json#/definitions/cobalt"
+        },
+        "batch": {
+          "$ref": "definitions.schema.json#/definitions/batch"
+        },
+        "BB": {
+          "$ref": "definitions.schema.json#/definitions/BB"
+        },
+        "DW": {
+          "$ref": "definitions.schema.json#/definitions/DW"
+        },
+        "env": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "vars": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "status": {
+          "$ref": "definitions.schema.json#/definitions/status"
+        },
+        "pre_build": {
+          "type": "string",
+          "description": "Run commands before building program"
+        },
+        "post_build": {
+          "type": "string",
+          "description": "Run commands after building program"
+        },
+        "pre_run": {
+          "type": "string",
+          "description": "Run commands before running program"
+        },
+        "post_run": {
+          "type": "string",
+          "description": "Run commands after running program"
+        },
+        "run": {
+          "type": "string",
+          "description": "Run command for launching compiled binary"
+        }
+      }
+    },
     "default_compiler_config": {
       "type": "object",
       "properties": {
@@ -34,6 +87,35 @@
         },
         "cppflags": {
           "type": "string"
+        },
+        "env": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "vars": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "status": {
+          "$ref": "definitions.schema.json#/definitions/status"
+        },
+        "pre_build": {
+          "type": "string",
+          "description": "Run commands before building program"
+        },
+        "post_build": {
+          "type": "string",
+          "description": "Run commands after building program"
+        },
+        "pre_run": {
+          "type": "string",
+          "description": "Run commands before running program"
+        },
+        "post_run": {
+          "type": "string",
+          "description": "Run commands after running program"
+        },
+        "run": {
+          "type": "string",
+          "description": "Run command for launching compiled binary"
         }
       }
     },
@@ -49,6 +131,15 @@
         "fflags": { "type": "string"},
         "ldflags": { "type": "string"},
         "cppflags": { "type": "string"},
+        "env": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "vars": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "status": {
+          "$ref": "definitions.schema.json#/definitions/status"
+        },
         "module": {
           "type": "object",
           "additionalProperties": false,
@@ -92,7 +183,10 @@
     },
     "compilers": {
       "type": "object",
-      "required": ["name"],
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
       "properties": {
         "name": {
           "$ref": "definitions.schema.json#/definitions/list_of_strings"
@@ -104,16 +198,29 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "gcc": {"$ref":  "#definitions/default_compiler_config"},
-            "intel": {"$ref":  "#definitions/default_compiler_config"},
-            "pgi": {"$ref":  "#definitions/default_compiler_config"},
-            "cray": {"$ref":  "#definitions/default_compiler_config"}
+            "all": {
+              "$ref": "#definitions/default_compiler_all"
+            },
+            "gcc": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "intel": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "pgi": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "cray": {
+              "$ref": "#definitions/default_compiler_config"
+            }
           }
         },
         "config": {
           "type": "object",
           "patternProperties": {
-            "^.*$": {"$ref":  "#definitions/compiler_declaration"}
+            "^.*$": {
+              "$ref": "#definitions/compiler_declaration"
+            }
           }
         }
       }
@@ -125,129 +232,14 @@
     "executor": {
       "$ref": "definitions.schema.json#/definitions/executor"
     },
-    "sbatch": {
-      "$ref": "definitions.schema.json#/definitions/sbatch"
-    },
-    "bsub": {
-      "$ref": "definitions.schema.json#/definitions/bsub"
-    },
-    "cobalt": {
-      "$ref": "definitions.schema.json#/definitions/cobalt"
-    },
-    "batch": {
-      "$ref": "definitions.schema.json#/definitions/batch"
-    },
-    "BB": {
-      "$ref": "definitions.schema.json#/definitions/BB"
-    },
-    "DW": {
-      "$ref": "definitions.schema.json#/definitions/DW"
-    },
-    "env": {
-      "$ref": "definitions.schema.json#/definitions/env"
-    },
-    "vars": {
-      "$ref": "definitions.schema.json#/definitions/env"
-    },
     "run_only": {
       "$ref": "definitions.schema.json#/definitions/run_only"
-    },
-    "status": {
-      "$ref": "definitions.schema.json#/definitions/status"
     },
     "skip": {
       "$ref": "definitions.schema.json#/definitions/skip"
     },
     "tags": {
       "$ref": "definitions.schema.json#/definitions/tags"
-    },
-    "pre_build": {
-      "type": "string",
-      "description": "Run commands before building program"
-    },
-    "post_build": {
-      "type": "string",
-      "description": "Run commands after building program"
-    },
-    "build": {
-      "type": "object",
-      "description": "The ``build`` section is used for compiling a single program, this section specifies fields for setting C, C++, Fortran compiler and flags including CPP flags and linker flags",
-      "properties": {
-        "name": {
-          "type": "string",
-          "enum": [
-            "gnu",
-            "intel",
-            "pgi",
-            "cray"
-          ],
-          "description": "Select the compiler class to use, buildtest will set cc, cxx, and fc compiler wrapper based on compiler name"
-        },
-        "cc": {
-          "type": "string",
-          "description": "Set C compiler. Use this field to override buildtest selection for **cc**"
-        },
-        "fc": {
-          "type": "string",
-          "description": "Set Fortran compiler. Use this field to override buildtest selection for **fc**"
-        },
-        "cxx": {
-          "type": "string",
-          "description": "Set C++ compiler. Use this field to override buildtest selection for **cxx**"
-        },
-        "source": {
-          "type": "string",
-          "description": "Specify a source file for compilation, the file can be relative path to buildspec or an absolute path"
-        },
-        "cflags": {
-          "type": "string",
-          "description": "Set C compiler flags (**cflags**)"
-        },
-        "cxxflags": {
-          "type": "string",
-          "description": "Set C++ compiler flags (**cxxflags**)"
-        },
-        "fflags": {
-          "type": "string",
-          "description": "Set Fortran compiler flags (**fflags**)"
-        },
-        "cppflags": {
-          "type": "string",
-          "description": "Set Pre Processor Flags (**cppflags**)"
-        },
-        "ldflags": {
-          "type": "string",
-          "description": "Set linker flags (**ldflags**)"
-        }
-      },
-      "required": [
-        "source",
-        "name"
-      ],
-      "additionalProperties": false
-    },
-    "pre_run": {
-      "type": "string",
-      "description": "Run commands before running program"
-    },
-    "post_run": {
-      "type": "string",
-      "description": "Run commands after running program"
-    },
-    "run": {
-      "type": "object",
-      "description": "The ``run`` section is used for specifying launch configuration of executable",
-      "properties": {
-        "launcher": {
-          "type": "string",
-          "description": "The ``launcher`` field is inserted before the executable. This can be used when running programs with ``mpirun``, ``mpiexec``, ``srun``, etc... You may specify launcher options with this field"
-        },
-        "args": {
-          "type": "string",
-          "description": "The ``args`` field is used to specify arguments to executable."
-        }
-      },
-      "additionalProperties": false
     }
   }
 }

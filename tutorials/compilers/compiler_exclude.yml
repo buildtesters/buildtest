@@ -13,7 +13,3 @@ buildspecs:
         gcc:
           cflags: -fopenacc
           ldflags: -lm
-    status:
-      regex:
-        stream: stdout
-        exp: "^final result: 1.000000$"

@@ -1,9 +1,11 @@
 import os
 import shutil
+
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.menu.compilers import BuildtestCompilers
 from buildtest.config import load_settings
+from buildtest.defaults import executor_root
 from buildtest.exceptions import BuildTestError
+from buildtest.menu.compilers import BuildtestCompilers
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
 
@@ -40,7 +42,6 @@ class CompilerBuilder(BuilderBase):
     cxxflags = None
     fflags = None
     cppflags = None
-    executable = None
 
     def __init__(self, name, recipe, buildspec, compiler=None, testdir=None):
         super().__init__(name, recipe, buildspec, testdir)
@@ -61,24 +62,52 @@ class CompilerBuilder(BuilderBase):
         self._resolve_source()
         self.lang = self._detect_lang(self.sourcefile)
         # set executable name and assign to self.executable
-        self.executable = self._set_executable_name()
+        self.executable = "%s.exe" % os.path.basename(self.sourcefile)
+        self.exec_variable = f"_EXEC={self.executable}"
 
         self._process_compiler_config()
-        self.modules = []
+
+        # get environment variables
+        self.envvars = (
+            deep_get(self.compiler_section, "config", self.compiler, "env")
+            or deep_get(self.compiler_section, "default", self.compiler_group, "env")
+            or deep_get(self.compiler_section, "default", "all", "env")
+        )
+
+        # get environment variables
+        self.vars = (
+            deep_get(self.compiler_section, "config", self.compiler, "vars")
+            or deep_get(self.compiler_section, "default", self.compiler_group, "vars")
+            or deep_get(self.compiler_section, "default", "all", "vars")
+        )
+
+        # get status
+        self.status = (
+            deep_get(self.compiler_section, "config", self.compiler, "status")
+            or deep_get(self.compiler_section, "default", self.compiler_group, "status")
+            or deep_get(self.compiler_section, "default", "all", "status")
+        )
 
         # compiler set in compilers 'config' section, we try to get module lines using self._get_modules
-        if deep_get(self.compiler_section, "config", self.compiler, "module"):
-            self.modules = self._get_modules(
-                self.compiler_section["config"][self.compiler]["module"]
-            )
+        self.modules = self._get_modules(
+            deep_get(self.compiler_section, "config", self.compiler, "module")
+        )
 
         if not self.modules:
             self.modules = self._get_modules(self.bc_compiler.get("module"))
 
-        self.pre_build = self.recipe.get("pre_build")
-        self.post_build = self.recipe.get("post_build")
-        self.pre_run = self.recipe.get("pre_run")
-        self.post_run = self.recipe.get("post_run")
+        self.pre_build = deep_get(
+            self.compiler_section, "default", self.compiler_group, "pre_build"
+        ) or deep_get(self.compiler_section, "default", "all", "pre_build")
+        self.post_build = deep_get(
+            self.compiler_section, "default", self.compiler_group, "post_build"
+        ) or deep_get(self.compiler_section, "default", "all", "post_build")
+        self.pre_run = deep_get(
+            self.compiler_section, "default", self.compiler_group, "pre_run"
+        ) or deep_get(self.compiler_section, "default", "all", "pre_run")
+        self.post_run = deep_get(
+            self.compiler_section, "default", self.compiler_group, "post_run"
+        ) or deep_get(self.compiler_section, "default", "all", "post_run")
 
         self.compile_cmd = self._compile_cmd()
 
@@ -97,13 +126,41 @@ class CompilerBuilder(BuilderBase):
         self.setup()
 
         # every test starts with shebang line
-        # lines = [self.shebang]
-        lines = []
+        lines = [self.shebang]
 
-        # get environment variables
-        lines += self.get_environment()
+        bsub_opts = deep_get(self.compiler_section, "default", "all", "bsub")
+        sbatch_opts = deep_get(self.compiler_section, "default", "all", "sbatch")
+        cobalt_opts = deep_get(self.compiler_section, "default", "all", "cobalt")
+        batch_opts = deep_get(self.compiler_section, "default", "all", "batch")
+
+        batch_directives_lines = self._get_scheduler_directives(
+            bsub=bsub_opts, sbatch=sbatch_opts, cobalt=cobalt_opts, batch=batch_opts
+        )
+
+        if batch_directives_lines:
+            lines += batch_directives_lines
+
+        burst_buffer_lines = self._get_burst_buffer(
+            deep_get(self.compiler_section, "default", "all", "BB")
+        )
+        if burst_buffer_lines:
+            lines += burst_buffer_lines
+
+        data_warp_lines = self._get_data_warp(
+            deep_get(self.compiler_section, "default", "all", "DW")
+        )
+        if data_warp_lines:
+            lines += data_warp_lines
+
+        lines += [
+            f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
+        ]
+
+        lines += [self.exec_variable]
+
+        lines += self.get_environment(self.envvars)
         # get variables
-        lines += self.get_variables()
+        lines += self.get_variables(self.vars)
 
         # if 'module' defined in Buildspec add modules to test
         if self.modules:
@@ -121,11 +178,14 @@ class CompilerBuilder(BuilderBase):
             lines.append(self.pre_run)
 
         # add run command
-        lines += self.run_cmd
+        lines.append(self.run_cmd)
 
         if self.post_run:
             lines.append(self.post_run)
 
+        lines += [
+            f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
+        ]
         return lines
 
     def _resolve_source(self):
@@ -135,15 +195,15 @@ class CompilerBuilder(BuilderBase):
         """
 
         # attempt to resolve path based on 'source' field. One can specify an absolute path if specified we honor it
-        self.resolvepath_sourcefile = resolve_path(self.sourcefile)
+        self.abspath_sourcefile = resolve_path(self.sourcefile)
         # One can specify a relative path to where buildspec is located when using 'source' field so we try again
-        if not self.resolvepath_sourcefile:
-            self.resolvepath_sourcefile = resolve_path(
+        if not self.abspath_sourcefile:
+            self.abspath_sourcefile = resolve_path(
                 os.path.join(os.path.dirname(self.buildspec), self.sourcefile)
             )
 
         # raise error if we can't find source file to compile
-        if not self.resolvepath_sourcefile:
+        if not self.abspath_sourcefile:
             raise BuildTestError(
                 f"Failed to resolve path specified by key 'source': {self.sourcefile}"
             )
@@ -201,8 +261,8 @@ class CompilerBuilder(BuilderBase):
                 self.cc,
                 self.cppflags,
                 self.cflags,
-                f"-o {self.executable}",
-                self.resolvepath_sourcefile,
+                f"-o $_EXEC",
+                self.abspath_sourcefile,
                 self.ldflags,
             ]
 
@@ -212,8 +272,8 @@ class CompilerBuilder(BuilderBase):
                 self.cxx,
                 self.cppflags,
                 self.cxxflags,
-                f"-o {self.executable}",
-                self.resolvepath_sourcefile,
+                f"-o $_EXEC",
+                self.abspath_sourcefile,
                 self.ldflags,
             ]
 
@@ -223,8 +283,8 @@ class CompilerBuilder(BuilderBase):
                 self.fc,
                 self.cppflags,
                 self.fflags,
-                f"-o {self.executable}",
-                self.resolvepath_sourcefile,
+                f"-o $_EXEC",
+                self.abspath_sourcefile,
                 self.ldflags,
             ]
 
@@ -239,45 +299,19 @@ class CompilerBuilder(BuilderBase):
         generated binary after compilation.
         """
 
-        if not self.recipe.get("run"):
-            return [f"./{self.executable}"]
-
-        run = []
-
-        run += [self.recipe["run"].get("launcher")]
-        run += [f"./{self.executable}"]
-
-        # add args after executable if defined
-        run += [self.recipe["run"].get("args")]
-        # remove any None from list, in case launcher or args not defined we still run program with executable
-        run = list(filter(None, run))
-        run = [" ".join(run)]
-
-        return run
-
-    def _set_executable_name(self, name=None):
-        """This method set the executable name. One may specify a custom name to executable via ``name``
-        argument. Otherwise the executable is using the filename of ``self.sourcefile`` and adding ``.exe``
-        extension at end.
-        """
-
-        if name:
-            return name
-
-        return "%s.exe" % os.path.basename(self.sourcefile)
+        # default action when run property is not specified is to run executable standalone
+        if not deep_get(self.compiler_section, "default", "all", "run"):
+            return f"./$_EXEC"
+        else:
+            return self.compiler_section["default"]["all"]["run"]
 
     def _process_compiler_config(self):
-
-        # get default compiler definition
-        """
-        if self.compiler_section.get("default"):
-            for compiler in self.default_compiler_settings.keys():
-                # if default section not defined for compiler we skip to next one
-                if not deep_get(self.compiler_section, "default", compiler):
-                    continue
-
-                for k, v in self.recipe["compilers"]["default"][compiler].items():
-                    self.default_compiler_settings[compiler][k] = v
+        """ This method is responsible for setting cc, fc, cxx class variables based
+            on compiler selection. The order of precedence is 'config', 'default',
+            then buildtest setting. Compiler settings in 'config' takes highest precendence,
+            this overrides any configuration in 'default'. Finally we resort to compiler
+            configuration in buildtest setting if none defined. This method is responsible
+            for setting cc, fc, cxx, cflags, cxxflags, fflags, ldflags, and cppflags.
         """
         bc = BuildtestCompilers()
 
@@ -296,36 +330,36 @@ class CompilerBuilder(BuilderBase):
         self.fc = self.bc_compiler["fc"]
 
         # if default compiler setting provided in buildspec let's assign it.
-        if deep_get(self.compiler_section, "defaults", self.compiler_group):
+        if deep_get(self.compiler_section, "default", self.compiler_group):
 
             self.cc = (
-                self.compiler_section["defaults"][self.compiler_group].get("cc")
+                self.compiler_section["default"][self.compiler_group].get("cc")
                 or self.cc
             )
 
             self.fc = (
-                self.compiler_section["defaults"][self.compiler_group].get("fc")
+                self.compiler_section["default"][self.compiler_group].get("fc")
                 or self.fc
             )
 
             self.cxx = (
-                self.compiler_section["defaults"][self.compiler_group].get("cxx")
+                self.compiler_section["default"][self.compiler_group].get("cxx")
                 or self.fc
             )
 
-            self.cflags = self.compiler_section["defaults"][self.compiler_group].get(
+            self.cflags = self.compiler_section["default"][self.compiler_group].get(
                 "cflags"
             )
-            self.cxxflags = self.compiler_section["defaults"][self.compiler_group].get(
+            self.cxxflags = self.compiler_section["default"][self.compiler_group].get(
                 "cxxflags"
             )
-            self.fflags = self.compiler_section["defaults"][self.compiler_group].get(
+            self.fflags = self.compiler_section["default"][self.compiler_group].get(
                 "fflags"
             )
-            self.ldflags = self.compiler_section["defaults"][self.compiler_group].get(
+            self.ldflags = self.compiler_section["default"][self.compiler_group].get(
                 "ldflags"
             )
-            self.cppflags = self.compiler_section["defaults"][self.compiler_group].get(
+            self.cppflags = self.compiler_section["default"][self.compiler_group].get(
                 "cppflags"
             )
         # if compiler instance defined in config section read from buildspec. This overrides default section if specified
