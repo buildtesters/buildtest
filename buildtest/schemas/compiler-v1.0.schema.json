@@ -140,6 +140,10 @@
         "status": {
           "$ref": "definitions.schema.json#/definitions/status"
         },
+        "run": {
+          "type": "string",
+          "description": "Run command for launching compiled binary"
+        },
         "module": {
           "type": "object",
           "additionalProperties": false,
