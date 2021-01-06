@@ -636,22 +636,217 @@ regular expression even though we have a returncode of 0.
     Passed Tests: 3/4 Percentage: 75.000%
     Failed Tests: 1/4 Percentage: 25.000%
 
+Single Test Multiple Compilers
+-------------------------------
+
+It's possible to run single test across multiple compilers (gcc, intel, cray, etc...). In the
+next example, we will build an OpenMP reduction test using gcc, intel and cray compilers. In this
+test, we use ``name`` field to select compilers that start with **gcc**, **intel** and **PrgEnv-cray**
+as compiler names. The ``default`` section is organized by compiler groups which inherits compiler flags
+for all compilers. OpenMP flag for gcc, intel and cray differ for instance one must use ``-fopenmp`` for gcc,
+``--qopenmp`` for intel and ``-h omp`` for cray. ::
+
+    version: "1.0"
+    buildspecs:
+      reduction:
+        type: compiler
+        executor: local.bash
+        source: src/reduction.c
+        description: OpenMP reduction example using gcc, intel and cray compiler
+        tags: [openmp]
+        compilers:
+          name: ["^(gcc|intel|PrgEnv-cray)"]
+          default:
+            all:
+              env:
+                OMP_NUM_THREADS: 4
+            gcc:
+              cflags: -fopenmp
+            intel:
+              cflags: -qopenmp
+            cray:
+              cflags: -h omp
+
+In this example `OMP_NUM_THREADS` environment variable under the ``all`` section which
+will be used for all compiler groups. This example was built on Cori, we expect this
+test to run against every gcc, intel and PrgEnv-cray compiler module::
+
+    cori$ buildtest build -b reduction.yml
+
+    +-------------------------------+
+    | Stage: Discovering Buildspecs |
+    +-------------------------------+
 
 
-Passing Arguments
--------------------
+    Discovered Buildspecs:
 
-If you want to pass options to executable command use the ``args`` key. Shown
-below is an example test
+    /global/u1/s/siddiq90/buildtest-cori/apps/openmp/reduction.yml
 
-.. program-output:: cat ../tutorials/compilers/passing_args.yml
+    +---------------------------+
+    | Stage: Parsing Buildspecs |
+    +---------------------------+
 
-The exec_args will pass options to the executable, use this if your binary
-requires input arguments. Shown below is a generated test::
+     schemafile                | validstate   | buildspec
+    ---------------------------+--------------+----------------------------------------------------------------
+     compiler-v1.0.schema.json | True         | /global/u1/s/siddiq90/buildtest-cori/apps/openmp/reduction.yml
+
+    +----------------------+
+    | Stage: Building Test |
+    +----------------------+
+
+
+
+     name      | id       | type     | executor   | tags       | compiler                                | testpath
+    -----------+----------+----------+------------+------------+-----------------------------------------+-----------------------------------------------------------------------------------------------
+     reduction | 4eb31800 | compiler | local.bash | ['openmp'] | gcc/6.1.0                               | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/72/stage/generate.sh
+     reduction | 514a32a1 | compiler | local.bash | ['openmp'] | gcc/7.3.0                               | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/73/stage/generate.sh
+     reduction | 9bb7a57c | compiler | local.bash | ['openmp'] | gcc/8.1.0                               | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/74/stage/generate.sh
+     reduction | 91e61ba6 | compiler | local.bash | ['openmp'] | gcc/8.2.0                               | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/75/stage/generate.sh
+     reduction | f6a8d54e | compiler | local.bash | ['openmp'] | gcc/8.3.0                               | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/76/stage/generate.sh
+     reduction | 29490f3a | compiler | local.bash | ['openmp'] | gcc/9.3.0                               | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/77/stage/generate.sh
+     reduction | 5e58e1cf | compiler | local.bash | ['openmp'] | gcc/10.1.0                              | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/78/stage/generate.sh
+     reduction | a4e696d3 | compiler | local.bash | ['openmp'] | gcc/6.3.0                               | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/79/stage/generate.sh
+     reduction | c571b53e | compiler | local.bash | ['openmp'] | gcc/8.1.1-openacc-gcc-8-branch-20190215 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/80/stage/generate.sh
+     reduction | b7cba893 | compiler | local.bash | ['openmp'] | PrgEnv-cray/6.0.5                       | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/81/stage/generate.sh
+     reduction | 67f9d327 | compiler | local.bash | ['openmp'] | PrgEnv-cray/6.0.7                       | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/82/stage/generate.sh
+     reduction | 16713092 | compiler | local.bash | ['openmp'] | PrgEnv-cray/6.0.9                       | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/83/stage/generate.sh
+     reduction | f5982111 | compiler | local.bash | ['openmp'] | intel/19.0.3.199                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/84/stage/generate.sh
+     reduction | c2b22eff | compiler | local.bash | ['openmp'] | intel/19.1.2.254                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/85/stage/generate.sh
+     reduction | e3f6faa4 | compiler | local.bash | ['openmp'] | intel/16.0.3.210                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/86/stage/generate.sh
+     reduction | d95a3883 | compiler | local.bash | ['openmp'] | intel/17.0.1.132                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/87/stage/generate.sh
+     reduction | 0aee1fee | compiler | local.bash | ['openmp'] | intel/17.0.2.174                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/88/stage/generate.sh
+     reduction | 853d3ff4 | compiler | local.bash | ['openmp'] | intel/18.0.1.163                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/89/stage/generate.sh
+     reduction | 0e66bc4a | compiler | local.bash | ['openmp'] | intel/18.0.3.222                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/90/stage/generate.sh
+     reduction | 69826793 | compiler | local.bash | ['openmp'] | intel/19.0.0.117                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/91/stage/generate.sh
+     reduction | f67d8953 | compiler | local.bash | ['openmp'] | intel/19.0.8.324                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/92/stage/generate.sh
+     reduction | e12ac611 | compiler | local.bash | ['openmp'] | intel/19.1.0.166                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/93/stage/generate.sh
+     reduction | fc8386f4 | compiler | local.bash | ['openmp'] | intel/19.1.1.217                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/94/stage/generate.sh
+     reduction | 80e39fa5 | compiler | local.bash | ['openmp'] | intel/19.1.2.275                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/95/stage/generate.sh
+     reduction | b9181f22 | compiler | local.bash | ['openmp'] | intel/19.1.3.304                        | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/96/stage/generate.sh
+
+    +----------------------+
+    | Stage: Running Test  |
+    +----------------------+
+
+     name      | id       | executor   | status   |   returncode | testpath
+    -----------+----------+------------+----------+--------------+-----------------------------------------------------------------------------------------------
+     reduction | 4eb31800 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/72/stage/generate.sh
+     reduction | 514a32a1 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/73/stage/generate.sh
+     reduction | 9bb7a57c | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/74/stage/generate.sh
+     reduction | 91e61ba6 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/75/stage/generate.sh
+     reduction | f6a8d54e | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/76/stage/generate.sh
+     reduction | 29490f3a | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/77/stage/generate.sh
+     reduction | 5e58e1cf | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/78/stage/generate.sh
+     reduction | a4e696d3 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/79/stage/generate.sh
+     reduction | c571b53e | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/80/stage/generate.sh
+     reduction | b7cba893 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/81/stage/generate.sh
+     reduction | 67f9d327 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/82/stage/generate.sh
+     reduction | 16713092 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/83/stage/generate.sh
+     reduction | f5982111 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/84/stage/generate.sh
+     reduction | c2b22eff | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/85/stage/generate.sh
+     reduction | e3f6faa4 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/86/stage/generate.sh
+     reduction | d95a3883 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/87/stage/generate.sh
+     reduction | 0aee1fee | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/88/stage/generate.sh
+     reduction | 853d3ff4 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/89/stage/generate.sh
+     reduction | 0e66bc4a | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/90/stage/generate.sh
+     reduction | 69826793 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/91/stage/generate.sh
+     reduction | f67d8953 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/92/stage/generate.sh
+     reduction | e12ac611 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/93/stage/generate.sh
+     reduction | fc8386f4 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/94/stage/generate.sh
+     reduction | 80e39fa5 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/95/stage/generate.sh
+     reduction | b9181f22 | local.bash | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/local.bash/reduction/reduction/96/stage/generate.sh
+
+    +----------------------+
+    | Stage: Test Summary  |
+    +----------------------+
+
+    Executed 25 tests
+    Passed Tests: 25/25 Percentage: 100.000%
+    Failed Tests: 0/25 Percentage: 0.000%
+
+
+If we inspect one of these tests from each compiler group we will see OMP_NUM_THREADS
+is set in all tests along with the appropriate compiler flag.
+
+.. code-block::
+   :linenos:
+   :emphasize-lines: 4-6
 
     #!/bin/bash
-    gcc -Wall -o argc.c.exe /global/u1/s/siddiq90/tutorials/examples/serial/src/argc.c
-    ./argc.c.exe 1 2 3
+    source /global/u1/s/siddiq90/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=reduction.c.exe
+    export OMP_NUM_THREADS=4
+    module load gcc/6.1.0
+    gcc -fopenmp -o $_EXEC /global/u1/s/siddiq90/buildtest-cori/apps/openmp/src/reduction.c
+    ./$_EXEC
+    source /global/u1/s/siddiq90/buildtest/var/executors/local.bash/after_script.sh
+
+.. code-block::
+   :linenos:
+   :emphasize-lines: 4-6
+
+    #!/bin/bash
+    source /global/u1/s/siddiq90/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=reduction.c.exe
+    export OMP_NUM_THREADS=4
+    module load PrgEnv-cray/6.0.5
+    cc -h omp -o $_EXEC /global/u1/s/siddiq90/buildtest-cori/apps/openmp/src/reduction.c
+    ./$_EXEC
+    source /global/u1/s/siddiq90/buildtest/var/executors/local.bash/after_script.sh
+
+.. code-block::
+   :linenos:
+   :emphasize-lines: 4-6
+
+    #!/bin/bash
+    source /global/u1/s/siddiq90/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=reduction.c.exe
+    export OMP_NUM_THREADS=4
+    module load intel/19.0.3.199
+    icc -qopenmp -o $_EXEC /global/u1/s/siddiq90/buildtest-cori/apps/openmp/src/reduction.c
+    ./$_EXEC
+    source /global/u1/s/siddiq90/buildtest/var/executors/local.bash/after_script.sh
+
+Customize Run Line
+-------------------
+
+buildtest will define variable ``_EXEC`` in the job script that can be used to reference
+the generated binary. By default, buildtest will run the program standalone, but sometimes you
+may want to customize how job is run. This may include passing arguments or running
+binary through a job/mpi launcher. The ``run`` property expects user to specify how to launch
+program. buildtest will change directory to the called script before running executable. The compiled
+executable will be present in local directory which can be accessed via ``./$_EXEC``. In example below
+we pass arguments ``1 3 5`` for gcc group and ``100 200`` for compiler ``gcc@10.2.0``.
+
+.. program-output:: cat ../tutorials/compilers/custom_run.yml
+
+If we build this test and see generated test, we notice buildtest customized the run line
+for launching binary. buildtest will directly replace content in ``run`` section into the
+shell-script. If no ``run`` field is specified buildtest will run the binary in standalone mode (``./$_EXEC``).
+
+.. code-block::
+   :linenos:
+   :emphasize-lines: 6
+
+    #!/bin/bash
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=argc.c.exe
+    module load gcc/10.2.0-37fmsw7
+    gcc -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/argc.c
+    ./$_EXEC 100 120
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+
+.. code-block::
+   :linenos:
+   :emphasize-lines: 6
+
+    #!/bin/bash
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    _EXEC=argc.c.exe
+    module load gcc/9.3.0-n7p74fd
+    gcc -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/argc.c
+    ./$_EXEC 1 3 5
+    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
 OpenMP Example
 ----------------
@@ -707,56 +902,61 @@ MPI Example
 ------------
 
 In this example we run a MPI Laplace code using 4 process on a KNL node using
-the module ``PrgEnv-intel`` and ``intel/19.1.2.254``. The executable is launched
-using ``srun``, that is set via ``launcher`` field. The source code
-``src/laplace_mpi.c`` must be run with 4 process, for this test we allocate 1
-node with 4 tasks.
+the ``intel/19.1.2.254`` compiler. This test is run on Cori through batch queue
+system. We can define #SBATCH parameters using ``sbatch`` property. This program
+is compiled using ``mpiicc`` wrapper this can be defined using ``cc`` parameter.
 
-The ``name`` field is a required field, buildtest uses this field to select the
-appropriate subclass, when you set ``name: intel`` buildtest will select the IntelCompiler
-subclass which sets the ``cc``, ``fc`` and ``cxx`` variables automatically. If you
-want to specify your compiler variables you can use ``cc``, ``fc`` and ``cxx`` fields
-and buildtest will honor your options.
-
-::
+Currently, buildtest cannot detect if program is serial or MPI to infer appropriate
+compiler wrapper. If ``cc`` wasn't specified, buildtest would infer `icc` as compiler
+wrapper for C program. This program is run using ``srun`` job launcher, we can control
+how test is executed using the ``run`` property. This test required we swap intel
+modules and load `impi/2020` module::
 
     version: "1.0"
     buildspecs:
       laplace_mpi:
         type: compiler
         description: Laplace MPI code in C
-        sbatch: ["-C knl", "-N 1", "-n 4"]
-        executor: slurm.debug
+        executor: slurm.knl_debug
         tags: ["mpi"]
-        module:
-          load: [PrgEnv-intel, intel/19.1.2.254]
-        build:
-          name: intel
-          source: src/laplace_mpi.c
-          cflags: -O3
-        run:
-          launcher: srun -n 4
+        source: src/laplace_mpi.c
+        compilers:
+          name: ["^(intel/19.1.2.254)$"]
+          default:
+            all:
+              sbatch: ["-N 1", "-n 4"]
+              run: srun -n 4 $_EXEC
+            intel:
+              cc: mpiicc
+              cflags: -O3
+          config:
+            intel/19.1.2.254:
+              module:
+                load: [impi/2020]
+                swap: [intel, intel/19.1.2.254]
 
-The generated test is as follows::
+The generated test is as follows, note that buildtest will insert ``module load`` before ``module swap``
+command::
 
     #!/bin/bash
-    #SBATCH -C knl
     #SBATCH -N 1
     #SBATCH -n 4
     #SBATCH --job-name=laplace_mpi
     #SBATCH --output=laplace_mpi.out
     #SBATCH --error=laplace_mpi.err
-    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/before_script.sh
-    module load PrgEnv-intel
-    module load intel/19.1.2.254
-    icc -O3 -o laplace_mpi.c.exe src/laplace_mpi.c
-    srun -n 4 ./laplace_mpi.c.exe
-    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/after_script.sh
+    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.knl_debug/before_script.sh
+    _EXEC=laplace_mpi.c.exe
+    module load impi/2020
+    module swap intel intel/19.1.2.254
+    mpiicc -O3 -o $_EXEC /global/u1/s/siddiq90/buildtest-cori/apps/mpi/src/laplace_mpi.c
+    srun -n 4 $_EXEC
+    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.knl_debug/after_script.sh
 
 
-Shown below is a sample build for this buildspec::
+Shown below is a sample build for this buildspec, buildtest will dispatch  job and poll
+job until its complete::
 
-    $ buildtest build -b apps/mpi/laplace_mpi.yml
+    $ buildtest build -b laplace_mpi.yml
 
     +-------------------------------+
     | Stage: Discovering Buildspecs |
@@ -779,35 +979,57 @@ Shown below is a sample build for this buildspec::
     | Stage: Building Test |
     +----------------------+
 
-     name        | id       | type     | executor    | tags    | testpath
-    -------------+----------+----------+-------------+---------+---------------------------------------------------------------------------------------------------
-     laplace_mpi | fdad3653 | compiler | slurm.debug | ['mpi'] | /global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/laplace_mpi/laplace_mpi/0/stage/generate.sh
+
+
+     name        | id       | type     | executor        | tags    | compiler         | testpath
+    -------------+----------+----------+-----------------+---------+------------------+-------------------------------------------------------------------------------------------------------
+     laplace_mpi | 0c1e082e | compiler | slurm.knl_debug | ['mpi'] | intel/19.1.2.254 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.knl_debug/laplace_mpi/laplace_mpi/4/stage/generate.sh
 
     +----------------------+
     | Stage: Running Test  |
     +----------------------+
 
-    [laplace_mpi] JobID: 36779045 dispatched to scheduler
-     name        | id       | executor    | status   |   returncode | testpath
-    -------------+----------+-------------+----------+--------------+---------------------------------------------------------------------------------------------------
-     laplace_mpi | fdad3653 | slurm.debug | N/A      |           -1 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/laplace_mpi/laplace_mpi/0/stage/generate.sh
+    [laplace_mpi] JobID: 37707966 dispatched to scheduler
+     name        | id       | executor        | status   |   returncode | testpath
+    -------------+----------+-----------------+----------+--------------+-------------------------------------------------------------------------------------------------------
+     laplace_mpi | 0c1e082e | slurm.knl_debug | N/A      |           -1 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.knl_debug/laplace_mpi/laplace_mpi/4/stage/generate.sh
 
 
     Polling Jobs in 10 seconds
     ________________________________________
-    [laplace_mpi]: JobID 36779045 in COMPLETED state
+    [laplace_mpi]: JobID 37707966 in RUNNING state
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    [laplace_mpi]: JobID 37707966 in RUNNING state
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    [laplace_mpi]: JobID 37707966 in RUNNING state
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    [laplace_mpi]: JobID 37707966 in RUNNING state
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    [laplace_mpi]: JobID 37707966 in COMPLETED state
 
 
     Polling Jobs in 10 seconds
     ________________________________________
 
-    +---------------------------------------------+
-    | Stage: Final Results after Polling all Jobs |
-    +---------------------------------------------+
+        +---------------------------------------------+
+        | Stage: Final Results after Polling all Jobs |
+        +---------------------------------------------+
 
-     name        | id       | executor    | status   |   returncode | testpath
-    -------------+----------+-------------+----------+--------------+---------------------------------------------------------------------------------------------------
-     laplace_mpi | fdad3653 | slurm.debug | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/laplace_mpi/laplace_mpi/0/stage/generate.sh
+     name        | id       | executor        | status   |   returncode | testpath
+    -------------+----------+-----------------+----------+--------------+-------------------------------------------------------------------------------------------------------
+     laplace_mpi | 0c1e082e | slurm.knl_debug | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.knl_debug/laplace_mpi/laplace_mpi/4/stage/generate.sh
 
     +----------------------+
     | Stage: Test Summary  |
@@ -817,122 +1039,6 @@ Shown below is a sample build for this buildspec::
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
 
-
-OpenACC Examples
------------------
-
-Next, we will make use of an OpenACC vector addition example shown below is an
-example test
-
-.. program-output:: cat ../tutorials/compilers/vecadd.yml
-
-To compile OpenACC program with gnu compiler we must use ``-fopenacc`` flag, this
-program requires linking with math library so we can specify linker flags (ldflags)
-using ``ldflags: -lm``.
-
-The output of this test will generate a single line output as follows::
-
-    final result: 1.000000
-
-The ``status`` field with ``regex`` is used for checking output stream using ``stream: stdout``
-and ``exp`` key to specify regular expression to use. If we are to build this test,
-you will notice the run section will have a Status of ``PASS``
-
-.. program-output:: cat docgen/schemas/vecadd.txt
-
-The regular expression is performed using `re.search <https://docs.python.org/3/library/re.html#re.search>`_, for example if we can change
-the ``exp`` field as follows::
-
-    exp: "^final result: 0.99$"
-
-Next if we re-run test we will notice the Status is ``FAIL`` even though we
-have a Return Code of **0**::
-
-    name       | id       | executor   | status   |   returncode | testpath
-    ------------+----------+------------+----------+--------------+------------------------------------------------------------------------------------------------
-     vecadd_gnu | 6a7d6b67 | local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vecadd/vecadd_gnu/3/stage/generate.sh
-
-In the next example, we extend the previous buildspec test to run at Cori GPU
-machine using Slurm scheduler. We use the executor ``slurm.gpu`` where our executor
-is defined as follows::
-
-    gpu:
-      description: submit jobs to GPU partition
-      options: ["-C gpu"]
-      cluster: escori
-
-In order to submit job to the Cori GPU cluster we must use ``sbatch -C gpu -M escori`` which
-is what ``slurm.gpu`` executor is doing.
-
-In this example we make use of ``module`` field to load modules into the test, for
-this test we load the modules ``cuda`` and ``gcc/8.1.1-openacc-gcc-8-branch-20190215``.
-This test will launch job via ``srun`` and check job state code is ``COMPLETED``.
-
-::
-
-    version: "1.0"
-    buildspecs:
-      vecadd_openacc_gnu:
-        type: compiler
-        description: Vector Addition example with GNU compiler
-        executor: slurm.gpu
-        sbatch: ["-G 1", "-t 5", "-N 1"]
-        module:
-          load: [cuda, gcc/8.1.1-openacc-gcc-8-branch-20190215]
-        build:
-          name: gnu
-          source: src/vecAdd.c
-          cflags: -fopenacc
-          ldflags: -lm
-        run:
-          launcher: srun
-        status:
-          slurm_job_state: COMPLETED
-
-buildtest will generate the following test, buildtest will add the #SBATCH directives
-followed by module commands. The executable is run via ``srun`` because we specify the ``launcher`` field. ::
-
-    #!/bin/bash
-    #SBATCH -G 1
-    #SBATCH -t 5
-    #SBATCH -N 1
-    #SBATCH --job-name=vecadd_openacc_gnu
-    #SBATCH --output=vecadd_openacc_gnu.out
-    #SBATCH --error=vecadd_openacc_gnu.err
-    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.gpu/before_script.sh
-    module load cuda
-    module load gcc/8.1.1-openacc-gcc-8-branch-20190215
-    gcc -fopenacc -o vecAdd.c.exe src/vecAdd.c -lm
-    srun ./vecAdd.c.exe
-    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.gpu/after_script.sh
-
-In this next example, we build same test using `hpcsdk <https://docs.nvidia.com/hpc-sdk/index.html>`_
-compiler by NVIDIA that recently acquired PGI compiler. At Cori, we must load ``hpcsdk``
-and ``cuda`` module in order to use the hpcsdk compiler. The ``name`` is a
-required field however buildtest will ignore since we specify
-``cc`` field. NVIDIA changed their compiler names instead of ``pgcc`` we must use
-``nvc`` with flag ``-acc`` to offload to GPU. For CoriGPU we must use
-``srun`` to acquire GPU access hence ``launcher`` field is set to srun.
-
-::
-
-    version: "1.0"
-    buildspecs:
-      vecadd_hpcsdk_gnu:
-        type: compiler
-        description: Vector Addition example with hpcsdk (pgi) compiler
-        executor: slurm.gpu
-        sbatch: ["-G 1", "-t 5", "-N 1"]
-        module:
-          load: [hpcsdk, cuda]
-        build:
-          name: pgi
-          cc: nvc
-          source: src/vecAdd.c
-          cflags: -acc
-          ldflags: -lm
-        run:
-          launcher: srun
 
 
 Pre/Post sections for build and run section

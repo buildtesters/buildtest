@@ -299,11 +299,18 @@ class CompilerBuilder(BuilderBase):
         generated binary after compilation.
         """
 
-        # default action when run property is not specified is to run executable standalone
-        if not deep_get(self.compiler_section, "default", "all", "run"):
-            return f"./$_EXEC"
-        else:
-            return self.compiler_section["default"]["all"]["run"]
+        # order of precedence on how to generate run line when executing binary.
+        # 1. Check in 'config' section within compiler
+        # 2. Check in 'default' section within compiler group
+        # 3. Check in 'default' section within 'all' section
+        # 4. Last resort run binary standalone
+        run_line = (
+            deep_get(self.compiler_section, "config", self.compiler, "run")
+            or deep_get(self.compiler_section, "default", self.compiler_group, "run")
+            or deep_get(self.compiler_section, "default", "all", "run")
+            or f"./$_EXEC"
+        )
+        return run_line
 
     def _process_compiler_config(self):
         """ This method is responsible for setting cc, fc, cxx class variables based
