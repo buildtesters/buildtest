@@ -1,16 +1,16 @@
 # Untitled string in compiler schema version 1.0 Schema
 
 ```txt
-compiler-v1.0.schema.json#/properties/build/properties/fflags
+compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_build
 ```
 
-Set Fortran compiler flags (**fflags**)
+Run commands after building program
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                             |
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | -------------------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [compiler-v1.0.schema.json\*](../out/compiler-v1.0.schema.json "open original schema") |
 
-## fflags Type
+## post_build Type
 
 `string`

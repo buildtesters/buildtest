@@ -24,24 +24,9 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | [compilers](#compilers)     | `object`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-compilers.md "compiler-v1.0.schema.json#/properties/compilers")     |
 | [source](#source)           | `string`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-source.md "compiler-v1.0.schema.json#/properties/source")           |
 | [executor](#executor)       | `string`  | Required | cannot be null | [compiler schema version 1.0](compiler-v1-properties-executor.md "compiler-v1.0.schema.json#/properties/executor")       |
-| [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-sbatch.md "compiler-v1.0.schema.json#/properties/sbatch")           |
-| [bsub](#bsub)               | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-bsub.md "compiler-v1.0.schema.json#/properties/bsub")               |
-| [cobalt](#cobalt)           | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-cobalt.md "compiler-v1.0.schema.json#/properties/cobalt")           |
-| [batch](#batch)             | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/properties/batch")            |
-| [BB](#bb)                   | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-bb.md "compiler-v1.0.schema.json#/properties/BB")                   |
-| [DW](#dw)                   | `array`   | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-dw.md "compiler-v1.0.schema.json#/properties/DW")                   |
-| [env](#env)                 | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/env")                |
-| [vars](#vars)               | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/vars")               |
 | [run_only](#run_only)       | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-run_only.md "compiler-v1.0.schema.json#/properties/run_only")      |
-| [status](#status)           | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/properties/status")          |
 | [skip](#skip)               | `boolean` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-skip.md "compiler-v1.0.schema.json#/properties/skip")               |
 | [tags](#tags)               | Merged    | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-tags.md "compiler-v1.0.schema.json#/properties/tags")               |
-| [pre_build](#pre_build)     | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-pre_build.md "compiler-v1.0.schema.json#/properties/pre_build")     |
-| [post_build](#post_build)   | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-post_build.md "compiler-v1.0.schema.json#/properties/post_build")   |
-| [build](#build)             | `object`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-build.md "compiler-v1.0.schema.json#/properties/build")             |
-| [pre_run](#pre_run)         | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-pre_run.md "compiler-v1.0.schema.json#/properties/pre_run")         |
-| [post_run](#post_run)       | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-post_run.md "compiler-v1.0.schema.json#/properties/post_run")       |
-| [run](#run)                 | `object`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-run.md "compiler-v1.0.schema.json#/properties/run")                 |
 
 ## type
 
@@ -137,172 +122,6 @@ Select one of the executor name defined in your configuration file (`config.yml`
 
 `string`
 
-## sbatch
-
-This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value
-
-
-`sbatch`
-
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-sbatch.md "compiler-v1.0.schema.json#/properties/sbatch")
-
-### sbatch Type
-
-`string[]`
-
-### sbatch Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
-
-## bsub
-
-This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value
-
-
-`bsub`
-
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-bsub.md "compiler-v1.0.schema.json#/properties/bsub")
-
-### bsub Type
-
-`string[]`
-
-### bsub Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
-
-## cobalt
-
-This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value
-
-
-`cobalt`
-
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-cobalt.md "compiler-v1.0.schema.json#/properties/cobalt")
-
-### cobalt Type
-
-`string[]`
-
-### cobalt Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
-
-## batch
-
-The `batch` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.
-
-
-`batch`
-
--   is optional
--   Type: `object` ([Details](definitions-definitions-batch.md))
--   cannot be null
--   defined in: [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/properties/batch")
-
-### batch Type
-
-`object` ([Details](definitions-definitions-batch.md))
-
-## BB
-
-Create burst buffer space, this specifies #BB options in your test.
-
-
-`BB`
-
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-bb.md "compiler-v1.0.schema.json#/properties/BB")
-
-### BB Type
-
-`string[]`
-
-### BB Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
-
-## DW
-
-Specify Data Warp option (#DW) when using burst buffer.
-
-
-`DW`
-
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-dw.md "compiler-v1.0.schema.json#/properties/DW")
-
-### DW Type
-
-`string[]`
-
-### DW Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
-
-## env
-
-One or more key value pairs for an environment (key=value)
-
-
-`env`
-
--   is optional
--   Type: `object` ([Details](definitions-definitions-env.md))
--   cannot be null
--   defined in: [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/env")
-
-### env Type
-
-`object` ([Details](definitions-definitions-env.md))
-
-### env Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
-## vars
-
-One or more key value pairs for an environment (key=value)
-
-
-`vars`
-
--   is optional
--   Type: `object` ([Details](definitions-definitions-env.md))
--   cannot be null
--   defined in: [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/properties/vars")
-
-### vars Type
-
-`object` ([Details](definitions-definitions-env.md))
-
-### vars Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
 ## run_only
 
 A set of conditions to specify when running tests. All conditions must pass in order to process test.
@@ -318,22 +137,6 @@ A set of conditions to specify when running tests. All conditions must pass in o
 ### run_only Type
 
 `object` ([Details](definitions-definitions-run_only.md))
-
-## status
-
-The status section describes how buildtest detects PASS/FAIL on test. By default returncode 0 is a PASS and anything else is a FAIL, however buildtest can support other types of PASS/FAIL conditions.
-
-
-`status`
-
--   is optional
--   Type: `object` ([Details](definitions-definitions-status.md))
--   cannot be null
--   defined in: [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/properties/status")
-
-### status Type
-
-`object` ([Details](definitions-definitions-status.md))
 
 ## skip
 
@@ -372,7 +175,216 @@ one (and only one) of
 -   [Untitled string in JSON Schema Definitions File. ](definitions-definitions-string_or_list-oneof-0.md "check type definition")
 -   [Untitled array in JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "check type definition")
 
-## pre_build
+# compiler schema version 1.0 Definitions
+
+## Definitions group default_compiler_all
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/default_compiler_all"}
+```
+
+| Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                                               |
+| :------------------------ | -------- | -------- | -------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [sbatch](#sbatch)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/sbatch")         |
+| [bsub](#bsub)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/bsub")             |
+| [cobalt](#cobalt)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/cobalt")         |
+| [batch](#batch)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/batch")                                           |
+| [BB](#bb)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/BB")                 |
+| [DW](#dw)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/DW")                 |
+| [env](#env)               | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/env")                                               |
+| [vars](#vars)             | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/vars")                                              |
+| [status](#status)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/status")                                         |
+| [pre_build](#pre_build)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-pre_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_build")   |
+| [post_build](#post_build) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-post_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_build") |
+| [pre_run](#pre_run)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-pre_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_run")       |
+| [post_run](#post_run)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-post_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_run")     |
+| [run](#run)               | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/run")               |
+
+### sbatch
+
+This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value
+
+
+`sbatch`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/sbatch")
+
+#### sbatch Type
+
+`string[]`
+
+#### sbatch Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### bsub
+
+This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value
+
+
+`bsub`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/bsub")
+
+#### bsub Type
+
+`string[]`
+
+#### bsub Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### cobalt
+
+This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value
+
+
+`cobalt`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/cobalt")
+
+#### cobalt Type
+
+`string[]`
+
+#### cobalt Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### batch
+
+The `batch` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.
+
+
+`batch`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-batch.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/batch")
+
+#### batch Type
+
+`object` ([Details](definitions-definitions-batch.md))
+
+### BB
+
+Create burst buffer space, this specifies #BB options in your test.
+
+
+`BB`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/BB")
+
+#### BB Type
+
+`string[]`
+
+#### BB Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### DW
+
+Specify Data Warp option (#DW) when using burst buffer.
+
+
+`DW`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/DW")
+
+#### DW Type
+
+`string[]`
+
+#### DW Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### env
+
+One or more key value pairs for an environment (key=value)
+
+
+`env`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-env.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/env")
+
+#### env Type
+
+`object` ([Details](definitions-definitions-env.md))
+
+#### env Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+### vars
+
+One or more key value pairs for an environment (key=value)
+
+
+`vars`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-env.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/vars")
+
+#### vars Type
+
+`object` ([Details](definitions-definitions-env.md))
+
+#### vars Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+### status
+
+The status section describes how buildtest detects PASS/FAIL on test. By default returncode 0 is a PASS and anything else is a FAIL, however buildtest can support other types of PASS/FAIL conditions.
+
+
+`status`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-status.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/status")
+
+#### status Type
+
+`object` ([Details](definitions-definitions-status.md))
+
+### pre_build
 
 Run commands before building program
 
@@ -382,13 +394,13 @@ Run commands before building program
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-pre_build.md "compiler-v1.0.schema.json#/properties/pre_build")
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-pre_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_build")
 
-### pre_build Type
+#### pre_build Type
 
 `string`
 
-## post_build
+### post_build
 
 Run commands after building program
 
@@ -398,29 +410,13 @@ Run commands after building program
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-post_build.md "compiler-v1.0.schema.json#/properties/post_build")
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-post_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_build")
 
-### post_build Type
+#### post_build Type
 
 `string`
 
-## build
-
-The `build` section is used for compiling a single program, this section specifies fields for setting C, C++, Fortran compiler and flags including CPP flags and linker flags
-
-
-`build`
-
--   is optional
--   Type: `object` ([Details](compiler-v1-properties-build.md))
--   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-build.md "compiler-v1.0.schema.json#/properties/build")
-
-### build Type
-
-`object` ([Details](compiler-v1-properties-build.md))
-
-## pre_run
+### pre_run
 
 Run commands before running program
 
@@ -430,13 +426,13 @@ Run commands before running program
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-pre_run.md "compiler-v1.0.schema.json#/properties/pre_run")
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-pre_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_run")
 
-### pre_run Type
+#### pre_run Type
 
 `string`
 
-## post_run
+### post_run
 
 Run commands after running program
 
@@ -446,29 +442,27 @@ Run commands after running program
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-post_run.md "compiler-v1.0.schema.json#/properties/post_run")
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-post_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_run")
 
-### post_run Type
+#### post_run Type
 
 `string`
 
-## run
+### run
 
-The `run` section is used for specifying launch configuration of executable
+Run command for launching compiled binary
 
 
 `run`
 
 -   is optional
--   Type: `object` ([Details](compiler-v1-properties-run.md))
+-   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-properties-run.md "compiler-v1.0.schema.json#/properties/run")
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/run")
 
-### run Type
+#### run Type
 
-`object` ([Details](compiler-v1-properties-run.md))
-
-# compiler schema version 1.0 Definitions
+`string`
 
 ## Definitions group default_compiler_config
 
@@ -478,15 +472,23 @@ Reference this group by using
 {"$ref":"compiler-v1.0.schema.json#/definitions/default_compiler_config"}
 ```
 
-| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                                                 |
-| :-------------------- | -------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [cc](#cc)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cc")             |
-| [fc](#fc)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-fc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fc")             |
-| [cxx](#cxx)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cxx.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxx")           |
-| [cflags](#cflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cflags")     |
-| [fflags](#fflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-fflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fflags")     |
-| [ldflags](#ldflags)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/ldflags")   |
-| [cppflags](#cppflags) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cppflags") |
+| Property                    | Type     | Required | Nullable       | Defined by                                                                                                                                                                                     |
+| :-------------------------- | -------- | -------- | -------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc)                   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cc")                 |
+| [fc](#fc)                   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-fc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fc")                 |
+| [cxx](#cxx)                 | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cxx.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxx")               |
+| [cflags](#cflags)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cflags")         |
+| [fflags](#fflags)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-fflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fflags")         |
+| [ldflags](#ldflags)         | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/ldflags")       |
+| [cppflags](#cppflags)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cppflags")     |
+| [env](#env-1)               | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env")                                                  |
+| [vars](#vars-1)             | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars")                                                 |
+| [status](#status-1)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status")                                            |
+| [pre_build](#pre_build-1)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-pre_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pre_build")   |
+| [post_build](#post_build-1) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-post_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/post_build") |
+| [pre_run](#pre_run-1)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-pre_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pre_run")       |
+| [post_run](#post_run-1)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-post_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/post_run")     |
+| [run](#run-1)               | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/run")               |
 
 ### cc
 
@@ -600,6 +602,142 @@ Reference this group by using
 
 `string`
 
+### env
+
+One or more key value pairs for an environment (key=value)
+
+
+`env`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-env.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env")
+
+#### env Type
+
+`object` ([Details](definitions-definitions-env.md))
+
+#### env Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+### vars
+
+One or more key value pairs for an environment (key=value)
+
+
+`vars`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-env.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars")
+
+#### vars Type
+
+`object` ([Details](definitions-definitions-env.md))
+
+#### vars Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+### status
+
+The status section describes how buildtest detects PASS/FAIL on test. By default returncode 0 is a PASS and anything else is a FAIL, however buildtest can support other types of PASS/FAIL conditions.
+
+
+`status`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-status.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status")
+
+#### status Type
+
+`object` ([Details](definitions-definitions-status.md))
+
+### pre_build
+
+Run commands before building program
+
+
+`pre_build`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-pre_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pre_build")
+
+#### pre_build Type
+
+`string`
+
+### post_build
+
+Run commands after building program
+
+
+`post_build`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-post_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/post_build")
+
+#### post_build Type
+
+`string`
+
+### pre_run
+
+Run commands before running program
+
+
+`pre_run`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-pre_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pre_run")
+
+#### pre_run Type
+
+`string`
+
+### post_run
+
+Run commands after running program
+
+
+`post_run`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-post_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/post_run")
+
+#### post_run Type
+
+`string`
+
+### run
+
+Run command for launching compiled binary
+
+
+`run`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/run")
+
+#### run Type
+
+`string`
+
 ## Definitions group compiler_declaration
 
 Reference this group by using
@@ -618,6 +756,10 @@ Reference this group by using
 | [fflags](#fflags-1)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-fflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/fflags")     |
 | [ldflags](#ldflags-1)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/ldflags")   |
 | [cppflags](#cppflags-1) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cppflags") |
+| [env](#env-2)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/env")                                           |
+| [vars](#vars-2)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/vars")                                          |
+| [status](#status-2)     | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/status")                                     |
+| [run](#run-2)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-run.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/run")           |
 | [module](#module)       | `object` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module")     |
 
 ### cc
@@ -745,6 +887,78 @@ Reference this group by using
 -   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cppflags")
 
 #### cppflags Type
+
+`string`
+
+### env
+
+One or more key value pairs for an environment (key=value)
+
+
+`env`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-env.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/env")
+
+#### env Type
+
+`object` ([Details](definitions-definitions-env.md))
+
+#### env Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+### vars
+
+One or more key value pairs for an environment (key=value)
+
+
+`vars`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-env.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/vars")
+
+#### vars Type
+
+`object` ([Details](definitions-definitions-env.md))
+
+#### vars Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+### status
+
+The status section describes how buildtest detects PASS/FAIL on test. By default returncode 0 is a PASS and anything else is a FAIL, however buildtest can support other types of PASS/FAIL conditions.
+
+
+`status`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-status.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/status")
+
+#### status Type
+
+`object` ([Details](definitions-definitions-status.md))
+
+### run
+
+Run command for launching compiled binary
+
+
+`run`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-run.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/run")
+
+#### run Type
 
 `string`
 

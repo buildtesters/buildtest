@@ -1,16 +1,16 @@
 # Untitled string in compiler schema version 1.0 Schema
 
 ```txt
-compiler-v1.0.schema.json#/properties/build/properties/source
+compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/run
 ```
 
-Specify a source file for compilation, the file can be relative path to buildspec or an absolute path
+Run command for launching compiled binary
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                             |
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | -------------------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [compiler-v1.0.schema.json\*](../out/compiler-v1.0.schema.json "open original schema") |
 
-## source Type
+## run Type
 
 `string`

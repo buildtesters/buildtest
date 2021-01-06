@@ -19,10 +19,27 @@ compiler-v1.0.schema.json#/properties/compilers/properties/default
 
 | Property        | Type     | Required | Nullable       | Defined by                                                                                                                                                              |
 | :-------------- | -------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [all](#all)     | `object` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all.md "compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/all")      |
 | [gcc](#gcc)     | `object` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config.md "compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/gcc")   |
 | [intel](#intel) | `object` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config.md "compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/intel") |
 | [pgi](#pgi)     | `object` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config.md "compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/pgi")   |
 | [cray](#cray)   | `object` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config.md "compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/cray")  |
+
+## all
+
+
+
+
+`all`
+
+-   is optional
+-   Type: `object` ([Details](compiler-v1-definitions-default_compiler_all.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all.md "compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/all")
+
+### all Type
+
+`object` ([Details](compiler-v1-definitions-default_compiler_all.md))
 
 ## gcc
 

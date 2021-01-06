@@ -1,16 +1,16 @@
 # Untitled string in compiler schema version 1.0 Schema
 
 ```txt
-compiler-v1.0.schema.json#/properties/build/properties/cxxflags
+compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_build
 ```
 
-Set C++ compiler flags (**cxxflags**)
+Run commands before building program
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                             |
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | -------------------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [compiler-v1.0.schema.json\*](../out/compiler-v1.0.schema.json "open original schema") |
 
-## cxxflags Type
+## pre_build Type
 
 `string`

@@ -1,16 +1,16 @@
-# Untitled string in compiler schema version 1.0 Schema
+# Untitled undefined type in compiler schema version 1.0 Schema
 
 ```txt
-compiler-v1.0.schema.json#/properties/post_run
+compiler-v1.0.schema.json#/definitions/default_compiler_all/properties
 ```
 
-Run commands after running program
+
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                             |
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | -------------------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [compiler-v1.0.schema.json\*](../out/compiler-v1.0.schema.json "open original schema") |
 
-## post_run Type
+## properties Type
 
-`string`
+unknown
