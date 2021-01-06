@@ -261,7 +261,7 @@ class CompilerBuilder(BuilderBase):
                 self.cc,
                 self.cppflags,
                 self.cflags,
-                f"-o $_EXEC",
+                "-o $_EXEC",
                 self.abspath_sourcefile,
                 self.ldflags,
             ]
@@ -272,7 +272,7 @@ class CompilerBuilder(BuilderBase):
                 self.cxx,
                 self.cppflags,
                 self.cxxflags,
-                f"-o $_EXEC",
+                "-o $_EXEC",
                 self.abspath_sourcefile,
                 self.ldflags,
             ]
@@ -283,7 +283,7 @@ class CompilerBuilder(BuilderBase):
                 self.fc,
                 self.cppflags,
                 self.fflags,
-                f"-o $_EXEC",
+                "-o $_EXEC",
                 self.abspath_sourcefile,
                 self.ldflags,
             ]
@@ -308,7 +308,7 @@ class CompilerBuilder(BuilderBase):
             deep_get(self.compiler_section, "config", self.compiler, "run")
             or deep_get(self.compiler_section, "default", self.compiler_group, "run")
             or deep_get(self.compiler_section, "default", "all", "run")
-            or f"./$_EXEC"
+            or "./$_EXEC"
         )
         return run_line
 

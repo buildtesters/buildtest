@@ -21,7 +21,6 @@ from buildtest.buildsystem.batch import (
     LSFBatchScript,
     CobaltBatchScript,
 )
-from buildtest.defaults import executor_root
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.file import create_dir, write_file
 from buildtest.utils.timer import Timer
@@ -348,7 +347,7 @@ class BuilderBase(ABC):
 
         return lines
 
-    def get_variables(self, vars):
+    def get_variables(self, variables):
         """Retrieve a list of  variables defined in buildspec and
         return them as list with the shell equivalent command.
 
@@ -360,7 +359,7 @@ class BuilderBase(ABC):
 
         shell = self.shell.name
         # Parse environment depending on expected shell
-        if vars:
+        if variables:
 
             # bash, sh, zsh variable declaration is KEY=VALUE
             if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
