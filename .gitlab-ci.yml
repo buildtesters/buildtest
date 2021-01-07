@@ -13,7 +13,9 @@ on-pull-requests_rules:
     - echo "$CI_PIPELINE_SOURCE"
     - whoami
     - git branch
-    - pipenv shell 
+    - conda env create -n buildtest python=3.8
+    - source activate buildtest    
     - source setup.sh
     - pip install -r docs/requirements.txt
     - coverage run -m pytest -vra tests
+    - conda env remove -n buildtest -y
