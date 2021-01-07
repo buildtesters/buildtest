@@ -363,12 +363,12 @@ class BuilderBase(ABC):
 
             # bash, sh, zsh variable declaration is KEY=VALUE
             if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
-                for k, v in vars.items():
+                for k, v in variables.items():
                     lines.append("%s=%s" % (k, v))
 
             # tcsh, csh variable declaration is set KEY=VALUE
             elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
-                for k, v in vars.items():
+                for k, v in variables.items():
                     lines.append("set %s=%s" % (k, v))
 
             else:
