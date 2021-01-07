@@ -1,19 +1,19 @@
 cori_pr_regression_test:
   tags: ["cori-login"]
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'      
+    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
       changes:
         - buildtest/*
         - tests/*
       when: always
     
   script: 
-    - module load python    
+    - module load python
     - echo "$CI_PIPELINE_SOURCE"
     - whoami
     - git branch
     - conda create -n buildtest python=3.8
-    - source activate buildtest    
+    - source activate buildtest
     - source setup.sh
     - pip install -r docs/requirements.txt
     - coverage run -m pytest -vra tests
