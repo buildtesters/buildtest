@@ -46,11 +46,11 @@ def test_build_by_tags():
         stage = None
         testdir = None
         exclude = None
-        tags = ["tutorials"]
+        tags = ["pass"]
         executor = None
         rebuild = None
 
-    #  testing buildtest build --tags tutorials
+    #  testing buildtest build --tags pass
     func_build_subcmd(args, buildtest_configuration)
 
     class args:
@@ -59,11 +59,11 @@ def test_build_by_tags():
         stage = None
         testdir = None
         exclude = None
-        tags = ["compile", "python"]
+        tags = ["fail", "python"]
         executor = None
         rebuild = None
 
-    #  testing buildtest build --tags tutorials --tags python
+    #  testing buildtest build --tags fail --tags python
     func_build_subcmd(args, buildtest_configuration)
 
 
@@ -210,7 +210,7 @@ def test_build_multi_executors():
     buildtest_configuration = load_settings()
 
     class args:
-        executor = ["local.sh", "local.bash"]
+        executor = ["local.sh", "local.python"]
         buildspec = None
         debug = False
         stage = None
@@ -219,7 +219,7 @@ def test_build_multi_executors():
         tags = None
         rebuild = None
 
-    # testing buildtest build --executor local.bash --executor local.sh
+    # testing buildtest build --executor local.sh --executor local.python
     func_build_subcmd(args, buildtest_configuration)
 
 
