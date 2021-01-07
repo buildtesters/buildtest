@@ -2,9 +2,6 @@ cori_pr_regression_test:
   tags: ["cori-login"]
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
-      changes:
-        - buildtest/*
-        - tests/*
       when: always
     
   script: 
