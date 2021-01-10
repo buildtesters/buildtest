@@ -2,7 +2,7 @@ cori_pr_regression_test:
   tags: ["cori-login"]
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
-      when: always
+      when: manual
     
   script: 
     - module load python
@@ -14,4 +14,6 @@ cori_pr_regression_test:
     - source setup.sh
     - pip install -r docs/requirements.txt
     - coverage run -m pytest -vra tests
+    - coverage report -m
+    - source deactivate
     - conda env remove -n buildtest -y
