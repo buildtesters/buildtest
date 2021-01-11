@@ -16,7 +16,7 @@ cori_pr_regression_test:
     - coverage run -m pytest -vra tests
     - coverage report -m
     # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable SECRET_CODECOV_TOKEN at https://gitlab.nersc.gov/nersc/consulting/buildtest/-/settings/ci_cd
-    - export CODECOV_TOKEN=SECRET_CODECOV_TOKEN
+    - export CODECOV_TOKEN=$SECRET_CODECOV_TOKEN
     - bash <(curl -s https://codecov.io/bash)
     - source deactivate
     - conda env remove -n buildtest -y
