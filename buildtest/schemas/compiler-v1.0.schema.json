@@ -11,139 +11,132 @@
     "executor"
   ],
   "definitions": {
+    "cc": {
+      "type": "string",
+      "description": "Set C compiler wrapper"
+    },
+    "fc": {
+      "type": "string",
+      "description": "Set Fortran compiler wrapper"
+    },
+    "cxx": {
+      "type": "string",
+      "description": "Set C++ compiler wrapper"
+    },
+    "cflags": {
+      "type": "string",
+      "description": "Set C compiler flags."
+    },
+    "fflags": {
+      "type": "string",
+      "description": "Set Fortran compiler flags."
+    },
+    "cxxflags": {
+      "type": "string",
+      "description": "Set C++ compiler flags."
+    },
+    "ldflags": {
+      "type": "string",
+      "description": "Set linker flags"
+    },
+    "cppflags": {
+      "type": "string",
+      "description": "Set C or C++ preprocessor flags"
+    },
+    "pre_build": {
+      "type": "string",
+      "description": "Run commands before building program"
+    },
+    "post_build": {
+      "type": "string",
+      "description": "Run commands after building program"
+    },
+    "pre_run": {
+      "type": "string",
+      "description": "Run commands before running program"
+    },
+    "post_run": {
+      "type": "string",
+      "description": "Run commands after running program"
+    },
+    "run": {
+      "type": "string",
+      "description": "Run command for launching compiled binary"
+    },
     "default_compiler_all": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "sbatch": {
-          "$ref": "definitions.schema.json#/definitions/sbatch"
-        },
-        "bsub": {
-          "$ref": "definitions.schema.json#/definitions/bsub"
-        },
-        "cobalt": {
-          "$ref": "definitions.schema.json#/definitions/cobalt"
-        },
-        "batch": {
-          "$ref": "definitions.schema.json#/definitions/batch"
-        },
-        "BB": {
-          "$ref": "definitions.schema.json#/definitions/BB"
-        },
-        "DW": {
-          "$ref": "definitions.schema.json#/definitions/DW"
-        },
-        "env": {
-          "$ref": "definitions.schema.json#/definitions/env"
-        },
-        "vars": {
-          "$ref": "definitions.schema.json#/definitions/env"
-        },
-        "status": {
-          "$ref": "definitions.schema.json#/definitions/status"
-        },
-        "pre_build": {
-          "type": "string",
-          "description": "Run commands before building program"
-        },
-        "post_build": {
-          "type": "string",
-          "description": "Run commands after building program"
-        },
-        "pre_run": {
-          "type": "string",
-          "description": "Run commands before running program"
-        },
-        "post_run": {
-          "type": "string",
-          "description": "Run commands after running program"
-        },
-        "run": {
-          "type": "string",
-          "description": "Run command for launching compiled binary"
-        }
+        "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
+        "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
+        "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt" },
+        "batch": { "$ref": "definitions.schema.json#/definitions/batch" },
+        "BB": { "$ref": "definitions.schema.json#/definitions/BB" },
+        "DW": { "$ref": "definitions.schema.json#/definitions/DW" },
+        "env": { "$ref": "definitions.schema.json#/definitions/env" },
+        "vars": { "$ref": "definitions.schema.json#/definitions/env" },
+        "status": { "$ref": "definitions.schema.json#/definitions/status" },
+        "pre_build": { "$ref": "#definitions/pre_build" },
+        "post_build": { "$ref": "#definitions/post_build" },
+        "pre_run": { "$ref": "#definitions/pre_run" },
+        "post_run": { "$ref": "#definitions/post_run" },
+        "run": { "$ref": "#definitions/run" }
       }
     },
     "default_compiler_config": {
       "type": "object",
       "properties": {
-        "cc": {
-          "type": "string"
-        },
-        "fc": {
-          "type": "string"
-        },
-        "cxx": {
-          "type": "string"
-        },
-        "cflags": {
-          "type": "string"
-        },
-        "fflags": {
-          "type": "string"
-        },
-        "ldflags": {
-          "type": "string"
-        },
-        "cppflags": {
-          "type": "string"
-        },
-        "env": {
-          "$ref": "definitions.schema.json#/definitions/env"
-        },
-        "vars": {
-          "$ref": "definitions.schema.json#/definitions/env"
-        },
-        "status": {
-          "$ref": "definitions.schema.json#/definitions/status"
-        },
-        "pre_build": {
-          "type": "string",
-          "description": "Run commands before building program"
-        },
-        "post_build": {
-          "type": "string",
-          "description": "Run commands after building program"
-        },
-        "pre_run": {
-          "type": "string",
-          "description": "Run commands before running program"
-        },
-        "post_run": {
-          "type": "string",
-          "description": "Run commands after running program"
-        },
-        "run": {
-          "type": "string",
-          "description": "Run command for launching compiled binary"
-        }
+        "cc": { "$ref": "#definitions/cc" },
+        "fc": { "$ref": "#definitions/fc" },
+        "cxx": { "$ref": "#definitions/cxx" },
+        "cflags": { "$ref": "#definitions/cflags" },
+        "fflags": { "$ref": "#definitions/fflags" },
+        "cxxflags": { "$ref": "#definitions/cxxflags" },
+        "ldflags": { "$ref": "#definitions/ldflags" },
+        "cppflags": { "$ref": "#definitions/cppflags" },
+        "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
+        "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
+        "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt" },
+        "batch": { "$ref": "definitions.schema.json#/definitions/batch" },
+        "BB": { "$ref": "definitions.schema.json#/definitions/BB" },
+        "DW": { "$ref": "definitions.schema.json#/definitions/DW" },
+        "env": { "$ref": "definitions.schema.json#/definitions/env" },
+        "vars": { "$ref": "definitions.schema.json#/definitions/env" },
+        "status": { "$ref": "definitions.schema.json#/definitions/status" },
+        "pre_build": { "$ref": "#definitions/pre_build" },
+        "post_build": { "$ref": "#definitions/post_build" },
+        "pre_run": { "$ref": "#definitions/pre_run" },
+        "post_run": { "$ref": "#definitions/post_run" },
+        "run": { "$ref": "#definitions/run" }
       }
     },
     "compiler_declaration": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "cc": { "type": "string"},
-        "fc": { "type": "string"},
-        "cxx": { "type": "string"},
-        "cflags": { "type": "string"},
-        "cxxflags": { "type": "string"},
-        "fflags": { "type": "string"},
-        "ldflags": { "type": "string"},
-        "cppflags": { "type": "string"},
-        "env": {
-          "$ref": "definitions.schema.json#/definitions/env"
-        },
-        "vars": {
-          "$ref": "definitions.schema.json#/definitions/env"
-        },
-        "status": {
-          "$ref": "definitions.schema.json#/definitions/status"
-        },
-        "run": {
-          "type": "string",
-          "description": "Run command for launching compiled binary"
-        },
+        "cc": { "$ref": "#definitions/cc" },
+        "fc": { "$ref": "#definitions/fc" },
+        "cxx": { "$ref": "#definitions/cxx" },
+        "cflags": { "$ref": "#definitions/cflags" },
+        "fflags": { "$ref": "#definitions/fflags" },
+        "cxxflags": { "$ref": "#definitions/cxxflags" },
+        "ldflags": { "$ref": "#definitions/ldflags" },
+        "cppflags": { "$ref": "#definitions/cppflags" },
+        "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
+        "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
+        "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt" },
+        "batch": { "$ref": "definitions.schema.json#/definitions/batch" },
+        "BB": { "$ref": "definitions.schema.json#/definitions/BB" },
+        "DW": { "$ref": "definitions.schema.json#/definitions/DW" },
+        "env": { "$ref": "definitions.schema.json#/definitions/env" },
+        "vars": { "$ref": "definitions.schema.json#/definitions/env" },
+        "status": { "$ref": "definitions.schema.json#/definitions/status" },
+        "pre_build": { "$ref": "#definitions/pre_build" },
+        "post_build": { "$ref": "#definitions/post_build" },
+        "pre_run": { "$ref": "#definitions/pre_run" },
+        "post_run": { "$ref": "#definitions/post_run" },
+        "run": { "$ref": "#definitions/run" },
+
         "module": {
           "type": "object",
           "additionalProperties": false,
