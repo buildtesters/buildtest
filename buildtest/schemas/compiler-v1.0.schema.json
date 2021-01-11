@@ -65,6 +65,7 @@
     },
     "default_compiler_all": {
       "type": "object",
+      "description": "Specify compiler configuration for all compiler groups. Use the ``all`` property if configuration is shared across compiler groups. This property can be overridden in compiler group or named compiler in ``config`` section.",
       "additionalProperties": false,
       "properties": {
         "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
@@ -85,6 +86,7 @@
     },
     "default_compiler_config": {
       "type": "object",
+      "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
       "properties": {
         "cc": { "$ref": "#definitions/cc" },
         "fc": { "$ref": "#definitions/fc" },
@@ -112,6 +114,7 @@
     },
     "compiler_declaration": {
       "type": "object",
+      "description": "Specify compiler configuration at compiler level. The ``config`` section has highest precedence when searching compiler configuration. This overrides fields found in compiler group and ``all`` property",
       "additionalProperties": false,
       "properties": {
         "cc": { "$ref": "#definitions/cc" },
@@ -173,7 +176,7 @@
     "type": {
       "type": "string",
       "pattern": "^compiler$",
-      "description": "Select schema type to use when validating buildspec. This must be of set to ``compiler``"
+      "description": "Select schema type to use when validating buildspec. This must be of set to ``compiler``."
     },
     "description": {
       "$ref": "definitions.schema.json#/definitions/description"
@@ -186,9 +189,11 @@
       "additionalProperties": false,
       "properties": {
         "name": {
+          "description": "Specify a list of regular expression to search compiler instance from buildtest settings.",
           "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "exclude": {
+          "description": "Specify a list of named compilers to exclude when building test based on regular expression specified in ``name`` property. The ``exclude`` property has no effect if named compiler not found based on regular expression.",
           "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "default": {
@@ -214,6 +219,7 @@
         },
         "config": {
           "type": "object",
+          "description": "Specify compiler configuration based on named compilers.",
           "patternProperties": {
             "^.*$": {
               "$ref": "#definitions/compiler_declaration"
