@@ -1,4 +1,5 @@
 import os
+import json
 import shutil
 
 from buildtest.buildsystem.base import BuilderBase
@@ -96,18 +97,37 @@ class CompilerBuilder(BuilderBase):
         if not self.modules:
             self.modules = self._get_modules(self.bc_compiler.get("module"))
 
-        self.pre_build = deep_get(
-            self.compiler_section, "default", self.compiler_group, "pre_build"
-        ) or deep_get(self.compiler_section, "default", "all", "pre_build")
-        self.post_build = deep_get(
-            self.compiler_section, "default", self.compiler_group, "post_build"
-        ) or deep_get(self.compiler_section, "default", "all", "post_build")
-        self.pre_run = deep_get(
-            self.compiler_section, "default", self.compiler_group, "pre_run"
-        ) or deep_get(self.compiler_section, "default", "all", "pre_run")
-        self.post_run = deep_get(
-            self.compiler_section, "default", self.compiler_group, "post_run"
-        ) or deep_get(self.compiler_section, "default", "all", "post_run")
+        self.pre_build = (
+            deep_get(self.compiler_section, "config", self.compiler, "pre_build")
+            or deep_get(
+                self.compiler_section, "default", self.compiler_group, "pre_build"
+            )
+            or deep_get(self.compiler_section, "default", "all", "pre_build")
+        )
+
+        self.post_build = (
+            deep_get(self.compiler_section, "config", self.compiler, "post_build")
+            or deep_get(
+                self.compiler_section, "default", self.compiler_group, "post_build"
+            )
+            or deep_get(self.compiler_section, "default", "all", "post_build")
+        )
+
+        self.pre_run = (
+            deep_get(self.compiler_section, "config", self.compiler, "pre_run")
+            or deep_get(
+                self.compiler_section, "default", self.compiler_group, "pre_run"
+            )
+            or deep_get(self.compiler_section, "default", "all", "pre_run")
+        )
+
+        self.post_run = (
+            deep_get(self.compiler_section, "config", self.compiler, "post_run")
+            or deep_get(
+                self.compiler_section, "default", self.compiler_group, "post_run"
+            )
+            or deep_get(self.compiler_section, "default", "all", "post_run")
+        )
 
         self.compile_cmd = self._compile_cmd()
 
@@ -128,27 +148,44 @@ class CompilerBuilder(BuilderBase):
         # every test starts with shebang line
         lines = [self.shebang]
 
-        bsub_opts = deep_get(self.compiler_section, "default", "all", "bsub")
-        sbatch_opts = deep_get(self.compiler_section, "default", "all", "sbatch")
-        cobalt_opts = deep_get(self.compiler_section, "default", "all", "cobalt")
-        batch_opts = deep_get(self.compiler_section, "default", "all", "batch")
+        batch_dict = {}
+        cray_dict = {}
+
+        # get sbatch, bsub, cobalt, batch property and store in batch dictionary. The order of lookup is in
+        # order of precedence
+        for batch in ["sbatch", "bsub", "cobalt", "batch"]:
+            batch_dict[batch] = (
+                deep_get(self.compiler_section, "config", self.compiler, batch)
+                or deep_get(
+                    self.compiler_section, "default", self.compiler_group, batch
+                )
+                or deep_get(self.compiler_section, "default", "all", batch)
+            )
+
+        for name in ["BB", "DW"]:
+            cray_dict[name] = (
+                deep_get(self.compiler_section, "config", self.compiler, name)
+                or deep_get(self.compiler_section, "default", self.compiler_group, name)
+                or deep_get(self.compiler_section, "default", "all", name)
+            )
 
         batch_directives_lines = self._get_scheduler_directives(
-            bsub=bsub_opts, sbatch=sbatch_opts, cobalt=cobalt_opts, batch=batch_opts
+            bsub=batch_dict["bsub"],
+            sbatch=batch_dict["sbatch"],
+            cobalt=batch_dict["cobalt"],
+            batch=batch_dict["batch"],
         )
 
         if batch_directives_lines:
             lines += batch_directives_lines
 
-        burst_buffer_lines = self._get_burst_buffer(
-            deep_get(self.compiler_section, "default", "all", "BB")
-        )
+        burst_buffer_lines = self._get_burst_buffer(cray_dict["BB"])
+
         if burst_buffer_lines:
             lines += burst_buffer_lines
 
-        data_warp_lines = self._get_data_warp(
-            deep_get(self.compiler_section, "default", "all", "DW")
-        )
+        data_warp_lines = self._get_data_warp(cray_dict["DW"])
+
         if data_warp_lines:
             lines += data_warp_lines
 

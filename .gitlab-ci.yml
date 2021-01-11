@@ -15,5 +15,7 @@ cori_pr_regression_test:
     - pip install -r docs/requirements.txt
     - coverage run -m pytest -vra tests
     - coverage report -m
+    # CODECOV_TOKEN environment must be set in gitlab mirror
+    - bash <(curl -s https://codecov.io/bash)
     - source deactivate
     - conda env remove -n buildtest -y
