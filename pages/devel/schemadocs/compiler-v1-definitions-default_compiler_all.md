@@ -4,7 +4,7 @@
 compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/all
 ```
 
-
+Specify compiler configuration for all compiler groups. Use the `all` property if configuration is shared across compiler groups. This property can be overridden in compiler group or named compiler in `config` section.
 
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                             |
@@ -17,22 +17,22 @@ compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/al
 
 # undefined Properties
 
-| Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                                               |
-| :------------------------ | -------- | -------- | -------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [sbatch](#sbatch)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/sbatch")         |
-| [bsub](#bsub)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/bsub")             |
-| [cobalt](#cobalt)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/cobalt")         |
-| [batch](#batch)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/batch")                                           |
-| [BB](#bb)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/BB")                 |
-| [DW](#dw)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/DW")                 |
-| [env](#env)               | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/env")                                               |
-| [vars](#vars)             | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/vars")                                              |
-| [status](#status)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/status")                                         |
-| [pre_build](#pre_build)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-pre_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_build")   |
-| [post_build](#post_build) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-post_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_build") |
-| [pre_run](#pre_run)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-pre_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_run")       |
-| [post_run](#post_run)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-post_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_run")     |
-| [run](#run)               | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/run")               |
+| Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                                       |
+| :------------------------ | -------- | -------- | -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [sbatch](#sbatch)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/sbatch") |
+| [bsub](#bsub)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/bsub")     |
+| [cobalt](#cobalt)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/cobalt") |
+| [batch](#batch)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/batch")                                   |
+| [BB](#bb)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/BB")         |
+| [DW](#dw)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/DW")         |
+| [env](#env)               | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/env")                                       |
+| [vars](#vars)             | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/vars")                                      |
+| [status](#status)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/status")                                 |
+| [pre_build](#pre_build)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-pre_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_build")                           |
+| [post_build](#post_build) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-post_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_build")                         |
+| [pre_run](#pre_run)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-pre_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_run")                               |
+| [post_run](#post_run)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-post_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_run")                             |
+| [run](#run)               | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/run")                                       |
 
 ## sbatch
 
@@ -226,7 +226,7 @@ Run commands before building program
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-pre_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_build")
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-pre_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_build")
 
 ### pre_build Type
 
@@ -242,7 +242,7 @@ Run commands after building program
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-post_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_build")
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-post_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_build")
 
 ### post_build Type
 
@@ -258,7 +258,7 @@ Run commands before running program
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-pre_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_run")
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-pre_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pre_run")
 
 ### pre_run Type
 
@@ -274,7 +274,7 @@ Run commands after running program
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-post_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_run")
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-post_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/post_run")
 
 ### post_run Type
 
@@ -290,7 +290,7 @@ Run command for launching compiled binary
 -   is optional
 -   Type: `string`
 -   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/run")
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-run.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/run")
 
 ### run Type
 

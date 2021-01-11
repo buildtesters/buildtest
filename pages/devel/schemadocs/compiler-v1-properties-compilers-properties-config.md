@@ -4,7 +4,7 @@
 compiler-v1.0.schema.json#/properties/compilers/properties/config
 ```
 
-
+Specify compiler configuration based on named compilers.
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                             |
@@ -23,7 +23,7 @@ compiler-v1.0.schema.json#/properties/compilers/properties/config
 
 ## Pattern: `^.*$`
 
-
+Specify compiler configuration at compiler level. The `config` section has highest precedence when searching compiler configuration. This overrides fields found in compiler group and `all` property
 
 
 `^.*$`

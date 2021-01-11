@@ -1,16 +1,16 @@
 # Untitled string in compiler schema version 1.0 Schema
 
 ```txt
-compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pre_run
+compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/post_build
 ```
 
-Run commands before running program
+Run commands after building program
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                             |
 | :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | -------------------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [compiler-v1.0.schema.json\*](../out/compiler-v1.0.schema.json "open original schema") |
 
-## pre_run Type
+## post_build Type
 
 `string`

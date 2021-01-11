@@ -30,7 +30,7 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 
 ## type
 
-Select schema type to use when validating buildspec. This must be of set to `compiler`
+Select schema type to use when validating buildspec. This must be of set to `compiler`.
 
 
 `type`
@@ -176,6 +176,149 @@ one (and only one) of
 -   [Untitled array in JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "check type definition")
 
 # compiler schema version 1.0 Definitions
+
+## Definitions group cc
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/cc"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group fc
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/fc"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group cxx
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/cxx"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group cflags
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/cflags"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group fflags
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/fflags"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group cxxflags
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/cxxflags"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group ldflags
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/ldflags"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group cppflags
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/cppflags"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group pre_build
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/pre_build"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group post_build
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/post_build"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group pre_run
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/pre_run"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group post_run
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/post_run"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
+
+## Definitions group run
+
+Reference this group by using
+
+```json
+{"$ref":"compiler-v1.0.schema.json#/definitions/run"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | ---- | -------- | -------- | :--------- |
 
 ## Definitions group default_compiler_all
 
@@ -479,8 +622,15 @@ Reference this group by using
 | [cxx](#cxx)                 | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cxx.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxx")               |
 | [cflags](#cflags)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cflags")         |
 | [fflags](#fflags)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-fflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fflags")         |
+| [cxxflags](#cxxflags)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cxxflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxxflags")     |
 | [ldflags](#ldflags)         | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/ldflags")       |
 | [cppflags](#cppflags)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cppflags")     |
+| [sbatch](#sbatch-1)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch")         |
+| [bsub](#bsub-1)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub")             |
+| [cobalt](#cobalt-1)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt")         |
+| [batch](#batch-1)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch")                                              |
+| [BB](#bb-1)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB")                 |
+| [DW](#dw-1)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW")                 |
 | [env](#env-1)               | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env")                                                  |
 | [vars](#vars-1)             | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars")                                                 |
 | [status](#status-1)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status")                                            |
@@ -492,7 +642,7 @@ Reference this group by using
 
 ### cc
 
-
+Set C compiler wrapper
 
 
 `cc`
@@ -508,7 +658,7 @@ Reference this group by using
 
 ### fc
 
-
+Set Fortran compiler wrapper
 
 
 `fc`
@@ -524,7 +674,7 @@ Reference this group by using
 
 ### cxx
 
-
+Set C++ compiler wrapper
 
 
 `cxx`
@@ -540,7 +690,7 @@ Reference this group by using
 
 ### cflags
 
-
+Set C compiler flags.
 
 
 `cflags`
@@ -556,7 +706,7 @@ Reference this group by using
 
 ### fflags
 
-
+Set Fortran compiler flags.
 
 
 `fflags`
@@ -570,9 +720,25 @@ Reference this group by using
 
 `string`
 
+### cxxflags
+
+Set C++ compiler flags.
+
+
+`cxxflags`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cxxflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxxflags")
+
+#### cxxflags Type
+
+`string`
+
 ### ldflags
 
-
+Set linker flags
 
 
 `ldflags`
@@ -588,7 +754,7 @@ Reference this group by using
 
 ### cppflags
 
-
+Set C or C++ preprocessor flags
 
 
 `cppflags`
@@ -601,6 +767,132 @@ Reference this group by using
 #### cppflags Type
 
 `string`
+
+### sbatch
+
+This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value
+
+
+`sbatch`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch")
+
+#### sbatch Type
+
+`string[]`
+
+#### sbatch Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### bsub
+
+This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value
+
+
+`bsub`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub")
+
+#### bsub Type
+
+`string[]`
+
+#### bsub Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### cobalt
+
+This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value
+
+
+`cobalt`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt")
+
+#### cobalt Type
+
+`string[]`
+
+#### cobalt Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### batch
+
+The `batch` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.
+
+
+`batch`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-batch.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch")
+
+#### batch Type
+
+`object` ([Details](definitions-definitions-batch.md))
+
+### BB
+
+Create burst buffer space, this specifies #BB options in your test.
+
+
+`BB`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB")
+
+#### BB Type
+
+`string[]`
+
+#### BB Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### DW
+
+Specify Data Warp option (#DW) when using burst buffer.
+
+
+`DW`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW")
+
+#### DW Type
+
+`string[]`
+
+#### DW Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ### env
 
@@ -746,25 +1038,35 @@ Reference this group by using
 {"$ref":"compiler-v1.0.schema.json#/definitions/compiler_declaration"}
 ```
 
-| Property                | Type     | Required | Nullable       | Defined by                                                                                                                                                                           |
-| :---------------------- | -------- | -------- | -------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [cc](#cc-1)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cc.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cc")             |
-| [fc](#fc-1)             | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-fc.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/fc")             |
-| [cxx](#cxx-1)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cxx.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cxx")           |
-| [cflags](#cflags-1)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cflags")     |
-| [cxxflags](#cxxflags)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cxxflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cxxflags") |
-| [fflags](#fflags-1)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-fflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/fflags")     |
-| [ldflags](#ldflags-1)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/ldflags")   |
-| [cppflags](#cppflags-1) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cppflags") |
-| [env](#env-2)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/env")                                           |
-| [vars](#vars-2)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/vars")                                          |
-| [status](#status-2)     | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/status")                                     |
-| [run](#run-2)           | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-run.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/run")           |
-| [module](#module)       | `object` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module")     |
+| Property                    | Type     | Required | Nullable       | Defined by                                                                                                                                                                               |
+| :-------------------------- | -------- | -------- | -------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc-1)                 | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cc.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cc")                 |
+| [fc](#fc-1)                 | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-fc.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/fc")                 |
+| [cxx](#cxx-1)               | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cxx.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cxx")               |
+| [cflags](#cflags-1)         | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cflags")         |
+| [fflags](#fflags-1)         | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-fflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/fflags")         |
+| [cxxflags](#cxxflags-1)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cxxflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cxxflags")     |
+| [ldflags](#ldflags-1)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/ldflags")       |
+| [cppflags](#cppflags-1)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cppflags")     |
+| [sbatch](#sbatch-2)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/sbatch")         |
+| [bsub](#bsub-2)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-bsub.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/bsub")             |
+| [cobalt](#cobalt-2)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cobalt")         |
+| [batch](#batch-2)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/batch")                                           |
+| [BB](#bb-2)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-bb.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/BB")                 |
+| [DW](#dw-2)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-dw.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/DW")                 |
+| [env](#env-2)               | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/env")                                               |
+| [vars](#vars-2)             | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/vars")                                              |
+| [status](#status-2)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/status")                                         |
+| [pre_build](#pre_build-2)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-pre_build.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/pre_build")   |
+| [post_build](#post_build-2) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-post_build.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/post_build") |
+| [pre_run](#pre_run-2)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-pre_run.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/pre_run")       |
+| [post_run](#post_run-2)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-post_run.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/post_run")     |
+| [run](#run-2)               | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-run.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/run")               |
+| [module](#module)           | `object` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module")         |
 
 ### cc
 
-
+Set C compiler wrapper
 
 
 `cc`
@@ -780,7 +1082,7 @@ Reference this group by using
 
 ### fc
 
-
+Set Fortran compiler wrapper
 
 
 `fc`
@@ -796,7 +1098,7 @@ Reference this group by using
 
 ### cxx
 
-
+Set C++ compiler wrapper
 
 
 `cxx`
@@ -812,7 +1114,7 @@ Reference this group by using
 
 ### cflags
 
-
+Set C compiler flags.
 
 
 `cflags`
@@ -826,25 +1128,9 @@ Reference this group by using
 
 `string`
 
-### cxxflags
-
-
-
-
-`cxxflags`
-
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cxxflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cxxflags")
-
-#### cxxflags Type
-
-`string`
-
 ### fflags
 
-
+Set Fortran compiler flags.
 
 
 `fflags`
@@ -858,9 +1144,25 @@ Reference this group by using
 
 `string`
 
+### cxxflags
+
+Set C++ compiler flags.
+
+
+`cxxflags`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cxxflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cxxflags")
+
+#### cxxflags Type
+
+`string`
+
 ### ldflags
 
-
+Set linker flags
 
 
 `ldflags`
@@ -876,7 +1178,7 @@ Reference this group by using
 
 ### cppflags
 
-
+Set C or C++ preprocessor flags
 
 
 `cppflags`
@@ -889,6 +1191,132 @@ Reference this group by using
 #### cppflags Type
 
 `string`
+
+### sbatch
+
+This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value
+
+
+`sbatch`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/sbatch")
+
+#### sbatch Type
+
+`string[]`
+
+#### sbatch Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### bsub
+
+This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value
+
+
+`bsub`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-bsub.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/bsub")
+
+#### bsub Type
+
+`string[]`
+
+#### bsub Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### cobalt
+
+This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value
+
+
+`cobalt`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cobalt")
+
+#### cobalt Type
+
+`string[]`
+
+#### cobalt Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### batch
+
+The `batch` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.
+
+
+`batch`
+
+-   is optional
+-   Type: `object` ([Details](definitions-definitions-batch.md))
+-   cannot be null
+-   defined in: [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/batch")
+
+#### batch Type
+
+`object` ([Details](definitions-definitions-batch.md))
+
+### BB
+
+Create burst buffer space, this specifies #BB options in your test.
+
+
+`BB`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-bb.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/BB")
+
+#### BB Type
+
+`string[]`
+
+#### BB Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### DW
+
+Specify Data Warp option (#DW) when using burst buffer.
+
+
+`DW`
+
+-   is optional
+-   Type: `string[]`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-dw.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/DW")
+
+#### DW Type
+
+`string[]`
+
+#### DW Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ### env
 
@@ -945,6 +1373,70 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 #### status Type
 
 `object` ([Details](definitions-definitions-status.md))
+
+### pre_build
+
+Run commands before building program
+
+
+`pre_build`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-pre_build.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/pre_build")
+
+#### pre_build Type
+
+`string`
+
+### post_build
+
+Run commands after building program
+
+
+`post_build`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-post_build.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/post_build")
+
+#### post_build Type
+
+`string`
+
+### pre_run
+
+Run commands before running program
+
+
+`pre_run`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-pre_run.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/pre_run")
+
+#### pre_run Type
+
+`string`
+
+### post_run
+
+Run commands after running program
+
+
+`post_run`
+
+-   is optional
+-   Type: `string`
+-   cannot be null
+-   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-post_run.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/post_run")
+
+#### post_run Type
+
+`string`
 
 ### run
 

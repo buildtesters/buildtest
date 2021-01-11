@@ -4,7 +4,7 @@
 compiler-v1.0.schema.json#/properties/type
 ```
 
-Select schema type to use when validating buildspec. This must be of set to `compiler`
+Select schema type to use when validating buildspec. This must be of set to `compiler`.
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                             |

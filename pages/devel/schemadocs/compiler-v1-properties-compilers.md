@@ -26,7 +26,7 @@ compiler-v1.0.schema.json#/properties/compilers
 
 ## name
 
-
+Specify a list of regular expression to search compiler instance from buildtest settings.
 
 
 `name`
@@ -48,7 +48,7 @@ compiler-v1.0.schema.json#/properties/compilers
 
 ## exclude
 
-
+Specify a list of named compilers to exclude when building test based on regular expression specified in `name` property. The `exclude` property has no effect if named compiler not found based on regular expression.
 
 
 `exclude`
@@ -86,7 +86,7 @@ compiler-v1.0.schema.json#/properties/compilers
 
 ## config
 
-
+Specify compiler configuration based on named compilers.
 
 
 `config`

@@ -27,7 +27,7 @@ compiler-v1.0.schema.json#/properties/compilers/properties/default
 
 ## all
 
-
+Specify compiler configuration for all compiler groups. Use the `all` property if configuration is shared across compiler groups. This property can be overridden in compiler group or named compiler in `config` section.
 
 
 `all`
@@ -43,7 +43,7 @@ compiler-v1.0.schema.json#/properties/compilers/properties/default
 
 ## gcc
 
-
+Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides `all` property. 
 
 
 `gcc`
@@ -59,7 +59,7 @@ compiler-v1.0.schema.json#/properties/compilers/properties/default
 
 ## intel
 
-
+Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides `all` property. 
 
 
 `intel`
@@ -75,7 +75,7 @@ compiler-v1.0.schema.json#/properties/compilers/properties/default
 
 ## pgi
 
-
+Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides `all` property. 
 
 
 `pgi`
@@ -91,7 +91,7 @@ compiler-v1.0.schema.json#/properties/compilers/properties/default
 
 ## cray
 
-
+Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides `all` property. 
 
 
 `cray`

@@ -27,6 +27,7 @@ The default value is:
     "all": {
       "$ref": "#definitions/default_compiler_all",
       "type": "object",
+      "description": "Specify compiler configuration for all compiler groups. Use the ``all`` property if configuration is shared across compiler groups. This property can be overridden in compiler group or named compiler in ``config`` section.",
       "additionalProperties": false,
       "properties": {
         "sbatch": {
@@ -228,22 +229,27 @@ The default value is:
           }
         },
         "pre_build": {
+          "$ref": "#definitions/pre_build",
           "type": "string",
           "description": "Run commands before building program"
         },
         "post_build": {
+          "$ref": "#definitions/post_build",
           "type": "string",
           "description": "Run commands after building program"
         },
         "pre_run": {
+          "$ref": "#definitions/pre_run",
           "type": "string",
           "description": "Run commands before running program"
         },
         "post_run": {
+          "$ref": "#definitions/post_run",
           "type": "string",
           "description": "Run commands after running program"
         },
         "run": {
+          "$ref": "#definitions/run",
           "type": "string",
           "description": "Run command for launching compiled binary"
         }
@@ -252,27 +258,161 @@ The default value is:
     "gcc": {
       "$ref": "#definitions/default_compiler_config",
       "type": "object",
+      "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
       "properties": {
         "cc": {
-          "type": "string"
+          "$ref": "#definitions/cc",
+          "type": "string",
+          "description": "Set C compiler wrapper"
         },
         "fc": {
-          "type": "string"
+          "$ref": "#definitions/fc",
+          "type": "string",
+          "description": "Set Fortran compiler wrapper"
         },
         "cxx": {
-          "type": "string"
+          "$ref": "#definitions/cxx",
+          "type": "string",
+          "description": "Set C++ compiler wrapper"
         },
         "cflags": {
-          "type": "string"
+          "$ref": "#definitions/cflags",
+          "type": "string",
+          "description": "Set C compiler flags."
         },
         "fflags": {
-          "type": "string"
+          "$ref": "#definitions/fflags",
+          "type": "string",
+          "description": "Set Fortran compiler flags."
+        },
+        "cxxflags": {
+          "$ref": "#definitions/cxxflags",
+          "type": "string",
+          "description": "Set C++ compiler flags."
         },
         "ldflags": {
-          "type": "string"
+          "$ref": "#definitions/ldflags",
+          "type": "string",
+          "description": "Set linker flags"
         },
         "cppflags": {
-          "type": "string"
+          "$ref": "#definitions/cppflags",
+          "type": "string",
+          "description": "Set C or C++ preprocessor flags"
+        },
+        "sbatch": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "bsub": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "cobalt": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "batch": {
+          "$ref": "definitions.schema.json#/definitions/batch",
+          "type": "object",
+          "description": "The ``batch`` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.",
+          "additionalProperties": false,
+          "properties": {
+            "account": {
+              "type": "string",
+              "description": "Specify Account to charge job"
+            },
+            "begintime": {
+              "type": "string",
+              "description": "Specify begin time when job will start allocation"
+            },
+            "cpucount": {
+              "type": "string",
+              "description": "Specify number of CPU to allocate"
+            },
+            "email-address": {
+              "type": "string",
+              "description": "Email Address to notify on Job State Changes"
+            },
+            "exclusive": {
+              "type": "boolean",
+              "description": "Specify if job needs to run in exclusive mode"
+            },
+            "memory": {
+              "type": "string",
+              "description": "Specify Memory Size for Job"
+            },
+            "network": {
+              "type": "string",
+              "description": "Specify network resource requirement for job"
+            },
+            "nodecount": {
+              "type": "string",
+              "description": "Specify number of Nodes to allocate"
+            },
+            "qos": {
+              "type": "string",
+              "description": "Specify Quality of Service (QOS)"
+            },
+            "queue": {
+              "type": "string",
+              "description": "Specify Job Queue"
+            },
+            "tasks-per-core": {
+              "type": "string",
+              "description": "Request number of tasks to be invoked on each core. "
+            },
+            "tasks-per-node": {
+              "type": "string",
+              "description": "Request number of tasks to be invoked on each node. "
+            },
+            "tasks-per-socket": {
+              "type": "string",
+              "description": "Request the maximum tasks to be invoked on each socket. "
+            },
+            "timelimit": {
+              "type": "string",
+              "description": "Specify Job timelimit"
+            }
+          }
+        },
+        "BB": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "Create burst buffer space, this specifies #BB options in your test.",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "DW": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "Specify Data Warp option (#DW) when using burst buffer.",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
         },
         "env": {
           "$ref": "definitions.schema.json#/definitions/env",
@@ -359,22 +499,27 @@ The default value is:
           }
         },
         "pre_build": {
+          "$ref": "#definitions/pre_build",
           "type": "string",
           "description": "Run commands before building program"
         },
         "post_build": {
+          "$ref": "#definitions/post_build",
           "type": "string",
           "description": "Run commands after building program"
         },
         "pre_run": {
+          "$ref": "#definitions/pre_run",
           "type": "string",
           "description": "Run commands before running program"
         },
         "post_run": {
+          "$ref": "#definitions/post_run",
           "type": "string",
           "description": "Run commands after running program"
         },
         "run": {
+          "$ref": "#definitions/run",
           "type": "string",
           "description": "Run command for launching compiled binary"
         }
@@ -383,27 +528,161 @@ The default value is:
     "intel": {
       "$ref": "#definitions/default_compiler_config",
       "type": "object",
+      "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
       "properties": {
         "cc": {
-          "type": "string"
+          "$ref": "#definitions/cc",
+          "type": "string",
+          "description": "Set C compiler wrapper"
         },
         "fc": {
-          "type": "string"
+          "$ref": "#definitions/fc",
+          "type": "string",
+          "description": "Set Fortran compiler wrapper"
         },
         "cxx": {
-          "type": "string"
+          "$ref": "#definitions/cxx",
+          "type": "string",
+          "description": "Set C++ compiler wrapper"
         },
         "cflags": {
-          "type": "string"
+          "$ref": "#definitions/cflags",
+          "type": "string",
+          "description": "Set C compiler flags."
         },
         "fflags": {
-          "type": "string"
+          "$ref": "#definitions/fflags",
+          "type": "string",
+          "description": "Set Fortran compiler flags."
+        },
+        "cxxflags": {
+          "$ref": "#definitions/cxxflags",
+          "type": "string",
+          "description": "Set C++ compiler flags."
         },
         "ldflags": {
-          "type": "string"
+          "$ref": "#definitions/ldflags",
+          "type": "string",
+          "description": "Set linker flags"
         },
         "cppflags": {
-          "type": "string"
+          "$ref": "#definitions/cppflags",
+          "type": "string",
+          "description": "Set C or C++ preprocessor flags"
+        },
+        "sbatch": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "bsub": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "cobalt": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "batch": {
+          "$ref": "definitions.schema.json#/definitions/batch",
+          "type": "object",
+          "description": "The ``batch`` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.",
+          "additionalProperties": false,
+          "properties": {
+            "account": {
+              "type": "string",
+              "description": "Specify Account to charge job"
+            },
+            "begintime": {
+              "type": "string",
+              "description": "Specify begin time when job will start allocation"
+            },
+            "cpucount": {
+              "type": "string",
+              "description": "Specify number of CPU to allocate"
+            },
+            "email-address": {
+              "type": "string",
+              "description": "Email Address to notify on Job State Changes"
+            },
+            "exclusive": {
+              "type": "boolean",
+              "description": "Specify if job needs to run in exclusive mode"
+            },
+            "memory": {
+              "type": "string",
+              "description": "Specify Memory Size for Job"
+            },
+            "network": {
+              "type": "string",
+              "description": "Specify network resource requirement for job"
+            },
+            "nodecount": {
+              "type": "string",
+              "description": "Specify number of Nodes to allocate"
+            },
+            "qos": {
+              "type": "string",
+              "description": "Specify Quality of Service (QOS)"
+            },
+            "queue": {
+              "type": "string",
+              "description": "Specify Job Queue"
+            },
+            "tasks-per-core": {
+              "type": "string",
+              "description": "Request number of tasks to be invoked on each core. "
+            },
+            "tasks-per-node": {
+              "type": "string",
+              "description": "Request number of tasks to be invoked on each node. "
+            },
+            "tasks-per-socket": {
+              "type": "string",
+              "description": "Request the maximum tasks to be invoked on each socket. "
+            },
+            "timelimit": {
+              "type": "string",
+              "description": "Specify Job timelimit"
+            }
+          }
+        },
+        "BB": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "Create burst buffer space, this specifies #BB options in your test.",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "DW": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "Specify Data Warp option (#DW) when using burst buffer.",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
         },
         "env": {
           "$ref": "definitions.schema.json#/definitions/env",
@@ -490,22 +769,27 @@ The default value is:
           }
         },
         "pre_build": {
+          "$ref": "#definitions/pre_build",
           "type": "string",
           "description": "Run commands before building program"
         },
         "post_build": {
+          "$ref": "#definitions/post_build",
           "type": "string",
           "description": "Run commands after building program"
         },
         "pre_run": {
+          "$ref": "#definitions/pre_run",
           "type": "string",
           "description": "Run commands before running program"
         },
         "post_run": {
+          "$ref": "#definitions/post_run",
           "type": "string",
           "description": "Run commands after running program"
         },
         "run": {
+          "$ref": "#definitions/run",
           "type": "string",
           "description": "Run command for launching compiled binary"
         }
@@ -514,27 +798,161 @@ The default value is:
     "pgi": {
       "$ref": "#definitions/default_compiler_config",
       "type": "object",
+      "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
       "properties": {
         "cc": {
-          "type": "string"
+          "$ref": "#definitions/cc",
+          "type": "string",
+          "description": "Set C compiler wrapper"
         },
         "fc": {
-          "type": "string"
+          "$ref": "#definitions/fc",
+          "type": "string",
+          "description": "Set Fortran compiler wrapper"
         },
         "cxx": {
-          "type": "string"
+          "$ref": "#definitions/cxx",
+          "type": "string",
+          "description": "Set C++ compiler wrapper"
         },
         "cflags": {
-          "type": "string"
+          "$ref": "#definitions/cflags",
+          "type": "string",
+          "description": "Set C compiler flags."
         },
         "fflags": {
-          "type": "string"
+          "$ref": "#definitions/fflags",
+          "type": "string",
+          "description": "Set Fortran compiler flags."
+        },
+        "cxxflags": {
+          "$ref": "#definitions/cxxflags",
+          "type": "string",
+          "description": "Set C++ compiler flags."
         },
         "ldflags": {
-          "type": "string"
+          "$ref": "#definitions/ldflags",
+          "type": "string",
+          "description": "Set linker flags"
         },
         "cppflags": {
-          "type": "string"
+          "$ref": "#definitions/cppflags",
+          "type": "string",
+          "description": "Set C or C++ preprocessor flags"
+        },
+        "sbatch": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "bsub": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "cobalt": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "batch": {
+          "$ref": "definitions.schema.json#/definitions/batch",
+          "type": "object",
+          "description": "The ``batch`` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.",
+          "additionalProperties": false,
+          "properties": {
+            "account": {
+              "type": "string",
+              "description": "Specify Account to charge job"
+            },
+            "begintime": {
+              "type": "string",
+              "description": "Specify begin time when job will start allocation"
+            },
+            "cpucount": {
+              "type": "string",
+              "description": "Specify number of CPU to allocate"
+            },
+            "email-address": {
+              "type": "string",
+              "description": "Email Address to notify on Job State Changes"
+            },
+            "exclusive": {
+              "type": "boolean",
+              "description": "Specify if job needs to run in exclusive mode"
+            },
+            "memory": {
+              "type": "string",
+              "description": "Specify Memory Size for Job"
+            },
+            "network": {
+              "type": "string",
+              "description": "Specify network resource requirement for job"
+            },
+            "nodecount": {
+              "type": "string",
+              "description": "Specify number of Nodes to allocate"
+            },
+            "qos": {
+              "type": "string",
+              "description": "Specify Quality of Service (QOS)"
+            },
+            "queue": {
+              "type": "string",
+              "description": "Specify Job Queue"
+            },
+            "tasks-per-core": {
+              "type": "string",
+              "description": "Request number of tasks to be invoked on each core. "
+            },
+            "tasks-per-node": {
+              "type": "string",
+              "description": "Request number of tasks to be invoked on each node. "
+            },
+            "tasks-per-socket": {
+              "type": "string",
+              "description": "Request the maximum tasks to be invoked on each socket. "
+            },
+            "timelimit": {
+              "type": "string",
+              "description": "Specify Job timelimit"
+            }
+          }
+        },
+        "BB": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "Create burst buffer space, this specifies #BB options in your test.",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "DW": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "Specify Data Warp option (#DW) when using burst buffer.",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
         },
         "env": {
           "$ref": "definitions.schema.json#/definitions/env",
@@ -621,22 +1039,27 @@ The default value is:
           }
         },
         "pre_build": {
+          "$ref": "#definitions/pre_build",
           "type": "string",
           "description": "Run commands before building program"
         },
         "post_build": {
+          "$ref": "#definitions/post_build",
           "type": "string",
           "description": "Run commands after building program"
         },
         "pre_run": {
+          "$ref": "#definitions/pre_run",
           "type": "string",
           "description": "Run commands before running program"
         },
         "post_run": {
+          "$ref": "#definitions/post_run",
           "type": "string",
           "description": "Run commands after running program"
         },
         "run": {
+          "$ref": "#definitions/run",
           "type": "string",
           "description": "Run command for launching compiled binary"
         }
@@ -645,27 +1068,161 @@ The default value is:
     "cray": {
       "$ref": "#definitions/default_compiler_config",
       "type": "object",
+      "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
       "properties": {
         "cc": {
-          "type": "string"
+          "$ref": "#definitions/cc",
+          "type": "string",
+          "description": "Set C compiler wrapper"
         },
         "fc": {
-          "type": "string"
+          "$ref": "#definitions/fc",
+          "type": "string",
+          "description": "Set Fortran compiler wrapper"
         },
         "cxx": {
-          "type": "string"
+          "$ref": "#definitions/cxx",
+          "type": "string",
+          "description": "Set C++ compiler wrapper"
         },
         "cflags": {
-          "type": "string"
+          "$ref": "#definitions/cflags",
+          "type": "string",
+          "description": "Set C compiler flags."
         },
         "fflags": {
-          "type": "string"
+          "$ref": "#definitions/fflags",
+          "type": "string",
+          "description": "Set Fortran compiler flags."
+        },
+        "cxxflags": {
+          "$ref": "#definitions/cxxflags",
+          "type": "string",
+          "description": "Set C++ compiler flags."
         },
         "ldflags": {
-          "type": "string"
+          "$ref": "#definitions/ldflags",
+          "type": "string",
+          "description": "Set linker flags"
         },
         "cppflags": {
-          "type": "string"
+          "$ref": "#definitions/cppflags",
+          "type": "string",
+          "description": "Set C or C++ preprocessor flags"
+        },
+        "sbatch": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "bsub": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "cobalt": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "batch": {
+          "$ref": "definitions.schema.json#/definitions/batch",
+          "type": "object",
+          "description": "The ``batch`` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.",
+          "additionalProperties": false,
+          "properties": {
+            "account": {
+              "type": "string",
+              "description": "Specify Account to charge job"
+            },
+            "begintime": {
+              "type": "string",
+              "description": "Specify begin time when job will start allocation"
+            },
+            "cpucount": {
+              "type": "string",
+              "description": "Specify number of CPU to allocate"
+            },
+            "email-address": {
+              "type": "string",
+              "description": "Email Address to notify on Job State Changes"
+            },
+            "exclusive": {
+              "type": "boolean",
+              "description": "Specify if job needs to run in exclusive mode"
+            },
+            "memory": {
+              "type": "string",
+              "description": "Specify Memory Size for Job"
+            },
+            "network": {
+              "type": "string",
+              "description": "Specify network resource requirement for job"
+            },
+            "nodecount": {
+              "type": "string",
+              "description": "Specify number of Nodes to allocate"
+            },
+            "qos": {
+              "type": "string",
+              "description": "Specify Quality of Service (QOS)"
+            },
+            "queue": {
+              "type": "string",
+              "description": "Specify Job Queue"
+            },
+            "tasks-per-core": {
+              "type": "string",
+              "description": "Request number of tasks to be invoked on each core. "
+            },
+            "tasks-per-node": {
+              "type": "string",
+              "description": "Request number of tasks to be invoked on each node. "
+            },
+            "tasks-per-socket": {
+              "type": "string",
+              "description": "Request the maximum tasks to be invoked on each socket. "
+            },
+            "timelimit": {
+              "type": "string",
+              "description": "Specify Job timelimit"
+            }
+          }
+        },
+        "BB": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "Create burst buffer space, this specifies #BB options in your test.",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "DW": {
+          "$ref": "#/definitions/list_of_strings",
+          "description": "Specify Data Warp option (#DW) when using burst buffer.",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
         },
         "env": {
           "$ref": "definitions.schema.json#/definitions/env",
@@ -752,22 +1309,27 @@ The default value is:
           }
         },
         "pre_build": {
+          "$ref": "#definitions/pre_build",
           "type": "string",
           "description": "Run commands before building program"
         },
         "post_build": {
+          "$ref": "#definitions/post_build",
           "type": "string",
           "description": "Run commands after building program"
         },
         "pre_run": {
+          "$ref": "#definitions/pre_run",
           "type": "string",
           "description": "Run commands before running program"
         },
         "post_run": {
+          "$ref": "#definitions/post_run",
           "type": "string",
           "description": "Run commands after running program"
         },
         "run": {
+          "$ref": "#definitions/run",
           "type": "string",
           "description": "Run command for launching compiled binary"
         }
