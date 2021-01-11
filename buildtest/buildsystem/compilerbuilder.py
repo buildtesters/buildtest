@@ -1,5 +1,4 @@
 import os
-import json
 import shutil
 
 from buildtest.buildsystem.base import BuilderBase
