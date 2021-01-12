@@ -23,9 +23,9 @@ Discovered Buildspecs:
 
  name        | id       | type   | executor     | tags                    | testpath
 -------------+----------+--------+--------------+-------------------------+---------------------------------------------------------------------------------------------------------
- circle_area | 24f2e720 | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
- circle_area | aac94285 | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/5/stage/generate.sh
- circle_area | 29732c42 | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/6/stage/generate.sh
+ circle_area | 09345ed7 | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/3/stage/generate.sh
+ circle_area | 4254f1ce | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
+ circle_area | 4f210a1e | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/5/stage/generate.sh
 
 
 
@@ -35,9 +35,9 @@ Discovered Buildspecs:
     
  name        | id       | executor     | status   |   returncode | testpath
 -------------+----------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------
- circle_area | 24f2e720 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
- circle_area | aac94285 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/5/stage/generate.sh
- circle_area | 29732c42 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/6/stage/generate.sh
+ circle_area | 09345ed7 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/3/stage/generate.sh
+ circle_area | 4254f1ce | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/4/stage/generate.sh
+ circle_area | 4f210a1e | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/5/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

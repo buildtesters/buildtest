@@ -1,0 +1,8 @@
+version: "1.0"
+buildspecs:
+  kernel_swapusage:
+    type: script
+    description: "Retrieve Kernel Swap Usage"
+    tags: [configuration]
+    executor: local.bash
+    run: /usr/sbin/sysctl kernel.swapusage

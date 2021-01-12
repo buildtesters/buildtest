@@ -723,7 +723,8 @@ def func_build_subcmd(args, buildtest_config):
     stage = args.stage
     executor = BuildExecutor(buildtest_config)
 
-    buildspec_filters = {"tags": args.tags, "executors": args.executor}
+    # buildspec_filters = {"tags": args.tags, "executors": args.executor}
+    buildspec_filters = {"tags": args.filter_tags, "executors": args.executor}
 
     # Parse all buildspecs and skip any buildspecs that fail validation, return type
     # is a builder object used for building test.

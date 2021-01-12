@@ -68,9 +68,8 @@ follows::
     There are no config files to process.
 
 
-buildtest can perform a directory build for instance let's build
-for directory ``tests/examples/buildspecs`` where buildtest will recursively
-search for all ``.yml`` files
+buildtest can build all buildspecs in a directory, in example below, buildtest
+will recursively search for all ``.yml`` files and attempt to build them.
 
 .. program-output:: cat docgen/getting_started/buildspec-directory.txt
 
@@ -97,10 +96,10 @@ Buildtest provides ``--exclude`` option or short option ``-x`` to exclude
 buildspecs which can be useful when you want to build all buildspecs in a directory
 but exclude a few buildspecs or exclude a sub-directory.
 
-For example we can build all buildspecs in ``examples`` but exclude file ``examples/systemd.yml``
+For example we can build all buildspecs in ``examples`` but exclude file ``examples/vars.yml``
 by running::
 
-    $ buildtest build -b examples -x examples/systemd.yml
+    $ buildtest build -b examples -x examples/vars.yml
 
 buildtest will discover all Buildspecs and then exclude any buildspecs specified
 by ``-x`` option. You can specify ``-x`` multiple times just like ``-b`` option.
@@ -118,12 +117,12 @@ true if you were to specify files instead of directory.
 Building By Tags
 ~~~~~~~~~~~~~~~~~
 
-buildtest can perform builds by tags by using ``--tags`` option. In order to use this
-feature, buildspecs must be in cache so you must run ``buildtest buildspec find``
+buildtest can perform builds by tags by using ``--tags`` or short option (``-t``).
+In order to use this feature, buildspecs must be in cache so you must run ``buildtest buildspec find``
 or see :ref:`find_buildspecs`.
 
 To build all tutorials tests you can perform ``buildtest build --tags tutorials``.
-In the buildspec there is a field ``tags: [tutorials]`` to classify tests.
+In buildspec file, there is a field ``tags: [tutorials]`` to classify tests.
 buildtest will read the cache file ``var/buildspec-cache.json`` and see which
 buildspecs have a matching tag. You should run ``buildtest buildspec find``
 atleast once, in order to detect cache file.
@@ -131,33 +130,41 @@ atleast once, in order to detect cache file.
 .. program-output::  cat docgen/getting_started/tags.txt
 
 You can build by multiple tags by specifying ``--tags`` multiple times. In next
-example we build all tests with tag name ``compiler`` and ``python``.
+example we build all tests with tag name ``pass`` and ``python``.
 
 .. program-output:: cat docgen/getting_started/multi-tags.txt
 
-When multiple tags are specified, we search each tag independently and if it
-is found in the buildspec cache we retrieve the test. To see a list of available
-tags in your buildspec cache see :ref:`buildspec_tags`.
+When multiple tags are specified, we search each tag independently and if it's
+found in the buildspec cache we retrieve the buildspec file and add file to queue.
+This queue is a list of buildspecs that buildtest will process (i.e ``parse``, ``build``, ``run``).
+To see a list of available tags in your buildspec cache see :ref:`buildspec_tags`.
 
-.. Note:: The ``--tags`` is used for discovering buildspecs and filtering tests during build phase.
-  For example a buildspec file (``system.yml``) that contain three tests **hostname_check**, **timeout**, and **ping_test**
-  are generally all run by default if you run as ``buildtest build -b system.yml``, but if you
-  specify ``--tags``, buildtest will exclude tests that don't have a matching tagname. It is possible
-  ``buildtest build --tags system`` can discover buildspec file ``system.yml`` but only
-  tests **timeout** and **ping_test** are built which have taa **system**  while
-  **hostname_check** is skipped because it's test doesn't have the **system** tag.
+.. Note:: The ``--tags`` is used for discovering buildspec file and not filtering tests
+   by tag. If you want to filter tests by tags use ``--filter-tags``.
 
-
-You can combine ``--tags`` with ``--buildspec`` and ``--exclude`` in a single command.
+You can combine ``--tags`` with ``--buildspec`` to discover buildspecs in a single command.
 buildtest will query tags and buildspecs independently and combine all discovered
-buildspecs, any duplicates are ignored and finally we apply the exclusion list to
-remove buildspecs.
+buildspecs together. In this next example we combine ``--tags`` and ``--buildspec``
+option to discover tests.
 
-In next example we combine all of these features together. This example builds
-all test with **python** tag, and build all buildspecs in directory - **tutorials/compilers**
-but we exclude **tutorials/compilers/vecadd.yml**.
+.. program-output:: cat docgen/getting_started/combine-tags-buildspec.txt
 
-.. program-output:: cat docgen/getting_started/combine-tags-buildspec-exclude.txt
+We have an additional option to filter buildspecs by tag name on the test level. This
+is controlled by option ``--filter-tags`` or short option ``-ft``. The ``--filter-tags``
+is used in conjunction with other options like ``--buildspec``, ``--tags``, or ``--executor``
+for discovering buildspecs. Let's rerun the previous example and filter tests by ``pass``.
+Now we only see tests built with tagname ``pass`` and all remaining tests were ignored.
+
+.. program-output:: cat docgen/getting_started/combine-filter-tags-buildspec.txt
+
+The ``--filter-tags`` option can be appended multiple times to filter tests by
+multiple tags. If buildtest detects no tests were found when filtering tests by
+tag name then buildtest will report a message. In example below we see no buildspecs
+were found with tag name ``compile`` in the test.
+
+
+.. program-output:: cat docgen/getting_started/filter-tags-nobuildspecs.txt
+
 
 Building by Executors
 -----------------------
@@ -342,6 +349,7 @@ In addition, we can query buildspecs by schema type, in next example we query
 all tests using the `script` schema
 
 .. program-output:: cat docgen/buildspec_filter_type.txt
+   :ellipsis: 20
 
 Finally, we can combine multiple filter fields separated by comma, in next example
 we query all buildspecs with ``tags=tutorials``, ``executor=local.sh``, and ``type=script``
@@ -714,14 +722,13 @@ To access buildtest docs you can run::
 
   $ buildtest docs
 
-To access schema docs run::
+To access schema docs (https://buildtesters.github.io/buildtest/) you can run::
 
   $ buildtest schemadocs
 
 Logfile
 -------
 
-Currently, buildtest will write the log file for any ``buildtest build`` command
-in ``buildtest.log`` of the current directory. The logfile will be overwritten
-if you run repeative commands from same directory. A permanent log file location
-will be implemented (TBD).
+Buildtest will write the log file for any ``buildtest build`` command
+in current directory with file name ``buildtest.log``. The logfile will be overwritten
+if you run commands from same directory.

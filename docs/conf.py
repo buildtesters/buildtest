@@ -22,7 +22,7 @@ from buildtest import BUILDTEST_VERSION
 
 # -- Project information -----------------------------------------------------
 project = "buildtest"
-copyright = "2017-2020, Shahzeb Siddiqui and Vanessa Sochat"
+copyright = "2017-2021, Shahzeb Siddiqui and Vanessa Sochat"
 author = "Shahzeb Siddiqui, Vanessa Sochat"
 
 # The short X.Y version

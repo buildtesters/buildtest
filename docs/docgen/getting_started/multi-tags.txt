@@ -1,4 +1,4 @@
-$ buildtest build --tags compile --tags python 
+$ buildtest build --tags pass --tags python 
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
@@ -7,65 +7,55 @@ $ buildtest build --tags compile --tags python
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_c.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
 /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_fortran.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
-/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+/Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
     
- schemafile                | validstate   | buildspec
----------------------------+--------------+--------------------------------------------------------------------------------
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_c.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_fortran.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+-------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- name         | id       | type   | executor     | tags                    | testpath
---------------+----------+--------+--------------+-------------------------+---------------------------------------------------------------------------------------------------------
- circle_area  | ed7c83ce | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/3/stage/generate.sh
- python_hello | 8b5a3b63 | script | local.bash   | python                  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/0/stage/generate.sh
+ name                     | id       | type   | executor     | tags                    | testpath
+--------------------------+----------+--------+--------------+-------------------------+---------------------------------------------------------------------------------------------------------------------
+ python_hello             | 9774ebe1 | script | local.bash   | python                  | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/0/stage/generate.sh
+ circle_area              | 2263a661 | script | local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/2/stage/generate.sh
+ exit1_fail               | bc3cd46a | script | local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/1/stage/generate.sh
+ exit1_pass               | b5c92753 | script | local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/1/stage/generate.sh
+ returncode_list_mismatch | 4b29d670 | script | local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/1/stage/generate.sh
+ returncode_int_match     | 077ade8e | script | local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/1/stage/generate.sh
 
 
- name                 | id       | type     | executor   | tags                     | compiler    | testpath
-----------------------+----------+----------+------------+--------------------------+-------------+--------------------------------------------------------------------------------------------------------------------
- hello_c              | ba962682 | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_c/hello_c/1/stage/generate.sh
- pre_post_build_run   | 8e2b538b | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
- hello_f              | 0479e7dd | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/1/stage/generate.sh
- executable_arguments | cace7ed8 | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/1/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
     
- name                 | id       | executor     | status   |   returncode | testpath
-----------------------+----------+--------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------
- circle_area          | ed7c83ce | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/3/stage/generate.sh
- hello_c              | ba962682 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_c/hello_c/1/stage/generate.sh
- pre_post_build_run   | 8e2b538b | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
- python_hello         | 8b5a3b63 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/0/stage/generate.sh
- hello_f              | 0479e7dd | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/1/stage/generate.sh
- executable_arguments | cace7ed8 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/passing_args/executable_arguments/1/stage/generate.sh
+ name                     | id       | executor     | status   |   returncode | testpath
+--------------------------+----------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------------------
+ python_hello             | 9774ebe1 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/0/stage/generate.sh
+ circle_area              | 2263a661 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/2/stage/generate.sh
+ exit1_fail               | bc3cd46a | local.sh     | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/1/stage/generate.sh
+ exit1_pass               | b5c92753 | local.sh     | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/1/stage/generate.sh
+ returncode_list_mismatch | 4b29d670 | local.sh     | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/1/stage/generate.sh
+ returncode_int_match     | 077ade8e | local.sh     | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/1/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
 
 Executed 6 tests
-Passed Tests: 6/6 Percentage: 100.000%
-Failed Tests: 0/6 Percentage: 0.000%
+Passed Tests: 4/6 Percentage: 66.667%
+Failed Tests: 2/6 Percentage: 33.333%
 
 
 

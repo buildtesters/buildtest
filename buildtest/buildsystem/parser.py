@@ -120,6 +120,12 @@ class BuildspecParser:
         )
 
     def _check_executor(self, test):
+        """This method checks if ``executor`` property is not None and executor
+           value is found in list of available executors.
+
+           :param test: name of test in ``buildspecs`` property in buildspec file
+           :type test: str, required
+        """
 
         # extract type field from test, if not found set to None
         executor = self.recipe["buildspecs"][test].get("executor") or None
@@ -140,7 +146,7 @@ class BuildspecParser:
 
            A buildspec is composed of one or more tests, each section is validated
            with a sub-schema. The ``type`` field is used for sub-schema lookup
-           from schema library. Finally we validate loaded recipe with sub-schema
+           from schema library. Finally we validate loaded recipe with sub-schema.
         """
 
         self.logger.info(

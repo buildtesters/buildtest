@@ -1,0 +1,54 @@
+$ buildtest build --tags pass --filter-tags pass --buildspec tutorials/python-hello.yml 
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+    
+
+Discovered Buildspecs:
+ 
+/Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+[python_hello] test is skipped because it is not in tag filter list: ['pass']
+[exit1_fail] test is skipped because it is not in tag filter list: ['pass']
+[returncode_list_mismatch] test is skipped because it is not in tag filter list: ['pass']
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+    
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+-------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ name                 | id       | type   | executor   | tags                  | testpath
+----------------------+----------+--------+------------+-----------------------+-----------------------------------------------------------------------------------------------------------------
+ exit1_pass           | af151887 | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/3/stage/generate.sh
+ returncode_int_match | 652a42f1 | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/3/stage/generate.sh
+
+
+
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+    
+ name                 | id       | executor   | status   |   returncode | testpath
+----------------------+----------+------------+----------+--------------+-----------------------------------------------------------------------------------------------------------------
+ exit1_pass           | af151887 | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/3/stage/generate.sh
+ returncode_int_match | 652a42f1 | local.sh   | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/3/stage/generate.sh
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+
+Executed 2 tests
+Passed Tests: 2/2 Percentage: 100.000%
+Failed Tests: 0/2 Percentage: 0.000%
+
+
+

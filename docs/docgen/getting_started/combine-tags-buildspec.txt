@@ -1,0 +1,57 @@
+$ buildtest build --tags pass --buildspec tutorials/python-hello.yml 
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+    
+
+Discovered Buildspecs:
+ 
+/Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+    
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+-------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ name                     | id       | type   | executor   | tags                  | testpath
+--------------------------+----------+--------+------------+-----------------------+---------------------------------------------------------------------------------------------------------------------
+ python_hello             | 39d01193 | script | local.bash | python                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
+ exit1_fail               | 3c3b3521 | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/2/stage/generate.sh
+ exit1_pass               | 1b9235c8 | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/2/stage/generate.sh
+ returncode_list_mismatch | 76ae087c | script | local.sh   | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/2/stage/generate.sh
+ returncode_int_match     | b1d162f9 | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/2/stage/generate.sh
+
+
+
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
+    
+ name                     | id       | executor   | status   |   returncode | testpath
+--------------------------+----------+------------+----------+--------------+---------------------------------------------------------------------------------------------------------------------
+ python_hello             | 39d01193 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/python-hello/python_hello/1/stage/generate.sh
+ exit1_fail               | 3c3b3521 | local.sh   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_fail/2/stage/generate.sh
+ exit1_pass               | 1b9235c8 | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/2/stage/generate.sh
+ returncode_list_mismatch | 76ae087c | local.sh   | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_list_mismatch/2/stage/generate.sh
+ returncode_int_match     | b1d162f9 | local.sh   | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/2/stage/generate.sh
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+
+Executed 5 tests
+Passed Tests: 3/5 Percentage: 60.000%
+Failed Tests: 2/5 Percentage: 40.000%
+
+
+

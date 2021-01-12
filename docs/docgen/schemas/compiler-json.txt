@@ -12,59 +12,249 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
     "executor"
   ],
   "definitions": {
+    "cc": {
+      "type": "string",
+      "description": "Set C compiler wrapper"
+    },
+    "fc": {
+      "type": "string",
+      "description": "Set Fortran compiler wrapper"
+    },
+    "cxx": {
+      "type": "string",
+      "description": "Set C++ compiler wrapper"
+    },
+    "cflags": {
+      "type": "string",
+      "description": "Set C compiler flags."
+    },
+    "fflags": {
+      "type": "string",
+      "description": "Set Fortran compiler flags."
+    },
+    "cxxflags": {
+      "type": "string",
+      "description": "Set C++ compiler flags."
+    },
+    "ldflags": {
+      "type": "string",
+      "description": "Set linker flags"
+    },
+    "cppflags": {
+      "type": "string",
+      "description": "Set C or C++ preprocessor flags"
+    },
+    "pre_build": {
+      "type": "string",
+      "description": "Run commands before building program"
+    },
+    "post_build": {
+      "type": "string",
+      "description": "Run commands after building program"
+    },
+    "pre_run": {
+      "type": "string",
+      "description": "Run commands before running program"
+    },
+    "post_run": {
+      "type": "string",
+      "description": "Run commands after running program"
+    },
+    "run": {
+      "type": "string",
+      "description": "Run command for launching compiled binary"
+    },
+    "default_compiler_all": {
+      "type": "object",
+      "description": "Specify compiler configuration for all compiler groups. Use the ``all`` property if configuration is shared across compiler groups. This property can be overridden in compiler group or named compiler in ``config`` section.",
+      "additionalProperties": false,
+      "properties": {
+        "sbatch": {
+          "$ref": "definitions.schema.json#/definitions/sbatch"
+        },
+        "bsub": {
+          "$ref": "definitions.schema.json#/definitions/bsub"
+        },
+        "cobalt": {
+          "$ref": "definitions.schema.json#/definitions/cobalt"
+        },
+        "batch": {
+          "$ref": "definitions.schema.json#/definitions/batch"
+        },
+        "BB": {
+          "$ref": "definitions.schema.json#/definitions/BB"
+        },
+        "DW": {
+          "$ref": "definitions.schema.json#/definitions/DW"
+        },
+        "env": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "vars": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "status": {
+          "$ref": "definitions.schema.json#/definitions/status"
+        },
+        "pre_build": {
+          "$ref": "#definitions/pre_build"
+        },
+        "post_build": {
+          "$ref": "#definitions/post_build"
+        },
+        "pre_run": {
+          "$ref": "#definitions/pre_run"
+        },
+        "post_run": {
+          "$ref": "#definitions/post_run"
+        },
+        "run": {
+          "$ref": "#definitions/run"
+        }
+      }
+    },
     "default_compiler_config": {
       "type": "object",
+      "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
       "properties": {
         "cc": {
-          "type": "string"
+          "$ref": "#definitions/cc"
         },
         "fc": {
-          "type": "string"
+          "$ref": "#definitions/fc"
         },
         "cxx": {
-          "type": "string"
+          "$ref": "#definitions/cxx"
         },
         "cflags": {
-          "type": "string"
+          "$ref": "#definitions/cflags"
         },
         "fflags": {
-          "type": "string"
+          "$ref": "#definitions/fflags"
+        },
+        "cxxflags": {
+          "$ref": "#definitions/cxxflags"
         },
         "ldflags": {
-          "type": "string"
+          "$ref": "#definitions/ldflags"
         },
         "cppflags": {
-          "type": "string"
+          "$ref": "#definitions/cppflags"
+        },
+        "sbatch": {
+          "$ref": "definitions.schema.json#/definitions/sbatch"
+        },
+        "bsub": {
+          "$ref": "definitions.schema.json#/definitions/bsub"
+        },
+        "cobalt": {
+          "$ref": "definitions.schema.json#/definitions/cobalt"
+        },
+        "batch": {
+          "$ref": "definitions.schema.json#/definitions/batch"
+        },
+        "BB": {
+          "$ref": "definitions.schema.json#/definitions/BB"
+        },
+        "DW": {
+          "$ref": "definitions.schema.json#/definitions/DW"
+        },
+        "env": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "vars": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "status": {
+          "$ref": "definitions.schema.json#/definitions/status"
+        },
+        "pre_build": {
+          "$ref": "#definitions/pre_build"
+        },
+        "post_build": {
+          "$ref": "#definitions/post_build"
+        },
+        "pre_run": {
+          "$ref": "#definitions/pre_run"
+        },
+        "post_run": {
+          "$ref": "#definitions/post_run"
+        },
+        "run": {
+          "$ref": "#definitions/run"
         }
       }
     },
     "compiler_declaration": {
       "type": "object",
+      "description": "Specify compiler configuration at compiler level. The ``config`` section has highest precedence when searching compiler configuration. This overrides fields found in compiler group and ``all`` property",
       "additionalProperties": false,
       "properties": {
         "cc": {
-          "type": "string"
+          "$ref": "#definitions/cc"
         },
         "fc": {
-          "type": "string"
+          "$ref": "#definitions/fc"
         },
         "cxx": {
-          "type": "string"
+          "$ref": "#definitions/cxx"
         },
         "cflags": {
-          "type": "string"
-        },
-        "cxxflags": {
-          "type": "string"
+          "$ref": "#definitions/cflags"
         },
         "fflags": {
-          "type": "string"
+          "$ref": "#definitions/fflags"
+        },
+        "cxxflags": {
+          "$ref": "#definitions/cxxflags"
         },
         "ldflags": {
-          "type": "string"
+          "$ref": "#definitions/ldflags"
         },
         "cppflags": {
-          "type": "string"
+          "$ref": "#definitions/cppflags"
+        },
+        "sbatch": {
+          "$ref": "definitions.schema.json#/definitions/sbatch"
+        },
+        "bsub": {
+          "$ref": "definitions.schema.json#/definitions/bsub"
+        },
+        "cobalt": {
+          "$ref": "definitions.schema.json#/definitions/cobalt"
+        },
+        "batch": {
+          "$ref": "definitions.schema.json#/definitions/batch"
+        },
+        "BB": {
+          "$ref": "definitions.schema.json#/definitions/BB"
+        },
+        "DW": {
+          "$ref": "definitions.schema.json#/definitions/DW"
+        },
+        "env": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "vars": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "status": {
+          "$ref": "definitions.schema.json#/definitions/status"
+        },
+        "pre_build": {
+          "$ref": "#definitions/pre_build"
+        },
+        "post_build": {
+          "$ref": "#definitions/post_build"
+        },
+        "pre_run": {
+          "$ref": "#definitions/pre_run"
+        },
+        "post_run": {
+          "$ref": "#definitions/post_run"
+        },
+        "run": {
+          "$ref": "#definitions/run"
         },
         "module": {
           "type": "object",
@@ -102,7 +292,7 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
     "type": {
       "type": "string",
       "pattern": "^compiler$",
-      "description": "Select schema type to use when validating buildspec. This must be of set to ``compiler``"
+      "description": "Select schema type to use when validating buildspec. This must be of set to ``compiler``."
     },
     "description": {
       "$ref": "definitions.schema.json#/definitions/description"
@@ -112,17 +302,23 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
       "required": [
         "name"
       ],
+      "additionalProperties": false,
       "properties": {
         "name": {
+          "description": "Specify a list of regular expression to search compiler instance from buildtest settings.",
           "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "exclude": {
+          "description": "Specify a list of named compilers to exclude when building test based on regular expression specified in ``name`` property. The ``exclude`` property has no effect if named compiler not found based on regular expression.",
           "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "default": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "all": {
+              "$ref": "#definitions/default_compiler_all"
+            },
             "gcc": {
               "$ref": "#definitions/default_compiler_config"
             },
@@ -139,6 +335,7 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
         },
         "config": {
           "type": "object",
+          "description": "Specify compiler configuration based on named compilers.",
           "patternProperties": {
             "^.*$": {
               "$ref": "#definitions/compiler_declaration"
@@ -154,129 +351,14 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
     "executor": {
       "$ref": "definitions.schema.json#/definitions/executor"
     },
-    "sbatch": {
-      "$ref": "definitions.schema.json#/definitions/sbatch"
-    },
-    "bsub": {
-      "$ref": "definitions.schema.json#/definitions/bsub"
-    },
-    "cobalt": {
-      "$ref": "definitions.schema.json#/definitions/cobalt"
-    },
-    "batch": {
-      "$ref": "definitions.schema.json#/definitions/batch"
-    },
-    "BB": {
-      "$ref": "definitions.schema.json#/definitions/BB"
-    },
-    "DW": {
-      "$ref": "definitions.schema.json#/definitions/DW"
-    },
-    "env": {
-      "$ref": "definitions.schema.json#/definitions/env"
-    },
-    "vars": {
-      "$ref": "definitions.schema.json#/definitions/env"
-    },
     "run_only": {
       "$ref": "definitions.schema.json#/definitions/run_only"
-    },
-    "status": {
-      "$ref": "definitions.schema.json#/definitions/status"
     },
     "skip": {
       "$ref": "definitions.schema.json#/definitions/skip"
     },
     "tags": {
       "$ref": "definitions.schema.json#/definitions/tags"
-    },
-    "pre_build": {
-      "type": "string",
-      "description": "Run commands before building program"
-    },
-    "post_build": {
-      "type": "string",
-      "description": "Run commands after building program"
-    },
-    "build": {
-      "type": "object",
-      "description": "The ``build`` section is used for compiling a single program, this section specifies fields for setting C, C++, Fortran compiler and flags including CPP flags and linker flags",
-      "properties": {
-        "name": {
-          "type": "string",
-          "enum": [
-            "gnu",
-            "intel",
-            "pgi",
-            "cray"
-          ],
-          "description": "Select the compiler class to use, buildtest will set cc, cxx, and fc compiler wrapper based on compiler name"
-        },
-        "cc": {
-          "type": "string",
-          "description": "Set C compiler. Use this field to override buildtest selection for **cc**"
-        },
-        "fc": {
-          "type": "string",
-          "description": "Set Fortran compiler. Use this field to override buildtest selection for **fc**"
-        },
-        "cxx": {
-          "type": "string",
-          "description": "Set C++ compiler. Use this field to override buildtest selection for **cxx**"
-        },
-        "source": {
-          "type": "string",
-          "description": "Specify a source file for compilation, the file can be relative path to buildspec or an absolute path"
-        },
-        "cflags": {
-          "type": "string",
-          "description": "Set C compiler flags (**cflags**)"
-        },
-        "cxxflags": {
-          "type": "string",
-          "description": "Set C++ compiler flags (**cxxflags**)"
-        },
-        "fflags": {
-          "type": "string",
-          "description": "Set Fortran compiler flags (**fflags**)"
-        },
-        "cppflags": {
-          "type": "string",
-          "description": "Set Pre Processor Flags (**cppflags**)"
-        },
-        "ldflags": {
-          "type": "string",
-          "description": "Set linker flags (**ldflags**)"
-        }
-      },
-      "required": [
-        "source",
-        "name"
-      ],
-      "additionalProperties": false
-    },
-    "pre_run": {
-      "type": "string",
-      "description": "Run commands before running program"
-    },
-    "post_run": {
-      "type": "string",
-      "description": "Run commands after running program"
-    },
-    "run": {
-      "type": "object",
-      "description": "The ``run`` section is used for specifying launch configuration of executable",
-      "properties": {
-        "launcher": {
-          "type": "string",
-          "description": "The ``launcher`` field is inserted before the executable. This can be used when running programs with ``mpirun``, ``mpiexec``, ``srun``, etc... You may specify launcher options with this field"
-        },
-        "args": {
-          "type": "string",
-          "description": "The ``args`` field is used to specify arguments to executable."
-        }
-      },
-      "additionalProperties": false
     }
   }
 }

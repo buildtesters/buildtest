@@ -389,7 +389,7 @@ below is an example test.
 The first test **skip** will be ignored by buildtest because ``skip: true`` is defined
 while **unskipped** will be processed as usual.
 
-.. Note:: Ommitting line ``skip: No`` from test **unskipped** will result in same behavior
+.. Note:: Omitting line ``skip: No`` from test **unskipped** will result in same behavior
 
 .. Note::
 
