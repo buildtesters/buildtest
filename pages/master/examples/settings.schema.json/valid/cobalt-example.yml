@@ -1,0 +1,13 @@
+moduletool: lmod
+load_default_buildspecs: True
+executors:
+  defaults:
+     launcher: qsub
+     max_pend_time: 30
+
+  cobalt:
+    knl:
+      queue: knl
+
+    haswell:
+      queue: haswell

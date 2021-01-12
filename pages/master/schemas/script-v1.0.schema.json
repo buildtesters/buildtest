@@ -1,0 +1,71 @@
+{
+  "$id": "script-v1.0.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "script schema version 1.0",
+  "description": "The script schema is of ``type: script`` in sub-schema which is used for running shell scripts",
+  "type": "object",
+  "required": ["type", "run", "executor"],
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^script$",
+      "description": "Select schema type to use when validating buildspec. This must be of set to 'script'"
+    },
+    "description": {
+      "$ref": "definitions.schema.json#/definitions/description"
+    },
+    "sbatch": {
+      "$ref": "definitions.schema.json#/definitions/sbatch"
+    },
+    "bsub": {
+      "$ref": "definitions.schema.json#/definitions/bsub"
+    },
+    "cobalt": {
+      "$ref": "definitions.schema.json#/definitions/cobalt"
+    },
+    "batch": {
+      "$ref": "definitions.schema.json#/definitions/batch"
+    },
+    "BB": {
+      "$ref": "definitions.schema.json#/definitions/BB"
+    },
+    "DW": {
+      "$ref": "definitions.schema.json#/definitions/DW"
+    },
+    "env": {
+      "$ref": "definitions.schema.json#/definitions/env"
+    },
+    "vars": {
+      "$ref": "definitions.schema.json#/definitions/env"
+    },
+    "executor": {
+      "$ref": "definitions.schema.json#/definitions/executor"
+    },
+    "run_only": {
+      "$ref": "definitions.schema.json#/definitions/run_only"
+    },
+    "shell": {
+      "type": "string",
+      "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed",
+      "pattern": "^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|bash|sh|csh|tcsh|zsh|python).*"
+    },
+    "shebang": {
+      "type": "string",
+      "description": "Specify a custom shebang line. If not specified buildtest will automatically add it in the test script."
+    },
+    "run": {
+      "type": "string",
+      "description": "A script to run using the default shell."
+    },
+    "status": {
+      "$ref": "definitions.schema.json#/definitions/status"
+    },
+    "skip": {
+      "$ref": "definitions.schema.json#/definitions/skip"
+    },
+    "tags": {
+      "$ref": "definitions.schema.json#/definitions/tags"
+    }
+  }
+}

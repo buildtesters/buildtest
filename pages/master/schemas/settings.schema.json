@@ -1,0 +1,315 @@
+{
+  "$id": "settings.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "buildtest configuration schema",
+  "type": "object",
+  "required": ["executors", "moduletool", "load_default_buildspecs"],
+  "additionalProperties": false,
+  "properties": {
+      "additionalProperties": false,
+      "buildspec_roots": {
+        "type": "array",
+        "items": { "type": "string"},
+        "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
+      },
+      "load_default_buildspecs": {
+        "type": "boolean",
+        "description": "Specify whether buildtest should automatically load  uildspecs provided in buildtest repo into buildspec cache"
+      },
+      "testdir": {
+        "type": "string",
+        "description": "Specify full path to test directory where buildtest will write tests."
+      },
+      "moduletool": {
+        "type": "string",
+        "description": "Specify modules tool used for interacting with ``module`` command. ",
+        "enum": ["environment-modules", "lmod", "N/A"]
+      },
+      "compilers": {
+        "type": "object",
+        "description": "Declare compiler section for defining system compilers that can be referenced in buildspec.",
+        "additionalProperties": false,
+        "properties": {
+          "find": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Find compilers based on module names",
+            "properties": {
+              "gcc": { "type": "string" },
+              "intel": { "type": "string" },
+              "cray": { "type": "string" },
+              "clang": { "type": "string" },
+              "cuda": { "type": "string" },
+              "pgi": { "type": "string" }
+            }
+          },
+          "compiler": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Start of compiler declaration",
+            "properties": {
+              "gcc": {
+                "description": "Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler. The GNU compiler wrapper are ``gcc``, ``g++`` and ``gfortran``. ",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/compiler_section"
+                  }
+                }
+              },
+              "intel": {
+                "description": "Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler. The Intel compiler wrapper are ``icc``, ``icpc`` and ``ifort``. ",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/compiler_section"
+                  }
+                }
+              },
+              "cray": {
+                "description": "Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler. The Cray compiler wrapper are ``cc``, ``CC`` and ``ftn``.",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/compiler_section"
+                  }
+                }
+              },
+              "pgi": {
+                "description": "Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler. The PGI compiler wrapper are ``pgcc``, ``pgc++`` and ``pgfortran``.",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/compiler_section"
+                  }
+                }
+              },
+              "clang": {
+                "description": "Declaration of one or more Clang compilers where we define C, C++ compiler. The Clang compiler wrapper are ``clang``, ``clang++``.",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/clang"
+                  }
+                }
+              },
+              "cuda": {
+                "description": "Declaration of one or more Cuda compilers where we define C compiler. The Cuda compiler wrapper is ``nvcc``. ",
+                "type": "object",
+                "patternProperties": {
+                  "^.*$": {
+                    "$ref": "#/definitions/cuda"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "executors": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``cobalt``. The executors are referenced in buildspec using ``executor`` field.",
+        "properties": {
+           "defaults": {
+            "type": "object",
+             "description": "Specify default executor settings for all executors",
+            "additionalProperties": false,
+             "properties": {
+               "pollinterval": {
+                 "type":  "integer",
+                 "description": "Specify poll interval in seconds after job submission, where buildtest will sleep and poll all jobs for job states. This field can be configured based on your preference. Excessive polling every few seconds can result in system degradation. ",
+                 "minimum": 10,
+                 "maximum": 300,
+                 "default": 30
+               },
+               "launcher": {
+                 "type": "string",
+                 "enum": ["sbatch", "bsub", "qsub"],
+                 "description": "Specify batch launcher to use when submitting jobs, this is applicable for LSF and Slurm Executors."
+               },
+               "max_pend_time": {"$ref":  "#/definitions/max_pend_time"},
+               "account": {"$ref":  "#/definitions/account"}
+             }
+          },
+          "local": {
+            "type": "object",
+            "description": "The ``local`` section is used for declaring local executors for running jobs on local machine",
+            "patternProperties": { "^.*$": { "$ref": "#/definitions/local" } }
+          },
+          "lsf": {
+            "type": "object",
+            "description": "The ``lsf`` section is used for declaring LSF executors for running jobs using LSF scheduler",
+            "patternProperties": { "^.*$": { "$ref": "#/definitions/lsf" } }
+          },
+          "slurm": {
+            "type": "object",
+            "description": "The ``slurm`` section is used for declaring Slurm executors for running jobs using Slurm scheduler",
+            "patternProperties": { "^.*$": { "$ref": "#/definitions/slurm" } }
+          },
+          "cobalt": {
+            "type": "object",
+            "description": "The ``cobalt`` section is used for declaring Cobalt executors for running jobs using Cobalt scheduler",
+            "patternProperties": { "^.*$": { "$ref": "#/definitions/cobalt" } }
+          }
+        }
+      }
+
+  },
+  "definitions": {
+      "cc": {
+        "description": "Specify path to C compiler wrapper. You may specify a compiler wrapper such as ``gcc`` assuming its in $PATH or you can use ``modules`` property to resolve path to compiler wrapper.",
+        "type": "string"
+      },
+      "cxx": {
+        "type": "string",
+        "description": "Specify path to C++ compiler wrapper. You may specify a compiler wrapper such as ``g++`` assuming its in $PATH or you can use ``modules`` property to resolve path to compiler wrapper."
+      },
+      "fc": {
+        "type": "string",
+        "description": "Specify path to Fortran compiler wrapper. You may specify a compiler wrapper such as ``gfortran`` assuming its in $PATH or you can use ``modules`` property to resolve path to compiler wrapper."
+      },
+      "clang": {
+        "description": "The clang compiler section consist of ``cc`` and ``cxx`` wrapper to specify C and C++ wrapper which are generally ``clang`` and ``clang++``",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cc", "cxx" ],
+        "properties": {
+          "cc": {"$ref":  "#/definitions/cc" },
+          "cxx": {"$ref":  "#/definitions/cxx" },
+          "module": { "$ref": "#/definitions/module" }
+        }
+      },
+      "cuda": {
+        "description": "The cuda compiler section consist of ``cc``  where you generally specify path to ``nvcc``",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cc"],
+        "properties": {
+          "cc": {"$ref":  "#/definitions/cc" },
+          "module": { "$ref": "#/definitions/module" }
+        }
+      },
+      "compiler_section": {
+        "description": "A compiler section is composed of ``cc``, ``cxx`` and ``fc`` wrapper these are required when you need to specify compiler wrapper.",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cc", "cxx", "fc"],
+        "properties": {
+          "cc": {"$ref":  "#/definitions/cc" },
+          "cxx": {"$ref":  "#/definitions/cxx" },
+          "fc": {"$ref":  "#/definitions/fc" },
+          "module": { "$ref": "#/definitions/module" }
+        }
+      },
+      "unique_string_array": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string"
+        }
+      },
+      "module": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+           "purge": {
+             "type": "boolean",
+              "description": "Run ``module purge`` if purge is set"
+           },
+           "load": {
+             "$ref": "definitions.schema.json#/definitions/list_of_strings",
+             "description": "Load one or more modules via ``module load``"
+           },
+           "swap": {
+             "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
+             "type": "array",
+             "uniqueItems": true,
+             "minItems": 2,
+             "maxItems": 2,
+             "items": {
+               "type": "string"
+             }
+           }
+         }
+      },
+      "script": {
+        "type": "array",
+        "additionalProperties": false,
+        "items": {
+          "type": "string"
+        }
+      },
+      "max_pend_time": {
+         "type":  "integer",
+         "description": "Cancel job if it is still pending in queue beyond max_pend_time",
+         "minimum": 10,
+         "default": 90
+      },
+      "account": {
+        "type": "string",
+        "description": "Specify Job Account for charging resources"
+      },
+      "local": {
+          "type": "object",
+          "description": "An instance object of local executor",
+          "additionalProperties": false,
+          "required": ["shell"],
+          "properties": {
+              "description": {"type": "string", "description":  "description field for documenting your executor"},
+              "shell":  {"type": "string",  "description": "Specify the shell launcher you want to use when running tests locally", "pattern": "^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|sh|bash|csh|tcsh|zsh|python).*" },
+              "before_script": { "#ref":  "#/definitions/script" },
+              "after_script": { "#ref":  "#/definitions/script" }
+          }
+       },
+
+      "slurm": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "An instance object of slurm executor",
+          "properties": {
+              "description": {"type": "string", "description": "description field for documenting your executor"},
+              "launcher": { "type": "string", "enum": ["sbatch"], "description": "Specify the slurm batch scheduler to use. This overrides the default ``launcher`` field. This must be ``sbatch``. " },
+              "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any other options for ``sbatch`` used by this executor for running all jobs." },
+              "cluster": {"type":  "string", "description": "Specify the slurm cluster you want to use ``-M <cluster>``"},
+              "partition": {"type":  "string", "description": "Specify the slurm partition you want to use ``-p <partition>``"},
+              "qos": {"type":  "string", "description": "Specify the slurm qos you want to use ``-q <qos>``"},
+              "before_script": { "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.", "#ref":  "#/definitions/script" },
+              "after_script": { "description": "The ``after_script`` section can be used to specify commands at end of test. The script will be sourced in active shell.","#ref":  "#/definitions/script" },
+              "max_pend_time": {"description": "overrides default ``max_pend_time`` value", "$ref":  "#/definitions/max_pend_time"},
+              "account": {"description": "overrides default ``account`` value", "$ref":  "#/definitions/account"}
+           }
+       },
+      "lsf": {
+          "type": "object",
+          "description": "An instance object of lsf executor",
+          "additionalProperties": false,
+          "properties": {
+              "description": {"type": "string", "description": "description field for documenting your executor"},
+              "launcher": { "type": "string", "enum": ["bsub"], "description": "Specify the lsf batch scheduler to use. This overrides the default ``launcher`` field. It must be ``bsub``. " },
+              "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any options for ``bsub`` for this executor when running all jobs associated to this executor" },
+              "queue": {"type":  "string", "description": "Specify the lsf queue you want to use ``-q <queue>``"},
+              "before_script": { "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.", "#ref":  "#/definitions/script" },
+              "after_script": { "description": "The ``after_script`` section can be used to specify commands at end of test. The script will be sourced in active shell.","#ref":  "#/definitions/script" },
+              "max_pend_time": {"description": "overrides default ``max_pend_time`` value", "$ref":  "#/definitions/max_pend_time"},
+              "account": {"description": "overrides default ``account`` value", "$ref":  "#/definitions/account"}
+          }
+       },
+      "cobalt": {
+          "type": "object",
+          "description": "An instance object of cobalt executor",
+          "additionalProperties": false,
+          "properties": {
+              "description": {"type": "string", "description": "description field for documenting your executor"},
+              "launcher": { "type": "string", "enum": ["qsub"], "description": "Specify the cobalt batch scheduler to use. This overrides the default ``launcher`` field. It must be ``qsub``. " },
+              "options": { "type": "array", "items": {"type": "string"}, "description": "Specify any options for ``qsub`` for this executor when running all jobs associated to this executor" },
+              "queue": {"type":  "string", "description": "Specify the lsf queue you want to use ``-q <queue>``"},
+              "before_script": { "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.", "#ref":  "#/definitions/script" },
+              "after_script": { "description": "The ``after_script`` section can be used to specify commands at end of test. The script will be sourced in active shell.","#ref":  "#/definitions/script" },
+              "max_pend_time": {"description": "overrides default ``max_pend_time`` value", "$ref":  "#/definitions/max_pend_time"},
+              "account": {"description": "overrides default ``account`` value", "$ref":  "#/definitions/account"}
+          }
+       }
+    }
+}
+
