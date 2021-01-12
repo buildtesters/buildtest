@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v0.9.2 (TBD)
-------------
+v0.9.2 (Jan 12th, 2021)
+-----------------------
 
 In this version, we added significant changes to ``compiler-v1.0-schema.json`` to support compiler test. This includes
 ability for building a single test across multiple compiler instance and across compiler groups (gcc, intel, cray, etc...) User
@@ -12,7 +12,14 @@ compilers. In addition, one can override properties at the compiler level.
 This version introduced significant refactor in codebase responsible for building, running and buildspec operation. We introduce
 classes when appropriate. We added a Gitlab `CI job <https://github.com/buildtesters/buildtest/blob/devel/.gitlab-ci.yml>`_ at Cori 
 to run regression test and report coverage report to codecov. This pipeline is run manually and  functionality will change until 
-we have stable environment for running PR pipelines.  
+we have stable environment for running PR pipelines.
+
+We changed the behavior of ``buildtest build --tags`` previously it was used for discovering buildspecs
+and filtering test, now it only discovers test. A new option was added ``--filter-tags`` which
+is used for filtering tests by tagname. Previously if one used ``--tags`` with ``--buildspec`` or
+``--executor`` would result in filtered tests by tags and buildtest may ignore some tests that
+were expected to run. With this change we can better support both use-case where one wants to discover
+tests by tag and filter them. This was implemented in `#587 <https://github.com/buildtesters/buildtest/pull/587>`_.
 
 - Refactor implementation for ``buildtest report`` into class see `#555 <https://github.com/buildtesters/buildtest/pull/555>`_
 - The ``module`` property is changed from ``array`` to ``object`` type which allows one to specify ``module load``, ``module swap``, ``module purge``. See `#556 <https://github.com/buildtesters/buildtest/pull/556>`_
