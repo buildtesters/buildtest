@@ -1,7 +1,7 @@
 #!/bin/csh
 # MIT License
 
-# Copyright (c) 2017-2020, Shahzeb Siddiqui and Vanessa Sochat
+# Copyright (c) 2017-2021, Shahzeb Siddiqui and Vanessa Sochat
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
