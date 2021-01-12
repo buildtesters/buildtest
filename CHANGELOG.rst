@@ -1,6 +1,25 @@
 CHANGELOG
 =========
 
+v0.9.2 (TBD)
+------------
+
+In this version, we added significant changes to ``compiler-v1.0-schema.json`` to support compiler test. This includes
+ability for building a single test across multiple compiler instance and across compiler groups (gcc, intel, cray, etc...) User
+can search compilers via regular expression when building test, and specify setting common to compiler group or shared across all 
+compilers. In addition, one can override properties at the compiler level. 
+
+This version introduced significant refactor in codebase responsible for building, running and buildspec operation. We introduce
+classes when appropriate. We added a Gitlab `CI job <https://github.com/buildtesters/buildtest/blob/devel/.gitlab-ci.yml>`_ at Cori 
+to run regression test and report coverage report to codecov. This pipeline is run manually and  functionality will change until 
+we have stable environment for running PR pipelines.  
+
+- Refactor implementation for ``buildtest report`` into class see `#555 <https://github.com/buildtesters/buildtest/pull/555>`_
+- The ``module`` property is changed from ``array`` to ``object`` type which allows one to specify ``module load``, ``module swap``, ``module purge``. See `#556 <https://github.com/buildtesters/buildtest/pull/556>`_
+- Fix bug in slurm job when executor was indefinitely polling jobs in ``TIMEOUT`` and ``OUT_OF_MEMORY`` job state. See `#561 <https://github.com/buildtesters/buildtest/pull/561>`_.
+- Increase test coverage for ``buildtest inspect`` and searching compilers see `#575 <https://github.com/buildtesters/buildtest/pull/575>`_.
+
+
 v0.9.1 (Nov 24th, 2020)
 ------------------------
 
@@ -44,7 +63,7 @@ into buildtest and add custom RefResolver for validating schemas on local
 filesystem as pose to fully qualified URI.
 
 We host schema, examples, and schema docs on Github pages at
-https://buildtesters.github.io/buildtest/ by adding a`jsonschemadocs <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/jsonschemadocs.yml>`_ workflow.
+https://buildtesters.github.io/buildtest/ by adding a `jsonschemadocs <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/jsonschemadocs.yml>`_ workflow.
 We moved JSON definitions to separate file called `definitions.schema.json`.
 
 We added `setup.sh`, `setup.csh` script to install buildtest for bash/csh shells,
