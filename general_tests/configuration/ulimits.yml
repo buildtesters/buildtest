@@ -1,6 +1,6 @@
 version: "1.0"
 buildspecs:
-  ulimit_filelock:
+  ulimit_filelock_unlimited:
     executor: local.bash
     type: script
     tags: [system]
@@ -11,7 +11,7 @@ buildspecs:
         stream: stdout
         exp: "^unlimited$"
 
-  ulimit_cputime:
+  ulimit_cputime_unlimited:
     executor: local.bash
     type: script
     tags: [system]
@@ -22,7 +22,7 @@ buildspecs:
         stream: stdout
         exp: "^unlimited$"
 
-  ulimit_stacksize:
+  ulimit_stacksize_unlimited:
     executor: local.bash
     type: script
     tags: [system]
@@ -33,7 +33,7 @@ buildspecs:
         stream: stdout
         exp: "^unlimited$"
 
-  ulimit_vmsize:
+  ulimit_vmsize_unlimited:
     executor: local.bash
     type: script
     tags: [system]
@@ -44,7 +44,7 @@ buildspecs:
         stream: stdout
         exp: "^unlimited$"
 
-  ulimit_filedescriptor:
+  ulimit_filedescriptor_4096:
     executor: local.bash
     type: script
     tags: [system]
@@ -55,7 +55,7 @@ buildspecs:
         stream: stdout
         exp: "^4096$"
 
-  ulimit_max_user_process:
+  ulimit_max_user_process_2048:
     executor: local.bash
     type: script
     tags: [system]

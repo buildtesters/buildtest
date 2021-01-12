@@ -2,8 +2,6 @@ $ buildtest buildspec find --buildspec-files
 +--------------------------------------------------------------------------------------------+
 | buildspecs                                                                                 |
 +============================================================================================+
-| /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml                                  |
-+--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/tutorials/run_only_distro.yml                          |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml                           |
@@ -36,17 +34,27 @@ $ buildtest buildspec find --buildspec-files
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/tutorials/sleep.yml                                    |
 +--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/tutorials/compilers/openmp_hello.yml                   |
++--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml                         |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/tutorials/compilers/envvar_override.yml                |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/tutorials/compilers/compiler_exclude.yml               |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_c.yml                    |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml             |
 +--------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml                   |
+| /Users/siddiq90/Documents/buildtest/tutorials/compilers/custom_run.yml                     |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_fortran.yml              |
 +--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/tutorials/compilers/compiler_status_regex.yml          |
++--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml             |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/general_tests/configuration/kernel_state.yml           |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/general_tests/configuration/ssh_localhost.yml          |
 +--------------------------------------------------------------------------------------------+

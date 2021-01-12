@@ -1,4 +1,4 @@
-$ buildtest build -b tests/examples/buildspecs/ -b tutorials/systemd.yml 
+$ buildtest build -b tests/examples/buildspecs/ -b tutorials/vars.yml 
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
@@ -7,11 +7,11 @@ $ buildtest build -b tests/examples/buildspecs/ -b tutorials/systemd.yml
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
-/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
-/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
-/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
 /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
+/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -19,11 +19,11 @@ Discovered Buildspecs:
     
  schemafile              | validstate   | buildspec
 -------------------------+--------------+----------------------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
 
 +----------------------+
 | Stage: Building Test |
@@ -31,16 +31,16 @@ Discovered Buildspecs:
 
  name                       | id       | type   | executor     | tags          | testpath
 ----------------------------+----------+--------+--------------+---------------+---------------------------------------------------------------------------------------------------------------
- hello_dinosaur             | 98e1bfc6 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/1/stage/generate.sh
- slurm_down_nodes_reason    | 7c89b091 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/1/stage/generate.sh
- slurm_not_responding_nodes | b9b03c79 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/1/stage/generate.sh
- systemd_default_target     | 2a469470 | script | local.bash   | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/1/stage/generate.sh
- circle_area                | 9cabc940 | script | local.python |               | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/1/stage/generate.sh
- _bin_sh_shell              | 86f7cf71 | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/1/stage/generate.sh
- _bin_bash_shell            | 85a94ab5 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/1/stage/generate.sh
- bash_shell                 | dbb7eba7 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/1/stage/generate.sh
- sh_shell                   | 824f299e | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/1/stage/generate.sh
- shell_options              | dd7b4bbd | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/1/stage/generate.sh
+ _bin_sh_shell              | 3f978533 | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
+ _bin_bash_shell            | 892a6050 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
+ bash_shell                 | 350066cd | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/0/stage/generate.sh
+ sh_shell                   | 87b2d542 | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/0/stage/generate.sh
+ shell_options              | 7ebcffad | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/0/stage/generate.sh
+ circle_area                | f7af85d0 | script | local.python |               | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/0/stage/generate.sh
+ variables_bash             | d512dfef | script | local.bash   | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
+ slurm_down_nodes_reason    | 7fe95b48 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/0/stage/generate.sh
+ slurm_not_responding_nodes | da77a4d6 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/0/stage/generate.sh
+ hello_dinosaur             | 3abe33a3 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/0/stage/generate.sh
 
 
 
@@ -50,24 +50,24 @@ Discovered Buildspecs:
     
  name                       | id       | executor     | status   |   returncode | testpath
 ----------------------------+----------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------------
- hello_dinosaur             | 98e1bfc6 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/1/stage/generate.sh
- slurm_down_nodes_reason    | 7c89b091 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/1/stage/generate.sh
- slurm_not_responding_nodes | b9b03c79 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/1/stage/generate.sh
- systemd_default_target     | 2a469470 | local.bash   | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/1/stage/generate.sh
- circle_area                | 9cabc940 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/1/stage/generate.sh
- _bin_sh_shell              | 86f7cf71 | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/1/stage/generate.sh
- _bin_bash_shell            | 85a94ab5 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/1/stage/generate.sh
- bash_shell                 | dbb7eba7 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/1/stage/generate.sh
- sh_shell                   | 824f299e | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/1/stage/generate.sh
- shell_options              | dd7b4bbd | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/1/stage/generate.sh
+ _bin_sh_shell              | 3f978533 | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
+ _bin_bash_shell            | 892a6050 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
+ bash_shell                 | 350066cd | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/0/stage/generate.sh
+ sh_shell                   | 87b2d542 | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/0/stage/generate.sh
+ shell_options              | 7ebcffad | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/0/stage/generate.sh
+ circle_area                | f7af85d0 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/0/stage/generate.sh
+ variables_bash             | d512dfef | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
+ slurm_down_nodes_reason    | 7fe95b48 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/0/stage/generate.sh
+ slurm_not_responding_nodes | da77a4d6 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/0/stage/generate.sh
+ hello_dinosaur             | 3abe33a3 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/0/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
 
 Executed 10 tests
-Passed Tests: 9/10 Percentage: 90.000%
-Failed Tests: 1/10 Percentage: 10.000%
+Passed Tests: 10/10 Percentage: 100.000%
+Failed Tests: 0/10 Percentage: 0.000%
 
 
 

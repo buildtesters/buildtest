@@ -20,9 +20,9 @@ class Builder:
             Builder class.
 
             :param bp: an instance of BuildspecParser class
-            :type bp: BuildspecParser
-            :param filter: A dictionary container filter fields for tags and executors passed from command line
-            :type tag_filter: dict, required
+            :type bp: BuildspecParser, required
+            :param filters: A dictionary container filter fields for tags and executors passed from command line
+            :type filters: dict, required
             :param testdir: Test Destination directory, specified by --testdir
             :type testdir: str, required
             :param rebuild: Number of rebuilds for a tesst this is specified by ``buildtest build --rebuild``. Defaults to 1
@@ -138,9 +138,9 @@ class Builder:
             self.filters["executors"]
             and recipe.get("executor") not in self.filters["executors"]
         ):
-            print(
-                f"[{testname}] test is skipped because it is not in executor filter list: {self.filters['executors']}"
-            )
+            msg = f"[{testname}] test is skipped because it is not in executor filter list: {self.filters['executors']}"
+            self.logger.info(msg)
+            print(msg)
             return True
 
         return False
@@ -167,9 +167,9 @@ class Builder:
                     found = True
 
             if not found:
-                print(
-                    f"[{name}] test is skipped because it is not in tag filter list: {self.filters['tags']}"
-                )
+                msg = f"[{name}] test is skipped because it is not in tag filter list: {self.filters['tags']}"
+                self.logger.info(msg)
+                print(msg)
                 return True
 
         return False
@@ -179,8 +179,11 @@ class Builder:
             are performed based on conditionals and if any conditional is not met we skip test.
 
             :param recipe: loaded buildspec recipe as dictionary
+            :type recipe: dict, required
             :param name: name of test from buildspec file
+            :type name: str, required
             :param system: An instance of ``BuildTestSystem`` class
+            :type system: BuildTestSystem, required
             :return: Returns a boolean to see if test is skipped based on ``run_only`` property
             :rtype: bool
         """

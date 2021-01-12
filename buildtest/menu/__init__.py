@@ -159,10 +159,18 @@ class BuildTestParser:
         )
 
         parser_build.add_argument(
+            "-t",
             "--tags",
             action="append",
             type=str,
-            help="Specify buildspecs by tags found in buildspec cache",
+            help="Discover buildspecs by tags found in buildspec cache",
+        )
+        parser_build.add_argument(
+            "-ft",
+            "--filter-tags",
+            action="append",
+            type=str,
+            help="Filter buildspecs by tags when building tests.",
         )
 
         parser_build.add_argument(
@@ -170,7 +178,7 @@ class BuildTestParser:
             "--executor",
             action="append",
             type=str,
-            help="Specify buildspecs by executor name found in buildspec cache",
+            help="Discover buildspecs by executor name found in buildspec cache",
         )
         parser_build.add_argument(
             "-s",
@@ -180,7 +188,6 @@ class BuildTestParser:
         )
 
         parser_build.add_argument(
-            "-t",
             "--testdir",
             help="specify a custom test directory. By default, use .buildtest in $PWD.",
         )

@@ -62,68 +62,186 @@ buildspecs:
           module:
             swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
 
-  sbatch_example:
+  sbatch_example_all_compiler_groups:
     type: compiler
-    description: sbatch example to configure #SBATCH options
+    description: sbatch example to for all compiler groups
     executor: local.bash
-    sbatch:
-      - "-t 10"
-      - "-n 2"
     source: src/hello.f90
     compilers:
       name: ["PrgEnv-cray"]
       default:
         cray:
           fflags: "-O1"
+        all:
+          sbatch: ["-t 10", "-n 2", "-C haswell" ]
       config:
         PrgEnv-cray@2.6.2:
           module:
             swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
-    status:
-      slurm_job_state: "COMPLETED"
 
-  bsub_example:
+  bsub_all_compiler_groups:
     type: compiler
-    description: bsub example to configure #BSUB options
+    description: bsub example for all compiler groups
     executor: local.bash
-    bsub:
-      - "-W 00:30"
-      - "-N 2"
     source: "src/hello.cpp"
     compilers:
       name: [intel]
+      default:
+        all:
+          bsub: ["-W 00:30", "-n 2"]
       config:
         intel@2019:
           cxxflags: "-O1"
+
+  cobalt_all_compiler_groups:
+    type: compiler
+    description: cobalt example for all compiler groups
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [intel]
+      default:
+        all:
+          cobalt: ["-t 30", "-n 1"]
+      config:
+        intel@2019:
+          cxxflags: "-O1"
+
+  sbatch_compiler_group:
+    type: compiler
+    description: sbatch example in multiple compiler groups.
+    executor: local.bash
+    source: src/hello.f90
+    compilers:
+      name: ["^(gcc|intel)"]
+      default:
+        gcc:
+          fflags: "-O1"
+          sbatch: ["-t 10", "-n 2", "-C haswell" ]
+        intel:
+          fflags: "-O2"
+          sbatch: ["-t 10", "-n 2", "-C knl" ]
+      config:
+        gcc@8.1.0:
+          sbatch: ["-t 60", "-n 2", "-C knl"]
+          module:
+            swap: [PrgEnv-intel, PrgEnv-gnu/6.1.0]
+
+
+  bsub_compiler_group:
+    type: compiler
+    description: bsub example in multiple compiler groups.
+    executor: local.bash
+    source: src/hello.f90
+    compilers:
+      name: ["^(gcc|intel)"]
+      default:
+        gcc:
+          fflags: "-O1"
+          bsub: ["-W 00:30", "-n 2" ]
+        intel:
+          fflags: "-O2"
+          bsub: ["-W 00:30", "-n 4" ]
+      config:
+        gcc@8.1.0:
+           bsub: ["-W 00:30", "-n 6" ]
+           module:
+             swap: [PrgEnv-intel, PrgEnv-gnu/6.1.0]
 
   batch_example:
     type: compiler
     description: example using batch field
     executor: local.bash
-    batch:
-      "timelimit": "30"
-      "nodecount": "2"
-      "queue": "batch"
-      "account": "biology"
     source: "src/hello.cpp"
     compilers:
       name: [intel]
+      default:
+        all:
+          batch:
+            "timelimit": "30"
+            "nodecount": "2"
+            "queue": "batch"
+            "account": "biology"
       config:
         intel@2019:
           cxxflags: "-O1"
 
-  args_example:
+  env_example:
     type: compiler
-    description: Launcher example
+    description: Setting environment variables
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        all:
+          env:
+            OMP_NUM_THREADS: 2
+          run: $_EXEC 1 2 4
+      config:
+        gcc@10.2.0:
+          cxxflags: "-fopenmp"
+
+  custom_env_by_compiler_group:
+    type: compiler
+    description: Setting environment variables in compiler groups
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: ["^(gcc|pgi)"]
+      default:
+        all:
+          run: $_EXEC 1 2 4
+        gcc:
+          cxxflags: "-fopenmp"
+          env:
+            OMP_NUM_THREADS: 4
+        pgi:
+          cxxflags: "-mp"
+          env:
+            OMP_NUM_THREADS: 6
+      config:
+        gcc@10.2.0:
+          env:
+            OMP_NUM_THREADS: 6
+
+        gcc@9.2.0:
+          env:
+            OMP_NUM_THREADS: 8
+
+        pgi@9.2.0:
+          env:
+            OMP_NUM_THREADS: 10
+
+  vars_example:
+    type: compiler
+    description: Setting shell variables
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        all:
+          vars:
+            OUTFILE: /tmp/file1.txt
+          run: $_EXEC > $OUTFILE
+      config:
+        gcc@10.2.0:
+          cxxflags: "-fopenmp"
+
+  pass_args_run:
+    type: compiler
+    description: Passing arguments to executable in run section
     executor: local.bash
     source: "src/hello.cpp"
     compilers:
       name: [intel]
+      default:
+        all:
+          run: $_EXEC 1 2 4
       config:
         intel@2019:
           cxxflags: "-O1"
-    run:
-      args: "1 2 4"
 
   mpi_launcher_example:
     type: compiler
@@ -132,30 +250,61 @@ buildspecs:
     source: "src/hello.cpp"
     compilers:
       name: [gcc]
+      default:
+        all:
+          run: mpirun -np 2 $_EXEC
       config:
         gcc@7.3.0:
           cflags: "-O3"
           cxx: mpicxx
-    run:
-      launcher: mpirun -np 2
+
+  status_returncode_example:
+    type: compiler
+    description: Status returncode match example
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [gnu]
+      default:
+        all:
+          vars:
+            OUTFILE: /tmp/file1.txt
+          run: $_EXEC > $OUTFILE
+          status:
+            returncode: 1
+      config:
+        gcc@10.2.0:
+          cxxflags: "-fopenmp"
 
   pre_post_build_run_sections:
     type: compiler
-    description: Run commands pre and post build and run section
+    description: Run commands pre and post build section
     executor: local.bash
-    pre_build: echo "pre-build section"
     source: "src/hello.cpp"
     compilers:
-      name: [gcc]
+      name: ["^(gcc)"]
+      default:
+        all:
+          pre_build: echo "pre-build section for ALL compilers"
+          post_build: echo "post-build section for ALL Compilers"
+          pre_run: echo "pre-run section for ALL compilers"
+          post_run: echo "post-run section for ALL Compilers"
+        gcc:
+          pre_build: echo "pre-build section for GCC compilers"
+          post_build: echo "post-build section for GCC compilers"
+          pre_run: echo "pre-run section for ALL compilers"
+          post_run: echo "post-run section for ALL Compilers"
       config:
         gcc@7.3.0:
+          pre_build: echo "pre-build section for gcc@7.3.0"
+          post_build: echo "post-build section for gcc@7.3.0"
+          pre_run: echo "pre-run section for ALL compilers"
+          post_run: echo "post-run section for ALL Compilers"
+          cflags: "-O3"
+        gcc@8.2.0:
+          pre_build: echo "gcc --version"
           cflags: "-O3"
 
-    post_build: echo "post-build section"
-    pre_run: echo "pre-run section"
-    run:
-      launcher: mpirun -np 2
-    post_run: echo "post-run section"
 
   multi_compilers:
     type: compiler
@@ -177,7 +326,6 @@ buildspecs:
       config:
         gcc@7.5.0:
           cflags: "-O3"
-          cc: gcc
           module:
             load: [gcc/7.5.0]
         intel@17:
@@ -193,6 +341,7 @@ buildspecs:
           module:
             swap: [PrgEnv-intel, PrgEnv-cray]
             load: [craype/2.6.2]
+
 File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/compiler-v1.0.schema.json/invalid/examples.yml
 ________________________________________________________________________________
 version: "1.0"
@@ -325,40 +474,19 @@ buildspecs:
     compilers:
       name: [gcc]
 
-  additionalProperties_batch:
+  missing_required_compiler_name:
     executor: local.bash
     type: compiler
-    description: "test additionalProperties in batch field"
-    batch:
-      "nodecount": "2"
-      "EXPORT": "ALL"
-    source: src/hello.c
+    description: "'name' field in compilers section is required field"
+    source: src/hello.f90
     compilers:
-      name: [gcc]
-
-  type_mismatch_args:
-    executor: local.bash
-    type: compiler
-    description: "type mismatch on args key"
-    source: src/hello.c
-    compilers:
-      name: [gcc]
-    run:
-      args: 1
-
-    missing_required_compiler_name:
-      executor: local.bash
-      type: compiler
-      description: "'name' field in compilers section is required field"
-      source: src/hello.f90
-      compilers:
-      default:
-        cray:
-          fflags: "-O1"
-      config:
-        PrgEnv-cray@2.6.2:
-          module:
-            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+    default:
+      cray:
+        fflags: "-O1"
+    config:
+      PrgEnv-cray@2.6.2:
+        module:
+          swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
 
   uniqueItems_compiler_name:
     executor: local.bash
@@ -376,7 +504,41 @@ buildspecs:
   additionalProperties_compiler:
     executor: local.bash
     type: compiler
-    description: "Test additionalProperies in compiler section, FOO: BAR"
+    description: "Test additionalProperies in compiler section"
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray"]
+      FOO: BAR
+      default:
+        all:
+          env:
+            X: 1
+      config:
+        PrgEnv-cray@2.6.2:
+          fflags: "-O1"
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+
+  additionalProperties_compiler_default_all:
+    executor: local.bash
+    type: compiler
+    description: "Test additionalProperies in compiler default all section"
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray"]
+      default:
+        all:
+          XYZ: 123
+      config:
+        PrgEnv-cray@2.6.2:
+          fflags: "-O1"
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+
+  additionalProperties_compiler_config:
+    executor: local.bash
+    type: compiler
+    description: "Test additionalProperies in compiler config section, FOO: BAR"
     source: src/hello.f90
     compilers:
       name: ["PrgEnv-cray"]

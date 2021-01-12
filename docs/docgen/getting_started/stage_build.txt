@@ -1,4 +1,4 @@
-$ buildtest build -b tutorials/systemd.yml --stage=build 
+$ buildtest build -b tutorials/vars.yml --stage=build 
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
@@ -7,22 +7,22 @@ $ buildtest build -b tutorials/systemd.yml --stage=build
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
     
  schemafile              | validstate   | buildspec
--------------------------+--------------+-----------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/systemd.yml
+-------------------------+--------------+--------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- name                   | id       | type   | executor   | tags          | testpath
-------------------------+----------+--------+------------+---------------+-------------------------------------------------------------------------------------------------------------
- systemd_default_target | 4ab0ee72 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd/systemd_default_target/4/stage/generate.sh
+ name           | id       | type   | executor   | tags          | testpath
+----------------+----------+--------+------------+---------------+--------------------------------------------------------------------------------------------------
+ variables_bash | 2c8bd68d | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/4/stage/generate.sh
 
 

@@ -848,56 +848,6 @@ shell-script. If no ``run`` field is specified buildtest will run the binary in 
     ./$_EXEC 1 3 5
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
-OpenMP Example
-----------------
-
-Here is an example OpenMP reduction test that runs on 1 node using 32 tasks on a
-haswell node::
-
-    version: "1.0"
-    buildspecs:
-      reduction:
-        type: compiler
-        executor: slurm.debug
-        sbatch: ["-N 1", "--ntasks-per-node 32", "-C haswell", "-t 1"]
-        module:
-          swap: [PrgEnv-intel, PrgEnv-gnu]
-        env:
-          OMP_NUM_THREADS: 32
-          OMP_PROC_BIND: spread
-          OMP_PLACES: cores
-        build:
-          source: src/reduction.c
-          name: gnu
-          cflags: -fopenmp
-        tags: [openmp]
-
-In this example, we use the SlurmExecutor ``slurm.debug``, the source file is
-``src/reduction.c`` that is relative to buildspec file. The environment variables
-are defined using ``env`` section. To enable openmp flag, for GNU compilers we
-pass ``-fopenmp`` to C compiler. By default, `PrgEnv-intel` module is loaded at startup
-on Cori system so we can use ``swap`` property to swap **PrgEnv-intel** with **PrgEnv-gnu**.
-Finally we classify this test using ``tags`` key which is set to `openmp`.
-
-The generated test looks as follows::
-
-    #!/bin/bash
-    #SBATCH -N 1
-    #SBATCH --ntasks-per-node 32
-    #SBATCH -C haswell
-    #SBATCH -t 1
-    #SBATCH --job-name=reduction
-    #SBATCH --output=reduction.out
-    #SBATCH --error=reduction.err
-    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/before_script.sh
-    export OMP_NUM_THREADS=32
-    export OMP_PROC_BIND=spread
-    export OMP_PLACES=cores
-    module swap PrgEnv-intel PrgEnv-gnu
-    gcc -fopenmp -o reduction.c.exe src/reduction.c
-    ./reduction.c.exe
-    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/after_script.sh
-
 MPI Example
 ------------
 

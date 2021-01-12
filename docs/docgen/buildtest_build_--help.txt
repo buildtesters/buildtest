@@ -1,6 +1,6 @@
 $ buildtest build --help
-usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-x EXCLUDE] [--tags TAGS] [-e EXECUTOR]
-                                            [-s {parse,build}] [-t TESTDIR] [--rebuild REBUILD]
+usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-x EXCLUDE] [-t TAGS] [-ft FILTER_TAGS] [-e EXECUTOR]
+                                            [-s {parse,build}] [--testdir TESTDIR] [--rebuild REBUILD]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -8,11 +8,12 @@ optional arguments:
                         Specify a Buildspec (YAML) file to build and run the test.
   -x EXCLUDE, --exclude EXCLUDE
                         Exclude one or more configs from processing. Configs can be files or directories.
-  --tags TAGS           Specify buildspecs by tags found in buildspec cache
+  -t TAGS, --tags TAGS  Discover buildspecs by tags found in buildspec cache
+  -ft FILTER_TAGS, --filter-tags FILTER_TAGS
+                        Filter buildspecs by tags when building tests.
   -e EXECUTOR, --executor EXECUTOR
-                        Specify buildspecs by executor name found in buildspec cache
+                        Discover buildspecs by executor name found in buildspec cache
   -s {parse,build}, --stage {parse,build}
                         control behavior of buildtest build
-  -t TESTDIR, --testdir TESTDIR
-                        specify a custom test directory. By default, use .buildtest in $PWD.
+  --testdir TESTDIR     specify a custom test directory. By default, use .buildtest in $PWD.
   --rebuild REBUILD     Rebuild test X number of times. Must be a positive number between [1-50]

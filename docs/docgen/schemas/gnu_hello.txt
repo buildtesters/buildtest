@@ -25,7 +25,7 @@ Discovered Buildspecs:
 
  name    | id       | type     | executor   | tags                     | compiler    | testpath
 ---------+----------+----------+------------+--------------------------+-------------+--------------------------------------------------------------------------------------------------------
- hello_f | d5727ded | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/3/stage/generate.sh
+ hello_f | 7af88c89 | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/2/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -33,7 +33,7 @@ Discovered Buildspecs:
     
  name    | id       | executor   | status   |   returncode | testpath
 ---------+----------+------------+----------+--------------+--------------------------------------------------------------------------------------------------------
- hello_f | d5727ded | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/3/stage/generate.sh
+ hello_f | 7af88c89 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/2/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
