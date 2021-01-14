@@ -13,8 +13,9 @@ cori_pr_regression_test:
     - git branch
     - conda create -n buildtest python=3.8
     - source activate buildtest
-    - source setup.sh
+    - source setup.sh    
     - pip install -r docs/requirements.txt
+    - rm -rf ~/.buildtest/
     - coverage run -m pytest -vra tests
     - coverage report -m
     # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable SECRET_CODECOV_TOKEN at https://gitlab.nersc.gov/nersc/consulting/buildtest/-/settings/ci_cd
