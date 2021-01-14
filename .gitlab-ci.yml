@@ -1,10 +1,12 @@
 cori_pr_regression_test:
-  tags: ["cori-login"]
+  tags: ["cori20-siddiq90"]
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
       when: manual
     
   script: 
+    - env | grep CI_
+    - echo $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME
     - module load python
     - echo "$CI_PIPELINE_SOURCE"
     - whoami
