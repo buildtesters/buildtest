@@ -10,7 +10,7 @@ Talks
     :header: "Title", "Conference", "Date", "Link"
     :widths:  100, 30, 30, 30
 
-    "**buildtest: HPC Testing Framework for Acceptance Testing**", "FOSDEM21_", "Feb 7, 2021", "`PDF <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest-fosdem21.pdf>`_"
+    "**buildtest: HPC Testing Framework for Acceptance Testing**", "FOSDEM21_", "Feb 7, 2021", "`PDF <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest_fosdem21.pdf>`_"
     "**buildtest: HPC Software Stack Testing Framework**", "FOSDEM20_", "Feb 2, 2020", "`PDF <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest-fosdem20.pdf>`_, `VIDEO <https://ftp.osuosl.org/pub/fosdem/2020/UB5.132/buildtest.webm>`_"
     "**buildtest: HPC Software Stack Testing Framework**", "5thEasybuildUserMeeting_", "Jan 30, 2020","`PDF <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest-fifth-easybuild-user-meeting.pdf>`_, `VIDEO <https://ftp.osuosl.org/pub/fosdem/2020/UB5.132/buildtest.webm>`_"
     "**buildtest: A Software Testing Framework with Module Operations for HPC systems**", "SC19_ @ HUST_ workshop", "Nov 18, 2019", "`PDF <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest_hust19.pdf>`_"

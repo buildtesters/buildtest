@@ -1,3 +1,4 @@
+import json
 import os
 import shutil
 
@@ -241,23 +242,34 @@ class CompilerBuilder(BuilderBase):
         # raise error if we can't find source file to compile
         if not self.abspath_sourcefile:
             raise BuildTestError(
-                f"Failed to resolve path specified by key 'source': {self.sourcefile}"
+                f"Failed to resolve path specified in field 'source': {self.sourcefile}"
             )
 
     def _detect_lang(self, sourcefile):
         """ This method will return the Programming Language based by looking up
             file extension of source file.
         """
+        self.logger.debug(
+            f"[{self.name}]: Detecting programming language for source file: {sourcefile}"
+        )
 
         ext = os.path.splitext(sourcefile)[1]
+
+        self.logger.debug(
+            f"Found file extension: {ext}, now we will attempt to lookup programming language based on extension"
+        )
 
         # if ext not in self.lang_ext_table then raise an error. This table consist of all file extensions that map to a Programming Language
         if ext not in self.lang_ext_table:
             raise BuildTestError(
-                f"Unable to detect Program Language based on extension: {ext} in file {sourcefile}"
+                f"[{self.name}]: Unable to detect Program Language based on extension: {ext} in source: {sourcefile}"
             )
         # Set Programming Language based on ext. Programming Language could be (C, C++, Fortran)
         lang = self.lang_ext_table[ext]
+        self.logger.debug(
+            f"[{self.name}]: Based on extension: {ext} the programming language is: {lang}"
+        )
+
         return lang
 
     def _get_modules(self, modules):
@@ -366,11 +378,16 @@ class CompilerBuilder(BuilderBase):
         bc = BuildtestCompilers()
 
         self.compiler_group = bc.compiler_name_to_group[self.compiler]
+        self.logger.debug(
+            f"[{self.name}]: compiler: {self.compiler} belongs to compiler group: {self.compiler_group}"
+        )
 
         # compiler from buildtest settings
         self.bc_compiler = self.settings["compilers"]["compiler"][self.compiler_group][
             self.compiler
         ]
+
+        self.logger.debug(self.bc_compiler)
         # set compiler values based on 'default' property in buildspec. This can override
         # compiler setting defined in configuration file. If default is not set we load from buildtest settings for appropriate compiler.
 
@@ -378,6 +395,13 @@ class CompilerBuilder(BuilderBase):
         self.cc = self.bc_compiler["cc"]
         self.cxx = self.bc_compiler["cxx"]
         self.fc = self.bc_compiler["fc"]
+
+        self.logger.debug(
+            f"[{self.name}]: Compiler setting for {self.compiler} from configuration file"
+        )
+        self.logger.debug(
+            f"[{self.name}]: {self.compiler}: {json.dumps(self.bc_compiler, indent=2)}"
+        )
 
         # if default compiler setting provided in buildspec let's assign it.
         if deep_get(self.compiler_section, "default", self.compiler_group):
@@ -414,6 +438,11 @@ class CompilerBuilder(BuilderBase):
             )
         # if compiler instance defined in config section read from buildspec. This overrides default section if specified
         if deep_get(self.compiler_section, "config", self.compiler):
+
+            self.logger.debug(
+                f"[{self.name}]: Detected compiler: {self.compiler} in 'config' scope overriding default compiler group setting for: {self.compiler_group}"
+            )
+
             self.cc = (
                 self.compiler_section["config"][self.compiler].get("cc") or self.cc
             )

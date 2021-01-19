@@ -71,25 +71,26 @@ def func_inspect(args):
     if os.path.exists(record["outfile"]):
         content = read_file(record["outfile"])
 
-    print("\n\n")
-    print("Output File")
-    print("{:_<30}".format(""))
-    print(content)
+        print("\n\n")
+        print("Output File")
+        print("{:_<30}".format(""))
+        print(content)
+
     if os.path.exists(record["errfile"]):
         content = read_file(record["errfile"])
 
-    print("\n\n")
-    print("Error File")
-    print("{:_<30}".format(""))
-    print(content)
+        print("\n\n")
+        print("Error File")
+        print("{:_<30}".format(""))
+        print(content)
 
     if os.path.exists(record["testpath"]):
         content = read_file(record["testpath"])
 
-    print("\n\n")
-    print("Test Content")
-    print("{:_<30}".format(""))
-    print(content)
+        print("\n\n")
+        print("Test Content")
+        print("{:_<30}".format(""))
+        print(content)
 
     if input_buildspec:
         print("\n\n")
