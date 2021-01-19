@@ -89,7 +89,7 @@
                 "type": "object",
                 "patternProperties": {
                   "^.*$": {
-                    "$ref": "#/definitions/clang"
+                    "$ref": "#/definitions/compiler_section"
                   }
                 }
               },
@@ -98,7 +98,7 @@
                 "type": "object",
                 "patternProperties": {
                   "^.*$": {
-                    "$ref": "#/definitions/cuda"
+                    "$ref": "#/definitions/compiler_section"
                   }
                 }
               }
@@ -168,27 +168,6 @@
       "fc": {
         "type": "string",
         "description": "Specify path to Fortran compiler wrapper. You may specify a compiler wrapper such as ``gfortran`` assuming its in $PATH or you can use ``modules`` property to resolve path to compiler wrapper."
-      },
-      "clang": {
-        "description": "The clang compiler section consist of ``cc`` and ``cxx`` wrapper to specify C and C++ wrapper which are generally ``clang`` and ``clang++``",
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["cc", "cxx" ],
-        "properties": {
-          "cc": {"$ref":  "#/definitions/cc" },
-          "cxx": {"$ref":  "#/definitions/cxx" },
-          "module": { "$ref": "#/definitions/module" }
-        }
-      },
-      "cuda": {
-        "description": "The cuda compiler section consist of ``cc``  where you generally specify path to ``nvcc``",
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["cc"],
-        "properties": {
-          "cc": {"$ref":  "#/definitions/cc" },
-          "module": { "$ref": "#/definitions/module" }
-        }
       },
       "compiler_section": {
         "description": "A compiler section is composed of ``cc``, ``cxx`` and ``fc`` wrapper these are required when you need to specify compiler wrapper.",
