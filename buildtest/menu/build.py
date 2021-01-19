@@ -180,21 +180,38 @@ def discover_buildspecs(
     buildspecs = []
     excluded_buildspecs = []
 
+    logger.debug(
+        f"Discovering buildspecs based on tags={tags}, executor={executorname}, buildspec={buildspec}, exclude_buildspec={exclude_buildspec}"
+    )
+    # discover buildspecs based on --tags
     if tags:
+        logger.debug(f"Checking tag argument: {tags} is of type 'list'")
         assert isinstance(tags, list)
+
         for tagname in tags:
+            logger.debug(f"Checking {tagname} is type 'str'")
             assert isinstance(tagname, str)
             buildspecs += discover_buildspecs_by_tags(tagname)
 
+        logger.debug(f"Discovered buildspecs based on {tags}")
+        logger.debug(buildspecs)
+
+    # discover buildspecs based on --executor
     if executorname:
-        assert isinstance(executorname, list)
+        # logger.debug(f"Checking executor argument: {tags} is of type 'list'")
+        # assert isinstance(executorname, list)
         for name in executorname:
+            logger.debug(f"Checking {name} is type 'str'")
             assert isinstance(name, str)
+
             buildspecs += discover_buildspecs_by_executor_name(name)
+
+    # discover buildspecs based on --buildspec
     if buildspec:
         # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
         # times we need to invoke discover_buildspecs once per argument.
 
+        logger.debug(f"Checking buildspec argument: {buildspec} is of type 'list'")
         assert isinstance(buildspec, list)
 
         for option in buildspec:
@@ -202,6 +219,7 @@ def discover_buildspecs(
 
             # only add buildspecs if its not None
             if bp:
+                logger.debug(f"Discovered buildspecs: {bp} based on argument: {option}")
                 buildspecs += bp
 
     # remove any duplicate Buildspec from list by converting list to set and then back to list
@@ -724,7 +742,7 @@ def func_build_subcmd(args, buildtest_config):
     executor = BuildExecutor(buildtest_config)
 
     # buildspec_filters = {"tags": args.tags, "executors": args.executor}
-    buildspec_filters = {"tags": args.filter_tags, "executors": args.executor}
+    buildspec_filters = {"tags": args.filter_tags}
 
     # Parse all buildspecs and skip any buildspecs that fail validation, return type
     # is a builder object used for building test.
@@ -741,6 +759,10 @@ def func_build_subcmd(args, buildtest_config):
         return
 
     buildphase_builders = build_phase(builders, printTable=True)
+    if not buildphase_builders:
+        raise BuildTestError(
+            "Unable to create any test during build phase. Please check buildtest.log for more details"
+        )
 
     if stage == "build":
         return

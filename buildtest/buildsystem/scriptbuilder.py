@@ -19,9 +19,14 @@ class ScriptBuilder(BuilderBase):
         python_content = self.recipe.get("run")
         script_path = "%s.py" % os.path.join(self.stage_dir, self.name)
         write_file(script_path, python_content)
+        self.logger.debug(f"[{self.name}]: Writing python script to: {script_path}")
         shutil.copy2(
             script_path, os.path.join(self.run_dir, os.path.basename(script_path))
         )
+        self.logger.debug(
+            f"[{self.name}]: Copying file: {script_path} to: {os.path.join(self.run_dir, os.path.basename(script_path))}"
+        )
+
         lines = [f"python {script_path}"]
         return lines
 
@@ -69,6 +74,7 @@ class ScriptBuilder(BuilderBase):
 
         # for python scripts we generate python script and return lines
         if self.shell.name == "python":
+            self.logger.debug(f"[{self.name}]: Detected python shell")
             lines += self.write_python_script()
             lines += [
                 f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"

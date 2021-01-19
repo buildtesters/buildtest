@@ -47,10 +47,9 @@ class Builder:
                 recipe = self.bp.recipe["buildspecs"][name]
 
                 if recipe.get("skip"):
-                    print(f"[{name}] test is skipped.")
-                    continue
-
-                if self._skip_tests_by_executor(recipe, name):
+                    msg = f"[{name}]({self.bp.buildspec}): test is skipped."
+                    self.logger.info(msg)
+                    print(msg)
                     continue
 
                 if self._skip_tests_by_tags(recipe, name):
@@ -116,34 +115,6 @@ class Builder:
                         testdir=self.testdir,
                     )
                     self.builders.append(builder)
-
-    # Builders
-    def _skip_tests_by_executor(self, recipe, testname):
-        """This method returns a boolean if tests need to be skipped by executors. If
-           executor in buildspec not found match in executor filter we skip test. This
-           check is performed only if executor_filter is passed. The executor_filter
-           is usually set if user runs ``buildtest build --executor``
-
-           :param recipe: loaded buildspec recipe as dictionary
-           :type recipe: dict
-           :param testname: name of test instance in buildspec file
-           :type testname: str
-           :return: A boolean to determine if test is skipped
-           :rtype: bool
-        """
-
-        # if input 'buildtest build --executor' is set we filter test by
-        # executor name. For now we skip all test that don't belong in executor list.
-        if (
-            self.filters["executors"]
-            and recipe.get("executor") not in self.filters["executors"]
-        ):
-            msg = f"[{testname}] test is skipped because it is not in executor filter list: {self.filters['executors']}"
-            self.logger.info(msg)
-            print(msg)
-            return True
-
-        return False
 
     def _skip_tests_by_tags(self, recipe, name):
         """ This method determines if test should be skipped based on tag names specified

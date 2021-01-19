@@ -214,6 +214,9 @@
             },
             "cray": {
               "$ref": "#definitions/default_compiler_config"
+            },
+            "clang": {
+              "$ref": "#definitions/default_compiler_config"
             }
           }
         },
