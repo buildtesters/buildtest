@@ -81,13 +81,16 @@ file. The ``description`` field is used to document the test and limited to 80 c
 Buildspec Structure
 --------------------
 
-Shown below is an overview of buildspec structure. In this test we define two test
-named ``hello_f`` and ``environment_variables``. Recall that tests are defined
-within the ``buildspecs`` scope and each test is validated with a sub-schema defined
-by ``type`` field. Every buildspec must be tied to an executor which defines how
-test is to be executed.
+Shown below is an overview of buildspec file. In this diagram we define one test within
+``buildspecs`` property named ``systemd_default_target``. This test is using the
+script schema defined by ``type: script``.  The ``executor`` property is a required
+property that determines how test is run. The executors are defined in buildtest configuration
+see :ref:`configuring_buildtest` for more details.
+
+The ``run`` property is used for defining content of script, this can a shell-script
+(bash,csh) or python script.
 
 .. image:: ../_static/buildspec-structure.png
 
-Proceed to :ref:`buildspec_overview` to learn more about buildspecs.
+Please proceed to :ref:`buildspec_overview` to learn more about buildspecs.
 
