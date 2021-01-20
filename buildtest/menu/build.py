@@ -47,15 +47,15 @@ def discover_buildspecs_by_tags(input_tag):
     buildspecs = []
     # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
     # if it matches input_tag we add buildspec to list
-    for path in cache["buildspecs"].keys():
-        for buildspecfile in cache["buildspecs"].keys():
-            for test in cache["buildspecs"][buildspecfile].keys():
 
-                # if tags is not declared we set to empty list
-                tag = cache["buildspecs"][buildspecfile][test].get("tags") or []
+    for buildspecfile in cache["buildspecs"].keys():
+        for test in cache["buildspecs"][buildspecfile].keys():
 
-                if input_tag in tag:
-                    buildspecs.append(buildspecfile)
+            # if tags is not declared we set to empty list
+            tag = cache["buildspecs"][buildspecfile][test].get("tags") or []
+
+            if input_tag in tag:
+                buildspecs.append(buildspecfile)
 
     return buildspecs
 
@@ -79,17 +79,15 @@ def discover_buildspecs_by_executor_name(executor_name):
     buildspecs = []
     # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
     # if it matches input_tag we add buildspec to list
-    for path in cache["buildspecs"].keys():
-        for buildspecfile in cache["buildspecs"].keys():
-            for test in cache["buildspecs"][buildspecfile].keys():
 
-                # if tags is not declared we set to empty list
-                executor = (
-                    cache["buildspecs"][buildspecfile][test].get("executor") or []
-                )
+    for buildspecfile in cache["buildspecs"].keys():
+        for test in cache["buildspecs"][buildspecfile].keys():
 
-                if executor_name == executor:
-                    buildspecs.append(buildspecfile)
+            # if tags is not declared we set to empty list
+            executor = cache["buildspecs"][buildspecfile][test].get("executor") or []
+
+            if executor_name == executor:
+                buildspecs.append(buildspecfile)
 
     return buildspecs
 
