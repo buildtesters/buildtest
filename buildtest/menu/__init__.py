@@ -211,7 +211,7 @@ class BuildTestParser:
         )
         buildspec_find.add_argument(
             "--root",
-            help="Specify root buildspecs (file or directory) path to load buildspecs into buildspec cache.",
+            help="Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
             type=str,
             action="append",
         )

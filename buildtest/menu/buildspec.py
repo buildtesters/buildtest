@@ -8,7 +8,7 @@ from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import load_settings
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDSPEC_DEFAULT_PATH
 from buildtest.exceptions import BuildTestError
-from buildtest.utils.file import is_file, walk_tree, resolve_path
+from buildtest.utils.file import is_dir, is_file, walk_tree, resolve_path, read_file
 
 logger = logging.getLogger(__name__)
 
@@ -23,8 +23,12 @@ class BuildspecCache:
     def __init__(self, rebuild, filterfields, formatfields, roots):
         self.filter = filterfields
         self.format = formatfields
-        self.roots = roots
+        # if --root is not specified we set to empty list instead of None
+        self.roots = roots or []
+
+        # list of buildspec directories to search for .yml files
         self.paths = []
+
         self.rebuild = rebuild
         self.cache = {}
 
@@ -34,11 +38,6 @@ class BuildspecCache:
         self.check_filter_fields()
         self.check_format_fields()
         self.find_buildspecs()
-
-    def get_paths(self):
-        """Returns a list of root buildspec roots"""
-
-        return self.paths
 
     def get_cache(self):
         """Returns cache file as loaded dictionary"""
@@ -56,29 +55,28 @@ class BuildspecCache:
         config_opts = load_settings()
         buildspec_paths = config_opts.get("buildspec_roots") or []
 
-        # self.file_roots will store files specified by --roots option
-        self.file_roots = []
-
-        if self.roots:
-            buildspec_paths += self.roots
+        if buildspec_paths:
+            self.roots += buildspec_paths
 
         # only load default buildspecs if 'load_default_buildspecs' set to True
         if config_opts.get("load_default_buildspecs"):
             self.paths += BUILDSPEC_DEFAULT_PATH
 
-        # if buildspec_roots defined in configuration, resolve path and if path exist add
-        # to list of paths to search for buildspecs
-        if buildspec_paths:
+        # for every root buildspec defined in configuration or via --root option,
+        # we resolve path and if path exist add to self.paths. The path must be a
+        # directory. If its file, we ignore it
+        if self.roots:
 
-            for root in buildspec_paths:
+            for root in self.roots:
                 path = resolve_path(root, exist=False)
                 if not os.path.exists(path):
                     print(f"Path: {path} does not exist!")
 
                 if is_file(path):
-                    self.file_roots.append(path)
+                    print(f"Path: {path} must be a directory not a file")
 
-                self.paths.append(path)
+                if is_dir(path):
+                    self.paths.append(path)
 
     def build(self):
         """This method will build buildspec cache file. If user requests to
@@ -114,19 +112,16 @@ class BuildspecCache:
         buildspecs = []
         # add all buildspecs from each repo. walk_tree will find all .yml files
         # recursively and add them to list
-        for path in self.paths:
-            buildspec = walk_tree(path, ".yml")
-            buildspecs += buildspec
 
-        # if --root specifies a file we add buildspecs only if they end in .yml extension
-        if self.file_roots:
-            for filename in self.file_roots:
-                if filename.endswith(".yml"):
-                    buildspecs += filename
-                else:
-                    print(
-                        f"File: {filename} does not end in .yml extension, skipping file"
-                    )
+        if not self.paths:
+            raise BuildTestError(
+                "Unable to search any buildspecs, please specify a directory"
+            )
+
+        if self.paths:
+            for path in self.paths:
+                buildspec = walk_tree(path, ".yml")
+                buildspecs += buildspec
 
         print(f"\nBuildspec Paths: {self.paths} \n")
 
@@ -144,8 +139,17 @@ class BuildspecCache:
         with open(BUILDSPEC_CACHE_FILE, "w") as fd:
             json.dump(self.update_cache, fd, indent=2)
 
-        print(f"\nDetected {len(self.invalid_buildspecs)} invalid buildspecs \n")
+        print("\n")
+        print("Invalid buildspecs")
+        print("{:_<80}".format(""))
+        for file in self.invalid_buildspecs:
+            print(file)
 
+        print(f"Found {len(self.invalid_buildspecs)} invalid buildspecs")
+        print("{:_<80}".format(""))
+
+        print("\n\n")
+        print(f"Updating buildspec cache file: {BUILDSPEC_CACHE_FILE}")
         # write invalid buildspecs to file if any found
         if self.invalid_buildspecs:
             buildspec_error_file = os.path.join(
@@ -154,11 +158,22 @@ class BuildspecCache:
 
             with open(buildspec_error_file, "w") as fd:
                 for file, msg in self.invalid_buildspecs.items():
-                    fd.write(f"buildspec:{file} \n\n")
-                    fd.write(f"{msg} \n")
+
+                    fd.write(f"buildspec file: {file} \n")
+                    fd.write("Content of buildspec: \n")
+                    fd.write("{:_<80} \n".format(""))
+                    content = read_file(file)
+                    fd.write(content)
+                    fd.write("{:_<80} \n".format(""))
+                    fd.write("\n")
+                    fd.write("Error Message: \n")
+                    fd.write(f"{msg}")
+                    fd.write("\n\n")
+                    fd.write("{:=<80} \n".format(""))
 
             print(f"Writing invalid buildspecs to file: {buildspec_error_file} ")
-            print("\n\n")
+
+        print("\n\n")
 
     def _validate_buildspecs(self, buildspecs):
         """Given a list of buildspec files, validate each buildspec using BuildspecParser
@@ -188,13 +203,13 @@ class BuildspecCache:
         return valid_buildspecs
 
     def build_cache(self):
-        """This method will rebuild the buildspec cache file by recursively searching
-        all .yml files specified by input argument ``paths`` which is a list of directory
-        roots. The buildspecs are validated and cache file is updated"
+        """ This method will rebuild the buildspec cache file by recursively searching
+            all .yml files specified by input argument ``paths`` which is a list of directory
+            roots. The buildspecs are validated and cache file is updated"
 
-        :param paths: A list of directory roots to process buildspecs files.
-        :type paths: list
-        :return: Rebuild cache file
+            :param paths: A list of directory roots to process buildspecs files.
+            :type paths: list
+            :return: Rebuild cache file
         """
 
         self.update_cache = {}
@@ -209,7 +224,14 @@ class BuildspecCache:
             self.update_cache[path] = {}
 
         buildspecs = self._discover_buildspecs()
+        print("Discovered Buildspecs")
+        print("{:_<80}".format(""))
+        for file in buildspecs:
+            print(file)
+
         print(f"Found {len(buildspecs)} buildspecs ")
+        print("{:_<80}".format(""))
+        print("\n")
 
         # validate each buildspec and return a list of valid buildspec parsers that
         # is an instance of BuildspecParser class
@@ -220,24 +242,12 @@ class BuildspecCache:
 
             recipe = parser.recipe["buildspecs"]
 
-            path_root = [
-                path
-                for path in self.paths
-                if os.path.commonprefix([parser.buildspec, path]) == path
-            ]
-            path_root = path_root[0]
-
-            if not self.update_cache["buildspecs"].get(path_root):
-                self.update_cache["buildspecs"][path_root] = {}
-
-            if not self.update_cache["buildspecs"][path_root].get(parser.buildspec):
-                self.update_cache["buildspecs"][path_root][parser.buildspec] = {}
+            if not self.update_cache["buildspecs"].get(parser.buildspec):
+                self.update_cache["buildspecs"][parser.buildspec] = {}
 
             for name in recipe.keys():
 
-                self.update_cache["buildspecs"][path_root][parser.buildspec][
-                    name
-                ] = recipe[name]
+                self.update_cache["buildspecs"][parser.buildspec][name] = recipe[name]
                 tags = recipe[name].get("tags")
                 executor = recipe[name].get("executor")
                 description = recipe[name].get("description")
@@ -364,55 +374,51 @@ class BuildspecCache:
             a table of tests that will be printed using print_buildspecs method.
         """
 
-        for path in self.cache["buildspecs"].keys():
-            for buildspecfile in self.cache["buildspecs"][path].keys():
-                for test in self.cache["buildspecs"][path][buildspecfile].keys():
+        for buildspecfile in self.cache["buildspecs"].keys():
+            for test in self.cache["buildspecs"][buildspecfile].keys():
 
-                    test_recipe = self.cache["buildspecs"][path][buildspecfile][test]
-                    schema_type = test_recipe.get("type")
-                    executor = test_recipe.get("executor")
-                    # if tags not defined in cache we set to empty list for comparison with tag_filter
-                    tags = test_recipe.get("tags") or []
-                    description = test_recipe.get("description")
+                test_recipe = self.cache["buildspecs"][buildspecfile][test]
+                schema_type = test_recipe.get("type")
+                executor = test_recipe.get("executor")
+                # if tags not defined in cache we set to empty list for comparison with tag_filter
+                tags = test_recipe.get("tags") or []
+                description = test_recipe.get("description")
 
-                    # filters buildspecs by executor, tags, type field. The return
-                    # is a boolean, if its True we skip the test
-                    if self._filter_buildspecs(executor, tags, schema_type):
-                        continue
+                # filters buildspecs by executor, tags, type field. The return
+                # is a boolean, if its True we skip the test
+                if self._filter_buildspecs(executor, tags, schema_type):
+                    continue
 
-                    if self.format:
-                        for field in self.table.keys():
-                            if field == "type":
-                                self.table[field].append(schema_type)
+                if self.format:
+                    for field in self.table.keys():
+                        if field == "type":
+                            self.table[field].append(schema_type)
 
-                            elif field == "file":
-                                self.table[field].append(buildspecfile)
-                            elif field == "name":
-                                self.table[field].append(test)
-                            # description, tags, executor have matching format fields with buildspec properties
-                            else:
-                                self.table[field].append(test_recipe.get(field))
+                        elif field == "file":
+                            self.table[field].append(buildspecfile)
+                        elif field == "name":
+                            self.table[field].append(test)
+                        # description, tags, executor have matching format fields with buildspec properties
+                        else:
+                            self.table[field].append(test_recipe.get(field))
 
-                    else:
-                        self.table["name"].append(test)
-                        self.table["type"].append(schema_type)
-                        self.table["executor"].append(executor)
-                        self.table["tags"].append(tags)
-                        self.table["description"].append(description)
+                else:
+                    self.table["name"].append(test)
+                    self.table["type"].append(schema_type)
+                    self.table["executor"].append(executor)
+                    self.table["tags"].append(tags)
+                    self.table["description"].append(description)
 
     def get_buildspecfiles(self):
         """ This method implements ``buildtest buildspec find --buildspec-files``
             which reports all buildspec files in cache.
-
-            :param cache: content of cache as dictionary
-            :type cache: dict
         """
 
         table = {"buildspecs": []}
         files = []
 
         for path in self.cache["buildspecs"].keys():
-            files += self.cache["buildspecs"][path].keys()
+            files += self.cache["buildspecs"].keys()
 
         table["buildspecs"] = files
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
@@ -420,9 +426,6 @@ class BuildspecCache:
     def get_tags(self):
         """ This method implements ``buildtest buildspec find --tags`` which
             reports a list of unique tags from all buildspecs in cache file.
-
-            :param cache: content of cache as dictionary
-            :type cache: dict
         """
 
         table = {"Tags": []}
@@ -433,9 +436,6 @@ class BuildspecCache:
     def get_executors(self):
         """ This method implements ``buildtest buildspec find --list-executors``
             which reports all executors from cache.
-
-            :param cache: content of cache as dictionary
-            :type cache: dict
         """
 
         table = {"executors": []}
@@ -444,7 +444,7 @@ class BuildspecCache:
 
     def print_by_executors(self):
         """ This method prints executors by tests and implements
-            ``buildtest buildspec find --test-by-tags`` command
+            ``buildtest buildspec find --group-by-executor`` command
         """
 
         table = {"executor": [], "name": [], "description": []}
@@ -459,7 +459,7 @@ class BuildspecCache:
 
     def print_by_tags(self):
         """ This method prints tags by tests and implements
-            ``buildtest buildspec find --test-by-tags`` command
+            ``buildtest buildspec find --group-by-tags`` command
         """
 
         table = {"tags": [], "name": [], "description": []}
@@ -521,7 +521,7 @@ class BuildspecCache:
             ``buildtest buildspec find --paths``
         """
 
-        for path in self.get_paths():
+        for path in self.paths:
             print(path)
 
 
