@@ -73,6 +73,7 @@ example using the `script` schema with test name called
       systemd_default_target:
         executor: local.bash
         type: script
+        tags: [system]
         description: check if default target is multi-user.target
         run: |
           if [ "multi-user.target" == `systemctl get-default` ]; then
@@ -81,8 +82,6 @@ example using the `script` schema with test name called
           fi
           echo "multi-user is not the default target";
           exit 1
-        status:
-          returncode: 0
 
 The test name **systemd_default_target** defined in **buildspec** section is
 validated with the following pattern ``"^[A-Za-z_][A-Za-z0-9_]*$"``. This test
