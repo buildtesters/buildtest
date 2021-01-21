@@ -6,10 +6,9 @@ settings.schema.json#/definitions/module
 
 
 
-
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
-| :------------------ | ---------- | -------------- | ------------ | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
 
 ## module Type
 
@@ -18,7 +17,7 @@ settings.schema.json#/definitions/module
 # undefined Properties
 
 | Property        | Type      | Required | Nullable       | Defined by                                                                                                                                    |
-| :-------------- | --------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| :-------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
 | [purge](#purge) | `boolean` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-purge.md "settings.schema.json#/definitions/module/properties/purge") |
 | [load](#load)   | `array`   | Optional | cannot be null | [buildtest configuration schema](definitions-definitions-list_of_strings.md "settings.schema.json#/definitions/module/properties/load")       |
 | [swap](#swap)   | `array`   | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-swap.md "settings.schema.json#/definitions/module/properties/swap")   |
@@ -27,13 +26,15 @@ settings.schema.json#/definitions/module
 
 Run `module purge` if purge is set
 
-
 `purge`
 
--   is optional
--   Type: `boolean`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-module-properties-purge.md "settings.schema.json#/definitions/module/properties/purge")
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-module-properties-purge.md "settings.schema.json#/definitions/module/properties/purge")
 
 ### purge Type
 
@@ -43,13 +44,15 @@ Run `module purge` if purge is set
 
 Load one or more modules via `module load`
 
-
 `load`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [buildtest configuration schema](definitions-definitions-list_of_strings.md "settings.schema.json#/definitions/module/properties/load")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](definitions-definitions-list_of_strings.md "settings.schema.json#/definitions/module/properties/load")
 
 ### load Type
 
@@ -65,13 +68,15 @@ Load one or more modules via `module load`
 
 Swap modules using `module swap`. The swap property expects 2 unique modules.
 
-
 `swap`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-module-properties-swap.md "settings.schema.json#/definitions/module/properties/swap")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-module-properties-swap.md "settings.schema.json#/definitions/module/properties/swap")
 
 ### swap Type
 

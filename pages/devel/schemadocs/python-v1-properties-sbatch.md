@@ -6,10 +6,9 @@ https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properti
 
 This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value
 
-
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                         |
-| :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [python-v1.0.schema.json\*](../out/python-v1.0.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                        |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [python-v1.0.schema.json*](../out/python-v1.0.schema.json "open original schema") |
 
 ## sbatch Type
 

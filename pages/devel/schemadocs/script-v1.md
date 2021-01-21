@@ -6,9 +6,8 @@ script-v1.0.schema.json
 
 The script schema is of `type: script` in sub-schema which is used for running shell scripts
 
-
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                       |
-| :------------------ | ---------- | -------------- | ------------ | :---------------- | --------------------- | ------------------- | -------------------------------------------------------------------------------- |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [script-v1.0.schema.json](../out/script-v1.0.schema.json "open original schema") |
 
 ## script schema version 1.0 Type
@@ -18,7 +17,7 @@ The script schema is of `type: script` in sub-schema which is used for running s
 # script schema version 1.0 Properties
 
 | Property                    | Type      | Required | Nullable       | Defined by                                                                                                            |
-| :-------------------------- | --------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------- |
+| :-------------------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`  | Required | cannot be null | [script schema version 1.0](script-v1-properties-type.md "script-v1.0.schema.json#/properties/type")                  |
 | [description](#description) | `string`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-description.md "script-v1.0.schema.json#/properties/description") |
 | [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-sbatch.md "script-v1.0.schema.json#/properties/sbatch")              |
@@ -42,13 +41,15 @@ The script schema is of `type: script` in sub-schema which is used for running s
 
 Select schema type to use when validating buildspec. This must be of set to 'script'
 
-
 `type`
 
--   is required
--   Type: `string`
--   cannot be null
--   defined in: [script schema version 1.0](script-v1-properties-type.md "script-v1.0.schema.json#/properties/type")
+*   is required
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](script-v1-properties-type.md "script-v1.0.schema.json#/properties/type")
 
 ### type Type
 
@@ -68,13 +69,15 @@ Select schema type to use when validating buildspec. This must be of set to 'scr
 
 The `description` field is used to document what the test is doing
 
-
 `description`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-description.md "script-v1.0.schema.json#/properties/description")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](definitions-definitions-description.md "script-v1.0.schema.json#/properties/description")
 
 ### description Type
 
@@ -88,13 +91,15 @@ The `description` field is used to document what the test is doing
 
 This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value
 
-
 `sbatch`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [script schema version 1.0](script-v1-properties-sbatch.md "script-v1.0.schema.json#/properties/sbatch")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](script-v1-properties-sbatch.md "script-v1.0.schema.json#/properties/sbatch")
 
 ### sbatch Type
 
@@ -110,13 +115,15 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 
 This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value
 
-
 `bsub`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [script schema version 1.0](script-v1-properties-bsub.md "script-v1.0.schema.json#/properties/bsub")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](script-v1-properties-bsub.md "script-v1.0.schema.json#/properties/bsub")
 
 ### bsub Type
 
@@ -132,13 +139,15 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 
 This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value
 
-
 `cobalt`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [script schema version 1.0](script-v1-properties-cobalt.md "script-v1.0.schema.json#/properties/cobalt")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](script-v1-properties-cobalt.md "script-v1.0.schema.json#/properties/cobalt")
 
 ### cobalt Type
 
@@ -154,13 +163,15 @@ This field is used for specifying #COBALT options in test script. buildtest will
 
 The `batch` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.
 
-
 `batch`
 
--   is optional
--   Type: `object` ([Details](definitions-definitions-batch.md))
--   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-batch.md "script-v1.0.schema.json#/properties/batch")
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-batch.md))
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](definitions-definitions-batch.md "script-v1.0.schema.json#/properties/batch")
 
 ### batch Type
 
@@ -170,13 +181,15 @@ The `batch` field is used to specify scheduler agnostic directives that are tran
 
 Create burst buffer space, this specifies #BB options in your test.
 
-
 `BB`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [script schema version 1.0](script-v1-properties-bb.md "script-v1.0.schema.json#/properties/BB")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](script-v1-properties-bb.md "script-v1.0.schema.json#/properties/BB")
 
 ### BB Type
 
@@ -192,13 +205,15 @@ Create burst buffer space, this specifies #BB options in your test.
 
 Specify Data Warp option (#DW) when using burst buffer.
 
-
 `DW`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [script schema version 1.0](script-v1-properties-dw.md "script-v1.0.schema.json#/properties/DW")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](script-v1-properties-dw.md "script-v1.0.schema.json#/properties/DW")
 
 ### DW Type
 
@@ -214,13 +229,15 @@ Specify Data Warp option (#DW) when using burst buffer.
 
 One or more key value pairs for an environment (key=value)
 
-
 `env`
 
--   is optional
--   Type: `object` ([Details](definitions-definitions-env.md))
--   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-env.md "script-v1.0.schema.json#/properties/env")
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-env.md))
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](definitions-definitions-env.md "script-v1.0.schema.json#/properties/env")
 
 ### env Type
 
@@ -234,13 +251,15 @@ One or more key value pairs for an environment (key=value)
 
 One or more key value pairs for an environment (key=value)
 
-
 `vars`
 
--   is optional
--   Type: `object` ([Details](definitions-definitions-env.md))
--   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-env.md "script-v1.0.schema.json#/properties/vars")
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-env.md))
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](definitions-definitions-env.md "script-v1.0.schema.json#/properties/vars")
 
 ### vars Type
 
@@ -252,15 +271,17 @@ One or more key value pairs for an environment (key=value)
 
 ## executor
 
-Select one of the executor name defined in your configuration file (`config.yml`). Every buildspec must have an executor which is responsible for running job. 
-
+Select one of the executor name defined in your configuration file (`config.yml`). Every buildspec must have an executor which is responsible for running job.
 
 `executor`
 
--   is required
--   Type: `string`
--   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-executor.md "script-v1.0.schema.json#/properties/executor")
+*   is required
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](definitions-definitions-executor.md "script-v1.0.schema.json#/properties/executor")
 
 ### executor Type
 
@@ -270,13 +291,15 @@ Select one of the executor name defined in your configuration file (`config.yml`
 
 A set of conditions to specify when running tests. All conditions must pass in order to process test.
 
-
 `run_only`
 
--   is optional
--   Type: `object` ([Details](definitions-definitions-run_only.md))
--   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-run_only.md "script-v1.0.schema.json#/properties/run_only")
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-run_only.md))
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](definitions-definitions-run_only.md "script-v1.0.schema.json#/properties/run_only")
 
 ### run_only Type
 
@@ -286,13 +309,15 @@ A set of conditions to specify when running tests. All conditions must pass in o
 
 Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The `shell` key can be used with `run` section to describe content of script and how its executed
 
-
 `shell`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [script schema version 1.0](script-v1-properties-shell.md "script-v1.0.schema.json#/properties/shell")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](script-v1-properties-shell.md "script-v1.0.schema.json#/properties/shell")
 
 ### shell Type
 
@@ -306,19 +331,21 @@ Specify a shell launcher to use when running jobs. This sets the shebang line in
 ^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|bash|sh|csh|tcsh|zsh|python).*
 ```
 
-[try pattern](https://regexr.com/?expression=%5E(%2Fbin%2Fbash%7C%2Fbin%2Fsh%7C%2Fbin%2Fcsh%7C%2Fbin%2Ftcsh%7C%2Fbin%2Fzsh%7Cbash%7Csh%7Ccsh%7Ctcsh%7Czsh%7Cpython).* "try regular expression with regexr.com")
+[try pattern](https://regexr.com/?expression=%5E\(%2Fbin%2Fbash%7C%2Fbin%2Fsh%7C%2Fbin%2Fcsh%7C%2Fbin%2Ftcsh%7C%2Fbin%2Fzsh%7Cbash%7Csh%7Ccsh%7Ctcsh%7Czsh%7Cpython\).\* "try regular expression with regexr.com")
 
 ## shebang
 
 Specify a custom shebang line. If not specified buildtest will automatically add it in the test script.
 
-
 `shebang`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [script schema version 1.0](script-v1-properties-shebang.md "script-v1.0.schema.json#/properties/shebang")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](script-v1-properties-shebang.md "script-v1.0.schema.json#/properties/shebang")
 
 ### shebang Type
 
@@ -328,13 +355,15 @@ Specify a custom shebang line. If not specified buildtest will automatically add
 
 A script to run using the default shell.
 
-
 `run`
 
--   is required
--   Type: `string`
--   cannot be null
--   defined in: [script schema version 1.0](script-v1-properties-run.md "script-v1.0.schema.json#/properties/run")
+*   is required
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](script-v1-properties-run.md "script-v1.0.schema.json#/properties/run")
 
 ### run Type
 
@@ -344,13 +373,15 @@ A script to run using the default shell.
 
 The status section describes how buildtest detects PASS/FAIL on test. By default returncode 0 is a PASS and anything else is a FAIL, however buildtest can support other types of PASS/FAIL conditions.
 
-
 `status`
 
--   is optional
--   Type: `object` ([Details](definitions-definitions-status.md))
--   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-status.md "script-v1.0.schema.json#/properties/status")
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-status.md))
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](definitions-definitions-status.md "script-v1.0.schema.json#/properties/status")
 
 ### status Type
 
@@ -360,13 +391,15 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 
 The `skip` is a boolean field that can be used to skip tests during builds. By default buildtest will build and run all tests in your buildspec file, if `skip: True` is set it will skip the buildspec.
 
-
 `skip`
 
--   is optional
--   Type: `boolean`
--   cannot be null
--   defined in: [script schema version 1.0](definitions-definitions-skip.md "script-v1.0.schema.json#/properties/skip")
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](definitions-definitions-skip.md "script-v1.0.schema.json#/properties/skip")
 
 ### skip Type
 
@@ -376,13 +409,15 @@ The `skip` is a boolean field that can be used to skip tests during builds. By d
 
 Classify tests using a tag name, this can be used for categorizing test and building tests using `--tags` option
 
-
 `tags`
 
--   is optional
--   Type: merged type ([Details](script-v1-properties-tags.md))
--   cannot be null
--   defined in: [script schema version 1.0](script-v1-properties-tags.md "script-v1.0.schema.json#/properties/tags")
+*   is optional
+
+*   Type: merged type ([Details](script-v1-properties-tags.md))
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](script-v1-properties-tags.md "script-v1.0.schema.json#/properties/tags")
 
 ### tags Type
 
@@ -390,5 +425,6 @@ merged type ([Details](script-v1-properties-tags.md))
 
 one (and only one) of
 
--   [Untitled string in JSON Schema Definitions File. ](definitions-definitions-string_or_list-oneof-0.md "check type definition")
--   [Untitled array in JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "check type definition")
+*   [Untitled string in JSON Schema Definitions File. ](definitions-definitions-string_or_list-oneof-0.md "check type definition")
+
+*   [Untitled array in JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "check type definition")

@@ -6,10 +6,9 @@ settings.schema.json#/definitions/slurm
 
 An instance object of slurm executor
 
-
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
-| :------------------ | ---------- | -------------- | ------------ | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
 
 ## slurm Type
 
@@ -18,7 +17,7 @@ An instance object of slurm executor
 # undefined Properties
 
 | Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                  |
-| :------------------------------ | ------------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :------------------------------ | :------------ | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [description](#description)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-description.md "settings.schema.json#/definitions/slurm/properties/description")     |
 | [launcher](#launcher)           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-launcher.md "settings.schema.json#/definitions/slurm/properties/launcher")           |
 | [options](#options)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-options.md "settings.schema.json#/definitions/slurm/properties/options")             |
@@ -34,13 +33,15 @@ An instance object of slurm executor
 
 description field for documenting your executor
 
-
 `description`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-description.md "settings.schema.json#/definitions/slurm/properties/description")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-description.md "settings.schema.json#/definitions/slurm/properties/description")
 
 ### description Type
 
@@ -48,15 +49,17 @@ description field for documenting your executor
 
 ## launcher
 
-Specify the slurm batch scheduler to use. This overrides the default `launcher` field. This must be `sbatch`. 
-
+Specify the slurm batch scheduler to use. This overrides the default `launcher` field. This must be `sbatch`.
 
 `launcher`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-launcher.md "settings.schema.json#/definitions/slurm/properties/launcher")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-launcher.md "settings.schema.json#/definitions/slurm/properties/launcher")
 
 ### launcher Type
 
@@ -67,20 +70,22 @@ Specify the slurm batch scheduler to use. This overrides the default `launcher` 
 **enum**: the value of this property must be equal to one of the following values:
 
 | Value      | Explanation |
-| :--------- | ----------- |
+| :--------- | :---------- |
 | `"sbatch"` |             |
 
 ## options
 
 Specify any other options for `sbatch` used by this executor for running all jobs.
 
-
 `options`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-options.md "settings.schema.json#/definitions/slurm/properties/options")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-options.md "settings.schema.json#/definitions/slurm/properties/options")
 
 ### options Type
 
@@ -90,13 +95,15 @@ Specify any other options for `sbatch` used by this executor for running all job
 
 Specify the slurm cluster you want to use `-M <cluster>`
 
-
 `cluster`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-cluster.md "settings.schema.json#/definitions/slurm/properties/cluster")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-cluster.md "settings.schema.json#/definitions/slurm/properties/cluster")
 
 ### cluster Type
 
@@ -106,13 +113,15 @@ Specify the slurm cluster you want to use `-M <cluster>`
 
 Specify the slurm partition you want to use `-p <partition>`
 
-
 `partition`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-partition.md "settings.schema.json#/definitions/slurm/properties/partition")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-partition.md "settings.schema.json#/definitions/slurm/properties/partition")
 
 ### partition Type
 
@@ -122,13 +131,15 @@ Specify the slurm partition you want to use `-p <partition>`
 
 Specify the slurm qos you want to use `-q <qos>`
 
-
 `qos`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-qos.md "settings.schema.json#/definitions/slurm/properties/qos")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-qos.md "settings.schema.json#/definitions/slurm/properties/qos")
 
 ### qos Type
 
@@ -138,13 +149,15 @@ Specify the slurm qos you want to use `-q <qos>`
 
 The `before_script` section can be used to specify commands before start of test. The script will be sourced in active shell.
 
-
 `before_script`
 
--   is optional
--   Type: unknown
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-before_script.md "settings.schema.json#/definitions/slurm/properties/before_script")
+*   is optional
+
+*   Type: unknown
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-before_script.md "settings.schema.json#/definitions/slurm/properties/before_script")
 
 ### before_script Type
 
@@ -154,13 +167,15 @@ unknown
 
 The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
 
-
 `after_script`
 
--   is optional
--   Type: unknown
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-after_script.md "settings.schema.json#/definitions/slurm/properties/after_script")
+*   is optional
+
+*   Type: unknown
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-after_script.md "settings.schema.json#/definitions/slurm/properties/after_script")
 
 ### after_script Type
 
@@ -170,13 +185,15 @@ unknown
 
 Cancel job if it is still pending in queue beyond max_pend_time
 
-
 `max_pend_time`
 
--   is optional
--   Type: `integer`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-max_pend_time.md "settings.schema.json#/definitions/slurm/properties/max_pend_time")
+*   is optional
+
+*   Type: `integer`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-max_pend_time.md "settings.schema.json#/definitions/slurm/properties/max_pend_time")
 
 ### max_pend_time Type
 
@@ -198,13 +215,15 @@ The default value is:
 
 Specify Job Account for charging resources
 
-
 `account`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/slurm/properties/account")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/slurm/properties/account")
 
 ### account Type
 
