@@ -1,5 +1,30 @@
+stages:
+  - validate
+  - regression
+
+validate_cori_testsuite:
+  tags: ["cori20-siddiq90"]
+  stage: validate
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
+      when: manual
+  script:
+    - module load python
+    - conda create -n buildtest python=3.8
+    - source activate buildtest
+    - source setup.sh    
+    - git clone https://github.com/buildtesters/buildtest-cori/
+    - cd buildtest-cori
+    - mkdir -p $HOME/.buildtest
+    - cp .buildtest/config.yml $HOME/.buildtest/config.yml
+    - buildtest config validate
+    - buildtest buildspec find --root $PWD
+    - source deactivate 
+    - conda env remove -n buildtest -y
+    
 cori_pr_regression_test:
   tags: ["cori20-siddiq90"]
+  stage: regression
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
       when: manual
