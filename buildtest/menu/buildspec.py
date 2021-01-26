@@ -104,9 +104,8 @@ class BuildspecCache:
 
     def _discover_buildspecs(self):
         """This method retrieves buildspecs based on ``self.paths`` which is a
-           list of directory paths to search. If --root is specified for specifying
-           buildspec roots we process each argument, if its a file we add file,
-           if its a directory we recursively find all .yml files
+           list of directory paths to search. If ``--root`` is specified
+           we process each argument and recursively find all .yml files
         """
 
         buildspecs = []
@@ -125,12 +124,6 @@ class BuildspecCache:
 
         print(f"\nBuildspec Paths: {self.paths} \n")
 
-        # remove any files in .buildtest directory of root of repo.
-        buildspecs = [
-            buildspec
-            for buildspec in buildspecs
-            if os.path.basename(os.path.dirname(buildspec)) != ".buildtest"
-        ]
         return buildspecs
 
     def _write_buildspec_cache(self):
@@ -218,6 +211,8 @@ class BuildspecCache:
         self.update_cache["buildspecs"] = {}
         self.update_cache["executor"] = {}
         self.update_cache["tags"] = {}
+        self.update_cache["maintainers"] = {}
+
         self.invalid_buildspecs = {}
 
         for path in self.paths:
@@ -241,6 +236,16 @@ class BuildspecCache:
         for parser in parsers:
 
             recipe = parser.recipe["buildspecs"]
+
+            # if maintainer field specified add all maintainers from buildspec to list
+            if parser.recipe.get("maintainers"):
+                print(parser.buildspec, parser.recipe["maintainers"])
+
+                for author in parser.recipe["maintainers"]:
+                    if not self.update_cache["maintainers"].get(author):
+                        self.update_cache["maintainers"][author] = []
+
+                    self.update_cache["maintainers"][author].append(parser.buildspec)
 
             if not self.update_cache["buildspecs"].get(parser.buildspec):
                 self.update_cache["buildspecs"][parser.buildspec] = {}
@@ -414,13 +419,7 @@ class BuildspecCache:
             which reports all buildspec files in cache.
         """
 
-        table = {"buildspecs": []}
-        files = []
-
-        for path in self.cache["buildspecs"].keys():
-            files += self.cache["buildspecs"].keys()
-
-        table["buildspecs"] = files
+        table = {"buildspecs": self.cache["buildspecs"].keys()}
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def get_tags(self):
@@ -428,9 +427,7 @@ class BuildspecCache:
             reports a list of unique tags from all buildspecs in cache file.
         """
 
-        table = {"Tags": []}
-
-        table["Tags"] = self.cache["unique_tags"]
+        table = {"Tags": self.cache["unique_tags"]}
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def get_executors(self):
@@ -438,8 +435,8 @@ class BuildspecCache:
             which reports all executors from cache.
         """
 
-        table = {"executors": []}
-        table["executors"] = self.cache["unique_executors"]
+        table = {"executors": self.cache["unique_executors"]}
+
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def print_by_executors(self):
@@ -476,6 +473,30 @@ class BuildspecCache:
         """Print buildspec table"""
 
         print(tabulate(self.table, headers=self.table.keys(), tablefmt="grid"))
+
+    def print_maintainer(self):
+        """ This method prints maintainers from buildspec cache file which implements
+            ``buildtest buildspec find --maintainers`` command.
+        """
+
+        table = {"maintainers": []}
+
+        for maintainer in self.cache["maintainers"].keys():
+            table["maintainers"].append(maintainer)
+
+        print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+
+    def print_maintainers_by_buildspecs(self):
+        """ This method prints maintainers breakdown by buildspecs. This method
+            implements ``buildtest buildspec find --maintainers-by-buildspecs
+        """
+
+        table = {"maintainers": [], "buildspec": []}
+        for maintainer, buildspec in self.cache["maintainers"].items():
+            table["maintainers"].append(maintainer)
+            table["buildspec"].append(buildspec)
+
+        print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     @staticmethod
     def print_filter_fields():
@@ -571,6 +592,15 @@ def func_buildspec_find(args):
 
     if args.group_by_tags:
         bp_cache.print_by_tags()
+        return
+
+    # implements buildtest buildspec find --maintainers
+    if args.maintainers:
+        bp_cache.print_maintainer()
+        return
+
+    if args.maintainers_by_buildspecs:
+        bp_cache.print_maintainers_by_buildspecs()
         return
 
     # implements buildtest buildspec find --helpfilter

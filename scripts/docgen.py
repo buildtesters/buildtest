@@ -123,6 +123,8 @@ def introspection_cmds():
         "buildspec_format_example.txt": "buildtest buildspec find --format name,description,file --filter tags=tutorials,executor=local.sh",
         "buildspec_find_group_by_tags.txt": "buildtest buildspec find --group-by-tags",
         "buildspec_find_group_by_executor.txt": "buildtest buildspec find --group-by-executor",
+        "buildspec_find_maintainers.txt": "buildtest buildspec find --maintainers",
+        "buildspec_find_maintainers_by_buildspecs.txt": "buildtest buildspec find --maintainers-by-buildspecs",
         "report-helpformat.txt": "buildtest report --helpformat",
         "report-helpfilter.txt": "buildtest report --helpfilter",
         "report-format.txt": "buildtest report --format name,id,executor,state,returncode",
