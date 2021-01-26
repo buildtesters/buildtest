@@ -30,6 +30,8 @@ def test_build_by_tags():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False

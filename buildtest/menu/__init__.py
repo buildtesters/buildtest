@@ -248,7 +248,18 @@ class BuildTestParser:
             action="store_true",
             help="Group tests by executor name",
         )
-
+        buildspec_find.add_argument(
+            "-m",
+            "--maintainers",
+            help="Get all maintainers for all buildspecs",
+            action="store_true",
+        )
+        buildspec_find.add_argument(
+            "-mb",
+            "--maintainers-by-buildspecs",
+            help="Show maintainers breakdown by buildspecs",
+            action="store_true",
+        )
         buildspec_find.add_argument(
             "--filter",
             type=handle_kv_string,

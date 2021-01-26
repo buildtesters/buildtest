@@ -289,7 +289,6 @@ To find all buildspecs run ``buildtest buildspec find`` which will discover
 all buildspecs in all repos by recursively finding all `.yml` extensions.
 
 .. program-output:: cat docgen/getting_started/buildspec-find.txt
-   :ellipsis: 50
 
 buildtest will validate each buildspec file with the appropriate
 schema type. buildspecs that pass validation will be displayed on screen.
@@ -413,6 +412,24 @@ using ``--group-by-executor`` option. This will show tests grouped by executor,
 name of test and test description. Shown below is an example output.
 
 .. program-output:: cat docgen/buildspec_find_group_by_executor.txt
+
+
+Query Maintainers in buildspecs
+---------------------------------
+
+The ``maintainers`` field can be used for identifying author for buildspec
+file which can be useful if you want to find out who is responsible for the test.
+You can retrieve all buildspec maintainers using ``--maintainers`` option or ``-m``
+short option. The command below will show all maintainers for buildspecs in buildspec
+cache
+
+.. program-output:: cat docgen/buildspec_find_maintainers.txt
+
+
+If you want to see a breakdown of maintainers by buildspec file you can use ``--maintainers-by-buildspecs``
+or ``-mb`` short option. This can be useful when tracking maintainers by buildspec files.
+
+.. program-output:: cat docgen/buildspec_find_maintainers_by_buildspecs.txt
 
 
 .. _test_reports:

@@ -1,0 +1,6 @@
+$ buildtest buildspec find --maintainers
++------------------+
+| maintainers      |
++==================+
+| @shahzebsiddiqui |
++------------------+

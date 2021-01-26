@@ -18,6 +18,8 @@ def test_func_buildspec_find():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False
@@ -36,6 +38,8 @@ def test_func_buildspec_find():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False
@@ -56,6 +60,8 @@ def test_buildspec_tags():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False
@@ -74,6 +80,8 @@ def test_buildspec_tags():
         paths = False
         group_by_tags = True
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False
@@ -95,6 +103,8 @@ def test_buildspec_files():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False
@@ -116,6 +126,8 @@ def test_buildspec_executors():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False
@@ -134,6 +146,8 @@ def test_buildspec_executors():
         paths = False
         group_by_tags = False
         group_by_executor = True
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False
@@ -155,6 +169,8 @@ def test_buildspec_paths():
         paths = True
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False
@@ -176,6 +192,8 @@ def test_buildspec_find_filter():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = True
@@ -194,6 +212,8 @@ def test_buildspec_find_filter():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = {"tags": "fail"}
         format = None
         helpfilter = False
@@ -212,6 +232,8 @@ def test_buildspec_find_filter():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = {
             "type": "script",
             "executor": "local.sh",
@@ -237,6 +259,8 @@ def test_buildspec_find_filter():
             paths = False
             group_by_tags = False
             group_by_executor = False
+            maintainers = False
+            maintainers_by_buildspecs = False
             filter = {"key1": "val1", "key2": "val2"}
             format = None
             helpfilter = False
@@ -257,6 +281,8 @@ def test_buildspec_find_format():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False
@@ -275,6 +301,8 @@ def test_buildspec_find_format():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = "name,type,executor,description,file"
         helpfilter = False
@@ -297,6 +325,8 @@ def test_buildspec_find_format():
             paths = False
             group_by_tags = False
             group_by_executor = False
+            maintainers = False
+            maintainers_by_buildspecs = False
             filter = None
             format = "field1"
             helpfilter = False
@@ -324,6 +354,8 @@ def test_buildspec_find_roots():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False
@@ -345,10 +377,55 @@ def test_buildspec_find_roots():
         paths = False
         group_by_tags = False
         group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = False
         filter = None
         format = None
         helpfilter = False
         helpformat = False
 
     # running buildtest buildspec find --root /path/to/buildtest/README.rst --root /path/to/buildtest/tutorials/environment.yml
+    func_buildspec_find(args)
+
+
+@pytest.mark.cli
+def test_buildspec_maintainers():
+    class args:
+        find = True
+        rebuild = False
+        root = None
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = False
+        group_by_tags = False
+        group_by_executor = False
+        maintainers = True
+        maintainers_by_buildspecs = False
+        filter = None
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # run buildtest buildspec find --maintainers
+    func_buildspec_find(args)
+
+    class args:
+        find = True
+        rebuild = False
+        root = None
+        buildspec_files = False
+        executors = False
+        tags = False
+        paths = False
+        group_by_tags = False
+        group_by_executor = False
+        maintainers = False
+        maintainers_by_buildspecs = True
+        filter = None
+        format = None
+        helpfilter = False
+        helpformat = False
+
+    # run buildtest buildspec find --maintainers
     func_buildspec_find(args)
