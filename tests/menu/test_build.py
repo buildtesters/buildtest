@@ -169,12 +169,12 @@ def test_build_by_stages():
         stage = "parse"
         testdir = None
         exclude = None
-        tags = ["tutorials"]
+        tags = ["python"]
         executor = None
         filter_tags = None
         rebuild = None
 
-    # testing buildtest build --tags tutorials --stage=parse
+    # testing buildtest build --tags python --stage=parse
     func_build_subcmd(args, buildtest_configuration)
 
     class args:
@@ -183,7 +183,7 @@ def test_build_by_stages():
         stage = "build"
         testdir = None
         exclude = None
-        tags = ["tutorials"]
+        tags = ["python"]
         executor = None
         filter_tags = None
         rebuild = None

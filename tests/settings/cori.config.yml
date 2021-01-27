@@ -1,0 +1,32 @@
+moduletool: environment-modules
+load_default_buildspecs: false
+executors:
+  defaults:
+    pollinterval: 10
+    launcher: sbatch
+    max_pend_time: 90
+    account: nstaff
+  local:
+    bash:
+      description: submit jobs on local machine using bash shell
+      shell: bash
+
+    sh:
+      description: submit jobs on local machine using sh shell
+      shell: sh
+
+    csh:
+      description: submit jobs on local machine using csh shell
+      shell: csh
+
+    python:
+      description: submit jobs on local machine using python shell
+      shell: python
+
+  slurm:
+    haswell_debug:
+      qos: debug
+      cluster: cori
+      options:
+        - -C haswell
+      description: debug queue on Haswell partition

@@ -15,12 +15,6 @@ exclude_lines =
     class BuildTestParser
     if self.debug
 
-    def validate_lsf_executors
-    def validate_slurm_executors
-    def get_slurm_partitions
-    def get_slurm_clusters
-    def get_slurm_qos
-    def get_lsf_queues
     # Don't complain if tests don't hit defensive assertion code:
     raise AssertionError
     raise NotImplementedError

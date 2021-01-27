@@ -15,38 +15,37 @@ from buildtest.schemas.defaults import schema_table, custom_validator
 from buildtest.utils.file import resolve_path, is_dir
 
 configuration = load_settings()
-master_executors = BuildExecutor(configuration)
-executors = master_executors.executors.keys()
+be = BuildExecutor(configuration)
 
 
 class BuildspecParser:
     """A BuildspecParser is a base class for loading and validating a Buildspec file.
-       The type (e.g., script) and version are derived from reading in
-       the file, and then matching to a Buildspec schema.
+    The type (e.g., script) and version are derived from reading in
+    the file, and then matching to a Buildspec schema.
 
-       The schemas are located in buildtest/schemas, we load the schema dictionary
-       and validate each buildspec with global schema and a sub-schema based on the
-       type field.
+    The schemas are located in buildtest/schemas, we load the schema dictionary
+    and validate each buildspec with global schema and a sub-schema based on the
+    type field.
 
-       If the version of a schema is not specified, we use the latest.
-       If the schema fails validation check, then we stop immediately.
+    If the version of a schema is not specified, we use the latest.
+    If the schema fails validation check, then we stop immediately.
     """
 
     def __init__(self, buildspec):
         """The init method will run some checks against buildspec before loading
-           buildspec. We retrieve available schemas via method
-           ``get_schemas_available`` and check if ``type`` in buildspec
-           match available schema. We validate the entire buildspec with
-           global.schema.json and validate each test section with the designated
-           type schema. If there is any error during the init method, an
-           exception will be raised.
+        buildspec. We retrieve available schemas via method
+        ``get_schemas_available`` and check if ``type`` in buildspec
+        match available schema. We validate the entire buildspec with
+        global.schema.json and validate each test section with the designated
+        type schema. If there is any error during the init method, an
+        exception will be raised.
 
-           :param buildspec: the pull path to the Buildspec file, must exist.
-           :type buildspec: str, required
+        :param buildspec: the pull path to the Buildspec file, must exist.
+        :type buildspec: str, required
         """
 
         self.logger = logging.getLogger(__name__)
-        self.executors = list(executors)
+        self.executors = be.list_executors()
         # if invalid input for buildspec
         if not buildspec:
             raise BuildTestError(
@@ -78,7 +77,7 @@ class BuildspecParser:
 
     def _check_schema_type(self, test):
         """Check ``type`` field is a valid sub-schema and verify ``type`` + ``version``
-           will resolve to a schema file.
+        will resolve to a schema file.
         """
 
         # extract type field from test, if not found set to None
@@ -121,10 +120,10 @@ class BuildspecParser:
 
     def _check_executor(self, test):
         """This method checks if ``executor`` property is not None and executor
-           value is found in list of available executors.
+        value is found in list of available executors.
 
-           :param test: name of test in ``buildspecs`` property in buildspec file
-           :type test: str, required
+        :param test: name of test in ``buildspecs`` property in buildspec file
+        :type test: str, required
         """
 
         # extract type field from test, if not found set to None
@@ -140,13 +139,13 @@ class BuildspecParser:
 
     def _validate(self):
         """This method will validate the entire buildspec file with global schema
-           and each test section with a sub-schema. The global validation ensures
-           that the overall structure of the file is sound for further parsing.
-           We load in the global.schema.json for this purpose.
+        and each test section with a sub-schema. The global validation ensures
+        that the overall structure of the file is sound for further parsing.
+        We load in the global.schema.json for this purpose.
 
-           A buildspec is composed of one or more tests, each section is validated
-           with a sub-schema. The ``type`` field is used for sub-schema lookup
-           from schema library. Finally we validate loaded recipe with sub-schema.
+        A buildspec is composed of one or more tests, each section is validated
+        with a sub-schema. The ``type`` field is used for sub-schema lookup
+        from schema library. Finally we validate loaded recipe with sub-schema.
         """
 
         self.logger.info(
