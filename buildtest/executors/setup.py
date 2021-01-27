@@ -66,6 +66,9 @@ class BuildExecutor:
     def __repr__(self):
         return "[buildtest-executor]"
 
+    def list_executors(self):
+        return list(self.executors.keys())
+
     def get(self, name):
         """Given the name of an executor return the executor for running
         a buildtest build, or get the default.

@@ -45,7 +45,7 @@ def test_build_executor(tmp_path):
         except (SystemExit, ValidationError):
             continue
 
-        bp_filters = {"tags": None, "executors": None}
+        bp_filters = {"tags": None}
         builders = Builder(bp=bp, filters=bp_filters, testdir=tmp_path)
         valid_builders = builders.get_builders()
 
