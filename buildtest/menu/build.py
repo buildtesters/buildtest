@@ -320,7 +320,9 @@ def resolve_testdirectory(config_opts, input_testdir=None):
     return test_directory
 
 
-def parse_buildspecs(buildspecs, test_directory, filters, rebuild, printTable=False):
+def parse_buildspecs(
+    buildspecs, executor, test_directory, filters, rebuild, printTable=False
+):
 
     """ Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
         fails validation we add it to ``skipped_tests`` list and print all skipped
@@ -329,11 +331,13 @@ def parse_buildspecs(buildspecs, test_directory, filters, rebuild, printTable=Fa
         buildspec file.
 
         :param buildspecs: A list of input buildspecs to parse
-        :type buildspecs: list of filepaths
+        :type buildspecs: list, required
+        :param executor: An instance of BuildExecutor class
+        :type executor: BuildExecutor
         :param test_directory: Test directory where buildspecs will be written
-        :type test_directory: str (directory path)
+        :type test_directory: str, required
         :param filters: A dictionary containing filters on builders based on tags and executors
-        :type filters: dict
+        :type filters: dict, required
         :param rebuild: Input argument from command line --rebuild
         :type rebuild: int or None
         :param printTable: a boolean to control if parse table is printed
@@ -351,7 +355,7 @@ def parse_buildspecs(buildspecs, test_directory, filters, rebuild, printTable=Fa
         valid_state = True
         try:
             # Read in Buildspec file here, loading each will validate the buildspec file
-            bp = BuildspecParser(buildspec)
+            bp = BuildspecParser(buildspec, executor)
         except (BuildTestError, ValidationError) as err:
             invalid_buildspecs.append(
                 f"Skipping {buildspec} since it failed to validate"
@@ -739,7 +743,6 @@ def func_build_subcmd(args, buildtest_config):
     stage = args.stage
     executor = BuildExecutor(buildtest_config)
 
-    # buildspec_filters = {"tags": args.tags, "executors": args.executor}
     buildspec_filters = {"tags": args.filter_tags}
 
     # Parse all buildspecs and skip any buildspecs that fail validation, return type
@@ -747,6 +750,7 @@ def func_build_subcmd(args, buildtest_config):
     builders = parse_buildspecs(
         buildspecs=buildspecs,
         filters=buildspec_filters,
+        executor=executor,
         test_directory=test_directory,
         rebuild=args.rebuild,
         printTable=True,
