@@ -1,11 +1,7 @@
 import os
 import pytest
-from jsonschema import ValidationError
 from buildtest.config import check_settings
-from buildtest.buildsystem.builders import Builder
-from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.executors.setup import BuildExecutor
-from buildtest.exceptions import BuildTestError
 
 
 def test_check_settings():
