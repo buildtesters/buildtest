@@ -548,7 +548,7 @@ test is recorded in ``var/report.json``. The command usage is the following.
 The ``buildtest inspect`` expects a **unique** test id this can be
 retrieve using the ``full_id`` format field if you are not sure::
 
-  $ buildtest report --format name, full_id
+  $ buildtest report --format name,full_id
 
 For example, let's assume we have the following tests in our report::
 
