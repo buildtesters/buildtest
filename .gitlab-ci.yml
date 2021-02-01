@@ -1,9 +1,12 @@
+variables:
+  SCHEDULER_PARAMETERS: "-N 1 -M escori -q compile -t 30"
+
 stages:
   - validate
   - regression
 
 validate_cori_testsuite:
-  tags: ["cori20-siddiq90"]
+  tags: ["cori"]
   stage: validate
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
@@ -23,7 +26,7 @@ validate_cori_testsuite:
     - conda env remove -n buildtest -y
     
 cori_pr_regression_test:
-  tags: ["cori20-siddiq90"]
+  tags: ["cori"]
   stage: regression
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
