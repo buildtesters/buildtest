@@ -14,7 +14,7 @@ The `cobalt` section is used for declaring Cobalt executors for running jobs usi
 
 `object` ([Details](settings-properties-executors-properties-cobalt.md))
 
-# undefined Properties
+# cobalt Properties
 
 | Property | Type     | Required | Nullable       | Defined by                                                                                                                                             |
 | :------- | :------- | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |

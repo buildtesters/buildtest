@@ -14,7 +14,7 @@ A set of conditions to specify when running tests. All conditions must pass in o
 
 `object` ([Details](definitions-definitions-run_only.md))
 
-# undefined Properties
+# run_only Properties
 
 | Property                      | Type     | Required | Nullable       | Defined by                                                                                                                                                            |
 | :---------------------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

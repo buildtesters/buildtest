@@ -14,7 +14,7 @@ Find compilers based on module names
 
 `object` ([Details](settings-properties-compilers-properties-find.md))
 
-# undefined Properties
+# find Properties
 
 | Property        | Type     | Required | Nullable       | Defined by                                                                                                                                                                        |
 | :-------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

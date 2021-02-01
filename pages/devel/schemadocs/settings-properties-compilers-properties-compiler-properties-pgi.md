@@ -14,7 +14,7 @@ Declaration of one or more PGI compilers where we define C, C++ and Fortran comp
 
 `object` ([Details](settings-properties-compilers-properties-compiler-properties-pgi.md))
 
-# undefined Properties
+# pgi Properties
 
 | Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                        |
 | :------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

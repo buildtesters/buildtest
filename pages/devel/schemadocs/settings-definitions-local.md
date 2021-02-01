@@ -14,7 +14,7 @@ An instance object of local executor
 
 `object` ([Details](settings-definitions-local.md))
 
-# undefined Properties
+# local Properties
 
 | Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                  |
 | :------------------------------ | :------------ | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |

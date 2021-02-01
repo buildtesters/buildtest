@@ -14,7 +14,7 @@ The `batch` field is used to specify scheduler agnostic directives that are tran
 
 `object` ([Details](definitions-definitions-batch.md))
 
-# undefined Properties
+# batch Properties
 
 | Property                              | Type      | Required | Nullable       | Defined by                                                                                                                                                              |
 | :------------------------------------ | :-------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

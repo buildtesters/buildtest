@@ -14,7 +14,7 @@ settings.schema.json#/definitions/module
 
 `object` ([Details](settings-definitions-module.md))
 
-# undefined Properties
+# module Properties
 
 | Property        | Type      | Required | Nullable       | Defined by                                                                                                                                    |
 | :-------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |

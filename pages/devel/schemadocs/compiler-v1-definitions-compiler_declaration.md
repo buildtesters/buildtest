@@ -14,7 +14,7 @@ Specify compiler configuration at compiler level. The `config` section has highe
 
 `object` ([Details](compiler-v1-definitions-compiler_declaration.md))
 
-# undefined Properties
+# ^.\*$ Properties
 
 | Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                                       |
 | :------------------------ | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

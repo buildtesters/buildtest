@@ -14,7 +14,7 @@ The executor section is used for declaring your executors that are responsible f
 
 `object` ([Details](settings-properties-executors.md))
 
-# undefined Properties
+# executors Properties
 
 | Property              | Type     | Required | Nullable       | Defined by                                                                                                                                              |
 | :-------------------- | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |

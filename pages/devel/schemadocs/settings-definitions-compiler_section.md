@@ -14,7 +14,7 @@ A compiler section is composed of `cc`, `cxx` and `fc` wrapper these are require
 
 `object` ([Details](settings-definitions-compiler_section.md))
 
-# undefined Properties
+# compiler_section Properties
 
 | Property          | Type     | Required | Nullable       | Defined by                                                                                                                              |
 | :---------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |

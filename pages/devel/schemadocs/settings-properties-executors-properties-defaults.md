@@ -14,7 +14,7 @@ Specify default executor settings for all executors
 
 `object` ([Details](settings-properties-executors-properties-defaults.md))
 
-# undefined Properties
+# defaults Properties
 
 | Property                        | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                |
 | :------------------------------ | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

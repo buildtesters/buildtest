@@ -14,7 +14,7 @@ Start of compiler declaration
 
 `object` ([Details](settings-properties-compilers-properties-compiler.md))
 
-# undefined Properties
+# compiler Properties
 
 | Property        | Type     | Required | Nullable       | Defined by                                                                                                                                                                                |
 | :-------------- | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

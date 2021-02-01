@@ -14,7 +14,7 @@ Declaration of one or more Cray compilers where we define C, C++ and Fortran com
 
 `object` ([Details](settings-properties-compilers-properties-compiler-properties-cray.md))
 
-# undefined Properties
+# cray Properties
 
 | Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                         |
 | :------- | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

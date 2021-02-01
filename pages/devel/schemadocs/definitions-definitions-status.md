@@ -14,7 +14,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 
 `object` ([Details](definitions-definitions-status.md))
 
-# undefined Properties
+# status Properties
 
 | Property                            | Type     | Required | Nullable       | Defined by                                                                                                                                                              |
 | :---------------------------------- | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

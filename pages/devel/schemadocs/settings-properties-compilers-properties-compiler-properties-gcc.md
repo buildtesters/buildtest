@@ -14,7 +14,7 @@ Declaration of one or more GNU compilers where we define C, C++ and Fortran comp
 
 `object` ([Details](settings-properties-compilers-properties-compiler-properties-gcc.md))
 
-# undefined Properties
+# gcc Properties
 
 | Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                        |
 | :------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

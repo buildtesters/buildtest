@@ -14,7 +14,7 @@ The `slurm` section is used for declaring Slurm executors for running jobs using
 
 `object` ([Details](settings-properties-executors-properties-slurm.md))
 
-# undefined Properties
+# slurm Properties
 
 | Property | Type     | Required | Nullable       | Defined by                                                                                                                                           |
 | :------- | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |

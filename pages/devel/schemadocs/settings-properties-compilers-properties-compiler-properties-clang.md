@@ -14,7 +14,7 @@ Declaration of one or more Clang compilers where we define C, C++ compiler. The 
 
 `object` ([Details](settings-properties-compilers-properties-compiler-properties-clang.md))
 
-# undefined Properties
+# clang Properties
 
 | Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                          |
 | :------- | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

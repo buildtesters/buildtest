@@ -14,7 +14,7 @@ An instance object of cobalt executor
 
 `object` ([Details](settings-definitions-cobalt.md))
 
-# undefined Properties
+# cobalt Properties
 
 | Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                    |
 | :------------------------------ | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |

@@ -14,7 +14,7 @@ compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module
 
 `object` ([Details](compiler-v1-definitions-compiler_declaration-properties-module.md))
 
-# undefined Properties
+# module Properties
 
 | Property            | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                             |
 | :------------------ | :-------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

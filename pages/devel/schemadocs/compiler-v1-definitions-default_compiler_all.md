@@ -14,7 +14,7 @@ Specify compiler configuration for all compiler groups. Use the `all` property i
 
 `object` ([Details](compiler-v1-definitions-default_compiler_all.md))
 
-# undefined Properties
+# all Properties
 
 | Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                                       |
 | :------------------------ | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

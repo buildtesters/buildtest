@@ -14,7 +14,7 @@ compiler-v1.0.schema.json#/properties/compilers
 
 `object` ([Details](compiler-v1-properties-compilers.md))
 
-# undefined Properties
+# compilers Properties
 
 | Property            | Type     | Required | Nullable       | Defined by                                                                                                                                                 |
 | :------------------ | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |

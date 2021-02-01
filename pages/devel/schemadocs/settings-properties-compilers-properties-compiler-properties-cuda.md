@@ -14,7 +14,7 @@ Declaration of one or more Cuda compilers where we define C compiler. The Cuda c
 
 `object` ([Details](settings-properties-compilers-properties-compiler-properties-cuda.md))
 
-# undefined Properties
+# cuda Properties
 
 | Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                         |
 | :------- | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -14,7 +14,7 @@ Perform regular expression search using `re.search` python module on stdout/stde
 
 `object` ([Details](definitions-definitions-status-properties-regex.md))
 
-# undefined Properties
+# regex Properties
 
 | Property          | Type     | Required | Nullable       | Defined by                                                                                                                                                                              |
 | :---------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

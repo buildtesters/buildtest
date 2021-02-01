@@ -14,7 +14,7 @@ Declare compiler section for defining system compilers that can be referenced in
 
 `object` ([Details](settings-properties-compilers.md))
 
-# undefined Properties
+# compilers Properties
 
 | Property              | Type     | Required | Nullable       | Defined by                                                                                                                                              |
 | :-------------------- | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |

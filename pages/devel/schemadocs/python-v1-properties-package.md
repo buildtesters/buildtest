@@ -14,7 +14,7 @@ https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properti
 
 `object` ([Details](python-v1-properties-package.md))
 
-# undefined Properties
+# package Properties
 
 | Property                      | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                |
 | :---------------------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

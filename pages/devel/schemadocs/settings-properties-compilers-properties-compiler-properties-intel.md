@@ -14,7 +14,7 @@ Declaration of one or more Intel compilers where we define C, C++ and Fortran co
 
 `object` ([Details](settings-properties-compilers-properties-compiler-properties-intel.md))
 
-# undefined Properties
+# intel Properties
 
 | Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                          |
 | :------- | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

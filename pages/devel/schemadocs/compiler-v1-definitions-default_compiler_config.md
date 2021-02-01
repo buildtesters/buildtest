@@ -14,7 +14,7 @@ Specify compiler configuration for group of compilers. Use this property if you 
 
 `object` ([Details](compiler-v1-definitions-default_compiler_config.md))
 
-# undefined Properties
+# clang Properties
 
 | Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                                             |
 | :------------------------ | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

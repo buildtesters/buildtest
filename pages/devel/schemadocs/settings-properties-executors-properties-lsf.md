@@ -14,7 +14,7 @@ The `lsf` section is used for declaring LSF executors for running jobs using LSF
 
 `object` ([Details](settings-properties-executors-properties-lsf.md))
 
-# undefined Properties
+# lsf Properties
 
 | Property | Type     | Required | Nullable       | Defined by                                                                                                                                       |
 | :------- | :------- | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -14,7 +14,7 @@ An instance object of lsf executor
 
 `object` ([Details](settings-definitions-lsf.md))
 
-# undefined Properties
+# lsf Properties
 
 | Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                              |
 | :------------------------------ | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |

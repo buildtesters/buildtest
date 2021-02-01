@@ -14,7 +14,7 @@ An instance object of slurm executor
 
 `object` ([Details](settings-definitions-slurm.md))
 
-# undefined Properties
+# slurm Properties
 
 | Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                  |
 | :------------------------------ | :------------ | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -14,7 +14,7 @@ Specify compiler configuration based on named compilers.
 
 `object` ([Details](compiler-v1-properties-compilers-properties-config.md))
 
-# undefined Properties
+# config Properties
 
 | Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                |
 | :------- | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

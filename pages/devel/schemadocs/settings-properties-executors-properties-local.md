@@ -14,7 +14,7 @@ The `local` section is used for declaring local executors for running jobs on lo
 
 `object` ([Details](settings-properties-executors-properties-local.md))
 
-# undefined Properties
+# local Properties
 
 | Property | Type     | Required | Nullable       | Defined by                                                                                                                                           |
 | :------- | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
