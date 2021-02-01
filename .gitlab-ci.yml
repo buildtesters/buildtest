@@ -1,4 +1,5 @@
-SCHEDULER_PARAMETERS: "-N 1 -M escori -q compile -t 30"
+variables:
+  SCHEDULER_PARAMETERS: "-N 1 -M escori -q compile -t 30"
 
 stages:
   - validate
