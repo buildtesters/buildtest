@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Mirror + trigger CI
-      uses: SvanBoxel/gitlab-mirror-and-ci-action@0.2
+      uses: stenongithub/gitlab-mirror-and-ci-action@0.2.5
       with:
         args: "https://software.nersc.gov/siddiq90/buildtest"
       env:
