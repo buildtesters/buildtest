@@ -1,3 +1,5 @@
+# This pipeline is run at NERSC at gitlab instance: https://software.nersc.gov
+
 variables:
   SCHEDULER_PARAMETERS: "-N 1 -M escori -q compile -t 30"
 

@@ -1,0 +1,34 @@
+# This pipeline is run at OLCF at gitlab instance: https://code.ornl.gov
+
+#variables:
+#  SCHEDULER_PARAMETERS: "-N 1 -M escori -q compile -t 30"
+
+stages:
+  - regression
+
+ascent_pr_regression_test:
+  tags: ["nobatch"]
+  stage: regression
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
+      when: manual
+    
+  script: 
+    - env | grep CI_
+    - echo $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME
+    - module load python
+    - echo "$CI_PIPELINE_SOURCE"
+    - whoami
+    - git branch
+    - conda create -n buildtest python=3.8
+    - source activate buildtest
+    - source setup.sh    
+    - pip install -r docs/requirements.txt
+    - rm -rf ~/.buildtest/
+    - coverage run -m pytest -vra tests
+    - coverage report -m
+    # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable SECRET_CODECOV_TOKEN at https://code.ornl.gov/shahzebsiddiqui/buildtest/-/settings/ci_cd
+    - export CODECOV_TOKEN=$SECRET_CODECOV_TOKEN
+    - bash <(curl -s https://codecov.io/bash)
+    - source deactivate
+    - conda env remove -n buildtest -y
