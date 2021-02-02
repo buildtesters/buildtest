@@ -28,9 +28,9 @@ jobs:
 
     - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }} 
       env:
-        OS: $ {{ matrix.os }}
+        OS: ${{ matrix.os }}
       run: |
-        echo $OS
+        if [ "OS" == "ubuntu-latest" ] ; then apt-get install -y tcsh zsh; else brew install tcsh zsh ;  fi        
         echo $SHELL
         $SHELL --version
         git --version
