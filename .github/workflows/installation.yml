@@ -1,4 +1,4 @@
-name: buildtest installation
+name: installation
 
 on:
   pull_request:
@@ -20,12 +20,12 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
       
-    - name: Setup Python ${{ matrix.python-version }} for OS: ${{ matrix.os }}
+    - name: Setup Python ${{ matrix.python-version }} 
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Buildtest Installation
+    - name: Buildtest Installation for ${{ matrix.os }}, ${{ matrix.python-version }} 
       run: |
         sudo apt-get install -y tcsh zsh
         echo $SHELL
