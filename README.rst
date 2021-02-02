@@ -1,4 +1,4 @@
-| |license| |docs| |codecov| |slack| |codefactor| |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |blackformat| |clichecks| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
+| |license| |docs| |codecov| |slack| |release| |ascent_pipeline_status| |cori_pipeline_status| |clichecks| |regressiontest| |buildtest_scripts|  |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -9,6 +9,25 @@
     :target: http://hpcbuildtest.slack.com
 
 .. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
+
+.. |ascent_pipeline_status| image::  https://code.ornl.gov/ecpcitest/buildtest/badges/devel/pipeline.svg
+   :target: https://code.ornl.gov/ecpcitest/buildtest/-/commits/devel
+ 
+.. |cori_pipeline_status| image:: https://software.nersc.gov/siddiq90/buildtest/badges/devel/pipeline.svg
+   :target: https://software.nersc.gov/siddiq90/buildtest/-/commits/devel
+   
+.. |release| image:: https://img.shields.io/github/v/release/buildtesters/buildtest.svg
+   :target: https://github.com/buildtesters/buildtest/releases
+   
+.. |issues| image:: https://img.shields.io/github/issues/buildtesters/buildtest.svg 
+    :target: https://github.com/buildtesters/buildtest/issues
+    
+.. |open_pr| image:: https://img.shields.io/github/issues-pr/buildtesters/buildtest.svg
+    :target: https://github.com/buildtesters/buildtest/pulls
+    
+.. |commit_activity_yearly| image:: https://img.shields.io/github/commit-activity/y/buildtesters/buildtest.svg
+ 
+.. |commit_activity_monthly| image:: https://img.shields.io/github/commit-activity/m/buildtesters/buildtest.svg
 
 .. |core_infrastructure| image:: https://bestpractices.coreinfrastructure.org/projects/3469/badge
 
