@@ -3,7 +3,7 @@ GitHub Integrations
 
 buildtest has several github integration, including automated checks during PR that maintainers will check
 during the PR review. You should check results from the `buildtest actions <https://github.com/buildtesters/buildtest/actions>`_
-that are also typically linked as part of the pull request testing suite.
+that are also typically linked as part of the pull request ci checks.
 
 You will want to make sure code is formatted via black as we have automated checks for python formatting. If you have not
 setup the black hook check out :ref:`black_hook`
@@ -43,6 +43,41 @@ after coverage report is uploaded to Codecov which is useful for reviewer and as
 to see status of coverage report during PR review process. The codecov file
 `.codecov.yml <https://github.com/buildtesters/buildtest/blob/devel/.codecov.yml>`_
 is used for configuration codecov. For more details on codecov yaml file see https://docs.codecov.io/docs/codecov-yaml.
+
+Gitlab CI checks
+------------------
+
+buildtest has automated CI checks on gitlab servers: https://software.nersc.gov and https://code.ornl.gov. The
+gitlab pipelines are stored in `.gitlab <https://github.com/buildtesters/buildtest/tree/devel/.gitlab>`_ directory found
+in root of repository.
+
+The `mirror.yml <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/mirror.yml>`_ github workflow
+is responsible for mirroring and trigger CI check and return result back to github PR. Currently, we are using github
+action `stenongithub/gitlab-mirror-and-ci-action <https://github.com/stenongithub/gitlab-mirror-and-ci-action>`_ to perform pull mirroring and triggering CI job.
+
+The gitlab server https://software.nersc.gov is hosted at NERSC. The following steps were taken to setup pipeline
+
+1. Create a Personal Access token with **read_api**, **read_repository**, **write_repository** scope at https://software.nersc.gov/-/profile/personal_access_tokens
+2. Define a secret **CORI_GITLAB_PASSWORD** at https://github.com/buildtesters/buildtest/settings/secrets/actions with token value generated in step 1
+3. Import buildtest project from github at https://software.nersc.gov/siddiq90/buildtest
+4. Add variable **SECRET_CODECOV_TOKEN** in https://software.nersc.gov/siddiq90/buildtest/-/settings/ci_cd that contains codecov token found at https://app.codecov.io/gh/buildtesters/buildtest/settings
+5. Change gitlab CI configuration file to `.gitlab/cori.yml <https://github.com/buildtesters/buildtest/blob/devel/.gitlab/cori.yml>`_ under **Settings > CI/CD > General pipelines**. For more details see https://docs.gitlab.com/ee/ci/pipelines/settings.html#custom-cicd-configuration-path
+
+The gitlab server https://code.ornl.gov is hosted at OLCF which has access to systems like Summit and Ascent. We performed similar steps at as shown above with
+slight modification
+
+1. Create a Personal access token with same scope at https://code.ornl.gov/-/profile/personal_access_tokens
+2. Define a secret **OLCF_GITLAB_PASSWORD** at https://github.com/buildtesters/buildtest/settings/secrets/actions
+3. Import buildtest project at https://code.ornl.gov/ecpcitest/buildtest. Currently, all projects in ``ecpcitest`` project group has access to gitlab runners.
+4. Add variable **SECRET_CODECOV_TOKEN** in https://code.ornl.gov/ecpcitest/buildtest/-/settings/ci_cd that contains codecov token found at https://app.codecov.io/gh/buildtesters/buildtest/settings
+5. Change gitlab CI configuration file to `.gitlab/olcf.yml <https://github.com/buildtesters/buildtest/blob/devel/.gitlab/olcf.yml>`_
+
+Currently, the gitlab pipelines are triggered manually which requires a user to have access to the gitlab project to run the pipeline. The pipelines can be run manually at
+https://software.nersc.gov/siddiq90/buildtest/-/pipelines and https://code.ornl.gov/ecpcitest/buildtest/-/pipelines
+
+The github workflow `mirror.yml <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/mirror.yml>`_
+defines gitlab configuration for each mirror. Any changes to mirror path must be addressed in this workflow to ensure pull mirroring is
+done properly.
 
 GitHub Actions
 --------------
