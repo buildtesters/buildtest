@@ -25,9 +25,8 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Buildtest Installation for ${{ matrix.os }}, ${{ matrix.python-version }} 
-      run: |
-        sudo apt-get install -y tcsh zsh
+    - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }} 
+      run: |        
         echo $SHELL
         $SHELL --version
         git --version
