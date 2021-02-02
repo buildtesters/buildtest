@@ -22,9 +22,15 @@
 # SOFTWARE.
 
 buildtest_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
+pip=pip3
+
+if ! [ -x "$(command -v $pip)" ]; then 
+  echo "cannot find program $pip, please install $pip"
+  exit 1
+fi
 
 echo "Installing buildtest dependencies"
-pip install -r ${buildtest_root}/requirements.txt &> /dev/null
+$pip install -r ${buildtest_root}/requirements.txt &> /dev/null
 
 bin=${buildtest_root}/bin
 export PATH=${bin}:$PATH

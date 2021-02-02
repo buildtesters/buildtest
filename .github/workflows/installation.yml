@@ -1,0 +1,38 @@
+name: buildtest installation
+
+on:
+  pull_request:
+    branches: [ devel ]
+
+
+jobs:
+
+  buildtest-installation:
+    runs-on: ${{ matrix.os }} 
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+        python-version: [3.6, 3.7, 3.8]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+      
+    - name: Setup Python ${{ matrix.python-version }} for OS: ${{ matrix.os }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Buildtest Installation
+      run: |
+        sudo apt-get install -y tcsh zsh
+        echo $SHELL
+        $SHELL --version
+        git --version
+        pip install -U pip
+        python --version
+        source setup.sh
+        which buildtest
+        buildtest --version
