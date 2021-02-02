@@ -26,7 +26,7 @@ jobs:
     - name: Mirror and trigger CI job at https://code.ornl.gov 
       uses: stenongithub/gitlab-mirror-and-ci-action@0.2.7
       with:
-        args: "https://code.ornl.govv/shahzebsiddiqui/buildtest"
+        args: "https://code.ornl.gov/shahzebsiddiqui/buildtest"
       env:
         GITLAB_HOSTNAME: "code.ornl.gov"
         GITLAB_USERNAME: "shahzebsiddiqui"
