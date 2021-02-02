@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/bin/csh -v
 # MIT License
 
 # Copyright (c) 2017-2021, Shahzeb Siddiqui and Vanessa Sochat
@@ -24,6 +24,13 @@
 set command=($_)
 set sourced_file=`readlink -f $command[2]`
 set buildtest_root=`dirname "$sourced_file"`
+
+set pip=pip
+
+if ( ! -x `command -v $pip` ) then 
+  echo "cannot find program $pip, please install $pip"
+  exit 1
+endif
 
 echo "Installing buildtest dependencies"
 pip install -r ${buildtest_root}/requirements.txt > /dev/null
