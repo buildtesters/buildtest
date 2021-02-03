@@ -1,7 +1,7 @@
 # Untitled object in compiler schema version 1.0 Schema
 
 ```txt
-compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/clang
+compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/cuda
 ```
 
 Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides `all` property.
@@ -10,11 +10,11 @@ Specify compiler configuration for group of compilers. Use this property if you 
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------------ |
 | Can be instantiated | No         | Unknown status | No           | Forbidden         | Allowed               | none                | [compiler-v1.0.schema.json*](../out/compiler-v1.0.schema.json "open original schema") |
 
-## clang Type
+## cuda Type
 
 `object` ([Details](compiler-v1-definitions-default_compiler_config.md))
 
-# clang Properties
+# cuda Properties
 
 | Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                                             |
 | :------------------------ | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
