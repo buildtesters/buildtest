@@ -37,5 +37,18 @@ export PATH=${bin}:$PATH
 # add PYTHONPATH for buildtest to persist in shell environment
 export PYTHONPATH=${buildtest_root}:$PYTHONPATH
 
+# autocomplete buildtest with argcomplete see: https://kislyuk.github.io/argcomplete/#
+if [[ "$SHELL" == "/bin/bash" ]]; then
+  eval "$(register-python-argcomplete buildtest)"
+elif [[ "$SHELL" == "/bin/zsh" ]]; then
+  # need to run lines below for autocompletion see https://github.com/kislyuk/argcomplete/issues/330
+  autoload -Uz compinit
+  compinit
+  autoload -U bashcompinit
+  bashcompinit
+  eval "$(register-python-argcomplete buildtest)"
+fi
+
 buildtest_path=$(which buildtest)
 echo "buildtest command: ${buildtest_path}"
+
