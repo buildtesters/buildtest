@@ -1,4 +1,4 @@
-| |license| |docs| |codecov| |slack| |release| |ascent_pipeline_status| |cori_pipeline_status| |clichecks| |regressiontest| |buildtest_scripts|  |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure|
+| |license| |docs| |codecov| |slack| |release| |ascent_pipeline_status| |cori_pipeline_status| |installation| |clichecks| |regressiontest| |buildtest_scripts|  |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -15,7 +15,7 @@
  
 .. |cori_pipeline_status| image:: https://software.nersc.gov/siddiq90/buildtest/badges/devel/pipeline.svg
    :target: https://software.nersc.gov/siddiq90/buildtest/-/commits/devel
-   
+
 .. |release| image:: https://img.shields.io/github/v/release/buildtesters/buildtest.svg
    :target: https://github.com/buildtesters/buildtest/releases
    
@@ -47,6 +47,9 @@
 .. |blackformat| image:: https://github.com/buildtesters/buildtest/workflows/Black%20Formatter/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
+.. |installation| image:: https://github.com/buildtesters/buildtest/workflows/installation/badge.svg
+   :target: https://github.com/buildtesters/buildtest/actions
+   
 .. |clichecks| image:: https://github.com/buildtesters/buildtest/workflows/buildtest%20cli%20test/badge.svg 
     :target: https://github.com/buildtesters/buildtest/actions
 
