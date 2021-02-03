@@ -217,6 +217,9 @@
             },
             "clang": {
               "$ref": "#definitions/default_compiler_config"
+            },
+            "cuda": {
+              "$ref": "#definitions/default_compiler_config"
             }
           }
         },

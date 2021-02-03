@@ -8,7 +8,7 @@ from buildtest.defaults import (
 )
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_schema, load_recipe
-from buildtest.system import BuildTestSystem, Slurm, LSF, Cobalt
+from buildtest.system import Slurm, LSF, Cobalt, system
 from buildtest.utils.command import BuildTestCommand
 from buildtest.exceptions import BuildTestError
 
@@ -46,7 +46,7 @@ def check_settings(settings_path=None, executor_check=True, retrieve_settings=Fa
     # such as slurm check are not applicable.
     if executor_check:
 
-        system = BuildTestSystem()
+        # system = BuildTestSystem()
 
         slurm_executors = user_schema.get("executors", {}).get("slurm")
         lsf_executors = user_schema.get("executors", {}).get("lsf")

@@ -546,9 +546,7 @@ class BuildspecCache:
 
         print(
             tabulate(
-                format_fields,
-                headers=["Field", "Description"],
-                tablefmt="simple",
+                format_fields, headers=["Field", "Description"], tablefmt="simple",
             )
         )
 

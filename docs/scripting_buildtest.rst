@@ -45,11 +45,11 @@ Build Phase
 ---------------
 
 Now that we can find buildspecs, let's try to parse and build the tests. In next
-example we will *discover*, *parse*, and *build* all tests with tag name **tutorials**.
+example we will *discover*, *parse*, and *build* all tests with tag name **pass**.
 
 .. literalinclude:: scripting_examples/ex3.py
 
-We retrieve all buildspecs by tag *tutorials* as mentioned in previous example. Next
+We retrieve all buildspecs by tag *pass* as mentioned in previous example. Next
 we load buildtest configuration using **load_settings** which returns a dictionary
 containing buildtest configuration. During this process, we validate the buildtest
 configuration.
@@ -73,8 +73,8 @@ for each builder. The ``printTable=True`` will print table for builder phase.
 .. Note:: Each builder corresponds to a single test name.
 
 Now let's run this script and notice the output resembles similar to running
-``buildtest build --tags tutorials`` but we stop right after build. In other words
-this is equivalent to ``buildtest build --tags tutorials --stage=build``.
+``buildtest build --tags pass`` but we stop right after build. In other words
+this is equivalent to ``buildtest build --tags pass --stage=build``.
 
 .. program-output:: cat scripting_examples/ex3.py.out
 
