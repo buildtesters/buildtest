@@ -26,18 +26,13 @@ class BuildTestSystem:
         """
 
         self.logger = logging.getLogger(__name__)
-        self.logger.debug("Starting System Compatibility Check")
-        self.init_system()
 
-        self.check_scheduler()
-        self.detect_module_tool()
-
-        self.logger.debug("Finished System Compatibility Check")
-
-    def init_system(self):
+    def check(self):
         """ Based on the module "distro" get system details like linux distro,
             processor, hostname, etc...
         """
+
+        self.logger.debug("Starting System Compatibility Check")
 
         self.system["os"] = distro.id()
         self.system["env"] = dict(os.environ)
@@ -53,6 +48,11 @@ class BuildTestSystem:
         if self.system["platform"] not in ["Linux", "Darwin"]:
             print("System must be Linux or Darwin")
             sys.exit(1)
+
+        self.detect_module_tool()
+        self.check_scheduler()
+
+        self.logger.debug("Finished System Compatibility Check")
 
     def check_scheduler(self):
         """ Check existence of batch scheduler and if so determine which scheduler
@@ -94,9 +94,15 @@ class BuildTestSystem:
 
         if os.getenv("LMOD_VERSION"):
             self.system["moduletool"] = "lmod"
+            self.logger.debug(
+                f"Detected Lmod with version: {os.getenv('LMOD_VERSION')}"
+            )
         # 3.x module versions define MODULE_VERSION while 4.5 version has MODULES_CMD, it doesn't have MODULE_VERSION set
         elif os.getenv("MODULE_VERSION") or os.getenv("MODULES_CMD"):
             self.system["moduletool"] = "environment-modules"
+            self.logger.debug(
+                f"Detected environment-modules with version: {os.getenv('LMOD_VERSION')}"
+            )
 
 
 class Scheduler:
@@ -237,3 +243,7 @@ class Cobalt(Scheduler):
                 name = line.partition(":")[2].strip()
                 queues.append(name)
         return queues
+
+
+system = BuildTestSystem()
+system.check()

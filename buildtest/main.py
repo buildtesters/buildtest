@@ -3,7 +3,7 @@ from buildtest.config import check_settings, resolve_settings_file
 from buildtest.defaults import var_root, BUILDTEST_USER_HOME
 from buildtest.menu import BuildTestParser
 from buildtest.menu.build import func_build_subcmd
-from buildtest.system import BuildTestSystem
+from buildtest.system import system
 from buildtest.log import init_logfile, streamlog
 from buildtest.utils.file import create_dir
 
@@ -25,7 +25,8 @@ def main():
     create_dir(var_root)
 
     # Create a build test system, and check requirements
-    BuildTestSystem()
+    # BuildTestSystem()
+    system.check()
 
     parser = BuildTestParser()
     args = parser.parse_options()
@@ -36,6 +37,7 @@ def main():
     # invoking load_settings will attempt to initialize buildtest settings and
     # load the schema
     settings_file = resolve_settings_file()
+    logger.info(f"Processing buildtest configuration file: {settings_file}")
     buildtest_configuration = check_settings(settings_file, retrieve_settings=True)
 
     if args.subcommands == "build":

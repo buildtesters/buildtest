@@ -11,7 +11,7 @@ from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
 )
 from buildtest.defaults import supported_schemas
-from buildtest.system import BuildTestSystem
+from buildtest.system import system
 
 
 def func_config_validate(args=None):
@@ -49,7 +49,6 @@ def func_config_summary(args=None):
         Repository details, Buildspecs files and test names.
     """
 
-    system = BuildTestSystem()
     print("buildtest version: ", BUILDTEST_VERSION)
     print("buildtest Path:", shutil.which("buildtest"))
 

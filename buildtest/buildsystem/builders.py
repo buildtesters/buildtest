@@ -10,7 +10,7 @@ import re
 from buildtest.buildsystem.scriptbuilder import ScriptBuilder
 from buildtest.buildsystem.compilerbuilder import CompilerBuilder
 from buildtest.menu.compilers import BuildtestCompilers
-from buildtest.system import BuildTestSystem
+from buildtest.system import system
 
 
 class Builder:
@@ -39,7 +39,7 @@ class Builder:
 
         self.bp = bp
         self.filters = filters
-        system = BuildTestSystem()
+        # system = BuildTestSystem()
         self.builders = []
 
         for count in range(self.rebuild):
@@ -91,7 +91,8 @@ class Builder:
         self.compilers = {}
         bc = BuildtestCompilers()
         discovered_compilers = bc.list()
-        # discovered_compilers = buildtest_compilers()
+
+        builders = []
 
         # exclude compiler from search if 'exclude' specified in buildspec
         if recipe["compilers"].get("exclude"):
@@ -105,7 +106,6 @@ class Builder:
         # apply regular expression specified by 'name' field against all discovered compilers
         for compiler_pattern in recipe["compilers"]["name"]:
             for bc_name in discovered_compilers:
-
                 if re.match(compiler_pattern, bc_name):
                     builder = CompilerBuilder(
                         name,
@@ -114,7 +114,15 @@ class Builder:
                         compiler=bc_name,
                         testdir=self.testdir,
                     )
-                    self.builders.append(builder)
+                    builders.append(builder)
+
+        if not builders:
+            msg = f"[{name}][{self.bp.buildspec}]: Unable to find any compilers based on regular expression: {recipe['compilers']['name']} so no tests were created."
+            print(msg)
+            self.logger.debug(msg)
+            return
+
+        self.builders.append(builder)
 
     def _skip_tests_by_tags(self, recipe, name):
         """ This method determines if test should be skipped based on tag names specified
@@ -138,7 +146,7 @@ class Builder:
                     found = True
 
             if not found:
-                msg = f"[{name}] test is skipped because it is not in tag filter list: {self.filters['tags']}"
+                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because it is not in tag filter list: {self.filters['tags']}"
                 self.logger.info(msg)
                 print(msg)
                 return True
@@ -165,7 +173,7 @@ class Builder:
             if recipe["run_only"].get("scheduler") and (
                 recipe["run_only"].get("scheduler") not in system.system["scheduler"]
             ):
-                msg = f"[{name}] test is skipped because ['run_only']['scheduler'] got value: {recipe['run_only']['scheduler']} but detected scheduler: {system.system['scheduler']}."
+                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because ['run_only']['scheduler'] got value: {recipe['run_only']['scheduler']} but detected scheduler: {system.system['scheduler']}."
                 print(msg)
                 self.logger.info(msg)
                 return True
@@ -174,7 +182,7 @@ class Builder:
             if recipe["run_only"].get("user") and (
                 recipe["run_only"].get("user") != os.getenv("USER")
             ):
-                msg = f"[{name}] test is skipped because ['run_only']['user'] got value: {recipe['run_only']['user']} but detected user: {os.getenv('USER')}."
+                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because this test is expected to run as user: {recipe['run_only']['user']} but detected user: {os.getenv('USER')}."
                 print(msg)
                 self.logger.info(msg)
                 return True
@@ -183,7 +191,7 @@ class Builder:
             if recipe["run_only"].get("platform") and (
                 recipe["run_only"].get("platform") != system.system["platform"]
             ):
-                msg = f"[{name}] test is skipped because ['run_only']['platform'] got value: {recipe['run_only']['platform']} but detected platform: {system.system['platform']}."
+                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because this test is expected to run on platform: {recipe['run_only']['platform']} but detected platform: {system.system['platform']}."
                 print(msg)
                 self.logger.info(msg)
                 return True
@@ -191,7 +199,7 @@ class Builder:
             # skip test if host platform is not equal to value specified by 'platform' field
             if recipe["run_only"].get("linux_distro"):
                 if system.system["os"] not in recipe["run_only"]["linux_distro"]:
-                    msg = f"[{name}] test is skipped because ['run_only']['linux_distro'] got value: {recipe['run_only']['linux_distro']} but detected platform: {system.system['os']}."
+                    msg = f"[{name}][{self.bp.buildspec}]: test is skipped because this test is expected to run on linux distro: {recipe['run_only']['linux_distro']} but detected linux distro: {system.system['os']}."
                     print(msg)
                     self.logger.info(msg)
                     return True
