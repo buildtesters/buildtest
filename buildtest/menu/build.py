@@ -21,7 +21,7 @@ from buildtest.exceptions import BuildTestError
 from buildtest.executors.setup import BuildExecutor
 
 from buildtest.menu.report import update_report
-from buildtest.utils.file import walk_tree, resolve_path
+from buildtest.utils.file import walk_tree, resolve_path, is_file
 from buildtest.utils.tools import Hasher
 
 logger = logging.getLogger(__name__)
@@ -40,6 +40,10 @@ def discover_buildspecs_by_tags(input_tag):
         :return: a list of buildspec files that match tag name
         :rtype: list
     """
+    if not is_file(BUILDSPEC_CACHE_FILE):
+        raise BuildTestError(
+            f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
+        )
 
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
         cache = json.loads(fd.read())
@@ -61,17 +65,22 @@ def discover_buildspecs_by_tags(input_tag):
 
 
 def discover_buildspecs_by_executor_name(executor_name):
-    """This method discovers buildspecs by executor name, using ``--executor-name``
-    option from ``buildtest build`` command. This method will read BUILDSPEC_CACHE_FILE
-    and search for ``executor`` key in buildspec recipe and match with input
-    executor name. The return is a list of matching buildspec with executor name
-    to process.
+    """ This method discovers buildspecs by executor name, using ``--executor-name``
+        option from ``buildtest build`` command. This method will read BUILDSPEC_CACHE_FILE
+        and search for ``executor`` key in buildspec recipe and match with input
+        executor name. The return is a list of matching buildspec with executor name
+        to process.
 
-    :param executor_name: Input executor name from command line argument ``buildtest build --executor-name <name>``
-    :type executor_name: string
-    :return: a list of buildspec files that match tag name
-    :rtype: list
+        :param executor_name: Input executor name from command line argument ``buildtest build --executor-name <name>``
+        :type executor_name: string
+        :return: a list of buildspec files that match tag name
+        :rtype: list
     """
+
+    if not is_file(BUILDSPEC_CACHE_FILE):
+        raise BuildTestError(
+            f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
+        )
 
     with open(BUILDSPEC_CACHE_FILE, "r") as fd:
         cache = json.loads(fd.read())
@@ -83,10 +92,10 @@ def discover_buildspecs_by_executor_name(executor_name):
     for buildspecfile in cache["buildspecs"].keys():
         for test in cache["buildspecs"][buildspecfile].keys():
 
-            # if tags is not declared we set to empty list
-            executor = cache["buildspecs"][buildspecfile][test].get("executor") or []
-
-            if executor_name == executor:
+            # check if executor in buildspec matches one in argument (buildtest build --executor <EXECUTOR>)
+            if executor_name == cache["buildspecs"][buildspecfile][test].get(
+                "executor"
+            ):
                 buildspecs.append(buildspecfile)
 
     return buildspecs
@@ -246,7 +255,7 @@ def discover_buildspecs(
 
         excluded_buildspecs = list(set(excludes))
 
-        logger.debug(f"The exclude pattern is the following: -e {exclude_buildspec}")
+        logger.debug(f"The exclude pattern is the following: {exclude_buildspec}")
 
         # exclude files that are found in excluded_buildspecs list
         buildspecs = [file for file in buildspecs if file not in excluded_buildspecs]
