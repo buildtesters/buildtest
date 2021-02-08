@@ -11,6 +11,7 @@ import sys
 import time
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
+from buildtest.utils.file import read_file
 
 
 class LSFExecutor(BaseExecutor):
@@ -213,6 +214,8 @@ class LSFExecutor(BaseExecutor):
         self.builder.metadata["errfile"] = os.path.join(
             self.builder.testdir, job_data["ERROR_FILE"]
         )
+        self.builder.metadata["output"] = read_file(self.builder.metadata["outfile"])
+        self.builder.metadata["error"] = read_file(self.builder.metadata["errfile"])
 
         self.logger.debug(
             f"[{self.builder.name}] returncode: {self.builder.metadata['result']['returncode']}"

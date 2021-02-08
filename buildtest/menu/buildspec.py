@@ -21,18 +21,18 @@ class BuildspecCache:
     format_fields = default_format_fields + ["file"]
 
     def __init__(self, rebuild, filterfields, formatfields, roots):
-        """The initializer method for BuildspecCache class is responsible for
-        loading and finding buildspecs into buildspec cache. This method is called
-        when using ``buildtest buildspec find`` command.
+        """ The initializer method for BuildspecCache class is responsible for
+            loading and finding buildspecs into buildspec cache. This method is called
+            when using ``buildtest buildspec find`` command.
 
-        :param rebuild: rebuild the buildspec cache by validating all buildspecs. The --rebuild is passed to this argument
-        :type rebuild: bool, required
-        :param filterfields:  The --filter option contains list of key value pairs for filtering buildspecs
-        :type filterfields: str, required
-        :param formatfields: The --format option contains list of key value pairs for formating buildspecs
-        :type formatfields: str, required
-        :param roots:  List of directories to search for buildspecs. This argument contains value of --roots
-        :type roots: list, required
+            :param rebuild: rebuild the buildspec cache by validating all buildspecs. The --rebuild is passed to this argument
+            :type rebuild: bool, required
+            :param filterfields:  The --filter option contains list of key value pairs for filtering buildspecs
+            :type filterfields: str, required
+            :param formatfields: The --format option contains list of key value pairs for formating buildspecs
+            :type formatfields: str, required
+            :param roots:  List of directories to search for buildspecs. This argument contains value of --roots
+            :type roots: list, required
         """
         self.filter = filterfields
         self.format = formatfields

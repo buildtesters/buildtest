@@ -100,6 +100,10 @@ class BuilderBase(ABC):
         self.metadata["buildspec"] = self.buildspec
         self.metadata["recipe"] = self.recipe
         self.metadata["tags"] = self.recipe.get("tags")
+        # store output content of test
+        self.metadata["output"] = None
+        # store error content of test
+        self.metadata["error"] = None
         self.metadata["result"] = {}
         self.metadata["result"]["state"] = "N/A"
         self.metadata["result"]["returncode"] = "-1"

@@ -104,6 +104,8 @@ class CobaltExecutor(BaseExecutor):
         self.logger.debug(
             f"Error file will be written to: {self.builder.metadata['errfile']}"
         )
+        self.builder.metadata["output"] = read_file(self.builder.metadata["outfile"])
+        self.builder.metadata["error"] = read_file(self.builder.metadata["errfile"])
 
         # 'qstat -lf <jobid>' will get all fields of Job.
         qstat_cmd = f"{self.poll_cmd} -lf {self.builder.metadata['jobid']}"

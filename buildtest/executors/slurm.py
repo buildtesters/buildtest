@@ -10,6 +10,7 @@ import sys
 import re
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
+from buildtest.utils.file import read_file
 
 
 class SlurmExecutor(BaseExecutor):
@@ -252,6 +253,9 @@ class SlurmExecutor(BaseExecutor):
         self.builder.metadata["job"]["scontrol"] = {}
         self.builder.metadata["job"]["scontrol"]["command"] = slurm_cmd
         self.builder.metadata["job"]["scontrol"]["output"] = "".join(cmd.get_output())
+        self.builder.metadata["output"] = read_file(self.builder.metadata["outfile"])
+        self.builder.metadata["error"] = read_file(self.builder.metadata["error"])
+
         self.logger.debug(f"Executing slurm command: {slurm_cmd}")
         self.check_test_state()
 
