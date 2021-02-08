@@ -125,12 +125,12 @@ class BuildTestParser:
         parser_schemadocs.set_defaults(func=schemadocs)
 
     def parse_options(self):
-        """This method parses the argument from ArgumentParser class and returns
-        the arguments. We store extra (non parsed arguments) with the class if
-        they are needed.
+        """ This method parses the argument from ArgumentParser class and returns
+            the arguments. We store extra (non parsed arguments) with the class if
+            they are needed.
 
-        :return: return a parsed dictionary returned by ArgumentParser
-        :rtype: dict
+            :return: return a parsed dictionary returned by ArgumentParser
+            :rtype: dict
         """
 
         argcomplete.autocomplete(self.parser)
@@ -374,7 +374,7 @@ class BuildTestParser:
         parser_inspect.set_defaults(func=func_inspect)
 
     def schema_menu(self):
-        """This method adds argparse argument for ``buildtest show``"""
+        """This method adds argparse argument for ``buildtest schema``"""
 
         # ################### buildtest schema  ########################
         parser_schema = self.subparsers.add_parser("schema")

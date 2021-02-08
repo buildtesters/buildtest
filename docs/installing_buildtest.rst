@@ -33,13 +33,17 @@ If you prefer the latest release use the **master** branch::
 Installing buildtest
 -----------------------
 
-To install buildtest run the following depending on your shell::
+To install buildtest you need to source the setup script as follows::
 
     # BASH users
     $ source setup.sh
 
     # CSH users
     $ source setup.csh
+
+We have enabled tab completion of buildtest arguments using `argcomplete <https://kislyuk.github.io/argcomplete/>`_
+library. Upon sourcing the setup script you can use the tab completion with any buildtest
+arguments.
 
 You may want to create an isolated python environment of choice depending on your preference you can use any of the following
 

@@ -80,14 +80,15 @@ class LocalExecutor(BaseExecutor):
         out, err = command.execute()
         self.result["runtime"] = t.stop()
 
-        # self.builder.metadata["endtime"] = datetime.datetime.now()
         self.result["endtime"] = datetime.datetime.now().strftime("%Y/%m/%d %X")
-        # self.result["endtime"] = self.get_formatted_time("endtime")
 
         self.logger.debug(
             f"Return code: {command.returncode} for test: {self.builder.metadata['testpath']}"
         )
         self.result["returncode"] = command.returncode
+
+        self.builder.metadata["output"] = out
+        self.builder.metadata["error"] = err
 
         self.write_testresults(out, err)
         self.builder.metadata["result"] = self.result
