@@ -1,0 +1,6 @@
+# this test fails because it exceeds 32 character length for test name
+version: "1.0"
+buildspecs:
+  this_test_exceeds_32_character_length:
+    type: script
+    run: hostname
