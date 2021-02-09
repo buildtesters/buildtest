@@ -67,11 +67,11 @@ is defined in JSON as follows::
          "type": "object",
          "description": "This section is used to define one or more tests (buildspecs). Each test must be unique name",
          "propertyNames": {
-           "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+           "pattern": "^[A-Za-z_.][A-Za-z0-9_.]*$",
            "maxLength": 32
     }
 
-The test names take the following pattern ``"^[A-Za-z_][A-Za-z0-9_]*$"`` and limited
+The test names take the following pattern ``"^[A-Za-z_.][A-Za-z0-9_.]*$"`` and limited
 to 32 characters. In previous example, the test name is **hello_world**. You must have unique
 testname in your **buildspecs** section, otherwise you will have an invalid buildspec
 file. The ``description`` field is used to document the test and limited to 80 characters.
