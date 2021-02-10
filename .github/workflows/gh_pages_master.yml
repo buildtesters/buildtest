@@ -77,7 +77,7 @@ jobs:
        run: |
          ls -R downloads
      - name: Deploy to GitHub Pages 🚀
-       uses: JamesIves/github-pages-deploy-action@3.7.1
+       uses: JamesIves/github-pages-deploy-action@4.0.0
        with:
          SSH: true
          BASE_BRANCH: master
