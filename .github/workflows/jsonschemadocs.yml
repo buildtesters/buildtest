@@ -51,10 +51,10 @@ jobs:
           persist-credentials: false
 
 
-     - name: Install SSH Client 🔑
-       uses: webfactory/ssh-agent@v0.4.1
-       with:
-         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+     #- name: Install SSH Client 🔑
+     #   uses: webfactory/ssh-agent@v0.4.1
+     #  with:
+     #    ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
      - name: Download Schemas
        uses: actions/download-artifact@v2
@@ -80,11 +80,10 @@ jobs:
 
 
      - name: Deploy to GitHub Pages 🚀
-       uses: JamesIves/github-pages-deploy-action@3.7.1
+       uses: JamesIves/github-pages-deploy-action@4.0.0
        with:
-         SSH: true
-         BASE_BRANCH: devel
-         BRANCH: gh-pages 
-         FOLDER: downloads 
-         TARGET_FOLDER: pages/devel
-         CLEAN: true
+         ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+         branch: gh-pages 
+         folder: downloads 
+         target-folder: pages/devel
+         clean: true
