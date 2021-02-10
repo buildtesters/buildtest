@@ -35,7 +35,7 @@ jobs:
 
       - name: Comment Pull Request
         if: github.event_name == 'pull_request' && failure() && env.IS_FORKED == 'no'
-        uses: marocchino/sticky-pull-request-comment@v1.1.0
+        uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: 'Please format your code with [black](https://black.readthedocs.io) version 19.3b0: `black buildtest tests/*.py`.'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
