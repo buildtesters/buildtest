@@ -53,7 +53,7 @@ sphinxcontrib-qthelp==1.0.3
 sphinxcontrib-serializinghtml==1.1.4
 tabulate==0.8.7
 toml==0.10.2
-typed-ast==1.4.1
+typed-ast==1.4.2
 Unidecode==1.1.1
 urllib3==1.25.10
 virtualenv==20.0.29
