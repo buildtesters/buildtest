@@ -26,7 +26,7 @@ def func_schema(args):
 
     # the default behavior when "buildtest schema" is executed is to show list of all
     # schemas
-    if not args.json and not args.example and not args.validate:
+    if not args.json and not args.example:
         for schema in schema_table["names"]:
             print(schema)
         return
@@ -58,33 +58,3 @@ def func_schema(args):
             print(f"File: {example}")
             print("{:_<80}".format(""))
             print(content)
-
-        err_msg = None
-        valid_state = True
-        # if --validate option is specified print validation message
-        if args.validate:
-            # for settings.schema.json we validate each test by running check_settings
-            if args.name == "settings.schema.json":
-                try:
-                    check_settings(example, executor_check=False)
-                except ValidationError as err:
-                    valid_state = False
-                    err_msg = err
-            # the rest of schemas are validated using BuildspecParser
-            else:
-                try:
-                    BuildspecParser(example)
-                except (SystemExit, ValidationError) as err:
-                    err_msg = err
-                    valid_state = False
-
-            print("{:_<80}".format(""))
-            if valid_state:
-                print(f"File: {example} is valid! ")
-            else:
-                print(f"File: {example} is invalid! ")
-
-            if err_msg:
-
-                print("{:_<40} Validation Error {:_<40}".format("", ""))
-                print(err_msg)
