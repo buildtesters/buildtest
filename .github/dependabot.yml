@@ -1,0 +1,22 @@
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    # check daily at 1am UTC
+    schedule:
+      interval: "daily"
+      time: "01:00"
+    labels:
+      - "github-action dependencies"
+      
+  # Maintain dependencies for pip
+  - package-ecosystem: "pip"
+    directory: "/"    
+    # check daily at 2am UTC
+    schedule:
+      interval: "daily"
+      time: "02:00"
+    labels:
+      - "pip dependencies"
+      
