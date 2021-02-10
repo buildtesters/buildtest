@@ -33,7 +33,7 @@ py==1.9.0
 pyflakes==2.2.0
 Pygments==2.6.1
 pyparsing==2.4.7
-pyrsistent==0.16.0
+pyrsistent==0.17.3
 pytest==6.0.1
 pytz==2020.1
 PyYAML==5.3.1
