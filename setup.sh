@@ -3,8 +3,8 @@
 
 # buildtest Copyright (c) 2021, The Regents of the University of California,
 # through Lawrence Berkeley National Laboratory (subject to receipt of
-# any required approvals from the U.S. Dept. of Energy) and Vanessa
-# Sochat. All rights reserved.
+# any required approvals from the U.S. Dept. of Energy), Shahzeb Siddiqui,
+# and Vanessa Sochat. All rights reserved.
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
