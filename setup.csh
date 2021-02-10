@@ -1,4 +1,4 @@
-#!/bin/csh -v
+#!/bin/csh
 # MIT License
 
 # buildtest Copyright (c) 2021, The Regents of the University of California,
