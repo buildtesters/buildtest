@@ -2,7 +2,56 @@ $ buildtest buildspec find
 
 Buildspec Paths: ['/Users/siddiq90/Documents/buildtest/tutorials', '/Users/siddiq90/Documents/buildtest/general_tests'] 
 
+Discovered Buildspecs
+________________________________________________________________________________
+/Users/siddiq90/Documents/buildtest/tutorials/invalid_buildspec_section.yml
+/Users/siddiq90/Documents/buildtest/tutorials/run_only_distro.yml
+/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
+/Users/siddiq90/Documents/buildtest/tutorials/environment.yml
+/Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+/Users/siddiq90/Documents/buildtest/tutorials/selinux.yml
+/Users/siddiq90/Documents/buildtest/tutorials/shebang.yml
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+/Users/siddiq90/Documents/buildtest/tutorials/csh_shell_examples.yml
+/Users/siddiq90/Documents/buildtest/tutorials/invalid_tags.yml
+/Users/siddiq90/Documents/buildtest/tutorials/hello_world.yml
+/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+/Users/siddiq90/Documents/buildtest/tutorials/root_user.yml
+/Users/siddiq90/Documents/buildtest/tutorials/tags_example.yml
+/Users/siddiq90/Documents/buildtest/tutorials/run_only_platform.yml
+/Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+/Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
+/Users/siddiq90/Documents/buildtest/tutorials/sleep.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/openmp_hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/envvar_override.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/compiler_exclude.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_c.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/pre_post_build_run.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/custom_run.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_fortran.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/compiler_status_regex.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/kernel_state.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/ssh_localhost.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/systemd-default-target.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/ulimits.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/sacctmgr.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/scontrol.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/squeue.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/sinfo.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/cobalt/commands.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bmgroups.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/lsinfo.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bugroup.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bqueues.yml
+/Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bhosts.yml
 Found 44 buildspecs 
+________________________________________________________________________________
+
+
 Validated 5/44 buildspecs
 Validated 10/44 buildspecs
 Validated 15/44 buildspecs
@@ -13,8 +62,23 @@ Validated 35/44 buildspecs
 Validated 40/44 buildspecs
 Validated 44/44 buildspecs
 
-Detected 4 invalid buildspecs 
 
+Invalid buildspecs
+________________________________________________________________________________
+/Users/siddiq90/Documents/buildtest/tutorials/invalid_buildspec_section.yml
+/Users/siddiq90/Documents/buildtest/tutorials/invalid_tags.yml
+/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
+/Users/siddiq90/Documents/buildtest/tutorials/compilers/passing_args.yml
+Found 4 invalid buildspecs
+________________________________________________________________________________
+
+
+Adding 40 buildspec files to cache
+There are 85 tests in buildspec cache
+
+
+
+Updating buildspec cache file: /Users/siddiq90/Documents/buildtest/var/buildspec-cache.json
 Writing invalid buildspecs to file: /Users/siddiq90/Documents/buildtest/var/buildspec.error 
 
 

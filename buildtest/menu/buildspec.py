@@ -34,6 +34,7 @@ class BuildspecCache:
             :param roots:  List of directories to search for buildspecs. This argument contains value of --roots
             :type roots: list, required
         """
+
         self.filter = filterfields
         self.format = formatfields
         # if --root is not specified we set to empty list instead of None

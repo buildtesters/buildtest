@@ -80,11 +80,14 @@ compilers:
       clang@12.0.0:
         cc: 'clang'
         cxx: 'clang++'
+        fc: 'None'
         module:
           load: [clang/12.0]
     cuda:
       cuda@11.0:
         cc: 'nvcc'
+        cxx: 'nvcc'
+        fc: 'None'
         module:
           load: [cuda/11.0]
     pgi:

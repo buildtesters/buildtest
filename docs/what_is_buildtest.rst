@@ -74,10 +74,10 @@ generate test scripts. There are several ways to discover buildspecs that may in
   # process entire directory but exclude sub-directory.
   $ buildtest build -b system -x system/lustre
 
-  # discover and filter buildspecs based on tags
+  # discover buildspecs based on tags
   $ buildtest build --tags network
 
-  # discover and filter buildspecs based on executors
+  # discover buildspecs based on executors
   $ buildtest build --executor local.sh
 
   # combine all options together
@@ -139,10 +139,6 @@ each schema. This can be queried as follows::
 
   # show schema examples of schema global.schema.json
   $ buildtest schema -n global.schema.json --example
-
-  # validate schema examples of schema global.schema.json
-  $ buildtest schema -n global.schema.json --validate
-
 
 For more information see :ref:`Getting_Started`.
 

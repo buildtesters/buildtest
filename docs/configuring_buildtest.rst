@@ -418,7 +418,8 @@ In this system, we have two gcc modules installed via `spack <https://spack.read
 package manager, we will attempt to add both modules as compiler instance in buildtest.
 
 ::
-    (buildtest) bash-3.2$ module -t av gcc
+
+    $ module -t av gcc
     /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:
     gcc/9.3.0-n7p74fd
     gcc/10.2.0-37fmsw7
@@ -426,7 +427,7 @@ package manager, we will attempt to add both modules as compiler instance in bui
 
 Next we run ``buildtest config compilers find`` which will search all modules based on
 regular expression and add compilers in their respective group. In this example, buildtest
-automatically add `gcc/9.2.0-n7p74fd` and `gcc/10.2.0-37fmsw7` modules as compiler
+automatically add ``gcc/9.2.0-n7p74fd`` and ```gcc/10.2.0-37fmsw7`` modules as compiler
 instance. Depending on the compiler group, buildtest will apply the compiler wrapper
 ``cc``, ``cxx``, ``fc`` however these can be updated manually. The module section
 is generated with the module to load. One can further tweak the module behavior
@@ -434,7 +435,7 @@ along with purging or swap modules.
 
 ::
 
-    (buildtest) bash-3.2$ buildtest config compilers find
+    $ buildtest config compilers find
     MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.4.12/modulefiles/Darwin:/usr/local/Cellar/lmod/8.4.12/modulefiles/Core
     Configuration File: /Users/siddiq90/.buildtest/config.yml
     ________________________________________________________________________________

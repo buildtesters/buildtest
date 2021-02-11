@@ -321,11 +321,11 @@ class BuilderBase(ABC):
             )
 
     def get_environment(self, env):
-        """Retrieve a list of environment variables defined in buildspec and
-        return them as list with the shell equivalent command
+        """ Retrieve a list of environment variables defined in buildspec and
+            return them as list with the shell equivalent command
 
-        :return: list of environment variable lines to add to test script.
-        :rtype: list
+            :return: list of environment variable lines to add to test script.
+            :rtype: list
         """
 
         lines = []
