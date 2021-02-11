@@ -362,6 +362,16 @@ class BuildTestParser:
             action="store_true",
             help="Report a list of filter fields to be used with --filter option",
         )
+        parser_report.add_argument(
+            "--latest",
+            help="Retrieve latest record of particular test",
+            action="store_true",
+        )
+        parser_report.add_argument(
+            "--oldest",
+            help="Retrieve oldest record of particular test",
+            action="store_true",
+        )
         ##################### buildtest report   ###########################
 
         parser_report.set_defaults(func=func_report)
