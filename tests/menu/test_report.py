@@ -17,6 +17,8 @@ def test_report_format():
         helpfilter = False
         format = None
         filter = None
+        oldest = False
+        latest = False
 
     # run 'buildtest report'
     func_report(args)
@@ -26,6 +28,8 @@ def test_report_format():
         helpfilter = False
         format = "name,state,returncode,buildspec"
         filter = None
+        oldest = False
+        latest = False
 
     # run 'buildtest report --format name,state,returncode,buildspec'
     func_report(args)
@@ -35,6 +39,8 @@ def test_report_format():
         helpfilter = False
         format = "badfield,state,returncode"
         filter = None
+        oldest = False
+        latest = False
 
     # specify invalid format field 'badfield'
     with pytest.raises(SystemExit):
@@ -48,6 +54,8 @@ def test_report_helpformat():
         helpfilter = False
         format = None
         filter = None
+        oldest = False
+        latest = False
 
     func_report(args)
 
@@ -59,6 +67,8 @@ def test_report_filter():
         helpfilter = True
         format = None
         filter = None
+        oldest = False
+        latest = False
 
     # run 'buildtest report --helpfilter'
     func_report(args)
@@ -68,6 +78,8 @@ def test_report_filter():
         helpfilter = False
         filter = {"state": "PASS"}
         format = None
+        oldest = False
+        latest = False
 
     # run 'buildtest report --filter state=PASS'
     func_report(args)
@@ -77,6 +89,8 @@ def test_report_filter():
         helpfilter = False
         filter = {"state": "PASS"}
         format = "name,state"
+        oldest = False
+        latest = False
 
     # run 'buildtest report --filter state=PASS --format name,state'
     func_report(args)
@@ -86,6 +100,8 @@ def test_report_filter():
         helpfilter = False
         filter = {"state": "UNKNOWN"}
         format = "name,state"
+        oldest = False
+        latest = False
 
     # run 'buildtest report --filter state=UNKNOWN --format name,state',
     # this raises error because UNKNOWN is not valid value for state field
@@ -97,6 +113,8 @@ def test_report_filter():
         helpfilter = False
         filter = {"returncode": "0", "executor": "local.bash"}
         format = "name,returncode,executor"
+        oldest = False
+        latest = False
 
     # run 'buildtest report --filter returncode=0,executor=local.bash --format name,returncode,executor
     func_report(args)
@@ -110,6 +128,8 @@ def test_report_filter():
             )
         }
         format = "name,returncode,buildspec"
+        oldest = False
+        latest = False
 
     # run 'buildtest report --filter buildspec=tutorials/pass_returncode.yml --format name,returncode,buildspec
     func_report(args)
@@ -119,6 +139,8 @@ def test_report_filter():
         helpfilter = False
         filter = {"name": "exit1_pass"}
         format = "name,returncode,state"
+        oldest = False
+        latest = False
 
     # run 'buildtest report --filter name=exit1_pass --format name,returncode,state
     func_report(args)
@@ -130,6 +152,8 @@ def test_report_filter():
             "buildspec": "".join(random.choice(string.ascii_letters) for i in range(10))
         }
         format = "name,returncode,state"
+        oldest = False
+        latest = False
 
     # the filter argument buildspec is a random string which will be invalid file
     # and we expect an exception to be raised
@@ -141,6 +165,8 @@ def test_report_filter():
         helpfilter = False
         filter = {"buildspec": "$HOME/.bashrc"}
         format = "name,returncode,state"
+        oldest = False
+        latest = False
 
     # run 'buildtest report --filter buildspec=$HOME/.bashrc --format name,returncode,state
     # this will raise error even though file is valid it won't be found in cache
@@ -157,6 +183,8 @@ def test_report_filter():
             "returncode": 0,
         }
         format = "name,returncode,state,executor,tags"
+        oldest = False
+        latest = False
 
     # run 'buildtest report --filter tags=tutorials,executor=local.bash,state=PASS,returncode=0 --format name,returncode,state,executor,tags
     func_report(args)
@@ -177,6 +205,8 @@ def test_func_report_when_BUILD_REPORT_missing():
         helpfilter = False
         filter = None
         format = None
+        oldest = False
+        latest = False
 
     with pytest.raises(SystemExit):
         func_report(args)

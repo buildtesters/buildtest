@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+v0.9.3 (TBD)
+-------------
+
+
+- Change Copyright and License to include UC - LBNL - `#611 <https://github.com/buildtesters/buildtest/pull/611>`_
+- Add dependabot for github actions and pypi packages - `#615 <https://github.com/buildtesters/buildtest/pull/615>`_
+- Add option to query buildspecs by maintainers and breakdown by buildspecs using `--maintainers` and `--maintainers-by-buildspecs` see `#599 <https://github.com/buildtesters/buildtest/pull/599>`_
+- Add option to filter tests by tags using `buildtest build --filter-tags`, the behavior of `buildtest build --tags` is used to for discovery of buildspecs `#587 <https://github.com/buildtesters/buildtest/pull/587>`_
+
+
 v0.9.2 (Jan 12th, 2021)
 -----------------------
 

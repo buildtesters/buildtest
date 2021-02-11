@@ -52,7 +52,9 @@ class Report:
         "buildspec": [],
     }
 
-    def __init__(self, filter_args, format_args):
+    def __init__(self, filter_args, format_args, latest, oldest):
+        self.latest = latest
+        self.oldest = oldest
         self.filter = filter_args
         self.format = format_args
         self.report = self.load()
@@ -83,6 +85,10 @@ class Report:
                 sys.exit(1)
 
     def _check_format_fields(self):
+        """ Check all format arguments (--format) are valid, the arguments are specified
+            in format (--format key1=val1,key2=val2). We make sure each key is valid
+            format field.
+        """
 
         self.display_format_fields = self.display_table.keys()
 
@@ -221,9 +227,24 @@ class Report:
                     if self._filter_test_by_names(name):
                         continue
 
+                tests = self.report[buildspec][name]
+
+                # if --latest and --oldest specified together we retrieve first and last record
+                if self.latest and self.oldest:
+                    tests = [
+                        self.report[buildspec][name][0],
+                        self.report[buildspec][name][-1],
+                    ]
+                # retrieve last record of every test if --latest is specified
+                elif self.latest:
+                    tests = [self.report[buildspec][name][-1]]
+                # retrieve first record of every test if --oldest is specified
+                elif self.oldest:
+                    tests = [self.report[buildspec][name][0]]
+
                 # process all tests for an associated script. There can be multiple
                 # test runs for a single test depending on how many tests were run
-                for test in self.report[buildspec][name]:
+                for test in tests:
 
                     if self.filter:
                         # filter by tags, if filter tag not found in test tag list we skip test
@@ -247,13 +268,11 @@ class Report:
 
                     if "name" in self.display_table.keys():
                         self.display_table["name"].append(name)
-
                     for field in self.display_format_fields:
                         # skip fields buildspec or name since they are accounted above and not part
                         # of test dictionary
                         if field in ["buildspec", "name"]:
                             continue
-
                         self.display_table[field].append(test[field])
 
     def print_format_fields(self):
@@ -310,7 +329,8 @@ class Report:
 
 
 def func_report(args=None):
-    results = Report(args.filter, args.format)
+
+    results = Report(args.filter, args.format, args.latest, args.oldest)
     if args.helpfilter:
         results.print_filter_fields()
         return
