@@ -8,7 +8,7 @@ $ buildtest build -b tutorials/skip_tests.yml
 Discovered Buildspecs:
  
 /Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml
-[skip] test is skipped.
+[skip](/Users/siddiq90/Documents/buildtest/tutorials/skip_tests.yml): test is skipped.
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -24,7 +24,7 @@ Discovered Buildspecs:
 
  name      | id       | type   | executor   | tags          | testpath
 -----------+----------+--------+------------+---------------+---------------------------------------------------------------------------------------------------
- unskipped | 5f76ac77 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
+ unskipped | 1c5b3db3 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
 
 
 
@@ -34,7 +34,7 @@ Discovered Buildspecs:
     
  name      | id       | executor   | status   |   returncode | testpath
 -----------+----------+------------+----------+--------------+---------------------------------------------------------------------------------------------------
- unskipped | 5f76ac77 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
+ unskipped | 1c5b3db3 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

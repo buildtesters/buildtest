@@ -23,7 +23,7 @@ Discovered Buildspecs:
 
  name           | id       | type   | executor   | tags          | testpath
 ----------------+----------+--------+------------+---------------+--------------------------------------------------------------------------------------------------
- variables_bash | 4b26d455 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/0/stage/generate.sh
+ variables_bash | 750f48bc | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/0/stage/generate.sh
 
 
 
@@ -33,7 +33,7 @@ Discovered Buildspecs:
     
  name           | id       | executor   | status   |   returncode | testpath
 ----------------+----------+------------+----------+--------------+--------------------------------------------------------------------------------------------------
- variables_bash | 4b26d455 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/0/stage/generate.sh
+ variables_bash | 750f48bc | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/0/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

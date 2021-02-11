@@ -142,18 +142,11 @@ To see a list of available tags in your buildspec cache see :ref:`buildspec_tags
 .. Note:: The ``--tags`` is used for discovering buildspec file and not filtering tests
    by tag. If you want to filter tests by tags use ``--filter-tags``.
 
-You can combine ``--tags`` with ``--buildspec`` to discover buildspecs in a single command.
-buildtest will query tags and buildspecs independently and combine all discovered
-buildspecs together. In this next example we combine ``--tags`` and ``--buildspec``
-option to discover tests.
-
-.. program-output:: cat docgen/getting_started/combine-tags-buildspec.txt
-
-We have an additional option to filter buildspecs by tag name on the test level. This
-is controlled by option ``--filter-tags`` or short option ``-ft``. The ``--filter-tags``
-is used in conjunction with other options like ``--buildspec``, ``--tags``, or ``--executor``
-for discovering buildspecs. Let's rerun the previous example and filter tests by ``pass``.
-Now we only see tests built with tagname ``pass`` and all remaining tests were ignored.
+The ``--filter-tags`` or short option ``-ft`` is used for filtering tests by
+tag name. The ``--filter-tags`` is used in conjunction with other options like
+``--buildspec``, ``--tags``, or ``--executor`` for discovering buildspecs.
+Let's rerun the previous example and filter tests by ``pass``. Now we only see
+tests built with tagname ``pass`` and all remaining tests were ignored.
 
 .. program-output:: cat docgen/getting_started/combine-filter-tags-buildspec.txt
 
@@ -165,6 +158,12 @@ were found with tag name ``compile`` in the test.
 
 .. program-output:: cat docgen/getting_started/filter-tags-nobuildspecs.txt
 
+You can combine ``--tags`` with ``--buildspec`` to discover buildspecs in a single command.
+buildtest will query tags and buildspecs independently and combine all discovered
+buildspecs together. In this next example we combine ``--tags`` and ``--buildspec``
+option to discover tests.
+
+.. program-output:: cat docgen/getting_started/combine-tags-buildspec.txt
 
 Building by Executors
 -----------------------
@@ -536,6 +535,72 @@ because this test can't be run. In this case you will get the following message:
 
     $ buildtest report --filter buildspec=tutorials/invalid_executor.yml
     buildspec file: /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml not found in cache
+
+Find Latest or Oldest test
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We can search for oldest or latest test for any given test. This can be useful if you
+want to see last test run or the very first run. If you want to retrieve the oldest
+test you can use ``--oldest`` option.
+
+buildtest will append tests, therefore last record in dictionary will be latest record,
+similarly first record is the oldest record.
+
+Let's take a look at this example, we filter by test name ``hello_f`` which retrieves
+three entries. Now if you want to filter by oldest record just add the **--oldest** option
+and it will retrieve the first record which is test id **349f3ada**.
+
+.. code-block::
+
+   $ buildtest report --filter name=hello_f --format name,id,starttime
+    +---------+----------+---------------------+
+    | name    | id       | starttime           |
+    +=========+==========+=====================+
+    | hello_f | 349f3ada | 2021/02/11 18:13:08 |
+    +---------+----------+---------------------+
+    | hello_f | ecd4a3f2 | 2021/02/11 18:13:18 |
+    +---------+----------+---------------------+
+    | hello_f | 5c87978b | 2021/02/11 18:13:33 |
+    +---------+----------+---------------------+
+
+    $ buildtest report --filter name=hello_f --format name,id,starttime --oldest
+    +---------+----------+---------------------+
+    | name    | id       | starttime           |
+    +=========+==========+=====================+
+    | hello_f | 349f3ada | 2021/02/11 18:13:08 |
+    +---------+----------+---------------------+
+
+
+If you want to retrieve the latest test result you can use **--latest** option which
+will retrieve the last record, in this same example we will retrieve test id `5c87978b`.
+
+
+.. code-block::
+
+    $ buildtest report --filter name=hello_f --format name,id,starttime --latest
+    +---------+----------+---------------------+
+    | name    | id       | starttime           |
+    +=========+==========+=====================+
+    | hello_f | 5c87978b | 2021/02/11 18:13:33 |
+    +---------+----------+---------------------+
+
+You may combine both options **--oldest** and **--latest**, in this case buildtest will
+retrieve the first and last record of every test.
+
+.. code-block::
+
+    $ buildtest report --format name,id,starttime --oldest --latest | more
+    +------------------------------+----------+---------------------+
+    | name                         | id       | starttime           |
+    +==============================+==========+=====================+
+    | variables_bash               | 750f48bc | 2021/02/11 18:13:03 |
+    +------------------------------+----------+---------------------+
+    | variables_bash               | 1bdfd403 | 2021/02/11 18:13:32 |
+    +------------------------------+----------+---------------------+
+    | ulimit_filelock_unlimited    | b7b852e4 | 2021/02/11 18:13:03 |
+    +------------------------------+----------+---------------------+
+    | ulimit_filelock_unlimited    | 56345a43 | 2021/02/11 18:13:18 |
+    +------------------------------+----------+---------------------+
 
 Test Inspection
 -----------------

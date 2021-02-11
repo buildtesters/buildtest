@@ -1,12 +1,12 @@
 $ buildtest config summary
-buildtest version:  0.9.1
+buildtest version:  0.9.2
 buildtest Path: /Users/siddiq90/Documents/buildtest/bin/buildtest
 
 
 Machine Details
 ______________________________
 Operating System:  darwin
-Hostname:  DOE-7086392.local.dhcp.lbl.gov
+Hostname:  DOE-7086392.local
 Machine:  x86_64
 Processor:  i386
 Python Path /Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/python

@@ -330,6 +330,12 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
             },
             "cray": {
               "$ref": "#definitions/default_compiler_config"
+            },
+            "clang": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "cuda": {
+              "$ref": "#definitions/default_compiler_config"
             }
           }
         },

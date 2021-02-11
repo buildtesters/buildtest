@@ -8,5 +8,5 @@ $ buildtest build -b tutorials/root_user.yml
 Discovered Buildspecs:
  
 /Users/siddiq90/Documents/buildtest/tutorials/root_user.yml
-[run_only_as_root] test is skipped because ['run_only']['user'] got value: root but detected user: siddiq90.
+[run_only_as_root][/Users/siddiq90/Documents/buildtest/tutorials/root_user.yml]: test is skipped because this test is expected to run as user: root but detected user: siddiq90.
 No buildspecs to process because there are no valid buildspecs

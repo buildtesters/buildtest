@@ -23,6 +23,6 @@ Discovered Buildspecs:
 
  name           | id       | type   | executor   | tags          | testpath
 ----------------+----------+--------+------------+---------------+--------------------------------------------------------------------------------------------------
- variables_bash | 2c8bd68d | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/4/stage/generate.sh
+ variables_bash | f92cf668 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/4/stage/generate.sh
 
 

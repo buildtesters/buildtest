@@ -9,8 +9,8 @@ Discovered Buildspecs:
  
 /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
 /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
-/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
 /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
 /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
 
 +---------------------------+
@@ -21,8 +21,8 @@ Discovered Buildspecs:
 -------------------------+--------------+----------------------------------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
 
 +----------------------+
@@ -31,16 +31,16 @@ Discovered Buildspecs:
 
  name                       | id       | type   | executor     | tags          | testpath
 ----------------------------+----------+--------+--------------+---------------+---------------------------------------------------------------------------------------------------------------
- _bin_sh_shell              | 3f978533 | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
- _bin_bash_shell            | 892a6050 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
- bash_shell                 | 350066cd | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/0/stage/generate.sh
- sh_shell                   | 87b2d542 | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/0/stage/generate.sh
- shell_options              | 7ebcffad | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/0/stage/generate.sh
- circle_area                | f7af85d0 | script | local.python |               | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/0/stage/generate.sh
- variables_bash             | d512dfef | script | local.bash   | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
- slurm_down_nodes_reason    | 7fe95b48 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/0/stage/generate.sh
- slurm_not_responding_nodes | da77a4d6 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/0/stage/generate.sh
- hello_dinosaur             | 3abe33a3 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/0/stage/generate.sh
+ _bin_sh_shell              | d8bb6a16 | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
+ _bin_bash_shell            | 746e3764 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
+ bash_shell                 | 93b8feae | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/0/stage/generate.sh
+ sh_shell                   | 60bed2da | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/0/stage/generate.sh
+ shell_options              | 7affd40a | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/0/stage/generate.sh
+ circle_area                | a71084b7 | script | local.python |               | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/0/stage/generate.sh
+ slurm_down_nodes_reason    | 2ab7e83c | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/0/stage/generate.sh
+ slurm_not_responding_nodes | f3683f87 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/0/stage/generate.sh
+ variables_bash             | 07a86de5 | script | local.bash   | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
+ hello_dinosaur             | c4651612 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/0/stage/generate.sh
 
 
 
@@ -50,16 +50,16 @@ Discovered Buildspecs:
     
  name                       | id       | executor     | status   |   returncode | testpath
 ----------------------------+----------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------------
- _bin_sh_shell              | 3f978533 | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
- _bin_bash_shell            | 892a6050 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
- bash_shell                 | 350066cd | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/0/stage/generate.sh
- sh_shell                   | 87b2d542 | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/0/stage/generate.sh
- shell_options              | 7ebcffad | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/0/stage/generate.sh
- circle_area                | f7af85d0 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/0/stage/generate.sh
- variables_bash             | d512dfef | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
- slurm_down_nodes_reason    | 7fe95b48 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/0/stage/generate.sh
- slurm_not_responding_nodes | da77a4d6 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/0/stage/generate.sh
- hello_dinosaur             | 3abe33a3 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/0/stage/generate.sh
+ _bin_sh_shell              | d8bb6a16 | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
+ _bin_bash_shell            | 746e3764 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
+ bash_shell                 | 93b8feae | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/0/stage/generate.sh
+ sh_shell                   | 60bed2da | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/0/stage/generate.sh
+ shell_options              | 7affd40a | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/0/stage/generate.sh
+ circle_area                | a71084b7 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/0/stage/generate.sh
+ slurm_down_nodes_reason    | 2ab7e83c | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/0/stage/generate.sh
+ slurm_not_responding_nodes | f3683f87 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/0/stage/generate.sh
+ variables_bash             | 07a86de5 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
+ hello_dinosaur             | c4651612 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/0/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |

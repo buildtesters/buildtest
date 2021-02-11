@@ -1,7 +1,7 @@
 $ buildtest config view
 Settings File: /Users/siddiq90/.buildtest/config.yml
 ________________________________________________________________________________
-moduletool: lmod
+moduletool: N/A
 load_default_buildspecs: true
 executors:
   local:
@@ -18,28 +18,10 @@ executors:
       description: submit jobs on local machine using python shell
       shell: python
 compilers:
-  find:
-    gcc: ^(gcc)
   compiler:
     gcc:
       builtin_gcc:
         cc: /usr/bin/gcc
+        fc: /usr/bin/gfortran
         cxx: /usr/bin/g++
-        fc: /usr/local/bin/gfortran
-      gcc@10.2.0:
-        cc: gcc
-        cxx: g++
-        fc: gfortran
-        module:
-          load:
-          - gcc/10.2.0-37fmsw7
-          purge: false
-      gcc@9.3.0:
-        cc: gcc
-        cxx: g++
-        fc: gfortran
-        module:
-          load:
-          - gcc/9.3.0-n7p74fd
-          purge: false
 

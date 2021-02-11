@@ -6,7 +6,7 @@ $ buildtest buildspec find --executors
 +--------------+
 | local.csh    |
 +--------------+
-| local.bash   |
-+--------------+
 | local.python |
++--------------+
+| local.bash   |
 +--------------+

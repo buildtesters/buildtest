@@ -28,7 +28,7 @@ $ buildtest schema -n global.schema.json --json
       "type": "object",
       "description": "This section is used to define one or more tests (buildspecs). Each test must be unique name",
       "propertyNames": {
-        "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+        "pattern": "^[A-Za-z_.][A-Za-z0-9_.]*$",
         "maxLength": 32
       }
     }
