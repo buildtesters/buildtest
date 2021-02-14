@@ -111,11 +111,11 @@ class BaseExecutor:
         out = "".join(out)
         err = "".join(err)
 
-        self.logger.debug(f"Writing run output to file: {outfile}")
+        self.logger.debug(f"Writing test output to file: {outfile}")
         write_file(outfile, out)
 
         # write error from test to .err file
-        self.logger.debug(f"Writing run error to file: {errfile}")
+        self.logger.debug(f"Writing test error to file: {errfile}")
         write_file(errfile, err)
 
         self.builder.metadata["outfile"] = outfile

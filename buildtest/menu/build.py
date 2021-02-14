@@ -333,7 +333,7 @@ def resolve_testdirectory(buildtest_configuration, cli_testdir=None):
 
 
 def parse_buildspecs(
-    buildspecs, executor, test_directory, filters, rebuild, stage=None, printTable=False
+    buildspecs, executor, test_directory, filters, rebuild, printTable=False
 ):
 
     """Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
@@ -352,8 +352,6 @@ def parse_buildspecs(
     :type filters: dict, required
     :param rebuild: Input argument from command line --rebuild
     :type rebuild: int or None
-    :param stage: Determine whether to exit after end of method. This holds value of --stage from command line
-    :type stage: str or None
     :param printTable: a boolean to control if parse table is printed
     :type printTable: bool, optional
     :return: A list of builder objects which are instances of ``BuilderBase`` class
@@ -408,21 +406,15 @@ def parse_buildspecs(
         )
         print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
-    # if buildtest build --stage=parse set, we exit
-    if stage == "parse":
-        sys.exit()
-
     return builders
 
 
-def build_phase(builders, stage=None, printTable=False):
+def build_phase(builders, printTable=False):
     """This method will build all tests by invoking class method ``build`` for
     each builder that generates testscript in the test directory.
 
     :param builders: A list of builders
     :type builders: list
-    :param stage: Determines whether to stop after build stage. This contains value of --stage
-    :type stage: None or str
     :param printTable: Print builder table
     :type printTable: boolean
     """
@@ -495,9 +487,6 @@ def build_phase(builders, stage=None, printTable=False):
         raise BuildTestError(
             "Unable to create any test during build phase. Please check buildtest.log for more details"
         )
-
-    if stage == "build":
-        sys.exit()
 
     return builders
 
@@ -780,11 +769,17 @@ def func_build_subcmd(args, buildtest_config):
         executor=executor,
         test_directory=test_directory,
         rebuild=args.rebuild,
-        stage=args.stage,
         printTable=True,
     )
+    # if --stage option is specified we return from method
+    if args.stage == "parse":
+        return
 
-    buildphase_builders = build_phase(builders, stage=args.stage, printTable=True)
+    buildphase_builders = build_phase(builders, printTable=True)
+
+    # if --stage option is specified we return from method
+    if args.stage == "build":
+        return
 
     runphase_builders = run_phase(
         buildphase_builders, executor, buildtest_config, printTable=True
