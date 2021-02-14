@@ -3,9 +3,10 @@ updates:
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
-    # check daily at 1am UTC
+    # check weekly on Sunday at 1am UTC
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "sunday"
       time: "01:00"
     labels:
       - "github-action dependencies"
@@ -13,9 +14,10 @@ updates:
   # Maintain dependencies for pip
   - package-ecosystem: "pip"
     directory: "/"
-    # check daily at 2am UTC
+    # check weekly at 2am UTC
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "sunday"
       time: "02:00"
     labels:
       - "pip dependencies"
