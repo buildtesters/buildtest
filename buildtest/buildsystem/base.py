@@ -28,23 +28,23 @@ from buildtest.utils.shell import Shell
 
 
 class BuilderBase(ABC):
-    """ The BuilderBase is an abstract class that implements common functions for
-        any kind of builder.
+    """The BuilderBase is an abstract class that implements common functions for
+    any kind of builder.
     """
 
     def __init__(self, name, recipe, buildspec, testdir=None):
-        """ The BuilderBase provides common functions for any builder. The builder
-            is an instance of BuilderBase. The initializer method will setup the builder
-            attributes based on input test by ``name`` parameter.
+        """The BuilderBase provides common functions for any builder. The builder
+        is an instance of BuilderBase. The initializer method will setup the builder
+        attributes based on input test by ``name`` parameter.
 
-            :param name: Name of test in Buildspec recipe
-            :type name: str, required
-            :param recipe: the loaded section from the buildspec for the user.
-            :type recipe: dict, required
-            :param buildspec: the pull path to the Buildspec file, must exist.
-            :type buildspec: str, required
-            :param testdir: Test Destination directory where to write test
-            :type testdir: str, optional
+        :param name: Name of test in Buildspec recipe
+        :type name: str, required
+        :param recipe: the loaded section from the buildspec for the user.
+        :type recipe: dict, required
+        :param buildspec: the pull path to the Buildspec file, must exist.
+        :type buildspec: str, required
+        :param testdir: Test Destination directory where to write test
+        :type testdir: str, optional
         """
 
         self.name = name
@@ -117,9 +117,9 @@ class BuilderBase(ABC):
         self.metadata["id"] = self.metadata["full_id"][:8]
 
     def detect_executor(self):
-        """ Return executor type based on executor property. The executor is in
-            format <type>.<name> so we check for keywords that start with known executor
-            types ``local``, ``slurm``, ``lsf``, ``cobalt``
+        """Return executor type based on executor property. The executor is in
+        format <type>.<name> so we check for keywords that start with known executor
+        types ``local``, ``slurm``, ``lsf``, ``cobalt``
         """
         executor_types = ["local", "slurm", "lsf", "cobalt"]
         for name in executor_types:
@@ -127,21 +127,21 @@ class BuilderBase(ABC):
                 return name
 
     def get_test_extension(self):
-        """ Return the test extension, which depends on the shell used. Based
-            on the value of ``shell`` key we return the shell extension.
+        """Return the test extension, which depends on the shell used. Based
+        on the value of ``shell`` key we return the shell extension.
 
-            shell: bash --> sh (default)
+        shell: bash --> sh (default)
 
-            :return: returns test extension based on shell type
-            :rtype: str
+        :return: returns test extension based on shell type
+        :rtype: str
         """
 
         self.logger.debug("Setting test extension to 'sh'")
         return "sh"
 
     def start(self):
-        """ Keep internal time for start of test. We start timer by calling
-            Timer class
+        """Keep internal time for start of test. We start timer by calling
+        Timer class
         """
 
         self.timer = Timer()
@@ -153,9 +153,9 @@ class BuilderBase(ABC):
         self.duration += self.timer.stop()
 
     def build(self):
-        """ This method is responsible for invoking setup, creating test
-            directory and writing test. This method is called from an instance
-            object of this class that does ``builder.build()``.
+        """This method is responsible for invoking setup, creating test
+        directory and writing test. This method is called from an instance
+        object of this class that does ``builder.build()``.
         """
 
         self._build_setup()
@@ -163,10 +163,10 @@ class BuilderBase(ABC):
         self._create_symlinks()
 
     def _build_setup(self):
-        """ This method is the setup operation to get ready to build test which
-            includes getting unique build id, setting up metadata object to store
-            test details such as where test will be located and directory of test.
-            This section cannot be reached without a valid, loaded recipe.
+        """This method is the setup operation to get ready to build test which
+        includes getting unique build id, setting up metadata object to store
+        test details such as where test will be located and directory of test.
+        This section cannot be reached without a valid, loaded recipe.
         """
 
         create_dir(self.testdir)
@@ -192,15 +192,15 @@ class BuilderBase(ABC):
         self.metadata["testroot"] = self.test_id
 
     def _get_scheduler_directives(self, bsub, sbatch, cobalt, batch):
-        """ Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
-            test with one of the executor types. This method will return a list
-            of string containing scheduler directives generally found at top of script.
-            If test is local executor we return an empty list
+        """Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
+        test with one of the executor types. This method will return a list
+        of string containing scheduler directives generally found at top of script.
+        If test is local executor we return an empty list
 
-            :param bsub: bsub property from buildspec
-            :param sbatch: sbatch property from buildspec
-            :param cobalt: cobalt property  from buildspec
-            :param batch: batch property from buildspec
+        :param bsub: bsub property from buildspec
+        :param sbatch: sbatch property from buildspec
+        :param cobalt: cobalt property  from buildspec
+        :param batch: batch property from buildspec
         """
 
         lines = []
@@ -231,12 +231,12 @@ class BuilderBase(ABC):
         return lines
 
     def _get_burst_buffer(self, burstbuffer):
-        """ Get Burst Buffer directives (#BB) lines specified by BB property
+        """Get Burst Buffer directives (#BB) lines specified by BB property
 
-            :param burstbuffer: Burst Buffer configuration specified by BB property
-            :type burstbuffer: dict, required
-            :return: list of burst buffer directives
-            :rtype: list
+        :param burstbuffer: Burst Buffer configuration specified by BB property
+        :type burstbuffer: dict, required
+        :return: list of burst buffer directives
+        :rtype: list
         """
 
         if not burstbuffer:
@@ -251,10 +251,10 @@ class BuilderBase(ABC):
     def _get_data_warp(self, datawarp):
         """Get Cray Data Warp directives (#DW) lines specified by DW property.
 
-           :param datawarp: Data Warp configuration specified by DW property
-           :type datawarp: dict, required
-           :return: list of data warp directives
-           :rtype: list
+        :param datawarp: Data Warp configuration specified by DW property
+        :type datawarp: dict, required
+        :return: list of data warp directives
+        :rtype: list
         """
 
         if not datawarp:
@@ -279,10 +279,10 @@ class BuilderBase(ABC):
         )
 
     def _write_test(self):
-        """ This method is responsible for invoking ``generate_script`` that
-            formulates content of testscript which is implemented in each subclass.
-            Next we write content to file and apply 755 permission on script so
-            it has executable permission.
+        """This method is responsible for invoking ``generate_script`` that
+        formulates content of testscript which is implemented in each subclass.
+        Next we write content to file and apply 755 permission on script so
+        it has executable permission.
         """
 
         # Implementation to write file generate.sh
@@ -321,11 +321,11 @@ class BuilderBase(ABC):
             )
 
     def get_environment(self, env):
-        """ Retrieve a list of environment variables defined in buildspec and
-            return them as list with the shell equivalent command
+        """Retrieve a list of environment variables defined in buildspec and
+        return them as list with the shell equivalent command
 
-            :return: list of environment variable lines to add to test script.
-            :rtype: list
+        :return: list of environment variable lines to add to test script.
+        :rtype: list
         """
 
         lines = []

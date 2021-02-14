@@ -21,18 +21,18 @@ class BuildspecCache:
     format_fields = default_format_fields + ["file"]
 
     def __init__(self, rebuild, filterfields, formatfields, roots):
-        """ The initializer method for BuildspecCache class is responsible for
-            loading and finding buildspecs into buildspec cache. This method is called
-            when using ``buildtest buildspec find`` command.
+        """The initializer method for BuildspecCache class is responsible for
+        loading and finding buildspecs into buildspec cache. This method is called
+        when using ``buildtest buildspec find`` command.
 
-            :param rebuild: rebuild the buildspec cache by validating all buildspecs. The --rebuild is passed to this argument
-            :type rebuild: bool, required
-            :param filterfields:  The --filter option contains list of key value pairs for filtering buildspecs
-            :type filterfields: str, required
-            :param formatfields: The --format option contains list of key value pairs for formating buildspecs
-            :type formatfields: str, required
-            :param roots:  List of directories to search for buildspecs. This argument contains value of --roots
-            :type roots: list, required
+        :param rebuild: rebuild the buildspec cache by validating all buildspecs. The --rebuild is passed to this argument
+        :type rebuild: bool, required
+        :param filterfields:  The --filter option contains list of key value pairs for filtering buildspecs
+        :type filterfields: str, required
+        :param formatfields: The --format option contains list of key value pairs for formating buildspecs
+        :type formatfields: str, required
+        :param roots:  List of directories to search for buildspecs. This argument contains value of --roots
+        :type roots: list, required
         """
 
         self.filter = filterfields
@@ -399,9 +399,9 @@ class BuildspecCache:
         return False
 
     def find_buildspecs(self):
-        """ This method will find buildspecs based on cache content. We skip any
-            tests based on executor filter, tag filter or type filter and build
-            a table of tests that will be printed using ``print_buildspecs`` method.
+        """This method will find buildspecs based on cache content. We skip any
+        tests based on executor filter, tag filter or type filter and build
+        a table of tests that will be printed using ``print_buildspecs`` method.
         """
 
         for buildspecfile in self.cache["buildspecs"].keys():
@@ -440,24 +440,24 @@ class BuildspecCache:
                     self.table["description"].append(description)
 
     def get_buildspecfiles(self):
-        """ This method implements ``buildtest buildspec find --buildspec-files``
-            which reports all buildspec files in cache.
+        """This method implements ``buildtest buildspec find --buildspec-files``
+        which reports all buildspec files in cache.
         """
 
         table = {"buildspecs": self.cache["buildspecs"].keys()}
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def get_tags(self):
-        """ This method implements ``buildtest buildspec find --tags`` which
-            reports a list of unique tags from all buildspecs in cache file.
+        """This method implements ``buildtest buildspec find --tags`` which
+        reports a list of unique tags from all buildspecs in cache file.
         """
 
         table = {"Tags": self.cache["unique_tags"]}
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def get_executors(self):
-        """ This method implements ``buildtest buildspec find --list-executors``
-            which reports all executors from cache.
+        """This method implements ``buildtest buildspec find --list-executors``
+        which reports all executors from cache.
         """
 
         table = {"executors": self.cache["unique_executors"]}
@@ -465,8 +465,8 @@ class BuildspecCache:
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def print_by_executors(self):
-        """ This method prints executors by tests and implements
-            ``buildtest buildspec find --group-by-executor`` command
+        """This method prints executors by tests and implements
+        ``buildtest buildspec find --group-by-executor`` command
         """
 
         table = {"executor": [], "name": [], "description": []}
@@ -480,8 +480,8 @@ class BuildspecCache:
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def print_by_tags(self):
-        """ This method prints tags by tests and implements
-            ``buildtest buildspec find --group-by-tags`` command
+        """This method prints tags by tests and implements
+        ``buildtest buildspec find --group-by-tags`` command
         """
 
         table = {"tags": [], "name": [], "description": []}
@@ -500,8 +500,8 @@ class BuildspecCache:
         print(tabulate(self.table, headers=self.table.keys(), tablefmt="grid"))
 
     def print_maintainer(self):
-        """ This method prints maintainers from buildspec cache file which implements
-            ``buildtest buildspec find --maintainers`` command.
+        """This method prints maintainers from buildspec cache file which implements
+        ``buildtest buildspec find --maintainers`` command.
         """
 
         table = {"maintainers": []}
@@ -512,8 +512,8 @@ class BuildspecCache:
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def print_maintainers_by_buildspecs(self):
-        """ This method prints maintainers breakdown by buildspecs. This method
-            implements ``buildtest buildspec find --maintainers-by-buildspecs``
+        """This method prints maintainers breakdown by buildspecs. This method
+        implements ``buildtest buildspec find --maintainers-by-buildspecs``
         """
 
         table = {"maintainers": [], "buildspec": []}
@@ -525,8 +525,8 @@ class BuildspecCache:
 
     @staticmethod
     def print_filter_fields():
-        """ This method prints filter fields available for buildspec cache. This
-            method implements command ``buildtest buildspec find --helpfilter``
+        """This method prints filter fields available for buildspec cache. This
+        method implements command ``buildtest buildspec find --helpfilter``
         """
 
         filter_field_table = [
@@ -545,8 +545,8 @@ class BuildspecCache:
 
     @staticmethod
     def print_format_fields():
-        """ This method prints format fields available for buildspec cache. This
-            method implements command ``buildtest buildspec find --helpformat``
+        """This method prints format fields available for buildspec cache. This
+        method implements command ``buildtest buildspec find --helpformat``
         """
 
         format_fields = [
@@ -560,13 +560,15 @@ class BuildspecCache:
 
         print(
             tabulate(
-                format_fields, headers=["Field", "Description"], tablefmt="simple",
+                format_fields,
+                headers=["Field", "Description"],
+                tablefmt="simple",
             )
         )
 
     def print_paths(self):
-        """ This method print buildspec paths, this implements command
-            ``buildtest buildspec find --paths``
+        """This method print buildspec paths, this implements command
+        ``buildtest buildspec find --paths``
         """
 
         for path in self.paths:
@@ -574,17 +576,17 @@ class BuildspecCache:
 
 
 def func_buildspec_find(args):
-    """ Entry point for ``buildtest buildspec find``. This method
-        will attempt to read for buildspec cache file (BUILDSPEC_CACHE_FILE)
-        if found and print a list of all buildspecs. Otherwise, it will
-        find and load all buildspecs and validate them using BuildspecParser class.
-        BuildspecParser will raise SystemError or ValidationError if a buildspec
-        is invalid which will be added to list of invalid buildspecs. Finally we
-        print a list of all valid buildspecs and any invalid buildspecs are
-        written to file along with error message.
+    """Entry point for ``buildtest buildspec find``. This method
+    will attempt to read for buildspec cache file (BUILDSPEC_CACHE_FILE)
+    if found and print a list of all buildspecs. Otherwise, it will
+    find and load all buildspecs and validate them using BuildspecParser class.
+    BuildspecParser will raise SystemError or ValidationError if a buildspec
+    is invalid which will be added to list of invalid buildspecs. Finally we
+    print a list of all valid buildspecs and any invalid buildspecs are
+    written to file along with error message.
 
-        :param args: Input argument from command line passed from argparse
-        :return: A list of valid buildspecs found in all repositories.
+    :param args: Input argument from command line passed from argparse
+    :return: A list of valid buildspecs found in all repositories.
     """
 
     bp_cache = BuildspecCache(

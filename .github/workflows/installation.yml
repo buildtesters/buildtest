@@ -8,7 +8,7 @@ on:
 jobs:
 
   buildtest-installation:
-    runs-on: ${{ matrix.os }} 
+    runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
@@ -19,17 +19,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      
-    - name: Setup Python ${{ matrix.python-version }} 
+
+    - name: Setup Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }} 
+    - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }}
       env:
         OS: ${{ matrix.os }}
       run: |
-        if [ "OS" == "ubuntu-latest" ] ; then apt-get install -y tcsh zsh; else brew install tcsh zsh ;  fi        
+        if [ "OS" == "ubuntu-latest" ] ; then apt-get install -y tcsh zsh; else brew install tcsh zsh ;  fi
         echo $SHELL
         $SHELL --version
         git --version

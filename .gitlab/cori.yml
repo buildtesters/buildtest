@@ -43,7 +43,7 @@ validate_cori_testsuite:
     - module load python
     - conda create -n buildtest python=3.8
     - source activate buildtest
-    - source setup.sh    
+    - source setup.sh
     - git clone https://github.com/buildtesters/buildtest-cori
     - cd buildtest-cori
     - mkdir -p $HOME/.buildtest

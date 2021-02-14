@@ -10,11 +10,11 @@ class ScriptBuilder(BuilderBase):
     type = "script"
 
     def write_python_script(self):
-        """ This method is used for writing python script when ``shell: python``
-            is set. The content from ``run`` section is added into a python
-            script. The file is written to run directory and we simply invoke
-            python script by running ``python script.py``
-       """
+        """This method is used for writing python script when ``shell: python``
+        is set. The content from ``run`` section is added into a python
+        script. The file is written to run directory and we simply invoke
+        python script by running ``python script.py``
+        """
 
         python_content = self.recipe.get("run")
         script_path = "%s.py" % os.path.join(self.stage_dir, self.name)
@@ -31,14 +31,14 @@ class ScriptBuilder(BuilderBase):
         return lines
 
     def generate_script(self):
-        """ This method builds the testscript content based on the builder type.
-            For ScriptBuilder we need to add the shebang, environment variables
-            and the run section. If shell is python we write a python script and
-            return immediately. The variables, environment section are not applicable
-            for python scripts
+        """This method builds the testscript content based on the builder type.
+        For ScriptBuilder we need to add the shebang, environment variables
+        and the run section. If shell is python we write a python script and
+        return immediately. The variables, environment section are not applicable
+        for python scripts
 
-            :return: return content of test script
-            :rtype: list
+        :return: return content of test script
+        :rtype: list
         """
 
         self.status = self.recipe.get("status")

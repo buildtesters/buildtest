@@ -17,19 +17,19 @@ logger = logging.getLogger(__name__)
 
 
 def check_settings(settings_path=None, executor_check=True, retrieve_settings=False):
-    """ Checks all keys in configuration file (settings/config.yml) are valid
-        keys and ensure value of each key matches expected type. For some keys
-        special logic is taken to ensure values are correct and directory path
-        exists. If any error is found buildtest will terminate immediately.
+    """Checks all keys in configuration file (settings/config.yml) are valid
+    keys and ensure value of each key matches expected type. For some keys
+    special logic is taken to ensure values are correct and directory path
+    exists. If any error is found buildtest will terminate immediately.
 
-        :param settings_path: Path to buildtest settings file
-        :type settings_path: str, optional
-        :param executor_check: boolean to control if executor checks are performed
-        :type executor_check: bool
-        :param retrieve_settings: return loaded buildtest settings that is validated by schema. By default, this method doesn't return anything other than validating buildtest settings
-        :type retrieve_settings: bool
-        :return: returns gracefully if all checks passes otherwise terminate immediately
-        :rtype: exit code 1 if checks failed
+    :param settings_path: Path to buildtest settings file
+    :type settings_path: str, optional
+    :param executor_check: boolean to control if executor checks are performed
+    :type executor_check: bool
+    :param retrieve_settings: return loaded buildtest settings that is validated by schema. By default, this method doesn't return anything other than validating buildtest settings
+    :type retrieve_settings: bool
+    :return: returns gracefully if all checks passes otherwise terminate immediately
+    :rtype: exit code 1 if checks failed
     """
 
     user_schema = load_settings(settings_path)
@@ -75,10 +75,10 @@ def check_settings(settings_path=None, executor_check=True, retrieve_settings=Fa
 
 
 def load_settings(settings_path=None):
-    """ Load the default settings file if no argument is specified.
+    """Load the default settings file if no argument is specified.
 
-        :param settings_path: Path to buildtest settings file
-        :type settings_path: str, optional
+    :param settings_path: Path to buildtest settings file
+    :type settings_path: str, optional
     """
 
     if not settings_path:
@@ -89,9 +89,9 @@ def load_settings(settings_path=None):
 
 
 def resolve_settings_file():
-    """ Returns path to buildtest settings file that should be used. If there
-        is a user defined buildtest settings ($HOME/.buildtest/config.yml) it will
-        be honored, otherwise default settings from buildtest will be used.
+    """Returns path to buildtest settings file that should be used. If there
+    is a user defined buildtest settings ($HOME/.buildtest/config.yml) it will
+    be honored, otherwise default settings from buildtest will be used.
     """
 
     # if buildtest settings file exist return it otherwise return default file
@@ -102,11 +102,11 @@ def resolve_settings_file():
 
 
 def validate_lsf_executors(lsf_executors):
-    """ This method validates all LSF executors. We check if queue is available
-        and in ``Open:Active`` state.
+    """This method validates all LSF executors. We check if queue is available
+    and in ``Open:Active`` state.
 
-        :param lsf_executors: A list of LSF executors to validate
-        :type lsf_executors: dict
+    :param lsf_executors: A list of LSF executors to validate
+    :type lsf_executors: dict
     """
     lsf = LSF()
     queue_dict = lsf.get_queues()
@@ -144,13 +144,13 @@ def validate_lsf_executors(lsf_executors):
 
 
 def validate_slurm_executors(slurm_executor):
-    """ This method will validate slurm executors, we check if partition, qos,
-        and cluster fields are valid values by retrieving details from slurm configuration.
-        These checks are performed on fields ``partition``, ``qos`` or ``cluster``
-        if specified in executor section.
+    """This method will validate slurm executors, we check if partition, qos,
+    and cluster fields are valid values by retrieving details from slurm configuration.
+    These checks are performed on fields ``partition``, ``qos`` or ``cluster``
+    if specified in executor section.
 
-        :param slurm_executor: list of slurm executors defined in loaded buildtest configuration
-        :type slurm_executor: dict
+    :param slurm_executor: list of slurm executors defined in loaded buildtest configuration
+    :type slurm_executor: dict
     """
 
     slurm_object = Slurm()
@@ -192,9 +192,9 @@ def validate_slurm_executors(slurm_executor):
 
 
 def validate_cobalt_executors(cobalt_executor):
-    """ Validate cobalt queue property by running ```qstat -Q <queue>``. If
-        its a non-zero exit code then queue doesn't exist otherwise it is a valid
-        queue.
+    """Validate cobalt queue property by running ```qstat -Q <queue>``. If
+    its a non-zero exit code then queue doesn't exist otherwise it is a valid
+    queue.
     """
 
     cobalt = Cobalt()

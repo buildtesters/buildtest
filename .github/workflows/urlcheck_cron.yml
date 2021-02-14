@@ -1,6 +1,6 @@
 name: Daily Check URLs
 
-on: 
+on:
   schedule:
     - cron: '0 0 * * *'
 

@@ -36,11 +36,11 @@ class CobaltExecutor(BaseExecutor):
         )
 
     def dispatch(self):
-        """ This method is responsible for dispatching Cobalt job, get JobID
-            and start record metadata in builder object. If job failed to submit
-            we check returncode and exit with failure. After we submit job, we
-            start timer and record when job was submitted and poll job once to get
-            job details and store them in builder object.
+        """This method is responsible for dispatching Cobalt job, get JobID
+        and start record metadata in builder object. If job failed to submit
+        we check returncode and exit with failure. After we submit job, we
+        start timer and record when job was submitted and poll job once to get
+        job details and store them in builder object.
         """
 
         os.chdir(self.builder.stage_dir)
@@ -126,12 +126,12 @@ class CobaltExecutor(BaseExecutor):
         self.builder.metadata["job"] = job_record
 
     def poll(self):
-        """This method is responsible for polling Cobalt job, we check the 
-        job state and existence of output file. If file exists or job is in 
+        """This method is responsible for polling Cobalt job, we check the
+        job state and existence of output file. If file exists or job is in
         'exiting' stage we set job to 'done' stage and gather results. If job
         is in 'pending' stage we check if job exceeds 'max_pend_time' time limit
         by checking with builder timer attribute using ``start`` and ``stop`` method.
-        If job exceeds the time limit job is cancelled. 
+        If job exceeds the time limit job is cancelled.
         """
 
         self.logger.debug(f"Query Job: {self.builder.metadata['jobid']}")
@@ -191,11 +191,11 @@ class CobaltExecutor(BaseExecutor):
             self.builder.job_state = self.job_state
 
     def gather(self):
-        """ This method is responsible for moving output and error file in the run
-            directory. We need to read <JOBID>.cobaltlog file which contains
-            output of exit code. Cobalt doesn't provide any method to retrieve
-            exit code using account command (``qstat``) so we need to perform
-            regular expression.
+        """This method is responsible for moving output and error file in the run
+        directory. We need to read <JOBID>.cobaltlog file which contains
+        output of exit code. Cobalt doesn't provide any method to retrieve
+        exit code using account command (``qstat``) so we need to perform
+        regular expression.
         """
 
         cobaltlog = os.path.join(

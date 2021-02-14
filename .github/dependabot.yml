@@ -9,14 +9,14 @@ updates:
       time: "01:00"
     labels:
       - "github-action dependencies"
-      
+
   # Maintain dependencies for pip
   - package-ecosystem: "pip"
-    directory: "/"    
+    directory: "/"
     # check daily at 2am UTC
     schedule:
       interval: "daily"
       time: "02:00"
     labels:
       - "pip dependencies"
-      
+

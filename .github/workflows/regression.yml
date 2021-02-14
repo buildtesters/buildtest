@@ -28,9 +28,9 @@ jobs:
         sudo apt-get install -y tcsh zsh
         source setup.sh
         pip install pytest
-        pip install coverage 
+        pip install coverage
         coverage run -m pytest -vra tests
         coverage report -m
-        
+
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
