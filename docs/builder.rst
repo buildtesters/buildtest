@@ -1,3 +1,5 @@
+.. _build_and_test_process:
+
 Build and Test Process
 ======================
 

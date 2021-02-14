@@ -49,7 +49,6 @@ elif [[ "$SHELL" == "/bin/zsh" ]]; then
   compinit
   autoload -U bashcompinit
   bashcompinit
-  eval "$(register-python-argcomplete buildtest)"
 fi
 
 buildtest_path=$(which buildtest)
