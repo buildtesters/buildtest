@@ -21,7 +21,7 @@ importlib-metadata==3.4.0
 iniconfig==1.1.1
 Jinja2==2.11.3
 jsonschema==3.2.0
-lazy-object-proxy==1.4.3
+lazy-object-proxy==1.5.2
 lmodule==0.1.0
 MarkupSafe==1.1.1
 mypy-extensions==0.4.3
