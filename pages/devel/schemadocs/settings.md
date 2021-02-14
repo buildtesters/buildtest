@@ -22,6 +22,7 @@ settings.schema.json
 | [buildspec_roots](#buildspec_roots)                 | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-properties-buildspec_roots.md "settings.schema.json#/properties/buildspec_roots")                 |
 | [load_default_buildspecs](#load_default_buildspecs) | `boolean`     | Required | cannot be null | [buildtest configuration schema](settings-properties-load_default_buildspecs.md "settings.schema.json#/properties/load_default_buildspecs") |
 | [testdir](#testdir)                                 | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-testdir.md "settings.schema.json#/properties/testdir")                                 |
+| [logdir](#logdir)                                   | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-logdir.md "settings.schema.json#/properties/logdir")                                   |
 | [moduletool](#moduletool)                           | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-moduletool.md "settings.schema.json#/properties/moduletool")                           |
 | [compilers](#compilers)                             | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers.md "settings.schema.json#/properties/compilers")                             |
 | [executors](#executors)                             | `object`      | Required | cannot be null | [buildtest configuration schema](settings-properties-executors.md "settings.schema.json#/properties/executors")                             |
@@ -95,6 +96,24 @@ Specify full path to test directory where buildtest will write tests.
 *   defined in: [buildtest configuration schema](settings-properties-testdir.md "settings.schema.json#/properties/testdir")
 
 ### testdir Type
+
+`string`
+
+## logdir
+
+Specify location where buildtest will write log files
+
+`logdir`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-properties-logdir.md "settings.schema.json#/properties/logdir")
+
+### logdir Type
 
 `string`
 
