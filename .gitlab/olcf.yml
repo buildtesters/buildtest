@@ -9,8 +9,8 @@ ascent_pr_regression_test:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
       when: manual
-    
-  script: 
+
+  script:
     - env | grep CI_
     - echo $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME
     - module load python
@@ -19,7 +19,7 @@ ascent_pr_regression_test:
     - git branch
     - conda create -n buildtest python=3.8
     - source activate buildtest
-    - source setup.sh    
+    - source setup.sh
     - pip install -r docs/requirements.txt
     - rm -rf ~/.buildtest/
     - coverage run -m pytest -vra tests

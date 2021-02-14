@@ -18,13 +18,13 @@ class Shell:
     ]
 
     def __init__(self, shell="bash"):
-        """ The Shell initializer takes an input shell and shell options and split
-            string by shell name and options.
+        """The Shell initializer takes an input shell and shell options and split
+        string by shell name and options.
 
-            Parameters:
+        Parameters:
 
-            :param shell: specify shell program and any options passed to shell
-            :type shell: str
+        :param shell: specify shell program and any options passed to shell
+        :type shell: str
         """
 
         # enforce input argument 'shell' to be a string
@@ -46,14 +46,13 @@ class Shell:
 
     @property
     def opts(self):
-        """retrieve the shell opts that are set on init, and updated with setter
-        """
+        """retrieve the shell opts that are set on init, and updated with setter"""
         return self._opts
 
     @opts.setter
     def opts(self, shell_opts):
         """Override the shell options in class attribute, this would be useful
-           when shell options need to change due to change in shell program.
+        when shell options need to change due to change in shell program.
         """
         self._opts = shell_opts
         return self._opts
@@ -61,18 +60,18 @@ class Shell:
     @property
     def path(self):
         """This method returns the full path to shell program using ``shutil.which()``
-           If shell program is not found we raise an exception. The shebang is
-           is updated assuming path is valid which is just adding character '#!'
-           in front of path. The return is full path to shell program. This method
-           automatically updates the shell path when there is a change in attribute
-           self.name
+        If shell program is not found we raise an exception. The shebang is
+        is updated assuming path is valid which is just adding character '#!'
+        in front of path. The return is full path to shell program. This method
+        automatically updates the shell path when there is a change in attribute
+        self.name
 
-           >>> shell = Shell("bash")
-           >>> shell.path
-           '/usr/bin/bash'
-           >>> shell.name="sh"
-           >>> shell.path
-           '/usr/bin/sh'
+        >>> shell = Shell("bash")
+        >>> shell.path
+        '/usr/bin/bash'
+        >>> shell.name="sh"
+        >>> shell.path
+        '/usr/bin/sh'
 
         """
         return self._path
@@ -86,8 +85,8 @@ class Shell:
 
     @path.setter
     def path(self, name):
-        """If the user provides a new path with a name, do same checks to 
-           ensure that it's found.
+        """If the user provides a new path with a name, do same checks to
+        ensure that it's found.
         """
         path = shutil.which(name)
 

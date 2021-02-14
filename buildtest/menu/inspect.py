@@ -7,8 +7,8 @@ from buildtest.utils.command import read_file
 
 def get_all_ids():
     """Return all unique test ids from report cache
-       :return: list of unique ids
-       :rtype: list
+    :return: list of unique ids
+    :rtype: list
     """
 
     test_id = []

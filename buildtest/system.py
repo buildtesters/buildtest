@@ -13,23 +13,23 @@ from buildtest.utils.command import BuildTestCommand
 
 
 class BuildTestSystem:
-    """ BuildTestSystem is a class that detects system configuration and outputs the result
-        in .run file which are generated upon test execution. This module also keeps
-        track of what is supported (or not supported) for a system.
+    """BuildTestSystem is a class that detects system configuration and outputs the result
+    in .run file which are generated upon test execution. This module also keeps
+    track of what is supported (or not supported) for a system.
     """
 
     system = {}
 
     def __init__(self):
-        """ Constructor method for BuildTestSystem(). Defines all system
-            configuration using class variable **system** which is a dictionary.
+        """Constructor method for BuildTestSystem(). Defines all system
+        configuration using class variable **system** which is a dictionary.
         """
 
         self.logger = logging.getLogger(__name__)
 
     def check(self):
-        """ Based on the module "distro" get system details like linux distro,
-            processor, hostname, etc...
+        """Based on the module "distro" get system details like linux distro,
+        processor, hostname, etc...
         """
 
         self.logger.debug("Starting System Compatibility Check")
@@ -55,10 +55,10 @@ class BuildTestSystem:
         self.logger.debug("Finished System Compatibility Check")
 
     def check_scheduler(self):
-        """ Check existence of batch scheduler and if so determine which scheduler
-            it is. Currently we support Slurm, LSF, and Cobalt we invoke each
-            class and see if its valid state. The checks determine if scheduler
-            binaries exist in $PATH.
+        """Check existence of batch scheduler and if so determine which scheduler
+        it is. Currently we support Slurm, LSF, and Cobalt we invoke each
+        class and see if its valid state. The checks determine if scheduler
+        binaries exist in $PATH.
         """
 
         slurm = Slurm()
@@ -82,12 +82,12 @@ class BuildTestSystem:
             return
 
     def detect_module_tool(self):
-        """ Check if module tool exists, we check for Lmod or environment-modules by
-            checking if environment variable ``LMOD_VERSION``, ``MODULE_VERSION`` or
-            ``MODULES_CMD`` exist. We check this with input specification in buildtest
-            configuration. If user specifies lmod as the module tool but detected
-            environment-modules, buildtest should pick this up and report this as part
-            of configuration check
+        """Check if module tool exists, we check for Lmod or environment-modules by
+        checking if environment variable ``LMOD_VERSION``, ``MODULE_VERSION`` or
+        ``MODULES_CMD`` exist. We check this with input specification in buildtest
+        configuration. If user specifies lmod as the module tool but detected
+        environment-modules, buildtest should pick this up and report this as part
+        of configuration check
         """
 
         self.system["moduletool"] = None
@@ -106,10 +106,10 @@ class BuildTestSystem:
 
 
 class Scheduler:
-    """ This is a base Scheduler class used for implementing common methods for
-        detecting Scheduler details. The subclass implement specific queries that
-        are scheduler specific. The ``Slurm``, ``LSF`` and ``Cobalt`` class inherit
-        from Base Class ``Scheduler``.
+    """This is a base Scheduler class used for implementing common methods for
+    detecting Scheduler details. The subclass implement specific queries that
+    are scheduler specific. The ``Slurm``, ``LSF`` and ``Cobalt`` class inherit
+    from Base Class ``Scheduler``.
     """
 
     state = True
@@ -132,8 +132,8 @@ class Scheduler:
 
 class Slurm(Scheduler):
     """The Slurm class implements common functions to query Slurm cluster
-        including partitions, qos, cluster. We check existence of slurm binaries
-        in $PATH and return if slurm cluster is in valid state.
+    including partitions, qos, cluster. We check existence of slurm binaries
+    in $PATH and return if slurm cluster is in valid state.
     """
 
     # all of these commands are used later when submitting, polling or cancelling job

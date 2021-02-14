@@ -20,13 +20,13 @@ from buildtest.schemas.defaults import schema_table
 
 def handle_kv_string(val):
     """This method is used as type field in --filter argument in ``buildtest buildspec find``.
-       This method returns a dict of key,value pair where input is in format
-       key1=val1,key2=val2,key3=val3
+    This method returns a dict of key,value pair where input is in format
+    key1=val1,key2=val2,key3=val3
 
-       :param val: input value
-       :type val: str
-       :return: dictionary of key/value pairs
-       :rtype: dict
+    :param val: input value
+    :type val: str
+    :return: dictionary of key/value pairs
+    :rtype: dict
     """
 
     kv_dict = {}
@@ -123,12 +123,12 @@ class BuildTestParser:
         parser_schemadocs.set_defaults(func=schemadocs)
 
     def parse_options(self):
-        """ This method parses the argument from ArgumentParser class and returns
-            the arguments. We store extra (non parsed arguments) with the class if
-            they are needed.
+        """This method parses the argument from ArgumentParser class and returns
+        the arguments. We store extra (non parsed arguments) with the class if
+        they are needed.
 
-            :return: return a parsed dictionary returned by ArgumentParser
-            :rtype: dict
+        :return: return a parsed dictionary returned by ArgumentParser
+        :rtype: dict
         """
 
         args, extra = self.parser.parse_known_args()
@@ -394,7 +394,10 @@ class BuildTestParser:
             choices=schema_table["names"],
         )
         parser_schema.add_argument(
-            "-e", "--example", action="store_true", help="Show schema examples",
+            "-e",
+            "--example",
+            action="store_true",
+            help="Show schema examples",
         )
         parser_schema.add_argument(
             "-j", "--json", action="store_true", help="Display json schema file"

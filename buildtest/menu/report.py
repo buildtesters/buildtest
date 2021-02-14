@@ -85,9 +85,9 @@ class Report:
                 sys.exit(1)
 
     def _check_format_fields(self):
-        """ Check all format arguments (--format) are valid, the arguments are specified
-            in format (--format key1=val1,key2=val2). We make sure each key is valid
-            format field.
+        """Check all format arguments (--format) are valid, the arguments are specified
+        in format (--format key1=val1,key2=val2). We make sure each key is valid
+        format field.
         """
 
         self.display_format_fields = self.display_table.keys()
@@ -109,9 +109,9 @@ class Report:
 
     def load(self):
         """This method is responsible for loading report file. If file not found
-           or report is empty dictionary we raise an error. The report file
-           is loaded using ``json.loads`` and return value is a dictionary containing
-           entire report of all tests.
+        or report is empty dictionary we raise an error. The report file
+        is loaded using ``json.loads`` and return value is a dictionary containing
+        entire report of all tests.
         """
 
         # raise error if BUILD_REPORT not found
@@ -344,11 +344,11 @@ def func_report(args=None):
 
 def update_report(valid_builders):
     """This method will update BUILD_REPORT after every test run performed
-       by ``buildtest build``. If BUILD_REPORT is not created, we will create
-       file and update json file by extracting contents from builder.metadata
+    by ``buildtest build``. If BUILD_REPORT is not created, we will create
+    file and update json file by extracting contents from builder.metadata
 
-       :param valid_builders: builder object that were successful during build and able to execute test
-       :type valid_builders: instance of BuilderBase (subclass)
+    :param valid_builders: builder object that were successful during build and able to execute test
+    :type valid_builders: instance of BuilderBase (subclass)
     """
 
     if not is_file(os.path.dirname(BUILD_REPORT)):

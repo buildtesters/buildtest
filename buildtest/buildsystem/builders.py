@@ -15,18 +15,18 @@ from buildtest.system import system
 
 class Builder:
     def __init__(self, bp, filters, testdir, rebuild=1):
-        """ Based on a loaded Buildspec file, return the correct builder
-            for each based on the type. Each type is associated with a known
-            Builder class.
+        """Based on a loaded Buildspec file, return the correct builder
+        for each based on the type. Each type is associated with a known
+        Builder class.
 
-            :param bp: an instance of BuildspecParser class
-            :type bp: BuildspecParser, required
-            :param filters: A dictionary container filter fields for tags and executors passed from command line
-            :type filters: dict, required
-            :param testdir: Test Destination directory, specified by --testdir
-            :type testdir: str, required
-            :param rebuild: Number of rebuilds for a tesst this is specified by ``buildtest build --rebuild``. Defaults to 1
-            :type rebuild: int, optional
+        :param bp: an instance of BuildspecParser class
+        :type bp: BuildspecParser, required
+        :param filters: A dictionary container filter fields for tags and executors passed from command line
+        :type filters: dict, required
+        :param testdir: Test Destination directory, specified by --testdir
+        :type testdir: str, required
+        :param rebuild: Number of rebuilds for a tesst this is specified by ``buildtest build --rebuild``. Defaults to 1
+        :type rebuild: int, optional
         """
 
         self.logger = logging.getLogger(__name__)
@@ -79,14 +79,14 @@ class Builder:
 
     def _build_compilers(self, name, recipe):
         """This method will perform regular expression with 'name' field in compilers
-           section and retrieve one or more compiler that were defined in buildtest
-           configuration. If any compilers were retrieved we return one or more
-           builder objects that call CompilerBuilder
+        section and retrieve one or more compiler that were defined in buildtest
+        configuration. If any compilers were retrieved we return one or more
+        builder objects that call CompilerBuilder
 
-           :param name: name of test from buildspec file
-           :type name: str
-           :param recipe: loaded test recipe
-           :type recipe: dict
+        :param name: name of test from buildspec file
+        :type name: str
+        :param recipe: loaded test recipe
+        :type recipe: dict
         """
         self.compilers = {}
         bc = BuildtestCompilers()
@@ -125,14 +125,14 @@ class Builder:
         self.builders.append(builder)
 
     def _skip_tests_by_tags(self, recipe, name):
-        """ This method determines if test should be skipped based on tag names specified
-            in filter field that is specified on command line via ``buildtest build --tags``
+        """This method determines if test should be skipped based on tag names specified
+        in filter field that is specified on command line via ``buildtest build --tags``
 
 
-            :param recipe: loaded buildspec recipe as dictionary
-            :param name: An instance of test from buildspec file
-            :return: Returns a boolean True/False which determines if test is skipped.
-            :rtype: bool
+        :param recipe: loaded buildspec recipe as dictionary
+        :param name: An instance of test from buildspec file
+        :return: Returns a boolean True/False which determines if test is skipped.
+        :rtype: bool
         """
 
         if self.filters["tags"]:
@@ -154,17 +154,17 @@ class Builder:
         return False
 
     def _skip_tests_run_only(self, recipe, name, system):
-        """ This method will skip tests based on ``run_only`` field from buildspec. Checks
-            are performed based on conditionals and if any conditional is not met we skip test.
+        """This method will skip tests based on ``run_only`` field from buildspec. Checks
+        are performed based on conditionals and if any conditional is not met we skip test.
 
-            :param recipe: loaded buildspec recipe as dictionary
-            :type recipe: dict, required
-            :param name: name of test from buildspec file
-            :type name: str, required
-            :param system: An instance of ``BuildTestSystem`` class
-            :type system: BuildTestSystem, required
-            :return: Returns a boolean to see if test is skipped based on ``run_only`` property
-            :rtype: bool
+        :param recipe: loaded buildspec recipe as dictionary
+        :type recipe: dict, required
+        :param name: name of test from buildspec file
+        :type name: str, required
+        :param system: An instance of ``BuildTestSystem`` class
+        :type system: BuildTestSystem, required
+        :return: Returns a boolean to see if test is skipped based on ``run_only`` property
+        :rtype: bool
         """
         # if run_only field set, check if all conditions match before proceeding with test
         if recipe.get("run_only"):
@@ -211,11 +211,11 @@ class Builder:
         return self.builders
 
     def get_test_names(self):
-        """ Return the list of test names for the loaded Buildspec recipe. This can
-            be retrieved by returning a list of keys under 'buildspecs' property
+        """Return the list of test names for the loaded Buildspec recipe. This can
+        be retrieved by returning a list of keys under 'buildspecs' property
 
-            :return: A list of test names in buildspec file
-            :rtype: list
+        :return: A list of test names in buildspec file
+        :rtype: list
         """
 
         keys = []

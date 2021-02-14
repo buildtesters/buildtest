@@ -54,10 +54,10 @@ class CompilerBuilder(BuilderBase):
         self.sourcefile = self.recipe["source"]
 
     def setup(self):
-        """ The setup method is responsible for process compiler section, getting modules
-            pre_build, post_build, pre_run, post_run section and generate compilation
-            and run command. This method invokes other methods and set values in class
-            variables. This method is called by self.generate_script method.
+        """The setup method is responsible for process compiler section, getting modules
+        pre_build, post_build, pre_run, post_run section and generate compilation
+        and run command. This method invokes other methods and set values in class
+        variables. This method is called by self.generate_script method.
         """
 
         self._resolve_source()
@@ -134,12 +134,12 @@ class CompilerBuilder(BuilderBase):
         self.run_cmd = self._run_cmd()
 
     def generate_script(self):
-        """ This method is responsible for generating test script for compiler schema.
-            The method ``generate_script`` is implemented in each subclass because
-            implementation on test generation differs across schema types.
+        """This method is responsible for generating test script for compiler schema.
+        The method ``generate_script`` is implemented in each subclass because
+        implementation on test generation differs across schema types.
 
-            This method will add the lines into list which comprise content
-            of test. The method will return a list containing lines of test script.
+        This method will add the lines into list which comprise content
+        of test. The method will return a list containing lines of test script.
         """
 
         self.setup()
@@ -226,9 +226,9 @@ class CompilerBuilder(BuilderBase):
         return lines
 
     def _resolve_source(self):
-        """ This method resolves full path to source file, it checks for absolute
-            path first before checking relative path that is relative to
-            Buildspec recipe.
+        """This method resolves full path to source file, it checks for absolute
+        path first before checking relative path that is relative to
+        Buildspec recipe.
         """
 
         # attempt to resolve path based on 'source' field. One can specify an absolute path if specified we honor it
@@ -246,8 +246,8 @@ class CompilerBuilder(BuilderBase):
             )
 
     def _detect_lang(self, sourcefile):
-        """ This method will return the Programming Language based by looking up
-            file extension of source file.
+        """This method will return the Programming Language based by looking up
+        file extension of source file.
         """
         self.logger.debug(
             f"[{self.name}]: Detecting programming language for source file: {sourcefile}"
@@ -274,10 +274,10 @@ class CompilerBuilder(BuilderBase):
 
     def _get_modules(self, modules):
         """Return a list of module command as a list of instructions based on
-          ``module`` property.
+        ``module`` property.
 
-           :param modules: 'module' property specified in buildspec used for loading/swapping modules
-           :type modules: object
+         :param modules: 'module' property specified in buildspec used for loading/swapping modules
+         :type modules: object
 
         """
 
@@ -304,9 +304,9 @@ class CompilerBuilder(BuilderBase):
         return module_cmd
 
     def _compile_cmd(self):
-        """ This method generates the compilation line and returns the output as
-            a list. The compilation line depends on the the language detected
-            that is stored in variable ``self.lang``.
+        """This method generates the compilation line and returns the output as
+        a list. The compilation line depends on the the language detected
+        that is stored in variable ``self.lang``.
         """
 
         cmd = []
@@ -350,8 +350,8 @@ class CompilerBuilder(BuilderBase):
         return cmd
 
     def _run_cmd(self):
-        """ This method builds the run command which refers to how to run the
-            generated binary after compilation.
+        """This method builds the run command which refers to how to run the
+        generated binary after compilation.
         """
 
         # order of precedence on how to generate run line when executing binary.
@@ -368,12 +368,12 @@ class CompilerBuilder(BuilderBase):
         return run_line
 
     def _process_compiler_config(self):
-        """ This method is responsible for setting cc, fc, cxx class variables based
-            on compiler selection. The order of precedence is ``config``, ``default``,
-            then buildtest setting. Compiler settings in 'config' takes highest precedence,
-            this overrides any configuration in 'default'. Finally we resort to compiler
-            configuration in buildtest setting if none defined. This method is responsible
-            for setting cc, fc, cxx, cflags, cxxflags, fflags, ldflags, and cppflags.
+        """This method is responsible for setting cc, fc, cxx class variables based
+        on compiler selection. The order of precedence is ``config``, ``default``,
+        then buildtest setting. Compiler settings in 'config' takes highest precedence,
+        this overrides any configuration in 'default'. Finally we resort to compiler
+        configuration in buildtest setting if none defined. This method is responsible
+        for setting cc, fc, cxx, cflags, cxxflags, fflags, ldflags, and cppflags.
         """
         bc = BuildtestCompilers()
 

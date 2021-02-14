@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 def is_file(fname):
-    """ This method will check if file exist, if so returns True otherwise returns
-        False
+    """This method will check if file exist, if so returns True otherwise returns
+    False
 
-        :param file: file path
-        :type file: str, required
-        :return: returns a boolean True/False depending on if input is a valid file.
-        :rtype: bool
+    :param file: file path
+    :type file: str, required
+    :return: returns a boolean True/False depending on if input is a valid file.
+    :rtype: bool
     """
 
     # resolve_path will return the full canonical filename or return None if file doesn't exist
@@ -38,12 +38,12 @@ def is_file(fname):
 
 def is_dir(dirname):
     """This method will check if a directory exist. If directory found we return
-       True otherwise False.
+    True otherwise False.
 
-       :param dir: directory path
-       :type dir: str, required
-       :return: returns a boolean True/False depending on if input is a valid directory.
-       :rtype: bool
+    :param dir: directory path
+    :type dir: str, required
+    :return: returns a boolean True/False depending on if input is a valid directory.
+    :rtype: bool
     """
 
     # resolve_path will return the full canonical directory name or return None if directory doesn't exist
@@ -59,18 +59,18 @@ def is_dir(dirname):
 
 def walk_tree(root_dir, ext=None):
     """This method will traverse a directory tree and return list of files
-       based on extension type. This method invokes is_dir() to check if directory
-       exists before traversal.
+    based on extension type. This method invokes is_dir() to check if directory
+    exists before traversal.
 
-       Parameters:
+    Parameters:
 
-       :param root_dir: directory path to traverse
-       :type root_dir: str, required
-       :param ext: file extensions to search in traversal
-       :type ext: str, optional
+    :param root_dir: directory path to traverse
+    :type root_dir: str, required
+    :param ext: file extensions to search in traversal
+    :type ext: str, optional
 
-       :return: returns a list of file paths
-       :rtype: list
+    :return: returns a list of file paths
+    :rtype: list
     """
 
     list_files = []
@@ -93,13 +93,13 @@ def walk_tree(root_dir, ext=None):
 
 def create_dir(dirname):
     """Create a directory if it doesn't exist. If directory contains variable
-       expansion ($HOME), user expansion (~) we resolve this before creating directory.
-       If there is an error creating directory we raise an exception
+    expansion ($HOME), user expansion (~) we resolve this before creating directory.
+    If there is an error creating directory we raise an exception
 
-       :param dirname: directory path to create
-       :type dirname: str, required
-       :return: creates the directory or print an exception message upon failure
-       :rtype: Catches exception of type OSError
+    :param dirname: directory path to create
+    :type dirname: str, required
+    :return: creates the directory or print an exception message upon failure
+    :rtype: Catches exception of type OSError
     """
 
     # these three lines implement same as ``resolve_path`` will return None when it's not a known file. We expect
@@ -114,17 +114,17 @@ def create_dir(dirname):
             logger.debug("Creating Directory: %s", dirname)
         except OSError as err:
             print(err)
-            raise
+            raise BuildTestError(f"Cannot create directory {dirname}")
 
 
 def resolve_path(path, exist=True):
     """This method will resolve a file path to account for shell expansion and resolve paths in
-       when a symlink is provided in the file. This method assumes file already exists.
+    when a symlink is provided in the file. This method assumes file already exists.
 
-       :param path: file path to resolve
-       :type path: str, required
-       :return: return realpath to file if found otherwise return None
-       :rtype: str or None
+    :param path: file path to resolve
+    :type path: str, required
+    :return: return realpath to file if found otherwise return None
+    :rtype: str or None
     """
 
     # apply shell expansion  when file includes something like $HOME/example
@@ -142,22 +142,22 @@ def resolve_path(path, exist=True):
 
 
 def read_file(filepath):
-    """ This method is used to read a file specified by argument ``filepath``.
-        If filepath is not a string we raise an error. We also run ``resolve_path``
-        to get realpath to file and account for shell or user expansion. The
-        return from ``resolve_path`` will be a valid file or ``None`` so  we
-        check if input is an invalid file. Finally we read the file and return
-        the content of the file as a string.
+    """This method is used to read a file specified by argument ``filepath``.
+    If filepath is not a string we raise an error. We also run ``resolve_path``
+    to get realpath to file and account for shell or user expansion. The
+    return from ``resolve_path`` will be a valid file or ``None`` so  we
+    check if input is an invalid file. Finally we read the file and return
+    the content of the file as a string.
 
 
 
-        :param filepath: file name to read
-        :type filepath: str, required
-        :raises:
-          SystemError: If filepath is not a string
-          SystemError: If filepath is not valid file
-        :return: return content of file as a string
-        :rtype: str
+    :param filepath: file name to read
+    :type filepath: str, required
+    :raises:
+      SystemError: If filepath is not a string
+      SystemError: If filepath is not valid file
+    :return: return content of file as a string
+    :rtype: str
     """
 
     # ensure filepath is a string, if not, we raise an error.
@@ -186,23 +186,23 @@ def read_file(filepath):
 
 
 def write_file(filepath, content):
-    """ This method is used to write an input ``content`` to a file specified by
-        ``filepath. Both filepath and content must be a str. An error is raised
-        if filepath is not a string or a directory. If ``content`` is not a str,
-        we return ``None`` since we can't process the content for writing.
-        Finally, we write the content to file and return. A successful write
-        will return nothing otherwise an exception will occur during the write
-        process.
+    """This method is used to write an input ``content`` to a file specified by
+    ``filepath. Both filepath and content must be a str. An error is raised
+    if filepath is not a string or a directory. If ``content`` is not a str,
+    we return ``None`` since we can't process the content for writing.
+    Finally, we write the content to file and return. A successful write
+    will return nothing otherwise an exception will occur during the write
+    process.
 
-        :param filepath: file name to write
-        :type filepath: str, required
-        :param content: content to write to file
-        :type content: str, required
-        :raises:
-          SystemError: System error if filepath is not string
-          SystemError: System error if filepath is a directory
-        :return: Return nothing if write is successful. A system error if ``filepath`` is not str or directory. If
-                 argument ``content`` is not str we return ``None``
+    :param filepath: file name to write
+    :type filepath: str, required
+    :param content: content to write to file
+    :type content: str, required
+    :raises:
+      SystemError: System error if filepath is not string
+      SystemError: System error if filepath is a directory
+    :return: Return nothing if write is successful. A system error if ``filepath`` is not str or directory. If
+             argument ``content`` is not str we return ``None``
     """
 
     # ensure filepath is a string, if not we raise an error
