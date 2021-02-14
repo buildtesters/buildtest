@@ -52,7 +52,7 @@ def test_create_dir(tmp_path):
     # check if directory is created  after invoking create_dir
     assert is_dir(dirname)
 
-    with pytest.raises(OSError):
+    with pytest.raises(BuildTestError):
         create_dir("/xyz")
 
 

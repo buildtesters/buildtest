@@ -183,6 +183,8 @@ class BuilderBase(ABC):
         create_dir(self.stage_dir)
         create_dir(self.run_dir)
 
+        self.logger.debug("Creating the stage directory: %s ", self.stage_dir)
+        self.logger.debug("Creating the run directory: %s", self.run_dir)
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
             os.path.join(self.stage_dir, "generate"),

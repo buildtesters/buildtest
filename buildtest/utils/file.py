@@ -111,7 +111,6 @@ def create_dir(dirname):
     if not os.path.isdir(dirname):
         try:
             os.makedirs(dirname)
-            logger.debug("Creating Directory: %s", dirname)
         except OSError as err:
             print(err)
             raise BuildTestError(f"Cannot create directory {dirname}")
