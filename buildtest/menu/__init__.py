@@ -2,9 +2,7 @@
 buildtest menu: include functions to build, get test configurations, and 
 interact with a global configuration for buildtest.
 """
-import argcomplete
 import argparse
-
 from buildtest import BUILDTEST_VERSION
 from buildtest.docs import buildtestdocs, schemadocs
 from buildtest.menu.buildspec import func_buildspec_find
@@ -133,7 +131,6 @@ class BuildTestParser:
             :rtype: dict
         """
 
-        argcomplete.autocomplete(self.parser)
         args, extra = self.parser.parse_known_args()
         self.extra = extra
 

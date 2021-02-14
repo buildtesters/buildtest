@@ -4,86 +4,56 @@ Getting Started
 ================
 
 This guide will get you familiar with buildtest command line interface. Once
-you complete this section, you should be comfortable navigating through buildtest
-features. Next you can proceed to :ref:`writing_buildspecs`
-section which will go over how to write your tests.
+you complete this section, you can proceed to :ref:`writing buildspecs <writing_buildspecs>`
+section where we will cover how to write buildspecs.
 
-Interacting with the client
----------------------------
-
-Once you install buildtest, you should find the client on your $PATH, you can
-run the following to see path to buildtest::
+Once you install buildtest, you should find the `buildtest` command in your **$PATH**.
+You can check the path to buildtest command by running::
 
       $ which buildtest
 
-If you don't see buildtest go back and review section :ref:`Setup`.
+If you don't see buildtest go back and :ref:`install buildtest <Setup>`.
+
+
+When you clone buildtest, you also get a set of buildspecs that you can run on your
+system. The ``buildtest build`` command is used for building and running tests.
+Buildtest will read one or more buildspecs file that adheres to one of the
+buildtest schemas. For a complete list of build options, run ``buildtest build --help``
 
 Build Usage
 ------------
 
-The ``buildtest build`` command is used for building and running tests. Buildtest will read one or more Buildspecs (YAML)
-file that adheres to one of the buildtest schemas. For a complete list of build options, run ``buildtest build --help``
-
 .. program-output:: cat docgen/buildtest_build_--help.txt
-
-.. _discover_buildspecs:
-
-Discover Buildspecs
---------------------
-
-The buildspec search resolution is described as follows:
-
-- If file doesn't exist, check for file in :ref:`buildspec_roots` and break after first match
-
-- If buildspec path is a directory, traverse directory recursively to find all ``.yml`` extensions
-
-- If buildspec path is a file, check if file extension is not ``.yml``,  exit immediately
-
-Shown below is a diagram on how buildtest discovers buildspecs. The user
-inputs a buildspec via ``--buildspec`` or tags (``--tags``) :ref:`build_by_tags`
-which will discover the buildspecs. User can :ref:`exclude_buildspecs`
-using ``--exclude`` option which is processed after discovering buildspecs. The
-excluded buildspecs are removed from list if found and final list of buildspecs
-is processed.
-
-.. image:: _static/DiscoverBuildspecs.jpg
-   :scale: 75 %
-
 
 Building a Test
 ----------------
 
 To build a test, we use the ``--buildspec`` or short option ``-b`` to specify the
-path to Buildspec file.
-
-Let's see some examples, first we specify a full path to buildspec file
+path to buildspec file. Let's see some examples, first we specify a full path to buildspec file.
+In this example, buildtest will :ref:`discover buildspecs <discover_buildspecs>` followed by
+parsing the test with appropriate schema and generate a shell script that is run
+by buildtest. You can learn more about :ref:`build and test process <build_and_test_process>`.
 
 .. program-output:: cat docgen/getting_started/buildspec-abspath.txt
 
-buildtest won't accept ``.yaml`` file extension for file, this can be demonstrated as
-follows::
+.. Note::
+    buildtest will only read buildspecs with ``.yml`` extension, if you specify a
+    ``.yaml`` it will be ignored by buildtest.
 
-    $ buildtest build -b invalid_ext.yaml
-    invalid_ext.yaml does not end in file extension .yml
-    There are no config files to process.
-
-
-buildtest can build all buildspecs in a directory, in example below, buildtest
-will recursively search for all ``.yml`` files and attempt to build them.
+The ``--buildspec`` option can be used to specify a file or directory path. If you want
+to build multiple buildspecs in a directory you can specify the directory path
+and buildtest will recursively search for all ``.yml`` files. In the next example,
+we build all tests in directory **general_tests/configuration**.
 
 .. program-output:: cat docgen/getting_started/buildspec-directory.txt
-
-In next section, you will see, we can build multiple buildspecs and interchange
-file and directory with ``-b`` option.
-
 
 Building Multiple Buildspecs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Buildtest supports building multiple buildspecs, just specify the ``-b`` option
-for every buildspec you want to build. In this example, we specify a file and
-directory path. The search resolution is performed for every argument (``-b``)
-independently, and accumulated into list.
+You can append ``-b`` option to build multiple buildspecs in the same
+command. Buildtest will discover buildspecs for every argument (``-b``) and accumulate
+a list of buildspecs to run. In this example, we instruct buildtest to build
+a buildspec file and all buildspecs in a directory path.
 
 .. program-output:: cat docgen/getting_started/multi-buildspecs.txt
 
@@ -92,34 +62,39 @@ independently, and accumulated into list.
 Excluding Buildspecs
 ~~~~~~~~~~~~~~~~~~~~~
 
-Buildtest provides ``--exclude`` option or short option ``-x`` to exclude
-buildspecs which can be useful when you want to build all buildspecs in a directory
-but exclude a few buildspecs or exclude a sub-directory.
+So far we learned how to build buildspecs by file and directory path using the ``-b``
+option. Next, we will discuss how one may exclude buildspecs which behaves similar to
+``-b`` option. You can exclude buildspecs via ``--exclude`` or short option ``-x``
+which can be useful when you want to exclude certain files or sub directory.
 
-For example we can build all buildspecs in ``examples`` but exclude file ``examples/vars.yml``
+For example we can build all buildspecs in ``tutorials`` but exclude file ``tutorials/vars.yml``
 by running::
 
-    $ buildtest build -b examples -x examples/vars.yml
+    $ buildtest build -b tutorials -x tutorials/vars.yml
 
-buildtest will discover all Buildspecs and then exclude any buildspecs specified
+buildtest will discover all buildspecs and then exclude any buildspecs specified
 by ``-x`` option. You can specify ``-x`` multiple times just like ``-b`` option.
 
 For example, we can undo discovery by passing same option to ``-b`` and ``-x``  as follows::
 
-    $ buildtest build -b examples/ -x examples/
+    $ buildtest build -b tutorials/ -x tutorials/
     There are no Buildspec files to process.
 
 Buildtest will stop immediately if there are no Buildspecs to process, this is
 true if you were to specify files instead of directory.
 
+In this example, we build all buildspecs in a directory but exclude two files. Buildtest
+will report the excluded buildspecs in the output.
+
+.. program-output:: cat docgen/getting_started/exclude_buildspecs.txt
 .. _build_by_tags:
 
 Building By Tags
 ~~~~~~~~~~~~~~~~~
 
 buildtest can perform builds by tags by using ``--tags`` or short option (``-t``).
-In order to use this feature, buildspecs must be in cache so you must run ``buildtest buildspec find``
-or see :ref:`find_buildspecs`.
+In order to use this feature, buildtest must load buildspecs in :ref:`cache <find_buildspecs>` which can be run
+via ``buildtest buildspec find``.
 
 To build all tutorials tests you can perform ``buildtest build --tags tutorials``.
 In buildspec file, there is a field ``tags: [tutorials]`` to classify tests.
@@ -137,7 +112,8 @@ example we build all tests with tag name ``pass`` and ``python``.
 When multiple tags are specified, we search each tag independently and if it's
 found in the buildspec cache we retrieve the buildspec file and add file to queue.
 This queue is a list of buildspecs that buildtest will process (i.e ``parse``, ``build``, ``run``).
-To see a list of available tags in your buildspec cache see :ref:`buildspec_tags`.
+You can :ref:`query tags <buildspec_tags>` from buildspecs cache to see all available
+tags by running ``buildtest buildspec find --tags``.
 
 .. Note:: The ``--tags`` is used for discovering buildspec file and not filtering tests
    by tag. If you want to filter tests by tags use ``--filter-tags``.
@@ -160,29 +136,32 @@ were found with tag name ``compile`` in the test.
 
 You can combine ``--tags`` with ``--buildspec`` to discover buildspecs in a single command.
 buildtest will query tags and buildspecs independently and combine all discovered
-buildspecs together. In this next example we combine ``--tags`` and ``--buildspec``
-option to discover tests.
+buildspecs together.
 
 .. program-output:: cat docgen/getting_started/combine-tags-buildspec.txt
 
-Building by Executors
------------------------
+As you may see, there are several ways to build buildspecs with buildtest. Tags is
+great way to build a whole collection of tests if you don't know path to all the files. You can
+specify multiple tags per buildspecs to classify how test can be run.
 
-buildtest can build tests by executor name using the ``--executor`` option. If you
-to build all test associated to an executor such as ``local.sh`` you can run::
+.. _build_by_executor:
+
+Building by Executors
+~~~~~~~~~~~~~~~~~~~~~~
+
+Every buildspec is associated to an executor which is responsible for running the test.
+You can instruct buildtest to run all tests by given executor via ``--executor`` option.
+For instance, if you want to build all test associated to executor ``local.sh`` you can run::
 
   $ buildtest build --executor local.sh
 
 buildtest will query buildspec cache for the executor name and retrieve a list of
-buildspecs with matching executor name. Later we process every buildspec and filter
-tests with executor name. In the first stage we retrieve the buildspec file which may
-contain one or more test and in second stage we process each test.
+buildspecs with matching executor name. To see a list of available executors in
+buildspec cache see :ref:`querying buildspec executor <buildspec_executor>`.
 
-To see a list of available executors in buildspec cache see :ref:`buildspec_executor`.
-
-.. Note:: By default all tests are run in buildspec file, the ``--executor`` is filtering by tests. This option
-   behaves similar to tags, the **--executor** is used for discovering buildspecs and filtering
-   tests with corresponding executor name.
+.. Note:: By default all tests are run in buildspec file.  The ``buildtest build --executor`` option discovers
+   buildspecs if one of the test matches the executor name. The ``--executor`` option
+   is **not filtering on test level**  like ``--filter-tags`` option.
 
 In this example we run all tests that are associated to `local.sh` executor. Notice how
 buildtest skips tests that don't match executor **local.sh** even though they were
@@ -202,31 +181,60 @@ all tests associated with ``local.sh`` and ``local.bash`` executor.
 
 .. program-output:: cat docgen/getting_started/multi-executor.txt
 
+.. _discover_buildspecs:
+
+Discover Buildspecs
+--------------------
+
+Now, let's discuss how buildtest discovers buildspecs since there are several ways to build
+buildspecs.
+
+The buildspec search resolution is described as follows:
+
+- If file or directory specified by ``-b`` option doesn't exist we exit immediately.
+
+- If buildspec path is a directory, traverse directory recursively to find all ``.yml`` extensions
+
+- If buildspec path is a file, check if file extension is not ``.yml``,  exit immediately
+
+- If user specifies ``--tags`` or ``--executor`` we search in buildspec cache to discover buildspecs.
+
+Shown below is a diagram on how buildtest discovers buildspecs. The user can build buildspecs
+by ``--buildspec``, :ref:`--tags <build_by_tags>`, or :ref:`--executor <build_by_executor>`
+which will discover the buildspecs. You can :ref:`exclude buildspecs <exclude_buildspecs>`
+using ``--exclude`` option which is processed after discovering buildspecs. The
+excluded buildspecs are removed from list if found and final list of buildspecs
+is processed.
+
+.. image:: _static/DiscoverBuildspecs.jpg
+   :scale: 75 %
+
 
 Control builds by Stages
 -------------------------
 
-You can control behavior of ``buildtest build`` command to stop at certain point
-using ``--stage`` option. This takes two values ``parse`` or ``build``, which will
-stop buildtest after parsing buildspecs or building the test content.
+We can control behavior of ``buildtest build`` command to stop at certain phase
+using ``--stage`` option. The **--stage** option accepts ``parse`` or ``build``, which
+will instruct buildtest to stop at parse or build phase of the pipeline.
 
-If you want to know your buildspecs are valid you can use ``--stage=parse`` to stop
-after parsing the buildspec. Shown below is an example build where we stop
-after parse stage.
+Buildtest will validate all the buildspecs in the parse stage, so you can
+instruct buildtest to stop at parse stage via ``--stage=parse``. This can be useful
+when debugging buildspecs that are invalid. In this example below, we instruct
+buildtest to stop after parse stage.
 
 .. program-output:: cat docgen/getting_started/stage_parse.txt
 
 Likewise, if you want to troubleshoot your test script without running them you can
-use ``--stage=build`` which will stop after building your test script. This can
-be extremely useful when writing your buildspecs and not having to run your tests.
-In this next example, we stop our after the build stage using ``--stage=build``.
+use ``--stage=build`` which will stop after build phase. This can
+be used when you are writing buildspec to troubleshoot how test is generated.
+In this next example, we inform buildtest to stop after build stage.
 
 .. program-output:: cat docgen/getting_started/stage_build.txt
 
 .. _invalid_buildspecs:
 
 Invalid Buildspecs
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 buildtest will skip any buildspecs that fail to validate, in that case
 the test script will not be generated. Here is an example where we have an invalid
@@ -252,7 +260,6 @@ path. To demonstrate we will build ``tutorials/python-shell.yml`` three times us
 
 .. program-output:: cat docgen/getting_started/rebuild.txt
 
-
 The rebuild works with all options including: ``--buildspec``, ``--exclude``, ``--tags``
 and ``--executors``.
 
@@ -274,10 +281,16 @@ If you try to exceed this bound you will get an error such as::
 Buildspecs Interface
 ----------------------
 
-buildtest is able to find and validate all buildspecs in your repos. The
-command ``buildtest buildspec`` comes with the following options.
+Now that we learned how to build tests, in this section we will discuss how one can
+query a buildspec cache. In buildtest, one can load all buildspecs which is equivalent
+to validating all buildspecs with the appropriate schema. Buildtest will ignore all
+invalid buildspecs and store them in a separate file.
 
-.. program-output:: cat docgen/buildtest_buildspec_--help.txt
+The ``buildtest buildspec find`` command is used for finding buildspecs from buildspec
+cache. This command is also used for generating the buildspec cache. Shown below is a list of options for
+``buildtest buildspec find``.
+
+.. program-output:: cat docgen/buildtest_buildspec_find_--help.txt
 
 .. _find_buildspecs:
 
@@ -300,10 +313,6 @@ run::
 
   $ buildtest buildspec find --rebuild
 
-Shown below is a list of options for ``buildtest buildspec find`` command.
-
-.. program-output:: cat docgen/buildtest_buildspec_find_--help.txt
-
 If you want to find all buildspec files in cache run ``buildtest buildspec find --buildspec-files``
 
 .. program-output:: cat docgen/buildspec_find_buildspecfiles.txt
@@ -319,22 +328,24 @@ If you want to find root directories of buildspecs loaded in buildspec cache use
     /Users/siddiq90/Documents/buildtest/general_tests
 
 
-buildtest will search buildspecs if :ref:`buildspec_roots` is defined in your configuration, it
-is a list of directory paths to search for buildspecs when you run ``buildtest buildspec find``.
-If you want to load buildspecs from a directory path, one can run
-``buildtest buildspec find --root <path> --rebuild`` and it will recursively find all
-`.yml` files and validate them. buildtest will load all valid buildspecs into cache and ignore
+buildtest will search buildspecs in :ref:`buildspecs root <buildspec_roots>` defined in your configuration,
+which is a list of directory paths to search for buildspecs.
+If you want to load buildspecs from a directory path, one can run specify a directory
+path via ``--root`` such as ``buildtest buildspec find --root <path> --rebuild``.
+buildtest will load all valid buildspecs into cache and ignore
 the rest. It's important to add ``--rebuild`` if you want to regenerate buildspec cache.
 
 Filtering buildspec
 ~~~~~~~~~~~~~~~~~~~
 
-You can filter buildspec cache using the the ``--filter`` option. Let's take a look
-at the available filter fields that are acceptable with filter option.
+Once you have a buildspec cache, we can query the buildspec cache for certain attributes.
+When you run **buildtest buildspec find** it will report all buildspecs from cache which can
+be difficult to process. Therefore, we have a filter option (``--filter``) to restrict our search.
+Let's take a look at the available filter fields that are acceptable with filter option.
 
 .. program-output:: cat docgen/buildspec-filter.txt
 
-The ``--filter`` option accepts arguments in key/value format as follows::
+The ``--filter`` option expects arguments in **key=value** format as follows::
 
     buildtest buildspec find --filter key1=value1,key2=value2,key3=value3
 
@@ -343,38 +354,39 @@ associated tag field in test.
 
 .. program-output:: cat docgen/buildspec_filter_tags.txt
 
-In addition, we can query buildspecs by schema type, in next example we query
-all tests using the `script` schema
+In addition, we can query buildspecs by schema type using ``type`` property. In this
+example we query all tests by `type` property
 
 .. program-output:: cat docgen/buildspec_filter_type.txt
    :ellipsis: 20
 
-Finally, we can combine multiple filter fields separated by comma, in next example
+Finally, we can combine multiple filter fields separated by comma, in the next example
 we query all buildspecs with ``tags=tutorials``, ``executor=local.sh``, and ``type=script``
 
 .. program-output:: cat docgen/buildspec_multifield_filter.txt
 
 
 Format buildspec cache
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
-buildtest has a few format fields to alter columns in the output of
-``buildtest buildspec find``. The format fields are specified comma separated using
-format: ``--format <field1>,<field2>,...``
+We have seen how one can filter buildspecs, but we can also configure which columns to display
+in the output of **buildtest buildspec find**. By default, we show few format fields
+in the output, however there are more format fields hidden from the default output.
 
-To see a list of all format fields use the ``--helpformat`` option as shown below
+The format fields are specified comma separated using format: ``--format <field1>,<field2>,...``.
+You can see a list of all format fields by ``--helpformat`` option as shown below
 
 .. program-output:: cat docgen/buildspec-format.txt
 
 
-In next example, we utilize ``--format`` field with ``--filter`` option to show
-how format fields affect table columns. buildtest will display output of columns
-format fields in order they were specified in command line.
+In the next example, we utilize ``--format`` field with ``--filter`` option to show
+how format fields affect table columns. buildtest will display the table in order of
+format fields specified in command line.
 
 .. program-output:: cat docgen/buildspec_format_example.txt
 
 buildtest makes use of python library named `tabulate <https://pypi.org/project/tabulate/>`_
-to generate these tables which are found in commands line ``buildtest buildspec find``
+to generate these tables which are found in commands line like ``buildtest buildspec find``
 and ``buildtest report``.
 
 .. _buildspec_tags:
@@ -414,7 +426,7 @@ name of test and test description. Shown below is an example output.
 
 
 Query Maintainers in buildspecs
----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``maintainers`` field can be used for identifying author for buildspec
 file which can be useful if you want to find out who is responsible for the test.
@@ -436,12 +448,12 @@ or ``-mb`` short option. This can be useful when tracking maintainers by buildsp
 Test Reports (``buildtest report``)
 -------------------------------------
 
-buildtest keeps track of all test results which can be retrieved via
+buildtest keeps track of all test results in a JSON file which can be retrieved via
 **buildtest report**. Shown below is command usage.
 
 .. program-output:: cat docgen/buildtest_report_--help.txt
 
-You may run ``buildtest report`` and buildtest will display report
+You may run ``buildtest report`` and buildtest will display all test results
 with default format fields.
 
 .. program-output:: cat docgen/report.txt
@@ -450,15 +462,16 @@ with default format fields.
 Format Reports
 ~~~~~~~~~~~~~~~
 
-There are more fields captured in the report, so if you want to see a
-list of available format fields run ``buildtest report --helpformat``.
+The `buildtest report` command displays a default format fields that can be changed using the
+``--format`` option. The report file (JSON) contains many more fields and we expose some of the fields
+in the `--format` option. To see a list of available format fields run ``buildtest report --helpformat``.
 
 .. program-output:: cat docgen/report-helpformat.txt
 
 
-You can format report using ``--format`` field which expects field
-name separated by comma (i.e **--format <field1>,<field2>**). In this example
-we format by fields ``--format id,executor,state,returncode``
+The ``--format`` field expects field name separated by comma (i.e **--format <field1>,<field2>**).
+In this example we format by fields ``--format id,executor,state,returncode``. Notice, that
+buildtest will display table in order of ``--format`` option.
 
 .. program-output:: cat docgen/report-format.txt
    :ellipsis: 20
@@ -466,37 +479,56 @@ we format by fields ``--format id,executor,state,returncode``
 Filter Reports
 ~~~~~~~~~~~~~~~~
 
-You can also filter reports using the ``--filter`` option, but first let's
-check the available filter fields. In order to see available filter fields
-run ``buildtest report --helpfilter``.
+The `buildtest report` command will display all tests results, which may not be relevant when
+you want to analyze specific tests. Therefore, we introduce a ``--filter`` option
+to filter output of `buildtest report`. First, lets see the available filter fields
+by run ``buildtest report --helpfilter``.
 
 .. program-output:: cat docgen/report-helpfilter.txt
 
-The ``--filter`` expects arguments in **key=value** format, you can
-specify multiple filter fields by a comma. buildtest will treat multiple
+The ``--filter`` option expects arguments in **key=value** format. You can
+specify multiple filter delimited by comma. buildtest will treat multiple
 filters as logical **AND** operation. The filter option can be used with
 ``--format`` field. Let's see some examples to illustrate the point.
 
-To see all tests with returncode of 2 we set ``--filter returncode=2``.
+Filter by returncode
+~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to retrieve all tests with a given returncode, we can use the **returncode**
+property. For instance, let's retrieve all tests with returncode of 2 by setting ``--filter returncode=2``.
 
 .. program-output:: cat docgen/report-returncode.txt
 
 .. Note:: buildtest automatically converts returncode to integer when matching returncode, so ``--filter returncode="2"`` will work too
 
-If you want to filter by test name ``exit1_pass`` you can use the
-``name=exit1_pass`` field as shown below
+Filter by test name
+~~~~~~~~~~~~~~~~~~~~~
+
+If you want to filter by test name, use the **name** attribute in filter option. Let's assume
+we want to filter all tests by name ``exit1_pass`` which can be done by
+setting ``--filter name=exit1_pass`` as shown below
 
 .. program-output:: cat docgen/report-filter-name.txt
 
-Likewise, we can filter tests by buildspec file using the ``--filter buildspec=<file>``.
-In example below we set ``buildspec=tutorials/pass_returncode.yml``. In this example,
-buildtest will resolve path and find the buildspec. If file doesn't exist or is
-not found in cache it will raise an error
+Filter by buildspec
+~~~~~~~~~~~~~~~~~~~~~
+
+Likewise, we can filter results by buildspec file using **buildspec** attribute via
+``--filter buildspec=<file>``. The **buildspec** attribute must resolve to a file path which can be
+relative or absolute path. buildtest will resolve path (absolute path) and find the appropriate
+tests that belong to the buildspec file. If file doesn't exist or is not found in cache it will raise an error.
 
 .. program-output:: cat docgen/report-filter-buildspec.txt
 
+Filter by test state
+~~~~~~~~~~~~~~~~~~~~~
+
+If you want to filter results by test state, use the **state** property. This can be
+useful if you want to know all pass or failed tests. The state property expects
+value of ``[PASS|FAIL]`` since these are the two recorded test states marked by buildtest.
+
 We can also pass multiple filter fields for instance if we want to find all **FAIL**
-tests for executor **local.sh** we can do the following
+tests for executor **local.sh** we can do the following.
 
 .. program-output:: cat docgen/report-multifilter.txt
 
@@ -540,14 +572,12 @@ Find Latest or Oldest test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We can search for oldest or latest test for any given test. This can be useful if you
-want to see last test run or the very first run. If you want to retrieve the oldest
-test you can use ``--oldest`` option.
-
-buildtest will append tests, therefore last record in dictionary will be latest record,
-similarly first record is the oldest record.
+want to see first or last test run. If you want to retrieve the oldest
+test you can use ``--oldest`` option. buildtest will append tests, therefore last
+record in dictionary will be latest record, similarly first record is the oldest record.
 
 Let's take a look at this example, we filter by test name ``hello_f`` which retrieves
-three entries. Now if you want to filter by oldest record just add the **--oldest** option
+three entries. Now let's filter by oldest record by specifying **--oldest** option
 and it will retrieve the first record which is test id **349f3ada**.
 
 .. code-block::
@@ -571,8 +601,8 @@ and it will retrieve the first record which is test id **349f3ada**.
     +---------+----------+---------------------+
 
 
-If you want to retrieve the latest test result you can use **--latest** option which
-will retrieve the last record, in this same example we will retrieve test id `5c87978b`.
+If you want to retrieve the latest test result you can use ``--latest`` option which
+will retrieve the last record, in the same example we will retrieve test id `5c87978b`.
 
 
 .. code-block::
@@ -584,8 +614,8 @@ will retrieve the last record, in this same example we will retrieve test id `5c
     | hello_f | 5c87978b | 2021/02/11 18:13:33 |
     +---------+----------+---------------------+
 
-You may combine both options **--oldest** and **--latest**, in this case buildtest will
-retrieve the first and last record of every test.
+You may combine **--oldest** and **--latest** options in same command, in this case
+buildtest will retrieve the first and last record of every test.
 
 .. code-block::
 
@@ -804,7 +834,7 @@ To access buildtest docs you can run::
 
   $ buildtest docs
 
-To access schema docs (https://buildtesters.github.io/buildtest/) you can run::
+To access `schema docs <https://buildtesters.github.io/buildtest>`_ you can run::
 
   $ buildtest schemadocs
 

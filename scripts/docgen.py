@@ -57,6 +57,7 @@ def tutorial():
         f"{os.path.join(prefix,'buildspec-abspath.txt')}": "buildtest build -b $HOME/Documents/buildtest/tutorials/vars.yml",
         f"{os.path.join(prefix, 'buildspec-directory.txt')}": "buildtest build -b general_tests/configuration/",
         f"{os.path.join(prefix, 'multi-buildspecs.txt')}": "buildtest build -b tests/examples/buildspecs/ -b tutorials/vars.yml",
+        f"{os.path.join(prefix, 'exclude_buildspecs.txt')}": "buildtest build -b general_tests/configuration/ -x general_tests/configuration/ulimits.yml -x general_tests/configuration/ssh_localhost.yml",
         f"{os.path.join(prefix, 'invalid-buildspec.txt')}": "buildtest build -b tutorials/invalid_buildspec_section.yml",
         f"{os.path.join(prefix, 'invalid-executor.txt')}": "buildtest build -b tutorials/invalid_executor.yml",
         f"{os.path.join(prefix, 'tags.txt')}": "buildtest build --tags tutorials",
