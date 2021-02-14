@@ -1,3 +1,5 @@
+"""Entry point for buildtest"""
+
 import os
 from buildtest.config import check_settings, resolve_settings_file
 from buildtest.defaults import var_root, BUILDTEST_USER_HOME

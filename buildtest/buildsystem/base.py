@@ -392,7 +392,11 @@ class BuilderBase(ABC):
         """Build the testscript content implemented in each subclass"""
 
     def __str__(self):
-        return f"builder object created with test name: {self.name} for schema type: {self.type} with ID: {self.metadata['full_id']}"
+        return (
+            f"builder object created with test name: {self.name} "
+            f"for schema type: {self.type} "
+            f"with ID: {self.metadata['full_id']}"
+        )
 
     def __repr__(self):
         return self.__str__()
