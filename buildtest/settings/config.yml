@@ -1,4 +1,8 @@
+# specify module system used at your site (environment-modules, Lmod)
 moduletool: N/A
+
+# boolean to determine if buildspecs provided in buildtest repo should be loaded in buildspec cache
+
 load_default_buildspecs: True
 executors:
   local:
@@ -14,13 +18,38 @@ executors:
       description: submit jobs on local machine using csh shell
       shell: csh
 
+    zsh:
+      description: submit jobs on local machine using zsh shell
+      shell: zsh
+
     python:
       description: submit jobs on local machine using python shell
       shell: python
+
+# compiler block
 compilers:
+  # a list of regular expression to search for compilers based on module pattern. Used with 'buildtest config compilers find' to generate compiler instance
+  # find:
+  #  gcc: ["^(gcc)"]
+  #  intel: ["^(intel)"]
+  #  cray: ["^(craype)"]
+  #  pgi: ["^(pgi)"]
+  #  cuda: [^(cuda)"]
+  #  clang: ["^(clang)"]
+
+  # declare compiler instance which can be site-specific. You can let 'buildtest config compilers find' generate compiler section
   compiler:
     gcc:
       builtin_gcc:
         cc: /usr/bin/gcc
         fc: /usr/bin/gfortran
         cxx: /usr/bin/g++
+
+# location of log directory
+logdir: /tmp/buildtest/
+
+# specify location where buildtest will write tests
+# testdir: /tmp
+
+# specify one or more directory where buildtest should load buildspecs
+# buildspec_roots: []

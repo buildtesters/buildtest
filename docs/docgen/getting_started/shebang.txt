@@ -23,8 +23,8 @@ Discovered Buildspecs:
 
  name                  | id       | type   | executor   | tags      | testpath
 -----------------------+----------+--------+------------+-----------+------------------------------------------------------------------------------------------------------------
- bash_login_shebang    | e36aac01 | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
- bash_nonlogin_shebang | 5a47e90c | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
+ bash_login_shebang    | 496f5afd | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
+ bash_nonlogin_shebang | 5b12a6b2 | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
 
 
 
@@ -34,8 +34,8 @@ Discovered Buildspecs:
     
  name                  | id       | executor   | status   |   returncode | testpath
 -----------------------+----------+------------+----------+--------------+------------------------------------------------------------------------------------------------------------
- bash_login_shebang    | e36aac01 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
- bash_nonlogin_shebang | 5a47e90c | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
+ bash_login_shebang    | 496f5afd | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
+ bash_nonlogin_shebang | 5b12a6b2 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -47,3 +47,4 @@ Failed Tests: 0/2 Percentage: 0.000%
 
 
 
+Writing Logfile to: /private/tmp/buildtest/buildtest_3zitszp5.log

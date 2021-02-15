@@ -23,6 +23,7 @@ Discovered Buildspecs:
 
  name           | id       | type   | executor   | tags          | testpath
 ----------------+----------+--------+------------+---------------+--------------------------------------------------------------------------------------------------
- variables_bash | f92cf668 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/4/stage/generate.sh
+ variables_bash | 7db7ab3a | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/4/stage/generate.sh
 
 
+Writing Logfile to: /private/tmp/buildtest/buildtest_t90e9sct.log

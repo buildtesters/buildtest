@@ -1,5 +1,5 @@
 $ buildtest config view
-Settings File: /Users/siddiq90/.buildtest/config.yml
+Settings File: /Users/siddiq90/Documents/buildtest/buildtest/settings/config.yml
 ________________________________________________________________________________
 moduletool: N/A
 load_default_buildspecs: true
@@ -14,6 +14,9 @@ executors:
     csh:
       description: submit jobs on local machine using csh shell
       shell: csh
+    zsh:
+      description: submit jobs on local machine using zsh shell
+      shell: zsh
     python:
       description: submit jobs on local machine using python shell
       shell: python
@@ -24,4 +27,5 @@ compilers:
         cc: /usr/bin/gcc
         fc: /usr/bin/gfortran
         cxx: /usr/bin/g++
+logdir: /tmp/buildtest/
 

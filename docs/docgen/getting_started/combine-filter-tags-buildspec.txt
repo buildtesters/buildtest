@@ -7,11 +7,11 @@ $ buildtest build --tags pass --filter-tags pass --buildspec tutorials/python-he
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+[python_hello][/Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml]: test is skipped because it is not in tag filter list: ['pass']
 [exit1_fail][/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml]: test is skipped because it is not in tag filter list: ['pass']
 [returncode_list_mismatch][/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml]: test is skipped because it is not in tag filter list: ['pass']
-[python_hello][/Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml]: test is skipped because it is not in tag filter list: ['pass']
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -19,8 +19,8 @@ Discovered Buildspecs:
     
  schemafile              | validstate   | buildspec
 -------------------------+--------------+-------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
 
 +----------------------+
 | Stage: Building Test |
@@ -28,8 +28,8 @@ Discovered Buildspecs:
 
  name                 | id       | type   | executor   | tags                  | testpath
 ----------------------+----------+--------+------------+-----------------------+-----------------------------------------------------------------------------------------------------------------
- exit1_pass           | 3dcd971c | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/3/stage/generate.sh
- returncode_int_match | 63fd0d0f | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/3/stage/generate.sh
+ exit1_pass           | b16af37e | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/3/stage/generate.sh
+ returncode_int_match | 4b3216c9 | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/3/stage/generate.sh
 
 
 
@@ -39,8 +39,8 @@ Discovered Buildspecs:
     
  name                 | id       | executor   | status   |   returncode | testpath
 ----------------------+----------+------------+----------+--------------+-----------------------------------------------------------------------------------------------------------------
- exit1_pass           | 3dcd971c | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/3/stage/generate.sh
- returncode_int_match | 63fd0d0f | local.sh   | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/3/stage/generate.sh
+ exit1_pass           | b16af37e | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/3/stage/generate.sh
+ returncode_int_match | 4b3216c9 | local.sh   | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/3/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -52,3 +52,4 @@ Failed Tests: 0/2 Percentage: 0.000%
 
 
 
+Writing Logfile to: /private/tmp/buildtest/buildtest_nnmzqggy.log

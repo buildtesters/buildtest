@@ -18,7 +18,7 @@ Buildtest Settings
 ________________________________________________________________________________
 Buildtest Settings: /Users/siddiq90/.buildtest/config.yml
 Buildtest Settings is  VALID
-Executors:  ['local.bash', 'local.sh', 'local.csh', 'local.python']
+Executors:  ['local.bash', 'local.sh', 'local.csh', 'local.zsh', 'local.python']
 Buildspec Cache File: /Users/siddiq90/Documents/buildtest/var/buildspec-cache.json
 
 

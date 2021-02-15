@@ -225,10 +225,10 @@ If you need define a literal string it is recommended
 to use the literal block ``|`` that is a special character in YAML.
 If you want to specify ``"`` or ``'`` in string you can use the escape character
 ``\`` followed by any of the special character. In example below we define
-several variables such as `X`, `Y` that contain numbers, variable `literalstring`
-is a literal string processed by YAML. The variable `singlequote` and `doublequote`
+several variables such as **X**, **Y** that contain numbers, variable **literalstring**
+is a literal string processed by YAML. The variable **singlequote** and **doublequote**
 defines a variable with the special character ``'`` and ``"``. The variables
-`current_user` and `files_homedir` store result of a shell command. This can
+**current_user** and **files_homedir** store result of a shell command. This can
 be done using ``var=$(<command>)`` or ``var=`<command>``` where ``<command>`` is
 a Linux command.
 
@@ -290,7 +290,7 @@ option using the ``shell`` field. The shell field is defined in schema as follow
         },
 
 The shell pattern is a regular expression where one can specify a shell name along
-with shell options. The shell will configure the `Shebang Line <https://en.wikipedia.org/wiki/Shebang_(Unix)>`_
+with shell options. The shell will configure the `shebang <https://en.wikipedia.org/wiki/Shebang_(Unix)>`_
 in the test-script. In this example, we illustrate a few tests using different shell
 field.
 
@@ -317,7 +317,7 @@ shell options into the shebang line. The generated test for this script is the f
     source /Users/siddiq90/Documents/buildtest/var/executors/local.sh/after_script.sh
 
 
-If you prefer to use `csh` or `tcsh` for writing scripts just set ``shell: csh`` or
+If you prefer **csh** or **tcsh** for writing scripts just set ``shell: csh`` or
 ``shell: tcsh``, note you will need to match this with appropriate executor. For now
 use ``executor: local.csh`` to run your csh/tcsh scripts. In this example below
 we define a script using csh, take note of ``run`` section we can write csh style.
@@ -355,7 +355,7 @@ is passed into the script::
 Python Shell
 ---------------
 
-You can use *script* schema to write python scripts using the run section. This
+You can use **script** schema to write python scripts using the **run** property. This
 can be achieved if you use the ``local.python`` executor assuming you have this
 defined in your buildtest configuration.
 
@@ -416,7 +416,7 @@ run_only -  user
 
 buildtest will skip test if any of the conditions are not met. Let's take an example
 in this buildspec we define a test name **run_only_as_root** that requires **root** user
-to run test. The *run_only* is a property of key/value pairs and **user** is one
+to run test. The **run_only** is a property of key/value pairs and **user** is one
 of the field. buildtest will only build & run test if current user matches ``user`` field.
 We detect current user using ``$USER`` and match with input field ``user``.
 buildtest will skip test if there is no match.

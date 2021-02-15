@@ -51,6 +51,7 @@ def main():
     else:
         if args.subcommands and args.func:
             args.func(args)
+        return
 
     logdir = buildtest_configuration.get("logdir")
 

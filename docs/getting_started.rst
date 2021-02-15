@@ -479,9 +479,9 @@ buildtest will display table in order of ``--format`` option.
 Filter Reports
 ~~~~~~~~~~~~~~~~
 
-The `buildtest report` command will display all tests results, which may not be relevant when
+The **buildtest report** command will display all tests results, which may not be relevant when
 you want to analyze specific tests. Therefore, we introduce a ``--filter`` option
-to filter output of `buildtest report`. First, lets see the available filter fields
+to filter out tests in the output. First, lets see the available filter fields
 by run ``buildtest report --helpfilter``.
 
 .. program-output:: cat docgen/report-helpfilter.txt

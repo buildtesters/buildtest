@@ -56,7 +56,7 @@ unique name::
   executors:
     local:
 
-The *LocalExecutors* can be ``bash``, ``sh`` and ``python`` shell and they are
+The *LocalExecutors* can be ``bash``, ``sh``, ``csh``, ``tcsh`` and ``python`` shell and they are
 referenced in buildspec using ``executor`` field as follows::
 
     executor: local.bash
@@ -194,6 +194,7 @@ as follows::
         pollinterval: 10
         launcher: sbatch
         max_pend_time: 90
+        account: nstaff
 
 The `launcher` field is applicable for batch executors in this
 case, ``launcher: sbatch`` inherits **sbatch** as the job launcher for all executors.
@@ -223,7 +224,7 @@ The ``options`` field is use to specify any additional options to launcher (``sb
 on command line. For ``slurm.gpu`` executor, we use the ``options: -C gpu``
 in order to submit to Cori GPU cluster which requires ``sbatch -M escori -C gpu``.
 Any additional **#SBATCH** options are
-defined in buildspec for more details see :ref:`batch_support`
+defined in buildspec for more details see :ref:`batch scheduler support <batch_support>`
 
 The ``max_pend_time`` option can be overridden per executor level for example the
 section below overrides the default to 300 seconds::
@@ -285,6 +286,18 @@ at your site. Valid options are the following::
 If your site has Lmod and you set ``moduletool: lmod``, we will make use of
 `Lmodule API <https://lmodule.readthedocs.io/en/latest/>`_ to test modules.
 
+Configuring where to write tests
+---------------------------------
+
+The default location where tests are written is **$BUILDTEST_ROOT/var/tests** where
+$BUILDTEST_ROOT is the root of buildtest repo. You may specify ``testdir`` in your
+configuration to instruct where tests can be written. For instance, if
+you want to write tests in **/tmp** you can set the following::
+
+    testdir: /tmp
+
+Alternately, one can specify test directory via ``buildtest build --testdir <path>`` which
+has highest precedence and overrides configuration and default value.
 
 before_script and after_script for executors
 ---------------------------------------------
@@ -487,10 +500,10 @@ along with purging or swap modules.
 
 
 This feature relies on module system (Lmod, environment-modules) to search modulefiles
-and one must specify `moduletool` property to indicate how buildtest will search modules.
-If `moduletool: lmod` is set, buildtest will rely on Lmod spider using `Lmodule  <http://lmodule.readthedocs.io/>`_
-API to detect and test all modules. If `moduletool: environment-modules` is set, buildtest
-will retrieve modules using output of `module -t av `.
+and one must specify **moduletool** property to indicate how buildtest will search modules.
+If ``moduletool: lmod`` is set, buildtest will rely on Lmod spider using `Lmodule  <http://lmodule.readthedocs.io/>`_
+API to detect and test all modules. If ``moduletool: environment-modules`` is set, buildtest
+will retrieve modules using output of ``module -t av``.
 
 
 buildtest configuration for Ascent @ OLCF
@@ -504,7 +517,7 @@ section within the ``executors`` section.
 
 The default launcher is `bsub` which can be defined under ``defaults``. The
 ``pollinterval`` will poll LSF jobs every 10 seconds using ``bjobs``. The
-``pollinterval`` accepts a range between `10` - `300` seconds as defined in
+``pollinterval`` accepts a range between **10 - 300** seconds as defined in
 schema. In order to avoid polling scheduler excessively pick a number that is best
 suitable for your site::
 
