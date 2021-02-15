@@ -153,6 +153,7 @@ build, notice we have two tests for ``vecadd_gnu`` one for each compiler::
     Passed Tests: 2/2 Percentage: 100.000%
     Failed Tests: 0/2 Percentage: 0.000%
 
+    Writing Logfile to: /private/tmp/buildtest/buildtest_b41hm3n7.log
 
 buildtest will use compiler settings including module configuration from buildtest
 settings (``config.yml``). The module configuration for ``gcc@9.3.0`` and ``gcc@10.2.0``
@@ -282,6 +283,8 @@ and test is not created during build phase.
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
 
+    Writing Logfile to: /private/tmp/buildtest/buildtest_b41hm3n7.log
+
 Compiler Defaults and Override Default Settings
 -------------------------------------------------
 
@@ -350,7 +353,7 @@ Next we run this test, and we get three tests for test name **hello_c**::
     Passed Tests: 3/3 Percentage: 100.000%
     Failed Tests: 0/3 Percentage: 0.000%
 
-
+    Writing Logfile to: /private/tmp/buildtest/buildtest_b41hm3n7.log
 
 If we inspect the following test, we see the compiler flags are associated with the compiler. The test below
 is for `builtin_gcc` which use the default ``-O1`` compiler flag as shown below.
@@ -477,6 +480,7 @@ Next we build this test as follows::
     Passed Tests: 2/2 Percentage: 100.000%
     Failed Tests: 0/2 Percentage: 0.000%
 
+    Writing Logfile to: /private/tmp/buildtest/buildtest_b41hm3n7.log
 
 Now let's inspect the test for **gcc@10.2.0** and notice buildtest is using 4 threads for running OpenMP example
 
@@ -636,6 +640,8 @@ regular expression even though we have a returncode of 0.
     Passed Tests: 3/4 Percentage: 75.000%
     Failed Tests: 1/4 Percentage: 25.000%
 
+    Writing Logfile to: /private/tmp/buildtest/buildtest_b41hm3n7.log
+
 Single Test Multiple Compilers
 -------------------------------
 
@@ -764,6 +770,7 @@ test to run against every gcc, intel and PrgEnv-cray compiler module::
     Passed Tests: 25/25 Percentage: 100.000%
     Failed Tests: 0/25 Percentage: 0.000%
 
+    Writing Logfile to: /private/tmp/buildtest/buildtest_b41hm3n7.log
 
 If we inspect one of these tests from each compiler group we will see OMP_NUM_THREADS
 is set in all tests along with the appropriate compiler flag.
@@ -989,7 +996,7 @@ job until its complete::
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
 
-
+    Writing Logfile to: /private/tmp/buildtest/buildtest_b41hm3n7.log
 
 Pre/Post sections for build and run section
 --------------------------------------------

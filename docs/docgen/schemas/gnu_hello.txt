@@ -25,7 +25,7 @@ Discovered Buildspecs:
 
  name    | id       | type     | executor   | tags                     | compiler    | testpath
 ---------+----------+----------+------------+--------------------------+-------------+--------------------------------------------------------------------------------------------------------
- hello_f | 5c87978b | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/2/stage/generate.sh
+ hello_f | 3506b103 | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/2/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
@@ -33,7 +33,7 @@ Discovered Buildspecs:
     
  name    | id       | executor   | status   |   returncode | testpath
 ---------+----------+------------+----------+--------------+--------------------------------------------------------------------------------------------------------
- hello_f | 5c87978b | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/2/stage/generate.sh
+ hello_f | 3506b103 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/2/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -45,3 +45,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 
+Writing Logfile to: /private/tmp/buildtest/buildtest_2drv3w_2.log

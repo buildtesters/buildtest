@@ -479,9 +479,9 @@ buildtest will display table in order of ``--format`` option.
 Filter Reports
 ~~~~~~~~~~~~~~~~
 
-The `buildtest report` command will display all tests results, which may not be relevant when
+The **buildtest report** command will display all tests results, which may not be relevant when
 you want to analyze specific tests. Therefore, we introduce a ``--filter`` option
-to filter output of `buildtest report`. First, lets see the available filter fields
+to filter out tests in the output. First, lets see the available filter fields
 by run ``buildtest report --helpfilter``.
 
 .. program-output:: cat docgen/report-helpfilter.txt
@@ -830,17 +830,10 @@ Accessing buildtest documentation
 We provide two command line options to access main documentation and schema docs. This
 will open a browser on your machine.
 
-To access buildtest docs you can run::
+To access `buildtest docs <https://buildtest.readthedocs.io/>`_ you can run::
 
   $ buildtest docs
 
 To access `schema docs <https://buildtesters.github.io/buildtest>`_ you can run::
 
   $ buildtest schemadocs
-
-Logfile
--------
-
-Buildtest will write the log file for any ``buildtest build`` command
-in current directory with file name ``buildtest.log``. The logfile will be overwritten
-if you run commands from same directory.
