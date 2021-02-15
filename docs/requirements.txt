@@ -32,7 +32,7 @@ pluggy==0.13.1
 pre-commit==2.10.1
 py==1.10.0
 pyflakes==2.2.0
-Pygments==2.7.4
+Pygments==2.8.0
 pyparsing==2.4.7
 pyrsistent==0.17.3
 pytest==6.2.2
