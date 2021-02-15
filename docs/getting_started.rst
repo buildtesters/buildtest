@@ -830,17 +830,10 @@ Accessing buildtest documentation
 We provide two command line options to access main documentation and schema docs. This
 will open a browser on your machine.
 
-To access buildtest docs you can run::
+To access `buildtest docs <https://buildtest.readthedocs.io/>`_ you can run::
 
   $ buildtest docs
 
 To access `schema docs <https://buildtesters.github.io/buildtest>`_ you can run::
 
   $ buildtest schemadocs
-
-Logfile
--------
-
-Buildtest will write the log file for any ``buildtest build`` command
-in current directory with file name ``buildtest.log``. The logfile will be overwritten
-if you run commands from same directory.

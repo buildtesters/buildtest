@@ -299,6 +299,31 @@ you want to write tests in **/tmp** you can set the following::
 Alternately, one can specify test directory via ``buildtest build --testdir <path>`` which
 has highest precedence and overrides configuration and default value.
 
+Configuring log path
+----------------------
+
+You can configure where buildtest will write logs using ``logdir`` property. For
+example, in example below buildtest will write log files ``$HOME/Documents/buildtest/var/logs``.
+buildtest will resolve variable expansion to get real path on filesystem.
+
+
+::
+
+    # location of log directory
+    logdir: $HOME/Documents/buildtest/var/logs
+
+
+``logdir`` is not required in configuration, if it's not specified buildtest will write logs
+based on `tempfile <https://docs.python.org/3/library/tempfile.html>`_ library which may vary
+based on platform (Linux, Mac).
+
+For instance, on Mac the directory path may be something as follows::
+
+    /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_dy_xu1eb.log
+
+The buildtest logs will start with **buildtest_** followed by random identifier with
+a **.log** extension.
+
 before_script and after_script for executors
 ---------------------------------------------
 
