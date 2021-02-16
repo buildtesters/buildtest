@@ -1,0 +1,29 @@
+version: "1.0"
+buildspecs:
+  build_sif_from_dockerimage:
+    type: script
+    executor: local.bash
+    description: build sif image from docker image docker://godlovedc/lolcow
+    tags: [containers, singularity]
+    run: |
+      singularity build mylolcow_latest.sif docker://godlovedc/lolcow
+      singularity inspect mylolcow_latest.sif
+
+  build_sandbox_image:
+    type: script
+    executor: local.bash
+    description: build sandbox image from docker image docker://godlovedc/lolcow
+    tags: [containers, singularity]
+    run: singularity build --sandbox mylolcow_latest_sandbox docker://godlovedc/lolcow
+ 
+  build_remoteimages:
+    type: script
+    executor: local.bash
+    description: build remote hosted image from AWS
+    tags: [containers, singularity]
+    vars:
+      IMAGE: alpine_oci_archive.sif
+    run: |
+      singularity pull  https://s3.amazonaws.com/singularity-ci-public/alpine-oci-archive.tar
+      singularity build $IMAGE oci-archive://alpine-oci-archive.tar
+      singularity exec $IMAGE cat /etc/os-release

@@ -1,0 +1,19 @@
+version: "1.0"
+buildspecs:
+  inspect_image:
+    type: script
+    executor: local.bash
+    description: Inspect image via 'singularity inspect'
+    tags: [containers, singularity]
+    vars:
+      IMAGE: alpine.sif
+    run: |
+      singularity pull $IMAGE library://alpine:latest 
+      singularity inspect --all $IMAGE
+      singularity inspect -d $IMAGE
+      singularity inspect -e $IMAGE
+      singularity inspect -j $IMAGE
+      singularity inspect -l $IMAGE
+      singularity inspect -r $IMAGE
+      singularity inspect -s $IMAGE
+      singularity inspect -t $IMAGE

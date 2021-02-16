@@ -1,0 +1,13 @@
+version: "1.0"
+buildspecs:
+  runImage:
+    type: script
+    executor: local.bash
+    description: run container docker://godlovedc/lolcow
+    tags: [containers, singularity]
+    run: |
+      singularity run docker://godlovedc/lolcow
+      singularity exec docker://godlovedc/lolcow fortune
+
+
+  
