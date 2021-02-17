@@ -17,17 +17,12 @@ import sys
 
 here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, here)
-from buildtest import BUILDTEST_VERSION
+from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
 
 
 # -- Project information -----------------------------------------------------
 project = "buildtest"
-copyright = """
-buildtest Copyright (c) 2021, The Regents of the University of California,
-through Lawrence Berkeley National Laboratory (subject to receipt of
-any required approvals from the U.S. Dept. of Energy), Shahzeb Siddiqui,
-and Vanessa Sochat. All rights reserved.
-"""
+copyright = BUILDTEST_COPYRIGHT
 
 author = "Shahzeb Siddiqui, Vanessa Sochat"
 

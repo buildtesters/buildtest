@@ -1,3 +1,4 @@
+import json
 import getpass
 import shutil
 import sys
@@ -43,6 +44,25 @@ def func_config_view(args=None):
     print(yaml.dump(content, default_flow_style=False, sort_keys=False))
 
 
+def func_config_executors(args=None):
+    """Display executors from buildtest configuration. This implements ``buildtest config executors`` command.
+    If no option is specified we display output in JSON format
+    """
+
+    settings_file = resolve_settings_file()
+    content = load_recipe(settings_file)
+
+    d = {"executors": content["executors"]}
+
+    # display output in JSON format
+    if args.json:
+        print(json.dumps(d, indent=2))
+        return
+
+    # display output in YAML format
+    print(yaml.dump(d, default_flow_style=False))
+
+
 def func_config_summary(args=None):
     """This method implements ``buildtest config summary`` option. In this method
     we will display a summary of System Details, Buildtest settings, Schemas,
@@ -68,14 +88,6 @@ def func_config_summary(args=None):
     print("Buildtest Settings")
     print("{:_<80}".format(""))
     print(f"Buildtest Settings: {BUILDTEST_SETTINGS_FILE}")
-
-    validstate = "VALID"
-    try:
-        check_settings()
-    except ValidationError:
-        validstate = "INVALID"
-
-    print("Buildtest Settings is ", validstate)
 
     settings_file = resolve_settings_file()
     settings = load_settings(settings_file)

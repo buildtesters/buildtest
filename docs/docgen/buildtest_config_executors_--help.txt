@@ -1,0 +1,6 @@
+$ buildtest config executors --help
+usage: buildtest [options] [COMMANDS] config executors [-h] [-j]
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -j, --json  View executor in JSON format

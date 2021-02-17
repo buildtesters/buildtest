@@ -3,13 +3,14 @@ buildtest menu: include functions to build, get test configurations, and
 interact with a global configuration for buildtest.
 """
 import argparse
-from buildtest import BUILDTEST_VERSION
+from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
 from buildtest.docs import buildtestdocs, schemadocs
 from buildtest.menu.buildspec import func_buildspec_find
 from buildtest.menu.config import (
     func_config_summary,
     func_config_validate,
     func_config_view,
+    func_config_executors,
 )
 from buildtest.menu.compilers import func_compiler_find, func_config_compiler
 from buildtest.menu.report import func_report
@@ -58,13 +59,21 @@ def positive_number(value):
 
 class BuildTestParser:
     def __init__(self):
-        epilog_str = (
-            "Documentation: " + "https://buildtest.readthedocs.io/en/latest/index.html"
-        )
+        epilog_str = f"""
+References
+_______________________________________________________________________________________
+GitHub:                  https://github.com/buildtesters/buildtest 
+Documentation:           https://buildtest.readthedocs.io/en/latest/index.html             
+Schema Documentation:    https://buildtesters.github.io/buildtest/
+Slack:                   http://hpcbuildtest.slack.com/
+ 
+Please report issues at https://github.com/buildtesters/buildtest/issues
+
+{BUILDTEST_COPYRIGHT}
+        """
+
         description_str = (
-            "buildtest is a HPC testing framework for building and executing"
-            + "tests. Buildtest comes with a set of json-schemas used to write "
-            + "test configuration (Buildspecs) in YAML to generate test scripts."
+            "buildtest is a HPC testing framework for writing acceptance tests."
         )
 
         self.parser = argparse.ArgumentParser(
@@ -76,8 +85,8 @@ class BuildTestParser:
         )
         self.subparser_dict = {
             "build": "Options for building test scripts",
-            "buildspec": "Command options for buildspecs",
-            "report": "Show report for test results",
+            "buildspec": "Options for querying buildspec cache",
+            "report": "Options for querying test results",
             "schema": "Commands for viewing buildtest schemas",
             "config": "Buildtest Configuration Menu",
             "inspect": "Inspect details for test from test report",
@@ -141,12 +150,10 @@ class BuildTestParser:
 
         parser_build = self.subparsers.add_parser("build")
 
-        ##################### buildtest build  ###########################
-
         parser_build.add_argument(
             "-b",
             "--buildspec",
-            help="Specify a Buildspec (YAML) file to build and run the test.",
+            help="Specify a buildspec (file or directory) to build. A buildspec must end in '.yml' extension.",
             action="append",
         )
 
@@ -154,7 +161,7 @@ class BuildTestParser:
             "-x",
             "--exclude",
             action="append",
-            help="Exclude one or more configs from processing. Configs can be files or directories.",
+            help="Exclude one or more buildspecs (file or directory) from processing. A buildspec must end in '.yml' extension.",
         )
 
         parser_build.add_argument(
@@ -188,7 +195,7 @@ class BuildTestParser:
 
         parser_build.add_argument(
             "--testdir",
-            help="specify a custom test directory. By default, use .buildtest in $PWD.",
+            help="Specify a custom test directory where to write tests. This overrides configuration file and default location.",
         )
         parser_build.add_argument(
             "--rebuild",
@@ -199,7 +206,6 @@ class BuildTestParser:
     def buildspec_menu(self):
         """This method implements ``buildtest buildspec`` command"""
 
-        # ####################### buildtest buildspec  ########################
         parser_buildspec = self.subparsers.add_parser("buildspec")
 
         subparsers_buildspec = parser_buildspec.add_subparsers(
@@ -286,22 +292,11 @@ class BuildTestParser:
         parser_config = self.subparsers.add_parser("config")
 
         subparsers_config = parser_config.add_subparsers(
-            description="buildtest configuration"
+            description="query information from buildtest configuration file"
         )
-        compiler_config = subparsers_config.add_parser(
-            "compilers", help="search or find compilers "
-        )
-        subparsers_compiler_find = compiler_config.add_subparsers(
-            description="Find new compilers and add them to detected compiler section"
-        )
-        compiler_find = subparsers_compiler_find.add_parser(
-            "find", help="Find compilers"
-        )
-        compiler_find.add_argument(
-            "-d",
-            "--debug",
-            help="Display Debugging output when finding compilers",
-            action="store_true",
+
+        parser_executors = subparsers_config.add_parser(
+            "executors", help="Query executors from buildtest configuration"
         )
 
         parser_config_view = subparsers_config.add_parser(
@@ -313,6 +308,28 @@ class BuildTestParser:
 
         parser_config_summary = subparsers_config.add_parser(
             "summary", help="Provide summary of buildtest settings."
+        )
+
+        compiler_config = subparsers_config.add_parser(
+            "compilers", help="search or find compilers "
+        )
+
+        parser_executors.add_argument(
+            "-j", "--json", action="store_true", help="View executor in JSON format"
+        )
+
+        subparsers_compiler_find = compiler_config.add_subparsers(
+            description="Find new compilers and add them to detected compiler section"
+        )
+
+        compiler_find = subparsers_compiler_find.add_parser(
+            "find", help="Find compilers"
+        )
+        compiler_find.add_argument(
+            "-d",
+            "--debug",
+            help="Display Debugging output when finding compilers",
+            action="store_true",
         )
 
         compiler_config.add_argument(
@@ -330,7 +347,8 @@ class BuildTestParser:
         compiler_config.add_argument(
             "-l", "--list", action="store_true", help="List all compilers "
         )
-
+        # parser_config_executor.set_defaults(fun)
+        parser_executors.set_defaults(func=func_config_executors)
         parser_config_view.set_defaults(func=func_config_view)
         parser_config_validate.set_defaults(func=func_config_validate)
         parser_config_summary.set_defaults(func=func_config_summary)

@@ -2,9 +2,10 @@
 moduletool: N/A
 
 # boolean to determine if buildspecs provided in buildtest repo should be loaded in buildspec cache
-
 load_default_buildspecs: True
+
 executors:
+  # define local executors for running jobs locally
   local:
     bash:
       description: submit jobs on local machine using bash shell
@@ -28,14 +29,14 @@ executors:
 
 # compiler block
 compilers:
-  # a list of regular expression to search for compilers based on module pattern. Used with 'buildtest config compilers find' to generate compiler instance
+  # regular expression to search for compilers based on module pattern. Used with 'buildtest config compilers find' to generate compiler instance
   # find:
-  #  gcc: ["^(gcc)"]
-  #  intel: ["^(intel)"]
-  #  cray: ["^(craype)"]
-  #  pgi: ["^(pgi)"]
-  #  cuda: [^(cuda)"]
-  #  clang: ["^(clang)"]
+  #  gcc: "^(gcc)"
+  #  intel: "^(intel)"
+  #  cray: "^(craype)"
+  #  pgi: "^(pgi)"
+  #  cuda: ^(cuda)"
+  #  clang: "^(clang)"
 
   # declare compiler instance which can be site-specific. You can let 'buildtest config compilers find' generate compiler section
   compiler:

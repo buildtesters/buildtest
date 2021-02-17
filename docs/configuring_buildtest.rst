@@ -286,7 +286,7 @@ at your site. Valid options are the following::
 If your site has Lmod and you set ``moduletool: lmod``, we will make use of
 `Lmodule API <https://lmodule.readthedocs.io/en/latest/>`_ to test modules.
 
-Configuring where to write tests
+Configuring test directory
 ---------------------------------
 
 The default location where tests are written is **$BUILDTEST_ROOT/var/tests** where
@@ -689,6 +689,22 @@ will be displayed in terminal. For example the error below indicates that
     On instance['moduletool']:
         'none'
 
+View Executors
+~~~~~~~~~~~~~~~~~
+
+You can use the command ``buildtest config executors`` to view executors from buildtest
+configuration file.  Shown below is the command usage
+
+.. program-output:: cat docgen/buildtest_config_executors_--help.txt
+
+You can run ``buildtest config executors`` without any options and it will display the output in
+YAML format. If you prefer json format you can use ``--json`` option.
+
+Shown below is an example output of `executors` defined in your buildtest configuration.
+
+.. program-output:: cat docgen/config_executors.txt
+
+
 Configuration Summary
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -699,7 +715,7 @@ display information from several sources into one single command along.
 
 
 Example Configurations
--------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 buildtest provides a few example configurations for configuring buildtest this
 can be retrieved by running ``buildtest schema -n settings.schema.json --examples``

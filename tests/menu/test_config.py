@@ -5,6 +5,7 @@ from buildtest.menu.config import (
     func_config_view,
     func_config_validate,
     func_config_summary,
+    func_config_executors,
 )
 from buildtest.utils.file import walk_tree
 from buildtest.schemas.defaults import custom_validator
@@ -37,3 +38,18 @@ def test_config_validate():
 def test_config_summary():
 
     func_config_summary()
+
+
+@pytest.mark.cli
+def test_config_executors():
+    class args:
+        json = True
+
+    # run buildtest config executors --json
+    func_config_executors(args)
+
+    class args:
+        json = False
+
+    # run buildtest config executors
+    func_config_executors(args)

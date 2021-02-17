@@ -6,11 +6,10 @@ Installing buildtest
 Requirements
 ------------
 
-You need the following packages to get started.
+You need the following packages to install buildtest.
 
-- git
-- Python >= 3.6
-- pip
+- `git <https://git-scm.com/downloads>`_
+- `Python <https://www.python.org/downloads/>`_ >= 3.6
 
 Cloning buildtest
 ------------------
@@ -30,13 +29,16 @@ If you prefer the latest release use the **master** branch::
 Installing buildtest
 -----------------------
 
-To install buildtest you need to source the setup script as follows::
+To install buildtest, navigate to buildtest repo and source the setup script as follows::
 
     # BASH users
     $ source setup.sh
 
     # CSH users
     $ source setup.csh
+
+This will add ``buildtest`` command in your $PATH and set environment variable
+**$BUILDTEST_ROOT** which points to root of buildtest repo.
 
 You may want to create an isolated python environment of choice depending on your
 preference you can use any of the following:
@@ -62,11 +64,5 @@ Once you are setup, you can run ``buildtest --help`` for more details on how to
 use buildtest. Shown below is the output
 
 .. program-output:: cat docgen/buildtest_--help.txt
-
-
-buildtest commands make use of sub-commands (i.e ``buildtest <subcommand>``). For more details
-on any subcommand run::
-
-    $ buildtest <subcommand> --help
 
 If you have got this far, please go to the next section on :ref:`Getting_Started`
