@@ -36,10 +36,12 @@ echo "Installing buildtest dependencies"
 $pip install -r ${buildtest_root}/requirements.txt &> /dev/null
 
 bin=${buildtest_root}/bin
+export BUILDTEST_ROOT=$buildtest_root
 export PATH=${bin}:$PATH
 # add PYTHONPATH for buildtest to persist in shell environment
 export PYTHONPATH=${buildtest_root}:$PYTHONPATH
 
+echo "BUILDTEST_ROOT: $BUILDTEST_ROOT"
 buildtest_path=$(which buildtest)
 echo "buildtest command: ${buildtest_path}"
 

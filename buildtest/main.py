@@ -70,6 +70,12 @@ def main():
     else:
         print(f"Writing Logfile to: {dest_logfile}")
 
+    # store copy of logfile at $BUILDTEST_ROOT/buildtest.log. A convenient location for user to
+    # find logfile for last build, this will be overwritten for every subsequent build.
+    shutil.copy2(
+        dest_logfile, os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
+    )
+
 
 if __name__ == "__main__":
     main()
