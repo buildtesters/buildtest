@@ -4,7 +4,7 @@
 # buildtest Copyright (c) 2021, The Regents of the University of California,
 # through Lawrence Berkeley National Laboratory (subject to receipt of
 # any required approvals from the U.S. Dept. of Energy), Shahzeb Siddiqui,
-and Vanessa Sochat. All rights reserved.
+# and Vanessa Sochat. All rights reserved.
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,38 @@ and Vanessa Sochat. All rights reserved.
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-set command=($_)
-set sourced_file=`readlink -f $command[2]`
-set buildtest_root=`dirname "$sourced_file"`
+# if BUILDTEST_ROOT not defined in current shell set, figure out directory path for 
+# sourced script (setup.csh) and set BUILDTEST_ROOT
+if (! $?BUILDTEST_ROOT) then
+    # figure out a command to list open files (Linux)
+    if (-d /proc/$$/fd) then
+        set _open_fd = "ls -l /proc/$$/fd"
+    # for Mac
+    else
+        which lsof > /dev/null
+        if ($? == 0) then
+            set _open_fd = "lsof -p $$"
+        endif
+    endif
+
+
+    # filter list of open files
+    if ( $?_open_fd ) then
+        set _source_file = `$_open_fd | sed -e 's/^[^/]*//' | grep "/setup.csh"`
+    endif
+
+    # setup.csh is located in $BUILDTEST_ROOT 
+    if ( $?_source_file ) then
+        setenv BUILDTEST_ROOT `dirname "$_source_file"`
+    endif
+
+    if (! $?BUILDTEST_ROOT) then
+        echo "Cannot set $BUILDTEST_ROOT based on path to setup.csh."
+        echo "Try setting BUILDTEST_ROOT to root of buildtest repo and try again."
+        exit 1
+    endif
+endif
+
 
 set pip=pip
 
@@ -36,16 +65,17 @@ if ( ! -x `command -v $pip` ) then
 endif
 
 echo "Installing buildtest dependencies"
-pip install -r ${buildtest_root}/requirements.txt > /dev/null
-set bin=${buildtest_root}/bin
+pip install -r ${BUILDTEST_ROOT}/requirements.txt > /dev/null
+set bin=${BUILDTEST_ROOT}/bin
 set path=($path $bin)
 
 # add PYTHONPATH for buildtest to persist in shell environment
 if (! $?PYTHONPATH ) then
-	setenv PYTHONPATH $buildtest_root
+	setenv PYTHONPATH $BUILDTEST_ROOT
 else
-        setenv PYTHONPATH ${PYTHONPATH}:$buildtest_root
+        setenv PYTHONPATH ${PYTHONPATH}:$BUILDTEST_ROOT
 endif
 
+echo "BUILDTEST_ROOT: $BUILDTEST_ROOT"
 set buildtest_path=`which buildtest`
 echo "buildtest command: ${buildtest_path}"
