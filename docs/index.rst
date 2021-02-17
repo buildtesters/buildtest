@@ -10,7 +10,7 @@ docs at https://buildtest.readthedocs.io/en/devel/.
 Status
 -----------
 
-| |license| |docs| |codecov| |slack| |codefactor| |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |blackformat| |clichecks| |regressiontest| |buildtest_scripts| |core_infrastructure| |black|
+| |license| |docs| |codecov| |slack| |regressiontest|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -22,8 +22,6 @@ Status
 
 .. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
 
-.. |core_infrastructure| image:: https://bestpractices.coreinfrastructure.org/projects/3469/badge
-
 .. |codecov| image:: https://codecov.io/gh/buildtesters/buildtest/branch/devel/graph/badge.svg
     :target: https://codecov.io/gh/buildtesters/buildtest
 
@@ -31,32 +29,8 @@ Status
     :target: https://www.codefactor.io/repository/github/buildtesters/buildtest
     :alt: CodeFactor
 
-.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :target: https://github.com/psf/black
-
-.. |checkurls| image:: https://github.com/buildtesters/buildtest/workflows/Check%20URLs/badge.svg
-    :target: https://github.com/buildtesters/buildtest/actions
-
-.. |blackformat| image:: https://github.com/buildtesters/buildtest/workflows/Black%20Formatter/badge.svg
-    :target: https://github.com/buildtesters/buildtest/actions
-
-.. |clichecks| image:: https://github.com/buildtesters/buildtest/workflows/buildtest%20cli%20test/badge.svg 
-    :target: https://github.com/buildtesters/buildtest/actions
-
 .. |regressiontest| image:: https://github.com/buildtesters/buildtest/workflows/regressiontest/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
-
-.. |buildtest_scripts| image:: https://github.com/buildtesters/buildtest/workflows/buildtest_scripts/badge.svg
-    :target: https://github.com/buildtesters/buildtest/actions
-
-.. |gh_pages_devel| image:: https://github.com/buildtesters/buildtest/workflows/Upload%20JSON%20Schema%20to%20gh-pages%20on%20devel/badge.svg
-    :target: https://github.com/buildtesters/buildtest/actions
-
-.. |gh_pages_master| image:: https://github.com/buildtesters/buildtest/workflows/Upload%20JSON%20Schema%20to%20gh-pages%20for%20master%20branch/badge.svg
-    :target: https://github.com/buildtesters/buildtest/actions    
-
-.. |dailyurlcheck| image:: https://github.com/buildtesters/buildtest/workflows/Daily%20Check%20URLs/badge.svg
-   :target: https://github.com/buildtesters/buildtest/actions
 
 Source Code
 ------------
