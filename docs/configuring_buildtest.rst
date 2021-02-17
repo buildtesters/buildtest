@@ -692,16 +692,18 @@ will be displayed in terminal. For example the error below indicates that
 View Executors
 ~~~~~~~~~~~~~~~~~
 
-You can view executors defined in buildtest configuration using ``buildtest config executors``. Shown
-below is the command usage
+You can use the command ``buildtest config executors`` to view executors from buildtest
+configuration file.  Shown below is the command usage
 
 .. program-output:: cat docgen/buildtest_config_executors_--help.txt
 
-You may display output in YAML or JSON format using ``--yaml`` or ``--json`` format and buildtest
-will retrieve the **executors** property from configuration file. Shown below is an
-example output in YAML format
+You can run ``buildtest config executors`` without any options and it will display the output in
+YAML format. If you prefer json format you can use ``--json`` option.
 
-.. program-output:: cat docgen/executors_yaml.txt
+Shown below is an example output of `executors` defined in your buildtest configuration.
+
+.. program-output:: cat docgen/config_executors.txt
+
 
 Configuration Summary
 ~~~~~~~~~~~~~~~~~~~~~~

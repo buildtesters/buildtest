@@ -3,7 +3,7 @@ buildtest menu: include functions to build, get test configurations, and
 interact with a global configuration for buildtest.
 """
 import argparse
-from buildtest import BUILDTEST_VERSION, COPYRIGHT
+from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
 from buildtest.docs import buildtestdocs, schemadocs
 from buildtest.menu.buildspec import func_buildspec_find
 from buildtest.menu.config import (
@@ -69,7 +69,7 @@ Slack:                   http://hpcbuildtest.slack.com/
  
 Please report issues at https://github.com/buildtesters/buildtest/issues
 
-{COPYRIGHT}
+{BUILDTEST_COPYRIGHT}
         """
 
         description_str = (
@@ -315,10 +315,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         )
 
         parser_executors.add_argument(
-            "-y", "--yaml", action="store_true", help="List executor in YAML format"
-        )
-        parser_executors.add_argument(
-            "-j", "--json", action="store_true", help="List executor in JSON format"
+            "-j", "--json", action="store_true", help="View executor in JSON format"
         )
 
         subparsers_compiler_find = compiler_config.add_subparsers(

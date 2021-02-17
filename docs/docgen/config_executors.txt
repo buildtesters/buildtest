@@ -1,4 +1,4 @@
-$ buildtest config executors --yaml
+$ buildtest config executors
 executors:
   local:
     bash:

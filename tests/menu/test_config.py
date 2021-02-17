@@ -43,13 +43,13 @@ def test_config_summary():
 @pytest.mark.cli
 def test_config_executors():
     class args:
-        yaml = True
-        json = False
+        json = True
 
+    # run buildtest config executors --json
     func_config_executors(args)
 
     class args:
-        yaml = False
-        json = True
+        json = False
 
+    # run buildtest config executors
     func_config_executors(args)

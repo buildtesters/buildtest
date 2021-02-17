@@ -45,20 +45,22 @@ def func_config_view(args=None):
 
 
 def func_config_executors(args=None):
-    """Display executors from buildtest configuration. This implements ``buildtest config executors`` command."""
+    """Display executors from buildtest configuration. This implements ``buildtest config executors`` command.
+    If no option is specified we display output in JSON format
+    """
 
     settings_file = resolve_settings_file()
     content = load_recipe(settings_file)
 
     d = {"executors": content["executors"]}
-    # display output in YAML format
-    if args.yaml:
-        print(yaml.dump(d, default_flow_style=False))
-        return
+
     # display output in JSON format
-    elif args.json:
+    if args.json:
         print(json.dumps(d, indent=2))
         return
+
+    # display output in YAML format
+    print(yaml.dump(d, default_flow_style=False))
 
 
 def func_config_summary(args=None):

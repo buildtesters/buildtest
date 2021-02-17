@@ -113,7 +113,7 @@ def introspection_cmds():
         "config-view.txt": "buildtest config view",
         "config-validate.txt": "buildtest config validate",
         "config-summary.txt": "buildtest config summary",
-        "executors_yaml.txt": "buildtest config executors --yaml",
+        "config_executors.txt": "buildtest config executors",
         "report.txt": "buildtest report",
         "buildspec-filter.txt": "buildtest buildspec find --helpfilter",
         "buildspec-format.txt": "buildtest buildspec find --helpformat",
