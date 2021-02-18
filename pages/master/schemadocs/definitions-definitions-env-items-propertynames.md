@@ -6,10 +6,9 @@ definitions.schema.json#/definitions/env/items/propertyNames
 
 
 
-
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                         |
-| :------------------ | ---------- | -------------- | ----------------------- | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [definitions.schema.json\*](../out/definitions.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                        |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [definitions.schema.json*](../out/definitions.schema.json "open original schema") |
 
 ## propertyNames Type
 
@@ -23,4 +22,4 @@ unknown
 ^[A-Za-z_][A-Za-z0-9_]*$
 ```
 
-[try pattern](https://regexr.com/?expression=%5E%5BA-Za-z_%5D%5BA-Za-z0-9_%5D*%24 "try regular expression with regexr.com")
+[try pattern](https://regexr.com/?expression=%5E%5BA-Za-z\_%5D%5BA-Za-z0-9\_%5D\*%24 "try regular expression with regexr.com")

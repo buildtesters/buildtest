@@ -6,19 +6,18 @@ settings.schema.json#/definitions/compiler_section
 
 A compiler section is composed of `cc`, `cxx` and `fc` wrapper these are required when you need to specify compiler wrapper.
 
-
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
-| :------------------ | ---------- | -------------- | ------------ | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
 
 ## compiler_section Type
 
 `object` ([Details](settings-definitions-compiler_section.md))
 
-# undefined Properties
+# compiler_section Properties
 
 | Property          | Type     | Required | Nullable       | Defined by                                                                                                                              |
-| :---------------- | -------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| :---------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
 | [cc](#cc)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cc.md "settings.schema.json#/definitions/compiler_section/properties/cc")         |
 | [cxx](#cxx)       | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cxx.md "settings.schema.json#/definitions/compiler_section/properties/cxx")       |
 | [fc](#fc)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-fc.md "settings.schema.json#/definitions/compiler_section/properties/fc")         |
@@ -28,13 +27,15 @@ A compiler section is composed of `cc`, `cxx` and `fc` wrapper these are require
 
 Specify path to C compiler wrapper. You may specify a compiler wrapper such as `gcc` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
 
-
 `cc`
 
--   is required
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-cc.md "settings.schema.json#/definitions/compiler_section/properties/cc")
+*   is required
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-cc.md "settings.schema.json#/definitions/compiler_section/properties/cc")
 
 ### cc Type
 
@@ -44,13 +45,15 @@ Specify path to C compiler wrapper. You may specify a compiler wrapper such as `
 
 Specify path to C++ compiler wrapper. You may specify a compiler wrapper such as `g++` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
 
-
 `cxx`
 
--   is required
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-cxx.md "settings.schema.json#/definitions/compiler_section/properties/cxx")
+*   is required
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-cxx.md "settings.schema.json#/definitions/compiler_section/properties/cxx")
 
 ### cxx Type
 
@@ -60,13 +63,15 @@ Specify path to C++ compiler wrapper. You may specify a compiler wrapper such as
 
 Specify path to Fortran compiler wrapper. You may specify a compiler wrapper such as `gfortran` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
 
-
 `fc`
 
--   is required
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-fc.md "settings.schema.json#/definitions/compiler_section/properties/fc")
+*   is required
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-fc.md "settings.schema.json#/definitions/compiler_section/properties/fc")
 
 ### fc Type
 
@@ -76,13 +81,15 @@ Specify path to Fortran compiler wrapper. You may specify a compiler wrapper suc
 
 
 
-
 `module`
 
--   is optional
--   Type: `object` ([Details](settings-definitions-module.md))
--   cannot be null
--   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/compiler_section/properties/module")
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-module.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/compiler_section/properties/module")
 
 ### module Type
 

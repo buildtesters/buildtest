@@ -6,19 +6,18 @@ script-v1.0.schema.json#/properties/batch
 
 The `batch` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.
 
-
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                         |
-| :------------------ | ---------- | -------------- | ------------ | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [script-v1.0.schema.json\*](../out/script-v1.0.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                        |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [script-v1.0.schema.json*](../out/script-v1.0.schema.json "open original schema") |
 
 ## batch Type
 
 `object` ([Details](definitions-definitions-batch.md))
 
-# undefined Properties
+# batch Properties
 
 | Property                              | Type      | Required | Nullable       | Defined by                                                                                                                                                              |
-| :------------------------------------ | --------- | -------- | -------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :------------------------------------ | :-------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [account](#account)                   | `string`  | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-batch-properties-account.md "definitions.schema.json#/definitions/batch/properties/account")                   |
 | [begintime](#begintime)               | `string`  | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-batch-properties-begintime.md "definitions.schema.json#/definitions/batch/properties/begintime")               |
 | [cpucount](#cpucount)                 | `string`  | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-batch-properties-cpucount.md "definitions.schema.json#/definitions/batch/properties/cpucount")                 |
@@ -38,13 +37,15 @@ The `batch` field is used to specify scheduler agnostic directives that are tran
 
 Specify Account to charge job
 
-
 `account`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-account.md "definitions.schema.json#/definitions/batch/properties/account")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-account.md "definitions.schema.json#/definitions/batch/properties/account")
 
 ### account Type
 
@@ -54,13 +55,15 @@ Specify Account to charge job
 
 Specify begin time when job will start allocation
 
-
 `begintime`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-begintime.md "definitions.schema.json#/definitions/batch/properties/begintime")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-begintime.md "definitions.schema.json#/definitions/batch/properties/begintime")
 
 ### begintime Type
 
@@ -70,13 +73,15 @@ Specify begin time when job will start allocation
 
 Specify number of CPU to allocate
 
-
 `cpucount`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-cpucount.md "definitions.schema.json#/definitions/batch/properties/cpucount")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-cpucount.md "definitions.schema.json#/definitions/batch/properties/cpucount")
 
 ### cpucount Type
 
@@ -86,13 +91,15 @@ Specify number of CPU to allocate
 
 Email Address to notify on Job State Changes
 
-
 `email-address`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-email-address.md "definitions.schema.json#/definitions/batch/properties/email-address")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-email-address.md "definitions.schema.json#/definitions/batch/properties/email-address")
 
 ### email-address Type
 
@@ -102,13 +109,15 @@ Email Address to notify on Job State Changes
 
 Specify if job needs to run in exclusive mode
 
-
 `exclusive`
 
--   is optional
--   Type: `boolean`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-exclusive.md "definitions.schema.json#/definitions/batch/properties/exclusive")
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-exclusive.md "definitions.schema.json#/definitions/batch/properties/exclusive")
 
 ### exclusive Type
 
@@ -118,13 +127,15 @@ Specify if job needs to run in exclusive mode
 
 Specify Memory Size for Job
 
-
 `memory`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-memory.md "definitions.schema.json#/definitions/batch/properties/memory")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-memory.md "definitions.schema.json#/definitions/batch/properties/memory")
 
 ### memory Type
 
@@ -134,13 +145,15 @@ Specify Memory Size for Job
 
 Specify network resource requirement for job
 
-
 `network`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-network.md "definitions.schema.json#/definitions/batch/properties/network")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-network.md "definitions.schema.json#/definitions/batch/properties/network")
 
 ### network Type
 
@@ -150,13 +163,15 @@ Specify network resource requirement for job
 
 Specify number of Nodes to allocate
 
-
 `nodecount`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-nodecount.md "definitions.schema.json#/definitions/batch/properties/nodecount")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-nodecount.md "definitions.schema.json#/definitions/batch/properties/nodecount")
 
 ### nodecount Type
 
@@ -166,13 +181,15 @@ Specify number of Nodes to allocate
 
 Specify Quality of Service (QOS)
 
-
 `qos`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-qos.md "definitions.schema.json#/definitions/batch/properties/qos")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-qos.md "definitions.schema.json#/definitions/batch/properties/qos")
 
 ### qos Type
 
@@ -182,13 +199,15 @@ Specify Quality of Service (QOS)
 
 Specify Job Queue
 
-
 `queue`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-queue.md "definitions.schema.json#/definitions/batch/properties/queue")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-queue.md "definitions.schema.json#/definitions/batch/properties/queue")
 
 ### queue Type
 
@@ -196,15 +215,17 @@ Specify Job Queue
 
 ## tasks-per-core
 
-Request number of tasks to be invoked on each core. 
-
+Request number of tasks to be invoked on each core.
 
 `tasks-per-core`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-tasks-per-core.md "definitions.schema.json#/definitions/batch/properties/tasks-per-core")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-tasks-per-core.md "definitions.schema.json#/definitions/batch/properties/tasks-per-core")
 
 ### tasks-per-core Type
 
@@ -212,15 +233,17 @@ Request number of tasks to be invoked on each core.
 
 ## tasks-per-node
 
-Request number of tasks to be invoked on each node. 
-
+Request number of tasks to be invoked on each node.
 
 `tasks-per-node`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-tasks-per-node.md "definitions.schema.json#/definitions/batch/properties/tasks-per-node")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-tasks-per-node.md "definitions.schema.json#/definitions/batch/properties/tasks-per-node")
 
 ### tasks-per-node Type
 
@@ -228,15 +251,17 @@ Request number of tasks to be invoked on each node.
 
 ## tasks-per-socket
 
-Request the maximum tasks to be invoked on each socket. 
-
+Request the maximum tasks to be invoked on each socket.
 
 `tasks-per-socket`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-tasks-per-socket.md "definitions.schema.json#/definitions/batch/properties/tasks-per-socket")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-tasks-per-socket.md "definitions.schema.json#/definitions/batch/properties/tasks-per-socket")
 
 ### tasks-per-socket Type
 
@@ -246,13 +271,15 @@ Request the maximum tasks to be invoked on each socket.
 
 Specify Job timelimit
 
-
 `timelimit`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-timelimit.md "definitions.schema.json#/definitions/batch/properties/timelimit")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-batch-properties-timelimit.md "definitions.schema.json#/definitions/batch/properties/timelimit")
 
 ### timelimit Type
 

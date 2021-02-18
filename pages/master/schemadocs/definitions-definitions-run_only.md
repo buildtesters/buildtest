@@ -6,19 +6,18 @@ script-v1.0.schema.json#/properties/run_only
 
 A set of conditions to specify when running tests. All conditions must pass in order to process test.
 
-
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                         |
-| :------------------ | ---------- | -------------- | ------------ | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [script-v1.0.schema.json\*](../out/script-v1.0.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                        |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [script-v1.0.schema.json*](../out/script-v1.0.schema.json "open original schema") |
 
 ## run_only Type
 
 `object` ([Details](definitions-definitions-run_only.md))
 
-# undefined Properties
+# run_only Properties
 
 | Property                      | Type     | Required | Nullable       | Defined by                                                                                                                                                            |
-| :---------------------------- | -------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :---------------------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [scheduler](#scheduler)       | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-run_only-properties-scheduler.md "definitions.schema.json#/definitions/run_only/properties/scheduler")       |
 | [user](#user)                 | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-run_only-properties-user.md "definitions.schema.json#/definitions/run_only/properties/user")                 |
 | [platform](#platform)         | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-run_only-properties-platform.md "definitions.schema.json#/definitions/run_only/properties/platform")         |
@@ -28,13 +27,15 @@ A set of conditions to specify when running tests. All conditions must pass in o
 
 Test will run only if scheduler is available. We assume binaries are available in $PATH
 
-
 `scheduler`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-run_only-properties-scheduler.md "definitions.schema.json#/definitions/run_only/properties/scheduler")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-run_only-properties-scheduler.md "definitions.schema.json#/definitions/run_only/properties/scheduler")
 
 ### scheduler Type
 
@@ -45,7 +46,7 @@ Test will run only if scheduler is available. We assume binaries are available i
 **enum**: the value of this property must be equal to one of the following values:
 
 | Value      | Explanation |
-| :--------- | ----------- |
+| :--------- | :---------- |
 | `"lsf"`    |             |
 | `"slurm"`  |             |
 | `"cobalt"` |             |
@@ -54,13 +55,15 @@ Test will run only if scheduler is available. We assume binaries are available i
 
 Test will run only if current user matches this field, otherwise test will be skipped
 
-
 `user`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-run_only-properties-user.md "definitions.schema.json#/definitions/run_only/properties/user")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-run_only-properties-user.md "definitions.schema.json#/definitions/run_only/properties/user")
 
 ### user Type
 
@@ -70,13 +73,15 @@ Test will run only if current user matches this field, otherwise test will be sk
 
 This test will run if target system is Linux or Darwin. We check target system using `platform.system()` and match with input field
 
-
 `platform`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-run_only-properties-platform.md "definitions.schema.json#/definitions/run_only/properties/platform")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-run_only-properties-platform.md "definitions.schema.json#/definitions/run_only/properties/platform")
 
 ### platform Type
 
@@ -87,7 +92,7 @@ This test will run if target system is Linux or Darwin. We check target system u
 **enum**: the value of this property must be equal to one of the following values:
 
 | Value      | Explanation |
-| :--------- | ----------- |
+| :--------- | :---------- |
 | `"Linux"`  |             |
 | `"Darwin"` |             |
 
@@ -95,13 +100,15 @@ This test will run if target system is Linux or Darwin. We check target system u
 
 Specify a list of Linux Distros to check when processing test. If target system matches one of input field, test will be processed.
 
-
 `linux_distro`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [JSON Schema Definitions File. ](definitions-definitions-run_only-properties-linux_distro.md "definitions.schema.json#/definitions/run_only/properties/linux_distro")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-run_only-properties-linux_distro.md "definitions.schema.json#/definitions/run_only/properties/linux_distro")
 
 ### linux_distro Type
 

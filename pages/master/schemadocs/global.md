@@ -6,9 +6,8 @@ global.schema.json
 
 buildtest global schema is validated for all buildspecs. The global schema defines top-level structure of buildspec and defintions that are inherited for sub-schemas
 
-
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                             |
-| :------------------ | ---------- | -------------- | ------------ | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------- |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [global.schema.json](../out/global.schema.json "open original schema") |
 
 ## global schema Type
@@ -18,7 +17,7 @@ buildtest global schema is validated for all buildspecs. The global schema defin
 # global schema Properties
 
 | Property                    | Type     | Required | Nullable       | Defined by                                                                                     |
-| :-------------------------- | -------- | -------- | -------------- | :--------------------------------------------------------------------------------------------- |
+| :-------------------------- | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------- |
 | [version](#version)         | `string` | Required | cannot be null | [global schema](global-properties-version.md "global.schema.json#/properties/version")         |
 | [maintainers](#maintainers) | `array`  | Optional | cannot be null | [global schema](global-properties-maintainers.md "global.schema.json#/properties/maintainers") |
 | [buildspecs](#buildspecs)   | `object` | Required | cannot be null | [global schema](global-properties-buildspecs.md "global.schema.json#/properties/buildspecs")   |
@@ -27,13 +26,15 @@ buildtest global schema is validated for all buildspecs. The global schema defin
 
 The semver version of the schema to use (x.x).
 
-
 `version`
 
--   is required
--   Type: `string`
--   cannot be null
--   defined in: [global schema](global-properties-version.md "global.schema.json#/properties/version")
+*   is required
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [global schema](global-properties-version.md "global.schema.json#/properties/version")
 
 ### version Type
 
@@ -43,13 +44,15 @@ The semver version of the schema to use (x.x).
 
 One or more maintainers or aliases
 
-
 `maintainers`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [global schema](global-properties-maintainers.md "global.schema.json#/properties/maintainers")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [global schema](global-properties-maintainers.md "global.schema.json#/properties/maintainers")
 
 ### maintainers Type
 
@@ -65,13 +68,15 @@ One or more maintainers or aliases
 
 This section is used to define one or more tests (buildspecs). Each test must be unique name
 
-
 `buildspecs`
 
--   is required
--   Type: `object` ([Details](global-properties-buildspecs.md))
--   cannot be null
--   defined in: [global schema](global-properties-buildspecs.md "global.schema.json#/properties/buildspecs")
+*   is required
+
+*   Type: `object` ([Details](global-properties-buildspecs.md))
+
+*   cannot be null
+
+*   defined in: [global schema](global-properties-buildspecs.md "global.schema.json#/properties/buildspecs")
 
 ### buildspecs Type
 

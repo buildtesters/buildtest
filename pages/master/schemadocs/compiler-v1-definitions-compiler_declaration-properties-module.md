@@ -6,19 +6,18 @@ compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module
 
 
 
-
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                             |
-| :------------------ | ---------- | -------------- | ------------ | :---------------- | --------------------- | ------------------- | -------------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [compiler-v1.0.schema.json\*](../out/compiler-v1.0.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                            |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------------ |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [compiler-v1.0.schema.json*](../out/compiler-v1.0.schema.json "open original schema") |
 
 ## module Type
 
 `object` ([Details](compiler-v1-definitions-compiler_declaration-properties-module.md))
 
-# undefined Properties
+# module Properties
 
 | Property            | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                             |
-| :------------------ | --------- | -------- | -------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :------------------ | :-------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [purge](#purge)     | `boolean` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module-properties-purge.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/purge")     |
 | [load](#load)       | `array`   | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/load")                                              |
 | [restore](#restore) | `string`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module-properties-restore.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/restore") |
@@ -28,13 +27,15 @@ compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module
 
 Run `module purge` if purge is set
 
-
 `purge`
 
--   is optional
--   Type: `boolean`
--   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module-properties-purge.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/purge")
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module-properties-purge.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/purge")
 
 ### purge Type
 
@@ -44,13 +45,15 @@ Run `module purge` if purge is set
 
 Load one or more modules via `module load`
 
-
 `load`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/load")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/load")
 
 ### load Type
 
@@ -66,13 +69,15 @@ Load one or more modules via `module load`
 
 Load a collection name via `module restore`
 
-
 `restore`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module-properties-restore.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/restore")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module-properties-restore.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/restore")
 
 ### restore Type
 
@@ -82,13 +87,15 @@ Load a collection name via `module restore`
 
 Swap modules using `module swap`. The swap property expects 2 unique modules.
 
-
 `swap`
 
--   is optional
--   Type: `string[]`
--   cannot be null
--   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module-properties-swap.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/swap")
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-module-properties-swap.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/swap")
 
 ### swap Type
 

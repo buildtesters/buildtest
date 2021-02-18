@@ -6,19 +6,18 @@ settings.schema.json#/properties/compilers/properties/find
 
 Find compilers based on module names
 
-
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
-| :------------------ | ---------- | -------------- | ------------ | :---------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
 
 ## find Type
 
 `object` ([Details](settings-properties-compilers-properties-find.md))
 
-# undefined Properties
+# find Properties
 
 | Property        | Type     | Required | Nullable       | Defined by                                                                                                                                                                        |
-| :-------------- | -------- | -------- | -------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :-------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [gcc](#gcc)     | `string` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-find-properties-gcc.md "settings.schema.json#/properties/compilers/properties/find/properties/gcc")     |
 | [intel](#intel) | `string` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-find-properties-intel.md "settings.schema.json#/properties/compilers/properties/find/properties/intel") |
 | [cray](#cray)   | `string` | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers-properties-find-properties-cray.md "settings.schema.json#/properties/compilers/properties/find/properties/cray")   |
@@ -30,13 +29,15 @@ Find compilers based on module names
 
 
 
-
 `gcc`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-gcc.md "settings.schema.json#/properties/compilers/properties/find/properties/gcc")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-gcc.md "settings.schema.json#/properties/compilers/properties/find/properties/gcc")
 
 ### gcc Type
 
@@ -46,13 +47,15 @@ Find compilers based on module names
 
 
 
-
 `intel`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-intel.md "settings.schema.json#/properties/compilers/properties/find/properties/intel")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-intel.md "settings.schema.json#/properties/compilers/properties/find/properties/intel")
 
 ### intel Type
 
@@ -62,13 +65,15 @@ Find compilers based on module names
 
 
 
-
 `cray`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-cray.md "settings.schema.json#/properties/compilers/properties/find/properties/cray")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-cray.md "settings.schema.json#/properties/compilers/properties/find/properties/cray")
 
 ### cray Type
 
@@ -78,13 +83,15 @@ Find compilers based on module names
 
 
 
-
 `clang`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-clang.md "settings.schema.json#/properties/compilers/properties/find/properties/clang")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-clang.md "settings.schema.json#/properties/compilers/properties/find/properties/clang")
 
 ### clang Type
 
@@ -94,13 +101,15 @@ Find compilers based on module names
 
 
 
-
 `cuda`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-cuda.md "settings.schema.json#/properties/compilers/properties/find/properties/cuda")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-cuda.md "settings.schema.json#/properties/compilers/properties/find/properties/cuda")
 
 ### cuda Type
 
@@ -110,13 +119,15 @@ Find compilers based on module names
 
 
 
-
 `pgi`
 
--   is optional
--   Type: `string`
--   cannot be null
--   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-pgi.md "settings.schema.json#/properties/compilers/properties/find/properties/pgi")
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-properties-compilers-properties-find-properties-pgi.md "settings.schema.json#/properties/compilers/properties/find/properties/pgi")
 
 ### pgi Type
 
