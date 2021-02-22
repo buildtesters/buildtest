@@ -10,7 +10,7 @@ docs at https://buildtest.readthedocs.io/en/devel/.
 Status
 -----------
 
-| |license| |docs| |codecov| |slack| |regressiontest|
+| |docs| |codecov| |slack| |regressiontest|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -19,8 +19,6 @@ Status
 
 .. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
     :target: http://hpcbuildtest.slack.com
-
-.. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
 
 .. |codecov| image:: https://codecov.io/gh/buildtesters/buildtest/branch/devel/graph/badge.svg
     :target: https://codecov.io/gh/buildtesters/buildtest
@@ -77,7 +75,7 @@ module features were deprecated and moved to lmodule with the main objective is 
 automate module load testing. For more details on lmodule see https://github.com/buildtesters/lmodule
 
 To get started with buildtest, please review the :ref:`terminology`
-and proceed to :ref:`Setup`  followed by :ref:`Getting Started`.
+and proceed to :ref:`installing buildtest <Setup>`  followed by :ref:`getting started guide <Getting_Started>`.
 
 For additional reference, you can read :ref:`summary_of_buildtest` and
 :ref:`conferences`.
