@@ -1,4 +1,4 @@
-| |license| |docs| |codecov| |slack| |release| |ascent_pipeline_status| |cori_pipeline_status| |installation| |regressiontest| |buildtest_scripts|  |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
+| |docs| |codecov| |slack| |release| |ascent_pipeline_status| |cori_pipeline_status| |installation| |regressiontest| |buildtest_scripts|  |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -7,8 +7,6 @@
 
 .. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
     :target: http://hpcbuildtest.slack.com
-
-.. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
 
 .. |ascent_pipeline_status| image::  https://code.ornl.gov/ecpcitest/buildtest/badges/devel/pipeline.svg
    :target: https://code.ornl.gov/ecpcitest/buildtest/-/commits/devel
@@ -71,14 +69,29 @@
 buildtest
 ---------
 
-buildtest is a HPC testing framework that helps facilities write acceptance test
-more efficiently. Buildtest provides a framework for facility to write tests in `YAML <https://yaml.org/>`_
-called *Buildspecs* and buildtest handles how to create testscript and run the test on your system.
-Buildtest makes use of `jsonschema <https://json-schema.org/>`_
-to specify schema how Buildspecs are written and validated. Once you learn buildtest,
-you can start writing tests.
+`buildtest <https://buildtest.rtfd.io/>`_ is a testing framework for HPC facilities to write acceptance test
+for their system. In buildtest, you will write tests in `YAML <https://yaml.org/>`_
+called **Buildspecs** which is a test recipe used by buildtest for generating test scripts.
+buildtest will process *buildspecs* and automatically create shell-scripts and run them
+on your system. buildtest supports `IBM Spectrum LSF <https://www.ibm.com/support/knowledgecenter/SSWRJV_10.1.0/lsf_welcome/lsf_welcome.html>`_,
+`Slurm <https://slurm.schedmd.com/>`_, and `Cobalt <https://trac.mcs.anl.gov/projects/cobalt/>`_ batch scheduler for job submission.
+buildtest makes use of `jsonschema <https://json-schema.org/>`_ to define structure of buildspecs used for validating buildspecs. 
 
-To get started with buildtest see `Installing buildtest <https://buildtest.readthedocs.io/en/latest/installing_buildtest.html>`_.
+If you want to learn more about buildtest read https://buildtest.readthedocs.io/en/latest/what_is_buildtest.html.
+
+Installation
+--------------
+
+
+Installing buildtest, is relatively easy. Just clone this repo and source the setup script::
+
+    git clone https://github.com/buildtesters/buildtest.git
+    cd buildtest
+    source setup.sh
+
+
+For more details see `installing buildtest <https://buildtest.readthedocs.io/en/latest/installing_buildtest.html>`_.
+
 
 Schema Development
 -------------------
@@ -121,24 +134,27 @@ if you face similar issue. If all else fails please create a ticket.
 Source Code
 ------------
 
-buildtest source code is under ``buildtest`` directory found in the root of this
-repository. The documentation is under ``docs`` which consist of ``Makefile``
-and ``conf.py`` to build the sphinx project along with documentation pages in
+buildtest source code is under `buildtest <https://github.com/buildtesters/buildtest/tree/devel/buildtest>`_
+directory found in the root of this repository. The documentation pages are located in
+`docs <https://github.com/buildtesters/buildtest/tree/devel/docs>`_ folder
+which consist of `Makefile <https://github.com/buildtesters/buildtest/blob/devel/docs/Makefile>`_ and
+`conf.py <https://github.com/buildtesters/buildtest/blob/devel/docs/conf.py>`_ to build the sphinx project along with documentation pages in
 ReStructuredText (rst). The regression test are found in top-level directory
-named ``tests`` and the test suite is run via ``pytest``.
+named `tests <https://github.com/buildtesters/buildtest/tree/devel/tests>`_ and the test suite is run via `pytest <https://docs.pytest.org/en/stable/>`_.
 
 Slack
 ------
 
-Click the `Join Slack Channel <https://hpcbuildtest.herokuapp.com/>`_ to get in
-touch with the buildtest community. If you already have an account then access
-the Slack Channel `here  <https://hpcbuildtest.slack.com>`_.
+Slack is the **preferred** method for communication and user support with buildtest.
+If you haven't joined slack click the `self invite <https://hpcbuildtest.herokuapp.com/>`_
+to register your account. Once you have an account you can access slack channel at https://hpcbuildtest.slack.com and post
+your questions in **#general** channel.
 
 Contributing Back
 -------------------
 
-We would love to get your contribution, if you are not sure check out the
-`Contribution Guide <https://buildtest.readthedocs.io/en/latest/contributing.html>`_ to get started.
+We would love to get your feedback and contribution, for more details see
+`contribution guide <https://buildtest.readthedocs.io/en/latest/contributing.html>`_.
 
 Author
 -------

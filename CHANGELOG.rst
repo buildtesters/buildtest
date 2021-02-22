@@ -1,14 +1,23 @@
 CHANGELOG
 =========
 
-v0.9.3 (TBD)
--------------
+v0.9.3 (Feb 22, 2021)
+----------------------
+
+In this version we updated the copyright details to include UC - LBNL see `COPYRIGHT <https://github.com/buildtesters/buildtest/blob/devel/COPYRIGHT>`_  and 
+`LICENSE <https://github.com/buildtesters/buildtest/blob/devel/LICENSE>`_. We added `dependabot <https://dependabot.com/>`_ for tracking out-of-date dependencies for github action and python dependencies. In addition, we made minor tweaks to ``buildtest buildspec find`` command in its output. We added regression test pipeline for OLCF - Ascent system and moved gitlab pipelines in top-level folder `.gitlab <https://github.com/buildtesters/buildtest/tree/devel/.gitlab>`_.
 
 
+- Add command ``buildtest config executors`` to view executors - `#648 <https://github.com/buildtesters/buildtest/pull/648>`_
+- Add ``--oldest`` and ``--latest`` option in **buildtest report** command for retrieving oldest and latest record see `#634 <https://github.com/buildtesters/buildtest/pull/634>`_
+- Remove ``--validate`` option from ``buildtest schema`` for validating JSON schema, this option mimics the regression test. See commit `5825637 <https://github.com/buildtesters/buildtest/commit/5825637cd7ff59b1db3eb5929f4a38e6824f24bf>`_
 - Change Copyright and License to include UC - LBNL - `#611 <https://github.com/buildtesters/buildtest/pull/611>`_
 - Add dependabot for github actions and pypi packages - `#615 <https://github.com/buildtesters/buildtest/pull/615>`_
-- Add option to query buildspecs by maintainers and breakdown by buildspecs using `--maintainers` and `--maintainers-by-buildspecs` see `#599 <https://github.com/buildtesters/buildtest/pull/599>`_
-- Add option to filter tests by tags using `buildtest build --filter-tags`, the behavior of `buildtest build --tags` is used to for discovery of buildspecs `#587 <https://github.com/buildtesters/buildtest/pull/587>`_
+- Add gitlab CI file for running regression test on OLCF `#603 <https://github.com/buildtesters/buildtest/pull/603>`_
+- Now when you install buildtest via ``setup.[sh|csh]``, we set **BUILDTEST_ROOT** variable so user can navigate to root of buildtest. We fixed how to detect root of buildtest on Linux and Mac system see `#646 <https://github.com/buildtesters/buildtest/pull/646>`_. We also add `installation workflow <https://github.com/buildtesters/buildtest/pull/604>`_ to test buildtest on different platform and python distro.
+- Add option to query buildspecs by maintainers and breakdown by buildspecs using ``--maintainers`` and ``--maintainers-by-buildspecs`` see `#599 <https://github.com/buildtesters/buildtest/pull/599>`_
+- Add option to filter tests by tags using ``buildtest build --filter-tags``, the behavior of ``buildtest build --tags`` is used to for discovery of buildspecs `#587 <https://github.com/buildtesters/buildtest/pull/587>`_
+- Add singularity tests see `#645 <https://github.com/buildtesters/buildtest/pull/645>`_
 
 
 v0.9.2 (Jan 12th, 2021)
