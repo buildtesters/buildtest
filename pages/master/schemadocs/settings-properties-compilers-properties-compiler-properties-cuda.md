@@ -16,24 +16,24 @@ Declaration of one or more Cuda compilers where we define C compiler. The Cuda c
 
 # cuda Properties
 
-| Property | Type     | Required | Nullable       | Defined by                                                                                                                                                             |
-| :------- | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cuda.md "settings.schema.json#/properties/compilers/properties/compiler/properties/cuda/patternProperties/^.*$") |
+| Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                         |
+| :------- | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section.md "settings.schema.json#/properties/compilers/properties/compiler/properties/cuda/patternProperties/^.*$") |
 
 ## Pattern: `^.*$`
 
-The cuda compiler section consist of `cc`  where you generally specify path to `nvcc`
+A compiler section is composed of `cc`, `cxx` and `fc` wrapper these are required when you need to specify compiler wrapper.
 
 `^.*$`
 
 *   is optional
 
-*   Type: `object` ([Details](settings-definitions-cuda.md))
+*   Type: `object` ([Details](settings-definitions-compiler_section.md))
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-cuda.md "settings.schema.json#/properties/compilers/properties/compiler/properties/cuda/patternProperties/^.\*$")
+*   defined in: [buildtest configuration schema](settings-definitions-compiler_section.md "settings.schema.json#/properties/compilers/properties/compiler/properties/cuda/patternProperties/^.\*$")
 
 ### ^.\*$ Type
 
-`object` ([Details](settings-definitions-cuda.md))
+`object` ([Details](settings-definitions-compiler_section.md))

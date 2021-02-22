@@ -16,24 +16,24 @@ Declaration of one or more Clang compilers where we define C, C++ compiler. The 
 
 # clang Properties
 
-| Property | Type     | Required | Nullable       | Defined by                                                                                                                                                               |
-| :------- | :------- | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-clang.md "settings.schema.json#/properties/compilers/properties/compiler/properties/clang/patternProperties/^.*$") |
+| Property | Type     | Required | Nullable       | Defined by                                                                                                                                                                          |
+| :------- | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `^.*$`   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section.md "settings.schema.json#/properties/compilers/properties/compiler/properties/clang/patternProperties/^.*$") |
 
 ## Pattern: `^.*$`
 
-The clang compiler section consist of `cc` and `cxx` wrapper to specify C and C++ wrapper which are generally `clang` and `clang++`
+A compiler section is composed of `cc`, `cxx` and `fc` wrapper these are required when you need to specify compiler wrapper.
 
 `^.*$`
 
 *   is optional
 
-*   Type: `object` ([Details](settings-definitions-clang.md))
+*   Type: `object` ([Details](settings-definitions-compiler_section.md))
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-clang.md "settings.schema.json#/properties/compilers/properties/compiler/properties/clang/patternProperties/^.\*$")
+*   defined in: [buildtest configuration schema](settings-definitions-compiler_section.md "settings.schema.json#/properties/compilers/properties/compiler/properties/clang/patternProperties/^.\*$")
 
 ### ^.\*$ Type
 
-`object` ([Details](settings-definitions-clang.md))
+`object` ([Details](settings-definitions-compiler_section.md))

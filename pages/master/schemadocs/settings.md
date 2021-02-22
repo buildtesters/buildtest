@@ -22,6 +22,7 @@ settings.schema.json
 | [buildspec_roots](#buildspec_roots)                 | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-properties-buildspec_roots.md "settings.schema.json#/properties/buildspec_roots")                 |
 | [load_default_buildspecs](#load_default_buildspecs) | `boolean`     | Required | cannot be null | [buildtest configuration schema](settings-properties-load_default_buildspecs.md "settings.schema.json#/properties/load_default_buildspecs") |
 | [testdir](#testdir)                                 | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-testdir.md "settings.schema.json#/properties/testdir")                                 |
+| [logdir](#logdir)                                   | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-logdir.md "settings.schema.json#/properties/logdir")                                   |
 | [moduletool](#moduletool)                           | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-moduletool.md "settings.schema.json#/properties/moduletool")                           |
 | [compilers](#compilers)                             | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers.md "settings.schema.json#/properties/compilers")                             |
 | [executors](#executors)                             | `object`      | Required | cannot be null | [buildtest configuration schema](settings-properties-executors.md "settings.schema.json#/properties/executors")                             |
@@ -95,6 +96,24 @@ Specify full path to test directory where buildtest will write tests.
 *   defined in: [buildtest configuration schema](settings-properties-testdir.md "settings.schema.json#/properties/testdir")
 
 ### testdir Type
+
+`string`
+
+## logdir
+
+Specify location where buildtest will write log files
+
+`logdir`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-properties-logdir.md "settings.schema.json#/properties/logdir")
+
+### logdir Type
 
 `string`
 
@@ -197,123 +216,6 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
-## Definitions group clang
-
-Reference this group by using
-
-```json
-{"$ref":"settings.schema.json#/definitions/clang"}
-```
-
-| Property          | Type     | Required | Nullable       | Defined by                                                                                                                              |
-| :---------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
-| [cc](#cc)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-clang-properties-cc.md "settings.schema.json#/definitions/clang/properties/cc")   |
-| [cxx](#cxx)       | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-clang-properties-cxx.md "settings.schema.json#/definitions/clang/properties/cxx") |
-| [module](#module) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/clang/properties/module")            |
-
-### cc
-
-Specify path to C compiler wrapper. You may specify a compiler wrapper such as `gcc` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
-
-`cc`
-
-*   is required
-
-*   Type: `string`
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-clang-properties-cc.md "settings.schema.json#/definitions/clang/properties/cc")
-
-#### cc Type
-
-`string`
-
-### cxx
-
-Specify path to C++ compiler wrapper. You may specify a compiler wrapper such as `g++` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
-
-`cxx`
-
-*   is required
-
-*   Type: `string`
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-clang-properties-cxx.md "settings.schema.json#/definitions/clang/properties/cxx")
-
-#### cxx Type
-
-`string`
-
-### module
-
-
-
-`module`
-
-*   is optional
-
-*   Type: `object` ([Details](settings-definitions-module.md))
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/clang/properties/module")
-
-#### module Type
-
-`object` ([Details](settings-definitions-module.md))
-
-## Definitions group cuda
-
-Reference this group by using
-
-```json
-{"$ref":"settings.schema.json#/definitions/cuda"}
-```
-
-| Property            | Type     | Required | Nullable       | Defined by                                                                                                                          |
-| :------------------ | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
-| [cc](#cc-1)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-cuda-properties-cc.md "settings.schema.json#/definitions/cuda/properties/cc") |
-| [module](#module-1) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/cuda/properties/module")         |
-
-### cc
-
-Specify path to C compiler wrapper. You may specify a compiler wrapper such as `gcc` assuming its in $PATH or you can use `modules` property to resolve path to compiler wrapper.
-
-`cc`
-
-*   is required
-
-*   Type: `string`
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-cuda-properties-cc.md "settings.schema.json#/definitions/cuda/properties/cc")
-
-#### cc Type
-
-`string`
-
-### module
-
-
-
-`module`
-
-*   is optional
-
-*   Type: `object` ([Details](settings-definitions-module.md))
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/cuda/properties/module")
-
-#### module Type
-
-`object` ([Details](settings-definitions-module.md))
-
 ## Definitions group compiler_section
 
 Reference this group by using
@@ -322,12 +224,12 @@ Reference this group by using
 {"$ref":"settings.schema.json#/definitions/compiler_section"}
 ```
 
-| Property            | Type     | Required | Nullable       | Defined by                                                                                                                                                    |
-| :------------------ | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [cc](#cc-2)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-cc.md "settings.schema.json#/definitions/compiler_section/properties/cc")   |
-| [cxx](#cxx-1)       | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-cxx.md "settings.schema.json#/definitions/compiler_section/properties/cxx") |
-| [fc](#fc)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-fc.md "settings.schema.json#/definitions/compiler_section/properties/fc")   |
-| [module](#module-2) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/compiler_section/properties/module")                       |
+| Property          | Type     | Required | Nullable       | Defined by                                                                                                                                                    |
+| :---------------- | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [cc](#cc)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-cc.md "settings.schema.json#/definitions/compiler_section/properties/cc")   |
+| [cxx](#cxx)       | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-cxx.md "settings.schema.json#/definitions/compiler_section/properties/cxx") |
+| [fc](#fc)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-compiler_section-properties-fc.md "settings.schema.json#/definitions/compiler_section/properties/fc")   |
+| [module](#module) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/compiler_section/properties/module")                       |
 
 ### cc
 
