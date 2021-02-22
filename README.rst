@@ -69,12 +69,15 @@
 buildtest
 ---------
 
-buildtest is a testing framework for HPC facilities to write acceptance test
+`buildtest <https://buildtest.rtfd.io/>`_ is a testing framework for HPC facilities to write acceptance test
 for their system. In buildtest, you will write tests in `YAML <https://yaml.org/>`_
 called **Buildspecs** which is a test recipe used by buildtest for generating test scripts.
 buildtest will process *buildspecs* and automatically create shell-scripts and run them
-on your system via executors (local, batch). Currently, we support LSF, Slurm, and Cobalt
-scheduler for job submission. We use `jsonschema <https://json-schema.org/>`_ to define structure of buildspecs.
+on your system. buildtest supports `IBM Spectrum LSF <https://www.ibm.com/support/knowledgecenter/SSWRJV_10.1.0/lsf_welcome/lsf_welcome.html>`_,
+`Slurm <https://slurm.schedmd.com/>`_, and `Cobalt <https://trac.mcs.anl.gov/projects/cobalt/>`_ batch scheduler for job submission.
+buildtest makes use of `jsonschema <https://json-schema.org/>`_ to define structure of buildspecs used for validating buildspecs. 
+
+If you want to learn more about buildtest read https://buildtest.readthedocs.io/en/latest/what_is_buildtest.html.
 
 Installation
 --------------
@@ -142,13 +145,10 @@ named `tests <https://github.com/buildtesters/buildtest/tree/devel/tests>`_ and 
 Slack
 ------
 
-Slack is **preferred* method to answer your questions,  best way to ask for questions, you
-Click the `Join Slack Channel <https://hpcbuildtest.herokuapp.com/>`_ to get in
-touch with the buildtest community. If you already have an account then access
-the Slack Channel `here  <https://hpcbuildtest.slack.com>`_.
-
-- Self Invite: https://hpcbuildtest.herokuapp.com/
-- Slack Channel: https://hpcbuildtest.slack.com
+Slack is the **preferred** method for communication and user support with buildtest.
+If you haven't joined slack click the `self invite <https://hpcbuildtest.herokuapp.com/>`_
+to register your account. Once you have an account you can access slack channel at https://hpcbuildtest.slack.com and post
+your questions in **#general** channel.
 
 Contributing Back
 -------------------
