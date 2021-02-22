@@ -324,6 +324,11 @@ For instance, on Mac the directory path may be something as follows::
 The buildtest logs will start with **buildtest_** followed by random identifier with
 a **.log** extension.
 
+buildtest will write the same log file in **$BUILDTEST_ROOT/buildtest.log** which can
+be used to fetch last build log. This is convenient if you don't remember the directory
+path to log file.
+
+
 before_script and after_script for executors
 ---------------------------------------------
 
