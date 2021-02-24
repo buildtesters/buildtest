@@ -392,9 +392,11 @@ def parse_buildspecs(
         for test in invalid_buildspecs:
             print(test)
 
+    # if no builders found we return from this method
     if not builders:
         print("No buildspecs to process because there are no valid buildspecs")
-        sys.exit(0)
+        return
+        # sys.exit(0)
 
     if printTable:
         print(
@@ -748,7 +750,7 @@ def func_build_subcmd(args, buildtest_config):
     :type buildtest_config: dict, required
     :rtype: None
     """
-    # print("args.testdir", args.testdir)
+
     test_directory = resolve_testdirectory(buildtest_config, args.testdir)
 
     # discover all buildspecs by tags, buildspecs, and exclude buildspecs. The return
@@ -771,6 +773,10 @@ def func_build_subcmd(args, buildtest_config):
         rebuild=args.rebuild,
         printTable=True,
     )
+
+    if not builders:
+        return
+
     # if --stage option is specified we return from method
     if args.stage == "parse":
         return

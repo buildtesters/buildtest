@@ -117,12 +117,6 @@ References
 
 - Snyk: https://app.snyk.io/org/buildtesters/
 
-Why buildtest?
----------------
-
-Read https://buildtest.readthedocs.io/en/latest/what_is_buildtest.html to
-understand why we need buildtest and what we are trying to solve.
-
 Documentation
 -------------
 
