@@ -370,12 +370,14 @@ def update_report(valid_builders):
         report[buildspec][name] = report.get(buildspec, {}).get(name) or []
 
         # query over attributes found in builder.metadata, we only assign
-        # keys that we care obout for reporting
+        # keys that we care about for reporting
         for item in [
             "id",
             "full_id",
             "testroot",
             "testpath",
+            "stagedir",
+            "rundir",
             "command",
             "outfile",
             "errfile",
