@@ -10,8 +10,6 @@
 
 *   [global schema](./global.md "buildtest global schema is validated for all buildspecs") – `global.schema.json`
 
-*   [python schema version 1.0](./python-v1.md "The script schema is of type: python in sub-schema which is used for running python scripts") – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json`
-
 *   [script schema version 1.0](./script-v1.md "The script schema is of type: script in sub-schema which is used for running shell scripts") – `script-v1.0.schema.json`
 
 ## Other Schemas
@@ -93,8 +91,6 @@
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `definitions.schema.json#/definitions/batch`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/status`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
@@ -304,10 +300,6 @@
 
 *   [Untitled object in global schema](./global-properties-buildspecs.md "This section is used to define one or more tests (buildspecs)") – `global.schema.json#/properties/buildspecs`
 
-*   [Untitled object in python schema version 1.0](./python-v1-properties-package.md) – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/package`
-
-*   [Untitled object in python schema version 1.0](./python-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/status`
-
 *   [Untitled object in script schema version 1.0](./script-v1-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `script-v1.0.schema.json#/properties/batch`
 
 *   [Untitled object in script schema version 1.0](./script-v1-properties-env.md "One or more key value pairs for an environment (key=value)") – `script-v1.0.schema.json#/properties/env`
@@ -369,10 +361,6 @@
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
 
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
 
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
 
@@ -553,14 +541,6 @@
 *   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
 
 *   [Untitled array in global schema](./global-properties-maintainers.md "One or more maintainers or aliases") – `global.schema.json#/properties/maintainers`
-
-*   [Untitled array in python schema version 1.0](./python-v1-properties-pyver.md) – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/pyver`
-
-*   [Untitled array in python schema version 1.0](./python-v1-properties-package-properties-pypi.md) – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/package/properties/pypi`
-
-*   [Untitled array in python schema version 1.0](./python-v1-properties-module.md) – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/module`
-
-*   [Untitled array in python schema version 1.0](./python-v1-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `https://buildtesters.github.io/schemas/schemas/python-v1.0.schema.json#/properties/sbatch`
 
 *   [Untitled array in script schema version 1.0](./script-v1-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `script-v1.0.schema.json#/properties/sbatch`
 
