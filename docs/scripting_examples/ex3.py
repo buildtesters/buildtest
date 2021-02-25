@@ -11,7 +11,7 @@ configuration = load_settings()
 testdir = resolve_testdirectory(configuration)
 
 executor = BuildExecutor(configuration)
-buildspec_filters = {"tags": None }
+buildspec_filters = {"tags": None}
 builders = parse_buildspecs(
     buildspecs=included_bp,
     executor=executor,

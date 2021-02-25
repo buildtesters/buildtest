@@ -73,8 +73,8 @@ class LSFExecutor(BaseExecutor):
         # The job_id variable is used to store the JobID retrieved by bjobs
         self.job_id = 0
 
-        os.chdir(self.builder.metadata["testroot"])
-        self.logger.debug(f"Changing to directory {self.builder.metadata['testroot']}")
+        os.chdir(self.builder.stage_dir)
+        self.logger.debug(f"Changing to stage directory {self.builder.stage_dir}")
 
         bsub_cmd = [self.launcher]
 
@@ -209,11 +209,13 @@ class LSFExecutor(BaseExecutor):
         self.builder.metadata["result"]["starttime"] = job_data["START_TIME"]
         self.builder.metadata["result"]["endtime"] = job_data["FINISH_TIME"]
         self.builder.metadata["outfile"] = os.path.join(
-            self.builder.testdir, job_data["OUTPUT_FILE"]
+            self.builder.stage_dir, job_data["OUTPUT_FILE"]
         )
         self.builder.metadata["errfile"] = os.path.join(
-            self.builder.testdir, job_data["ERROR_FILE"]
+            self.builder.stage_dir, job_data["ERROR_FILE"]
         )
+        print(self.builder.metadata)
+        print(self.builder.testdir)
         self.builder.metadata["output"] = read_file(self.builder.metadata["outfile"])
         self.builder.metadata["error"] = read_file(self.builder.metadata["errfile"])
 
