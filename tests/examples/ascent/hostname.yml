@@ -1,0 +1,11 @@
+version: "1.0"
+buildspecs:
+  hostname:
+    type: script
+    executor: lsf.batch
+    description: Run hostname in batch job
+    tags: [jobs]
+    batch:
+      timelimit: "10"
+      nodecount: "1"
+    run: jsrun hostname
