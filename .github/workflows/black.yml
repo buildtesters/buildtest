@@ -16,12 +16,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - uses: psf/black@stable
-        continue-on-error: true
-        with:
-          args: "buildtest tests --check"
-  
+      
       - name: Check imports with pyflakes
         run: |
           pip install pyflakes
           pyflakes buildtest tests
+          
+      - name: Run black lint
+      - uses: psf/black@stable
+        with:
+          args: ". --check"
+  
+      
