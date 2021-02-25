@@ -5,7 +5,5 @@ buildspecs:
     executor: lsf.batch
     description: Run hostname in batch job
     tags: [jobs]
-    batch:
-      timelimit: "10"
-      nodecount: "1"
+    bsub: ["-W 10", "-nnodes 1"]
     run: jsrun hostname

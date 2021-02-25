@@ -3,7 +3,7 @@ load_default_buildspecs: false
 executors:
   defaults:
     launcher: bsub
-    pollinterval: 10
+    pollinterval: 30
     max_pend_time: 60
     account: gen014ecpci
   local:
