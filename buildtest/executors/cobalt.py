@@ -10,7 +10,15 @@ from buildtest.executors.base import BaseExecutor
 
 
 class CobaltExecutor(BaseExecutor):
-    """The CobaltExecutor class is responsible for submitting jobs to Cobalt Scheduler."""
+    """The CobaltExecutor class is responsible for submitting jobs to Cobalt Scheduler.
+    The class implements the following methods:
+
+    load: load Cobalt executors from configuration file
+    dispatch: submit Cobalt job to scheduler
+    poll: poll Cobalt job via qstat and retrieve job state
+    gather: gather job result
+    cancel: cancel job if it exceeds max pending time
+    """
 
     type = "cobalt"
 
@@ -91,12 +99,8 @@ class CobaltExecutor(BaseExecutor):
         # file names are not set in job script
         outfile = str(self.builder.metadata["jobid"]) + ".output"
         errfile = str(self.builder.metadata["jobid"]) + ".error"
-        self.builder.metadata[
-            "outfile"
-        ] = f"{os.path.join(self.builder.stage_dir,outfile)}"
-        self.builder.metadata[
-            "errfile"
-        ] = f"{os.path.join(self.builder.stage_dir,errfile)}"
+        self.builder.metadata["outfile"] = os.path.join(self.builder.stage_dir, outfile)
+        self.builder.metadata["errfile"] = os.path.join(self.builder.stage_dir, errfile)
 
         self.logger.debug(
             f"Output file will be written to: {self.builder.metadata['outfile']}"
@@ -148,11 +152,10 @@ class CobaltExecutor(BaseExecutor):
         output = " ".join(output).strip()
 
         # Output in format State: <state> so we need to get value of state
-        job_state = output.partition(":")[2]
-        self.job_state = job_state.strip()
+        job_state = output.partition(":")[2].strip()
 
-        if self.job_state:
-            self.builder.job_state = self.job_state
+        if job_state:
+            self.builder.job_state = job_state
 
         msg = f"[{self.builder.metadata['name']}]: JobID {self.builder.metadata['jobid']} in {self.builder.job_state} state "
         print(msg)
@@ -180,7 +183,7 @@ class CobaltExecutor(BaseExecutor):
             # if timer time is more than requested pend time then cancel job
             if int(self.builder.duration) > self.max_pend_time:
                 self.cancel()
-                self.job_state = "CANCELLED"
+                self.builder.job_state = "CANCELLED"
                 print(
                     "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
                         self.builder.duration, self.max_pend_time
@@ -188,7 +191,6 @@ class CobaltExecutor(BaseExecutor):
                 )
 
             self.builder.start()
-            self.builder.job_state = self.job_state
 
     def gather(self):
         """This method is responsible for moving output and error file in the run

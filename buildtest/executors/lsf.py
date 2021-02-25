@@ -18,15 +18,15 @@ class LSFExecutor(BaseExecutor):
     """The LSFExecutor class is responsible for submitting jobs to LSF Scheduler.
     The LSFExecutor performs the following steps
 
-    check: check if lsf queue is available for accepting jobs.
     load: load lsf configuration from buildtest configuration file
     dispatch: dispatch job to scheduler and acquire job ID
     poll: wait for LSF jobs to finish
     gather: Once job is complete, gather job data
+    cancel: Cancel job if it exceeds max pending time
     """
 
     type = "lsf"
-    job_state = None
+
     poll_cmd = "bjobs"
     # format fields we retrieve in gather step
     format_fields = [
@@ -142,14 +142,14 @@ class LSFExecutor(BaseExecutor):
         self.logger.debug(query)
         cmd = BuildTestCommand(query)
         cmd.execute()
-        self.job_state = cmd.get_output()
-        self.job_state = "".join(self.job_state).rstrip()
-        msg = f"[{self.builder.metadata['name']}]: JobID {self.builder.metadata['jobid']} in {self.job_state} state "
+        job_state = cmd.get_output()
+        self.builder.job_state = "".join(job_state).rstrip()
+        msg = f"[{self.builder.metadata['name']}]: JobID {self.builder.metadata['jobid']} in {self.builder.job_state} state "
         print(msg)
         self.logger.debug(msg)
 
         # if job state in PEND check if we need to cancel job by checking internal timer
-        if self.job_state == "PEND":
+        if self.builder.job_state == "PEND":
             self.builder.stop()
             self.logger.debug(f"Time Duration: {self.builder.duration}")
             self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
@@ -157,20 +157,14 @@ class LSFExecutor(BaseExecutor):
             # if timer time is more than requested pend time then cancel job
             if int(self.builder.duration) > self.max_pend_time:
                 self.cancel()
-                self.job_state = "CANCELLED"
+                self.builder.job_state = "CANCELLED"
                 print(
                     "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
                         self.builder.duration, self.max_pend_time
                     )
                 )
-                self.builder.job_state = self.job_state
-                return self.job_state
 
             self.builder.start()
-
-        self.builder.job_state = self.job_state
-
-        return self.job_state
 
     def gather(self):
         """Gather Job detail after completion of job. This method will retrieve output
@@ -214,8 +208,7 @@ class LSFExecutor(BaseExecutor):
         self.builder.metadata["errfile"] = os.path.join(
             self.builder.stage_dir, job_data["ERROR_FILE"]
         )
-        print(self.builder.metadata)
-        print(self.builder.testdir)
+
         self.builder.metadata["output"] = read_file(self.builder.metadata["outfile"])
         self.builder.metadata["error"] = read_file(self.builder.metadata["errfile"])
 

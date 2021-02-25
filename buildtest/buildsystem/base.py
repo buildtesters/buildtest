@@ -53,6 +53,9 @@ class BuilderBase(ABC):
         self.metadata = {}
 
         self.duration = 0
+
+        # keeps track of job state as job progress through queuing system. This is
+        # applicable for builders using batch executor.
         self.job_state = None
 
         # ensure buildspec ends with .yml extension
@@ -104,6 +107,7 @@ class BuilderBase(ABC):
         self.metadata["output"] = None
         # store error content of test
         self.metadata["error"] = None
+
         self.metadata["result"] = {}
         self.metadata["result"]["state"] = "N/A"
         self.metadata["result"]["returncode"] = "-1"
@@ -112,6 +116,10 @@ class BuilderBase(ABC):
             schema_table[f"{self.recipe['type']}-v1.0.schema.json"]["path"]
         )
         self.metadata["executor"] = self.executor
+        # used to store job id from batch scheduler
+        self.metadata["jobid"] = None
+        # used to store job metrics for given JobID from batch scheduler
+        self.metadata["job"] = None
         # Generate a unique id for the build based on key and unique string
         self.metadata["full_id"] = self._generate_unique_id()
         self.metadata["id"] = self.metadata["full_id"][:8]

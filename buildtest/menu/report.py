@@ -399,7 +399,7 @@ def update_report(valid_builders):
         entry["output"] = builder.metadata["output"]
         entry["error"] = builder.metadata["error"]
 
-        entry["job"] = builder.metadata.get("job") or None
+        entry["job"] = builder.metadata["job"]
         report[buildspec][name].append(entry)
 
     with open(BUILD_REPORT, "w") as fd:
