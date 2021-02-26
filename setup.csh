@@ -57,6 +57,9 @@ if (! $?BUILDTEST_ROOT) then
 endif
 
 
+# error printing tables from tabulate when utf8 encoding not set. See https://github.com/buildtesters/buildtest/issues/665
+setenv LANG en_US.utf8
+
 set pip=pip
 
 if ( ! -x `command -v $pip` ) then 
