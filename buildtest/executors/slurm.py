@@ -153,9 +153,12 @@ class SlurmExecutor(BaseExecutor):
         job_state = cmd.get_output()
         self.builder.job_state = "".join(job_state).rstrip()
 
-        msg = f"[{self.builder.metadata['name']}]: JobID {self.builder.metadata['jobid']} in {self.builder.job_state} state "
-        print(msg)
-        self.logger.debug(msg)
+        self.logger.debug(
+            "[%s]: JobID %s in %s state ",
+            self.builder.metadata["name"],
+            self.builder.metadata["jobid"],
+            self.builder.job_state,
+        )
 
         # if job state in PENDING check if we need to cancel job by checking internal timer
         if self.builder.job_state == "PENDING":

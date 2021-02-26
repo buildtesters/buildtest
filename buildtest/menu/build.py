@@ -701,43 +701,59 @@ def poll_jobs(config_dict, poll_queue, executor, valid_builders):
                 ignore_jobs.add(builder)
                 completed_jobs.add(builder)
 
+        jobIDs = []
+
+        for job in poll_queue:
+            jobIDs.append(job.metadata["jobid"])
+        print("Job Queue:", jobIDs)
+
         completed_jobs_table = {
             "name": [],
             "executor": [],
             "jobID": [],
             "jobstate": [],
-            "command": [],
         }
         pending_jobs_table = {
             "name": [],
             "executor": [],
             "jobID": [],
             "jobstate": [],
-            "command": [],
         }
         for job in completed_jobs:
             completed_jobs_table["name"].append(job.name)
             completed_jobs_table["executor"].append(job.executor)
             completed_jobs_table["jobID"].append(job.metadata["jobid"])
             completed_jobs_table["jobstate"].append(job.job_state)
-            completed_jobs_table["command"].append(job.metadata["command"])
 
         for job in poll_queue:
             pending_jobs_table["name"].append(job.name)
             pending_jobs_table["executor"].append(job.executor)
             pending_jobs_table["jobID"].append(job.metadata["jobid"])
             pending_jobs_table["jobstate"].append(job.job_state)
-            pending_jobs_table["command"].append(job.metadata["command"])
 
         print("\n")
         print("Completed Jobs")
         print("{:_<40}".format(""))
-        print(tabulate(completed_jobs_table, headers=table.keys(), tablefmt="presto"))
+        print("\n")
+        print(
+            tabulate(
+                completed_jobs_table,
+                headers=completed_jobs_table.keys(),
+                tablefmt="fancy_grid",
+            )
+        )
 
         print("\n")
-        print("Completed Jobs")
+        print("Pending Jobs")
         print("{:_<40}".format(""))
-        print(tabulate(pending_jobs_table, headers=table.keys(), tablefmt="presto"))
+        print("\n")
+        print(
+            tabulate(
+                pending_jobs_table,
+                headers=pending_jobs_table.keys(),
+                tablefmt="fancy_grid",
+            )
+        )
 
     # remove any builders where for jobs that need to be ignored
     if ignore_jobs:

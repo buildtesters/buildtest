@@ -157,9 +157,12 @@ class CobaltExecutor(BaseExecutor):
         if job_state:
             self.builder.job_state = job_state
 
-        msg = f"[{self.builder.metadata['name']}]: JobID {self.builder.metadata['jobid']} in {self.builder.job_state} state "
-        print(msg)
-        self.logger.debug(msg)
+        self.logger.debug(
+            "[%s]: JobID %s in %s state ",
+            self.builder.metadata["name"],
+            self.builder.metadata["jobid"],
+            self.builder.job_state,
+        )
 
         # additional check to see if job outputfile is written to file system.
         # If job is in 'exiting' state we assume job is now finished, qstat will remove
