@@ -5,9 +5,10 @@ when initializing the executors.
 """
 
 import os
-import shutil
-import sys
 import re
+import shutil
+
+from buildtest.exceptions import BuildTestError
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
@@ -17,16 +18,15 @@ class SlurmExecutor(BaseExecutor):
     """The SlurmExecutor class is responsible for submitting jobs to Slurm Scheduler.
     The SlurmExecutor performs the following steps
 
-    check: check if slurm partition is available for accepting jobs.
     load: load slurm configuration from buildtest configuration file
     dispatch: dispatch job to scheduler and acquire job ID
     poll: wait for Slurm jobs to finish
     gather: Once job is complete, gather job data
+    cancel: Cancel job if it exceeds max pending time
     """
 
     type = "slurm"
-    steps = ["dispatch", "poll", "gather", "close"]
-    job_state = None
+
     poll_cmd = "sacct"
     sacct_fields = [
         "Account",
@@ -79,9 +79,6 @@ class SlurmExecutor(BaseExecutor):
 
         self.result = {}
 
-        # The job_id variable is used to store the JobID retrieved by sacct
-        self.job_id = 0
-
         os.chdir(self.builder.stage_dir)
         self.logger.debug(f"Changing to directory {self.builder.stage_dir}")
 
@@ -117,18 +114,16 @@ class SlurmExecutor(BaseExecutor):
         if command.returncode != 0:
             err = f"[{self.builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
             err += f"[{self.builder.metadata['name']}] running command: {' '.join(sbatch_cmd)}"
-            sys.exit(err)
+            raise BuildtestError(err)
 
         parse_jobid = command.get_output()
         parse_jobid = " ".join(parse_jobid)
 
         # output of sbatch --parsable could be in format 'JobID;cluster' if so we split by colon to extract JobID
         if re.search(";", parse_jobid):
-            self.job_id = int(parse_jobid.split(";")[0])
+            self.builder.metadata["jobid"] = int(parse_jobid.split(";")[0])
         else:
-            self.job_id = int(parse_jobid)
-
-        self.builder.metadata["jobid"] = self.job_id
+            self.builder.metadata["jobid"] = int(parse_jobid)
 
         msg = f"[{self.builder.metadata['name']}] JobID: {self.builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
@@ -154,15 +149,19 @@ class SlurmExecutor(BaseExecutor):
         self.logger.debug(slurm_query)
         cmd = BuildTestCommand(slurm_query)
         cmd.execute()
-        self.job_state = cmd.get_output()
-        self.job_state = "".join(self.job_state).rstrip()
 
-        msg = f"[{self.builder.metadata['name']}]: JobID {self.builder.metadata['jobid']} in {self.job_state} state "
-        print(msg)
-        self.logger.debug(msg)
+        job_state = cmd.get_output()
+        self.builder.job_state = "".join(job_state).rstrip()
+
+        self.logger.debug(
+            "[%s]: JobID %s in %s state ",
+            self.builder.metadata["name"],
+            self.builder.metadata["jobid"],
+            self.builder.job_state,
+        )
 
         # if job state in PENDING check if we need to cancel job by checking internal timer
-        if self.job_state == "PENDING":
+        if self.builder.job_state == "PENDING":
             self.builder.stop()
             self.logger.debug(f"Time Duration: {self.builder.duration}")
             self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
@@ -170,19 +169,18 @@ class SlurmExecutor(BaseExecutor):
             # if timer time is more than requested pend time then cancel job
             if int(self.builder.duration) > self.max_pend_time:
                 self.cancel()
-                self.job_state = "CANCELLED"
+                self.builder.job_state = "CANCELLED"
                 print(
                     "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
                         self.builder.duration, self.max_pend_time
                     )
                 )
-                self.builder.job_state = self.job_state
-                return self.job_state
+
+                # return self.builder.job_state
 
             self.builder.start()
 
-        self.builder.job_state = self.job_state
-        return self.job_state
+        # return self.builder.job_state
 
     def gather(self):
         """Gather Slurm detail after job completion"""

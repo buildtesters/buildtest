@@ -174,6 +174,7 @@ class BuildExecutor:
         :return: Return a dictionary containing poll information
         :rtype: dict
         """
+
         poll_info = {
             "job_complete": False,  # indicate job is not complete and requires polling
             "ignore_job": False,  # indicate job should be ignored
@@ -220,13 +221,14 @@ class BuildExecutor:
                 poll_info["ignore_job"] = True
 
         elif executor.type == "cobalt":
-            print(f"builder: {builder.metadata['name']} in {builder.job_state}")
+
             # only poll job if its in starting, queued, or running state
             if (
                 builder.job_state in ["starting", "queued", "running"]
                 or not builder.job_state
             ):
                 executor.poll()
+
             # if job is done or exiting state we mark job_complete as True to indicate
             # we dont want to poll anymore.
             elif builder.job_state in ["done", "exiting"]:

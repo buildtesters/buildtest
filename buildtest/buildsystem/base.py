@@ -53,6 +53,9 @@ class BuilderBase(ABC):
         self.metadata = {}
 
         self.duration = 0
+
+        # keeps track of job state as job progress through queuing system. This is
+        # applicable for builders using batch executor.
         self.job_state = None
 
         # ensure buildspec ends with .yml extension
@@ -104,6 +107,17 @@ class BuilderBase(ABC):
         self.metadata["output"] = None
         # store error content of test
         self.metadata["error"] = None
+
+        # root of test directory
+        self.metadata["testroot"] = None
+        # location of stage directory in test root
+        self.metadata["stagedir"] = None
+        # location of run directory in test root
+        self.metadata["rundir"] = None
+
+        # location of test script
+        self.metadata["testpath"] = None
+
         self.metadata["result"] = {}
         self.metadata["result"]["state"] = "N/A"
         self.metadata["result"]["returncode"] = "-1"
@@ -112,6 +126,10 @@ class BuilderBase(ABC):
             schema_table[f"{self.recipe['type']}-v1.0.schema.json"]["path"]
         )
         self.metadata["executor"] = self.executor
+        # used to store job id from batch scheduler
+        self.metadata["jobid"] = None
+        # used to store job metrics for given JobID from batch scheduler
+        self.metadata["job"] = None
         # Generate a unique id for the build based on key and unique string
         self.metadata["full_id"] = self._generate_unique_id()
         self.metadata["id"] = self.metadata["full_id"][:8]
@@ -174,24 +192,29 @@ class BuilderBase(ABC):
         # the testid is incremented for every run, this can be done by getting
         # length of all files in testdir and creating a directory. Subsequent
         # runs will increment this counter
-        self.test_id = os.path.join(self.testdir, str(num_content))
-        create_dir(self.test_id)
 
-        self.stage_dir = os.path.join(self.test_id, "stage")
-        self.run_dir = os.path.join(self.test_id, "run")
+        self.metadata["testroot"] = os.path.join(self.testdir, str(num_content))
+        create_dir(self.metadata["testroot"])
+
+        self.stage_dir = os.path.join(self.metadata["testroot"], "stage")
+        self.run_dir = os.path.join(self.metadata["testroot"], "run")
+
         # create stage and run directories
         create_dir(self.stage_dir)
-        create_dir(self.run_dir)
-
         self.logger.debug("Creating the stage directory: %s ", self.stage_dir)
+
+        create_dir(self.run_dir)
         self.logger.debug("Creating the run directory: %s", self.run_dir)
+
+        self.metadata["stagedir"] = self.stage_dir
+        self.metadata["rundir"] = self.run_dir
+
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
             os.path.join(self.stage_dir, "generate"),
             self.get_test_extension(),
         )
         self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
-        self.metadata["testroot"] = self.test_id
 
     def _get_scheduler_directives(self, bsub, sbatch, cobalt, batch):
         """Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
@@ -319,7 +342,7 @@ class BuilderBase(ABC):
         # create symlink for all files directory where buildspec file exists
         for file in files:
             os.symlink(
-                file, os.path.join(self.test_id, "stage", os.path.basename(file))
+                file, os.path.join(self.metadata["stagedir"], os.path.basename(file))
             )
 
     def get_environment(self, env):

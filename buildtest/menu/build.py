@@ -674,6 +674,8 @@ def poll_jobs(config_dict, poll_queue, executor, valid_builders):
 
     # keep track of ignored jobs by job scheduler these include jobs that failed abnormally or cancelled by scheduler
     ignore_jobs = set()
+    completed_jobs = set()
+
     while poll_queue:
 
         print("\n")
@@ -691,11 +693,67 @@ def poll_jobs(config_dict, poll_queue, executor, valid_builders):
             if poll_info["job_complete"]:
                 logger.debug(f"{builder} poll complete, removing test from poll queue")
                 poll_queue.remove(builder)
+                completed_jobs.add(builder)
 
             # add invalid jobs to ignore_jobs list which are ignored from output
             # and not updated in report
             if poll_info["ignore_job"]:
                 ignore_jobs.add(builder)
+                completed_jobs.add(builder)
+
+        jobIDs = []
+
+        for job in poll_queue:
+            jobIDs.append(job.metadata["jobid"])
+        print("Job Queue:", jobIDs)
+
+        completed_jobs_table = {
+            "name": [],
+            "executor": [],
+            "jobID": [],
+            "jobstate": [],
+        }
+        pending_jobs_table = {
+            "name": [],
+            "executor": [],
+            "jobID": [],
+            "jobstate": [],
+        }
+        for job in completed_jobs:
+            completed_jobs_table["name"].append(job.name)
+            completed_jobs_table["executor"].append(job.executor)
+            completed_jobs_table["jobID"].append(job.metadata["jobid"])
+            completed_jobs_table["jobstate"].append(job.job_state)
+
+        for job in poll_queue:
+            pending_jobs_table["name"].append(job.name)
+            pending_jobs_table["executor"].append(job.executor)
+            pending_jobs_table["jobID"].append(job.metadata["jobid"])
+            pending_jobs_table["jobstate"].append(job.job_state)
+
+        print("\n")
+        print("Completed Jobs")
+        print("{:_<40}".format(""))
+        print("\n")
+        print(
+            tabulate(
+                completed_jobs_table,
+                headers=completed_jobs_table.keys(),
+                tablefmt="fancy_grid",
+            )
+        )
+
+        print("\n")
+        print("Pending Jobs")
+        print("{:_<40}".format(""))
+        print("\n")
+        print(
+            tabulate(
+                pending_jobs_table,
+                headers=pending_jobs_table.keys(),
+                tablefmt="fancy_grid",
+            )
+        )
 
     # remove any builders where for jobs that need to be ignored
     if ignore_jobs:
