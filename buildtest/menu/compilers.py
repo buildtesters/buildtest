@@ -6,7 +6,11 @@ import yaml
 from lmod.module import Module
 from lmod.spider import Spider
 
-from buildtest.config import resolve_settings_file, load_settings
+from buildtest.config import (
+    resolve_settings_file,
+    load_settings,
+    buildtest_configuration,
+)
 from buildtest.exceptions import BuildTestError
 from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.utils.tools import deep_get
@@ -19,23 +23,41 @@ def func_compiler_find(args=None):
     search for all modules in current ``$MODULEPATH``.
     """
 
-    settings_file = resolve_settings_file()
-    configuration = load_settings(settings_file)
+    # settings_file = resolve_settings_file()
+    # configuration = load_settings(settings_file)
 
     bc = BuildtestCompilers(debug=args.debug)
     bc.find_compilers()
-    configuration["compilers"]["compiler"] = bc.compilers
+    # configuration["compilers"]["compiler"] = bc.compilers
 
-    custom_validator(configuration, schema_table["settings.schema.json"]["recipe"])
+    buildtest_configuration.target_config["compilers"]["compiler"] = bc.compilers
 
-    print(f"Configuration File: {settings_file}")
+    # delete system entry
+    del buildtest_configuration.config["system"][buildtest_configuration.name]
+
+    buildtest_configuration.config["system"][
+        buildtest_configuration.name
+    ] = buildtest_configuration.target_config
+
+    custom_validator(
+        buildtest_configuration.config, schema_table["settings.schema.json"]["recipe"]
+    )
+
+    print(
+        yaml.safe_dump(
+            buildtest_configuration.config, default_flow_style=False, sort_keys=False
+        )
+    )
     print("{:_<80}".format(""))
-    print(yaml.safe_dump(configuration, default_flow_style=False, sort_keys=False))
-    print("{:_<80}".format(""))
-    print(f"Updating settings file:  {settings_file}")
+    print(f"Updating settings file: {buildtest_configuration.file}")
 
-    with open(settings_file, "w") as fd:
-        yaml.safe_dump(configuration, fd, default_flow_style=False, sort_keys=False)
+    with open(buildtest_configuration.file, "w") as fd:
+        yaml.safe_dump(
+            buildtest_configuration.config,
+            fd,
+            default_flow_style=False,
+            sort_keys=False,
+        )
 
 
 def func_config_compiler(args=None):
@@ -43,11 +65,11 @@ def func_config_compiler(args=None):
     section from buildtest configuration.
     """
 
-    settings_file = resolve_settings_file()
-    configuration = load_settings(settings_file)
+    # settings_file = resolve_settings_file()
+    # configuration = load_settings(settings_file)
 
-    bc = BuildtestCompilers(configuration)
-
+    # bc = BuildtestCompilers(configuration)
+    bc = BuildtestCompilers(buildtest_configuration)
     if args.json:
         bc.print_json()
     if args.yaml:
@@ -70,13 +92,13 @@ class BuildtestCompilers:
         "cuda": {"cc": "nvcc", "cxx": "nvcc", "fc": "None"},
     }
 
-    def __init__(self, debug=False, settings_file=None):
+    def __init__(self, debug=False):
         """
         :param compilers: compiler section from buildtest configuration.
         :type compilers: dict
         """
 
-        self.configuration = load_settings(settings_file)
+        self.configuration = buildtest_configuration.target_config
         self.debug = debug
 
         if not deep_get(self.configuration, "compilers", "compiler"):

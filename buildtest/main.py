@@ -44,10 +44,10 @@ def main():
     # load the schema
     settings_file = resolve_settings_file()
     logger.info(f"Processing buildtest configuration file: {settings_file}")
-    buildtest_configuration = check_settings(settings_file, retrieve_settings=True)
+    check_settings(settings_file)
 
     if args.subcommands == "build":
-        func_build_subcmd(args, buildtest_configuration)
+        func_build_subcmd(args)
     else:
         if args.subcommands and args.func:
             args.func(args)

@@ -38,26 +38,28 @@ class BuildExecutor:
         self.executors = {}
         self.logger = logging.getLogger(__name__)
         self.logger.debug("Getting Executors from buildtest settings")
+        systems = config_opts["system"]
+        for system in systems:
 
-        for name in config_opts["executors"].get("local", {}).keys():
-            self.executors[f"local.{name}"] = LocalExecutor(
-                name, config_opts["executors"]["local"][name], config_opts
-            )
+            for name in systems[system]["executors"].get("local", {}).keys():
+                self.executors[f"local.{name}"] = LocalExecutor(
+                    name, systems[system]["executors"]["local"][name], config_opts
+                )
 
-        for name in config_opts["executors"].get("slurm", {}).keys():
-            self.executors[f"slurm.{name}"] = SlurmExecutor(
-                name, config_opts["executors"]["slurm"][name], config_opts
-            )
+            for name in systems[system]["executors"].get("slurm", {}).keys():
+                self.executors[f"slurm.{name}"] = SlurmExecutor(
+                    name, systems[system]["executors"]["slurm"][name], config_opts
+                )
 
-        for name in config_opts["executors"].get("lsf", {}).keys():
-            self.executors[f"lsf.{name}"] = LSFExecutor(
-                name, config_opts["executors"]["lsf"][name], config_opts
-            )
+            for name in systems[system]["executors"].get("lsf", {}).keys():
+                self.executors[f"lsf.{name}"] = LSFExecutor(
+                    name, systems[system]["executors"]["lsf"][name], config_opts
+                )
 
-        for name in config_opts["executors"].get("cobalt", {}).keys():
-            self.executors[f"cobalt.{name}"] = CobaltExecutor(
-                name, config_opts["executors"]["cobalt"][name], config_opts
-            )
+            for name in systems[system]["executors"].get("cobalt", {}).keys():
+                self.executors[f"cobalt.{name}"] = CobaltExecutor(
+                    name, systems[system]["executors"]["cobalt"][name], config_opts
+                )
         self.setup()
 
     def __str__(self):

@@ -3,107 +3,219 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "buildtest configuration schema",
   "type": "object",
-  "required": ["executors", "moduletool", "load_default_buildspecs"],
+  "required": ["system"],
   "additionalProperties": false,
   "properties": {
-      "additionalProperties": false,
-      "buildspec_roots": {
-        "type": "array",
-        "items": { "type": "string"},
-        "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
-      },
-      "load_default_buildspecs": {
-        "type": "boolean",
-        "description": "Specify whether buildtest should automatically load  uildspecs provided in buildtest repo into buildspec cache"
-      },
-      "testdir": {
-        "type": "string",
-        "description": "Specify full path to test directory where buildtest will write tests."
-      },
-      "logdir":
-      {
-        "type": "string",
-        "description": "Specify location where buildtest will write log files"
-      },
-      "moduletool": {
-        "type": "string",
-        "description": "Specify modules tool used for interacting with ``module`` command. ",
-        "enum": ["environment-modules", "lmod", "N/A"]
-      },
-      "compilers": {
-        "type": "object",
-        "description": "Declare compiler section for defining system compilers that can be referenced in buildspec.",
-        "additionalProperties": false,
-        "properties": {
-          "find": {
-            "type": "object",
-            "additionalProperties": false,
-            "description": "Find compilers based on module names",
-            "properties": {
-              "gcc": { "type": "string" },
-              "intel": { "type": "string" },
-              "cray": { "type": "string" },
-              "clang": { "type": "string" },
-              "cuda": { "type": "string" },
-              "pgi": { "type": "string" }
+    "system": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+
+          "$ref": "#/definitions/system"
+        }
+      }
+    }
+  },
+  "definitions": {
+      "system": {
+         "required": ["executors", "moduletool", "load_default_buildspecs","hostnames"],
+         "additionalProperties": false,
+         "type": "object",
+         "properties": {
+          "hostnames": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           },
-          "compiler": {
+          "buildspec_roots": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
+          },
+          "load_default_buildspecs": {
+            "type": "boolean",
+            "description": "Specify whether buildtest should automatically load  uildspecs provided in buildtest repo into buildspec cache"
+          },
+          "testdir": {
+            "type": "string",
+            "description": "Specify full path to test directory where buildtest will write tests."
+          },
+          "logdir": {
+            "type": "string",
+            "description": "Specify location where buildtest will write log files"
+          },
+          "moduletool": {
+            "type": "string",
+            "description": "Specify modules tool used for interacting with ``module`` command. ",
+            "enum": [
+              "environment-modules",
+              "lmod",
+              "N/A"
+            ]
+          },
+          "compilers": {
+            "type": "object",
+            "description": "Declare compiler section for defining system compilers that can be referenced in buildspec.",
+            "additionalProperties": false,
+            "properties": {
+              "find": {
+                "type": "object",
+                "additionalProperties": false,
+                "description": "Find compilers based on module names",
+                "properties": {
+                  "gcc": {
+                    "type": "string"
+                  },
+                  "intel": {
+                    "type": "string"
+                  },
+                  "cray": {
+                    "type": "string"
+                  },
+                  "clang": {
+                    "type": "string"
+                  },
+                  "cuda": {
+                    "type": "string"
+                  },
+                  "pgi": {
+                    "type": "string"
+                  }
+                }
+              },
+              "compiler": {
+                "type": "object",
+                "additionalProperties": false,
+                "description": "Start of compiler declaration",
+                "properties": {
+                  "gcc": {
+                    "description": "Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler. The GNU compiler wrapper are ``gcc``, ``g++`` and ``gfortran``. ",
+                    "type": "object",
+                    "patternProperties": {
+                      "^.*$": {
+                        "$ref": "#/definitions/compiler_section"
+                      }
+                    }
+                  },
+                  "intel": {
+                    "description": "Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler. The Intel compiler wrapper are ``icc``, ``icpc`` and ``ifort``. ",
+                    "type": "object",
+                    "patternProperties": {
+                      "^.*$": {
+                        "$ref": "#/definitions/compiler_section"
+                      }
+                    }
+                  },
+                  "cray": {
+                    "description": "Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler. The Cray compiler wrapper are ``cc``, ``CC`` and ``ftn``.",
+                    "type": "object",
+                    "patternProperties": {
+                      "^.*$": {
+                        "$ref": "#/definitions/compiler_section"
+                      }
+                    }
+                  },
+                  "pgi": {
+                    "description": "Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler. The PGI compiler wrapper are ``pgcc``, ``pgc++`` and ``pgfortran``.",
+                    "type": "object",
+                    "patternProperties": {
+                      "^.*$": {
+                        "$ref": "#/definitions/compiler_section"
+                      }
+                    }
+                  },
+                  "clang": {
+                    "description": "Declaration of one or more Clang compilers where we define C, C++ compiler. The Clang compiler wrapper are ``clang``, ``clang++``.",
+                    "type": "object",
+                    "patternProperties": {
+                      "^.*$": {
+                        "$ref": "#/definitions/compiler_section"
+                      }
+                    }
+                  },
+                  "cuda": {
+                    "description": "Declaration of one or more Cuda compilers where we define C compiler. The Cuda compiler wrapper is ``nvcc``. ",
+                    "type": "object",
+                    "patternProperties": {
+                      "^.*$": {
+                        "$ref": "#/definitions/compiler_section"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "executors": {
             "type": "object",
             "additionalProperties": false,
-            "description": "Start of compiler declaration",
+            "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``cobalt``. The executors are referenced in buildspec using ``executor`` field.",
             "properties": {
-              "gcc": {
-                "description": "Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler. The GNU compiler wrapper are ``gcc``, ``g++`` and ``gfortran``. ",
+              "defaults": {
                 "type": "object",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/compiler_section"
+                "description": "Specify default executor settings for all executors",
+                "additionalProperties": false,
+                "properties": {
+                  "pollinterval": {
+                    "type": "integer",
+                    "description": "Specify poll interval in seconds after job submission, where buildtest will sleep and poll all jobs for job states. This field can be configured based on your preference. Excessive polling every few seconds can result in system degradation. ",
+                    "minimum": 10,
+                    "maximum": 300,
+                    "default": 30
+                  },
+                  "launcher": {
+                    "type": "string",
+                    "enum": [
+                      "sbatch",
+                      "bsub",
+                      "qsub"
+                    ],
+                    "description": "Specify batch launcher to use when submitting jobs, this is applicable for LSF and Slurm Executors."
+                  },
+                  "max_pend_time": {
+                    "$ref": "#/definitions/max_pend_time"
+                  },
+                  "account": {
+                    "$ref": "#/definitions/account"
                   }
                 }
               },
-              "intel": {
-                "description": "Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler. The Intel compiler wrapper are ``icc``, ``icpc`` and ``ifort``. ",
+              "local": {
                 "type": "object",
+                "description": "The ``local`` section is used for declaring local executors for running jobs on local machine",
                 "patternProperties": {
                   "^.*$": {
-                    "$ref": "#/definitions/compiler_section"
+                    "$ref": "#/definitions/local"
                   }
                 }
               },
-              "cray": {
-                "description": "Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler. The Cray compiler wrapper are ``cc``, ``CC`` and ``ftn``.",
+              "lsf": {
                 "type": "object",
+                "description": "The ``lsf`` section is used for declaring LSF executors for running jobs using LSF scheduler",
                 "patternProperties": {
                   "^.*$": {
-                    "$ref": "#/definitions/compiler_section"
+                    "$ref": "#/definitions/lsf"
                   }
                 }
               },
-              "pgi": {
-                "description": "Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler. The PGI compiler wrapper are ``pgcc``, ``pgc++`` and ``pgfortran``.",
+              "slurm": {
                 "type": "object",
+                "description": "The ``slurm`` section is used for declaring Slurm executors for running jobs using Slurm scheduler",
                 "patternProperties": {
                   "^.*$": {
-                    "$ref": "#/definitions/compiler_section"
+                    "$ref": "#/definitions/slurm"
                   }
                 }
               },
-              "clang": {
-                "description": "Declaration of one or more Clang compilers where we define C, C++ compiler. The Clang compiler wrapper are ``clang``, ``clang++``.",
+              "cobalt": {
                 "type": "object",
+                "description": "The ``cobalt`` section is used for declaring Cobalt executors for running jobs using Cobalt scheduler",
                 "patternProperties": {
                   "^.*$": {
-                    "$ref": "#/definitions/compiler_section"
-                  }
-                }
-              },
-              "cuda": {
-                "description": "Declaration of one or more Cuda compilers where we define C compiler. The Cuda compiler wrapper is ``nvcc``. ",
-                "type": "object",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/compiler_section"
+                    "$ref": "#/definitions/cobalt"
                   }
                 }
               }
@@ -111,57 +223,7 @@
           }
         }
       },
-      "executors": {
-        "type": "object",
-        "additionalProperties": false,
-        "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``cobalt``. The executors are referenced in buildspec using ``executor`` field.",
-        "properties": {
-           "defaults": {
-            "type": "object",
-             "description": "Specify default executor settings for all executors",
-            "additionalProperties": false,
-             "properties": {
-               "pollinterval": {
-                 "type":  "integer",
-                 "description": "Specify poll interval in seconds after job submission, where buildtest will sleep and poll all jobs for job states. This field can be configured based on your preference. Excessive polling every few seconds can result in system degradation. ",
-                 "minimum": 10,
-                 "maximum": 300,
-                 "default": 30
-               },
-               "launcher": {
-                 "type": "string",
-                 "enum": ["sbatch", "bsub", "qsub"],
-                 "description": "Specify batch launcher to use when submitting jobs, this is applicable for LSF and Slurm Executors."
-               },
-               "max_pend_time": {"$ref":  "#/definitions/max_pend_time"},
-               "account": {"$ref":  "#/definitions/account"}
-             }
-          },
-          "local": {
-            "type": "object",
-            "description": "The ``local`` section is used for declaring local executors for running jobs on local machine",
-            "patternProperties": { "^.*$": { "$ref": "#/definitions/local" } }
-          },
-          "lsf": {
-            "type": "object",
-            "description": "The ``lsf`` section is used for declaring LSF executors for running jobs using LSF scheduler",
-            "patternProperties": { "^.*$": { "$ref": "#/definitions/lsf" } }
-          },
-          "slurm": {
-            "type": "object",
-            "description": "The ``slurm`` section is used for declaring Slurm executors for running jobs using Slurm scheduler",
-            "patternProperties": { "^.*$": { "$ref": "#/definitions/slurm" } }
-          },
-          "cobalt": {
-            "type": "object",
-            "description": "The ``cobalt`` section is used for declaring Cobalt executors for running jobs using Cobalt scheduler",
-            "patternProperties": { "^.*$": { "$ref": "#/definitions/cobalt" } }
-          }
-        }
-      }
 
-  },
-  "definitions": {
       "cc": {
         "description": "Specify path to C compiler wrapper. You may specify a compiler wrapper such as ``gcc`` assuming its in $PATH or you can use ``modules`` property to resolve path to compiler wrapper.",
         "type": "string"
