@@ -16,4 +16,4 @@ Discovered Buildspecs:
  schemafile              | validstate   | buildspec
 -------------------------+--------------+--------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
-Writing Logfile to: /private/tmp/buildtest/buildtest_c50y9b7f.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_ck_75mer.log

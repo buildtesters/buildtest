@@ -7,8 +7,6 @@ from lmod.module import Module
 from lmod.spider import Spider
 
 from buildtest.config import (
-    resolve_settings_file,
-    load_settings,
     buildtest_configuration as site_config,
     BuildtestConfiguration,
 )
@@ -24,37 +22,26 @@ def func_compiler_find(args=None):
     search for all modules in current ``$MODULEPATH``.
     """
 
-    # settings_file = resolve_settings_file()
-    # configuration = load_settings(settings_file)
-
     bc = BuildtestCompilers(debug=args.debug)
     bc.find_compilers()
     # configuration["compilers"]["compiler"] = bc.compilers
 
-    buildtest_configuration.target_config["compilers"]["compiler"] = bc.compilers
+    site_config.target_config["compilers"]["compiler"] = bc.compilers
 
     # delete system entry
-    del buildtest_configuration.config["system"][buildtest_configuration.name]
+    del site_config.config["system"][site_config.name]
 
-    buildtest_configuration.config["system"][
-        buildtest_configuration.name
-    ] = buildtest_configuration.target_config
+    site_config.config["system"][site_config.name] = site_config.target_config
 
-    custom_validator(
-        buildtest_configuration.config, schema_table["settings.schema.json"]["recipe"]
-    )
+    custom_validator(site_config.config, schema_table["settings.schema.json"]["recipe"])
 
-    print(
-        yaml.safe_dump(
-            buildtest_configuration.config, default_flow_style=False, sort_keys=False
-        )
-    )
+    print(yaml.safe_dump(site_config.config, default_flow_style=False, sort_keys=False))
     print("{:_<80}".format(""))
-    print(f"Updating settings file: {buildtest_configuration.file}")
+    print(f"Updating settings file: {site_config.file}")
 
-    with open(buildtest_configuration.file, "w") as fd:
+    with open(site_config.file, "w") as fd:
         yaml.safe_dump(
-            buildtest_configuration.config,
+            site_config.config,
             fd,
             default_flow_style=False,
             sort_keys=False,

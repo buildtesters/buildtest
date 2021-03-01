@@ -3,7 +3,7 @@ import os
 import shutil
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.config import load_settings
+from buildtest.config import buildtest_configuration
 from buildtest.defaults import executor_root
 from buildtest.exceptions import BuildTestError
 from buildtest.menu.compilers import BuildtestCompilers
@@ -49,7 +49,6 @@ class CompilerBuilder(BuilderBase):
         self.compiler = compiler
 
         self.compiler_section = self.recipe["compilers"]
-        self.settings = load_settings()
 
         self.sourcefile = self.recipe["source"]
 
@@ -383,9 +382,9 @@ class CompilerBuilder(BuilderBase):
         )
 
         # compiler from buildtest settings
-        self.bc_compiler = self.settings["compilers"]["compiler"][self.compiler_group][
-            self.compiler
-        ]
+        self.bc_compiler = buildtest_configuration.target_config["compilers"][
+            "compiler"
+        ][self.compiler_group][self.compiler]
 
         self.logger.debug(self.bc_compiler)
         # set compiler values based on 'default' property in buildspec. This can override

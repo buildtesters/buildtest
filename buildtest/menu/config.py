@@ -5,18 +5,14 @@ import sys
 import yaml
 from jsonschema import ValidationError
 from buildtest import BUILDTEST_VERSION
-from buildtest.schemas.utils import load_recipe
+
 from buildtest.config import (
     check_settings,
-    load_settings,
     resolve_settings_file,
     buildtest_configuration,
 )
-from buildtest.defaults import (
-    USER_SETTINGS_FILE,
-    BUILDSPEC_CACHE_FILE,
-)
-from buildtest.defaults import supported_schemas
+from buildtest.defaults import BUILDSPEC_CACHE_FILE, supported_schemas
+from buildtest.schemas.utils import load_recipe
 from buildtest.system import system
 
 

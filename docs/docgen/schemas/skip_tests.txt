@@ -22,9 +22,9 @@ Discovered Buildspecs:
 | Stage: Building Test |
 +----------------------+ 
 
- name      | id       | type   | executor   | tags          | testpath
------------+----------+--------+------------+---------------+---------------------------------------------------------------------------------------------------
- unskipped | 6b6d3493 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
+ name      | id       | type   | executor           | tags          | testpath
+-----------+----------+--------+--------------------+---------------+-----------------------------------------------------------------------------------------------------------
+ unskipped | 0091bc29 | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/skip_tests/unskipped/5/stage/generate.sh
 
 
 
@@ -32,9 +32,9 @@ Discovered Buildspecs:
 | Stage: Running Test  |
 +----------------------+ 
     
- name      | id       | executor   | status   |   returncode | testpath
------------+----------+------------+----------+--------------+---------------------------------------------------------------------------------------------------
- unskipped | 6b6d3493 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/skip_tests/unskipped/2/stage/generate.sh
+ name      | id       | executor           | status   |   returncode | testpath
+-----------+----------+--------------------+----------+--------------+-----------------------------------------------------------------------------------------------------------
+ unskipped | 0091bc29 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/skip_tests/unskipped/5/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -46,4 +46,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_tp9xqio0.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_54r4ykl1.log

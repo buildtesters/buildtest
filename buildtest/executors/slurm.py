@@ -116,7 +116,7 @@ class SlurmExecutor(BaseExecutor):
         if command.returncode != 0:
             err = f"[{self.builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
             err += f"[{self.builder.metadata['name']}] running command: {' '.join(sbatch_cmd)}"
-            raise BuildtestError(err)
+            raise BuildTestError(err)
 
         parse_jobid = command.get_output()
         parse_jobid = " ".join(parse_jobid)

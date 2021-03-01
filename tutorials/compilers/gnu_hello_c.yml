@@ -12,7 +12,7 @@ buildspecs:
         gcc:
           cflags: -O1
       config:
-        gcc@9.3.0:
+        gcc/9.3.0-n7p74fd:
           cflags: -O2
-        gcc@10.2.0:
+        gcc/10.2.0-37fmsw7:
           cflags: -O3

@@ -12,5 +12,5 @@ buildspecs:
         gcc:
           run: ./$_EXEC 1 3 5
       config:
-        gcc@10.2.0:
+        gcc/10.2.0-37fmsw7:
           run: ./$_EXEC 100 120

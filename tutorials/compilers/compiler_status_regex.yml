@@ -19,7 +19,7 @@ buildspecs:
 
   override_status_regex:
     type: compiler
-    description: Override regular expression for compiler gcc@10.2.0
+    description: Override regular expression for compiler gcc/10.2.0-37fmsw7
     tags: [tutorials, compile]
     executor: generic.local.bash
     source: src/vecAdd.c
@@ -34,7 +34,7 @@ buildspecs:
               stream: stdout
               exp: "^final result: 1.000000$"
       config:
-        gcc@10.2.0:
+        gcc/10.2.0-37fmsw7:
           status:
             regex:
               stream: stdout

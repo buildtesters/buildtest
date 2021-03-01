@@ -9,10 +9,8 @@ from jsonschema.exceptions import ValidationError
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import BuildtestConfiguration
-from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, DEFAULT_SETTINGS_FILE
+from buildtest.defaults import DEFAULT_SETTINGS_FILE
 from buildtest.executors.setup import BuildExecutor
-from buildtest.schemas.defaults import custom_validator
-from buildtest.schemas.utils import load_schema, load_recipe
 
 
 pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

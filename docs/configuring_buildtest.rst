@@ -428,6 +428,8 @@ these options::
     $ buildtest config compilers --list
     builtin_gcc
 
+.. _detect_compilers:
+
 Detect Compilers (Experimental Feature)
 ----------------------------------------
 

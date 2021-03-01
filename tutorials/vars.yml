@@ -9,13 +9,9 @@ buildspecs:
       X: 1
       Y: 2
       literalstring: |
-        "this is a literal string ':' \t \n"
-      singlequote: |
-        "'singlequote'"
-      doublequote: |
-        "\"doublequote\""
-      multistring: |
-        "\"This is a multi string\""
+        "this is a literal string ':' "
+      singlequote: "'singlequote'"
+      doublequote: "\"doublequote\""
       current_user: "$(whoami)"
       files_homedir: "`find $HOME -type f -maxdepth 1`"
 
@@ -24,6 +20,6 @@ buildspecs:
       echo $literalstring
       echo $singlequote
       echo $doublequote
-      echo $multistring
+
       echo $current_user
       echo $files_homedir

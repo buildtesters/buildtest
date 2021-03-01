@@ -1,174 +1,172 @@
 $ buildtest buildspec find --group-by-executor
-+--------------+------------------------------+-------------------------------------------------------------------+
-| executor     | name                         | description                                                       |
-+==============+==============================+===================================================================+
-| local.bash   | run_only_macos_distro        | Run test only if linux distro is darwin.                          |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | _bin_bash_shell              | /bin/bash shell example                                           |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | bash_shell                   | bash shell example                                                |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | bash_env_variables           | Declare environment variables in default shell (bash)             |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | python_hello                 | Hello World python                                                |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | variables_bash               | Declare shell variables in bash                                   |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | selinux_disable              | Check if SELinux is Disabled                                      |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | bash_login_shebang           | customize shebang line with bash login shell                      |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | bash_nonlogin_shebang        | customize shebang line with default bash (nonlogin) shell         |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | hello_world                  | hello world example                                               |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | run_only_as_root             | This test will only run if current user is root                   |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | string_tag                   | tags can be a string                                              |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | list_of_strings_tags         | tags can be a list of strings                                     |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | skip                         | This test is skipped                                              |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | unskipped                    | This test is not skipped                                          |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | sleep                        | sleep 2 seconds                                                   |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | openmp_hello_c_example       | OpenMP Hello World C example                                      |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | vecadd_gnu                   | Vector Addition example with GNU compiler                         |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | override_environmentvars     | override default environment variables                            |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | vecadd_gnu_exclude           | Vector Addition example with GNU compilers but exclude gcc@10.2.0 |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | hello_c                      | Hello World C Compilation                                         |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | pre_post_build_run           | example using pre_build, post_build, pre_run, post_run example    |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | custom_run_by_compilers      | Customize binary launch based on compiler                         |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | hello_f                      | Hello World Fortran Compilation                                   |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | default_status_regex         | Regular expression check in stdout for gcc group                  |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | override_status_regex        | Override regular expression for compiler gcc@10.2.0               |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | root_disk_usage              | Check root disk usage and report if it exceeds threshold          |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | kernel_swapusage             | Retrieve Kernel Swap Usage                                        |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | ssh_localhost_remotecommand  | Test if ssh on localhost works and if we can run remote command.  |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | systemd_default_target       | check if default target is multi-user.target                      |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | ulimit_filelock_unlimited    | Check if file lock is set to unlimited in ulimits                 |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | ulimit_cputime_unlimited     | Check if cputime is set to unlimited in ulimits                   |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | ulimit_stacksize_unlimited   | Check if stack size is set to unlimited in ulimits                |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | ulimit_vmsize_unlimited      | Check virtual memory size and check if its set to unlimited       |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | ulimit_filedescriptor_4096   | Check if open file descriptors limit is set to 4096               |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | ulimit_max_user_process_2048 | Check max number of user process limit is set to 2048             |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_accounts                | run sacctmgr list accounts                                        |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_users                   | run sacctmgr list users                                           |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_qos                     | run sacctmgr list qos                                             |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_tres                    | run sacctmgr list tres                                            |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | slurm_config                 | run scontrol show config                                          |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_partition               | run scontrol show partition                                       |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | current_user_queue           | show all current pending jobs for current user (squeue -u $USER)  |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_all_jobs                | show all pending + running jobs (squeue -a)                       |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | nodes_state_down             | Show nodes in DOWN state                                          |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | nodes_state_reboot           | Show nodes in REBOOT state                                        |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | nodes_state_allocated        | Show nodes in ALLOCATED state                                     |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | nodes_state_completing       | Show nodes in COMPLETING state                                    |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | nodes_state_idle             | Show nodes in IDLE state                                          |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | node_down_fail_list_reason   | Show nodes DOWN, DRAINED, FAIL or FAILING and list reason         |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | dead_nodes                   | Show non-responding nodes                                         |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | get_partitions               | Get all slurm partitions                                          |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | sinfo_version                | get slurm version                                                 |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_host_groups             | Show information about host groups using bmgroup                  |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_lsf_configuration       | Show LSF configuration using lsinfo                               |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_lsf_models              | Show information about host models in LSF cluster                 |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_lsf_resources           | Show information about LSF resources                              |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | lsf_version                  | Display lsf version using lsinfo                                  |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_lsf_user_groups         | Show information about all LSF user groups                        |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_lsf_queues              | Show LSF queues                                                   |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_lsf_queues_formatted    | Show LSF queues with formatted columns                            |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | show_lsf_queues_current_user | Show LSF queues available for current user                        |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | display_lsf_hosts            | Show all hosts in LSF cluster                                     |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | display_hosts_format         | Show all hosts with column hostname and status                    |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.bash   | bhosts_version               | Display bhosts version                                            |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | _bin_sh_shell                | /bin/sh shell example                                             |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | sh_shell                     | sh shell example                                                  |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | shell_options                | shell options                                                     |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | exit1_fail                   | exit 1 by default is FAIL                                         |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | exit1_pass                   | report exit 1 as PASS                                             |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | returncode_list_mismatch     | exit 2 failed since it failed to match returncode 1               |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | returncode_int_match         | exit 128 matches returncode 128                                   |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | qsub_version                 | Run qsub version                                                  |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | qselect_version              | Run qselect version                                               |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | cqsub_version                | Run cqsub version                                                 |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | qdel_version                 | Run qdel version                                                  |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | qmove_version                | Run qmove version                                                 |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | show_jobs                    | Show all jobs in queue                                            |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.sh     | show_queues                  | Show queues                                                       |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.csh    | csh_env_declaration          | csh shell example to declare environment variables                |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.csh    | tcsh_env_declaration         | tcsh shell example to declare environment variables               |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.csh    | csh_shell                    | csh shell example                                                 |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.python | run_only_platform_darwin     | This test will only run if target platform is Darwin              |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.python | run_only_platform_linux      | This test will only run if target platform is Linux               |
-+--------------+------------------------------+-------------------------------------------------------------------+
-| local.python | circle_area                  | Calculate circle of area given a radius                           |
-+--------------+------------------------------+-------------------------------------------------------------------+
++----------------------+------------------------------+-------------------------------------------------------------------+
+| executor             | name                         | description                                                       |
++======================+==============================+===================================================================+
+| generic.local.bash   | run_only_macos_distro        | Run test only if linux distro is darwin.                          |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | _bin_bash_shell              | /bin/bash shell example                                           |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | bash_shell                   | bash shell example                                                |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | bash_env_variables           | Declare environment variables in default shell (bash)             |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | python_hello                 | Hello World python                                                |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | variables_bash               | Declare shell variables in bash                                   |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | selinux_disable              | Check if SELinux is Disabled                                      |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | bash_login_shebang           | customize shebang line with bash login shell                      |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | bash_nonlogin_shebang        | customize shebang line with default bash (nonlogin) shell         |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | hello_world                  | hello world example                                               |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | run_only_as_root             | This test will only run if current user is root                   |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | string_tag                   | tags can be a string                                              |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | list_of_strings_tags         | tags can be a list of strings                                     |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | skip                         | This test is skipped                                              |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | unskipped                    | This test is not skipped                                          |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | sleep                        | sleep 2 seconds                                                   |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | openmp_hello_c_example       | OpenMP Hello World C example                                      |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | vecadd_gnu                   | Vector Addition example with GNU compiler                         |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | override_environmentvars     | override default environment variables                            |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | vecadd_gnu_exclude           | Vector Addition example with GNU compilers but exclude gcc@10.2.0 |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | hello_c                      | Hello World C Compilation                                         |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | pre_post_build_run           | example using pre_build, post_build, pre_run, post_run example    |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | custom_run_by_compilers      | Customize binary launch based on compiler                         |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | hello_f                      | Hello World Fortran Compilation                                   |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | default_status_regex         | Regular expression check in stdout for gcc group                  |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | override_status_regex        | Override regular expression for compiler gcc/10.2.0-37fmsw7       |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | root_disk_usage              | Check root disk usage and report if it exceeds threshold          |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | kernel_swapusage             | Retrieve Kernel Swap Usage                                        |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | ssh_localhost_remotecommand  | Test if ssh on localhost works and if we can run remote command.  |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | systemd_default_target       | check if default target is multi-user.target                      |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | ulimit_filelock_unlimited    | Check if file lock is set to unlimited in ulimits                 |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | ulimit_cputime_unlimited     | Check if cputime is set to unlimited in ulimits                   |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | ulimit_stacksize_unlimited   | Check if stack size is set to unlimited in ulimits                |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | ulimit_vmsize_unlimited      | Check virtual memory size and check if its set to unlimited       |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | ulimit_filedescriptor_4096   | Check if open file descriptors limit is set to 4096               |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | ulimit_max_user_process_2048 | Check max number of user process limit is set to 2048             |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_accounts                | run sacctmgr list accounts                                        |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_users                   | run sacctmgr list users                                           |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_qos                     | run sacctmgr list qos                                             |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_tres                    | run sacctmgr list tres                                            |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | slurm_config                 | run scontrol show config                                          |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_partition               | run scontrol show partition                                       |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | current_user_queue           | show all current pending jobs for current user (squeue -u $USER)  |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_all_jobs                | show all pending + running jobs (squeue -a)                       |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_host_groups             | Show information about host groups using bmgroup                  |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_lsf_configuration       | Show LSF configuration using lsinfo                               |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_lsf_models              | Show information about host models in LSF cluster                 |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_lsf_resources           | Show information about LSF resources                              |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | lsf_version                  | Display lsf version using lsinfo                                  |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_lsf_user_groups         | Show information about all LSF user groups                        |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_lsf_queues              | Show LSF queues                                                   |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_lsf_queues_formatted    | Show LSF queues with formatted columns                            |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | show_lsf_queues_current_user | Show LSF queues available for current user                        |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | display_lsf_hosts            | Show all hosts in LSF cluster                                     |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | display_hosts_format         | Show all hosts with column hostname and status                    |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | bhosts_version               | display version from bhosts command                               |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | pullImage_dockerhub          | Pull image docker://godlovedc/lolcow from DockerHub               |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | pullImage_sylabscloud        | Pull image library://alpine:latest from Sylabs Cloud              |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | pullImage_shub               | Pull image shub://vsoch/singularity-images from SingularityHub    |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | runImage                     | run container docker://godlovedc/lolcow                           |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | inspect_image                | Inspect image via 'singularity inspect'                           |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | build_sif_from_dockerimage   | build sif image from docker image docker://godlovedc/lolcow       |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | build_sandbox_image          | build sandbox image from docker image docker://godlovedc/lolcow   |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | build_remoteimages           | build remote hosted image from AWS                                |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | _bin_sh_shell                | /bin/sh shell example                                             |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | sh_shell                     | sh shell example                                                  |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | shell_options                | shell options                                                     |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | exit1_fail                   | exit 1 by default is FAIL                                         |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | exit1_pass                   | report exit 1 as PASS                                             |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | returncode_list_mismatch     | exit 2 failed since it failed to match returncode 1               |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | returncode_int_match         | exit 128 matches returncode 128                                   |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | qsub_version                 | print version for qsub command                                    |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | qselect_version              | print version for qselect                                         |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | cqsub_version                | print version for cqsub command                                   |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | qdel_version                 | print version for qdel command                                    |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | qmove_version                | print version for qmove command                                   |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | show_jobs                    | Show all jobs in queue                                            |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.sh     | show_queues                  | Show all queues                                                   |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.csh    | csh_env_declaration          | csh shell example to declare environment variables                |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.csh    | tcsh_env_declaration         | tcsh shell example to declare environment variables               |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.csh    | csh_shell                    | csh shell example                                                 |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.python | run_only_platform_darwin     | This test will only run if target platform is Darwin              |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.python | run_only_platform_linux      | This test will only run if target platform is Linux               |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.python | circle_area                  | Calculate circle of area given a radius                           |
++----------------------+------------------------------+-------------------------------------------------------------------+

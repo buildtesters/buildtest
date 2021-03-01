@@ -93,7 +93,6 @@ class Builder:
         discovered_compilers = bc.list()
 
         builders = []
-
         # exclude compiler from search if 'exclude' specified in buildspec
         if recipe["compilers"].get("exclude"):
             for exclude in recipe["compilers"]["exclude"]:
@@ -122,7 +121,8 @@ class Builder:
             self.logger.debug(msg)
             return
 
-        self.builders.append(builder)
+        for builder in builders:
+            self.builders.append(builder)
 
     def _skip_tests_by_tags(self, recipe, name):
         """This method determines if test should be skipped based on tag names specified

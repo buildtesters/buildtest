@@ -1,7 +1,7 @@
 import os
 import pytest
 import uuid
-from buildtest.config import load_settings
+
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.menu.build import (
     discover_by_buildspecs,

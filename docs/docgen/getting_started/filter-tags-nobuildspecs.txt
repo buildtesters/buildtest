@@ -14,3 +14,4 @@ Discovered Buildspecs:
 [sh_shell][/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
 [shell_options][/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
 No buildspecs to process because there are no valid buildspecs
+Writing Logfile to: /private/tmp/buildtest/buildtest_xj0_jq3_.log

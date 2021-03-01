@@ -1,6 +1,5 @@
 import logging
 import os
-import json
 import socket
 
 from buildtest.defaults import (
@@ -12,7 +11,7 @@ from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_schema, load_recipe
 from buildtest.system import Slurm, LSF, Cobalt, system
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.tools import Hasher, deep_get
+from buildtest.utils.tools import deep_get
 from buildtest.exceptions import BuildTestError
 
 

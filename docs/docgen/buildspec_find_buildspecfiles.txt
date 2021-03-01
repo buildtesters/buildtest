@@ -68,8 +68,6 @@ $ buildtest buildspec find --buildspec-files
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/squeue.yml                   |
 +--------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/buildtest/general_tests/sched/slurm/sinfo.yml                    |
-+--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/general_tests/sched/cobalt/commands.yml                |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bmgroups.yml                   |
@@ -81,4 +79,12 @@ $ buildtest buildspec find --buildspec-files
 | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bqueues.yml                    |
 +--------------------------------------------------------------------------------------------+
 | /Users/siddiq90/Documents/buildtest/general_tests/sched/lsf/bhosts.yml                     |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/general_tests/containers/singularity/pull.yml          |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/general_tests/containers/singularity/run.yml           |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/general_tests/containers/singularity/inspect.yml       |
++--------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/buildtest/general_tests/containers/singularity/build.yml         |
 +--------------------------------------------------------------------------------------------+

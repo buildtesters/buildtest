@@ -1,7 +1,7 @@
 system:
   generic:
     hostnames: ["localhost"]
-    # specify module system used at your site (environment-modules, Lmod)
+    # specify module system used at your site (environment-modules, lmod)
     moduletool: N/A
 
     # boolean to determine if buildspecs provided in buildtest repo should be loaded in buildspec cache

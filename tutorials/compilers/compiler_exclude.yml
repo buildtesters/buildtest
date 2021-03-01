@@ -8,7 +8,7 @@ buildspecs:
     source: src/vecAdd.c
     compilers:
       name: ["^(gcc)"]
-      exclude: [gcc@10.2.0]
+      exclude: [gcc/10.2.0-37fmsw7]
       default:
         gcc:
           cflags: -fopenacc

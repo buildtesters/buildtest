@@ -1,4 +1,4 @@
-$ buildtest build --tags pass --filter-tags pass --buildspec tutorials/python-hello.yml 
+$ buildtest build --tags pass --filter-tags pass -b tutorials/python-hello.yml 
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
@@ -26,10 +26,10 @@ Discovered Buildspecs:
 | Stage: Building Test |
 +----------------------+ 
 
- name                 | id       | type   | executor   | tags                  | testpath
-----------------------+----------+--------+------------+-----------------------+-----------------------------------------------------------------------------------------------------------------
- exit1_pass           | b16af37e | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/3/stage/generate.sh
- returncode_int_match | 4b3216c9 | script | local.sh   | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/3/stage/generate.sh
+ name                 | id       | type   | executor         | tags                  | testpath
+----------------------+----------+--------+------------------+-----------------------+--------------------------------------------------------------------------------------------------------------------------
+ exit1_pass           | 7a4772f1 | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/17/stage/generate.sh
+ returncode_int_match | 2980ee01 | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/17/stage/generate.sh
 
 
 
@@ -37,10 +37,10 @@ Discovered Buildspecs:
 | Stage: Running Test  |
 +----------------------+ 
     
- name                 | id       | executor   | status   |   returncode | testpath
-----------------------+----------+------------+----------+--------------+-----------------------------------------------------------------------------------------------------------------
- exit1_pass           | b16af37e | local.sh   | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/exit1_pass/3/stage/generate.sh
- returncode_int_match | 4b3216c9 | local.sh   | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/pass_returncode/returncode_int_match/3/stage/generate.sh
+ name                 | id       | executor         | status   |   returncode | testpath
+----------------------+----------+------------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------------
+ exit1_pass           | 7a4772f1 | generic.local.sh | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/17/stage/generate.sh
+ returncode_int_match | 2980ee01 | generic.local.sh | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/17/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -52,4 +52,4 @@ Failed Tests: 0/2 Percentage: 0.000%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_nnmzqggy.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_qg9bfffi.log

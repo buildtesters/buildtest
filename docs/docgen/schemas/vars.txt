@@ -21,9 +21,9 @@ Discovered Buildspecs:
 | Stage: Building Test |
 +----------------------+ 
 
- name           | id       | type   | executor   | tags          | testpath
-----------------+----------+--------+------------+---------------+--------------------------------------------------------------------------------------------------
- variables_bash | 9c293f94 | script | local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/5/stage/generate.sh
+ name           | id       | type   | executor           | tags          | testpath
+----------------+----------+--------+--------------------+---------------+-----------------------------------------------------------------------------------------------------------
+ variables_bash | 311c6baf | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/11/stage/generate.sh
 
 
 
@@ -31,9 +31,9 @@ Discovered Buildspecs:
 | Stage: Running Test  |
 +----------------------+ 
     
- name           | id       | executor   | status   |   returncode | testpath
-----------------+----------+------------+----------+--------------+--------------------------------------------------------------------------------------------------
- variables_bash | 9c293f94 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/5/stage/generate.sh
+ name           | id       | executor           | status   |   returncode | testpath
+----------------+----------+--------------------+----------+--------------+-----------------------------------------------------------------------------------------------------------
+ variables_bash | 311c6baf | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/11/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -45,4 +45,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_qudrdoco.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_kre1uikw.log
