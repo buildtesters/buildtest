@@ -1,7 +1,7 @@
 version: "1.0"
 buildspecs:
   systemd_default_target:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     tags: [system]
     description: check if default target is multi-user.target

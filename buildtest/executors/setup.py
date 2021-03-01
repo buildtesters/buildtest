@@ -26,40 +26,51 @@ class BuildExecutor:
     provided, we use reasonable defaults.
     """
 
-    def __init__(self, config_opts):
+    def __init__(self, site_config):
         """Initialize executors, meaning that we provide the buildtest
-        configuration (``config_opts``) that are validated, and can instantiate
+        configuration that are validated, and can instantiate
         each executor to be available.
 
-        :param config_opts: the validated config opts provided by buildtest.
-        :type config_opts: dict, required
+        :param site_config: the site configuration for buildtest.
+        :type site_config: instance of BuildtestConfiguration class, required
         """
 
         self.executors = {}
         self.logger = logging.getLogger(__name__)
         self.logger.debug("Getting Executors from buildtest settings")
-        systems = config_opts["system"]
-        for system in systems:
 
-            for name in systems[system]["executors"].get("local", {}).keys():
-                self.executors[f"local.{name}"] = LocalExecutor(
-                    name, systems[system]["executors"]["local"][name], config_opts
+        if site_config.localexecutors:
+            for name in site_config.localexecutors:
+                self.executors[f"{site_config.name}.local.{name}"] = LocalExecutor(
+                    name,
+                    site_config.target_config["executors"]["local"][name],
+                    site_config,
                 )
 
-            for name in systems[system]["executors"].get("slurm", {}).keys():
-                self.executors[f"slurm.{name}"] = SlurmExecutor(
-                    name, systems[system]["executors"]["slurm"][name], config_opts
+        if site_config.slurmexecutors:
+            for name in site_config.slurmexecutors:
+                self.executors[f"{site_config.name}.slurm.{name}"] = SlurmExecutor(
+                    name,
+                    site_config.target_config["executors"]["slurm"][name],
+                    site_config,
                 )
 
-            for name in systems[system]["executors"].get("lsf", {}).keys():
-                self.executors[f"lsf.{name}"] = LSFExecutor(
-                    name, systems[system]["executors"]["lsf"][name], config_opts
+        if site_config.lsfexecutors:
+            for name in site_config.lsfexecutors:
+                self.executors[f"{site_config.name}.lsf.{name}"] = LSFExecutor(
+                    name,
+                    site_config.target_config["executors"]["lsf"][name],
+                    site_config,
                 )
 
-            for name in systems[system]["executors"].get("cobalt", {}).keys():
-                self.executors[f"cobalt.{name}"] = CobaltExecutor(
-                    name, systems[system]["executors"]["cobalt"][name], config_opts
+        if site_config.cobaltexecutors:
+            for name in site_config.cobaltexecutors:
+                self.executors[f"{site_config.name}.cobalt.{name}"] = CobaltExecutor(
+                    name,
+                    site_config.target_config["executors"]["cobalt"][name],
+                    site_config,
                 )
+
         self.setup()
 
     def __str__(self):

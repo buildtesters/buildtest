@@ -2,14 +2,14 @@ version: "1.0"
 buildspecs:
 
   exit1_fail:
-    executor: local.sh
+    executor: generic.local.sh
     type: script
     description: exit 1 by default is FAIL
     tags: [tutorials, fail]
     run: exit 1
 
   exit1_pass:
-    executor: local.sh
+    executor: generic.local.sh
     type: script
     description: report exit 1 as PASS
     run: exit 1
@@ -18,7 +18,7 @@ buildspecs:
       returncode: [1]
 
   returncode_list_mismatch:
-    executor: local.sh
+    executor: generic.local.sh
     type: script
     description: exit 2 failed since it failed to match returncode 1
     run: exit 2
@@ -27,7 +27,7 @@ buildspecs:
       returncode: [1, 3]
 
   returncode_int_match:
-    executor: local.sh
+    executor: generic.local.sh
     type: script
     description: exit 128 matches returncode 128
     run: exit 128

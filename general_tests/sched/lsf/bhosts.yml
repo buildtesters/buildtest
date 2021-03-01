@@ -3,7 +3,7 @@ buildspecs:
   display_lsf_hosts:
     description: Show all hosts in LSF cluster
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     tags: lsf
     run_only:
       scheduler: lsf
@@ -12,16 +12,16 @@ buildspecs:
   display_hosts_format:
     description: Show all hosts with column hostname and status
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     tags: lsf
     run_only:
       scheduler: lsf
     run: bhosts -o 'host_name status'
 
   bhosts_version:
-    description: Display bhosts version
+    description: display version from bhosts command
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     tags: lsf
     run_only:
       scheduler: lsf

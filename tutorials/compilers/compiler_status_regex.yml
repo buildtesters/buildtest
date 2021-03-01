@@ -4,7 +4,7 @@ buildspecs:
     type: compiler
     description: Regular expression check in stdout for gcc group
     tags: [tutorials, compile]
-    executor: local.bash
+    executor: generic.local.bash
     source: src/vecAdd.c
     compilers:
       name: ["^(gcc)"]
@@ -21,7 +21,7 @@ buildspecs:
     type: compiler
     description: Override regular expression for compiler gcc@10.2.0
     tags: [tutorials, compile]
-    executor: local.bash
+    executor: generic.local.bash
     source: src/vecAdd.c
     compilers:
       name: ["^(gcc)"]

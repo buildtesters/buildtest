@@ -4,7 +4,7 @@ buildspecs:
     type: compiler
     description: Vector Addition example with GNU compilers but exclude gcc@10.2.0
     tags: [tutorials, compile]
-    executor: local.bash
+    executor: generic.local.bash
     source: src/vecAdd.c
     compilers:
       name: ["^(gcc)"]

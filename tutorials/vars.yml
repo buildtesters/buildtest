@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   variables_bash:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Declare shell variables in bash
     tags: [tutorials]
     vars:

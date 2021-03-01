@@ -1,7 +1,7 @@
 version: "1.0"
 buildspecs:
   ulimit_filelock_unlimited:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     tags: [system]
     description: Check if file lock is set to unlimited in ulimits
@@ -12,7 +12,7 @@ buildspecs:
         exp: "^unlimited$"
 
   ulimit_cputime_unlimited:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     tags: [system]
     description: Check if cputime is set to unlimited in ulimits
@@ -23,7 +23,7 @@ buildspecs:
         exp: "^unlimited$"
 
   ulimit_stacksize_unlimited:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     tags: [system]
     description: Check if stack size is set to unlimited in ulimits
@@ -34,7 +34,7 @@ buildspecs:
         exp: "^unlimited$"
 
   ulimit_vmsize_unlimited:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     tags: [system]
     description: Check virtual memory size and check if its set to unlimited
@@ -45,7 +45,7 @@ buildspecs:
         exp: "^unlimited$"
 
   ulimit_filedescriptor_4096:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     tags: [system]
     description: Check if open file descriptors limit is set to 4096
@@ -56,7 +56,7 @@ buildspecs:
         exp: "^4096$"
 
   ulimit_max_user_process_2048:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     tags: [system]
     description: Check max number of user process limit is set to 2048

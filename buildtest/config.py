@@ -12,7 +12,7 @@ from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_schema, load_recipe
 from buildtest.system import Slurm, LSF, Cobalt, system
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.tools import Hasher
+from buildtest.utils.tools import Hasher, deep_get
 from buildtest.exceptions import BuildTestError
 
 
@@ -31,6 +31,11 @@ class BuildtestConfiguration:
         # but only one system can be active depending on which host buildtest is run
         self.target_config = None
         self._validate()
+
+        self.localexecutors = None
+        self.slurmexecutors = None
+        self.lsfexecutors = None
+        self.cobaltexecutors = None
 
         self.get_current_system()
 
@@ -60,6 +65,35 @@ class BuildtestConfiguration:
                 raise BuildTestError(
                     f"Based on target system: {socket.gethostname()} we cannot find a matching system from {list(self.systems)}"
                 )
+
+        if self.target_config["executors"].get("local"):
+            self.localexecutors = list(self.target_config["executors"]["local"].keys())
+
+        if self.target_config["executors"].get("slurm"):
+            self.slurmexecutors = list(self.target_config["executors"]["slurm"].keys())
+
+        if self.target_config["executors"].get("lsf"):
+            self.lsfexecutors = list(self.target_config["executors"]["lsf"].keys())
+
+        if self.target_config["executors"].get("cobalt"):
+            self.cobaltexecutors = list(
+                self.target_config["executors"]["cobalt"].keys()
+            )
+
+    def get_executors_by_type(self, executor_type):
+        """Return list of executor names by given type of executor.
+        :param executor_type: type of executor (local, slurm, lsf, cobalt)
+        :type executor_type: string
+        """
+        names = deep_get(self.target_config, "executors", executor_type)
+        if not names:
+            raise BuildTestError(
+                "Cannot fetch executors by type: %s in system: %s ",
+                executor_type,
+                self.name,
+            )
+
+        return list(names.keys())
 
     def _validate(self):
         """This method validates the site configuration with schema"""

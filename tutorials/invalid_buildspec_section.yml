@@ -1,7 +1,7 @@
 version: "1.0"
 buildspecs:
   invalid_type:
-    executor: local.bash
+    executor: generic.local.bash
     type: badscript
     description: invalid type
     tags: [tutorials, fail]

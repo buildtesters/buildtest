@@ -3,7 +3,7 @@ buildspecs:
   hello_c:
     type: compiler
     description: "Hello World C Compilation"
-    executor: local.bash
+    executor: generic.local.bash
     tags: [tutorials, compile]
     source: "src/hello.c"
     compilers:

@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   show_lsf_configuration:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Show LSF configuration using lsinfo
     tags: lsf
     run_only:
@@ -11,7 +11,7 @@ buildspecs:
 
   show_lsf_models:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Show information about host models in LSF cluster
     tags: lsf
     run_only:
@@ -20,7 +20,7 @@ buildspecs:
 
   show_lsf_resources:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Show information about LSF resources
     tags: lsf
     run_only:
@@ -29,7 +29,7 @@ buildspecs:
 
   lsf_version:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Display lsf version using lsinfo
     tags: lsf
     run_only:

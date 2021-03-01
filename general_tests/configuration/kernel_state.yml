@@ -4,5 +4,5 @@ buildspecs:
     type: script
     description: "Retrieve Kernel Swap Usage"
     tags: [configuration]
-    executor: local.bash
+    executor: generic.local.bash
     run: /usr/sbin/sysctl kernel.swapusage

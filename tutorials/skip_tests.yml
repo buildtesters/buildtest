@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   skip:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: This test is skipped
     skip: Yes
     tags: [tutorials]
@@ -10,7 +10,7 @@ buildspecs:
 
   unskipped:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: This test is not skipped
     skip: No
     tags: [tutorials]

@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   run_only_macos_distro:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: "Run test only if linux distro is darwin."
     tags: [mac]
     run_only:

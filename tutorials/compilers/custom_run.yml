@@ -3,7 +3,7 @@ buildspecs:
   custom_run_by_compilers:
     type: compiler
     description: Customize binary launch based on compiler
-    executor: local.bash
+    executor: generic.local.bash
     tags: [tutorials, compile]
     source: "src/argc.c"
     compilers:

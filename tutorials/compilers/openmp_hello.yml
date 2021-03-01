@@ -3,7 +3,7 @@ buildspecs:
   openmp_hello_c_example:
     type: compiler
     description: OpenMP Hello World C example
-    executor: local.bash
+    executor: generic.local.bash
     tags: [tutorials, compile]
     source: "src/hello_omp.c"
     compilers:

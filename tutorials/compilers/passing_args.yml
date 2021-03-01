@@ -3,7 +3,7 @@ buildspecs:
   executable_arguments:
     type: compiler
     description: Passing arguments example
-    executor: local.bash
+    executor: generic.local.bash
     tags: [tutorials, compile]
     source: "src/argc.c"
     compilers:

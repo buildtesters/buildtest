@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   build_sif_from_dockerimage:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: build sif image from docker image docker://godlovedc/lolcow
     tags: [containers, singularity]
     run: |
@@ -11,14 +11,14 @@ buildspecs:
 
   build_sandbox_image:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: build sandbox image from docker image docker://godlovedc/lolcow
     tags: [containers, singularity]
     run: singularity build --sandbox mylolcow_latest_sandbox docker://godlovedc/lolcow
  
   build_remoteimages:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: build remote hosted image from AWS
     tags: [containers, singularity]
     vars:

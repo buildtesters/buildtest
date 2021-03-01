@@ -13,23 +13,23 @@ class BaseExecutor:
 
     type = "base"
 
-    def __init__(self, name, settings, config_opts):
+    def __init__(self, name, settings, site_configs):
         """Initiate a base executor, meaning we provide a name (also held
         by the BuildExecutor base that holds it) and the loaded dictionary
         of config opts to parse.
 
         :param name: a name for the base executor and key provided in the configuration file
         :type name: str, required
-        :param settings: the executor settings.
+        :param settings: executor settings from configuration file for a particular executor instance (``local.bash``)
         :type settings: dict, required
-        :param config_opts: loaded buildtest configuration
-        :type config_opts: dict
+        :param site_configs: loaded buildtest configuration
+        :type site_configs: instance of BuildtestConfiguration, required
         """
 
         self.logger = logging.getLogger(__name__)
         self.name = name
         self._settings = settings
-        self._buildtestsettings = config_opts
+        self._buildtestsettings = site_configs
         self.load()
         self.builder = None
         self.result = {}

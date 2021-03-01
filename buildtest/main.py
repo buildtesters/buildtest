@@ -4,7 +4,11 @@ import os
 import shutil
 import sys
 import tempfile
-from buildtest.config import check_settings, resolve_settings_file
+from buildtest.config import (
+    check_settings,
+    resolve_settings_file,
+    buildtest_configuration,
+)
 from buildtest.defaults import var_root, BUILDTEST_USER_HOME
 from buildtest.menu import BuildTestParser
 from buildtest.menu.build import func_build_subcmd
@@ -53,7 +57,7 @@ def main():
             args.func(args)
         return
 
-    logdir = buildtest_configuration.get("logdir")
+    logdir = buildtest_configuration.target_config.get("logdir")
 
     if not logdir:
         print(f"Writing Logfile to: {dest_logfile}")

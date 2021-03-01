@@ -807,8 +807,10 @@ def func_build_subcmd(args):
     :type args: dict, required
     :rtype: None
     """
-    bc = buildtest_configuration.target_config
-    test_directory = resolve_testdirectory(bc, args.testdir)
+
+    test_directory = resolve_testdirectory(
+        buildtest_configuration.target_config, args.testdir
+    )
 
     # discover all buildspecs by tags, buildspecs, and exclude buildspecs. The return
     # is a list of buildspecs and excluded buildspecs
@@ -816,7 +818,7 @@ def func_build_subcmd(args):
         args.tags, args.executor, args.buildspec, args.exclude, debug=True
     )
 
-    executor = BuildExecutor(bc)
+    executor = BuildExecutor(buildtest_configuration)
 
     buildspec_filters = {"tags": args.filter_tags}
 
@@ -844,7 +846,9 @@ def func_build_subcmd(args):
     if args.stage == "build":
         return
 
-    runphase_builders = run_phase(buildphase_builders, executor, bc, printTable=True)
+    runphase_builders = run_phase(
+        buildphase_builders, executor, buildtest_configuration, printTable=True
+    )
 
     # only update report if we have a list of valid builders returned from run_phase
     if runphase_builders:

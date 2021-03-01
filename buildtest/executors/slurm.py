@@ -12,6 +12,7 @@ from buildtest.exceptions import BuildTestError
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
+from buildtest.utils.tools import deep_get
 
 
 class SlurmExecutor(BaseExecutor):
@@ -57,21 +58,22 @@ class SlurmExecutor(BaseExecutor):
     def load(self):
         """Load the a slurm executor configuration from buildtest settings."""
 
-        self.launcher = self._settings.get("launcher") or self._buildtestsettings[
-            "executors"
-        ].get("defaults", {}).get("launcher")
+        self.launcher = self._settings.get("launcher") or deep_get(
+            self._buildtestsettings.target_configs, "executors", "defaults", "launcher"
+        )
         self.launcher_opts = self._settings.get("options")
 
         self.cluster = self._settings.get("cluster")
         self.partition = self._settings.get("partition")
         self.qos = self._settings.get("qos")
-        self.account = self._settings.get("account") or self._buildtestsettings[
-            "executors"
-        ].get("defaults", {}).get("account")
-        self.max_pend_time = self._settings.get(
-            "max_pend_time"
-        ) or self._buildtestsettings["executors"].get("defaults", {}).get(
-            "max_pend_time"
+        self.account = self._settings.get("account") or deep_get(
+            self._buildtestsettings.target_configs, "executors", "defaults", "account"
+        )
+        self.max_pend_time = self._settings.get("max_pend_time") or deep_get(
+            self._buildtestsettings.target_configs,
+            "executors",
+            "defaults",
+            "max_pend_time",
         )
 
     def dispatch(self):

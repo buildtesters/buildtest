@@ -1,7 +1,7 @@
 version: "1.0"
 buildspecs:
   show_accounts:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: run sacctmgr list accounts
     tags: [slurm]
@@ -10,7 +10,7 @@ buildspecs:
     run: sacctmgr list accounts
 
   show_users:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: run sacctmgr list users
     tags: [slurm]
@@ -21,7 +21,7 @@ buildspecs:
       sacctmgr list users $USER
 
   show_qos:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: run sacctmgr list qos
     tags: [slurm]
@@ -30,7 +30,7 @@ buildspecs:
     run: sacctmgr list qos
 
   show_tres:
-    executor: local.bash
+    executor: generic.local.bash
     description: run sacctmgr list tres
     type: script
     tags: [slurm]
