@@ -22,4 +22,11 @@ system:
             echo "commands run before job"
           after_script: |
             time
-            echo "commands run after job"
+
+    compilers:
+      compiler:
+        gcc:
+          default:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran

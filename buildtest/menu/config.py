@@ -13,7 +13,7 @@ from buildtest.config import (
     buildtest_configuration,
 )
 from buildtest.defaults import (
-    BUILDTEST_SETTINGS_FILE,
+    USER_SETTINGS_FILE,
     BUILDSPEC_CACHE_FILE,
 )
 from buildtest.defaults import supported_schemas

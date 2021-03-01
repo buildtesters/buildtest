@@ -9,7 +9,7 @@ import logging
 import os
 import sys
 
-from buildtest.defaults import BUILDTEST_SETTINGS_FILE, executor_root
+from buildtest.defaults import USER_SETTINGS_FILE, executor_root
 from buildtest.executors.cobalt import CobaltExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
@@ -18,12 +18,9 @@ from buildtest.utils.file import create_dir, write_file
 
 
 class BuildExecutor:
-    """A BuildExecutor is a base class some type of executor, for example,
-    the types "local", "lsf", "slurm" would map to ``LocalExecutor``,
-    ``LSFExecutor`` and ``SlurmExecutor`` here, each expecting a particular
-    set of variables under the config options. If options are required
-    and not provided, we exit on error. If they are optional and not
-    provided, we use reasonable defaults.
+    """A BuildExecutor is a base class for an executor. The executors can be
+    different types such as local, slurm, lsf, cobalt which map to subclass
+    ``LocalExecutor``, ``SlurmExecutor``, ``LSFExecutor``, ``CobaltExecutor``
     """
 
     def __init__(self, site_config):
@@ -115,7 +112,7 @@ class BuildExecutor:
             msg = "[%s]: executor %s is not defined in %s" % (
                 builder.metadata["name"],
                 executor,
-                BUILDTEST_SETTINGS_FILE,
+                USER_SETTINGS_FILE,
             )
             builder.logger.error(msg)
             sys.exit(msg)

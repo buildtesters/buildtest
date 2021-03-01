@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   # Shell would be accepted to indicate a single line shell command (or similar)
   hello_dinosaur:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     env:
       FIRST_NAME: avocado

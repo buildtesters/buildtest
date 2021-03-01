@@ -29,3 +29,11 @@ system:
           options:
             - "-n 1"
             - "-t 10"
+
+    compilers:
+      compiler:
+        gcc:
+          default:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran

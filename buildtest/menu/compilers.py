@@ -9,7 +9,8 @@ from lmod.spider import Spider
 from buildtest.config import (
     resolve_settings_file,
     load_settings,
-    buildtest_configuration,
+    buildtest_configuration as site_config,
+    BuildtestConfiguration,
 )
 from buildtest.exceptions import BuildTestError
 from buildtest.schemas.defaults import custom_validator, schema_table
@@ -69,7 +70,7 @@ def func_config_compiler(args=None):
     # configuration = load_settings(settings_file)
 
     # bc = BuildtestCompilers(configuration)
-    bc = BuildtestCompilers(buildtest_configuration)
+    bc = BuildtestCompilers()
     if args.json:
         bc.print_json()
     if args.yaml:
@@ -92,13 +93,22 @@ class BuildtestCompilers:
         "cuda": {"cc": "nvcc", "cxx": "nvcc", "fc": "None"},
     }
 
-    def __init__(self, debug=False):
+    def __init__(self, settings_file=None, debug=False):
         """
+        :param settings_file: Specify an alternate settings file to use when finding compilers
+        :param settings_file: str, optional
         :param compilers: compiler section from buildtest configuration.
         :type compilers: dict
         """
 
-        self.configuration = buildtest_configuration.target_config
+        self.configuration = site_config.target_config
+
+        # if settings file is provided, let's load settings into BuildtestConfiguration
+        # and set self.configuration to loaded configuration
+        if settings_file:
+            bc = BuildtestConfiguration(settings_file)
+            self.configuration = bc.target_config
+
         self.debug = debug
 
         if not deep_get(self.configuration, "compilers", "compiler"):

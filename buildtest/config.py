@@ -4,7 +4,7 @@ import json
 import socket
 
 from buildtest.defaults import (
-    BUILDTEST_SETTINGS_FILE,
+    USER_SETTINGS_FILE,
     DEFAULT_SETTINGS_FILE,
     DEFAULT_SETTINGS_SCHEMA,
 )
@@ -152,7 +152,7 @@ def check_settings(settings_path=None, executor_check=True, retrieve_settings=Fa
             )
 
     if retrieve_settings:
-        return user_schema
+        return bc.target_config
 
 
 def load_settings(settings_path=None):
@@ -176,8 +176,8 @@ def resolve_settings_file():
     """
 
     # if buildtest settings file exist return it otherwise return default file
-    if os.path.exists(BUILDTEST_SETTINGS_FILE):
-        return BUILDTEST_SETTINGS_FILE
+    if os.path.exists(USER_SETTINGS_FILE):
+        return USER_SETTINGS_FILE
 
     return DEFAULT_SETTINGS_FILE
 

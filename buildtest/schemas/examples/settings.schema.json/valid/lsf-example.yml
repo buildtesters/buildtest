@@ -27,3 +27,10 @@ system:
           queue: test
           account: qa
           options: ["-W 20"]
+    compilers:
+      compiler:
+        gcc:
+          default:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran

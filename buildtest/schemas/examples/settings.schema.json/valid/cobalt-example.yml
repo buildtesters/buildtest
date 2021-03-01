@@ -15,3 +15,11 @@ system:
 
         haswell:
           queue: haswell
+
+    compilers:
+      compiler:
+        gcc:
+          default:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran

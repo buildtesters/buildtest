@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   invalid_file:
     type: compiler
-    executor: local.bash
+    executor: generic.local.bash
     description: Can't find source file name
     source: /path/to/invalidfile
     compilers:
