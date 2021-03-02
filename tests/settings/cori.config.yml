@@ -1,32 +1,45 @@
-moduletool: environment-modules
-load_default_buildspecs: false
-executors:
-  defaults:
-    pollinterval: 10
-    launcher: sbatch
-    max_pend_time: 90
-    account: nstaff
-  local:
-    bash:
-      description: submit jobs on local machine using bash shell
-      shell: bash
+system:
+  cori:
+    hostnames: [cori01, cori02, cori03, cori04, cori05, cori06, cori07, cori08, cori09, cori10, cori11, cori12]
+    moduletool: environment-modules
+    load_default_buildspecs: false
+    compilers:
+      find:
+        gcc: ^(gcc|PrgEnv-gnu)
+        cray: ^(PrgEnv-cray)
+        intel: ^(intel|PrgEnv-intel)
+        pgi: ^(pgi)
+        cuda: ^(cuda\/)
+      compiler:
+        gcc:
+          builtin_gcc:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
 
-    sh:
-      description: submit jobs on local machine using sh shell
-      shell: sh
+    executors:
+      defaults:
+        pollinterval: 10
+        launcher: sbatch
+        max_pend_time: 90
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
+        csh:
+          description: submit jobs on local machine using csh shell
+          shell: csh
+        python:
+          description: submit jobs on local machine using python shell
+          shell: python
 
-    csh:
-      description: submit jobs on local machine using csh shell
-      shell: csh
-
-    python:
-      description: submit jobs on local machine using python shell
-      shell: python
-
-  slurm:
-    haswell_debug:
-      qos: debug
-      cluster: cori
-      options:
-        - -C haswell
-      description: debug queue on Haswell partition
+      slurm:
+        haswell_debug:
+          qos: debug
+          cluster: cori
+          options:
+          - -C haswell
+          description: debug queue on Haswell partition
