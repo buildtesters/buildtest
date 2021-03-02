@@ -1,27 +1,39 @@
-moduletool: N/A
-load_default_buildspecs: True
-executors:
-  local:
-    bash:
-      description: submit jobs on local machine
-      shell: bash -v
+system:
+  generic:
+    hostnames: ['localhost']
 
-  slurm:
-    haswell:
-      launcher: sbatch
-      options:
-        - "-p haswell"
-        - "-t 00:10"
+    moduletool: N/A
+    load_default_buildspecs: True
+    executors:
+      local:
+        bash:
+          description: submit jobs on local machine
+          shell: bash -v
 
-  lsf:
-    batch:
-      launcher: bsub
-      options:
-        - "-q batch"
-        - "-t 00:10"
-  cobalt:
-    normal:
-      launcher: qsub
-      options:
-        - "-n 1"
-        - "-t 10"
+      slurm:
+        haswell:
+          launcher: sbatch
+          options:
+            - "-p haswell"
+            - "-t 00:10"
+
+      lsf:
+        batch:
+          launcher: bsub
+          options:
+            - "-q batch"
+            - "-t 00:10"
+      cobalt:
+        normal:
+          launcher: qsub
+          options:
+            - "-n 1"
+            - "-t 10"
+
+    compilers:
+      compiler:
+        gcc:
+          default:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran

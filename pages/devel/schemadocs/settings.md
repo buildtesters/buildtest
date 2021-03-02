@@ -16,36 +16,68 @@ settings.schema.json
 
 # buildtest configuration schema Properties
 
-| Property                                            | Type          | Required | Nullable       | Defined by                                                                                                                                  |
-| :-------------------------------------------------- | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
-| [additionalProperties](#additionalproperties)       | Not specified | Optional | cannot be null | [Untitled schema](undefined.md "undefined#undefined")                                                                                       |
-| [buildspec_roots](#buildspec_roots)                 | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-properties-buildspec_roots.md "settings.schema.json#/properties/buildspec_roots")                 |
-| [load_default_buildspecs](#load_default_buildspecs) | `boolean`     | Required | cannot be null | [buildtest configuration schema](settings-properties-load_default_buildspecs.md "settings.schema.json#/properties/load_default_buildspecs") |
-| [testdir](#testdir)                                 | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-testdir.md "settings.schema.json#/properties/testdir")                                 |
-| [logdir](#logdir)                                   | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-logdir.md "settings.schema.json#/properties/logdir")                                   |
-| [moduletool](#moduletool)                           | `string`      | Required | cannot be null | [buildtest configuration schema](settings-properties-moduletool.md "settings.schema.json#/properties/moduletool")                           |
-| [compilers](#compilers)                             | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-properties-compilers.md "settings.schema.json#/properties/compilers")                             |
-| [executors](#executors)                             | `object`      | Required | cannot be null | [buildtest configuration schema](settings-properties-executors.md "settings.schema.json#/properties/executors")                             |
+| Property          | Type     | Required | Nullable       | Defined by                                                                                                |
+| :---------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------- |
+| [system](#system) | `object` | Required | cannot be null | [buildtest configuration schema](settings-properties-system.md "settings.schema.json#/properties/system") |
 
-## additionalProperties
+## system
 
-no description
 
-`additionalProperties`
 
-*   is optional
+`system`
 
-*   Type: unknown
+*   is required
+
+*   Type: `object` ([Details](settings-properties-system.md))
 
 *   cannot be null
 
-*   defined in: [Untitled schema](undefined.md "undefined#undefined")
+*   defined in: [buildtest configuration schema](settings-properties-system.md "settings.schema.json#/properties/system")
 
-### Untitled schema Type
+### system Type
 
-unknown
+`object` ([Details](settings-properties-system.md))
 
-## buildspec_roots
+# buildtest configuration schema Definitions
+
+## Definitions group system
+
+Reference this group by using
+
+```json
+{"$ref":"settings.schema.json#/definitions/system"}
+```
+
+| Property                                            | Type      | Required | Nullable       | Defined by                                                                                                                                                                        |
+| :-------------------------------------------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [hostnames](#hostnames)                             | `array`   | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-hostnames.md "settings.schema.json#/definitions/system/properties/hostnames")                             |
+| [buildspec_roots](#buildspec_roots)                 | `array`   | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-buildspec_roots.md "settings.schema.json#/definitions/system/properties/buildspec_roots")                 |
+| [load_default_buildspecs](#load_default_buildspecs) | `boolean` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-load_default_buildspecs.md "settings.schema.json#/definitions/system/properties/load_default_buildspecs") |
+| [testdir](#testdir)                                 | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-testdir.md "settings.schema.json#/definitions/system/properties/testdir")                                 |
+| [logdir](#logdir)                                   | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-logdir.md "settings.schema.json#/definitions/system/properties/logdir")                                   |
+| [moduletool](#moduletool)                           | `string`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-moduletool.md "settings.schema.json#/definitions/system/properties/moduletool")                           |
+| [compilers](#compilers)                             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers.md "settings.schema.json#/definitions/system/properties/compilers")                             |
+| [executors](#executors)                             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors.md "settings.schema.json#/definitions/system/properties/executors")                             |
+
+### hostnames
+
+
+
+`hostnames`
+
+*   is required
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-hostnames.md "settings.schema.json#/definitions/system/properties/hostnames")
+
+#### hostnames Type
+
+`string[]`
+
+### buildspec_roots
 
 Specify a list of directory paths to search buildspecs. This field can be used with `buildtest buildspec find` to rebuild buildspec cache or build tests using `buildtest build` command
 
@@ -57,13 +89,13 @@ Specify a list of directory paths to search buildspecs. This field can be used w
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-properties-buildspec_roots.md "settings.schema.json#/properties/buildspec_roots")
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-buildspec_roots.md "settings.schema.json#/definitions/system/properties/buildspec_roots")
 
-### buildspec_roots Type
+#### buildspec_roots Type
 
 `string[]`
 
-## load_default_buildspecs
+### load_default_buildspecs
 
 Specify whether buildtest should automatically load  uildspecs provided in buildtest repo into buildspec cache
 
@@ -75,13 +107,13 @@ Specify whether buildtest should automatically load  uildspecs provided in build
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-properties-load_default_buildspecs.md "settings.schema.json#/properties/load_default_buildspecs")
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-load_default_buildspecs.md "settings.schema.json#/definitions/system/properties/load_default_buildspecs")
 
-### load_default_buildspecs Type
+#### load_default_buildspecs Type
 
 `boolean`
 
-## testdir
+### testdir
 
 Specify full path to test directory where buildtest will write tests.
 
@@ -93,13 +125,13 @@ Specify full path to test directory where buildtest will write tests.
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-properties-testdir.md "settings.schema.json#/properties/testdir")
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-testdir.md "settings.schema.json#/definitions/system/properties/testdir")
 
-### testdir Type
+#### testdir Type
 
 `string`
 
-## logdir
+### logdir
 
 Specify location where buildtest will write log files
 
@@ -111,13 +143,13 @@ Specify location where buildtest will write log files
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-properties-logdir.md "settings.schema.json#/properties/logdir")
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-logdir.md "settings.schema.json#/definitions/system/properties/logdir")
 
-### logdir Type
+#### logdir Type
 
 `string`
 
-## moduletool
+### moduletool
 
 Specify modules tool used for interacting with `module` command.
 
@@ -129,13 +161,13 @@ Specify modules tool used for interacting with `module` command.
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-properties-moduletool.md "settings.schema.json#/properties/moduletool")
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-moduletool.md "settings.schema.json#/definitions/system/properties/moduletool")
 
-### moduletool Type
+#### moduletool Type
 
 `string`
 
-### moduletool Constraints
+#### moduletool Constraints
 
 **enum**: the value of this property must be equal to one of the following values:
 
@@ -145,25 +177,25 @@ Specify modules tool used for interacting with `module` command.
 | `"lmod"`                |             |
 | `"N/A"`                 |             |
 
-## compilers
+### compilers
 
 Declare compiler section for defining system compilers that can be referenced in buildspec.
 
 `compilers`
 
-*   is optional
+*   is required
 
-*   Type: `object` ([Details](settings-properties-compilers.md))
+*   Type: `object` ([Details](settings-definitions-system-properties-compilers.md))
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-properties-compilers.md "settings.schema.json#/properties/compilers")
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-compilers.md "settings.schema.json#/definitions/system/properties/compilers")
 
-### compilers Type
+#### compilers Type
 
-`object` ([Details](settings-properties-compilers.md))
+`object` ([Details](settings-definitions-system-properties-compilers.md))
 
-## executors
+### executors
 
 The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be `local`, `lsf`, `slurm`, `cobalt`. The executors are referenced in buildspec using `executor` field.
 
@@ -171,17 +203,15 @@ The executor section is used for declaring your executors that are responsible f
 
 *   is required
 
-*   Type: `object` ([Details](settings-properties-executors.md))
+*   Type: `object` ([Details](settings-definitions-system-properties-executors.md))
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-properties-executors.md "settings.schema.json#/properties/executors")
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-executors.md "settings.schema.json#/definitions/system/properties/executors")
 
-### executors Type
+#### executors Type
 
-`object` ([Details](settings-properties-executors.md))
-
-# buildtest configuration schema Definitions
+`object` ([Details](settings-definitions-system-properties-executors.md))
 
 ## Definitions group cc
 
