@@ -1,6 +1,6 @@
 import os
 import pytest
-from buildtest.config import BuildTestCommand
+from buildtest.menu.build import BuildTest
 
 
 def test_ascent():
@@ -12,5 +12,5 @@ def test_ascent():
     ascent = os.path.join(here, "settings", "ascent.yml")
 
     buildspec_files = os.path.join(here, "examples", "cori_buildspecs", "hostname.yml")
-    cmd = BuildTestCommand(config_file=ascent, buildspec=[buildspec_files])
+    cmd = BuildTest(config_file=ascent, buildspec=[buildspec_files])
     cmd.build()
