@@ -1,3 +1,5 @@
+.. _compiler_schema:
+
 Compiler Schema
 =================
 

@@ -540,15 +540,18 @@ You may leverage ``batch`` with ``sbatch``, ``bsub``,  or ``cobalt`` field to sp
 your job directives. If a particular field is not available in ``batch`` property
 then utilize ``sbatch``, ``bsub``, ``cobalt`` field to fill in rest of the arguments.
 
+.. _max_pend_time:
 
 Jobs exceeds `max_pend_time`
 -----------------------------
 
 Recall from :ref:`configuring_buildtest` that `max_pend_time` will cancel jobs if
 job exceed timelimit. buildtest will start a timer for each job right after job
-submission and keep track of time duration, if job is pending then job will be cancelled.
+submission and keep track of time duration, and if job is in **pending** state and it exceepds `max_pend_time`,
+then job will be cancelled.
+
 To demonstrate, here is an example of two buildspecs submitted to scheduler and notice
-job ``shared_qos_haswell_hostname`` was cancelled during after `max_pend_time` of 10
+job ``shared_qos_haswell_hostname`` was cancelled after `max_pend_time` of 10
 sec. Note that cancelled job is not reported in final output nor updated in report hence
 it won't be present in the report (``buildtest report``).
 
