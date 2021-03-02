@@ -7,14 +7,12 @@ expose functions to run builds.
 
 import logging
 import os
-from buildtest.config import buildtest_configuration
+
 from buildtest.exceptions import BuildTestError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.utils import load_recipe
 from buildtest.schemas.defaults import schema_table, custom_validator
 from buildtest.utils.file import resolve_path, is_dir
-
-be = BuildExecutor(buildtest_configuration)
 
 
 class BuildspecParser:
@@ -27,7 +25,7 @@ class BuildspecParser:
     ``type`` field. If the schema fails validation check, then we stop immediately.
     """
 
-    def __init__(self, buildspec, executor=None):
+    def __init__(self, buildspec, buildexecutor):
         """The init method will run some checks against buildspec before loading
         buildspec. We retrieve available schemas via method
         ``get_schemas_available`` and check if ``type`` in buildspec
@@ -38,17 +36,18 @@ class BuildspecParser:
 
         :param buildspec: the pull path to the Buildspec file, must exist.
         :type buildspec: str, required
-        :param executor: an instance of BuildExecutor class defines Executors from configuration file
-        :type executor: BuildExecutor, optional
+        :param buildexecutor: an instance of BuildExecutor class defines Executors from configuration file
+        :type buildexecutor: BuildExecutor, required
         """
 
         self.logger = logging.getLogger(__name__)
-        self.executors = be.list_executors()
-        # if executor is defined get list of executors, this is applicable if one wants to specify alternate configuration
-        # to validate tests.
 
-        if executor:
-            self.executors = executor.list_executors()
+        if not isinstance(buildexecutor, BuildExecutor):
+            raise BuildTestError(
+                "Invalid type argument for 'buildexecutor', must be of type BuildExecutor"
+            )
+
+        self.buildexecutors = buildexecutor.list_executors()
 
         # if invalid input for buildspec
         if not buildspec:
@@ -133,12 +132,12 @@ class BuildspecParser:
         # extract type field from test, if not found set to None
         executor = self.recipe["buildspecs"][test].get("executor") or None
 
-        if executor not in self.executors:
+        if executor not in self.buildexecutors:
             raise BuildTestError(
-                f"executor: {executor} not found in executor list: {self.executors}"
+                f"executor: {executor} not found in executor list: {self.buildexecutors}"
             )
         self.logger.debug(
-            f"Executor: {executor} found in executor list: {self.executors}"
+            f"Executor: {executor} found in executor list: {self.buildexecutors}"
         )
 
     def _validate(self):

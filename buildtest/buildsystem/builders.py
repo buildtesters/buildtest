@@ -135,18 +135,18 @@ class Builder:
         :rtype: bool
         """
 
-        if self.filters["tags"]:
+        if self.filters:
             # if tags field in buildspec is empty, then we skip test only if user filters by tags
             if not recipe.get("tags"):
                 return True
 
             found = False
-            for tagname in self.filters["tags"]:
+            for tagname in self.filters:
                 if tagname in recipe.get("tags"):
                     found = True
 
             if not found:
-                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because it is not in tag filter list: {self.filters['tags']}"
+                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because it is not in tag filter list: {self.filters}"
                 self.logger.info(msg)
                 print(msg)
                 return True
