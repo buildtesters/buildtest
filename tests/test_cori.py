@@ -12,5 +12,5 @@ def test_cori():
     cori_configuration = os.path.join(here, "settings", "cori.config.yml")
 
     buildspec_files = os.path.join(here, "examples", "cori_buildspecs", "hostname.yml")
-    cmd = BuildTest(config_file=cori_configuration, buildspec=[buildspec_files])
+    cmd = BuildTest(config_file=cori_configuration, buildspecs=[buildspec_files])
     cmd.build()
