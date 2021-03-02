@@ -55,10 +55,10 @@ def check_valid_recipes(recipes, valids, loaded, version):
 @pytest.mark.schema
 def test_script_examples(tmp_path):
     """the script test_organization is responsible for all the schemas
-       in the root of the repository, under <schema>/examples.
-       A schema specific test is intended to run tests that
-       are specific to a schema. In this case, this is the "script"
-       folder. Invalid examples should be under ./invalid/script.
+    in the root of the repository, under <schema>/examples.
+    A schema specific test is intended to run tests that
+    are specific to a schema. In this case, this is the "script"
+    folder. Invalid examples should be under ./invalid/script.
     """
 
     print("Testing schema %s" % schema_file)

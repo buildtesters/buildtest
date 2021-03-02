@@ -8,7 +8,9 @@ class TestBuildTestError:
         reason="Testing to see if exception of type BuildTestError is raised",
         raises=BuildTestError,
     )
-    def test_exception(self,):
+    def test_exception(
+        self,
+    ):
         """This test will check if we can raise Exception of type BuildTestError"""
         error = BuildTestError("Failed to run command")
         assert hasattr(error, "msg")

@@ -55,14 +55,14 @@ class LSFExecutor(BaseExecutor):
         """Load the a LSF executor configuration from buildtest settings."""
 
         self.launcher = self._settings.get("launcher") or deep_get(
-            self._buildtestsettings.target_configs, "executors", "defaults", "launcher"
+            self._buildtestsettings.target_config, "executors", "defaults", "launcher"
         )
         self.launcher_opts = self._settings.get("options")
         self.account = self._settings.get("account") or deep_get(
-            self._buildtestsettings.target_configs, "executors", "defaults", "account"
+            self._buildtestsettings.target_config, "executors", "defaults", "account"
         )
         self.max_pend_time = self._settings.get("max_pend_time") or deep_get(
-            self._buildtestsettings.target_configs,
+            self._buildtestsettings.target_config,
             "executors",
             "defaults",
             "max_pend_time",
