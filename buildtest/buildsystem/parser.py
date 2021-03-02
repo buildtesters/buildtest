@@ -7,7 +7,7 @@ expose functions to run builds.
 
 import logging
 import os
-from buildtest.config import buildtest_configuration
+
 from buildtest.exceptions import BuildTestError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.utils import load_recipe

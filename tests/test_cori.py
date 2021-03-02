@@ -1,6 +1,6 @@
 import os
 import pytest
-from buildtest.config import check_settings, BuildtestConfiguration, BuildTestCommand
+from buildtest.config import BuildTestCommand
 
 
 def test_cori():

@@ -1,6 +1,5 @@
 import os
 import pytest
-import uuid
 import tempfile
 
 from buildtest.defaults import BUILDTEST_ROOT, DEFAULT_SETTINGS_FILE
@@ -140,31 +139,10 @@ def test_build_multi_executors():
 
 @pytest.mark.cli
 def test_build_by_stages():
-    class args:
-        buildspec = None
-        debug = False
-        stage = "parse"
-        testdir = None
-        exclude = None
-        tags = ["python"]
-        executor = None
-        filter_tags = None
-        rebuild = None
 
     # testing buildtest build --tags python --stage=parse
     cmd = BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["python"], stage="parse")
     cmd.build()
-
-    class args:
-        buildspec = None
-        debug = False
-        stage = "build"
-        testdir = None
-        exclude = None
-        tags = ["python"]
-        executor = None
-        filter_tags = None
-        rebuild = None
 
     # testing buildtest build --tags tutorials --stage=build
     cmd = BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["python"], stage="build")
@@ -221,11 +199,11 @@ def test_BuildTest_type():
     # buildspec must be a list not a string
     buildspec = os.path.join(valid_buildspecs, "environment.yml")
     with pytest.raises(BuildTestError):
-        cmd = BuildTest(config_file=DEFAULT_SETTINGS_FILE, buildspecs=buildspec)
+        BuildTest(config_file=DEFAULT_SETTINGS_FILE, buildspecs=buildspec)
 
     # invalid value for exclude buildspecs must be a list
     with pytest.raises(BuildTestError):
-        cmd = BuildTest(
+        BuildTest(
             config_file=DEFAULT_SETTINGS_FILE,
             buildspecs=[buildspec],
             exclude_buildspecs=buildspec,
@@ -233,35 +211,27 @@ def test_BuildTest_type():
 
     # tags must be a list not a string
     with pytest.raises(BuildTestError):
-        cmd = BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags="pass")
+        BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags="pass")
 
     # tags must be a list not a string
     with pytest.raises(BuildTestError):
-        cmd = BuildTest(
-            config_file=DEFAULT_SETTINGS_FILE, executors="generic.local.bash"
-        )
+        BuildTest(config_file=DEFAULT_SETTINGS_FILE, executors="generic.local.bash")
 
     # filter_Tags must be a list not a string
     with pytest.raises(BuildTestError):
-        cmd = BuildTest(
-            config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], filter_tags="pass"
-        )
+        BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], filter_tags="pass")
 
     # invalid type for stage argument, must be a string not list
     with pytest.raises(BuildTestError):
-        cmd = BuildTest(
-            config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], stage=["parse"]
-        )
+        BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], stage=["parse"])
 
     # invalid value for stage argument, must be 'parse' or 'build'
     with pytest.raises(BuildTestError):
-        cmd = BuildTest(
-            config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], stage="unknown"
-        )
+        BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], stage="unknown")
 
     # invalid value for testdir argument, must be a str
     with pytest.raises(BuildTestError):
-        cmd = BuildTest(
+        BuildTest(
             config_file=DEFAULT_SETTINGS_FILE,
             tags=["pass"],
             testdir=list(BUILDTEST_ROOT),
@@ -269,4 +239,4 @@ def test_BuildTest_type():
 
     # invalid type for rebuild argument, must be an int not string
     with pytest.raises(BuildTestError):
-        cmd = BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], rebuild="1")
+        BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], rebuild="1")

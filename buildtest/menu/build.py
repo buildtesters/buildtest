@@ -11,7 +11,7 @@ import sys
 import time
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
-from buildtest.config import buildtest_configuration, BuildtestConfiguration
+from buildtest.config import BuildtestConfiguration
 from buildtest.defaults import (
     BUILDTEST_ROOT,
     BUILDSPEC_CACHE_FILE,

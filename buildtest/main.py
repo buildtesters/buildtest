@@ -11,7 +11,7 @@ from buildtest.config import (
 )
 from buildtest.defaults import var_root, BUILDTEST_USER_HOME
 from buildtest.menu import BuildTestParser
-from buildtest.menu.build import func_build_subcmd, BuildTest
+from buildtest.menu.build import BuildTest
 from buildtest.system import system
 from buildtest.log import init_logfile, streamlog
 from buildtest.utils.file import create_dir, resolve_path
