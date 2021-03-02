@@ -1,7 +1,6 @@
 import os
 import pytest
-from buildtest.config import check_settings, BuildtestConfiguration
-from buildtest.menu.build import func_build_subcmd
+from buildtest.config import check_settings, BuildtestConfiguration, BuildTestCommand
 
 
 def test_cori():
@@ -11,22 +10,7 @@ def test_cori():
 
     here = os.path.dirname(os.path.abspath(__file__))
     cori_configuration = os.path.join(here, "settings", "cori.config.yml")
-    settings = check_settings(cori_configuration, retrieve_settings=True)
-
-    bc = BuildtestConfiguration(cori_configuration)
 
     buildspec_files = os.path.join(here, "examples", "cori_buildspecs", "hostname.yml")
-
-    class args:
-        buildspec = [buildspec_files]
-        debug = False
-        stage = None
-        testdir = None
-        exclude = None
-        tags = None
-        executor = None
-        filter_tags = None
-        rebuild = None
-
-    #  test job submission on Cori
-    func_build_subcmd(args)
+    cmd = BuildTestCommand(config_file=cori_configuration, buildspec=[buildspec_files])
+    cmd.build()

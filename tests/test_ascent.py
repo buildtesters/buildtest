@@ -1,7 +1,6 @@
 import os
 import pytest
-from buildtest.config import check_settings
-from buildtest.menu.build import func_build_subcmd
+from buildtest.config import BuildTestCommand
 
 
 def test_ascent():
@@ -11,20 +10,7 @@ def test_ascent():
 
     here = os.path.dirname(os.path.abspath(__file__))
     ascent = os.path.join(here, "settings", "ascent.yml")
-    settings = check_settings(ascent, retrieve_settings=True)
 
-    buildspec_files = os.path.join(here, "examples", "ascent", "hostname.yml")
-
-    class args:
-        buildspec = [buildspec_files]
-        debug = False
-        stage = None
-        testdir = None
-        exclude = None
-        tags = None
-        executor = None
-        filter_tags = None
-        rebuild = None
-
-    #  test job submission on Ascent
-    func_build_subcmd(args, settings)
+    buildspec_files = os.path.join(here, "examples", "cori_buildspecs", "hostname.yml")
+    cmd = BuildTestCommand(config_file=ascent, buildspec=[buildspec_files])
+    cmd.build()

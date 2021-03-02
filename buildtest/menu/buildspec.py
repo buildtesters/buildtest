@@ -5,8 +5,13 @@ import os
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
 from buildtest.buildsystem.parser import BuildspecParser
-from buildtest.config import buildtest_configuration
-from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDSPEC_DEFAULT_PATH
+from buildtest.config import buildtest_configuration, BuildtestConfiguration
+from buildtest.defaults import (
+    BUILDSPEC_CACHE_FILE,
+    BUILDSPEC_DEFAULT_PATH,
+    DEFAULT_SETTINGS_FILE,
+)
+from buildtest.executors.setup import BuildExecutor
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_dir, is_file, walk_tree, resolve_path, read_file
 
@@ -20,7 +25,7 @@ class BuildspecCache:
     default_format_fields = ["name", "type", "executor", "tags", "description"]
     format_fields = default_format_fields + ["file"]
 
-    def __init__(self, rebuild, filterfields, formatfields, roots):
+    def __init__(self, rebuild, filterfields, formatfields, roots, settings_file=None):
         """The initializer method for BuildspecCache class is responsible for
         loading and finding buildspecs into buildspec cache. This method is called
         when using ``buildtest buildspec find`` command.
@@ -34,7 +39,7 @@ class BuildspecCache:
         :param roots:  List of directories to search for buildspecs. This argument contains value of --roots
         :type roots: list, required
         """
-
+        self.settings = settings_file or DEFAULT_SETTINGS_FILE
         self.filter = filterfields
         self.format = formatfields
         # if --root is not specified we set to empty list instead of None
@@ -181,11 +186,15 @@ class BuildspecCache:
         """
         valid_buildspecs = []
         self.count = 0
+
+        configuration = BuildtestConfiguration(self.settings)
+        buildexecutor = BuildExecutor(configuration)
+
         for buildspec in buildspecs:
             self.count += 1
 
             try:
-                parse = BuildspecParser(buildspec)
+                parse = BuildspecParser(buildspec, buildexecutor)
             # any buildspec that raises SystemExit or ValidationError imply
             # buildspec is not valid, we add this to invalid list along with
             # error message and skip to next buildspec
@@ -576,7 +585,7 @@ class BuildspecCache:
             print(path)
 
 
-def func_buildspec_find(args):
+def func_buildspec_find(args, settings_file=None):
     """Entry point for ``buildtest buildspec find``. This method
     will attempt to read for buildspec cache file (BUILDSPEC_CACHE_FILE)
     if found and print a list of all buildspecs. Otherwise, it will
@@ -595,6 +604,7 @@ def func_buildspec_find(args):
         filterfields=args.filter,
         formatfields=args.format,
         roots=args.root,
+        settings_file=settings_file,
     )
 
     # implements buildtest buildspec find --tags

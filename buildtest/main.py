@@ -11,7 +11,7 @@ from buildtest.config import (
 )
 from buildtest.defaults import var_root, BUILDTEST_USER_HOME
 from buildtest.menu import BuildTestParser
-from buildtest.menu.build import func_build_subcmd
+from buildtest.menu.build import func_build_subcmd, BuildTest
 from buildtest.system import system
 from buildtest.log import init_logfile, streamlog
 from buildtest.utils.file import create_dir, resolve_path
@@ -51,7 +51,18 @@ def main():
     check_settings(settings_file)
 
     if args.subcommands == "build":
-        func_build_subcmd(args)
+        cmd = BuildTest(
+            config_file=settings_file,
+            buildspecs=args.buildspec,
+            exclude_buildspecs=args.exclude,
+            executors=args.executor,
+            tags=args.tags,
+            filter_tags=args.filter_tags,
+            rebuild=args.rebuild,
+            stage=args.stage,
+            testdir=args.testdir,
+        )
+        cmd.build()
     else:
         if args.subcommands and args.func:
             args.func(args)

@@ -41,7 +41,7 @@ def test_build_executor(tmp_path):
     for buildspec in os.listdir(examples_dir):
         buildspec = os.path.join(examples_dir, buildspec)
         try:
-            bp = BuildspecParser(buildspec)
+            bp = BuildspecParser(buildspec, be)
         except (SystemExit, ValidationError):
             continue
 
