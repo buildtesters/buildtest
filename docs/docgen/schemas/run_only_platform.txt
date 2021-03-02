@@ -22,9 +22,9 @@ Discovered Buildspecs:
 | Stage: Building Test |
 +----------------------+ 
 
- name                     | id       | type   | executor     | tags          | testpath
---------------------------+----------+--------+--------------+---------------+---------------------------------------------------------------------------------------------------------------------------
- run_only_platform_darwin | ff805db5 | script | local.python | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.python/run_only_platform/run_only_platform_darwin/1/stage/generate.sh
+ name                     | id       | type   | executor             | tags          | testpath
+--------------------------+----------+--------+----------------------+---------------+-----------------------------------------------------------------------------------------------------------------------------------
+ run_only_platform_darwin | 360979cc | script | generic.local.python | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.python/run_only_platform/run_only_platform_darwin/4/stage/generate.sh
 
 
 
@@ -32,9 +32,9 @@ Discovered Buildspecs:
 | Stage: Running Test  |
 +----------------------+ 
     
- name                     | id       | executor     | status   |   returncode | testpath
---------------------------+----------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------------------------
- run_only_platform_darwin | ff805db5 | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/run_only_platform/run_only_platform_darwin/1/stage/generate.sh
+ name                     | id       | executor             | status   |   returncode | testpath
+--------------------------+----------+----------------------+----------+--------------+-----------------------------------------------------------------------------------------------------------------------------------
+ run_only_platform_darwin | 360979cc | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.python/run_only_platform/run_only_platform_darwin/4/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -46,4 +46,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_c462ezu8.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_n8azbqmr.log

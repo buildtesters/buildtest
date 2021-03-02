@@ -7,14 +7,14 @@ $ buildtest build -b general_tests/configuration/ -x general_tests/configuration
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml
 /Users/siddiq90/Documents/buildtest/general_tests/configuration/kernel_state.yml
 /Users/siddiq90/Documents/buildtest/general_tests/configuration/systemd-default-target.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml
 
 Excluded Buildspecs:
 
-/Users/siddiq90/Documents/buildtest/general_tests/configuration/ssh_localhost.yml
 /Users/siddiq90/Documents/buildtest/general_tests/configuration/ulimits.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/ssh_localhost.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -22,19 +22,19 @@ Excluded Buildspecs:
     
  schemafile              | validstate   | buildspec
 -------------------------+--------------+--------------------------------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/kernel_state.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/systemd-default-target.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- name                   | id       | type   | executor   | tags                      | testpath
-------------------------+----------+--------+------------+---------------------------+----------------------------------------------------------------------------------------------------------------------------
- root_disk_usage        | 06ec01cb | script | local.bash | ['filesystem', 'storage'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/disk_usage/root_disk_usage/1/stage/generate.sh
- kernel_swapusage       | 2f8d01be | script | local.bash | ['configuration']         | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/kernel_state/kernel_swapusage/1/stage/generate.sh
- systemd_default_target | 4c77b919 | script | local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd-default-target/systemd_default_target/1/stage/generate.sh
+ name                   | id       | type   | executor           | tags                      | testpath
+------------------------+----------+--------+--------------------+---------------------------+------------------------------------------------------------------------------------------------------------------------------------
+ kernel_swapusage       | 7b948ef9 | script | generic.local.bash | ['configuration']         | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/6/stage/generate.sh
+ systemd_default_target | 6a51825a | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/systemd-default-target/systemd_default_target/6/stage/generate.sh
+ root_disk_usage        | caaeccbd | script | generic.local.bash | ['filesystem', 'storage'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/6/stage/generate.sh
 
 
 
@@ -42,11 +42,11 @@ Excluded Buildspecs:
 | Stage: Running Test  |
 +----------------------+ 
     
- name                   | id       | executor   | status   |   returncode | testpath
-------------------------+----------+------------+----------+--------------+----------------------------------------------------------------------------------------------------------------------------
- root_disk_usage        | 06ec01cb | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/disk_usage/root_disk_usage/1/stage/generate.sh
- kernel_swapusage       | 2f8d01be | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/kernel_state/kernel_swapusage/1/stage/generate.sh
- systemd_default_target | 4c77b919 | local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/systemd-default-target/systemd_default_target/1/stage/generate.sh
+ name                   | id       | executor           | status   |   returncode | testpath
+------------------------+----------+--------------------+----------+--------------+------------------------------------------------------------------------------------------------------------------------------------
+ kernel_swapusage       | 7b948ef9 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/6/stage/generate.sh
+ systemd_default_target | 6a51825a | generic.local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/systemd-default-target/systemd_default_target/6/stage/generate.sh
+ root_disk_usage        | caaeccbd | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/6/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -58,4 +58,4 @@ Failed Tests: 1/3 Percentage: 33.333%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_5u0sg2u3.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_howw__66.log

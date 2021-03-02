@@ -15,3 +15,4 @@ Error Messages from Stage: Parse
 ________________________________________________________________________________
 Skipping /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml since it failed to validate
 No buildspecs to process because there are no valid buildspecs
+Writing Logfile to: /private/tmp/buildtest/buildtest_8f9nf7qg.log

@@ -1,7 +1,7 @@
 version: "1.0"
 buildspecs:
   circle_area:
-    executor: local.python
+    executor: generic.local.python
     type: script
     shell: python
     description: "Calculate circle of area given a radius"

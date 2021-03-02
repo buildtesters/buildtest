@@ -11,6 +11,7 @@ import sys
 import time
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
+from buildtest.config import buildtest_configuration
 from buildtest.defaults import (
     BUILDTEST_ROOT,
     BUILDSPEC_CACHE_FILE,
@@ -793,7 +794,7 @@ def print_test_summary(total_tests, passed_tests, failed_tests):
     print("\n\n")
 
 
-def func_build_subcmd(args, buildtest_config):
+def func_build_subcmd(args):
     """Entry point for ``buildtest build`` sub-command. This method will discover
     Buildspecs in method ``discover_buildspecs``. If there is an exclusion list
     this will be checked, once buildtest knows all Buildspecs to process it will
@@ -804,12 +805,12 @@ def func_build_subcmd(args, buildtest_config):
 
     :param args: arguments passed from command line
     :type args: dict, required
-    :param buildtest_config: loaded buildtest settings
-    :type buildtest_config: dict, required
     :rtype: None
     """
 
-    test_directory = resolve_testdirectory(buildtest_config, args.testdir)
+    test_directory = resolve_testdirectory(
+        buildtest_configuration.target_config, args.testdir
+    )
 
     # discover all buildspecs by tags, buildspecs, and exclude buildspecs. The return
     # is a list of buildspecs and excluded buildspecs
@@ -817,7 +818,7 @@ def func_build_subcmd(args, buildtest_config):
         args.tags, args.executor, args.buildspec, args.exclude, debug=True
     )
 
-    executor = BuildExecutor(buildtest_config)
+    executor = BuildExecutor(buildtest_configuration)
 
     buildspec_filters = {"tags": args.filter_tags}
 
@@ -846,7 +847,7 @@ def func_build_subcmd(args, buildtest_config):
         return
 
     runphase_builders = run_phase(
-        buildphase_builders, executor, buildtest_config, printTable=True
+        buildphase_builders, executor, buildtest_configuration, printTable=True
     )
 
     # only update report if we have a list of valid builders returned from run_phase

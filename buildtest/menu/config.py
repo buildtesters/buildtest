@@ -5,13 +5,14 @@ import sys
 import yaml
 from jsonschema import ValidationError
 from buildtest import BUILDTEST_VERSION
-from buildtest.schemas.utils import load_recipe
-from buildtest.config import check_settings, load_settings, resolve_settings_file
-from buildtest.defaults import (
-    BUILDTEST_SETTINGS_FILE,
-    BUILDSPEC_CACHE_FILE,
+
+from buildtest.config import (
+    check_settings,
+    resolve_settings_file,
+    buildtest_configuration,
 )
-from buildtest.defaults import supported_schemas
+from buildtest.defaults import BUILDSPEC_CACHE_FILE, supported_schemas
+from buildtest.schemas.utils import load_recipe
 from buildtest.system import system
 
 
@@ -49,10 +50,10 @@ def func_config_executors(args=None):
     If no option is specified we display output in JSON format
     """
 
-    settings_file = resolve_settings_file()
-    content = load_recipe(settings_file)
+    # settings_file = resolve_settings_file()
+    # content = load_recipe(settings_file)
 
-    d = {"executors": content["executors"]}
+    d = {"executors": buildtest_configuration.target_config["executors"]}
 
     # display output in JSON format
     if args.json:
@@ -87,14 +88,13 @@ def func_config_summary(args=None):
 
     print("Buildtest Settings")
     print("{:_<80}".format(""))
-    print(f"Buildtest Settings: {BUILDTEST_SETTINGS_FILE}")
-
-    settings_file = resolve_settings_file()
-    settings = load_settings(settings_file)
+    print(f"Buildtest Settings: {buildtest_configuration.file}")
 
     executors = []
-    for executor_type in settings.get("executors").keys():
-        for name in settings["executors"][executor_type].keys():
+    for executor_type in buildtest_configuration.target_config.get("executors").keys():
+        for name in buildtest_configuration.target_config["executors"][
+            executor_type
+        ].keys():
             executors.append(f"{executor_type}.{name}")
 
     print("Executors: ", executors)

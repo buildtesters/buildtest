@@ -21,10 +21,10 @@ Discovered Buildspecs:
 | Stage: Building Test |
 +----------------------+ 
 
- name                  | id       | type   | executor   | tags      | testpath
------------------------+----------+--------+------------+-----------+------------------------------------------------------------------------------------------------------------
- bash_login_shebang    | 496f5afd | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
- bash_nonlogin_shebang | 5b12a6b2 | script | local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
+ name                  | id       | type   | executor           | tags      | testpath
+-----------------------+----------+--------+--------------------+-----------+--------------------------------------------------------------------------------------------------------------------
+ bash_login_shebang    | c5cc8ba7 | script | generic.local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/5/stage/generate.sh
+ bash_nonlogin_shebang | d8437d8d | script | generic.local.bash | tutorials | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/5/stage/generate.sh
 
 
 
@@ -32,10 +32,10 @@ Discovered Buildspecs:
 | Stage: Running Test  |
 +----------------------+ 
     
- name                  | id       | executor   | status   |   returncode | testpath
------------------------+----------+------------+----------+--------------+------------------------------------------------------------------------------------------------------------
- bash_login_shebang    | 496f5afd | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/2/stage/generate.sh
- bash_nonlogin_shebang | 5b12a6b2 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
+ name                  | id       | executor           | status   |   returncode | testpath
+-----------------------+----------+--------------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------
+ bash_login_shebang    | c5cc8ba7 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/5/stage/generate.sh
+ bash_nonlogin_shebang | d8437d8d | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/5/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -47,4 +47,4 @@ Failed Tests: 0/2 Percentage: 0.000%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_3zitszp5.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_ygk8pj8z.log

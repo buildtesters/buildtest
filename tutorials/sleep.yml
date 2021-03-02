@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   sleep:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: sleep 2 seconds
     tags: [tutorials]
     vars:

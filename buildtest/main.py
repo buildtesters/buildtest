@@ -4,7 +4,11 @@ import os
 import shutil
 import sys
 import tempfile
-from buildtest.config import check_settings, resolve_settings_file
+from buildtest.config import (
+    check_settings,
+    resolve_settings_file,
+    buildtest_configuration,
+)
 from buildtest.defaults import var_root, BUILDTEST_USER_HOME
 from buildtest.menu import BuildTestParser
 from buildtest.menu.build import func_build_subcmd
@@ -44,16 +48,16 @@ def main():
     # load the schema
     settings_file = resolve_settings_file()
     logger.info(f"Processing buildtest configuration file: {settings_file}")
-    buildtest_configuration = check_settings(settings_file, retrieve_settings=True)
+    check_settings(settings_file)
 
     if args.subcommands == "build":
-        func_build_subcmd(args, buildtest_configuration)
+        func_build_subcmd(args)
     else:
         if args.subcommands and args.func:
             args.func(args)
         return
 
-    logdir = buildtest_configuration.get("logdir")
+    logdir = buildtest_configuration.target_config.get("logdir")
 
     if not logdir:
         print(f"Writing Logfile to: {dest_logfile}")

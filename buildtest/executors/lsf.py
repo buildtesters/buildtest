@@ -12,6 +12,7 @@ import time
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
+from buildtest.utils.tools import deep_get
 
 
 class LSFExecutor(BaseExecutor):
@@ -53,17 +54,18 @@ class LSFExecutor(BaseExecutor):
     def load(self):
         """Load the a LSF executor configuration from buildtest settings."""
 
-        self.launcher = self._settings.get("launcher") or self._buildtestsettings[
-            "executors"
-        ].get("defaults", {}).get("launcher")
+        self.launcher = self._settings.get("launcher") or deep_get(
+            self._buildtestsettings.target_configs, "executors", "defaults", "launcher"
+        )
         self.launcher_opts = self._settings.get("options")
-        self.account = self._settings.get("account") or self._buildtestsettings[
-            "executors"
-        ].get("defaults", {}).get("account")
-        self.max_pend_time = self._settings.get(
-            "max_pend_time"
-        ) or self._buildtestsettings["executors"].get("defaults", {}).get(
-            "max_pend_time"
+        self.account = self._settings.get("account") or deep_get(
+            self._buildtestsettings.target_configs, "executors", "defaults", "account"
+        )
+        self.max_pend_time = self._settings.get("max_pend_time") or deep_get(
+            self._buildtestsettings.target_configs,
+            "executors",
+            "defaults",
+            "max_pend_time",
         )
         self.queue = self._settings.get("queue")
 

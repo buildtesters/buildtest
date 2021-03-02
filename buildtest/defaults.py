@@ -27,7 +27,7 @@ SCHEMA_ROOT = os.path.join(BUILDTEST_ROOT, "buildtest", "schemas")
 BUILDTEST_USER_HOME = os.path.join(userhome, ".buildtest")
 
 # dictionary used for storing status of builds
-BUILDTEST_SETTINGS_FILE = os.path.join(BUILDTEST_USER_HOME, "config.yml")
+USER_SETTINGS_FILE = os.path.join(BUILDTEST_USER_HOME, "config.yml")
 
 var_root = os.path.join(BUILDTEST_ROOT, "var")
 executor_root = os.path.join(var_root, "executors")

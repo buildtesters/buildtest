@@ -1,5 +1,5 @@
 $ buildtest config summary
-buildtest version:  0.9.2
+buildtest version:  0.9.3
 buildtest Path: /Users/siddiq90/Documents/buildtest/bin/buildtest
 
 
@@ -16,8 +16,7 @@ User: siddiq90
 
 Buildtest Settings
 ________________________________________________________________________________
-Buildtest Settings: /Users/siddiq90/.buildtest/config.yml
-Buildtest Settings is  VALID
+Buildtest Settings: /Users/siddiq90/Documents/buildtest/buildtest/settings/config.yml
 Executors:  ['local.bash', 'local.sh', 'local.csh', 'local.zsh', 'local.python']
 Buildspec Cache File: /Users/siddiq90/Documents/buildtest/var/buildspec-cache.json
 

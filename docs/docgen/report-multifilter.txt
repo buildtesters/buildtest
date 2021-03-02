@@ -1,36 +1,84 @@
-$ buildtest report --filter state=FAIL,executor=local.sh --format=name,id,state,executor
-+--------------------------+----------+---------+------------+
-| name                     | id       | state   | executor   |
-+==========================+==========+=========+============+
-| exit1_fail               | 543adede | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| exit1_fail               | 193daf84 | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| exit1_fail               | f87d57e9 | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| exit1_fail               | b2c55620 | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| exit1_fail               | b844796d | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| exit1_fail               | e9032ef4 | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| exit1_fail               | d8f8e3d8 | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| exit1_fail               | 8ebb06c3 | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 568ec6d3 | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| returncode_list_mismatch | f73e1f70 | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| returncode_list_mismatch | efcdcd98 | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 72ad68ef | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 9dfd8e45 | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 3ed874fe | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| returncode_list_mismatch | 86795dea | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
-| returncode_list_mismatch | eab17573 | FAIL    | local.sh   |
-+--------------------------+----------+---------+------------+
+$ buildtest report --filter state=FAIL,executor=generic.local.sh --format=name,id,state,executor
++--------------------------+----------+---------+------------------+
+| name                     | id       | state   | executor         |
++==========================+==========+=========+==================+
+| exit1_fail               | 323f39c2 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 92630b47 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 359ad92d | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | dd09aae2 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | cd5daef5 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 7a1e5cdf | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 5d9215d8 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 2e6a831c | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 6e3e7654 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 7a8aaa5e | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 28db231c | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | ae3bd55d | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | b466f8e3 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | d50f153d | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | fbd2ecb6 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | ef7bb2f6 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | e77eb7a7 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 28fa1720 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | c5922767 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 4fc14198 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 91e3e034 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | ab4c4791 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 729d8c9e | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | dfc1cab4 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 31dc290c | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 8852ce7d | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 88eca23d | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | bf512b72 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | ac5eda8b | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 4f53dd7d | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | efc99e3e | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 6115dd0c | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 48710bf2 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | b7e5fed4 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 67b082b7 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 8984d117 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 9eb5f97a | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 3b98dd36 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | b9f724a0 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 50b87f01 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+

@@ -15,3 +15,4 @@ Error Messages from Stage: Parse
 ________________________________________________________________________________
 Skipping /Users/siddiq90/Documents/buildtest/tutorials/invalid_buildspec_section.yml since it failed to validate
 No buildspecs to process because there are no valid buildspecs
+Writing Logfile to: /private/tmp/buildtest/buildtest_l8xx16e2.log

@@ -1,6 +1,6 @@
 version: "1.0"
 buildspecs:
   type_mismatch:
-    executor: local.sh
+    executor: generic.local.sh
     type: badvalue
     run: hostname

@@ -46,7 +46,7 @@ method. The test section within ``hello_world`` is validated by sub-schema by lo
 on ``type`` field::
 
     hello_world:
-      executor: local.bash
+      executor: generic.local.bash
       type: script
       description: "hello world example"
       run: echo "hello world!"

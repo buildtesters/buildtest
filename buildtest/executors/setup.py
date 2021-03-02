@@ -9,7 +9,7 @@ import logging
 import os
 import sys
 
-from buildtest.defaults import BUILDTEST_SETTINGS_FILE, executor_root
+from buildtest.defaults import USER_SETTINGS_FILE, executor_root
 from buildtest.executors.cobalt import CobaltExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
@@ -18,46 +18,56 @@ from buildtest.utils.file import create_dir, write_file
 
 
 class BuildExecutor:
-    """A BuildExecutor is a base class some type of executor, for example,
-    the types "local", "lsf", "slurm" would map to ``LocalExecutor``,
-    ``LSFExecutor`` and ``SlurmExecutor`` here, each expecting a particular
-    set of variables under the config options. If options are required
-    and not provided, we exit on error. If they are optional and not
-    provided, we use reasonable defaults.
+    """A BuildExecutor is a base class for an executor. The executors can be
+    different types such as local, slurm, lsf, cobalt which map to subclass
+    ``LocalExecutor``, ``SlurmExecutor``, ``LSFExecutor``, ``CobaltExecutor``
     """
 
-    def __init__(self, config_opts):
+    def __init__(self, site_config):
         """Initialize executors, meaning that we provide the buildtest
-        configuration (``config_opts``) that are validated, and can instantiate
+        configuration that are validated, and can instantiate
         each executor to be available.
 
-        :param config_opts: the validated config opts provided by buildtest.
-        :type config_opts: dict, required
+        :param site_config: the site configuration for buildtest.
+        :type site_config: instance of BuildtestConfiguration class, required
         """
 
         self.executors = {}
         self.logger = logging.getLogger(__name__)
         self.logger.debug("Getting Executors from buildtest settings")
 
-        for name in config_opts["executors"].get("local", {}).keys():
-            self.executors[f"local.{name}"] = LocalExecutor(
-                name, config_opts["executors"]["local"][name], config_opts
-            )
+        if site_config.localexecutors:
+            for name in site_config.localexecutors:
+                self.executors[f"{site_config.name}.local.{name}"] = LocalExecutor(
+                    name,
+                    site_config.target_config["executors"]["local"][name],
+                    site_config,
+                )
 
-        for name in config_opts["executors"].get("slurm", {}).keys():
-            self.executors[f"slurm.{name}"] = SlurmExecutor(
-                name, config_opts["executors"]["slurm"][name], config_opts
-            )
+        if site_config.slurmexecutors:
+            for name in site_config.slurmexecutors:
+                self.executors[f"{site_config.name}.slurm.{name}"] = SlurmExecutor(
+                    name,
+                    site_config.target_config["executors"]["slurm"][name],
+                    site_config,
+                )
 
-        for name in config_opts["executors"].get("lsf", {}).keys():
-            self.executors[f"lsf.{name}"] = LSFExecutor(
-                name, config_opts["executors"]["lsf"][name], config_opts
-            )
+        if site_config.lsfexecutors:
+            for name in site_config.lsfexecutors:
+                self.executors[f"{site_config.name}.lsf.{name}"] = LSFExecutor(
+                    name,
+                    site_config.target_config["executors"]["lsf"][name],
+                    site_config,
+                )
 
-        for name in config_opts["executors"].get("cobalt", {}).keys():
-            self.executors[f"cobalt.{name}"] = CobaltExecutor(
-                name, config_opts["executors"]["cobalt"][name], config_opts
-            )
+        if site_config.cobaltexecutors:
+            for name in site_config.cobaltexecutors:
+                self.executors[f"{site_config.name}.cobalt.{name}"] = CobaltExecutor(
+                    name,
+                    site_config.target_config["executors"]["cobalt"][name],
+                    site_config,
+                )
+
         self.setup()
 
     def __str__(self):
@@ -102,7 +112,7 @@ class BuildExecutor:
             msg = "[%s]: executor %s is not defined in %s" % (
                 builder.metadata["name"],
                 executor,
-                BUILDTEST_SETTINGS_FILE,
+                USER_SETTINGS_FILE,
             )
             builder.logger.error(msg)
             sys.exit(msg)

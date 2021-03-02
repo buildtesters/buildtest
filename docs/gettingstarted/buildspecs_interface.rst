@@ -82,7 +82,7 @@ example we query all tests by `type` property
    :ellipsis: 20
 
 Finally, we can combine multiple filter fields separated by comma, in the next example
-we query all buildspecs with ``tags=tutorials``, ``executor=local.sh``, and ``type=script``
+we query all buildspecs with ``tags=tutorials``, ``executor=generic.local.sh``, and ``type=script``
 
 .. program-output:: cat docgen/buildspec_multifield_filter.txt
 

@@ -14,7 +14,7 @@ Let's start off with a simple example declaring variables::
     buildspecs:
       variables:
         type: script
-        executor: local.bash
+        executor: generic.local.bash
         vars:
           X: 1
           Y: 2
@@ -71,7 +71,7 @@ example using the `script` schema with test name called
     version: "1.0"
     buildspecs:
       systemd_default_target:
-        executor: local.bash
+        executor: generic.local.bash
         type: script
         tags: [system]
         description: check if default target is multi-user.target
@@ -85,18 +85,21 @@ example using the `script` schema with test name called
 
 The test name **systemd_default_target** defined in **buildspec** section is
 validated with the following pattern ``"^[A-Za-z_][A-Za-z0-9_]*$"``. This test
-will use the executor **local.bash** which means it will use the Local Executor
+will use the executor **generic.local.bash** which means it will use the Local Executor
 with an executor name `bash` defined in the buildtest settings. The default
 buildtest settings will provide a bash executor as follows::
 
-    executors:
-      local:
-        bash:
-          description: submit jobs on local machine using bash shell
-          shell: bash
+    system:
+      generic:
+        hostnames: ["localhost"]
+        executors:
+          local:
+            bash:
+              description: submit jobs on local machine using bash shell
+              shell: bash
 
 The ``shell: bash`` indicates this executor will use `bash` to run the test scripts.
-To reference this executor use the format ``<type>.<name>`` in this case **local.bash**
+To reference this executor use the format ``<system>.<type>.<name>`` in this case **generic.local.bash**
 refers to bash executor.
 
 The ``description`` field is an optional key that can be used to provide a brief
@@ -206,10 +209,10 @@ Environment variables are defined using ``export`` in bash, sh, zsh while csh an
 tcsh use ``setenv``. Shown below is a generated test script for csh test::
 
     #!/bin/csh
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.csh/before_script.sh
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.csh/before_script.sh
     setenv SHELL_NAME csh
     echo "This is running $SHELL_NAME"
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.csh/after_script.sh
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.csh/after_script.sh
 
 Variable Declaration
 ----------------------
@@ -244,38 +247,33 @@ Next we build this test by running ``buildtest build -b tutorials/vars.yml``.
 If we inspect the output file we see the following result::
 
     1+2= 3
-    this is a literal string ':' \t \n
-    'singlequote'
-    "doublequote"
-    "This is a multi string"
+    this is a literal string ':'
+    singlequote
+    doublequote
     siddiq90
-    /Users/siddiq90/.anyconnect /Users/siddiq90/.DS_Store /Users/siddiq90/.serverauth.555 /Users/siddiq90/.CFUserTextEncoding /Users/siddiq90/.bashrc /Users/siddiq90/.zshrc /Users/siddiq90/.coverage /Users/siddiq90/.serverauth.87055 /Users/siddiq90/gitlab-tokens /Users/siddiq90/.zsh_history /Users/siddiq90/.lesshst /Users/siddiq90/.git-completion.bash /Users/siddiq90/buildtest.log /Users/siddiq90/darhan.log /Users/siddiq90/ascent.yml /Users/siddiq90/.zcompdump /Users/siddiq90/.serverauth.543 /Users/siddiq90/.bash_profile /Users/siddiq90/.Xauthority /Users/siddiq90/.python_history /Users/siddiq90/.gitconfig /Users/siddiq90/output.txt /Users/siddiq90/.bash_history /Users/siddiq90/.viminfo
+    /Users/siddiq90/.anyconnect /Users/siddiq90/.DS_Store /Users/siddiq90/.serverauth.555 /Users/siddiq90/.CFUserTextEncoding /Users/siddiq90/.wget-hsts /Users/siddiq90/.bashrc /Users/siddiq90/.zshrc /Users/siddiq90/.coverage /Users/siddiq90/.serverauth.87055 /Users/siddiq90/.zsh_history /Users/siddiq90/.lesshst /Users/siddiq90/.git-completion.bash /Users/siddiq90/buildtest.log /Users/siddiq90/darhan.log /Users/siddiq90/ascent.yml /Users/siddiq90/.cshrc /Users/siddiq90/github-tokens /Users/siddiq90/.zcompdump /Users/siddiq90/.serverauth.543 /Users/siddiq90/.bash_profile /Users/siddiq90/.Xauthority /Users/siddiq90/.python_history /Users/siddiq90/.gitconfig /Users/siddiq90/output.txt /Users/siddiq90/.bash_history /Users/siddiq90/.viminfo
 
 Shown below is the generated testscript::
 
-
-    #!/bin/bash
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+   #!/bin/bash
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/before_script.sh
     X=1
     Y=2
-    literalstring="this is a literal string ':' \t \n"
+    literalstring="this is a literal string ':' "
 
-    singlequote="'singlequote'"
-
-    doublequote="\"doublequote\""
-
-    multistring="\"This is a multi string\""
-
+    singlequote='singlequote'
+    doublequote="doublequote"
     current_user=$(whoami)
     files_homedir=`find $HOME -type f -maxdepth 1`
     echo "$X+$Y=" $(($X+$Y))
     echo $literalstring
     echo $singlequote
     echo $doublequote
-    echo $multistring
+
     echo $current_user
     echo $files_homedir
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/after_script.sh
+
 
 Customize Shell
 -----------------
@@ -300,9 +298,9 @@ The generated test-script for buildspec **_bin_sh_shell** will specify shebang
 **/bin/sh** because we specified ``shell: /bin/sh``::
 
     #!/bin/sh
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.sh/before_script.sh
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.sh/before_script.sh
     bzip2 --help
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.sh/after_script.sh
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.sh/after_script.sh
 
 If you don't specify a shell path such as ``shell: sh``, then buildtest will resolve
 path by looking in $PATH and build the shebang line.
@@ -311,15 +309,15 @@ In test **shell_options** we specify ``shell: "sh -x"``, buildtest will tack on 
 shell options into the shebang line. The generated test for this script is the following::
 
     #!/bin/sh -x
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.sh/before_script.sh
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.sh/before_script.sh
     echo $SHELL
     hostname
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.sh/after_script.sh
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.sh/after_script.sh
 
 
 If you prefer **csh** or **tcsh** for writing scripts just set ``shell: csh`` or
 ``shell: tcsh``, note you will need to match this with appropriate executor. For now
-use ``executor: local.csh`` to run your csh/tcsh scripts. In this example below
+use ``executor: generic.local.csh`` to run your csh/tcsh scripts. In this example below
 we define a script using csh, take note of ``run`` section we can write csh style.
 
 .. program-output:: cat tutorials/csh_shell_examples.yml
@@ -348,15 +346,15 @@ If we look at the generated test for **bash_login_shebang** we see the shebang l
 is passed into the script::
 
     #!/bin/bash -l
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/before_script.sh
     shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.bash/after_script.sh
 
 Python Shell
 ---------------
 
 You can use **script** schema to write python scripts using the **run** property. This
-can be achieved if you use the ``local.python`` executor assuming you have this
+can be achieved if you use the ``generic.local.python`` executor assuming you have this
 defined in your buildtest configuration.
 
 Here is a python example calculating area of circle

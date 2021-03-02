@@ -1,7 +1,7 @@
 version: "1.0"
 buildspecs:
   _bin_sh_shell:
-    executor: local.sh
+    executor: generic.local.sh
     type: script
     description: "/bin/sh shell example"
     shell: /bin/sh
@@ -9,7 +9,7 @@ buildspecs:
     run: "bzip2 --help"
 
   _bin_bash_shell:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: "/bin/bash shell example"
     shell: /bin/bash
@@ -17,7 +17,7 @@ buildspecs:
     run: "bzip2 -h"
 
   bash_shell:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: "bash shell example"
     shell: bash
@@ -25,7 +25,7 @@ buildspecs:
     run: "echo $SHELL"
 
   sh_shell:
-    executor: local.sh
+    executor: generic.local.sh
     type: script
     description: "sh shell example"
     shell: sh
@@ -33,7 +33,7 @@ buildspecs:
     run: "echo $SHELL"
 
   shell_options:
-    executor: local.sh
+    executor: generic.local.sh
     type: script
     description: "shell options"
     shell: "sh -x"

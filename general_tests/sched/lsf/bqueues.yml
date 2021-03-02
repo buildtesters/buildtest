@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   show_lsf_queues:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Show LSF queues
     tags: lsf
     run_only:
@@ -11,7 +11,7 @@ buildspecs:
 
   show_lsf_queues_formatted:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Show LSF queues with formatted columns
     tags: lsf
     run_only:
@@ -20,7 +20,7 @@ buildspecs:
 
   show_lsf_queues_current_user:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Show LSF queues available for current user
     tags: lsf
     run_only:

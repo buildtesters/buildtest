@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   show_lsf_user_groups:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Show information about all LSF user groups
     tags: lsf
     run_only:

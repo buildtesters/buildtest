@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   bash_login_shebang:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     shebang: "#!/bin/bash -l"
     description: customize shebang line with bash login shell
     tags: tutorials
@@ -14,7 +14,7 @@ buildspecs:
 
   bash_nonlogin_shebang:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     shebang: "#!/bin/bash"
     description: customize shebang line with default bash (nonlogin) shell
     tags: tutorials

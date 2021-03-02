@@ -150,9 +150,9 @@ Building by Executors
 
 Every buildspec is associated to an executor which is responsible for running the test.
 You can instruct buildtest to run all tests by given executor via ``--executor`` option.
-For instance, if you want to build all test associated to executor ``local.sh`` you can run::
+For instance, if you want to build all test associated to executor ``generic.local.sh`` you can run::
 
-  $ buildtest build --executor local.sh
+  $ buildtest build --executor generic.local.sh
 
 buildtest will query buildspec cache for the executor name and retrieve a list of
 buildspecs with matching executor name. To see a list of available executors in
@@ -162,21 +162,20 @@ buildspec cache see :ref:`querying buildspec executor <buildspec_executor>`.
    buildspecs if one of the test matches the executor name. The ``--executor`` option
    is **not filtering on test level**  like ``--filter-tags`` option.
 
-In this example we run all tests that are associated to `local.sh` executor. Notice how
-buildtest skips tests that don't match executor **local.sh** even though they were
+In this example we run all tests that are associated to ``generic.local.sh`` executor. Notice how
+buildtest skips tests that don't match executor **generic.local.sh** even though they were
 discovered in buildspec file.
 
 .. program-output:: cat docgen/getting_started/single-executor.txt
 
 We can append arguments to ``--executor`` to search for multiple executors by
 specifying ``--executor <name1> --executor <name2>``. In next example we search
-all tests associated with ``local.sh`` and ``local.bash`` executor.
+all tests associated with ``generic.local.sh`` and ``generic.local.bash`` executor.
 
 .. Note:: If you specify multiple executors, buildtest will combine the executors
-   into list, for example ``--executor local.bash --executor local.sh`` is converted
-   into a list (executor filter) - ``[local.bash, local.sh]``, and buildtest will
-   skip any test whose ``executor`` field in testname doesn't belong to executor
-   filter list are skipped.
+   into list, for example ``--executor generic.local.bash --executor generic.local.sh`` is converted
+   into a list - ``[generic.local.bash, generic.local.sh]``, and buildtest will
+   discover buildspecs based on ``executor`` field in testname.
 
 .. program-output:: cat docgen/getting_started/multi-executor.txt
 

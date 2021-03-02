@@ -1,7 +1,7 @@
 version: "1.0"
 buildspecs:
   current_user_queue:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: show all current pending jobs for current user (squeue -u $USER)
     tags: [slurm]
@@ -10,7 +10,7 @@ buildspecs:
     run: squeue -u $USER
 
   show_all_jobs:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: show all pending + running jobs (squeue -a)
     tags: [slurm]

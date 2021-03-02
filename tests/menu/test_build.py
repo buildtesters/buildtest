@@ -1,7 +1,7 @@
 import os
 import pytest
 import uuid
-from buildtest.config import load_settings
+
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.menu.build import (
     discover_by_buildspecs,
@@ -39,8 +39,6 @@ def test_build_by_tags():
 
     func_buildspec_find(args)
 
-    buildtest_configuration = load_settings()
-
     class args:
         buildspec = None
         debug = False
@@ -53,7 +51,7 @@ def test_build_by_tags():
         rebuild = None
 
     #  testing buildtest build --tags pass
-    func_build_subcmd(args, buildtest_configuration)
+    func_build_subcmd(args)
 
     class args:
         buildspec = [os.path.join(test_root, "tutorials")]
@@ -67,7 +65,7 @@ def test_build_by_tags():
         rebuild = None
 
     #  testing buildtest build --tags fail --tags python
-    func_build_subcmd(args, buildtest_configuration)
+    func_build_subcmd(args)
 
     class args:
         buildspec = None
@@ -81,13 +79,12 @@ def test_build_by_tags():
         rebuild = None
 
     #  testing buildtest build --tags pass --tags pass
-    func_build_subcmd(args, buildtest_configuration)
+    func_build_subcmd(args)
 
 
 @pytest.mark.cli
 def test_build_buildspecs():
     buildspec_paths = os.path.join(test_root, "buildsystem", "valid_buildspecs")
-    buildtest_configuration = load_settings()
 
     class args:
         buildspec = [buildspec_paths]
@@ -101,7 +98,7 @@ def test_build_buildspecs():
         rebuild = None
 
     #  testing buildtest build --buildspec tests/examples/buildspecs
-    func_build_subcmd(args, buildtest_configuration)
+    func_build_subcmd(args)
 
     class args:
         buildspec = [buildspec_paths]
@@ -117,15 +114,13 @@ def test_build_buildspecs():
     #  testing buildtest build --buildspec tests/examples/buildspecs --exclude tests/examples/buildspecs
     # this results in no buildspecs built
     with pytest.raises(SystemExit):
-        func_build_subcmd(args, buildtest_configuration)
+        func_build_subcmd(args)
 
 
 @pytest.mark.cli
 def test_buildspec_tag_executor():
-    buildtest_configuration = load_settings()
-
     class args:
-        executor = ["local.sh"]
+        executor = ["generic.local.sh"]
         tags = ["fail"]
         buildspec = None
         debug = False
@@ -136,15 +131,13 @@ def test_buildspec_tag_executor():
         rebuild = None
 
     # testing buildtest build --tags fail --executor local.sh
-    func_build_subcmd(args, buildtest_configuration)
+    func_build_subcmd(args)
 
 
 @pytest.mark.cli
 def test_build_multi_executors():
-    buildtest_configuration = load_settings()
-
     class args:
-        executor = ["local.sh", "local.python"]
+        executor = ["generic.local.sh", "generic.local.python"]
         buildspec = None
         debug = False
         stage = None
@@ -155,14 +148,11 @@ def test_build_multi_executors():
         rebuild = None
 
     # testing buildtest build --executor local.sh --executor local.python
-    func_build_subcmd(args, buildtest_configuration)
+    func_build_subcmd(args)
 
 
 @pytest.mark.cli
 def test_build_by_stages():
-
-    buildtest_configuration = load_settings()
-
     class args:
         buildspec = None
         debug = False
@@ -175,7 +165,7 @@ def test_build_by_stages():
         rebuild = None
 
     # testing buildtest build --tags python --stage=parse
-    func_build_subcmd(args, buildtest_configuration)
+    func_build_subcmd(args)
 
     class args:
         buildspec = None
@@ -189,13 +179,12 @@ def test_build_by_stages():
         rebuild = None
 
     # testing buildtest build --tags tutorials --stage=build
-    func_build_subcmd(args, buildtest_configuration)
+    func_build_subcmd(args)
 
 
 @pytest.mark.cli
 def test_build_rebuild():
 
-    buildtest_configuration = load_settings()
     buildspec_file = os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")
 
     class args:
@@ -210,7 +199,7 @@ def test_build_rebuild():
         rebuild = 5
 
     # rebuild 5 times (buildtest build -b tutorials/python-shell.yml --rebuild=5
-    func_build_subcmd(args, buildtest_configuration)
+    func_build_subcmd(args)
 
 
 def test_discover_by_buildspecs(tmpdir):

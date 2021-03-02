@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   pullImage_dockerhub:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Pull image docker://godlovedc/lolcow from DockerHub
     tags: [containers, singularity]
     vars:
@@ -13,7 +13,7 @@ buildspecs:
 
   pullImage_sylabscloud:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Pull image library://alpine:latest from Sylabs Cloud
     tags: [containers, singularity]
     vars:
@@ -24,7 +24,7 @@ buildspecs:
 
   pullImage_shub:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Pull image shub://vsoch/singularity-images from SingularityHub    
     tags: [containers, singularity]
     vars: 

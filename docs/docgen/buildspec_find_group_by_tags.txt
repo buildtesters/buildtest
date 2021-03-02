@@ -72,7 +72,7 @@ $ buildtest buildspec find --group-by-tags
 +---------------+------------------------------+-------------------------------------------------------------------+
 | tutorials     | default_status_regex         | Regular expression check in stdout for gcc group                  |
 +---------------+------------------------------+-------------------------------------------------------------------+
-| tutorials     | override_status_regex        | Override regular expression for compiler gcc@10.2.0               |
+| tutorials     | override_status_regex        | Override regular expression for compiler gcc/10.2.0-37fmsw7       |
 +---------------+------------------------------+-------------------------------------------------------------------+
 | python        | python_hello                 | Hello World python                                                |
 +---------------+------------------------------+-------------------------------------------------------------------+
@@ -110,7 +110,7 @@ $ buildtest buildspec find --group-by-tags
 +---------------+------------------------------+-------------------------------------------------------------------+
 | compile       | default_status_regex         | Regular expression check in stdout for gcc group                  |
 +---------------+------------------------------+-------------------------------------------------------------------+
-| compile       | override_status_regex        | Override regular expression for compiler gcc@10.2.0               |
+| compile       | override_status_regex        | Override regular expression for compiler gcc/10.2.0-37fmsw7       |
 +---------------+------------------------------+-------------------------------------------------------------------+
 | filesystem    | root_disk_usage              | Check root disk usage and report if it exceeds threshold          |
 +---------------+------------------------------+-------------------------------------------------------------------+
@@ -150,37 +150,19 @@ $ buildtest buildspec find --group-by-tags
 +---------------+------------------------------+-------------------------------------------------------------------+
 | slurm         | show_all_jobs                | show all pending + running jobs (squeue -a)                       |
 +---------------+------------------------------+-------------------------------------------------------------------+
-| slurm         | nodes_state_down             | Show nodes in DOWN state                                          |
+| cobalt        | qsub_version                 | print version for qsub command                                    |
 +---------------+------------------------------+-------------------------------------------------------------------+
-| slurm         | nodes_state_reboot           | Show nodes in REBOOT state                                        |
+| cobalt        | qselect_version              | print version for qselect                                         |
 +---------------+------------------------------+-------------------------------------------------------------------+
-| slurm         | nodes_state_allocated        | Show nodes in ALLOCATED state                                     |
+| cobalt        | cqsub_version                | print version for cqsub command                                   |
 +---------------+------------------------------+-------------------------------------------------------------------+
-| slurm         | nodes_state_completing       | Show nodes in COMPLETING state                                    |
+| cobalt        | qdel_version                 | print version for qdel command                                    |
 +---------------+------------------------------+-------------------------------------------------------------------+
-| slurm         | nodes_state_idle             | Show nodes in IDLE state                                          |
-+---------------+------------------------------+-------------------------------------------------------------------+
-| slurm         | node_down_fail_list_reason   | Show nodes DOWN, DRAINED, FAIL or FAILING and list reason         |
-+---------------+------------------------------+-------------------------------------------------------------------+
-| slurm         | dead_nodes                   | Show non-responding nodes                                         |
-+---------------+------------------------------+-------------------------------------------------------------------+
-| slurm         | get_partitions               | Get all slurm partitions                                          |
-+---------------+------------------------------+-------------------------------------------------------------------+
-| slurm         | sinfo_version                | get slurm version                                                 |
-+---------------+------------------------------+-------------------------------------------------------------------+
-| cobalt        | qsub_version                 | Run qsub version                                                  |
-+---------------+------------------------------+-------------------------------------------------------------------+
-| cobalt        | qselect_version              | Run qselect version                                               |
-+---------------+------------------------------+-------------------------------------------------------------------+
-| cobalt        | cqsub_version                | Run cqsub version                                                 |
-+---------------+------------------------------+-------------------------------------------------------------------+
-| cobalt        | qdel_version                 | Run qdel version                                                  |
-+---------------+------------------------------+-------------------------------------------------------------------+
-| cobalt        | qmove_version                | Run qmove version                                                 |
+| cobalt        | qmove_version                | print version for qmove command                                   |
 +---------------+------------------------------+-------------------------------------------------------------------+
 | cobalt        | show_jobs                    | Show all jobs in queue                                            |
 +---------------+------------------------------+-------------------------------------------------------------------+
-| cobalt        | show_queues                  | Show queues                                                       |
+| cobalt        | show_queues                  | Show all queues                                                   |
 +---------------+------------------------------+-------------------------------------------------------------------+
 | lsf           | show_host_groups             | Show information about host groups using bmgroup                  |
 +---------------+------------------------------+-------------------------------------------------------------------+
@@ -204,5 +186,37 @@ $ buildtest buildspec find --group-by-tags
 +---------------+------------------------------+-------------------------------------------------------------------+
 | lsf           | display_hosts_format         | Show all hosts with column hostname and status                    |
 +---------------+------------------------------+-------------------------------------------------------------------+
-| lsf           | bhosts_version               | Display bhosts version                                            |
+| lsf           | bhosts_version               | display version from bhosts command                               |
++---------------+------------------------------+-------------------------------------------------------------------+
+| containers    | pullImage_dockerhub          | Pull image docker://godlovedc/lolcow from DockerHub               |
++---------------+------------------------------+-------------------------------------------------------------------+
+| containers    | pullImage_sylabscloud        | Pull image library://alpine:latest from Sylabs Cloud              |
++---------------+------------------------------+-------------------------------------------------------------------+
+| containers    | pullImage_shub               | Pull image shub://vsoch/singularity-images from SingularityHub    |
++---------------+------------------------------+-------------------------------------------------------------------+
+| containers    | runImage                     | run container docker://godlovedc/lolcow                           |
++---------------+------------------------------+-------------------------------------------------------------------+
+| containers    | inspect_image                | Inspect image via 'singularity inspect'                           |
++---------------+------------------------------+-------------------------------------------------------------------+
+| containers    | build_sif_from_dockerimage   | build sif image from docker image docker://godlovedc/lolcow       |
++---------------+------------------------------+-------------------------------------------------------------------+
+| containers    | build_sandbox_image          | build sandbox image from docker image docker://godlovedc/lolcow   |
++---------------+------------------------------+-------------------------------------------------------------------+
+| containers    | build_remoteimages           | build remote hosted image from AWS                                |
++---------------+------------------------------+-------------------------------------------------------------------+
+| singularity   | pullImage_dockerhub          | Pull image docker://godlovedc/lolcow from DockerHub               |
++---------------+------------------------------+-------------------------------------------------------------------+
+| singularity   | pullImage_sylabscloud        | Pull image library://alpine:latest from Sylabs Cloud              |
++---------------+------------------------------+-------------------------------------------------------------------+
+| singularity   | pullImage_shub               | Pull image shub://vsoch/singularity-images from SingularityHub    |
++---------------+------------------------------+-------------------------------------------------------------------+
+| singularity   | runImage                     | run container docker://godlovedc/lolcow                           |
++---------------+------------------------------+-------------------------------------------------------------------+
+| singularity   | inspect_image                | Inspect image via 'singularity inspect'                           |
++---------------+------------------------------+-------------------------------------------------------------------+
+| singularity   | build_sif_from_dockerimage   | build sif image from docker image docker://godlovedc/lolcow       |
++---------------+------------------------------+-------------------------------------------------------------------+
+| singularity   | build_sandbox_image          | build sandbox image from docker image docker://godlovedc/lolcow   |
++---------------+------------------------------+-------------------------------------------------------------------+
+| singularity   | build_remoteimages           | build remote hosted image from AWS                                |
 +---------------+------------------------------+-------------------------------------------------------------------+

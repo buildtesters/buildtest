@@ -1,13 +1,25 @@
-moduletool: lmod
-load_default_buildspecs: True
-executors:
-  defaults:
-     launcher: qsub
-     max_pend_time: 30
+system:
+  generic:
+    hostnames: ['localhost']
 
-  cobalt:
-    knl:
-      queue: knl
+    moduletool: lmod
+    load_default_buildspecs: True
+    executors:
+      defaults:
+         launcher: qsub
+         max_pend_time: 30
 
-    haswell:
-      queue: haswell
+      cobalt:
+        knl:
+          queue: knl
+
+        haswell:
+          queue: haswell
+
+    compilers:
+      compiler:
+        gcc:
+          default:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran

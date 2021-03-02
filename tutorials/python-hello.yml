@@ -3,7 +3,7 @@ buildspecs:
   python_hello:
     type: script
     description: Hello World python
-    executor: local.bash
+    executor: generic.local.bash
     tags: python
     run: python hello.py
 

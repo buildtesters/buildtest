@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   invalid_file_ext:
     type: compiler
-    executor: local.bash
+    executor: generic.local.bash
     description: Invalid file extension XYZ when detecting compiler language
     source: src/file.XYZ
     compilers:

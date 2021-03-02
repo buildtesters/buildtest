@@ -7,7 +7,7 @@ Query Test Report
 buildtest keeps track of all tests and results in a JSON file that is stored in **$BUILDTEST_ROOT/var/report.json**. This
 file is read by **buildtest report** command to extract certain fields from JSON file and display
 them in table format. We use python `tabulate <https://pypi.org/project/tabulate/>`_ library for
-pretty print table data. Shown below is command usage for **buildtest report** command.
+pretty print table data. Shown below is command usage to query test reports.
 
 .. program-output:: cat docgen/buildtest_report_--help.txt
 
@@ -28,16 +28,17 @@ Available Format Fields
 
 The **buildtest report** command displays a default format fields that can be changed using the
 ``--format`` option. The report file (JSON) contains many more fields and we expose some of the fields
-in the `--format` option. To see a list of available format fields run ``buildtest report --helpformat``.
+with the **--format** option. To see a list of available format fields you can run ``buildtest report --helpformat``.
+This option will list all format fields and their description.
 
 .. program-output:: cat docgen/report-helpformat.txt
 
 Format Field Usage
 ~~~~~~~~~~~~~~~~~~~
 
-The ``--format`` field expects field name separated by comma (i.e **--format <field1>,<field2>**).
-In this example we format by fields ``--format id,executor,state,returncode``. Notice, that
-buildtest will display table in order of ``--format`` option.
+The ``--format`` field expects field name separated by comma (i.e ``--format <field1>,<field2>``).
+In this example we format by fields ``--format id,executor,state,returncode``. Notice how
+buildtest will format table columns in the order format options.
 
 .. program-output:: cat docgen/report-format.txt
    :ellipsis: 20
@@ -92,9 +93,8 @@ Filter by test state
 If you want to filter results by test state, use the **state** property. This can be
 useful if you want to know all pass or failed tests. The state property expects
 value of ``[PASS|FAIL]`` since these are the two recorded test states marked by buildtest.
-
 We can also pass multiple filter fields for instance if we want to find all **FAIL**
-tests for executor **local.sh** we can do the following.
+tests for executor **generic.local.sh** we can do the following.
 
 .. program-output:: cat docgen/report-multifilter.txt
 
@@ -211,69 +211,69 @@ retrieve using the ``full_id`` format field if you are not sure::
 
   $ buildtest report --format name,full_id
 
-For example, let's assume we have the following tests in our report::
+Let's assume we have the following tests in our report, we can see a full id for
+each test which we can use to inspect a certain test::
 
-    $ buildtest report --format name,full_id
-    +-------------------------+--------------------------------------+
-    | name                    | full_id                              |
-    +=========================+======================================+
-    | bash_login_shebang      | eb6e26b2-938b-4913-8b98-e21528c82778 |
-    +-------------------------+--------------------------------------+
-    | bash_login_shebang      | d7937a9a-d3fb-4d3f-95e1-465488757820 |
-    +-------------------------+--------------------------------------+
-    | bash_login_shebang      | dea6c6fd-b9a6-4b07-a3fc-b483d02d7ff9 |
-    +-------------------------+--------------------------------------+
-    | bash_nonlogin_shebang   | bbf94b94-949d-4f97-987a-9a93309f1dc2 |
-    +-------------------------+--------------------------------------+
-    | bash_nonlogin_shebang   | 7ca9db2f-1e2b-4739-b9a2-71c8cc00249e |
-    +-------------------------+--------------------------------------+
-    | bash_nonlogin_shebang   | 4c5caf85-6ba0-4ca0-90b0-c769a2fcf501 |
-    +-------------------------+--------------------------------------+
-    | root_disk_usage         | e78071ef-6444-4228-b7f9-b4eb39071fdd |
-    +-------------------------+--------------------------------------+
-    | ulimit_filelock         | c6294cfa-c559-493b-b44f-b17b54ec276d |
-    +-------------------------+--------------------------------------+
-    | ulimit_cputime          | aa5530e2-be09-4d49-b8c0-0e818f855a40 |
-    +-------------------------+--------------------------------------+
-    | ulimit_stacksize        | 3591925d-7dfa-4bc7-a3b1-fb9dfadf956e |
-    +-------------------------+--------------------------------------+
-    | ulimit_vmsize           | 4a01f26b-9c8a-4870-8e33-51923c8c46ad |
-    +-------------------------+--------------------------------------+
-    | ulimit_filedescriptor   | 565b85ac-e51f-46f9-8c6f-c2899a370609 |
-    +-------------------------+--------------------------------------+
-    | ulimit_max_user_process | 0486c11c-5733-4d8e-822e-c0adddbb2af7 |
-    +-------------------------+--------------------------------------+
-    | systemd_default_target  | 7cfc9057-6338-403c-a7af-b1301d04d817 |
-    +-------------------------+--------------------------------------+
+    $  buildtest report --format name,full_id
+    +------------------------------+--------------------------------------+
+    | name                         | full_id                              |
+    +==============================+======================================+
+    | variables_bash               | a4ce2fd1-7723-4519-8525-0b5061d17d8d |
+    +------------------------------+--------------------------------------+
+    | variables_bash               | 9fbd7f93-3931-46a7-9095-8821d2553a85 |
+    +------------------------------+--------------------------------------+
+    | variables_bash               | e2dca3dc-99bc-4122-8231-3ae937681275 |
+    +------------------------------+--------------------------------------+
+    | variables_bash               | d747549f-261c-4457-ab1b-7fc574cf8fc0 |
+    +------------------------------+--------------------------------------+
+    | variables_bash               | 43cb7107-906b-455b-8928-4f776333d1bb |
+    +------------------------------+--------------------------------------+
 
-Let's assume we are interested in viewing test ``bash_login_shebang``, since we
-have multiple instance for same test we must specify a unique id. In example below
-we query the the test id **eb6e26b2-938b-4913-8b98-e21528c82778**::
+Let's assume we are interested in viewing test id **a4ce2fd1-7723-4519-8525-0b5061d17d8d**, we
+can use ``buildtest inspect`` and pass the full id. buildtest will display the test record in JSON,
+output and error content, content of testscript and buildspec file::
 
-    $ buildtest inspect eb6e26b2-938b-4913-8b98-e21528c82778
+    $ buildtest inspect a4ce2fd1-7723-4519-8525-0b5061d17d8d
     {
-      "id": "eb6e26b2",
-      "full_id": "eb6e26b2-938b-4913-8b98-e21528c82778",
-      "testroot": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/0",
-      "testpath": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/0/stage/generate.sh",
-      "command": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/0/stage/generate.sh",
-      "outfile": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/0/run/bash_login_shebang.out",
-      "errfile": "/Users/siddiq90/Documents/buildtest/var/tests/local.bash/shebang/bash_login_shebang/0/run/bash_login_shebang.err",
+      "id": "a4ce2fd1",
+      "full_id": "a4ce2fd1-7723-4519-8525-0b5061d17d8d",
+      "testroot": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0",
+      "testpath": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/stage/generate.sh",
+      "stagedir": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/stage",
+      "rundir": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/run",
+      "command": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/stage/generate.sh",
+      "outfile": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/run/variables_bash.out",
+      "errfile": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/run/variables_bash.err",
       "schemafile": "script-v1.0.schema.json",
-      "executor": "local.bash",
+      "executor": "generic.local.bash",
       "tags": "tutorials",
-      "starttime": "2020/10/21 16:27:18",
-      "endtime": "2020/10/21 16:27:18",
-      "runtime": 0.26172968399999996,
+      "starttime": "2021/03/01 15:11:09",
+      "endtime": "2021/03/01 15:11:11",
+      "runtime": 1.6528677349999998,
       "state": "PASS",
-      "returncode": 0
+      "returncode": 0,
+      "output": [
+        "1+2= 3\n",
+        "this is a literal string ':'\n",
+        "singlequote\n",
+        "doublequote\n",
+        "siddiq90\n",
+        "/Users/siddiq90/.anyconnect /Users/siddiq90/.DS_Store /Users/siddiq90/.serverauth.555 /Users/siddiq90/.CFUserTextEncoding /Users/siddiq90/.wget-hsts /Users/siddiq90/.bashrc /Users/siddiq90/.zshrc /Users/siddiq90/.coverage /Users/siddiq90/.serverauth.87055 /Users/siddiq90/.zsh_history /Users/siddiq90/.lesshst /Users/siddiq90/.git-completion.bash /Users/siddiq90/buildtest.log /Users/siddiq90/darhan.log /Users/siddiq90/ascent.yml /Users/siddiq90/.cshrc /Users/siddiq90/github-tokens /Users/siddiq90/.zcompdump /Users/siddiq90/.serverauth.543 /Users/siddiq90/.bash_profile /Users/siddiq90/.Xauthority /Users/siddiq90/.python_history /Users/siddiq90/.gitconfig /Users/siddiq90/output.txt /Users/siddiq90/.bash_history /Users/siddiq90/.viminfo\n"
+      ],
+      "error": [],
+      "job": null
     }
 
 
 
     Output File
     ______________________________
-    Login Shell
+    1+2= 3
+    this is a literal string ':'
+    singlequote
+    doublequote
+    siddiq90
+    /Users/siddiq90/.anyconnect /Users/siddiq90/.DS_Store /Users/siddiq90/.serverauth.555 /Users/siddiq90/.CFUserTextEncoding /Users/siddiq90/.wget-hsts /Users/siddiq90/.bashrc /Users/siddiq90/.zshrc /Users/siddiq90/.coverage /Users/siddiq90/.serverauth.87055 /Users/siddiq90/.zsh_history /Users/siddiq90/.lesshst /Users/siddiq90/.git-completion.bash /Users/siddiq90/buildtest.log /Users/siddiq90/darhan.log /Users/siddiq90/ascent.yml /Users/siddiq90/.cshrc /Users/siddiq90/github-tokens /Users/siddiq90/.zcompdump /Users/siddiq90/.serverauth.543 /Users/siddiq90/.bash_profile /Users/siddiq90/.Xauthority /Users/siddiq90/.python_history /Users/siddiq90/.gitconfig /Users/siddiq90/output.txt /Users/siddiq90/.bash_history /Users/siddiq90/.viminfo
 
 
 
@@ -286,47 +286,56 @@ we query the the test id **eb6e26b2-938b-4913-8b98-e21528c82778**::
 
     Test Content
     ______________________________
-    #!/bin/bash -l
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
-    shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
+    #!/bin/bash
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/before_script.sh
+    X=1
+    Y=2
+    literalstring="this is a literal string ':' "
+
+    singlequote='singlequote'
+    doublequote="doublequote"
+    current_user=$(whoami)
+    files_homedir=`find $HOME -type f -maxdepth 1`
+    echo "$X+$Y=" $(($X+$Y))
+    echo $literalstring
+    echo $singlequote
+    echo $doublequote
+
+    echo $current_user
+    echo $files_homedir
+    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/after_script.sh
 
 
 
-    buildspec:  /Users/siddiq90/Documents/buildtest/tutorials/shebang.yml
+    buildspec:  /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
     ______________________________
     version: "1.0"
     buildspecs:
-      bash_login_shebang:
+      variables_bash:
         type: script
-        executor: local.bash
-        shebang: "#!/bin/bash -l"
-        description: customize shebang line with bash login shell
-        tags: tutorials
-        run: shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
-        status:
-          regex:
-            exp: "^Login Shell$"
-            stream: stdout
+        executor: generic.local.bash
+        description: Declare shell variables in bash
+        tags: [tutorials]
+        vars:
+          X: 1
+          Y: 2
+          literalstring: |
+            "this is a literal string ':' "
+          singlequote: "'singlequote'"
+          doublequote: "\"doublequote\""
+          current_user: "$(whoami)"
+          files_homedir: "`find $HOME -type f -maxdepth 1`"
 
-      bash_nonlogin_shebang:
-        type: script
-        executor: local.bash
-        shebang: "#!/bin/bash"
-        description: customize shebang line with default bash (nonlogin) shell
-        tags: tutorials
-        run: shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
-        status:
-          regex:
-            exp: "^Not Login Shell$"
-            stream: stdout
+        run: |
+          echo "$X+$Y=" $(($X+$Y))
+          echo $literalstring
+          echo $singlequote
+          echo $doublequote
 
+          echo $current_user
+          echo $files_homedir
 
-
-buildtest will present the test record from JSON record including contents of
-output file, error file, testscript and buildspec file.
-
-User can can specify first few characters of the id and buildtest will detect if
+User can specify first few characters of the id and buildtest will detect if
 its a unique test id. If buildtest discovers more than one test id, then buildtest
 will report all the ids where there is a conflict. In example below we find
 two tests with id **7c**::

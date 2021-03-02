@@ -1,8 +1,9 @@
 import logging
 import os
+import socket
 
 from buildtest.defaults import (
-    BUILDTEST_SETTINGS_FILE,
+    USER_SETTINGS_FILE,
     DEFAULT_SETTINGS_FILE,
     DEFAULT_SETTINGS_SCHEMA,
 )
@@ -10,10 +11,98 @@ from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_schema, load_recipe
 from buildtest.system import Slurm, LSF, Cobalt, system
 from buildtest.utils.command import BuildTestCommand
+from buildtest.utils.tools import deep_get
 from buildtest.exceptions import BuildTestError
 
 
 logger = logging.getLogger(__name__)
+
+
+class BuildtestConfiguration:
+    """This class is an interface to buildtest configuration"""
+
+    def __init__(self, settings_file):
+        self.file = settings_file
+        self.config = load_recipe(settings_file)
+        self.systems = self.config["system"].keys()
+
+        # self.target_config stores value for target system. The configuration may define multiple system,
+        # but only one system can be active depending on which host buildtest is run
+        self.target_config = None
+        self._validate()
+
+        self.localexecutors = None
+        self.slurmexecutors = None
+        self.lsfexecutors = None
+        self.cobaltexecutors = None
+
+        self.get_current_system()
+
+    def get_current_system(self):
+        """This method gets current system by setting ``self.target`` by matching ``hostnames`` entry
+        in each system list with actual system. We retrieve target hostname via ``socket.gethostname()``
+        and determine which system configuration to use. If no system is found we raise an error.
+        """
+
+        for name in self.config["system"].keys():
+            # if "hostnames" contain entry 'localhost' or '*' we return the system name
+            if (
+                "localhost" in self.config["system"][name]["hostnames"]
+                or "*" in self.config["system"][name]["hostnames"]
+            ):
+                self.target_config = self.config["system"][name]
+                self.name = name
+                break
+
+            # otherwise we get hostname and match against host list
+            if socket.gethostname() in self.config["system"][name]["hostnames"]:
+                self.target_config = self.config["system"][name]
+                self.name = name
+                break
+
+            if not self.target_config:
+                raise BuildTestError(
+                    f"Based on target system: {socket.gethostname()} we cannot find a matching system from {list(self.systems)}"
+                )
+
+        if self.target_config["executors"].get("local"):
+            self.localexecutors = list(self.target_config["executors"]["local"].keys())
+
+        if self.target_config["executors"].get("slurm"):
+            self.slurmexecutors = list(self.target_config["executors"]["slurm"].keys())
+
+        if self.target_config["executors"].get("lsf"):
+            self.lsfexecutors = list(self.target_config["executors"]["lsf"].keys())
+
+        if self.target_config["executors"].get("cobalt"):
+            self.cobaltexecutors = list(
+                self.target_config["executors"]["cobalt"].keys()
+            )
+
+    def get_executors_by_type(self, executor_type):
+        """Return list of executor names by given type of executor.
+        :param executor_type: type of executor (local, slurm, lsf, cobalt)
+        :type executor_type: string
+        """
+        names = deep_get(self.target_config, "executors", executor_type)
+        if not names:
+            raise BuildTestError(
+                "Cannot fetch executors by type: %s in system: %s ",
+                executor_type,
+                self.name,
+            )
+
+        return list(names.keys())
+
+    def _validate(self):
+        """This method validates the site configuration with schema"""
+
+        logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
+        config_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
+
+        logger.debug(f"Validating user schema with schema: {DEFAULT_SETTINGS_SCHEMA}")
+        custom_validator(recipe=self.config, schema=config_schema)
+        logger.debug("Validation was successful")
 
 
 def check_settings(settings_path=None, executor_check=True, retrieve_settings=False):
@@ -32,25 +121,16 @@ def check_settings(settings_path=None, executor_check=True, retrieve_settings=Fa
     :rtype: exit code 1 if checks failed
     """
 
-    user_schema = load_settings(settings_path)
-
-    logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
-    config_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
-
-    logger.debug(f"Validating user schema with schema: {DEFAULT_SETTINGS_SCHEMA}")
-    custom_validator(recipe=user_schema, schema=config_schema)
-    logger.debug("Validation was successful")
+    bc = BuildtestConfiguration(settings_path)
 
     # only perform executor check if executor_check is True. This is default
     # behavior, this can be disabled only for regression test where executor check
     # such as slurm check are not applicable.
     if executor_check:
 
-        # system = BuildTestSystem()
-
-        slurm_executors = user_schema.get("executors", {}).get("slurm")
-        lsf_executors = user_schema.get("executors", {}).get("lsf")
-        cobalt_executors = user_schema.get("executors", {}).get("cobalt")
+        slurm_executors = bc.target_config.get("executors", {}).get("slurm")
+        lsf_executors = bc.target_config.get("executors", {}).get("lsf")
+        cobalt_executors = bc.target_config.get("executors", {}).get("cobalt")
 
         if slurm_executors:
             validate_slurm_executors(slurm_executors)
@@ -62,16 +142,16 @@ def check_settings(settings_path=None, executor_check=True, retrieve_settings=Fa
             validate_cobalt_executors(cobalt_executors)
 
         if (
-            user_schema.get("moduletool") != "N/A"
-            and user_schema.get("moduletool") != system.system["moduletool"]
+            bc.target_config.get("moduletool") != "N/A"
+            and bc.target_config.get("moduletool") != system.system["moduletool"]
         ):
 
             raise BuildTestError(
-                f"Cannot find modules_tool: {user_schema.get('moduletool')} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool."
+                f"Cannot find modules_tool: {bc.target_config('moduletool')} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool."
             )
 
     if retrieve_settings:
-        return user_schema
+        return bc.target_config
 
 
 def load_settings(settings_path=None):
@@ -95,8 +175,8 @@ def resolve_settings_file():
     """
 
     # if buildtest settings file exist return it otherwise return default file
-    if os.path.exists(BUILDTEST_SETTINGS_FILE):
-        return BUILDTEST_SETTINGS_FILE
+    if os.path.exists(USER_SETTINGS_FILE):
+        return USER_SETTINGS_FILE
 
     return DEFAULT_SETTINGS_FILE
 
@@ -206,3 +286,7 @@ def validate_cobalt_executors(cobalt_executor):
             raise BuildTestError(
                 f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'"
             )
+
+
+settings_file = resolve_settings_file()
+buildtest_configuration = BuildtestConfiguration(settings_file)

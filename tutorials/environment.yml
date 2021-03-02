@@ -1,7 +1,7 @@
 version: "1.0"
 buildspecs:
   bash_env_variables:
-    executor: local.bash
+    executor: generic.local.bash
     description: Declare environment variables in default shell (bash)
     type: script
     env:
@@ -15,7 +15,7 @@ buildspecs:
       printf "${FIRST_NAME} ${LAST_NAME}\n"
 
   csh_env_declaration:
-    executor: local.csh
+    executor: generic.local.csh
     type: script
     description: "csh shell example to declare environment variables"
     shell: /bin/csh
@@ -25,7 +25,7 @@ buildspecs:
     run: echo "This is running $SHELL_NAME"
 
   tcsh_env_declaration:
-    executor: local.csh
+    executor: generic.local.csh
     type: script
     description: "tcsh shell example to declare environment variables"
     shell: /bin/tcsh

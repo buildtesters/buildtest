@@ -23,17 +23,17 @@ Discovered Buildspecs:
 
 
 
- name    | id       | type     | executor   | tags                     | compiler    | testpath
----------+----------+----------+------------+--------------------------+-------------+--------------------------------------------------------------------------------------------------------
- hello_f | 3506b103 | compiler | local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/2/stage/generate.sh
+ name    | id       | type     | executor           | tags                     | compiler    | testpath
+---------+----------+----------+--------------------+--------------------------+-------------+----------------------------------------------------------------------------------------------------------------
+ hello_f | 5cb134d0 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/5/stage/generate.sh
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
     
- name    | id       | executor   | status   |   returncode | testpath
----------+----------+------------+----------+--------------+--------------------------------------------------------------------------------------------------------
- hello_f | 3506b103 | local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/gnu_hello_fortran/hello_f/2/stage/generate.sh
+ name    | id       | executor           | status   |   returncode | testpath
+---------+----------+--------------------+----------+--------------+----------------------------------------------------------------------------------------------------------------
+ hello_f | 5cb134d0 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/5/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -45,4 +45,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_2drv3w_2.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_722w7603.log

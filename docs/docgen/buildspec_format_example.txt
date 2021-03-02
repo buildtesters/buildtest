@@ -1,4 +1,4 @@
-$ buildtest buildspec find --format name,description,file --filter tags=tutorials,executor=local.sh
+$ buildtest buildspec find --format name,description,file --filter tags=tutorials,executor=generic.local.sh
 +--------------------------+-----------------------------------------------------+-------------------------------------------------------------------+
 | name                     | description                                         | file                                                              |
 +==========================+=====================================================+===================================================================+

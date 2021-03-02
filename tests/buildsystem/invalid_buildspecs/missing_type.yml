@@ -1,5 +1,5 @@
 version: "1.0"
 buildspecs:
   missing_type:
-    executor: local.sh
+    executor: generic.local.sh
     run: hostname

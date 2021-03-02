@@ -3,7 +3,7 @@ buildspecs:
   override_environmentvars:
     type: compiler
     description: override default environment variables
-    executor: local.bash
+    executor: generic.local.bash
     tags: [tutorials, compile]
     source: "src/hello_omp.c"
     compilers:
@@ -14,6 +14,6 @@ buildspecs:
           env:
             OMP_NUM_THREADS: 2
       config:
-        gcc@10.2.0:
+        gcc/10.2.0-37fmsw7:
           env:
             OMP_NUM_THREADS: 4

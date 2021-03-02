@@ -5,7 +5,7 @@ import os
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
 from buildtest.buildsystem.parser import BuildspecParser
-from buildtest.config import load_settings
+from buildtest.config import buildtest_configuration
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDSPEC_DEFAULT_PATH
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_dir, is_file, walk_tree, resolve_path, read_file
@@ -66,7 +66,8 @@ class BuildspecCache:
         and general tests.
         """
 
-        config_opts = load_settings()
+        config_opts = buildtest_configuration.target_config
+
         buildspec_paths = config_opts.get("buildspec_roots") or []
 
         if buildspec_paths:

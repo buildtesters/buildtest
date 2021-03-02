@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   run_only_platform_darwin:
     description: "This test will only run if target platform is Darwin"
-    executor: local.python
+    executor: generic.local.python
     type: script
     tags: ["tutorials"]
     run_only:
@@ -18,7 +18,7 @@ buildspecs:
 
   run_only_platform_linux:
     description: "This test will only run if target platform is Linux"
-    executor: local.python
+    executor: generic.local.python
     type: script
     tags: ["tutorials"]
     run_only:

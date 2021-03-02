@@ -1,7 +1,7 @@
 version: "1.0"
 buildspecs:
   slurm_config:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: run scontrol show config
     tags: [slurm]
@@ -10,7 +10,7 @@ buildspecs:
     run: scontrol show config
 
   show_partition:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     tags: [slurm]
     run_only:

@@ -1,4 +1,4 @@
-$ buildtest build -b tests/examples/buildspecs/ -b tutorials/vars.yml 
+$ buildtest build -b general_tests/configuration/ -b tutorials/vars.yml 
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
@@ -7,40 +7,43 @@ $ buildtest build -b tests/examples/buildspecs/ -b tutorials/vars.yml
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
 /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
-/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
-/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
-/Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/ulimits.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/systemd-default-target.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/ssh_localhost.yml
+/Users/siddiq90/Documents/buildtest/general_tests/configuration/kernel_state.yml
+[ssh_localhost_remotecommand][/Users/siddiq90/Documents/buildtest/general_tests/configuration/ssh_localhost.yml]: test is skipped because this test is expected to run on platform: Linux but detected platform: Darwin.
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
     
  schemafile              | validstate   | buildspec
--------------------------+--------------+----------------------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/slurm.yml
+-------------------------+--------------+--------------------------------------------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/python-shell.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/environment.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tests/examples/buildspecs/shell_examples.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/ulimits.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/systemd-default-target.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/disk_usage.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/ssh_localhost.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/general_tests/configuration/kernel_state.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- name                       | id       | type   | executor     | tags          | testpath
-----------------------------+----------+--------+--------------+---------------+---------------------------------------------------------------------------------------------------------------
- slurm_down_nodes_reason    | c5375cb6 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/0/stage/generate.sh
- slurm_not_responding_nodes | 0cec150c | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/0/stage/generate.sh
- variables_bash             | 1a4d752b | script | local.bash   | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
- circle_area                | 06f2c88a | script | local.python |               | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/0/stage/generate.sh
- hello_dinosaur             | d5e70b02 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/0/stage/generate.sh
- _bin_sh_shell              | 1122a03a | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
- _bin_bash_shell            | b81b7d5d | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
- bash_shell                 | 7287ce48 | script | local.bash   |               | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/0/stage/generate.sh
- sh_shell                   | 646e2c1e | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/0/stage/generate.sh
- shell_options              | 9775aca3 | script | local.sh     |               | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/0/stage/generate.sh
+ name                         | id       | type   | executor           | tags                      | testpath
+------------------------------+----------+--------+--------------------+---------------------------+------------------------------------------------------------------------------------------------------------------------------------
+ variables_bash               | 622e65a6 | script | generic.local.bash | ['tutorials']             | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/7/stage/generate.sh
+ ulimit_filelock_unlimited    | e092c1fa | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_filelock_unlimited/4/stage/generate.sh
+ ulimit_cputime_unlimited     | c4765674 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_cputime_unlimited/4/stage/generate.sh
+ ulimit_stacksize_unlimited   | c7493a88 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_stacksize_unlimited/4/stage/generate.sh
+ ulimit_vmsize_unlimited      | e46c57aa | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_vmsize_unlimited/4/stage/generate.sh
+ ulimit_filedescriptor_4096   | c2a1f76b | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_filedescriptor_4096/4/stage/generate.sh
+ ulimit_max_user_process_2048 | 529de0b8 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_max_user_process_2048/4/stage/generate.sh
+ systemd_default_target       | 00854e63 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/systemd-default-target/systemd_default_target/5/stage/generate.sh
+ root_disk_usage              | 7169ec69 | script | generic.local.bash | ['filesystem', 'storage'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/5/stage/generate.sh
+ kernel_swapusage             | 600533dc | script | generic.local.bash | ['configuration']         | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/5/stage/generate.sh
 
 
 
@@ -48,27 +51,27 @@ Discovered Buildspecs:
 | Stage: Running Test  |
 +----------------------+ 
     
- name                       | id       | executor     | status   |   returncode | testpath
-----------------------------+----------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------------
- slurm_down_nodes_reason    | c5375cb6 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_down_nodes_reason/0/stage/generate.sh
- slurm_not_responding_nodes | 0cec150c | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/slurm/slurm_not_responding_nodes/0/stage/generate.sh
- variables_bash             | 1a4d752b | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/vars/variables_bash/1/stage/generate.sh
- circle_area                | 06f2c88a | local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.python/python-shell/circle_area/0/stage/generate.sh
- hello_dinosaur             | d5e70b02 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/environment/hello_dinosaur/0/stage/generate.sh
- _bin_sh_shell              | 1122a03a | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
- _bin_bash_shell            | b81b7d5d | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
- bash_shell                 | 7287ce48 | local.bash   | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.bash/shell_examples/bash_shell/0/stage/generate.sh
- sh_shell                   | 646e2c1e | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/sh_shell/0/stage/generate.sh
- shell_options              | 9775aca3 | local.sh     | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/local.sh/shell_examples/shell_options/0/stage/generate.sh
+ name                         | id       | executor           | status   |   returncode | testpath
+------------------------------+----------+--------------------+----------+--------------+------------------------------------------------------------------------------------------------------------------------------------
+ variables_bash               | 622e65a6 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/7/stage/generate.sh
+ ulimit_filelock_unlimited    | e092c1fa | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_filelock_unlimited/4/stage/generate.sh
+ ulimit_cputime_unlimited     | c4765674 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_cputime_unlimited/4/stage/generate.sh
+ ulimit_stacksize_unlimited   | c7493a88 | generic.local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_stacksize_unlimited/4/stage/generate.sh
+ ulimit_vmsize_unlimited      | e46c57aa | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_vmsize_unlimited/4/stage/generate.sh
+ ulimit_filedescriptor_4096   | c2a1f76b | generic.local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_filedescriptor_4096/4/stage/generate.sh
+ ulimit_max_user_process_2048 | 529de0b8 | generic.local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/ulimits/ulimit_max_user_process_2048/4/stage/generate.sh
+ systemd_default_target       | 00854e63 | generic.local.bash | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/systemd-default-target/systemd_default_target/5/stage/generate.sh
+ root_disk_usage              | 7169ec69 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/5/stage/generate.sh
+ kernel_swapusage             | 600533dc | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/5/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
 
 Executed 10 tests
-Passed Tests: 10/10 Percentage: 100.000%
-Failed Tests: 0/10 Percentage: 0.000%
+Passed Tests: 6/10 Percentage: 60.000%
+Failed Tests: 4/10 Percentage: 40.000%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_d61uso77.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_d5a0e_mq.log
