@@ -1,6 +1,6 @@
 system:
   generic:
-    hostnames: ['localhost']
+    hostnames: ['.*']
 
     moduletool: N/A
     load_default_buildspecs: True
