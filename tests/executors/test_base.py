@@ -46,7 +46,9 @@ def test_build_executor(tmp_path):
             continue
 
         bp_filters = {"tags": None}
-        builders = Builder(bp=bp, filters=bp_filters, testdir=tmp_path)
+        builders = Builder(
+            bp=bp, buildexecutor=be, filters=bp_filters, testdir=tmp_path
+        )
         valid_builders = builders.get_builders()
 
         # build each test and then run it

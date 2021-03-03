@@ -27,14 +27,16 @@ in addition we can specify **#SBATCH** directives using ``sbatch`` field.
 The sbatch field is a list of string types, buildtest will
 insert **#SBATCH** directive in front of each value.
 
-Shown below is an example buildspec::
+Shown below is an example buildspec
+
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
       slurm_metadata:
         description: Get metadata from compute node when submitting job
         type: script
-        executor: slurm.debug
+        executor: cori.slurm.debug
         sbatch:
           - "-t 00:05"
           - "-C haswell"
@@ -49,7 +51,9 @@ Shown below is an example buildspec::
           echo "partition:" $SLURM_JOB_PARTITION
 
 buildtest will add the ``#SBATCH`` directives at top of script followed by
-content in the ``run`` section. Shown below is the example test content ::
+content in the ``run`` section. Shown below is the example test content
+
+.. code-block:: shell
 
     #!/bin/bash
     #SBATCH -t 00:05
@@ -63,15 +67,20 @@ content in the ``run`` section. Shown below is the example test content ::
     echo "nodeid:" $SLURM_NODEID
     echo "partition:" $SLURM_JOB_PARTITION
 
-The slurm.debug executor in our ``settings.yml`` is defined as follows::
+The ``cori.slurm.debug`` executor in our configuration file is defined as follows
 
-    slurm:
-      debug:
-        description: jobs for debug qos
-        qos: debug
-        cluster: cori
+.. code-block:: yaml
 
-With this setting, any buildspec test that use ``slurm.debug`` executor will result
+    system:
+      cori:
+        executors:
+          slurm:
+           debug:
+            description: jobs for debug qos
+            qos: debug
+            cluster: cori
+
+With this setting, any buildspec test that use ``cori.slurm.debug`` executor will result
 in the following launch option: ``sbatch --qos debug --clusters=cori </path/to/script.sh>``.
 
 Unlike the LocalExecutor, the **Run Stage**, will dispatch the slurm job and poll
@@ -86,72 +95,16 @@ the job and process next job. buildtest will show output of all tests after
 **Polling Stage** with test results of all tests. A slurm job with exit code 0 will
 be marked with status ``PASS``.
 
-Shown below is an example build for this test ::
+Shown below is an example build for this test
+
+.. code-block:: console
 
     $ buildtest build -b metadata.yml
-    Paths:
-    __________
-    Prefix: /global/u1/s/siddiq90/cache
-    Buildspec Search Path: ['/global/homes/s/siddiq90/.buildtest/site']
-    Test Directory: /global/u1/s/siddiq90/cache/tests
 
-    +-------------------------------+
-    | Stage: Discovered Buildspecs  |
-    +-------------------------------+
-
-    /global/u1/s/siddiq90/buildtest-cori/slurm/valid_jobs/metadata.yml
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-     Name           | Schema File             | Test Path                                                    | Buildspec
-    ----------------+-------------------------+--------------------------------------------------------------+--------------------------------------------------------------------
-     slurm_metadata | script-v1.0.schema.json | /global/u1/s/siddiq90/cache/tests/metadata/slurm_metadata.sh | /global/u1/s/siddiq90/buildtest-cori/slurm/valid_jobs/metadata.yml
-
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
-
-    [slurm_metadata] job dispatched to scheduler
-    [slurm_metadata] acquiring job id in 2 seconds
-     name           | executor    | status   |   returncode | testpath
-    ----------------+-------------+----------+--------------+--------------------------------------------------------------
-     slurm_metadata | slurm.debug | N/A      |            0 | /global/u1/s/siddiq90/cache/tests/metadata/slurm_metadata.sh
-
-
-    Polling Jobs in 10 seconds
-    ________________________________________
-    [slurm_metadata]: JobID 32740760 in PENDING state
-
-
-    Polling Jobs in 10 seconds
-    ________________________________________
-    [slurm_metadata]: JobID 32740760 in COMPLETED state
-
-
-    Polling Jobs in 10 seconds
-    ________________________________________
-
-    +---------------------------------------------+
-    | Stage: Final Results after Polling all Jobs |
-    +---------------------------------------------+
-
-     name           | executor    | status   |   returncode | testpath
-    ----------------+-------------+----------+--------------+--------------------------------------------------------------
-     slurm_metadata | slurm.debug | PASS     |            0 | /global/u1/s/siddiq90/cache/tests/metadata/slurm_metadata.sh
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-    Executed 1 tests
-    Passed Tests: 1/1 Percentage: 100.000%
-    Failed Tests: 0/1 Percentage: 0.000%
 
 The **SlurmExecutor** class is responsible for processing slurm job that may include:
 dispatch, poll, gather, or cancel job. The SlurmExecutor will gather job metrics
-via ``sacct`` using the following format fields:
+via `sacct <https://slurm.schedmd.com/sacct.html>`_ using the following format fields:
 
 -    Account
 -    AllocNodes

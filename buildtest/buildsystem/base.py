@@ -32,7 +32,7 @@ class BuilderBase(ABC):
     any kind of builder.
     """
 
-    def __init__(self, name, recipe, buildspec, testdir=None):
+    def __init__(self, name, recipe, buildspec, buildexecutor, testdir=None):
         """The BuilderBase provides common functions for any builder. The builder
         is an instance of BuilderBase. The initializer method will setup the builder
         attributes based on input test by ``name`` parameter.
@@ -43,6 +43,8 @@ class BuilderBase(ABC):
         :type recipe: dict, required
         :param buildspec: the pull path to the Buildspec file, must exist.
         :type buildspec: str, required
+        :param buildexecutor: an instance of BuildExecutor class defines Executors from configuration file
+        :type buildexecutor: BuildExecutor, required
         :param testdir: Test Destination directory where to write test
         :type testdir: str, optional
         """
@@ -81,7 +83,8 @@ class BuilderBase(ABC):
         self.recipe = recipe
 
         self.executor = self.recipe.get("executor")
-        self.executor_type = self.detect_executor()
+        # get type attribute from Executor class (local, slurm, cobalt, lsf)
+        self.executor_type = buildexecutor.executors[self.executor].type
 
         self._set_metadata_values()
 
@@ -133,16 +136,6 @@ class BuilderBase(ABC):
         # Generate a unique id for the build based on key and unique string
         self.metadata["full_id"] = self._generate_unique_id()
         self.metadata["id"] = self.metadata["full_id"][:8]
-
-    def detect_executor(self):
-        """Return executor type based on executor property. The executor is in
-        format <type>.<name> so we check for keywords that start with known executor
-        types ``local``, ``slurm``, ``lsf``, ``cobalt``
-        """
-        executor_types = ["local", "slurm", "lsf", "cobalt"]
-        for name in executor_types:
-            if self.executor.startswith(name):
-                return name
 
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
