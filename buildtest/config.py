@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 import socket
 
 from buildtest.defaults import (
@@ -43,27 +44,22 @@ class BuildtestConfiguration:
         in each system list with actual system. We retrieve target hostname via ``socket.gethostname()``
         and determine which system configuration to use. If no system is found we raise an error.
         """
-
+        host_lookup = {}
+        # for every system record we lookup 'hostnames' entry and apply re.match against current hostbame. If found we break from loop
         for name in self.config["system"].keys():
-            # if "hostnames" contain entry 'localhost' or '*' we return the system name
-            if (
-                "localhost" in self.config["system"][name]["hostnames"]
-                or "*" in self.config["system"][name]["hostnames"]
-            ):
-                self.target_config = self.config["system"][name]
-                self.name = name
-                break
+            hostname = socket.gethostname()
+            host_lookup[name] = self.config["system"][name]["hostnames"]
 
-            # otherwise we get hostname and match against host list
-            if socket.gethostname() in self.config["system"][name]["hostnames"]:
-                self.target_config = self.config["system"][name]
-                self.name = name
-                break
+            for host_entry in self.config["system"][name]["hostnames"]:
+                if re.match(host_entry, hostname):
+                    self.target_config = self.config["system"][name]
+                    self.name = name
+                    break
 
-            if not self.target_config:
-                raise BuildTestError(
-                    f"Based on target system: {socket.gethostname()} we cannot find a matching system from {list(self.systems)}"
-                )
+        if not self.target_config:
+            raise BuildTestError(
+                f"Based on current system hostname: {socket.gethostname()} we cannot find a matching system  {list(self.systems)} based on current hostnames: {host_lookup} "
+            )
 
         if self.target_config["executors"].get("local"):
             self.localexecutors = list(self.target_config["executors"]["local"].keys())
