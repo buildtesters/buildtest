@@ -1,6 +1,6 @@
 system:
   generic:
-    hostnames: ['localhost']
+    hostnames: ['.*']
 
     logdir: $BUILDTEST_ROOT/logs
     testdir: $BUILDTEST_ROOT/tests

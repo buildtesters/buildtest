@@ -1,6 +1,6 @@
 system:
   generic:
-    hostnames: ["localhost"]
+    hostnames: [".*"]
     # specify module system used at your site (environment-modules, lmod)
     moduletool: N/A
 

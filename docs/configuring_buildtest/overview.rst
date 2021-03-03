@@ -43,14 +43,46 @@ cluster called ``generic`` which is a dummy cluster used for running tutorial ex
 
     "required": ["executors", "moduletool", "load_default_buildspecs","hostnames", "compilers"]
 
-The ``hostnames`` is a list of nodes that belong to the cluster where buildtest should be run. Generally,
-these hosts should be your login nodes in your cluster. The ``hostnames`` is a host entries for instance if you
-want to configure buildtest to run from nodes ``login1``, ``login2``, ``login3`` you can do the following::
+The ``hostnames`` field is a list of nodes that belong to the cluster where buildtest should be run. Generally,
+these hosts should be your login nodes in your cluster. buildtest will process **hostnames** field across
+all system entry using `re.match <https://docs.python.org/3/library/re.html#re.match>`_ until a hostname is found, if
+none is found we report an error.
 
-    hostnames: ["login1", "login2", "login3"]
 
-We have two keywords ``localhost`` and ``*`` used to match your current system regardless of name. buildtest will
-process each system record and review the **hostnames** property to determine the correct system until one is found.
+In this example we defined two systems `machine`, `machine2` with the following hostnames.
+
+.. code-block:: yaml
+
+    system:
+      machine1:
+        hostnames:  ['loca$', '^1DOE']
+      machine2:
+        hostnames: ['BOB|JOHN']
+
+In this example, none of the host entries match with hostname `DOE-7086392.local` so we get an error
+since buildtest needs to detect a system before proceeding.
+
+.. code-block:: shell
+
+      buildtest.exceptions.BuildTestError: "Based on current system hostname: DOE-7086392.local we cannot find a matching system  ['machine1', 'machine2'] based on current hostnames: {'machine1': ['loca$', '^1DOE'], 'machine2': ['BOB|JOHN']} "
+
+
+Let's assume you we have a system named ``mycluster`` that should  run on nodes ``login1``, ``login2``, and ``login3``.
+You can specify hostnames as follows.
+
+.. code-block:: yaml
+
+    system:
+      mycluster:
+        hostnames: ["login1", "login2", "login3"]
+
+Alternately, you can use regular expression to condense this list
+
+.. code-block:: yaml
+
+    system:
+      mycluster:
+        hostnames: ["login[1-3]"]
 
 If your system supports module-system (`environment-modules <https://modules.readthedocs.io/en/latest/>`_ or `Lmod <Mhttps://lmod.readthedocs.io/en/latest/index.html>`_) you
 will need to define the ``moduletool`` property. For more details see :ref:`configuring module tool <module_configuration>`. The
