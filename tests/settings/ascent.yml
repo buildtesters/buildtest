@@ -25,3 +25,12 @@ system:
       lsf:
         batch:
           queue: batch
+
+    compilers:
+      compiler:
+        gcc:
+          builtin_gcc:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
+
