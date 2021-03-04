@@ -428,27 +428,11 @@ class BuildTest:
         ``get_builders`` method in BuildspecParser class which gets all tests from
         buildspec file.
 
-        :param buildspecs: A list of input buildspecs to parse
-        :type buildspecs: list, required
-        :param executor: An instance of BuildExecutor class
-        :type executor: BuildExecutor
-        :param test_directory: Test directory where buildspecs will be written
-        :type test_directory: str, required
-        :param filters: A dictionary containing filters on builders based on tags and executors
-        :type filters: dict, required
-        :param rebuild: Input argument from command line --rebuild
-        :type rebuild: int or None
         :param printTable: a boolean to control if parse table is printed
         :type printTable: bool, optional
         :return: A list of builder objects which are instances of ``BuilderBase`` class
         :rtype: list
         """
-
-        # buildspecs = buildspecs or self.detected_buildspecs
-        # executor = executor or self.buildexecutor
-        # filters = filters or self.filtertags
-        # test_directory = test_directory or self.testdir
-        # rebuild = rebuild or self.rebuild
 
         builders = []
         self.builders = []
@@ -536,9 +520,7 @@ class BuildTest:
         if self.stage == "build":
             return
 
-        self.builders = self.run_phase(
-            self.builders, self.buildexecutor, printTable=True
-        )
+        self.builders = self.run_phase(printTable=True)
 
         # only update report if we have a list of valid builders returned from run_phase
         if self.builders:
@@ -623,14 +605,14 @@ class BuildTest:
                 "Unable to create any test during build phase. Please check buildtest.log for more details"
             )
 
-    def run_phase(self, builders, executor, printTable=False):
+    def run_phase(self, printTable=False):
         """This method will run all builders with the appropriate executor.
         The executor argument is an instance of ``BuildExecutor`` that is responsible
         for orchestrating builder execution to the appropriate executor class. The
         executor contains a list of executors picked up from buildtest configuration.
         For tests running locally, we get the test metadata and count PASS/FAIL test
         state to tally number of pass and fail test which is printed at end in
-        Test Summary. For tests that need to run via scheduler (Slurm, LSF) the first
+        Test Summary. For tests that need to run via scheduler, the first
         stage of run will dispatch job, and state will be `N/A`. We first dispatch all
         jobs and later poll jobs until they are complete. The poll section is skipped
         if all tests are run locally. In poll section we regenerate table with all
@@ -641,10 +623,6 @@ class BuildTest:
         The `valid_builders` contains the test meta-data that is used for updating
         test report in next stage.
 
-        :param builders:  A list of builders that need to be run. These correspond to test names
-        :type: builders: list of objects of type `BuilderBase`
-        :param executor: The master executor class responsible for invoking appropriate executor class corresponding to builder.
-        :type executor: BuildExecutor
         :param printTable: boolean to control print statement for run phase
         :type printTable: bool
         :return: A list of valid builders
@@ -680,9 +658,9 @@ class BuildTest:
 
         poll_queue = []
 
-        for builder in builders:
+        for builder in self.builders:
             try:
-                executor.run(builder)
+                self.buildexecutor.run(builder)
             except SystemExit as err:
                 print("[%s]: Failed to Run Test" % builder.metadata["name"])
                 errmsg.append(err)
@@ -724,7 +702,7 @@ class BuildTest:
 
         # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
         if poll:
-            valid_builders = self.poll_jobs(poll_queue, executor, valid_builders)
+            valid_builders = self.poll_jobs(poll_queue, valid_builders)
 
             table = {
                 "name": [],
@@ -796,7 +774,7 @@ class BuildTest:
 
         return valid_builders
 
-    def poll_jobs(self, poll_queue, executor, valid_builders):
+    def poll_jobs(self, poll_queue, valid_builders):
         """This method will poll jobs by processing all jobs in ``poll_queue``. If
         job is cancelled by scheduler, we remove this from valid_builders list.
         This method will return a list of valid_builders after polling. If there
@@ -804,8 +782,6 @@ class BuildTest:
 
         :param poll_queue: a list of jobs that need to be polled. The jobs will poll using poll method from executor
         :type poll_queue: list, required
-        :param executor: an instance of BuildExecutor class
-        :type executor: BuildExecutor, required
         :param valid_builders: list of valid builders
         :type valid_builders: list, required
         """
@@ -831,7 +807,7 @@ class BuildTest:
             logger.debug(f"Polling Jobs: {poll_queue}")
 
             for builder in poll_queue:
-                poll_info = executor.poll(builder)
+                poll_info = self.buildexecutor.poll(builder)
 
                 # remove builder from poll_queue when state is True
                 if poll_info["job_complete"]:
