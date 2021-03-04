@@ -23,7 +23,7 @@ from buildtest.executors.setup import BuildExecutor
 
 from buildtest.menu.report import update_report
 from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir
-from buildtest.utils.tools import Hasher
+from buildtest.utils.tools import Hasher, deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -465,7 +465,11 @@ class BuildTest:
             table["buildspec"].append(buildspec)
 
             builder = Builder(
-                bp=bp, filters=filters, testdir=test_directory, rebuild=rebuild
+                bp=bp,
+                buildexecutor=executor,
+                filters=filters,
+                testdir=test_directory,
+                rebuild=rebuild,
             )
             builders += builder.get_builders()
 
@@ -486,9 +490,9 @@ class BuildTest:
         if printTable:
             print(
                 """
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+ 
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
         """
             )
             print(tabulate(table, headers=table.keys(), tablefmt="presto"))
@@ -527,7 +531,7 @@ class BuildTest:
             return
 
         self.builders = self.run_phase(
-            self.builders, self.buildexecutor, self.configuration, printTable=True
+            self.builders, self.buildexecutor, printTable=True
         )
 
         # only update report if we have a list of valid builders returned from run_phase
@@ -546,9 +550,9 @@ class BuildTest:
         invalid_builders = []
         print(
             """
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+ 
++----------------------+
+| Stage: Building Test |
++----------------------+ 
     """
         )
         table = Hasher()
@@ -617,7 +621,7 @@ class BuildTest:
 
         return builders
 
-    def run_phase(self, builders, executor, buildtest_config, printTable=False):
+    def run_phase(self, builders, executor, printTable=False):
         """This method will run all builders with the appropriate executor.
         The executor argument is an instance of ``BuildExecutor`` that is responsible
         for orchestrating builder execution to the appropriate executor class. The
@@ -639,8 +643,6 @@ class BuildTest:
         :type: builders: list of objects of type `BuilderBase`
         :param executor: The master executor class responsible for invoking appropriate executor class corresponding to builder.
         :type executor: BuildExecutor
-        :param buildtest_config: loaded buildtest configuration
-        :type buildtest_config: dict
         :param printTable: boolean to control print statement for run phase
         :type printTable: bool
         :return: A list of valid builders
@@ -659,9 +661,9 @@ class BuildTest:
         if printTable:
             print(
                 """
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+ 
++----------------------+
+| Stage: Running Test  |
++----------------------+ 
         """
             )
 
@@ -720,9 +722,7 @@ class BuildTest:
 
         # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
         if poll:
-            valid_builders = poll_jobs(
-                buildtest_config, poll_queue, executor, valid_builders
-            )
+            valid_builders = self.poll_jobs(poll_queue, executor, valid_builders)
 
             table = {
                 "name": [],
@@ -736,9 +736,9 @@ class BuildTest:
             if printTable:
                 print(
                     """
-        +---------------------------------------------+
-        | Stage: Final Results after Polling all Jobs |
-        +---------------------------------------------+ 
++---------------------------------------------+
+| Stage: Final Results after Polling all Jobs |
++---------------------------------------------+ 
         """
                 )
 
@@ -794,7 +794,7 @@ class BuildTest:
 
         return valid_builders
 
-    def poll_jobs(poll_queue, executor, valid_builders):
+    def poll_jobs(self, poll_queue, executor, valid_builders):
         """This method will poll jobs by processing all jobs in ``poll_queue``. If
         job is cancelled by scheduler, we remove this from valid_builders list.
         This method will return a list of valid_builders after polling. If there
@@ -808,7 +808,9 @@ class BuildTest:
         :type valid_builders: list, required
         """
 
-        interval = deep_get(self.configuration, "executors", "defaults", "pollinterval")
+        interval = deep_get(
+            self.configuration.target_config, "executors", "defaults", "pollinterval"
+        )
         # if no items in poll_queue terminate, this will happen as jobs complete polling
         # and they are removed from queue.
 

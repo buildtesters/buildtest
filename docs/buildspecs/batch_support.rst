@@ -27,14 +27,16 @@ in addition we can specify **#SBATCH** directives using ``sbatch`` field.
 The sbatch field is a list of string types, buildtest will
 insert **#SBATCH** directive in front of each value.
 
-Shown below is an example buildspec::
+Shown below is an example buildspec
+
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
       slurm_metadata:
         description: Get metadata from compute node when submitting job
         type: script
-        executor: slurm.debug
+        executor: cori.slurm.debug
         sbatch:
           - "-t 00:05"
           - "-C haswell"
@@ -49,7 +51,9 @@ Shown below is an example buildspec::
           echo "partition:" $SLURM_JOB_PARTITION
 
 buildtest will add the ``#SBATCH`` directives at top of script followed by
-content in the ``run`` section. Shown below is the example test content ::
+content in the ``run`` section. Shown below is the example test content
+
+.. code-block:: shell
 
     #!/bin/bash
     #SBATCH -t 00:05
@@ -63,15 +67,20 @@ content in the ``run`` section. Shown below is the example test content ::
     echo "nodeid:" $SLURM_NODEID
     echo "partition:" $SLURM_JOB_PARTITION
 
-The slurm.debug executor in our ``settings.yml`` is defined as follows::
+The ``cori.slurm.debug`` executor in our configuration file is defined as follows
 
-    slurm:
-      debug:
-        description: jobs for debug qos
-        qos: debug
-        cluster: cori
+.. code-block:: yaml
 
-With this setting, any buildspec test that use ``slurm.debug`` executor will result
+    system:
+      cori:
+        executors:
+          slurm:
+           debug:
+            description: jobs for debug qos
+            qos: debug
+            cluster: cori
+
+With this setting, any buildspec test that use ``cori.slurm.debug`` executor will result
 in the following launch option: ``sbatch --qos debug --clusters=cori </path/to/script.sh>``.
 
 Unlike the LocalExecutor, the **Run Stage**, will dispatch the slurm job and poll
@@ -86,96 +95,117 @@ the job and process next job. buildtest will show output of all tests after
 **Polling Stage** with test results of all tests. A slurm job with exit code 0 will
 be marked with status ``PASS``.
 
-Shown below is an example build for this test ::
+Shown below is an example build for this test
+
+.. code-block:: console
 
     $ buildtest build -b metadata.yml
-    Paths:
-    __________
-    Prefix: /global/u1/s/siddiq90/cache
-    Buildspec Search Path: ['/global/homes/s/siddiq90/.buildtest/site']
-    Test Directory: /global/u1/s/siddiq90/cache/tests
 
-    +-------------------------------+
-    | Stage: Discovered Buildspecs  |
-    +-------------------------------+
+    +---------------------------+
+    | Stage: Parsing Buildspecs |
+    +---------------------------+
 
-    /global/u1/s/siddiq90/buildtest-cori/slurm/valid_jobs/metadata.yml
+     schemafile              | validstate   | buildspec
+    -------------------------+--------------+-------------------------------------------------------------------
+     script-v1.0.schema.json | True         | /global/u1/s/siddiq90/buildtest-cori/buildspecs/jobs/metadata.yml
 
     +----------------------+
     | Stage: Building Test |
     +----------------------+
 
-     Name           | Schema File             | Test Path                                                    | Buildspec
-    ----------------+-------------------------+--------------------------------------------------------------+--------------------------------------------------------------------
-     slurm_metadata | script-v1.0.schema.json | /global/u1/s/siddiq90/cache/tests/metadata/slurm_metadata.sh | /global/u1/s/siddiq90/buildtest-cori/slurm/valid_jobs/metadata.yml
+     name           | id       | type   | executor                 | tags     | testpath
+    ----------------+----------+--------+--------------------------+----------+----------------------------------------------------------------------------------------------------------------
+     slurm_metadata | 5b46e6ba | script | cori.slurm.haswell_debug | ['jobs'] | /global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.haswell_debug/metadata/slurm_metadata/6/stage/generate.sh
+
+
 
     +----------------------+
     | Stage: Running Test  |
     +----------------------+
 
-    [slurm_metadata] job dispatched to scheduler
-    [slurm_metadata] acquiring job id in 2 seconds
-     name           | executor    | status   |   returncode | testpath
-    ----------------+-------------+----------+--------------+--------------------------------------------------------------
-     slurm_metadata | slurm.debug | N/A      |            0 | /global/u1/s/siddiq90/cache/tests/metadata/slurm_metadata.sh
+    [slurm_metadata] JobID: 40201868 dispatched to scheduler
+     name           | id       | executor                 | status   |   returncode | testpath
+    ----------------+----------+--------------------------+----------+--------------+----------------------------------------------------------------------------------------------------------------
+     slurm_metadata | 5b46e6ba | cori.slurm.haswell_debug | N/A      |           -1 | /global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.haswell_debug/metadata/slurm_metadata/6/stage/generate.sh
 
 
-    Polling Jobs in 10 seconds
+    Polling Jobs in 15 seconds
     ________________________________________
-    [slurm_metadata]: JobID 32740760 in PENDING state
+    Job Queue: [40201868]
 
 
-    Polling Jobs in 10 seconds
+    Completed Jobs
     ________________________________________
-    [slurm_metadata]: JobID 32740760 in COMPLETED state
 
 
-    Polling Jobs in 10 seconds
+    ╒════════╤════════════╤═════════╤════════════╕
+    │ name   │ executor   │ jobID   │ jobstate   │
+    ╞════════╪════════════╪═════════╪════════════╡
+    ╘════════╧════════════╧═════════╧════════════╛
+
+
+    Pending Jobs
     ________________________________________
+
+
+    ╒════════════════╤══════════════════════════╤══════════╤════════════╕
+    │ name           │ executor                 │    jobID │ jobstate   │
+    ╞════════════════╪══════════════════════════╪══════════╪════════════╡
+    │ slurm_metadata │ cori.slurm.haswell_debug │ 40201868 │ COMPLETED  │
+    ╘════════════════╧══════════════════════════╧══════════╧════════════╛
+
+
+    Polling Jobs in 15 seconds
+    ________________________________________
+    Job Queue: []
+
+
+    Completed Jobs
+    ________________________________________
+
+
+    ╒════════════════╤══════════════════════════╤══════════╤════════════╕
+    │ name           │ executor                 │    jobID │ jobstate   │
+    ╞════════════════╪══════════════════════════╪══════════╪════════════╡
+    │ slurm_metadata │ cori.slurm.haswell_debug │ 40201868 │ COMPLETED  │
+    ╘════════════════╧══════════════════════════╧══════════╧════════════╛
+
+
+    Pending Jobs
+    ________________________________________
+
+
+    ╒════════╤════════════╤═════════╤════════════╕
+    │ name   │ executor   │ jobID   │ jobstate   │
+    ╞════════╪════════════╪═════════╪════════════╡
+    ╘════════╧════════════╧═════════╧════════════╛
 
     +---------------------------------------------+
     | Stage: Final Results after Polling all Jobs |
     +---------------------------------------------+
 
-     name           | executor    | status   |   returncode | testpath
-    ----------------+-------------+----------+--------------+--------------------------------------------------------------
-     slurm_metadata | slurm.debug | PASS     |            0 | /global/u1/s/siddiq90/cache/tests/metadata/slurm_metadata.sh
+     name           | id       | executor                 | status   |   returncode | testpath
+    ----------------+----------+--------------------------+----------+--------------+----------------------------------------------------------------------------------------------------------------
+     slurm_metadata | 5b46e6ba | cori.slurm.haswell_debug | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.haswell_debug/metadata/slurm_metadata/6/stage/generate.sh
 
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
+            +----------------------+
+            | Stage: Test Summary  |
+            +----------------------+
 
     Executed 1 tests
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
 
+
+
+    Writing Logfile to: /tmp/buildtest_ncy01hqp.log
+
 The **SlurmExecutor** class is responsible for processing slurm job that may include:
 dispatch, poll, gather, or cancel job. The SlurmExecutor will gather job metrics
-via ``sacct`` using the following format fields:
-
--    Account
--    AllocNodes
--    AllocTRES
--    ConsumedEnergyRaw
--    CPUTimeRaw
--    Elapsed
--    End
--    ExitCode
--    JobID
--    JobName
--    NCPUS
--    NNodes
--    QOS
--    ReqGRES
--    ReqMem
--    ReqNodes
--    ReqTRES
--    Start
--    State
--    Submit
--    UID
--    User
--    WorkDir
+via `sacct <https://slurm.schedmd.com/sacct.html>`_ using the following format fields:
+**Account**, **AllocNodes**, **AllocTRES**, **ConsumedEnergyRaw**, **CPUTimeRaw**, **Elapsed**,
+**End**, **ExitCode**, **JobID**, **JobName**, **NCPUS**, **NNodes**, **QOS**, **ReqGRES**,
+**ReqMem**, **ReqNodes**, **ReqTRES**, **Start**, **State**, **Submit**, **UID**, **User**, **WorkDir**
 
 For a complete list of format fields see ``sacct -e``. For now, we support only these fields of interest
 for reporting purpose.
@@ -186,38 +216,60 @@ is part of ``status`` field. This field expects one of the following values: ``[
 This is an example of simulating fail job by expecting a return code of 1 with job
 state of ``FAILED``.
 
-::
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
       wall_timeout:
         type: script
-        executor: slurm.debug
+        executor: cori.slurm.debug
         sbatch: [ "-t 2", "-C haswell", "-n 1"]
         run: exit 1
         status:
-          slurm_job_state: "FAILED"
+          slurm_job_state: "TIMEOUT"
 
 
 If we run this test, buildtest will mark this test as ``PASS`` because the slurm job
 state matches with expected result even though returncode is 1.
 
-::
+.. code-block:: console
+    :emphasize-lines: 8,26
+
+        Completed Jobs
+    ________________________________________
+
+
+    ╒══════════════╤══════════════════════════╤══════════╤════════════╕
+    │ name         │ executor                 │    jobID │ jobstate   │
+    ╞══════════════╪══════════════════════════╪══════════╪════════════╡
+    │ wall_timeout │ cori.slurm.haswell_debug │ 40201980 │ TIMEOUT    │
+    ╘══════════════╧══════════════════════════╧══════════╧════════════╛
+
+
+    Pending Jobs
+    ________________________________________
+
+
+    ╒════════╤════════════╤═════════╤════════════╕
+    │ name   │ executor   │ jobID   │ jobstate   │
+    ╞════════╪════════════╪═════════╪════════════╡
+    ╘════════╧════════════╧═════════╧════════════╛
 
     +---------------------------------------------+
     | Stage: Final Results after Polling all Jobs |
     +---------------------------------------------+
 
-     name         | executor    | status   |   returncode | testpath
-    --------------+-------------+----------+--------------+---------------------------------------------------------
-     wall_timeout | slurm.debug | PASS     |            1 | /global/u1/s/siddiq90/cache/tests/exit1/wall_timeout.sh
+     name         | id       | executor                 | status   |   returncode | testpath
+    --------------+----------+--------------------------+----------+--------------+-------------------------------------------------------------------------------------------------------------
+     wall_timeout | 15084c68 | cori.slurm.haswell_debug | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.haswell_debug/timeout/wall_timeout/0/stage/generate.sh
+
 
 If you examine the logfile ``buildtest.log`` you will see an entry of ``sacct`` command run to gather
 results followed by list of field and value output::
 
     2020-07-22 18:20:48,170 [base.py:587 - gather() ] - [DEBUG] Gather slurm job data by running: sacct -j 32741040 -X -n -P -o Account,AllocNodes,AllocTRES,ConsumedEnergyRaw,CPUTimeRaw,End,ExitCode,JobID,JobName,NCPUS,NNodes,QOS,ReqGRES,ReqMem,ReqNodes,ReqTRES,Start,State,Submit,UID,User,WorkDir -M cori
     ...
-    2020-07-22 18:20:48,405 [base.py:598 - gather() ] - [DEBUG] field: State   value: FAILED
+    2020-07-22 18:20:48,405 [base.py:598 - gather() ] - [DEBUG] field: State   value: TIMEOUT
 
 
 LSF Executor
@@ -236,13 +288,13 @@ The ``bsub`` key works similar to ``sbatch`` key which allows one to specify **#
 directive into job script. This example will use the ``lsf.batch`` executor with
 executor name ``batch`` defined in buildtest configuration.
 
-::
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
       hostname:
         type: script
-        executor: lsf.batch
+        executor: ascent.lsf.batch
         bsub: [ "-W 10",  "-nnodes 1"]
 
         run: jsrun hostname
@@ -254,26 +306,9 @@ any of the two states, LSFExecutor will proceed to ``gather`` stage and acquire
 job results.
 
 The LSFExecutor ``gather`` method will retrieve the following format fields using
-``bjobs``
-
--    job_name
--    stat
--    user
--    user_group
--    queue
--    proj_name
--    pids
--    exit_code
--    from_host
--    exec_host
--    submit_time
--    start_time
--    finish_time
--    nthreads
--    exec_home
--    exec_cwd
--    output_file
--    error_file
+``bjobs``: **job_name**, **stat**, **user**, **user_group**, **queue**, **proj_name**,
+**pids**, **exit_code**, **from_host**, **exec_host**, **submit_time**, **start_time**,
+**finish_time**, **nthreads**, **exec_home**, **exec_cwd**, **output_file**, **error_file**
 
 Cobalt Executor
 ----------------
@@ -289,18 +324,20 @@ system. Cobalt directives are specified using ``#COBALT`` this can be specified
 using ``cobalt`` property which accepts a list of strings. Shown below is an example
 using cobalt property.
 
-::
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
       yarrow_hostname:
-        executor: cobalt.yarrow
+        executor: jlse.cobalt.yarrow
         type: script
         cobalt: ["-n 1", "--proccount 1", "-t 10"]
         run: hostname
 
 In this example, we allocate 1 node with 1 processor for 10min. This is translated into
-the following job script::
+the following job script.
+
+.. code-block:: console
 
     #!/usr/bin/bash
     #COBALT -n 1
@@ -312,7 +349,9 @@ the following job script::
     source /home/shahzebsiddiqui/buildtest/var/executors/cobalt.yarrow/after_script.sh
 
 
-Let's run this test and notice the job states::
+Let's run this test and notice the job states.
+
+.. code-block:: console
 
     $ buildtest build -b yarrow_hostname.yml
 
@@ -449,7 +488,9 @@ for the **batch** field
 
 
 In this example, we rewrite the LSF buildspec to use ``batch`` instead of ``bsub``
-field::
+field.
+
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
@@ -462,7 +503,9 @@ field::
         run: jsrun hostname
 
 buildtest will translate the batch field into #BSUB directive as you can see in
-the generated test::
+the generated test.
+
+.. code-block:: console
 
     #!/usr/bin/bash
     #BSUB -W 10
@@ -471,7 +514,9 @@ the generated test::
     jsrun hostname
 
 In next example we use ``batch`` field with on a Slurm cluster that submits a sleep
-job as follows::
+job as follows.
+
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
@@ -494,7 +539,9 @@ job as follows::
 The ``exclusive`` field is used for getting exclusive node access, this is a boolean
 instead of string. You can instruct buildtest to stop after build phase by using
 ``--stage=build`` which will build the script but not run it. If we inspect the
-generated script we see the following::
+generated script we see the following.
+
+.. code-block:: shell
 
     #!/bin/bash
     #SBATCH --nodes=1
@@ -509,12 +556,14 @@ generated script we see the following::
 
 The ``batch`` property can translate some fields into #COBALT directives. buildtest
 will support fields that are applicable with scheduler. Shown below is an example
-with 1 node using 10min that runs hostname using executor `cobalt.iris`::
+with 1 node using 10min that runs hostname using executor `jlse.cobalt.iris`.
+
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
       iris_hostname:
-        executor: cobalt.iris
+        executor: jlse.cobalt.iris
         type: script
         batch:
           nodecount: "1"
@@ -522,7 +571,9 @@ with 1 node using 10min that runs hostname using executor `cobalt.iris`::
         run: hostname
 
 
-If we build the buildspec and inspect the testscript we see the following::
+If we build the buildspec and inspect the testscript we see the following.
+
+.. code-block:: shell
 
     #!/usr/bin/bash
     #COBALT --nodecount 1
@@ -550,89 +601,154 @@ job exceed timelimit. buildtest will start a timer for each job right after job
 submission and keep track of time duration, and if job is in **pending** state and it exceepds `max_pend_time`,
 then job will be cancelled.
 
-To demonstrate, here is an example of two buildspecs submitted to scheduler and notice
-job ``shared_qos_haswell_hostname`` was cancelled after `max_pend_time` of 10
+To demonstrate, here is an example where job ``shared_qos_haswell_hostname`` was cancelled after `max_pend_time` of 10
 sec. Note that cancelled job is not reported in final output nor updated in report hence
-it won't be present in the report (``buildtest report``).
+it won't be present in the report (``buildtest report``). In this example, we only
+had one test so upon job cancellation we found there was no tests to report hence,
+buildtest will terminate after run stage.
 
 .. code-block::
-    :emphasize-lines: 51-52
+    :emphasize-lines: 85-86,
     :linenos:
 
-    $ buildtest build -b queues/shared.yml -b queues/xfer.yml
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-
-    Discovered Buildspecs:
-
-    /global/u1/s/siddiq90/buildtest-cori/queues/xfer.yml
-    /global/u1/s/siddiq90/buildtest-cori/queues/shared.yml
+    $ buildtest build -b shared.yml
 
     +---------------------------+
     | Stage: Parsing Buildspecs |
     +---------------------------+
 
      schemafile              | validstate   | buildspec
-    -------------------------+--------------+--------------------------------------------------------
-     script-v1.0.schema.json | True         | /global/u1/s/siddiq90/buildtest-cori/queues/xfer.yml
-     script-v1.0.schema.json | True         | /global/u1/s/siddiq90/buildtest-cori/queues/shared.yml
+    -------------------------+--------------+-------------------------------------------------------------------
+     script-v1.0.schema.json | True         | /global/u1/s/siddiq90/buildtest-cori/buildspecs/queues/shared.yml
 
     +----------------------+
     | Stage: Building Test |
     +----------------------+
 
-     name                        | id       | type   | executor     | tags                  | testpath
-    -----------------------------+----------+--------+--------------+-----------------------+---------------------------------------------------------------------------------------------------------------
-     xfer_qos_hostname           | d0043be3 | script | slurm.xfer   | ['queues']            | /global/u1/s/siddiq90/buildtest/var/tests/slurm.xfer/xfer/xfer_qos_hostname/1/stage/generate.sh
-     shared_qos_haswell_hostname | 9d3723ac | script | slurm.shared | ['queues', 'reframe'] | /global/u1/s/siddiq90/buildtest/var/tests/slurm.shared/shared/shared_qos_haswell_hostname/1/stage/generate.sh
+     name                        | id       | type   | executor                  | tags                  | testpath
+    -----------------------------+----------+--------+---------------------------+-----------------------+----------------------------------------------------------------------------------------------------------------------------
+     shared_qos_haswell_hostname | e4bda70d | script | cori.slurm.haswell_shared | ['queues', 'reframe'] | /global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.haswell_shared/shared/shared_qos_haswell_hostname/0/stage/generate.sh
+
+
 
     +----------------------+
     | Stage: Running Test  |
     +----------------------+
 
-    [xfer_qos_hostname] JobID: 1089664 dispatched to scheduler
-    [shared_qos_haswell_hostname] JobID: 35189528 dispatched to scheduler
-     name                        | id       | executor     | status   |   returncode | testpath
-    -----------------------------+----------+--------------+----------+--------------+---------------------------------------------------------------------------------------------------------------
-     xfer_qos_hostname           | d0043be3 | slurm.xfer   | N/A      |            0 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.xfer/xfer/xfer_qos_hostname/1/stage/generate.sh
-     shared_qos_haswell_hostname | 9d3723ac | slurm.shared | N/A      |            0 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.shared/shared/shared_qos_haswell_hostname/1/stage/generate.sh
+    [shared_qos_haswell_hostname] JobID: 40202201 dispatched to scheduler
+     name                        | id       | executor                  | status   |   returncode | testpath
+    -----------------------------+----------+---------------------------+----------+--------------+----------------------------------------------------------------------------------------------------------------------------
+     shared_qos_haswell_hostname | e4bda70d | cori.slurm.haswell_shared | N/A      |           -1 | /global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.haswell_shared/shared/shared_qos_haswell_hostname/0/stage/generate.sh
 
 
     Polling Jobs in 10 seconds
     ________________________________________
-    [xfer_qos_hostname]: JobID 1089664 in COMPLETED state
-    [shared_qos_haswell_hostname]: JobID 35189528 in PENDING state
+    Job Queue: [40202201]
+
+
+    Completed Jobs
+    ________________________________________
+
+
+    ╒════════╤════════════╤═════════╤════════════╕
+    │ name   │ executor   │ jobID   │ jobstate   │
+    ╞════════╪════════════╪═════════╪════════════╡
+    ╘════════╧════════════╧═════════╧════════════╛
+
+
+    Pending Jobs
+    ________________________________________
+
+
+    ╒═════════════════════════════╤═══════════════════════════╤══════════╤════════════╕
+    │ name                        │ executor                  │    jobID │ jobstate   │
+    ╞═════════════════════════════╪═══════════════════════════╪══════════╪════════════╡
+    │ shared_qos_haswell_hostname │ cori.slurm.haswell_shared │ 40202201 │ PENDING    │
+    ╘═════════════════════════════╧═══════════════════════════╧══════════╧════════════╛
+
 
     Polling Jobs in 10 seconds
     ________________________________________
-    [shared_qos_haswell_hostname]: JobID 35189528 in PENDING state
-    Cancelling Job: shared_qos_haswell_hostname running command: scancel 35189528
-    Cancelling Job because duration time: 20.573901 sec exceeds max pend time: 10 sec
+    Job Queue: [40202201]
+
+
+    Completed Jobs
+    ________________________________________
+
+
+    ╒════════╤════════════╤═════════╤════════════╕
+    │ name   │ executor   │ jobID   │ jobstate   │
+    ╞════════╪════════════╪═════════╪════════════╡
+    ╘════════╧════════════╧═════════╧════════════╛
+
+
+    Pending Jobs
+    ________________________________________
+
+
+    ╒═════════════════════════════╤═══════════════════════════╤══════════╤════════════╕
+    │ name                        │ executor                  │    jobID │ jobstate   │
+    ╞═════════════════════════════╪═══════════════════════════╪══════════╪════════════╡
+    │ shared_qos_haswell_hostname │ cori.slurm.haswell_shared │ 40202201 │ PENDING    │
+    ╘═════════════════════════════╧═══════════════════════════╧══════════╧════════════╛
 
 
     Polling Jobs in 10 seconds
     ________________________________________
+    Cancelling Job: shared_qos_haswell_hostname running command: scancel 40202201 --clusters=cori
+    Cancelling Job because duration time: 30.375364 sec exceeds max pend time: 20 sec
+    Job Queue: [40202201]
+
+
+    Completed Jobs
+    ________________________________________
+
+
+    ╒════════╤════════════╤═════════╤════════════╕
+    │ name   │ executor   │ jobID   │ jobstate   │
+    ╞════════╪════════════╪═════════╪════════════╡
+    ╘════════╧════════════╧═════════╧════════════╛
+
+
+    Pending Jobs
+    ________________________________________
+
+
+    ╒═════════════════════════════╤═══════════════════════════╤══════════╤════════════╕
+    │ name                        │ executor                  │    jobID │ jobstate   │
+    ╞═════════════════════════════╪═══════════════════════════╪══════════╪════════════╡
+    │ shared_qos_haswell_hostname │ cori.slurm.haswell_shared │ 40202201 │ CANCELLED  │
+    ╘═════════════════════════════╧═══════════════════════════╧══════════╧════════════╛
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    Job Queue: []
+
+
+    Completed Jobs
+    ________________________________________
+
+
+    ╒═════════════════════════════╤═══════════════════════════╤══════════╤════════════╕
+    │ name                        │ executor                  │    jobID │ jobstate   │
+    ╞═════════════════════════════╪═══════════════════════════╪══════════╪════════════╡
+    │ shared_qos_haswell_hostname │ cori.slurm.haswell_shared │ 40202201 │ CANCELLED  │
+    ╘═════════════════════════════╧═══════════════════════════╧══════════╧════════════╛
+
+
+    Pending Jobs
+    ________________________________________
+
+
+    ╒════════╤════════════╤═════════╤════════════╕
+    │ name   │ executor   │ jobID   │ jobstate   │
+    ╞════════╪════════════╪═════════╪════════════╡
+    ╘════════╧════════════╧═════════╧════════════╛
     Cancelled Tests:
     shared_qos_haswell_hostname
+    After polling all jobs we found no valid builders to process
 
-    +---------------------------------------------+
-    | Stage: Final Results after Polling all Jobs |
-    +---------------------------------------------+
-
-     name              | id       | executor   | status   |   returncode | testpath
-    -------------------+----------+------------+----------+--------------+-------------------------------------------------------------------------------------------------
-     xfer_qos_hostname | d0043be3 | slurm.xfer | PASS     |            0 | /global/u1/s/siddiq90/buildtest/var/tests/slurm.xfer/xfer/xfer_qos_hostname/1/stage/generate.sh
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-    Executed 1 tests
-    Passed Tests: 1/1 Percentage: 100.000%
-    Failed Tests: 0/1 Percentage: 0.000%
 
 Cray Burst Buffer & Data Warp
 -------------------------------
@@ -651,13 +767,13 @@ cd into the databuffer and write a 5GB random file.
    comes before ``#DW``. buildtest will automatically add the directive **#BB**
    and **#DW** when using properties BB and DW
 
-::
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
       create_burst_buffer:
         type: script
-        executor: slurm.debug
+        executor: cori.slurm.debug
         batch:
           nodecount: "1"
           timelimit: "5"
@@ -677,19 +793,21 @@ cd into the databuffer and write a 5GB random file.
 
 Next we run this test and once its complete we will inspect the test using
 ``buildtest inspect``. Take note of the generated script and output file, we can see
-there is a 5GB ``random.txt`` file that was generated in the burst buffer::
+there is a 5GB ``random.txt`` file that was generated in the burst buffer.
 
-    (buildtest) siddiq90@cori06:~/buildtest-cori/jobs> buildtest inspect 26b1459c
+.. code-block:: console
+
+    $ buildtest inspect 26b1459c
     {
       "id": "26b1459c",
       "full_id": "26b1459c-2a25-4f4f-8461-d96eec58d254",
-      "testroot": "/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8",
-      "testpath": "/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/generate.sh",
-      "command": "sbatch --parsable -q debug --clusters=cori --account=nstaff /global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/generate.sh",
-      "outfile": "/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/create_burst_buffer.out",
-      "errfile": "/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/create_burst_buffer.err",
+      "testroot": "/global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.debug/create_buffer/create_burst_buffer/8",
+      "testpath": "/global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.debug/create_buffer/create_burst_buffer/8/stage/generate.sh",
+      "command": "sbatch --parsable -q debug --clusters=cori --account=nstaff /global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.debug/create_buffer/create_burst_buffer/8/stage/generate.sh",
+      "outfile": "/global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.debug/create_buffer/create_burst_buffer/8/stage/create_burst_buffer.out",
+      "errfile": "/global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.debug/create_buffer/create_burst_buffer/8/stage/create_burst_buffer.err",
       "schemafile": "script-v1.0.schema.json",
-      "executor": "slurm.debug",
+      "executor": "cori.slurm.debug",
       "tags": "jobs",
       "starttime": "2020-10-29T13:06:31",
       "endtime": "2020-10-29T13:08:09",
@@ -718,7 +836,7 @@ there is a 5GB ``random.txt`` file that was generated in the burst buffer::
         "Submit": "2020-10-29T13:06:18",
         "UID": "92503",
         "User": "siddiq90",
-        "WorkDir": "/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage\n",
+        "WorkDir": "/global/u1/s/siddiq90/buildtest/var/tests/cori.slurm.debug/create_buffer/create_burst_buffer/8/stage\n",
         "scontrol": {
           "command": "scontrol show job 35693664 --clusters=cori",
           "output": "JobId=35693664 JobName=create_burst_buffer\n   UserId=siddiq90(92503) GroupId=siddiq90(92503) MCS_label=N/A\n   Priority=73380 Nice=0 Account=nstaff QOS=debug_knl\n   JobState=COMPLETED Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:01:38 TimeLimit=00:05:00 TimeMin=N/A\n   SubmitTime=2020-10-29T13:06:18 EligibleTime=2020-10-29T13:06:18\n   AccrueTime=2020-10-29T13:06:21\n   StartTime=2020-10-29T13:06:31 EndTime=2020-10-29T13:08:09 Deadline=N/A\n   PreemptEligibleTime=2020-10-29T13:06:31 PreemptTime=None\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2020-10-29T13:06:31\n   Partition=debug_knl AllocNode:Sid=cori06:62431\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=nid03546\n   BatchHost=nid03546\n   NumNodes=1 NumCPUs=272 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   TRES=cpu=272,mem=87G,energy=11972,node=1,billing=272\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryNode=87G MinTmpDiskNode=0\n   Features=knl&quad&cache DelayBoot=2-00:00:00\n   OverSubscribe=NO Contiguous=0 Licenses=(null) Network=(null)\n   Command=/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/generate.sh\n   WorkDir=/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage\n   AdminComment={\"stdinPath\":\"\\/dev\\/null\",\"packJobId\":0,\"submitTime\":1604001978,\"burstBuffer\":\"#BB create_persistent name=databuffer capacity=10GB access_mode=striped type=scratch\\n#DW persistentdw name=databuffer\",\"cluster\":\"cori\",\"resizing\":0,\"partition\":\"debug_knl\",\"jobExitCode\":0,\"uid\":92503,\"nodes\":\"nid03546\",\"priority\":73380,\"name\":\"create_burst_buffer\",\"endTime\":1604002089,\"jobId\":35693664,\"stdoutPath\":\"\\/global\\/u1\\/s\\/siddiq90\\/buildtest\\/var\\/tests\\/slurm.debug\\/create_buffer\\/create_burst_buffer\\/8\\/stage\\/create_burst_buffer.out\",\"stderrPath\":\"\\/global\\/u1\\/s\\/siddiq90\\/buildtest\\/var\\/tests\\/slurm.debug\\/create_buffer\\/create_burst_buffer\\/8\\/stage\\/create_burst_buffer.err\",\"restartCnt\":0,\"allocNodes\":1,\"startTime\":1604001991,\"jobAccount\":\"nstaff\",\"batchHost\":\"nid03546\",\"features\":\"knl&quad&cache\",\"argv\":[\"\\/global\\/u1\\/s\\/siddiq90\\/buildtest\\/var\\/tests\\/slurm.debug\\/create_buffer\\/create_burst_buffer\\/8\\/stage\\/generate.sh\"],\"gresRequest\":\"craynetwork:4\",\"arrayJobId\":0,\"qos\":\"debug_knl\",\"reboot\":0,\"workingDirectory\":\"\\/global\\/u1\\/s\\/siddiq90\\/buildtest\\/var\\/tests\\/slurm.debug\\/create_buffer\\/create_burst_buffer\\/8\\/stage\",\"timeLimit\":5,\"tresRequest\":\"1=272,2=89088,3=18446744073709551614,4=1,5=272\",\"allocCpus\":272,\"jobDerivedExitCode\":0,\"arrayTaskId\":4294967294,\"gresUsed\":\"craynetwork:4\",\"packJobOffset\":0} \n   StdErr=/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/create_burst_buffer.err\n   StdIn=/dev/null\n   StdOut=/global/u1/s/siddiq90/buildtest/var/tests/slurm.debug/create_buffer/create_burst_buffer/8/stage/create_burst_buffer.out\n   BurstBuffer=#BB create_persistent name=databuffer capacity=10GB access_mode=striped type=scratch\n#DW persistentdw name=databuffer\n   Power=\n   TresPerNode=craynetwork:1\n   MailUser=(null) MailType=NONE\n"
@@ -758,13 +876,13 @@ there is a 5GB ``random.txt`` file that was generated in the burst buffer::
     #SBATCH --error=create_burst_buffer.err
     #BB create_persistent name=databuffer capacity=10GB access_mode=striped type=scratch
     #DW persistentdw name=databuffer
-    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/before_script.sh
+    source /global/u1/s/siddiq90/buildtest/var/executors/cori.slurm.debug/before_script.sh
     cd $DW_PERSISTENT_STRIPED_databuffer
     pwd
     dd if=/dev/urandom of=random.txt bs=1G count=5 iflag=fullblock
     ls -lh $DW_PERSISTENT_STRIPED_databuffer/
 
-    source /global/u1/s/siddiq90/buildtest/var/executors/slurm.debug/after_script.sh
+    source /global/u1/s/siddiq90/buildtest/var/executors/cori.slurm.debug/after_script.sh
 
 
 
@@ -774,7 +892,7 @@ there is a 5GB ``random.txt`` file that was generated in the burst buffer::
     buildspecs:
       create_burst_buffer:
         type: script
-        executor: slurm.debug
+        executor: cori.slurm.debug
         batch:
           nodecount: "1"
           timelimit: "5"
@@ -794,19 +912,23 @@ there is a 5GB ``random.txt`` file that was generated in the burst buffer::
 
 
 
-We can confirm their is an active burst buffer by running the following::
+We can confirm their is an active burst buffer by running the following
+
+.. code-block:: console
 
     $ scontrol show burst | grep databuffer
         Name=databuffer CreateTime=2020-10-29T13:06:21 Pool=wlm_pool Size=20624MiB State=allocated UserID=siddiq90(92503)
 
 A persistent burst buffer is accessible across jobs, for now we will delete the burst
-buffer with this test::
+buffer with this test.
+
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
       delete_burst_buffer:
         type: script
-        executor: slurm.debug
+        executor: cori.slurm.debug
         batch:
           nodecount: "1"
           timelimit: "5"
@@ -823,7 +945,9 @@ buffer with this test::
 
 The directive ``#BB destroy_persistent name=databuffer`` is responsible for deleting
 the burst buffer, once this job we shouldn't see any burst buffer which can be
-confirmed using::
+confirmed using.
+
+.. code-block:: console
 
     $ scontrol show burst | grep databuffer | wc -l
     0
@@ -833,13 +957,13 @@ In next example, we will pre-create a 1GB file and stage in data using ``#DW sta
 option. First we create a 1GB random file in $SCRATCH and move this into burst buffer
 by specifying the `source` and `destination` field.
 
-::
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
       stage_in_out_burst_buffer:
         type: script
-        executor: slurm.debug
+        executor: cori.slurm.debug
         tags: [datawarp, jobs]
         description: Stage in data to Burst Buffer
         batch:
@@ -855,4 +979,3 @@ by specifying the `source` and `destination` field.
           dd if=/dev/urandom of=stage_in.txt bs=1G count=1 iflag=fullblock
           ls -lh ${DW_JOB_STRIPED}/stage_in.txt
           rm  $SCRATCH/stage_in.txt
-

@@ -14,13 +14,15 @@ from buildtest.system import system
 
 
 class Builder:
-    def __init__(self, bp, filters, testdir, rebuild=1):
+    def __init__(self, bp, buildexecutor, filters, testdir, rebuild=1):
         """Based on a loaded Buildspec file, return the correct builder
         for each based on the type. Each type is associated with a known
         Builder class.
 
         :param bp: an instance of BuildspecParser class
         :type bp: BuildspecParser, required
+        :param buildexecutor: an instance of BuildExecutor class defines Executors from configuration file
+        :type buildexecutor: BuildExecutor, required
         :param filters: A dictionary container filter fields for tags and executors passed from command line
         :type filters: dict, required
         :param testdir: Test Destination directory, specified by --testdir
@@ -31,6 +33,7 @@ class Builder:
 
         self.logger = logging.getLogger(__name__)
         self.testdir = testdir
+        self.buildexecutor = buildexecutor
         if not rebuild:
             self.rebuild = 1
         else:
@@ -62,7 +65,11 @@ class Builder:
                 if recipe["type"] == "script":
                     self.builders.append(
                         ScriptBuilder(
-                            name, recipe, self.bp.buildspec, testdir=self.testdir
+                            name=name,
+                            recipe=recipe,
+                            buildspec=self.bp.buildspec,
+                            buildexecutor=self.buildexecutor,
+                            testdir=self.testdir,
                         )
                     )
                 elif recipe["type"] == "compiler":
@@ -107,9 +114,10 @@ class Builder:
             for bc_name in discovered_compilers:
                 if re.match(compiler_pattern, bc_name):
                     builder = CompilerBuilder(
-                        name,
-                        recipe,
-                        self.bp.buildspec,
+                        name=name,
+                        recipe=recipe,
+                        buildspec=self.bp.buildspec,
+                        buildexecutor=self.buildexecutor,
                         compiler=bc_name,
                         testdir=self.testdir,
                     )

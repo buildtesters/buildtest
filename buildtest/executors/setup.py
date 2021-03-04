@@ -1,7 +1,7 @@
 """
 This module is responsible for setup of executors defined in buildtest
 configuration. The BuildExecutor class initializes the executors and chooses the
-executor class (LocalExecutor, LSFExecutor, SlurmExecutor) to call depending
+executor class (LocalExecutor, LSFExecutor, SlurmExecutor, CobaltExecutor) to call depending
 on executor name.
 """
 

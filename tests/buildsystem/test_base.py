@@ -54,7 +54,9 @@ def test_BuildspecParser(tmp_path):
 
         filters = []
 
-        builders = Builder(bp, filters=filters, testdir=tmp_path)
+        builders = Builder(
+            bp=bp, buildexecutor=executors, filters=filters, testdir=tmp_path
+        )
         builders = builders.get_builders()
         assert builders
 
