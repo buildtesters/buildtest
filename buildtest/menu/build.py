@@ -148,7 +148,8 @@ class BuildTest:
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
         self.executors = executors
-        self.testdir = testdir
+
+        self.testdir = resolve_testdirectory(self.configuration.target_config, testdir)
         self.stage = stage
         self.filtertags = filter_tags
         self.rebuild = rebuild
@@ -160,13 +161,15 @@ class BuildTest:
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
         self.buildexecutor = None
+        self.builders = None
+        self.buildexecutor = BuildExecutor(self.configuration)
 
-    def discover_buildspecs(self, debug=False):
+    def discover_buildspecs(self, printTable=False):
         """This method discovers all buildspecs based on --buildspecs, --tags, --executor
         and excluding buildspecs (--exclude).
 
-        :param debug: Boolean to control print messages to stdout
-        :type debug: boolean, optional
+        :param printTable: Boolean to control print messages to stdout
+        :type printTable: boolean, optional
         """
 
         self.bp_found = []
@@ -267,13 +270,13 @@ class BuildTest:
             msg = "There are no Buildspec files to process."
             sys.exit(msg)
 
-        if debug:
+        if printTable:
 
             print(
                 """
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+ 
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
         """
             )
 
@@ -417,9 +420,7 @@ class BuildTest:
         logger.info(f"Found the following config files: {buildspecs}")
         return buildspecs
 
-    def parse_buildspecs(
-        self, buildspecs, executor, test_directory, filters, rebuild, printTable=False
-    ):
+    def parse_buildspecs(self, printTable=False):
 
         """Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
         fails validation we add it to ``skipped_tests`` list and print all skipped
@@ -443,16 +444,23 @@ class BuildTest:
         :rtype: list
         """
 
+        # buildspecs = buildspecs or self.detected_buildspecs
+        # executor = executor or self.buildexecutor
+        # filters = filters or self.filtertags
+        # test_directory = test_directory or self.testdir
+        # rebuild = rebuild or self.rebuild
+
         builders = []
+        self.builders = []
         table = {"schemafile": [], "validstate": [], "buildspec": []}
         invalid_buildspecs = []
         # build all the tests
-        for buildspec in buildspecs:
+        for buildspec in self.detected_buildspecs:
 
             valid_state = True
             try:
                 # Read in Buildspec file here, loading each will validate the buildspec file
-                bp = BuildspecParser(buildspec, executor)
+                bp = BuildspecParser(buildspec, self.buildexecutor)
             except (BuildTestError, ValidationError) as err:
                 invalid_buildspecs.append(
                     f"Skipping {buildspec} since it failed to validate"
@@ -466,12 +474,12 @@ class BuildTest:
 
             builder = Builder(
                 bp=bp,
-                buildexecutor=executor,
-                filters=filters,
-                testdir=test_directory,
-                rebuild=rebuild,
+                buildexecutor=self.buildexecutor,
+                filters=self.filtertags,
+                testdir=self.testdir,
+                rebuild=self.rebuild,
             )
-            builders += builder.get_builders()
+            self.builders += builder.get_builders()
 
         # print any skipped buildspecs if they failed to validate during build stage
         if len(invalid_buildspecs) > 0:
@@ -482,7 +490,7 @@ class BuildTest:
                 print(test)
 
         # if no builders found we return from this method
-        if not builders:
+        if not self.builders:
             print("No buildspecs to process because there are no valid buildspecs")
             return
             # sys.exit(0)
@@ -497,20 +505,16 @@ class BuildTest:
             )
             print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
-        return builders
+        return self.builders
 
     def build(self):
         """This method is responsible for implementating stages: parse, build, run, update. """
 
         self.discover_buildspecs()
-        self.testdir = resolve_testdirectory(
-            self.configuration.target_config, self.testdir
-        )
-
-        self.buildexecutor = BuildExecutor(self.configuration)
 
         # Parse all buildspecs and skip any buildspecs that fail validation, return type
         # is a builder object used for building test.
+        """
         self.builders = self.parse_buildspecs(
             buildspecs=self.detected_buildspecs,
             filters=self.filtertags,
@@ -519,12 +523,14 @@ class BuildTest:
             rebuild=self.rebuild,
             printTable=True,
         )
+        """
+        self.parse_buildspecs(printTable=True)
 
         # if no builders found or  --stage=parse set we return from method
         if not self.builders or self.stage == "parse":
             return
 
-        self.builders = self.build_phase(self.builders, printTable=True)
+        self.build_phase(printTable=True)
 
         # if --stage=build is set  we return from method
         if self.stage == "build":
@@ -538,12 +544,10 @@ class BuildTest:
         if self.builders:
             update_report(self.builders)
 
-    def build_phase(self, builders, printTable=False):
+    def build_phase(self, printTable=False):
         """This method will build all tests by invoking class method ``build`` for
         each builder that generates testscript in the test directory.
 
-        :param builders: A list of builders
-        :type builders: list
         :param printTable: Print builder table
         :type printTable: boolean
         """
@@ -562,7 +566,7 @@ class BuildTest:
 
         del table["script"]["compiler"]
 
-        for builder in builders:
+        for builder in self.builders:
             try:
                 builder.build()
             except BuildTestError as err:
@@ -612,14 +616,12 @@ class BuildTest:
         # remove builders if any invalid builders detected in build phase
         if invalid_builders:
             for test in invalid_builders:
-                builders.remove(test)
+                self.builders.remove(test)
 
-        if not builders:
+        if not self.builders:
             raise BuildTestError(
                 "Unable to create any test during build phase. Please check buildtest.log for more details"
             )
-
-        return builders
 
     def run_phase(self, builders, executor, printTable=False):
         """This method will run all builders with the appropriate executor.
