@@ -607,7 +607,7 @@ it won't be present in the report (``buildtest report``). In this example, we on
 had one test so upon job cancellation we found there was no tests to report hence,
 buildtest will terminate after run stage.
 
-.. code-block::
+.. code-block:: console
     :emphasize-lines: 85-86
     :linenos:
 

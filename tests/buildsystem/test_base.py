@@ -37,6 +37,14 @@ def test_BuildspecParser(tmp_path):
         with pytest.raises(BuildTestError):
             BuildspecParser(buildspecfile, executors)
 
+    directory = os.path.join(here, "invalid_builds")
+    # invalid builds
+    for buildspec in walk_tree(directory, ".yml"):
+        buildspecfile = os.path.join(directory, buildspec)
+        print("Processing buildspec", buildspecfile)
+        with pytest.raises(BuildTestError):
+            BuildspecParser(buildspecfile, executors)
+
     # Examples folder
     valid_buildspecs_directory = os.path.join(here, "valid_buildspecs")
 

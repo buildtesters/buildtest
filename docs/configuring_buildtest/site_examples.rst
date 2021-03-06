@@ -14,41 +14,49 @@ The default launcher is `bsub` which can be defined under ``defaults``. The
 ``pollinterval`` will poll LSF jobs every 10 seconds using ``bjobs``. The
 ``pollinterval`` accepts a range between **10 - 300** seconds as defined in
 schema. In order to avoid polling scheduler excessively pick a number that is best
-suitable for your site::
+suitable for your site
 
-    moduletool: lmod
-    load_default_buildspecs: true
-    executors:
-      defaults:
-        launcher: bsub
-        pollinterval: 10
-        max_pend_time: 45
+.. code-block:: yaml
 
-      local:
-        bash:
-          description: submit jobs on local machine using bash shell
-          shell: bash
-
-        sh:
-          description: submit jobs on local machine using sh shell
-          shell: sh
-
-        csh:
-          description: submit jobs on local machine using csh shell
-          shell: csh
-
-        python:
-          description: submit jobs on local machine using python shell
-          shell: python
-      lsf:
-        batch:
-          queue: batch
-          description: Submit job to batch queue
-
-        test:
-          queue: test
-          description: Submit job to test queue
-
+    system:
+      ascent:
+        moduletool: lmod
+        load_default_buildspecs: false
+        executors:
+          defaults:
+            launcher: bsub
+            pollinterval: 10
+            max_pend_time: 60
+            account: gen014ecpci
+          local:
+            bash:
+              description: submit jobs on local machine using bash shell
+              shell: bash
+            sh:
+              description: submit jobs on local machine using sh shell
+              shell: sh
+            csh:
+              description: submit jobs on local machine using csh shell
+              shell: csh
+            python:
+              description: submit jobs on local machine using python shell
+              shell: python
+          lsf:
+            batch:
+              queue: batch
+            test:
+              queue: test
+        compilers:
+          find:
+            gcc: ^(gcc)
+            pgi: ^(pgi)
+            cuda: ^(cuda)
+          compiler:
+            gcc:
+              builtin_gcc:
+                cc: /usr/bin/gcc
+                cxx: /usr/bin/g++
+                fc: /usr/bin/gfortran
 
 JLSE @ ANL
 -----------
@@ -62,42 +70,38 @@ for all batch executors. In each cobalt executor the ``queue`` property will spe
 the queue name to submit job, for instance the executor ``yarrow`` with ``queue: yarrow``
 will submit job using ``qsub -q yarrow`` when using this executor.
 
-::
+.. code-block:: yaml
 
-    buildspec_roots:
-      - $HOME/jlse_tests
-    executors:
-      defaults:
-         launcher: qsub
-         pollinterval: 10
-         max_pend_time: 10
-
-      local:
-        bash:
-          description: submit jobs on local machine using bash shell
-          shell: bash
-
-        sh:
-          description: submit jobs on local machine using sh shell
-          shell: sh
-
-        csh:
-          description: submit jobs on local machine using csh shell
-          shell: csh
-
-        python:
-          description: submit jobs on local machine using python shell
-          shell: python
-
-      cobalt:
-        yarrow:
-          queue: yarrow
-
-        yarrow_debug:
-          queue: yarrow_debug
-
-        iris:
-          queue: iris
-
-        iris_debug:
-          queue: iris_debug
+    system:
+      jlse:
+        hostnames:
+        - jlselogin*
+        moduletool: environment-modules
+        load_default_buildspecs: false
+        executors:
+          defaults:
+            launcher: qsub
+            pollinterval: 10
+            max_pend_time: 300
+          local:
+            bash:
+              description: submit jobs on local machine using bash shell
+              shell: bash
+            sh:
+              description: submit jobs on local machine using sh shell
+              shell: sh
+            csh:
+              description: submit jobs on local machine using csh shell
+              shell: csh
+            python:
+              description: submit jobs on local machine using python shell
+              shell: python
+          cobalt:
+            yarrow:
+              queue: yarrow
+            yarrow_debug:
+              queue: yarrow_debug
+            iris:
+              queue: iris
+            iris_debug:
+              queue: iris_debug

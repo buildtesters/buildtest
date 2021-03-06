@@ -1,0 +1,24 @@
+version: "1.0"
+buildspecs:
+  pre_post_build_run:
+    type: compiler
+    description: example using pre_build, post_build, pre_run, post_run example
+    executor: generic.local.bash
+    tags: [tutorials, compile]
+    source: "$BUILDTEST_ROOT/tutorials/compilers/src/hello.c"
+    compilers:
+      name: ["^(builtin_gcc)$"]
+      default:
+        gcc:
+          cflags: -Wall
+        all:
+          pre_build: |
+            echo "This is a pre-build section"
+            gcc --version
+          post_build: |
+            echo "This is post-build section"
+          pre_run: |
+            echo "This is pre-run section"
+            export FOO=BAR
+          post_run: |
+            echo "This is post-run section"

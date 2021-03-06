@@ -1,4 +1,8 @@
-from buildtest.buildsystem.batch import LSFBatchScript, SlurmBatchScript
+from buildtest.buildsystem.batch import (
+    LSFBatchScript,
+    SlurmBatchScript,
+    CobaltBatchScript,
+)
 
 
 def test_batchscript_example1():
@@ -33,6 +37,18 @@ def test_batchscript_example1():
     assert expected_header == header
     print("actual header %s and expected header: %s" % (header, expected_header))
 
+    script = CobaltBatchScript(batch_cmds)
+    header = script.get_headers()
+
+    expected_header = [
+        "#COBALT --project biology",
+        "#COBALT --proccount 1",
+        "#COBALT --queue debug",
+        "#COBALT --time 10",
+    ]
+
+    assert header == expected_header
+
 
 def test_batchscript_example2():
     batch_cmds = {
@@ -56,3 +72,14 @@ def test_batchscript_example2():
     # tasks-per-node is not valid option in LSF so this option is skipped. bsub commands are processed first before batch
     expected_header = ["#BSUB -W 10", "#BSUB -q normal", "#BSUB -n 2"]
     assert expected_header == header
+
+    qsub_cmd = ["--time 10", "--queue debug"]
+    script = CobaltBatchScript(batch_cmds, qsub_cmd)
+    header = script.get_headers()
+    print(header)
+    expected_header = [
+        "#COBALT --time 10",
+        "#COBALT --queue debug",
+        "#COBALT --proccount 2",
+    ]
+    assert header == expected_header

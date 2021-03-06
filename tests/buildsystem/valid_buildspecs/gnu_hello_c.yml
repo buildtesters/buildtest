@@ -1,0 +1,16 @@
+version: "1.0"
+buildspecs:
+  hello_c:
+    type: compiler
+    description: "Hello World C Compilation"
+    executor: generic.local.bash
+    tags: [tutorials, compile]
+    source: "$BUILDTEST_ROOT/tutorials/compilers/src/hello.c"
+    compilers:
+      name: ["^(builtin_gcc|gcc)"]
+      default:
+        gcc:
+          cflags: -O1
+      config:
+        builtin_gcc:
+          cflags: -O2

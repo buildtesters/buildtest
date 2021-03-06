@@ -10,12 +10,14 @@ docs at https://buildtest.readthedocs.io/en/devel/.
 Status
 -----------
 
-| |docs| |codecov| |slack| |regressiontest|
+| |license| |docs| |codecov| |slack| |regressiontest|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
     :scale: 100%
     :target: https://buildtest.readthedocs.io/en/latest/?badge=latest
+
+.. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
 
 .. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
     :target: http://hpcbuildtest.slack.com
@@ -56,7 +58,9 @@ Useful Links
 
 - Snyk: https://app.snyk.io/org/buildtesters/
 
-- Slack Channel: http://hpcbuildtest.slack.com. Click `Here  <https://hpcbuildtest.herokuapp.com/>`_ to Join Slack 
+- Slack Channel: http://hpcbuildtest.slack.com
+
+- Slack Invite: https://hpcbuildtest.herokuapp.com
 
 Description
 ------------
