@@ -97,7 +97,6 @@ For additional reference, you can read :ref:`summary_of_buildtest` and
    configuring_buildtest.rst
    writing_buildspecs.rst
    builder.rst
-   scripting_buildtest.rst
    references.rst
 
 .. toctree::

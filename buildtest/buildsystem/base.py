@@ -32,7 +32,7 @@ class BuilderBase(ABC):
     any kind of builder.
     """
 
-    def __init__(self, name, recipe, buildspec, buildexecutor, testdir=None):
+    def __init__(self, name, recipe, buildspec, buildexecutor, testdir):
         """The BuilderBase provides common functions for any builder. The builder
         is an instance of BuilderBase. The initializer method will setup the builder
         attributes based on input test by ``name`` parameter.

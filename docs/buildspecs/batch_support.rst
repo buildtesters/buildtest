@@ -608,7 +608,7 @@ had one test so upon job cancellation we found there was no tests to report henc
 buildtest will terminate after run stage.
 
 .. code-block::
-    :emphasize-lines: 85-86,
+    :emphasize-lines: 85-86
     :linenos:
 
     $ buildtest build -b shared.yml

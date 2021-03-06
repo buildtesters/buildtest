@@ -44,8 +44,16 @@ class CompilerBuilder(BuilderBase):
     fflags = None
     cppflags = None
 
-    def __init__(self, name, recipe, buildspec, compiler=None, testdir=None):
-        super().__init__(name, recipe, buildspec, testdir)
+    def __init__(
+        self, name, recipe, buildspec, buildexecutor, compiler=None, testdir=None
+    ):
+        super().__init__(
+            name=name,
+            recipe=recipe,
+            buildspec=buildspec,
+            buildexecutor=buildexecutor,
+            testdir=testdir,
+        )
         self.compiler = compiler
 
         self.compiler_section = self.recipe["compilers"]

@@ -90,8 +90,8 @@ class Builder:
         configuration. If any compilers were retrieved we return one or more
         builder objects that call CompilerBuilder
 
-        :param name: name of test from buildspec file
-        :type name: str
+        :param bp: an instance of BuilderspecParser class
+        :type bp: BuildspecParser
         :param recipe: loaded test recipe
         :type recipe: dict
         """
