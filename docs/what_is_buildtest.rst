@@ -57,7 +57,9 @@ Preview of buildtest
 ----------------------
 
 buildtest will process YAML files called **buildspecs** (build specification) and
-generate test scripts. There are several ways to discover buildspecs that may include::
+generate test scripts. There are several ways to discover buildspecs that may include:
+
+.. code-block:: console
 
   # process a single file
   $ buildtest build -b /path/to/file.yml
@@ -83,13 +85,17 @@ generate test scripts. There are several ways to discover buildspecs that may in
   # combine all options together
   $ buildtest build -b example.yml -b system --tags network -x system/kernel.yml
 
-buildtest will keep track of all test that can be queried using::
+buildtest will keep track of all test that can be queried using:
+
+.. code-block:: console
 
   # report all tests
   $ buildtest report
 
 Alternately, one can filter and format rows/columns of the report table which
-can be useful when you want to analyze test results. This can be done using::
+can be useful when you want to analyze test results. This can be done using:
+
+.. code-block:: console
 
   $ buildtest report --filter KEY1=VALUE1,KEY2=VALUE2 --format <field1>,<field2>
 
@@ -101,7 +107,9 @@ can be useful when you want to analyze test results. This can be done using::
 
 A single buildspec is composed of one or more tests and buildtest will run all tests
 by default. buildtest will assign a unique id for every test, if you want to inspect
-a particular test you can run the following::
+a particular test you can run the following:
+
+.. code-block:: console
 
   $ buildtest inspect <ID>
 
@@ -110,7 +118,9 @@ one only needs to specify a few characters and buildtest will detect if its a un
 
 buildtest can discover and validate buildspecs with corresponding JSON schema. This
 feature is handy when you want to see all tests in your acceptance test. To see
-all buildspecs you need to use ``buildtest buildspec find``::
+all buildspecs you need to use ``buildtest buildspec find``:
+
+.. code-block:: console
 
     # build your buildspec cache and report all validated buildspecs
     $ buildtest buildspec find
@@ -129,7 +139,9 @@ all buildspecs you need to use ``buildtest buildspec find``::
 
 buildtest has a command line interface to buildtest schemas. We provide a list of
 available schemas, including schema content and schema examples validated for
-each schema. This can be queried as follows::
+each schema. This can be queried as follows:
+
+.. code-block:: console
 
   # show available schemas
   $ buildtest schema

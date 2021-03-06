@@ -8,7 +8,9 @@ A buildspec can be composed of several test sections. The buildspec file is
 validated with the :ref:`global_schema` and each test section is validated with
 a sub-schema defined by the ``type`` field.
 
-Let's start off with a simple example declaring variables::
+Let's start off with a simple example declaring variables:
+
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
@@ -35,9 +37,11 @@ with a schema ``script-v1.0.schema.json``. In future, we can support multiple ve
 of subschema for backwards compatibility.
 
 
-Shown below is schema definition for script-v1.0.schema.json ::
+Shown below is schema header for script-v1.0.schema.json.
 
-    {
+.. code-block:: json
+
+
       "$id": "script-v1.0.schema.json",
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "script schema version 1.0",
@@ -45,8 +49,7 @@ Shown below is schema definition for script-v1.0.schema.json ::
       "type": "object",
       "required": ["type", "run", "executor"],
       "additionalProperties": false,
-      ...
-    }
+
 
 The ``"type": "object"`` means sub-schema is a JSON `object <http://json-schema.org/understanding-json-schema/reference/object.html>`_
 where we define a list of key/value pair. The sub-schemas are of type ``object``
@@ -66,7 +69,9 @@ the test script.
 
 Let's look at a more interesting example, shown below is a multi line run
 example using the `script` schema with test name called
-**systemd_default_target**, shown below is the content of test::
+**systemd_default_target**, shown below is the content of test:
+
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
@@ -87,7 +92,9 @@ The test name **systemd_default_target** defined in **buildspec** section is
 validated with the following pattern ``"^[A-Za-z_][A-Za-z0-9_]*$"``. This test
 will use the executor **generic.local.bash** which means it will use the Local Executor
 with an executor name `bash` defined in the buildtest settings. The default
-buildtest settings will provide a bash executor as follows::
+buildtest settings will provide a bash executor as follows:
+
+.. code-block:: yaml
 
     system:
       generic:
@@ -112,8 +119,6 @@ buildtest will mark test state. By default, a returncode of **0** is **PASS** an
 non-zero is a **FAIL**. Currently buildtest reports only two states: ``PASS``, ``FAIL``.
 In this example, buildtest will match the actual returncode with one defined
 in key ``returncode`` in the status section.
-
-
 
 .. _script_schema:
 
@@ -149,19 +154,21 @@ The ``returncode`` field can be an integer or list of integers but it may not ac
 duplicate values. If you specify a list of exit codes, buildtest will check actual returncode
 with list of expected returncodes specified by `returncode` field.
 
-Shown below are examples of invalid returncodes::
+Shown below are examples of invalid returncodes:
 
-  # empty list is not allowed
-  returncode: []
+.. code-block:: yaml
 
-  # floating point is not accepted in list
-  returncode: [1, 1.5]
+      # empty list is not allowed
+      returncode: []
 
-  # floating point not accepted
-  returncode: 1.5
+      # floating point is not accepted in list
+      returncode: [1, 1.5]
 
-  # duplicates are not allowed
-  returncode: [1, 2, 5, 5]
+      # floating point not accepted
+      returncode: 1.5
+
+      # duplicates are not allowed
+      returncode: [1, 2, 5, 5]
 
 
 Classifying tests with tags
@@ -180,7 +187,9 @@ this test, we define a duplicate tag **network** which is not allowed.
 
 .. program-output:: cat ../tutorials/invalid_tags.yml
 
-If we run this test and inspect the logs we will see an error message in schema validation::
+If we run this test and inspect the logs we will see an error message in schema validation:
+
+.. code-block:: console
 
     2020-09-29 10:56:43,175 [parser.py:179 - _validate() ] - [INFO] Validating test - 'duplicate_string_tags' with schemafile: script-v1.0.schema.json
     2020-09-29 10:56:43,175 [buildspec.py:397 - parse_buildspecs() ] - [ERROR] ['network', 'network'] is not valid under any of the given schemas
@@ -206,7 +215,9 @@ variable with default shell (bash), csh, and tcsh
 .. program-output:: cat tutorials/environment.yml
 
 Environment variables are defined using ``export`` in bash, sh, zsh while csh and
-tcsh use ``setenv``. Shown below is a generated test script for csh test::
+tcsh use ``setenv``. Shown below is a generated test script for csh test:
+
+.. code-block:: shell
 
     #!/bin/csh
     source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.csh/before_script.sh
@@ -244,7 +255,9 @@ Next we build this test by running ``buildtest build -b tutorials/vars.yml``.
 
 .. program-output:: cat docgen/schemas/vars.txt
 
-If we inspect the output file we see the following result::
+If we inspect the output file we see the following result:
+
+.. code-block:: shell
 
     1+2= 3
     this is a literal string ':'
@@ -253,9 +266,11 @@ If we inspect the output file we see the following result::
     siddiq90
     /Users/siddiq90/.anyconnect /Users/siddiq90/.DS_Store /Users/siddiq90/.serverauth.555 /Users/siddiq90/.CFUserTextEncoding /Users/siddiq90/.wget-hsts /Users/siddiq90/.bashrc /Users/siddiq90/.zshrc /Users/siddiq90/.coverage /Users/siddiq90/.serverauth.87055 /Users/siddiq90/.zsh_history /Users/siddiq90/.lesshst /Users/siddiq90/.git-completion.bash /Users/siddiq90/buildtest.log /Users/siddiq90/darhan.log /Users/siddiq90/ascent.yml /Users/siddiq90/.cshrc /Users/siddiq90/github-tokens /Users/siddiq90/.zcompdump /Users/siddiq90/.serverauth.543 /Users/siddiq90/.bash_profile /Users/siddiq90/.Xauthority /Users/siddiq90/.python_history /Users/siddiq90/.gitconfig /Users/siddiq90/output.txt /Users/siddiq90/.bash_history /Users/siddiq90/.viminfo
 
-Shown below is the generated testscript::
+Shown below is the generated testscript:
 
-   #!/bin/bash
+.. code-block:: shell
+
+    #!/bin/bash
     source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/before_script.sh
     X=1
     Y=2
@@ -279,13 +294,15 @@ Customize Shell
 -----------------
 
 buildtest will default to ``bash`` shell when running test, but we can configure shell
-option using the ``shell`` field. The shell field is defined in schema as follows::
+option using the ``shell`` field. The shell field is defined in schema as follows:
+
+.. code-block:: json
 
     "shell": {
-          "type": "string",
-          "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed",
-          "pattern": "^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|bash|sh|csh|tcsh|zsh|python).*"
-        },
+      "type": "string",
+      "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed",
+      "pattern": "^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|bash|sh|csh|tcsh|zsh|python).*"
+    },
 
 The shell pattern is a regular expression where one can specify a shell name along
 with shell options. The shell will configure the `shebang <https://en.wikipedia.org/wiki/Shebang_(Unix)>`_
@@ -295,7 +312,9 @@ field.
 .. program-output:: cat tutorials/shell_examples.yml
 
 The generated test-script for buildspec **_bin_sh_shell** will specify shebang
-**/bin/sh** because we specified ``shell: /bin/sh``::
+**/bin/sh** because we specified ``shell: /bin/sh``:
+
+.. code-block:: shell
 
     #!/bin/sh
     source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.sh/before_script.sh
@@ -306,7 +325,9 @@ If you don't specify a shell path such as ``shell: sh``, then buildtest will res
 path by looking in $PATH and build the shebang line.
 
 In test **shell_options** we specify ``shell: "sh -x"``, buildtest will tack on the
-shell options into the shebang line. The generated test for this script is the following::
+shell options into the shebang line. The generated test for this script is the following:
+
+.. code-block:: shell
 
     #!/bin/sh -x
     source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.sh/before_script.sh
@@ -343,7 +364,9 @@ Now let's run this test as we see the following.
 .. program-output:: cat docgen/getting_started/shebang.txt
 
 If we look at the generated test for **bash_login_shebang** we see the shebang line
-is passed into the script::
+is passed into the script:
+
+.. code-block:: shell
 
     #!/bin/bash -l
     source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/before_script.sh

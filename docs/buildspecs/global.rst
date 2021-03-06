@@ -11,7 +11,9 @@ For more details see `Global Schema Documentation <https://buildtesters.github.i
 Global Keys in buildspec
 --------------------------
 
-Shown below is the start of the global.schema.json::
+Shown below is the start of the global.schema.json
+
+.. code-block:: json
 
   "$id": "global.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -31,7 +33,9 @@ Shown below is an example buildspec.
 .. program-output:: cat ../tutorials/hello_world.yml
 
 
-In this example, the global schema validates the following section::
+In this example, the global schema validates the following section:
+
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
@@ -43,7 +47,9 @@ In this example, the global schema validates the following section::
 The field ``version`` ``buildspecs`` and ``maintainers`` are validated with **global.schema.json**
 using `jsonschema.validate <https://python-jsonschema.readthedocs.io/en/stable/_modules/jsonschema/validators/#validate>`_
 method. The test section within ``hello_world`` is validated by sub-schema by looking up schema based
-on ``type`` field::
+on ``type`` field:
+
+.. code-block:: yaml
 
     hello_world:
       executor: generic.local.bash
@@ -61,14 +67,17 @@ Test Names
 -----------
 
 The **buildspecs** property is a JSON object that defines one or more test. This
-is defined in JSON as follows::
+is defined in JSON as follows:
+
+.. code-block:: json
 
     "buildspecs": {
-         "type": "object",
-         "description": "This section is used to define one or more tests (buildspecs). Each test must be unique name",
-         "propertyNames": {
-           "pattern": "^[A-Za-z_.][A-Za-z0-9_.]*$",
-           "maxLength": 32
+      "type": "object",
+       "description": "This section is used to define one or more tests (buildspecs). Each test must be unique name",
+       "propertyNames": {
+          "pattern": "^[A-Za-z_.][A-Za-z0-9_.]*$",
+          "maxLength": 32
+       }
     }
 
 The test names take the following pattern ``"^[A-Za-z_.][A-Za-z0-9_.]*$"`` and limited

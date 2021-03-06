@@ -6,7 +6,7 @@ buildspecs:
     description: Invalid file extension XYZ when detecting compiler language
     source: src/file.XYZ
     compilers:
-      name: ["gcc"]
+      name: ["^(builtin_gcc)$"]
       default:
         gcc:
           cflags: -O3

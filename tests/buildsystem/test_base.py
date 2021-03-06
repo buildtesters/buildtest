@@ -37,6 +37,22 @@ def test_BuildspecParser(tmp_path):
         with pytest.raises(BuildTestError):
             BuildspecParser(buildspecfile, executors)
 
+    directory = os.path.join(here, "invalid_builds")
+    # invalid builds for compiler schema tests. These tests will raise BuildTestError exception upon building
+    # even though they are valid buildspecs.
+    for buildspec in walk_tree(directory, ".yml"):
+        buildspecfile = os.path.join(directory, buildspec)
+        print("Processing buildspec", buildspecfile)
+        bp = BuildspecParser(buildspecfile, executors)
+
+        with pytest.raises(BuildTestError):
+            builder = Builder(
+                bp=bp, buildexecutor=executors, filters=[], testdir="/tmp"
+            )
+            builders = builder.get_builders()
+            for test in builders:
+                test.build()
+
     # Examples folder
     valid_buildspecs_directory = os.path.join(here, "valid_buildspecs")
 

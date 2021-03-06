@@ -6,7 +6,7 @@ buildspecs:
     description: Can't find source file name
     source: /path/to/invalidfile
     compilers:
-      name: ["gcc"]
+      name: ["^(builtin_gcc)$"]
       default:
         gcc:
           cflags: -O3

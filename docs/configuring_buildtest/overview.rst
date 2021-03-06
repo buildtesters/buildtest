@@ -96,7 +96,9 @@ Configuring Module Tool
 ------------------------
 
 You should configure the ``moduletool`` property to the module-system installed
-at your site. Valid options are the following::
+at your site. Valid options are the following:
+
+.. code-block:: yaml
 
     # environment-modules
     moduletool: environment-modules
@@ -116,7 +118,9 @@ buildspec roots
 buildtest can discover buildspec using ``buildspec_roots`` keyword. This field is a list
 of directory paths to search for buildspecs. For example we clone the repo
 https://github.com/buildtesters/buildtest-cori at **$HOME/buildtest-cori** and assign
-this to **buildspec_roots** as follows::
+this to **buildspec_roots** as follows:
+
+.. code-block:: yaml
 
     buildspec_roots:
       - $HOME/buildtest-cori
@@ -155,29 +159,42 @@ Executor Declaration
 
 The ``executors`` is a JSON `object`, that defines one or more executors. The executors
 are grouped by their type followed by executor name. In this example we define two
-local executors ``bash``, ``sh`` and one slurm executor called ``regular```::
+local executors ``bash``, ``sh`` and one slurm executor called ``regular```:
+
+.. code-block:: yaml
 
   system:
-   generic:
-    executors:
-      local:
-        bash:
-        sh:
-      slurm:
-        regular:
+    generic:
+      executors:
+        local:
+          bash:
+            shell: bash
+            description: bash shell
+          sh:
+            shell: sh
+            description: sh shell
+        slurm:
+          regular:
+            queue: regular
 
 The **LocalExecutors** are defined in section `local` where each executor must be
 unique name. The *LocalExecutors* can be ``bash``, ``sh``, ``csh``, ``tcsh`` and ``python`` shell and they are
-referenced in buildspec using ``executor`` field in the following format::
+referenced in buildspec using ``executor`` field in the following format:
+
+.. code-block:: yaml
 
     executor: <system>.<type>.<name>
 
 For instance, if a buildspec wants to reference the LocalExecutor `bash` from the `generic`
-cluster, you would specify the following in the buildspec::
+cluster, you would specify the following in the buildspec:
+
+.. code-block:: yaml
 
      executor: generic.local.bash
 
-In our example configuration, we defined a local `bash` executor as follows::
+In our example configuration, we defined a local `bash` executor as follows:
+
+.. code-block:: yaml
 
     executors:
       # define local executors for running jobs locally
@@ -191,7 +208,9 @@ The local executors requires the ``shell`` key which takes the pattern
 Any buildspec that references this executor will submit job using ``bash`` shell.
 
 You can pass options to shell which will get passed into each job submission.
-For instance if you want all bash scripts to run in login shell you can specify ``bash --login``::
+For instance if you want all bash scripts to run in login shell you can specify ``bash --login``:
+
+.. code-block:: yaml
 
     executors:
       local:
@@ -225,7 +244,7 @@ example, in example below buildtest will write log files ``$HOME/Documents/build
 buildtest will resolve variable expansion to get real path on filesystem.
 
 
-::
+.. code-block:: yaml
 
     # location of log directory
     logdir: $HOME/Documents/buildtest/var/logs
@@ -255,7 +274,9 @@ one test. For this reason, we support ``before_script`` and ``after_script`` sec
 per executor which is of string type where you can specify multi-line commands.
 
 This can be demonstrated with an executor name **local.e4s** responsible for
-building `E4S Testsuite <https://github.com/E4S-Project/testsuite>`_::
+building `E4S Testsuite <https://github.com/E4S-Project/testsuite>`_
+
+.. code-block:: yaml
 
     local:
       e4s:
@@ -271,7 +292,9 @@ building `E4S Testsuite <https://github.com/E4S-Project/testsuite>`_::
 The `e4s` executor attempts to clone E4S Testsuite in $SCRATCH and activate
 a spack environment and run the initialize script ``source setup.sh``. buildtest
 will write a ``before_script.sh`` and ``after_script.sh`` for every executor.
-This can be found in ``var/executors`` directory as shown below::
+This can be found in ``var/executors`` directory as shown below
+
+.. code-block:: console
 
     $ tree var/executors/
     var/executors/
@@ -309,7 +332,9 @@ Default Executor Settings
 ---------------------------
 
 One can define default executor configurations for all executors using the ``defaults`` property. Shown below is an
-example::
+example
+
+.. code-block:: yaml
 
     executors:
       defaults:
@@ -335,7 +360,9 @@ Max Pend Time
 ---------------
 
 The **max_pend_time** option can be overridden per executor level for example the
-section below overrides the default to 300 seconds::
+section below overrides the default to 300 seconds:
+
+.. code-block:: yaml
 
         bigmem:
           description: bigmem jobs
@@ -361,7 +388,9 @@ Specifying QoS (Slurm)
 At Cori, jobs are submitted via qos instead of partition so we model a slurm executor
 named by qos. The ``qos`` field instructs which Slurm QOS to use when submitting job. For
 example we defined a slurm executor named **haswell_debug** which will submit jobs to **debug**
-qos on the haswell partition as follows::
+qos on the haswell partition as follows:
+
+.. code-block:: yaml
 
     executors:
       slurm:

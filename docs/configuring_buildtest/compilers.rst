@@ -12,7 +12,9 @@ Compiler Declaration
 ---------------------
 
 
-Shown below is a declaration of ``builtin_gcc`` provided by default::
+Shown below is a declaration of ``builtin_gcc`` provided by default.
+
+.. code-block:: yaml
 
     compilers:
       compiler:

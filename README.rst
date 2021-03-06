@@ -1,4 +1,4 @@
-| |docs| |codecov| |slack| |release| |ascent_pipeline_status| |cori_pipeline_status| |installation| |regressiontest| |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
+| |license| |docs| |codecov| |slack| |release| |ascent_pipeline_status| |cori_pipeline_status| |installation| |regressiontest| |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -7,6 +7,8 @@
 
 .. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
     :target: http://hpcbuildtest.slack.com
+
+.. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
 
 .. |ascent_pipeline_status| image::  https://code.ornl.gov/ecpcitest/buildtest/badges/devel/pipeline.svg
    :target: https://code.ornl.gov/ecpcitest/buildtest/-/commits/devel

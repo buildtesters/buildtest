@@ -24,7 +24,9 @@ schema **settings.schema.json**. If validation is successful you will get the fo
 If there is an error during validation, the output from **jsonschema.exceptions.ValidationError**
 will be displayed in terminal. For example the error below indicates that
 ``moduletool`` property was expecting one of the values
-[``environment-modules``, ``lmod``, ``N/A``] but it recieved a value of ``none``::
+[``environment-modules``, ``lmod``, ``N/A``] but it recieved a value of ``none``:
+
+.. code-block:: console
 
     $ buildtest config validate
     Traceback (most recent call last):
@@ -72,7 +74,7 @@ YAML format. If you prefer json format you can use ``--json`` option. Shown belo
 `executors` defined in your buildtest configuration.
 
 .. program-output:: cat docgen/config_executors.txt
-
+   :shell:
 
 Configuration Summary
 ----------------------
@@ -81,7 +83,7 @@ You can get a summary of buildtest using ``buildtest config summary``, this will
 display information from several sources into one single command along.
 
 .. program-output:: cat docgen/config-summary.txt
-
+   :shell:
 
 Example Configurations
 -----------------------
@@ -92,6 +94,7 @@ or short option (``-e``), which will validate each example with schema file
 ``settings.schema.json``.
 
 .. program-output:: cat docgen/schemas/settings-examples.txt
+   :shell:
 
 If you want to retrieve full json schema file for buildtest configuration you can
 run ``buildtest schema -n settings.schema.json --json`` or short option ``-j``.

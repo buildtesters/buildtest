@@ -12,7 +12,9 @@ Compilation Examples
 ----------------------
 
 We assume the reader has basic understanding of :ref:`global_schema`
-validation. Shown below is the schema definition for compiler schema::
+validation. Shown below is the schema header definition for compiler schema:
+
+.. code-block:: json
 
       "$id": "compiler-v1.0.schema.json",
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -46,7 +48,9 @@ Shown below is an example build for the buildspec example
 
 .. program-output:: cat docgen/schemas/gnu_hello.txt
 
-The generated test for test name **hello_f** is the following::
+The generated test for test name **hello_f** is the following:
+
+.. code-block:: shell
 
     #!/bin/bash
     source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/before_script.sh
@@ -63,7 +67,7 @@ will be discussed later.
 The ``builtin_gcc`` compiler is defined below this can be retrieved by running
 ``buildtest config compilers``. The ``-y`` will display compilers in YAML format.
 
-::
+.. code-block:: console
 
     $ buildtest config compilers -y
     gcc:
@@ -100,7 +104,7 @@ we select all compilers with regular expression ``^(builtin_gcc|gcc)`` that is s
 Currently, we have 3 compilers defined in buildtest settings, shown below is a listing
 of all compilers. We used ``buildtest config compilers find`` to :ref:`detect compilers <detect_compilers>`.
 
-.. code-block::
+.. code-block:: console
 
     $ buildtest config compilers -l
     builtin_gcc
@@ -112,7 +116,9 @@ of all compilers. We used ``buildtest config compilers find`` to :ref:`detect co
 
 
 We expect buildtest to select all three compilers based on our regular expression. In the following
-build, notice we have three tests for ``vecadd_gnu`` one for each compiler::
+build, notice we have three tests for ``vecadd_gnu`` one for each compiler:
+
+.. code-block:: console
 
     $ buildtest build -b tutorials/compilers/vecadd.yml
 
@@ -175,7 +181,7 @@ The ``load`` is a list of modules to load via ``module load``.
 
 Shown below is the compiler configuration.
 
-.. code-block::
+.. code-block:: yaml
     :emphasize-lines: 14-17,22-25
     :linenos:
 
@@ -207,7 +213,7 @@ Shown below is the compiler configuration.
 
 If we take a closer look at the generated test we see the modules are loaded into the test script.
 
-.. code-block::
+.. code-block:: shell
     :emphasize-lines: 4
     :linenos:
 
@@ -220,7 +226,7 @@ If we take a closer look at the generated test we see the modules are loaded int
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
 
-.. code-block::
+.. code-block:: shell
     :emphasize-lines: 4
     :linenos:
 
@@ -247,7 +253,7 @@ by excluding ``gcc/10.2.0-37fmsw7`` compiler. This is specified by ``exclude: [g
 Notice when we build this test, buildtest will exclude **gcc/10.2.0-37fmsw7** compiler
 and test is not created during build phase.
 
-.. code-block::
+.. code-block:: console
     :linenos:
     :emphasize-lines: 11
 
@@ -317,7 +323,9 @@ and ``gcc/10.2.0-37fmsw7`` to use ``-O3`` for **cflags** .
 
 .. program-output:: cat ../tutorials/compilers/gnu_hello_c.yml
 
-Next we run this test, and we get three tests for test name **hello_c**::
+Next we run this test, and we get three tests for test name **hello_c**.
+
+.. code-block:: console
 
     $ buildtest build -b tutorials/compilers/gnu_hello_c.yml
 
@@ -375,7 +383,7 @@ Next we run this test, and we get three tests for test name **hello_c**::
 If we inspect the following test, we see the compiler flags are associated with the compiler. The test below
 is for `builtin_gcc` which use the default ``-O1`` compiler flag as shown below.
 
-.. code-block::
+.. code-block:: shell
     :emphasize-lines: 4
     :linenos:
 
@@ -387,7 +395,7 @@ is for `builtin_gcc` which use the default ``-O1`` compiler flag as shown below.
 
 The test for **gcc/10.2.0-37fmsw7** and **gcc/9.3.0-n7p74fd** have cflags ``-O3`` and ``-O2`` set in their respective tests.
 
-.. code-block::
+.. code-block:: shell
     :emphasize-lines: 5
     :linenos:
 
@@ -399,7 +407,7 @@ The test for **gcc/10.2.0-37fmsw7** and **gcc/9.3.0-n7p74fd** have cflags ``-O3`
     ./$_EXEC
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
-.. code-block::
+.. code-block:: shell
     :emphasize-lines: 5
     :linenos:
 
@@ -426,7 +434,7 @@ compiler group
 Shown below is one of the generated test. Notice on line 4 buildtest will set OMP_NUM_THREADS
 environment variable.
 
-.. code-block::
+.. code-block:: shell
     :emphasize-lines: 4
     :linenos:
 
@@ -447,7 +455,9 @@ when running program. This will override the default value of 2.
 
 .. program-output:: cat ../tutorials/compilers/envvar_override.yml
 
-Next we build this test as follows::
+Next we build this test as follows:
+
+.. code-block:: console
 
 
     $ buildtest build -b tutorials/compilers/envvar_override.yml
@@ -503,7 +513,7 @@ Next we build this test as follows::
 
 Now let's inspect the test for **gcc/10.2.0-37fmsw7** and notice buildtest is using 4 threads for running OpenMP example
 
-.. code-block::
+.. code-block:: console
     :linenos:
     :emphasize-lines: 34-37, 53
 
@@ -613,7 +623,7 @@ If we build this test, notice that test id **9320ca41** failed which corresponds
 ``gcc/10.2.0-37fmsw7`` compiler test. The test fails because it fails to pass on
 regular expression even though we have a returncode of 0.
 
-.. code-block::
+.. code-block:: console
     :linenos:
     :emphasize-lines: 31,42
 
@@ -680,7 +690,9 @@ next example, we will build an OpenMP reduction test using gcc, intel and cray c
 test, we use ``name`` field to select compilers that start with **gcc**, **intel** and **PrgEnv-cray**
 as compiler names. The ``default`` section is organized by compiler groups which inherits compiler flags
 for all compilers. OpenMP flag for gcc, intel and cray differ for instance one must use ``-fopenmp`` for gcc,
-``--qopenmp`` for intel and ``-h omp`` for cray. ::
+``--qopenmp`` for intel and ``-h omp`` for cray.
+
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
@@ -705,7 +717,9 @@ for all compilers. OpenMP flag for gcc, intel and cray differ for instance one m
 
 In this example `OMP_NUM_THREADS` environment variable under the ``all`` section which
 will be used for all compiler groups. This example was built on Cori, we expect this
-test to run against every gcc, intel and PrgEnv-cray compiler module::
+test to run against every gcc, intel and PrgEnv-cray compiler module:
+
+.. code-block:: console
 
     cori$ buildtest build -b reduction.yml
 
@@ -805,7 +819,7 @@ test to run against every gcc, intel and PrgEnv-cray compiler module::
 If we inspect one of these tests from each compiler group we will see OMP_NUM_THREADS
 is set in all tests along with the appropriate compiler flag.
 
-.. code-block::
+.. code-block:: shell
    :linenos:
    :emphasize-lines: 4-6
 
@@ -818,7 +832,7 @@ is set in all tests along with the appropriate compiler flag.
     ./$_EXEC
     source /global/u1/s/siddiq90/buildtest/var/executors/local.bash/after_script.sh
 
-.. code-block::
+.. code-block:: shell
    :linenos:
    :emphasize-lines: 4-6
 
@@ -831,7 +845,7 @@ is set in all tests along with the appropriate compiler flag.
     ./$_EXEC
     source /global/u1/s/siddiq90/buildtest/var/executors/local.bash/after_script.sh
 
-.. code-block::
+.. code-block:: shell
    :linenos:
    :emphasize-lines: 4-6
 
@@ -861,7 +875,7 @@ If we build this test and see generated test, we notice buildtest customized the
 for launching binary. buildtest will directly replace content in ``run`` section into the
 shell-script. If no ``run`` field is specified buildtest will run the binary in standalone mode (``./$_EXEC``).
 
-.. code-block::
+.. code-block:: shell
    :linenos:
    :emphasize-lines: 6
 
@@ -873,7 +887,7 @@ shell-script. If no ``run`` field is specified buildtest will run the binary in 
     ./$_EXEC 100 120
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
-.. code-block::
+.. code-block:: shell
    :linenos:
    :emphasize-lines: 6
 
@@ -897,7 +911,9 @@ Currently, buildtest cannot detect if program is serial or MPI to infer appropri
 compiler wrapper. If ``cc`` wasn't specified, buildtest would infer `icc` as compiler
 wrapper for C program. This program is run using ``srun`` job launcher, we can control
 how test is executed using the ``run`` property. This test required we swap intel
-modules and load `impi/2020` module::
+modules and load `impi/2020` module.
+
+.. code-block:: yaml
 
     version: "1.0"
     buildspecs:
@@ -923,7 +939,9 @@ modules and load `impi/2020` module::
                 swap: [intel, intel/19.1.2.254]
 
 The generated test is as follows, note that buildtest will insert ``module load`` before ``module swap``
-command::
+command.
+
+.. code-block:: shell
 
     #!/bin/bash
     #SBATCH -N 1
@@ -941,7 +959,9 @@ command::
 
 
 Shown below is a sample build for this buildspec, buildtest will dispatch  job and poll
-job until its complete::
+job until its complete.
+
+.. code-block:: console
 
     $ buildtest build -b laplace_mpi.yml
 
@@ -1041,7 +1061,9 @@ Shown below is an example buildspec with pre/post section.
 .. program-output:: cat ../tutorials/compilers/pre_post_build_run.yml
 
 
-The format of the test structure is the following::
+The format of the test structure is as follows.
+
+.. code-block:: shell
 
     #!{shebang path} -- defaults to #!/bin/bash depends on executor name (local.bash, local.sh)
     {job directives} -- sbatch or bsub field
@@ -1057,7 +1079,9 @@ The format of the test structure is the following::
     {run executable} -- run field
     {post run commands} -- post_run field
 
-The generated test for this buildspec is the following::
+The generated test for this buildspec is the following:
+
+.. code-block:: shell
 
     #!/bin/bash
     source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
