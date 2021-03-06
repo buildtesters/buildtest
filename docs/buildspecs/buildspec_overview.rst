@@ -154,21 +154,21 @@ The ``returncode`` field can be an integer or list of integers but it may not ac
 duplicate values. If you specify a list of exit codes, buildtest will check actual returncode
 with list of expected returncodes specified by `returncode` field.
 
-Shown below are examples of invalid returncodes::
+Shown below are examples of invalid returncodes:
 
 .. code-block:: yaml
 
-  # empty list is not allowed
-  returncode: []
+      # empty list is not allowed
+      returncode: []
 
-  # floating point is not accepted in list
-  returncode: [1, 1.5]
+      # floating point is not accepted in list
+      returncode: [1, 1.5]
 
-  # floating point not accepted
-  returncode: 1.5
+      # floating point not accepted
+      returncode: 1.5
 
-  # duplicates are not allowed
-  returncode: [1, 2, 5, 5]
+      # duplicates are not allowed
+      returncode: [1, 2, 5, 5]
 
 
 Classifying tests with tags
