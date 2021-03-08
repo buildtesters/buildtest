@@ -522,7 +522,7 @@ job as follows.
     buildspecs:
       sleep:
         type: script
-        executor: slurm.normal
+        executor: cori.slurm.knl_debug
         description: sleep 2 seconds
         tags: [tutorials]
         batch:

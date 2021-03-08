@@ -51,13 +51,13 @@ Shahzeb was tasked with testing the software ecosystem by focusing on the most
 important application due to time constraints. During this period, several dozen
 test scripts were developed in shell-script that targeted core HPC tools such as
 compilers, **MPI**, **R**, **Python**, etc. A single master script was used to
-run all the tests which led to buildtest.
+run all the tests which led to `buildtest`.
 
 Preview of buildtest
 ----------------------
 
 buildtest will process YAML files called **buildspecs** (build specification) and
-generate test scripts. There are several ways to discover buildspecs that may include:
+generate test scripts. There are several ways to build buildspecs that may include:
 
 .. code-block:: console
 
@@ -79,24 +79,26 @@ generate test scripts. There are several ways to discover buildspecs that may in
   # discover buildspecs based on tags
   $ buildtest build --tags network
 
+  # filter tests by tag name network
+  $ buildtest build --tags network --filter-tags network
+
   # discover buildspecs based on executors
-  $ buildtest build --executor local.sh
+  $ buildtest build --executor generic.local.sh
 
   # combine all options together
   $ buildtest build -b example.yml -b system --tags network -x system/kernel.yml
 
-buildtest will keep track of all test that can be queried using:
+
+buildtest will retrieve test results using `buildtest report` command which will display
+all test records. We can filter and format output of test records using the ``--filter``
+and ``--format`` option. Shown below is example usage:
 
 .. code-block:: console
 
   # report all tests
   $ buildtest report
 
-Alternately, one can filter and format rows/columns of the report table which
-can be useful when you want to analyze test results. This can be done using:
-
-.. code-block:: console
-
+  # filter and format test report
   $ buildtest report --filter KEY1=VALUE1,KEY2=VALUE2 --format <field1>,<field2>
 
   # show filter fields
@@ -104,6 +106,13 @@ can be useful when you want to analyze test results. This can be done using:
 
   # show format fields
   $ buildtest report --helpformat
+
+  # get oldest test record
+  $ buildtest report --oldest
+
+  # get latest test record
+  $ buildtest report --latest
+
 
 A single buildspec is composed of one or more tests and buildtest will run all tests
 by default. buildtest will assign a unique id for every test, if you want to inspect
@@ -167,7 +176,7 @@ buildtest is not
   - a replacement for benchmark tools or test suite from upstream package
   - a replacement for writing tests, you will need to write your tests defined by buildtest schemas, however you can copy/paste & adapt tests from other sites that are applicable to you.
 
-Typical use-case :
+Typical use-case:
 
   - Run your test suite during system maintenance
   - Perform daily tests for testing various system components. These tests should be short

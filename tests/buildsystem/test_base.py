@@ -39,7 +39,7 @@ def test_BuildspecParser(tmp_path):
 
     directory = os.path.join(here, "invalid_builds")
     # invalid builds for compiler schema tests. These tests will raise BuildTestError exception upon building
-    # even though they are valid buildspecs.
+    # even though they are valid buildspecs.\
     for buildspec in walk_tree(directory, ".yml"):
         buildspecfile = os.path.join(directory, buildspec)
         print("Processing buildspec", buildspecfile)

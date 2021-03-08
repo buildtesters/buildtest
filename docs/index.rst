@@ -3,9 +3,10 @@ buildtest
 
 This documentation was last rebuild on |today| and is intended for version |version|.
 
-Please refer to https://buildtest.readthedocs.io/en/latest/ for documentation
-on latest release. If you are working off `devel` branch then please to *devel*
-docs at https://buildtest.readthedocs.io/en/devel/.
+If you are working off a latest release please see  https://buildtest.readthedocs.io/en/latest/ for documentation.
+If you are working off `devel <https://github.com/buildtesters/buildtest/tree/devel>`_ branch then please refer to
+https://buildtest.readthedocs.io/en/devel/
+which references the `devel` branch.
 
 Status
 -----------
@@ -41,7 +42,6 @@ Test Repositories
 ------------------
 
 - Cori @ NERSC: https://github.com/buildtesters/buildtest-cori
-- Stampede2 @ TACC: https://github.com/buildtesters/buildtest-stampede2
 
 Useful Links
 -------------
@@ -66,24 +66,23 @@ Description
 ------------
 
 `buildtest <https://github.com/buildtesters/buildtest>`_  is
-a HPC testing framework to help sites perform acceptance & regression
-testing of an HPC system. buildtest utilizes `json schema <https://json-schema.org/>`_
-to define structure of test written in YAML called a  **Buildspec File**.
-The `schema docs <https://buildtesters.github.io/schemas/>`_ is a resource that
-hosts buildtest schemas and documents all field attributes for each schema, this will
-be useful when you are writting buildspecs.
+a testing framework to help HPC sites write test for their system as part of their
+routine acceptance & regression test. buildtest provides a YAML interface to write tests
+which buildtest can validate and generate shell scripts that can run on your HPC system.
+The test template (YAML) is called **buildspec** which can define one or more test instance
+that is validated by a `json schema <https://json-schema.org/>`_. buildtest supports the following batch schedulers
+for job submission: `IBM Spectrum LSF <https://www.ibm.com/support/knowledgecenter/SSWRJV_10.1.0/lsf_welcome/lsf_welcome.html>`_,
+`Slurm <https://slurm.schedmd.com/>`_, and `Cobalt <https://trac.mcs.anl.gov/projects/cobalt/>`_. We
+publish the schema documentation, json schemas, and schema examples at https://buildtesters.github.io/buildtesters/
+which is useful when you are :ref:`writing buildspecs <writing_buildspecs>`.
+
+To get started with buildtest, please see :ref:`installing buildtest <Setup>`  and
+:ref:`getting started guide <Getting_Started>`.
 
 A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_
 is a Python API for `Lmod <https://lmod.readthedocs.io/en/latest/>`_. The buildtest
 module features were deprecated and moved to lmodule with the main objective is to
 automate module load testing. For more details on lmodule see https://github.com/buildtesters/lmodule
-
-To get started with buildtest, please review the :ref:`terminology`
-and proceed to :ref:`installing buildtest <Setup>`  followed by :ref:`getting started guide <Getting_Started>`.
-
-For additional reference, you can read :ref:`summary_of_buildtest` and
-:ref:`conferences`.
-
 
 .. toctree::
    :maxdepth: 2
