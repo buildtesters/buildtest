@@ -494,7 +494,7 @@ class BuildTest:
     def build(self):
         """This method is responsible for implementating stages: parse, build, run, update. """
 
-        self.discover_buildspecs()
+        self.discover_buildspecs(printTable=True)
 
         # Parse all buildspecs and skip any buildspecs that fail validation, return type
         # is a builder object used for building test.
@@ -752,9 +752,9 @@ class BuildTest:
         if printTable:
             print(
                 """
-        +----------------------+
-        | Stage: Test Summary  |
-        +----------------------+ 
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
         """
             )
 
