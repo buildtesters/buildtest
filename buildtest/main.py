@@ -10,6 +10,7 @@ from buildtest.config import (
     buildtest_configuration,
 )
 from buildtest.defaults import var_root, BUILDTEST_USER_HOME
+from buildtest.menu.buildspec import buildspec_find
 from buildtest.menu import BuildTestParser
 from buildtest.menu.build import BuildTest
 from buildtest.system import system
@@ -50,6 +51,8 @@ def main():
     logger.info(f"Processing buildtest configuration file: {settings_file}")
     check_settings(settings_file)
 
+    print(args.subcommands)
+
     if args.subcommands == "build":
         cmd = BuildTest(
             config_file=settings_file,
@@ -63,6 +66,10 @@ def main():
             testdir=args.testdir,
         )
         cmd.build()
+    # implementation for 'buildtest buildspec find'
+    elif args.subcommands == "buildspec":
+        buildspec_find(args=args, settings_file=settings_file)
+        return
     else:
         if args.subcommands and args.func:
             args.func(args)

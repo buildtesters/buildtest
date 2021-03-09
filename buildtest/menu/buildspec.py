@@ -25,7 +25,14 @@ class BuildspecCache:
     default_format_fields = ["name", "type", "executor", "tags", "description"]
     format_fields = default_format_fields + ["file"]
 
-    def __init__(self, rebuild, filterfields, formatfields, roots, settings_file=None):
+    def __init__(
+        self,
+        rebuild=False,
+        filterfields=None,
+        formatfields=None,
+        roots=None,
+        settings_file=None,
+    ):
         """The initializer method for BuildspecCache class is responsible for
         loading and finding buildspecs into buildspec cache. This method is called
         when using ``buildtest buildspec find`` command.
@@ -585,21 +592,10 @@ class BuildspecCache:
             print(path)
 
 
-def func_buildspec_find(args, settings_file=None):
-    """Entry point for ``buildtest buildspec find``. This method
-    will attempt to read for buildspec cache file (BUILDSPEC_CACHE_FILE)
-    if found and print a list of all buildspecs. Otherwise, it will
-    find and load all buildspecs and validate them using BuildspecParser class.
-    BuildspecParser will raise SystemError or ValidationError if a buildspec
-    is invalid which will be added to list of invalid buildspecs. Finally we
-    print a list of all valid buildspecs and any invalid buildspecs are
-    written to file along with error message.
+def buildspec_find(args, settings_file):
+    """Entry point for ``buildtest buildspec find`` command"""
 
-    :param args: Input argument from command line passed from argparse
-    :return: A list of valid buildspecs found in all repositories.
-    """
-
-    bp_cache = BuildspecCache(
+    cache = BuildspecCache(
         rebuild=args.rebuild,
         filterfields=args.filter,
         formatfields=args.format,
@@ -609,34 +605,34 @@ def func_buildspec_find(args, settings_file=None):
 
     # implements buildtest buildspec find --tags
     if args.tags:
-        bp_cache.get_tags()
+        cache.get_tags()
         return
 
     # implements buildtest buildspec find --buildspec-files
     if args.buildspec_files:
-        bp_cache.get_buildspecfiles()
+        cache.get_buildspecfiles()
         return
 
     if args.paths:
-        bp_cache.print_paths()
+        cache.print_paths()
         return
 
     # implements buildtest buildspec find --executors
     if args.executors:
-        bp_cache.get_executors()
+        cache.get_executors()
         return
 
     if args.group_by_executor:
-        bp_cache.print_by_executors()
+        cache.print_by_executors()
         return
 
     if args.group_by_tags:
-        bp_cache.print_by_tags()
+        cache.print_by_tags()
         return
 
     # implements buildtest buildspec find --maintainers
     if args.maintainers:
-        bp_cache.print_maintainer()
+        cache.print_maintainer()
         return
 
     if args.maintainers_by_buildspecs:
@@ -645,12 +641,12 @@ def func_buildspec_find(args, settings_file=None):
 
     # implements buildtest buildspec find --helpfilter
     if args.helpfilter:
-        bp_cache.print_filter_fields()
+        cache.print_filter_fields()
         return
 
     # implements buildtest buildspec find --helpformat
     if args.helpformat:
-        bp_cache.print_format_fields()
+        cache.print_format_fields()
         return
 
-    bp_cache.print_buildspecs()
+    cache.print_buildspecs()

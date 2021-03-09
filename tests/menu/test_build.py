@@ -4,7 +4,7 @@ import tempfile
 
 from buildtest.defaults import BUILDTEST_ROOT, DEFAULT_SETTINGS_FILE
 from buildtest.menu.build import BuildTest
-from buildtest.menu.buildspec import func_buildspec_find
+from buildtest.menu.buildspec import BuildspecCache
 from buildtest.exceptions import BuildTestError
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -34,7 +34,9 @@ def test_build_by_tags():
         helpfilter = False
         helpformat = False
 
-    func_buildspec_find(args, settings_file=DEFAULT_SETTINGS_FILE)
+    # func_buildspec_find(args, settings_file=DEFAULT_SETTINGS_FILE)
+
+    BuildspecCache(rebuild=True, settings_file=DEFAULT_SETTINGS_FILE)
 
     #  testing buildtest build --tags pass
     cmd = BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"])

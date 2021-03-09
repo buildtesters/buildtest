@@ -1,7 +1,10 @@
 import os
 import pytest
+from buildtest.config import resolve_settings_file
 from buildtest.exceptions import BuildTestError
-from buildtest.menu.buildspec import func_buildspec_find
+from buildtest.menu.buildspec import BuildspecCache
+
+settings_file = resolve_settings_file()
 
 
 @pytest.mark.cli
@@ -25,183 +28,57 @@ def test_func_buildspec_find():
         helpfilter = False
         helpformat = False
 
-    func_buildspec_find(args)
+    """
+    cache = BuildspecCache(
+        rebuild=args.rebuild,
+        filterfields=args.filter,
+        formatfields=args.format,
+        roots=args.root,
+        settings_file=settings_file,
+    )
+    """
+    # buildtest buildspec find --rebuild
+    cache = BuildspecCache(rebuild=True, settings_file=settings_file)
 
-    # rerunning buildtest buildspec find without --rebuild option this will read from cache file
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
+    cache.print_buildspecs()
 
-    func_buildspec_find(args)
+    # buildtest buildspec find
+    cache = BuildspecCache(settings_file=settings_file)
+    cache.print_buildspecs()
 
+    # implements buildtest buildspec find --tags
+    cache.get_tags()
 
-@pytest.mark.cli
-def test_buildspec_tags():
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = True
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
+    # implements buildtest buildspec find --buildspec-files
+    cache.get_buildspecfiles()
 
-    # testing buildtest buildspec find --tags
-    func_buildspec_find(args)
+    # implements buildtest buildspec find --paths
+    cache.print_paths()
 
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = True
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
+    # implements buildtest buildspec find --executors
+    cache.get_executors()
 
-    # testing buildtest buildspec find --group-by-tags
-    func_buildspec_find(args)
+    # implements buildtest buildspec find --group-by-executors
+    cache.print_by_executors()
 
+    # implements buildtest buildspec find --group-by-tags
+    cache.print_by_tags()
 
-@pytest.mark.cli
-def test_buildspec_files():
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = True
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
+    # implements buildtest buildspec find --maintainers
+    cache.print_maintainer()
 
-    # testing buildtest buildspec find --buildspec-files
-    func_buildspec_find(args)
+    # implements buildtest buildspec find --maintainers-by-buildspecs
+    cache.print_maintainers_by_buildspecs()
 
+    # implements buildtest buildspec find --helpfilter
+    cache.print_filter_fields()
 
-@pytest.mark.cli
-def test_buildspec_executors():
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = True
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
-
-    # testing buildtest buildspec find --executors
-    func_buildspec_find(args)
-
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = True
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
-
-    # testing buildtest buildspec find --group-by-executor
-    func_buildspec_find(args)
-
-
-@pytest.mark.cli
-def test_buildspec_paths():
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = True
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
-
-    # testing buildtest buildspec find --paths
-    func_buildspec_find(args)
+    # implements buildtest buildspec find --helpformat
+    cache.print_format_fields()
 
 
 @pytest.mark.cli
 def test_buildspec_find_filter():
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = True
-        helpformat = False
-
-    # testing buildtest buildspec find --helpfilter
-    func_buildspec_find(args)
-
     class args:
         find = True
         rebuild = False
@@ -220,53 +97,22 @@ def test_buildspec_find_filter():
         helpformat = False
 
     # testing buildtest buildspec find --filter tags=fail
-    func_buildspec_find(args)
+    cache = BuildspecCache(filterfields={"tags": "fail"}, settings_file=settings_file)
+    cache.print_buildspecs()
 
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = {
-            "type": "script",
-            "executor": "local.sh",
-            "tags": "fail",
-        }
-        format = None
-        helpfilter = False
-        helpformat = False
-
-    # testing buildtest buildspec find --filter type=script,executor=local.sh,tags=fail
-    func_buildspec_find(args)
+    # testing buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
+    cache = BuildspecCache(
+        filterfields={"type": "script", "executor": "generic.local.sh", "tags": "fail"},
+        settings_file=settings_file,
+    )
+    cache.print_buildspecs()
 
     # testing buildtest buildspec find --filter key1=val1,key2=val2
     with pytest.raises(BuildTestError):
-
-        class args:
-            find = True
-            rebuild = False
-            root = None
-            buildspec_files = False
-            executors = False
-            tags = False
-            paths = False
-            group_by_tags = False
-            group_by_executor = False
-            maintainers = False
-            maintainers_by_buildspecs = False
-            filter = {"key1": "val1", "key2": "val2"}
-            format = None
-            helpfilter = False
-            helpformat = False
-
-        func_buildspec_find(args)
+        cache = BuildspecCache(
+            filterfields={"key1": "val1", "key2": "val2"}, settings_file=settings_file
+        )
+        cache.print_buildspecs()
 
 
 @pytest.mark.cli
@@ -284,55 +130,23 @@ def test_buildspec_find_format():
         maintainers = False
         maintainers_by_buildspecs = False
         filter = None
-        format = None
-        helpfilter = False
-        helpformat = True
-
-    # testing buildtest buildspec find --helpformat
-    func_buildspec_find(args)
-
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
         format = "name,type,executor,description,file"
         helpfilter = False
         helpformat = False
 
-    # testing buildtest buildspec find --helpformat
-    func_buildspec_find(args)
+    # testing buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
+    cache = BuildspecCache(
+        formatfields="name,type,executor,description,file", settings_file=settings_file
+    )
+    cache.print_buildspecs()
 
     # testing buildtest buildspec find --format field1 should raise error. Any
     # invalid format fields will raise an exception of type BuildTestError
     with pytest.raises(BuildTestError):
 
-        class args:
-            find = True
-            rebuild = False
-            root = None
-            buildspec_files = False
-            executors = False
-            tags = False
-            paths = False
-            group_by_tags = False
-            group_by_executor = False
-            maintainers = False
-            maintainers_by_buildspecs = False
-            filter = None
-            format = "field1"
-            helpfilter = False
-            helpformat = False
-
-        func_buildspec_find(args)
+        # testing buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
+        cache = BuildspecCache(formatfields="field1", settings_file=settings_file)
+        cache.print_buildspecs()
 
 
 @pytest.mark.cli
@@ -344,88 +158,13 @@ def test_buildspec_find_roots():
         os.path.join(repo_root, "tutorials"),
     ]
 
-    class args:
-        find = True
-        rebuild = False
-        root = root_buildspecs
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
-
-    # running buildtest buildspec find --root /path/to/buildtest/tests/buildsystem --root /path/to/buildtest/tutorials/
-    func_buildspec_find(args)
-
-    class args:
-        find = True
-        rebuild = False
-        root = [
-            os.path.join(repo_root, "README.rst"),
-            os.path.join(repo_root, "tutorials", "environment.yml"),
-        ]
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
+    BuildspecCache(roots=root_buildspecs, settings_file=settings_file)
 
     # running buildtest buildspec find --root /path/to/buildtest/README.rst --root /path/to/buildtest/tutorials/environment.yml
-    func_buildspec_find(args)
-
-
-@pytest.mark.cli
-def test_buildspec_maintainers():
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = True
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
-
-    # run buildtest buildspec find --maintainers
-    func_buildspec_find(args)
-
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = True
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
-
-    # run buildtest buildspec find --maintainers
-    func_buildspec_find(args)
+    BuildspecCache(
+        roots=[
+            os.path.join(repo_root, "README.rst"),
+            os.path.join(repo_root, "tutorials", "environment.yml"),
+        ],
+        settings_file=settings_file,
+    )

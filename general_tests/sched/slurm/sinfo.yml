@@ -1,7 +1,7 @@
 version: "1.0"
 buildspecs:
   nodes_state_down:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: Show nodes in DOWN state
     tags: [slurm]
@@ -10,7 +10,7 @@ buildspecs:
     run: sinfo -t DOWN
 
   nodes_state_reboot:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: Show nodes in REBOOT state
     tags: [slurm]
@@ -19,7 +19,7 @@ buildspecs:
     run: sinfo -t REBOOT
 
   nodes_state_allocated:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: Show nodes in ALLOCATED state
     tags: [slurm]
@@ -28,7 +28,7 @@ buildspecs:
     run: sinfo -t ALLOCATED
 
   nodes_state_completing:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: Show nodes in COMPLETING state
     tags: [slurm]
@@ -37,7 +37,7 @@ buildspecs:
     run: sinfo -t COMPLETING
 
   nodes_state_idle:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: Show nodes in IDLE state
     tags: [slurm]
@@ -46,7 +46,7 @@ buildspecs:
     run: sinfo -t IDLE
 
   node_down_fail_list_reason:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: Show nodes DOWN, DRAINED, FAIL or FAILING and list reason
     tags: [slurm]
@@ -55,7 +55,7 @@ buildspecs:
     run: sinfo -R
 
   dead_nodes:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: Show non-responding nodes
     tags: [slurm]
@@ -64,7 +64,7 @@ buildspecs:
     run: sinfo --dead
 
   get_partitions:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: Get all slurm partitions
     tags: [slurm]
@@ -73,7 +73,7 @@ buildspecs:
     run: sinfo -a -h -O partitionname
 
   sinfo_version:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: get slurm version
     tags: [slurm]
