@@ -47,7 +47,7 @@ class BuildtestConfiguration:
         host_lookup = {}
         # for every system record we lookup 'hostnames' entry and apply re.match against current hostbame. If found we break from loop
         for name in self.config["system"].keys():
-            hostname = socket.gethostname()
+            hostname = socket.getfqdn()
             host_lookup[name] = self.config["system"][name]["hostnames"]
 
             for host_entry in self.config["system"][name]["hostnames"]:
@@ -100,6 +100,137 @@ class BuildtestConfiguration:
         custom_validator(recipe=self.config, schema=config_schema)
         logger.debug("Validation was successful")
 
+    def validate_executors(self):
+        slurm_executors = deep_get(self.target_config, "executors", "slurm")
+        lsf_executors = deep_get(self.target_config, "executors", "lsf")
+        cobalt_executors = deep_get(self.target_config, "executors", "cobalt")
+
+        if slurm_executors:
+            self._validate_slurm_executors(slurm_executors)
+
+        if lsf_executors:
+            self._validate_lsf_executors(lsf_executors)
+
+        if cobalt_executors:
+            self._validate_cobalt_executors(cobalt_executors)
+
+        if (
+            self.target_config.get("moduletool") != "N/A"
+            and self.target_config.get("moduletool") != system.system["moduletool"]
+        ):
+            raise BuildTestError(
+                f"Cannot find modules_tool: {self.target_config('moduletool')} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool."
+            )
+
+    def _validate_lsf_executors(lsf_executors):
+        """This method validates all LSF executors. We check if queue is available
+        and in ``Open:Active`` state.
+
+        :param lsf_executors: A list of LSF executors to validate
+        :type lsf_executors: dict
+        """
+        lsf = LSF()
+        queue_dict = lsf.get_queues()
+
+        queue_list = []
+        valid_queue_state = "Open:Active"
+        record = queue_dict["RECORDS"]
+        # retrieve all queues from json record
+        for name in record:
+            queue_list.append(name["QUEUE_NAME"])
+
+        # check all executors have defined valid queues and check queue state.
+        for executor in lsf_executors:
+            queue = lsf_executors[executor].get("queue")
+            # if queue field is defined check if its valid queue
+            if queue:
+                if queue not in queue_list:
+                    raise BuildTestError(
+                        f"{lsf_executors[executor]['queue']} not a valid partition!. Please select one of the following partitions: {queue_list}"
+                    )
+
+                # check queue record for Status
+                for name in record:
+
+                    # skip record until we find matching queue
+                    if name["QUEUE_NAME"] != queue:
+                        continue
+
+                    queue_state = name["STATUS"]
+                    # if state not Open:Active we raise error
+                    if not queue_state == valid_queue_state:
+                        raise BuildTestError(
+                            f"{lsf_executors[executor]['queue']} is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs"
+                        )
+
+    def _validate_slurm_executors(slurm_executor):
+        """This method will validate slurm executors, we check if partition, qos,
+        and cluster fields are valid values by retrieving details from slurm configuration.
+        These checks are performed on fields ``partition``, ``qos`` or ``cluster``
+        if specified in executor section.
+
+        :param slurm_executor: list of slurm executors defined in loaded buildtest configuration
+        :type slurm_executor: dict
+        """
+
+        slurm_object = Slurm()
+
+        for executor in slurm_executor:
+
+            # if 'partition' key defined check if its valid partition
+            if slurm_executor[executor].get("partition"):
+
+                if slurm_executor[executor]["partition"] not in slurm_object.partitions:
+                    raise BuildTestError(
+                        f"{slurm_executor[executor]['partition']} not a valid partition!. Please select one of the following partitions: {slurm_object.partitions}"
+                    )
+
+                query = (
+                    f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
+                )
+                cmd = BuildTestCommand(query)
+                cmd.execute()
+                part_state = "".join(cmd.get_output())
+                part_state = part_state.rstrip()
+                # check if partition is in 'up' state. If not we raise an error.
+                if part_state != "up":
+                    raise BuildTestError(
+                        f"{slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
+                    )
+            # check if 'qos' key is valid qos
+            if (
+                slurm_executor[executor].get("qos")
+                and slurm_executor[executor].get("qos") not in slurm_object.qos
+            ):
+                raise BuildTestError(
+                    f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm_object.qos}"
+                )
+
+            # check if 'cluster' key is valid slurm cluster
+            if (
+                slurm_executor[executor].get("cluster")
+                and slurm_executor[executor].get("cluster") not in slurm_object.clusters
+            ):
+                raise BuildTestError(
+                    f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_object.clusters}"
+                )
+
+    def _validate_cobalt_executors(cobalt_executor):
+        """Validate cobalt queue property by running ```qstat -Q <queue>``. If
+        its a non-zero exit code then queue doesn't exist otherwise it is a valid
+        queue.
+        """
+
+        cobalt = Cobalt()
+
+        for executor in cobalt_executor:
+            queue = cobalt_executor[executor].get("queue")
+            # if queue property defined in cobalt executor name check if it exists
+            if queue not in cobalt.queues:
+                raise BuildTestError(
+                    f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'"
+                )
+
 
 def check_settings(settings_path=None, executor_check=True, retrieve_settings=False):
     """Checks all keys in configuration file (settings/config.yml) are valid
@@ -123,28 +254,7 @@ def check_settings(settings_path=None, executor_check=True, retrieve_settings=Fa
     # behavior, this can be disabled only for regression test where executor check
     # such as slurm check are not applicable.
     if executor_check:
-
-        slurm_executors = bc.target_config.get("executors", {}).get("slurm")
-        lsf_executors = bc.target_config.get("executors", {}).get("lsf")
-        cobalt_executors = bc.target_config.get("executors", {}).get("cobalt")
-
-        if slurm_executors:
-            validate_slurm_executors(slurm_executors)
-
-        if lsf_executors:
-            validate_lsf_executors(lsf_executors)
-
-        if cobalt_executors:
-            validate_cobalt_executors(cobalt_executors)
-
-        if (
-            bc.target_config.get("moduletool") != "N/A"
-            and bc.target_config.get("moduletool") != system.system["moduletool"]
-        ):
-
-            raise BuildTestError(
-                f"Cannot find modules_tool: {bc.target_config('moduletool')} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool."
-            )
+        bc.validate_executors()
 
     if retrieve_settings:
         return bc.target_config
@@ -175,113 +285,6 @@ def resolve_settings_file():
         return USER_SETTINGS_FILE
 
     return DEFAULT_SETTINGS_FILE
-
-
-def validate_lsf_executors(lsf_executors):
-    """This method validates all LSF executors. We check if queue is available
-    and in ``Open:Active`` state.
-
-    :param lsf_executors: A list of LSF executors to validate
-    :type lsf_executors: dict
-    """
-    lsf = LSF()
-    queue_dict = lsf.get_queues()
-
-    queue_list = []
-    valid_queue_state = "Open:Active"
-    record = queue_dict["RECORDS"]
-    # retrieve all queues from json record
-    for name in record:
-        queue_list.append(name["QUEUE_NAME"])
-
-    # check all executors have defined valid queues and check queue state.
-    for executor in lsf_executors:
-        queue = lsf_executors[executor].get("queue")
-        # if queue field is defined check if its valid queue
-        if queue:
-            if queue not in queue_list:
-                raise BuildTestError(
-                    f"{lsf_executors[executor]['queue']} not a valid partition!. Please select one of the following partitions: {queue_list}"
-                )
-
-            # check queue record for Status
-            for name in record:
-
-                # skip record until we find matching queue
-                if name["QUEUE_NAME"] != queue:
-                    continue
-
-                queue_state = name["STATUS"]
-                # if state not Open:Active we raise error
-                if not queue_state == valid_queue_state:
-                    raise BuildTestError(
-                        f"{lsf_executors[executor]['queue']} is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs"
-                    )
-
-
-def validate_slurm_executors(slurm_executor):
-    """This method will validate slurm executors, we check if partition, qos,
-    and cluster fields are valid values by retrieving details from slurm configuration.
-    These checks are performed on fields ``partition``, ``qos`` or ``cluster``
-    if specified in executor section.
-
-    :param slurm_executor: list of slurm executors defined in loaded buildtest configuration
-    :type slurm_executor: dict
-    """
-
-    slurm_object = Slurm()
-
-    for executor in slurm_executor:
-
-        # if 'partition' key defined check if its valid partition
-        if slurm_executor[executor].get("partition"):
-
-            if slurm_executor[executor]["partition"] not in slurm_object.partitions:
-                raise BuildTestError(
-                    f"{slurm_executor[executor]['partition']} not a valid partition!. Please select one of the following partitions: {slurm_object.partitions}"
-                )
-
-            query = f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
-            cmd = BuildTestCommand(query)
-            cmd.execute()
-            part_state = "".join(cmd.get_output())
-            part_state = part_state.rstrip()
-            # check if partition is in 'up' state. If not we raise an error.
-            if part_state != "up":
-                raise BuildTestError(
-                    f"{slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
-                )
-        # check if 'qos' key is valid qos
-        if slurm_executor[executor].get("qos"):
-
-            if slurm_executor[executor]["qos"] not in slurm_object.qos:
-                raise BuildTestError(
-                    f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm_object.qos}"
-                )
-        # check if 'cluster' key is valid slurm cluster
-        if slurm_executor[executor].get("cluster"):
-
-            if slurm_executor[executor]["cluster"] not in slurm_object.clusters:
-                raise BuildTestError(
-                    f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_object.clusters}"
-                )
-
-
-def validate_cobalt_executors(cobalt_executor):
-    """Validate cobalt queue property by running ```qstat -Q <queue>``. If
-    its a non-zero exit code then queue doesn't exist otherwise it is a valid
-    queue.
-    """
-
-    cobalt = Cobalt()
-
-    for executor in cobalt_executor:
-        queue = cobalt_executor[executor].get("queue")
-        # if queue property defined in cobalt executor name check if it exists
-        if queue not in cobalt.queues:
-            raise BuildTestError(
-                f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'"
-            )
 
 
 settings_file = resolve_settings_file()

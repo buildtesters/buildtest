@@ -434,7 +434,6 @@ class BuildTest:
         :rtype: list
         """
 
-        builders = []
         self.builders = []
         table = {"schemafile": [], "validstate": [], "buildspec": []}
         invalid_buildspecs = []

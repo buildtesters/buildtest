@@ -1,21 +1,19 @@
-# This pipeline is run at OLCF at gitlab instance: https://code.ornl.gov
+# This pipeline is run at ALCF at gitlab instance: https://gitlab.jlse.anl.gov
 
 stages:
   - regression
 
-ascent_pr_regression_test:
-  tags: ["nobatch"]
+jlse_pr_regression_test:
+  tags: [shell, jlse]
   stage: regression
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" || $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
       when: manual
 
   script:
-    - module load python/3.6.6-anaconda3-5.3.0
+    - module load python/2020.09.15.001
     - whoami
     - git branch
-
-    - cd $CI_PROJECT_DIR
     - conda create -p $CI_PROJECT_DIR/.conda python=3.8 -y
     - source activate $CI_PROJECT_DIR/.conda
     - source setup.sh
@@ -23,7 +21,7 @@ ascent_pr_regression_test:
     - rm -rf ~/.buildtest/
     - coverage run -m pytest -vra tests
     - coverage report -m
-    # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable SECRET_CODECOV_TOKEN at https://code.ornl.gov/ecpcitest/buildtest/-/settings/ci_cd
+    # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable SECRET_CODECOV_TOKEN at https://gitlab.jlse.anl.gov/e4s/shahzebsiddiqui/buildtest/-/settings/ci_cd
     - export CODECOV_TOKEN=$SECRET_CODECOV_TOKEN
     - bash <(curl -s https://codecov.io/bash)
     - source deactivate

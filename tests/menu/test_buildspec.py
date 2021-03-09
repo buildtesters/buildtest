@@ -23,7 +23,7 @@ def test_func_buildspec_find():
     # implements buildtest buildspec find --tags
     cache.get_tags()
 
-    # implements buildtest buildspec find --buildspec-files
+    # implements buildtest buildspec find --buildspec
     cache.get_buildspecfiles()
 
     # implements buildtest buildspec find --paths
@@ -93,7 +93,6 @@ def test_buildspec_find_format():
 @pytest.mark.cli
 def test_buildspec_find_roots():
 
-    repo_root = os.path.dirname(os.path.dirname(__file__))
     root_buildspecs = [
         os.path.join(BUILDTEST_ROOT, "tests", "buildsystem"),
         os.path.join(BUILDTEST_ROOT, "tutorials"),

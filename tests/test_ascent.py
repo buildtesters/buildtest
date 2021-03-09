@@ -1,16 +1,17 @@
 import os
 import pytest
+import socket
 from buildtest.menu.build import BuildTest
 
 
 def test_ascent():
-    # ascent system has LMOD_SYSTEM_NAME set to "ascent" only run this test if this value is set
-    if os.getenv("LMOD_SYSTEM_NAME") != "ascent":
-        pytest.skip("Test runs only on ascent")
+    # this test must run on Ascent system with domain '.ascent.olcf.ornl.gov' otherwise its skipped
+    if not socket.getfqdn().endswith("ascent.olcf.ornl.gov"):
+        pytest.skip("This test must run on domain ascent.olcf.ornl.gov")
 
     here = os.path.dirname(os.path.abspath(__file__))
     ascent = os.path.join(here, "settings", "ascent.yml")
 
-    buildspec_files = os.path.join(here, "examples", "cori_buildspecs", "hostname.yml")
+    buildspec_files = os.path.join(here, "examples", "ascent", "hostname.yml")
     cmd = BuildTest(config_file=ascent, buildspecs=[buildspec_files])
     cmd.build()

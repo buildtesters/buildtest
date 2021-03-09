@@ -1,8 +1,5 @@
-import os
-import pytest
 from buildtest.config import check_settings
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
-from buildtest.executors.setup import BuildExecutor
 
 
 def test_check_settings():

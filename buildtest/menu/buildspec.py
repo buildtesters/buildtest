@@ -603,48 +603,51 @@ def buildspec_find(args, settings_file):
         settings_file=settings_file,
     )
 
-    # implements buildtest buildspec find --tags
+    # buildtest buildspec find --tags
     if args.tags:
         cache.get_tags()
         return
 
-    # implements buildtest buildspec find --buildspec-files
-    if args.buildspec_files:
+    # buildtest buildspec find --buildspec
+    if args.buildspec:
         cache.get_buildspecfiles()
         return
 
+    # buildtest buildspec find --paths
     if args.paths:
         cache.print_paths()
         return
 
-    # implements buildtest buildspec find --executors
+    # buildtest buildspec find --executors
     if args.executors:
         cache.get_executors()
         return
 
+    # buildtest buildspec find --group-by-executors
     if args.group_by_executor:
         cache.print_by_executors()
         return
 
+    # buildtest buildspec find --group-by-tags
     if args.group_by_tags:
         cache.print_by_tags()
         return
 
-    # implements buildtest buildspec find --maintainers
+    # buildtest buildspec find --maintainers
     if args.maintainers:
         cache.print_maintainer()
         return
-
+    #  buildtest buildspec find --maintainers-by-buildspecs
     if args.maintainers_by_buildspecs:
-        bp_cache.print_maintainers_by_buildspecs()
+        cache.print_maintainers_by_buildspecs()
         return
 
-    # implements buildtest buildspec find --helpfilter
+    # buildtest buildspec find --helpfilter
     if args.helpfilter:
         cache.print_filter_fields()
         return
 
-    # implements buildtest buildspec find --helpformat
+    # buildtest buildspec find --helpformat
     if args.helpformat:
         cache.print_format_fields()
         return

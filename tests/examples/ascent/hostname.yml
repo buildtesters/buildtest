@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   hostname:
     type: script
-    executor: lsf.batch
+    executor: ascent.lsf.batch
     description: Run hostname in batch job
     tags: [jobs]
     bsub: ["-W 10", "-nnodes 1"]

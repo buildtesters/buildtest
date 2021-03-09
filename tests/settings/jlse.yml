@@ -1,14 +1,14 @@
 system:
-  ascent:
-    hostnames: [login1.ascent.olcf.ornl.gov]
-    moduletool: lmod
+  jlse:
+    hostnames:
+    - jlselogin*
+    moduletool: environment-modules
     load_default_buildspecs: false
     executors:
       defaults:
-        launcher: bsub
+        launcher: qsub
         pollinterval: 30
         max_pend_time: 300
-        account: gen014ecpci
       local:
         bash:
           description: submit jobs on local machine using bash shell
@@ -22,15 +22,21 @@ system:
         python:
           description: submit jobs on local machine using python shell
           shell: python
-      lsf:
-        batch:
-          queue: batch
-
+      cobalt:
+        yarrow:
+          queue: yarrow
+        yarrow_debug:
+          queue: yarrow_debug
+        iris:
+          queue: iris
+        iris_debug:
+          queue: iris_debug
     compilers:
+      find:
+        gcc: ^(gcc)
       compiler:
         gcc:
           builtin_gcc:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-

@@ -34,7 +34,7 @@ run::
 
   $ buildtest buildspec find --rebuild
 
-If you want to find all buildspec files in cache run ``buildtest buildspec find --buildspec-files``
+If you want to find all buildspec files in cache run ``buildtest buildspec find --buildspec``
 
 .. program-output:: cat docgen/buildspec_find_buildspecfiles.txt
      :ellipsis: 30
@@ -42,7 +42,7 @@ If you want to find all buildspec files in cache run ``buildtest buildspec find 
 If you want to find root directories of buildspecs loaded in buildspec cache use the
 ``buildtest buildspec find --paths`` option.
 
-::
+.. code-block:: console
 
     $ buildtest buildspec find --paths
     /Users/siddiq90/Documents/buildtest/tutorials
