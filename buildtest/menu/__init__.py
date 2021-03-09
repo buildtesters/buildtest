@@ -230,8 +230,8 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
             "-t", "--tags", help="List all available tags", action="store_true"
         )
         buildspec_find.add_argument(
-            "-bf",
-            "--buildspec-files",
+            "-b",
+            "--buildspec",
             help="Get all buildspec files from cache",
             action="store_true",
         )

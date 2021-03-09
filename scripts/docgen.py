@@ -118,7 +118,7 @@ def introspection_cmds():
         "buildspec-filter.txt": "buildtest buildspec find --helpfilter",
         "buildspec-format.txt": "buildtest buildspec find --helpformat",
         "buildspec_find_tags.txt": "buildtest buildspec find --tags",
-        "buildspec_find_buildspecfiles.txt": "buildtest buildspec find --buildspec-files",
+        "buildspec_find_buildspecfiles.txt": "buildtest buildspec find --buildspec",
         "buildspec_find_executors.txt": "buildtest buildspec find --executors",
         "buildspec_filter_type.txt": "buildtest buildspec find --filter type=script",
         "buildspec_filter_tags.txt": "buildtest buildspec find --filter tags=fail",

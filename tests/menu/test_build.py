@@ -15,43 +15,12 @@ valid_buildspecs = os.path.join(test_root, "buildsystem", "valid_buildspecs")
 @pytest.mark.cli
 def test_build_by_tags():
 
-    # ensure we rebuild cache file before running by tags
-    # rerunning buildtest buildspec find without --rebuild option this will read from cache file
-    class args:
-        find = True
-        rebuild = True
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
-
-    # func_buildspec_find(args, settings_file=DEFAULT_SETTINGS_FILE)
-
+    # ensure we rebuild cache file before running any buildspecs commands
     BuildspecCache(rebuild=True, settings_file=DEFAULT_SETTINGS_FILE)
 
     #  testing buildtest build --tags pass
     cmd = BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"])
     cmd.build()
-
-    class args:
-        buildspec = [os.path.join(test_root, "tutorials")]
-        debug = False
-        stage = None
-        testdir = None
-        exclude = None
-        tags = ["fail", "python"]
-        executor = None
-        filter_tags = None
-        rebuild = None
 
     #  testing buildtest build --tags fail --tags python --buildspec tutorials
     cmd = BuildTest(
@@ -60,17 +29,6 @@ def test_build_by_tags():
         tags=["fail", "python"],
     )
     cmd.build()
-
-    class args:
-        buildspec = None
-        debug = False
-        stage = None
-        testdir = None
-        exclude = None
-        tags = ["pass"]
-        executor = None
-        filter_tags = ["pass"]
-        rebuild = None
 
     #  testing buildtest build --tags pass --tags pass
     cmd = BuildTest(
