@@ -7,7 +7,7 @@ system:
       defaults:
         launcher: bsub
         pollinterval: 30
-        max_pend_time: 60
+        max_pend_time: 300
         account: gen014ecpci
       local:
         bash:

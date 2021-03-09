@@ -19,9 +19,9 @@ system:
 
     executors:
       defaults:
-        pollinterval: 10
+        pollinterval: 30
         launcher: sbatch
-        max_pend_time: 90
+        max_pend_time: 300
       local:
         bash:
           description: submit jobs on local machine using bash shell
