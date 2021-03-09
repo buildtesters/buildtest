@@ -1,6 +1,7 @@
 import os
 import pytest
 from buildtest.config import resolve_settings_file
+from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.menu.buildspec import BuildspecCache
 
@@ -10,33 +11,6 @@ settings_file = resolve_settings_file()
 @pytest.mark.cli
 def test_func_buildspec_find():
 
-    # testing buildtest buildspec find --rebuild
-    class args:
-        find = True
-        rebuild = True
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = None
-        helpfilter = False
-        helpformat = False
-
-    """
-    cache = BuildspecCache(
-        rebuild=args.rebuild,
-        filterfields=args.filter,
-        formatfields=args.format,
-        roots=args.root,
-        settings_file=settings_file,
-    )
-    """
     # buildtest buildspec find --rebuild
     cache = BuildspecCache(rebuild=True, settings_file=settings_file)
 
@@ -79,22 +53,6 @@ def test_func_buildspec_find():
 
 @pytest.mark.cli
 def test_buildspec_find_filter():
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = {"tags": "fail"}
-        format = None
-        helpfilter = False
-        helpformat = False
 
     # testing buildtest buildspec find --filter tags=fail
     cache = BuildspecCache(filterfields={"tags": "fail"}, settings_file=settings_file)
@@ -117,34 +75,17 @@ def test_buildspec_find_filter():
 
 @pytest.mark.cli
 def test_buildspec_find_format():
-    class args:
-        find = True
-        rebuild = False
-        root = None
-        buildspec_files = False
-        executors = False
-        tags = False
-        paths = False
-        group_by_tags = False
-        group_by_executor = False
-        maintainers = False
-        maintainers_by_buildspecs = False
-        filter = None
-        format = "name,type,executor,description,file"
-        helpfilter = False
-        helpformat = False
 
-    # testing buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
+    # testing buildtest buildspec find --format name,type,executor,description,file
     cache = BuildspecCache(
         formatfields="name,type,executor,description,file", settings_file=settings_file
     )
     cache.print_buildspecs()
 
-    # testing buildtest buildspec find --format field1 should raise error. Any
-    # invalid format fields will raise an exception of type BuildTestError
+    # Any invalid format fields will raise an exception of type BuildTestError
     with pytest.raises(BuildTestError):
 
-        # testing buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
+        # testing buildtest buildspec find --format field1
         cache = BuildspecCache(formatfields="field1", settings_file=settings_file)
         cache.print_buildspecs()
 
@@ -154,17 +95,17 @@ def test_buildspec_find_roots():
 
     repo_root = os.path.dirname(os.path.dirname(__file__))
     root_buildspecs = [
-        os.path.join(repo_root, "tests", "buildsystem"),
-        os.path.join(repo_root, "tutorials"),
+        os.path.join(BUILDTEST_ROOT, "tests", "buildsystem"),
+        os.path.join(BUILDTEST_ROOT, "tutorials"),
     ]
-
+    # testing buildtest buildspec find --root $BUILDTEST_ROOT/tests/buildsystem --root $BUILDTEST_ROOT/tutorials
     BuildspecCache(roots=root_buildspecs, settings_file=settings_file)
 
-    # running buildtest buildspec find --root /path/to/buildtest/README.rst --root /path/to/buildtest/tutorials/environment.yml
+    # running buildtest buildspec find --root $BUILDTEST_ROOT/README.rst --root $BUILDTEST_ROOT/environment.yml
     BuildspecCache(
         roots=[
-            os.path.join(repo_root, "README.rst"),
-            os.path.join(repo_root, "tutorials", "environment.yml"),
+            os.path.join(BUILDTEST_ROOT, "README.rst"),
+            os.path.join(BUILDTEST_ROOT, "tutorials", "environment.yml"),
         ],
         settings_file=settings_file,
     )
