@@ -51,7 +51,7 @@ def main():
     logger.info(f"Processing buildtest configuration file: {settings_file}")
     check_settings(settings_file)
 
-    print(args.subcommands)
+    print(args)
 
     if args.subcommands == "build":
         cmd = BuildTest(

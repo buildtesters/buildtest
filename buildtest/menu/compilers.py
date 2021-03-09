@@ -53,10 +53,6 @@ def func_config_compiler(args=None):
     section from buildtest configuration.
     """
 
-    # settings_file = resolve_settings_file()
-    # configuration = load_settings(settings_file)
-
-    # bc = BuildtestCompilers(configuration)
     bc = BuildtestCompilers()
     if args.json:
         bc.print_json()
@@ -90,7 +86,7 @@ class BuildtestCompilers:
 
         self.configuration = site_config.target_config
 
-        # if settings file is provided, let's load settings into BuildtestConfiguration
+        # if settings_file is provided, let's load settings into BuildtestConfiguration
         # and set self.configuration to loaded configuration
         if settings_file:
             bc = BuildtestConfiguration(settings_file)
