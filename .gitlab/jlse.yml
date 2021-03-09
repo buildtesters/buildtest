@@ -14,8 +14,8 @@ jlse_pr_regression_test:
     - module load python/2020.09.15.001
     - whoami
     - git branch
-    - conda create -n buildtest python=3.8
-    - source activate buildtest
+    - conda create -p $CI_PROJECT_DIR/.conda python=3.8 -y
+    - source activate $CI_PROJECT_DIR/.conda
     - source setup.sh
     - pip install -r docs/requirements.txt
     - rm -rf ~/.buildtest/
@@ -25,4 +25,4 @@ jlse_pr_regression_test:
     - export CODECOV_TOKEN=$SECRET_CODECOV_TOKEN
     - bash <(curl -s https://codecov.io/bash)
     - source deactivate
-    - conda env remove -n buildtest -y
+    - conda env remove -p $CI_PROJECT_DIR/.conda -y

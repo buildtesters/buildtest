@@ -11,14 +11,13 @@ ascent_pr_regression_test:
       when: manual
 
   script:
-    - env | grep CI_
-    - echo $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME
     - module load python/3.6.6-anaconda3-5.3.0
-    - echo "$CI_PIPELINE_SOURCE"
     - whoami
     - git branch
-    - conda create -n buildtest python=3.8
-    - source activate buildtest
+
+    - cd $CI_PROJECT_DIR
+    - conda create -p $CI_PROJECT_DIR/.conda python=3.8 -y
+    - source activate $CI_PROJECT_DIR/.conda
     - source setup.sh
     - pip install -r docs/requirements.txt
     - rm -rf ~/.buildtest/
@@ -28,4 +27,4 @@ ascent_pr_regression_test:
     - export CODECOV_TOKEN=$SECRET_CODECOV_TOKEN
     - bash <(curl -s https://codecov.io/bash)
     - source deactivate
-    - conda env remove -n buildtest -y
+    - conda env remove -p $CI_PROJECT_DIR/.conda -y
