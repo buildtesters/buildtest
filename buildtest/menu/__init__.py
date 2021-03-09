@@ -5,7 +5,6 @@ interact with a global configuration for buildtest.
 import argparse
 from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
 from buildtest.docs import buildtestdocs, schemadocs
-from buildtest.menu.buildspec import func_buildspec_find
 from buildtest.menu.config import (
     func_config_summary,
     func_config_validate,
@@ -284,7 +283,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
             action="store_true",
             help="Show Format fields for --format option for formatting buildspec cache output",
         )
-        buildspec_find.set_defaults(func=func_buildspec_find)
+        # buildspec_find.set_defaults(func=func_buildspec_find)
 
     def config_menu(self):
         """This method adds argparse argument for ``buildtest config``"""
