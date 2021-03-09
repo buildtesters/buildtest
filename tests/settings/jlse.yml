@@ -1,0 +1,42 @@
+system:
+  jlse:
+    hostnames:
+    - jlselogin*
+    moduletool: environment-modules
+    load_default_buildspecs: false
+    executors:
+      defaults:
+        launcher: qsub
+        pollinterval: 10
+        max_pend_time: 300
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
+        csh:
+          description: submit jobs on local machine using csh shell
+          shell: csh
+        python:
+          description: submit jobs on local machine using python shell
+          shell: python
+      cobalt:
+        yarrow:
+          queue: yarrow
+        yarrow_debug:
+          queue: yarrow_debug
+        iris:
+          queue: iris
+        iris_debug:
+          queue: iris_debug
+    compilers:
+      find:
+        gcc: ^(gcc)
+      compiler:
+        gcc:
+          builtin_gcc:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
