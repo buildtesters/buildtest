@@ -122,7 +122,7 @@ class BuildtestConfiguration:
                 f"Cannot find modules_tool: {self.target_config('moduletool')} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool."
             )
 
-    def _validate_lsf_executors(lsf_executors):
+    def _validate_lsf_executors(self, lsf_executors):
         """This method validates all LSF executors. We check if queue is available
         and in ``Open:Active`` state.
 
@@ -163,7 +163,7 @@ class BuildtestConfiguration:
                             f"{lsf_executors[executor]['queue']} is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs"
                         )
 
-    def _validate_slurm_executors(slurm_executor):
+    def _validate_slurm_executors(self, slurm_executor):
         """This method will validate slurm executors, we check if partition, qos,
         and cluster fields are valid values by retrieving details from slurm configuration.
         These checks are performed on fields ``partition``, ``qos`` or ``cluster``
@@ -215,7 +215,7 @@ class BuildtestConfiguration:
                     f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_object.clusters}"
                 )
 
-    def _validate_cobalt_executors(cobalt_executor):
+    def _validate_cobalt_executors(self, cobalt_executor):
         """Validate cobalt queue property by running ```qstat -Q <queue>``. If
         its a non-zero exit code then queue doesn't exist otherwise it is a valid
         queue.

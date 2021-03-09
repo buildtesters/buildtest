@@ -55,7 +55,7 @@ class ScriptBuilder(BuilderBase):
             bsub=self.recipe.get("bsub"),
             sbatch=self.recipe.get("sbatch"),
             cobalt=self.recipe.get("cobalt"),
-            batch=self.recipe.get("cobalt"),
+            batch=self.recipe.get("batch"),
         )
         if batch_directives_lines:
             lines += batch_directives_lines
