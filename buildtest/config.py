@@ -12,6 +12,7 @@ from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_schema, load_recipe
 from buildtest.system import Slurm, LSF, Cobalt, system
 from buildtest.utils.command import BuildTestCommand
+from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
 from buildtest.exceptions import BuildTestError
 
@@ -274,11 +275,15 @@ def load_settings(settings_path=None):
     return load_recipe(settings_path)
 
 
-def resolve_settings_file():
+def resolve_settings_file(settings_path=None):
     """Returns path to buildtest settings file that should be used. If there
     is a user defined buildtest settings ($HOME/.buildtest/config.yml) it will
     be honored, otherwise default settings from buildtest will be used.
     """
+
+    if settings_path:
+        settings_path = resolve_path(settings_path)
+        return settings_path
 
     # if buildtest settings file exist return it otherwise return default file
     if os.path.exists(USER_SETTINGS_FILE):

@@ -201,6 +201,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
             type=positive_number,
             help="Rebuild test X number of times. Must be a positive number between [1-50]",
         )
+        parser_build.add_argument(
+            "-c", "--config", help="Specify path to buildtest configuration file"
+        )
 
     def buildspec_menu(self):
         """This method implements ``buildtest buildspec`` command"""
