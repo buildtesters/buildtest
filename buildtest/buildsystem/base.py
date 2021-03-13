@@ -85,7 +85,7 @@ class BuilderBase(ABC):
         self.executor = self.recipe.get("executor")
         # get type attribute from Executor class (local, slurm, cobalt, lsf)
         self.executor_type = buildexecutor.executors[self.executor].type
-
+        self.buildexecutor = buildexecutor
         self._set_metadata_values()
 
         # The default shell will be bash
@@ -99,6 +99,15 @@ class BuilderBase(ABC):
         )
         self.logger.debug("Using shell %s", self.shell.name)
         self.logger.debug(f"Shebang used for test: {self.shebang}")
+
+        # shell_type is used to classify compatible shells which are matched by executor shell.
+        self.shell_type = None
+        if self.shell.name in ["sh", "bash", "zsh", "/bin/sh", "/bin/bash", "/bin/zsh"]:
+            self.shell_type = "bash"
+        elif self.shell.name in ["csh", "tcsh", "/bin/csh", "/bin/tcsh"]:
+            self.shell_type = "csh"
+        elif self.shell.name in ["python"]:
+            self.shell_type = "python"
 
     def _set_metadata_values(self):
         """This method sets self.metadata that contains metadata for each builder object."""

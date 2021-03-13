@@ -74,7 +74,7 @@ def resolve_testdirectory(buildtest_configuration, cli_testdir=None):
 
 
 class BuildTest:
-    """This class is an interface to building tests via 'buildtest build' command."""
+    """This class is an interface to building tests via "buildtest build" command."""
 
     def __init__(
         self,

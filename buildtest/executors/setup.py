@@ -39,7 +39,7 @@ class BuildExecutor:
         if site_config.localexecutors:
             for name in site_config.localexecutors:
                 self.executors[f"{site_config.name}.local.{name}"] = LocalExecutor(
-                    name,
+                    f"{site_config.name}.local.{name}",
                     site_config.target_config["executors"]["local"][name],
                     site_config,
                 )
@@ -47,7 +47,7 @@ class BuildExecutor:
         if site_config.slurmexecutors:
             for name in site_config.slurmexecutors:
                 self.executors[f"{site_config.name}.slurm.{name}"] = SlurmExecutor(
-                    name,
+                    f"{site_config.name}.local.{name}",
                     site_config.target_config["executors"]["slurm"][name],
                     site_config,
                 )
@@ -55,7 +55,7 @@ class BuildExecutor:
         if site_config.lsfexecutors:
             for name in site_config.lsfexecutors:
                 self.executors[f"{site_config.name}.lsf.{name}"] = LSFExecutor(
-                    name,
+                    f"{site_config.name}.local.{name}",
                     site_config.target_config["executors"]["lsf"][name],
                     site_config,
                 )
@@ -63,7 +63,7 @@ class BuildExecutor:
         if site_config.cobaltexecutors:
             for name in site_config.cobaltexecutors:
                 self.executors[f"{site_config.name}.cobalt.{name}"] = CobaltExecutor(
-                    name,
+                    f"{site_config.name}.local.{name}",
                     site_config.target_config["executors"]["cobalt"][name],
                     site_config,
                 )
