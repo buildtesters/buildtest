@@ -33,6 +33,13 @@ class LocalExecutor(BaseExecutor):
         if not shutil.which(self.shell):
             sys.exit(f"Unable to find shell: {self.shell}")
 
+        if self.shell in ["sh", "bash", "zsh", "/bin/sh", "/bin/bash", "/bin/zsh"]:
+            self.shell_type = "bash"
+        elif self.shell in ["csh", "tcsh", "/bin/csh", "/bin/tcsh"]:
+            self.shell_type = "csh"
+        elif self.shell in ["python"]:
+            self.shell_type = "python"
+
     def run(self):
         """This method is responsible for running test for LocalExecutor which
         runs test locally. We keep track of metadata in ``self.builder.metadata``
@@ -44,18 +51,18 @@ class LocalExecutor(BaseExecutor):
         # builders that use the Local Executor.
         self.result = {}
 
-        # check shell type mismatch between buildspec shell and executor shell. We can't support python with sh/bash.
-        if (
-            self.builder.shell.name in ["sh", "bash", "/bin/bash", "/bin/sh"]
-            and self.shell == "python"
-        ) or (
-            self.builder.shell.name == "python"
-            and self.shell in ["sh", "bash", "/bin/bash", "/bin/sh"]
-        ):
+        if self.shell_type != self.builder.shell_type:
             sys.exit(
-                f"[{self.name}]: shell mismatch, expecting {self.shell} while buildspec shell is {self.builder.shell.name}"
+                f"[{self.builder.name}]: we have a shell mismatch with executor: {self.name}. The executor shell: {self.shell} is not compatible with shell: {self.builder.shell.name} found in buildspec"
             )
-
+        """   
+        # check shell type mismatch between buildspec shell and executor shell. We can't support python with sh/bash.
+        if ( self.builder.shell.name in self.shell_types and self.shell == "python") or \
+           ( self.builder.shell.name == "python" and self.shell in self.shell_types):
+            sys.exit(
+                f"[{self.builder.name}]: shell mismatch, expecting {self.shell} while buildspec shell is {self.builder.shell.name}"
+            )
+        """
         self.result["id"] = self.builder.metadata.get("id")
 
         # Change to the test directory
