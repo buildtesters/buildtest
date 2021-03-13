@@ -325,7 +325,7 @@ Cori @ NERSC
 
 Shown below is the configuration file used at Cori.
 
-.. command-output:: wget -q -O - https://raw.githubusercontent.com/buildtesters/buildtest-cori/devel/.buildtest/config.yml 2>&1
+.. command-output:: wget -q -O - https://raw.githubusercontent.com/buildtesters/buildtest-cori/devel/config.yml 2>&1
    :shell:
 
 Default Executor Settings
