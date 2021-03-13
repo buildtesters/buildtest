@@ -45,9 +45,12 @@ def main():
     if args.debug:
         streamlog(args.debug)
 
-    # invoking load_settings will attempt to initialize buildtest settings and
-    # load the schema
-    settings_file = resolve_settings_file()
+    # resolve_settings_file will resolve settings file for buildtest in the following order:
+    # 1. Command Line:  'buildtest build -c config.yml'
+    # 2. User Configuration:  $HOME/.buildtest/config.yml
+    # 3. Default Settings:  $BUILDTEST_ROOT/buildtest/settings/config.yml
+    settings_file = resolve_settings_file(args.config)
+
     logger.info(f"Processing buildtest configuration file: {settings_file}")
     check_settings(settings_file)
 
