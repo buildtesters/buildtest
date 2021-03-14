@@ -26,7 +26,7 @@ def func_config_validate(args=None):
 
     settings_file = resolve_settings_file()
     try:
-        check_settings(settings_file)
+        check_settings(settings_path=settings_file, executor_check=True)
     except (ValidationError, SystemExit) as err:
         print(err)
         raise sys.exit(f"{settings_file} is not valid")

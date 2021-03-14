@@ -55,7 +55,7 @@ def tutorial():
     prefix = "getting_started"
     cmd_dict = {
         f"{os.path.join(prefix, 'buildspec-find.txt')}": "buildtest buildspec find",
-        f"{os.path.join(prefix,'buildspec-abspath.txt')}": "buildtest build -b $HOME/Documents/buildtest/tutorials/vars.yml",
+        f"{os.path.join(prefix,'buildspec-abspath.txt')}": "buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml",
         f"{os.path.join(prefix, 'buildspec-directory.txt')}": "buildtest build -b general_tests/configuration/",
         f"{os.path.join(prefix, 'multi-buildspecs.txt')}": "buildtest build -b general_tests/configuration/ -b tutorials/vars.yml",
         f"{os.path.join(prefix, 'exclude_buildspecs.txt')}": "buildtest build -b general_tests/configuration/ -x general_tests/configuration/ulimits.yml -x general_tests/configuration/ssh_localhost.yml",

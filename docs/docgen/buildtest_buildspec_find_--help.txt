@@ -1,5 +1,5 @@
 $ buildtest buildspec find --help
-usage: buildtest [options] [COMMANDS] buildspec find [-h] [--root ROOT] [-r] [-t] [-bf] [-e] [-p] [--group-by-tags]
+usage: buildtest [options] [COMMANDS] buildspec find [-h] [--root ROOT] [-r] [-t] [-b] [-e] [-p] [--group-by-tags]
                                                      [--group-by-executor] [-m] [-mb] [--filter FILTER]
                                                      [--format FORMAT] [--helpfilter] [--helpformat]
 
@@ -8,8 +8,7 @@ optional arguments:
   --root ROOT           Specify root buildspecs (directory) path to load buildspecs into buildspec cache.
   -r, --rebuild         Rebuild buildspec cache and find all buildspecs again
   -t, --tags            List all available tags
-  -bf, --buildspec-files
-                        Get all buildspec files from cache
+  -b, --buildspec       Get all buildspec files from cache
   -e, --executors       get all unique executors from buildspecs
   -p, --paths           print all root buildspec paths
   --group-by-tags       Group tests by tag name

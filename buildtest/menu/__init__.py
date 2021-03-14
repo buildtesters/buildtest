@@ -49,7 +49,8 @@ def handle_kv_string(val):
 
 
 def positive_number(value):
-    if int(value) <= 0 or int(value) > 50:
+    value = int(value)
+    if value <= 0 or value > 50:
         raise argparse.ArgumentTypeError(
             f"{value} must be a positive number between [1-50]"
         )
