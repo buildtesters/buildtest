@@ -1,6 +1,9 @@
 Building Documentation
 =======================
 
+The buildtest documentation is written in `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_ using sphinx.
+You should be familiar with rst if you want to contribute to user documentation.
+
 ReadTheDocs
 -------------
 buildtest `documentation <https://buildtest.readthedocs.io/en/latest>`_ is hosted
@@ -15,8 +18,8 @@ to grant access to this project.
 Setup
 ------
 
-buildtest documentation is located in top-level directory ``docs``. If you want
-to build the documentation you will need to make sure your python environment
+buildtest documentation is located in top-level `docs <https://github.com/buildtesters/buildtest/tree/devel/docs>`_ directory.
+If you want to build the documentation you will need to make sure your python environment
 has all the packages defined in ``docs/requirements.txt``. If your environment
 is already setup as described in :ref:`Setup` then  you can skip this step.
 

@@ -2,8 +2,8 @@ Regression Tests
 =================
 
 buildtest has a suite of regression tests to verify the state of buildtest. These
-tests are located in the top-level directory ``tests``. buildtest is using
-`pytest <https://docs.pytest.org/en/latest/>`_ for running the regression tests.
+tests are located in the top-level directory `tests <https://github.com/buildtesters/buildtest/tree/devel/tests>`_.
+buildtest is using `pytest <https://docs.pytest.org/en/latest/>`_ for running the regression tests.
 
 Getting Started
 ----------------
@@ -87,7 +87,9 @@ You may want to run coverage report against your test, this can be done by runni
     coverage run -m pytest tests
 
 This can be used with ``coverage report`` to show coverage results of your
-regression test run locally. Shown below is an example output::
+regression test run locally. Shown below is an example output:
+
+.. code-block:: console
 
     $ coverage report
     Name                                        Stmts   Miss Branch BrPart  Cover
