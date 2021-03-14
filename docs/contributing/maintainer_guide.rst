@@ -56,7 +56,7 @@ branch from devel.
 Default Branch
 ------------------
 
-The ``master`` branch should be setup as the default branch.
+The default branch should be  ``devel`` which should be protected branch.
 
 Branch Settings
 ----------------
