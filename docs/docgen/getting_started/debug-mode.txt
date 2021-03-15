@@ -1,36 +1,33 @@
 $ buildtest -d DEBUG build -b tutorials/invalid_executor.yml 
-2021-03-01 16:56:33,896 [main.py:50 -  main() ] - [INFO] Processing buildtest configuration file: /Users/siddiq90/Documents/buildtest/buildtest/settings/config.yml
-2021-03-01 16:56:33,901 [config.py:100 - _validate() ] - [DEBUG] Loading default settings schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2021-03-01 16:56:33,901 [utils.py:34 - load_schema() ] - [DEBUG] Successfully loaded schema file: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2021-03-01 16:56:33,901 [config.py:103 - _validate() ] - [DEBUG] Validating user schema with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/settings.schema.json
-2021-03-01 16:56:33,901 [config.py:105 - _validate() ] - [DEBUG] Validation was successful
-2021-03-01 16:56:33,902 [build.py:192 - discover_buildspecs() ] - [DEBUG] Discovering buildspecs based on tags=None, executor=None, buildspec=['tutorials/invalid_executor.yml'], exclude_buildspec=None
-2021-03-01 16:56:33,902 [build.py:222 - discover_buildspecs() ] - [DEBUG] Checking buildspec argument: ['tutorials/invalid_executor.yml'] is of type 'list'
-2021-03-01 16:56:33,902 [build.py:151 - discover_by_buildspecs() ] - [DEBUG] BuildSpec: tutorials/invalid_executor.yml is a file
-2021-03-01 16:56:33,902 [build.py:163 - discover_by_buildspecs() ] - [INFO] Found the following config files: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
-2021-03-01 16:56:33,902 [build.py:230 - discover_buildspecs() ] - [DEBUG] Discovered buildspecs: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml'] based on argument: tutorials/invalid_executor.yml
-2021-03-01 16:56:33,902 [build.py:242 - discover_buildspecs() ] - [DEBUG] Based on input argument: --buildspec ['tutorials/invalid_executor.yml'] buildtest discovered the following Buildspecs: ['/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml']
+2021-03-13 22:56:02,609 [config.py:97 - _validate() ] - [DEBUG] Loading default settings schema: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/settings.schema.json
+2021-03-13 22:56:02,609 [utils.py:34 - load_schema() ] - [DEBUG] Successfully loaded schema file: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/settings.schema.json
+2021-03-13 22:56:02,609 [config.py:100 - _validate() ] - [DEBUG] Validating user schema with schema: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/settings.schema.json
+2021-03-13 22:56:02,610 [config.py:102 - _validate() ] - [DEBUG] Validation was successful
+2021-03-13 22:56:07,616 [setup.py:37 - __init__() ] - [DEBUG] Getting Executors from buildtest settings
+2021-03-13 22:56:07,621 [build.py:182 - discover_buildspecs() ] - [DEBUG] Discovering buildspecs based on tags=None, executor=None, buildspec=['tutorials/invalid_executor.yml'], excluded buildspec=None
+2021-03-13 22:56:07,622 [build.py:408 - discover_by_buildspecs() ] - [DEBUG] Buildspec: tutorials/invalid_executor.yml is a file
+2021-03-13 22:56:07,622 [build.py:421 - discover_by_buildspecs() ] - [INFO] Based on input argument we discovered the following buildspecs: ['/Users/siddiq90/Documents/github/buildtest/tutorials/invalid_executor.yml']
+2021-03-13 22:56:07,622 [build.py:239 - discover_buildspecs() ] - [DEBUG] buildtest discovered the following Buildspecs: ['/Users/siddiq90/Documents/github/buildtest/tutorials/invalid_executor.yml']
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-    
+        
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
-2021-03-01 16:56:33,902 [setup.py:37 - __init__() ] - [DEBUG] Getting Executors from buildtest settings
-2021-03-01 16:56:33,907 [parser.py:156 - _validate() ] - [INFO] Validating /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml with schema: /Users/siddiq90/Documents/buildtest/buildtest/schemas/global.schema.json
-2021-03-01 16:56:33,907 [parser.py:172 - _validate() ] - [INFO] Validating test - 'wrongexecutor' in recipe: /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml
-2021-03-01 16:56:33,907 [parser.py:95 - _check_schema_type() ] - [INFO] Detected field 'type: script'
-2021-03-01 16:56:33,907 [parser.py:106 - _check_schema_type() ] - [INFO] Checking 'script' in supported type schemas: ['script', 'compiler']
-2021-03-01 16:56:33,907 [parser.py:122 - _check_schema_type() ] - [INFO] Checking version '1.0' in version list: ['1.0']
-2021-03-01 16:56:33,907 [build.py:376 - parse_buildspecs() ] - [ERROR] "executor: badexecutor not found in executor list: ['generic.local.bash', 'generic.local.sh', 'generic.local.csh', 'generic.local.zsh', 'generic.local.python']"
+/Users/siddiq90/Documents/github/buildtest/tutorials/invalid_executor.yml
+2021-03-13 22:56:07,624 [parser.py:155 - _validate() ] - [INFO] Validating /Users/siddiq90/Documents/github/buildtest/tutorials/invalid_executor.yml with schema: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/global.schema.json
+2021-03-13 22:56:07,625 [parser.py:171 - _validate() ] - [INFO] Validating test - 'wrongexecutor' in recipe: /Users/siddiq90/Documents/github/buildtest/tutorials/invalid_executor.yml
+2021-03-13 22:56:07,625 [parser.py:94 - _check_schema_type() ] - [INFO] Detected field 'type: script'
+2021-03-13 22:56:07,625 [parser.py:105 - _check_schema_type() ] - [INFO] Checking 'script' in supported type schemas: ['script', 'compiler']
+2021-03-13 22:56:07,625 [parser.py:121 - _check_schema_type() ] - [INFO] Checking version '1.0' in version list: ['1.0']
+2021-03-13 22:56:07,625 [build.py:453 - parse_buildspecs() ] - [ERROR] "executor: badexecutor not found in executor list: ['generic.local.bash', 'generic.local.sh', 'generic.local.csh', 'generic.local.zsh', 'generic.local.python']"
 
 
 
 Error Messages from Stage: Parse
 ________________________________________________________________________________
-Skipping /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml since it failed to validate
+Skipping /Users/siddiq90/Documents/github/buildtest/tutorials/invalid_executor.yml since it failed to validate
 No buildspecs to process because there are no valid buildspecs
-Writing Logfile to: /private/tmp/buildtest/buildtest_nappuw8q.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_4j0k9cd2.log

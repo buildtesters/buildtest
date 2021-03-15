@@ -3,16 +3,16 @@ $ buildtest build -b tutorials/invalid_buildspec_section.yml
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-    
+        
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/invalid_buildspec_section.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/invalid_buildspec_section.yml
 
 
 
 Error Messages from Stage: Parse
 ________________________________________________________________________________
-Skipping /Users/siddiq90/Documents/buildtest/tutorials/invalid_buildspec_section.yml since it failed to validate
+Skipping /Users/siddiq90/Documents/github/buildtest/tutorials/invalid_buildspec_section.yml since it failed to validate
 No buildspecs to process because there are no valid buildspecs
-Writing Logfile to: /private/tmp/buildtest/buildtest_l8xx16e2.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_niq30gjj.log

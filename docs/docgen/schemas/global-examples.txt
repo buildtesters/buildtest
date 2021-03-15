@@ -1,5 +1,5 @@
 $ buildtest schema -n global.schema.json --example 
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/valid/examples.yml
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/global.schema.json/valid/examples.yml
 ________________________________________________________________________________
 version: "1.0"
 
@@ -44,7 +44,7 @@ buildspecs:
     type: script
     run: hostname
 
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/unique_maintainers.yml
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/global.schema.json/invalid/unique_maintainers.yml
 ________________________________________________________________________________
 version: "1.0"
 maintainers: [shahzebsiddiqui, shahzebsiddiqui]
@@ -52,7 +52,7 @@ buildspecs:
   hostname:
     type: script
     run: "hostname"
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/maintainers_type_mismatch.yml
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/global.schema.json/invalid/maintainers_type_mismatch.yml
 ________________________________________________________________________________
 version: "1.0"
 # wrong type for maintainers key, expects a string
@@ -61,7 +61,7 @@ buildspecs:
   hostname:
     type: script
     run: "hostname"
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/exceed_testname_length.yml
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/global.schema.json/invalid/exceed_testname_length.yml
 ________________________________________________________________________________
 # this test fails because it exceeds 32 character length for test name
 version: "1.0"
@@ -69,7 +69,7 @@ buildspecs:
   this_test_exceeds_32_character_length:
     type: script
     run: hostname
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/invalid_pattern.yml
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/global.schema.json/invalid/invalid_pattern.yml
 ________________________________________________________________________________
 version: "1.0"
 buildspecs:
@@ -77,7 +77,7 @@ buildspecs:
   (badname:
     type: script
     run: "ping login 1"
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/global.schema.json/invalid/missing-version.yml
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/global.schema.json/invalid/missing-version.yml
 ________________________________________________________________________________
 buildspecs:
   # Shell would be accepted to indicate a single line shell command (or similar)

@@ -3,52 +3,52 @@ $ buildtest build -b tutorials/pass_returncode.yml
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-    
+        
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
-    
+        
  schemafile              | validstate   | buildspec
--------------------------+--------------+-------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+-------------------------+--------------+--------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
-
+    
  name                     | id       | type   | executor         | tags                  | testpath
---------------------------+----------+--------+------------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------
- exit1_fail               | 4fc14198 | script | generic.local.sh | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/19/stage/generate.sh
- exit1_pass               | ac8a6281 | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/22/stage/generate.sh
- returncode_list_mismatch | 50b87f01 | script | generic.local.sh | ['tutorials', 'fail'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/19/stage/generate.sh
- returncode_int_match     | 25cac099 | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/22/stage/generate.sh
+--------------------------+----------+--------+------------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------
+ exit1_fail               | aa3ce7e1 | script | generic.local.sh | ['tutorials', 'fail'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/7/stage/generate.sh
+ exit1_pass               | 2f9844bf | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/8/stage/generate.sh
+ returncode_list_mismatch | 3563e7d5 | script | generic.local.sh | ['tutorials', 'fail'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/7/stage/generate.sh
+ returncode_int_match     | 5fa4312b | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/8/stage/generate.sh
 
 
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
-    
+        
  name                     | id       | executor         | status   |   returncode | testpath
---------------------------+----------+------------------+----------+--------------+------------------------------------------------------------------------------------------------------------------------------
- exit1_fail               | 4fc14198 | generic.local.sh | FAIL     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/19/stage/generate.sh
- exit1_pass               | ac8a6281 | generic.local.sh | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/22/stage/generate.sh
- returncode_list_mismatch | 50b87f01 | generic.local.sh | FAIL     |            2 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/19/stage/generate.sh
- returncode_int_match     | 25cac099 | generic.local.sh | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/22/stage/generate.sh
+--------------------------+----------+------------------+----------+--------------+------------------------------------------------------------------------------------------------------------------------------------
+ exit1_fail               | aa3ce7e1 | generic.local.sh | FAIL     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/7/stage/generate.sh
+ exit1_pass               | 2f9844bf | generic.local.sh | PASS     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/8/stage/generate.sh
+ returncode_list_mismatch | 3563e7d5 | generic.local.sh | FAIL     |            2 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/7/stage/generate.sh
+ returncode_int_match     | 5fa4312b | generic.local.sh | PASS     |          128 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/8/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-
+        
 Executed 4 tests
 Passed Tests: 2/4 Percentage: 50.000%
 Failed Tests: 2/4 Percentage: 50.000%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_zj55q3wc.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_7wqgdm7u.log

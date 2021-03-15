@@ -2,711 +2,341 @@ $ buildtest report --format name,id,executor,state,returncode
 +------------------------------+----------+----------------------+---------+--------------+
 | name                         | id       | executor             | state   |   returncode |
 +==============================+==========+======================+=========+==============+
-| variables_bash               | f49c325c | generic.local.bash   | PASS    |            0 |
+| variables_bash               | bd0e7313 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| variables_bash               | 4452069d | generic.local.bash   | PASS    |            0 |
+| variables_bash               | 9a38b78a | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| variables_bash               | 2b3a7871 | generic.local.bash   | PASS    |            0 |
+| variables_bash               | 3cba403a | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| variables_bash               | 8318155d | generic.local.bash   | PASS    |            0 |
+| variables_bash               | 1c95bd2f | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| variables_bash               | 1353cf14 | generic.local.bash   | PASS    |            0 |
+| variables_bash               | d71a18c2 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| variables_bash               | 7a06983e | generic.local.bash   | PASS    |            0 |
+| ulimit_filelock_unlimited    | a995241d | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| variables_bash               | 622e65a6 | generic.local.bash   | PASS    |            0 |
+| ulimit_filelock_unlimited    | d37d5491 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| variables_bash               | a71d36be | generic.local.bash   | PASS    |            0 |
+| ulimit_filelock_unlimited    | 4ddddc77 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| variables_bash               | bb9b62b5 | generic.local.bash   | PASS    |            0 |
+| ulimit_cputime_unlimited     | 3d631fb1 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| variables_bash               | 311c6baf | generic.local.bash   | PASS    |            0 |
+| ulimit_cputime_unlimited     | 7285ddcd | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| kernel_swapusage             | 42d3c9de | generic.local.bash   | PASS    |            0 |
+| ulimit_cputime_unlimited     | fd6b6047 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| kernel_swapusage             | 358d64f3 | generic.local.bash   | PASS    |            0 |
+| ulimit_stacksize_unlimited   | d933ef5f | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| kernel_swapusage             | 85ec8048 | generic.local.bash   | PASS    |            0 |
+| ulimit_stacksize_unlimited   | 234b031f | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| kernel_swapusage             | 51d6c45a | generic.local.bash   | PASS    |            0 |
+| ulimit_stacksize_unlimited   | 601747a2 | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| kernel_swapusage             | 71cd5a74 | generic.local.bash   | PASS    |            0 |
+| ulimit_vmsize_unlimited      | 65d1f2f1 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| kernel_swapusage             | 600533dc | generic.local.bash   | PASS    |            0 |
+| ulimit_vmsize_unlimited      | 03fb38a9 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| kernel_swapusage             | 7b948ef9 | generic.local.bash   | PASS    |            0 |
+| ulimit_vmsize_unlimited      | e65d3e8d | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| kernel_swapusage             | 4c586605 | generic.local.bash   | PASS    |            0 |
+| ulimit_filedescriptor_4096   | ee47659f | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| root_disk_usage              | d6225907 | generic.local.bash   | PASS    |            0 |
+| ulimit_filedescriptor_4096   | de6e3daf | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| root_disk_usage              | 0a73ccb6 | generic.local.bash   | PASS    |            0 |
+| ulimit_filedescriptor_4096   | 33bd0138 | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| root_disk_usage              | 1f37a17a | generic.local.bash   | PASS    |            0 |
+| ulimit_max_user_process_2048 | 4004c446 | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| root_disk_usage              | c285030e | generic.local.bash   | PASS    |            0 |
+| ulimit_max_user_process_2048 | 09d875cd | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| root_disk_usage              | 468cae3b | generic.local.bash   | PASS    |            0 |
+| ulimit_max_user_process_2048 | ece03b1d | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| root_disk_usage              | 7169ec69 | generic.local.bash   | PASS    |            0 |
+| kernel_swapusage             | 0942c114 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| root_disk_usage              | caaeccbd | generic.local.bash   | PASS    |            0 |
+| kernel_swapusage             | 6735c536 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| root_disk_usage              | 3b378ab4 | generic.local.bash   | PASS    |            0 |
+| kernel_swapusage             | b43bcb17 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| systemd_default_target       | c7531a21 | generic.local.bash   | FAIL    |            1 |
+| kernel_swapusage             | 773f1298 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| systemd_default_target       | a471f279 | generic.local.bash   | FAIL    |            1 |
+| systemd_default_target       | 7b56c223 | generic.local.bash   | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| systemd_default_target       | 25f84772 | generic.local.bash   | FAIL    |            1 |
+| systemd_default_target       | c58cae1b | generic.local.bash   | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| systemd_default_target       | 7eee1a3d | generic.local.bash   | FAIL    |            1 |
+| systemd_default_target       | 203e2a54 | generic.local.bash   | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| systemd_default_target       | 1044a8ef | generic.local.bash   | FAIL    |            1 |
+| systemd_default_target       | 515e4e0a | generic.local.bash   | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| systemd_default_target       | 00854e63 | generic.local.bash   | FAIL    |            1 |
+| root_disk_usage              | 70013ffc | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| systemd_default_target       | 6a51825a | generic.local.bash   | FAIL    |            1 |
+| root_disk_usage              | 754b8dc3 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| systemd_default_target       | 9e53a444 | generic.local.bash   | FAIL    |            1 |
+| root_disk_usage              | e97f9253 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filelock_unlimited    | 3dda6f76 | generic.local.bash   | PASS    |            0 |
+| root_disk_usage              | 2aa6c8ff | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filelock_unlimited    | 3e125ce1 | generic.local.bash   | PASS    |            0 |
+| vecadd_gnu_exclude           | b7281833 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filelock_unlimited    | 76584826 | generic.local.bash   | PASS    |            0 |
+| vecadd_gnu_exclude           | c909ff2a | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filelock_unlimited    | 9c0b65ed | generic.local.bash   | PASS    |            0 |
+| default_status_regex         | 533f5737 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filelock_unlimited    | e092c1fa | generic.local.bash   | PASS    |            0 |
+| default_status_regex         | 92fd5df5 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filelock_unlimited    | e48218ad | generic.local.bash   | PASS    |            0 |
+| default_status_regex         | 0a3666e5 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_cputime_unlimited     | 32f7a869 | generic.local.bash   | PASS    |            0 |
+| default_status_regex         | 4078772c | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_cputime_unlimited     | f7155f96 | generic.local.bash   | PASS    |            0 |
+| override_status_regex        | 912b17c3 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_cputime_unlimited     | 4b5870c4 | generic.local.bash   | PASS    |            0 |
+| override_status_regex        | 59003b62 | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_cputime_unlimited     | b0d10aa3 | generic.local.bash   | PASS    |            0 |
+| override_status_regex        | d41b72fc | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_cputime_unlimited     | c4765674 | generic.local.bash   | PASS    |            0 |
+| override_status_regex        | 4e70058f | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_cputime_unlimited     | 7bbc1fed | generic.local.bash   | PASS    |            0 |
+| bash_login_shebang           | 985f4154 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_stacksize_unlimited   | 9cd68fce | generic.local.bash   | FAIL    |            0 |
+| bash_login_shebang           | 0d5ea8e8 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_stacksize_unlimited   | 85fdebb2 | generic.local.bash   | FAIL    |            0 |
+| bash_login_shebang           | 9fb4a678 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_stacksize_unlimited   | 0ea66f1c | generic.local.bash   | FAIL    |            0 |
+| bash_nonlogin_shebang        | 05531ccd | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_stacksize_unlimited   | 7d4d17ca | generic.local.bash   | FAIL    |            0 |
+| bash_nonlogin_shebang        | 8f115a9a | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_stacksize_unlimited   | c7493a88 | generic.local.bash   | FAIL    |            0 |
+| bash_nonlogin_shebang        | 83037399 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_stacksize_unlimited   | 7e1c9086 | generic.local.bash   | FAIL    |            0 |
+| openmp_hello_c_example       | 0ea13496 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_vmsize_unlimited      | f0127a88 | generic.local.bash   | PASS    |            0 |
+| openmp_hello_c_example       | b7f7f553 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_vmsize_unlimited      | d6441a18 | generic.local.bash   | PASS    |            0 |
+| openmp_hello_c_example       | a85caf54 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_vmsize_unlimited      | 6753d2d6 | generic.local.bash   | PASS    |            0 |
+| openmp_hello_c_example       | 5e97cba1 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_vmsize_unlimited      | a48dcdc2 | generic.local.bash   | PASS    |            0 |
+| circle_area                  | a36bf8ef | generic.local.python | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_vmsize_unlimited      | e46c57aa | generic.local.bash   | PASS    |            0 |
+| circle_area                  | 44b9fe94 | generic.local.python | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_vmsize_unlimited      | 3ecabc88 | generic.local.bash   | PASS    |            0 |
+| circle_area                  | 787ebce2 | generic.local.python | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filedescriptor_4096   | c8f5982b | generic.local.bash   | FAIL    |            0 |
+| circle_area                  | c0125f62 | generic.local.python | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filedescriptor_4096   | 0d97f222 | generic.local.bash   | FAIL    |            0 |
+| circle_area                  | 4d40d4a2 | generic.local.python | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filedescriptor_4096   | 0e0c8d8e | generic.local.bash   | FAIL    |            0 |
+| override_environmentvars     | e22d4527 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filedescriptor_4096   | 8df33cdf | generic.local.bash   | FAIL    |            0 |
+| override_environmentvars     | c5a10549 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filedescriptor_4096   | c2a1f76b | generic.local.bash   | FAIL    |            0 |
+| override_environmentvars     | 0af431fc | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_filedescriptor_4096   | 54fa3dad | generic.local.bash   | FAIL    |            0 |
+| override_environmentvars     | c07ba482 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_max_user_process_2048 | 074427b4 | generic.local.bash   | FAIL    |            0 |
+| csh_shell                    | 0b7e1e2c | generic.local.csh    | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_max_user_process_2048 | 4c3205b7 | generic.local.bash   | FAIL    |            0 |
+| run_only_platform_darwin     | 3517b140 | generic.local.python | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_max_user_process_2048 | d9ae461d | generic.local.bash   | FAIL    |            0 |
+| run_only_platform_darwin     | d56dcbfb | generic.local.python | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_max_user_process_2048 | 3d2cad5f | generic.local.bash   | FAIL    |            0 |
+| exit1_fail                   | 8a15f523 | generic.local.sh     | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_max_user_process_2048 | 529de0b8 | generic.local.bash   | FAIL    |            0 |
+| exit1_fail                   | 3b9a250b | generic.local.sh     | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| ulimit_max_user_process_2048 | 4147869e | generic.local.bash   | FAIL    |            0 |
+| exit1_fail                   | c4e9edca | generic.local.sh     | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| csh_shell                    | e5353dcf | generic.local.csh    | PASS    |            0 |
+| exit1_fail                   | 3a7f2c80 | generic.local.sh     | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| csh_shell                    | e5908b66 | generic.local.csh    | PASS    |            0 |
+| exit1_fail                   | 872fc831 | generic.local.sh     | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | 323f39c2 | generic.local.sh     | FAIL    |            1 |
+| exit1_fail                   | 3e69e29b | generic.local.sh     | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | 92630b47 | generic.local.sh     | FAIL    |            1 |
+| exit1_fail                   | fc787440 | generic.local.sh     | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | 359ad92d | generic.local.sh     | FAIL    |            1 |
+| exit1_fail                   | aa3ce7e1 | generic.local.sh     | FAIL    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | dd09aae2 | generic.local.sh     | FAIL    |            1 |
+| exit1_pass                   | 68e23f09 | generic.local.sh     | PASS    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | cd5daef5 | generic.local.sh     | FAIL    |            1 |
+| exit1_pass                   | 184fff26 | generic.local.sh     | PASS    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | 7a1e5cdf | generic.local.sh     | FAIL    |            1 |
+| exit1_pass                   | 2d367d8c | generic.local.sh     | PASS    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | 5d9215d8 | generic.local.sh     | FAIL    |            1 |
+| exit1_pass                   | 9efe550e | generic.local.sh     | PASS    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | 2e6a831c | generic.local.sh     | FAIL    |            1 |
+| exit1_pass                   | 41d02d93 | generic.local.sh     | PASS    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | 6e3e7654 | generic.local.sh     | FAIL    |            1 |
+| exit1_pass                   | ef868b8a | generic.local.sh     | PASS    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | 7a8aaa5e | generic.local.sh     | FAIL    |            1 |
+| exit1_pass                   | 83383992 | generic.local.sh     | PASS    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | 28db231c | generic.local.sh     | FAIL    |            1 |
+| exit1_pass                   | 104210b9 | generic.local.sh     | PASS    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | ae3bd55d | generic.local.sh     | FAIL    |            1 |
+| exit1_pass                   | 2f9844bf | generic.local.sh     | PASS    |            1 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | b466f8e3 | generic.local.sh     | FAIL    |            1 |
+| returncode_list_mismatch     | 93c9495c | generic.local.sh     | FAIL    |            2 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | d50f153d | generic.local.sh     | FAIL    |            1 |
+| returncode_list_mismatch     | d68679cf | generic.local.sh     | FAIL    |            2 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | fbd2ecb6 | generic.local.sh     | FAIL    |            1 |
+| returncode_list_mismatch     | 564c0c17 | generic.local.sh     | FAIL    |            2 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | ef7bb2f6 | generic.local.sh     | FAIL    |            1 |
+| returncode_list_mismatch     | 1050f1a5 | generic.local.sh     | FAIL    |            2 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | e77eb7a7 | generic.local.sh     | FAIL    |            1 |
+| returncode_list_mismatch     | d7d5e3a3 | generic.local.sh     | FAIL    |            2 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | 28fa1720 | generic.local.sh     | FAIL    |            1 |
+| returncode_list_mismatch     | 9b3aa53d | generic.local.sh     | FAIL    |            2 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | c5922767 | generic.local.sh     | FAIL    |            1 |
+| returncode_list_mismatch     | 28968376 | generic.local.sh     | FAIL    |            2 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_fail                   | 4fc14198 | generic.local.sh     | FAIL    |            1 |
+| returncode_list_mismatch     | 3563e7d5 | generic.local.sh     | FAIL    |            2 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 7652ba48 | generic.local.sh     | PASS    |            1 |
+| returncode_int_match         | c5f70a66 | generic.local.sh     | PASS    |          128 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 17f47866 | generic.local.sh     | PASS    |            1 |
+| returncode_int_match         | 2d493c35 | generic.local.sh     | PASS    |          128 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 4bdabb99 | generic.local.sh     | PASS    |            1 |
+| returncode_int_match         | 4d935e22 | generic.local.sh     | PASS    |          128 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | bf89cfe5 | generic.local.sh     | PASS    |            1 |
+| returncode_int_match         | 40097192 | generic.local.sh     | PASS    |          128 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 92d589b0 | generic.local.sh     | PASS    |            1 |
+| returncode_int_match         | 674c71b7 | generic.local.sh     | PASS    |          128 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | ba8d9684 | generic.local.sh     | PASS    |            1 |
+| returncode_int_match         | 14c0fe38 | generic.local.sh     | PASS    |          128 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | d9487170 | generic.local.sh     | PASS    |            1 |
+| returncode_int_match         | cbd95e81 | generic.local.sh     | PASS    |          128 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 74bc7426 | generic.local.sh     | PASS    |            1 |
+| returncode_int_match         | a28edc2f | generic.local.sh     | PASS    |          128 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 3d62b594 | generic.local.sh     | PASS    |            1 |
+| returncode_int_match         | 5fa4312b | generic.local.sh     | PASS    |          128 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | cb4d6ed7 | generic.local.sh     | PASS    |            1 |
+| hello_f                      | 26883568 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 6cfa7a40 | generic.local.sh     | PASS    |            1 |
+| hello_f                      | f5aceff3 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 247d093e | generic.local.sh     | PASS    |            1 |
+| hello_f                      | 822206c4 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 3f542ac2 | generic.local.sh     | PASS    |            1 |
+| selinux_disable              | f30e311e | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 1e847e83 | generic.local.sh     | PASS    |            1 |
+| selinux_disable              | bc38c886 | generic.local.bash   | FAIL    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 29fceb4a | generic.local.sh     | PASS    |            1 |
+| hello_world                  | 3c52c8ba | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | d418a113 | generic.local.sh     | PASS    |            1 |
+| hello_world                  | 0b971401 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 4d3072da | generic.local.sh     | PASS    |            1 |
+| sleep                        | bc10feb8 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 7a4772f1 | generic.local.sh     | PASS    |            1 |
+| sleep                        | c1cf3d2e | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | c2246681 | generic.local.sh     | PASS    |            1 |
+| vecadd_gnu                   | a8806694 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 07954433 | generic.local.sh     | PASS    |            1 |
+| vecadd_gnu                   | 806eb1b3 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 0c55c0ed | generic.local.sh     | PASS    |            1 |
+| vecadd_gnu                   | 85b1a582 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | 031f67b1 | generic.local.sh     | PASS    |            1 |
+| vecadd_gnu                   | 7dcce42a | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| exit1_pass                   | ac8a6281 | generic.local.sh     | PASS    |            1 |
+| vecadd_gnu                   | 4a9bdafc | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 91e3e034 | generic.local.sh     | FAIL    |            2 |
+| vecadd_gnu                   | c8b713dd | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | ab4c4791 | generic.local.sh     | FAIL    |            2 |
+| custom_run_by_compilers      | 338ef06f | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 729d8c9e | generic.local.sh     | FAIL    |            2 |
+| custom_run_by_compilers      | c85daa42 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | dfc1cab4 | generic.local.sh     | FAIL    |            2 |
+| custom_run_by_compilers      | a7ea9449 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 31dc290c | generic.local.sh     | FAIL    |            2 |
+| custom_run_by_compilers      | 2aee0271 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 8852ce7d | generic.local.sh     | FAIL    |            2 |
+| custom_run_by_compilers      | c252adb5 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 88eca23d | generic.local.sh     | FAIL    |            2 |
+| custom_run_by_compilers      | 91007993 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | bf512b72 | generic.local.sh     | FAIL    |            2 |
+| bash_env_variables           | 1eaf9a4f | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | ac5eda8b | generic.local.sh     | FAIL    |            2 |
+| bash_env_variables           | 969819e5 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 4f53dd7d | generic.local.sh     | FAIL    |            2 |
+| csh_env_declaration          | b4848430 | generic.local.csh    | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | efc99e3e | generic.local.sh     | FAIL    |            2 |
+| csh_env_declaration          | b6bf2932 | generic.local.csh    | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 6115dd0c | generic.local.sh     | FAIL    |            2 |
+| tcsh_env_declaration         | 5be220c9 | generic.local.csh    | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 48710bf2 | generic.local.sh     | FAIL    |            2 |
+| tcsh_env_declaration         | 084a6d14 | generic.local.csh    | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | b7e5fed4 | generic.local.sh     | FAIL    |            2 |
+| _bin_sh_shell                | 89f8043a | generic.local.sh     | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 67b082b7 | generic.local.sh     | FAIL    |            2 |
+| _bin_sh_shell                | e0ed3fe2 | generic.local.sh     | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 8984d117 | generic.local.sh     | FAIL    |            2 |
+| _bin_sh_shell                | 5911786d | generic.local.sh     | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 9eb5f97a | generic.local.sh     | FAIL    |            2 |
+| _bin_bash_shell              | 234b4f8a | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 3b98dd36 | generic.local.sh     | FAIL    |            2 |
+| _bin_bash_shell              | 47cd3745 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | b9f724a0 | generic.local.sh     | FAIL    |            2 |
+| _bin_bash_shell              | 5f73eabe | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_list_mismatch     | 50b87f01 | generic.local.sh     | FAIL    |            2 |
+| bash_shell                   | 9f8f3d31 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 2fa1eb52 | generic.local.sh     | PASS    |          128 |
+| bash_shell                   | 734894ea | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | c722392e | generic.local.sh     | PASS    |          128 |
+| bash_shell                   | f7e929c4 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 58d9c5dd | generic.local.sh     | PASS    |          128 |
+| sh_shell                     | 26faf4d3 | generic.local.sh     | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | ef45b469 | generic.local.sh     | PASS    |          128 |
+| sh_shell                     | 5fd0eec9 | generic.local.sh     | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 63917d57 | generic.local.sh     | PASS    |          128 |
+| sh_shell                     | 8e2e288d | generic.local.sh     | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | e8adf7ee | generic.local.sh     | PASS    |          128 |
+| shell_options                | 6bc8b91c | generic.local.sh     | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | d6af4c07 | generic.local.sh     | PASS    |          128 |
+| shell_options                | d9d4d567 | generic.local.sh     | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | eb9b7778 | generic.local.sh     | PASS    |          128 |
+| shell_options                | 5774bc2b | generic.local.sh     | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 73517b23 | generic.local.sh     | PASS    |          128 |
+| unskipped                    | ad00a938 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 296e9528 | generic.local.sh     | PASS    |          128 |
+| unskipped                    | cbc32be5 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | faab85d9 | generic.local.sh     | PASS    |          128 |
+| unskipped                    | 29fd4ba3 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | ae9b8f4d | generic.local.sh     | PASS    |          128 |
+| hello_c                      | ff12075e | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | f496f2c8 | generic.local.sh     | PASS    |          128 |
+| hello_c                      | 99a182d7 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 98ed4411 | generic.local.sh     | PASS    |          128 |
+| hello_c                      | dccf5bc7 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 27f2192d | generic.local.sh     | PASS    |          128 |
+| hello_c                      | fecc0ae7 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 2661af6b | generic.local.sh     | PASS    |          128 |
+| hello_c                      | 70b04399 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | ff751c02 | generic.local.sh     | PASS    |          128 |
+| hello_c                      | 6ccc7023 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 2980ee01 | generic.local.sh     | PASS    |          128 |
+| pre_post_build_run           | 1b9f80ca | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 8dcd660d | generic.local.sh     | PASS    |          128 |
+| pre_post_build_run           | 60b64a39 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 0e487c97 | generic.local.sh     | PASS    |          128 |
+| python_hello                 | 84bb517a | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 5733defa | generic.local.sh     | PASS    |          128 |
+| python_hello                 | e751a675 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 32382385 | generic.local.sh     | PASS    |          128 |
+| python_hello                 | d633dc8f | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| returncode_int_match         | 25cac099 | generic.local.sh     | PASS    |          128 |
+| pullImage_dockerhub          | ef0166ac | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| run_only_platform_darwin     | 6e16db01 | generic.local.python | PASS    |            0 |
+| pullImage_sylabscloud        | d2ea5f48 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| run_only_platform_darwin     | b5c28f1c | generic.local.python | PASS    |            0 |
+| pullImage_shub               | 582c5c26 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| run_only_platform_darwin     | 123fbcbb | generic.local.python | PASS    |            0 |
+| inspect_image                | 794d867b | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| run_only_platform_darwin     | 2333be0d | generic.local.python | PASS    |            0 |
+| build_sif_from_dockerimage   | b5a434dd | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| run_only_platform_darwin     | 360979cc | generic.local.python | PASS    |            0 |
+| build_sandbox_image          | 422324e4 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| hello_c                      | 7ad19e36 | generic.local.bash   | PASS    |            0 |
+| build_remoteimages           | adb823cb | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| hello_c                      | 3f6298e9 | generic.local.bash   | PASS    |            0 |
+| runImage                     | 8fa44392 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| hello_c                      | 6b7d4d9f | generic.local.bash   | PASS    |            0 |
+| string_tag                   | ac1b4abf | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| hello_c                      | 94709d19 | generic.local.bash   | PASS    |            0 |
+| list_of_strings_tags         | 55e87644 | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| hello_c                      | 21dd9a34 | generic.local.bash   | PASS    |            0 |
+| run_only_macos_distro        | afe9aadf | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+
-| hello_c                      | 7129e34e | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_c                      | 7bf77e60 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_sh_shell                | dd921742 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_sh_shell                | 0c799648 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_sh_shell                | a2068dcb | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_sh_shell                | 7583c08b | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_sh_shell                | 580406a2 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_sh_shell                | 51f1da35 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_sh_shell                | d8f2efac | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_sh_shell                | 82bde6cb | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_bash_shell              | 1c742e4a | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_bash_shell              | 1d254102 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_bash_shell              | 584a9f5a | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_bash_shell              | 9b2df82e | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_bash_shell              | 53727399 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_bash_shell              | f239c52c | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_bash_shell              | d6e9824b | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_bash_shell              | 81c2c8d8 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_shell                   | aaa98fee | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_shell                   | 62cab9b2 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_shell                   | 8879d7e7 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_shell                   | ddf04842 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_shell                   | 4ad86e3c | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_shell                   | 19ba1de3 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_shell                   | 2f1325d0 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_shell                   | 4b07f092 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sh_shell                     | 73a288b5 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sh_shell                     | e79b191a | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sh_shell                     | 414b8499 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sh_shell                     | 55ad8f7d | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sh_shell                     | bef4637a | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sh_shell                     | 9ccb4e5d | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sh_shell                     | 6d13dae3 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sh_shell                     | 5e11c4f2 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| shell_options                | f0e838cc | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| shell_options                | 059da4db | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| shell_options                | 34ede140 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| shell_options                | 51444f89 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| shell_options                | 82e2f8bb | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| shell_options                | 93bfa09d | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| shell_options                | 93d21549 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| shell_options                | 0eaf3667 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | 3dbb9699 | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | bb43ffed | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | bc083fd8 | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | 278b6a0e | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | 1aa533d8 | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | eccb7170 | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | 058c5ccc | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | 01c1f05a | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | 2c57386b | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | cc2a9e36 | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | 48512b6c | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | 2c2d3bd0 | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | d0d80718 | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | faf20eae | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | fc216cc7 | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | 8f8197d1 | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | 5dd1376b | generic.local.python | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| pre_post_build_run           | 6e49a7f5 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| pre_post_build_run           | a31ab8b4 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| pre_post_build_run           | 5e14a941 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| pre_post_build_run           | 02fd028e | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| selinux_disable              | ea336f72 | generic.local.bash   | FAIL    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| selinux_disable              | 4f9b3bff | generic.local.bash   | FAIL    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| selinux_disable              | 5a1ecdd6 | generic.local.bash   | FAIL    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| selinux_disable              | 56222bfb | generic.local.bash   | FAIL    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sleep                        | e93e293a | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sleep                        | 59074143 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sleep                        | 08f41ba8 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sleep                        | f1858ad3 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| custom_run_by_compilers      | 7ba4836e | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| custom_run_by_compilers      | 34042b9a | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| custom_run_by_compilers      | e623231b | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| custom_run_by_compilers      | a5251bac | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_login_shebang           | 3d5f2d24 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_login_shebang           | 19cd7298 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_login_shebang           | d30dac5d | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_login_shebang           | 139637ff | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_login_shebang           | 3249d67e | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_login_shebang           | c5cc8ba7 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_nonlogin_shebang        | 5ae6ac40 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_nonlogin_shebang        | d45453c0 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_nonlogin_shebang        | 5b0e5a36 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_nonlogin_shebang        | 43297c4e | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_nonlogin_shebang        | c4900837 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_nonlogin_shebang        | d8437d8d | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_world                  | 8e310a1f | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_world                  | 83f602d9 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_world                  | 95bf4109 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_world                  | 7cacc904 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| unskipped                    | a62be6f5 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| unskipped                    | 41d59d6c | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| unskipped                    | 2c606e6e | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| unskipped                    | 03598887 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| unskipped                    | 9087c9f3 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| unskipped                    | 0091bc29 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_f                      | 2ce762dc | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_f                      | 15bcf177 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_f                      | 3f480b28 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_f                      | affc086d | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_f                      | 21e0e9e3 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_f                      | 5cb134d0 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_env_variables           | 071bec49 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_env_variables           | 048d548d | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_env_variables           | 13705ca9 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_env_variables           | 8006a592 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| csh_env_declaration          | 4b76a1b1 | generic.local.csh    | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| csh_env_declaration          | 71cdce10 | generic.local.csh    | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| csh_env_declaration          | 4f3d72f2 | generic.local.csh    | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| csh_env_declaration          | 116c7abc | generic.local.csh    | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| tcsh_env_declaration         | c02dbf66 | generic.local.csh    | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| tcsh_env_declaration         | f0ed2863 | generic.local.csh    | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| tcsh_env_declaration         | bacaebc7 | generic.local.csh    | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| tcsh_env_declaration         | de95bae6 | generic.local.csh    | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| python_hello                 | ce0ea367 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| python_hello                 | 8dd81a3f | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| python_hello                 | 2fcf0acd | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| python_hello                 | a9366d61 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| python_hello                 | 62a2bfc4 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| python_hello                 | 30e5c10a | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| python_hello                 | ebd7ce90 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| string_tag                   | 02d576fc | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| string_tag                   | c2f5d68c | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| list_of_strings_tags         | 06f81f3b | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| list_of_strings_tags         | 96bc6227 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| runImage                     | a38f4d0e | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| runImage                     | bb1c0538 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| run_only_macos_distro        | 5305849b | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| run_only_macos_distro        | ebde83e3 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| run_only_macos_distro        | 343d2034 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| run_only_macos_distro        | 886c036a | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| inspect_image                | a87ee975 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| inspect_image                | 3ddaf93d | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| pullImage_dockerhub          | 72c46f2e | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| pullImage_dockerhub          | 2ab4b84c | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| pullImage_sylabscloud        | 29caeb13 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| pullImage_sylabscloud        | 049cc401 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| pullImage_shub               | f21a574b | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| pullImage_shub               | 6c293399 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| build_sif_from_dockerimage   | 52d41cc6 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| build_sif_from_dockerimage   | 0f6c12db | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| build_sandbox_image          | 9b8adcdb | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| build_sandbox_image          | 940da297 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| build_remoteimages           | 464abf02 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| build_remoteimages           | 58a517c6 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | 27af5278 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | 4768539d | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | 3ddc1bb7 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | fcc9f2e7 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | 1489dfb4 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | b979dd83 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | 15bd7b64 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | 3cc11dc6 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | caea92e7 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | 6d942989 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | dcc353a6 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | 7de6d9b4 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | 92af1a6d | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | 540e428f | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu                   | 54b50108 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu_exclude           | eb738d4f | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu_exclude           | 13b94dc7 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu_exclude           | 2eb60b83 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu_exclude           | abd115de | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu_exclude           | 9a084308 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu_exclude           | 516276c4 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu_exclude           | 30fa9c29 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| vecadd_gnu_exclude           | 0a418f09 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| override_environmentvars     | 89099e2a | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| override_environmentvars     | 7e482440 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| override_environmentvars     | a234a889 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| override_environmentvars     | 9ebe6f17 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| default_status_regex         | 240edfd6 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| default_status_regex         | 7879910d | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| override_status_regex        | bde9c117 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| override_status_regex        | 9320ca41 | generic.local.bash   | FAIL    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| hello_dinosaur               | 9a7d6fc4 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| slurm_down_nodes_reason      | 9a3c6e39 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| slurm_not_responding_nodes   | af1ac0f8 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_sh_shell                | e664a098 | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| _bin_bash_shell              | 62573abc | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| bash_shell                   | 06057043 | generic.local.bash   | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| sh_shell                     | fbe7436f | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| shell_options                | 1c527aaf | generic.local.sh     | PASS    |            0 |
-+------------------------------+----------+----------------------+---------+--------------+
-| circle_area                  | 5393677d | generic.local.python | PASS    |            0 |
+| run_only_macos_distro        | 685c605c | generic.local.bash   | PASS    |            0 |
 +------------------------------+----------+----------------------+---------+--------------+

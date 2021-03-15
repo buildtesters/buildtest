@@ -3,53 +3,53 @@ $ buildtest build --tags pass --filter-tags pass -b tutorials/python-hello.yml
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-    
+        
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
-/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
-[python_hello][/Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml]: test is skipped because it is not in tag filter list: ['pass']
-[exit1_fail][/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml]: test is skipped because it is not in tag filter list: ['pass']
-[returncode_list_mismatch][/Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml]: test is skipped because it is not in tag filter list: ['pass']
+/Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml
+[exit1_fail][/Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml]: test is skipped because it is not in tag filter list: ['pass']
+[returncode_list_mismatch][/Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml]: test is skipped because it is not in tag filter list: ['pass']
+[python_hello][/Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml]: test is skipped because it is not in tag filter list: ['pass']
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
-    
+        
  schemafile              | validstate   | buildspec
--------------------------+--------------+-------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-hello.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/pass_returncode.yml
+-------------------------+--------------+--------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
-
+    
  name                 | id       | type   | executor         | tags                  | testpath
-----------------------+----------+--------+------------------+-----------------------+--------------------------------------------------------------------------------------------------------------------------
- exit1_pass           | 7a4772f1 | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/17/stage/generate.sh
- returncode_int_match | 2980ee01 | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/17/stage/generate.sh
+----------------------+----------+--------+------------------+-----------------------+--------------------------------------------------------------------------------------------------------------------------------
+ exit1_pass           | 9efe550e | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/3/stage/generate.sh
+ returncode_int_match | 40097192 | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/3/stage/generate.sh
 
 
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
-    
+        
  name                 | id       | executor         | status   |   returncode | testpath
-----------------------+----------+------------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------------
- exit1_pass           | 7a4772f1 | generic.local.sh | PASS     |            1 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/17/stage/generate.sh
- returncode_int_match | 2980ee01 | generic.local.sh | PASS     |          128 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/17/stage/generate.sh
+----------------------+----------+------------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------------------
+ exit1_pass           | 9efe550e | generic.local.sh | PASS     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/3/stage/generate.sh
+ returncode_int_match | 40097192 | generic.local.sh | PASS     |          128 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/3/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-
+        
 Executed 2 tests
 Passed Tests: 2/2 Percentage: 100.000%
 Failed Tests: 0/2 Percentage: 0.000%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_qg9bfffi.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_9h_wlpao.log
