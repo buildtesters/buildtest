@@ -94,10 +94,11 @@ def main():
     if args.subcommands == "buildspec":
         buildspec_find(args=args, settings_file=settings_file)
         return
-    else:
-        if args.subcommands and args.func:
-            args.func(args)
-        return
+
+    if args.subcommands and args.func:
+        args.func(args)
+
+
 
 
 if __name__ == "__main__":

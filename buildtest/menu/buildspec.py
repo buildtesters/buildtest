@@ -5,7 +5,7 @@ import os
 from tabulate import tabulate
 from jsonschema.exceptions import ValidationError
 from buildtest.buildsystem.parser import BuildspecParser
-from buildtest.config import buildtest_configuration, BuildtestConfiguration
+from buildtest.config import check_settings, BuildtestConfiguration
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILDSPEC_DEFAULT_PATH,
@@ -47,6 +47,7 @@ class BuildspecCache:
         :type roots: list, required
         """
         self.settings = settings_file or DEFAULT_SETTINGS_FILE
+        self.configuration = check_settings(self.settings, executor_check=True)
         self.filter = filterfields
         self.format = formatfields
         # if --root is not specified we set to empty list instead of None
@@ -78,15 +79,13 @@ class BuildspecCache:
         and general tests.
         """
 
-        config_opts = buildtest_configuration.target_config
-
-        buildspec_paths = config_opts.get("buildspec_roots") or []
+        buildspec_paths = self.configuration.target_config.get("buildspec_roots") or []
 
         if buildspec_paths:
             self.roots += buildspec_paths
 
         # only load default buildspecs if 'load_default_buildspecs' set to True
-        if config_opts.get("load_default_buildspecs"):
+        if self.configuration.target_config.get("load_default_buildspecs"):
             self.paths += BUILDSPEC_DEFAULT_PATH
 
         # for every root buildspec defined in configuration or via --root option,
