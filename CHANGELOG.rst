@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v0.9.4 (TBD)
-------------
+v0.9.4 (Mar 14, 2021)
+---------------------
 
 The major change in this version is configuration template for buildtest is organized into system groups by top-level key `system`. This allows facility
 to deploy a single configuration used for multiple HPC clusters. See `#668 <https://github.com/buildtesters/buildtest/pull/668>`_ for more details. We provide a ``generic`` system name that can be used to run buildtest. We reorganized the `getting started <https://buildtest.readthedocs.io/en/devel/getting_started.html>`_ page into sub-pages so it's easier to navigate to each section, for more details see `#659 <https://github.com/buildtesters/buildtest/pull/659>`_. The executors are referenced in ``<system>.<executor-type>.<executor-name>``. Previously we would reference executor like ``local.bash`` now it would be referenced as ``generic.local.bash`` which is a local executor of name **bash** tied to system name **generic**. buildtest will detect the system based on ``hostnames`` field which is a list of regular expression to search where buildtest can run. If no system is found it will raise an error. 
