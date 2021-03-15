@@ -1,6 +1,6 @@
 $ buildtest config summary
 buildtest version:  0.9.3
-buildtest Path: /Users/siddiq90/Documents/buildtest/bin/buildtest
+buildtest Path: /Users/siddiq90/Documents/github/buildtest/bin/buildtest
 
 
 Machine Details
@@ -9,16 +9,16 @@ Operating System:  darwin
 Hostname:  DOE-7086392.local
 Machine:  x86_64
 Processor:  i386
-Python Path /Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/bin/python
+Python Path /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python
 Python Version: 3.7.3
 User: siddiq90
 
 
 Buildtest Settings
 ________________________________________________________________________________
-Buildtest Settings: /Users/siddiq90/Documents/buildtest/buildtest/settings/config.yml
+Buildtest Settings: /Users/siddiq90/.buildtest/config.yml
 Executors:  ['local.bash', 'local.sh', 'local.csh', 'local.zsh', 'local.python']
-Buildspec Cache File: /Users/siddiq90/Documents/buildtest/var/buildspec-cache.json
+Buildspec Cache File: /Users/siddiq90/Documents/github/buildtest/var/buildspec-cache.json
 
 
 Buildtest Schemas

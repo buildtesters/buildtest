@@ -107,12 +107,15 @@ class BuildtestConfiguration:
         cobalt_executors = deep_get(self.target_config, "executors", "cobalt")
 
         if slurm_executors:
+            logger.debug("Checking slurm executors")
             self._validate_slurm_executors(slurm_executors)
 
         if lsf_executors:
+            logger.debug("Checking lsf executors")
             self._validate_lsf_executors(lsf_executors)
 
         if cobalt_executors:
+            logger.debug("Checking cobalt executors")
             self._validate_cobalt_executors(cobalt_executors)
 
         if (
@@ -233,7 +236,7 @@ class BuildtestConfiguration:
                 )
 
 
-def check_settings(settings_path=None, executor_check=True, retrieve_settings=False):
+def check_settings(settings_path=None, executor_check=True):
     """Checks all keys in configuration file (settings/config.yml) are valid
     keys and ensure value of each key matches expected type. For some keys
     special logic is taken to ensure values are correct and directory path
@@ -243,13 +246,14 @@ def check_settings(settings_path=None, executor_check=True, retrieve_settings=Fa
     :type settings_path: str, optional
     :param executor_check: boolean to control if executor checks are performed
     :type executor_check: bool
-    :param retrieve_settings: return loaded buildtest settings that is validated by schema. By default, this method doesn't return anything other than validating buildtest settings
-    :type retrieve_settings: bool
-    :return: returns gracefully if all checks passes otherwise terminate immediately
-    :rtype: exit code 1 if checks failed
+    :return: returns an instance object of BuildtestConfiguration
     """
 
-    bc = BuildtestConfiguration(settings_path)
+    settings_file = resolve_settings_file(settings_path)
+    if not settings_file:
+        raise BuildTestError("Cannot detect a buildtest configuration file")
+
+    bc = BuildtestConfiguration(settings_file)
 
     # only perform executor check if executor_check is True. This is default
     # behavior, this can be disabled only for regression test where executor check
@@ -257,8 +261,7 @@ def check_settings(settings_path=None, executor_check=True, retrieve_settings=Fa
     if executor_check:
         bc.validate_executors()
 
-    if retrieve_settings:
-        return bc.target_config
+    return bc
 
 
 def load_settings(settings_path=None):

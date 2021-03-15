@@ -2,43 +2,19 @@ $ buildtest report --filter returncode=2 --format=name,id,returncode
 +--------------------------+----------+--------------+
 | name                     | id       |   returncode |
 +==========================+==========+==============+
-| returncode_list_mismatch | 91e3e034 |            2 |
+| returncode_list_mismatch | 93c9495c |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | ab4c4791 |            2 |
+| returncode_list_mismatch | d68679cf |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 729d8c9e |            2 |
+| returncode_list_mismatch | 564c0c17 |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | dfc1cab4 |            2 |
+| returncode_list_mismatch | 1050f1a5 |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 31dc290c |            2 |
+| returncode_list_mismatch | d7d5e3a3 |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 8852ce7d |            2 |
+| returncode_list_mismatch | 9b3aa53d |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 88eca23d |            2 |
+| returncode_list_mismatch | 28968376 |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | bf512b72 |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | ac5eda8b |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | 4f53dd7d |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | efc99e3e |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | 6115dd0c |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | 48710bf2 |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | b7e5fed4 |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | 67b082b7 |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | 8984d117 |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | 9eb5f97a |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | 3b98dd36 |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | b9f724a0 |            2 |
-+--------------------------+----------+--------------+
-| returncode_list_mismatch | 50b87f01 |            2 |
+| returncode_list_mismatch | 3563e7d5 |            2 |
 +--------------------------+----------+--------------+

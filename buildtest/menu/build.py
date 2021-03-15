@@ -11,7 +11,7 @@ import sys
 import time
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
-from buildtest.config import BuildtestConfiguration
+from buildtest.config import BuildtestConfiguration, check_settings
 from buildtest.defaults import (
     BUILDTEST_ROOT,
     BUILDSPEC_CACHE_FILE,
@@ -143,7 +143,10 @@ class BuildTest:
             raise BuildTestError(f"{rebuild} is not of type int")
 
         self.configfile = config_file
-        self.configuration = BuildtestConfiguration(self.configfile)
+        self.configuration = check_settings(
+            settings_path=self.configfile, executor_check=True
+        )
+        # self.configuration = BuildtestConfiguration(self.configfile)
         self.buildspecs = buildspecs
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
@@ -218,9 +221,6 @@ class BuildTest:
 
                 # only add buildspecs if its not None
                 if bp:
-                    logger.debug(
-                        f"Discovered buildspecs: {bp} based on argument: {option}"
-                    )
                     buildspecs += bp
 
             self.bp_found += buildspecs
@@ -405,7 +405,7 @@ class BuildTest:
                 return
 
             buildspecs = [buildspec]
-            logger.debug(f"BuildSpec: {buildspec} is a file")
+            logger.debug(f"Buildspec: {buildspec} is a file")
 
         # If we don't have any files discovered
         if not buildspecs:
@@ -417,7 +417,9 @@ class BuildTest:
         # return all buildspec by resolving path, this gets the real canonical path and address shell expansion and user expansion
         buildspecs = [resolve_path(file) for file in buildspecs]
 
-        logger.info(f"Found the following config files: {buildspecs}")
+        logger.info(
+            f"Based on input argument we discovered the following buildspecs: {buildspecs}"
+        )
         return buildspecs
 
     def parse_buildspecs(self, printTable=False):

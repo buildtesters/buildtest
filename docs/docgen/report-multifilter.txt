@@ -2,83 +2,35 @@ $ buildtest report --filter state=FAIL,executor=generic.local.sh --format=name,i
 +--------------------------+----------+---------+------------------+
 | name                     | id       | state   | executor         |
 +==========================+==========+=========+==================+
-| exit1_fail               | 323f39c2 | FAIL    | generic.local.sh |
+| exit1_fail               | 8a15f523 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 92630b47 | FAIL    | generic.local.sh |
+| exit1_fail               | 3b9a250b | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 359ad92d | FAIL    | generic.local.sh |
+| exit1_fail               | c4e9edca | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | dd09aae2 | FAIL    | generic.local.sh |
+| exit1_fail               | 3a7f2c80 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | cd5daef5 | FAIL    | generic.local.sh |
+| exit1_fail               | 872fc831 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 7a1e5cdf | FAIL    | generic.local.sh |
+| exit1_fail               | 3e69e29b | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 5d9215d8 | FAIL    | generic.local.sh |
+| exit1_fail               | fc787440 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 2e6a831c | FAIL    | generic.local.sh |
+| exit1_fail               | aa3ce7e1 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 6e3e7654 | FAIL    | generic.local.sh |
+| returncode_list_mismatch | 93c9495c | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 7a8aaa5e | FAIL    | generic.local.sh |
+| returncode_list_mismatch | d68679cf | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 28db231c | FAIL    | generic.local.sh |
+| returncode_list_mismatch | 564c0c17 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | ae3bd55d | FAIL    | generic.local.sh |
+| returncode_list_mismatch | 1050f1a5 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | b466f8e3 | FAIL    | generic.local.sh |
+| returncode_list_mismatch | d7d5e3a3 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | d50f153d | FAIL    | generic.local.sh |
+| returncode_list_mismatch | 9b3aa53d | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | fbd2ecb6 | FAIL    | generic.local.sh |
+| returncode_list_mismatch | 28968376 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | ef7bb2f6 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| exit1_fail               | e77eb7a7 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| exit1_fail               | 28fa1720 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| exit1_fail               | c5922767 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| exit1_fail               | 4fc14198 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 91e3e034 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | ab4c4791 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 729d8c9e | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | dfc1cab4 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 31dc290c | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 8852ce7d | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 88eca23d | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | bf512b72 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | ac5eda8b | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 4f53dd7d | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | efc99e3e | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 6115dd0c | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 48710bf2 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | b7e5fed4 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 67b082b7 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 8984d117 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 9eb5f97a | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 3b98dd36 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | b9f724a0 | FAIL    | generic.local.sh |
-+--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 50b87f01 | FAIL    | generic.local.sh |
+| returncode_list_mismatch | 3563e7d5 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+

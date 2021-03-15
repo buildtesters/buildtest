@@ -3,27 +3,27 @@ $ buildtest build -b tutorials/vars.yml --stage=build
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-    
+        
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
-    
+        
  schemafile              | validstate   | buildspec
--------------------------+--------------+--------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
+-------------------------+--------------+---------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
-
+    
  name           | id       | type   | executor           | tags          | testpath
-----------------+----------+--------+--------------------+---------------+-----------------------------------------------------------------------------------------------------------
- variables_bash | 0dc3fee8 | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/10/stage/generate.sh
+----------------+----------+--------+--------------------+---------------+-----------------------------------------------------------------------------------------------------------------
+ variables_bash | 85aa962d | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/4/stage/generate.sh
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_zylz6jwm.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_5abygkeo.log

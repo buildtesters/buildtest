@@ -3,15 +3,15 @@ $ buildtest build -b tutorials/shell_examples.yml --filter-tags compile
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-    
+        
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml
-[_bin_sh_shell][/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
-[_bin_bash_shell][/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
-[bash_shell][/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
-[sh_shell][/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
-[shell_options][/Users/siddiq90/Documents/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
+/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml
+[_bin_sh_shell][/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
+[_bin_bash_shell][/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
+[bash_shell][/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
+[sh_shell][/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
+[shell_options][/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
 No buildspecs to process because there are no valid buildspecs
-Writing Logfile to: /private/tmp/buildtest/buildtest_xj0_jq3_.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_bud5cqk9.log

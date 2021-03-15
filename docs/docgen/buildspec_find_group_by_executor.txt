@@ -90,6 +90,24 @@ $ buildtest buildspec find --group-by-executor
 +----------------------+------------------------------+-------------------------------------------------------------------+
 | generic.local.bash   | show_all_jobs                | show all pending + running jobs (squeue -a)                       |
 +----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | nodes_state_down             | Show nodes in DOWN state                                          |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | nodes_state_reboot           | Show nodes in REBOOT state                                        |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | nodes_state_allocated        | Show nodes in ALLOCATED state                                     |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | nodes_state_completing       | Show nodes in COMPLETING state                                    |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | nodes_state_idle             | Show nodes in IDLE state                                          |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | node_down_fail_list_reason   | Show nodes DOWN, DRAINED, FAIL or FAILING and list reason         |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | dead_nodes                   | Show non-responding nodes                                         |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | get_partitions               | Get all slurm partitions                                          |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | sinfo_version                | get slurm version                                                 |
++----------------------+------------------------------+-------------------------------------------------------------------+
 | generic.local.bash   | show_host_groups             | Show information about host groups using bmgroup                  |
 +----------------------+------------------------------+-------------------------------------------------------------------+
 | generic.local.bash   | show_lsf_configuration       | Show LSF configuration using lsinfo                               |

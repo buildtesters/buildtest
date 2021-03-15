@@ -1,9 +1,9 @@
 $ buildtest schema -n settings.schema.json -e 
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/local-executor.yml
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/local-executor.yml
 ________________________________________________________________________________
 system:
   generic:
-    hostnames: ['localhost']
+    hostnames: ['.*']
 
     logdir: $BUILDTEST_ROOT/logs
     testdir: $BUILDTEST_ROOT/tests
@@ -105,11 +105,11 @@ system:
             module:
               load: [pgi/18.0]
 
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/cobalt-example.yml
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/cobalt-example.yml
 ________________________________________________________________________________
 system:
   generic:
-    hostnames: ['localhost']
+    hostnames: ['.*']
 
     moduletool: lmod
     load_default_buildspecs: True
@@ -132,11 +132,11 @@ system:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
 ________________________________________________________________________________
 system:
   generic:
-    hostnames: ['localhost']
+    hostnames: ['.*']
 
     moduletool: lmod
     load_default_buildspecs: True
@@ -166,11 +166,11 @@ system:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/combined_executor.yml
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/combined_executor.yml
 ________________________________________________________________________________
 system:
   generic:
-    hostnames: ['localhost']
+    hostnames: ['.*']
 
     moduletool: N/A
     load_default_buildspecs: True
@@ -207,11 +207,11 @@ system:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-File: /Users/siddiq90/Documents/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-example.yml
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-example.yml
 ________________________________________________________________________________
 system:
   generic:
-    hostnames: ['localhost']
+    hostnames: ['.*']
 
     moduletool: lmod
     load_default_buildspecs: False

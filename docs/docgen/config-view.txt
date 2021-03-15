@@ -1,11 +1,11 @@
 $ buildtest config view
-Settings File: /Users/siddiq90/Documents/buildtest/buildtest/settings/config.yml
+Settings File: /Users/siddiq90/.buildtest/config.yml
 ________________________________________________________________________________
 system:
   generic:
     hostnames:
-    - localhost
-    moduletool: N/A
+    - .*
+    moduletool: lmod
     load_default_buildspecs: true
     executors:
       local:
@@ -25,11 +25,29 @@ system:
           description: submit jobs on local machine using python shell
           shell: python
     compilers:
+      find:
+        gcc: ^(gcc)
       compiler:
         gcc:
           builtin_gcc:
             cc: /usr/bin/gcc
             fc: /usr/bin/gfortran
             cxx: /usr/bin/g++
+          gcc/9.3.0-n7p74fd:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/9.3.0-n7p74fd
+              purge: false
+          gcc/10.2.0-37fmsw7:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/10.2.0-37fmsw7
+              purge: false
     logdir: /tmp/buildtest/
 

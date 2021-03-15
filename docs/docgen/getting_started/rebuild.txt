@@ -3,50 +3,50 @@ $ buildtest build -b tutorials/python-shell.yml --rebuild=3
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-    
+        
 
 Discovered Buildspecs:
  
-/Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/python-shell.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
-    
+        
  schemafile              | validstate   | buildspec
--------------------------+--------------+----------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml
+-------------------------+--------------+-----------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/python-shell.yml
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
-
+    
  name        | id       | type   | executor             | tags                    | testpath
--------------+----------+--------+----------------------+-------------------------+------------------------------------------------------------------------------------------------------------------
- circle_area | fc216cc7 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.python/python-shell/circle_area/16/stage/generate.sh
- circle_area | 8f8197d1 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.python/python-shell/circle_area/17/stage/generate.sh
- circle_area | 5dd1376b | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.python/python-shell/circle_area/18/stage/generate.sh
+-------------+----------+--------+----------------------+-------------------------+------------------------------------------------------------------------------------------------------------------------
+ circle_area | 787ebce2 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/2/stage/generate.sh
+ circle_area | c0125f62 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/3/stage/generate.sh
+ circle_area | 4d40d4a2 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh
 
 
 
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
-    
+        
  name        | id       | executor             | status   |   returncode | testpath
--------------+----------+----------------------+----------+--------------+------------------------------------------------------------------------------------------------------------------
- circle_area | fc216cc7 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.python/python-shell/circle_area/16/stage/generate.sh
- circle_area | 8f8197d1 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.python/python-shell/circle_area/17/stage/generate.sh
- circle_area | 5dd1376b | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.python/python-shell/circle_area/18/stage/generate.sh
+-------------+----------+----------------------+----------+--------------+------------------------------------------------------------------------------------------------------------------------
+ circle_area | 787ebce2 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/2/stage/generate.sh
+ circle_area | c0125f62 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/3/stage/generate.sh
+ circle_area | 4d40d4a2 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-
+        
 Executed 3 tests
 Passed Tests: 3/3 Percentage: 100.000%
 Failed Tests: 0/3 Percentage: 0.000%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_kvk9huan.log
+Writing Logfile to: /private/tmp/buildtest/buildtest_hgzymug8.log

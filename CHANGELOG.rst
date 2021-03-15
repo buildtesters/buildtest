@@ -1,17 +1,18 @@
 CHANGELOG
 =========
 
-v0.9.4 (TBD)
-------------
+v0.9.4 (Mar 14, 2021)
+---------------------
 
 The major change in this version is configuration template for buildtest is organized into system groups by top-level key `system`. This allows facility
 to deploy a single configuration used for multiple HPC clusters. See `#668 <https://github.com/buildtesters/buildtest/pull/668>`_ for more details. We provide a ``generic`` system name that can be used to run buildtest. We reorganized the `getting started <https://buildtest.readthedocs.io/en/devel/getting_started.html>`_ page into sub-pages so it's easier to navigate to each section, for more details see `#659 <https://github.com/buildtesters/buildtest/pull/659>`_. The executors are referenced in ``<system>.<executor-type>.<executor-name>``. Previously we would reference executor like ``local.bash`` now it would be referenced as ``generic.local.bash`` which is a local executor of name **bash** tied to system name **generic**. buildtest will detect the system based on ``hostnames`` field which is a list of regular expression to search where buildtest can run. If no system is found it will raise an error. 
 
+- Add option to override configuration file via ``buildtest build -c`` see `#684 <https://github.com/buildtesters/buildtest/pull/684>`_
 - Changed the output of how jobs are printed during poll stage by showing a table of jobIDs see `#664 <https://github.com/buildtesters/buildtest/pull/664>`_
 - Add regression test for Ascent system at OLCF for LSF `#663 <https://github.com/buildtesters/buildtest/pull/663>`_
 - Replace black workflow to use the registered black action `psf/black@stable` see `#662 <https://github.com/buildtesters/buildtest/pull/662>`_
 - We removed documentation and scripting with buildtest and CI checks see `#674 <https://github.com/buildtesters/buildtest/pull/674>`_
-- Update Diagram for buildspec structure and parser stage because we changed the executor name format `#678 <https://github.com/buildtesters/buildtest/pull/678>`_
+- Update diagram for buildspec structure and parser stage because we changed the executor name format `#678 <https://github.com/buildtesters/buildtest/pull/678>`_
 - Add JLSE gitlab CI file that can be found at `.gitlab/jlse.yml <https://github.com/buildtesters/buildtest/blob/devel/.gitlab/jlse.yml>`_ which runs tests buildtest regression test at https://gitlab.jlse.anl.gov
 - The `configuring buildtest <https://buildtest.readthedocs.io/en/devel/configuring_buildtest.html>`_ page was redesigned into sub-pages and new configuration format was documented. For more details see commit `cdd56db4c15dc68031e8162cdd1b34cfafe2e5d3 <https://github.com/buildtesters/buildtest/commit/cdd56db4c15dc68031e8162cdd1b34cfafe2e5d3>`_ 
 
