@@ -154,8 +154,16 @@ class Slurm(Scheduler):
         self.qos = self.get_qos()
 
     def get_partitions(self):
-        """Get list of all partitions slurm partitions"""
+        """Get list of all partitions slurm partitions using ``sinfo -a -h -O partitionname``. The output
+           is a list of queue names
 
+            $ sinfo -a -h -O partitionname
+            system
+            system_shared
+            debug_hsw
+            debug_knl
+            jupyter
+        """
         # get list of partitions
 
         query = "sinfo -a -h -O partitionname"
@@ -168,7 +176,13 @@ class Slurm(Scheduler):
         return partitions
 
     def get_clusters(self):
-        """Get list of slurm clusters"""
+        """Get list of slurm clusters by running ``sacctmgr list cluster -P -n format=Cluster``.
+           The output is a list of slurm clusters something as follows::
+
+            $ sacctmgr list cluster -P -n format=Cluster
+            cori
+            escori
+        """
 
         query = "sacctmgr list cluster -P -n format=Cluster"
         cmd = BuildTestCommand(query)
@@ -180,7 +194,17 @@ class Slurm(Scheduler):
         return slurm_clusters
 
     def get_qos(self):
-        """Return a list of all slurm qos"""
+        """Retrieve a list of all slurm qos by running ``sacctmgr list qos -P -n  format=Name``. The output
+        is a list of qos. Shown below is an example output
+
+        $ sacctmgr list qos -P -n  format=Name
+        normal
+        premium
+        low
+        serialize
+        scavenger
+
+        """
 
         query = "sacctmgr list qos -P -n  format=Name"
         cmd = BuildTestCommand(query)
@@ -260,7 +284,13 @@ class PBS(Scheduler):
         self.logger = logging.getLogger(__name__)
 
         self.check()
+        if self.state:
+            self._get_queues()
 
+    def _get_queues(self):
+        """ Get queue configuration using ``qstat -Q -f -F json`` and retrieve a
+            list of queues.
+        """
         query = "qstat -Q -f -F json"
         cmd = BuildTestCommand(query)
         cmd.execute()

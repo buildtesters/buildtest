@@ -157,9 +157,9 @@ class CompilerBuilder(BuilderBase):
         batch_dict = {}
         cray_dict = {}
 
-        # get sbatch, bsub, cobalt, batch property and store in batch dictionary.
+        # get sbatch, bsub, cobalt, pbs, batch property and store in batch dictionary.
         # The order of lookup is in order of precedence
-        for batch in ["sbatch", "bsub", "cobalt", "batch"]:
+        for batch in ["sbatch", "bsub", "cobalt", "pbs", "batch"]:
             batch_dict[batch] = (
                 deep_get(self.compiler_section, "config", self.compiler, batch)
                 or deep_get(
@@ -172,6 +172,7 @@ class CompilerBuilder(BuilderBase):
             bsub=batch_dict["bsub"],
             sbatch=batch_dict["sbatch"],
             cobalt=batch_dict["cobalt"],
+            pbs=batch_dict["pbs"],
             batch=batch_dict["batch"],
         )
 
