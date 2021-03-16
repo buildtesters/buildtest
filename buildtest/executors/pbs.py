@@ -1,8 +1,6 @@
 import datetime
 import json
 import os
-import re
-import shutil
 import sys
 
 from buildtest.executors.base import BaseExecutor
