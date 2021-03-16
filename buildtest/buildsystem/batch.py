@@ -164,3 +164,53 @@ class CobaltBatchScript(BatchScript):
                     ]
                 else:
                     continue
+
+
+class PBSBatchScript(BatchScript):
+    batch_translation = {
+        "account": "-P",
+        "begintime": None,
+        "cpucount": "-l ppn",
+        "email-address": "-M",
+        "exclusive": None,
+        "memory": None,
+        "network": None,
+        "nodecount": "-l nodes",
+        "qos": None,
+        "queue": "-q",
+        "tasks-per-core": None,
+        "tasks-per-node": None,
+        "tasks-per-socket": None,
+        "timelimit": "--time",
+    }
+
+    def __init__(self, batch=None, pbs=None):
+        """
+        :param batch: The batch commands specified by batch field. These are scheduler agnostic fields
+        :param pbs: pbs commands that are inserted with #PBS directive
+        """
+        self.headers = []
+        self.directive = "#PBS"
+
+        self.batch = batch
+        self.pbs = pbs
+
+        self.build_header()
+
+    def build_header(self):
+        # only process if sbatch field is specified
+        if self.pbs:
+            for cmd in self.pbs:
+                self.headers += [f"{self.directive} {cmd}"]
+
+        # only process if batch field is specified
+        if self.batch:
+            for key, value in self.batch.items():
+
+                # if batch key is None that means scheduler doesn't support the option
+                if self.batch_translation.get(key):
+                    self.headers += [
+                        f"{self.directive} {self.batch_translation[key]} {value}"
+                    ]
+                else:
+                    continue

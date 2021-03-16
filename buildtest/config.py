@@ -37,6 +37,7 @@ class BuildtestConfiguration:
         self.slurmexecutors = None
         self.lsfexecutors = None
         self.cobaltexecutors = None
+        self.pbsexecutors = None
 
         self.get_current_system()
 
@@ -75,7 +76,10 @@ class BuildtestConfiguration:
             self.cobaltexecutors = list(
                 self.target_config["executors"]["cobalt"].keys()
             )
-
+        if self.target_config["executors"].get("pbs"):
+            self.pbsexecutors = list(
+                self.target_config["executors"]["pbs"].keys()
+            )
     def get_executors_by_type(self, executor_type):
         """Return list of executor names by given type of executor.
         :param executor_type: type of executor (local, slurm, lsf, cobalt)
@@ -105,6 +109,7 @@ class BuildtestConfiguration:
         slurm_executors = deep_get(self.target_config, "executors", "slurm")
         lsf_executors = deep_get(self.target_config, "executors", "lsf")
         cobalt_executors = deep_get(self.target_config, "executors", "cobalt")
+        pbs_executors = deep_get(self.target_config, "executors", "pbs")
 
         if slurm_executors:
             logger.debug("Checking slurm executors")
@@ -117,6 +122,11 @@ class BuildtestConfiguration:
         if cobalt_executors:
             logger.debug("Checking cobalt executors")
             self._validate_cobalt_executors(cobalt_executors)
+
+
+        if pbs_executors:
+            logger.debug("Checking pbs executors")
+            self._validate_pbs_executors(pbs_executors)
 
         if (
             self.target_config.get("moduletool") != "N/A"
@@ -234,6 +244,13 @@ class BuildtestConfiguration:
                 raise BuildTestError(
                     f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'"
                 )
+    def _validate_pbs_executors(self, pbs_executor):
+        """Validate cobalt queue property by running ```qstat -Q <queue>``. If
+        its a non-zero exit code then queue doesn't exist otherwise it is a valid
+        queue.
+        """
+        pass
+
 
 
 def check_settings(settings_path=None, executor_check=True):

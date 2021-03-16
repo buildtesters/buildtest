@@ -20,6 +20,7 @@ from buildtest.buildsystem.batch import (
     SlurmBatchScript,
     LSFBatchScript,
     CobaltBatchScript,
+    PBSBatchScript
 )
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.file import create_dir, write_file
@@ -218,7 +219,7 @@ class BuilderBase(ABC):
         )
         self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
 
-    def _get_scheduler_directives(self, bsub, sbatch, cobalt, batch):
+    def _get_scheduler_directives(self, bsub, sbatch, cobalt, pbs, batch):
         """Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
         test with one of the executor types. This method will return a list
         of string containing scheduler directives generally found at top of script.
@@ -227,6 +228,7 @@ class BuilderBase(ABC):
         :param bsub: bsub property from buildspec
         :param sbatch: sbatch property from buildspec
         :param cobalt: cobalt property  from buildspec
+        :param pbs: pbs property  from buildspec
         :param batch: batch property from buildspec
         """
 
@@ -254,6 +256,11 @@ class BuilderBase(ABC):
             script = CobaltBatchScript(batch, cobalt)
             lines += script.get_headers()
             lines += [f"#COBALT --jobname {self.name}"]
+
+        elif self.executor_type == "pbs":
+            script = PBSBatchScript(batch, pbs)
+            lines += script.get_headers()
+            lines += [f"#PBS -N {self.name}"]
 
         return lines
 
