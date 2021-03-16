@@ -168,12 +168,12 @@ class CobaltBatchScript(BatchScript):
 
 class PBSBatchScript(BatchScript):
     batch_translation = {
-        "account": "-P",
+        "account": "project",
         "begintime": None,
-        "cpucount": "-l ppn",
-        "email-address": "-M",
+        "cpucount": "-l ncpus",
+        "email-address": "-WMail_Users",
         "exclusive": None,
-        "memory": None,
+        "memory": "-l mem",
         "network": None,
         "nodecount": "-l nodes",
         "qos": None,
@@ -181,7 +181,7 @@ class PBSBatchScript(BatchScript):
         "tasks-per-core": None,
         "tasks-per-node": None,
         "tasks-per-socket": None,
-        "timelimit": "--time",
+        "timelimit": "-l walltime",
     }
 
     def __init__(self, batch=None, pbs=None):
@@ -210,7 +210,7 @@ class PBSBatchScript(BatchScript):
                 # if batch key is None that means scheduler doesn't support the option
                 if self.batch_translation.get(key):
                     self.headers += [
-                        f"{self.directive} {self.batch_translation[key]} {value}"
+                        f"{self.directive} {self.batch_translation[key]}={value}"
                     ]
                 else:
                     continue

@@ -68,7 +68,7 @@ class BuildExecutor:
                     site_config.target_config["executors"]["cobalt"][name],
                     site_config,
                 )
-        print(site_config.pbsexecutors)
+
         if site_config.pbsexecutors:
             for name in site_config.pbsexecutors:
                 print(site_config.target_config["executors"]["pbs"][name])
@@ -257,9 +257,19 @@ class BuildExecutor:
                 poll_info["ignore_job"] = True
 
         elif executor.type == "pbs":
+            # pending or running job requires polling
             if (builder.job_state in ["Q", "R"] or not builder.job_state):
                 executor.poll()
+            # if job is finished we gather results
+            elif builder.job_state in ["F"]:
+                executor.gather()
+                poll_info["job_complete"] = True
+            # if job is on hold we cancel it asap
+            elif builder.job_state in ["H"]:
+                executor.cancel()
+                poll_info["job_complete"] = True
+                poll_info["ignore_job"] = True
             else:
                 poll_info["job_complete"] = True
-
+                poll_info["ignore_job"] = True
         return poll_info

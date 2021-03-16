@@ -2,10 +2,11 @@ system:
   generic:
     hostnames: ['.*']
 
-    moduletool: lmod
+    moduletool: N/A
     load_default_buildspecs: True
     executors:
       defaults:
+         pollinterval: 10
          launcher: qsub
          max_pend_time: 30
       pbs:

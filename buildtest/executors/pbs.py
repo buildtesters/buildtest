@@ -28,8 +28,6 @@ class PBSExecutor(BaseExecutor):
     def load(self):
         """Load the a Cobalt executor configuration from buildtest settings."""
 
-        print(self._settings)
-
         self.launcher = self._settings.get("launcher") or deep_get(
             self._buildtestsettings.target_config, "executors", "defaults", "launcher"
         )
@@ -41,11 +39,8 @@ class PBSExecutor(BaseExecutor):
         )
 
         self.max_pend_time = self._settings.get("max_pend_time") or deep_get(
-            self._buildtestsettings, "executors", "defaults", "max_pend_time"
+            self._buildtestsettings.target_config, "executors", "defaults", "max_pend_time"
         )
-        print("max_time:", self.max_pend_time, self._settings.get("max_pend_time"), deep_get(
-            self._buildtestsettings, "executors", "defaults", "max_pend_time"
-        ))
 
     def dispatch(self):
         """This method is responsible for dispatching PBS job, get JobID
@@ -97,6 +92,17 @@ class PBSExecutor(BaseExecutor):
         print(msg)
         self.logger.debug(msg)
 
+        qstat_cmd = f"{self.poll_cmd} -f -F json {self.builder.metadata['jobid']}"
+        cmd = BuildTestCommand(qstat_cmd)
+        cmd.execute()
+        output = cmd.get_output()
+        output = " ".join(output)
+        job_data = json.loads(output)
+
+        # output in the form of <server>:<file>
+        self.builder.metadata['outfile'] = job_data["Jobs"][self.job_id]["Output_Path"].split(":")[1]
+        self.builder.metadata['errfile'] = job_data["Jobs"][self.job_id]["Error_Path"].split(":")[1]
+
     def poll(self):
         """This method is responsible for polling Cobalt job, we check the
         job state and existence of output file. If file exists or job is in
@@ -109,7 +115,7 @@ class PBSExecutor(BaseExecutor):
         self.logger.debug(f"Query Job: {self.builder.metadata['jobid']}")
         # run qstat -f -F json <jobid>
         qstat_cmd = (
-            f"{self.poll_cmd} -f -F json {self.builder.metadata['jobid']}"
+            f"{self.poll_cmd} -x -f -F json {self.builder.metadata['jobid']}"
         )
         self.logger.debug(f"Executing command: {qstat_cmd}")
         cmd = BuildTestCommand(qstat_cmd)
@@ -118,11 +124,11 @@ class PBSExecutor(BaseExecutor):
         output = " ".join(output)
 
         job_data = json.loads(output)
-        print(type(job_data), json.dumps(job_data,indent=2))
 
-        print("jobid:", self.builder.metadata["jobid"], type(self.builder.metadata["jobid"]))
+        self.logger.debug("Job record")
+        self.logger.debug(json.dumps(job_data,indent=2))
+
         job_state = job_data["Jobs"][self.builder.metadata['jobid']]["job_state"]
-        print("job_state:", job_state)
 
         if job_state:
             self.builder.job_state = job_state
@@ -134,6 +140,7 @@ class PBSExecutor(BaseExecutor):
             self.builder.job_state,
         )
 
+        # if job in pending state (Q) check if it exceeds max_pend_time if so cancel job
         if self.builder.job_state == "Q":
             self.builder.stop()
             self.logger.debug(f"Time Duration: {self.builder.duration}")
@@ -152,32 +159,30 @@ class PBSExecutor(BaseExecutor):
             self.builder.start()
 
     def gather(self):
-        """This method is responsible for moving output and error file in the run
-        directory. We need to read <JOBID>.cobaltlog file which contains
-        output of exit code. Cobalt doesn't provide any method to retrieve
-        exit code using account command (``qstat``) so we need to perform
-        regular expression.
+        """This method is responsible for getting output of job using `qstat -x -f -F json <jobID>`
+        and storing the result in builder object. We retrieve specific fields such as exit status,
+        start time, end time, runtime and store them in builder object. We read output and error file
+        and store the content in builder object.
         """
+
+        qstat_cmd = f"{self.poll_cmd} -x -f -F json {self.builder.metadata['jobid']}"
+
+        self.logger.debug(f"Executing command: {qstat_cmd}")
+        cmd = BuildTestCommand(qstat_cmd)
+        cmd.execute()
+        output = cmd.get_output()
+        output = " ".join(output)
+
+        job_data = json.loads(output)
+
+        self.builder.metadata["result"]["returncode"] = job_data["Jobs"][self.builder.metadata['jobid']]["Exit_status"]
+        self.builder.metadata["result"]["starttime"] = job_data["Jobs"][self.builder.metadata['jobid']]["stime"]
+        self.builder.metadata["result"]["endtime"] = job_data["Jobs"][self.builder.metadata['jobid']]["etime"]
+        self.builder.metadata["result"]["runtime"] = job_data["Jobs"][self.builder.metadata['jobid']]["resources_used"]["walltime"]
+        self.builder.metadata["job"] = job_data
 
         self.builder.metadata["output"] = read_file(self.builder.metadata["outfile"])
         self.builder.metadata["error"] = read_file(self.builder.metadata["errfile"])
-
-        cobaltlog = os.path.join(
-            self.builder.stage_dir, str(self.builder.metadata["jobid"]) + ".cobaltlog"
-        )
-        self.logger.debug(f"Cobalt Log File written to {cobaltlog}")
-        if os.path.exists(cobaltlog):
-            content = read_file(cobaltlog)
-            pattern = r"(exit code of.)(\d+)(\;)"
-            # pattern to check in cobalt log file is 'exit code of <CODE>;'
-            m = re.search(pattern, content)
-            if m:
-                self.builder.metadata["result"]["returncode"] = int(m.group(2))
-                print(self.builder.metadata["result"]["returncode"])
-            else:
-                self.logger.debug(
-                    f"Error in regular expression: {pattern}. Unable to find returncode please check your cobalt log file"
-                )
 
         self.check_test_state()
 
