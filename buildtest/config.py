@@ -1,4 +1,5 @@
 import logging
+import json
 import os
 import re
 import socket
@@ -10,7 +11,7 @@ from buildtest.defaults import (
 )
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_schema, load_recipe
-from buildtest.system import Slurm, LSF, Cobalt, system
+from buildtest.system import Slurm, LSF, Cobalt, PBS, system
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
@@ -245,12 +246,45 @@ class BuildtestConfiguration:
                     f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'"
                 )
     def _validate_pbs_executors(self, pbs_executor):
-        """Validate cobalt queue property by running ```qstat -Q <queue>``. If
-        its a non-zero exit code then queue doesn't exist otherwise it is a valid
-        queue.
-        """
-        pass
+        """Validate pbs queue property by running by checking if queue is found and
+           queue is 'enabled' and 'started' which are two properties found in pbs queue
+           configuration that can be retrieved using ``qstat -Q -f -F json``. The output is in
+           the following format
 
+           $ qstat -Q -f -F json
+            {
+                "timestamp":1615924938,
+                "pbs_version":"19.0.0",
+                "pbs_server":"pbs",
+                "Queue":{
+                    "workq":{
+                        "queue_type":"Execution",
+                        "total_jobs":0,
+                        "state_count":"Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Begun:0 ",
+                        "resources_assigned":{
+                            "mem":"0kb",
+                            "ncpus":0,
+                            "nodect":0
+                        },
+                        "hasnodes":"True",
+                        "enabled":"True",
+                        "started":"True"
+                    }
+                }
+            }
+
+        """
+
+        pbs = PBS()
+        for executor in pbs_executor:
+            queue = pbs_executor[executor].get("queue")
+            if queue not in pbs.queues:
+                raise BuildTestError(f"{queue} not in {pbs.queues}")
+
+            if pbs.queue_summary["Queue"][queue]["enabled"] != "True" or  pbs.queue_summary["Queue"][queue]["started"] != "True":
+                print("Queue Configuration")
+                print(json.dumps(pbs.queue_summary,indent=2))
+                raise BuildTestError(f"{queue} is not enabled or started properly. Please check your queue configuration")
 
 
 def check_settings(settings_path=None, executor_check=True):

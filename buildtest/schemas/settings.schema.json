@@ -339,6 +339,7 @@
           "type": "object",
           "description": "An instance object of lsf executor",
           "additionalProperties": false,
+          "required": ["queue"],
           "properties": {
               "description": {"type": "string", "description": "description field for documenting your executor"},
               "launcher": { "type": "string", "enum": ["bsub"], "description": "Specify the lsf batch scheduler to use. This overrides the default ``launcher`` field. It must be ``bsub``. " },
@@ -354,6 +355,7 @@
           "type": "object",
           "description": "An instance object of cobalt executor",
           "additionalProperties": false,
+          "required": ["queue"],
           "properties": {
               "description": {"type": "string", "description": "description field for documenting your executor"},
               "launcher": { "type": "string", "enum": ["qsub"], "description": "Specify the cobalt batch scheduler to use. This overrides the default ``launcher`` field. It must be ``qsub``. " },
@@ -369,6 +371,7 @@
         "type": "object",
         "description": "An instance object of cobalt executor",
           "additionalProperties": false,
+          "required": ["queue"],
           "properties": {
               "description": {"type": "string", "description": "description field for documenting your executor"},
               "launcher": { "type": "string", "enum": ["qsub"], "description": "Specify the pbs batch scheduler to use. This overrides the default ``launcher`` field. It must be ``qsub``. " },
