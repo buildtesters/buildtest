@@ -1,14 +1,13 @@
 import os
 import pytest
-import socket
 from buildtest.menu.build import BuildTest
-
+from buildtest.utils.command import BuildTestCommand
 
 def test_cori():
     # This test must run on Cori Login nodes which are cori[01-20].nersc.gov.
-    if not socket.getfqdn().endswith("nersc.gov") or not socket.getfqdn().startswith(
-        "cori"
-    ):
+    hostname = " ".join(BuildTestCommand("hostname -f").get_output())
+
+    if not hostname.endswith("nersc.gov") or not hostname.startswith("cori"):
         pytest.skip(
             "This test runs only on domain 'nersc.gov' with machine names that start with 'cori*'"
         )

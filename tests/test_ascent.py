@@ -1,12 +1,13 @@
 import os
 import pytest
-import socket
 from buildtest.menu.build import BuildTest
+from buildtest.utils.command import BuildTestCommand
 
 
 def test_ascent():
     # this test must run on Ascent system with domain '.ascent.olcf.ornl.gov' otherwise its skipped
-    if not socket.getfqdn().endswith("ascent.olcf.ornl.gov"):
+    hostname = " ".join(BuildTestCommand("hostname -f").get_output())
+    if not hostname.endswith("ascent.olcf.ornl.gov"):
         pytest.skip("This test must run on domain ascent.olcf.ornl.gov")
 
     here = os.path.dirname(os.path.abspath(__file__))

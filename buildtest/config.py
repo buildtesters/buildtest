@@ -2,7 +2,6 @@ import logging
 import json
 import os
 import re
-import socket
 
 from buildtest.defaults import (
     USER_SETTINGS_FILE,
@@ -44,13 +43,16 @@ class BuildtestConfiguration:
 
     def get_current_system(self):
         """This method gets current system by setting ``self.target`` by matching ``hostnames`` entry
-        in each system list with actual system. We retrieve target hostname via ``socket.gethostname()``
-        and determine which system configuration to use. If no system is found we raise an error.
+        in each system list with actual system. We retrieve target hostname and determine which system configuration to use.
+        If no system is found we raise an error.
         """
         host_lookup = {}
-        # for every system record we lookup 'hostnames' entry and apply re.match against current hostbame. If found we break from loop
+
+        # get hostname fqdn
+        hostname = " ".join(BuildTestCommand("hostname -f").get_output())
+
+        # for every system record we lookup 'hostnames' entry and apply re.match against current hostname. If found we break from loop
         for name in self.config["system"].keys():
-            hostname = socket.getfqdn()
             host_lookup[name] = self.config["system"][name]["hostnames"]
 
             for host_entry in self.config["system"][name]["hostnames"]:
@@ -61,7 +63,7 @@ class BuildtestConfiguration:
 
         if not self.target_config:
             raise BuildTestError(
-                f"Based on current system hostname: {socket.gethostname()} we cannot find a matching system  {list(self.systems)} based on current hostnames: {host_lookup} "
+                f"Based on current system hostname: {hostname} we cannot find a matching system  {list(self.systems)} based on current hostnames: {host_lookup} "
             )
 
         if self.target_config["executors"].get("local"):
