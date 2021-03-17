@@ -1,12 +1,12 @@
 import os
 import pytest
-import socket
 from buildtest.menu.build import BuildTest
+from buildtest.utils.command import BuildTestCommand
 
 
 def test_jlse():
-
-    if not socket.getfqdn().endswith("alcf.anl.gov"):
+    hostname = " ".join(BuildTestCommand("hostname -f").get_output())
+    if not hostname.endswith("alcf.anl.gov"):
         pytest.skip("Test runs only on JLSE Login Nodes with domain name alcf.anl.gov")
 
     here = os.path.dirname(os.path.abspath(__file__))
