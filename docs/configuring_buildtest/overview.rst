@@ -224,7 +224,7 @@ Once you define your executors, you can :ref:`query the executors <view_executor
 command.
 
 Configuring test directory
----------------------------------
+---------------------------
 
 The default location where tests are written is **$BUILDTEST_ROOT/var/tests** where
 $BUILDTEST_ROOT is the root of buildtest repo. You may specify ``testdir`` in your
@@ -415,3 +415,77 @@ on command line. For instance, ``slurm.gpu`` executor, we use the ``options: -C 
 to submit to Cori GPU cluster which requires ``sbatch -M escori -C gpu``.
 Any additional **#SBATCH** options are defined in buildspec for more details see :ref:`batch scheduler support <batch_support>`.
 
+.. _pbs_executors:
+
+PBS Executors
+--------------
+
+buildtest supports `PBS <https://www.altair.com/pbs-works-documentation/>`_ scheduler
+which can be defined in the ``executors`` section. Shown below is an example configuration using
+one ``pbs`` executor named ``workq``.  The property ``queue: workq`` defines
+the name of PBS queue that is available in your system.
+
+.. code-block:: yaml
+    :linenos:
+    :emphasize-lines: 12-14
+
+    system:
+      generic:
+        hostnames: ['.*']
+
+        moduletool: N/A
+        load_default_buildspecs: True
+        executors:
+          defaults:
+             pollinterval: 10
+             launcher: qsub
+             max_pend_time: 30
+          pbs:
+            workq:
+              queue: workq
+        compilers:
+          compiler:
+            gcc:
+              default:
+                cc: /usr/bin/gcc
+                cxx: /usr/bin/g++
+                fc: /usr/bin/gfortran
+
+buildtest will detect the PBS queues in your system and determine if queues are valid
+and queue state `enabled` or `started` are set to **True**. In this example below, buildtest will
+query the queue configuration and check the output of all pbs executors with this JSON format. In example
+below we have one queue `workq` defined that is ``enabled`` and ``started``.
+
+.. code-block:: console
+    :emphasize-lines: 6-7, 17-18
+    :linenos:
+
+    $ qstat -Q -f -F json
+    {
+        "timestamp":1615924938,
+        "pbs_version":"19.0.0",
+        "pbs_server":"pbs",
+        "Queue":{
+            "workq":{
+                "queue_type":"Execution",
+                "total_jobs":0,
+                "state_count":"Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Begun:0 ",
+                "resources_assigned":{
+                    "mem":"0kb",
+                    "ncpus":0,
+                    "nodect":0
+                },
+                "hasnodes":"True",
+                "enabled":"True",
+                "started":"True"
+            }
+        }
+    }
+
+.. _pbs_limitation:
+
+PBS Limitation
+~~~~~~~~~~~~~~~~~~
+
+.. Note:: Please note that buildtest PBS support relies on job history set because buildtest needs to query job after completion using `qstat -x`. This
+          can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **13.15.5.1 Enabling Job History** in `PBS 2020.1 Admin Guide <https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2020.1.pdf>`_

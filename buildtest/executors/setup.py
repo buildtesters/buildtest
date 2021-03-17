@@ -71,7 +71,6 @@ class BuildExecutor:
 
         if site_config.pbsexecutors:
             for name in site_config.pbsexecutors:
-                print(site_config.target_config["executors"]["pbs"][name])
                 self.executors[f"{site_config.name}.pbs.{name}"] = PBSExecutor(
                     f"{site_config.name}.pbs.{name}",
                     site_config.target_config["executors"]["pbs"][name],

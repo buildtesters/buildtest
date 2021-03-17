@@ -4,10 +4,11 @@ Batch Scheduler Support
 ========================
 
 
-Slurm Executor
----------------
+Slurm
+------
 
-The ``SlurmExecutor`` class is responsible for managing slurm jobs which
+buildtest can submit jobs to `Slurm <https://slurm.schedmd.com/>`_ assuming you have slurm executors defined
+in your configuration file. The ``SlurmExecutor`` class is responsible for managing slurm jobs which
 will perform the following action
 
   1. Check slurm binary ``sbatch`` and ``sacct``.
@@ -15,14 +16,13 @@ will perform the following action
   3. Poll all slurm jobs until all have finished
   4. Gather Job results once job is complete via ``sacct``.
 
-buildtest will dispatch all jobs and poll all jobs in a ``while (True)`` until all
-jobs are complete. If job is in [**PENDING** | **RUNNING** ] then buildtest will
-keep polling at a set interval. Once job is not in **PENDING**
-or **RUNNING** stage, buildtest will gather job results and wait until all jobs have
-finished.
+buildtest will dispatch slurm jobs and poll all jobs until all
+jobs are complete. If job is in **PENDING** or  **RUNNING** state, then buildtest will
+keep polling at a set interval defined by ``pollinterval`` setting in buildtest.
+Once job is not in **PENDING** or **RUNNING** stage, buildtest will gather job results
+and wait until all jobs have finished.
 
-In order to use a slurm scheduler, you must define some slurm executors and reference
-them via ``executor`` property. In this example we have a slurm executor ``slurm.debug``,
+In this example we have a slurm executor ``cori.slurm.debug``,
 in addition we can specify **#SBATCH** directives using ``sbatch`` field.
 The sbatch field is a list of string types, buildtest will
 insert **#SBATCH** directive in front of each value.
@@ -75,10 +75,10 @@ The ``cori.slurm.debug`` executor in our configuration file is defined as follow
       cori:
         executors:
           slurm:
-           debug:
-            description: jobs for debug qos
-            qos: debug
-            cluster: cori
+            debug:
+              description: jobs for debug qos
+              qos: debug
+              cluster: cori
 
 With this setting, any buildspec test that use ``cori.slurm.debug`` executor will result
 in the following launch option: ``sbatch --qos debug --clusters=cori </path/to/script.sh>``.
@@ -205,8 +205,7 @@ dispatch, poll, gather, or cancel job. The SlurmExecutor will gather job metrics
 via `sacct <https://slurm.schedmd.com/sacct.html>`_ using the following format fields:
 **Account**, **AllocNodes**, **AllocTRES**, **ConsumedEnergyRaw**, **CPUTimeRaw**, **Elapsed**,
 **End**, **ExitCode**, **JobID**, **JobName**, **NCPUS**, **NNodes**, **QOS**, **ReqGRES**,
-**ReqMem**, **ReqNodes**, **ReqTRES**, **Start**, **State**, **Submit**, **UID**, **User**, **WorkDir**
-
+**ReqMem**, **ReqNodes**, **ReqTRES**, **Start**, **State**, **Submit**, **UID**, **User**, **WorkDir**.
 For a complete list of format fields see ``sacct -e``. For now, we support only these fields of interest
 for reporting purpose.
 
@@ -233,7 +232,7 @@ If we run this test, buildtest will mark this test as ``PASS`` because the slurm
 state matches with expected result even though returncode is 1.
 
 .. code-block:: console
-    :emphasize-lines: 8,26
+    :emphasize-lines: 8,27
 
         Completed Jobs
     ________________________________________
@@ -272,21 +271,14 @@ results followed by list of field and value output::
     2020-07-22 18:20:48,405 [base.py:598 - gather() ] - [DEBUG] field: State   value: TIMEOUT
 
 
-LSF Executor
--------------
+LSF
+----
 
-The **LSFExecutor** is responsible for submitting jobs to LSF scheduler. The LSFExecutor
-behaves similar to SlurmExecutor with the five stages implemented as class methods:
+buildtest can support job submission to `IBM Spectrum LSF <https://www.ibm.com/support/knowledgecenter/en/SSWRJV/product_welcome_spectrum_lsf.html>`_
+if you have defined LSF executors in your configuration file.
 
-- Check: check lsf binaries (``bsub``, ``bjobs``)
-- Load: load lsf executor from buildtest configuration ``config.yml``
-- Dispatch: Dispatch job using bsub and retrieve JobID
-- Poll: Poll job using ``bjobs`` to retrieve job state
-- Gather: Retrieve job results once job is finished
-
-The ``bsub`` key works similar to ``sbatch`` key which allows one to specify **#BSUB**
-directive into job script. This example will use the ``lsf.batch`` executor with
-executor name ``batch`` defined in buildtest configuration.
+The ``bsub`` property can be used to  specify **#BSUB** directive into job script. This example
+will use the executor ``ascent.lsf.batch`` executor that was defined in buildtest configuration.
 
 .. code-block:: yaml
 
@@ -299,19 +291,363 @@ executor name ``batch`` defined in buildtest configuration.
 
         run: jsrun hostname
 
-The LSFExecutor ``poll`` method will retrieve job state using
+The LSFExecutor poll jobs  and retrieve job state using
 ``bjobs -noheader -o 'stat' <JOBID>``. The LSFExecutor will poll
 job so long as they are in **PEND** or **RUN** state. Once job is not in
-any of the two states, LSFExecutor will proceed to ``gather`` stage and acquire
-job results.
-
-The LSFExecutor ``gather`` method will retrieve the following format fields using
-``bjobs``: **job_name**, **stat**, **user**, **user_group**, **queue**, **proj_name**,
+any of the two states, LSFExecutor will gather job results. buildtest will retrieve
+the following format fields using ``bjobs``: **job_name**, **stat**, **user**, **user_group**, **queue**, **proj_name**,
 **pids**, **exit_code**, **from_host**, **exec_host**, **submit_time**, **start_time**,
-**finish_time**, **nthreads**, **exec_home**, **exec_cwd**, **output_file**, **error_file**
+**finish_time**, **nthreads**, **exec_home**, **exec_cwd**, **output_file**, **error_file** to
+get job record.
 
-Cobalt Executor
-----------------
+
+PBS
+----
+
+buildtest can support job submission to `PBS Pro <https://www.altair.com/pbs-works-documentation/>`_ or `OpenPBS <https://openpbs.atlassian.net/wiki/spaces/PBSPro/overview>`_
+scheduler. Assuming you have configured :ref:`pbs_executors` in your configuration file you can submit jobs
+to the PBS executor by selecting the appropriate pbs executor via ``executor`` property in buildspec. The ``#PBS``
+directives can be specified using ``pbs`` field which is a list of PBS options that get inserted at top of script. Shown
+below is an example buildspec using the `script` schema.
+
+.. code-block:: yaml
+   :emphasize-lines: 6
+
+    version: "1.0"
+    buildspecs:
+      pbs_sleep:
+        type: script
+        executor: generic.pbs.workq
+        pbs: ["-l nodes=1", "-l walltime=00:02:00"]
+        run: sleep 10
+
+
+buildtest will poll PBS jobs using ``qstat -x -f -F json <jobID>`` until job is finished. Note that
+we use **-x** option to retrieve finished jobs which is required inorder for buildtest to detect job
+state upon completion. Please see :ref:`pbs_limitation` to ensure your PBS cluster supports job history.
+
+Shown below is an example build of the buildspec using PBS scheduler.
+
+
+.. code-block:: console
+
+    [pbsuser@pbs buildtest]$ buildtest build -b general_tests/sched/pbs/hostname.yml
+
+    +-------------------------------+
+    | Stage: Discovering Buildspecs |
+    +-------------------------------+
+
+
+    Discovered Buildspecs:
+
+    /tmp/Documents/buildtest/general_tests/sched/pbs/hostname.yml
+
+    +---------------------------+
+    | Stage: Parsing Buildspecs |
+    +---------------------------+
+
+     schemafile              | validstate   | buildspec
+    -------------------------+--------------+---------------------------------------------------------------
+     script-v1.0.schema.json | True         | /tmp/Documents/buildtest/general_tests/sched/pbs/hostname.yml
+
+    +----------------------+
+    | Stage: Building Test |
+    +----------------------+
+
+     name      | id       | type   | executor          | tags   | testpath
+    -----------+----------+--------+-------------------+--------+---------------------------------------------------------------------------------------------
+     pbs_sleep | 2adfc3c1 | script | generic.pbs.workq |        | /tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh
+
+
+
+    +----------------------+
+    | Stage: Running Test  |
+    +----------------------+
+
+    [pbs_sleep] JobID: 40.pbs dispatched to scheduler
+     name      | id       | executor          | status   |   returncode | testpath
+    -----------+----------+-------------------+----------+--------------+---------------------------------------------------------------------------------------------
+     pbs_sleep | 2adfc3c1 | generic.pbs.workq | N/A      |           -1 | /tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    Job Queue: ['40.pbs']
+
+
+    Completed Jobs
+    ________________________________________
+
+
+    ╒════════╤════════════╤═════════╤════════════╕
+    │ name   │ executor   │ jobID   │ jobstate   │
+    ╞════════╪════════════╪═════════╪════════════╡
+    ╘════════╧════════════╧═════════╧════════════╛
+
+
+    Pending Jobs
+    ________________________________________
+
+
+    ╒═══════════╤═══════════════════╤═════════╤════════════╕
+    │ name      │ executor          │ jobID   │ jobstate   │
+    ╞═══════════╪═══════════════════╪═════════╪════════════╡
+    │ pbs_sleep │ generic.pbs.workq │ 40.pbs  │ R          │
+    ╘═══════════╧═══════════════════╧═════════╧════════════╛
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    Job Queue: ['40.pbs']
+
+
+    Completed Jobs
+    ________________________________________
+
+
+    ╒════════╤════════════╤═════════╤════════════╕
+    │ name   │ executor   │ jobID   │ jobstate   │
+    ╞════════╪════════════╪═════════╪════════════╡
+    ╘════════╧════════════╧═════════╧════════════╛
+
+
+    Pending Jobs
+    ________________________________________
+
+
+    ╒═══════════╤═══════════════════╤═════════╤════════════╕
+    │ name      │ executor          │ jobID   │ jobstate   │
+    ╞═══════════╪═══════════════════╪═════════╪════════════╡
+    │ pbs_sleep │ generic.pbs.workq │ 40.pbs  │ F          │
+    ╘═══════════╧═══════════════════╧═════════╧════════════╛
+
+
+    Polling Jobs in 10 seconds
+    ________________________________________
+    Job Queue: []
+
+
+    Completed Jobs
+    ________________________________________
+
+
+    ╒═══════════╤═══════════════════╤═════════╤════════════╕
+    │ name      │ executor          │ jobID   │ jobstate   │
+    ╞═══════════╪═══════════════════╪═════════╪════════════╡
+    │ pbs_sleep │ generic.pbs.workq │ 40.pbs  │ F          │
+    ╘═══════════╧═══════════════════╧═════════╧════════════╛
+
+
+    Pending Jobs
+    ________________________________________
+
+
+    ╒════════╤════════════╤═════════╤════════════╕
+    │ name   │ executor   │ jobID   │ jobstate   │
+    ╞════════╪════════════╪═════════╪════════════╡
+    ╘════════╧════════════╧═════════╧════════════╛
+
+    +---------------------------------------------+
+    | Stage: Final Results after Polling all Jobs |
+    +---------------------------------------------+
+
+     name      | id       | executor          | status   |   returncode | testpath
+    -----------+----------+-------------------+----------+--------------+---------------------------------------------------------------------------------------------
+     pbs_sleep | 2adfc3c1 | generic.pbs.workq | PASS     |            0 | /tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh
+
+    +----------------------+
+    | Stage: Test Summary  |
+    +----------------------+
+
+    Executed 1 tests
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%
+
+
+
+    Writing Logfile to: /tmp/buildtest_mu285m58.log
+
+buildtest will preserve the job record from ``qstat -x -f -F json <jobID>`` in the test report if job was complete.
+If we take a look at the test result using **buildtest inspect** you will see the ``job`` section is
+prepopulated from the JSON record provided by **qstat**.
+
+
+.. code-block:: console
+    :emphasize-lines: 22-88
+    :linenos:
+
+    [pbsuser@pbs buildtest]$ buildtest inspect 2adfc3c1
+    {
+      "id": "2adfc3c1",
+      "full_id": "2adfc3c1-1c81-43d0-a151-6fa1a9818eb4",
+      "testroot": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3",
+      "testpath": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh",
+      "stagedir": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage",
+      "rundir": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/run",
+      "command": "qsub -q workq /tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh",
+      "outfile": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/pbs_sleep.o40",
+      "errfile": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/pbs_sleep.e40",
+      "schemafile": "script-v1.0.schema.json",
+      "executor": "generic.pbs.workq",
+      "tags": "",
+      "starttime": "Wed Mar 17 20:36:48 2021",
+      "endtime": "Wed Mar 17 20:36:48 2021",
+      "runtime": "00:00:10",
+      "state": "PASS",
+      "returncode": 0,
+      "output": "",
+      "error": "",
+      "job": {
+        "timestamp": 1616013438,
+        "pbs_version": "19.0.0",
+        "pbs_server": "pbs",
+        "Jobs": {
+          "40.pbs": {
+            "Job_Name": "pbs_sleep",
+            "Job_Owner": "pbsuser@pbs",
+            "resources_used": {
+              "cpupercent": 0,
+              "cput": "00:00:00",
+              "mem": "5620kb",
+              "ncpus": 1,
+              "vmem": "25632kb",
+              "walltime": "00:00:10"
+            },
+            "job_state": "F",
+            "queue": "workq",
+            "server": "pbs",
+            "Checkpoint": "u",
+            "ctime": "Wed Mar 17 20:36:48 2021",
+            "Error_Path": "pbs:/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/pbs_sleep.e40",
+            "exec_host": "pbs/0",
+            "exec_vnode": "(pbs:ncpus=1)",
+            "Hold_Types": "n",
+            "Join_Path": "n",
+            "Keep_Files": "n",
+            "Mail_Points": "a",
+            "mtime": "Wed Mar 17 20:36:58 2021",
+            "Output_Path": "pbs:/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/pbs_sleep.o40",
+            "Priority": 0,
+            "qtime": "Wed Mar 17 20:36:48 2021",
+            "Rerunable": "True",
+            "Resource_List": {
+              "ncpus": 1,
+              "nodect": 1,
+              "nodes": 1,
+              "place": "scatter",
+              "select": "1:ncpus=1",
+              "walltime": "00:02:00"
+            },
+            "stime": "Wed Mar 17 20:36:48 2021",
+            "session_id": 7154,
+            "jobdir": "/home/pbsuser",
+            "substate": 92,
+            "Variable_List": {
+              "PBS_O_HOME": "/home/pbsuser",
+              "PBS_O_LANG": "en_US.utf8",
+              "PBS_O_LOGNAME": "pbsuser",
+              "PBS_O_PATH": "/tmp/Documents/buildtest/bin:/tmp/Documents/github/buildtest/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/pbs/bin:/home/pbsuser/.local/bin:/home/pbsuser/bin",
+              "PBS_O_MAIL": "/var/spool/mail/pbsuser",
+              "PBS_O_SHELL": "/bin/bash",
+              "PBS_O_WORKDIR": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage",
+              "PBS_O_SYSTEM": "Linux",
+              "PBS_O_QUEUE": "workq",
+              "PBS_O_HOST": "pbs"
+            },
+            "comment": "Job run at Wed Mar 17 at 20:36 on (pbs:ncpus=1) and finished",
+            "etime": "Wed Mar 17 20:36:48 2021",
+            "run_count": 1,
+            "Stageout_status": 1,
+            "Exit_status": 0,
+            "Submit_arguments": "-q workq /tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh",
+            "history_timestamp": 1616013418,
+            "project": "_pbs_project_default"
+          }
+        }
+      }
+    }
+
+
+
+    Output File
+    ______________________________
+
+
+
+
+    Error File
+    ______________________________
+
+
+
+
+    Test Content
+    ______________________________
+    #!/bin/bash
+    #PBS -l nodes=1
+    #PBS -l walltime=00:02:00
+    #PBS -N pbs_sleep
+    source /tmp/Documents/buildtest/var/executors/generic.pbs.workq/before_script.sh
+    sleep 10
+    source /tmp/Documents/buildtest/var/executors/generic.pbs.workq/after_script.sh
+
+
+
+    buildspec:  /tmp/Documents/buildtest/general_tests/sched/pbs/hostname.yml
+    ______________________________
+    version: "1.0"
+    buildspecs:
+      pbs_sleep:
+        type: script
+        executor: generic.pbs.workq
+        pbs: ["-l nodes=1", "-l walltime=00:02:00"]
+        run: sleep 10
+
+
+You can use ``batch`` property to define schedule configuration that is translated into **#PBS**
+directives. To learn more about `batch` property see :ref:`scheduler_agnostic_configuration`.
+
+In this example we show how one can use ``batch`` property with the PBS executor instead of using
+``pbs`` property. You may specify ``batch`` and ``pbs`` property to define PBS directives. This
+example will allocate 1 node, 1 cpu, 500mb memory with 2min timelimit and send email notification.
+
+
+
+.. code-block:: yaml
+    :emphasize-lines: 6-11
+
+    version: "1.0"
+    buildspecs:
+      pbs_sleep:
+        type: script
+        executor: generic.pbs.workq
+        batch:
+          nodecount: "1"
+          cpucount: "1"
+          memory: "500mb"
+          email-address: "shahzebmsiddiqui@gmail.com"
+          timelimit: "00:02:00"
+        run: sleep 15
+
+buildtest will translate the ``batch`` property into ``#PBS`` directives if their is an
+equivalent option. Shown below is the generated test using the `batch` property.
+
+.. code-block:: shell
+    :emphasize-lines: 2-6
+
+    #!/bin/bash
+    #PBS -l nodes=1
+    #PBS -l ncpus=1
+    #PBS -l mem=500mb
+    #PBS -WMail_Users=shahzebmsiddiqui@gmail.com
+    #PBS -l walltime=00:02:00
+    #PBS -N pbs_sleep
+    source /tmp/Documents/buildtest/var/executors/generic.pbs.workq/before_script.sh
+    sleep 15
+    source /tmp/Documents/buildtest/var/executors/generic.pbs.workq/after_script.sh
+
+Cobalt
+-------
 
 `Cobalt <https://trac.mcs.anl.gov/projects/cobalt>`_ is a job scheduler developed
 by `Argonne National Laboratory <https://www.anl.gov/>`_ that runs on compute
@@ -457,6 +793,8 @@ such as ::
 
 qstat has no job record for capturing returncode so buildtest must rely on Cobalt Log file.:
 
+.. _scheduler_agnostic_configuration:
+
 Scheduler Agnostic Configuration
 ---------------------------------
 
@@ -468,23 +806,23 @@ for the **batch** field
 
 
 .. csv-table:: Batch Translation Table
-   :header: "Field", "Slurm", "LSF", "Cobalt"
-   :widths: 25 25 25 25
+   :header: "Field", "Slurm", "LSF", "PBS", "Cobalt"
+   :widths: 25 25 25 25 25
 
-   **account**, --account, -P, --project
-   **begin**, --begin, -b, N/A
-   **cpucount**, --ntasks, -n, --proccount
-   **email-address**, --mail-user, -u, --notify
-   **exclusive**, --exclusive=user, -x, N/A
-   **memory**, --mem, -M, N/A
-   **network**, --network, -network, N/A
-   **nodecount**, --nodes, -nnodes, --nodecount
-   **qos**, --qos, N/A, N/A
-   **queue**, --partition, -q, --queue
-   **tasks-per-core**, --ntasks-per-core, N/A, N/A
-   **tasks-per-node**, --ntasks-per-node, N/A, N/A
-   **tasks-per-socket**, --ntasks-per-socket, N/A, N/A
-   **timelimit**, --time, -W, --time
+   **account**, ``--account``, ``-P``, ``project``, ``--project``
+   **begin**, ``--begin``, ``-b``, **N/A**, **N/A**
+   **cpucount**, ``--ntasks``, ``-n``, ``-l ncpus``, ``--proccount``
+   **email-address**, ``--mail-user``, ``-u``, ``-WMail_Users``, ``--notify``
+   **exclusive**, ``--exclusive=user``, ``-x``, **N/A**, **N/A**
+   **memory**, ``--mem``, ``-M``, ``-l mem``, **N/A**
+   **network**, ``--network``, ``-network``, **N/A**, **N/A**
+   **nodecount**, ``--nodes``, ``-nnodes``, ``-l nodes``, ``--nodecount``
+   **qos**, ``--qos``, **N/A**, **N/A**, **N/A**
+   **queue**, ``--partition``, ``-q``, ``-q``, ``--queue``
+   **tasks-per-core**, ``--ntasks-per-core``, **N/A**, **N/A**, **N/A**
+   **tasks-per-node**, ``--ntasks-per-node``, **N/A**, **N/A**, **N/A**
+   **tasks-per-socket**, ``--ntasks-per-socket``, **N/A**, **N/A**, **N/A**
+   **timelimit**, ``--time``, ``-W``, ``-l walltime``, ``--time``
 
 
 In this example, we rewrite the LSF buildspec to use ``batch`` instead of ``bsub``
