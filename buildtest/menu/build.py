@@ -146,6 +146,7 @@ class BuildTest:
         self.configuration = check_settings(
             settings_path=self.configfile, executor_check=True
         )
+
         # self.configuration = BuildtestConfiguration(self.configfile)
         self.buildspecs = buildspecs
         self.exclude_buildspecs = exclude_buildspecs
@@ -363,6 +364,7 @@ class BuildTest:
         """Given a buildspec file specified by the user with ``buildtest build --buildspec``,
         discover one or more files and return a list for buildtest to process.
         This method is called once per argument of ``--buildspec`` or ``--exclude``
+        option. If its a directory path we recursively find all buildspecs with
         option. If its a directory path we recursively find all buildspecs with
         .yml extension. If filepath doesn't exist or file extension is not .yml we
         return None and capture error in log.
