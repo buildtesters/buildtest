@@ -1,15 +1,15 @@
-# Untitled string in buildtest configuration schema Schema
+# Untitled undefined type in buildtest configuration schema Schema
 
 ```txt
-settings.schema.json#/definitions/pbs/properties/account
+settings.schema.json#/definitions/pbs/properties/after_script
 ```
 
-Specify Job Account for charging resources
+The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
 
-## account Type
+## after_script Type
 
-`string`
+unknown

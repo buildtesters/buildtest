@@ -23,6 +23,7 @@ The executor section is used for declaring your executors that are responsible f
 | [lsf](#lsf)           | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-lsf.md "settings.schema.json#/definitions/system/properties/executors/properties/lsf")           |
 | [slurm](#slurm)       | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-slurm.md "settings.schema.json#/definitions/system/properties/executors/properties/slurm")       |
 | [cobalt](#cobalt)     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-cobalt.md "settings.schema.json#/definitions/system/properties/executors/properties/cobalt")     |
+| [pbs](#pbs)           | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-pbs.md "settings.schema.json#/definitions/system/properties/executors/properties/pbs")           |
 
 ## defaults
 
@@ -113,3 +114,21 @@ The `cobalt` section is used for declaring Cobalt executors for running jobs usi
 ### cobalt Type
 
 `object` ([Details](settings-definitions-system-properties-executors-properties-cobalt.md))
+
+## pbs
+
+The `pbs` section is used for declaring PBS executors for running jobs using PBS scheduler
+
+`pbs`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-system-properties-executors-properties-pbs.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-executors-properties-pbs.md "settings.schema.json#/definitions/system/properties/executors/properties/pbs")
+
+### pbs Type
+
+`object` ([Details](settings-definitions-system-properties-executors-properties-pbs.md))

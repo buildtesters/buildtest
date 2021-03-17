@@ -23,6 +23,7 @@ The script schema is of `type: script` in sub-schema which is used for running s
 | [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-sbatch.md "script-v1.0.schema.json#/properties/sbatch")              |
 | [bsub](#bsub)               | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-bsub.md "script-v1.0.schema.json#/properties/bsub")                  |
 | [cobalt](#cobalt)           | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-cobalt.md "script-v1.0.schema.json#/properties/cobalt")              |
+| [pbs](#pbs)                 | `array`   | Optional | cannot be null | [script schema version 1.0](definitions-definitions-list_of_strings.md "script-v1.0.schema.json#/properties/pbs")     |
 | [batch](#batch)             | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-batch.md "script-v1.0.schema.json#/properties/batch")             |
 | [BB](#bb)                   | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-bb.md "script-v1.0.schema.json#/properties/BB")                      |
 | [DW](#dw)                   | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-dw.md "script-v1.0.schema.json#/properties/DW")                      |
@@ -154,6 +155,30 @@ This field is used for specifying #COBALT options in test script. buildtest will
 `string[]`
 
 ### cobalt Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+## pbs
+
+
+
+`pbs`
+
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](definitions-definitions-list_of_strings.md "script-v1.0.schema.json#/properties/pbs")
+
+### pbs Type
+
+`string[]`
+
+### pbs Constraints
 
 **minimum number of items**: the minimum number of items for this array is: `1`
 
