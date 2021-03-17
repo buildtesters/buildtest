@@ -1,4 +1,5 @@
 import logging
+import json
 import os
 import re
 import socket
@@ -10,7 +11,7 @@ from buildtest.defaults import (
 )
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_schema, load_recipe
-from buildtest.system import Slurm, LSF, Cobalt, system
+from buildtest.system import Slurm, LSF, Cobalt, PBS, system
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
@@ -37,6 +38,7 @@ class BuildtestConfiguration:
         self.slurmexecutors = None
         self.lsfexecutors = None
         self.cobaltexecutors = None
+        self.pbsexecutors = None
 
         self.get_current_system()
 
@@ -75,7 +77,10 @@ class BuildtestConfiguration:
             self.cobaltexecutors = list(
                 self.target_config["executors"]["cobalt"].keys()
             )
-
+        if self.target_config["executors"].get("pbs"):
+            self.pbsexecutors = list(
+                self.target_config["executors"]["pbs"].keys()
+            )
     def get_executors_by_type(self, executor_type):
         """Return list of executor names by given type of executor.
         :param executor_type: type of executor (local, slurm, lsf, cobalt)
@@ -105,6 +110,7 @@ class BuildtestConfiguration:
         slurm_executors = deep_get(self.target_config, "executors", "slurm")
         lsf_executors = deep_get(self.target_config, "executors", "lsf")
         cobalt_executors = deep_get(self.target_config, "executors", "cobalt")
+        pbs_executors = deep_get(self.target_config, "executors", "pbs")
 
         if slurm_executors:
             logger.debug("Checking slurm executors")
@@ -117,6 +123,11 @@ class BuildtestConfiguration:
         if cobalt_executors:
             logger.debug("Checking cobalt executors")
             self._validate_cobalt_executors(cobalt_executors)
+
+
+        if pbs_executors:
+            logger.debug("Checking pbs executors")
+            self._validate_pbs_executors(pbs_executors)
 
         if (
             self.target_config.get("moduletool") != "N/A"
@@ -234,6 +245,46 @@ class BuildtestConfiguration:
                 raise BuildTestError(
                     f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'"
                 )
+    def _validate_pbs_executors(self, pbs_executor):
+        """Validate pbs queue property by running by checking if queue is found and
+           queue is 'enabled' and 'started' which are two properties found in pbs queue
+           configuration that can be retrieved using ``qstat -Q -f -F json``. The output is in
+           the following format
+
+           $ qstat -Q -f -F json
+            {
+                "timestamp":1615924938,
+                "pbs_version":"19.0.0",
+                "pbs_server":"pbs",
+                "Queue":{
+                    "workq":{
+                        "queue_type":"Execution",
+                        "total_jobs":0,
+                        "state_count":"Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Begun:0 ",
+                        "resources_assigned":{
+                            "mem":"0kb",
+                            "ncpus":0,
+                            "nodect":0
+                        },
+                        "hasnodes":"True",
+                        "enabled":"True",
+                        "started":"True"
+                    }
+                }
+            }
+
+        """
+
+        pbs = PBS()
+        for executor in pbs_executor:
+            queue = pbs_executor[executor].get("queue")
+            if queue not in pbs.queues:
+                raise BuildTestError(f"{queue} not in {pbs.queues}")
+
+            if pbs.queue_summary["Queue"][queue]["enabled"] != "True" or  pbs.queue_summary["Queue"][queue]["started"] != "True":
+                print("Queue Configuration")
+                print(json.dumps(pbs.queue_summary,indent=2))
+                raise BuildTestError(f"{queue} is not enabled or started properly. Please check your queue configuration")
 
 
 def check_settings(settings_path=None, executor_check=True):

@@ -64,6 +64,7 @@ class BuildTestSystem:
         slurm = Slurm()
         lsf = LSF()
         cobalt = Cobalt()
+        pbs = PBS()
 
         # the "scheduler" property is used with run_only section in buildspecs for
         # running test based on scheduler.
@@ -79,6 +80,10 @@ class BuildTestSystem:
 
         if cobalt.get_state():
             self.system["scheduler"] = "cobalt"
+            return
+
+        if pbs.get_state():
+            self.system["scheduler"] = "pbs"
             return
 
     def detect_module_tool(self):
@@ -149,8 +154,16 @@ class Slurm(Scheduler):
         self.qos = self.get_qos()
 
     def get_partitions(self):
-        """Get list of all partitions slurm partitions"""
+        """Get list of all partitions slurm partitions using ``sinfo -a -h -O partitionname``. The output
+           is a list of queue names
 
+            $ sinfo -a -h -O partitionname
+            system
+            system_shared
+            debug_hsw
+            debug_knl
+            jupyter
+        """
         # get list of partitions
 
         query = "sinfo -a -h -O partitionname"
@@ -163,7 +176,13 @@ class Slurm(Scheduler):
         return partitions
 
     def get_clusters(self):
-        """Get list of slurm clusters"""
+        """Get list of slurm clusters by running ``sacctmgr list cluster -P -n format=Cluster``.
+           The output is a list of slurm clusters something as follows::
+
+            $ sacctmgr list cluster -P -n format=Cluster
+            cori
+            escori
+        """
 
         query = "sacctmgr list cluster -P -n format=Cluster"
         cmd = BuildTestCommand(query)
@@ -175,7 +194,17 @@ class Slurm(Scheduler):
         return slurm_clusters
 
     def get_qos(self):
-        """Return a list of all slurm qos"""
+        """Retrieve a list of all slurm qos by running ``sacctmgr list qos -P -n  format=Name``. The output
+        is a list of qos. Shown below is an example output
+
+        $ sacctmgr list qos -P -n  format=Name
+        normal
+        premium
+        low
+        serialize
+        scavenger
+
+        """
 
         query = "sacctmgr list qos -P -n  format=Name"
         cmd = BuildTestCommand(query)
@@ -243,6 +272,38 @@ class Cobalt(Scheduler):
                 name = line.partition(":")[2].strip()
                 queues.append(name)
         return queues
+
+
+
+class PBS(Scheduler):
+    """The PBS class checks for Cobalt binaries and gets a list of Cobalt queues"""
+
+    binaries = ["qsub", "qstat", "qdel"]
+
+    def __init__(self):
+        self.logger = logging.getLogger(__name__)
+
+        self.check()
+        if self.state:
+            self._get_queues()
+
+    def _get_queues(self):
+        """ Get queue configuration using ``qstat -Q -f -F json`` and retrieve a
+            list of queues.
+        """
+        query = "qstat -Q -f -F json"
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        content = cmd.get_output()
+
+        self.logger.debug(f"Get PBS Queues details by running {query}")
+        self.queue_summary = json.loads(" ".join(content))
+        self.logger.debug(json.dumps(self.queue_summary, indent=2))
+
+        queues = list(self.queue_summary["Queue"].keys())
+        self.logger.debug(f"Available Queues: {queues}")
+
+        self.queues = queues
 
 
 system = BuildTestSystem()

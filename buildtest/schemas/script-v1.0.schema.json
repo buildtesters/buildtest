@@ -24,6 +24,9 @@
     "cobalt": {
       "$ref": "definitions.schema.json#/definitions/cobalt"
     },
+     "pbs": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings"
+    },
     "batch": {
       "$ref": "definitions.schema.json#/definitions/batch"
     },

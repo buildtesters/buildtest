@@ -14,6 +14,7 @@ from buildtest.executors.cobalt import CobaltExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
 from buildtest.executors.slurm import SlurmExecutor
+from buildtest.executors.pbs import PBSExecutor
 from buildtest.utils.file import create_dir, write_file
 
 
@@ -47,7 +48,7 @@ class BuildExecutor:
         if site_config.slurmexecutors:
             for name in site_config.slurmexecutors:
                 self.executors[f"{site_config.name}.slurm.{name}"] = SlurmExecutor(
-                    f"{site_config.name}.local.{name}",
+                    f"{site_config.name}.slurm.{name}",
                     site_config.target_config["executors"]["slurm"][name],
                     site_config,
                 )
@@ -55,7 +56,7 @@ class BuildExecutor:
         if site_config.lsfexecutors:
             for name in site_config.lsfexecutors:
                 self.executors[f"{site_config.name}.lsf.{name}"] = LSFExecutor(
-                    f"{site_config.name}.local.{name}",
+                    f"{site_config.name}.lsf.{name}",
                     site_config.target_config["executors"]["lsf"][name],
                     site_config,
                 )
@@ -63,11 +64,19 @@ class BuildExecutor:
         if site_config.cobaltexecutors:
             for name in site_config.cobaltexecutors:
                 self.executors[f"{site_config.name}.cobalt.{name}"] = CobaltExecutor(
-                    f"{site_config.name}.local.{name}",
+                    f"{site_config.name}.cobalt.{name}",
                     site_config.target_config["executors"]["cobalt"][name],
                     site_config,
                 )
 
+        if site_config.pbsexecutors:
+            for name in site_config.pbsexecutors:
+                print(site_config.target_config["executors"]["pbs"][name])
+                self.executors[f"{site_config.name}.pbs.{name}"] = PBSExecutor(
+                    f"{site_config.name}.pbs.{name}",
+                    site_config.target_config["executors"]["pbs"][name],
+                    site_config,
+                )
         self.setup()
 
     def __str__(self):
@@ -160,7 +169,7 @@ class BuildExecutor:
         if executor.type == "local":
             executor.run()
         # The run stage for batch executor (Slurm, LSF, Cobalt) executor is to invoke dispatch method
-        elif executor.type in ["slurm", "lsf", "cobalt"]:
+        elif executor.type in ["slurm", "lsf", "cobalt", "pbs"]:
             executor.dispatch()
 
     def poll(self, builder):
@@ -247,4 +256,20 @@ class BuildExecutor:
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True
 
+        elif executor.type == "pbs":
+            # pending or running job requires polling
+            if (builder.job_state in ["Q", "R"] or not builder.job_state):
+                executor.poll()
+            # if job is finished we gather results
+            elif builder.job_state in ["F"]:
+                executor.gather()
+                poll_info["job_complete"] = True
+            # if job is on hold we cancel it asap
+            elif builder.job_state in ["H"]:
+                executor.cancel()
+                poll_info["job_complete"] = True
+                poll_info["ignore_job"] = True
+            else:
+                poll_info["job_complete"] = True
+                poll_info["ignore_job"] = True
         return poll_info
