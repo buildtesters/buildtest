@@ -4,7 +4,7 @@
 settings.schema.json#/definitions/system/properties/hostnames
 ```
 
-
+Specify a list of hostnames to check where buildtest can run for the given system record
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |

@@ -1,15 +1,15 @@
-# Untitled boolean in buildtest configuration schema Schema
+# Untitled string in buildtest configuration schema Schema
 
 ```txt
-settings.schema.json#/definitions/system/properties/load_default_buildspecs
+settings.schema.json#/definitions/system/properties/description
 ```
 
-Specify whether buildtest should automatically load  buildspecs provided in buildtest repo into buildspec cache
+system description field
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
 
-## load_default_buildspecs Type
+## description Type
 
-`boolean`
+`string`

@@ -24,9 +24,14 @@
          "properties": {
           "hostnames": {
             "type": "array",
+            "description": "Specify a list of hostnames to check where buildtest can run for the given system record",
             "items": {
               "type": "string"
             }
+          },
+          "description": {
+            "type": "string",
+            "description": "system description field"
           },
           "buildspec_roots": {
             "type": "array",
@@ -37,7 +42,7 @@
           },
           "load_default_buildspecs": {
             "type": "boolean",
-            "description": "Specify whether buildtest should automatically load  uildspecs provided in buildtest repo into buildspec cache"
+            "description": "Specify whether buildtest should automatically load  buildspecs provided in buildtest repo into buildspec cache"
           },
           "testdir": {
             "type": "string",

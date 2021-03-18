@@ -51,6 +51,7 @@ Reference this group by using
 | Property                                            | Type      | Required | Nullable       | Defined by                                                                                                                                                                        |
 | :-------------------------------------------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [hostnames](#hostnames)                             | `array`   | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-hostnames.md "settings.schema.json#/definitions/system/properties/hostnames")                             |
+| [description](#description)                         | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-description.md "settings.schema.json#/definitions/system/properties/description")                         |
 | [buildspec_roots](#buildspec_roots)                 | `array`   | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-buildspec_roots.md "settings.schema.json#/definitions/system/properties/buildspec_roots")                 |
 | [load_default_buildspecs](#load_default_buildspecs) | `boolean` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-load_default_buildspecs.md "settings.schema.json#/definitions/system/properties/load_default_buildspecs") |
 | [testdir](#testdir)                                 | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-testdir.md "settings.schema.json#/definitions/system/properties/testdir")                                 |
@@ -61,7 +62,7 @@ Reference this group by using
 
 ### hostnames
 
-
+Specify a list of hostnames to check where buildtest can run for the given system record
 
 `hostnames`
 
@@ -76,6 +77,24 @@ Reference this group by using
 #### hostnames Type
 
 `string[]`
+
+### description
+
+system description field
+
+`description`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-description.md "settings.schema.json#/definitions/system/properties/description")
+
+#### description Type
+
+`string`
 
 ### buildspec_roots
 
@@ -97,7 +116,7 @@ Specify a list of directory paths to search buildspecs. This field can be used w
 
 ### load_default_buildspecs
 
-Specify whether buildtest should automatically load  uildspecs provided in buildtest repo into buildspec cache
+Specify whether buildtest should automatically load  buildspecs provided in buildtest repo into buildspec cache
 
 `load_default_buildspecs`
 
@@ -469,7 +488,7 @@ Reference this group by using
 
 | Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                  |
 | :------------------------------ | :------------ | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [description](#description)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-description.md "settings.schema.json#/definitions/local/properties/description")     |
+| [description](#description-1)   | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-description.md "settings.schema.json#/definitions/local/properties/description")     |
 | [shell](#shell)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-shell.md "settings.schema.json#/definitions/local/properties/shell")                 |
 | [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-before_script.md "settings.schema.json#/definitions/local/properties/before_script") |
 | [after_script](#after_script)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-after_script.md "settings.schema.json#/definitions/local/properties/after_script")   |
@@ -566,7 +585,7 @@ Reference this group by using
 
 | Property                          | Type          | Required | Nullable       | Defined by                                                                                                                                                  |
 | :-------------------------------- | :------------ | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [description](#description-1)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-description.md "settings.schema.json#/definitions/slurm/properties/description")     |
+| [description](#description-2)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-description.md "settings.schema.json#/definitions/slurm/properties/description")     |
 | [launcher](#launcher)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-launcher.md "settings.schema.json#/definitions/slurm/properties/launcher")           |
 | [options](#options)               | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-options.md "settings.schema.json#/definitions/slurm/properties/options")             |
 | [cluster](#cluster)               | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-cluster.md "settings.schema.json#/definitions/slurm/properties/cluster")             |
@@ -787,7 +806,7 @@ Reference this group by using
 
 | Property                          | Type          | Required | Nullable       | Defined by                                                                                                                                              |
 | :-------------------------------- | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [description](#description-2)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-description.md "settings.schema.json#/definitions/lsf/properties/description")     |
+| [description](#description-3)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-description.md "settings.schema.json#/definitions/lsf/properties/description")     |
 | [launcher](#launcher-1)           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-launcher.md "settings.schema.json#/definitions/lsf/properties/launcher")           |
 | [options](#options-1)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-options.md "settings.schema.json#/definitions/lsf/properties/options")             |
 | [queue](#queue)                   | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-queue.md "settings.schema.json#/definitions/lsf/properties/queue")                 |
@@ -970,7 +989,7 @@ Reference this group by using
 
 | Property                          | Type          | Required | Nullable       | Defined by                                                                                                                                                    |
 | :-------------------------------- | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [description](#description-3)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-description.md "settings.schema.json#/definitions/cobalt/properties/description")     |
+| [description](#description-4)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-description.md "settings.schema.json#/definitions/cobalt/properties/description")     |
 | [launcher](#launcher-2)           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-launcher.md "settings.schema.json#/definitions/cobalt/properties/launcher")           |
 | [options](#options-2)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-options.md "settings.schema.json#/definitions/cobalt/properties/options")             |
 | [queue](#queue-1)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-queue.md "settings.schema.json#/definitions/cobalt/properties/queue")                 |
@@ -1153,7 +1172,7 @@ Reference this group by using
 
 | Property                          | Type          | Required | Nullable       | Defined by                                                                                                                                              |
 | :-------------------------------- | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [description](#description-4)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-description.md "settings.schema.json#/definitions/pbs/properties/description")     |
+| [description](#description-5)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-description.md "settings.schema.json#/definitions/pbs/properties/description")     |
 | [launcher](#launcher-3)           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-launcher.md "settings.schema.json#/definitions/pbs/properties/launcher")           |
 | [options](#options-3)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-options.md "settings.schema.json#/definitions/pbs/properties/options")             |
 | [queue](#queue-2)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-queue.md "settings.schema.json#/definitions/pbs/properties/queue")                 |
