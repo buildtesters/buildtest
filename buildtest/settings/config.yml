@@ -1,9 +1,12 @@
 system:
   generic:
+    # specify list of hostnames where buildtest can run for given system record
     hostnames: [".*"]
+
+    # system description
+    description: Generic System
     # specify module system used at your site (environment-modules, lmod)
     moduletool: N/A
-
     # boolean to determine if buildspecs provided in buildtest repo should be loaded in buildspec cache
     load_default_buildspecs: True
 
@@ -50,7 +53,7 @@ system:
             cxx: /usr/bin/g++
 
     # location of log directory
-    logdir: /tmp/buildtest/
+    # logdir: /tmp/
 
     # specify location where buildtest will write tests
     # testdir: /tmp
