@@ -2,7 +2,6 @@ import logging
 import json
 import os
 import re
-
 from buildtest.defaults import (
     USER_SETTINGS_FILE,
     DEFAULT_SETTINGS_FILE,
@@ -49,7 +48,9 @@ class BuildtestConfiguration:
         host_lookup = {}
 
         # get hostname fqdn
-        hostname = " ".join(BuildTestCommand("hostname -f").get_output())
+        cmd = BuildTestCommand("hostname -f")
+        cmd.execute()
+        hostname = " ".join(cmd.get_output())
 
         # for every system record we lookup 'hostnames' entry and apply re.match against current hostname. If found we break from loop
         for name in self.config["system"].keys():
@@ -147,11 +148,11 @@ class BuildtestConfiguration:
         :type lsf_executors: dict
         """
         lsf = LSF()
-        queue_dict = lsf.get_queues()
+        assert hasattr(lsf,"queues")
 
         queue_list = []
         valid_queue_state = "Open:Active"
-        record = queue_dict["RECORDS"]
+        record = lsf.queues["RECORDS"]
         # retrieve all queues from json record
         for name in record:
             queue_list.append(name["QUEUE_NAME"])
@@ -163,7 +164,7 @@ class BuildtestConfiguration:
             if queue:
                 if queue not in queue_list:
                     raise BuildTestError(
-                        f"{lsf_executors[executor]['queue']} not a valid partition!. Please select one of the following partitions: {queue_list}"
+                        f"{lsf_executors[executor]['queue']} not a valid queue!. Please select one of the following queue: {queue_list}"
                     )
 
                 # check queue record for Status
@@ -190,16 +191,20 @@ class BuildtestConfiguration:
         :type slurm_executor: dict
         """
 
-        slurm_object = Slurm()
+        slurm = Slurm()
+        # make sure slurm attributes slurm.partitions, slurm.qos, slurm.clusters are set
+        assert hasattr(slurm,"partitions")
+        assert hasattr(slurm, "qos")
+        assert hasattr(slurm, "clusters")
 
         for executor in slurm_executor:
 
             # if 'partition' key defined check if its valid partition
             if slurm_executor[executor].get("partition"):
 
-                if slurm_executor[executor]["partition"] not in slurm_object.partitions:
+                if slurm_executor[executor]["partition"] not in slurm.partitions:
                     raise BuildTestError(
-                        f"{slurm_executor[executor]['partition']} not a valid partition!. Please select one of the following partitions: {slurm_object.partitions}"
+                        f"{slurm_executor[executor]['partition']} not a valid partition!. Please select one of the following partitions: {slurm.partitions}"
                     )
 
                 query = (
@@ -217,28 +222,29 @@ class BuildtestConfiguration:
             # check if 'qos' key is valid qos
             if (
                 slurm_executor[executor].get("qos")
-                and slurm_executor[executor].get("qos") not in slurm_object.qos
+                and slurm_executor[executor].get("qos") not in slurm.qos
             ):
                 raise BuildTestError(
-                    f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm_object.qos}"
+                    f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm.qos}"
                 )
 
             # check if 'cluster' key is valid slurm cluster
             if (
                 slurm_executor[executor].get("cluster")
-                and slurm_executor[executor].get("cluster") not in slurm_object.clusters
+                and slurm_executor[executor].get("cluster") not in slurm.clusters
             ):
                 raise BuildTestError(
-                    f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm_object.clusters}"
+                    f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm.clusters}"
                 )
 
     def _validate_cobalt_executors(self, cobalt_executor):
-        """Validate cobalt queue property by running ```qstat -Q <queue>``. If
+        """Validate cobalt queue property by running ```qstat -Ql <queue>``. If
         its a non-zero exit code then queue doesn't exist otherwise it is a valid
         queue.
         """
 
         cobalt = Cobalt()
+        assert hasattr(cobalt, "queues")
 
         for executor in cobalt_executor:
             queue = cobalt_executor[executor].get("queue")
@@ -278,6 +284,7 @@ class BuildtestConfiguration:
         """
 
         pbs = PBS()
+        assert hasattr(pbs,"queues")
         for executor in pbs_executor:
             queue = pbs_executor[executor].get("queue")
             if queue not in pbs.queues:
