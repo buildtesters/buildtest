@@ -271,7 +271,7 @@ class LSF(Scheduler):
 class Cobalt(Scheduler):
     """The Cobalt class checks for Cobalt binaries and gets a list of Cobalt queues"""
     # specify a set of Cobalt commands to check for file existence
-    binaries = ["qsub", "qstat", "qdel", "nodelist", "qcancel","showres", "partlist"]
+    binaries = ["qsub", "qstat", "qdel", "nodelist", "showres", "partlist"]
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
