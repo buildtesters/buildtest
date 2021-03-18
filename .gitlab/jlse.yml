@@ -1,7 +1,26 @@
 # This pipeline is run at ALCF at gitlab instance: https://gitlab.jlse.anl.gov
 
 stages:
+  - sync
   - regression
+
+sync_buildtest_jlse_mirror:
+  tags: [shell, jlse]
+  stage: sync
+  only: 
+    refs:
+    - schedules
+  
+  script:
+    - cd $CI_PROJECT_DIR
+    - mkdir tmp && cd tmp
+    - git clone https://github.com/buildtesters/buildtest
+    - cd buildtest 
+    - git remote add jlse_mirror git@gitlab-server-jlse-01.jlse.anl.gov:e4s/shahzebsiddiqui/buildtest.git
+    - git remote -v
+    - git branch
+    - git push jlse_mirror devel
+
 
 jlse_pr_regression_test:
   tags: [shell, jlse]
