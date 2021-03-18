@@ -5,8 +5,9 @@ from buildtest.utils.command import BuildTestCommand
 
 def test_cori():
     # This test must run on Cori Login nodes which are cori[01-20].nersc.gov.
-    hostname = " ".join(BuildTestCommand("hostname -f").get_output())
-
+    cmd = BuildTestCommand("hostname -f")
+    cmd.execute()
+    hostname = " ".join(cmd.get_output())
     if not hostname.endswith("nersc.gov") or not hostname.startswith("cori"):
         pytest.skip(
             "This test runs only on domain 'nersc.gov' with machine names that start with 'cori*'"

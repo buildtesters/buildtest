@@ -5,7 +5,9 @@ from buildtest.utils.command import BuildTestCommand
 
 
 def test_jlse():
-    hostname = " ".join(BuildTestCommand("hostname -f").get_output())
+    cmd = BuildTestCommand("hostname -f")
+    cmd.execute()
+    hostname = " ".join(cmd.get_output())
     if not hostname.endswith("alcf.anl.gov"):
         pytest.skip("Test runs only on JLSE Login Nodes with domain name alcf.anl.gov")
 

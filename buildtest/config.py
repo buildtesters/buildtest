@@ -2,7 +2,6 @@ import logging
 import json
 import os
 import re
-import socket
 from buildtest.defaults import (
     USER_SETTINGS_FILE,
     DEFAULT_SETTINGS_FILE,
@@ -49,7 +48,9 @@ class BuildtestConfiguration:
         host_lookup = {}
 
         # get hostname fqdn
-        hostname = socket.gethostname()
+        cmd = BuildTestCommand("hostname -f")
+        cmd.execute()
+        hostname = " ".join(cmd.get_output())
 
         # for every system record we lookup 'hostnames' entry and apply re.match against current hostname. If found we break from loop
         for name in self.config["system"].keys():
