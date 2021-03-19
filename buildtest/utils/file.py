@@ -132,7 +132,6 @@ def resolve_path(path, exist=True):
     path = os.path.expanduser(path)
 
     real_path = os.path.realpath(path)
-
     if os.path.exists(real_path):
         return real_path
 

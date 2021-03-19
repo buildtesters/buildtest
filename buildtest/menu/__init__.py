@@ -10,6 +10,7 @@ from buildtest.menu.config import (
     func_config_validate,
     func_config_view,
     func_config_executors,
+    func_config_system
 )
 from buildtest.menu.compilers import func_compiler_find, func_config_compiler
 from buildtest.menu.report import func_report
@@ -312,6 +313,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         parser_config_summary = subparsers_config.add_parser(
             "summary", help="Provide summary of buildtest settings."
         )
+        parser_config_system = subparsers_config.add_parser("systems", help="List all available systems")
 
         compiler_config = subparsers_config.add_parser(
             "compilers", help="search or find compilers "
@@ -355,6 +357,8 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         parser_config_view.set_defaults(func=func_config_view)
         parser_config_validate.set_defaults(func=func_config_validate)
         parser_config_summary.set_defaults(func=func_config_summary)
+        parser_config_system.set_defaults(func=func_config_system)
+
 
         compiler_config.set_defaults(func=func_config_compiler)
         compiler_find.set_defaults(func=func_compiler_find)

@@ -76,6 +76,24 @@ YAML format. If you prefer json format you can use ``--json`` option. Shown belo
 .. program-output:: cat docgen/config_executors.txt
    :shell:
 
+View Registered Systems
+------------------------
+
+Your buildtest configuration may compose of one or more systems since you can define multiple systems
+in a single configuration file to run buildtest for different HPC clusters. You can use
+``buildtest config systems`` to report all system details defined in your configuration file.
+In this example below we should the ``generic`` system. If you have multiple entries, you will see one
+entry per system record.
+
+.. code-block:: console
+
+    $ buildtest config systems
+    +----------+----------------+-------------+--------------+
+    | system   | description    | hostnames   | moduletool   |
+    +==========+================+=============+==============+
+    | generic  | Generic System | ['.*']      | N/A          |
+    +----------+----------------+-------------+--------------+
+
 Configuration Summary
 ----------------------
 

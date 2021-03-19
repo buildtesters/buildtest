@@ -469,6 +469,7 @@ class BuildspecCache:
         """
 
         table = {"Tags": self.cache["unique_tags"]}
+        print(table, type(table))
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def get_executors(self):
