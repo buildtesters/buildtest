@@ -4,6 +4,7 @@ import shutil
 import sys
 import yaml
 from jsonschema import ValidationError
+from tabulate import tabulate
 from buildtest import BUILDTEST_VERSION
 
 from buildtest.config import (
@@ -14,6 +15,23 @@ from buildtest.config import (
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, supported_schemas
 from buildtest.schemas.utils import load_recipe
 from buildtest.system import system
+
+def func_config_system(args=None, settings_file=None):
+    """This method implements command ``buildtest config systems`` which displays
+       system details from configuration file in table format.
+    """
+    #settings_file = settings_file or resolve_settings_file()
+    #print(settings_file)
+    bc = check_settings(settings_path=settings_file, executor_check=False)
+    table = {"system": [], "description": [], "hostnames": [], "moduletool": [] }
+    for name in bc.config["system"].keys():
+        table["system"].append(name)
+        table["description"].append(bc.config["system"][name].get("description"))
+        table["moduletool"].append(bc.config["system"][name]["moduletool"])
+        table["hostnames"].append(bc.config["system"][name]["hostnames"])
+
+    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+
 
 
 def func_config_validate(args=None):
