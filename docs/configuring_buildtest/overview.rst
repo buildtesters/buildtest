@@ -11,6 +11,15 @@ buildtest configuration uses a JSON schemafile `settings.schema.json <https://ra
 for validating your configuration. We have published the schema guide for settings schema which
 you can find `here <https://buildtesters.github.io/buildtest/pages/schemadocs/settings.html>`_.
 
+Which configuration file does buildtest read?
+------------------------------------------------
+
+buildtest will read configuration files in the following order:
+
+- Command line ``buildtest build -c <buildtest-configuration>.yml``
+- User Configuration - ``$HOME/.buildtest/config.yml``
+- Default Configuration - ``$BUILDTEST_ROOT/buildtest/settings/config.yml``
+
 
 .. _default_configuration:
 
@@ -26,8 +35,7 @@ We recommend you copy the default configuration as a template to configure build
 started you should copy the file in ``$HOME/.buildtest/config.yml``. Please
 run the following command::
 
-    $ cp $BUILDTEST_ROOT/buildtest/settings.yml $HOME/.buildtest/config.yml
-
+    $ cp $BUILDTEST_ROOT/buildtest/settings/config.yml $HOME/.buildtest/config.yml
 
 Shown below is the default configuration provided by buildtest.
 
