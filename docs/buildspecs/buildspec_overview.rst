@@ -170,6 +170,7 @@ Shown below are examples of invalid returncodes:
       # duplicates are not allowed
       returncode: [1, 2, 5, 5]
 
+.. _define_tags:
 
 Classifying tests with tags
 ----------------------------

@@ -65,4 +65,4 @@ use buildtest. Shown below is the output
 
 .. program-output:: cat docgen/buildtest_--help.txt
 
-If you have got this far, please go to the next section on :ref:`Getting_Started`
+If you have got this far, please go to the next section on :ref:`getting_started`

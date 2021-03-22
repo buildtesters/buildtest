@@ -6,7 +6,7 @@ Configuring buildtest
 .. toctree::
    :maxdepth: 2
 
-   configuring_buildtest/overview.rst
-   configuring_buildtest/compilers.rst
-   configuring_buildtest/command_line_interface.rst
-   configuring_buildtest/site_examples.rst
+   configuring_buildtest/overview
+   configuring_buildtest/compilers
+   configuring_buildtest/command_line_interface
+   configuring_buildtest/site_examples

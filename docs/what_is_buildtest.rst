@@ -161,7 +161,7 @@ each schema. This can be queried as follows:
   # show schema examples of schema global.schema.json
   $ buildtest schema -n global.schema.json --example
 
-For more information see :ref:`Getting_Started`.
+For more information see :ref:`getting_started`.
 
 Target Audience & Use Case
 ---------------------------
@@ -183,7 +183,7 @@ Typical use-case:
   - Run weekly/biweekly test on medium/large workload including micro-benchmark
   - Run tests for newly installed software package typically requested by user.
 
-If you are interested trying out buildtest check out :ref:`Getting_Started` and
+If you are interested trying out buildtest check out :ref:`getting_started` and
 `Join Slack Channel <https://hpcbuildtest.herokuapp.com/>`_.
 
 Timeline
@@ -193,11 +193,13 @@ Timeline
     :header: "Date", "Description"
     :widths: 30, 60
 
-    **Nov 24st 2020**, "`v0.9.1 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.1>`_ added support for `Cobalt Scheduler <https://trac.mcs.anl.gov/projects/cobalt>`_"
-    **Sep 3rd 2020**, "`v0.8.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.8.0>`_ introduced `JSON Schema <https://json-schema.org/>`_ for validating buildspec. Add support for Slurm and LSF scheduler for job submission. Add support for building buildspecs by file, directory and tagname and command line interface to schema"
-    **Mar 3rd 2020**, "A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_ was formed based on buildtest module features"
-    **Sep 11th 2018**, "In `v0.4.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.4.0>`_ buildtest was ported from Python 2 to 3"
-    **Aug 20th 2017**, "In `v0.1.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.1.5>`_ buildtest was converted from bash to Python and project was moved into github https://github.com/HPC-buildtest/buildtest"
+    **Mar 14th 2021**, "`v0.9.4 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.4>`_ introduced major change in buildtest configuration file (``settings.schema.json``) to define multiple HPC systems in configuration file. This lead to change in how ``executors`` are referenced in buildspec file."
+    **Jan 12th 2021**, "`v0.9.2 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.2>`_ contains major refactor to ``compiler-v1.0-schema.json`` for writing compiler test using regular expression to search for compilers that are defined in configuration file."
+    **Nov 24st 2020**, "`v0.9.1 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.1>`_ added support for `Cobalt Scheduler <https://trac.mcs.anl.gov/projects/cobalt>`_."
+    **Sep 3rd 2020**, "`v0.8.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.8.0>`_ introduced `JSON Schema <https://json-schema.org/>`_ for validating buildspec. Add support for Slurm and LSF scheduler for job submission. Add support for building buildspecs by file, directory and tagname and command line interface to schema."
+    **Mar 3rd 2020**, "A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_ was formed based on buildtest module features."
+    **Sep 11th 2018**, "In `v0.4.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.4.0>`_ buildtest was ported from Python 2 to 3."
+    **Aug 20th 2017**, "In `v0.1.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.1.5>`_ buildtest was converted from bash to Python and project was moved into github https://github.com/HPC-buildtest/buildtest."
     **Feb 18th 2017**, "Start of project"
 
 

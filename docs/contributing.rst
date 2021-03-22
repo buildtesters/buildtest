@@ -57,10 +57,10 @@ Contributing Topics
 
 .. toctree::
 
-   contributing/code_contribution_guide.rst
-   contributing/github_integration.rst
-   contributing/build_documentation.rst
-   contributing/regression_testing.rst
-   contributing/schema.rst
-   contributing/maintainer_guide.rst
-   contributing/new_maintainer_checklist.rst
+   contributing/code_contribution_guide
+   contributing/github_integration
+   contributing/build_documentation
+   contributing/regression_testing
+   contributing/schema
+   contributing/maintainer_guide
+   contributing/new_maintainer_checklist
