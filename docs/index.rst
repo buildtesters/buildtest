@@ -77,7 +77,7 @@ publish the schema documentation, json schemas, and schema examples at https://b
 which is useful when you are :ref:`writing buildspecs <writing_buildspecs>`.
 
 To get started with buildtest, please see :ref:`installing buildtest <Setup>`  and
-:ref:`getting started guide <Getting_Started>`.
+:ref:`getting started guide <getting_started>`.
 
 A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_
 is a Python API for `Lmod <https://lmod.readthedocs.io/en/latest/>`_. The buildtest
@@ -88,26 +88,27 @@ automate module load testing. For more details on lmodule see https://github.com
    :maxdepth: 2
    :caption: Background
 
-   what_is_buildtest.rst
-   terminology.rst
+   what_is_buildtest
+   terminology
 
 .. toctree::
    :maxdepth: 2
    :caption: Reference
 
-   installing_buildtest.rst
-   getting_started.rst
-   configuring_buildtest.rst
-   writing_buildspecs.rst
-   builder.rst
-   references.rst
+   installing_buildtest
+   getting_started
+   configuring_buildtest
+   writing_buildspecs
+   builder
+   buildtest_site
+   references
 
 .. toctree::
    :maxdepth: 2
    :caption: Development Guide
 
-   contributing.rst
-   api.rst
+   contributing
+   api
 
 License
 --------

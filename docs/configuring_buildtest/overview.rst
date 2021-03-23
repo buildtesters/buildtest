@@ -1,7 +1,7 @@
 Overview
 =========
 
-We assume you are familiar with general concepts presented in :ref:`getting started <Getting_Started>` and your next
+We assume you are familiar with general concepts presented in :ref:`getting started <getting_started>` and your next
 step is to configure buildtest to run at your site. This guide will present you the necessary steps to get
 you started.
 
@@ -10,6 +10,8 @@ that can be used to run on your laptop or workstation that supports Linux or Mac
 buildtest configuration uses a JSON schemafile `settings.schema.json <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/settings.schema.json>`_.
 for validating your configuration. We have published the schema guide for settings schema which
 you can find `here <https://buildtesters.github.io/buildtest/pages/schemadocs/settings.html>`_.
+
+.. _which_configuration_file_buildtest_reads:
 
 Which configuration file does buildtest read?
 ------------------------------------------------
