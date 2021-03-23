@@ -29,8 +29,8 @@ jobs:
         source setup.sh
         pip install pytest
         pip install coverage
-        coverage run -m pytest -vra tests
-        coverage report -m
+        sh $BUIILDTEST_ROOT/scripts/regtest.sh
+
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
