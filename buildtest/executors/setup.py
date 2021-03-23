@@ -166,10 +166,10 @@ class BuildExecutor:
 
         # The run stage for LocalExecutor is to invoke run method
         if executor.type == "local":
-            executor.run()
+            executor.run(builder)
         # The run stage for batch executor (Slurm, LSF, Cobalt) executor is to invoke dispatch method
         elif executor.type in ["slurm", "lsf", "cobalt", "pbs"]:
-            executor.dispatch()
+            executor.dispatch(builder)
 
     def poll(self, builder):
         """Poll all jobs for batch executors (LSF, Slurm, Cobalt). For slurm we poll
@@ -208,7 +208,7 @@ class BuildExecutor:
         if executor.type == "slurm":
             # only poll job if its in PENDING or RUNNING state
             if builder.job_state in ["PENDING", "RUNNING"] or not builder.job_state:
-                executor.poll()
+                executor.poll(builder)
             # conditions for gathering job results when job is in FAILED or COMPLETED state
             elif builder.job_state in [
                 "FAILED",
@@ -216,7 +216,7 @@ class BuildExecutor:
                 "TIMEOUT",
                 "OUT_OF_MEMORY",
             ]:
-                executor.gather()
+                executor.gather(builder)
                 poll_info["job_complete"] = True
 
             else:
@@ -227,10 +227,10 @@ class BuildExecutor:
         elif executor.type == "lsf":
             # only poll job if its in PENDING or RUNNING state
             if builder.job_state in ["PEND", "RUN"] or not builder.job_state:
-                executor.poll()
+                executor.poll(builder)
             # only gather result when job state in DONE. This implies job is complete
             elif builder.job_state == "DONE":
-                executor.gather()
+                executor.gather(builder)
                 poll_info["job_complete"] = True
             # any other job state (PSUSP, EXIT, USUSP, SSUSP) implies job failed
             # abnormally so we consider job complete but set this to cancelled job so its ignored
@@ -245,7 +245,7 @@ class BuildExecutor:
                 builder.job_state in ["starting", "queued", "running"]
                 or not builder.job_state
             ):
-                executor.poll()
+                executor.poll(builder)
 
             # if job is done or exiting state we mark job_complete as True to indicate
             # we dont want to poll anymore.
@@ -258,14 +258,14 @@ class BuildExecutor:
         elif executor.type == "pbs":
             # pending or running job requires polling
             if (builder.job_state in ["Q", "R"] or not builder.job_state):
-                executor.poll()
+                executor.poll(builder)
             # if job is finished we gather results
             elif builder.job_state in ["F"]:
-                executor.gather()
+                executor.gather(builder)
                 poll_info["job_complete"] = True
             # if job is on hold we cancel it asap
             elif builder.job_state in ["H"]:
-                executor.cancel()
+                executor.cancel(builder)
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True
             else:

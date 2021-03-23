@@ -11,7 +11,6 @@ import sys
 
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.timer import Timer
 
 
 class LocalExecutor(BaseExecutor):
@@ -40,56 +39,41 @@ class LocalExecutor(BaseExecutor):
         elif self.shell in ["python"]:
             self.shell_type = "python"
 
-    def run(self):
+    def run(self, builder):
         """This method is responsible for running test for LocalExecutor which
-        runs test locally. We keep track of metadata in ``self.builder.metadata``
-        and ``self.result`` keeps track of run result. The output and error file
+        runs test locally. We keep track of metadata in ``builder.metadata``
+        that keeps track of run result. The output and error file
         are written to filesystem.
         """
 
-        # self.result must be initialized to empty dict since this is shared by
-        # builders that use the Local Executor.
-        self.result = {}
-
-        if self.shell_type != self.builder.shell_type:
+        if self.shell_type != builder.shell_type:
             sys.exit(
-                f"[{self.builder.name}]: we have a shell mismatch with executor: {self.name}. The executor shell: {self.shell} is not compatible with shell: {self.builder.shell.name} found in buildspec"
+                f"[{builder.name}]: we have a shell mismatch with executor: {self.name}. The executor shell: {self.shell} is not compatible with shell: {builder.shell.name} found in buildspec"
             )
 
-        self.result["id"] = self.builder.metadata.get("id")
-
         # Change to the test directory
-        os.chdir(self.builder.stage_dir)
-        self.logger.debug(f"Changing to directory {self.builder.stage_dir}")
+        os.chdir(builder.stage_dir)
+        self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
-        cmd = [self.builder.metadata["testpath"]]
+        cmd = [builder.metadata["testpath"]]
 
-        self.builder.metadata["command"] = " ".join(cmd)
+        builder.metadata["command"] = " ".join(cmd)
         self.logger.debug(
-            f"Running Test via command: {self.builder.metadata['command']}"
+            f"Running Test via command: {builder.metadata['command']}"
         )
 
-        command = BuildTestCommand(self.builder.metadata["command"])
-        # self.builder.metadata["starttime"] = datetime.datetime.now()
-        # self.result["starttime"] = self.get_formatted_time("starttime")
+        command = BuildTestCommand(builder.metadata["command"])
 
-        self.result["starttime"] = datetime.datetime.now().strftime("%Y/%m/%d %X")
-
-        t = Timer()
-        t.start()
+        self.start_time(builder)
         out, err = command.execute()
-        self.result["runtime"] = t.stop()
-
-        self.result["endtime"] = datetime.datetime.now().strftime("%Y/%m/%d %X")
+        self.end_time(builder)
 
         self.logger.debug(
-            f"Return code: {command.returncode} for test: {self.builder.metadata['testpath']}"
+            f"Return code: {command.returncode} for test: {builder.metadata['testpath']}"
         )
-        self.result["returncode"] = command.returncode
+        builder.metadata["result"]["returncode"] = command.returncode
 
-        self.builder.metadata["output"] = out
-        self.builder.metadata["error"] = err
-
+        builder.metadata["output"] = out
+        builder.metadata["error"] = err
         self.write_testresults(out, err)
-        self.builder.metadata["result"] = self.result
         self.check_test_state()

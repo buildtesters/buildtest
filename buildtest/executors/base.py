@@ -2,6 +2,7 @@
 BuildExecutor: manager for test executors
 """
 
+import datetime
 import logging
 import os
 import re
@@ -45,6 +46,21 @@ class BaseExecutor:
         so we are sure that the builder is defined. This is also where
         we set the result to return.
         """
+
+    def start_time(self, builder):
+        """Record start time in builder metadata object. This method is called right after job submission"""
+        builder.metadata["result"]["starttime"] = datetime.datetime.now()
+
+    def end_time(self, builder):
+        """Record end time in builder metadata object. This method is after job completion."""
+        builder.metadata["result"]["endtime"] = datetime.datetime.now()
+
+        #Calculate runtime of job by calculating delta between start and endtime.
+        runtime = builder.metadata["result"]["endtime"] - builder.metadata["result"]["starttime"]
+        builder.metadata["result"]["runtime"] = runtime.total_seconds()
+        builder.metadata["result"]["starttime"] = builder.metadata["result"]["starttime"].strftime("%Y/%m/%d %X")
+        builder.metadata["result"]["endtime"] = builder.metadata["result"]["endtime"].strftime("%Y/%m/%d %X")
+
 
     def __str__(self):
         return "%s.%s" % (self.type, self.name)
