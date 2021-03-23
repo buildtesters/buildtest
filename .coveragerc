@@ -27,6 +27,7 @@ exclude_lines =
 ignore_errors = True
 skip_empty = True
 sort = Cover
+precision = 2
 [html]
 directory = htmlcov
 
