@@ -3,7 +3,7 @@ This module implements the SlurmExecutor class responsible for submitting
 jobs to Slurm Scheduler. This class is called in class BuildExecutor
 when initializing the executors.
 """
-
+import datetime
 import os
 import re
 import shutil
@@ -112,7 +112,7 @@ class SlurmExecutor(BaseExecutor):
         command.execute()
 
         # record starttime of job
-        self.builder.metadata["result"]["starttime"] = datetime.datetime.now().strftime("%Y/%m/%d %X")
+        self.builder.metadata["result"]["starttime"] = datetime.datetime.now()
         self.builder.start()
 
         # if sbatch job submission returns non-zero exit that means we have failure, exit immediately
@@ -217,9 +217,11 @@ class SlurmExecutor(BaseExecutor):
             job_data["ExitCode"].split(":")[0]
         )
 
-        self.builder.metadata["result"]["endtime"] = datetime.datetime.now().strftime("%Y/%m/%d %X")
+        self.builder.metadata["result"]["endtime"] = datetime.datetime.now()
         runtime = self.builder.metadata["result"]["endtime"] - self.builder.metadata["result"]["starttime"]
         self.builder.metadata["result"]["runtime"] = runtime.total_seconds()
+        self.builder.metadata["result"]["starttime"] = self.builder.metadata["result"]["starttime"].strftime("%Y/%m/%d %X")
+        self.builder.metadata["result"]["endtime"] = self.builder.metadata["result"]["endtime"].strftime("%Y/%m/%d %X")
 
         if self.builder.job_state == "CANCELLED":
             return
