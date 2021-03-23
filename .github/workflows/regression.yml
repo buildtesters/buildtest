@@ -29,7 +29,7 @@ jobs:
         source setup.sh
         pip install pytest
         pip install coverage
-        sh $BUIILDTEST_ROOT/scripts/regtest.sh
+        sh $BUILDTEST_ROOT/scripts/regtest.sh
 
 
     - name: Upload coverage to Codecov
