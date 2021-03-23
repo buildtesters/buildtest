@@ -67,7 +67,6 @@ class LocalExecutor(BaseExecutor):
         self.start_time(builder)
         out, err = command.execute()
         self.end_time(builder)
-        self.runtime(builder)
 
         self.logger.debug(
             f"Return code: {command.returncode} for test: {builder.metadata['testpath']}"

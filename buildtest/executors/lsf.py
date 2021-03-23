@@ -206,7 +206,7 @@ class LSFExecutor(BaseExecutor):
         else:
             builder.metadata["result"]["returncode"] = int(job_data["EXIT_CODE"])
 
-        self.end_time()
+        self.end_time(builder)
 
         builder.metadata["outfile"] = os.path.join(
             builder.stage_dir, job_data["OUTPUT_FILE"]

@@ -55,12 +55,12 @@ class BaseExecutor:
         """Record end time in builder metadata object. This method is after job completion."""
         builder.metadata["result"]["endtime"] = datetime.datetime.now()
 
-    def runtime(self, builder):
-        """Calculate runtime of job by calculating delta between start and endtime."""
+        #Calculate runtime of job by calculating delta between start and endtime.
         runtime = builder.metadata["result"]["endtime"] - builder.metadata["result"]["starttime"]
         builder.metadata["result"]["runtime"] = runtime.total_seconds()
         builder.metadata["result"]["starttime"] = builder.metadata["result"]["starttime"].strftime("%Y/%m/%d %X")
         builder.metadata["result"]["endtime"] = builder.metadata["result"]["endtime"].strftime("%Y/%m/%d %X")
+
 
     def __str__(self):
         return "%s.%s" % (self.type, self.name)

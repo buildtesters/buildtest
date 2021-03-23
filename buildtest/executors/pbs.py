@@ -176,7 +176,6 @@ class PBSExecutor(BaseExecutor):
 
         # record endtime in builder object
         self.end_time(builder)
-        self.runtime(builder)
 
         builder.metadata["job"] = job_data
 

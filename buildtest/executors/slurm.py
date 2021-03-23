@@ -217,8 +217,7 @@ class SlurmExecutor(BaseExecutor):
             job_data["ExitCode"].split(":")[0]
         )
 
-        self.end_time()
-
+        self.end_time(builder)
 
         if builder.job_state == "CANCELLED":
             return
