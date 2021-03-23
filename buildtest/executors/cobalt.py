@@ -70,7 +70,7 @@ class CobaltExecutor(BaseExecutor):
 
         command = BuildTestCommand(builder.metadata["command"])
         command.execute()
-        self.start_time()
+        self.start_time(builder)
         builder.start()
 
         # if qsub job submission returns non-zero exit that means we have failure, exit immediately
@@ -167,7 +167,7 @@ class CobaltExecutor(BaseExecutor):
             or builder.job_state == "exiting"
         ):
             builder.job_state = "done"
-            self.gather()
+            self.gather(builder)
             return
 
         if builder.job_state == "pending":
@@ -202,7 +202,7 @@ class CobaltExecutor(BaseExecutor):
             self.builder.stage_dir, str(self.builder.metadata["jobid"]) + ".cobaltlog"
         )
 
-        self.end_time()
+        self.end_time(builder)
 
         self.logger.debug(f"Cobalt Log File written to {cobaltlog}")
         if os.path.exists(cobaltlog):
@@ -223,12 +223,12 @@ class CobaltExecutor(BaseExecutor):
     def cancel(self, builder):
         """Cancel Cobalt job using qdel, this operation is performed if job exceeds its max_pend_time"""
 
-        query = f"qdel {self.builder.metadata['jobid']}"
+        query = f"qdel {builder.metadata['jobid']}"
 
         cmd = BuildTestCommand(query)
         cmd.execute()
         msg = (
-            f"Cancelling Job: {self.builder.metadata['name']} running command: {query}"
+            f"Cancelling Job: {builder.metadata['name']} running command: {query}"
         )
         print(msg)
         self.logger.debug(msg)

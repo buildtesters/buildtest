@@ -99,7 +99,7 @@ class LSFExecutor(BaseExecutor):
 
         command = BuildTestCommand(builder.metadata["command"])
         command.execute()
-        self.start_time()
+        self.start_time(builder)
         builder.start()
         # if job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
@@ -162,7 +162,7 @@ class LSFExecutor(BaseExecutor):
 
             # if timer time is more than requested pend time then cancel job
             if int(builder.duration) > self.max_pend_time:
-                self.cancel()
+                self.cancel(builder)
                 builder.job_state = "CANCELLED"
                 print(
                     "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
@@ -197,41 +197,41 @@ class LSFExecutor(BaseExecutor):
             job_data[field] = value
             self.logger.debug(f"field: {field}   value: {value}")
 
-        self.builder.metadata["job"] = job_data
+        builder.metadata["job"] = job_data
 
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only
         # about first number
         if job_data["EXIT_CODE"] == "":
-            self.builder.metadata["result"]["returncode"] = 0
+            builder.metadata["result"]["returncode"] = 0
         else:
-            self.builder.metadata["result"]["returncode"] = int(job_data["EXIT_CODE"])
+            builder.metadata["result"]["returncode"] = int(job_data["EXIT_CODE"])
 
         self.end_time()
 
-        self.builder.metadata["outfile"] = os.path.join(
-            self.builder.stage_dir, job_data["OUTPUT_FILE"]
+        builder.metadata["outfile"] = os.path.join(
+            builder.stage_dir, job_data["OUTPUT_FILE"]
         )
-        self.builder.metadata["errfile"] = os.path.join(
-            self.builder.stage_dir, job_data["ERROR_FILE"]
+        builder.metadata["errfile"] = os.path.join(
+            builder.stage_dir, job_data["ERROR_FILE"]
         )
 
-        self.builder.metadata["output"] = read_file(self.builder.metadata["outfile"])
-        self.builder.metadata["error"] = read_file(self.builder.metadata["errfile"])
+        builder.metadata["output"] = read_file(builder.metadata["outfile"])
+        builder.metadata["error"] = read_file(builder.metadata["errfile"])
 
         self.logger.debug(
-            f"[{self.builder.name}] returncode: {self.builder.metadata['result']['returncode']}"
+            f"[{self.builder.name}] returncode: {builder.metadata['result']['returncode']}"
         )
         self.check_test_state()
 
     def cancel(self, builder):
         """Cancel LSF job, this is required if job exceeds max pending time in queue"""
 
-        query = f"bkill {self.builder.metadata['jobid']}"
+        query = f"bkill {builder.metadata['jobid']}"
 
         cmd = BuildTestCommand(query)
         cmd.execute()
         msg = (
-            f"Cancelling Job: {self.builder.metadata['name']} running command: {query}"
+            f"Cancelling Job: {builder.metadata['name']} running command: {query}"
         )
         print(msg)
         self.logger.debug(msg)

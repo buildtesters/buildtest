@@ -112,7 +112,7 @@ class SlurmExecutor(BaseExecutor):
         command.execute()
 
         # record starttime of job
-        self.start_time()
+        self.start_time(builder)
         builder.start()
 
         # if sbatch job submission returns non-zero exit that means we have failure, exit immediately
@@ -173,7 +173,7 @@ class SlurmExecutor(BaseExecutor):
 
             # if timer time is more than requested pend time then cancel job
             if int(builder.duration) > self.max_pend_time:
-                self.cancel()
+                self.cancel(builder)
                 builder.job_state = "CANCELLED"
                 print(
                     "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
@@ -266,7 +266,7 @@ class SlurmExecutor(BaseExecutor):
     def cancel(self, builder):
         """Cancel slurm job, this operation is performed if job exceeds pending or runtime."""
 
-        query = f"scancel {self.builder.metadata['jobid']}"
+        query = f"scancel {builder.metadata['jobid']}"
         # cancel by slurm cluster if required to cancel job from remote slurm cluster
         if self.cluster:
             query += f" --clusters={self.cluster}"
@@ -274,7 +274,7 @@ class SlurmExecutor(BaseExecutor):
         cmd = BuildTestCommand(query)
         cmd.execute()
         msg = (
-            f"Cancelling Job: {self.builder.metadata['name']} running command: {query}"
+            f"Cancelling Job: {builder.metadata['name']} running command: {query}"
         )
         print(msg)
         self.logger.debug(msg)
