@@ -70,8 +70,9 @@ class PBSExecutor(BaseExecutor):
         )
         command = BuildTestCommand(self.builder.metadata["command"])
         command.execute()
+        # record start time in builder object
+        self.start_time()
         self.builder.start()
-        self.builder.metadata["result"]["starttime"] = datetime.datetime.now()
 
         # if qsub job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
@@ -173,11 +174,9 @@ class PBSExecutor(BaseExecutor):
 
         self.builder.metadata["result"]["returncode"] = job_data["Jobs"][self.builder.metadata['jobid']]["Exit_status"]
 
-        self.builder.metadata["result"]["endtime"] = datetime.datetime.now()
-        runtime = self.builder.metadata["result"]["endtime"] - self.builder.metadata["result"]["starttime"]
-        self.builder.metadata["result"]["runtime"] = runtime.total_seconds()
-        self.builder.metadata["result"]["starttime"] =  self.builder.metadata["result"]["starttime"].strftime("%Y/%m/%d %X")
-        self.builder.metadata["result"]["endtime"] =  self.builder.metadata["result"]["endtime"].strftime("%Y/%m/%d %X")
+        # record endtime in builder object
+        self.end_time()
+        self.runtime()
 
         self.builder.metadata["job"] = job_data
 

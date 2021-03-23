@@ -99,9 +99,8 @@ class LSFExecutor(BaseExecutor):
 
         command = BuildTestCommand(self.builder.metadata["command"])
         command.execute()
+        self.start_time()
         self.builder.start()
-        self.builder.metadata["result"]["starttime"] = datetime.datetime.now()
-
         # if job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
             err = f"[{self.builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
@@ -207,12 +206,7 @@ class LSFExecutor(BaseExecutor):
         else:
             self.builder.metadata["result"]["returncode"] = int(job_data["EXIT_CODE"])
 
-        self.builder.metadata["result"]["endtime"] = datetime.datetime.now()
-        runtime = self.builder.metadata["result"]["endtime"] - self.builder.metadata["result"]["starttime"]
-        self.builder.metadata["result"]["runtime"] = runtime.total_seconds()
-
-        self.builder.metadata["result"]["starttime"] = self.builder.metadata["result"]["starttime"].strftime("%Y/%m/%d %X")
-        self.builder.metadata["result"]["endtime"] = self.builder.metadata["result"]["endtime"].strftime("%Y/%m/%d %X")
+        self.end_time()
 
         self.builder.metadata["outfile"] = os.path.join(
             self.builder.stage_dir, job_data["OUTPUT_FILE"]

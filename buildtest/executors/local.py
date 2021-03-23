@@ -11,7 +11,6 @@ import sys
 
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.timer import Timer
 
 
 class LocalExecutor(BaseExecutor):
@@ -43,20 +42,14 @@ class LocalExecutor(BaseExecutor):
     def run(self):
         """This method is responsible for running test for LocalExecutor which
         runs test locally. We keep track of metadata in ``self.builder.metadata``
-        and ``self.result`` keeps track of run result. The output and error file
+        that keeps track of run result. The output and error file
         are written to filesystem.
         """
-
-        # self.result must be initialized to empty dict since this is shared by
-        # builders that use the Local Executor.
-        self.result = {}
 
         if self.shell_type != self.builder.shell_type:
             sys.exit(
                 f"[{self.builder.name}]: we have a shell mismatch with executor: {self.name}. The executor shell: {self.shell} is not compatible with shell: {self.builder.shell.name} found in buildspec"
             )
-
-        self.result["id"] = self.builder.metadata.get("id")
 
         # Change to the test directory
         os.chdir(self.builder.stage_dir)
@@ -70,26 +63,19 @@ class LocalExecutor(BaseExecutor):
         )
 
         command = BuildTestCommand(self.builder.metadata["command"])
-        # self.builder.metadata["starttime"] = datetime.datetime.now()
-        # self.result["starttime"] = self.get_formatted_time("starttime")
 
-        self.result["starttime"] = datetime.datetime.now().strftime("%Y/%m/%d %X")
-
-        t = Timer()
-        t.start()
+        self.start_time()
         out, err = command.execute()
-        self.result["runtime"] = t.stop()
-
-        self.result["endtime"] = datetime.datetime.now().strftime("%Y/%m/%d %X")
+        self.end_time()
+        self.runtime()
 
         self.logger.debug(
             f"Return code: {command.returncode} for test: {self.builder.metadata['testpath']}"
         )
-        self.result["returncode"] = command.returncode
+        self.builder.metadata["result"]["returncode"] = command.returncode
 
         self.builder.metadata["output"] = out
         self.builder.metadata["error"] = err
-
+        print(self.builder.metadata["result"])
         self.write_testresults(out, err)
-        self.builder.metadata["result"] = self.result
         self.check_test_state()
