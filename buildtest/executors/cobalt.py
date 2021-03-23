@@ -67,11 +67,10 @@ class CobaltExecutor(BaseExecutor):
         self.logger.debug(
             f"Running Test via command: {self.builder.metadata['command']}"
         )
-        self.builder.metadata["result"]["starttime"] = datetime.datetime.now().strftime(
-            "%Y/%m/%d %X"
-        )
+
         command = BuildTestCommand(self.builder.metadata["command"])
         command.execute()
+        self.builder.metadata["result"]["starttime"] = datetime.datetime.now()
         self.builder.start()
 
         # if qsub job submission returns non-zero exit that means we have failure, exit immediately
@@ -168,9 +167,6 @@ class CobaltExecutor(BaseExecutor):
             or self.builder.job_state == "exiting"
         ):
             self.builder.job_state = "done"
-            self.builder.metadata["result"][
-                "endtime"
-            ] = datetime.datetime.now().strftime("%Y/%m/%d %X")
             self.gather()
             return
 
@@ -205,6 +201,15 @@ class CobaltExecutor(BaseExecutor):
         cobaltlog = os.path.join(
             self.builder.stage_dir, str(self.builder.metadata["jobid"]) + ".cobaltlog"
         )
+
+        self.builder.metadata["result"]["endtime"] = datetime.datetime.now()
+        runtime = self.builder.metadata["result"]["endtime"] - self.builder.metadata["result"]["starttime"]
+        self.builder.metadata["result"]["runtime"] = runtime.total_seconds()
+
+        self.builder.metadata["result"]["starttime"].strftime("%Y/%m/%d %X")
+        self.builder.metadata["result"]["endtime"].strftime("%Y/%m/%d %X")
+
+
         self.logger.debug(f"Cobalt Log File written to {cobaltlog}")
         if os.path.exists(cobaltlog):
             content = read_file(cobaltlog)

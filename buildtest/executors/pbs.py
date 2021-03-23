@@ -68,12 +68,10 @@ class PBSExecutor(BaseExecutor):
         self.logger.debug(
             f"Running Test via command: {self.builder.metadata['command']}"
         )
-        self.builder.metadata["result"]["starttime"] = datetime.datetime.now().strftime(
-            "%Y/%m/%d %X"
-        )
         command = BuildTestCommand(self.builder.metadata["command"])
         command.execute()
         self.builder.start()
+        self.builder.metadata["result"]["starttime"] = datetime.datetime.now()
 
         # if qsub job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
@@ -174,9 +172,13 @@ class PBSExecutor(BaseExecutor):
         job_data = json.loads(output)
 
         self.builder.metadata["result"]["returncode"] = job_data["Jobs"][self.builder.metadata['jobid']]["Exit_status"]
-        self.builder.metadata["result"]["starttime"] = job_data["Jobs"][self.builder.metadata['jobid']]["stime"]
-        self.builder.metadata["result"]["endtime"] = job_data["Jobs"][self.builder.metadata['jobid']]["etime"]
-        self.builder.metadata["result"]["runtime"] = job_data["Jobs"][self.builder.metadata['jobid']]["resources_used"]["walltime"]
+
+        self.builder.metadata["result"]["endtime"] = datetime.datetime.now()
+        runtime = self.builder.metadata["result"]["endtime"] - self.builder.metadata["result"]["starttime"]
+        self.builder.metadata["result"]["runtime"] = runtime.total_seconds()
+        self.builder.metadata["result"]["starttime"] =  self.builder.metadata["result"]["starttime"].strftime("%Y/%m/%d %X")
+        self.builder.metadata["result"]["endtime"] =  self.builder.metadata["result"]["endtime"].strftime("%Y/%m/%d %X")
+
         self.builder.metadata["job"] = job_data
 
         self.builder.metadata["output"] = read_file(self.builder.metadata["outfile"])

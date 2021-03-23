@@ -55,14 +55,7 @@ class LocalExecutor(BaseExecutor):
             sys.exit(
                 f"[{self.builder.name}]: we have a shell mismatch with executor: {self.name}. The executor shell: {self.shell} is not compatible with shell: {self.builder.shell.name} found in buildspec"
             )
-        """   
-        # check shell type mismatch between buildspec shell and executor shell. We can't support python with sh/bash.
-        if ( self.builder.shell.name in self.shell_types and self.shell == "python") or \
-           ( self.builder.shell.name == "python" and self.shell in self.shell_types):
-            sys.exit(
-                f"[{self.builder.name}]: shell mismatch, expecting {self.shell} while buildspec shell is {self.builder.shell.name}"
-            )
-        """
+
         self.result["id"] = self.builder.metadata.get("id")
 
         # Change to the test directory
