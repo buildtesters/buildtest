@@ -1,4 +1,6 @@
-import datetime
+"""This method implements CobaltExecutor class which is defines how cobalt executor
+submit job to Cobalt scheduler."""
+
 import json
 import os
 import re

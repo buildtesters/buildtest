@@ -3,6 +3,8 @@ buildtest menu: include functions to build, get test configurations, and
 interact with a global configuration for buildtest.
 """
 import argparse
+from termcolor import colored
+
 from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
 from buildtest.docs import buildtestdocs, schemadocs
 from buildtest.menu.config import (
@@ -60,7 +62,7 @@ def positive_number(value):
 
 class BuildTestParser:
     def __init__(self):
-        epilog_str = f"""
+        epilog_str = colored(f"""
 References
 _______________________________________________________________________________________
 GitHub:                  https://github.com/buildtesters/buildtest 
@@ -71,7 +73,7 @@ Slack:                   http://hpcbuildtest.slack.com/
 Please report issues at https://github.com/buildtesters/buildtest/issues
 
 {BUILDTEST_COPYRIGHT}
-        """
+""", 'blue', attrs=["bold"])
 
         description_str = (
             "buildtest is a HPC testing framework for writing acceptance tests."

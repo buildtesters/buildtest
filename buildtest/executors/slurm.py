@@ -3,7 +3,6 @@ This module implements the SlurmExecutor class responsible for submitting
 jobs to Slurm Scheduler. This class is called in class BuildExecutor
 when initializing the executors.
 """
-import datetime
 import os
 import re
 import shutil

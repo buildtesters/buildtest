@@ -3,3 +3,4 @@ jsonschema
 tabulate
 distro
 lmodule==0.1
+termcolor

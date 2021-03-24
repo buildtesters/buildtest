@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+from termcolor import colored
 from tabulate import tabulate
 from buildtest.defaults import BUILD_REPORT
 from buildtest.exceptions import BuildTestError
@@ -296,8 +297,13 @@ class Report:
             ["state", "Test State reported by buildtest (PASS/FAIL)"],
             ["returncode", "Return Code from Test Execution"],
         ]
+        table = []
+        # color first column green and second column red
+        for row in format_table:
+            table.append([colored(row[0],'green',attrs=['bold']), colored(row[1],'red')])
+
         print(
-            tabulate(format_table, headers=["Fields", "Description"], tablefmt="simple")
+            tabulate(table, headers=[colored(field,'blue',attrs=['bold']) for field in ["Fields", "Description"]], tablefmt="simple")
         )
 
     def print_filter_fields(self):
@@ -311,11 +317,13 @@ class Report:
             ["tags", "Filter tests by tag name ", "STRING"],
             ["returncode", "Filter tests by returncode ", "INT"],
         ]
-
+        table = []
+        for row in filter_field_table:
+            table.append([colored(row[0],'green',attrs=['bold']), colored(row[1],'red'), colored(row[2],'cyan')])
         print(
             tabulate(
-                filter_field_table,
-                headers=["Filter Fields", "Description", "Expected Value"],
+                table,
+                headers=[colored(field,'blue',attrs=['bold']) for field in ["Filter Fields", "Description", "Expected Value"]],
                 tablefmt="simple",
             )
         )
@@ -323,7 +331,7 @@ class Report:
     def print_display_table(self):
         print(
             tabulate(
-                self.display_table, headers=self.display_table.keys(), tablefmt="grid"
+                self.display_table, headers=[colored(field,'blue',attrs=['bold']) for field in self.display_table.keys()], tablefmt="grid"
             )
         )
 

@@ -11,6 +11,7 @@ import sys
 import time
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
+from termcolor import cprint
 from buildtest.config import check_settings
 from buildtest.defaults import (
     BUILDTEST_ROOT,
@@ -273,19 +274,18 @@ class BuildTest:
 
         if printTable:
 
-            print(
-                """
+            cprint(
+"""
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-        """
-            )
+""", 'red',attrs=['bold'])
 
-            print("\nDiscovered Buildspecs:\n ")
+            print("Discovered Buildspecs:")
             [print(buildspec) for buildspec in self.detected_buildspecs]
 
             if self.bp_removed:
-                print("\nExcluded Buildspecs:\n")
+                print("\nExcluded Buildspecs:")
                 [print(file) for file in self.bp_removed]
 
     def discover_buildspecs_by_tags(self, input_tag):
@@ -483,13 +483,12 @@ class BuildTest:
             # sys.exit(0)
 
         if printTable:
-            print(
-                """
+            cprint("""
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
-        """
-            )
+""", 'red', attrs=['bold'])
+
             print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
         return self.builders
@@ -501,16 +500,7 @@ class BuildTest:
 
         # Parse all buildspecs and skip any buildspecs that fail validation, return type
         # is a builder object used for building test.
-        """
-        self.builders = self.parse_buildspecs(
-            buildspecs=self.detected_buildspecs,
-            filters=self.filtertags,
-            executor=self.buildexecutor,
-            test_directory=self.testdir,
-            rebuild=self.rebuild,
-            printTable=True,
-        )
-        """
+
         self.parse_buildspecs(printTable=True)
 
         # if no builders found or  --stage=parse set we return from method
@@ -537,13 +527,12 @@ class BuildTest:
         :type printTable: boolean
         """
         invalid_builders = []
-        print(
-            """
+        cprint("""
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
-    """
-        )
+""", 'red', attrs=['bold'])
+
         table = Hasher()
         for field in ["name", "id", "type", "executor", "tags", "compiler", "testpath"]:
             table["script"][field] = []
@@ -642,13 +631,12 @@ class BuildTest:
         poll = False
 
         if printTable:
-            print(
-                """
+            cprint(
+"""
 +----------------------+
 | Stage: Running Test  |
 +----------------------+ 
-        """
-            )
+""", 'red', attrs=['bold'])
 
         table = {
             "name": [],
@@ -717,13 +705,12 @@ class BuildTest:
             }
 
             if printTable:
-                print(
-                    """
+                cprint(
+"""
 +---------------------------------------------+
 | Stage: Final Results after Polling all Jobs |
 +---------------------------------------------+ 
-        """
-                )
+""", 'red', attrs=['bold'])
 
             # regenerate test results after poll
             passed_tests = 0
@@ -753,25 +740,23 @@ class BuildTest:
             return
 
         if printTable:
-            print(
-                """
+            cprint(
+"""
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-        """
+""", 'red', attrs=['bold']
             )
-
-            print(f"Executed {total_tests} tests")
 
             pass_rate = passed_tests * 100 / total_tests
             fail_rate = failed_tests * 100 / total_tests
 
-            print(
-                f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%"
+            cprint(
+                f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%", 'green'
             )
 
-            print(
-                f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%"
+            cprint(
+                f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%", 'red'
             )
             print("\n\n")
 

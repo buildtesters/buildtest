@@ -1,4 +1,5 @@
-import datetime
+"""This module implements PBSExecutor class that defines how executors submit
+job to PBS Scheduler"""
 import json
 import os
 import sys
