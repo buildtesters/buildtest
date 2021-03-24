@@ -3,6 +3,7 @@ import logging
 import os
 
 from tabulate import tabulate
+from termcolor import colored
 from jsonschema.exceptions import ValidationError
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import check_settings, BuildtestConfiguration
@@ -22,7 +23,7 @@ class BuildspecCache:
 
     table = {}
     filter_fields = ["type", "executor", "tags"]
-    default_format_fields = ["name", "type", "executor", "tags", "description"]
+    default_format_fields = ["name", "type","executor","tags","description"]
     format_fields = default_format_fields + ["file"]
 
     def __init__(
@@ -46,6 +47,7 @@ class BuildspecCache:
         :param roots:  List of directories to search for buildspecs. This argument contains value of --roots
         :type roots: list, required
         """
+
         self.settings = settings_file or DEFAULT_SETTINGS_FILE
         self.configuration = check_settings(self.settings, executor_check=True)
         self.filter = filterfields
@@ -461,6 +463,10 @@ class BuildspecCache:
         """
 
         table = {"buildspecs": self.cache["buildspecs"].keys()}
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            print(tabulate(table, headers=[colored(field,'blue', attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+            return
+
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def get_tags(self):
@@ -469,17 +475,24 @@ class BuildspecCache:
         """
 
         table = {"Tags": self.cache["unique_tags"]}
-        print(table, type(table))
-        print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            print(tabulate(table, headers=[colored(field,'blue', attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+            return
+
+        print(tabulate(table,headers=table.keys(), tablefmt="grid"))
 
     def get_executors(self):
-        """This method implements ``buildtest buildspec find --list-executors``
+        """This method implements ``buildtest buildspec find --executors``
         which reports all executors from cache.
         """
 
         table = {"executors": self.cache["unique_executors"]}
 
-        print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            print(tabulate(table, headers=[colored(field,'blue', attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+            return
+
+        print(tabulate(table,headers=table.keys(), tablefmt="grid"))
 
     def print_by_executors(self):
         """This method prints executors by tests and implements
@@ -494,7 +507,11 @@ class BuildspecCache:
                 table["name"].append(test_name)
                 table["description"].append(description)
 
-        print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            print(tabulate(table, headers=[colored(field,'blue', attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+            return
+
+        print(tabulate(table,headers=table.keys(), tablefmt="grid"))
 
     def print_by_tags(self):
         """This method prints tags by tests and implements
@@ -509,12 +526,20 @@ class BuildspecCache:
                 table["name"].append(test_name)
                 table["description"].append(description)
 
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            print(tabulate(table, headers=[colored(field,'blue', attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+            return
+
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def print_buildspecs(self):
         """Print buildspec table"""
 
-        print(tabulate(self.table, headers=self.table.keys(), tablefmt="grid"))
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            print(tabulate(self.table, headers=[colored(field,'blue', attrs=['bold']) for field in self.table.keys()], tablefmt="grid"))
+            return
+
+    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
     def print_maintainer(self):
         """This method prints maintainers from buildspec cache file which implements
@@ -525,6 +550,10 @@ class BuildspecCache:
 
         for maintainer in self.cache["maintainers"].keys():
             table["maintainers"].append(maintainer)
+
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            print(tabulate(table, headers=[colored(field,'blue', attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+            return
 
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
@@ -537,6 +566,10 @@ class BuildspecCache:
         for maintainer, buildspec in self.cache["maintainers"].items():
             table["maintainers"].append(maintainer)
             table["buildspec"].append(buildspec)
+
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            print(tabulate(table, headers=[colored(field,'blue', attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+            return
 
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
@@ -552,20 +585,31 @@ class BuildspecCache:
             ["type", "Filter by schema type ", "STRING"],
         ]
 
-        print(
-            tabulate(
-                filter_field_table,
-                headers=["Field", "Description", "Type"],
-                tablefmt="simple",
+        table = []
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            for row in filter_field_table:
+                table.append([colored(row[0], 'green', attrs=['bold']),
+                              colored(row[1], 'red'),
+                              colored(row[2], 'cyan')])
+
+
+            print(
+                tabulate(
+                    table,
+                    headers=[colored(field,'blue',attrs=['bold']) for field in ["Field", "Description", "Type"]],
+                    tablefmt="simple",
+                )
             )
-        )
+            return
+
+        print(tabulate(filter_field_table,headers=["Field","Description","Type"], tablefmt="simple"))
 
     @staticmethod
     def print_format_fields():
         """This method prints format fields available for buildspec cache. This
         method implements command ``buildtest buildspec find --helpformat``
         """
-
+        headers = ["Field", "Description"]
         format_fields = [
             ["name", "Format by test name"],
             ["tags", "Format by tag name "],
@@ -574,14 +618,22 @@ class BuildspecCache:
             ["description", "Format by description"],
             ["file", "Format by file"],
         ]
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            table = []
+            for row in format_fields:
+                table.append([colored(row[0], 'green', attrs=['bold']),
+                              colored(row[1], 'red')])
 
-        print(
-            tabulate(
-                format_fields,
-                headers=["Field", "Description"],
-                tablefmt="simple",
+            print(
+                tabulate(
+                    table,
+                    headers=[colored(field,'blue',attrs=['bold']) for field in headers],
+                    tablefmt="simple",
+                )
             )
-        )
+            return
+
+        print(tabulate(format_fields,headers=headers, tablefmt="simple"))
 
     def print_paths(self):
         """This method print buildspec paths, this implements command

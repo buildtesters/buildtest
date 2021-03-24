@@ -4,7 +4,6 @@ jobs to LSF Scheduler. This class is called in class BuildExecutor
 when initializing the executors.
 """
 
-import datetime
 import json
 import os
 import subprocess

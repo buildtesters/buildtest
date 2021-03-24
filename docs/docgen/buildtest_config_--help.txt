@@ -1,5 +1,6 @@
 $ buildtest config --help
-usage: buildtest [options] [COMMANDS] config [-h] {executors,view,validate,summary,compilers} ...
+
+usage: buildtest [options] [COMMANDS] config [-h] {executors,view,validate,summary,systems,compilers} ...
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -7,9 +8,10 @@ optional arguments:
 subcommands:
   query information from buildtest configuration file
 
-  {executors,view,validate,summary,compilers}
+  {executors,view,validate,summary,systems,compilers}
     executors           Query executors from buildtest configuration
     view                View Buildtest Configuration File
     validate            Validate buildtest settings file with schema.
     summary             Provide summary of buildtest settings.
+    systems             List all available systems
     compilers           search or find compilers

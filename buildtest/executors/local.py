@@ -4,7 +4,6 @@ jobs to localhost. This class is called in class BuildExecutor
 when initializing the executors.
 """
 
-import datetime
 import os
 import shutil
 import sys

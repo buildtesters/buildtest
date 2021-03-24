@@ -1,4 +1,5 @@
 $ buildtest config executors
+
 executors:
   local:
     bash:

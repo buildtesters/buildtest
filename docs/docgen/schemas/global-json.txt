@@ -1,4 +1,5 @@
 $ buildtest schema -n global.schema.json --json 
+
 {
   "$id": "global.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",

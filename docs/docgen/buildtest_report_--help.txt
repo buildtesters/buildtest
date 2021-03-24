@@ -1,4 +1,5 @@
 $ buildtest report --help
+
 usage: buildtest [options] [COMMANDS] report [-h] [--helpformat] [--format FORMAT] [--filter FILTER] [--helpfilter]
                                              [--latest] [--oldest]
 

@@ -1,22 +1,36 @@
 $ buildtest report --filter name=exit1_pass --format=name,id,returncode,state
-+------------+----------+--------------+---------+
-| name       | id       |   returncode | state   |
-+============+==========+==============+=========+
-| exit1_pass | 68e23f09 |            1 | PASS    |
-+------------+----------+--------------+---------+
-| exit1_pass | 184fff26 |            1 | PASS    |
-+------------+----------+--------------+---------+
-| exit1_pass | 2d367d8c |            1 | PASS    |
-+------------+----------+--------------+---------+
-| exit1_pass | 9efe550e |            1 | PASS    |
-+------------+----------+--------------+---------+
-| exit1_pass | 41d02d93 |            1 | PASS    |
-+------------+----------+--------------+---------+
-| exit1_pass | ef868b8a |            1 | PASS    |
-+------------+----------+--------------+---------+
-| exit1_pass | 83383992 |            1 | PASS    |
-+------------+----------+--------------+---------+
-| exit1_pass | 104210b9 |            1 | PASS    |
-+------------+----------+--------------+---------+
-| exit1_pass | 2f9844bf |            1 | PASS    |
-+------------+----------+--------------+---------+
+
+name        id          returncode  state
+----------  --------  ------------  -------
+exit1_pass  3e4195f4             1  PASS
+exit1_pass  d9cc7488             1  PASS
+exit1_pass  d112d30b             1  PASS
+exit1_pass  ab692cda             1  PASS
+exit1_pass  647084a8             1  PASS
+exit1_pass  ab0f7e37             1  PASS
+exit1_pass  a3573208             1  PASS
+exit1_pass  20956316             1  PASS
+exit1_pass  95fcfa54             1  PASS
+exit1_pass  017cb50d             1  PASS
+exit1_pass  7b15c0fc             1  PASS
+exit1_pass  408584db             1  PASS
+exit1_pass  2db64e57             1  PASS
+exit1_pass  db7a41e1             1  PASS
+exit1_pass  092008f4             1  PASS
+exit1_pass  f35fdc4e             1  PASS
+exit1_pass  9106e409             1  PASS
+exit1_pass  ec3bae0c             1  PASS
+exit1_pass  e1f34769             1  PASS
+exit1_pass  1a31fb9e             1  PASS
+exit1_pass  7ee3afd3             1  PASS
+exit1_pass  2d99b378             1  PASS
+exit1_pass  981c7a8e             1  PASS
+exit1_pass  c92c619e             1  PASS
+exit1_pass  ec57279c             1  PASS
+exit1_pass  bb20d68b             1  PASS
+exit1_pass  ecd146a7             1  PASS
+exit1_pass  899b841e             1  PASS
+exit1_pass  f3481ad8             1  PASS
+exit1_pass  991495e0             1  PASS
+exit1_pass  9be59128             1  PASS
+exit1_pass  17d0d095             1  PASS

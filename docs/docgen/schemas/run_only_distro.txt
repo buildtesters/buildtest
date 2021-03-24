@@ -1,48 +1,46 @@
 $ buildtest build -b tutorials/run_only_distro.yml 
 
+
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-        
 
 Discovered Buildspecs:
- 
 /Users/siddiq90/Documents/github/buildtest/tutorials/run_only_distro.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
-        
+
  schemafile              | validstate   | buildspec
 -------------------------+--------------+--------------------------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/run_only_distro.yml
 
-+----------------------+
-| Stage: Building Test |
-+----------------------+ 
-    
+        +-------------------------------+
+        | Stage: Building Test          |
+        +-------------------------------+ 
+        
  name                  | id       | type   | executor           | tags    | testpath
 -----------------------+----------+--------+--------------------+---------+-----------------------------------------------------------------------------------------------------------------------------------
- run_only_macos_distro | 685c605c | script | generic.local.bash | ['mac'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_only_distro/run_only_macos_distro/1/stage/generate.sh
+ run_only_macos_distro | fe0d745a | script | generic.local.bash | ['mac'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_only_distro/run_only_macos_distro/5/stage/generate.sh
 
 
 
-+----------------------+
-| Stage: Running Test  |
-+----------------------+ 
-        
++-------------------------------+
+| Stage: Running Test           |
++-------------------------------+ 
+
  name                  | id       | executor           | status   |   returncode | testpath
 -----------------------+----------+--------------------+----------+--------------+-----------------------------------------------------------------------------------------------------------------------------------
- run_only_macos_distro | 685c605c | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_only_distro/run_only_macos_distro/1/stage/generate.sh
+ run_only_macos_distro | fe0d745a | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_only_distro/run_only_macos_distro/5/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-        
-Executed 1 tests
+
 Passed Tests: 1/1 Percentage: 100.000%
 Failed Tests: 0/1 Percentage: 0.000%
 
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_2ora9ook.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_tmlfesph.log

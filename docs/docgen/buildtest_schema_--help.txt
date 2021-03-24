@@ -1,4 +1,5 @@
 $ buildtest schema --help
+
 usage: buildtest [options] [COMMANDS] schema [-h] [-n Schema Name] [-e] [-j]
 
 optional arguments:

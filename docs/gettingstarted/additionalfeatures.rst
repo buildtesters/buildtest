@@ -70,3 +70,11 @@ To access `buildtest docs <https://buildtest.readthedocs.io/>`_ you can run::
 To access `schema docs <https://buildtesters.github.io/buildtest>`_ you can run::
 
   $ buildtest schemadocs
+
+Color Mode
+----------
+
+buildtest will display output in color, if you want to disable color you can set
+environment variable ``BUILDTEST_COLOR`` to **False** and buildtest will not display
+the ANSI codes. This can be useful if you don't want to see ANSI color codes in the
+text output.

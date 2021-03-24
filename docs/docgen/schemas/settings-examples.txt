@@ -1,4 +1,5 @@
 $ buildtest schema -n settings.schema.json -e 
+
 File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/local-executor.yml
 ________________________________________________________________________________
 system:
@@ -132,6 +133,29 @@ system:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
+File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/pbs-example.yml
+________________________________________________________________________________
+system:
+  generic:
+    hostnames: ['.*']
+
+    moduletool: N/A
+    load_default_buildspecs: True
+    executors:
+      defaults:
+         pollinterval: 10
+         launcher: qsub
+         max_pend_time: 30
+      pbs:
+        workq:
+          queue: workq
+    compilers:
+      compiler:
+        gcc:
+          default:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
 File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
 ________________________________________________________________________________
 system:
@@ -190,12 +214,14 @@ system:
       lsf:
         batch:
           launcher: bsub
+          queue: batch
           options:
             - "-q batch"
             - "-t 00:10"
       cobalt:
         normal:
           launcher: qsub
+          queue: normal
           options:
             - "-n 1"
             - "-t 10"

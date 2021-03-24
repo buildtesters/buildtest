@@ -1,4 +1,5 @@
 $ buildtest config compilers --help
+
 usage: buildtest [options] [COMMANDS] config compilers [-h] [-j] [-y] [-l] {find} ...
 
 optional arguments:

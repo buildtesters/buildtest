@@ -3,6 +3,9 @@ buildtest menu: include functions to build, get test configurations, and
 interact with a global configuration for buildtest.
 """
 import argparse
+import os
+from termcolor import colored
+
 from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
 from buildtest.docs import buildtestdocs, schemadocs
 from buildtest.menu.config import (
@@ -71,7 +74,9 @@ Slack:                   http://hpcbuildtest.slack.com/
 Please report issues at https://github.com/buildtesters/buildtest/issues
 
 {BUILDTEST_COPYRIGHT}
-        """
+"""
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            epilog_str=colored(epilog_str,"blue",attrs=["bold"])
 
         description_str = (
             "buildtest is a HPC testing framework for writing acceptance tests."

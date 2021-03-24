@@ -1,10 +1,12 @@
 import json
 import getpass
+import os
 import shutil
 import sys
 import yaml
 from jsonschema import ValidationError
 from tabulate import tabulate
+from termcolor import colored
 from buildtest import BUILDTEST_VERSION
 
 from buildtest.config import (
@@ -30,9 +32,11 @@ def func_config_system(args=None, settings_file=None):
         table["moduletool"].append(bc.config["system"][name]["moduletool"])
         table["hostnames"].append(bc.config["system"][name]["hostnames"])
 
+    if os.getenv("BUILDTEST_COLOR") == "True":
+        print(tabulate(table, headers=[colored(field,'blue',attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+        return
+
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
-
-
 
 def func_config_validate(args=None):
     """This method implements ``buildtest config validate`` which attempts to
@@ -56,12 +60,13 @@ def func_config_view(args=None):
     """View buildtest configuration file. This implements ``buildtest config view``"""
 
     settings_file = resolve_settings_file()
-    print(f"Settings File: {settings_file}")
-    print("{:_<80}".format(""))
+
     content = load_recipe(settings_file)
 
     print(yaml.dump(content, default_flow_style=False, sort_keys=False))
 
+    print("{:_<80}".format(""))
+    print(f"Settings File: {settings_file}")
 
 def func_config_executors(args=None):
     """Display executors from buildtest configuration. This implements ``buildtest config executors`` command.

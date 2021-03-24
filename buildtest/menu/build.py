@@ -11,6 +11,7 @@ import sys
 import time
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
+from termcolor import colored, cprint
 from buildtest.config import check_settings
 from buildtest.defaults import (
     BUILDTEST_ROOT,
@@ -272,20 +273,21 @@ class BuildTest:
             sys.exit(msg)
 
         if printTable:
-
-            print(
-                """
+            msg = """
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-        """
-            )
+"""
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                msg = colored(msg,"red", attrs=['bold'])
 
-            print("\nDiscovered Buildspecs:\n ")
+            print(msg)
+
+            print("Discovered Buildspecs:")
             [print(buildspec) for buildspec in self.detected_buildspecs]
 
             if self.bp_removed:
-                print("\nExcluded Buildspecs:\n")
+                print("\nExcluded Buildspecs:")
                 [print(file) for file in self.bp_removed]
 
     def discover_buildspecs_by_tags(self, input_tag):
@@ -483,13 +485,16 @@ class BuildTest:
             # sys.exit(0)
 
         if printTable:
-            print(
-                """
+            msg = """
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
-        """
-            )
+"""
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                msg = colored(msg,'red',attrs=['bold'])
+
+            print(msg)
+
             print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
         return self.builders
@@ -501,16 +506,7 @@ class BuildTest:
 
         # Parse all buildspecs and skip any buildspecs that fail validation, return type
         # is a builder object used for building test.
-        """
-        self.builders = self.parse_buildspecs(
-            buildspecs=self.detected_buildspecs,
-            filters=self.filtertags,
-            executor=self.buildexecutor,
-            test_directory=self.testdir,
-            rebuild=self.rebuild,
-            printTable=True,
-        )
-        """
+
         self.parse_buildspecs(printTable=True)
 
         # if no builders found or  --stage=parse set we return from method
@@ -537,13 +533,16 @@ class BuildTest:
         :type printTable: boolean
         """
         invalid_builders = []
-        print(
-            """
-+----------------------+
-| Stage: Building Test |
-+----------------------+ 
-    """
-        )
+        msg = """
+        +-------------------------------+
+        | Stage: Building Test          |
+        +-------------------------------+ 
+        """
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            msg = colored(msg, "red", attrs=['bold'])
+
+        print(msg)
+
         table = Hasher()
         for field in ["name", "id", "type", "executor", "tags", "compiler", "testpath"]:
             table["script"][field] = []
@@ -642,13 +641,16 @@ class BuildTest:
         poll = False
 
         if printTable:
-            print(
-                """
-+----------------------+
-| Stage: Running Test  |
-+----------------------+ 
-        """
-            )
+            msg = """
++-------------------------------+
+| Stage: Running Test           |
++-------------------------------+ 
+"""
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                msg = colored(msg, "red", attrs=['bold'])
+
+            print(msg)
+
 
         table = {
             "name": [],
@@ -717,13 +719,15 @@ class BuildTest:
             }
 
             if printTable:
-                print(
-                    """
+                msg = """
 +---------------------------------------------+
 | Stage: Final Results after Polling all Jobs |
 +---------------------------------------------+ 
-        """
-                )
+"""
+                if os.getenv("BUILDTEST_COLOR") == "True":
+                    msg = colored(msg, "red", attrs=['bold'])
+
+                print(msg)
 
             # regenerate test results after poll
             passed_tests = 0
@@ -753,26 +757,27 @@ class BuildTest:
             return
 
         if printTable:
-            print(
-                """
+            msg = """
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-        """
-            )
+"""
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                msg = colored(msg, "red", attrs=['bold'])
 
-            print(f"Executed {total_tests} tests")
+            print(msg)
 
             pass_rate = passed_tests * 100 / total_tests
             fail_rate = failed_tests * 100 / total_tests
 
-            print(
-                f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%"
-            )
+            msg1 = f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%"
+            msg2 = f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%"
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                msg1 = colored(msg1,'green')
+                msg2 = colored(msg2, 'red')
 
-            print(
-                f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%"
-            )
+            print(msg1)
+            print(msg2)
             print("\n\n")
 
         return valid_builders

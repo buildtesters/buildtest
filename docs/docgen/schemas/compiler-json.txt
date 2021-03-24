@@ -1,4 +1,5 @@
 $ buildtest schema -n compiler-v1.0.schema.json --json 
+
 {
   "$id": "compiler-v1.0.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -70,22 +71,25 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
       "additionalProperties": false,
       "properties": {
         "sbatch": {
-          "$ref": "definitions.schema.json#/definitions/sbatch"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "bsub": {
-          "$ref": "definitions.schema.json#/definitions/bsub"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "cobalt": {
-          "$ref": "definitions.schema.json#/definitions/cobalt"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
+        },
+        "pbs": {
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "batch": {
           "$ref": "definitions.schema.json#/definitions/batch"
         },
         "BB": {
-          "$ref": "definitions.schema.json#/definitions/BB"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "DW": {
-          "$ref": "definitions.schema.json#/definitions/DW"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "env": {
           "$ref": "definitions.schema.json#/definitions/env"
@@ -142,22 +146,25 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
           "$ref": "#definitions/cppflags"
         },
         "sbatch": {
-          "$ref": "definitions.schema.json#/definitions/sbatch"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "bsub": {
-          "$ref": "definitions.schema.json#/definitions/bsub"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "cobalt": {
-          "$ref": "definitions.schema.json#/definitions/cobalt"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
+        },
+        "pbs": {
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "batch": {
           "$ref": "definitions.schema.json#/definitions/batch"
         },
         "BB": {
-          "$ref": "definitions.schema.json#/definitions/BB"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "DW": {
-          "$ref": "definitions.schema.json#/definitions/DW"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "env": {
           "$ref": "definitions.schema.json#/definitions/env"
@@ -215,22 +222,25 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
           "$ref": "#definitions/cppflags"
         },
         "sbatch": {
-          "$ref": "definitions.schema.json#/definitions/sbatch"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "bsub": {
-          "$ref": "definitions.schema.json#/definitions/bsub"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "cobalt": {
-          "$ref": "definitions.schema.json#/definitions/cobalt"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
+        },
+        "pbs": {
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "batch": {
           "$ref": "definitions.schema.json#/definitions/batch"
         },
         "BB": {
-          "$ref": "definitions.schema.json#/definitions/BB"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "DW": {
-          "$ref": "definitions.schema.json#/definitions/DW"
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
         },
         "env": {
           "$ref": "definitions.schema.json#/definitions/env"

@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+from termcolor import colored
 from tabulate import tabulate
 from buildtest.defaults import BUILD_REPORT
 from buildtest.exceptions import BuildTestError
@@ -296,9 +297,19 @@ class Report:
             ["state", "Test State reported by buildtest (PASS/FAIL)"],
             ["returncode", "Return Code from Test Execution"],
         ]
-        print(
-            tabulate(format_table, headers=["Fields", "Description"], tablefmt="simple")
-        )
+        headers = ["Fields", "Description"]
+        table = []
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            # color first column green and second column red
+            for row in format_table:
+                table.append([colored(row[0],'green',attrs=['bold']), colored(row[1],'red')])
+
+            print(
+                tabulate(table, headers=[colored(field,'blue',attrs=['bold']) for field in headers ], tablefmt="simple")
+            )
+            return
+
+        print(tabulate(format_table, headers=headers,tablefmt="simple"))
 
     def print_filter_fields(self):
         """Implements command ``buildtest report --helpfilter``"""
@@ -311,21 +322,32 @@ class Report:
             ["tags", "Filter tests by tag name ", "STRING"],
             ["returncode", "Filter tests by returncode ", "INT"],
         ]
-
-        print(
-            tabulate(
-                filter_field_table,
-                headers=["Filter Fields", "Description", "Expected Value"],
-                tablefmt="simple",
+        headers = ["Filter Fields", "Description", "Expected Value"]
+        table = []
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            for row in filter_field_table:
+                table.append([colored(row[0],'green',attrs=['bold']), colored(row[1],'red'), colored(row[2],'cyan')])
+            print(
+                tabulate(
+                    table,
+                    headers=[colored(field,'blue',attrs=['bold']) for field in headers],
+                    tablefmt="simple",
+                )
             )
-        )
+            return
+
+        print(tabulate(filter_field_table, headers=headers, tablefmt="simple"))
 
     def print_display_table(self):
-        print(
-            tabulate(
-                self.display_table, headers=self.display_table.keys(), tablefmt="grid"
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            print(
+                tabulate(
+                    self.display_table, headers=[colored(field,'blue',attrs=['bold']) for field in self.display_table.keys()], tablefmt="grid"
+                )
             )
-        )
+            return
+
+        print(tabulate(self.display_table, headers=self.display_table.keys(), tablefmt="frid"))
 
 
 def func_report(args=None):
