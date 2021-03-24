@@ -8,6 +8,7 @@ from buildtest.utils.file import create_dir, write_file
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 docgen = os.path.join(root, "docs", "docgen")
 
+os.environ["BUILDTEST_COLOR"] = "False"
 
 def build_helper():
     """This method will write output of several helper options for all sub-commands in buildtest"""

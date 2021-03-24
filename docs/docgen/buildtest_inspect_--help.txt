@@ -1,4 +1,5 @@
 $ buildtest inspect --help
+
 usage: buildtest [options] [COMMANDS] inspect [-h] test
 
 positional arguments:

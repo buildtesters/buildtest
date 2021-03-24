@@ -11,7 +11,7 @@ import sys
 import time
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
-from termcolor import cprint
+from termcolor import colored, cprint
 from buildtest.config import check_settings
 from buildtest.defaults import (
     BUILDTEST_ROOT,
@@ -273,13 +273,15 @@ class BuildTest:
             sys.exit(msg)
 
         if printTable:
-
-            cprint(
-"""
+            msg = """
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-""", 'red',attrs=['bold'])
+"""
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                msg = colored(msg,"red", attrs=['bold'])
+
+            print(msg)
 
             print("Discovered Buildspecs:")
             [print(buildspec) for buildspec in self.detected_buildspecs]
@@ -483,11 +485,15 @@ class BuildTest:
             # sys.exit(0)
 
         if printTable:
-            cprint("""
+            msg = """
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
-""", 'red', attrs=['bold'])
+"""
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                msg = colored(msg,'red',attrs=['bold'])
+
+            print(msg)
 
             print(tabulate(table, headers=table.keys(), tablefmt="presto"))
 
@@ -527,11 +533,15 @@ class BuildTest:
         :type printTable: boolean
         """
         invalid_builders = []
-        cprint("""
-+----------------------+
-| Stage: Building Test |
-+----------------------+ 
-""", 'red', attrs=['bold'])
+        msg = """
+        +-------------------------------+
+        | Stage: Building Test          |
+        +-------------------------------+ 
+        """
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            msg = colored(msg, "red", attrs=['bold'])
+
+        print(msg)
 
         table = Hasher()
         for field in ["name", "id", "type", "executor", "tags", "compiler", "testpath"]:
@@ -631,12 +641,16 @@ class BuildTest:
         poll = False
 
         if printTable:
-            cprint(
+            msg = """
++-------------------------------+
+| Stage: Running Test           |
++-------------------------------+ 
 """
-+----------------------+
-| Stage: Running Test  |
-+----------------------+ 
-""", 'red', attrs=['bold'])
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                msg = colored(msg, "red", attrs=['bold'])
+
+            print(msg)
+
 
         table = {
             "name": [],
@@ -705,12 +719,15 @@ class BuildTest:
             }
 
             if printTable:
-                cprint(
-"""
+                msg = """
 +---------------------------------------------+
 | Stage: Final Results after Polling all Jobs |
 +---------------------------------------------+ 
-""", 'red', attrs=['bold'])
+"""
+                if os.getenv("BUILDTEST_COLOR") == "True":
+                    msg = colored(msg, "red", attrs=['bold'])
+
+                print(msg)
 
             # regenerate test results after poll
             passed_tests = 0
@@ -740,24 +757,27 @@ class BuildTest:
             return
 
         if printTable:
-            cprint(
-"""
+            msg = """
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-""", 'red', attrs=['bold']
-            )
+"""
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                msg = colored(msg, "red", attrs=['bold'])
+
+            print(msg)
 
             pass_rate = passed_tests * 100 / total_tests
             fail_rate = failed_tests * 100 / total_tests
 
-            cprint(
-                f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%", 'green'
-            )
+            msg1 = f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%"
+            msg2 = f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%"
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                msg1 = colored(msg1,'green')
+                msg2 = colored(msg2, 'red')
 
-            cprint(
-                f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%", 'red'
-            )
+            print(msg1)
+            print(msg2)
             print("\n\n")
 
         return valid_builders

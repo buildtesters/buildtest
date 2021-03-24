@@ -1,4 +1,5 @@
 $ buildtest report --helpfilter
+
 Filter Fields    Description                 Expected Value
 ---------------  --------------------------  ----------------
 buildspec        Filter by buildspec file    FILE

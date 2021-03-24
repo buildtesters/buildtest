@@ -1,5 +1,6 @@
 import json
 import getpass
+import os
 import shutil
 import sys
 import yaml
@@ -31,9 +32,11 @@ def func_config_system(args=None, settings_file=None):
         table["moduletool"].append(bc.config["system"][name]["moduletool"])
         table["hostnames"].append(bc.config["system"][name]["hostnames"])
 
-    print(tabulate(table, headers=[colored(field,'blue',attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+    if os.getenv("BUILDTEST_COLOR") == "True":
+        print(tabulate(table, headers=[colored(field,'blue',attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+        return
 
-
+    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
 def func_config_validate(args=None):
     """This method implements ``buildtest config validate`` which attempts to

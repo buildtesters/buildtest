@@ -24,6 +24,9 @@ os.environ["COLUMNS"] = "120"
 def main():
     """Entry point to buildtest."""
 
+    if not os.getenv("BUILDTEST_COLOR"):
+        os.environ["BUILDTEST_COLOR"] = "True"
+
     # create a temporary file to store logfile and we don't delete file by setting 'delete=False'
     # by default tempfile will delete file upon exit.
     tf = tempfile.NamedTemporaryFile(prefix="buildtest_", delete=False, suffix=".log")

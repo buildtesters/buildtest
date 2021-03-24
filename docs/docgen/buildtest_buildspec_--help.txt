@@ -1,4 +1,5 @@
 $ buildtest buildspec --help
+
 usage: buildtest [options] [COMMANDS] buildspec [-h] {find} ...
 
 optional arguments:

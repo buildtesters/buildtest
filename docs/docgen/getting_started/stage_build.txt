@@ -1,29 +1,28 @@
 $ buildtest build -b tutorials/vars.yml --stage=build 
 
+
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
-        
 
 Discovered Buildspecs:
- 
 /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
-        
+
  schemafile              | validstate   | buildspec
 -------------------------+--------------+---------------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
 
-+----------------------+
-| Stage: Building Test |
-+----------------------+ 
-    
+        +-------------------------------+
+        | Stage: Building Test          |
+        +-------------------------------+ 
+        
  name           | id       | type   | executor           | tags          | testpath
-----------------+----------+--------+--------------------+---------------+-----------------------------------------------------------------------------------------------------------------
- variables_bash | 85aa962d | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/4/stage/generate.sh
+----------------+----------+--------+--------------------+---------------+------------------------------------------------------------------------------------------------------------------
+ variables_bash | 140e27ff | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/21/stage/generate.sh
 
 
-Writing Logfile to: /private/tmp/buildtest/buildtest_5abygkeo.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_1_abvhwj.log

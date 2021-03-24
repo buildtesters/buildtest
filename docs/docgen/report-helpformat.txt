@@ -1,4 +1,5 @@
 $ buildtest report --helpformat
+
 Fields      Description
 ----------  --------------------------------------------
 buildspec   Buildspec file

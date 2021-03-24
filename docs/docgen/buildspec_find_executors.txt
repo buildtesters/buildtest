@@ -1,4 +1,5 @@
 $ buildtest buildspec find --executors
+
 +----------------------+
 | executors            |
 +======================+
@@ -6,7 +7,7 @@ $ buildtest buildspec find --executors
 +----------------------+
 | generic.local.sh     |
 +----------------------+
-| generic.local.bash   |
-+----------------------+
 | generic.local.csh    |
++----------------------+
+| generic.local.bash   |
 +----------------------+
