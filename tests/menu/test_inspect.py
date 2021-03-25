@@ -15,11 +15,13 @@ def test_inspect_ids():
     assert len(test_ids.keys()) >= 1
     print(test_ids)
 
+
 def test_buildtest_inspect_list():
     class args:
         subcommands = "list"
 
     func_inspect(args)
+
 
 def test_buildtest_inspect_name():
 
@@ -37,7 +39,6 @@ def test_buildtest_inspect_name():
     print(f"Querying test names: {args.name}")
     func_inspect(args)
 
-
     class args:
         subcommands = "name"
         name = ["".join(random.choice(string.ascii_letters) for i in range(10))]
@@ -45,6 +46,7 @@ def test_buildtest_inspect_name():
     print(f"Querying test names: {args.name}")
     with pytest.raises(SystemExit):
         func_inspect(args)
+
 
 def test_buildtest_inspect_id():
 
@@ -62,8 +64,8 @@ def test_buildtest_inspect_id():
     class args:
         subcommands = "id"
         id = [str(uuid.uuid4())]
+
     print(f"Querying test identifier: {args.id}")
     # generate a random unique id which is not a valid test id when searching for tests by id.
     with pytest.raises(SystemExit):
         func_inspect(args)
-
