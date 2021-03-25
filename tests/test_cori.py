@@ -8,9 +8,7 @@ def test_cori():
     # This test must run on Cori Login nodes which are cori[01-20].nersc.gov.
     hostname = socket.getfqdn()
     if not hostname.startswith("cori"):
-        pytest.skip(
-            "This test runs on Cori Login nodes ('cori*')"
-        )
+        pytest.skip("This test runs on Cori Login nodes ('cori*')")
 
     here = os.path.dirname(os.path.abspath(__file__))
     cori_configuration = os.path.join(here, "settings", "cori.yml")

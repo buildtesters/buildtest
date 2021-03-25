@@ -66,9 +66,7 @@ class CobaltExecutor(BaseExecutor):
 
         batch_cmd += [builder.metadata["testpath"]]
         builder.metadata["command"] = " ".join(batch_cmd)
-        self.logger.debug(
-            f"Running Test via command: {builder.metadata['command']}"
-        )
+        self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
 
         command = BuildTestCommand(builder.metadata["command"])
         command.execute()
@@ -78,7 +76,9 @@ class CobaltExecutor(BaseExecutor):
         # if qsub job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
             err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            err += f"[{builder.metadata['name']}] running command: {' '.join(batch_cmd)}"
+            err += (
+                f"[{builder.metadata['name']}] running command: {' '.join(batch_cmd)}"
+            )
             sys.exit(err)
 
         parse_jobid = command.get_output()
@@ -138,9 +138,7 @@ class CobaltExecutor(BaseExecutor):
         self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
 
         # get Job State by running 'qstat -l --header <jobid>'
-        qstat_cmd = (
-            f"{self.poll_cmd} -l --header State {builder.metadata['jobid']}"
-        )
+        qstat_cmd = f"{self.poll_cmd} -l --header State {builder.metadata['jobid']}"
         self.logger.debug(f"Executing command: {qstat_cmd}")
         cmd = BuildTestCommand(qstat_cmd)
         cmd.execute()
@@ -164,10 +162,7 @@ class CobaltExecutor(BaseExecutor):
         # additional check to see if job outputfile is written to file system.
         # If job is in 'exiting' state we assume job is now finished, qstat will remove
         # completed job and it can't be polled so it is likely self.job_state is undefined
-        if (
-            shutil.which(builder.metadata["outfile"])
-            or builder.job_state == "exiting"
-        ):
+        if shutil.which(builder.metadata["outfile"]) or builder.job_state == "exiting":
             builder.job_state = "done"
             self.gather(builder)
             return
@@ -229,8 +224,6 @@ class CobaltExecutor(BaseExecutor):
 
         cmd = BuildTestCommand(query)
         cmd.execute()
-        msg = (
-            f"Cancelling Job: {builder.metadata['name']} running command: {query}"
-        )
+        msg = f"Cancelling Job: {builder.metadata['name']} running command: {query}"
         print(msg)
         self.logger.debug(msg)

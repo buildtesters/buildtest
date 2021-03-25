@@ -18,14 +18,15 @@ from buildtest.defaults import BUILDSPEC_CACHE_FILE, supported_schemas
 from buildtest.schemas.utils import load_recipe
 from buildtest.system import system
 
+
 def func_config_system(args=None, settings_file=None):
     """This method implements command ``buildtest config systems`` which displays
-       system details from configuration file in table format.
+    system details from configuration file in table format.
     """
-    #settings_file = settings_file or resolve_settings_file()
-    #print(settings_file)
+    # settings_file = settings_file or resolve_settings_file()
+    # print(settings_file)
     bc = check_settings(settings_path=settings_file, executor_check=False)
-    table = {"system": [], "description": [], "hostnames": [], "moduletool": [] }
+    table = {"system": [], "description": [], "hostnames": [], "moduletool": []}
     for name in bc.config["system"].keys():
         table["system"].append(name)
         table["description"].append(bc.config["system"][name].get("description"))
@@ -33,10 +34,19 @@ def func_config_system(args=None, settings_file=None):
         table["hostnames"].append(bc.config["system"][name]["hostnames"])
 
     if os.getenv("BUILDTEST_COLOR") == "True":
-        print(tabulate(table, headers=[colored(field,'blue',attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+        print(
+            tabulate(
+                table,
+                headers=[
+                    colored(field, "blue", attrs=["bold"]) for field in table.keys()
+                ],
+                tablefmt="grid",
+            )
+        )
         return
 
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+
 
 def func_config_validate(args=None):
     """This method implements ``buildtest config validate`` which attempts to
@@ -67,6 +77,7 @@ def func_config_view(args=None):
 
     print("{:_<80}".format(""))
     print(f"Settings File: {settings_file}")
+
 
 def func_config_executors(args=None):
     """Display executors from buildtest configuration. This implements ``buildtest config executors`` command.

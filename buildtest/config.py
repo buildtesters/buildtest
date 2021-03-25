@@ -81,9 +81,8 @@ class BuildtestConfiguration:
                 self.target_config["executors"]["cobalt"].keys()
             )
         if self.target_config["executors"].get("pbs"):
-            self.pbsexecutors = list(
-                self.target_config["executors"]["pbs"].keys()
-            )
+            self.pbsexecutors = list(self.target_config["executors"]["pbs"].keys())
+
     def get_executors_by_type(self, executor_type):
         """Return list of executor names by given type of executor.
         :param executor_type: type of executor (local, slurm, lsf, cobalt)
@@ -127,7 +126,6 @@ class BuildtestConfiguration:
             logger.debug("Checking cobalt executors")
             self._validate_cobalt_executors(cobalt_executors)
 
-
         if pbs_executors:
             logger.debug("Checking pbs executors")
             self._validate_pbs_executors(pbs_executors)
@@ -148,7 +146,7 @@ class BuildtestConfiguration:
         :type lsf_executors: dict
         """
         lsf = LSF()
-        assert hasattr(lsf,"queues")
+        assert hasattr(lsf, "queues")
 
         queue_list = []
         valid_queue_state = "Open:Active"
@@ -193,7 +191,7 @@ class BuildtestConfiguration:
 
         slurm = Slurm()
         # make sure slurm attributes slurm.partitions, slurm.qos, slurm.clusters are set
-        assert hasattr(slurm,"partitions")
+        assert hasattr(slurm, "partitions")
         assert hasattr(slurm, "qos")
         assert hasattr(slurm, "clusters")
 
@@ -253,47 +251,53 @@ class BuildtestConfiguration:
                 raise BuildTestError(
                     f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'"
                 )
+
     def _validate_pbs_executors(self, pbs_executor):
         """Validate pbs queue property by running by checking if queue is found and
-           queue is 'enabled' and 'started' which are two properties found in pbs queue
-           configuration that can be retrieved using ``qstat -Q -f -F json``. The output is in
-           the following format
+        queue is 'enabled' and 'started' which are two properties found in pbs queue
+        configuration that can be retrieved using ``qstat -Q -f -F json``. The output is in
+        the following format
 
-           $ qstat -Q -f -F json
-            {
-                "timestamp":1615924938,
-                "pbs_version":"19.0.0",
-                "pbs_server":"pbs",
-                "Queue":{
-                    "workq":{
-                        "queue_type":"Execution",
-                        "total_jobs":0,
-                        "state_count":"Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Begun:0 ",
-                        "resources_assigned":{
-                            "mem":"0kb",
-                            "ncpus":0,
-                            "nodect":0
-                        },
-                        "hasnodes":"True",
-                        "enabled":"True",
-                        "started":"True"
-                    }
-                }
-            }
+        $ qstat -Q -f -F json
+         {
+             "timestamp":1615924938,
+             "pbs_version":"19.0.0",
+             "pbs_server":"pbs",
+             "Queue":{
+                 "workq":{
+                     "queue_type":"Execution",
+                     "total_jobs":0,
+                     "state_count":"Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Begun:0 ",
+                     "resources_assigned":{
+                         "mem":"0kb",
+                         "ncpus":0,
+                         "nodect":0
+                     },
+                     "hasnodes":"True",
+                     "enabled":"True",
+                     "started":"True"
+                 }
+             }
+         }
 
         """
 
         pbs = PBS()
-        assert hasattr(pbs,"queues")
+        assert hasattr(pbs, "queues")
         for executor in pbs_executor:
             queue = pbs_executor[executor].get("queue")
             if queue not in pbs.queues:
                 raise BuildTestError(f"{queue} not in {pbs.queues}")
 
-            if pbs.queue_summary["Queue"][queue]["enabled"] != "True" or  pbs.queue_summary["Queue"][queue]["started"] != "True":
+            if (
+                pbs.queue_summary["Queue"][queue]["enabled"] != "True"
+                or pbs.queue_summary["Queue"][queue]["started"] != "True"
+            ):
                 print("Queue Configuration")
-                print(json.dumps(pbs.queue_summary,indent=2))
-                raise BuildTestError(f"{queue} is not enabled or started properly. Please check your queue configuration")
+                print(json.dumps(pbs.queue_summary, indent=2))
+                raise BuildTestError(
+                    f"{queue} is not enabled or started properly. Please check your queue configuration"
+                )
 
 
 def check_settings(settings_path=None, executor_check=True):

@@ -3,6 +3,7 @@ import pytest
 import socket
 from buildtest.menu.build import BuildTest
 
+
 def test_jlse():
     hostname = socket.getfqdn()
     if not hostname.endswith("alcf.anl.gov"):

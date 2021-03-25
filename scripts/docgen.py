@@ -10,6 +10,7 @@ docgen = os.path.join(root, "docs", "docgen")
 
 os.environ["BUILDTEST_COLOR"] = "False"
 
+
 def build_helper():
     """This method will write output of several helper options for all sub-commands in buildtest"""
     help_cmds = [

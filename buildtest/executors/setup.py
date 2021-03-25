@@ -257,7 +257,7 @@ class BuildExecutor:
 
         elif executor.type == "pbs":
             # pending or running job requires polling
-            if (builder.job_state in ["Q", "R"] or not builder.job_state):
+            if builder.job_state in ["Q", "R"] or not builder.job_state:
                 executor.poll(builder)
             # if job is finished we gather results
             elif builder.job_state in ["F"]:

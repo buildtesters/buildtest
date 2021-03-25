@@ -92,9 +92,7 @@ class LSFExecutor(BaseExecutor):
         bsub_cmd.append(builder.metadata["testpath"])
 
         builder.metadata["command"] = " ".join(bsub_cmd)
-        self.logger.debug(
-            f"Running Test via command: {builder.metadata['command']}"
-        )
+        self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
 
         command = BuildTestCommand(builder.metadata["command"])
         command.execute()
@@ -109,9 +107,7 @@ class LSFExecutor(BaseExecutor):
         interval = 5
 
         print(f"[{builder.metadata['name']}] job dispatched to scheduler")
-        print(
-            f"[{builder.metadata['name']}] acquiring job id in {interval} seconds"
-        )
+        print(f"[{builder.metadata['name']}] acquiring job id in {interval} seconds")
 
         # wait a few seconds before querying for jobID. It can take a few seconds
         # between job submission and running bjobs to get output.
@@ -229,8 +225,6 @@ class LSFExecutor(BaseExecutor):
 
         cmd = BuildTestCommand(query)
         cmd.execute()
-        msg = (
-            f"Cancelling Job: {builder.metadata['name']} running command: {query}"
-        )
+        msg = f"Cancelling Job: {builder.metadata['name']} running command: {query}"
         print(msg)
         self.logger.debug(msg)
