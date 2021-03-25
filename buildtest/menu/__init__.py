@@ -419,7 +419,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         test_id = subparser.add_parser("id", help="Specify a Test ID")
         test_id.add_argument("id", nargs="*", help="Test ID")
 
-        list = subparser.add_parser("list", help="List all test ids")
+        subparser.add_parser("list", help="List all test ids")
 
         # parser_inspect.add_argument("test", nargs="*", help="select unique test")
         parser_inspect.set_defaults(func=func_inspect)

@@ -5,7 +5,6 @@ from termcolor import colored
 from tabulate import tabulate
 
 from buildtest.defaults import BUILD_REPORT
-from buildtest.utils.command import read_file
 from buildtest.exceptions import BuildTestError
 
 

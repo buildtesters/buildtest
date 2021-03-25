@@ -11,7 +11,7 @@ import sys
 import time
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
-from termcolor import colored, cprint
+from termcolor import colored
 from buildtest.config import check_settings
 from buildtest.defaults import (
     BUILDTEST_ROOT,
