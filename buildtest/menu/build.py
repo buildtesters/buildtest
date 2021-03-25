@@ -534,9 +534,9 @@ class BuildTest:
         """
         invalid_builders = []
         msg = """
-        +-------------------------------+
-        | Stage: Building Test          |
-        +-------------------------------+ 
++-------------------------------+
+| Stage: Building Test          |
++-------------------------------+ 
         """
         if os.getenv("BUILDTEST_COLOR") == "True":
             msg = colored(msg, "red", attrs=['bold'])

@@ -5,13 +5,44 @@ def test_inspect_ids():
 
     test_ids = get_all_ids()
     # return should be a list of test ids
-    assert isinstance(test_ids, list)
+    assert isinstance(test_ids, dict)
+
+    # ensure there is atleast one test ID in report.json
+    assert len(test_ids.keys()) >= 1
     print(test_ids)
 
-    # check if we have atleast one item and its test id is a string
-    assert isinstance(test_ids[0], str) and len(test_ids) > 0
-
+def test_buildtest_inspect_list():
     class args:
-        test = test_ids[0]
+        subcommands = "list"
 
     func_inspect(args)
+
+def test_buildtest_inspect_name():
+
+    test_ids = get_all_ids()
+    test_name = None
+
+    for identifier, name in test_ids.items():
+        test_name = name
+        break
+
+    class args:
+        subcommands = "name"
+        name = [test_name]
+
+    print(f"Querying test names: {args.name}")
+    func_inspect(args)
+
+def test_buildtest_inspect_id():
+
+    test_ids = get_all_ids()
+
+    identifier = list(test_ids.keys())[0]
+
+    class args:
+        subcommands = "id"
+        id = [identifier]
+
+    print(f"Querying test identifier: {args.id}")
+    func_inspect(args)
+

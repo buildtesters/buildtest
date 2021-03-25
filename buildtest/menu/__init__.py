@@ -407,7 +407,18 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         """This method builds menu for `buildtest inspect` """
 
         parser_inspect = self.subparsers.add_parser("inspect")
-        parser_inspect.add_argument("test", help="select unique test")
+        subparser = parser_inspect.add_subparsers(help="subcommands", description="Inspect Test result", dest="subcommands")
+        #parser_inspect_id = parser_inspect.add_subparsers(description="Query Report By Test ID")
+
+        name = subparser.add_parser("name", help="Specify name of test")
+        name.add_argument("name", nargs="*", help="Name of test")
+
+        test_id = subparser.add_parser("id", help="Specify a Test ID")
+        test_id.add_argument("id", nargs="*", help="Test ID")
+
+        list = subparser.add_parser("list", help="List all test ids")
+
+        # parser_inspect.add_argument("test", nargs="*", help="select unique test")
         parser_inspect.set_defaults(func=func_inspect)
 
     def schema_menu(self):
