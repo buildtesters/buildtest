@@ -158,14 +158,14 @@ class Slurm(Scheduler):
 
     def _get_partitions(self):
         """Get list of all partitions slurm partitions using ``sinfo -a -h -O partitionname``. The output
-           is a list of queue names
+        is a list of queue names
 
-            $ sinfo -a -h -O partitionname
-            system
-            system_shared
-            debug_hsw
-            debug_knl
-            jupyter
+         $ sinfo -a -h -O partitionname
+         system
+         system_shared
+         debug_hsw
+         debug_knl
+         jupyter
         """
         # get list of partitions
 
@@ -180,11 +180,11 @@ class Slurm(Scheduler):
 
     def _get_clusters(self):
         """Get list of slurm clusters by running ``sacctmgr list cluster -P -n format=Cluster``.
-           The output is a list of slurm clusters something as follows::
+        The output is a list of slurm clusters something as follows::
 
-            $ sacctmgr list cluster -P -n format=Cluster
-            cori
-            escori
+         $ sacctmgr list cluster -P -n format=Cluster
+         cori
+         escori
         """
 
         query = "sacctmgr list cluster -P -n format=Cluster"
@@ -221,6 +221,7 @@ class Slurm(Scheduler):
 
 class LSF(Scheduler):
     """The LSF class checks for LSF binaries and returns a list of LSF queues"""
+
     # specify a set of LSF commands to check for file existence
     binaries = ["bsub", "bqueues", "bkill", "bjobs"]
 
@@ -270,6 +271,7 @@ class LSF(Scheduler):
 
 class Cobalt(Scheduler):
     """The Cobalt class checks for Cobalt binaries and gets a list of Cobalt queues"""
+
     # specify a set of Cobalt commands to check for file existence
     binaries = ["qsub", "qstat", "qdel", "nodelist", "showres", "partlist"]
 
@@ -301,7 +303,6 @@ class Cobalt(Scheduler):
         return queues
 
 
-
 class PBS(Scheduler):
     """The PBS class checks for Cobalt binaries and gets a list of Cobalt queues"""
 
@@ -316,8 +317,8 @@ class PBS(Scheduler):
             self._get_queues()
 
     def _get_queues(self):
-        """ Get queue configuration using ``qstat -Q -f -F json`` and retrieve a
-            list of queues.
+        """Get queue configuration using ``qstat -Q -f -F json`` and retrieve a
+        list of queues.
         """
         query = "qstat -Q -f -F json"
         cmd = BuildTestCommand(query)

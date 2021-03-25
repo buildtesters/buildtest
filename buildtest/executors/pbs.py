@@ -38,7 +38,10 @@ class PBSExecutor(BaseExecutor):
         )
 
         self.max_pend_time = self._settings.get("max_pend_time") or deep_get(
-            self._buildtestsettings.target_config, "executors", "defaults", "max_pend_time"
+            self._buildtestsettings.target_config,
+            "executors",
+            "defaults",
+            "max_pend_time",
         )
 
     def dispatch(self, builder):
@@ -66,9 +69,7 @@ class PBSExecutor(BaseExecutor):
 
         batch_cmd += [builder.metadata["testpath"]]
         self.builder.metadata["command"] = " ".join(batch_cmd)
-        self.logger.debug(
-            f"Running Test via command: {builder.metadata['command']}"
-        )
+        self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
         command = BuildTestCommand(builder.metadata["command"])
         command.execute()
         # record start time in builder object
@@ -78,7 +79,9 @@ class PBSExecutor(BaseExecutor):
         # if qsub job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
             err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            err += f"[{builder.metadata['name']}] running command: {' '.join(batch_cmd)}"
+            err += (
+                f"[{builder.metadata['name']}] running command: {' '.join(batch_cmd)}"
+            )
             sys.exit(err)
 
         parse_jobid = command.get_output()
@@ -98,8 +101,12 @@ class PBSExecutor(BaseExecutor):
         job_data = json.loads(output)
 
         # output in the form of <server>:<file>
-        builder.metadata['outfile'] = job_data["Jobs"][self.job_id]["Output_Path"].split(":")[1]
-        builder.metadata['errfile'] = job_data["Jobs"][self.job_id]["Error_Path"].split(":")[1]
+        builder.metadata["outfile"] = job_data["Jobs"][self.job_id][
+            "Output_Path"
+        ].split(":")[1]
+        builder.metadata["errfile"] = job_data["Jobs"][self.job_id]["Error_Path"].split(
+            ":"
+        )[1]
 
     def poll(self, builder):
         """This method is responsible for polling Cobalt job, we check the
@@ -112,9 +119,7 @@ class PBSExecutor(BaseExecutor):
 
         self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
         # run qstat -f -F json <jobid>
-        qstat_cmd = (
-            f"{self.poll_cmd} -x -f -F json {builder.metadata['jobid']}"
-        )
+        qstat_cmd = f"{self.poll_cmd} -x -f -F json {builder.metadata['jobid']}"
         self.logger.debug(f"Executing command: {qstat_cmd}")
         cmd = BuildTestCommand(qstat_cmd)
         cmd.execute()
@@ -124,9 +129,9 @@ class PBSExecutor(BaseExecutor):
         job_data = json.loads(output)
 
         self.logger.debug("Job record")
-        self.logger.debug(json.dumps(job_data,indent=2))
+        self.logger.debug(json.dumps(job_data, indent=2))
 
-        job_state = job_data["Jobs"][builder.metadata['jobid']]["job_state"]
+        job_state = job_data["Jobs"][builder.metadata["jobid"]]["job_state"]
 
         if job_state:
             builder.job_state = job_state
@@ -173,7 +178,9 @@ class PBSExecutor(BaseExecutor):
 
         job_data = json.loads(output)
 
-        self.builder.metadata["result"]["returncode"] = job_data["Jobs"][builder.metadata['jobid']]["Exit_status"]
+        self.builder.metadata["result"]["returncode"] = job_data["Jobs"][
+            builder.metadata["jobid"]
+        ]["Exit_status"]
 
         # record endtime in builder object
         self.end_time(builder)
@@ -192,8 +199,6 @@ class PBSExecutor(BaseExecutor):
 
         cmd = BuildTestCommand(query)
         cmd.execute()
-        msg = (
-            f"Cancelling Job: {builder.metadata['name']} running command: {query}"
-        )
+        msg = f"Cancelling Job: {builder.metadata['name']} running command: {query}"
         print(msg)
         self.logger.debug(msg)

@@ -8,6 +8,7 @@ from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.command import read_file
 from buildtest.exceptions import BuildTestError
 
+
 def get_all_ids():
     """Return all unique test ids from report cache
     :return: list of unique ids
@@ -16,7 +17,9 @@ def get_all_ids():
 
     test_id = {}
     if not os.path.exists(BUILD_REPORT):
-        raise BuildTestError(f"Cannot find file {BUILD_REPORT}, please build a test via 'buildtest build' in order to generate report file.")
+        raise BuildTestError(
+            f"Cannot find file {BUILD_REPORT}, please build a test via 'buildtest build' in order to generate report file."
+        )
 
     with open(BUILD_REPORT, "r") as fd:
         report = json.loads(fd.read())
@@ -26,15 +29,14 @@ def get_all_ids():
         for name in report[buildspec].keys():
             # loop over each test entry for given test
             for test in report[buildspec][name]:
-                #test_id.append(test["full_id"])
-                test_id[test['full_id']] = name
+                # test_id.append(test["full_id"])
+                test_id[test["full_id"]] = name
 
     return test_id
 
 
 def func_inspect(args):
     """Entry point for ``buildtest inspect`` command"""
-
 
     # implements command 'buildtest inspect list'
     if args.subcommands == "list":
@@ -64,7 +66,9 @@ def func_inspect(args):
 
         # if no test discovered exit with message
         if not discovered_ids:
-            sys.exit(f"Unable to find any test records based on id: {args.id}, please run 'buildtest inspect list' to see list of ids.")
+            sys.exit(
+                f"Unable to find any test records based on id: {args.id}, please run 'buildtest inspect list' to see list of ids."
+            )
 
         for buildspec in report.keys():
             for test in report[buildspec].keys():
@@ -74,6 +78,7 @@ def func_inspect(args):
                             records[identifier] = test_record
 
         print(json.dumps(records, indent=2))
+
 
 def inspect_list():
     """Implements method ``buildtest inspect list``"""
@@ -86,13 +91,22 @@ def inspect_list():
         table["id"].append(id)
 
     if os.getenv("BUILDTEST_COLOR") == "True":
-        print(tabulate(table, headers=[colored(field, 'blue', attrs=['bold']) for field in table.keys()], tablefmt="grid"))
+        print(
+            tabulate(
+                table,
+                headers=[
+                    colored(field, "blue", attrs=["bold"]) for field in table.keys()
+                ],
+                tablefmt="grid",
+            )
+        )
         return
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
+
 def inspect_by_name(report, names):
     """Implements command ``buildtest inspect name`` which will print all test records
-       by given name in JSON format.
+    by given name in JSON format.
     """
 
     records = {}
@@ -104,6 +118,7 @@ def inspect_by_name(report, names):
 
     if not records:
         sys.exit(
-            f"Unable to find any records based on {names}. Please run 'buildtest inspect list' and see list of test names.")
+            f"Unable to find any records based on {names}. Please run 'buildtest inspect list' and see list of test names."
+        )
 
     print(json.dumps(records, indent=2))

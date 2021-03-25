@@ -13,7 +13,7 @@ from buildtest.menu.config import (
     func_config_validate,
     func_config_view,
     func_config_executors,
-    func_config_system
+    func_config_system,
 )
 from buildtest.menu.compilers import func_compiler_find, func_config_compiler
 from buildtest.menu.report import func_report
@@ -76,7 +76,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 {BUILDTEST_COPYRIGHT}
 """
         if os.getenv("BUILDTEST_COLOR") == "True":
-            epilog_str=colored(epilog_str,"blue",attrs=["bold"])
+            epilog_str = colored(epilog_str, "blue", attrs=["bold"])
 
         description_str = (
             "buildtest is a HPC testing framework for writing acceptance tests."
@@ -318,7 +318,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         parser_config_summary = subparsers_config.add_parser(
             "summary", help="Provide summary of buildtest settings."
         )
-        parser_config_system = subparsers_config.add_parser("systems", help="List all available systems")
+        parser_config_system = subparsers_config.add_parser(
+            "systems", help="List all available systems"
+        )
 
         compiler_config = subparsers_config.add_parser(
             "compilers", help="search or find compilers "
@@ -364,7 +366,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         parser_config_summary.set_defaults(func=func_config_summary)
         parser_config_system.set_defaults(func=func_config_system)
 
-
         compiler_config.set_defaults(func=func_config_compiler)
         compiler_find.set_defaults(func=func_compiler_find)
 
@@ -407,8 +408,10 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         """This method builds menu for `buildtest inspect` """
 
         parser_inspect = self.subparsers.add_parser("inspect")
-        subparser = parser_inspect.add_subparsers(help="subcommands", description="Inspect Test result", dest="subcommands")
-        #parser_inspect_id = parser_inspect.add_subparsers(description="Query Report By Test ID")
+        subparser = parser_inspect.add_subparsers(
+            help="subcommands", description="Inspect Test result", dest="subcommands"
+        )
+        # parser_inspect_id = parser_inspect.add_subparsers(description="Query Report By Test ID")
 
         name = subparser.add_parser("name", help="Specify name of test")
         name.add_argument("name", nargs="*", help="Name of test")

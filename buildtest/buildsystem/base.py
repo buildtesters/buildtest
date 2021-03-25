@@ -20,7 +20,7 @@ from buildtest.buildsystem.batch import (
     SlurmBatchScript,
     LSFBatchScript,
     CobaltBatchScript,
-    PBSBatchScript
+    PBSBatchScript,
 )
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.file import create_dir, write_file

@@ -279,7 +279,7 @@ class BuildTest:
 +-------------------------------+ 
 """
             if os.getenv("BUILDTEST_COLOR") == "True":
-                msg = colored(msg,"red", attrs=['bold'])
+                msg = colored(msg, "red", attrs=["bold"])
 
             print(msg)
 
@@ -491,7 +491,7 @@ class BuildTest:
 +---------------------------+ 
 """
             if os.getenv("BUILDTEST_COLOR") == "True":
-                msg = colored(msg,'red',attrs=['bold'])
+                msg = colored(msg, "red", attrs=["bold"])
 
             print(msg)
 
@@ -539,7 +539,7 @@ class BuildTest:
 +-------------------------------+ 
         """
         if os.getenv("BUILDTEST_COLOR") == "True":
-            msg = colored(msg, "red", attrs=['bold'])
+            msg = colored(msg, "red", attrs=["bold"])
 
         print(msg)
 
@@ -647,10 +647,9 @@ class BuildTest:
 +-------------------------------+ 
 """
             if os.getenv("BUILDTEST_COLOR") == "True":
-                msg = colored(msg, "red", attrs=['bold'])
+                msg = colored(msg, "red", attrs=["bold"])
 
             print(msg)
-
 
         table = {
             "name": [],
@@ -725,7 +724,7 @@ class BuildTest:
 +---------------------------------------------+ 
 """
                 if os.getenv("BUILDTEST_COLOR") == "True":
-                    msg = colored(msg, "red", attrs=['bold'])
+                    msg = colored(msg, "red", attrs=["bold"])
 
                 print(msg)
 
@@ -763,7 +762,7 @@ class BuildTest:
 +----------------------+ 
 """
             if os.getenv("BUILDTEST_COLOR") == "True":
-                msg = colored(msg, "red", attrs=['bold'])
+                msg = colored(msg, "red", attrs=["bold"])
 
             print(msg)
 
@@ -773,8 +772,8 @@ class BuildTest:
             msg1 = f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%"
             msg2 = f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%"
             if os.getenv("BUILDTEST_COLOR") == "True":
-                msg1 = colored(msg1,'green')
-                msg2 = colored(msg2, 'red')
+                msg1 = colored(msg1, "green")
+                msg2 = colored(msg2, "red")
 
             print(msg1)
             print(msg2)

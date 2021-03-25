@@ -57,9 +57,7 @@ class LocalExecutor(BaseExecutor):
         cmd = [builder.metadata["testpath"]]
 
         builder.metadata["command"] = " ".join(cmd)
-        self.logger.debug(
-            f"Running Test via command: {builder.metadata['command']}"
-        )
+        self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
 
         command = BuildTestCommand(builder.metadata["command"])
 
