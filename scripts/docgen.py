@@ -137,6 +137,9 @@ def introspection_cmds():
         "report-filter-buildspec.txt": "buildtest report --filter buildspec=tutorials/pass_returncode.yml --format=name,id,state,buildspec",
         "report-multifilter.txt": "buildtest report --filter state=FAIL,executor=generic.local.sh --format=name,id,state,executor",
         "report-returncode.txt": "buildtest report --filter returncode=2 --format=name,id,returncode",
+        "buildtest_inspect_list.txt": "buildtest inspect list",
+        "buildtest_inspect_names.txt": "buildtest inspect name shell_options",
+        "buildtest_inspect_multi_names.txt": "buildtest inspect name bash_shell python_hello",
     }
 
     for k, v in cmd_dict.items():

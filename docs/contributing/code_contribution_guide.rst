@@ -96,7 +96,7 @@ Pull Request Review
 Once you have submitted a Pull Request, please check the automated checks that are
 run for your PR to ensure checks are passed. Most common failures in CI checks
 are black and pyflakes issue, this can be done by
-:ref:`configuring black <black_hook>` and running :ref:`pyflakes <pyflakes>`. Once all checks have passed,
+:ref:`configuring black <black_hook>` and running :ref:`pyflakes <using_pyflakes>`. Once all checks have passed,
 maintainer will review your PR and provide feedback so please be patient.
 Please coordinate with maintainer through PR or Slack.
 
@@ -163,8 +163,6 @@ the issue or contact appropriate individuals directly in slack.
 6. There should not be any branches other than ``master`` or ``devel``. Feature
 branches should be pushed to your fork and not to origin.
 
-
-
 .. _black_hook:
 
 Configuring Black Pre-Commit Hook
@@ -222,7 +220,8 @@ you can do the following:
 
 The changes will be shown with lines removed or added via ``-`` and ``+``. For more details refer to `black documentation <https://github.com/psf/black>`_.
 
-.. _pyflakes:
+
+.. _using_pyflakes:
 
 pyflakes
 ----------

@@ -15,7 +15,6 @@ Status
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
-    :scale: 100%
     :target: https://buildtest.readthedocs.io/en/latest/?badge=latest
 
 .. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg

@@ -1,3 +1,5 @@
+.. _compilers:
+
 Defining Compilers at your site
 =================================
 

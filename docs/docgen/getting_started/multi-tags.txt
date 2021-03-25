@@ -6,9 +6,9 @@ $ buildtest build --tags pass --tags python
 +-------------------------------+ 
 
 Discovered Buildspecs:
+/Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
 /Users/siddiq90/Documents/github/buildtest/tutorials/python-shell.yml
 /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -16,22 +16,22 @@ Discovered Buildspecs:
 
  schemafile              | validstate   | buildspec
 -------------------------+--------------+--------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/python-shell.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
 
-        +-------------------------------+
-        | Stage: Building Test          |
-        +-------------------------------+ 
++-------------------------------+
+| Stage: Building Test          |
++-------------------------------+ 
         
  name                     | id       | type   | executor             | tags                    | testpath
---------------------------+----------+--------+----------------------+-------------------------+-------------------------------------------------------------------------------------------------------------------------------------
- circle_area              | 940b067f | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/20/stage/generate.sh
- python_hello             | 997a9fb6 | script | generic.local.bash   | python                  | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/8/stage/generate.sh
- exit1_fail               | e1c48533 | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/21/stage/generate.sh
- exit1_pass               | ec57279c | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/24/stage/generate.sh
- returncode_list_mismatch | 29151d67 | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/21/stage/generate.sh
- returncode_int_match     | eb8a8022 | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/24/stage/generate.sh
+--------------------------+----------+--------+----------------------+-------------------------+------------------------------------------------------------------------------------------------------------------------------------
+ exit1_fail               | f1a3ad7d | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/1/stage/generate.sh
+ exit1_pass               | 60d26637 | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/1/stage/generate.sh
+ returncode_list_mismatch | c3e52add | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/1/stage/generate.sh
+ returncode_int_match     | e215faa8 | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/1/stage/generate.sh
+ circle_area              | 74864a25 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/1/stage/generate.sh
+ python_hello             | 069ab71e | script | generic.local.bash   | python                  | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/stage/generate.sh
 
 
 
@@ -40,13 +40,13 @@ Discovered Buildspecs:
 +-------------------------------+ 
 
  name                     | id       | executor             | status   |   returncode | testpath
---------------------------+----------+----------------------+----------+--------------+-------------------------------------------------------------------------------------------------------------------------------------
- circle_area              | 940b067f | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/20/stage/generate.sh
- python_hello             | 997a9fb6 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/8/stage/generate.sh
- exit1_fail               | e1c48533 | generic.local.sh     | FAIL     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/21/stage/generate.sh
- exit1_pass               | ec57279c | generic.local.sh     | PASS     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/24/stage/generate.sh
- returncode_list_mismatch | 29151d67 | generic.local.sh     | FAIL     |            2 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/21/stage/generate.sh
- returncode_int_match     | eb8a8022 | generic.local.sh     | PASS     |          128 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/24/stage/generate.sh
+--------------------------+----------+----------------------+----------+--------------+------------------------------------------------------------------------------------------------------------------------------------
+ exit1_fail               | f1a3ad7d | generic.local.sh     | FAIL     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/1/stage/generate.sh
+ exit1_pass               | 60d26637 | generic.local.sh     | PASS     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/1/stage/generate.sh
+ returncode_list_mismatch | c3e52add | generic.local.sh     | FAIL     |            2 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/1/stage/generate.sh
+ returncode_int_match     | e215faa8 | generic.local.sh     | PASS     |          128 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/1/stage/generate.sh
+ circle_area              | 74864a25 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/1/stage/generate.sh
+ python_hello             | 069ab71e | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -57,4 +57,4 @@ Failed Tests: 2/6 Percentage: 33.333%
 
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_kna75hre.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest__3lx9v4k.log

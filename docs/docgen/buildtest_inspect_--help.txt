@@ -1,9 +1,14 @@
 $ buildtest inspect --help
 
-usage: buildtest [options] [COMMANDS] inspect [-h] test
-
-positional arguments:
-  test        select unique test
+usage: buildtest [options] [COMMANDS] inspect [-h] {name,id,list} ...
 
 optional arguments:
-  -h, --help  show this help message and exit
+  -h, --help      show this help message and exit
+
+subcommands:
+  Inspect Test result
+
+  {name,id,list}  subcommands
+    name          Specify name of test
+    id            Specify a Test ID
+    list          List all test ids

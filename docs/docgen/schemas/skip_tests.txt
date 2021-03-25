@@ -17,13 +17,13 @@ Discovered Buildspecs:
 -------------------------+--------------+---------------------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml
 
-        +-------------------------------+
-        | Stage: Building Test          |
-        +-------------------------------+ 
++-------------------------------+
+| Stage: Building Test          |
++-------------------------------+ 
         
  name      | id       | type   | executor           | tags          | testpath
 -----------+----------+--------+--------------------+---------------+------------------------------------------------------------------------------------------------------------------
- unskipped | b6ac96b3 | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/skip_tests/unskipped/8/stage/generate.sh
+ unskipped | 2173e51a | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/skip_tests/unskipped/2/stage/generate.sh
 
 
 
@@ -33,7 +33,7 @@ Discovered Buildspecs:
 
  name      | id       | executor           | status   |   returncode | testpath
 -----------+----------+--------------------+----------+--------------+------------------------------------------------------------------------------------------------------------------
- unskipped | b6ac96b3 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/skip_tests/unskipped/8/stage/generate.sh
+ unskipped | 2173e51a | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/skip_tests/unskipped/2/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -44,4 +44,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_99emkx2q.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_plci3r04.log

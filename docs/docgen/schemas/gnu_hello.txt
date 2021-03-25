@@ -16,15 +16,15 @@ Discovered Buildspecs:
 ---------------------------+--------------+--------------------------------------------------------------------------------------
  compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_fortran.yml
 
-        +-------------------------------+
-        | Stage: Building Test          |
-        +-------------------------------+ 
++-------------------------------+
+| Stage: Building Test          |
++-------------------------------+ 
         
 
 
  name    | id       | type     | executor           | tags                     | compiler    | testpath
 ---------+----------+----------+--------------------+--------------------------+-------------+-----------------------------------------------------------------------------------------------------------------------
- hello_f | 2da4b273 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/9/stage/generate.sh
+ hello_f | ec575eff | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/2/stage/generate.sh
 
 +-------------------------------+
 | Stage: Running Test           |
@@ -32,7 +32,7 @@ Discovered Buildspecs:
 
  name    | id       | executor           | status   |   returncode | testpath
 ---------+----------+--------------------+----------+--------------+-----------------------------------------------------------------------------------------------------------------------
- hello_f | 2da4b273 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/9/stage/generate.sh
+ hello_f | ec575eff | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/2/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -43,4 +43,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_zuwqiudk.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_vz9mnkoo.log

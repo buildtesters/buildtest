@@ -1,4 +1,4 @@
-.. _command_line_interface:
+.. _configuration_cli:
 
 Command Line Interface to buildtest configuration
 ==================================================

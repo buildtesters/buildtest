@@ -7,12 +7,12 @@ Query Test Report
 buildtest keeps track of all tests and results in a JSON file that is stored in **$BUILDTEST_ROOT/var/report.json**. This
 file is read by **buildtest report** command to extract certain fields from JSON file and display
 them in table format. We use python `tabulate <https://pypi.org/project/tabulate/>`_ library for
-pretty print table data. Shown below is command usage to query test reports.
+pretty print data in tables. Shown below is command usage to query test reports.
 
 .. program-output:: cat docgen/buildtest_report_--help.txt
 
 You may run ``buildtest report`` without any option, and buildtest will display **all** test results
-with default format fields. To see a list of all format fields, click :ref:`here <format_fields>`.
+with default format fields. To see a list of all format fields, click :ref:`here <report_format_fields>`.
 
 .. program-output:: cat docgen/report.txt
    :ellipsis: 20
@@ -20,7 +20,7 @@ with default format fields. To see a list of all format fields, click :ref:`here
 Format Reports
 ---------------
 
-.. _format_fields:
+.. _report_format_fields:
 
 Available Format Fields
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -146,7 +146,7 @@ Let's take a look at this example, we filter by test name ``hello_f`` which retr
 three entries. Now let's filter by oldest record by specifying **--oldest** option
 and it will retrieve the first record which is test id **349f3ada**.
 
-.. code-block::
+.. code-block:: console
 
    $ buildtest report --filter name=hello_f --format name,id,starttime
     +---------+----------+---------------------+
@@ -171,7 +171,7 @@ If you want to retrieve the latest test result you can use ``--latest`` option w
 will retrieve the last record, in the same example we will retrieve test id `5c87978b`.
 
 
-.. code-block::
+.. code-block:: console
 
     $ buildtest report --filter name=hello_f --format name,id,starttime --latest
     +---------+----------+---------------------+
@@ -183,7 +183,7 @@ will retrieve the last record, in the same example we will retrieve test id `5c8
 You may combine **--oldest** and **--latest** options in same command, in this case
 buildtest will retrieve the first and last record of every test.
 
-.. code-block::
+.. code-block:: console
 
     $ buildtest report --format name,id,starttime --oldest --latest | more
     +------------------------------+----------+---------------------+
@@ -198,151 +198,139 @@ buildtest will retrieve the first and last record of every test.
     | ulimit_filelock_unlimited    | 56345a43 | 2021/02/11 18:13:18 |
     +------------------------------+----------+---------------------+
 
-Test Inspection
------------------
+.. _inspect_test:
+
+Inspect Tests Records
+----------------------
 
 buildtest provides an interface via ``buildtest inspect`` to query test details once
 test is recorded in ``var/report.json``. The command usage is the following.
 
 .. program-output:: cat docgen/buildtest_inspect_--help.txt
 
-The ``buildtest inspect`` expects a **unique** test id this can be
-retrieve using the ``full_id`` format field if you are not sure::
+You can query all test names and corresponding ids using ``buildtest inspect list`` which
+retrieves all test records from ``var/report.json``.
 
-  $ buildtest report --format name,full_id
+.. program-output:: cat docgen/buildtest_inspect_list.txt
 
-Let's assume we have the following tests in our report, we can see a full id for
-each test which we can use to inspect a certain test::
+The ``buildtest inspect name`` command can query test records based on test **name**
+along with all runs for a particular test because a single test may be run multiple times.
+Let's see first example of how it looks. buildtest is querying the appropriate record from
+``var/report.json`` and display output in console
 
-    $  buildtest report --format name,full_id
-    +------------------------------+--------------------------------------+
-    | name                         | full_id                              |
-    +==============================+======================================+
-    | variables_bash               | a4ce2fd1-7723-4519-8525-0b5061d17d8d |
-    +------------------------------+--------------------------------------+
-    | variables_bash               | 9fbd7f93-3931-46a7-9095-8821d2553a85 |
-    +------------------------------+--------------------------------------+
-    | variables_bash               | e2dca3dc-99bc-4122-8231-3ae937681275 |
-    +------------------------------+--------------------------------------+
-    | variables_bash               | d747549f-261c-4457-ab1b-7fc574cf8fc0 |
-    +------------------------------+--------------------------------------+
-    | variables_bash               | 43cb7107-906b-455b-8928-4f776333d1bb |
-    +------------------------------+--------------------------------------+
+.. program-output:: cat docgen/buildtest_inspect_names.txt
 
-Let's assume we are interested in viewing test id **a4ce2fd1-7723-4519-8525-0b5061d17d8d**, we
-can use ``buildtest inspect`` and pass the full id. buildtest will display the test record in JSON,
-output and error content, content of testscript and buildspec file::
+You can pass multiple test names to ``buildtest inspect name <test1> <test2>`` and buildtest
+will find all records for given name. In example below we show how one can inspect test records
+for multiple test names in single command.
 
-    $ buildtest inspect a4ce2fd1-7723-4519-8525-0b5061d17d8d
+.. program-output:: cat docgen/buildtest_inspect_multi_names.txt
+
+The ``buildtest inspect id`` works similar to ``buildtest inspect names`` except it
+operates on test id. This can be useful if you want to extract a particular test record and not
+see all test records at once.
+
+You only need to specify a few characters and buildtest will resolve full test id if there is a match.
+The ``buildtest inspect id`` can operate on single or multiple ids if you want to specify multiple
+ids in single command you can do ``buildtest inspect id <identifier1> <identifier2>``.
+
+Let's see an example where we query a single test record. Notice, that we only specify
+a few characters **069** and buildtest found a matching record **069ab71e-527c-472b-a9e5-e400ef428f1a**
+
+.. code-block:: console
+
+    $ buildtest inspect id 069
+
     {
-      "id": "a4ce2fd1",
-      "full_id": "a4ce2fd1-7723-4519-8525-0b5061d17d8d",
-      "testroot": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0",
-      "testpath": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/stage/generate.sh",
-      "stagedir": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/stage",
-      "rundir": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/run",
-      "command": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/stage/generate.sh",
-      "outfile": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/run/variables_bash.out",
-      "errfile": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/run/variables_bash.err",
-      "schemafile": "script-v1.0.schema.json",
-      "executor": "generic.local.bash",
-      "tags": "tutorials",
-      "starttime": "2021/03/01 15:11:09",
-      "endtime": "2021/03/01 15:11:11",
-      "runtime": 1.6528677349999998,
-      "state": "PASS",
-      "returncode": 0,
-      "output": [
-        "1+2= 3\n",
-        "this is a literal string ':'\n",
-        "singlequote\n",
-        "doublequote\n",
-        "siddiq90\n",
-        "/Users/siddiq90/.anyconnect /Users/siddiq90/.DS_Store /Users/siddiq90/.serverauth.555 /Users/siddiq90/.CFUserTextEncoding /Users/siddiq90/.wget-hsts /Users/siddiq90/.bashrc /Users/siddiq90/.zshrc /Users/siddiq90/.coverage /Users/siddiq90/.serverauth.87055 /Users/siddiq90/.zsh_history /Users/siddiq90/.lesshst /Users/siddiq90/.git-completion.bash /Users/siddiq90/buildtest.log /Users/siddiq90/darhan.log /Users/siddiq90/ascent.yml /Users/siddiq90/.cshrc /Users/siddiq90/github-tokens /Users/siddiq90/.zcompdump /Users/siddiq90/.serverauth.543 /Users/siddiq90/.bash_profile /Users/siddiq90/.Xauthority /Users/siddiq90/.python_history /Users/siddiq90/.gitconfig /Users/siddiq90/output.txt /Users/siddiq90/.bash_history /Users/siddiq90/.viminfo\n"
-      ],
-      "error": [],
-      "job": null
+      "069ab71e-527c-472b-a9e5-e400ef428f1a": {
+        "id": "069ab71e",
+        "full_id": "069ab71e-527c-472b-a9e5-e400ef428f1a",
+        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0",
+        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/stage/generate.sh",
+        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/stage",
+        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/run",
+        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/stage/generate.sh",
+        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/run/python_hello.out",
+        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/run/python_hello.err",
+        "schemafile": "script-v1.0.schema.json",
+        "executor": "generic.local.bash",
+        "tags": "python",
+        "starttime": "2021/03/24 21:55:48",
+        "endtime": "2021/03/24 21:55:48",
+        "runtime": 0.188871,
+        "state": "PASS",
+        "returncode": 0,
+        "output": [
+          "Hello World\n"
+        ],
+        "error": [],
+        "job": null
+      }
     }
 
+We can pass multiple IDs to ``buildtest inspect id`` and buildtest will retrieve test
+record if there is a match. In example below we see two records retrieved from a single command
 
+.. code-block:: console
 
-    Output File
-    ______________________________
-    1+2= 3
-    this is a literal string ':'
-    singlequote
-    doublequote
-    siddiq90
-    /Users/siddiq90/.anyconnect /Users/siddiq90/.DS_Store /Users/siddiq90/.serverauth.555 /Users/siddiq90/.CFUserTextEncoding /Users/siddiq90/.wget-hsts /Users/siddiq90/.bashrc /Users/siddiq90/.zshrc /Users/siddiq90/.coverage /Users/siddiq90/.serverauth.87055 /Users/siddiq90/.zsh_history /Users/siddiq90/.lesshst /Users/siddiq90/.git-completion.bash /Users/siddiq90/buildtest.log /Users/siddiq90/darhan.log /Users/siddiq90/ascent.yml /Users/siddiq90/.cshrc /Users/siddiq90/github-tokens /Users/siddiq90/.zcompdump /Users/siddiq90/.serverauth.543 /Users/siddiq90/.bash_profile /Users/siddiq90/.Xauthority /Users/siddiq90/.python_history /Users/siddiq90/.gitconfig /Users/siddiq90/output.txt /Users/siddiq90/.bash_history /Users/siddiq90/.viminfo
+    $ buildtest inspect id 6f13 015e
+    {
+      "015ec352-2048-4717-8d4c-a150ef13e0e2": {
+        "id": "015ec352",
+        "full_id": "015ec352-2048-4717-8d4c-a150ef13e0e2",
+        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4",
+        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh",
+        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage",
+        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/run",
+        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh",
+        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/run/circle_area.out",
+        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/run/circle_area.err",
+        "schemafile": "script-v1.0.schema.json",
+        "executor": "generic.local.python",
+        "tags": "tutorials python",
+        "starttime": "2021/03/24 21:56:14",
+        "endtime": "2021/03/24 21:56:14",
+        "runtime": 0.179244,
+        "state": "PASS",
+        "returncode": 0,
+        "output": [
+          "Circle Radius  2\n",
+          "Area of circle  12.566370614359172\n"
+        ],
+        "error": [],
+        "job": null
+      },
+      "6f13cda7-f807-4075-97f6-8a8fd5a8226e": {
+        "id": "6f13cda7",
+        "full_id": "6f13cda7-f807-4075-97f6-8a8fd5a8226e",
+        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0",
+        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/stage/generate.sh",
+        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/stage",
+        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/run",
+        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/stage/generate.sh",
+        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/run/sleep.out",
+        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/run/sleep.err",
+        "schemafile": "script-v1.0.schema.json",
+        "executor": "generic.local.bash",
+        "tags": "tutorials",
+        "starttime": "2021/03/24 21:55:45",
+        "endtime": "2021/03/24 21:55:47",
+        "runtime": 2.132367,
+        "state": "PASS",
+        "returncode": 0,
+        "output": [],
+        "error": [],
+        "job": null
+      }
+    }
 
+If you specify an invalid test id using ``buildtest inspect id`` you will get an error
+message as follows.
 
+.. code-block:: console
 
+    $ buildtest inspect id lad
 
-    Error File
-    ______________________________
+    Unable to find any test records based on id: ['lad'], please run 'buildtest inspect list' to see list of ids.
 
-
-
-
-    Test Content
-    ______________________________
-    #!/bin/bash
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/before_script.sh
-    X=1
-    Y=2
-    literalstring="this is a literal string ':' "
-
-    singlequote='singlequote'
-    doublequote="doublequote"
-    current_user=$(whoami)
-    files_homedir=`find $HOME -type f -maxdepth 1`
-    echo "$X+$Y=" $(($X+$Y))
-    echo $literalstring
-    echo $singlequote
-    echo $doublequote
-
-    echo $current_user
-    echo $files_homedir
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/after_script.sh
-
-
-
-    buildspec:  /Users/siddiq90/Documents/buildtest/tutorials/vars.yml
-    ______________________________
-    version: "1.0"
-    buildspecs:
-      variables_bash:
-        type: script
-        executor: generic.local.bash
-        description: Declare shell variables in bash
-        tags: [tutorials]
-        vars:
-          X: 1
-          Y: 2
-          literalstring: |
-            "this is a literal string ':' "
-          singlequote: "'singlequote'"
-          doublequote: "\"doublequote\""
-          current_user: "$(whoami)"
-          files_homedir: "`find $HOME -type f -maxdepth 1`"
-
-        run: |
-          echo "$X+$Y=" $(($X+$Y))
-          echo $literalstring
-          echo $singlequote
-          echo $doublequote
-
-          echo $current_user
-          echo $files_homedir
-
-User can specify first few characters of the id and buildtest will detect if
-its a unique test id. If buildtest discovers more than one test id, then buildtest
-will report all the ids where there is a conflict. In example below we find
-two tests with id **7c**::
-
-    $ buildtest inspect 7c
-    Detected 2 test records, please specify a unique test id
-    7ca9db2f-1e2b-4739-b9a2-71c8cc00249e
-    7cfc9057-6338-403c-a7af-b1301d04d817
-
-.. note:: This feature is in development and may change in future
+You will see similar message if you specify an invalid test name using ``buildtest inspect name`` command.

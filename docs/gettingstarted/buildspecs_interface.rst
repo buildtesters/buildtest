@@ -1,3 +1,4 @@
+.. _buildspec_interface:
 
 Buildspecs Interface
 ======================

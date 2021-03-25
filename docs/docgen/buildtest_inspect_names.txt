@@ -1,0 +1,96 @@
+$ buildtest inspect name shell_options
+
+{
+  "shell_options": [
+    {
+      "id": "dc657139",
+      "full_id": "dc657139-d297-4441-848c-33cae06b595d",
+      "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0",
+      "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage/generate.sh",
+      "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage",
+      "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/run",
+      "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage/generate.sh",
+      "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/run/shell_options.out",
+      "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/run/shell_options.err",
+      "schemafile": "script-v1.0.schema.json",
+      "executor": "generic.local.sh",
+      "tags": "tutorials",
+      "starttime": "2021/03/24 21:55:41",
+      "endtime": "2021/03/24 21:55:41",
+      "runtime": 0.132134,
+      "state": "PASS",
+      "returncode": 0,
+      "output": [
+        "/bin/bash\n",
+        "DOE-7086392.local\n"
+      ],
+      "error": [
+        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\n",
+        "+ echo /bin/bash\n",
+        "+ hostname\n",
+        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh\n"
+      ],
+      "job": null
+    },
+    {
+      "id": "93e97211",
+      "full_id": "93e97211-6bd3-4218-8b87-370ca2183af3",
+      "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1",
+      "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1/stage/generate.sh",
+      "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1/stage",
+      "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1/run",
+      "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1/stage/generate.sh",
+      "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1/run/shell_options.out",
+      "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1/run/shell_options.err",
+      "schemafile": "script-v1.0.schema.json",
+      "executor": "generic.local.sh",
+      "tags": "tutorials",
+      "starttime": "2021/03/24 21:55:52",
+      "endtime": "2021/03/24 21:55:52",
+      "runtime": 0.076502,
+      "state": "PASS",
+      "returncode": 0,
+      "output": [
+        "/bin/bash\n",
+        "DOE-7086392.local\n"
+      ],
+      "error": [
+        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\n",
+        "+ echo /bin/bash\n",
+        "+ hostname\n",
+        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh\n"
+      ],
+      "job": null
+    },
+    {
+      "id": "d9e8fc1c",
+      "full_id": "d9e8fc1c-5b8d-4a0a-be1b-fe32665d3d52",
+      "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2",
+      "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/stage/generate.sh",
+      "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/stage",
+      "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/run",
+      "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/stage/generate.sh",
+      "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/run/shell_options.out",
+      "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/run/shell_options.err",
+      "schemafile": "script-v1.0.schema.json",
+      "executor": "generic.local.sh",
+      "tags": "tutorials",
+      "starttime": "2021/03/24 21:56:04",
+      "endtime": "2021/03/24 21:56:04",
+      "runtime": 0.072742,
+      "state": "PASS",
+      "returncode": 0,
+      "output": [
+        "/bin/bash\n",
+        "DOE-7086392.local\n"
+      ],
+      "error": [
+        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\n",
+        "+ echo /bin/bash\n",
+        "+ hostname\n",
+        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh\n"
+      ],
+      "job": null
+    }
+  ]
+}
