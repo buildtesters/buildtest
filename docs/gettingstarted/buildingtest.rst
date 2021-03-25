@@ -1,3 +1,5 @@
+.. _building_test:
+
 Building Test via buildtest
 ==============================
 

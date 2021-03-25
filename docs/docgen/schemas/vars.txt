@@ -16,13 +16,13 @@ Discovered Buildspecs:
 -------------------------+--------------+---------------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
 
-        +-------------------------------+
-        | Stage: Building Test          |
-        +-------------------------------+ 
++-------------------------------+
+| Stage: Building Test          |
++-------------------------------+ 
         
  name           | id       | type   | executor           | tags          | testpath
-----------------+----------+--------+--------------------+---------------+------------------------------------------------------------------------------------------------------------------
- variables_bash | 55416aba | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/22/stage/generate.sh
+----------------+----------+--------+--------------------+---------------+-----------------------------------------------------------------------------------------------------------------
+ variables_bash | 100a0fed | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/5/stage/generate.sh
 
 
 
@@ -31,8 +31,8 @@ Discovered Buildspecs:
 +-------------------------------+ 
 
  name           | id       | executor           | status   |   returncode | testpath
-----------------+----------+--------------------+----------+--------------+------------------------------------------------------------------------------------------------------------------
- variables_bash | 55416aba | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/22/stage/generate.sh
+----------------+----------+--------------------+----------+--------------+-----------------------------------------------------------------------------------------------------------------
+ variables_bash | 100a0fed | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/5/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -43,4 +43,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_fk6z148c.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_rm5db21i.log

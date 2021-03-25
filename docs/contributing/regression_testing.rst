@@ -18,15 +18,15 @@ dependencies found in requirements file::
 Writing Regression Tests
 -------------------------
 
-If you want to write a new regression test, you should get familiar with the
-coverage report gather in `codecov <https://codecov.io/gh/buildtesters/buildtest>`_.
+If you want to write a new regression test, you should be familiar with
+`coverage <https://coverage.readthedocs.io/>`_ report that is pushed to `codecov <https://codecov.io/gh/buildtesters/buildtest>`_.
 The coverage report will give a detailed line-line coverage of source
 code HIT/MISS when running the regression test. Increasing coverage report would
 be great way to write a new regression test.
 
-The ``tests`` directory is structured in a way that each source file has a
-corresponding test file that starts with ``test_``. For instance, if you want to
-write a test for ``buildtest/utils/command.py``, there will be a corresponding
+The `tests <https://github.com/buildtesters/buildtest/tree/devel/tests>`_ directory is structured in a way
+that each source file has a corresponding test file that starts with ``test_``. For instance,
+if you want to write a test for ``buildtest/utils/command.py``, there will be a corresponding
 test under ``tests/utils/test_command.py``.
 
 If you adding a new directory, make sure the name corresponds to one found under
@@ -44,28 +44,20 @@ Shown below is a simple test that always passes
 For more details on writing tests with pytest see
 `Getting-Started <https://docs.pytest.org/en/latest/getting-started.html#installation-and-getting-started>`_.
 
-Running Test with pytest
+Running Regression Test
 ------------------------
 
-To run all the tests you can run the following::
+The recommended way to run regression test is via::
 
-  pytest tests/
+    $ sh $BUILDTEST_ROOT/scripts/regtest.sh
 
-Some other options can be useful for troubleshooting such as::
+The script should be run from top-level folder (i.e **$BUILDTEST_ROOT**). This
+script is a wrapper to `pytest` and `coverage`. We have a `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
+found in top-level folder that defines pytest configuration. If you want to run tests
+natively via `pytest` without using the script you can just run ``pytest`` and
+it will run with options defined in `pytest.ini` file.
 
-    # print passed test with output
-    pytest -rP tests
-
-    # print all failed tests
-    pytest -rf tests
-
-    # print all test with verbose
-    pytest -v tests
-
-    # print all except Pass tests
-    pytest -ra tests
-
-If you want to run all schema tests you can run via ``schema`` marker as follows::
+If you want to run all schema tests you can use the ``schema`` marker as follows::
 
    pytest -v -m schema
 
@@ -82,11 +74,10 @@ or run ``pytest --help``.
 Running test via coverage
 --------------------------
 
-You may want to run coverage report against your test, this can be done by running::
-
-    coverage run -m pytest tests
-
-This can be used with ``coverage report`` to show coverage results of your
+There is a coverage configuration file `.coveragerc <https://github.com/buildtesters/buildtest/blob/devel/.coveragerc>`_ located
+in root of buildtest that is read by **coverage** utility. You can just run ``coverage run -m pytest``
+to get line-line coverage of the source code. This action is done via `regtest.sh <https://github.com/buildtesters/buildtest/blob/devel/scripts/regtest.sh>`_ script if you
+were to run it as is. Upon completion of tests you can run ``coverage report`` to show coverage results of your
 regression test run locally. Shown below is an example output:
 
 .. code-block:: console
@@ -117,11 +108,11 @@ regression test run locally. Shown below is an example output:
     -----------------------------------------------------------------------------
     TOTAL                                         744    241    236     41    63%
 
+If you want to view the coverage details locally in a browser you can run: ``coverage html`` which will
+write the results to directory **htmlcov**. You can open the file ``open htmlcov/index.html`` and it will show you
+a summary of coverage results that you would see from codecov.
 
-You may want to run ``coverage report -m`` which will show missing line numbers
-in report. For more details on coverage refer to
-`coverage documentation <https://coverage.readthedocs.io/>`_.
-
+For more details on coverage please refer to `coverage documentation <https://coverage.readthedocs.io/>`_.
 
 Tox
 ----

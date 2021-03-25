@@ -56,8 +56,12 @@ run all the tests which led to `buildtest`.
 Preview of buildtest
 ----------------------
 
+Building test
+~~~~~~~~~~~~~~
+
 buildtest will process YAML files called **buildspecs** (build specification) and
-generate test scripts. There are several ways to build buildspecs that may include:
+generate test scripts. To build and run tests you use ``buildtest build`` command.
+There are several ways to build buildspecs, shown below are few examples:
 
 .. code-block:: console
 
@@ -88,8 +92,12 @@ generate test scripts. There are several ways to build buildspecs that may inclu
   # combine all options together
   $ buildtest build -b example.yml -b system --tags network -x system/kernel.yml
 
+For more details see :ref:`building_test`.
 
-buildtest will retrieve test results using `buildtest report` command which will display
+Querying Test Report
+~~~~~~~~~~~~~~~~~~~~~
+
+buildtest will retrieve test results using ``buildtest report`` command which will display
 all test records. We can filter and format output of test records using the ``--filter``
 and ``--format`` option. Shown below is example usage:
 
@@ -113,17 +121,34 @@ and ``--format`` option. Shown below is example usage:
   # get latest test record
   $ buildtest report --latest
 
+To learn more about `buildtest report` see :ref:`querying test reports <test_reports>`.
 
-A single buildspec is composed of one or more tests and buildtest will run all tests
-by default. buildtest will assign a unique id for every test, if you want to inspect
-a particular test you can run the following:
+
+Inspect Tests
+~~~~~~~~~~~~~~~
+
+If you want to see more detailed results for tests you should use ``buildtest inspect``
+which will extract the JSON record from the report file. Shown below are few command usage:
 
 .. code-block:: console
 
-  $ buildtest inspect <ID>
+    # list all test names and id
+    $ buildtest inspect list
 
-buildtest will generate a unique id based on `uuid.uuid4() <https://docs.python.org/3/library/uuid.html#uuid.uuid4>`_
-one only needs to specify a few characters and buildtest will detect if its a unique id.
+    # query record for test name 'python_hello'
+    $ buildtest inspect name python_hello
+
+    # query record for test name 'hello_world' 'shell_opts'
+    $ buildtest inspect name hello_world shell_opts
+
+    # query record based on test id
+    $ buildtest inspect id <identifier-1> <identifier-2>
+
+To learn more about `buildtest inspect` see :ref:`inspect_test`.
+
+
+Query Buildspecs
+~~~~~~~~~~~~~~~~~
 
 buildtest can discover and validate buildspecs with corresponding JSON schema. This
 feature is handy when you want to see all tests in your acceptance test. To see
@@ -143,11 +168,54 @@ all buildspecs you need to use ``buildtest buildspec find``:
     # view all executors
     $ buildtest buildspec find --executors
 
+    # view all maintainers
+    $ buildtest buildspec find --maintainers
+
     # filter and format buildspec cache
     $ buildtest buildspec find --filter KEY1=VALUE1,KEY2=VALUE2 --format <field1>,<field2>
 
-buildtest has a command line interface to buildtest schemas. We provide a list of
-available schemas, including schema content and schema examples validated for
+To learn more about `buildtest buildspec find` see :ref:`buildspec_interface`.
+
+Configuration
+~~~~~~~~~~~~~~
+
+buildtest provides :ref:`command line interface <configuration_cli>` via ``buildtest config`` to query
+buildtest configuration file. As you start :ref:`configuring buildtest <configuring_buildtest>` at your site,
+you will want to run:
+
+.. code-block:: console
+
+    $ buildtest config validate
+
+If you want to view your configuration file you can do:
+
+.. code-block:: console
+
+    $ buildtest config view
+
+buildtest can :ref:`define compilers <compilers>` in your configuration file which can be used to
+compile source code in a test. The ``buildtest config compilers`` command is responsible
+for querying and finding compilers:
+
+.. code-block:: console
+
+    # list compilers in flat listing
+    $ buildtest config compilers -l
+
+    # list compilers in YAML format
+    $ buildtest config compilers --yaml
+
+    # list compilers in JSON format
+    $ buildtest config compilers --json
+
+    # find compilers and update configuration file
+    $ buildtest config compilers find
+
+Schema Interface
+~~~~~~~~~~~~~~~~~
+
+buildtest has a :ref:`command line interface <buildtest_schemas>` to buildtest schemas via ``buildtest schema`` command.
+We provide a list of available schemas, including schema content and schema examples validated for
 each schema. This can be queried as follows:
 
 .. code-block:: console
@@ -161,7 +229,8 @@ each schema. This can be queried as follows:
   # show schema examples of schema global.schema.json
   $ buildtest schema -n global.schema.json --example
 
-For more information see :ref:`getting_started`.
+We encourage you go over the :ref:`getting_started` guide as you learn buildtest and
+try the examples on your machine.
 
 Target Audience & Use Case
 ---------------------------
@@ -172,7 +241,7 @@ regression testing of their HPC system.
 buildtest is not
 
   - replacement for `make`, `cmake`, `autoconf`, `ctest`
-  - a software build framework (`easybuild`, `spack`, `nix`, `guix`)
+  - a software build framework (`easybuild <https://docs.easybuild.io/en/latest/>`_, `spack <https://spack.readthedocs.io/en/latest/>`_, `nix <https://nixos.org/>`_ , `guix <https://guix.gnu.org/>`_)
   - a replacement for benchmark tools or test suite from upstream package
   - a replacement for writing tests, you will need to write your tests defined by buildtest schemas, however you can copy/paste & adapt tests from other sites that are applicable to you.
 
@@ -194,6 +263,7 @@ Timeline
     :widths: 30, 60
 
     **Mar 14th 2021**, "`v0.9.4 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.4>`_ introduced major change in buildtest configuration file (``settings.schema.json``) to define multiple HPC systems in configuration file. This lead to change in how ``executors`` are referenced in buildspec file."
+    **Feb 22nd 2021**, "`v0.9.3 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.3>`_ change Copyright details for project to include `LBNL <https://www.lbl.gov/>`_. We added `dependabot <https://dependabot.com/>`_ for managing dependencies, added OLCF facility pipelines for running regression test."
     **Jan 12th 2021**, "`v0.9.2 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.2>`_ contains major refactor to ``compiler-v1.0-schema.json`` for writing compiler test using regular expression to search for compilers that are defined in configuration file."
     **Nov 24st 2020**, "`v0.9.1 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.1>`_ added support for `Cobalt Scheduler <https://trac.mcs.anl.gov/projects/cobalt>`_."
     **Sep 3rd 2020**, "`v0.8.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.8.0>`_ introduced `JSON Schema <https://json-schema.org/>`_ for validating buildspec. Add support for Slurm and LSF scheduler for job submission. Add support for building buildspecs by file, directory and tagname and command line interface to schema."
