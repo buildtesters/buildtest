@@ -331,11 +331,12 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         )
 
         subparsers_compiler_find = compiler_config.add_subparsers(
-            description="Find new compilers and add them to detected compiler section"
+            description="Find new compilers and add them to detected compiler section",
         )
 
         compiler_find = subparsers_compiler_find.add_parser(
-            "find", help="Find compilers"
+            "find",
+            help="Find compilers",
         )
         compiler_find.add_argument(
             "-d",
@@ -355,9 +356,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
             "--yaml",
             action="store_true",
             help="List compiler details in YAML format",
-        )
-        compiler_config.add_argument(
-            "-l", "--list", action="store_true", help="List all compilers "
         )
         # parser_config_executor.set_defaults(fun)
         parser_executors.set_defaults(func=func_config_executors)
