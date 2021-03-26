@@ -223,7 +223,7 @@ class CobaltExecutor(BaseExecutor):
                     f"Error in regular expression: {pattern}. Unable to find returncode please check your cobalt log file"
                 )
 
-        self.check_test_state()
+        self.check_test_state(builder)
 
     def cancel(self, builder):
         """Cancel Cobalt job using qdel, this operation is performed if job exceeds its max_pend_time

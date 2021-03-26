@@ -226,7 +226,7 @@ class LSFExecutor(BaseExecutor):
         self.logger.debug(
             f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
         )
-        self.check_test_state()
+        self.check_test_state(builder)
 
     def cancel(self, builder):
         """Cancel LSF job, this is required if job exceeds max pending time in queue.

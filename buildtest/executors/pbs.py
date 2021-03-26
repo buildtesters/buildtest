@@ -199,7 +199,7 @@ class PBSExecutor(BaseExecutor):
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
         builder.metadata["error"] = read_file(builder.metadata["errfile"])
 
-        self.check_test_state()
+        self.check_test_state(builder)
 
     def cancel(self, builder):
         """Cancel Cobalt job using qdel, this operation is performed if job exceeds its max_pend_time.
