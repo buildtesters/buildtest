@@ -70,7 +70,11 @@ class LSFExecutor(BaseExecutor):
         self.queue = self._settings.get("queue")
 
     def dispatch(self, builder):
-        """This method is responsible for dispatching job to scheduler."""
+        """This method is responsible for dispatching job to scheduler.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
+        """
 
         # The job_id variable is used to store the JobID retrieved by bjobs
         self.job_id = 0
@@ -131,6 +135,9 @@ class LSFExecutor(BaseExecutor):
         """This method will poll for job by using bjobs and return state of job.
         The command to be run is ``bjobs -noheader -o 'stat' <JOBID>`` which
         returns job state.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
         """
 
         self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
@@ -171,6 +178,9 @@ class LSFExecutor(BaseExecutor):
         """Gather Job detail after completion of job. This method will retrieve output
         fields defined for ``self.format_fields``. buildtest will run
         ``bjobs -o '<field1> ... <fieldN>' <JOBID> -json``.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
         """
 
         # bjobs gather command to extract format fields and convert output to JSON
@@ -214,12 +224,16 @@ class LSFExecutor(BaseExecutor):
         builder.metadata["error"] = read_file(builder.metadata["errfile"])
 
         self.logger.debug(
-            f"[{self.builder.name}] returncode: {builder.metadata['result']['returncode']}"
+            f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
         )
-        self.check_test_state()
+        self.check_test_state(builder)
 
     def cancel(self, builder):
-        """Cancel LSF job, this is required if job exceeds max pending time in queue"""
+        """Cancel LSF job, this is required if job exceeds max pending time in queue.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
+        """
 
         query = f"bkill {builder.metadata['jobid']}"
 

@@ -49,6 +49,9 @@ class CobaltExecutor(BaseExecutor):
         we check returncode and exit with failure. After we submit job, we
         start timer and record when job was submitted and poll job once to get
         job details and store them in builder object.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
         """
 
         os.chdir(builder.stage_dir)
@@ -133,6 +136,9 @@ class CobaltExecutor(BaseExecutor):
         is in 'pending' stage we check if job exceeds 'max_pend_time' time limit
         by checking with builder timer attribute using ``start`` and ``stop`` method.
         If job exceeds the time limit job is cancelled.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
         """
 
         self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
@@ -190,13 +196,16 @@ class CobaltExecutor(BaseExecutor):
         output of exit code. Cobalt doesn't provide any method to retrieve
         exit code using account command (``qstat``) so we need to perform
         regular expression.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
         """
 
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
-        builder.metadata["error"] = read_file(self.builder.metadata["errfile"])
+        builder.metadata["error"] = read_file(builder.metadata["errfile"])
 
         cobaltlog = os.path.join(
-            self.builder.stage_dir, str(self.builder.metadata["jobid"]) + ".cobaltlog"
+            builder.stage_dir, str(builder.metadata["jobid"]) + ".cobaltlog"
         )
 
         self.end_time(builder)
@@ -208,17 +217,20 @@ class CobaltExecutor(BaseExecutor):
             # pattern to check in cobalt log file is 'exit code of <CODE>;'
             m = re.search(pattern, content)
             if m:
-                self.builder.metadata["result"]["returncode"] = int(m.group(2))
-                print(self.builder.metadata["result"]["returncode"])
+                builder.metadata["result"]["returncode"] = int(m.group(2))
             else:
                 self.logger.debug(
                     f"Error in regular expression: {pattern}. Unable to find returncode please check your cobalt log file"
                 )
 
-        self.check_test_state()
+        self.check_test_state(builder)
 
     def cancel(self, builder):
-        """Cancel Cobalt job using qdel, this operation is performed if job exceeds its max_pend_time"""
+        """Cancel Cobalt job using qdel, this operation is performed if job exceeds its max_pend_time
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
+        """
 
         query = f"qdel {builder.metadata['jobid']}"
 

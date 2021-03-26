@@ -50,6 +50,9 @@ class PBSExecutor(BaseExecutor):
         we check returncode and exit with failure. After we submit job, we
         start timer and record when job was submitted and poll job once to get
         job details and store them in builder object.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
         """
 
         self.load()
@@ -68,7 +71,7 @@ class PBSExecutor(BaseExecutor):
             batch_cmd += [" ".join(self.launcher_opts)]
 
         batch_cmd += [builder.metadata["testpath"]]
-        self.builder.metadata["command"] = " ".join(batch_cmd)
+        builder.metadata["command"] = " ".join(batch_cmd)
         self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
         command = BuildTestCommand(builder.metadata["command"])
         command.execute()
@@ -115,6 +118,9 @@ class PBSExecutor(BaseExecutor):
         is in 'pending' stage we check if job exceeds 'max_pend_time' time limit
         by checking with builder timer attribute using ``start`` and ``stop`` method.
         If job exceeds the time limit job is cancelled.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
         """
 
         self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
@@ -152,7 +158,7 @@ class PBSExecutor(BaseExecutor):
             # if timer time is more than requested pend time then cancel job
             if int(builder.duration) > self.max_pend_time:
                 self.cancel(builder)
-                self.builder.job_state = "CANCELLED"
+                builder.job_state = "CANCELLED"
                 print(
                     "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
                         builder.duration, self.max_pend_time
@@ -166,6 +172,9 @@ class PBSExecutor(BaseExecutor):
         and storing the result in builder object. We retrieve specific fields such as exit status,
         start time, end time, runtime and store them in builder object. We read output and error file
         and store the content in builder object.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
         """
 
         qstat_cmd = f"{self.poll_cmd} -x -f -F json {builder.metadata['jobid']}"
@@ -178,7 +187,7 @@ class PBSExecutor(BaseExecutor):
 
         job_data = json.loads(output)
 
-        self.builder.metadata["result"]["returncode"] = job_data["Jobs"][
+        builder.metadata["result"]["returncode"] = job_data["Jobs"][
             builder.metadata["jobid"]
         ]["Exit_status"]
 
@@ -190,10 +199,14 @@ class PBSExecutor(BaseExecutor):
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
         builder.metadata["error"] = read_file(builder.metadata["errfile"])
 
-        self.check_test_state()
+        self.check_test_state(builder)
 
     def cancel(self, builder):
-        """Cancel Cobalt job using qdel, this operation is performed if job exceeds its max_pend_time"""
+        """Cancel Cobalt job using qdel, this operation is performed if job exceeds its max_pend_time.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
+        """
 
         query = f"qdel {builder.metadata['jobid']}"
 
