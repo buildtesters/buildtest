@@ -52,14 +52,16 @@ def func_config_compiler(args=None):
     """This method implements ``buildtest config compilers`` which shows compiler
     section from buildtest configuration.
     """
-
     bc = BuildtestCompilers()
+
+    if args.json is False and args.yaml is False:
+        bc.print_compilers()
+
     if args.json:
         bc.print_json()
+
     if args.yaml:
         bc.print_yaml()
-    if args.list:
-        bc.print_compilers()
 
 
 class BuildtestCompilers:

@@ -489,12 +489,16 @@ class BuildTest:
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
 """
+            headers = table.keys()
+
             if os.getenv("BUILDTEST_COLOR") == "True":
                 msg = colored(msg, "red", attrs=["bold"])
+                headers = list(
+                    map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
+                )
 
             print(msg)
-
-            print(tabulate(table, headers=table.keys(), tablefmt="presto"))
+            print(tabulate(table, headers=headers, tablefmt="presto"))
 
         return self.builders
 
@@ -543,7 +547,8 @@ class BuildTest:
         print(msg)
 
         table = Hasher()
-        for field in ["name", "id", "type", "executor", "tags", "compiler", "testpath"]:
+        headers = ["name", "id", "type", "executor", "tags", "compiler", "testpath"]
+        for field in headers:
             table["script"][field] = []
             table["compiler"][field] = []
 
@@ -577,20 +582,34 @@ class BuildTest:
                     print(test)
 
             if len(table["script"]["name"]) > 0:
+
+                if os.getenv("BUILDTEST_COLOR") == "True":
+                    headers = list(
+                        map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
+                    )
+
                 print(
                     tabulate(
                         table["script"],
-                        headers=table["script"].keys(),
+                        headers=headers,
                         tablefmt="presto",
                     )
                 )
 
             print("\n")
+
             if len(table["compiler"]["name"]) > 0:
+
+                headers = table["compiler"].keys()
+                if os.getenv("BUILDTEST_COLOR") == "True":
+                    headers = list(
+                        map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
+                    )
+
                 print(
                     tabulate(
                         table["compiler"],
-                        headers=table["compiler"].keys(),
+                        headers=headers,
                         tablefmt="presto",
                     )
                 )
@@ -690,7 +709,13 @@ class BuildTest:
             total_tests += 1
 
         if printTable:
-            print(tabulate(table, headers=table.keys(), tablefmt="presto"))
+            headers = table.keys()
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = list(
+                    map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
+                )
+
+            print(tabulate(table, headers=headers, tablefmt="presto"))
 
         if errmsg:
             print("\n\n")
@@ -746,7 +771,13 @@ class BuildTest:
                 total_tests += 1
 
             if printTable:
-                print(tabulate(table, headers=table.keys(), tablefmt="presto"))
+                headers = table.keys()
+                if os.getenv("BUILDTEST_COLOR") == "True":
+                    headers = list(
+                        map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
+                    )
+
+                print(tabulate(table, headers=headers, tablefmt="presto"))
 
         ########## TEST SUMMARY ####################
         if total_tests == 0:
@@ -775,7 +806,7 @@ class BuildTest:
 
             print(msg1)
             print(msg2)
-            print("\n\n")
+            print("\n")
 
         return valid_builders
 
