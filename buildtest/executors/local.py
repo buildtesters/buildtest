@@ -10,6 +10,7 @@ import sys
 
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
+from buildtest.utils.file import write_file
 
 
 class LocalExecutor(BaseExecutor):
@@ -24,7 +25,6 @@ class LocalExecutor(BaseExecutor):
     def load(self):
         self.shell = self._settings.get("shell")
         self.shell = self.shell.split()[0]
-        self.check()
 
     def check(self):
         """Check if shell binary is available"""
@@ -43,7 +43,14 @@ class LocalExecutor(BaseExecutor):
         runs test locally. We keep track of metadata in ``builder.metadata``
         that keeps track of run result. The output and error file
         are written to filesystem.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
         """
+
+        # we only run the check at time of running the test since that's when we need
+        # the binary available
+        self.check()
 
         if self.shell_type != builder.shell_type:
             sys.exit(
@@ -70,7 +77,33 @@ class LocalExecutor(BaseExecutor):
         )
         builder.metadata["result"]["returncode"] = command.returncode
 
-        builder.metadata["output"] = out
-        builder.metadata["error"] = err
-        self.write_testresults(out, err)
-        self.check_test_state()
+        builder.metadata["output"] = "".join(out)
+        builder.metadata["error"] = "".join(err)
+        self.write_testresults(builder)
+        self.check_test_state(builder)
+
+    def write_testresults(self, builder):
+        """This method writes test results into output and error file.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
+        """
+
+        # Keep an output file
+        run_output_file = os.path.join(
+            builder.metadata.get("testroot"),
+            "run",
+            builder.metadata.get("name"),
+        )
+        outfile = run_output_file + ".out"
+        errfile = run_output_file + ".err"
+
+        self.logger.debug(f"Writing test output to file: {outfile}")
+        write_file(outfile, builder.metadata["output"])
+
+        # write error from test to .err file
+        self.logger.debug(f"Writing test error to file: {errfile}")
+        write_file(errfile, builder.metadata["error"])
+
+        builder.metadata["outfile"] = outfile
+        builder.metadata["errfile"] = errfile

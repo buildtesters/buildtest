@@ -6,7 +6,7 @@ import datetime
 import logging
 import os
 import re
-from buildtest.utils.file import write_file, read_file
+from buildtest.utils.file import read_file
 
 
 class BaseExecutor:
@@ -32,7 +32,6 @@ class BaseExecutor:
         self._settings = settings
         self._buildtestsettings = site_configs
         self.load()
-        self.builder = None
         self.result = {}
 
     def load(self):
@@ -74,7 +73,7 @@ class BaseExecutor:
     def __repr__(self):
         return self.__str__()
 
-    def _check_regex(self, status):
+    def _check_regex(self, builder):
         """This method conducts a regular expression check using ``re.search``
         with regular expression defined in Buildspec. User must specify an
         output stream (stdout, stderr) to select when performing regex. In
@@ -91,69 +90,39 @@ class BaseExecutor:
 
         regex_match = False
 
-        if not status.get("regex"):
+        if not builder.status.get("regex"):
             return regex_match
 
-        if status["regex"]["stream"] == "stdout":
+        if builder.status["regex"]["stream"] == "stdout":
             self.logger.debug(
-                f"Detected regex stream 'stdout' so reading output file: {self.builder.metadata['outfile']}"
+                f"Detected regex stream 'stdout' so reading output file: {builder.metadata['outfile']}"
             )
-            content = read_file(self.builder.metadata["outfile"])
+            content = read_file(builder.metadata["outfile"])
 
-        elif status["regex"]["stream"] == "stderr":
+        elif builder.status["regex"]["stream"] == "stderr":
             self.logger.debug(
-                f"Detected regex stream 'stderr' so reading error file: {self.builder.metadata['errfile']}"
+                f"Detected regex stream 'stderr' so reading error file: {builder.metadata['errfile']}"
             )
-            content = read_file(self.builder.metadata["errfile"])
+            content = read_file(builder.metadata["errfile"])
 
-        self.logger.debug(f"Applying re.search with exp: {status['regex']['exp']}")
+        self.logger.debug(
+            f"Applying re.search with exp: {builder.status['regex']['exp']}"
+        )
 
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
-        return re.search(status["regex"]["exp"], content) is not None
+        return re.search(builder.status["regex"]["exp"], content) is not None
 
-    def write_testresults(self, out, err):
-        """This method writes test results into output and error file.
-
-        :param out: content of output stream
-        :type out: list, required
-        :param err: content of error stream
-        :type err: list, required
-        """
-
-        # Keep an output file
-        run_output_file = os.path.join(
-            self.builder.metadata.get("testroot"),
-            "run",
-            self.builder.metadata.get("name"),
-        )
-        outfile = run_output_file + ".out"
-        errfile = run_output_file + ".err"
-
-        # write output of test to .out file
-        out = "".join(out)
-        err = "".join(err)
-
-        self.logger.debug(f"Writing test output to file: {outfile}")
-        write_file(outfile, out)
-
-        # write error from test to .err file
-        self.logger.debug(f"Writing test error to file: {errfile}")
-        write_file(errfile, err)
-
-        self.builder.metadata["outfile"] = outfile
-        self.builder.metadata["errfile"] = errfile
-
-    def _returncode_check(self, status):
+    def _returncode_check(self, builder):
         """Check status check of ``returncode`` field if specified in status
         property.
         """
 
         returncode_match = False
 
-        if status.get("returncode"):
+        if builder.status.get("returncode"):
             # returncode can be an integer or list of integers
 
-            buildspec_returncode = status["returncode"]
+            buildspec_returncode = builder.status["returncode"]
 
             # if buildspec returncode field is integer we convert to list for check
             if isinstance(buildspec_returncode, int):
@@ -164,24 +133,24 @@ class BaseExecutor:
                 "Status Return Code: %s   Result Return Code: %s"
                 % (
                     buildspec_returncode,
-                    self.builder.metadata["result"]["returncode"],
+                    builder.metadata["result"]["returncode"],
                 )
             )
             # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
             returncode_match = (
-                self.builder.metadata["result"]["returncode"] in buildspec_returncode
+                builder.metadata["result"]["returncode"] in buildspec_returncode
             )
 
         return returncode_match
 
-    def check_test_state(self):
+    def check_test_state(self, builder):
         """This method is responsible for detecting state of test (PASS/FAIL)
         based on returncode or regular expression.
         """
 
-        self.builder.metadata["result"]["state"] = "FAIL"
+        builder.metadata["result"]["state"] = "FAIL"
         # if status is defined in Buildspec, then check for returncode and regex
-        if self.builder.status:
+        if builder.status:
 
             # regex_match is boolean to check if output/error stream matches regex defined in Buildspec,
             # if no regex is defined we set this to True since we do a logical AND
@@ -190,20 +159,18 @@ class BaseExecutor:
             slurm_job_state_match = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
-            returncode_match = self._returncode_check(self.builder.status)
+            returncode_match = self._returncode_check(builder)
 
             # check regex against output or error stream based on regular expression
             # defined in status property. Return value is a boolean
-            regex_match = self._check_regex(self.builder.status)
+            regex_match = self._check_regex(builder)
 
             # if slurm_job_state_codes defined in buildspec.
             # self.builder.metadata["job"] only defined when job run through SlurmExecutor
-            if self.builder.status.get("slurm_job_state") and self.builder.metadata.get(
-                "job"
-            ):
+            if builder.status.get("slurm_job_state") and builder.metadata.get("job"):
                 slurm_job_state_match = (
-                    self.builder.status["slurm_job_state"]
-                    == self.builder.metadata["job"]["State"]
+                    builder.status["slurm_job_state"]
+                    == builder.metadata["job"]["State"]
                 )
 
             self.logger.info(
@@ -212,12 +179,12 @@ class BaseExecutor:
             )
 
             if returncode_match or regex_match or slurm_job_state_match:
-                self.builder.metadata["result"]["state"] = "PASS"
+                builder.metadata["result"]["state"] = "PASS"
 
         # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
         else:
-            if self.builder.metadata["result"]["returncode"] == 0:
-                self.builder.metadata["result"]["state"] = "PASS"
+            if builder.metadata["result"]["returncode"] == 0:
+                builder.metadata["result"]["state"] = "PASS"
 
         # Return to starting directory for next test
         os.chdir(self.builder.pwd)

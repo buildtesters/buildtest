@@ -165,7 +165,7 @@ class BuildTest:
         self.bp_removed = None
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
-        self.buildexecutor = None
+
         self.builders = None
         self.buildexecutor = BuildExecutor(self.configuration)
 
@@ -472,8 +472,7 @@ class BuildTest:
 
         # print any skipped buildspecs if they failed to validate during build stage
         if len(invalid_buildspecs) > 0:
-            print("\n\n")
-            print("Error Messages from Stage: Parse")
+            print("\n\nError Messages from Stage: Parse")
             print("{:_<80}".format(""))
             for test in invalid_buildspecs:
                 print(test)
@@ -534,10 +533,10 @@ class BuildTest:
         """
         invalid_builders = []
         msg = """
-+-------------------------------+
-| Stage: Building Test          |
-+-------------------------------+ 
-        """
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+"""
         if os.getenv("BUILDTEST_COLOR") == "True":
             msg = colored(msg, "red", attrs=["bold"])
 
@@ -572,8 +571,7 @@ class BuildTest:
         if printTable:
             # print any skipped buildspecs if they failed to validate during build stage
             if invalid_builders:
-                print("\n\n")
-                print("Error Messages from Stage: Build")
+                print("\n\nError Messages from Stage: Build")
                 print("{:_<80}".format(""))
                 for test in invalid_builders:
                     print(test)
@@ -642,9 +640,9 @@ class BuildTest:
 
         if printTable:
             msg = """
-+-------------------------------+
-| Stage: Running Test           |
-+-------------------------------+ 
++---------------------+
+| Stage: Running Test |
++---------------------+ 
 """
             if os.getenv("BUILDTEST_COLOR") == "True":
                 msg = colored(msg, "red", attrs=["bold"])

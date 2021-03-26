@@ -76,7 +76,11 @@ class SlurmExecutor(BaseExecutor):
         )
 
     def dispatch(self, builder):
-        """This method is responsible for dispatching job to slurm scheduler."""
+        """This method is responsible for dispatching job to slurm scheduler.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
+        """
 
         self.result = {}
 
@@ -138,6 +142,9 @@ class SlurmExecutor(BaseExecutor):
         until job finishes. We use `sacct` to poll for job id and sleep for given
         time interval until trying again. The command to be run is
         ``sacct -j <jobid> -o State -n -X -P``
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
         """
 
         self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
@@ -187,7 +194,11 @@ class SlurmExecutor(BaseExecutor):
         # return builder.job_state
 
     def gather(self, builder):
-        """Gather Slurm detail after job completion"""
+        """Gather Slurm job data after job completion
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
+        """
 
         gather_cmd = f"{self.poll_cmd} -j {builder.metadata['jobid']} -X -n -P -o {','.join(self.sacct_fields)}"
 
@@ -246,23 +257,17 @@ class SlurmExecutor(BaseExecutor):
             f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
         )
 
-        slurm_cmd = f"scontrol show job {builder.metadata['jobid']}"
-        if self.cluster:
-            slurm_cmd += f" --clusters={self.cluster}"
+        builder.metadata["output"] = read_file(self.builder.metadata["outfile"])
+        builder.metadata["error"] = read_file(self.builder.metadata["errfile"])
 
-        cmd = BuildTestCommand(slurm_cmd)
-        cmd.execute()
-        builder.metadata["job"]["scontrol"] = {}
-        builder.metadata["job"]["scontrol"]["command"] = slurm_cmd
-        self.builder.metadata["job"]["scontrol"]["output"] = "".join(cmd.get_output())
-        self.builder.metadata["output"] = read_file(self.builder.metadata["outfile"])
-        self.builder.metadata["error"] = read_file(self.builder.metadata["errfile"])
-
-        self.logger.debug(f"Executing slurm command: {slurm_cmd}")
-        self.check_test_state()
+        self.check_test_state(builder)
 
     def cancel(self, builder):
-        """Cancel slurm job, this operation is performed if job exceeds pending or runtime."""
+        """Cancel slurm job, this operation is performed if job exceeds pending or runtime.
+
+        :param builder: builder object
+        :type builder: BuilderBase, required
+        """
 
         query = f"scancel {builder.metadata['jobid']}"
         # cancel by slurm cluster if required to cancel job from remote slurm cluster
