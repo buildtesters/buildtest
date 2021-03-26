@@ -54,7 +54,7 @@ def func_config_compiler(args=None):
     """
     bc = BuildtestCompilers()
 
-    if args.json == False and args.yaml == False:
+    if args.json is False and args.yaml is False:
         bc.print_compilers()
 
     if args.json:
