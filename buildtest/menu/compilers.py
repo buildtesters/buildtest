@@ -69,13 +69,10 @@ class BuildtestCompilers:
         "gcc": {"cc": "gcc", "cxx": "g++", "fc": "gfortran"},
         "intel": {"cc": "icc", "cxx": "icpc", "fc": "ifort"},
         "pgi": {"cc": "pgcc", "cxx": "pgc++", "fc": "pgfortran"},
-        "cray": {
-            "cc": "cc",
-            "cxx": "CC",
-            "fc": "ftn",
-        },
+        "cray": {"cc": "cc", "cxx": "CC", "fc": "ftn"},
         "clang": {"cc": "clang", "cxx": "clang++", "fc": "None"},
         "cuda": {"cc": "nvcc", "cxx": "nvcc", "fc": "None"},
+        "upcxx": {"cc": "upcxx", "cxx": "upcxx", "fc": "None"},
     }
 
     def __init__(self, settings_file=None, debug=False):

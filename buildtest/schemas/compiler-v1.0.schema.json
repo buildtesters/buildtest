@@ -223,6 +223,9 @@
             },
             "cuda": {
               "$ref": "#definitions/default_compiler_config"
+            },
+            "upcxx": {
+              "$ref": "#definitions/default_compiler_config"
             }
           }
         },
