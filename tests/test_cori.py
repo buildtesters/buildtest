@@ -2,6 +2,7 @@ import os
 import pytest
 import socket
 from buildtest.menu.build import BuildTest
+from buildtest.utils.file import walk_tree
 
 
 def test_cori():
