@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+v0.9.5 (TBD)
+------------
+
+This release added support for `PBS Scheduler <https://www.openpbs.org/>`_ see `#691 <https://github.com/buildtesters/buildtest/pull/691>`_ and `#693 <https://github.com/buildtesters/buildtest/pull/693>`_
+We changed the **starttime** and **endtime** format for batch job submission when reported to ``report.json`` see `#700 <https://github.com/buildtesters/buildtest/pull/700>`_. We added color output
+for buildtest commands using `termcolor <https://pypi.org/project/termcolor/>`_ library. We can disable color using `BUILDTEST_COLOR` environment variable. See `#703 <https://github.com/buildtesters/buildtest/pull/703>`_. We
+reimplement command `buildtest inspect` command by introducing commands `buildtest inspect names`, `buildtest inspect list`, `buildtest inspect id` see `#704 <https://github.com/buildtesters/buildtest/pull/704>`_.
+
+- Add wrapper script to run regression test via `sh $BUILDTEST_ROOT/scripts/regtest.sh`. This script is wrapper to `pytest` and `coverage`. See `#702 <https://github.com/buildtesters/buildtest/pull/702>`_.
+- Add `description` field for system description in configuration file `#694 <https://github.com/buildtesters/buildtest/pull/694>`_
+- Add command `buildtest config system` see `#697 <https://github.com/buildtesters/buildtest/pull/697>`_
+
 v0.9.4 (Mar 14, 2021)
 ---------------------
 
