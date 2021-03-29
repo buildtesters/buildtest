@@ -13,6 +13,8 @@ def test_cori():
     here = os.path.dirname(os.path.abspath(__file__))
     cori_configuration = os.path.join(here, "settings", "cori.yml")
 
-    buildspec_files = os.path.join(here, "examples", "cori", "hostname.yml")
+    buildspec_files = walk_tree(
+        os.path.join(os.getenv("BUILDTEST_ROOT"), "tests", "examples"), ".yml"
+    )
     cmd = BuildTest(config_file=cori_configuration, buildspecs=[buildspec_files])
     cmd.build()

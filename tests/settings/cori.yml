@@ -43,3 +43,10 @@ system:
           options:
           - -C haswell
           description: debug queue on Haswell partition
+
+        knl_debug:
+          qos: debug
+          cluster: cori
+          options:
+            - -C knl
+          description: debug queue on KNL partition
