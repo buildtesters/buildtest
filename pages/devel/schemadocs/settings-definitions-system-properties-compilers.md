@@ -23,7 +23,7 @@ Declare compiler section for defining system compilers that can be referenced in
 
 ## find
 
-Find compilers based on module names
+Find compilers by specifying regular expression that is applied to modulefile names
 
 `find`
 

@@ -11,7 +11,6 @@ buildspecs:
         gcc@8.4.0:
           cflags: "-O3"
 
-
   intel_example:
     executor: local.bash
     type: compiler
@@ -23,10 +22,38 @@ buildspecs:
         intel@2018:
           cflags: "-O1"
 
+  clang_example:
+    executor: local.bash
+    type: compiler
+    description: "clang example using cflags"
+    source: src/hello.c
+    compilers:
+      name: [clang]
+      default:
+        clang:
+          cflags: "-O1"
+      config:
+        clang@11:
+          cflags: "-O2"
+
+  upcxx_example:
+    executor: local.bash
+    type: compiler
+    description: "upcxx compiler declaration in default and config section "
+    source: src/hello.c
+    compilers:
+      name: [upcxx]
+      default:
+        upcxx:
+          cflags: "-g aries"
+      config:
+        upcxx@2020:
+          cflags: "-O1 -g aries"
+
   pgi_example:
     executor: local.bash
     type: compiler
-    description: "pgi example using cxxflags, ldflags key"
+    description: "pgi example using cxxflags, ldflags in default and config section"
     source: src/hello.cpp
     compilers:
       name: ["^(pgi|PrgEnv)"]
@@ -58,6 +85,7 @@ buildspecs:
         PrgEnv-cray@2.6.2:
           module:
             swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+
 
   sbatch_example_all_compiler_groups:
     type: compiler

@@ -4,7 +4,7 @@
 settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/clang
 ```
 
-
+Specify a regular expression to search for clang compilers from your module stack
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |

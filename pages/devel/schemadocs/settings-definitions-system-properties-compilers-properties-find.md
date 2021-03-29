@@ -4,7 +4,7 @@
 settings.schema.json#/definitions/system/properties/compilers/properties/find
 ```
 
-Find compilers based on module names
+Find compilers by specifying regular expression that is applied to modulefile names
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
@@ -24,10 +24,11 @@ Find compilers based on module names
 | [clang](#clang) | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-clang.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/clang") |
 | [cuda](#cuda)   | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-cuda.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/cuda")   |
 | [pgi](#pgi)     | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-pgi.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/pgi")     |
+| [upcxx](#upcxx) | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-upcxx.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/upcxx") |
 
 ## gcc
 
-
+Specify a regular expression to search for gcc compilers from your module stack
 
 `gcc`
 
@@ -45,7 +46,7 @@ Find compilers based on module names
 
 ## intel
 
-
+Specify a regular expression to search for intel compilers from your module stack
 
 `intel`
 
@@ -63,7 +64,7 @@ Find compilers based on module names
 
 ## cray
 
-
+Specify a regular expression to search for cray compilers from your module stack
 
 `cray`
 
@@ -81,7 +82,7 @@ Find compilers based on module names
 
 ## clang
 
-
+Specify a regular expression to search for clang compilers from your module stack
 
 `clang`
 
@@ -99,7 +100,7 @@ Find compilers based on module names
 
 ## cuda
 
-
+Specify a regular expression to search for cuda compilers from your module stack
 
 `cuda`
 
@@ -117,7 +118,7 @@ Find compilers based on module names
 
 ## pgi
 
-
+Specify a regular expression to search for pgi compilers from your module stack
 
 `pgi`
 
@@ -130,5 +131,23 @@ Find compilers based on module names
 *   defined in: [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-pgi.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/pgi")
 
 ### pgi Type
+
+`string`
+
+## upcxx
+
+Specify a regular expression to search for upcxx compilers from your module stack
+
+`upcxx`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-upcxx.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/upcxx")
+
+### upcxx Type
 
 `string`

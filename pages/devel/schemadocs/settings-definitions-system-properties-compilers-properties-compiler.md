@@ -24,6 +24,7 @@ Start of compiler declaration
 | [pgi](#pgi)     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-compiler-properties-pgi.md "settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/pgi")     |
 | [clang](#clang) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-compiler-properties-clang.md "settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/clang") |
 | [cuda](#cuda)   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-compiler-properties-cuda.md "settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cuda")   |
+| [upcxx](#upcxx) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md "settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx") |
 
 ## gcc
 
@@ -132,3 +133,21 @@ Declaration of one or more Cuda compilers where we define C compiler. The Cuda c
 ### cuda Type
 
 `object` ([Details](settings-definitions-system-properties-compilers-properties-compiler-properties-cuda.md))
+
+## upcxx
+
+Declaration of one or more UPCXX compilers where we define C, C++ compiler. The UPCXX compiler wrapper are `upcxx`.
+
+`upcxx`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md "settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx")
+
+### upcxx Type
+
+`object` ([Details](settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md))
