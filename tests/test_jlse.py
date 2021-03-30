@@ -2,6 +2,7 @@ import os
 import pytest
 import socket
 from buildtest.menu.build import BuildTest
+from buildtest.menu.compilers import BuildtestCompilers
 
 
 def test_jlse():
@@ -15,3 +16,7 @@ def test_jlse():
     buildspec_files = os.path.join(here, "examples", "jlse", "hostname.yml")
     cmd = BuildTest(config_file=configuration, buildspecs=[buildspec_files])
     cmd.build()
+
+    # testing buildtest config compilers find
+    bc = BuildtestCompilers(settings_file=configuration)
+    bc.find_compilers()

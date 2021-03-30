@@ -4,6 +4,8 @@ import random
 import shutil
 import string
 import uuid
+import tempfile
+
 from buildtest.utils.file import (
     is_dir,
     is_file,
@@ -58,6 +60,9 @@ def test_create_dir(tmp_path):
 
 @pytest.mark.utility
 def test_walk_tree():
+    files = walk_tree(here)
+    assert files
+
     list_of_files = walk_tree(here, ".py")
     print(f"Detected {len(list_of_files)} .py files found in directory: {here}")
     assert len(list_of_files) > 0
@@ -135,6 +140,11 @@ def test_write_file_exceptions(tmp_path):
     with pytest.raises(BuildTestError):
         write_file(os.path.join(tmp_path, "null.txt"), ["hi"])
 
+    with tempfile.TemporaryDirectory() as tmpdir:
+        print("Creating temporary directory: ", tmpdir)
+        with pytest.raises(BuildTestError):
+            write_file(tmpdir, "hello world")
+
 
 @pytest.mark.utility
 def test_read_file(tmp_path):
@@ -152,6 +162,15 @@ def test_read_file(tmp_path):
     # checking invalid file should report an error
     with pytest.raises(BuildTestError):
         read_file(file)
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        fname = os.path.join(tmpdir, "permission-denied.txt")
+        msg = "hello world"
+        write_file(fname, msg)
+        # make permission 000 so its unreadable
+        os.chmod(fname, 000)
+        with pytest.raises(BuildTestError):
+            read_file(fname)
 
     print("Reading '/etc/shadow' will raise an exception BuildTestError")
     # reading /etc/shadow will raise a Permission error so we catch this exception BuildTestError
