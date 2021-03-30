@@ -215,9 +215,7 @@ class BuildTest:
         if self.buildspecs:
             # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
             # times we need to invoke discover_buildspecs once per argument.
-
             buildspecs = []
-
             for option in self.buildspecs:
                 bp = self.discover_by_buildspecs(option)
 
@@ -384,6 +382,8 @@ class BuildTest:
         """
 
         buildspecs = []
+
+
         # if buildspec doesn't exist print message and log error and return
         if not os.path.exists(os.path.abspath(buildspec)):
             msg = (

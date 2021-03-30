@@ -5,11 +5,11 @@ system:
     load_default_buildspecs: false
     compilers:
       find:
-        gcc: ^(gcc|PrgEnv-gnu)
-        cray: ^(PrgEnv-cray)
-        intel: ^(intel|PrgEnv-intel)
-        pgi: ^(pgi)
-        cuda: ^(cuda\/)
+        gcc: "^(gcc|PrgEnv-gnu)"
+        cray: "^(PrgEnv-cray)"
+        intel: "^(intel|PrgEnv-intel)"
+        pgi: "^(pgi)"
+        cuda: "^(cuda\/)"
       compiler:
         gcc:
           builtin_gcc:
