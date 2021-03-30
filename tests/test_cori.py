@@ -10,12 +10,11 @@ def test_cori():
     hostname = socket.getfqdn()
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
-
     here = os.path.dirname(os.path.abspath(__file__))
     cori_configuration = os.path.join(here, "settings", "cori.yml")
 
     buildspec_files = walk_tree(
-        os.path.join(os.getenv("BUILDTEST_ROOT"), "tests", "examples"), ".yml"
+        os.path.join(os.getenv("BUILDTEST_ROOT"), "tests", "examples","cori"), ".yml"
     )
-    cmd = BuildTest(config_file=cori_configuration, buildspecs=[buildspec_files])
+    cmd = BuildTest(config_file=cori_configuration, buildspecs=buildspec_files)
     cmd.build()
