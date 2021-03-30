@@ -3,9 +3,10 @@ import pytest
 import tempfile
 
 from buildtest.defaults import BUILDTEST_ROOT, DEFAULT_SETTINGS_FILE
+from buildtest.exceptions import BuildTestError
 from buildtest.menu.build import BuildTest
 from buildtest.menu.buildspec import BuildspecCache
-from buildtest.exceptions import BuildTestError
+from buildtest.utils.file import walk_tree
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)
@@ -45,6 +46,16 @@ def test_build_buildspecs():
     cmd = BuildTest(config_file=DEFAULT_SETTINGS_FILE, buildspecs=[buildspec_paths])
     cmd.build()
 
+    excluded_buildspecs = walk_tree(buildspec_paths, ".yml")
+    assert len(excluded_buildspecs) > 0
+    #  testing buildtest build --buildspec tests/buildsystem/valid_buildspecs and exclude the first buildspec
+    cmd = BuildTest(
+        config_file=DEFAULT_SETTINGS_FILE,
+        buildspecs=[buildspec_paths],
+        exclude_buildspecs=[excluded_buildspecs[0]],
+    )
+    cmd.build()
+
     #  testing buildtest build --buildspec tests/examples/buildspecs --exclude tests/examples/buildspecs
     # this results in no buildspecs built
     with pytest.raises(SystemExit):
@@ -58,16 +69,6 @@ def test_build_buildspecs():
 
 @pytest.mark.cli
 def test_buildspec_tag_executor():
-    class args:
-        executor = ["generic.local.sh"]
-        tags = ["fail"]
-        buildspec = None
-        debug = False
-        stage = None
-        testdir = None
-        exclude = None
-        filter_tags = None
-        rebuild = None
 
     # testing buildtest build --tags fail --executor generic.local.sh
     cmd = BuildTest(
@@ -78,16 +79,6 @@ def test_buildspec_tag_executor():
 
 @pytest.mark.cli
 def test_build_multi_executors():
-    class args:
-        executor = ["generic.local.sh", "generic.local.python"]
-        buildspec = None
-        debug = False
-        stage = None
-        testdir = None
-        exclude = None
-        tags = None
-        filter_tags = None
-        rebuild = None
 
     # testing buildtest build --executor generic.local.sh --executor generic.local.python
     cmd = BuildTest(
@@ -117,6 +108,33 @@ def test_build_rebuild():
     # rebuild 5 times (buildtest build -b tutorials/python-shell.yml --rebuild=5
     cmd = BuildTest(
         config_file=DEFAULT_SETTINGS_FILE, buildspecs=[buildspec_file], rebuild=5
+    )
+    cmd.build()
+
+
+def test_invalid_buildspes():
+
+    buildspec_file = [
+        os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_tags.yml"),
+        os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_executor.yml"),
+    ]
+
+    # rebuild 5 times (buildtest build -b tutorials/python-shell.yml --rebuild=5
+    cmd = BuildTest(
+        config_file=DEFAULT_SETTINGS_FILE, buildspecs=buildspec_file, rebuild=5
+    )
+    cmd.build()
+
+
+def test_build_disable_BUILDTEST_COLOR():
+
+    buildspec_file = [os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")]
+    os.environ["BUILDTEST_COLOR"] = "True"
+
+    # BUILDTEST_COLOR=False buildtest build -b tutorials/python-shell.yml
+    cmd = BuildTest(
+        config_file=DEFAULT_SETTINGS_FILE,
+        buildspecs=buildspec_file,
     )
     cmd.build()
 
@@ -177,7 +195,7 @@ def test_BuildTest_type():
     with pytest.raises(BuildTestError):
         BuildTest(config_file=DEFAULT_SETTINGS_FILE, executors="generic.local.bash")
 
-    # filter_Tags must be a list not a string
+    # filter_tags must be a list not a string
     with pytest.raises(BuildTestError):
         BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], filter_tags="pass")
 

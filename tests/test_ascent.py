@@ -2,6 +2,7 @@ import os
 import pytest
 import socket
 from buildtest.menu.build import BuildTest
+from buildtest.menu.compilers import BuildtestCompilers
 
 
 def test_ascent():
@@ -12,8 +13,12 @@ def test_ascent():
         pytest.skip("This test must run on domain ascent.olcf.ornl.gov")
 
     here = os.path.dirname(os.path.abspath(__file__))
-    ascent = os.path.join(here, "settings", "ascent.yml")
+    settings_file = os.path.join(here, "settings", "ascent.yml")
 
     buildspec_files = os.path.join(here, "examples", "ascent", "hostname.yml")
-    cmd = BuildTest(config_file=ascent, buildspecs=[buildspec_files])
+    cmd = BuildTest(config_file=settings_file, buildspecs=[buildspec_files])
     cmd.build()
+
+    # testing buildtest config compilers find
+    bc = BuildtestCompilers(settings_file=settings_file)
+    bc.find_compilers()
