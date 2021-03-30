@@ -383,7 +383,6 @@ class BuildTest:
 
         buildspecs = []
 
-
         # if buildspec doesn't exist print message and log error and return
         if not os.path.exists(os.path.abspath(buildspec)):
             msg = (
