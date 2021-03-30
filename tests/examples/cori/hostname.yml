@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   hostname:
     type: script
-    executor: cori.slurm.haswell_debug
+    executor: cori.slurm.knl_debug
     description: "Run hostname through slurm queue"
     sbatch: ["-t 5", "-N 1"]
     run: hostname

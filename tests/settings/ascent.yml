@@ -27,6 +27,8 @@ system:
           queue: batch
 
     compilers:
+      find:
+        gcc: "^(gcc)"
       compiler:
         gcc:
           builtin_gcc:

@@ -49,10 +49,9 @@ Running Regression Test
 
 The recommended way to run regression test is via::
 
-    $ sh $BUILDTEST_ROOT/scripts/regtest.sh
+    $ python $BUILDTEST_ROOT/scripts/regtest.py
 
-The script should be run from top-level folder (i.e **$BUILDTEST_ROOT**). This
-script is a wrapper to `pytest` and `coverage`. We have a `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
+This script is a wrapper to `pytest` and `coverage`. We have a `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
 found in top-level folder that defines pytest configuration. If you want to run tests
 natively via `pytest` without using the script you can just run ``pytest`` and
 it will run with options defined in `pytest.ini` file.
