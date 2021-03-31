@@ -106,7 +106,7 @@ of all compilers. We used ``buildtest config compilers find`` to :ref:`detect co
 
 .. code-block:: console
 
-    $ buildtest config compilers -l
+    $ buildtest config compilers
     builtin_gcc
     gcc/9.3.0-n7p74fd
     gcc/10.2.0-37fmsw7

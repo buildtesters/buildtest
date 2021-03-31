@@ -60,7 +60,7 @@ these options::
         cxx: /usr/bin/g++
         fc: /usr/bin/gfortran
 
-    $ buildtest config compilers --list
+    $ buildtest config compilers
     builtin_gcc
 
 .. _detect_compilers:

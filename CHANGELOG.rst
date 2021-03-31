@@ -1,17 +1,21 @@
 CHANGELOG
 =========
 
-v0.9.5 (TBD)
-------------
+v0.9.5 (Mar 31, 2021)
+----------------------
 
 This release added support for `PBS Scheduler <https://www.openpbs.org/>`_ see `#691 <https://github.com/buildtesters/buildtest/pull/691>`_ and `#693 <https://github.com/buildtesters/buildtest/pull/693>`_
 We changed the **starttime** and **endtime** format for batch job submission when reported to ``report.json`` see `#700 <https://github.com/buildtesters/buildtest/pull/700>`_. We added color output
 for buildtest commands using `termcolor <https://pypi.org/project/termcolor/>`_ library. We can disable color using `BUILDTEST_COLOR` environment variable. See `#703 <https://github.com/buildtesters/buildtest/pull/703>`_. We
-reimplement command `buildtest inspect` command by introducing commands `buildtest inspect names`, `buildtest inspect list`, `buildtest inspect id` see `#704 <https://github.com/buildtesters/buildtest/pull/704>`_.
+re-implemented command `buildtest inspect` command by introducing commands `buildtest inspect names`, `buildtest inspect list`, `buildtest inspect id` see `#704 <https://github.com/buildtesters/buildtest/pull/704>`_.
 
-- Add wrapper script to run regression test via `sh $BUILDTEST_ROOT/scripts/regtest.sh`. This script is wrapper to `pytest` and `coverage`. See `#702 <https://github.com/buildtesters/buildtest/pull/702>`_.
+- Add wrapper script to run regression test via `sh $BUILDTEST_ROOT/scripts/regtest.py`. This script is wrapper to `pytest` and `coverage`. See `#710 <https://github.com/buildtesters/buildtest/pull/710>`_.
 - Add `description` field for system description in configuration file `#694 <https://github.com/buildtesters/buildtest/pull/694>`_
 - Add command `buildtest config system` see `#697 <https://github.com/buildtesters/buildtest/pull/697>`_
+- Increase test coverage and add few more facility tests for Cori and Ascent see `#712 <https://github.com/buildtesters/buildtest/pull/712>`_
+- The `buildtest config compilers` implements the ``--list`` option  which is removed see `#708 <https://github.com/buildtesters/buildtest/pull/708>`_
+- Add `upcxx` compiler support in compiler schema and settings schema see `#709 <https://github.com/buildtesters/buildtest/pull/709>`_
+
 
 v0.9.4 (Mar 14, 2021)
 ---------------------
