@@ -1,13 +1,22 @@
 $ buildtest report --filter name=exit1_pass --format=name,id,returncode,state
-
-name        id          returncode  state
-----------  --------  ------------  -------
-exit1_pass  e6933549             1  PASS
-exit1_pass  60d26637             1  PASS
-exit1_pass  50e730ee             1  PASS
-exit1_pass  105b838e             1  PASS
-exit1_pass  cfb8a05f             1  PASS
-exit1_pass  86d5ab82             1  PASS
-exit1_pass  e0c09a7a             1  PASS
-exit1_pass  b76dd7e5             1  PASS
-exit1_pass  e460805c             1  PASS
++------------+----------+--------------+---------+
+| name       | id       |   returncode | state   |
++============+==========+==============+=========+
+| exit1_pass | 9a32d114 |            1 | PASS    |
++------------+----------+--------------+---------+
+| exit1_pass | 05f02767 |            1 | PASS    |
++------------+----------+--------------+---------+
+| exit1_pass | 9c5aaa6e |            1 | PASS    |
++------------+----------+--------------+---------+
+| exit1_pass | 6fccc250 |            1 | PASS    |
++------------+----------+--------------+---------+
+| exit1_pass | 38966a80 |            1 | PASS    |
++------------+----------+--------------+---------+
+| exit1_pass | cc461271 |            1 | PASS    |
++------------+----------+--------------+---------+
+| exit1_pass | 37bb053f |            1 | PASS    |
++------------+----------+--------------+---------+
+| exit1_pass | d75f6d20 |            1 | PASS    |
++------------+----------+--------------+---------+
+| exit1_pass | df326a9b |            1 | PASS    |
++------------+----------+--------------+---------+

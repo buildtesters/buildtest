@@ -1,10 +1,9 @@
 $ buildtest buildspec find --helpformat
-
 Field        Description
 -----------  -----------------------
+description  Format by description
+executor     Format by executor type
+file         Format by file
 name         Format by test name
 tags         Format by tag name
 type         Format by schema type
-executor     Format by executor type
-description  Format by description
-file         Format by file

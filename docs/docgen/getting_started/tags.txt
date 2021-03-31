@@ -1,41 +1,40 @@
 $ buildtest build --tags tutorials 
 
-
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
 
 Discovered Buildspecs:
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/openmp_hello.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/selinux.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/hello_world.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/vecadd.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_fortran.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_exclude.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/root_user.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/custom_run.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/pre_post_build_run.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/environment.yml
 /Users/siddiq90/Documents/github/buildtest/tutorials/python-shell.yml
 /Users/siddiq90/Documents/github/buildtest/tutorials/csh_shell_examples.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/run_only_platform.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_c.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/environment.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/shebang.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/root_user.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/hello_world.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/custom_run.yml
 /Users/siddiq90/Documents/github/buildtest/tutorials/sleep.yml
-[openmp_hello_c_example][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/openmp_hello.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
-[vecadd_gnu_exclude][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_exclude.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
+/Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/shebang.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/selinux.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/pre_post_build_run.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_c.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_fortran.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/openmp_hello.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/vecadd.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/run_only_platform.yml
+/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_exclude.yml
 [run_only_as_root][/Users/siddiq90/Documents/github/buildtest/tutorials/root_user.yml]: test is skipped because this test is expected to run as user: root but detected user: siddiq90.
 [default_status_regex][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
 [override_status_regex][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
 [skip](/Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml): test is skipped.
-[run_only_platform_linux][/Users/siddiq90/Documents/github/buildtest/tutorials/run_only_platform.yml]: test is skipped because this test is expected to run on platform: Linux but detected platform: Darwin.
 [override_environmentvars][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
+[openmp_hello_c_example][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/openmp_hello.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
+[run_only_platform_linux][/Users/siddiq90/Documents/github/buildtest/tutorials/run_only_platform.yml]: test is skipped because this test is expected to run on platform: Linux but detected platform: Darwin.
+[vecadd_gnu_exclude][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_exclude.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -43,100 +42,100 @@ Discovered Buildspecs:
 
  schemafile                | validstate   | buildspec
 ---------------------------+--------------+------------------------------------------------------------------------------------------
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/openmp_hello.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/selinux.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/hello_world.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/vecadd.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_fortran.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_exclude.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/root_user.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/custom_run.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/pre_post_build_run.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/environment.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/python-shell.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/csh_shell_examples.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/run_only_platform.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_c.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/environment.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/shebang.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/root_user.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/hello_world.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/custom_run.yml
  script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/sleep.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/shebang.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/selinux.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/pre_post_build_run.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_c.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_fortran.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/openmp_hello.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/vecadd.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/run_only_platform.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_exclude.yml
 
-+-------------------------------+
-| Stage: Building Test          |
-+-------------------------------+ 
-        
- name                     | id       | type   | executor             | tags                    | testpath
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ name                     | id       | type   | executor             | tags                    | compiler
 --------------------------+----------+--------+----------------------+-------------------------+------------------------------------------------------------------------------------------------------------------------------------------
- selinux_disable          | f4305d94 | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/selinux/selinux_disable/0/stage/generate.sh
- hello_world              | 7a2fc609 | script | generic.local.bash   | tutorials               | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/hello_world/hello_world/0/stage/generate.sh
- _bin_sh_shell            | 994c71c6 | script | generic.local.sh     | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
- _bin_bash_shell          | 71bd4e70 | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
- bash_shell               | 23027a5a | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shell_examples/bash_shell/0/stage/generate.sh
- sh_shell                 | a038cffb | script | generic.local.sh     | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/sh_shell/0/stage/generate.sh
- shell_options            | dc657139 | script | generic.local.sh     | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage/generate.sh
- unskipped                | def92015 | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/skip_tests/unskipped/0/stage/generate.sh
- circle_area              | 4d875c18 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage/generate.sh
- csh_shell                | 7f7a2652 | script | generic.local.csh    | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/csh_shell_examples/csh_shell/0/stage/generate.sh
- run_only_platform_darwin | 62ed7919 | script | generic.local.python | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/run_only_platform/run_only_platform_darwin/0/stage/generate.sh
- exit1_fail               | b8c5fde0 | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/0/stage/generate.sh
- exit1_pass               | e6933549 | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/0/stage/generate.sh
- returncode_list_mismatch | 3e8c8adf | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/0/stage/generate.sh
- returncode_int_match     | 12f68566 | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/0/stage/generate.sh
- variables_bash           | 2c6ae73a | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/2/stage/generate.sh
- bash_env_variables       | a3ed0ada | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/environment/bash_env_variables/0/stage/generate.sh
- csh_env_declaration      | 3fc015e6 | script | generic.local.csh    | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/environment/csh_env_declaration/0/stage/generate.sh
- tcsh_env_declaration     | a335d8cf | script | generic.local.csh    | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/environment/tcsh_env_declaration/0/stage/generate.sh
- bash_login_shebang       | 9caafb51 | script | generic.local.bash   | tutorials               | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/0/stage/generate.sh
- bash_nonlogin_shebang    | 3be81d99 | script | generic.local.bash   | tutorials               | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/0/stage/generate.sh
- sleep                    | 6f13cda7 | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/stage/generate.sh
+ bash_env_variables       | c41541e5 | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/environment/bash_env_variables/0/stage/generate.sh
+ csh_env_declaration      | 248ad312 | script | generic.local.csh    | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/environment/csh_env_declaration/0/stage/generate.sh
+ tcsh_env_declaration     | 85f86864 | script | generic.local.csh    | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/environment/tcsh_env_declaration/0/stage/generate.sh
+ circle_area              | 1480f566 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage/generate.sh
+ csh_shell                | e7838d2e | script | generic.local.csh    | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/csh_shell_examples/csh_shell/0/stage/generate.sh
+ hello_world              | 06746173 | script | generic.local.bash   | tutorials               | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/hello_world/hello_world/0/stage/generate.sh
+ sleep                    | 51f971d9 | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/stage/generate.sh
+ unskipped                | dd7ae611 | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/skip_tests/unskipped/0/stage/generate.sh
+ exit1_fail               | a17ff3d0 | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/0/stage/generate.sh
+ exit1_pass               | 9a32d114 | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/0/stage/generate.sh
+ returncode_list_mismatch | 23fb8bdd | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/0/stage/generate.sh
+ returncode_int_match     | f0c1c5fe | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/0/stage/generate.sh
+ bash_login_shebang       | 950842f9 | script | generic.local.bash   | tutorials               | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/0/stage/generate.sh
+ bash_nonlogin_shebang    | c8fb689b | script | generic.local.bash   | tutorials               | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/0/stage/generate.sh
+ selinux_disable          | 9d40d929 | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/selinux/selinux_disable/0/stage/generate.sh
+ _bin_sh_shell            | db54c101 | script | generic.local.sh     | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
+ _bin_bash_shell          | 0352ca9b | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
+ bash_shell               | 6b193172 | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shell_examples/bash_shell/0/stage/generate.sh
+ sh_shell                 | 00a17e8b | script | generic.local.sh     | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/sh_shell/0/stage/generate.sh
+ shell_options            | ffeeb817 | script | generic.local.sh     | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage/generate.sh
+ variables_bash           | 1a446dc9 | script | generic.local.bash   | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/2/stage/generate.sh
+ run_only_platform_darwin | 7a754147 | script | generic.local.python | ['tutorials']           | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/run_only_platform/run_only_platform_darwin/0/stage/generate.sh
 
 
  name                    | id       | type     | executor           | tags                     | compiler    | testpath
 -------------------------+----------+----------+--------------------+--------------------------+-------------+-----------------------------------------------------------------------------------------------------------------------------------
- vecadd_gnu              | 82b77d15 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/0/stage/generate.sh
- hello_f                 | ced6c82f | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/0/stage/generate.sh
- custom_run_by_compilers | 3da37819 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/0/stage/generate.sh
- pre_post_build_run      | fdc674f4 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/pre_post_build_run/pre_post_build_run/0/stage/generate.sh
- hello_c                 | a4085fe3 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/0/stage/generate.sh
+ custom_run_by_compilers | 892fbd30 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/0/stage/generate.sh
+ pre_post_build_run      | 2194ed77 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/pre_post_build_run/pre_post_build_run/0/stage/generate.sh
+ hello_c                 | ea48baea | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/0/stage/generate.sh
+ hello_f                 | 0680d199 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/0/stage/generate.sh
+ vecadd_gnu              | 16db6893 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/0/stage/generate.sh
 
-+-------------------------------+
-| Stage: Running Test           |
-+-------------------------------+ 
++---------------------+
+| Stage: Running Test |
++---------------------+ 
 
  name                     | id       | executor             | status   |   returncode | testpath
 --------------------------+----------+----------------------+----------+--------------+------------------------------------------------------------------------------------------------------------------------------------------
- selinux_disable          | f4305d94 | generic.local.bash   | FAIL     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/selinux/selinux_disable/0/stage/generate.sh
- hello_world              | 7a2fc609 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/hello_world/hello_world/0/stage/generate.sh
- _bin_sh_shell            | 994c71c6 | generic.local.sh     | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
- _bin_bash_shell          | 71bd4e70 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
- bash_shell               | 23027a5a | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shell_examples/bash_shell/0/stage/generate.sh
- sh_shell                 | a038cffb | generic.local.sh     | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/sh_shell/0/stage/generate.sh
- shell_options            | dc657139 | generic.local.sh     | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage/generate.sh
- vecadd_gnu               | 82b77d15 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/0/stage/generate.sh
- hello_f                  | ced6c82f | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/0/stage/generate.sh
- custom_run_by_compilers  | 3da37819 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/0/stage/generate.sh
- unskipped                | def92015 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/skip_tests/unskipped/0/stage/generate.sh
- pre_post_build_run       | fdc674f4 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/pre_post_build_run/pre_post_build_run/0/stage/generate.sh
- circle_area              | 4d875c18 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage/generate.sh
- csh_shell                | 7f7a2652 | generic.local.csh    | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/csh_shell_examples/csh_shell/0/stage/generate.sh
- run_only_platform_darwin | 62ed7919 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/run_only_platform/run_only_platform_darwin/0/stage/generate.sh
- exit1_fail               | b8c5fde0 | generic.local.sh     | FAIL     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/0/stage/generate.sh
- exit1_pass               | e6933549 | generic.local.sh     | PASS     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/0/stage/generate.sh
- returncode_list_mismatch | 3e8c8adf | generic.local.sh     | FAIL     |            2 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/0/stage/generate.sh
- returncode_int_match     | 12f68566 | generic.local.sh     | PASS     |          128 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/0/stage/generate.sh
- hello_c                  | a4085fe3 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/0/stage/generate.sh
- variables_bash           | 2c6ae73a | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/2/stage/generate.sh
- bash_env_variables       | a3ed0ada | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/environment/bash_env_variables/0/stage/generate.sh
- csh_env_declaration      | 3fc015e6 | generic.local.csh    | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/environment/csh_env_declaration/0/stage/generate.sh
- tcsh_env_declaration     | a335d8cf | generic.local.csh    | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/environment/tcsh_env_declaration/0/stage/generate.sh
- bash_login_shebang       | 9caafb51 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/0/stage/generate.sh
- bash_nonlogin_shebang    | 3be81d99 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/0/stage/generate.sh
- sleep                    | 6f13cda7 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/stage/generate.sh
+ bash_env_variables       | c41541e5 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/environment/bash_env_variables/0/stage/generate.sh
+ csh_env_declaration      | 248ad312 | generic.local.csh    | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/environment/csh_env_declaration/0/stage/generate.sh
+ tcsh_env_declaration     | 85f86864 | generic.local.csh    | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/environment/tcsh_env_declaration/0/stage/generate.sh
+ circle_area              | 1480f566 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage/generate.sh
+ csh_shell                | e7838d2e | generic.local.csh    | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.csh/csh_shell_examples/csh_shell/0/stage/generate.sh
+ hello_world              | 06746173 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/hello_world/hello_world/0/stage/generate.sh
+ custom_run_by_compilers  | 892fbd30 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/0/stage/generate.sh
+ sleep                    | 51f971d9 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/stage/generate.sh
+ unskipped                | dd7ae611 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/skip_tests/unskipped/0/stage/generate.sh
+ exit1_fail               | a17ff3d0 | generic.local.sh     | FAIL     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/0/stage/generate.sh
+ exit1_pass               | 9a32d114 | generic.local.sh     | PASS     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/0/stage/generate.sh
+ returncode_list_mismatch | 23fb8bdd | generic.local.sh     | FAIL     |            2 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/0/stage/generate.sh
+ returncode_int_match     | f0c1c5fe | generic.local.sh     | PASS     |          128 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/0/stage/generate.sh
+ bash_login_shebang       | 950842f9 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/0/stage/generate.sh
+ bash_nonlogin_shebang    | c8fb689b | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/0/stage/generate.sh
+ selinux_disable          | 9d40d929 | generic.local.bash   | FAIL     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/selinux/selinux_disable/0/stage/generate.sh
+ _bin_sh_shell            | db54c101 | generic.local.sh     | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/_bin_sh_shell/0/stage/generate.sh
+ _bin_bash_shell          | 0352ca9b | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shell_examples/_bin_bash_shell/0/stage/generate.sh
+ bash_shell               | 6b193172 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shell_examples/bash_shell/0/stage/generate.sh
+ sh_shell                 | 00a17e8b | generic.local.sh     | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/sh_shell/0/stage/generate.sh
+ shell_options            | ffeeb817 | generic.local.sh     | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage/generate.sh
+ pre_post_build_run       | 2194ed77 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/pre_post_build_run/pre_post_build_run/0/stage/generate.sh
+ hello_c                  | ea48baea | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/0/stage/generate.sh
+ hello_f                  | 0680d199 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/0/stage/generate.sh
+ vecadd_gnu               | 16db6893 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/0/stage/generate.sh
+ variables_bash           | 1a446dc9 | generic.local.bash   | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/2/stage/generate.sh
+ run_only_platform_darwin | 7a754147 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/run_only_platform/run_only_platform_darwin/0/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -146,5 +145,4 @@ Passed Tests: 24/27 Percentage: 88.889%
 Failed Tests: 3/27 Percentage: 11.111%
 
 
-
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest__v2x0_rk.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_74oned2m.log

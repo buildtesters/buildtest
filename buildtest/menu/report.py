@@ -380,7 +380,7 @@ class Report:
 
         print(
             tabulate(
-                self.display_table, headers=self.display_table.keys(), tablefmt="frid"
+                self.display_table, headers=self.display_table.keys(), tablefmt="grid"
             )
         )
 

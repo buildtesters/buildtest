@@ -1,6 +1,5 @@
 $ buildtest build -b tutorials/invalid_executor.yml 
 
-
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
@@ -9,9 +8,8 @@ Discovered Buildspecs:
 /Users/siddiq90/Documents/github/buildtest/tutorials/invalid_executor.yml
 
 
-
 Error Messages from Stage: Parse
 ________________________________________________________________________________
 Skipping /Users/siddiq90/Documents/github/buildtest/tutorials/invalid_executor.yml since it failed to validate
 No buildspecs to process because there are no valid buildspecs
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_cl9210bh.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_cghvs5ij.log

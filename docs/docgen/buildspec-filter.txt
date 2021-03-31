@@ -1,5 +1,4 @@
 $ buildtest buildspec find --helpfilter
-
 Field     Description              Type
 --------  -----------------------  ------
 executor  Filter by executor name  STRING

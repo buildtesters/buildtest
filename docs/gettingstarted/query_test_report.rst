@@ -41,7 +41,7 @@ In this example we format by fields ``--format id,executor,state,returncode``. N
 buildtest will format table columns in the order format options.
 
 .. program-output:: cat docgen/report-format.txt
-   :ellipsis: 20
+   :ellipsis: 21
 
 Filter Reports
 ---------------
@@ -235,91 +235,104 @@ The ``buildtest inspect id`` can operate on single or multiple ids if you want t
 ids in single command you can do ``buildtest inspect id <identifier1> <identifier2>``.
 
 Let's see an example where we query a single test record. Notice, that we only specify
-a few characters **069** and buildtest found a matching record **069ab71e-527c-472b-a9e5-e400ef428f1a**
+a few characters **fee** and buildtest found a matching record **fee66c67-db4e-4d35-8c6d-28ac5cbbaba0**
 
 .. code-block:: console
 
-    $ buildtest inspect id 069
+    $ buildtest inspect id fee
 
     {
-      "069ab71e-527c-472b-a9e5-e400ef428f1a": {
-        "id": "069ab71e",
-        "full_id": "069ab71e-527c-472b-a9e5-e400ef428f1a",
-        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0",
-        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/stage/generate.sh",
-        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/stage",
-        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/run",
-        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/stage/generate.sh",
-        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/run/python_hello.out",
-        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/run/python_hello.err",
+      "fee66c67-db4e-4d35-8c6d-28ac5cbbaba0": {
+        "id": "fee66c67",
+        "full_id": "fee66c67-db4e-4d35-8c6d-28ac5cbbaba0",
         "schemafile": "script-v1.0.schema.json",
         "executor": "generic.local.bash",
+        "compiler": null,
+        "hostname": "DOE-7086392.local",
+        "user": "siddiq90",
+        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2",
+        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/stage/generate.sh",
+        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/stage",
+        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/run",
+        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/stage/generate.sh",
+        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/run/python_hello.out",
+        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/run/python_hello.err",
+        "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  python_hello:\n    type: script\n    description: Hello World python\n    executor: generic.local.bash\n    tags: python\n    run: python hello.py\n\n",
+        "test_content": "#!/bin/bash \nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/before_script.sh\npython hello.py\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/after_script.sh",
         "tags": "python",
-        "starttime": "2021/03/24 21:55:48",
-        "endtime": "2021/03/24 21:55:48",
-        "runtime": 0.188871,
+        "starttime": "2021/03/31 11:18:21",
+        "endtime": "2021/03/31 11:18:21",
+        "runtime": 0.104714,
         "state": "PASS",
         "returncode": 0,
-        "output": [
-          "Hello World\n"
-        ],
-        "error": [],
+        "output": "Hello World\n",
+        "error": "",
         "job": null
       }
     }
 
 We can pass multiple IDs to ``buildtest inspect id`` and buildtest will retrieve test
-record if there is a match. In example below we see two records retrieved from a single command
+record if there is a match. You only need to specify a few characters to ensure we have a unique test
+ID and buildtest will retrieve the record.
+
 
 .. code-block:: console
 
-    $ buildtest inspect id 6f13 015e
+   $ buildtest inspect id 944 a76
+
     {
-      "015ec352-2048-4717-8d4c-a150ef13e0e2": {
-        "id": "015ec352",
-        "full_id": "015ec352-2048-4717-8d4c-a150ef13e0e2",
-        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4",
-        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh",
-        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage",
-        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/run",
-        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh",
-        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/run/circle_area.out",
-        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/run/circle_area.err",
-        "schemafile": "script-v1.0.schema.json",
-        "executor": "generic.local.python",
-        "tags": "tutorials python",
-        "starttime": "2021/03/24 21:56:14",
-        "endtime": "2021/03/24 21:56:14",
-        "runtime": 0.179244,
-        "state": "PASS",
-        "returncode": 0,
-        "output": [
-          "Circle Radius  2\n",
-          "Area of circle  12.566370614359172\n"
-        ],
-        "error": [],
-        "job": null
-      },
-      "6f13cda7-f807-4075-97f6-8a8fd5a8226e": {
-        "id": "6f13cda7",
-        "full_id": "6f13cda7-f807-4075-97f6-8a8fd5a8226e",
-        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0",
-        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/stage/generate.sh",
-        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/stage",
-        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/run",
-        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/stage/generate.sh",
-        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/run/sleep.out",
-        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/sleep/sleep/0/run/sleep.err",
+      "a76799db-f11e-4050-8dcb-8b147092c536": {
+        "id": "a76799db",
+        "full_id": "a76799db-f11e-4050-8dcb-8b147092c536",
         "schemafile": "script-v1.0.schema.json",
         "executor": "generic.local.bash",
-        "tags": "tutorials",
-        "starttime": "2021/03/24 21:55:45",
-        "endtime": "2021/03/24 21:55:47",
-        "runtime": 2.132367,
+        "compiler": null,
+        "hostname": "DOE-7086392.local",
+        "user": "siddiq90",
+        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0",
+        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/stage/generate.sh",
+        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/stage",
+        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/run",
+        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/stage/generate.sh",
+        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/run/root_disk_usage.out",
+        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/run/root_disk_usage.err",
+        "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  root_disk_usage:\n    executor: generic.local.bash\n    type: script\n    tags: [filesystem, storage]\n    description: Check root disk usage and report if it exceeds threshold\n    env:\n      threshold: 90\n    run: |\n      root_disk_usage=`df -a / | tail -n 1 |  awk '{print $5'} | sed 's/[^0-9]*//g'`\n      # if root exceeds threshold\n      if [ \"$root_disk_usage\" -gt \"$threshold\" ]; then\n        echo \"[WARNING] Root Disk Usage: $root_disk_usage% exceeded threshold of $threshold%\"\n        exit 1\n      fi\n      echo \"[OK] Root disk is below threshold of $threshold%\"\n",
+        "test_content": "#!/bin/bash \nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/before_script.sh\nexport threshold=90\nroot_disk_usage=`df -a / | tail -n 1 |  awk '{print $5'} | sed 's/[^0-9]*//g'`\n# if root exceeds threshold\nif [ \"$root_disk_usage\" -gt \"$threshold\" ]; then\n  echo \"[WARNING] Root Disk Usage: $root_disk_usage% exceeded threshold of $threshold%\"\n  exit 1\nfi\necho \"[OK] Root disk is below threshold of $threshold%\"\n\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/after_script.sh",
+        "tags": "filesystem storage",
+        "starttime": "2021/03/31 11:17:50",
+        "endtime": "2021/03/31 11:17:50",
+        "runtime": 0.114321,
         "state": "PASS",
         "returncode": 0,
-        "output": [],
-        "error": [],
+        "output": "[OK] Root disk is below threshold of 90%\n",
+        "error": "",
+        "job": null
+      },
+      "944f6399-b82b-47f9-bb15-8f529dedd4e6": {
+        "id": "944f6399",
+        "full_id": "944f6399-b82b-47f9-bb15-8f529dedd4e6",
+        "schemafile": "script-v1.0.schema.json",
+        "executor": "generic.local.python",
+        "compiler": null,
+        "hostname": "DOE-7086392.local",
+        "user": "siddiq90",
+        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0",
+        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage/generate.sh",
+        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage",
+        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/run",
+        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage/generate.sh",
+        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/run/circle_area.out",
+        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/run/circle_area.err",
+        "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  circle_area:\n    executor: generic.local.python\n    type: script\n    shell: python\n    description: \"Calculate circle of area given a radius\"\n    tags: [tutorials, python]\n    run: |\n      import math\n      radius = 2\n      area = math.pi * radius * radius\n      print(\"Circle Radius \", radius)\n      print(\"Area of circle \", area)\n",
+        "test_content": "#!/bin/bash\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.python/before_script.sh\npython /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage/circle_area.py\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.python/after_script.sh",
+        "tags": "tutorials python",
+        "starttime": "2021/03/31 11:18:00",
+        "endtime": "2021/03/31 11:18:00",
+        "runtime": 0.144171,
+        "state": "PASS",
+        "returncode": 0,
+        "output": "Circle Radius  2\nArea of circle  12.566370614359172\n",
+        "error": "",
         "job": null
       }
     }

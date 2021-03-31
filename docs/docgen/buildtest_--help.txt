@@ -1,5 +1,4 @@
 $ buildtest --help
-
 usage: buildtest [options] [COMMANDS]
 
 buildtest is a HPC testing framework for writing acceptance tests.

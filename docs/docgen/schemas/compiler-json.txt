@@ -1,5 +1,4 @@
 $ buildtest schema -n compiler-v1.0.schema.json --json 
-
 {
   "$id": "compiler-v1.0.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -345,6 +344,9 @@ $ buildtest schema -n compiler-v1.0.schema.json --json
               "$ref": "#definitions/default_compiler_config"
             },
             "cuda": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "upcxx": {
               "$ref": "#definitions/default_compiler_config"
             }
           }
