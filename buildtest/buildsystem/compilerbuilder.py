@@ -56,6 +56,8 @@ class CompilerBuilder(BuilderBase):
         )
         self.compiler = compiler
 
+        self.metadata["compiler"] = compiler
+
         self.compiler_section = self.recipe["compilers"]
 
         self.sourcefile = self.recipe["source"]

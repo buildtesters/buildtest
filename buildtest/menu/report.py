@@ -421,6 +421,11 @@ def update_report(valid_builders):
         for item in [
             "id",
             "full_id",
+            "schemafile",
+            "executor",
+            "compiler",
+            "hostname",
+            "user",
             "testroot",
             "testpath",
             "stagedir",
@@ -428,8 +433,8 @@ def update_report(valid_builders):
             "command",
             "outfile",
             "errfile",
-            "schemafile",
-            "executor",
+            "buildspec_content",
+            "test_content",
         ]:
             entry[item] = builder.metadata[item]
 

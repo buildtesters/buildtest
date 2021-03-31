@@ -103,7 +103,7 @@ class BuildExecutor:
         """
 
         # extract executor name from buildspec recipe
-        executor = builder.metadata.get("recipe").get("executor")
+        executor = builder.recipe.get("executor")
 
         # if executor not defined in buildspec we raise an error
         if not executor:
@@ -112,7 +112,7 @@ class BuildExecutor:
                 builder.metadata["buildspec"],
             )
             builder.logger.error(msg)
-            builder.logger.debug("test: %s", builder.metadata["recipe"])
+            builder.logger.debug("test: %s", builder.recipe)
             sys.exit(msg)
 
         # The executor is not valid we raise error
@@ -172,7 +172,7 @@ class BuildExecutor:
             executor.dispatch(builder)
 
     def poll(self, builder):
-        """Poll all jobs for batch executors (LSF, Slurm, Cobalt). For slurm we poll
+        """Poll all jobs for batch executors (LSF, Slurm, Cobalt, PBS). For slurm we poll
         until job is in ``PENDING`` or ``RUNNING`` state. If Slurm job is in
         ``FAILED`` or ``COMPLETED`` state we assume job is finished and we gather
         results. If its in any other state we ignore job and return out of method.
@@ -186,6 +186,10 @@ class BuildExecutor:
         state. For Cobalt jobs we cannot query job after its complete since JobID
         is no longer present in queuing system. Therefore, for when job is complete
         which is ``done`` or ``exiting`` state, we mark job is complete.
+
+        For PBS jobs we poll job if its in queued or running stage which corresponds
+        to "Q" and "R" in job stage. If job is finished ("F") we gather results. If job
+        is in "H" stage we automatically cancel job otherwise we ignore job and mark job complete.
 
         :param builder: an instance of BuilderBase (subclass)
         :type builder: BuilderBase (subclass), required
