@@ -1,7 +1,7 @@
 # Untitled object in compiler schema version 1.0 Schema
 
 ```txt
-compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/cuda
+compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/upcxx
 ```
 
 Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides `all` property.
@@ -10,36 +10,37 @@ Specify compiler configuration for group of compilers. Use this property if you 
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------------ |
 | Can be instantiated | No         | Unknown status | No           | Forbidden         | Allowed               | none                | [compiler-v1.0.schema.json*](../out/compiler-v1.0.schema.json "open original schema") |
 
-## cuda Type
+## upcxx Type
 
 `object` ([Details](compiler-v1-definitions-default_compiler_config.md))
 
-# cuda Properties
+# upcxx Properties
 
-| Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                                             |
-| :------------------------ | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [cc](#cc)                 | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-cc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cc")                                            |
-| [fc](#fc)                 | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-fc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fc")                                            |
-| [cxx](#cxx)               | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-cxx.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxx")                                          |
-| [cflags](#cflags)         | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-cflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cflags")                                    |
-| [fflags](#fflags)         | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-fflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fflags")                                    |
-| [cxxflags](#cxxflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-cxxflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxxflags")                                |
-| [ldflags](#ldflags)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-ldflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/ldflags")                                  |
-| [cppflags](#cppflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-cppflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cppflags")                                |
-| [sbatch](#sbatch)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch") |
-| [bsub](#bsub)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub")     |
-| [cobalt](#cobalt)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt") |
-| [batch](#batch)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch")                                      |
-| [BB](#bb)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB")         |
-| [DW](#dw)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW")         |
-| [env](#env)               | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env")                                          |
-| [vars](#vars)             | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars")                                         |
-| [status](#status)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status")                                    |
-| [pre_build](#pre_build)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-pre_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pre_build")                              |
-| [post_build](#post_build) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-post_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/post_build")                            |
-| [pre_run](#pre_run)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-pre_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pre_run")                                  |
-| [post_run](#post_run)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-post_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/post_run")                                |
-| [run](#run)               | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/run")                                          |
+| Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                   |
+| :------------------------ | :------- | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc)                 | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-cc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cc")                  |
+| [fc](#fc)                 | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-fc.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fc")                  |
+| [cxx](#cxx)               | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-cxx.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxx")                |
+| [cflags](#cflags)         | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-cflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cflags")          |
+| [fflags](#fflags)         | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-fflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/fflags")          |
+| [cxxflags](#cxxflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-cxxflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxxflags")      |
+| [ldflags](#ldflags)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-ldflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/ldflags")        |
+| [cppflags](#cppflags)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-cppflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cppflags")      |
+| [sbatch](#sbatch)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch") |
+| [bsub](#bsub)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub")   |
+| [cobalt](#cobalt)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt") |
+| [pbs](#pbs)               | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs")    |
+| [batch](#batch)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch")            |
+| [BB](#bb)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB")     |
+| [DW](#dw)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW")     |
+| [env](#env)               | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env")                |
+| [vars](#vars)             | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars")               |
+| [status](#status)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status")          |
+| [pre_build](#pre_build)   | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-pre_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pre_build")    |
+| [post_build](#post_build) | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-post_build.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/post_build")  |
+| [pre_run](#pre_run)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-pre_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pre_run")        |
+| [post_run](#post_run)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-post_run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/post_run")      |
+| [run](#run)               | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-run.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/run")                |
 
 ## cc
 
@@ -187,7 +188,7 @@ Set C or C++ preprocessor flags
 
 ## sbatch
 
-This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value
+
 
 `sbatch`
 
@@ -197,7 +198,7 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch")
 
 ### sbatch Type
 
@@ -211,7 +212,7 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 
 ## bsub
 
-This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value
+
 
 `bsub`
 
@@ -221,7 +222,7 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub")
 
 ### bsub Type
 
@@ -235,7 +236,7 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 
 ## cobalt
 
-This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value
+
 
 `cobalt`
 
@@ -245,13 +246,37 @@ This field is used for specifying #COBALT options in test script. buildtest will
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt")
 
 ### cobalt Type
 
 `string[]`
 
 ### cobalt Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+## pbs
+
+
+
+`pbs`
+
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs")
+
+### pbs Type
+
+`string[]`
+
+### pbs Constraints
 
 **minimum number of items**: the minimum number of items for this array is: `1`
 
@@ -277,7 +302,7 @@ The `batch` field is used to specify scheduler agnostic directives that are tran
 
 ## BB
 
-Create burst buffer space, this specifies #BB options in your test.
+
 
 `BB`
 
@@ -287,7 +312,7 @@ Create burst buffer space, this specifies #BB options in your test.
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB")
 
 ### BB Type
 
@@ -301,7 +326,7 @@ Create burst buffer space, this specifies #BB options in your test.
 
 ## DW
 
-Specify Data Warp option (#DW) when using burst buffer.
+
 
 `DW`
 
@@ -311,7 +336,7 @@ Specify Data Warp option (#DW) when using burst buffer.
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW")
 
 ### DW Type
 

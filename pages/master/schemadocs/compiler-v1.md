@@ -346,12 +346,13 @@ Reference this group by using
 
 | Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                                               |
 | :------------------------ | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [sbatch](#sbatch)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/sbatch")         |
-| [bsub](#bsub)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/bsub")             |
-| [cobalt](#cobalt)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/cobalt")         |
+| [sbatch](#sbatch)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/sbatch")                                |
+| [bsub](#bsub)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/bsub")                                  |
+| [cobalt](#cobalt)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/cobalt")                                |
+| [pbs](#pbs)               | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pbs")                                   |
 | [batch](#batch)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/batch")                                           |
-| [BB](#bb)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/BB")                 |
-| [DW](#dw)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/DW")                 |
+| [BB](#bb)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/BB")                                    |
+| [DW](#dw)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/DW")                                    |
 | [env](#env)               | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/env")                                               |
 | [vars](#vars)             | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/vars")                                              |
 | [status](#status)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/status")                                         |
@@ -363,7 +364,7 @@ Reference this group by using
 
 ### sbatch
 
-This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value
+
 
 `sbatch`
 
@@ -373,7 +374,7 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/sbatch")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/sbatch")
 
 #### sbatch Type
 
@@ -387,7 +388,7 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 
 ### bsub
 
-This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value
+
 
 `bsub`
 
@@ -397,7 +398,7 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/bsub")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/bsub")
 
 #### bsub Type
 
@@ -411,7 +412,7 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 
 ### cobalt
 
-This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value
+
 
 `cobalt`
 
@@ -421,13 +422,37 @@ This field is used for specifying #COBALT options in test script. buildtest will
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/cobalt")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/cobalt")
 
 #### cobalt Type
 
 `string[]`
 
 #### cobalt Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### pbs
+
+
+
+`pbs`
+
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pbs")
+
+#### pbs Type
+
+`string[]`
+
+#### pbs Constraints
 
 **minimum number of items**: the minimum number of items for this array is: `1`
 
@@ -453,7 +478,7 @@ The `batch` field is used to specify scheduler agnostic directives that are tran
 
 ### BB
 
-Create burst buffer space, this specifies #BB options in your test.
+
 
 `BB`
 
@@ -463,7 +488,7 @@ Create burst buffer space, this specifies #BB options in your test.
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/BB")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/BB")
 
 #### BB Type
 
@@ -477,7 +502,7 @@ Create burst buffer space, this specifies #BB options in your test.
 
 ### DW
 
-Specify Data Warp option (#DW) when using burst buffer.
+
 
 `DW`
 
@@ -487,7 +512,7 @@ Specify Data Warp option (#DW) when using burst buffer.
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_all-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/DW")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/DW")
 
 #### DW Type
 
@@ -669,12 +694,13 @@ Reference this group by using
 | [cxxflags](#cxxflags)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cxxflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cxxflags")     |
 | [ldflags](#ldflags)         | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/ldflags")       |
 | [cppflags](#cppflags)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cppflags")     |
-| [sbatch](#sbatch-1)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch")         |
-| [bsub](#bsub-1)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub")             |
-| [cobalt](#cobalt-1)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt")         |
+| [sbatch](#sbatch-1)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch")                                   |
+| [bsub](#bsub-1)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub")                                     |
+| [cobalt](#cobalt-1)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt")                                   |
+| [pbs](#pbs-1)               | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs")                                      |
 | [batch](#batch-1)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch")                                              |
-| [BB](#bb-1)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB")                 |
-| [DW](#dw-1)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW")                 |
+| [BB](#bb-1)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB")                                       |
+| [DW](#dw-1)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW")                                       |
 | [env](#env-1)               | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env")                                                  |
 | [vars](#vars-1)             | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars")                                                 |
 | [status](#status-1)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status")                                            |
@@ -830,7 +856,7 @@ Set C or C++ preprocessor flags
 
 ### sbatch
 
-This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value
+
 
 `sbatch`
 
@@ -840,7 +866,7 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch")
 
 #### sbatch Type
 
@@ -854,7 +880,7 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 
 ### bsub
 
-This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value
+
 
 `bsub`
 
@@ -864,7 +890,7 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bsub.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub")
 
 #### bsub Type
 
@@ -878,7 +904,7 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 
 ### cobalt
 
-This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value
+
 
 `cobalt`
 
@@ -888,13 +914,37 @@ This field is used for specifying #COBALT options in test script. buildtest will
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt")
 
 #### cobalt Type
 
 `string[]`
 
 #### cobalt Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### pbs
+
+
+
+`pbs`
+
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs")
+
+#### pbs Type
+
+`string[]`
+
+#### pbs Constraints
 
 **minimum number of items**: the minimum number of items for this array is: `1`
 
@@ -920,7 +970,7 @@ The `batch` field is used to specify scheduler agnostic directives that are tran
 
 ### BB
 
-Create burst buffer space, this specifies #BB options in your test.
+
 
 `BB`
 
@@ -930,7 +980,7 @@ Create burst buffer space, this specifies #BB options in your test.
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-bb.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB")
 
 #### BB Type
 
@@ -944,7 +994,7 @@ Create burst buffer space, this specifies #BB options in your test.
 
 ### DW
 
-Specify Data Warp option (#DW) when using burst buffer.
+
 
 `DW`
 
@@ -954,7 +1004,7 @@ Specify Data Warp option (#DW) when using burst buffer.
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-default_compiler_config-properties-dw.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW")
 
 #### DW Type
 
@@ -1136,12 +1186,13 @@ Reference this group by using
 | [cxxflags](#cxxflags-1)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cxxflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cxxflags")     |
 | [ldflags](#ldflags-1)       | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-ldflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/ldflags")       |
 | [cppflags](#cppflags-1)     | `string` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cppflags.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cppflags")     |
-| [sbatch](#sbatch-2)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/sbatch")         |
-| [bsub](#bsub-2)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-bsub.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/bsub")             |
-| [cobalt](#cobalt-2)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cobalt")         |
+| [sbatch](#sbatch-2)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/sbatch")                                |
+| [bsub](#bsub-2)             | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/bsub")                                  |
+| [cobalt](#cobalt-2)         | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cobalt")                                |
+| [pbs](#pbs-2)               | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/pbs")                                   |
 | [batch](#batch-2)           | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-batch.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/batch")                                           |
-| [BB](#bb-2)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-bb.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/BB")                 |
-| [DW](#dw-2)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-dw.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/DW")                 |
+| [BB](#bb-2)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/BB")                                    |
+| [DW](#dw-2)                 | `array`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/DW")                                    |
 | [env](#env-2)               | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/env")                                               |
 | [vars](#vars-2)             | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-env.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/vars")                                              |
 | [status](#status-2)         | `object` | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-status.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/status")                                         |
@@ -1298,7 +1349,7 @@ Set C or C++ preprocessor flags
 
 ### sbatch
 
-This field is used for specifying #SBATCH options in test script. buildtest will insert #SBATCH in front of each value
+
 
 `sbatch`
 
@@ -1308,7 +1359,7 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-sbatch.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/sbatch")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/sbatch")
 
 #### sbatch Type
 
@@ -1322,7 +1373,7 @@ This field is used for specifying #SBATCH options in test script. buildtest will
 
 ### bsub
 
-This field is used for specifying #BSUB options in test script. buildtest will insert #BSUB in front of each value
+
 
 `bsub`
 
@@ -1332,7 +1383,7 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-bsub.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/bsub")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/bsub")
 
 #### bsub Type
 
@@ -1346,7 +1397,7 @@ This field is used for specifying #BSUB options in test script. buildtest will i
 
 ### cobalt
 
-This field is used for specifying #COBALT options in test script. buildtest will insert #COBALT in front of each value
+
 
 `cobalt`
 
@@ -1356,13 +1407,37 @@ This field is used for specifying #COBALT options in test script. buildtest will
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-cobalt.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cobalt")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cobalt")
 
 #### cobalt Type
 
 `string[]`
 
 #### cobalt Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+### pbs
+
+
+
+`pbs`
+
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/pbs")
+
+#### pbs Type
+
+`string[]`
+
+#### pbs Constraints
 
 **minimum number of items**: the minimum number of items for this array is: `1`
 
@@ -1388,7 +1463,7 @@ The `batch` field is used to specify scheduler agnostic directives that are tran
 
 ### BB
 
-Create burst buffer space, this specifies #BB options in your test.
+
 
 `BB`
 
@@ -1398,7 +1473,7 @@ Create burst buffer space, this specifies #BB options in your test.
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-bb.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/BB")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/BB")
 
 #### BB Type
 
@@ -1412,7 +1487,7 @@ Create burst buffer space, this specifies #BB options in your test.
 
 ### DW
 
-Specify Data Warp option (#DW) when using burst buffer.
+
 
 `DW`
 
@@ -1422,7 +1497,7 @@ Specify Data Warp option (#DW) when using burst buffer.
 
 *   cannot be null
 
-*   defined in: [compiler schema version 1.0](compiler-v1-definitions-compiler_declaration-properties-dw.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/DW")
+*   defined in: [compiler schema version 1.0](definitions-definitions-list_of_strings.md "compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/DW")
 
 #### DW Type
 
