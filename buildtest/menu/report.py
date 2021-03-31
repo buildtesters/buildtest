@@ -21,22 +21,25 @@ class Report:
     # all format fields available for --helpformat
     format_fields = [
         "buildspec",
-        "name",
-        "id",
+        "command",
+        "compiler",
+        "endtime",
+        "errfile",
+        "executor",
         "full_id",
+        "hostname",
+        "id",
+        "name",
+        "outfile",
+        "runtime",
+        "returncode",
+        "schemafile",
+        "starttime",
+        "state",
+        "tags",
         "testroot",
         "testpath",
-        "command",
-        "outfile",
-        "errfile",
-        "schemafile",
-        "executor",
-        "tags",
-        "starttime",
-        "endtime",
-        "runtime",
-        "state",
-        "returncode",
+        "user",
     ]
     filter_fields = ["buildspec", "name", "executor", "state", "tags", "returncode"]
 
@@ -280,23 +283,30 @@ class Report:
         """Implements command ``buildtest report --helpformat``"""
         format_table = [
             ["buildspec", "Buildspec file"],
-            ["name", "Name of test defined in buildspec"],
-            ["id", "Unique Build Identifier (abbreviated)"],
+            ["command", "Command executed"],
+            [
+                "compiler",
+                "Retrieve compiler used for test (applicable for compiler schema)",
+            ],
+            ["endtime", "End Time for Test in date format"],
+            ["errfile", "Error File"],
+            ["executor", "Executor name"],
+            ["hostname", "Retrieve hostname of machine where job was submitted from"],
             ["full_id", "Full qualified unique build identifier"],
+            ["id", "Unique Build Identifier (abbreviated)"],
+            ["name", "Name of test defined in buildspec"],
+            ["outfile", "Output file"],
+            ["returncode", "Return Code from Test Execution"],
+            ["runtime", "Total runtime in seconds"],
+            ["schemafile", "Schema file used for validation"],
+            ["starttime", "Start Time of test in date format"],
+            ["state", "Test State reported by buildtest (PASS/FAIL)"],
+            ["tags", "Tag name"],
             ["testroot", "Root of test directory"],
             ["testpath", "Path to test"],
-            ["command", "Command executed"],
-            ["outfile", "Output file"],
-            ["errfile", "Error File"],
-            ["schemafile", "Schema file used for validation"],
-            ["executor", "Executor name"],
-            ["tags", "Tag name"],
-            ["starttime", "Start Time of test in date format"],
-            ["endtime", "End Time for Test in date format"],
-            ["runtime", "Total runtime in seconds"],
-            ["state", "Test State reported by buildtest (PASS/FAIL)"],
-            ["returncode", "Return Code from Test Execution"],
+            ["user", "Get user who submitted job"],
         ]
+
         headers = ["Fields", "Description"]
         table = []
         if os.getenv("BUILDTEST_COLOR") == "True":
@@ -370,7 +380,7 @@ class Report:
 
         print(
             tabulate(
-                self.display_table, headers=self.display_table.keys(), tablefmt="frid"
+                self.display_table, headers=self.display_table.keys(), tablefmt="grid"
             )
         )
 
@@ -421,6 +431,11 @@ def update_report(valid_builders):
         for item in [
             "id",
             "full_id",
+            "schemafile",
+            "executor",
+            "compiler",
+            "hostname",
+            "user",
             "testroot",
             "testpath",
             "stagedir",
@@ -428,8 +443,8 @@ def update_report(valid_builders):
             "command",
             "outfile",
             "errfile",
-            "schemafile",
-            "executor",
+            "buildspec_content",
+            "test_content",
         ]:
             entry[item] = builder.metadata[item]
 

@@ -1,5 +1,4 @@
 $ buildtest schema 
-
 global.schema.json
 definitions.schema.json
 settings.schema.json

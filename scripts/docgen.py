@@ -37,7 +37,7 @@ def run(query):
 
     print(f"Executing Command: {query}")
     out = subprocess.check_output(query, shell=True, universal_newlines=True)
-    out = "".join(out)
+    # out = "".join(out)
     return out
 
 
@@ -134,7 +134,7 @@ def introspection_cmds():
         "report-helpfilter.txt": "buildtest report --helpfilter",
         "report-format.txt": "buildtest report --format name,id,executor,state,returncode",
         "report-filter-name.txt": "buildtest report --filter name=exit1_pass --format=name,id,returncode,state",
-        "report-filter-buildspec.txt": "buildtest report --filter buildspec=tutorials/pass_returncode.yml --format=name,id,state,buildspec",
+        "report-filter-buildspec.txt": "buildtest report --filter buildspec=tutorials/python-hello.yml --format=name,id,state,buildspec",
         "report-multifilter.txt": "buildtest report --filter state=FAIL,executor=generic.local.sh --format=name,id,state,executor",
         "report-returncode.txt": "buildtest report --filter returncode=2 --format=name,id,returncode",
         "buildtest_inspect_list.txt": "buildtest inspect list",

@@ -1,5 +1,4 @@
 $ buildtest schema -n settings.schema.json -e 
-
 File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/local-executor.yml
 ________________________________________________________________________________
 system:

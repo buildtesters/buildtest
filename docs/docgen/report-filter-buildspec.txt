@@ -1,38 +1,10 @@
-$ buildtest report --filter buildspec=tutorials/pass_returncode.yml --format=name,id,state,buildspec
-
-name                      id        state    buildspec
-------------------------  --------  -------  ------------------------------------------------------------------------
-exit1_fail                b8c5fde0  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_fail                f1a3ad7d  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_fail                cde8c6f9  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_fail                d5651f86  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_fail                083f83d8  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_fail                9eeb0a2b  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_fail                7619d73b  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_fail                1b778ee6  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_pass                e6933549  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_pass                60d26637  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_pass                50e730ee  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_pass                105b838e  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_pass                cfb8a05f  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_pass                86d5ab82  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_pass                e0c09a7a  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_pass                b76dd7e5  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-exit1_pass                e460805c  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_list_mismatch  3e8c8adf  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_list_mismatch  c3e52add  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_list_mismatch  85ec254b  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_list_mismatch  e1d97c13  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_list_mismatch  877d7b9e  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_list_mismatch  ef59d9bb  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_list_mismatch  416156d2  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_list_mismatch  86375158  FAIL     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_int_match      12f68566  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_int_match      e215faa8  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_int_match      a2d558b2  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_int_match      f9461290  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_int_match      96fb4dc7  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_int_match      3c75b9f0  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_int_match      e2bbbf90  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_int_match      33fc2db4  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-returncode_int_match      0d15a4c7  PASS     /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
+$ buildtest report --filter buildspec=tutorials/python-hello.yml --format=name,id,state,buildspec
++--------------+----------+---------+-----------------------------------------------------------------------+
+| name         | id       | state   | buildspec                                                             |
++==============+==========+=========+=======================================================================+
+| python_hello | 19891649 | PASS    | /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml |
++--------------+----------+---------+-----------------------------------------------------------------------+
+| python_hello | 1bff7c1a | PASS    | /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml |
++--------------+----------+---------+-----------------------------------------------------------------------+
+| python_hello | b76b9490 | PASS    | /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml |
++--------------+----------+---------+-----------------------------------------------------------------------+

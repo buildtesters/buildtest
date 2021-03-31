@@ -1,5 +1,4 @@
 $ buildtest schema -n script-v1.0.schema.json --example 
-
 File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/script-v1.0.schema.json/valid/examples.yml
 ________________________________________________________________________________
 version: "1.0"

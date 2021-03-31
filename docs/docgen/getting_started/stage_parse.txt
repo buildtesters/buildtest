@@ -1,6 +1,5 @@
 $ buildtest build -b tutorials/vars.yml --stage=parse 
 
-
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
@@ -15,4 +14,4 @@ Discovered Buildspecs:
  schemafile              | validstate   | buildspec
 -------------------------+--------------+---------------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_qa2gddie.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_vwg27_4u.log

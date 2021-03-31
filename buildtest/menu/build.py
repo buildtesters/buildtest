@@ -169,6 +169,32 @@ class BuildTest:
         self.builders = None
         self.buildexecutor = BuildExecutor(self.configuration)
 
+    def build(self):
+        """This method is responsible for implementating stages: parse, build, run, update. """
+
+        self.discover_buildspecs(printTable=True)
+
+        # Parse all buildspecs and skip any buildspecs that fail validation, return type
+        # is a builder object used for building test.
+
+        self.parse_buildspecs(printTable=True)
+
+        # if no builders found or  --stage=parse set we return from method
+        if not self.builders or self.stage == "parse":
+            return
+
+        self.build_phase(printTable=True)
+
+        # if --stage=build is set  we return from method
+        if self.stage == "build":
+            return
+
+        self.builders = self.run_phase(printTable=True)
+
+        # only update report if we have a list of valid builders returned from run_phase
+        if self.builders:
+            update_report(self.builders)
+
     def discover_buildspecs(self, printTable=False):
         """This method discovers all buildspecs based on --buildspecs, --tags, --executor
         and excluding buildspecs (--exclude).
@@ -325,13 +351,12 @@ class BuildTest:
         return buildspecs
 
     def discover_buildspecs_by_executor_name(self, executor_name):
-        """This method discovers buildspecs by executor name, using ``--executor-name``
-        option from ``buildtest build`` command. This method will read BUILDSPEC_CACHE_FILE
-        and search for ``executor`` key in buildspec recipe and match with input
-        executor name. The return is a list of matching buildspec with executor name
-        to process.
+        """This method discovers buildspecs by executor name, using ``buildtest build --executor``
+        command. This method will read BUILDSPEC_CACHE_FILE and search for ``executor`` key
+        in buildspec recipe and match with input executor name. The return is a list of matching
+        buildspec with executor name to process.
 
-        :param executor_name: Input executor name from command line argument ``buildtest build --executor-name <name>``
+        :param executor_name: Input executor name from command line argument ``buildtest build --executor <name>``
         :type executor_name: string
         :return: a list of buildspec files that match tag name
         :rtype: list
@@ -426,7 +451,6 @@ class BuildTest:
         return buildspecs
 
     def parse_buildspecs(self, printTable=False):
-
         """Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
         fails validation we add it to ``skipped_tests`` list and print all skipped
         tests at end. If buildspec passes validation we get all builders by invoking
@@ -480,7 +504,6 @@ class BuildTest:
         if not self.builders:
             print("No buildspecs to process because there are no valid buildspecs")
             return
-            # sys.exit(0)
 
         if printTable:
             msg = """
@@ -499,34 +522,6 @@ class BuildTest:
             print(msg)
             print(tabulate(table, headers=headers, tablefmt="presto"))
 
-        return self.builders
-
-    def build(self):
-        """This method is responsible for implementating stages: parse, build, run, update. """
-
-        self.discover_buildspecs(printTable=True)
-
-        # Parse all buildspecs and skip any buildspecs that fail validation, return type
-        # is a builder object used for building test.
-
-        self.parse_buildspecs(printTable=True)
-
-        # if no builders found or  --stage=parse set we return from method
-        if not self.builders or self.stage == "parse":
-            return
-
-        self.build_phase(printTable=True)
-
-        # if --stage=build is set  we return from method
-        if self.stage == "build":
-            return
-
-        self.builders = self.run_phase(printTable=True)
-
-        # only update report if we have a list of valid builders returned from run_phase
-        if self.builders:
-            update_report(self.builders)
-
     def build_phase(self, printTable=False):
         """This method will build all tests by invoking class method ``build`` for
         each builder that generates testscript in the test directory.
@@ -534,6 +529,7 @@ class BuildTest:
         :param printTable: Print builder table
         :type printTable: boolean
         """
+
         invalid_builders = []
         msg = """
 +----------------------+
@@ -580,6 +576,7 @@ class BuildTest:
                 for test in invalid_builders:
                     print(test)
 
+            # if we have any tests using 'script' schema we print all tests together since table columns are different
             if len(table["script"]["name"]) > 0:
 
                 if os.getenv("BUILDTEST_COLOR") == "True":
@@ -597,6 +594,7 @@ class BuildTest:
 
             print("\n")
 
+            # if we have any tests using 'compiler' schema we print all tests together since table columns are different
             if len(table["compiler"]["name"]) > 0:
 
                 headers = table["compiler"].keys()
@@ -629,14 +627,13 @@ class BuildTest:
         for orchestrating builder execution to the appropriate executor class. The
         executor contains a list of executors picked up from buildtest configuration.
         For tests running locally, we get the test metadata and count PASS/FAIL test
-        state to tally number of pass and fail test which is printed at end in
-        Test Summary. For tests that need to run via scheduler, the first
-        stage of run will dispatch job, and state will be `N/A`. We first dispatch all
-        jobs and later poll jobs until they are complete. The poll section is skipped
-        if all tests are run locally. In poll section we regenerate table with all
-        valid_builders and updated test state and returncode and calculate total
-        pass/fail tests. Finally we return a list of valid_builders which are tests
-        that ran through one of the executors. Any test that failed to run or be
+        state which is printed at end in Test Summary. For tests that need to run
+        via scheduler, the first stage of run will dispatch job, and state will be
+        `N/A`. We first dispatch all jobs and later poll jobs until they are complete.
+        The poll section is skipped if all tests are run locally. In poll section we
+        regenerate table with all valid_builders and updated test state and returncode
+        and recalculate total pass/fail tests. Finally we return a list of valid_builders
+        which are tests that ran through one of the executors. Any test that failed to run or be
         dispatched will be skipped during run stage and not added in `valid_builders`.
         The `valid_builders` contains the test meta-data that is used for updating
         test report in next stage.
@@ -695,6 +692,8 @@ class BuildTest:
             table["returncode"].append(builder.metadata["result"]["returncode"])
             table["testpath"].append(builder.metadata["testpath"])
 
+            # for jobs with N/A state we append to poll queue which means job is dispatched to scheduler
+            # and we poll job later
             if builder.metadata["result"]["state"] == "N/A":
                 poll_queue.append(builder)
                 poll = True
@@ -724,8 +723,6 @@ class BuildTest:
                 print(error)
             print("\n")
 
-        ########## END RUN STAGE ####################
-
         # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
         if poll:
             valid_builders = self.poll_jobs(poll_queue, valid_builders)
@@ -754,6 +751,7 @@ class BuildTest:
             passed_tests = 0
             failed_tests = 0
             total_tests = 0
+
             for builder in valid_builders:
                 if builder.metadata["result"]["state"] == "PASS":
                     passed_tests += 1
@@ -831,6 +829,7 @@ class BuildTest:
         ignore_jobs = set()
         completed_jobs = set()
 
+        # loop until poll_queue is empty which means all jobs have finished
         while poll_queue:
 
             print("\n")
@@ -920,7 +919,8 @@ class BuildTest:
                 valid_builders.remove(builder)
 
             print("Cancelled Tests:")
-            [print(builder.metadata["name"]) for builder in ignore_jobs]
+            for builder in ignore_jobs:
+                print(builder.metadata["name"])
 
         # after removing jobs from valid_builders list there is chance we have no jobs to report
         # in that case we return from method

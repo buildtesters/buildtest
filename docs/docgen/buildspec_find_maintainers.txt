@@ -1,5 +1,4 @@
 $ buildtest buildspec find --maintainers
-
 +------------------+
 | maintainers      |
 +==================+

@@ -1,5 +1,4 @@
 $ buildtest config executors --help
-
 usage: buildtest [options] [COMMANDS] config executors [-h] [-j]
 
 optional arguments:

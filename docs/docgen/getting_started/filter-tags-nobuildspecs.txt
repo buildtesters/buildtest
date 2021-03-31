@@ -1,6 +1,5 @@
 $ buildtest build -b tutorials/shell_examples.yml --filter-tags compile 
 
-
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
@@ -13,4 +12,4 @@ Discovered Buildspecs:
 [sh_shell][/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
 [shell_options][/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
 No buildspecs to process because there are no valid buildspecs
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_3f_ha34a.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_ygr0y6gg.log

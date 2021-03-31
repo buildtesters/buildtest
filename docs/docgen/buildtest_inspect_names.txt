@@ -1,10 +1,14 @@
 $ buildtest inspect name shell_options
-
 {
   "shell_options": [
     {
-      "id": "dc657139",
-      "full_id": "dc657139-d297-4441-848c-33cae06b595d",
+      "id": "ffeeb817",
+      "full_id": "ffeeb817-7ed3-4c35-b3c9-f6084e886c31",
+      "schemafile": "script-v1.0.schema.json",
+      "executor": "generic.local.sh",
+      "compiler": null,
+      "hostname": "DOE-7086392.local",
+      "user": "siddiq90",
       "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0",
       "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage/generate.sh",
       "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage",
@@ -12,29 +16,26 @@ $ buildtest inspect name shell_options
       "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage/generate.sh",
       "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/run/shell_options.out",
       "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/run/shell_options.err",
-      "schemafile": "script-v1.0.schema.json",
-      "executor": "generic.local.sh",
+      "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  _bin_sh_shell:\n    executor: generic.local.sh\n    type: script\n    description: \"/bin/sh shell example\"\n    shell: /bin/sh\n    tags: [tutorials]\n    run: \"bzip2 --help\"\n\n  _bin_bash_shell:\n    executor: generic.local.bash\n    type: script\n    description: \"/bin/bash shell example\"\n    shell: /bin/bash\n    tags: [tutorials]\n    run: \"bzip2 -h\"\n\n  bash_shell:\n    executor: generic.local.bash\n    type: script\n    description: \"bash shell example\"\n    shell: bash\n    tags: [tutorials]\n    run: \"echo $SHELL\"\n\n  sh_shell:\n    executor: generic.local.sh\n    type: script\n    description: \"sh shell example\"\n    shell: sh\n    tags: [tutorials]\n    run: \"echo $SHELL\"\n\n  shell_options:\n    executor: generic.local.sh\n    type: script\n    description: \"shell options\"\n    shell: \"sh -x\"\n    tags: [tutorials]\n    run: |\n      echo $SHELL\n      hostname",
+      "test_content": "#!/bin/sh -x\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\necho $SHELL\nhostname\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh",
       "tags": "tutorials",
-      "starttime": "2021/03/24 21:55:41",
-      "endtime": "2021/03/24 21:55:41",
-      "runtime": 0.132134,
+      "starttime": "2021/03/31 11:59:38",
+      "endtime": "2021/03/31 11:59:38",
+      "runtime": 0.142988,
       "state": "PASS",
       "returncode": 0,
-      "output": [
-        "/bin/bash\n",
-        "DOE-7086392.local\n"
-      ],
-      "error": [
-        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\n",
-        "+ echo /bin/bash\n",
-        "+ hostname\n",
-        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh\n"
-      ],
+      "output": "/bin/bash\nDOE-7086392.local\n",
+      "error": "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\n+ echo /bin/bash\n+ hostname\n+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh\n",
       "job": null
     },
     {
-      "id": "93e97211",
-      "full_id": "93e97211-6bd3-4218-8b87-370ca2183af3",
+      "id": "63b07684",
+      "full_id": "63b07684-ceca-4391-a96b-b0063aab8147",
+      "schemafile": "script-v1.0.schema.json",
+      "executor": "generic.local.sh",
+      "compiler": null,
+      "hostname": "DOE-7086392.local",
+      "user": "siddiq90",
       "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1",
       "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1/stage/generate.sh",
       "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1/stage",
@@ -42,29 +43,26 @@ $ buildtest inspect name shell_options
       "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1/stage/generate.sh",
       "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1/run/shell_options.out",
       "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/1/run/shell_options.err",
-      "schemafile": "script-v1.0.schema.json",
-      "executor": "generic.local.sh",
+      "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  _bin_sh_shell:\n    executor: generic.local.sh\n    type: script\n    description: \"/bin/sh shell example\"\n    shell: /bin/sh\n    tags: [tutorials]\n    run: \"bzip2 --help\"\n\n  _bin_bash_shell:\n    executor: generic.local.bash\n    type: script\n    description: \"/bin/bash shell example\"\n    shell: /bin/bash\n    tags: [tutorials]\n    run: \"bzip2 -h\"\n\n  bash_shell:\n    executor: generic.local.bash\n    type: script\n    description: \"bash shell example\"\n    shell: bash\n    tags: [tutorials]\n    run: \"echo $SHELL\"\n\n  sh_shell:\n    executor: generic.local.sh\n    type: script\n    description: \"sh shell example\"\n    shell: sh\n    tags: [tutorials]\n    run: \"echo $SHELL\"\n\n  shell_options:\n    executor: generic.local.sh\n    type: script\n    description: \"shell options\"\n    shell: \"sh -x\"\n    tags: [tutorials]\n    run: |\n      echo $SHELL\n      hostname",
+      "test_content": "#!/bin/sh -x\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\necho $SHELL\nhostname\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh",
       "tags": "tutorials",
-      "starttime": "2021/03/24 21:55:52",
-      "endtime": "2021/03/24 21:55:52",
-      "runtime": 0.076502,
+      "starttime": "2021/03/31 11:59:43",
+      "endtime": "2021/03/31 11:59:43",
+      "runtime": 0.053003,
       "state": "PASS",
       "returncode": 0,
-      "output": [
-        "/bin/bash\n",
-        "DOE-7086392.local\n"
-      ],
-      "error": [
-        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\n",
-        "+ echo /bin/bash\n",
-        "+ hostname\n",
-        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh\n"
-      ],
+      "output": "/bin/bash\nDOE-7086392.local\n",
+      "error": "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\n+ echo /bin/bash\n+ hostname\n+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh\n",
       "job": null
     },
     {
-      "id": "d9e8fc1c",
-      "full_id": "d9e8fc1c-5b8d-4a0a-be1b-fe32665d3d52",
+      "id": "226bd5bf",
+      "full_id": "226bd5bf-c3a1-4eac-8e2c-f68fca607a07",
+      "schemafile": "script-v1.0.schema.json",
+      "executor": "generic.local.sh",
+      "compiler": null,
+      "hostname": "DOE-7086392.local",
+      "user": "siddiq90",
       "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2",
       "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/stage/generate.sh",
       "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/stage",
@@ -72,24 +70,16 @@ $ buildtest inspect name shell_options
       "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/stage/generate.sh",
       "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/run/shell_options.out",
       "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/run/shell_options.err",
-      "schemafile": "script-v1.0.schema.json",
-      "executor": "generic.local.sh",
+      "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  _bin_sh_shell:\n    executor: generic.local.sh\n    type: script\n    description: \"/bin/sh shell example\"\n    shell: /bin/sh\n    tags: [tutorials]\n    run: \"bzip2 --help\"\n\n  _bin_bash_shell:\n    executor: generic.local.bash\n    type: script\n    description: \"/bin/bash shell example\"\n    shell: /bin/bash\n    tags: [tutorials]\n    run: \"bzip2 -h\"\n\n  bash_shell:\n    executor: generic.local.bash\n    type: script\n    description: \"bash shell example\"\n    shell: bash\n    tags: [tutorials]\n    run: \"echo $SHELL\"\n\n  sh_shell:\n    executor: generic.local.sh\n    type: script\n    description: \"sh shell example\"\n    shell: sh\n    tags: [tutorials]\n    run: \"echo $SHELL\"\n\n  shell_options:\n    executor: generic.local.sh\n    type: script\n    description: \"shell options\"\n    shell: \"sh -x\"\n    tags: [tutorials]\n    run: |\n      echo $SHELL\n      hostname",
+      "test_content": "#!/bin/sh -x\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\necho $SHELL\nhostname\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh",
       "tags": "tutorials",
-      "starttime": "2021/03/24 21:56:04",
-      "endtime": "2021/03/24 21:56:04",
-      "runtime": 0.072742,
+      "starttime": "2021/03/31 11:59:44",
+      "endtime": "2021/03/31 11:59:44",
+      "runtime": 0.050098,
       "state": "PASS",
       "returncode": 0,
-      "output": [
-        "/bin/bash\n",
-        "DOE-7086392.local\n"
-      ],
-      "error": [
-        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\n",
-        "+ echo /bin/bash\n",
-        "+ hostname\n",
-        "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh\n"
-      ],
+      "output": "/bin/bash\nDOE-7086392.local\n",
+      "error": "+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/before_script.sh\n+ echo /bin/bash\n+ hostname\n+ source /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.sh/after_script.sh\n",
       "job": null
     }
   ]

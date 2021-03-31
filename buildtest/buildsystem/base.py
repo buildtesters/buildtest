@@ -6,12 +6,12 @@ is implemented as separate Builder.
 ScriptBuilder class implements 'type: script'
 CompilerBuilder class implements 'type: compiler'
 """
-
-
+import getpass
 import logging
 import os
 import re
 import shutil
+import socket
 import stat
 import sys
 import uuid
@@ -23,7 +23,7 @@ from buildtest.buildsystem.batch import (
     PBSBatchScript,
 )
 from buildtest.schemas.defaults import schema_table
-from buildtest.utils.file import create_dir, write_file
+from buildtest.utils.file import create_dir, write_file, read_file
 from buildtest.utils.timer import Timer
 from buildtest.utils.shell import Shell
 
@@ -114,12 +114,29 @@ class BuilderBase(ABC):
         """This method sets self.metadata that contains metadata for each builder object."""
         self.metadata["name"] = self.name
         self.metadata["buildspec"] = self.buildspec
-        self.metadata["recipe"] = self.recipe
+
+        # store recipe
+        # self.metadata["recipe"] = self.recipe
+
+        # store tags
         self.metadata["tags"] = self.recipe.get("tags")
+        # store executor name
+        self.metadata["executor"] = self.executor
+
+        # store schemafile used for validating
+        self.metadata["schemafile"] = os.path.basename(
+            schema_table[f"{self.recipe['type']}-v1.0.schema.json"]["path"]
+        )
+
         # store output content of test
         self.metadata["output"] = None
         # store error content of test
         self.metadata["error"] = None
+
+        # store current hostname
+        self.metadata["hostname"] = socket.gethostname()
+        # store current username
+        self.metadata["user"] = getpass.getuser()
 
         # root of test directory
         self.metadata["testroot"] = None
@@ -131,14 +148,19 @@ class BuilderBase(ABC):
         # location of test script
         self.metadata["testpath"] = None
 
+        # store content of buildspec file
+        self.metadata["buildspec_content"] = read_file(self.buildspec)
+        # used to store content of test
+        self.metadata["test_content"] = None
+
+        # used to store compiler name used the test. Only applicable with compiler schema
+        self.metadata["compiler"] = None
+
         self.metadata["result"] = {}
         self.metadata["result"]["state"] = "N/A"
         self.metadata["result"]["returncode"] = "-1"
         self.metadata["result"]["runtime"] = 0
-        self.metadata["schemafile"] = os.path.basename(
-            schema_table[f"{self.recipe['type']}-v1.0.schema.json"]["path"]
-        )
-        self.metadata["executor"] = self.executor
+
         # used to store job id from batch scheduler
         self.metadata["jobid"] = None
         # used to store job metrics for given JobID from batch scheduler
@@ -329,6 +351,8 @@ class BuilderBase(ABC):
         self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
 
         write_file(self.metadata["testpath"], lines)
+
+        self.metadata["test_content"] = lines
 
         self._set_execute_perm()
         # copy testpath to run_dir

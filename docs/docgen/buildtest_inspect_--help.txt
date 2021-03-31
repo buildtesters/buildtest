@@ -1,5 +1,4 @@
 $ buildtest inspect --help
-
 usage: buildtest [options] [COMMANDS] inspect [-h] {name,id,list} ...
 
 optional arguments:

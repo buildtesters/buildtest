@@ -1,6 +1,5 @@
 $ buildtest build -b tutorials/python-shell.yml --rebuild=3 
 
-
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
@@ -16,27 +15,27 @@ Discovered Buildspecs:
 -------------------------+--------------+-----------------------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/python-shell.yml
 
-+-------------------------------+
-| Stage: Building Test          |
-+-------------------------------+ 
-        
- name        | id       | type   | executor             | tags                    | testpath
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ name        | id       | type   | executor             | tags                    | compiler
 -------------+----------+--------+----------------------+-------------------------+------------------------------------------------------------------------------------------------------------------------
- circle_area | 882ea4ac | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/2/stage/generate.sh
- circle_area | 447e5125 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/3/stage/generate.sh
- circle_area | 015ec352 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh
+ circle_area | ee0d33a6 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/2/stage/generate.sh
+ circle_area | 1a0a08e8 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/3/stage/generate.sh
+ circle_area | 9143634c | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh
 
 
 
-+-------------------------------+
-| Stage: Running Test           |
-+-------------------------------+ 
++---------------------+
+| Stage: Running Test |
++---------------------+ 
 
  name        | id       | executor             | status   |   returncode | testpath
 -------------+----------+----------------------+----------+--------------+------------------------------------------------------------------------------------------------------------------------
- circle_area | 882ea4ac | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/2/stage/generate.sh
- circle_area | 447e5125 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/3/stage/generate.sh
- circle_area | 015ec352 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh
+ circle_area | ee0d33a6 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/2/stage/generate.sh
+ circle_area | 1a0a08e8 | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/3/stage/generate.sh
+ circle_area | 9143634c | generic.local.python | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh
 
 +----------------------+
 | Stage: Test Summary  |
@@ -46,5 +45,4 @@ Passed Tests: 3/3 Percentage: 100.000%
 Failed Tests: 0/3 Percentage: 0.000%
 
 
-
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_5xv6773f.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_uxifase_.log

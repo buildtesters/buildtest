@@ -1,5 +1,4 @@
 $ buildtest config --help
-
 usage: buildtest [options] [COMMANDS] config [-h] {executors,view,validate,summary,systems,compilers} ...
 
 optional arguments:

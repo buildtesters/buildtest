@@ -1,5 +1,4 @@
 $ buildtest build --help
-
 usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-x EXCLUDE] [-t TAGS] [-ft FILTER_TAGS] [-e EXECUTOR]
                                             [-s {parse,build}] [--testdir TESTDIR] [--rebuild REBUILD] [-c CONFIG]
 
