@@ -466,18 +466,16 @@ Next we build this test as follows:
     | Stage: Discovering Buildspecs |
     +-------------------------------+
 
-
     Discovered Buildspecs:
-
-    /Users/siddiq90/Documents/buildtest/tutorials/compilers/envvar_override.yml
+    /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml
 
     +---------------------------+
     | Stage: Parsing Buildspecs |
     +---------------------------+
 
      schemafile                | validstate   | buildspec
-    ---------------------------+--------------+-----------------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/envvar_override.yml
+    ---------------------------+--------------+------------------------------------------------------------------------------------
+     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml
 
     +----------------------+
     | Stage: Building Test |
@@ -486,119 +484,96 @@ Next we build this test as follows:
 
 
      name                     | id       | type     | executor           | tags                     | compiler           | testpath
-    --------------------------+----------+----------+--------------------+--------------------------+--------------------+-------------------------------------------------------------------------------------------------------------------------------
-     override_environmentvars | a234a889 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/2/stage/generate.sh
-     override_environmentvars | 9ebe6f17 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/3/stage/generate.sh
+    --------------------------+----------+----------+--------------------+--------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------
+     override_environmentvars | bc4a4769 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage/generate.sh
+     override_environmentvars | e18b5e7d | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage/generate.sh
 
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
+    +---------------------+
+    | Stage: Running Test |
+    +---------------------+
 
      name                     | id       | executor           | status   |   returncode | testpath
-    --------------------------+----------+--------------------+----------+--------------+-------------------------------------------------------------------------------------------------------------------------------
-     override_environmentvars | a234a889 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/2/stage/generate.sh
-     override_environmentvars | 9ebe6f17 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/3/stage/generate.sh
+    --------------------------+----------+--------------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------------------------
+     override_environmentvars | bc4a4769 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage/generate.sh
+     override_environmentvars | e18b5e7d | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage/generate.sh
 
     +----------------------+
     | Stage: Test Summary  |
     +----------------------+
 
-    Executed 2 tests
     Passed Tests: 2/2 Percentage: 100.000%
     Failed Tests: 0/2 Percentage: 0.000%
 
 
+    Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_6vrmp6v8.log
 
-    Writing Logfile to: /private/tmp/buildtest/buildtest_niw_i5q9.log
+Now let's inspect the test by running ``buildtest inspect name`` and we notice there are two test records for `override_environmentvars` using
+**gcc/9.3.0-n7p74fd** and **gcc/10.2.0-37fmsw7**.
 
-Now let's inspect the test for **gcc/10.2.0-37fmsw7** and notice buildtest is using 4 threads for running OpenMP example
 
 .. code-block:: console
     :linenos:
-    :emphasize-lines: 34-37, 53
+    :emphasize-lines: 9,36
 
-    $ buildtest inspect 9ebe6f17
+    $ buildtest inspect name override_environmentvars
     {
-      "id": "9ebe6f17",
-      "full_id": "9ebe6f17-bd30-4259-bc41-5bdc702950d8",
-      "testroot": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/3",
-      "testpath": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/3/stage/generate.sh",
-      "stagedir": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/3/stage",
-      "rundir": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/3/run",
-      "command": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/3/stage/generate.sh",
-      "outfile": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/3/run/override_environmentvars.out",
-      "errfile": "/Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/3/run/override_environmentvars.err",
-      "schemafile": "compiler-v1.0.schema.json",
-      "executor": "generic.local.bash",
-      "tags": "tutorials compile",
-      "starttime": "2021/03/01 16:38:23",
-      "endtime": "2021/03/01 16:38:24",
-      "runtime": 0.575392766,
-      "state": "PASS",
-      "returncode": 0,
-      "output": [
-        "Hello World from thread = 1\n",
-        "Hello World from thread = 3\n",
-        "Hello World from thread = 2\n",
-        "Hello World from thread = 0\n"
-      ],
-      "error": [],
-      "job": null
+      "override_environmentvars": [
+        {
+          "id": "bc4a4769",
+          "full_id": "bc4a4769-99cc-404c-be36-fd39c4179d92",
+          "schemafile": "compiler-v1.0.schema.json",
+          "executor": "generic.local.bash",
+          "compiler": "gcc/9.3.0-n7p74fd",
+          "hostname": "DOE-7086392.local",
+          "user": "siddiq90",
+          "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0",
+          "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage/generate.sh",
+          "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage",
+          "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/run",
+          "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage/generate.sh",
+          "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/run/override_environmentvars.out",
+          "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/run/override_environmentvars.err",
+          "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  override_environmentvars:\n    type: compiler\n    description: override default environment variables\n    executor: generic.local.bash\n    tags: [tutorials, compile]\n    source: \"src/hello_omp.c\"\n    compilers:\n      name: [\"^(gcc)\"]\n      default:\n        gcc:\n          cflags: -fopenmp\n          env:\n            OMP_NUM_THREADS: 2\n      config:\n        gcc/10.2.0-37fmsw7:\n          env:\n            OMP_NUM_THREADS: 4",
+          "test_content": "#!/bin/bash \nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/before_script.sh\n_EXEC=hello_omp.c.exe\nexport OMP_NUM_THREADS=2\nmodule load gcc/9.3.0-n7p74fd\ngcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/src/hello_omp.c\n./$_EXEC\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/after_script.sh",
+          "tags": "tutorials compile",
+          "starttime": "2021/03/31 12:11:13",
+          "endtime": "2021/03/31 12:11:13",
+          "runtime": 0.485775,
+          "state": "PASS",
+          "returncode": 0,
+          "output": "Hello World from thread = 0\nHello World from thread = 1\n",
+          "error": "",
+          "job": null
+        },
+        {
+          "id": "e18b5e7d",
+          "full_id": "e18b5e7d-c9dc-4834-a55a-f1dbb1a02ce1",
+          "schemafile": "compiler-v1.0.schema.json",
+          "executor": "generic.local.bash",
+          "compiler": "gcc/10.2.0-37fmsw7",
+          "hostname": "DOE-7086392.local",
+          "user": "siddiq90",
+          "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1",
+          "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage/generate.sh",
+          "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage",
+          "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/run",
+          "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage/generate.sh",
+          "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/run/override_environmentvars.out",
+          "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/run/override_environmentvars.err",
+          "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  override_environmentvars:\n    type: compiler\n    description: override default environment variables\n    executor: generic.local.bash\n    tags: [tutorials, compile]\n    source: \"src/hello_omp.c\"\n    compilers:\n      name: [\"^(gcc)\"]\n      default:\n        gcc:\n          cflags: -fopenmp\n          env:\n            OMP_NUM_THREADS: 2\n      config:\n        gcc/10.2.0-37fmsw7:\n          env:\n            OMP_NUM_THREADS: 4",
+          "test_content": "#!/bin/bash \nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/before_script.sh\n_EXEC=hello_omp.c.exe\nexport OMP_NUM_THREADS=4\nmodule load gcc/10.2.0-37fmsw7\ngcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/src/hello_omp.c\n./$_EXEC\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/after_script.sh",
+          "tags": "tutorials compile",
+          "starttime": "2021/03/31 12:11:13",
+          "endtime": "2021/03/31 12:11:14",
+          "runtime": 0.397184,
+          "state": "PASS",
+          "returncode": 0,
+          "output": "Hello World from thread = 0\nHello World from thread = 2\nHello World from thread = 1\nHello World from thread = 3\n",
+          "error": "",
+          "job": null
+        }
+      ]
     }
-
-
-
-    Output File
-    ______________________________
-    Hello World from thread = 1
-    Hello World from thread = 3
-    Hello World from thread = 2
-    Hello World from thread = 0
-
-
-
-
-    Error File
-    ______________________________
-
-
-
-
-    Test Content
-    ______________________________
-    #!/bin/bash
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/before_script.sh
-    _EXEC=hello_omp.c.exe
-    export OMP_NUM_THREADS=4
-    module load gcc/10.2.0-37fmsw7
-    gcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello_omp.c
-    ./$_EXEC
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/after_script.sh
-
-
-
-    buildspec:  /Users/siddiq90/Documents/buildtest/tutorials/compilers/envvar_override.yml
-    ______________________________
-    version: "1.0"
-    buildspecs:
-      override_environmentvars:
-        type: compiler
-        description: override default environment variables
-        executor: generic.local.bash
-        tags: [tutorials, compile]
-        source: "src/hello_omp.c"
-        compilers:
-          name: ["^(gcc)"]
-          default:
-            gcc:
-              cflags: -fopenmp
-              env:
-                OMP_NUM_THREADS: 2
-          config:
-            gcc/10.2.0-37fmsw7:
-              env:
-                OMP_NUM_THREADS: 4
-
 
 Tweak how test are passed
 --------------------------
