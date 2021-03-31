@@ -246,7 +246,7 @@ class BuildtestCompilers:
         return self.names
 
     def print_compilers(self):
-        """This method implements ``buildtest config compilers --list`` which
+        """This method implements ``buildtest config compilers`` which
         prints all compilers from buildtest configuration
         """
         for name in self.names:

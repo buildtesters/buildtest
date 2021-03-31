@@ -200,7 +200,7 @@ for querying and finding compilers:
 .. code-block:: console
 
     # list compilers in flat listing
-    $ buildtest config compilers -l
+    $ buildtest config compilers
 
     # list compilers in YAML format
     $ buildtest config compilers --yaml

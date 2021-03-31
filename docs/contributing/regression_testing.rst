@@ -74,42 +74,62 @@ Running test via coverage
 --------------------------
 
 There is a coverage configuration file `.coveragerc <https://github.com/buildtesters/buildtest/blob/devel/.coveragerc>`_ located
-in root of buildtest that is read by **coverage** utility. You can just run ``coverage run -m pytest``
-to get line-line coverage of the source code. This action is done via `regtest.sh <https://github.com/buildtesters/buildtest/blob/devel/scripts/regtest.sh>`_ script if you
-were to run it as is. Upon completion of tests you can run ``coverage report`` to show coverage results of your
+in root of buildtest that is read by **coverage** utility. The `regtest.py <https://github.com/buildtesters/buildtest/blob/devel/scripts/regtest.py>`_  script
+will collect coverage details upon completion of regression test which is equivalent to running `coverage run -m pytest` but we make some additional checks when
+running the script. Upon completion of tests you can run ``coverage report`` to show coverage results of your
 regression test run locally. Shown below is an example output:
 
 .. code-block:: console
 
     $ coverage report
-    Name                                        Stmts   Miss Branch BrPart  Cover
-    -----------------------------------------------------------------------------
-    buildtest/__init__.py                           2      0      0      0   100%
-    buildtest/buildsystem/__init__.py               0      0      0      0   100%
-    buildtest/buildsystem/base.py                 222     19     76     19    85%
-    buildtest/buildsystem/schemas/__init__.py       0      0      0      0   100%
-    buildtest/buildsystem/schemas/utils.py         53      8     26      8    77%
-    buildtest/config.py                            65     29     28      5    48%
-    buildtest/defaults.py                          18      0      0      0   100%
-    buildtest/exceptions.py                         5      1      2      1    71%
-    buildtest/log.py                               18      0      0      0   100%
-    buildtest/main.py                              11     11      0      0     0%
-    buildtest/menu/__init__.py                     62     47      4      0    23%
-    buildtest/menu/build.py                        62     52     28      0    11%
-    buildtest/menu/config.py                       35      1     18      0    98%
-    buildtest/menu/get.py                          31     23     10      0    20%
-    buildtest/menu/show.py                         17      3      6      3    74%
-    buildtest/menu/status.py                       11      8      2      0    23%
-    buildtest/system.py                            37     37     10      0     0%
-    buildtest/utils/__init__.py                     0      0      0      0   100%
-    buildtest/utils/command.py                     49      2     12      3    92%
-    buildtest/utils/file.py                        46      0     14      2    97%
-    -----------------------------------------------------------------------------
-    TOTAL                                         744    241    236     41    63%
+    Name                                       Stmts   Miss Branch BrPart     Cover
+    -------------------------------------------------------------------------------
+    buildtest/__init__.py                          3      3      0      0     0.00%
+    buildtest/defaults.py                         17     17      0      0     0.00%
+    buildtest/executors/slurm.py                 110     93     28      0    12.32%
+    buildtest/executors/cobalt.py                110     93     22      0    12.88%
+    buildtest/executors/pbs.py                    96     81     14      0    13.64%
+    buildtest/executors/lsf.py                   103     85     16      0    15.13%
+    buildtest/utils/timer.py                      15      9      4      0    31.58%
+    buildtest/menu/__init__.py                    29     16     10      0    33.33%
+    buildtest/executors/setup.py                 108     60     60      8    35.71%
+    buildtest/menu/compilers.py                  107     60     50      3    38.22%
+    buildtest/config.py                          158     72     76     10    47.86%
+    buildtest/system.py                          155     70     38     11    50.78%
+    buildtest/docs.py                              5      2      0      0    60.00%
+    buildtest/log.py                              19      7      0      0    63.16%
+    buildtest/buildsystem/base.py                185     45     50      8    67.23%
+    buildtest/menu/build.py                      421    117    208     22    70.59%
+    buildtest/buildsystem/batch.py                75     17     44      7    71.43%
+    buildtest/buildsystem/compilerbuilder.py     193     36     52     10    77.14%
+    buildtest/buildsystem/builders.py            107     24     60      8    77.25%
+    buildtest/utils/tools.py                      19      2     12      2    80.65%
+    buildtest/exceptions.py                        7      2      4      0    81.82%
+    buildtest/menu/buildspec.py                  356     46    188     22    83.82%
+    buildtest/executors/local.py                  49      3     10      4    88.14%
+    buildtest/buildsystem/scriptbuilder.py        41      3     10      3    88.24%
+    buildtest/utils/file.py                       68     11     30      0    88.78%
+    buildtest/menu/report.py                     193     16    114     14    89.58%
+    buildtest/executors/base.py                   61      4     18      2    89.87%
+    buildtest/utils/command.py                    68      3     20      5    90.91%
+    buildtest/menu/config.py                      73      4     12      1    94.12%
+    buildtest/buildsystem/parser.py               51      2     18      2    94.20%
+    buildtest/menu/schema.py                      26      0     16      2    95.24%
+    buildtest/menu/inspect.py                     63      2     46      3    95.41%
+    buildtest/schemas/defaults.py                 32      0      0      0   100.00%
+    buildtest/schemas/utils.py                    26      0      8      0   100.00%
+    buildtest/utils/shell.py                      30      0      8      0   100.00%
+    -------------------------------------------------------------------------------
+    TOTAL                                       3179   1005   1246    147    66.19%
+
+4 empty files skipped.
 
 If you want to view the coverage details locally in a browser you can run: ``coverage html`` which will
 write the results to directory **htmlcov**. You can open the file ``open htmlcov/index.html`` and it will show you
 a summary of coverage results that you would see from codecov.
+
+.. image:: coverage_locally.png
+
 
 For more details on coverage please refer to `coverage documentation <https://coverage.readthedocs.io/>`_.
 
