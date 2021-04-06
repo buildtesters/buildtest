@@ -2,11 +2,11 @@ import os
 import pytest
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
 from buildtest.cli.config import (
-    func_config_view,
-    func_config_validate,
-    func_config_summary,
-    func_config_executors,
-    func_config_system,
+    view_configuration,
+    validate_config,
+    view_summary,
+    view_executors,
+    view_system,
 )
 from buildtest.utils.file import walk_tree
 from buildtest.schemas.defaults import custom_validator
@@ -23,12 +23,12 @@ def test_config_systems():
     # run 'buildtest config systems' against all valid configuration files
     for settings_file in os.listdir(schema_files):
         bc_file = os.path.join(schema_files, settings_file)
-        func_config_system(settings_file=bc_file)
+        view_system(settings_file=bc_file)
 
 
 @pytest.mark.cli
 def test_view_configuration():
-    func_config_view()
+    view_configuration()
 
 
 def test_valid_config_schemas():
@@ -42,14 +42,12 @@ def test_valid_config_schemas():
 
 @pytest.mark.cli
 def test_config_validate():
-
-    func_config_validate()
+    validate_config()
 
 
 @pytest.mark.cli
 def test_config_summary():
-
-    func_config_summary()
+    view_summary()
 
 
 @pytest.mark.cli
@@ -58,10 +56,10 @@ def test_config_executors():
         json = True
 
     # run buildtest config executors --json
-    func_config_executors(args)
+    view_executors(args)
 
     class args:
         json = False
 
     # run buildtest config executors
-    func_config_executors(args)
+    view_executors(args)

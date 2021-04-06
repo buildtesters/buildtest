@@ -19,7 +19,21 @@ from buildtest.schemas.utils import load_recipe
 from buildtest.system import system
 
 
-def func_config_system(args=None, settings_file=None):
+def config_cmd(args):
+
+    if args.config == "view":
+        view_configuration()
+    elif args.config == "executors":
+        view_executors(args.json)
+    elif args.config == "summary":
+        view_summary()
+    elif args.config == "validate":
+        validate_config()
+    elif args.config == "systems":
+        view_system()
+
+
+def view_system(settings_file=None):
     """This method implements command ``buildtest config systems`` which displays
     system details from configuration file in table format.
     """
@@ -48,7 +62,7 @@ def func_config_system(args=None, settings_file=None):
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
 
-def func_config_validate(args=None):
+def validate_config():
     """This method implements ``buildtest config validate`` which attempts to
     validate buildtest settings with schema. If it not validate an exception
     an exception of type SystemError is raised. We invoke ``check_settings``
@@ -66,7 +80,7 @@ def func_config_validate(args=None):
     print(f"{settings_file} is valid")
 
 
-def func_config_view(args=None):
+def view_configuration():
     """View buildtest configuration file. This implements ``buildtest config view``"""
 
     settings_file = resolve_settings_file()
@@ -79,18 +93,15 @@ def func_config_view(args=None):
     print(f"Settings File: {settings_file}")
 
 
-def func_config_executors(args=None):
+def view_executors(json_format=False):
     """Display executors from buildtest configuration. This implements ``buildtest config executors`` command.
     If no option is specified we display output in JSON format
     """
 
-    # settings_file = resolve_settings_file()
-    # content = load_recipe(settings_file)
-
     d = {"executors": buildtest_configuration.target_config["executors"]}
 
     # display output in JSON format
-    if args.json:
+    if json_format:
         print(json.dumps(d, indent=2))
         return
 
@@ -98,7 +109,7 @@ def func_config_executors(args=None):
     print(yaml.dump(d, default_flow_style=False))
 
 
-def func_config_summary(args=None):
+def view_summary():
     """This method implements ``buildtest config summary`` option. In this method
     we will display a summary of System Details, Buildtest settings, Schemas,
     Repository details, Buildspecs files and test names.

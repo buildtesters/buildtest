@@ -5,7 +5,7 @@ from buildtest.schemas.defaults import schema_table
 from buildtest.utils.file import walk_tree, read_file
 
 
-def func_schema(args):
+def schema_cmd(args):
     """This method implements command ``buildtest schema`` which shows a list
     of schemas, their json content and list of schema examples. The input
     ``args`` is an instance of argparse class that contains

@@ -8,17 +8,7 @@ from termcolor import colored
 
 from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
 from buildtest.docs import buildtestdocs, schemadocs
-from buildtest.cli.config import (
-    func_config_summary,
-    func_config_validate,
-    func_config_view,
-    func_config_executors,
-    func_config_system,
-)
-from buildtest.cli.compilers import func_compiler_find, func_config_compiler
-from buildtest.cli.report import func_report
-from buildtest.cli.schema import func_schema
-from buildtest.cli.inspect import func_inspect
+from buildtest.cli.schema import schema_cmd
 from buildtest.schemas.defaults import schema_table
 
 
@@ -291,7 +281,7 @@ def config_menu(subparsers):
     parser_config = subparsers.add_parser("config")
 
     subparsers_config = parser_config.add_subparsers(
-        description="query information from buildtest configuration file"
+        description="query information from buildtest configuration file", dest="config"
     )
 
     executors = subparsers_config.add_parser(
@@ -302,20 +292,19 @@ def config_menu(subparsers):
         "-j", "--json", action="store_true", help="View executor in JSON format"
     )
 
-    view = subparsers_config.add_parser(
-        "view", help="View Buildtest Configuration File"
-    )
-    validate = subparsers_config.add_parser(
+    subparsers_config.add_parser("view", help="View Buildtest Configuration File")
+    subparsers_config.add_parser(
         "validate", help="Validate buildtest settings file with schema."
     )
 
-    summary = subparsers_config.add_parser(
+    subparsers_config.add_parser(
         "summary", help="Provide summary of buildtest settings."
     )
-    system = subparsers_config.add_parser("systems", help="List all available systems")
+    subparsers_config.add_parser("systems", help="List all available systems")
 
     compilers = subparsers_config.add_parser(
-        "compilers", help="search or find compilers "
+        "compilers",
+        help="search or find compilers",
     )
 
     compilers.add_argument(
@@ -333,6 +322,7 @@ def config_menu(subparsers):
 
     subparsers_compiler_find = compilers.add_subparsers(
         description="Find new compilers and add them to detected compiler section",
+        dest="compilers",
     )
 
     compiler_find = subparsers_compiler_find.add_parser(
@@ -345,16 +335,6 @@ def config_menu(subparsers):
         help="Display Debugging output when finding compilers",
         action="store_true",
     )
-
-    # parser_config_executor.set_defaults(fun)
-    executors.set_defaults(func=func_config_executors)
-    view.set_defaults(func=func_config_view)
-    validate.set_defaults(func=func_config_validate)
-    summary.set_defaults(func=func_config_summary)
-    system.set_defaults(func=func_config_system)
-
-    compilers.set_defaults(func=func_config_compiler)
-    compiler_find.set_defaults(func=func_compiler_find)
 
 
 def report_menu(subparsers):
@@ -389,18 +369,14 @@ def report_menu(subparsers):
         action="store_true",
     )
 
-    parser_report.set_defaults(func=func_report)
-
 
 def inspect_menu(subparsers):
     """This method builds menu for `buildtest inspect` """
 
     parser_inspect = subparsers.add_parser("inspect")
     subparser = parser_inspect.add_subparsers(
-        help="subcommands", description="Inspect Test result", dest="subcommands"
+        help="subcommands", description="Inspect Test result", dest="inspect"
     )
-    # parser_inspect_id = parser_inspect.add_subparsers(description="Query Report By Test ID")
-
     name = subparser.add_parser("name", help="Specify name of test")
     name.add_argument("name", nargs="*", help="Name of test")
 
@@ -409,14 +385,10 @@ def inspect_menu(subparsers):
 
     subparser.add_parser("list", help="List all test ids")
 
-    # parser_inspect.add_argument("test", nargs="*", help="select unique test")
-    parser_inspect.set_defaults(func=func_inspect)
-
 
 def schema_menu(subparsers):
     """This method builds menu for ``buildtest schema``"""
 
-    # ################### buildtest schema  ########################
     parser_schema = subparsers.add_parser("schema")
 
     parser_schema.add_argument(
@@ -435,4 +407,3 @@ def schema_menu(subparsers):
     parser_schema.add_argument(
         "-j", "--json", action="store_true", help="Display json schema file"
     )
-    parser_schema.set_defaults(func=func_schema)
