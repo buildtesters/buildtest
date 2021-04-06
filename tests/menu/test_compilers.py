@@ -1,6 +1,6 @@
 import os
 import pytest
-from buildtest.menu.compilers import BuildtestCompilers
+from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.exceptions import BuildTestError
 
 here = os.path.dirname(os.path.abspath(__file__))

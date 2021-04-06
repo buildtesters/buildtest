@@ -22,7 +22,7 @@ from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.exceptions import BuildTestError
 from buildtest.executors.setup import BuildExecutor
 
-from buildtest.menu.report import update_report
+from buildtest.cli.report import update_report
 from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir
 from buildtest.utils.tools import Hasher, deep_get
 

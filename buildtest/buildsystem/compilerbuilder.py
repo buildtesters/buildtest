@@ -6,7 +6,7 @@ from buildtest.buildsystem.base import BuilderBase
 from buildtest.config import buildtest_configuration
 from buildtest.defaults import executor_root
 from buildtest.exceptions import BuildTestError
-from buildtest.menu.compilers import BuildtestCompilers
+from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
 

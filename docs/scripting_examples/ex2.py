@@ -1,6 +1,6 @@
 import os
 from buildtest.defaults import BUILDTEST_ROOT, DEFAULT_SETTINGS_FILE
-from buildtest.menu.build import BuildTest
+from buildtest.cli.build import BuildTest
 
 input_buildspecs = [os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml")]
 

@@ -1,8 +1,8 @@
 import os
 import pytest
 import socket
-from buildtest.menu.build import BuildTest
-from buildtest.menu.compilers import BuildtestCompilers
+from buildtest.cli.build import BuildTest
+from buildtest.cli.compilers import BuildtestCompilers
 
 
 def test_ascent():

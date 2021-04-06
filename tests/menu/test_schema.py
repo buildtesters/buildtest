@@ -1,5 +1,5 @@
 import pytest
-from buildtest.menu.schema import func_schema
+from buildtest.cli.schema import func_schema
 
 
 @pytest.mark.schema
