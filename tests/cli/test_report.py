@@ -4,7 +4,7 @@ import random
 import shutil
 import string
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_ROOT
-from buildtest.cli.report import func_report
+from buildtest.cli.report import report_cmd
 
 
 @pytest.mark.cli
@@ -21,7 +21,7 @@ def test_report_format():
         latest = False
 
     # run 'buildtest report'
-    func_report(args)
+    report_cmd(args)
 
     class args:
         helpformat = False
@@ -32,7 +32,7 @@ def test_report_format():
         latest = False
 
     # run 'buildtest report --format name,state,returncode,buildspec'
-    func_report(args)
+    report_cmd(args)
 
     class args:
         helpformat = False
@@ -44,7 +44,7 @@ def test_report_format():
 
     # specify invalid format field 'badfield'
     with pytest.raises(SystemExit):
-        func_report(args)
+        report_cmd(args)
 
 
 @pytest.mark.cli
@@ -57,7 +57,7 @@ def test_report_helpformat():
         oldest = False
         latest = False
 
-    func_report(args)
+    report_cmd(args)
 
 
 @pytest.mark.cli
@@ -71,7 +71,7 @@ def test_report_filter():
         latest = False
 
     # run 'buildtest report --helpfilter'
-    func_report(args)
+    report_cmd(args)
 
     class args:
         helpformat = False
@@ -82,7 +82,7 @@ def test_report_filter():
         latest = False
 
     # run 'buildtest report --filter state=PASS'
-    func_report(args)
+    report_cmd(args)
 
     class args:
         helpformat = False
@@ -93,7 +93,7 @@ def test_report_filter():
         latest = False
 
     # run 'buildtest report --filter state=PASS --format name,state'
-    func_report(args)
+    report_cmd(args)
 
     class args:
         helpformat = False
@@ -106,7 +106,7 @@ def test_report_filter():
     # run 'buildtest report --filter state=UNKNOWN --format name,state',
     # this raises error because UNKNOWN is not valid value for state field
     with pytest.raises(SystemExit):
-        func_report(args)
+        report_cmd(args)
 
     class args:
         helpformat = False
@@ -117,7 +117,7 @@ def test_report_filter():
         latest = False
 
     # run 'buildtest report --filter returncode=0,executor=local.bash --format name,returncode,executor
-    func_report(args)
+    report_cmd(args)
 
     class args:
         helpformat = False
@@ -132,7 +132,7 @@ def test_report_filter():
         latest = False
 
     # run 'buildtest report --filter buildspec=tutorials/pass_returncode.yml --format name,returncode,buildspec
-    func_report(args)
+    report_cmd(args)
 
     class args:
         helpformat = False
@@ -143,7 +143,7 @@ def test_report_filter():
         latest = False
 
     # run 'buildtest report --filter name=exit1_pass --format name,returncode,state
-    func_report(args)
+    report_cmd(args)
 
     class args:
         helpformat = False
@@ -158,7 +158,7 @@ def test_report_filter():
     # the filter argument buildspec is a random string which will be invalid file
     # and we expect an exception to be raised
     with pytest.raises(SystemExit):
-        func_report(args)
+        report_cmd(args)
 
     class args:
         helpformat = False
@@ -171,7 +171,7 @@ def test_report_filter():
     # run 'buildtest report --filter buildspec=$HOME/.bashrc --format name,returncode,state
     # this will raise error even though file is valid it won't be found in cache
     with pytest.raises(SystemExit):
-        func_report(args)
+        report_cmd(args)
 
     class args:
         helpformat = False
@@ -187,10 +187,10 @@ def test_report_filter():
         latest = False
 
     # run 'buildtest report --filter tags=tutorials,executor=local.bash,state=PASS,returncode=0 --format name,returncode,state,executor,tags
-    func_report(args)
+    report_cmd(args)
 
 
-def test_func_report_when_BUILD_REPORT_missing():
+def test_report_cmd_when_BUILD_REPORT_missing():
 
     backupfile = f"{BUILD_REPORT}.bak"
 
@@ -209,7 +209,7 @@ def test_func_report_when_BUILD_REPORT_missing():
         latest = False
 
     with pytest.raises(SystemExit):
-        func_report(args)
+        report_cmd(args)
 
     shutil.move(backupfile, BUILD_REPORT)
 

@@ -10,7 +10,6 @@ from buildtest.config import (
     buildtest_configuration,
 )
 from buildtest.defaults import var_root, BUILDTEST_USER_HOME
-from buildtest.cli.buildspec import buildspec_find
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
 from buildtest.system import system
@@ -98,11 +97,33 @@ def main():
 
     # implementation for 'buildtest buildspec find'
     if args.subcommands == "buildspec":
-        buildspec_find(args=args, settings_file=settings_file)
-        return
+        from buildtest.cli.buildspec import buildspec_find
 
-    if args.subcommands and args.func:
-        args.func(args)
+        buildspec_find(args=args, settings_file=settings_file)
+    elif args.subcommands == "inspect":
+        from buildtest.cli.inspect import inspect
+
+        inspect(args)
+
+    elif args.subcommands == "config" and args.config == "compilers":
+        from buildtest.cli.compilers import compiler_cmd
+
+        compiler_cmd(args)
+
+    elif args.subcommands == "config":
+        from buildtest.cli.config import config_cmd
+
+        config_cmd(args)
+
+    elif args.subcommands == "report":
+        from buildtest.cli.report import report_cmd
+
+        report_cmd(args)
+
+    elif args.subcommands == "schema":
+        from buildtest.cli.schema import schema_cmd
+
+        schema_cmd(args)
 
 
 if __name__ == "__main__":

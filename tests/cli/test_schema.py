@@ -1,10 +1,10 @@
 import pytest
-from buildtest.cli.schema import func_schema
+from buildtest.cli.schema import schema_cmd
 
 
 @pytest.mark.schema
 @pytest.mark.cli
-def test_func_schema():
+def test_schema_cmd():
 
     supported_schemas = [
         "definitions.schema.json",
@@ -22,7 +22,7 @@ def test_func_schema():
             example = False
 
         # run buildtest schema -n <schema> --json
-        func_schema(args_json)
+        schema_cmd(args_json)
 
         class args_examples:
             name = schema
@@ -34,7 +34,7 @@ def test_func_schema():
             continue
 
         # run buildtest schema -n <schema> --example
-        func_schema(args_examples)
+        schema_cmd(args_examples)
 
     class args:
         name = None
@@ -42,7 +42,7 @@ def test_func_schema():
         example = False
 
     # run buildtest schema
-    func_schema(args)
+    schema_cmd(args)
 
     class args:
         name = None
@@ -51,7 +51,7 @@ def test_func_schema():
 
     # passing --json or --example without --name will result in SystemExit exception
     with pytest.raises(SystemExit):
-        func_schema(args)
+        schema_cmd(args)
 
     class args:
         name = "definitions.schema.json"
@@ -60,4 +60,4 @@ def test_func_schema():
 
     # passing --example  with definitions.schema.json will result in error
     with pytest.raises(SystemExit):
-        func_schema(args)
+        schema_cmd(args)

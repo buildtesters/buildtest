@@ -15,7 +15,25 @@ from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.utils.tools import deep_get
 
 
-def func_compiler_find(args=None):
+def compiler_cmd(args):
+
+    if args.compilers == "find":
+        compiler_find(args)
+        return
+
+    bc = BuildtestCompilers()
+
+    if args.json is False and args.yaml is False:
+        bc.print_compilers()
+
+    if args.json:
+        bc.print_json()
+
+    if args.yaml:
+        bc.print_yaml()
+
+
+def compiler_find(args=None):
     """This method implements ``buildtest config compilers find`` which detects
     new compilers based on module names defined in configuration. If system has
     Lmod we use Lmodule API to detect the compilers. For environment-modules we
@@ -46,22 +64,6 @@ def func_compiler_find(args=None):
             default_flow_style=False,
             sort_keys=False,
         )
-
-
-def func_config_compiler(args=None):
-    """This method implements ``buildtest config compilers`` which shows compiler
-    section from buildtest configuration.
-    """
-    bc = BuildtestCompilers()
-
-    if args.json is False and args.yaml is False:
-        bc.print_compilers()
-
-    if args.json:
-        bc.print_json()
-
-    if args.yaml:
-        bc.print_yaml()
 
 
 class BuildtestCompilers:

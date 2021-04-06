@@ -2,7 +2,7 @@ import pytest
 import random
 import string
 import uuid
-from buildtest.cli.inspect import get_all_ids, func_inspect
+from buildtest.cli.inspect import get_all_ids, inspect
 
 
 def test_inspect_ids():
@@ -18,9 +18,10 @@ def test_inspect_ids():
 
 def test_buildtest_inspect_list():
     class args:
-        subcommands = "list"
+        subcommands = "config"
+        inspect = "list"
 
-    func_inspect(args)
+    inspect(args)
 
 
 def test_buildtest_inspect_name():
@@ -33,19 +34,21 @@ def test_buildtest_inspect_name():
         break
 
     class args:
-        subcommands = "name"
+        subcommands = "config"
+        inspect = "name"
         name = [test_name]
 
     print(f"Querying test names: {args.name}")
-    func_inspect(args)
+    inspect(args)
 
     class args:
-        subcommands = "name"
+        subcommands = "config"
+        inspect = "name"
         name = ["".join(random.choice(string.ascii_letters) for i in range(10))]
 
     print(f"Querying test names: {args.name}")
     with pytest.raises(SystemExit):
-        func_inspect(args)
+        inspect(args)
 
 
 def test_buildtest_inspect_id():
@@ -55,17 +58,19 @@ def test_buildtest_inspect_id():
     identifier = list(test_ids.keys())[0]
 
     class args:
-        subcommands = "id"
+        subcommands = "config"
+        inspect = "id"
         id = [identifier]
 
     print(f"Querying test identifier: {args.id}")
-    func_inspect(args)
+    inspect(args)
 
     class args:
-        subcommands = "id"
+        subcommands = "config"
+        inspect = "id"
         id = [str(uuid.uuid4())]
 
     print(f"Querying test identifier: {args.id}")
     # generate a random unique id which is not a valid test id when searching for tests by id.
     with pytest.raises(SystemExit):
-        func_inspect(args)
+        inspect(args)

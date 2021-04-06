@@ -385,7 +385,7 @@ class Report:
         )
 
 
-def func_report(args=None):
+def report_cmd(args):
 
     results = Report(args.filter, args.format, args.latest, args.oldest)
     if args.helpfilter:

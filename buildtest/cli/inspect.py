@@ -34,11 +34,11 @@ def get_all_ids():
     return test_id
 
 
-def func_inspect(args):
+def inspect(args):
     """Entry point for ``buildtest inspect`` command"""
-
+    print(args)
     # implements command 'buildtest inspect list'
-    if args.subcommands == "list":
+    if args.inspect == "list":
         inspect_list()
         return
 
@@ -47,12 +47,12 @@ def func_inspect(args):
         report = json.loads(fd.read())
 
     # implements command 'buildtest inspect name'
-    if args.subcommands == "name":
+    if args.inspect == "name":
         inspect_by_name(report, args.name)
         return
 
     # implements command 'buildtest inspect id'
-    if args.subcommands == "id":
+    if args.inspect == "id":
 
         discovered_ids = []
         records = {}
