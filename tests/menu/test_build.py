@@ -4,8 +4,8 @@ import tempfile
 
 from buildtest.defaults import BUILDTEST_ROOT, DEFAULT_SETTINGS_FILE
 from buildtest.exceptions import BuildTestError
-from buildtest.menu.build import BuildTest
-from buildtest.menu.buildspec import BuildspecCache
+from buildtest.cli.build import BuildTest
+from buildtest.cli.buildspec import BuildspecCache
 from buildtest.utils.file import walk_tree
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

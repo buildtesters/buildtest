@@ -3,7 +3,7 @@ import pytest
 from buildtest.config import resolve_settings_file
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
-from buildtest.menu.buildspec import BuildspecCache
+from buildtest.cli.buildspec import BuildspecCache
 
 settings_file = resolve_settings_file()
 

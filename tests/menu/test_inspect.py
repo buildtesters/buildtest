@@ -2,7 +2,7 @@ import pytest
 import random
 import string
 import uuid
-from buildtest.menu.inspect import get_all_ids, func_inspect
+from buildtest.cli.inspect import get_all_ids, func_inspect
 
 
 def test_inspect_ids():

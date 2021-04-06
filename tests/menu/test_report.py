@@ -4,7 +4,7 @@ import random
 import shutil
 import string
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_ROOT
-from buildtest.menu.report import func_report
+from buildtest.cli.report import func_report
 
 
 @pytest.mark.cli

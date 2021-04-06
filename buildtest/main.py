@@ -10,9 +10,9 @@ from buildtest.config import (
     buildtest_configuration,
 )
 from buildtest.defaults import var_root, BUILDTEST_USER_HOME
-from buildtest.menu.buildspec import buildspec_find
-from buildtest.menu import BuildTestParser
-from buildtest.menu.build import BuildTest
+from buildtest.cli.buildspec import buildspec_find
+from buildtest.cli import get_parser
+from buildtest.cli.build import BuildTest
 from buildtest.system import system
 from buildtest.log import init_logfile, streamlog
 from buildtest.utils.file import create_dir, resolve_path
@@ -42,8 +42,11 @@ def main():
     # BuildTestSystem()
     system.check()
 
-    parser = BuildTestParser()
-    args = parser.parse_options()
+    # parser = BuildTestParser()
+    # args = parser.parse_options()
+
+    parser = get_parser()
+    args, extras = parser.parse_known_args()
 
     if args.debug:
         streamlog(args.debug)

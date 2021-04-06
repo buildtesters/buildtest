@@ -1,7 +1,7 @@
 import os
 import pytest
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
-from buildtest.menu.config import (
+from buildtest.cli.config import (
     func_config_view,
     func_config_validate,
     func_config_summary,
