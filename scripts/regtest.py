@@ -4,15 +4,13 @@ import os
 import shutil
 import sys
 
-from buildtest.defaults import BUILDTEST_USER_HOME, var_root
+from buildtest.defaults import BUILDTEST_USER_HOME
 from buildtest.utils.file import is_dir
 
 if not os.getenv("BUILDTEST_ROOT"):
     sys.exit("Please check your buildtest installation by running 'source setup.sh'")
 
 html_dir = os.path.join(os.getenv("BUILDTEST_ROOT"), "htmlcov")
-if is_dir(var_root):
-    shutil.rmtree(var_root)
 
 if is_dir(BUILDTEST_USER_HOME):
     shutil.rmtree(BUILDTEST_USER_HOME)

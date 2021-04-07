@@ -13,10 +13,7 @@ from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
 from termcolor import colored
 from buildtest.config import check_settings
-from buildtest.defaults import (
-    BUILDTEST_ROOT,
-    BUILDSPEC_CACHE_FILE,
-)
+from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.exceptions import BuildTestError
@@ -62,7 +59,9 @@ def resolve_testdirectory(buildtest_configuration, cli_testdir=None):
     # 2. Configuration option specified by 'testdir'
     # 3. Defaults to $BUILDTEST_ROOT/var/tests
     test_directory = (
-        cli_testdir or prefix_testdir or os.path.join(BUILDTEST_ROOT, "var", "tests")
+        cli_testdir
+        or prefix_testdir
+        or os.path.join(BUILDTEST_USER_HOME, "var", "tests")
     )
     if not test_directory:
         raise BuildTestError(

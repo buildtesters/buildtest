@@ -9,12 +9,21 @@ from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import check_settings, BuildtestConfiguration
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
+    BUILDSPEC_ERROR_FILE,
     BUILDSPEC_DEFAULT_PATH,
     DEFAULT_SETTINGS_FILE,
+    BUILDTEST_BUILDSPEC_DIR,
 )
 from buildtest.executors.setup import BuildExecutor
 from buildtest.exceptions import BuildTestError
-from buildtest.utils.file import is_dir, is_file, walk_tree, resolve_path, read_file
+from buildtest.utils.file import (
+    create_dir,
+    is_dir,
+    is_file,
+    read_file,
+    resolve_path,
+    walk_tree,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +56,9 @@ class BuildspecCache:
         :param roots:  List of directories to search for buildspecs. This argument contains value of --roots
         :type roots: list, required
         """
+
+        if not is_dir(BUILDTEST_BUILDSPEC_DIR):
+            create_dir(BUILDTEST_BUILDSPEC_DIR)
 
         self.settings = settings_file or DEFAULT_SETTINGS_FILE
         self.configuration = check_settings(self.settings, executor_check=True)
@@ -164,11 +176,8 @@ class BuildspecCache:
         print(f"Updating buildspec cache file: {BUILDSPEC_CACHE_FILE}")
         # write invalid buildspecs to file if any found
         if self.invalid_buildspecs:
-            buildspec_error_file = os.path.join(
-                os.path.dirname(BUILDSPEC_CACHE_FILE), "buildspec.error"
-            )
 
-            with open(buildspec_error_file, "w") as fd:
+            with open(BUILDSPEC_ERROR_FILE, "w") as fd:
                 for file, msg in self.invalid_buildspecs.items():
 
                     fd.write(f"buildspec file: {file} \n")
@@ -183,7 +192,7 @@ class BuildspecCache:
                     fd.write("\n\n")
                     fd.write("{:=<80} \n".format(""))
 
-            print(f"Writing invalid buildspecs to file: {buildspec_error_file} ")
+            print(f"Writing invalid buildspecs to file: {BUILDSPEC_ERROR_FILE} ")
 
         print("\n\n")
 
@@ -250,11 +259,12 @@ class BuildspecCache:
         self.update_cache["executor"] = {}
         self.update_cache["tags"] = {}
         self.update_cache["maintainers"] = {}
+        self.update_cache["paths"] = self.paths
 
         self.invalid_buildspecs = {}
 
-        for path in self.paths:
-            self.update_cache[path] = {}
+        # for path in self.paths:
+        #    self.update_cache[path] = {}
 
         buildspecs = self._discover_buildspecs()
         print("Discovered Buildspecs")

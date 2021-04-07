@@ -2,7 +2,7 @@ import os
 import shutil
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.defaults import executor_root
+from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.utils.file import write_file
 
 
@@ -70,7 +70,7 @@ class ScriptBuilder(BuilderBase):
             lines += data_warp_lines
 
         lines += [
-            f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
+            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
         ]
 
         # for python scripts we generate python script and return lines
@@ -78,7 +78,7 @@ class ScriptBuilder(BuilderBase):
             self.logger.debug(f"[{self.name}]: Detected python shell")
             lines += self.write_python_script()
             lines += [
-                f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
+                f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'after_script.sh')}"
             ]
 
             return lines
@@ -95,7 +95,7 @@ class ScriptBuilder(BuilderBase):
         lines += [self.recipe.get("run")]
 
         lines += [
-            f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
+            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'after_script.sh')}"
         ]
 
         return lines

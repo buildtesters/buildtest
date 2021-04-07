@@ -9,7 +9,12 @@ from buildtest.config import (
     resolve_settings_file,
     buildtest_configuration,
 )
-from buildtest.defaults import var_root, BUILDTEST_USER_HOME
+from buildtest.defaults import (
+    BUILDTEST_VAR_DIR,
+    BUILDTEST_USER_HOME,
+    BUILDTEST_EXECUTOR_DIR,
+    BUILDTEST_BUILDSPEC_DIR,
+)
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
 from buildtest.system import system
@@ -35,14 +40,13 @@ def main():
     logger.info("Starting buildtest log")
 
     create_dir(BUILDTEST_USER_HOME)
-    create_dir(var_root)
+    create_dir(BUILDTEST_VAR_DIR)
+    create_dir(BUILDTEST_EXECUTOR_DIR)
+    create_dir(BUILDTEST_BUILDSPEC_DIR)
 
     # Create a build test system, and check requirements
     # BuildTestSystem()
     system.check()
-
-    # parser = BuildTestParser()
-    # args = parser.parse_options()
 
     parser = get_parser()
     args, extras = parser.parse_known_args()
