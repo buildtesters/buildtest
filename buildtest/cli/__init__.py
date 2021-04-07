@@ -4,11 +4,10 @@ interact with a global configuration for buildtest.
 """
 import argparse
 import os
-from termcolor import colored
 
+from termcolor import colored
 from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
 from buildtest.docs import buildtestdocs, schemadocs
-from buildtest.cli.schema import schema_cmd
 from buildtest.schemas.defaults import schema_table
 
 

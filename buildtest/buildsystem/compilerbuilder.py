@@ -4,7 +4,7 @@ import shutil
 
 from buildtest.buildsystem.base import BuilderBase
 from buildtest.config import buildtest_configuration
-from buildtest.defaults import executor_root
+from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.exceptions import BuildTestError
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.utils.file import resolve_path
@@ -200,7 +200,7 @@ class CompilerBuilder(BuilderBase):
             lines += data_warp_lines
 
         lines += [
-            f"source {os.path.join(executor_root, self.executor, 'before_script.sh')}"
+            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
         ]
 
         lines += [self.exec_variable]
@@ -231,7 +231,7 @@ class CompilerBuilder(BuilderBase):
             lines.append(self.post_run)
 
         lines += [
-            f"source {os.path.join(executor_root, self.executor, 'after_script.sh')}"
+            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'after_script.sh')}"
         ]
         return lines
 

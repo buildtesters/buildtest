@@ -9,7 +9,7 @@ import logging
 import os
 import sys
 
-from buildtest.defaults import USER_SETTINGS_FILE, executor_root
+from buildtest.defaults import USER_SETTINGS_FILE, BUILDTEST_EXECUTOR_DIR
 from buildtest.executors.cobalt import CobaltExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
@@ -140,16 +140,20 @@ class BuildExecutor:
         """
 
         for executor_name in self.executors.keys():
-            create_dir(os.path.join(executor_root, executor_name))
+            create_dir(os.path.join(BUILDTEST_EXECUTOR_DIR, executor_name))
             executor_settings = self.executors[executor_name]._settings
 
             # if before_script field defined in executor section write content to var/executors/<executor>/before_script.sh
-            file = os.path.join(executor_root, executor_name, "before_script.sh")
+            file = os.path.join(
+                BUILDTEST_EXECUTOR_DIR, executor_name, "before_script.sh"
+            )
             content = executor_settings.get("before_script") or ""
             write_file(file, content)
 
             # after_script field defined in executor section write content to var/executors/<executor>/after_script.sh
-            file = os.path.join(executor_root, executor_name, "after_script.sh")
+            file = os.path.join(
+                BUILDTEST_EXECUTOR_DIR, executor_name, "after_script.sh"
+            )
             content = executor_settings.get("after_script") or ""
             write_file(file, content)
 
