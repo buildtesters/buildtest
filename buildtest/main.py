@@ -4,6 +4,8 @@ import os
 import shutil
 import sys
 import tempfile
+import webbrowser
+
 from buildtest.config import (
     check_settings,
     resolve_settings_file,
@@ -50,6 +52,10 @@ def main():
 
     parser = get_parser()
     args, extras = parser.parse_known_args()
+
+    # if no commands specified we raise an error
+    if not args.subcommands:
+        raise SystemExit("Invalid input argument")
 
     if args.debug:
         streamlog(args.debug)
@@ -104,10 +110,15 @@ def main():
         from buildtest.cli.buildspec import buildspec_find
 
         buildspec_find(args=args, settings_file=settings_file)
-    elif args.subcommands == "inspect":
-        from buildtest.cli.inspect import inspect
+    elif args.subcommands == "docs":
+        webbrowser.open("https://buildtest.readthedocs.io/")
+    elif args.subcommands == "schemadocs":
 
-        inspect(args)
+        webbrowser.open("https://buildtesters.github.io/buildtest/")
+    elif args.subcommands == "inspect":
+        from buildtest.cli.inspect import inspect_cmd
+
+        inspect_cmd(args)
 
     elif args.subcommands == "config" and args.config == "compilers":
         from buildtest.cli.compilers import compiler_cmd

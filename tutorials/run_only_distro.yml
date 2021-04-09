@@ -3,7 +3,7 @@ buildspecs:
   run_only_macos_distro:
     type: script
     executor: generic.local.bash
-    description: "Run test only if linux distro is darwin."
+    description: "Run test only if distro is darwin."
     tags: [mac]
     run_only:
       linux_distro:
@@ -13,3 +13,13 @@ buildspecs:
       regex:
         stream: stdout
         exp: "^Darwin$"
+
+  run_only_linux_distro:
+    type: script
+    executor: generic.local.bash
+    description: "Run test only if distro is CentOS."
+    tags: [mac]
+    run_only:
+      linux_distro:
+        - centos
+    run: uname

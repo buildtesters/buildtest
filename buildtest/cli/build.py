@@ -87,6 +87,7 @@ class BuildTest:
         stage=None,
         filter_tags=None,
         rebuild=None,
+        buildtest_system=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -110,7 +111,10 @@ class BuildTest:
         :type filter_tags: list, optional
         :param rebuild: contains value of command line argument (--rebuild)
         :type rebuild: list, optional
+        :param buildtest_system: Instance of BuildTestSystem class
+        :type  buildtest_system: BuildTestSystem
         """
+
         stage_values = ["parse", "build"]
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -167,6 +171,7 @@ class BuildTest:
 
         self.builders = None
         self.buildexecutor = BuildExecutor(self.configuration)
+        self.system = buildtest_system
 
     def build(self):
         """This method is responsible for implementating stages: parse, build, run, update. """
@@ -489,6 +494,7 @@ class BuildTest:
                 filters=self.filtertags,
                 testdir=self.testdir,
                 rebuild=self.rebuild,
+                buildtest_system=self.system,
             )
             self.builders += builder.get_builders()
 

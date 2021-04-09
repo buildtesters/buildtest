@@ -3,6 +3,7 @@ This module detects System changes defined in class BuildTestSystem.
 """
 
 import distro
+import getpass
 import logging
 import json
 import os
@@ -10,13 +11,11 @@ import platform
 import shutil
 import sys
 from buildtest.utils.command import BuildTestCommand
+from buildtest.defaults import BUILDTEST_ROOT
 
 
 class BuildTestSystem:
-    """BuildTestSystem is a class that detects system configuration and outputs the result
-    in .run file which are generated upon test execution. This module also keeps
-    track of what is supported (or not supported) for a system.
-    """
+    """BuildTestSystem is a class that detects system configuration"""
 
     system = {}
 
@@ -27,6 +26,9 @@ class BuildTestSystem:
 
         self.logger = logging.getLogger(__name__)
 
+    def get(self):
+        return self.system
+
     def check(self):
         """Based on the module "distro" get system details like linux distro,
         processor, hostname, etc...
@@ -34,20 +36,27 @@ class BuildTestSystem:
 
         self.logger.debug("Starting System Compatibility Check")
 
+        self.system["platform"] = platform.system()
+        if self.system["platform"] not in ["Linux", "Darwin"]:
+            print("System must be Linux or Darwin")
+            sys.exit(1)
+
         self.system["os"] = distro.id()
-        self.system["env"] = dict(os.environ)
+        self.system["user"] = getpass.getuser()
         self.system["python"] = shutil.which("python")
         self.system["pyver"] = platform.python_version()
         self.system["processor"] = platform.processor()
         self.system["host"] = platform.node()
         self.system["machine"] = platform.machine()
+
+        self.logger.debug(f"Machine: {self.system['machine']}")
+        self.logger.debug(f"Host: {self.system['host']}")
+        self.logger.debug(f"User: {self.system['user']}")
         self.logger.debug(f"Operating System: {self.system['os']}")
         self.logger.debug(f"Python Path: {self.system['python']}")
-
-        self.system["platform"] = platform.system()
-        if self.system["platform"] not in ["Linux", "Darwin"]:
-            print("System must be Linux or Darwin")
-            sys.exit(1)
+        self.logger.debug(f"Python Version: {self.system['pyver']}")
+        self.logger.debug(f"BUILDTEST_ROOT: {BUILDTEST_ROOT}")
+        self.logger.debug(f"Path to Buildtest: {shutil.which('buildtest')}")
 
         self.detect_module_tool()
         self.check_scheduler()
@@ -70,21 +79,21 @@ class BuildTestSystem:
         # running test based on scheduler.
         self.system["scheduler"] = []
 
-        if slurm.get_state():
-            self.system["scheduler"] = "slurm"
-            return
+        if slurm.state:
+            self.logger.debug("Detected Slurm Scheduler")
+            self.system["scheduler"].append("slurm")
 
-        if lsf.get_state():
-            self.system["scheduler"] = "lsf"
-            return
+        if lsf.state:
+            self.logger.debug("Detected LSF Scheduler")
+            self.system["scheduler"].append("lsf")
 
-        if cobalt.get_state():
-            self.system["scheduler"] = "cobalt"
-            return
+        if cobalt.state:
+            self.logger.debug("Detected Cobalt Scheduler")
+            self.system["scheduler"].append("cobalt")
 
-        if pbs.get_state():
-            self.system["scheduler"] = "pbs"
-            return
+        if pbs.state:
+            self.logger.debug("Detected PBS Scheduler")
+            self.system["scheduler"].append("pbs")
 
     def detect_module_tool(self):
         """Check if module tool exists, we check for Lmod or environment-modules by
@@ -96,17 +105,17 @@ class BuildTestSystem:
         """
 
         self.system["moduletool"] = None
+        lmod_version = os.getenv("LMOD_VERSION")
+        environmodules_version = os.getenv("MODULE_VERSION") or os.getenv("MODULES_CMD")
 
-        if os.getenv("LMOD_VERSION"):
+        if lmod_version:
             self.system["moduletool"] = "lmod"
-            self.logger.debug(
-                f"Detected Lmod with version: {os.getenv('LMOD_VERSION')}"
-            )
+            self.logger.debug(f"Detected Lmod with version: {lmod_version}")
         # 3.x module versions define MODULE_VERSION while 4.5 version has MODULES_CMD, it doesn't have MODULE_VERSION set
-        elif os.getenv("MODULE_VERSION") or os.getenv("MODULES_CMD"):
+        if environmodules_version:
             self.system["moduletool"] = "environment-modules"
             self.logger.debug(
-                f"Detected environment-modules with version: {os.getenv('LMOD_VERSION')}"
+                f"Detected environment-modules with version: {environmodules_version}"
             )
 
 
@@ -117,7 +126,6 @@ class Scheduler:
     from Base Class ``Scheduler``.
     """
 
-    state = True
     logger = logging.getLogger(__name__)
 
     def check(self):
@@ -126,13 +134,9 @@ class Scheduler:
         for command in self.binaries:
             if not shutil.which(command):
                 self.logger.debug(f"Cannot find {command} command in $PATH")
-                self.state = False
+                return False
 
-    def get_state(self):
-        """Return state of cluster, the return is a boolean to indicate scheduler
-        is valid or not.
-        """
-        return self.state
+        return True
 
 
 class Slurm(Scheduler):
@@ -148,7 +152,7 @@ class Slurm(Scheduler):
 
         self.logger = logging.getLogger(__name__)
 
-        self.check()
+        self.state = self.check()
 
         # retrieve slurm partitions, qos, and cluster only if slurm is detected.
         if self.state:
@@ -229,7 +233,7 @@ class LSF(Scheduler):
 
         self.logger = logging.getLogger(__name__)
 
-        self.check()
+        self.state = self.check()
 
         # retrieve LSF queues if LSF is detected
         if self.state:
@@ -278,7 +282,7 @@ class Cobalt(Scheduler):
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
-        self.check()
+        self.state = self.check()
 
         if self.state:
             self.queues = self._get_queues()
@@ -311,8 +315,9 @@ class PBS(Scheduler):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
+        self.state = None
 
-        self.check()
+        self.state = self.check()
         if self.state:
             self._get_queues()
 
@@ -336,4 +341,3 @@ class PBS(Scheduler):
 
 
 system = BuildTestSystem()
-system.check()

@@ -34,9 +34,9 @@ def get_all_ids():
     return test_id
 
 
-def inspect(args):
+def inspect_cmd(args):
     """Entry point for ``buildtest inspect`` command"""
-    print(args)
+
     # implements command 'buildtest inspect list'
     if args.inspect == "list":
         inspect_list()

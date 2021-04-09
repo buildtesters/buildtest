@@ -7,6 +7,7 @@ from buildtest.exceptions import BuildTestError
 from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.utils.file import walk_tree
+from buildtest.system import BuildTestSystem
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)
@@ -70,9 +71,15 @@ def test_build_buildspecs():
 @pytest.mark.cli
 def test_buildspec_tag_executor():
 
+    system = BuildTestSystem()
+    system.check()
+
     # testing buildtest build --tags fail --executor generic.local.sh
     cmd = BuildTest(
-        config_file=DEFAULT_SETTINGS_FILE, tags=["fail"], executors=["generic.local.sh"]
+        config_file=DEFAULT_SETTINGS_FILE,
+        tags=["fail"],
+        executors=["generic.local.sh"],
+        buildtest_system=system,
     )
     cmd.build()
 
@@ -80,10 +87,42 @@ def test_buildspec_tag_executor():
 @pytest.mark.cli
 def test_build_multi_executors():
 
+    system = BuildTestSystem()
+    system.check()
+
     # testing buildtest build --executor generic.local.sh --executor generic.local.python
     cmd = BuildTest(
         config_file=DEFAULT_SETTINGS_FILE,
         executors=["generic.local.sh", "generic.local.python"],
+        buildtest_system=system,
+    )
+    cmd.build()
+
+
+def test_run_only():
+
+    system = BuildTestSystem()
+    system.check()
+
+    # Testing run_only fields by running:  buildtest build -b tutorials/root_user.yml -b tutorials/run_only_distro.yml -b tutorials/run_only_platform.yml
+    cmd = BuildTest(
+        buildspecs=[
+            os.path.join(BUILDTEST_ROOT, "tutorials", "root_user.yml"),
+            os.path.join(BUILDTEST_ROOT, "tutorials", "run_only_distro.yml"),
+            os.path.join(BUILDTEST_ROOT, "tutorials", "run_only_platform.yml"),
+        ],
+        config_file=DEFAULT_SETTINGS_FILE,
+        buildtest_system=system,
+    )
+    cmd.build()
+
+
+def test_skip_field():
+
+    # Testing run_only fields by running:  buildtest build -b tutorials/skip.yml
+    cmd = BuildTest(
+        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "skip_tests.yml")],
+        config_file=DEFAULT_SETTINGS_FILE,
     )
     cmd.build()
 
