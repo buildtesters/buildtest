@@ -1,12 +1,12 @@
 $ buildtest config summary
-buildtest version:  0.9.4
+buildtest version:  0.9.5
 buildtest Path: /Users/siddiq90/Documents/github/buildtest/bin/buildtest
 
 
 Machine Details
 ______________________________
 Operating System:  darwin
-Hostname:  DOE-7086392.local
+Hostname:  DOE-7086392.fios-router.home
 Machine:  x86_64
 Processor:  i386
 Python Path /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python
@@ -18,7 +18,7 @@ Buildtest Settings
 ________________________________________________________________________________
 Buildtest Settings: /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
 Executors:  ['local.bash', 'local.sh', 'local.csh', 'local.zsh', 'local.python']
-Buildspec Cache File: /Users/siddiq90/Documents/github/buildtest/var/buildspec-cache.json
+Buildspec Cache File: /Users/siddiq90/.buildtest/buildspecs/cache.json
 
 
 Buildtest Schemas

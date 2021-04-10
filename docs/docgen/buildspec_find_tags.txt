@@ -2,39 +2,39 @@ $ buildtest buildspec find --tags
 +---------------+
 | Tags          |
 +===============+
-| configuration |
-+---------------+
-| storage       |
-+---------------+
-| tutorials     |
-+---------------+
 | mac           |
 +---------------+
-| pass          |
+| filesystem    |
 +---------------+
-| compile       |
+| python        |
 +---------------+
 | system        |
 +---------------+
 | cobalt        |
 +---------------+
-| fail          |
+| singularity   |
 +---------------+
-| python        |
+| storage       |
 +---------------+
 | lsf           |
 +---------------+
-| network       |
+| slurm         |
 +---------------+
 | ping          |
 +---------------+
-| slurm         |
+| fail          |
 +---------------+
-| singularity   |
-+---------------+
-| filesystem    |
+| network       |
 +---------------+
 | containers    |
 +---------------+
+| compile       |
++---------------+
+| tutorials     |
++---------------+
+| configuration |
++---------------+
 | ssh           |
++---------------+
+| pass          |
 +---------------+

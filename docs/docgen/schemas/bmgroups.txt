@@ -1,5 +1,17 @@
 $ buildtest build -b general_tests/sched/lsf/bmgroups.yml 
 
+
+User:  siddiq90
+Hostname:  DOE-7086392.fios-router.home
+Platform:  Darwin
+Current Time:  2021/04/10 00:58:15
+buildtest path: /Users/siddiq90/Documents/github/buildtest/bin/buildtest
+buildtest version:  0.9.5
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python
+python version:  3.7.3
+Test Directory:  /Users/siddiq90/.buildtest/var/tests
+Configuration File:  /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
+
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
@@ -8,4 +20,5 @@ Discovered Buildspecs:
 /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bmgroups.yml
 [show_host_groups][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bmgroups.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
 No buildspecs to process because there are no valid buildspecs
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_h94pw5gn.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_trlx7nx5.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/github/buildtest/buildtest.log
