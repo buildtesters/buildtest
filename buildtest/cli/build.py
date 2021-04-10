@@ -14,15 +14,16 @@ from datetime import datetime
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
 from termcolor import colored
+
 from buildtest import BUILDTEST_VERSION
-from buildtest.config import check_settings
-from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
+from buildtest.cli.report import update_report
+from buildtest.config import check_settings
+from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME
 from buildtest.exceptions import BuildTestError
 from buildtest.executors.setup import BuildExecutor
-
-from buildtest.cli.report import update_report
+from buildtest.system import system
 from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir
 from buildtest.utils.tools import Hasher, deep_get
 
@@ -174,7 +175,7 @@ class BuildTest:
 
         self.builders = None
         self.buildexecutor = BuildExecutor(self.configuration)
-        self.system = buildtest_system
+        self.system = buildtest_system or system
 
         print("\n")
         print("User: ", self.system.system["user"])

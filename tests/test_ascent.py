@@ -3,6 +3,7 @@ import pytest
 import socket
 from buildtest.cli.build import BuildTest
 from buildtest.cli.compilers import BuildtestCompilers
+from buildtest.system import BuildTestSystem
 
 
 def test_ascent():
@@ -14,9 +15,13 @@ def test_ascent():
 
     here = os.path.dirname(os.path.abspath(__file__))
     settings_file = os.path.join(here, "settings", "ascent.yml")
+    system = BuildTestSystem()
+    system.check()
 
     buildspec_files = os.path.join(here, "examples", "ascent", "hostname.yml")
-    cmd = BuildTest(config_file=settings_file, buildspecs=[buildspec_files])
+    cmd = BuildTest(
+        config_file=settings_file, buildspecs=[buildspec_files], buildtest_system=system
+    )
     cmd.build()
 
     # testing buildtest config compilers find

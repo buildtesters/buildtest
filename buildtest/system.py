@@ -341,3 +341,4 @@ class PBS(Scheduler):
 
 
 system = BuildTestSystem()
+system.check()
