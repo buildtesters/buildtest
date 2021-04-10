@@ -7,11 +7,14 @@ import logging
 import json
 import os
 import re
+import shutil
 import sys
 import time
+from datetime import datetime
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
 from termcolor import colored
+from buildtest import BUILDTEST_VERSION
 from buildtest.config import check_settings
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME
 from buildtest.buildsystem.builders import Builder
@@ -173,6 +176,18 @@ class BuildTest:
         self.buildexecutor = BuildExecutor(self.configuration)
         self.system = buildtest_system
 
+        print("\n")
+        print("User: ", self.system.system["user"])
+        print("Hostname: ", self.system.system["host"])
+        print("Platform: ", self.system.system["platform"])
+        print("Current Time: ", datetime.now().strftime("%Y/%m/%d %X"))
+        print("buildtest path:", shutil.which("buildtest"))
+        print("buildtest version: ", BUILDTEST_VERSION)
+        print("python path:", self.system.system["python"])
+        print("python version: ", self.system.system["pyver"])
+        print("Test Directory: ", self.testdir)
+        print("Configuration File: ", self.configuration.file)
+
     def build(self):
         """This method is responsible for implementating stages: parse, build, run, update. """
 
@@ -210,6 +225,9 @@ class BuildTest:
         self.bp_found = []
         self.bp_removed = []
 
+        tag_dict = {}
+        executor_dict = {}
+
         logger.debug(
             f"Discovering buildspecs based on tags={self.tags}, executor={self.executors}, buildspec={self.buildspecs}, excluded buildspec={self.exclude_buildspecs}"
         )
@@ -220,7 +238,8 @@ class BuildTest:
             for name in self.tags:
                 logger.debug(f"Checking {name} is type 'str'")
                 assert isinstance(name, str)
-                buildspecs += self.discover_buildspecs_by_tags(name)
+                tag_dict[name] = self.discover_buildspecs_by_tags(name)
+                buildspecs += tag_dict[name]
 
             self.bp_found += buildspecs
 
@@ -234,7 +253,8 @@ class BuildTest:
                 logger.debug(f"Checking {name} is type 'str'")
                 assert isinstance(name, str)
 
-                buildspecs += self.discover_buildspecs_by_executor_name(name)
+                executor_dict[name] = self.discover_buildspecs_by_executor_name(name)
+                buildspecs += executor_dict[name]
 
             self.bp_found += buildspecs
 
@@ -312,11 +332,42 @@ class BuildTest:
             print(msg)
 
             print("Discovered Buildspecs:")
-            [print(buildspec) for buildspec in self.detected_buildspecs]
+            for buildspec in self.detected_buildspecs:
+                print(buildspec)
 
             if self.bp_removed:
                 print("\nExcluded Buildspecs:")
-                [print(file) for file in self.bp_removed]
+                for file in self.bp_removed:
+                    print(file)
+
+            # print breakdown of buildspecs by tags
+            if tag_dict:
+                print("\nBREAKDOWN OF BUILDSPECS BY TAGS\n")
+
+                headers = tag_dict.keys()
+                if os.getenv("BUILDTEST_COLOR") == "True":
+                    headers = list(
+                        map(
+                            lambda x: colored(x, "blue", attrs=["bold"]),
+                            tag_dict.keys(),
+                        )
+                    )
+                print(tabulate(tag_dict, headers=headers, tablefmt="simple"))
+
+            # print breakdown of buildspecs by executors
+            if executor_dict:
+                print("\nBREAKDOWN OF BUILDSPECS BY EXECUTORS\n")
+
+                headers = executor_dict.keys()
+                if os.getenv("BUILDTEST_COLOR") == "True":
+                    headers = list(
+                        map(
+                            lambda x: colored(x, "blue", attrs=["bold"]),
+                            executor_dict.keys(),
+                        )
+                    )
+
+                print(tabulate(executor_dict, headers=headers, tablefmt="simple"))
 
     def discover_buildspecs_by_tags(self, input_tag):
         """This method discovers buildspecs by tags, using ``--tags`` option
@@ -352,6 +403,9 @@ class BuildTest:
                 if input_tag in tag:
                     buildspecs.append(buildspecfile)
 
+        # remove any duplicates and return back a list
+        buildspecs = list(set(buildspecs))
+
         return buildspecs
 
     def discover_buildspecs_by_executor_name(self, executor_name):
@@ -386,6 +440,9 @@ class BuildTest:
                     "executor"
                 ):
                     buildspecs.append(buildspecfile)
+
+        # remove any duplicates and return back a list
+        buildspecs = list(set(buildspecs))
 
         return buildspecs
 
@@ -527,6 +584,25 @@ class BuildTest:
             print(msg)
             print(tabulate(table, headers=headers, tablefmt="presto"))
 
+            testnames = list(map(lambda x: x.name, self.builders))
+            description = list(
+                map(lambda x: x.recipe.get("description"), self.builders)
+            )
+
+            print("\n\n")
+
+            headers = ["name", "description"]
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = list(
+                    map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
+                )
+
+            print(
+                tabulate(
+                    zip(testnames, description), headers=headers, tablefmt="simple"
+                )
+            )
+
     def build_phase(self, printTable=False):
         """This method will build all tests by invoking class method ``build`` for
         each builder that generates testscript in the test directory.
@@ -547,12 +623,11 @@ class BuildTest:
         print(msg)
 
         table = Hasher()
-        headers = ["name", "id", "type", "executor", "tags", "compiler", "testpath"]
-        for field in headers:
-            table["script"][field] = []
-            table["compiler"][field] = []
 
-        del table["script"]["compiler"]
+        for field in ["name", "id", "type", "executor", "tags", "testpath"]:
+            table["script"][field] = []
+        for field in ["name", "id", "type", "executor", "tags", "compiler", "testpath"]:
+            table["compiler"][field] = []
 
         for builder in self.builders:
             try:
@@ -584,9 +659,13 @@ class BuildTest:
             # if we have any tests using 'script' schema we print all tests together since table columns are different
             if len(table["script"]["name"]) > 0:
 
+                headers = table["script"].keys()
                 if os.getenv("BUILDTEST_COLOR") == "True":
                     headers = list(
-                        map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
+                        map(
+                            lambda x: colored(x, "blue", attrs=["bold"]),
+                            table["script"].keys(),
+                        )
                     )
 
                 print(
@@ -605,7 +684,10 @@ class BuildTest:
                 headers = table["compiler"].keys()
                 if os.getenv("BUILDTEST_COLOR") == "True":
                     headers = list(
-                        map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
+                        map(
+                            lambda x: colored(x, "blue", attrs=["bold"]),
+                            table["compiler"].keys(),
+                        )
                     )
 
                 print(
@@ -675,7 +757,6 @@ class BuildTest:
             "executor": [],
             "status": [],
             "returncode": [],
-            "testpath": [],
         }
 
         poll_queue = []
@@ -695,7 +776,6 @@ class BuildTest:
             table["executor"].append(builder.executor)
             table["status"].append(builder.metadata["result"]["state"])
             table["returncode"].append(builder.metadata["result"]["returncode"])
-            table["testpath"].append(builder.metadata["testpath"])
 
             # for jobs with N/A state we append to poll queue which means job is dispatched to scheduler
             # and we poll job later
@@ -738,7 +818,6 @@ class BuildTest:
                 "executor": [],
                 "status": [],
                 "returncode": [],
-                "testpath": [],
             }
 
             if printTable:
@@ -768,7 +847,6 @@ class BuildTest:
                 table["executor"].append(builder.executor)
                 table["status"].append(builder.metadata["result"]["state"])
                 table["returncode"].append(builder.metadata["result"]["returncode"])
-                table["testpath"].append(builder.metadata["testpath"])
 
                 total_tests += 1
 
