@@ -115,7 +115,7 @@ def main():
     settings_file = resolve_settings_file()
 
     logger.info(f"Processing buildtest configuration file: {settings_file}")
-    check_settings(settings_file)
+    configuration = check_settings(settings_file)
 
     # implementation for 'buildtest buildspec find'
     if args.subcommands == "buildspec":
@@ -151,6 +151,11 @@ def main():
         from buildtest.cli.schema import schema_cmd
 
         schema_cmd(args)
+
+    elif args.subcommands == "cdash":
+        from buildtest.cli.cdash import cdash_cmd
+
+        cdash_cmd(args, configuration)
 
 
 if __name__ == "__main__":
